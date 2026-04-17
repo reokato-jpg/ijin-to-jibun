@@ -2526,6 +2526,157 @@ main { flex: 1; overflow-y: auto; background: var(--paper); }
   color: #fff;
 }
 
+/* ================ X（Twitter）風タイムライン ================ */
+.x-feed {
+  background: #fff;
+  border: 1px solid var(--rule-soft);
+  border-radius: 0;
+}
+.x-post {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--rule-soft);
+  transition: background 0.15s;
+  cursor: default;
+}
+.x-post:hover { background: rgba(122,46,58,0.03); }
+.x-post:last-child { border-bottom: none; }
+.x-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: var(--paper-warm);
+  background-size: cover;
+  background-position: center top;
+  flex-shrink: 0;
+}
+.x-avatar-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-jp);
+  color: var(--wine);
+  font-weight: 700;
+  font-size: 18px;
+}
+.x-post-body {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.x-post-head {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+  font-size: 13px;
+}
+.x-post-name {
+  font-family: var(--font-jp);
+  font-weight: 800;
+  color: var(--ink);
+}
+.x-post-verified {
+  color: #1d9bf0;
+  font-size: 13px;
+  font-weight: 900;
+}
+.x-post-handle {
+  color: var(--ink-4);
+  font-family: var(--font-en);
+  font-style: italic;
+  font-size: 12px;
+}
+.x-post-dot { color: var(--ink-4); margin: 0 2px; }
+.x-post-time {
+  color: var(--ink-4);
+  font-size: 12px;
+  font-family: var(--font-jp);
+}
+.x-post-type {
+  margin-left: auto;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: rgba(122,46,58,0.08);
+  color: var(--wine);
+  font-family: var(--font-jp);
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+.x-post-title {
+  font-family: var(--font-jp);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--ink);
+  line-height: 1.4;
+  margin-top: 2px;
+}
+.x-post-text {
+  font-family: var(--font-jp);
+  font-size: 14px;
+  color: var(--ink-2);
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.x-post-source {
+  font-size: 12px;
+  color: var(--ink-4);
+  font-family: var(--font-jp);
+  margin-top: 2px;
+}
+.x-post-media {
+  margin-top: 8px;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #1a1a1a;
+  background-size: cover;
+  background-position: center;
+  border-radius: 14px;
+  border: 1px solid var(--rule-soft);
+}
+.x-post-embed-link {
+  display: inline-block;
+  margin-top: 8px;
+  color: #1d9bf0;
+  font-size: 13px;
+  font-family: var(--font-jp);
+  text-decoration: none;
+  font-weight: 600;
+}
+.x-post-embed-link:hover { text-decoration: underline; }
+.x-post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
+}
+.x-post-tags .event-tag {
+  font-size: 11px;
+  padding: 2px 8px;
+  background: #fffdf6;
+  border: 1px solid var(--rule);
+  color: var(--wine);
+  border-radius: 10px;
+  cursor: pointer;
+}
+.x-post-actions {
+  display: flex;
+  gap: 28px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--ink-4);
+  font-family: var(--font-en);
+}
+.x-action { cursor: default; }
+/* 旧LINE風スタイルの無効化 */
+.profile-feed.line-chat { background: transparent !important; padding: 0 !important; }
+.line-msg, .line-bubble, .line-date, .line-msg-avatar { display: none !important; }
+
 /* ================ 詳細検索トグル ================ */
 .adv-search-toggle {
   display: flex;

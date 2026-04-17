@@ -917,53 +917,107 @@ async function showPerson(id) {
   const tagsUsed = new Set();
   events.forEach(e => (e.tags || []).forEach(t => tagsUsed.add(t)));
 
-  // 投稿フィード（LINE風吹き出し）
-  const avatar = p.imageUrl
-    ? `<div class="line-msg-avatar" style="background-image:url('${p.imageUrl}')"></div>`
-    : `<div class="line-msg-avatar">${p.name.charAt(0)}</div>`;
-  let lastYear = null;
-  const feedHtml = [];
-  events.forEach(e => {
-    if (e.year !== lastYear) {
-      feedHtml.push(`<div class="line-date">${e.year}年</div>`);
-      lastYear = e.year;
-    }
-    const tagChips = (e.tags || []).map(tid => {
+  // X（Twitter）風の投稿カードHTML生成
+  const handleTxt = p.nameEn ? p.nameEn.split(' ').pop().toLowerCase() : p.id;
+  const xAvatar = p.imageUrl
+    ? `<div class="x-avatar" style="background-image:url('${p.imageUrl}')"></div>`
+    : `<div class="x-avatar x-avatar-fallback">${p.name.charAt(0)}</div>`;
+
+  function xPostCard({ year, age, icon, typeLabel, title, body, tags, image, extra, source }) {
+    const tagChips = (tags || []).map(tid => {
       const t = DATA.tagMap[tid];
       return t ? `<span class="event-tag" data-tag="${t.id}">${t.name}</span>` : '';
     }).join('');
-    feedHtml.push(`
-      <div class="line-msg">
-        ${avatar}
-        <div class="line-msg-content">
-          <div class="line-msg-name">${p.name}</div>
-          <div class="line-bubble">
-            <div class="line-bubble-title">${e.title}</div>
-            <div>${e.detail}</div>
-            ${tagChips ? `<div class="line-bubble-tags">${tagChips}</div>` : ''}
+    const when = year ? `${year}年${age ? `・${age}歳` : ''}` : '';
+    return `
+      <article class="x-post">
+        ${xAvatar}
+        <div class="x-post-body">
+          <div class="x-post-head">
+            <span class="x-post-name">${p.name}</span>
+            <span class="x-post-verified" title="${p.field}">✓</span>
+            <span class="x-post-handle">@${handleTxt}</span>
+            <span class="x-post-dot">·</span>
+            <span class="x-post-time">${when || '—'}</span>
+            ${typeLabel ? `<span class="x-post-type x-post-type-${icon || 'default'}">${typeLabel}</span>` : ''}
+          </div>
+          ${title ? `<div class="x-post-title">${title}</div>` : ''}
+          ${body ? `<div class="x-post-text">${body}</div>` : ''}
+          ${source ? `<div class="x-post-source">— ${source}</div>` : ''}
+          ${image ? `<div class="x-post-media" style="background-image:url('${image}')"></div>` : ''}
+          ${extra || ''}
+          ${tagChips ? `<div class="x-post-tags">${tagChips}</div>` : ''}
+          <div class="x-post-actions">
+            <span class="x-action">💬 ${Math.max(1, (body || '').length % 5)}</span>
+            <span class="x-action">🔁 ${Math.max(1, (title || body || '').length % 7)}</span>
+            <span class="x-action">♡ ${Math.max(3, (body || title || '').length % 11) * 3}</span>
           </div>
         </div>
-        <div class="line-msg-meta">
-          <span class="line-msg-time">${e.year}${e.age ? `(${e.age})` : ''}</span>
-        </div>
-      </div>
-    `);
+      </article>
+    `;
+  }
+
+  // 投稿タブ（年表ベース）
+  const feedHtml = [];
+  events.forEach(e => {
+    feedHtml.push(xPostCard({
+      year: e.year, age: e.age, icon: 'event', typeLabel: '出来事',
+      title: e.title, body: e.detail, tags: e.tags
+    }));
   });
-  // 名言もフィードに追加
   (p.quotes || []).forEach(q => {
-    feedHtml.push(`
-      <div class="line-msg">
-        ${avatar}
-        <div class="line-msg-content">
-          <div class="line-msg-name">${p.name}</div>
-          <div class="line-bubble">
-            <div class="line-bubble-quote">${q.text}</div>
-            ${q.source ? `<div class="line-bubble-source">— ${q.source}</div>` : ''}
-          </div>
-        </div>
-      </div>
-    `);
+    feedHtml.push(xPostCard({
+      year: null, icon: 'quote', typeLabel: '名言',
+      title: null, body: `「${q.text}」`, source: q.source || ''
+    }));
   });
+
+  // 全部流れてくるタイムライン（出来事・名言・作品・映画・場所・本）
+  const stream = [];
+  events.forEach(e => stream.push({ sortYear: e.year || 0, sortPri: 1, html: xPostCard({
+    year: e.year, age: e.age, icon: 'event', typeLabel: '🪶 出来事',
+    title: e.title, body: e.detail, tags: e.tags
+  })}));
+  (p.quotes || []).forEach(q => stream.push({ sortYear: 99999, sortPri: 2, html: xPostCard({
+    icon: 'quote', typeLabel: '✍ 名言',
+    body: `「${q.text}」`, source: q.source || ''
+  })}));
+  (p.works || []).forEach(w => {
+    const yt = w.youtubeId ? `https://i.ytimg.com/vi/${w.youtubeId}/mqdefault.jpg` : null;
+    const ytLink = w.youtubeId ? `<a class="x-post-embed-link" href="https://www.youtube.com/watch?v=${w.youtubeId}" target="_blank" rel="noopener">▶ YouTubeで聴く</a>` : '';
+    stream.push({ sortYear: w.year || 99999, sortPri: 3, html: xPostCard({
+      year: w.year, icon: 'work', typeLabel: '🎵 代表作',
+      title: w.title, body: w.description || '', image: yt, extra: ytLink
+    })});
+  });
+  (p.media || []).forEach(m => {
+    const yt = m.youtubeId ? `https://i.ytimg.com/vi/${m.youtubeId}/mqdefault.jpg` : null;
+    const ytLink = m.youtubeId ? `<a class="x-post-embed-link" href="https://www.youtube.com/watch?v=${m.youtubeId}" target="_blank" rel="noopener">▶ 予告編を観る</a>` : '';
+    const typeLbl = {movie:'🎬 映画', drama:'📺 ドラマ', anime:'🎞 アニメ', doc:'📹 ドキュメンタリー'}[m.type] || '🎬 映像';
+    stream.push({ sortYear: m.year || 99999, sortPri: 4, html: xPostCard({
+      year: m.year, icon: 'media', typeLabel: typeLbl,
+      title: m.title, body: m.description || (m.cast ? `主演: ${m.cast}` : ''), image: yt, extra: ytLink
+    })});
+  });
+  (p.places || []).forEach(pl => {
+    const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(pl.name + ' ' + pl.location)}`;
+    const mapLink = `<a class="x-post-embed-link" href="${mapUrl}" target="_blank" rel="noopener">📍 地図で見る</a>`;
+    stream.push({ sortYear: 99998, sortPri: 5, html: xPostCard({
+      icon: 'place', typeLabel: '📍 聖地',
+      title: pl.name, body: `${pl.location}${pl.note ? `\n${pl.note}` : ''}`, extra: mapLink
+    })});
+  });
+  (p.books || []).forEach(b => {
+    const cover = b.asin ? amazonCover(b.asin) : '';
+    const link = b.asin ? `<a class="x-post-embed-link" href="${amazonUrl(b.asin)}" target="_blank" rel="noopener">📖 Amazonで見る</a>` : '';
+    stream.push({ sortYear: 99999, sortPri: 6, html: xPostCard({
+      icon: 'book', typeLabel: '📘 関連本',
+      title: b.title, body: b.description || `${b.author}`, image: cover, extra: link
+    })});
+  });
+  // 年代順、同年は種類順
+  stream.sort((a, b) => (a.sortYear - b.sortYear) || (a.sortPri - b.sortPri));
+  const streamHtml = stream.map(s => s.html).join('');
 
   const html = `
     <!-- カバー画像 -->
@@ -1016,7 +1070,8 @@ async function showPerson(id) {
 
     <!-- ミニタブ -->
     <div class="profile-tabs">
-      <button class="profile-tab active" data-ptab="posts">投稿</button>
+      <button class="profile-tab active" data-ptab="stream">タイムライン</button>
+      <button class="profile-tab" data-ptab="posts">投稿</button>
       <button class="profile-tab" data-ptab="quotes">名言</button>
       <button class="profile-tab" data-ptab="timeline">年表</button>
       ${(p.relations && p.relations.length > 0) ? '<button class="profile-tab" data-ptab="relations">人間関係</button>' : ''}
@@ -1115,9 +1170,16 @@ async function showPerson(id) {
       })()}
     </div>
 
-    <!-- 投稿タブ -->
-    <div class="profile-tab-content active" data-ptab="posts">
-      <div class="profile-feed line-chat">
+    <!-- タイムラインタブ（ぜんぶ流れてくる） -->
+    <div class="profile-tab-content active" data-ptab="stream">
+      <div class="x-feed">
+        ${streamHtml}
+      </div>
+    </div>
+
+    <!-- 投稿タブ（出来事＋名言） -->
+    <div class="profile-tab-content" data-ptab="posts">
+      <div class="x-feed">
         ${feedHtml.join('')}
       </div>
     </div>
