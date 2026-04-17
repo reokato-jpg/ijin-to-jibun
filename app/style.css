@@ -84,7 +84,14 @@ body {
   .category-filter, .era-filter, .sort-filter { justify-content: center; }
   /* 人物詳細：ヘッダーを広めに */
   .profile-cover { height: 220px; }
-  .profile-tabs { max-width: 900px; margin-left: auto; margin-right: auto; }
+  .profile-tabs {
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+    gap: 4px;
+  }
+  .profile-tab { padding: 12px 20px; font-size: 14px; }
   .profile-feed, .profile-tab-content { max-width: 860px; margin-left: auto; margin-right: auto; }
   /* 本棚・書籍カード */
   .article-grid { grid-template-columns: repeat(3, 1fr); }
@@ -1472,6 +1479,13 @@ main { flex: 1; overflow-y: auto; background: var(--paper); }
   cursor: pointer;
   transition: color 0.15s, border-color 0.15s;
   white-space: nowrap;
+  outline: none;
+}
+.profile-tab:focus { outline: none; }
+.profile-tab:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: -2px;
+  border-radius: 3px;
 }
 .profile-tab.active {
   color: var(--wine);
