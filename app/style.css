@@ -65,6 +65,15 @@ body {
   .book-grid { grid-template-columns: repeat(6, 1fr); gap: 18px 14px; }
   /* 本日のおすすめ（ホーム）は6人横並び */
   #peopleList .book-grid { grid-template-columns: repeat(6, 1fr); }
+  /* HP版は記事カードを縦長に見せすぎない＆文字を読める大きさに */
+  .article-grid { grid-template-columns: repeat(3, 1fr); gap: 20px 16px; }
+  .article-card { aspect-ratio: 2 / 2.6; }
+  .article-card-inner { max-height: 40%; padding: 10px 12px 12px; }
+  .article-card-inner .article-source,
+  .article-card-inner .article-category { font-size: 10px; padding: 2px 7px; }
+  .article-card-inner .article-title { font-size: 13px; margin-bottom: 4px; white-space: normal; -webkit-line-clamp: 2; display: -webkit-box; -webkit-box-orient: vertical; }
+  .article-card-inner .article-desc { font-size: 11px; -webkit-line-clamp: 2; line-height: 1.5; }
+  .article-card-inner .article-badges { margin-bottom: 6px; }
   .home-books { grid-template-columns: 1fr 1fr 1fr; max-width: 720px; margin-left: auto; margin-right: auto; }
   .category-filter, .era-filter, .sort-filter { justify-content: center; }
   /* 人物詳細：ヘッダーを広めに */
