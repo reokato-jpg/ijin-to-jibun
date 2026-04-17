@@ -1411,17 +1411,64 @@ async function showPerson(id) {
       if (panel) panel.classList.toggle('hidden');
     });
   });
+  // コメントパネルの中身だけを書き換えるヘルパー（全体再描画しない）
+  function refreshCommentsPanel(key) {
+    const panel = container.querySelector(`[data-comments-panel="${CSS.escape(key)}"]`);
+    if (!panel) return;
+    const list = panel.querySelector('.x-comments-list');
+    const comments = (commentsData || {})[key] || [];
+    if (list) {
+      list.innerHTML = comments.length
+        ? comments.map((c, i) => `
+            <div class="x-comment" data-comment-idx="${i}">
+              <div class="x-comment-text">${escapeHtml(c.text)}</div>
+              <div class="x-comment-meta">
+                <span class="x-comment-date">${formatTs(c.ts)}</span>
+                ${c.userId === 'me' || !c.userId ? `<button class="x-comment-delete" data-comment-delete="${key}|${i}">削除</button>` : ''}
+              </div>
+            </div>
+          `).join('')
+        : '<div class="x-comments-empty">まだコメントはありません</div>';
+    }
+    // 件数バッジも更新
+    const btn = container.querySelector(`[data-comment-toggle="${CSS.escape(key)}"] .x-action-count`);
+    if (btn) btn.textContent = comments.length || '';
+    // 新しい削除ボタンにハンドラを再バインド
+    panel.querySelectorAll('[data-comment-delete]').forEach(b => {
+      b.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const [k, idxStr] = b.dataset.commentDelete.split('|');
+        const idx = Number(idxStr);
+        if (!confirm('このコメントを削除しますか？')) return;
+        deleteComment(k, idx);
+        refreshCommentsPanel(k);
+      });
+    });
+  }
+
   container.querySelectorAll('[data-comment-form]').forEach(form => {
-    form.addEventListener('submit', async (e) => {
+    const handle = async (e) => {
       e.preventDefault();
+      e.stopPropagation();
       const key = form.dataset.commentForm;
       const input = form.querySelector('.x-comment-input');
       const text = (input.value || '').trim();
       if (!text) return;
       await submitComment(key, text);
       input.value = '';
-      showPerson(p.id); // 再描画
-    });
+      refreshCommentsPanel(key);
+    };
+    form.addEventListener('submit', handle);
+    // Enterキーでの意図しない送信も確実にキャッチ
+    const input = form.querySelector('.x-comment-input');
+    if (input) {
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.isComposing && !e.shiftKey) {
+          e.preventDefault();
+          handle(e);
+        }
+      });
+    }
   });
   container.querySelectorAll('[data-comment-delete]').forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -1430,7 +1477,7 @@ async function showPerson(id) {
       const idx = Number(idxStr);
       if (!confirm('このコメントを削除しますか？')) return;
       deleteComment(key, idx);
-      showPerson(p.id);
+      refreshCommentsPanel(key);
     });
   });
   // 手紙の通報ボタン
