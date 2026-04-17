@@ -676,29 +676,45 @@ function renderHomeBooks() {
   `).join('');
 }
 
-// ====================== IMSLP楽譜URL生成ヘルパー ======================
-// タイトルに含まれる作品番号（BWV, Op., K., D., HWV）を抽出してIMSLP検索へ
+// ====================== 楽譜URL生成ヘルパー ======================
+// 作品番号（BWV/Op./K./D./HWV/RV）を抽出
+function extractCatalog(title) {
+  const m = (title || '').match(/(BWV|WoO|Op\.?|作品|K\.|KV|D\.|HWV|RV)\s*\.?\s*([0-9０-９]+(?:[-–]\d+)?)/i);
+  if (!m) return null;
+  const cat = m[1].replace('作品', 'Op.');
+  const num = m[2].replace(/[０-９]/g, d => '０１２３４５６７８９'.indexOf(d));
+  return `${cat} ${num}`;
+}
+// 英語姓を取得
+function familyNameEn(person) {
+  const nameEn = (person.nameEn || '').trim();
+  if (!nameEn) return '';
+  const parts = nameEn.split(' ');
+  return parts[parts.length - 1];
+}
 function buildImslpUrl(person, work) {
-  const title = (work && work.title) || '';
-  // BWV 1007 / Op.23 / K.525 / D.759 / HWV 56 / Op.10-12 / RV425
-  const m = title.match(/(BWV|WoO|Op\.?|作品|K\.|KV|D\.|HWV|RV)\s*\.?\s*([0-9０-９]+(?:[-–]\d+)?)/i);
-  if (m) {
-    const cat = m[1].replace('作品', 'Op.');
-    const num = m[2].replace(/[０-９]/g, d => '０１２３４５６７８９'.indexOf(d));
-    const q = encodeURIComponent(`${cat} ${num}`);
-    return `https://imslp.org/index.php?search=${q}&title=Special%3ASearch&go=Go`;
+  const cat = extractCatalog(work && work.title);
+  if (cat) {
+    return `https://imslp.org/index.php?search=${encodeURIComponent(cat)}&title=Special%3ASearch&go=Go`;
   }
   // 作品番号が無ければ、作曲家のIMSLPカテゴリページへ
   const nameEn = (person.nameEn || '').trim();
   if (nameEn) {
-    // "Frédéric Chopin" → "Chopin%2C_Frédéric"
     const parts = nameEn.split(' ');
     const family = parts[parts.length - 1];
     const given = parts.slice(0, -1).join(' ');
-    const cat = encodeURIComponent(`Category:${family},_${given}`);
-    return `https://imslp.org/wiki/${cat}`;
+    const catP = encodeURIComponent(`Category:${family},_${given}`);
+    return `https://imslp.org/wiki/${catP}`;
   }
   return `https://imslp.org/wiki/Main_Page`;
+}
+function buildMusescoreUrl(person, work) {
+  // 英語姓 + 作品番号 で検索（Japaneseタイトルは使わない）
+  const family = familyNameEn(person);
+  const cat = extractCatalog(work && work.title);
+  const q = [family, cat].filter(Boolean).join(' ');
+  if (!q) return `https://musescore.com/sheetmusic`;
+  return `https://musescore.com/sheetmusic?text=${encodeURIComponent(q)}`;
 }
 
 // ====================== 人物一覧 ======================
@@ -1366,8 +1382,8 @@ async function showPerson(id) {
                         <span class="work-btn-icon">♫</span> 楽譜
                       </a>
                     ` : ''}
-                    ${w.musescoreUrl ? `
-                      <a class="work-btn work-btn-musescore" href="${w.musescoreUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+                    ${(w.musescoreUrl || /作曲家|ピアニスト|音楽|指揮者/.test(p.field || '')) ? `
+                      <a class="work-btn work-btn-musescore" href="${buildMusescoreUrl(p, w)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
                         <span class="work-btn-icon">🎼</span> Musescore
                       </a>
                     ` : ''}
