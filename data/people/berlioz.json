@@ -184,5 +184,12 @@
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/e/ee/Hector_Berlioz_Crop.jpg",
-  "wikiTitle": "エクトル・ベルリオーズ"
+  "wikiTitle": "エクトル・ベルリオーズ",
+  "imageCredit": {
+    "artist": "cabinet card, stamped \"Franck, Phot(ographer)\" (Paris); François-Marie-Louis-Alexandre Gobinet de Villecholle) (pseudonym Franck)",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Berkshire Fine Arts: http://www.berkshirefinearts.com/show_article.php?article_id=151&amp;category=Music",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hector_Berlioz_Crop.jpg"
+  }
 }

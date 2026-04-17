@@ -236,10 +236,10 @@
   "wikiTitle": "フランツ・リスト",
   "imageCredit": {
     "artist": "Franz Hanfstaengl",
-    "license": "Public domain",
-    "licenseUrl": "",
-    "credit": "Unknown source Unknown source",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Liszt_1858.jpg"
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "credit": "https://www.bridgemanimages.com/it/noartistknown/franz-liszt-1811-1886-hungarian-pianist-and-composer/nomedium/asset/3137432",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Franz_Liszt.png"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Franz_Liszt.png/330px-Franz_Liszt.png",
   "coverImageCaption": "ヴァイマール・リスト邸"

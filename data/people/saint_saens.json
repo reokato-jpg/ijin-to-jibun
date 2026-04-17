@@ -189,5 +189,12 @@
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Saintsaens.jpg/500px-Saintsaens.jpg",
-  "wikiTitle": "カミーユ・サン＝サーンス"
+  "wikiTitle": "カミーユ・サン＝サーンス",
+  "imageCredit": {
+    "artist": "Nadar",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Oronoz Leefoto: http://www.oronoz.com/leefoto.php?referencia=170771&amp;usuario=",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Saintsaens.jpg"
+  }
 }

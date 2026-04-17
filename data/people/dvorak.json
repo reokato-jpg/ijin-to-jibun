@@ -242,5 +242,12 @@
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Dvorak.jpg/500px-Dvorak.jpg",
   "wikiTitle": "アントニン・ドヴォルザーク",
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Jan_hus_1.jpg/330px-Jan_hus_1.jpg",
-  "coverImageCaption": "ドヴォルザーク記念館"
+  "coverImageCaption": "ドヴォルザーク記念館",
+  "imageCredit": {
+    "artist": "Unknown author Unknown author",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "This file comes from Gallica Digital Library and is available under the digital ID btv1b8417521d",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Dvorak.jpg"
+  }
 }

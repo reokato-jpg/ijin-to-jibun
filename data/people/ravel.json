@@ -184,11 +184,11 @@
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/RavelSignature.png/500px-RavelSignature.png",
   "wikiTitle": "モーリス・ラヴェル",
   "imageCredit": {
-    "artist": "Unknown author Unknown author The image holder, the Bibliothèque nationale de France has not identified a photographer. (Follow link and click on \"Detailed information\".)",
+    "artist": "Maurice Ravel",
     "license": "Public domain",
     "licenseUrl": "",
-    "credit": "Bibliothèque nationale de France",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Maurice_Ravel_1925.jpg"
+    "credit": "https://imslp.org/wiki/Le_tombeau_de_Couperin_(piano)_(Ravel Maurice)",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:RavelSignature.png"
   },
   "works": [
     {

@@ -167,5 +167,12 @@
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Ilya_Repin_-_Portret_of_the_Composer_Modest_Petrovich_Mussorgsky_-_Google_Art_Project.jpg/500px-Ilya_Repin_-_Portret_of_the_Composer_Modest_Petrovich_Mussorgsky_-_Google_Art_Project.jpg",
-  "wikiTitle": "モデスト・ムソルグスキー"
+  "wikiTitle": "モデスト・ムソルグスキー",
+  "imageCredit": {
+    "artist": "",
+    "license": "",
+    "licenseUrl": "",
+    "credit": "",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ilya_Repin_-_Portret_of_the_Composer_Modest_Petrovich_Mussorgsky_-_Google_Art_Project.jpg"
+  }
 }

@@ -203,5 +203,12 @@
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Gabriel_Faur%C3%A9_Paul_Nadar_1905.JPG/500px-Gabriel_Faur%C3%A9_Paul_Nadar_1905.JPG",
-  "wikiTitle": "ガブリエル・フォーレ"
+  "wikiTitle": "ガブリエル・フォーレ",
+  "imageCredit": {
+    "artist": "Paul Nadar",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "credit": "Uploaded by Flopinot2012 on 2013-10-05",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Gabriel_Faur%C3%A9_Paul_Nadar_1905.JPG"
+  }
 }

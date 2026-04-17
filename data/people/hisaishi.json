@@ -158,5 +158,12 @@
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Joe_Hisaishi_2011.jpg/500px-Joe_Hisaishi_2011.jpg",
-  "wikiTitle": "久石譲"
+  "wikiTitle": "久石譲",
+  "imageCredit": {
+    "artist": "citykane",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "credit": "Flickr",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Joe_Hisaishi_2011.jpg"
+  }
 }

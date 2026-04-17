@@ -134,5 +134,12 @@
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/c/cc/Respighi_1935.jpg",
-  "wikiTitle": "オットリーノ・レスピーギ"
+  "wikiTitle": "オットリーノ・レスピーギ",
+  "imageCredit": {
+    "artist": "Madeline Grimoldi",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Encyclopaedia Britannica",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Respighi_1935.jpg"
+  }
 }

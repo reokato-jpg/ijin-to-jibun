@@ -181,11 +181,11 @@
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Hokusai_portrait.jpg/500px-Hokusai_portrait.jpg",
   "wikiTitle": "葛飾北斎",
   "imageCredit": {
-    "artist": "",
-    "license": "",
+    "artist": "Katsushika Hokusai",
+    "license": "Public domain",
     "licenseUrl": "",
-    "credit": "",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Katsushika_Hokusai-Self-Portrait-1839.jpg"
+    "credit": "Unknown source Unknown source",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hokusai_portrait.jpg"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/2018_Sumida_Hokusai_Museum_2.jpg/330px-2018_Sumida_Hokusai_Museum_2.jpg",
   "coverImageCaption": "すみだ北斎美術館",

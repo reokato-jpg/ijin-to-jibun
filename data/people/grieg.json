@@ -243,5 +243,12 @@
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Edvard_Grieg_portrait_%28cropped%29.jpg/500px-Edvard_Grieg_portrait_%28cropped%29.jpg",
   "wikiTitle": "エドヴァルド・グリーグ",
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Troldhaugen_in_Bergen.jpg/330px-Troldhaugen_in_Bergen.jpg",
-  "coverImageCaption": "トロルハウゲン"
+  "coverImageCaption": "トロルハウゲン",
+  "imageCredit": {
+    "artist": "Bergen Public Library Norway from Bergen, Norway",
+    "license": "No restrictions",
+    "licenseUrl": "https://www.flickr.com/commons/usage/",
+    "credit": "[Edvard Grieg portrait]",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Edvard_Grieg_portrait_%28cropped%29.jpg"
+  }
 }

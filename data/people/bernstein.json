@@ -170,5 +170,12 @@
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Leonard_Bernstein_by_Jack_Mitchell_%28high_quality%29.jpg/500px-Leonard_Bernstein_by_Jack_Mitchell_%28high_quality%29.jpg",
-  "wikiTitle": "レナード・バーンスタイン"
+  "wikiTitle": "レナード・バーンスタイン",
+  "imageCredit": {
+    "artist": "Jack Mitchell",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "credit": "User:X4n6",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Leonard_Bernstein_by_Jack_Mitchell_%28high_quality%29.jpg"
+  }
 }

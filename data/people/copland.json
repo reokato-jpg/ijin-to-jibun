@@ -140,5 +140,12 @@
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Aaron_Copland_1970.JPG/500px-Aaron_Copland_1970.JPG",
-  "wikiTitle": "アーロン・コープランド"
+  "wikiTitle": "アーロン・コープランド",
+  "imageCredit": {
+    "artist": "CBS Television",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "eBay item ( archive link )",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aaron_Copland_1970.JPG"
+  }
 }

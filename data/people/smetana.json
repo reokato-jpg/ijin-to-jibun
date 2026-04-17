@@ -192,5 +192,12 @@
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Bedrich_Smetana.jpg/500px-Bedrich_Smetana.jpg",
   "wikiTitle": "ベドルジハ・スメタナ",
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Bedrich_Smetana.jpg/330px-Bedrich_Smetana.jpg",
-  "coverImageCaption": "スメタナ博物館"
+  "coverImageCaption": "スメタナ博物館",
+  "imageCredit": {
+    "artist": "Unknown author Unknown author",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Encyclopedia Britannica - first published in Arthur Elson: Modern Composers of Europe L.C. Page &amp; Co 1904 (facing page 194)",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bedrich_Smetana.jpg"
+  }
 }

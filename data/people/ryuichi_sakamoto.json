@@ -174,5 +174,12 @@
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Ryuichi_Sakamoto_side.jpg/500px-Ryuichi_Sakamoto_side.jpg",
   "wikiTitle": "坂本龍一",
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Tokyo_geidai_logo.svg/langja-330px-Tokyo_geidai_logo.svg.png",
-  "coverImageCaption": "東京芸術大学"
+  "coverImageCaption": "東京芸術大学",
+  "imageCredit": {
+    "artist": "KAB America",
+    "license": "CC BY 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+    "credit": "Own work",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ryuichi_Sakamoto_side.jpg"
+  }
 }

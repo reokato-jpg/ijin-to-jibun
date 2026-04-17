@@ -159,5 +159,12 @@
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Nikolay_A_Rimsky_Korsakov_1897.jpg/500px-Nikolay_A_Rimsky_Korsakov_1897.jpg",
-  "wikiTitle": "ニコライ・リムスキー＝コルサコフ"
+  "wikiTitle": "ニコライ・リムスキー＝コルサコフ",
+  "imageCredit": {
+    "artist": "Serge Lachinov",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "svobodanews.ru ; removed PD watermark",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Nikolay_A_Rimsky_Korsakov_1897.jpg"
+  }
 }

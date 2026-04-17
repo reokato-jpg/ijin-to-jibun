@@ -188,5 +188,12 @@
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Skrjabin_Alexander.jpg/500px-Skrjabin_Alexander.jpg",
-  "wikiTitle": "アレクサンドル・スクリャービン"
+  "wikiTitle": "アレクサンドル・スクリャービン",
+  "imageCredit": {
+    "artist": "",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "http://en.wikipedia.org/wiki/Image:Scriabin.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Skrjabin_Alexander.jpg"
+  }
 }

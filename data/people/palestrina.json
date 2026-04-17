@@ -127,5 +127,12 @@
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/1/18/Giovanni_Pierluigi_da_Palestrina.jpg",
-  "wikiTitle": "ジョヴァンニ・パレストリーナ"
+  "wikiTitle": "ジョヴァンニ・パレストリーナ",
+  "imageCredit": {
+    "artist": "",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "http://xoomer.virgilio.it/senesino/Dei/Palestrina.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Giovanni_Pierluigi_da_Palestrina.jpg"
+  }
 }
