@@ -2003,14 +2003,40 @@ async function showTag(tagId) {
 
 // ====================== ルーティン ======================
 
-const ROUTINE_CATS = {
-  sleep:    { label: '睡眠',      color: '#2a3142' },
-  work:     { label: '創作・仕事', color: '#6e4d3a' },
-  meal:     { label: '食事',      color: '#c9a34e' },
-  exercise: { label: '運動・散歩', color: '#6b7d55' },
-  social:   { label: '交流',      color: '#8b5a7a' },
-  rest:     { label: '休息・読書', color: '#b5a98a' },
+// デフォルトカテゴリ（色は落ち着いたトーンで統一）
+const DEFAULT_ROUTINE_CATS = {
+  sleep:    { label: '睡眠',      color: '#3d3a52' },
+  work:     { label: '仕事・創作', color: '#7a2e3a' },
+  meal:     { label: '食事',      color: '#b8952e' },
+  exercise: { label: '運動',      color: '#5e7254' },
+  social:   { label: '交流',      color: '#8a6a8a' },
+  rest:     { label: '休息',      color: '#8b7a6a' },
 };
+const CUSTOM_CATS_KEY = 'ijin_custom_routine_cats';
+function loadCustomCats() {
+  try { return JSON.parse(localStorage.getItem(CUSTOM_CATS_KEY) || '{}'); } catch { return {}; }
+}
+function saveCustomCats(obj) { localStorage.setItem(CUSTOM_CATS_KEY, JSON.stringify(obj)); }
+function allRoutineCats() {
+  return { ...DEFAULT_ROUTINE_CATS, ...loadCustomCats() };
+}
+function addCustomCat(key, label, color) {
+  if (!key || !label) return false;
+  const cats = loadCustomCats();
+  cats[key] = { label, color: color || '#8b7a6a', custom: true };
+  saveCustomCats(cats);
+  return true;
+}
+function removeCustomCat(key) {
+  const cats = loadCustomCats();
+  if (cats[key]) {
+    delete cats[key];
+    saveCustomCats(cats);
+    return true;
+  }
+  return false;
+}
+// ROUTINE_CATS は allRoutineCats() を使ってください
 
 // body全体でルーティンカードのタップを拾う（確実に動作させるため）
 if (typeof window !== 'undefined' && !window.__routinePeekBound) {
@@ -2090,7 +2116,8 @@ function routineCalendarHtml(routine) {
   sorted.forEach(r => {
     const top = r.start * HOUR_HEIGHT;
     const height = Math.max(18, (r.end - r.start) * HOUR_HEIGHT - 2);
-    const cat = ROUTINE_CATS[r.cat] || ROUTINE_CATS.rest;
+    const cats_ = allRoutineCats();
+    const cat = cats_[r.cat] || cats_.rest;
     const durHours = r.end - r.start;
     const compact = durHours < 1.2 ? 'rcal-event-compact' : '';
     blocks += `<div class="rcal-event ${compact}" style="top:${top + 1}px; height:${height}px; background:${cat.color}">
@@ -2108,7 +2135,8 @@ function routineDetailListHtml(routine) {
   if (!routine || !routine.length) return '';
   const sorted = [...routine].sort((a, b) => a.start - b.start);
   return `<div class="routine-detail-list">${sorted.map(r => {
-    const cat = ROUTINE_CATS[r.cat] || ROUTINE_CATS.rest;
+    const cats_ = allRoutineCats();
+    const cat = cats_[r.cat] || cats_.rest;
     const sh = String(r.start).padStart(2, '0');
     const eh = String(r.end).padStart(2, '0');
     return `<div class="routine-detail-item">
@@ -2164,7 +2192,7 @@ function openMyRoutineEditor() {
         <input class="re-end" type="number" min="1" max="24" value="${r.end}">
         <span>:00</span>
         <select class="re-cat">
-          ${Object.entries(ROUTINE_CATS).map(([k,v]) =>
+          ${Object.entries(allRoutineCats()).map(([k,v]) =>
             `<option value="${k}" ${r.cat===k?'selected':''}>${v.label}</option>`).join('')}
         </select>
         <input class="re-activity" type="text" value="${r.activity || ''}" placeholder="活動内容">
@@ -2196,14 +2224,39 @@ function openMyRoutineEditor() {
   });
 }
 
+function openAddCatDialog() {
+  const label = prompt('カテゴリ名を入力（例：執筆、瞑想、散歩、家事）');
+  if (!label || !label.trim()) return;
+  const colors = ['#7a2e3a', '#3d3a52', '#5e7254', '#b8952e', '#8a6a8a', '#8b5a7a', '#4a6b7a', '#c9633a'];
+  const color = colors[Math.floor(Math.random() * colors.length)];
+  const key = 'custom_' + Date.now();
+  addCustomCat(key, label.trim(), color);
+  renderRoutines();
+}
+
 function renderRoutines() {
   // 凡例
   const legend = document.getElementById('routineLegend');
-  legend.innerHTML = Object.entries(ROUTINE_CATS).map(([k, v]) =>
-    `<div class="routine-legend-item">
-      <span class="routine-legend-color" style="background:${v.color}"></span>${v.label}
+  const cats = allRoutineCats();
+  legend.innerHTML = Object.entries(cats).map(([k, v]) =>
+    `<div class="routine-legend-item" data-cat-key="${k}">
+      <span class="routine-legend-color" style="background:${v.color}"></span>
+      <span class="routine-legend-label">${v.label}</span>
+      ${v.custom ? `<button class="routine-legend-del" data-remove-cat="${k}" aria-label="削除">×</button>` : ''}
     </div>`
-  ).join('');
+  ).join('') +
+    `<button class="routine-legend-add" id="addCustomCatBtn" type="button">＋ カテゴリを追加</button>`;
+  const addBtn = legend.querySelector('#addCustomCatBtn');
+  if (addBtn) addBtn.addEventListener('click', openAddCatDialog);
+  legend.querySelectorAll('[data-remove-cat]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const key = btn.dataset.removeCat;
+      if (!confirm(`「${cats[key].label}」を削除しますか？`)) return;
+      removeCustomCat(key);
+      renderRoutines();
+    });
+  });
 
   const list = document.getElementById('routinesList');
   const store = loadRoutineStore();

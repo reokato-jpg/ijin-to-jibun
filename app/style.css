@@ -1922,13 +1922,39 @@ main { flex: 1; overflow-y: auto; background: var(--paper); }
   font-size: 13px;
   color: var(--ink-2);
   font-family: var(--font-jp);
+  padding: 4px 10px;
+  background: #fffdf6;
+  border: 1px solid var(--rule);
+  border-radius: 14px;
 }
 .routine-legend-color {
-  width: 12px;
-  height: 12px;
-  border-radius: 2px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
   flex-shrink: 0;
 }
+.routine-legend-label { font-size: 12px; }
+.routine-legend-del {
+  background: none;
+  border: none;
+  color: var(--ink-4);
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0 2px;
+  line-height: 1;
+}
+.routine-legend-del:hover { color: #e0245e; }
+.routine-legend-add {
+  padding: 4px 10px;
+  background: transparent;
+  border: 1px dashed var(--wine);
+  border-radius: 14px;
+  font-size: 12px;
+  color: var(--wine);
+  cursor: pointer;
+  font-family: var(--font-jp);
+}
+.routine-legend-add:hover { background: var(--wine); color: #fff; }
 /* ルーティンカード */
 .routine-card {
   position: relative;
