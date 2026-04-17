@@ -65,6 +65,12 @@ body {
   .book-grid { grid-template-columns: repeat(6, 1fr); gap: 18px 14px; }
   /* 本日のおすすめ（ホーム）は6人横並び */
   #peopleList .book-grid { grid-template-columns: repeat(6, 1fr); }
+  /* 検索結果の本棚も6列 */
+  #tagsList .book-grid { grid-template-columns: repeat(6, 1fr); }
+  /* わたしの本も6列 */
+  #favoritesList .book-grid { grid-template-columns: repeat(6, 1fr); }
+  /* 偉人たちの本棚（ホームの書籍カバー）も6冊横並び */
+  .home-books { grid-template-columns: repeat(6, 1fr); max-width: 100%; gap: 16px 12px; }
   /* HP版は記事カードを縦長に見せすぎない＆文字を読める大きさに */
   .article-grid { grid-template-columns: repeat(3, 1fr); gap: 20px 16px; }
   .article-card { aspect-ratio: 2 / 2.6; }

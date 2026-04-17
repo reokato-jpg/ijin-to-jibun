@@ -624,7 +624,9 @@ function renderHomeBooks() {
     (p.books || []).forEach(b => { if (b.asin && !usedAsins.has(b.asin)) all.push({ ...b, person: p }); });
   });
   all.sort((a, b) => ((hashStr(a.asin) ^ seed) >>> 0) - ((hashStr(b.asin) ^ seed) >>> 0));
-  while (picked.length < 3 && all.length) {
+  // HP版は6冊、スマホは3冊
+  const bookCount = (typeof window !== 'undefined' && window.innerWidth >= 900) ? 6 : 3;
+  while (picked.length < bookCount && all.length) {
     picked.push(all.shift());
   }
 
@@ -722,7 +724,7 @@ function renderSortFilter() {
   });
 }
 
-// 画面幅が変わった時に本日のおすすめを再描画（6↔3切替）
+// 画面幅が変わった時に本日のおすすめ・偉人たちの本棚を再描画
 if (typeof window !== 'undefined' && !window.__peopleResizeBound) {
   window.__peopleResizeBound = true;
   let resizeTimer = null;
@@ -731,6 +733,9 @@ if (typeof window !== 'undefined' && !window.__peopleResizeBound) {
     resizeTimer = setTimeout(() => {
       if (typeof renderPeople === 'function' && document.getElementById('peopleList')) {
         renderPeople(currentSearch || '');
+      }
+      if (typeof renderHomeBooks === 'function' && document.getElementById('homeBooks')) {
+        renderHomeBooks();
       }
     }, 200);
   });
