@@ -2955,15 +2955,79 @@ function showChatCall() {
 
   const name = getUserName();
   const p = companion.person;
-  const variants = [
-    name ? `おーい、${name}。` : `おーい。`,
+  const hour = new Date().getHours();
+  const timeOfDay = hour < 5 ? 'night' : hour < 11 ? 'morning' : hour < 17 ? 'afternoon' : hour < 22 ? 'evening' : 'night';
+  const N = name || 'きみ';
+
+  // 時間帯別の挨拶
+  const timeVariants = {
+    morning: [
+      `おはよう、${N}。`,
+      `朝の光は好きか？`,
+      `目が覚めたばかり？`,
+      `今日はどんな一日になるだろうな。`,
+      `朝のうちに、少し話していかないか。`,
+    ],
+    afternoon: [
+      `${N}、昼間に少し時間はあるか？`,
+      `午後の一息、一緒にどうだ。`,
+      `何か退屈してないか？`,
+      `今ちょうど、君のことを考えていた。`,
+    ],
+    evening: [
+      `${N}、夕方だな。`,
+      `今日はお疲れ。`,
+      `日が沈む頃、話したくなる。`,
+      `一日を振り返ってみるか？`,
+      `静かな時間に、少しだけ。`,
+    ],
+    night: [
+      `${N}、眠れないのか？`,
+      `夜は長い。話し相手はいるか？`,
+      `僕も夜型なんだ。`,
+      `こんな時間まで起きているのか。`,
+      `月は見たか？`,
+      `静寂の中でこそ、言葉が届く気がする。`,
+    ],
+  };
+
+  // 汎用のバリエーション
+  const generalVariants = [
+    `おーい、${N}。`,
     `ねえ、聞いて。`,
-    name ? `${name}、ちょっといいか？` : `ちょっといいか？`,
+    `${N}、ちょっといいか？`,
     `そこにいるか？`,
-    name ? `${name}さん、話がある。` : `話があるんだ。`,
+    `${N}さん、話がある。`,
     `聞いてほしいことがある。`,
+    `ひとつだけ伝えたいことがあるんだ。`,
+    `${N}、手が空いたら読んでくれ。`,
+    `ふと、君のことを思い出した。`,
+    `時代は違えど、僕たちは似ている気がする。`,
+    `${N}、最近どう？`,
+    `僕の話、聞いてくれるか？`,
+    `なあ、${N}。`,
+    `${N}、少しだけ付き合ってくれないか。`,
+    `こんにちは、${N}。僕だ。`,
+    `返事はいらない。ただ、聞いてほしい。`,
+    `${N}、ここに来てくれたんだな。`,
+    `僕の言葉、届いているか？`,
+    `一緒に考えてほしいことがある。`,
+    `${N}、迷ってるのか？`,
+    `君の悩み、僕にも覚えがある。`,
+    `時を越えて、ひとつ教えてやろうか。`,
+    `${N}、ちょっとだけ話さないか。`,
+    `やあ、${N}。また会えたな。`,
+    `${N}、どうして今日はここに来た？`,
+    `何か言いたいことがありそうな顔だ。`,
+    `${N}、忘れないでくれ。`,
+    `僕はここにいる、いつでも。`,
+    `${N}、今日も生きてるか。`,
+    `静かな瞬間こそ、大事にしたい。`,
+    `${N}、僕の時代にも同じことで悩む奴がいた。`,
   ];
-  const msg = variants[Math.floor(Math.random() * variants.length)];
+
+  const pool = [...(timeVariants[timeOfDay] || []), ...generalVariants];
+  const msg = pool[Math.floor(Math.random() * pool.length)];
   document.getElementById('chatCallText').textContent = msg;
   document.getElementById('chatCallWho').textContent = `— ${p.name}`;
   bubble.classList.remove('hidden');
