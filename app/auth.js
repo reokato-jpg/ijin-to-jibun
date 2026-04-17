@@ -270,22 +270,31 @@ function escapeSmall(s) { return (s || '').replace(/[<>&]/g, ''); }
 
 // アカウントボタン挿入（初回）
 function insertAccountButton() {
-  // 既存のヘッダーに挿入
-  const headerActions = document.querySelector('.app-header') || document.querySelector('header');
-  if (!headerActions || document.getElementById('accountBadge')) return;
+  // ヘッダー右側のコンテナに追加（なければ作る）
+  let headerRight = document.querySelector('.app-header .header-right');
+  if (!headerRight) {
+    const header = document.querySelector('.app-header') || document.querySelector('header');
+    if (!header) return;
+    headerRight = document.createElement('div');
+    headerRight.className = 'header-right';
+    // 既存の検索ボタン等を移動
+    const existingBtn = header.querySelector('.icon-btn');
+    if (existingBtn) headerRight.appendChild(existingBtn);
+    header.appendChild(headerRight);
+  }
+  if (document.getElementById('accountBadge')) return;
   const btn = document.createElement('button');
   btn.id = 'accountBadge';
   btn.className = 'account-badge';
   btn.innerHTML = `<span class="acc-icon">👤</span><span class="acc-name">ログイン</span>`;
   btn.addEventListener('click', () => {
     if (currentUser) {
-      // ログイン中：メニュー
       openAccountMenu();
     } else {
       openLoginModal();
     }
   });
-  headerActions.appendChild(btn);
+  headerRight.appendChild(btn);
   updateAccountUI();
 }
 
