@@ -80,7 +80,6 @@ body {
   .article-card-inner .article-title { font-size: 10px; margin-bottom: 2px; white-space: normal; -webkit-line-clamp: 2; display: -webkit-box; -webkit-box-orient: vertical; line-height: 1.3; }
   .article-card-inner .article-desc { font-size: 9px; -webkit-line-clamp: 1; line-height: 1.4; }
   .article-card-inner .article-badges { margin-bottom: 3px; }
-  .home-books { grid-template-columns: 1fr 1fr 1fr; max-width: 720px; margin-left: auto; margin-right: auto; }
   .category-filter, .era-filter, .sort-filter { justify-content: center; }
   /* 人物詳細：本全体を読みやすい820px幅に統一 */
   .profile-cover { height: 260px; }
