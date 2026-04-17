@@ -4713,6 +4713,75 @@ main { flex: 1; overflow-y: auto; background: var(--paper); }
   font-style: italic;
 }
 
+/* 記事カードラッパー（本＋下の説明） */
+.article-card-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.article-caption {
+  text-decoration: none;
+  color: inherit;
+  text-align: center;
+  padding: 0 4px;
+  font-family: var(--font-jp);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+}
+.article-caption .article-badges {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 2px;
+}
+.article-caption .article-source,
+.article-caption .article-category {
+  font-size: 9px;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: var(--wine);
+  color: #fff;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+.article-caption .article-category {
+  background: #fffdf6;
+  color: var(--wine);
+  border: 1px solid var(--wine);
+}
+.article-caption .article-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-width: 100%;
+}
+.article-caption .article-desc {
+  font-size: 10px;
+  color: var(--ink-3);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-width: 100%;
+}
+.article-caption .article-date {
+  font-size: 9px;
+  color: var(--ink-4);
+  font-family: var(--font-en);
+  margin-top: 2px;
+}
+.article-card-wrap .article-card-inner { display: none; }
+
 /* 記事 = 布張りハードカバー風（本らしい縦長比率） */
 .article-card {
   display: block;
@@ -4879,6 +4948,17 @@ main { flex: 1; overflow-y: auto; background: var(--paper); }
   box-shadow:
     0 2px 5px rgba(0,0,0,0.3),
     inset 0 0 0 1px rgba(255,255,255,0.25);
+}
+/* 帯（下のテキスト）を削除した新デザインでは、サムネが本をフィルする */
+.article-card-wrap .article-thumb {
+  margin: 12px;
+  flex: 1;
+  aspect-ratio: auto;
+  min-height: 60%;
+}
+.article-card-wrap .article-card {
+  display: flex;
+  flex-direction: column;
 }
 
 /* 帯 = 本の下半分（白背景） */
