@@ -16,6 +16,15 @@
       "tags": []
     },
     {
+      "year": 1976,
+      "age": 24,
+      "title": "東京藝大作曲科大学院修了",
+      "detail": "現代音楽の正統派学位を得る。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
       "year": 1978,
       "age": 26,
       "title": "YMO結成、高橋幸宏・細野晴臣と",
@@ -43,10 +52,35 @@
       ]
     },
     {
+      "year": 1988,
+      "age": 36,
+      "title": "『ラスト・エンペラー』ゴールデングローブ賞",
+      "detail": "オスカーとグラミーも。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 2011,
+      "age": 59,
+      "title": "3.11後、反原発運動に積極関与",
+      "detail": "坂本龍一の市民活動家としての顔。",
+      "tags": []
+    },
+    {
       "year": 2014,
       "age": 62,
       "title": "咽頭がん、のち直腸がんと闘病",
       "detail": "以後の生涯を治療と作曲に捧げる。",
+      "tags": [
+        "illness"
+      ]
+    },
+    {
+      "year": 2020,
+      "age": 68,
+      "title": "直腸がん発覚",
+      "detail": "最晩年は『12』という病床の日記的アルバムを完成。",
       "tags": [
         "illness"
       ]
@@ -69,6 +103,18 @@
     {
       "text": "僕たちは地球の使用人だ。",
       "source": "環境活動について"
+    },
+    {
+      "text": "音楽はいつか滅ぶ、だから今美しく響け。",
+      "source": "『坂本龍一 12』序"
+    },
+    {
+      "text": "地球のうえで生きる我々は、地球の一部だ。",
+      "source": "環境活動演説"
+    },
+    {
+      "text": "美しく生き、美しく終わりたい。",
+      "source": "晩年のインタビュー"
     }
   ],
   "relations": [
@@ -99,23 +145,34 @@
       "year": 1983,
       "type": "映画音楽",
       "description": "最も有名な日本発の映画音楽",
-      "youtubeId": "gUbwQGj1w5w"
+      "youtubeId": "gUbwQGj1w5w",
+      "imslpUrl": "https://imslp.org/index.php?search=Ryuichi%20Sakamoto%20%E6%88%A6%E5%A0%B4%E3%81%AE%E3%83%A1%E3%83%AA%E3%83%BC%E3%82%AF%E3%83%AA%E3%82%B9%E3%83%9E%E3%82%B9%EF%BC%88%E3%83%A1%E3%82%A4%E3%83%B3%E3%83%86%E3%83%BC%E3%83%9E%EF%BC%89&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E5%9D%82%E6%9C%AC%E9%BE%8D%E4%B8%80%20%E6%88%A6%E5%A0%B4%E3%81%AE%E3%83%A1%E3%83%AA%E3%83%BC%E3%82%AF%E3%83%AA%E3%82%B9%E3%83%9E%E3%82%B9%EF%BC%88%E3%83%A1%E3%82%A4%E3%83%B3%E3%83%86%E3%83%BC%E3%83%9E%EF%BC%89",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E5%9D%82%E6%9C%AC%E9%BE%8D%E4%B8%80%20%E6%88%A6%E5%A0%B4%E3%81%AE%E3%83%A1%E3%83%AA%E3%83%BC%E3%82%AF%E3%83%AA%E3%82%B9%E3%83%9E%E3%82%B9%EF%BC%88%E3%83%A1%E3%82%A4%E3%83%B3%E3%83%86%E3%83%BC%E3%83%9E%EF%BC%89"
     },
     {
       "title": "Energy Flow",
       "year": 1999,
       "type": "ピアノ曲",
       "description": "CMで国民的ヒット",
-      "youtubeId": "k0vXc1OmlPc"
+      "youtubeId": "k0vXc1OmlPc",
+      "imslpUrl": "https://imslp.org/index.php?search=Ryuichi%20Sakamoto%20Energy%20Flow&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E5%9D%82%E6%9C%AC%E9%BE%8D%E4%B8%80%20Energy%20Flow",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E5%9D%82%E6%9C%AC%E9%BE%8D%E4%B8%80%20Energy%20Flow"
     },
     {
       "title": "アクア（Aqua）",
       "year": 1999,
       "type": "ピアノ曲",
       "description": "娘のために書いた優美なピアノ曲",
-      "youtubeId": "HoH3QIFeMkc"
+      "youtubeId": "HoH3QIFeMkc",
+      "imslpUrl": "https://imslp.org/index.php?search=Ryuichi%20Sakamoto%20%E3%82%A2%E3%82%AF%E3%82%A2%EF%BC%88Aqua%EF%BC%89&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E5%9D%82%E6%9C%AC%E9%BE%8D%E4%B8%80%20%E3%82%A2%E3%82%AF%E3%82%A2%EF%BC%88Aqua%EF%BC%89",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E5%9D%82%E6%9C%AC%E9%BE%8D%E4%B8%80%20%E3%82%A2%E3%82%AF%E3%82%A2%EF%BC%88Aqua%EF%BC%89"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Ryuichi_Sakamoto_side.jpg/500px-Ryuichi_Sakamoto_side.jpg",
-  "wikiTitle": "坂本龍一"
+  "wikiTitle": "坂本龍一",
+  "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Tokyo_geidai_logo.svg/langja-330px-Tokyo_geidai_logo.svg.png",
+  "coverImageCaption": "東京芸術大学"
 }

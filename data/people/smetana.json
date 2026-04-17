@@ -16,12 +16,41 @@
       "tags": []
     },
     {
+      "year": 1843,
+      "age": 19,
+      "title": "プラハに出てリスト派のピアノ教師に",
+      "detail": "貧しい中で音楽院ではなく自習で技を磨いた。",
+      "tags": [
+        "restart",
+        "poverty"
+      ]
+    },
+    {
       "year": 1848,
       "age": 24,
       "title": "プラハ革命（ヨーロッパ1848年革命）に参加",
       "detail": "バリケードを築きチェコ独立を歌った。以後チェコ民族音楽を志す。",
       "tags": [
         "turning_encounter"
+      ]
+    },
+    {
+      "year": 1856,
+      "age": 32,
+      "title": "スウェーデン・ヨーテボリに5年亡命",
+      "detail": "オーストリア支配下のプラハを嫌って北欧で指揮活動。",
+      "tags": [
+        "restart",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1861,
+      "age": 37,
+      "title": "プラハ帰還、チェコ民族運動に没頭",
+      "detail": "仮設劇場音楽監督就任。",
+      "tags": [
+        "restart"
       ]
     },
     {
@@ -55,6 +84,15 @@
       ]
     },
     {
+      "year": 1876,
+      "age": 52,
+      "title": "聴覚喪失の中で『モルダウ』初演成功",
+      "detail": "自身は会場で聴けなかったが聴衆の歓喜を身体で感じた。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
       "year": 1884,
       "age": 60,
       "title": "プラハの精神病院で死去",
@@ -73,6 +111,18 @@
     {
       "text": "ブルタバの流れは、チェコの魂である。",
       "source": "『我が祖国』序"
+    },
+    {
+      "text": "チェコ人の血が、私の五線譜に流れている。",
+      "source": "スメタナの書簡"
+    },
+    {
+      "text": "聞こえない音楽こそ、最も純粋な音楽だ。",
+      "source": "晩年の手記"
+    },
+    {
+      "text": "祖国は母、母は音楽。",
+      "source": "スメタナの言葉"
     }
   ],
   "relations": [
@@ -103,30 +153,44 @@
       "year": 1879,
       "type": "管弦楽",
       "description": "6曲連作の民族叙事詩",
-      "youtubeId": "9-ZFpOoJtSA"
+      "youtubeId": "9-ZFpOoJtSA",
+      "imslpUrl": "https://imslp.org/index.php?search=Bed%C5%99ich%20Smetana%20%E9%80%A3%E4%BD%9C%E4%BA%A4%E9%9F%BF%E8%A9%A9%E3%80%8E%E6%88%91%E3%81%8C%E7%A5%96%E5%9B%BD%E3%80%8F&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%83%99%E3%83%89%E3%83%AB%E3%82%B8%E3%83%8F%E3%83%BB%E3%82%B9%E3%83%A1%E3%82%BF%E3%83%8A%20%E9%80%A3%E4%BD%9C%E4%BA%A4%E9%9F%BF%E8%A9%A9%E3%80%8E%E6%88%91%E3%81%8C%E7%A5%96%E5%9B%BD%E3%80%8F",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%99%E3%83%89%E3%83%AB%E3%82%B8%E3%83%8F%E3%83%BB%E3%82%B9%E3%83%A1%E3%82%BF%E3%83%8A%20%E9%80%A3%E4%BD%9C%E4%BA%A4%E9%9F%BF%E8%A9%A9%E3%80%8E%E6%88%91%E3%81%8C%E7%A5%96%E5%9B%BD%E3%80%8F"
     },
     {
       "title": "交響詩『モルダウ（ブルタバ）』",
       "year": 1874,
       "type": "管弦楽",
       "description": "2つの源流から大河へ。連作中の最有名曲",
-      "youtubeId": "lJ-yOZyfacY"
+      "youtubeId": "lJ-yOZyfacY",
+      "imslpUrl": "https://imslp.org/index.php?search=Bed%C5%99ich%20Smetana%20%E4%BA%A4%E9%9F%BF%E8%A9%A9%E3%80%8E%E3%83%A2%E3%83%AB%E3%83%80%E3%82%A6%EF%BC%88%E3%83%96%E3%83%AB%E3%82%BF%E3%83%90%EF%BC%89%E3%80%8F&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%83%99%E3%83%89%E3%83%AB%E3%82%B8%E3%83%8F%E3%83%BB%E3%82%B9%E3%83%A1%E3%82%BF%E3%83%8A%20%E4%BA%A4%E9%9F%BF%E8%A9%A9%E3%80%8E%E3%83%A2%E3%83%AB%E3%83%80%E3%82%A6%EF%BC%88%E3%83%96%E3%83%AB%E3%82%BF%E3%83%90%EF%BC%89%E3%80%8F",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%99%E3%83%89%E3%83%AB%E3%82%B8%E3%83%8F%E3%83%BB%E3%82%B9%E3%83%A1%E3%82%BF%E3%83%8A%20%E4%BA%A4%E9%9F%BF%E8%A9%A9%E3%80%8E%E3%83%A2%E3%83%AB%E3%83%80%E3%82%A6%EF%BC%88%E3%83%96%E3%83%AB%E3%82%BF%E3%83%90%EF%BC%89%E3%80%8F"
     },
     {
       "title": "歌劇『売られた花嫁』序曲",
       "year": 1866,
       "type": "オペラ",
       "description": "チェコ語オペラの金字塔",
-      "youtubeId": "n5IizcwFOoc"
+      "youtubeId": "n5IizcwFOoc",
+      "imslpUrl": "https://imslp.org/index.php?search=Bed%C5%99ich%20Smetana%20%E6%AD%8C%E5%8A%87%E3%80%8E%E5%A3%B2%E3%82%89%E3%82%8C%E3%81%9F%E8%8A%B1%E5%AB%81%E3%80%8F%E5%BA%8F%E6%9B%B2&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%83%99%E3%83%89%E3%83%AB%E3%82%B8%E3%83%8F%E3%83%BB%E3%82%B9%E3%83%A1%E3%82%BF%E3%83%8A%20%E6%AD%8C%E5%8A%87%E3%80%8E%E5%A3%B2%E3%82%89%E3%82%8C%E3%81%9F%E8%8A%B1%E5%AB%81%E3%80%8F%E5%BA%8F%E6%9B%B2",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%99%E3%83%89%E3%83%AB%E3%82%B8%E3%83%8F%E3%83%BB%E3%82%B9%E3%83%A1%E3%82%BF%E3%83%8A%20%E6%AD%8C%E5%8A%87%E3%80%8E%E5%A3%B2%E3%82%89%E3%82%8C%E3%81%9F%E8%8A%B1%E5%AB%81%E3%80%8F%E5%BA%8F%E6%9B%B2"
     },
     {
       "title": "弦楽四重奏曲第1番『わが生涯より』",
       "year": 1876,
       "type": "室内楽",
       "description": "聴覚喪失の恐怖を音にした自伝的四重奏曲",
-      "youtubeId": "0H-E-SsdAhs"
+      "youtubeId": "0H-E-SsdAhs",
+      "imslpUrl": "https://imslp.org/index.php?search=Bed%C5%99ich%20Smetana%20%E5%BC%A6%E6%A5%BD%E5%9B%9B%E9%87%8D%E5%A5%8F%E6%9B%B2%E7%AC%AC1%E7%95%AA%E3%80%8E%E3%82%8F%E3%81%8C%E7%94%9F%E6%B6%AF%E3%82%88%E3%82%8A%E3%80%8F&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%83%99%E3%83%89%E3%83%AB%E3%82%B8%E3%83%8F%E3%83%BB%E3%82%B9%E3%83%A1%E3%82%BF%E3%83%8A%20%E5%BC%A6%E6%A5%BD%E5%9B%9B%E9%87%8D%E5%A5%8F%E6%9B%B2%E7%AC%AC1%E7%95%AA%E3%80%8E%E3%82%8F%E3%81%8C%E7%94%9F%E6%B6%AF%E3%82%88%E3%82%8A%E3%80%8F",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%99%E3%83%89%E3%83%AB%E3%82%B8%E3%83%8F%E3%83%BB%E3%82%B9%E3%83%A1%E3%82%BF%E3%83%8A%20%E5%BC%A6%E6%A5%BD%E5%9B%9B%E9%87%8D%E5%A5%8F%E6%9B%B2%E7%AC%AC1%E7%95%AA%E3%80%8E%E3%82%8F%E3%81%8C%E7%94%9F%E6%B6%AF%E3%82%88%E3%82%8A%E3%80%8F"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Bedrich_Smetana.jpg/500px-Bedrich_Smetana.jpg",
-  "wikiTitle": "ベドルジハ・スメタナ"
+  "wikiTitle": "ベドルジハ・スメタナ",
+  "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Bedrich_Smetana.jpg/330px-Bedrich_Smetana.jpg",
+  "coverImageCaption": "スメタナ博物館"
 }

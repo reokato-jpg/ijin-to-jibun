@@ -29,6 +29,15 @@
       ]
     },
     {
+      "year": 1824,
+      "age": 21,
+      "title": "独学でオペラ『ヴェーヴェルレイ』序曲を書き上げる",
+      "detail": "医者をやめ作曲家になる決心を確定した作品。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
       "year": 1827,
       "age": 24,
       "title": "英国女優ハリエット・スミッソンに恋",
@@ -54,6 +63,35 @@
       "detail": "しかし10年で別居。1854年彼女の死の数ヶ月後に内縁妻と結婚したが2人も先に死んだ。",
       "tags": [
         "heartbreak",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1837,
+      "age": 34,
+      "title": "『レクイエム』初演、フランス軍戦没者記念",
+      "detail": "16本のトランペットを含む超大編成。革命的管弦楽。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1846,
+      "age": 43,
+      "title": "『ファウストの劫罰』初演は大失敗、借金を背負う",
+      "detail": "パリで聴衆が集まらず大赤字。ロシアで救われた。",
+      "tags": [
+        "pride_broken",
+        "poverty"
+      ]
+    },
+    {
+      "year": 1854,
+      "age": 50,
+      "title": "妻ハリエット死去、半年後マリー・レシオと結婚",
+      "detail": "ハリエットが生涯の傷跡を残した。",
+      "tags": [
+        "loss",
         "turning_encounter"
       ]
     },
@@ -84,6 +122,18 @@
     {
       "text": "時間だけが、真の批評家である。",
       "source": "書簡"
+    },
+    {
+      "text": "音楽は感情の中で化学反応を起こす科学だ。",
+      "source": "『回想録』"
+    },
+    {
+      "text": "私は音楽を信じる。それだけが私を救う。",
+      "source": "書簡"
+    },
+    {
+      "text": "偉大さは、自分の時代に孤独であることだ。",
+      "source": "書簡"
     }
   ],
   "relations": [
@@ -107,21 +157,30 @@
       "year": 1830,
       "type": "交響曲",
       "description": "失恋の幻覚を音楽化したロマン派の革命",
-      "youtubeId": "sNg6q4uxyuI"
+      "youtubeId": "sNg6q4uxyuI",
+      "imslpUrl": "https://imslp.org/index.php?search=Hector%20Berlioz%20%E5%B9%BB%E6%83%B3%E4%BA%A4%E9%9F%BF%E6%9B%B2%20%E4%BD%9C%E5%93%8114&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%A8%E3%82%AF%E3%83%88%E3%83%AB%E3%83%BB%E3%83%99%E3%83%AB%E3%83%AA%E3%82%AA%E3%83%BC%E3%82%BA%20%E5%B9%BB%E6%83%B3%E4%BA%A4%E9%9F%BF%E6%9B%B2%20%E4%BD%9C%E5%93%8114",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%A8%E3%82%AF%E3%83%88%E3%83%AB%E3%83%BB%E3%83%99%E3%83%AB%E3%83%AA%E3%82%AA%E3%83%BC%E3%82%BA%20%E5%B9%BB%E6%83%B3%E4%BA%A4%E9%9F%BF%E6%9B%B2%20%E4%BD%9C%E5%93%8114"
     },
     {
       "title": "劇的交響曲『ロメオとジュリエット』作品17",
       "year": 1839,
       "type": "交響曲",
       "description": "シェイクスピアへの音楽的賛歌",
-      "youtubeId": "v4zDaKkrRBw"
+      "youtubeId": "v4zDaKkrRBw",
+      "imslpUrl": "https://imslp.org/index.php?search=Hector%20Berlioz%20%E5%8A%87%E7%9A%84%E4%BA%A4%E9%9F%BF%E6%9B%B2%E3%80%8E%E3%83%AD%E3%83%A1%E3%82%AA%E3%81%A8%E3%82%B8%E3%83%A5%E3%83%AA%E3%82%A8%E3%83%83%E3%83%88%E3%80%8F%E4%BD%9C%E5%93%8117&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%A8%E3%82%AF%E3%83%88%E3%83%AB%E3%83%BB%E3%83%99%E3%83%AB%E3%83%AA%E3%82%AA%E3%83%BC%E3%82%BA%20%E5%8A%87%E7%9A%84%E4%BA%A4%E9%9F%BF%E6%9B%B2%E3%80%8E%E3%83%AD%E3%83%A1%E3%82%AA%E3%81%A8%E3%82%B8%E3%83%A5%E3%83%AA%E3%82%A8%E3%83%83%E3%83%88%E3%80%8F%E4%BD%9C%E5%93%8117",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%A8%E3%82%AF%E3%83%88%E3%83%AB%E3%83%BB%E3%83%99%E3%83%AB%E3%83%AA%E3%82%AA%E3%83%BC%E3%82%BA%20%E5%8A%87%E7%9A%84%E4%BA%A4%E9%9F%BF%E6%9B%B2%E3%80%8E%E3%83%AD%E3%83%A1%E3%82%AA%E3%81%A8%E3%82%B8%E3%83%A5%E3%83%AA%E3%82%A8%E3%83%83%E3%83%88%E3%80%8F%E4%BD%9C%E5%93%8117"
     },
     {
       "title": "歌劇『ファウストの劫罰』ラコッツィ行進曲",
       "year": 1846,
       "type": "管弦楽",
       "description": "華やかな軍隊行進曲",
-      "youtubeId": "nqCLd1xdDvg"
+      "youtubeId": "nqCLd1xdDvg",
+      "imslpUrl": "https://imslp.org/index.php?search=Hector%20Berlioz%20%E6%AD%8C%E5%8A%87%E3%80%8E%E3%83%95%E3%82%A1%E3%82%A6%E3%82%B9%E3%83%88%E3%81%AE%E5%8A%AB%E7%BD%B0%E3%80%8F%E3%83%A9%E3%82%B3%E3%83%83%E3%83%84%E3%82%A3%E8%A1%8C%E9%80%B2%E6%9B%B2&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%A8%E3%82%AF%E3%83%88%E3%83%AB%E3%83%BB%E3%83%99%E3%83%AB%E3%83%AA%E3%82%AA%E3%83%BC%E3%82%BA%20%E6%AD%8C%E5%8A%87%E3%80%8E%E3%83%95%E3%82%A1%E3%82%A6%E3%82%B9%E3%83%88%E3%81%AE%E5%8A%AB%E7%BD%B0%E3%80%8F%E3%83%A9%E3%82%B3%E3%83%83%E3%83%84%E3%82%A3%E8%A1%8C%E9%80%B2%E6%9B%B2",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%A8%E3%82%AF%E3%83%88%E3%83%AB%E3%83%BB%E3%83%99%E3%83%AB%E3%83%AA%E3%82%AA%E3%83%BC%E3%82%BA%20%E6%AD%8C%E5%8A%87%E3%80%8E%E3%83%95%E3%82%A1%E3%82%A6%E3%82%B9%E3%83%88%E3%81%AE%E5%8A%AB%E7%BD%B0%E3%80%8F%E3%83%A9%E3%82%B3%E3%83%83%E3%83%84%E3%82%A3%E8%A1%8C%E9%80%B2%E6%9B%B2"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/e/ee/Hector_Berlioz_Crop.jpg",

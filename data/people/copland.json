@@ -25,6 +25,15 @@
       ]
     },
     {
+      "year": 1938,
+      "age": 38,
+      "title": "バレエ『ビリー・ザ・キッド』初演",
+      "detail": "アメリカン・サウンドの確立作。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
       "year": 1944,
       "age": 44,
       "title": "『アパラチアの春』初演",
@@ -34,12 +43,30 @@
       ]
     },
     {
+      "year": 1950,
+      "age": 50,
+      "title": "ピューリッツァー賞・ニューヨーク批評家協会賞",
+      "detail": "映画『我が家の楽園』音楽で。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
       "year": 1953,
       "age": 53,
       "title": "マッカーシー赤狩りで召喚",
       "detail": "共産主義疑惑で議会証言。作品演奏がキャンセルされる時期。",
       "tags": [
         "pride_broken"
+      ]
+    },
+    {
+      "year": 1964,
+      "age": 64,
+      "title": "大統領自由勲章",
+      "detail": "ジョンソン大統領から。赤狩りの汚名返上。",
+      "tags": [
+        "approval"
       ]
     },
     {
@@ -56,6 +83,18 @@
   "quotes": [
     {
       "text": "すべての偉大な音楽は、愛と死の間で書かれている。",
+      "source": "コープランドの言葉"
+    },
+    {
+      "text": "音楽家の仕事は、聴衆に新しい耳を与えることだ。",
+      "source": "『音楽の聴き方』"
+    },
+    {
+      "text": "民族色とは借り物ではなく、自分の内にある。",
+      "source": "書簡"
+    },
+    {
+      "text": "シンプルさは、最も困難な完成だ。",
       "source": "コープランドの言葉"
     }
   ],
@@ -74,21 +113,30 @@
       "year": 1944,
       "type": "バレエ",
       "description": "ピューリッツァー賞。『シンプル・ギフツ』の変奏",
-      "youtubeId": "T_ON2eXYzzM"
+      "youtubeId": "T_ON2eXYzzM",
+      "imslpUrl": "https://imslp.org/index.php?search=Aaron%20Copland%20%E3%83%90%E3%83%AC%E3%82%A8%E3%80%8E%E3%82%A2%E3%83%91%E3%83%A9%E3%83%81%E3%82%A2%E3%81%AE%E6%98%A5%E3%80%8F%E7%B5%84%E6%9B%B2&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%A2%E3%83%BC%E3%83%AD%E3%83%B3%E3%83%BB%E3%82%B3%E3%83%BC%E3%83%97%E3%83%A9%E3%83%B3%E3%83%89%20%E3%83%90%E3%83%AC%E3%82%A8%E3%80%8E%E3%82%A2%E3%83%91%E3%83%A9%E3%83%81%E3%82%A2%E3%81%AE%E6%98%A5%E3%80%8F%E7%B5%84%E6%9B%B2",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%A2%E3%83%BC%E3%83%AD%E3%83%B3%E3%83%BB%E3%82%B3%E3%83%BC%E3%83%97%E3%83%A9%E3%83%B3%E3%83%89%20%E3%83%90%E3%83%AC%E3%82%A8%E3%80%8E%E3%82%A2%E3%83%91%E3%83%A9%E3%83%81%E3%82%A2%E3%81%AE%E6%98%A5%E3%80%8F%E7%B5%84%E6%9B%B2"
     },
     {
       "title": "市民のためのファンファーレ",
       "year": 1942,
       "type": "管弦楽",
       "description": "戦時中の市民を讃える勇壮なファンファーレ",
-      "youtubeId": "6oSeZZtNYEU"
+      "youtubeId": "6oSeZZtNYEU",
+      "imslpUrl": "https://imslp.org/index.php?search=Aaron%20Copland%20%E5%B8%82%E6%B0%91%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E3%83%95%E3%82%A1%E3%83%B3%E3%83%95%E3%82%A1%E3%83%BC%E3%83%AC&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%A2%E3%83%BC%E3%83%AD%E3%83%B3%E3%83%BB%E3%82%B3%E3%83%BC%E3%83%97%E3%83%A9%E3%83%B3%E3%83%89%20%E5%B8%82%E6%B0%91%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E3%83%95%E3%82%A1%E3%83%B3%E3%83%95%E3%82%A1%E3%83%BC%E3%83%AC",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%A2%E3%83%BC%E3%83%AD%E3%83%B3%E3%83%BB%E3%82%B3%E3%83%BC%E3%83%97%E3%83%A9%E3%83%B3%E3%83%89%20%E5%B8%82%E6%B0%91%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E3%83%95%E3%82%A1%E3%83%B3%E3%83%95%E3%82%A1%E3%83%BC%E3%83%AC"
     },
     {
       "title": "バレエ『ロデオ』",
       "year": 1942,
       "type": "バレエ",
       "description": "西部カウボーイの音楽",
-      "youtubeId": "MEoJn5cmR80"
+      "youtubeId": "MEoJn5cmR80",
+      "imslpUrl": "https://imslp.org/index.php?search=Aaron%20Copland%20%E3%83%90%E3%83%AC%E3%82%A8%E3%80%8E%E3%83%AD%E3%83%87%E3%82%AA%E3%80%8F&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%A2%E3%83%BC%E3%83%AD%E3%83%B3%E3%83%BB%E3%82%B3%E3%83%BC%E3%83%97%E3%83%A9%E3%83%B3%E3%83%89%20%E3%83%90%E3%83%AC%E3%82%A8%E3%80%8E%E3%83%AD%E3%83%87%E3%82%AA%E3%80%8F",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%A2%E3%83%BC%E3%83%AD%E3%83%B3%E3%83%BB%E3%82%B3%E3%83%BC%E3%83%97%E3%83%A9%E3%83%B3%E3%83%89%20%E3%83%90%E3%83%AC%E3%82%A8%E3%80%8E%E3%83%AD%E3%83%87%E3%82%AA%E3%80%8F"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Aaron_Copland_1970.JPG/500px-Aaron_Copland_1970.JPG",

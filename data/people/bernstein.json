@@ -25,6 +25,24 @@
       ]
     },
     {
+      "year": 1944,
+      "age": 26,
+      "title": "バレエ『ファンシー・フリー』成功、ミュージカル『オン・ザ・タウン』",
+      "detail": "作曲家としても即スター。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1953,
+      "age": 35,
+      "title": "赤狩りで一時パスポート没収",
+      "detail": "家族のウクライナ系ユダヤ背景で疑われた。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
       "year": 1957,
       "age": 39,
       "title": "『ウェスト・サイド物語』初演",
@@ -40,6 +58,24 @@
       "detail": "11年間の伝説的音楽監督時代。『ヤング・ピープルズ・コンサート』でクラシックを子供たちに。",
       "tags": [
         "approval"
+      ]
+    },
+    {
+      "year": 1971,
+      "age": 53,
+      "title": "『ミサ曲』ケネディ・センターでの初演",
+      "detail": "殺されたJFKの思い出に。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1973,
+      "age": 55,
+      "title": "ハーバード講義『音楽の未回答の問い』",
+      "detail": "6回の伝説的レクチャー。音楽を言語学的に分析した。",
+      "tags": [
+        "breakthrough"
       ]
     },
     {
@@ -71,6 +107,18 @@
     {
       "text": "これは怒りと復讐を超えて、愛だけを残そうという試みだった。",
       "source": "ベルリンでの演奏について"
+    },
+    {
+      "text": "音楽を愛する人はみな、学校に戻る時がある。",
+      "source": "ヤング・ピープルズ・コンサート"
+    },
+    {
+      "text": "芸術は人生を、人生を芸術に。",
+      "source": "書簡"
+    },
+    {
+      "text": "『第九』が鳴っている限り、世界は完全には壊れない。",
+      "source": "ベルリンの壁崩壊演奏会"
     }
   ],
   "relations": [
@@ -95,21 +143,30 @@
       "year": 1957,
       "type": "ミュージカル",
       "description": "『トゥナイト』『マリア』『アメリカ』など永遠の名曲",
-      "youtubeId": "A5jcZKnvWD8"
+      "youtubeId": "A5jcZKnvWD8",
+      "imslpUrl": "https://imslp.org/index.php?search=Leonard%20Bernstein%20%E3%83%9F%E3%83%A5%E3%83%BC%E3%82%B8%E3%82%AB%E3%83%AB%E3%80%8E%E3%82%A6%E3%82%A7%E3%82%B9%E3%83%88%E3%83%BB%E3%82%B5%E3%82%A4%E3%83%89%E7%89%A9%E8%AA%9E%E3%80%8F&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%83%AC%E3%83%8A%E3%83%BC%E3%83%89%E3%83%BB%E3%83%90%E3%83%BC%E3%83%B3%E3%82%B9%E3%82%BF%E3%82%A4%E3%83%B3%20%E3%83%9F%E3%83%A5%E3%83%BC%E3%82%B8%E3%82%AB%E3%83%AB%E3%80%8E%E3%82%A6%E3%82%A7%E3%82%B9%E3%83%88%E3%83%BB%E3%82%B5%E3%82%A4%E3%83%89%E7%89%A9%E8%AA%9E%E3%80%8F",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%AC%E3%83%8A%E3%83%BC%E3%83%89%E3%83%BB%E3%83%90%E3%83%BC%E3%83%B3%E3%82%B9%E3%82%BF%E3%82%A4%E3%83%B3%20%E3%83%9F%E3%83%A5%E3%83%BC%E3%82%B8%E3%82%AB%E3%83%AB%E3%80%8E%E3%82%A6%E3%82%A7%E3%82%B9%E3%83%88%E3%83%BB%E3%82%B5%E3%82%A4%E3%83%89%E7%89%A9%E8%AA%9E%E3%80%8F"
     },
     {
       "title": "キャンディード 序曲",
       "year": 1956,
       "type": "管弦楽",
       "description": "陽気で機知に富む序曲",
-      "youtubeId": "ZUkpOuuiGVU"
+      "youtubeId": "ZUkpOuuiGVU",
+      "imslpUrl": "https://imslp.org/index.php?search=Leonard%20Bernstein%20%E3%82%AD%E3%83%A3%E3%83%B3%E3%83%87%E3%82%A3%E3%83%BC%E3%83%89%20%E5%BA%8F%E6%9B%B2&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%83%AC%E3%83%8A%E3%83%BC%E3%83%89%E3%83%BB%E3%83%90%E3%83%BC%E3%83%B3%E3%82%B9%E3%82%BF%E3%82%A4%E3%83%B3%20%E3%82%AD%E3%83%A3%E3%83%B3%E3%83%87%E3%82%A3%E3%83%BC%E3%83%89%20%E5%BA%8F%E6%9B%B2",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%AC%E3%83%8A%E3%83%BC%E3%83%89%E3%83%BB%E3%83%90%E3%83%BC%E3%83%B3%E3%82%B9%E3%82%BF%E3%82%A4%E3%83%B3%20%E3%82%AD%E3%83%A3%E3%83%B3%E3%83%87%E3%82%A3%E3%83%BC%E3%83%89%20%E5%BA%8F%E6%9B%B2"
     },
     {
       "title": "ミサ曲",
       "year": 1971,
       "type": "劇的作品",
       "description": "ケネディ・センター開幕のための意欲作",
-      "youtubeId": "PtJpC8b_fAQ"
+      "youtubeId": "PtJpC8b_fAQ",
+      "imslpUrl": "https://imslp.org/index.php?search=Leonard%20Bernstein%20%E3%83%9F%E3%82%B5%E6%9B%B2&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%83%AC%E3%83%8A%E3%83%BC%E3%83%89%E3%83%BB%E3%83%90%E3%83%BC%E3%83%B3%E3%82%B9%E3%82%BF%E3%82%A4%E3%83%B3%20%E3%83%9F%E3%82%B5%E6%9B%B2",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%AC%E3%83%8A%E3%83%BC%E3%83%89%E3%83%BB%E3%83%90%E3%83%BC%E3%83%B3%E3%82%B9%E3%82%BF%E3%82%A4%E3%83%B3%20%E3%83%9F%E3%82%B5%E6%9B%B2"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Leonard_Bernstein_by_Jack_Mitchell_%28high_quality%29.jpg/500px-Leonard_Bernstein_by_Jack_Mitchell_%28high_quality%29.jpg",

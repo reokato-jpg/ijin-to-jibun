@@ -16,6 +16,13 @@
       "tags": []
     },
     {
+      "year": 1974,
+      "age": 24,
+      "title": "国立音楽大学作曲科卒業",
+      "detail": "前衛音楽と映画音楽の境界で活動開始。",
+      "tags": []
+    },
+    {
       "year": 1984,
       "age": 34,
       "title": "宮崎駿『風の谷のナウシカ』音楽",
@@ -52,6 +59,24 @@
       "tags": [
         "approval"
       ]
+    },
+    {
+      "year": 2008,
+      "age": 58,
+      "title": "ニューヨーク・カーネギーホールで自作指揮",
+      "detail": "世界的作曲家として認知。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 2022,
+      "age": 72,
+      "title": "文化功労者顕彰",
+      "detail": "日本の音楽界最高の名誉。",
+      "tags": [
+        "approval"
+      ]
     }
   ],
   "quotes": [
@@ -62,6 +87,18 @@
     {
       "text": "シンプルで、美しく、心に残ること。",
       "source": "作曲のモットー"
+    },
+    {
+      "text": "映像が何を求めているかを、音で答える。",
+      "source": "久石譲の言葉"
+    },
+    {
+      "text": "メロディの力は、時代を超える。",
+      "source": "書簡"
+    },
+    {
+      "text": "子供の心で作る曲こそ、一番難しい。",
+      "source": "作曲ノート"
     }
   ],
   "relations": [
@@ -84,28 +121,40 @@
       "year": 1988,
       "type": "映画音楽",
       "description": "世界中の子供に愛される旋律",
-      "youtubeId": "epPpXpu_2VY"
+      "youtubeId": "epPpXpu_2VY",
+      "imslpUrl": "https://imslp.org/index.php?search=Joe%20Hisaishi%20%E3%81%A8%E3%81%AA%E3%82%8A%E3%81%AE%E3%83%88%E3%83%88%E3%83%AD%20%E3%83%A1%E3%82%A4%E3%83%B3%E3%83%86%E3%83%BC%E3%83%9E&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E4%B9%85%E7%9F%B3%E8%AD%B2%20%E3%81%A8%E3%81%AA%E3%82%8A%E3%81%AE%E3%83%88%E3%83%88%E3%83%AD%20%E3%83%A1%E3%82%A4%E3%83%B3%E3%83%86%E3%83%BC%E3%83%9E",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E4%B9%85%E7%9F%B3%E8%AD%B2%20%E3%81%A8%E3%81%AA%E3%82%8A%E3%81%AE%E3%83%88%E3%83%88%E3%83%AD%20%E3%83%A1%E3%82%A4%E3%83%B3%E3%83%86%E3%83%BC%E3%83%9E"
     },
     {
       "title": "千と千尋の神隠し『あの夏へ』",
       "year": 2001,
       "type": "映画音楽",
       "description": "ピアノで語る記憶と別れ",
-      "youtubeId": "TL3oq_k0IRQ"
+      "youtubeId": "TL3oq_k0IRQ",
+      "imslpUrl": "https://imslp.org/index.php?search=Joe%20Hisaishi%20%E5%8D%83%E3%81%A8%E5%8D%83%E5%B0%8B%E3%81%AE%E7%A5%9E%E9%9A%A0%E3%81%97%E3%80%8E%E3%81%82%E3%81%AE%E5%A4%8F%E3%81%B8%E3%80%8F&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E4%B9%85%E7%9F%B3%E8%AD%B2%20%E5%8D%83%E3%81%A8%E5%8D%83%E5%B0%8B%E3%81%AE%E7%A5%9E%E9%9A%A0%E3%81%97%E3%80%8E%E3%81%82%E3%81%AE%E5%A4%8F%E3%81%B8%E3%80%8F",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E4%B9%85%E7%9F%B3%E8%AD%B2%20%E5%8D%83%E3%81%A8%E5%8D%83%E5%B0%8B%E3%81%AE%E7%A5%9E%E9%9A%A0%E3%81%97%E3%80%8E%E3%81%82%E3%81%AE%E5%A4%8F%E3%81%B8%E3%80%8F"
     },
     {
       "title": "Summer（菊次郎の夏）",
       "year": 1999,
       "type": "映画音楽",
       "description": "北野武作品の代表曲",
-      "youtubeId": "YWgaf66mq1g"
+      "youtubeId": "YWgaf66mq1g",
+      "imslpUrl": "https://imslp.org/index.php?search=Joe%20Hisaishi%20Summer%EF%BC%88%E8%8F%8A%E6%AC%A1%E9%83%8E%E3%81%AE%E5%A4%8F%EF%BC%89&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E4%B9%85%E7%9F%B3%E8%AD%B2%20Summer%EF%BC%88%E8%8F%8A%E6%AC%A1%E9%83%8E%E3%81%AE%E5%A4%8F%EF%BC%89",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E4%B9%85%E7%9F%B3%E8%AD%B2%20Summer%EF%BC%88%E8%8F%8A%E6%AC%A1%E9%83%8E%E3%81%AE%E5%A4%8F%EF%BC%89"
     },
     {
       "title": "Merry-Go-Round（ハウルの動く城）",
       "year": 2004,
       "type": "映画音楽",
       "description": "ワルツ調の永遠の名曲",
-      "youtubeId": "i5J2dBWgFm4"
+      "youtubeId": "i5J2dBWgFm4",
+      "imslpUrl": "https://imslp.org/index.php?search=Joe%20Hisaishi%20Merry-Go-Round%EF%BC%88%E3%83%8F%E3%82%A6%E3%83%AB%E3%81%AE%E5%8B%95%E3%81%8F%E5%9F%8E%EF%BC%89&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E4%B9%85%E7%9F%B3%E8%AD%B2%20Merry-Go-Round%EF%BC%88%E3%83%8F%E3%82%A6%E3%83%AB%E3%81%AE%E5%8B%95%E3%81%8F%E5%9F%8E%EF%BC%89",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E4%B9%85%E7%9F%B3%E8%AD%B2%20Merry-Go-Round%EF%BC%88%E3%83%8F%E3%82%A6%E3%83%AB%E3%81%AE%E5%8B%95%E3%81%8F%E5%9F%8E%EF%BC%89"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Joe_Hisaishi_2011.jpg/500px-Joe_Hisaishi_2011.jpg",

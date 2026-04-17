@@ -16,6 +16,13 @@
       "tags": []
     },
     {
+      "year": 1852,
+      "age": 13,
+      "title": "ペテルブルク士官学校入学、若くして酒を覚える",
+      "detail": "軍人貴族の世界でシャンパンと歌。",
+      "tags": []
+    },
+    {
       "year": 1858,
       "age": 19,
       "title": "陸軍を退役、音楽家への道",
@@ -53,12 +60,30 @@
       ]
     },
     {
+      "year": 1872,
+      "age": 33,
+      "title": "『ボリス・ゴドゥノフ』初演改訂版",
+      "detail": "以前は民衆合唱が不足と拒否された。改訂版で成功。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
       "year": 1874,
       "age": 35,
       "title": "『展覧会の絵』作曲",
       "detail": "親友・画家ハルトマンの追悼展を巡る音楽的散歩。",
       "tags": [
         "breakthrough",
+        "loss"
+      ]
+    },
+    {
+      "year": 1878,
+      "age": 39,
+      "title": "旧友の姉クトゥーゾワの死",
+      "detail": "友人を次々失う時期。歌曲集『死の歌と踊り』が生まれる。",
+      "tags": [
         "loss"
       ]
     },
@@ -81,6 +106,18 @@
     {
       "text": "真の芸術とは、人間そのものを描くことである。",
       "source": "書簡"
+    },
+    {
+      "text": "民衆の言葉そのままを音楽にすべきだ。",
+      "source": "書簡"
+    },
+    {
+      "text": "芸術は、美しさではなく、真実である。",
+      "source": "書簡"
+    },
+    {
+      "text": "私は民衆と共に呼吸したい。",
+      "source": "ムソルグスキーの言葉"
     }
   ],
   "relations": [
@@ -103,21 +140,30 @@
       "year": 1874,
       "type": "ピアノ曲",
       "description": "親友の遺作を巡る音楽的散歩。ラヴェル編が有名",
-      "youtubeId": "YOuRA4Wf2HQ"
+      "youtubeId": "YOuRA4Wf2HQ",
+      "imslpUrl": "https://imslp.org/index.php?search=Modest%20Mussorgsky%20%E7%B5%84%E6%9B%B2%E3%80%8E%E5%B1%95%E8%A6%A7%E4%BC%9A%E3%81%AE%E7%B5%B5%E3%80%8F&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%83%A2%E3%83%87%E3%82%B9%E3%83%88%E3%83%BB%E3%83%A0%E3%82%BD%E3%83%AB%E3%82%B0%E3%82%B9%E3%82%AD%E3%83%BC%20%E7%B5%84%E6%9B%B2%E3%80%8E%E5%B1%95%E8%A6%A7%E4%BC%9A%E3%81%AE%E7%B5%B5%E3%80%8F",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%A2%E3%83%87%E3%82%B9%E3%83%88%E3%83%BB%E3%83%A0%E3%82%BD%E3%83%AB%E3%82%B0%E3%82%B9%E3%82%AD%E3%83%BC%20%E7%B5%84%E6%9B%B2%E3%80%8E%E5%B1%95%E8%A6%A7%E4%BC%9A%E3%81%AE%E7%B5%B5%E3%80%8F"
     },
     {
       "title": "歌劇『ボリス・ゴドゥノフ』",
       "year": 1869,
       "type": "オペラ",
       "description": "民衆を主役にしたロシア歴史オペラの傑作",
-      "youtubeId": "zQD8CYtDiqE"
+      "youtubeId": "zQD8CYtDiqE",
+      "imslpUrl": "https://imslp.org/index.php?search=Modest%20Mussorgsky%20%E6%AD%8C%E5%8A%87%E3%80%8E%E3%83%9C%E3%83%AA%E3%82%B9%E3%83%BB%E3%82%B4%E3%83%89%E3%82%A5%E3%83%8E%E3%83%95%E3%80%8F&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%83%A2%E3%83%87%E3%82%B9%E3%83%88%E3%83%BB%E3%83%A0%E3%82%BD%E3%83%AB%E3%82%B0%E3%82%B9%E3%82%AD%E3%83%BC%20%E6%AD%8C%E5%8A%87%E3%80%8E%E3%83%9C%E3%83%AA%E3%82%B9%E3%83%BB%E3%82%B4%E3%83%89%E3%82%A5%E3%83%8E%E3%83%95%E3%80%8F",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%A2%E3%83%87%E3%82%B9%E3%83%88%E3%83%BB%E3%83%A0%E3%82%BD%E3%83%AB%E3%82%B0%E3%82%B9%E3%82%AD%E3%83%BC%20%E6%AD%8C%E5%8A%87%E3%80%8E%E3%83%9C%E3%83%AA%E3%82%B9%E3%83%BB%E3%82%B4%E3%83%89%E3%82%A5%E3%83%8E%E3%83%95%E3%80%8F"
     },
     {
       "title": "交響詩『はげ山の一夜』",
       "year": 1867,
       "type": "管弦楽",
       "description": "『ファンタジア』で世界的に有名に",
-      "youtubeId": "R3RF_3wMpF4"
+      "youtubeId": "R3RF_3wMpF4",
+      "imslpUrl": "https://imslp.org/index.php?search=Modest%20Mussorgsky%20%E4%BA%A4%E9%9F%BF%E8%A9%A9%E3%80%8E%E3%81%AF%E3%81%92%E5%B1%B1%E3%81%AE%E4%B8%80%E5%A4%9C%E3%80%8F&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%83%A2%E3%83%87%E3%82%B9%E3%83%88%E3%83%BB%E3%83%A0%E3%82%BD%E3%83%AB%E3%82%B0%E3%82%B9%E3%82%AD%E3%83%BC%20%E4%BA%A4%E9%9F%BF%E8%A9%A9%E3%80%8E%E3%81%AF%E3%81%92%E5%B1%B1%E3%81%AE%E4%B8%80%E5%A4%9C%E3%80%8F",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%A2%E3%83%87%E3%82%B9%E3%83%88%E3%83%BB%E3%83%A0%E3%82%BD%E3%83%AB%E3%82%B0%E3%82%B9%E3%82%AD%E3%83%BC%20%E4%BA%A4%E9%9F%BF%E8%A9%A9%E3%80%8E%E3%81%AF%E3%81%92%E5%B1%B1%E3%81%AE%E4%B8%80%E5%A4%9C%E3%80%8F"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Ilya_Repin_-_Portret_of_the_Composer_Modest_Petrovich_Mussorgsky_-_Google_Art_Project.jpg/500px-Ilya_Repin_-_Portret_of_the_Composer_Modest_Petrovich_Mussorgsky_-_Google_Art_Project.jpg",

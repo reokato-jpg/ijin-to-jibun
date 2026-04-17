@@ -26,6 +26,23 @@
       ]
     },
     {
+      "year": 1866,
+      "age": 25,
+      "title": "プラハ仮設劇場の首席ヴィオラ奏者に",
+      "detail": "スメタナ指揮の楽団で9年間演奏。",
+      "tags": []
+    },
+    {
+      "year": 1873,
+      "age": 32,
+      "title": "アンナと結婚",
+      "detail": "かつての生徒ヨセフィーナ（アンナの姉）に片思いしていた。ヨセフィーナは生涯の心の人。",
+      "tags": [
+        "heartbreak",
+        "turning_encounter"
+      ]
+    },
+    {
       "year": 1874,
       "age": 33,
       "title": "国家作曲奨励賞を5年連続受賞",
@@ -45,12 +62,31 @@
       ]
     },
     {
+      "year": 1879,
+      "age": 38,
+      "title": "ブラームスとの会見",
+      "detail": "ウィーンで初対面。ブラームスは『彼の捨て紙籠の中身でも他の作曲家10人分だ』と絶賛。",
+      "tags": [
+        "turning_encounter",
+        "approval"
+      ]
+    },
+    {
       "year": 1892,
       "age": 51,
       "title": "ニューヨーク音楽院院長として渡米",
       "detail": "年俸15,000ドル（当時のチェコ首相の25倍）で招聘。",
       "tags": [
         "restart"
+      ]
+    },
+    {
+      "year": 1892,
+      "age": 51,
+      "title": "ナショナル音楽院の生徒ハリー・バーリー",
+      "detail": "黒人霊歌の導き手。『新世界』の源泉となる。",
+      "tags": [
+        "turning_encounter"
       ]
     },
     {
@@ -70,6 +106,23 @@
       "tags": [
         "restart"
       ]
+    },
+    {
+      "year": 1895,
+      "age": 54,
+      "title": "義姉ヨセフィーナ死去",
+      "detail": "チェコ帰国の決定打。チェロ協奏曲の終楽章に彼女の好きな歌を忍ばせた。",
+      "tags": [
+        "loss",
+        "heartbreak"
+      ]
+    },
+    {
+      "year": 1898,
+      "age": 57,
+      "title": "歌劇『ルサルカ』作曲開始",
+      "detail": "スラヴ伝説の水の精。チェコ・オペラの最高傑作。",
+      "tags": []
     },
     {
       "year": 1904,
@@ -92,6 +145,18 @@
     },
     {
       "text": "神と、愛と、そして作曲のほかに、人生に何があろう。",
+      "source": "ドヴォルザークの言葉"
+    },
+    {
+      "text": "汽車のない日は、作曲も出来ない。",
+      "source": "ドヴォルザークは鉄道マニアだった"
+    },
+    {
+      "text": "メロディは、神様から作曲家への贈り物だ。",
+      "source": "書簡"
+    },
+    {
+      "text": "自分の心の底にあるものしか、人は書けない。",
       "source": "ドヴォルザークの言葉"
     }
   ],
@@ -128,37 +193,54 @@
       "year": 1893,
       "type": "交響曲",
       "description": "アメリカでの滞在が生んだチェコ人の交響曲",
-      "youtubeId": "bNMT1-Rn1kQ"
+      "youtubeId": "bNMT1-Rn1kQ",
+      "imslpUrl": "https://imslp.org/index.php?search=Anton%C3%ADn%20Dvo%C5%99%C3%A1k%20%E4%BA%A4%E9%9F%BF%E6%9B%B2%E7%AC%AC9%E7%95%AA%E3%80%8E%E6%96%B0%E4%B8%96%E7%95%8C%E3%82%88%E3%82%8A%E3%80%8F%E3%83%9B%E7%9F%AD%E8%AA%BF%20%E4%BD%9C%E5%93%8195&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%A2%E3%83%B3%E3%83%88%E3%83%8B%E3%83%B3%E3%83%BB%E3%83%89%E3%83%B4%E3%82%A9%E3%83%AB%E3%82%B6%E3%83%BC%E3%82%AF%20%E4%BA%A4%E9%9F%BF%E6%9B%B2%E7%AC%AC9%E7%95%AA%E3%80%8E%E6%96%B0%E4%B8%96%E7%95%8C%E3%82%88%E3%82%8A%E3%80%8F%E3%83%9B%E7%9F%AD%E8%AA%BF%20%E4%BD%9C%E5%93%8195",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%A2%E3%83%B3%E3%83%88%E3%83%8B%E3%83%B3%E3%83%BB%E3%83%89%E3%83%B4%E3%82%A9%E3%83%AB%E3%82%B6%E3%83%BC%E3%82%AF%20%E4%BA%A4%E9%9F%BF%E6%9B%B2%E7%AC%AC9%E7%95%AA%E3%80%8E%E6%96%B0%E4%B8%96%E7%95%8C%E3%82%88%E3%82%8A%E3%80%8F%E3%83%9B%E7%9F%AD%E8%AA%BF%20%E4%BD%9C%E5%93%8195"
     },
     {
       "title": "チェロ協奏曲 ロ短調 作品104",
       "year": 1895,
       "type": "協奏曲",
       "description": "チェロ協奏曲の金字塔。ブラームスが聴いて『自分にも書けたのに』と涙したという",
-      "youtubeId": "Q3zuxTqf0FU"
+      "youtubeId": "Q3zuxTqf0FU",
+      "imslpUrl": "https://imslp.org/index.php?search=Anton%C3%ADn%20Dvo%C5%99%C3%A1k%20%E3%83%81%E3%82%A7%E3%83%AD%E5%8D%94%E5%A5%8F%E6%9B%B2%20%E3%83%AD%E7%9F%AD%E8%AA%BF%20%E4%BD%9C%E5%93%81104&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%A2%E3%83%B3%E3%83%88%E3%83%8B%E3%83%B3%E3%83%BB%E3%83%89%E3%83%B4%E3%82%A9%E3%83%AB%E3%82%B6%E3%83%BC%E3%82%AF%20%E3%83%81%E3%82%A7%E3%83%AD%E5%8D%94%E5%A5%8F%E6%9B%B2%20%E3%83%AD%E7%9F%AD%E8%AA%BF%20%E4%BD%9C%E5%93%81104",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%A2%E3%83%B3%E3%83%88%E3%83%8B%E3%83%B3%E3%83%BB%E3%83%89%E3%83%B4%E3%82%A9%E3%83%AB%E3%82%B6%E3%83%BC%E3%82%AF%20%E3%83%81%E3%82%A7%E3%83%AD%E5%8D%94%E5%A5%8F%E6%9B%B2%20%E3%83%AD%E7%9F%AD%E8%AA%BF%20%E4%BD%9C%E5%93%81104"
     },
     {
       "title": "弦楽四重奏曲第12番『アメリカ』",
       "year": 1893,
       "type": "室内楽",
       "description": "アイオワ州スピルヴィルで書かれた明るい傑作",
-      "youtubeId": "o2qe10FDTS8"
+      "youtubeId": "o2qe10FDTS8",
+      "imslpUrl": "https://imslp.org/index.php?search=Anton%C3%ADn%20Dvo%C5%99%C3%A1k%20%E5%BC%A6%E6%A5%BD%E5%9B%9B%E9%87%8D%E5%A5%8F%E6%9B%B2%E7%AC%AC12%E7%95%AA%E3%80%8E%E3%82%A2%E3%83%A1%E3%83%AA%E3%82%AB%E3%80%8F&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%A2%E3%83%B3%E3%83%88%E3%83%8B%E3%83%B3%E3%83%BB%E3%83%89%E3%83%B4%E3%82%A9%E3%83%AB%E3%82%B6%E3%83%BC%E3%82%AF%20%E5%BC%A6%E6%A5%BD%E5%9B%9B%E9%87%8D%E5%A5%8F%E6%9B%B2%E7%AC%AC12%E7%95%AA%E3%80%8E%E3%82%A2%E3%83%A1%E3%83%AA%E3%82%AB%E3%80%8F",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%A2%E3%83%B3%E3%83%88%E3%83%8B%E3%83%B3%E3%83%BB%E3%83%89%E3%83%B4%E3%82%A9%E3%83%AB%E3%82%B6%E3%83%BC%E3%82%AF%20%E5%BC%A6%E6%A5%BD%E5%9B%9B%E9%87%8D%E5%A5%8F%E6%9B%B2%E7%AC%AC12%E7%95%AA%E3%80%8E%E3%82%A2%E3%83%A1%E3%83%AA%E3%82%AB%E3%80%8F"
     },
     {
       "title": "スラヴ舞曲集",
       "year": 1878,
       "type": "管弦楽",
       "description": "ブラームスの勧めで書き世界的大ヒット",
-      "youtubeId": "6EKXdYuqqTs"
+      "youtubeId": "6EKXdYuqqTs",
+      "imslpUrl": "https://imslp.org/index.php?search=Anton%C3%ADn%20Dvo%C5%99%C3%A1k%20%E3%82%B9%E3%83%A9%E3%83%B4%E8%88%9E%E6%9B%B2%E9%9B%86&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%A2%E3%83%B3%E3%83%88%E3%83%8B%E3%83%B3%E3%83%BB%E3%83%89%E3%83%B4%E3%82%A9%E3%83%AB%E3%82%B6%E3%83%BC%E3%82%AF%20%E3%82%B9%E3%83%A9%E3%83%B4%E8%88%9E%E6%9B%B2%E9%9B%86",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%A2%E3%83%B3%E3%83%88%E3%83%8B%E3%83%B3%E3%83%BB%E3%83%89%E3%83%B4%E3%82%A9%E3%83%AB%E3%82%B6%E3%83%BC%E3%82%AF%20%E3%82%B9%E3%83%A9%E3%83%B4%E8%88%9E%E6%9B%B2%E9%9B%86"
     },
     {
       "title": "ユモレスク 作品101-7",
       "year": 1894,
       "type": "ピアノ曲",
       "description": "最も愛されるサロン小品",
-      "youtubeId": "7Ej4x-W91XU"
+      "youtubeId": "7Ej4x-W91XU",
+      "imslpUrl": "https://imslp.org/index.php?search=Anton%C3%ADn%20Dvo%C5%99%C3%A1k%20%E3%83%A6%E3%83%A2%E3%83%AC%E3%82%B9%E3%82%AF%20%E4%BD%9C%E5%93%81101-7&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%A2%E3%83%B3%E3%83%88%E3%83%8B%E3%83%B3%E3%83%BB%E3%83%89%E3%83%B4%E3%82%A9%E3%83%AB%E3%82%B6%E3%83%BC%E3%82%AF%20%E3%83%A6%E3%83%A2%E3%83%AC%E3%82%B9%E3%82%AF%20%E4%BD%9C%E5%93%81101-7",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%A2%E3%83%B3%E3%83%88%E3%83%8B%E3%83%B3%E3%83%BB%E3%83%89%E3%83%B4%E3%82%A9%E3%83%AB%E3%82%B6%E3%83%BC%E3%82%AF%20%E3%83%A6%E3%83%A2%E3%83%AC%E3%82%B9%E3%82%AF%20%E4%BD%9C%E5%93%81101-7"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Dvorak.jpg/500px-Dvorak.jpg",
-  "wikiTitle": "アントニン・ドヴォルザーク"
+  "wikiTitle": "アントニン・ドヴォルザーク",
+  "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Jan_hus_1.jpg/330px-Jan_hus_1.jpg",
+  "coverImageCaption": "ドヴォルザーク記念館"
 }

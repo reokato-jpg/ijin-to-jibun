@@ -25,12 +25,30 @@
       ]
     },
     {
+      "year": 1913,
+      "age": 34,
+      "title": "サンタ・チェチリア音楽院作曲教授",
+      "detail": "生涯ローマ音楽界の中心に。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
       "year": 1917,
       "age": 38,
       "title": "『ローマの噴水』初演",
       "detail": "4つの噴水の4つの時間。色彩の革命。",
       "tags": [
         "breakthrough"
+      ]
+    },
+    {
+      "year": 1919,
+      "age": 40,
+      "title": "エルサと結婚",
+      "detail": "生徒のソプラノ歌手。以後二人三脚で作品を送り出す。",
+      "tags": [
+        "turning_encounter"
       ]
     },
     {
@@ -41,6 +59,13 @@
       "tags": [
         "breakthrough"
       ]
+    },
+    {
+      "year": 1932,
+      "age": 53,
+      "title": "イタリア・アカデミー会員",
+      "detail": "ファシスト政権下の名誉も引き受けた複雑な立場。",
+      "tags": []
     },
     {
       "year": 1936,
@@ -56,6 +81,14 @@
     {
       "text": "古代は失われたのではない。音楽の中に眠っている。",
       "source": "レスピーギの言葉"
+    },
+    {
+      "text": "ローマの松が、私に永遠を教えた。",
+      "source": "レスピーギの手記"
+    },
+    {
+      "text": "古い楽譜にこそ、新しい音楽のヒントがある。",
+      "source": "書簡"
     }
   ],
   "relations": [
@@ -74,21 +107,30 @@
       "year": 1924,
       "type": "管弦楽",
       "description": "『アッピア街道の松』のクライマックスは圧巻",
-      "youtubeId": "7v4nrTfyCUU"
+      "youtubeId": "7v4nrTfyCUU",
+      "imslpUrl": "https://imslp.org/index.php?search=Ottorino%20Respighi%20%E4%BA%A4%E9%9F%BF%E8%A9%A9%E3%80%8E%E3%83%AD%E3%83%BC%E3%83%9E%E3%81%AE%E6%9D%BE%E3%80%8F&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%AA%E3%83%83%E3%83%88%E3%83%AA%E3%83%BC%E3%83%8E%E3%83%BB%E3%83%AC%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AE%20%E4%BA%A4%E9%9F%BF%E8%A9%A9%E3%80%8E%E3%83%AD%E3%83%BC%E3%83%9E%E3%81%AE%E6%9D%BE%E3%80%8F",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%AA%E3%83%83%E3%83%88%E3%83%AA%E3%83%BC%E3%83%8E%E3%83%BB%E3%83%AC%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AE%20%E4%BA%A4%E9%9F%BF%E8%A9%A9%E3%80%8E%E3%83%AD%E3%83%BC%E3%83%9E%E3%81%AE%E6%9D%BE%E3%80%8F"
     },
     {
       "title": "交響詩『ローマの噴水』",
       "year": 1917,
       "type": "管弦楽",
       "description": "4つの噴水が刻む時間",
-      "youtubeId": "-SQ_LYdFZTQ"
+      "youtubeId": "-SQ_LYdFZTQ",
+      "imslpUrl": "https://imslp.org/index.php?search=Ottorino%20Respighi%20%E4%BA%A4%E9%9F%BF%E8%A9%A9%E3%80%8E%E3%83%AD%E3%83%BC%E3%83%9E%E3%81%AE%E5%99%B4%E6%B0%B4%E3%80%8F&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%AA%E3%83%83%E3%83%88%E3%83%AA%E3%83%BC%E3%83%8E%E3%83%BB%E3%83%AC%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AE%20%E4%BA%A4%E9%9F%BF%E8%A9%A9%E3%80%8E%E3%83%AD%E3%83%BC%E3%83%9E%E3%81%AE%E5%99%B4%E6%B0%B4%E3%80%8F",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%AA%E3%83%83%E3%83%88%E3%83%AA%E3%83%BC%E3%83%8E%E3%83%BB%E3%83%AC%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AE%20%E4%BA%A4%E9%9F%BF%E8%A9%A9%E3%80%8E%E3%83%AD%E3%83%BC%E3%83%9E%E3%81%AE%E5%99%B4%E6%B0%B4%E3%80%8F"
     },
     {
       "title": "交響詩『ローマの祭』",
       "year": 1928,
       "type": "管弦楽",
       "description": "ローマ三部作の完結編",
-      "youtubeId": "3L7JlymQZLg"
+      "youtubeId": "3L7JlymQZLg",
+      "imslpUrl": "https://imslp.org/index.php?search=Ottorino%20Respighi%20%E4%BA%A4%E9%9F%BF%E8%A9%A9%E3%80%8E%E3%83%AD%E3%83%BC%E3%83%9E%E3%81%AE%E7%A5%AD%E3%80%8F&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%AA%E3%83%83%E3%83%88%E3%83%AA%E3%83%BC%E3%83%8E%E3%83%BB%E3%83%AC%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AE%20%E4%BA%A4%E9%9F%BF%E8%A9%A9%E3%80%8E%E3%83%AD%E3%83%BC%E3%83%9E%E3%81%AE%E7%A5%AD%E3%80%8F",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%AA%E3%83%83%E3%83%88%E3%83%AA%E3%83%BC%E3%83%8E%E3%83%BB%E3%83%AC%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AE%20%E4%BA%A4%E9%9F%BF%E8%A9%A9%E3%80%8E%E3%83%AD%E3%83%BC%E3%83%9E%E3%81%AE%E7%A5%AD%E3%80%8F"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/c/cc/Respighi_1935.jpg",

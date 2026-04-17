@@ -16,6 +16,13 @@
       "tags": []
     },
     {
+      "year": 1544,
+      "age": 19,
+      "title": "故郷パレストリーナの大聖堂楽長に",
+      "detail": "最初の職。この町の名が姓に。",
+      "tags": []
+    },
+    {
       "year": 1551,
       "age": 26,
       "title": "バチカン、ジュリア礼拝堂楽長に",
@@ -44,6 +51,24 @@
       ]
     },
     {
+      "year": 1580,
+      "age": 55,
+      "title": "妻ルクレツィアを失う",
+      "detail": "ペストで妻と2人の息子を失う。深い傷。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1581,
+      "age": 56,
+      "title": "ヴィルジニア・ドルモリと再婚",
+      "detail": "裕福な未亡人。経済的余裕を得て晩年の代表作を生む。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
       "year": 1594,
       "age": 69,
       "title": "ローマで死去",
@@ -57,6 +82,14 @@
     {
       "text": "すべての声部は、神に捧げる祈りである。",
       "source": "パレストリーナの言葉"
+    },
+    {
+      "text": "沈黙の中にこそ、神の声がある。",
+      "source": "パレストリーナの言葉"
+    },
+    {
+      "text": "多声は一つの魂に至る道だ。",
+      "source": "書簡"
     }
   ],
   "relations": [],
@@ -68,20 +101,29 @@
       "year": 1567,
       "type": "宗教曲",
       "description": "パレストリーナ様式の完成",
-      "youtubeId": "CcXHZONL6ck"
+      "youtubeId": "CcXHZONL6ck",
+      "imslpUrl": "https://imslp.org/index.php?search=Giovanni%20Pierluigi%20da%20Palestrina%20%E6%95%99%E7%9A%87%E3%83%9E%E3%83%AB%E3%82%B1%E3%83%AB%E3%82%B9%E3%81%AE%E3%83%9F%E3%82%B5&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%B8%E3%83%A7%E3%83%B4%E3%82%A1%E3%83%B3%E3%83%8B%E3%83%BB%E3%83%91%E3%83%AC%E3%82%B9%E3%83%88%E3%83%AA%E3%83%BC%E3%83%8A%20%E6%95%99%E7%9A%87%E3%83%9E%E3%83%AB%E3%82%B1%E3%83%AB%E3%82%B9%E3%81%AE%E3%83%9F%E3%82%B5",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%B8%E3%83%A7%E3%83%B4%E3%82%A1%E3%83%B3%E3%83%8B%E3%83%BB%E3%83%91%E3%83%AC%E3%82%B9%E3%83%88%E3%83%AA%E3%83%BC%E3%83%8A%20%E6%95%99%E7%9A%87%E3%83%9E%E3%83%AB%E3%82%B1%E3%83%AB%E3%82%B9%E3%81%AE%E3%83%9F%E3%82%B5"
     },
     {
       "title": "モテット『シカット・ケルブス』",
       "year": 1580,
       "type": "宗教曲",
       "description": "『鹿が谷川を慕うごとく』詩篇42篇",
-      "youtubeId": "M49N1-VDZHo"
+      "youtubeId": "M49N1-VDZHo",
+      "imslpUrl": "https://imslp.org/index.php?search=Giovanni%20Pierluigi%20da%20Palestrina%20%E3%83%A2%E3%83%86%E3%83%83%E3%83%88%E3%80%8E%E3%82%B7%E3%82%AB%E3%83%83%E3%83%88%E3%83%BB%E3%82%B1%E3%83%AB%E3%83%96%E3%82%B9%E3%80%8F&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%B8%E3%83%A7%E3%83%B4%E3%82%A1%E3%83%B3%E3%83%8B%E3%83%BB%E3%83%91%E3%83%AC%E3%82%B9%E3%83%88%E3%83%AA%E3%83%BC%E3%83%8A%20%E3%83%A2%E3%83%86%E3%83%83%E3%83%88%E3%80%8E%E3%82%B7%E3%82%AB%E3%83%83%E3%83%88%E3%83%BB%E3%82%B1%E3%83%AB%E3%83%96%E3%82%B9%E3%80%8F",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%B8%E3%83%A7%E3%83%B4%E3%82%A1%E3%83%B3%E3%83%8B%E3%83%BB%E3%83%91%E3%83%AC%E3%82%B9%E3%83%88%E3%83%AA%E3%83%BC%E3%83%8A%20%E3%83%A2%E3%83%86%E3%83%83%E3%83%88%E3%80%8E%E3%82%B7%E3%82%AB%E3%83%83%E3%83%88%E3%83%BB%E3%82%B1%E3%83%AB%E3%83%96%E3%82%B9%E3%80%8F"
     },
     {
       "title": "ミゼレーレ",
       "year": 1580,
       "type": "宗教曲",
-      "description": "詩篇51篇による荘厳なミサ"
+      "description": "詩篇51篇による荘厳なミサ",
+      "imslpUrl": "https://imslp.org/index.php?search=Giovanni%20Pierluigi%20da%20Palestrina%20%E3%83%9F%E3%82%BC%E3%83%AC%E3%83%BC%E3%83%AC&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%B8%E3%83%A7%E3%83%B4%E3%82%A1%E3%83%B3%E3%83%8B%E3%83%BB%E3%83%91%E3%83%AC%E3%82%B9%E3%83%88%E3%83%AA%E3%83%BC%E3%83%8A%20%E3%83%9F%E3%82%BC%E3%83%AC%E3%83%BC%E3%83%AC",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%B8%E3%83%A7%E3%83%B4%E3%82%A1%E3%83%B3%E3%83%8B%E3%83%BB%E3%83%91%E3%83%AC%E3%82%B9%E3%83%88%E3%83%AA%E3%83%BC%E3%83%8A%20%E3%83%9F%E3%82%BC%E3%83%AC%E3%83%BC%E3%83%AC"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/1/18/Giovanni_Pierluigi_da_Palestrina.jpg",

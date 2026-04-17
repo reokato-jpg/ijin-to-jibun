@@ -36,10 +36,28 @@
       ]
     },
     {
+      "year": 1863,
+      "age": 27,
+      "title": "ワーグナー『さまよえるオランダ人』スコアを一度見て暗譜",
+      "detail": "驚異の記憶力。『神がくれた頭脳』と言われた。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
       "year": 1871,
       "age": 35,
       "title": "国民音楽協会設立",
       "detail": "フランス作曲家の自立を目指す。フランク・フォーレらと。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1877,
+      "age": 42,
+      "title": "歌劇『サムソンとデリラ』初演",
+      "detail": "リストの援助でヴァイマルで初演。",
       "tags": [
         "breakthrough"
       ]
@@ -55,10 +73,28 @@
       ]
     },
     {
+      "year": 1881,
+      "age": 46,
+      "title": "妻マリーが一人で突然出奔",
+      "detail": "2人の息子を失ったあとの崩壊。以後離別、二度と会わなかった。",
+      "tags": [
+        "heartbreak"
+      ]
+    },
+    {
       "year": 1886,
       "age": 51,
       "title": "『動物の謝肉祭』作曲（生前は公開禁止）",
       "detail": "ユーモアが自分の威厳を傷つけると恐れ、『白鳥』以外公開を禁じた。死後大ヒット。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1908,
+      "age": 73,
+      "title": "史上初の映画音楽『ギーズ公の暗殺』作曲",
+      "detail": "映画音楽の歴史を拓いた。",
       "tags": [
         "breakthrough"
       ]
@@ -81,6 +117,18 @@
     {
       "text": "趣味は不滅ではない。流行は滅びる。",
       "source": "書簡"
+    },
+    {
+      "text": "音楽の規則を知り、それを超えよ。",
+      "source": "弟子フォーレに"
+    },
+    {
+      "text": "才能は義務である、それを怠るな。",
+      "source": "書簡"
+    },
+    {
+      "text": "私は常に、音楽と数学の両方を愛した。",
+      "source": "晩年の手記"
     }
   ],
   "relations": [
@@ -104,28 +152,40 @@
       "year": 1886,
       "type": "交響曲",
       "description": "オルガン付きの壮大な交響曲",
-      "youtubeId": "HfRQacLN6u0"
+      "youtubeId": "HfRQacLN6u0",
+      "imslpUrl": "https://imslp.org/index.php?search=Camille%20Saint-Sa%C3%ABns%20%E4%BA%A4%E9%9F%BF%E6%9B%B2%E7%AC%AC3%E7%95%AA%E3%80%8E%E3%82%AA%E3%83%AB%E3%82%AC%E3%83%B3%E4%BB%98%E3%81%8D%E3%80%8F%E3%83%8F%E7%9F%AD%E8%AA%BF%20%E4%BD%9C%E5%93%8178&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%AB%E3%83%9F%E3%83%BC%E3%83%A6%E3%83%BB%E3%82%B5%E3%83%B3%EF%BC%9D%E3%82%B5%E3%83%BC%E3%83%B3%E3%82%B9%20%E4%BA%A4%E9%9F%BF%E6%9B%B2%E7%AC%AC3%E7%95%AA%E3%80%8E%E3%82%AA%E3%83%AB%E3%82%AC%E3%83%B3%E4%BB%98%E3%81%8D%E3%80%8F%E3%83%8F%E7%9F%AD%E8%AA%BF%20%E4%BD%9C%E5%93%8178",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%AB%E3%83%9F%E3%83%BC%E3%83%A6%E3%83%BB%E3%82%B5%E3%83%B3%EF%BC%9D%E3%82%B5%E3%83%BC%E3%83%B3%E3%82%B9%20%E4%BA%A4%E9%9F%BF%E6%9B%B2%E7%AC%AC3%E7%95%AA%E3%80%8E%E3%82%AA%E3%83%AB%E3%82%AC%E3%83%B3%E4%BB%98%E3%81%8D%E3%80%8F%E3%83%8F%E7%9F%AD%E8%AA%BF%20%E4%BD%9C%E5%93%8178"
     },
     {
       "title": "組曲『動物の謝肉祭』",
       "year": 1886,
       "type": "管弦楽",
       "description": "『白鳥』『水族館』で永遠に愛される動物寓話",
-      "youtubeId": "S2Vl_KlM_-Y"
+      "youtubeId": "S2Vl_KlM_-Y",
+      "imslpUrl": "https://imslp.org/index.php?search=Camille%20Saint-Sa%C3%ABns%20%E7%B5%84%E6%9B%B2%E3%80%8E%E5%8B%95%E7%89%A9%E3%81%AE%E8%AC%9D%E8%82%89%E7%A5%AD%E3%80%8F&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%AB%E3%83%9F%E3%83%BC%E3%83%A6%E3%83%BB%E3%82%B5%E3%83%B3%EF%BC%9D%E3%82%B5%E3%83%BC%E3%83%B3%E3%82%B9%20%E7%B5%84%E6%9B%B2%E3%80%8E%E5%8B%95%E7%89%A9%E3%81%AE%E8%AC%9D%E8%82%89%E7%A5%AD%E3%80%8F",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%AB%E3%83%9F%E3%83%BC%E3%83%A6%E3%83%BB%E3%82%B5%E3%83%B3%EF%BC%9D%E3%82%B5%E3%83%BC%E3%83%B3%E3%82%B9%20%E7%B5%84%E6%9B%B2%E3%80%8E%E5%8B%95%E7%89%A9%E3%81%AE%E8%AC%9D%E8%82%89%E7%A5%AD%E3%80%8F"
     },
     {
       "title": "ヴァイオリン協奏曲第3番 ロ短調 作品61",
       "year": 1880,
       "type": "協奏曲",
       "description": "サラサーテに捧げた名作",
-      "youtubeId": "PW6Bp7QmIAQ"
+      "youtubeId": "PW6Bp7QmIAQ",
+      "imslpUrl": "https://imslp.org/index.php?search=Camille%20Saint-Sa%C3%ABns%20%E3%83%B4%E3%82%A1%E3%82%A4%E3%82%AA%E3%83%AA%E3%83%B3%E5%8D%94%E5%A5%8F%E6%9B%B2%E7%AC%AC3%E7%95%AA%20%E3%83%AD%E7%9F%AD%E8%AA%BF%20%E4%BD%9C%E5%93%8161&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%AB%E3%83%9F%E3%83%BC%E3%83%A6%E3%83%BB%E3%82%B5%E3%83%B3%EF%BC%9D%E3%82%B5%E3%83%BC%E3%83%B3%E3%82%B9%20%E3%83%B4%E3%82%A1%E3%82%A4%E3%82%AA%E3%83%AA%E3%83%B3%E5%8D%94%E5%A5%8F%E6%9B%B2%E7%AC%AC3%E7%95%AA%20%E3%83%AD%E7%9F%AD%E8%AA%BF%20%E4%BD%9C%E5%93%8161",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%AB%E3%83%9F%E3%83%BC%E3%83%A6%E3%83%BB%E3%82%B5%E3%83%B3%EF%BC%9D%E3%82%B5%E3%83%BC%E3%83%B3%E3%82%B9%20%E3%83%B4%E3%82%A1%E3%82%A4%E3%82%AA%E3%83%AA%E3%83%B3%E5%8D%94%E5%A5%8F%E6%9B%B2%E7%AC%AC3%E7%95%AA%20%E3%83%AD%E7%9F%AD%E8%AA%BF%20%E4%BD%9C%E5%93%8161"
     },
     {
       "title": "『死の舞踏』作品40",
       "year": 1874,
       "type": "管弦楽",
       "description": "真夜中に踊る骸骨の交響詩",
-      "youtubeId": "YyknBTm_YyM"
+      "youtubeId": "YyknBTm_YyM",
+      "imslpUrl": "https://imslp.org/index.php?search=Camille%20Saint-Sa%C3%ABns%20%E3%80%8E%E6%AD%BB%E3%81%AE%E8%88%9E%E8%B8%8F%E3%80%8F%E4%BD%9C%E5%93%8140&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%AB%E3%83%9F%E3%83%BC%E3%83%A6%E3%83%BB%E3%82%B5%E3%83%B3%EF%BC%9D%E3%82%B5%E3%83%BC%E3%83%B3%E3%82%B9%20%E3%80%8E%E6%AD%BB%E3%81%AE%E8%88%9E%E8%B8%8F%E3%80%8F%E4%BD%9C%E5%93%8140",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%AB%E3%83%9F%E3%83%BC%E3%83%A6%E3%83%BB%E3%82%B5%E3%83%B3%EF%BC%9D%E3%82%B5%E3%83%BC%E3%83%B3%E3%82%B9%20%E3%80%8E%E6%AD%BB%E3%81%AE%E8%88%9E%E8%B8%8F%E3%80%8F%E4%BD%9C%E5%93%8140"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Saintsaens.jpg/500px-Saintsaens.jpg",

@@ -38,6 +38,24 @@
       ]
     },
     {
+      "year": 1894,
+      "age": 22,
+      "title": "ロシア巨人ベリャーエフの後援を受ける",
+      "detail": "ピアノ作品の出版契約。年金も得られ安定。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1898,
+      "age": 26,
+      "title": "モスクワ音楽院ピアノ教授",
+      "detail": "若き天才として数年教えた。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
       "year": 1904,
       "age": 32,
       "title": "妻子を捨ててタチアナへ",
@@ -48,12 +66,30 @@
       ]
     },
     {
+      "year": 1908,
+      "age": 36,
+      "title": "『法悦の詩』完成",
+      "detail": "官能と宇宙神秘の交響詩。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
       "year": 1910,
       "age": 38,
       "title": "『プロメテウス』初演、世界初の色光楽器付き",
       "detail": "音と色を対応させる光楽器『ルーチェ』を楽譜に記載。",
       "tags": [
         "breakthrough"
+      ]
+    },
+    {
+      "year": 1913,
+      "age": 41,
+      "title": "ロンドン、ニューヨーク演奏旅行",
+      "detail": "大成功。世界的ピアニスト＝作曲家に。",
+      "tags": [
+        "approval"
       ]
     },
     {
@@ -75,6 +111,18 @@
     {
       "text": "音楽は宇宙を変える力を持つ。",
       "source": "スクリャービンの言葉"
+    },
+    {
+      "text": "音と光と香りが、一つに交響する世界を作る。",
+      "source": "神秘主義ノート"
+    },
+    {
+      "text": "私は宇宙そのものだ。",
+      "source": "日記"
+    },
+    {
+      "text": "芸術は宇宙を変える使命を持つ。",
+      "source": "スクリャービンの言葉"
     }
   ],
   "relations": [
@@ -93,35 +141,50 @@
       "year": 1907,
       "type": "ピアノ曲",
       "description": "『法悦の詩』の精神を込めた革新的ソナタ",
-      "youtubeId": "_bCGdLdlFdk"
+      "youtubeId": "_bCGdLdlFdk",
+      "imslpUrl": "https://imslp.org/index.php?search=Alexander%20Scriabin%20%E3%83%94%E3%82%A2%E3%83%8E%E3%82%BD%E3%83%8A%E3%82%BF%E7%AC%AC5%E7%95%AA%20%E4%BD%9C%E5%93%8153&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%A2%E3%83%AC%E3%82%AF%E3%82%B5%E3%83%B3%E3%83%89%E3%83%AB%E3%83%BB%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%A3%E3%83%BC%E3%83%93%E3%83%B3%20%E3%83%94%E3%82%A2%E3%83%8E%E3%82%BD%E3%83%8A%E3%82%BF%E7%AC%AC5%E7%95%AA%20%E4%BD%9C%E5%93%8153",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%A2%E3%83%AC%E3%82%AF%E3%82%B5%E3%83%B3%E3%83%89%E3%83%AB%E3%83%BB%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%A3%E3%83%BC%E3%83%93%E3%83%B3%20%E3%83%94%E3%82%A2%E3%83%8E%E3%82%BD%E3%83%8A%E3%82%BF%E7%AC%AC5%E7%95%AA%20%E4%BD%9C%E5%93%8153"
     },
     {
       "title": "法悦の詩 作品54",
       "year": 1908,
       "type": "管弦楽",
       "description": "官能と恍惚の交響詩",
-      "youtubeId": "Ybs4o4L38Do"
+      "youtubeId": "Ybs4o4L38Do",
+      "imslpUrl": "https://imslp.org/index.php?search=Alexander%20Scriabin%20%E6%B3%95%E6%82%A6%E3%81%AE%E8%A9%A9%20%E4%BD%9C%E5%93%8154&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%A2%E3%83%AC%E3%82%AF%E3%82%B5%E3%83%B3%E3%83%89%E3%83%AB%E3%83%BB%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%A3%E3%83%BC%E3%83%93%E3%83%B3%20%E6%B3%95%E6%82%A6%E3%81%AE%E8%A9%A9%20%E4%BD%9C%E5%93%8154",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%A2%E3%83%AC%E3%82%AF%E3%82%B5%E3%83%B3%E3%83%89%E3%83%AB%E3%83%BB%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%A3%E3%83%BC%E3%83%93%E3%83%B3%20%E6%B3%95%E6%82%A6%E3%81%AE%E8%A9%A9%20%E4%BD%9C%E5%93%8154"
     },
     {
       "title": "プロメテウス 火の詩 作品60",
       "year": 1910,
       "type": "管弦楽",
       "description": "色光楽器付きの神秘主義の極致",
-      "youtubeId": "4t8jNqKeVK8"
+      "youtubeId": "4t8jNqKeVK8",
+      "imslpUrl": "https://imslp.org/index.php?search=Alexander%20Scriabin%20%E3%83%97%E3%83%AD%E3%83%A1%E3%83%86%E3%82%A6%E3%82%B9%20%E7%81%AB%E3%81%AE%E8%A9%A9%20%E4%BD%9C%E5%93%8160&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%A2%E3%83%AC%E3%82%AF%E3%82%B5%E3%83%B3%E3%83%89%E3%83%AB%E3%83%BB%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%A3%E3%83%BC%E3%83%93%E3%83%B3%20%E3%83%97%E3%83%AD%E3%83%A1%E3%83%86%E3%82%A6%E3%82%B9%20%E7%81%AB%E3%81%AE%E8%A9%A9%20%E4%BD%9C%E5%93%8160",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%A2%E3%83%AC%E3%82%AF%E3%82%B5%E3%83%B3%E3%83%89%E3%83%AB%E3%83%BB%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%A3%E3%83%BC%E3%83%93%E3%83%B3%20%E3%83%97%E3%83%AD%E3%83%A1%E3%83%86%E3%82%A6%E3%82%B9%20%E7%81%AB%E3%81%AE%E8%A9%A9%20%E4%BD%9C%E5%93%8160"
     },
     {
       "title": "前奏曲集 作品11",
       "year": 1896,
       "type": "ピアノ曲",
       "description": "ショパン的な24の前奏曲",
-      "youtubeId": "8LCH1UJpNiE"
+      "youtubeId": "8LCH1UJpNiE",
+      "imslpUrl": "https://imslp.org/index.php?search=Alexander%20Scriabin%20%E5%89%8D%E5%A5%8F%E6%9B%B2%E9%9B%86%20%E4%BD%9C%E5%93%8111&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%A2%E3%83%AC%E3%82%AF%E3%82%B5%E3%83%B3%E3%83%89%E3%83%AB%E3%83%BB%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%A3%E3%83%BC%E3%83%93%E3%83%B3%20%E5%89%8D%E5%A5%8F%E6%9B%B2%E9%9B%86%20%E4%BD%9C%E5%93%8111",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%A2%E3%83%AC%E3%82%AF%E3%82%B5%E3%83%B3%E3%83%89%E3%83%AB%E3%83%BB%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%A3%E3%83%BC%E3%83%93%E3%83%B3%20%E5%89%8D%E5%A5%8F%E6%9B%B2%E9%9B%86%20%E4%BD%9C%E5%93%8111"
     },
     {
       "title": "エチュード嬰ニ短調 作品8-12",
       "year": 1894,
       "type": "ピアノ曲",
       "description": "悲愴で激しい練習曲",
-      "youtubeId": "qctmUnKU7Mk"
+      "youtubeId": "qctmUnKU7Mk",
+      "imslpUrl": "https://imslp.org/index.php?search=Alexander%20Scriabin%20%E3%82%A8%E3%83%81%E3%83%A5%E3%83%BC%E3%83%89%E5%AC%B0%E3%83%8B%E7%9F%AD%E8%AA%BF%20%E4%BD%9C%E5%93%818-12&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%A2%E3%83%AC%E3%82%AF%E3%82%B5%E3%83%B3%E3%83%89%E3%83%AB%E3%83%BB%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%A3%E3%83%BC%E3%83%93%E3%83%B3%20%E3%82%A8%E3%83%81%E3%83%A5%E3%83%BC%E3%83%89%E5%AC%B0%E3%83%8B%E7%9F%AD%E8%AA%BF%20%E4%BD%9C%E5%93%818-12",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%A2%E3%83%AC%E3%82%AF%E3%82%B5%E3%83%B3%E3%83%89%E3%83%AB%E3%83%BB%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%A3%E3%83%BC%E3%83%93%E3%83%B3%20%E3%82%A8%E3%83%81%E3%83%A5%E3%83%BC%E3%83%89%E5%AC%B0%E3%83%8B%E7%9F%AD%E8%AA%BF%20%E4%BD%9C%E5%93%818-12"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Skrjabin_Alexander.jpg/500px-Skrjabin_Alexander.jpg",

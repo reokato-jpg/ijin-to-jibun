@@ -26,6 +26,15 @@
       ]
     },
     {
+      "year": 1862,
+      "age": 19,
+      "title": "ライプツィヒ音楽院卒業",
+      "detail": "ロマン派の中心地で学位を得る。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
       "year": 1864,
       "age": 21,
       "title": "作曲家リカルド・ノードロークと出会う",
@@ -33,6 +42,15 @@
       "tags": [
         "turning_encounter",
         "loss"
+      ]
+    },
+    {
+      "year": 1865,
+      "age": 22,
+      "title": "コペンハーゲンでニルス・ゲーゼに学ぶ",
+      "detail": "デンマークの大作曲家から北欧民族音楽の重要性を知る。",
+      "tags": [
+        "turning_encounter"
       ]
     },
     {
@@ -65,6 +83,15 @@
       ]
     },
     {
+      "year": 1873,
+      "age": 30,
+      "title": "イプセンから『ペール・ギュント』の付随音楽を依頼",
+      "detail": "最初は気が乗らなかったが結果的に生涯の代表作に。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
       "year": 1876,
       "age": 32,
       "title": "『ペール・ギュント』初演",
@@ -74,12 +101,28 @@
       ]
     },
     {
+      "year": 1883,
+      "age": 40,
+      "title": "伯爵夫人ビョルンソンのサロンで絶賛",
+      "detail": "ノルウェー文学界と深く結びつき、民族音楽家の地位確立。",
+      "tags": []
+    },
+    {
       "year": 1885,
       "age": 42,
       "title": "ベルゲン郊外トロルハウゲンに邸宅建設",
       "detail": "『妖精の丘』の意。以後死ぬまでここで作曲。",
       "tags": [
         "restart"
+      ]
+    },
+    {
+      "year": 1901,
+      "age": 57,
+      "title": "ロンドン王立音楽院名誉会員",
+      "detail": "ケンブリッジ大学名誉博士号も。国際的評価。",
+      "tags": [
+        "approval"
       ]
     },
     {
@@ -103,6 +146,18 @@
     },
     {
       "text": "作曲家は自分を偽れない。その音楽はその人自身だ。",
+      "source": "書簡"
+    },
+    {
+      "text": "芸術家は常に故郷の土の匂いを持っているべきだ。",
+      "source": "手紙 1899"
+    },
+    {
+      "text": "沈黙もまた、音楽の一部である。",
+      "source": "グリーグの手記"
+    },
+    {
+      "text": "民謡は民族の魂。それに触れずして何が作曲家か。",
       "source": "書簡"
     }
   ],
@@ -139,37 +194,54 @@
       "year": 1868,
       "type": "協奏曲",
       "description": "ロマン派協奏曲の最高峰",
-      "youtubeId": "-oS76E5zdo8"
+      "youtubeId": "-oS76E5zdo8",
+      "imslpUrl": "https://imslp.org/index.php?search=Edvard%20Grieg%20%E3%83%94%E3%82%A2%E3%83%8E%E5%8D%94%E5%A5%8F%E6%9B%B2%20%E3%82%A4%E7%9F%AD%E8%AA%BF%20%E4%BD%9C%E5%93%8116&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%A8%E3%83%89%E3%83%B4%E3%82%A1%E3%83%AB%E3%83%89%E3%83%BB%E3%82%B0%E3%83%AA%E3%83%BC%E3%82%B0%20%E3%83%94%E3%82%A2%E3%83%8E%E5%8D%94%E5%A5%8F%E6%9B%B2%20%E3%82%A4%E7%9F%AD%E8%AA%BF%20%E4%BD%9C%E5%93%8116",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%A8%E3%83%89%E3%83%B4%E3%82%A1%E3%83%AB%E3%83%89%E3%83%BB%E3%82%B0%E3%83%AA%E3%83%BC%E3%82%B0%20%E3%83%94%E3%82%A2%E3%83%8E%E5%8D%94%E5%A5%8F%E6%9B%B2%20%E3%82%A4%E7%9F%AD%E8%AA%BF%20%E4%BD%9C%E5%93%8116"
     },
     {
       "title": "ペール・ギュント 組曲第1番『朝』",
       "year": 1875,
       "type": "管弦楽",
       "description": "世界で最も有名な『朝の音楽』",
-      "youtubeId": "kOrj02vjU88"
+      "youtubeId": "kOrj02vjU88",
+      "imslpUrl": "https://imslp.org/index.php?search=Edvard%20Grieg%20%E3%83%9A%E3%83%BC%E3%83%AB%E3%83%BB%E3%82%AE%E3%83%A5%E3%83%B3%E3%83%88%20%E7%B5%84%E6%9B%B2%E7%AC%AC1%E7%95%AA%E3%80%8E%E6%9C%9D%E3%80%8F&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%A8%E3%83%89%E3%83%B4%E3%82%A1%E3%83%AB%E3%83%89%E3%83%BB%E3%82%B0%E3%83%AA%E3%83%BC%E3%82%B0%20%E3%83%9A%E3%83%BC%E3%83%AB%E3%83%BB%E3%82%AE%E3%83%A5%E3%83%B3%E3%83%88%20%E7%B5%84%E6%9B%B2%E7%AC%AC1%E7%95%AA%E3%80%8E%E6%9C%9D%E3%80%8F",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%A8%E3%83%89%E3%83%B4%E3%82%A1%E3%83%AB%E3%83%89%E3%83%BB%E3%82%B0%E3%83%AA%E3%83%BC%E3%82%B0%20%E3%83%9A%E3%83%BC%E3%83%AB%E3%83%BB%E3%82%AE%E3%83%A5%E3%83%B3%E3%83%88%20%E7%B5%84%E6%9B%B2%E7%AC%AC1%E7%95%AA%E3%80%8E%E6%9C%9D%E3%80%8F"
     },
     {
       "title": "『山の魔王の宮殿にて』",
       "year": 1875,
       "type": "管弦楽",
       "description": "地底を駆け抜ける緊迫のクレッシェンド",
-      "youtubeId": "xkrB6ZNJqrM"
+      "youtubeId": "xkrB6ZNJqrM",
+      "imslpUrl": "https://imslp.org/index.php?search=Edvard%20Grieg%20%E3%80%8E%E5%B1%B1%E3%81%AE%E9%AD%94%E7%8E%8B%E3%81%AE%E5%AE%AE%E6%AE%BF%E3%81%AB%E3%81%A6%E3%80%8F&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%A8%E3%83%89%E3%83%B4%E3%82%A1%E3%83%AB%E3%83%89%E3%83%BB%E3%82%B0%E3%83%AA%E3%83%BC%E3%82%B0%20%E3%80%8E%E5%B1%B1%E3%81%AE%E9%AD%94%E7%8E%8B%E3%81%AE%E5%AE%AE%E6%AE%BF%E3%81%AB%E3%81%A6%E3%80%8F",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%A8%E3%83%89%E3%83%B4%E3%82%A1%E3%83%AB%E3%83%89%E3%83%BB%E3%82%B0%E3%83%AA%E3%83%BC%E3%82%B0%20%E3%80%8E%E5%B1%B1%E3%81%AE%E9%AD%94%E7%8E%8B%E3%81%AE%E5%AE%AE%E6%AE%BF%E3%81%AB%E3%81%A6%E3%80%8F"
     },
     {
       "title": "ホルベルク組曲 作品40",
       "year": 1884,
       "type": "管弦楽",
       "description": "ノルウェーの劇作家への献呈曲",
-      "youtubeId": "7kUH3b1GPw0"
+      "youtubeId": "7kUH3b1GPw0",
+      "imslpUrl": "https://imslp.org/index.php?search=Edvard%20Grieg%20%E3%83%9B%E3%83%AB%E3%83%99%E3%83%AB%E3%82%AF%E7%B5%84%E6%9B%B2%20%E4%BD%9C%E5%93%8140&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%A8%E3%83%89%E3%83%B4%E3%82%A1%E3%83%AB%E3%83%89%E3%83%BB%E3%82%B0%E3%83%AA%E3%83%BC%E3%82%B0%20%E3%83%9B%E3%83%AB%E3%83%99%E3%83%AB%E3%82%AF%E7%B5%84%E6%9B%B2%20%E4%BD%9C%E5%93%8140",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%A8%E3%83%89%E3%83%B4%E3%82%A1%E3%83%AB%E3%83%89%E3%83%BB%E3%82%B0%E3%83%AA%E3%83%BC%E3%82%B0%20%E3%83%9B%E3%83%AB%E3%83%99%E3%83%AB%E3%82%AF%E7%B5%84%E6%9B%B2%20%E4%BD%9C%E5%93%8140"
     },
     {
       "title": "叙情小品集",
       "year": 1867,
       "type": "ピアノ曲",
       "description": "66曲の小品集。グリーグの日記のような音楽",
-      "youtubeId": "KCnJKwfvAoY"
+      "youtubeId": "KCnJKwfvAoY",
+      "imslpUrl": "https://imslp.org/index.php?search=Edvard%20Grieg%20%E5%8F%99%E6%83%85%E5%B0%8F%E5%93%81%E9%9B%86&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%A8%E3%83%89%E3%83%B4%E3%82%A1%E3%83%AB%E3%83%89%E3%83%BB%E3%82%B0%E3%83%AA%E3%83%BC%E3%82%B0%20%E5%8F%99%E6%83%85%E5%B0%8F%E5%93%81%E9%9B%86",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%A8%E3%83%89%E3%83%B4%E3%82%A1%E3%83%AB%E3%83%89%E3%83%BB%E3%82%B0%E3%83%AA%E3%83%BC%E3%82%B0%20%E5%8F%99%E6%83%85%E5%B0%8F%E5%93%81%E9%9B%86"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Edvard_Grieg_portrait_%28cropped%29.jpg/500px-Edvard_Grieg_portrait_%28cropped%29.jpg",
-  "wikiTitle": "エドヴァルド・グリーグ"
+  "wikiTitle": "エドヴァルド・グリーグ",
+  "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Troldhaugen_in_Bergen.jpg/330px-Troldhaugen_in_Bergen.jpg",
+  "coverImageCaption": "トロルハウゲン"
 }

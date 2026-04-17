@@ -43,12 +43,30 @@
       ]
     },
     {
+      "year": 1871,
+      "age": 27,
+      "title": "まだ和声も対位法も知らないのに作曲教授",
+      "detail": "教えながら学んだ。『教授の座を受けたのは誤算だった』が結果的に学問派に。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
       "year": 1888,
       "age": 44,
       "title": "『シェエラザード』作曲",
       "detail": "千夜一夜物語から着想した色彩的な管弦楽の傑作。",
       "tags": [
         "breakthrough"
+      ]
+    },
+    {
+      "year": 1889,
+      "age": 45,
+      "title": "世界万博パリで指揮",
+      "detail": "ロシア音楽を世界に紹介。",
+      "tags": [
+        "approval"
       ]
     },
     {
@@ -78,6 +96,18 @@
     {
       "text": "真の教師は、生徒に『自分の道を見つけよ』と言う者だ。",
       "source": "書簡"
+    },
+    {
+      "text": "指導は、生徒の翼を広げるためにある。",
+      "source": "リムスキーの手記"
+    },
+    {
+      "text": "色彩は音楽の第4次元である。",
+      "source": "『管弦楽法の原理』"
+    },
+    {
+      "text": "若者は未来を、老人は記憶を持つ。",
+      "source": "書簡"
     }
   ],
   "relations": [
@@ -102,21 +132,30 @@
       "year": 1888,
       "type": "管弦楽",
       "description": "千夜一夜物語の官能的な色彩",
-      "youtubeId": "QoCqr2bK7OM"
+      "youtubeId": "QoCqr2bK7OM",
+      "imslpUrl": "https://imslp.org/index.php?search=Nikolai%20Rimsky-Korsakov%20%E4%BA%A4%E9%9F%BF%E7%B5%84%E6%9B%B2%E3%80%8E%E3%82%B7%E3%82%A7%E3%82%A8%E3%83%A9%E3%82%B6%E3%83%BC%E3%83%89%E3%80%8F%E4%BD%9C%E5%93%8135&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%83%8B%E3%82%B3%E3%83%A9%E3%82%A4%E3%83%BB%E3%83%AA%E3%83%A0%E3%82%B9%E3%82%AD%E3%83%BC%EF%BC%9D%E3%82%B3%E3%83%AB%E3%82%B5%E3%82%B3%E3%83%95%20%E4%BA%A4%E9%9F%BF%E7%B5%84%E6%9B%B2%E3%80%8E%E3%82%B7%E3%82%A7%E3%82%A8%E3%83%A9%E3%82%B6%E3%83%BC%E3%83%89%E3%80%8F%E4%BD%9C%E5%93%8135",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%8B%E3%82%B3%E3%83%A9%E3%82%A4%E3%83%BB%E3%83%AA%E3%83%A0%E3%82%B9%E3%82%AD%E3%83%BC%EF%BC%9D%E3%82%B3%E3%83%AB%E3%82%B5%E3%82%B3%E3%83%95%20%E4%BA%A4%E9%9F%BF%E7%B5%84%E6%9B%B2%E3%80%8E%E3%82%B7%E3%82%A7%E3%82%A8%E3%83%A9%E3%82%B6%E3%83%BC%E3%83%89%E3%80%8F%E4%BD%9C%E5%93%8135"
     },
     {
       "title": "『熊蜂の飛行』",
       "year": 1900,
       "type": "管弦楽",
       "description": "歌劇『サルタン皇帝の物語』より、超絶技巧の小品",
-      "youtubeId": "S8wuHvVoEQk"
+      "youtubeId": "S8wuHvVoEQk",
+      "imslpUrl": "https://imslp.org/index.php?search=Nikolai%20Rimsky-Korsakov%20%E3%80%8E%E7%86%8A%E8%9C%82%E3%81%AE%E9%A3%9B%E8%A1%8C%E3%80%8F&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%83%8B%E3%82%B3%E3%83%A9%E3%82%A4%E3%83%BB%E3%83%AA%E3%83%A0%E3%82%B9%E3%82%AD%E3%83%BC%EF%BC%9D%E3%82%B3%E3%83%AB%E3%82%B5%E3%82%B3%E3%83%95%20%E3%80%8E%E7%86%8A%E8%9C%82%E3%81%AE%E9%A3%9B%E8%A1%8C%E3%80%8F",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%8B%E3%82%B3%E3%83%A9%E3%82%A4%E3%83%BB%E3%83%AA%E3%83%A0%E3%82%B9%E3%82%AD%E3%83%BC%EF%BC%9D%E3%82%B3%E3%83%AB%E3%82%B5%E3%82%B3%E3%83%95%20%E3%80%8E%E7%86%8A%E8%9C%82%E3%81%AE%E9%A3%9B%E8%A1%8C%E3%80%8F"
     },
     {
       "title": "スペイン奇想曲 作品34",
       "year": 1887,
       "type": "管弦楽",
       "description": "華やかなスペイン情緒",
-      "youtubeId": "LkgZHb5SjbM"
+      "youtubeId": "LkgZHb5SjbM",
+      "imslpUrl": "https://imslp.org/index.php?search=Nikolai%20Rimsky-Korsakov%20%E3%82%B9%E3%83%9A%E3%82%A4%E3%83%B3%E5%A5%87%E6%83%B3%E6%9B%B2%20%E4%BD%9C%E5%93%8134&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%83%8B%E3%82%B3%E3%83%A9%E3%82%A4%E3%83%BB%E3%83%AA%E3%83%A0%E3%82%B9%E3%82%AD%E3%83%BC%EF%BC%9D%E3%82%B3%E3%83%AB%E3%82%B5%E3%82%B3%E3%83%95%20%E3%82%B9%E3%83%9A%E3%82%A4%E3%83%B3%E5%A5%87%E6%83%B3%E6%9B%B2%20%E4%BD%9C%E5%93%8134",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%8B%E3%82%B3%E3%83%A9%E3%82%A4%E3%83%BB%E3%83%AA%E3%83%A0%E3%82%B9%E3%82%AD%E3%83%BC%EF%BC%9D%E3%82%B3%E3%83%AB%E3%82%B5%E3%82%B3%E3%83%95%20%E3%82%B9%E3%83%9A%E3%82%A4%E3%83%B3%E5%A5%87%E6%83%B3%E6%9B%B2%20%E4%BD%9C%E5%93%8134"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Nikolay_A_Rimsky_Korsakov_1897.jpg/500px-Nikolay_A_Rimsky_Korsakov_1897.jpg",
