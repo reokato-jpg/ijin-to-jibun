@@ -2797,6 +2797,9 @@ main { flex: 1; overflow-y: auto; background: var(--paper); }
   gap: 18px 12px;
   padding: 4px;
 }
+@media (min-width: 900px) {
+  .home-books { grid-template-columns: repeat(6, 1fr); gap: 16px 12px; }
+}
 .home-book-card {
   text-decoration: none;
   color: inherit;
