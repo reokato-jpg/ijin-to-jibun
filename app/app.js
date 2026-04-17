@@ -3251,61 +3251,6 @@ function renderFavorites() {
     <div class="open-book">
       <!-- 左ページ: 扉絵（タイトルページ） -->
       <div class="open-page open-page-left">
-        <!-- インク瓶（左下） -->
-        <svg class="book-ornament book-ink" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <defs>
-            <linearGradient id="inkBottleGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#2a1520"/>
-              <stop offset="100%" stop-color="#0f080c"/>
-            </linearGradient>
-            <linearGradient id="inkLiquidGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#4a1822"/>
-              <stop offset="100%" stop-color="#1a0810"/>
-            </linearGradient>
-          </defs>
-          <!-- 瓶の本体 -->
-          <path d="M16 30 L16 56 Q16 60 20 60 L44 60 Q48 60 48 56 L48 30 Z" fill="url(#inkBottleGrad)" stroke="#7a2e3a" stroke-width="1"/>
-          <!-- インクの液面（瓶の中） -->
-          <path d="M18 38 L18 56 Q18 58 20 58 L44 58 Q46 58 46 56 L46 38 Z" fill="url(#inkLiquidGrad)" opacity="0.9"/>
-          <!-- ラベル -->
-          <rect x="22" y="42" width="20" height="10" fill="#fffdf6" stroke="#7a2e3a" stroke-width="0.5"/>
-          <text x="32" y="49" fill="#7a2e3a" font-size="5" font-family="serif" text-anchor="middle">INK</text>
-          <!-- 瓶の首 -->
-          <path d="M22 22 L22 30 L42 30 L42 22 Z" fill="#1a0c12" stroke="#7a2e3a" stroke-width="1"/>
-          <!-- コルク蓋 -->
-          <rect x="24" y="14" width="16" height="8" fill="#8b6332" stroke="#4a3418" stroke-width="0.5" rx="1"/>
-          <rect x="23" y="13" width="18" height="3" fill="#9c7142" stroke="#4a3418" stroke-width="0.5" rx="1"/>
-          <!-- ハイライト -->
-          <path d="M20 32 L20 54" stroke="#b8952e" stroke-width="0.5" opacity="0.3"/>
-        </svg>
-        <!-- 万年筆（右上） -->
-        <svg class="book-ornament book-pen" viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <defs>
-            <linearGradient id="penBodyGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#2a1520"/>
-              <stop offset="50%" stop-color="#4a1822"/>
-              <stop offset="100%" stop-color="#1a0810"/>
-            </linearGradient>
-            <linearGradient id="penNibGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#d4af3a"/>
-              <stop offset="100%" stop-color="#8a6b1a"/>
-            </linearGradient>
-          </defs>
-          <!-- キャップのクリップ -->
-          <path d="M95 10 L105 12 L105 16 L95 14 Z" fill="#b8952e" stroke="#6a5020" stroke-width="0.5"/>
-          <!-- 後ろのキャップ -->
-          <path d="M85 14 L112 16 Q116 16 116 20 Q116 24 112 24 L85 26 Z" fill="url(#penBodyGrad)" stroke="#7a2e3a" stroke-width="0.5"/>
-          <!-- 本体 -->
-          <path d="M25 16 L85 14 L85 26 L25 24 Z" fill="url(#penBodyGrad)" stroke="#7a2e3a" stroke-width="0.5"/>
-          <!-- 金のリング -->
-          <rect x="80" y="13.5" width="2" height="13" fill="#d4af3a"/>
-          <rect x="25" y="14.5" width="2" height="11" fill="#d4af3a"/>
-          <!-- ペン先（ニブ） -->
-          <path d="M25 16 L10 20 L25 24 Z" fill="url(#penNibGrad)" stroke="#6a5020" stroke-width="0.5"/>
-          <!-- ニブの割れ目 -->
-          <line x1="24" y1="20" x2="12" y2="20" stroke="#4a3418" stroke-width="0.3"/>
-          <circle cx="22" cy="20" r="0.6" fill="#4a3418"/>
-        </svg>
         <div class="title-page">
           <div class="title-page-top">❦ ── ◆ ── ❦</div>
           <div class="title-page-title">${bookTitle}</div>
