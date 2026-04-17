@@ -53,11 +53,36 @@ body {
   box-shadow: 0 0 30px rgba(0,0,0,0.08);
 }
 
-@media (min-width: 660px) {
-  .book-grid { grid-template-columns: 1fr 1fr 1fr 1fr; }
-}
+/* ================ 横に広いHP版レイアウト ================ */
+/* PCブラウザ（900px以上）では本棚のように広く使う */
 @media (min-width: 900px) {
-  .book-grid { grid-template-columns: repeat(5, 1fr); }
+  body {
+    max-width: 1080px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.12);
+  }
+  main { padding: 0 18px; }
+  .home-block, .view > * { max-width: 1040px; margin-left: auto; margin-right: auto; }
+  .book-grid { grid-template-columns: repeat(5, 1fr); gap: 22px 18px; }
+  .home-books { grid-template-columns: 1fr 1fr 1fr; max-width: 720px; margin-left: auto; margin-right: auto; }
+  .category-filter, .era-filter, .sort-filter { justify-content: center; }
+  /* 人物詳細：ヘッダーを広めに */
+  .profile-cover { height: 220px; }
+  .profile-tabs { max-width: 900px; margin-left: auto; margin-right: auto; }
+  .profile-feed, .profile-tab-content { max-width: 860px; margin-left: auto; margin-right: auto; }
+  /* 本棚・書籍カード */
+  .article-grid { grid-template-columns: repeat(3, 1fr); }
+  /* ルーティンポップアップも広く */
+  .routine-modal-panel { width: min(92vw, 760px); }
+}
+@media (min-width: 1200px) {
+  body { max-width: 1200px; }
+  .book-grid { grid-template-columns: repeat(6, 1fr); }
+  .home-block, .view > * { max-width: 1160px; }
+}
+/* タブレットサイズ */
+@media (min-width: 660px) and (max-width: 899px) {
+  body { max-width: 760px; }
+  .book-grid { grid-template-columns: 1fr 1fr 1fr 1fr; }
 }
 
 /* ================ ヘッダー ================ */
