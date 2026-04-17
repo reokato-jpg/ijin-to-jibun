@@ -1373,11 +1373,63 @@ let currentSearchFilter = 'all';
 let currentSearchQuery = '';
 let currentSearchEra = 'all';
 let currentSearchSort = 'birth_asc';
+let currentSearchCountry = 'all';
+
+// 国名を地域に正規化（同国異表記をまとめる）
+function normalizeCountry(c) {
+  if (!c) return '';
+  const s = String(c);
+  // スラッシュや読点で分割された最初の国を採用
+  const first = s.split(/[／\/・,、]/)[0].trim();
+  const map = {
+    '日本（平安）': '日本', '日本（江戸）': '日本',
+    'オーストリア＝ハンガリー（現チェコ）': 'オーストリア',
+    'コルシカ・フランス': 'フランス',
+    'イギリス→スイス': 'イギリス',
+    'ドイツ→オランダ': 'ドイツ',
+    '北マケドニア→インド': 'インド',
+    'オーストリア・フランス': 'オーストリア',
+    'ポーランド / フランス': 'ポーランド',
+    '古代ギリシャ': 'ギリシャ',
+    '古代インド': 'インド',
+    '古代中国': '中国'
+  };
+  return map[first] || first;
+}
 
 function renderSearchSubFilters() {
   const eraBar = document.getElementById('searchEraFilter');
   const sortBar = document.getElementById('searchSortFilter');
+  const countryBar = document.getElementById('searchCountryFilter');
   if (!eraBar || !sortBar) return;
+  // 国フィルター（対象カテゴリの人物から出現する国を集計）
+  if (countryBar) {
+    const cat = currentSearchFilter;
+    const targetPeople = DATA.people.filter(p => {
+      if (cat === 'all' || cat === 'emotion') return true;
+      return categoryOf(p.field) === cat;
+    });
+    const countryCount = {};
+    targetPeople.forEach(p => {
+      const c = normalizeCountry(p.country);
+      if (c) countryCount[c] = (countryCount[c] || 0) + 1;
+    });
+    // 件数順にソート（件数多い順、同数は名前順）
+    const countries = Object.keys(countryCount).sort((a, b) => countryCount[b] - countryCount[a] || a.localeCompare(b, 'ja'));
+    const chips = [`<button class="era-chip ${currentSearchCountry==='all'?'active':''}" data-scountry="all">全ての国<span class="cat-count">${targetPeople.length}</span></button>`]
+      .concat(countries.map(c => {
+        const active = currentSearchCountry === c ? 'active' : '';
+        return `<button class="era-chip ${active}" data-scountry="${c}">${c}<span class="cat-count">${countryCount[c]}</span></button>`;
+      }));
+    countryBar.innerHTML = chips.join('');
+    countryBar.querySelectorAll('[data-scountry]').forEach(el => {
+      el.addEventListener('click', () => {
+        currentSearchCountry = el.dataset.scountry;
+        renderSearchSubFilters();
+        renderTags();
+      });
+    });
+  }
   const cat = currentSearchFilter;
   const rules = ERA_RULES[cat];
   if (!rules || cat === 'emotion') {
@@ -1478,6 +1530,10 @@ function renderTags() {
     // 時代絞り込み
     if (currentSearchEra !== 'all' && ERA_RULES[f]) {
       personItems = personItems.filter(p => eraOf(f, p.birth) === currentSearchEra);
+    }
+    // 国絞り込み
+    if (currentSearchCountry !== 'all') {
+      personItems = personItems.filter(p => normalizeCountry(p.country) === currentSearchCountry);
     }
     // 並び替え
     personItems.sort((a, b) => {
@@ -1584,11 +1640,29 @@ function bindSearchPanel() {
     btn.addEventListener('click', () => {
       currentSearchFilter = btn.dataset.filter;
       currentSearchEra = 'all';
+      currentSearchCountry = 'all';
       filters.forEach(b => b.classList.toggle('active', b === btn));
       renderSearchSubFilters();
       renderTags();
     });
   });
+  // 詳細検索トグル
+  const toggle = document.getElementById('advSearchToggle');
+  const panel = document.getElementById('advSearchPanel');
+  if (toggle && panel) {
+    toggle.addEventListener('click', () => {
+      const open = !panel.classList.contains('hidden');
+      if (open) {
+        panel.classList.add('hidden');
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.classList.remove('open');
+      } else {
+        panel.classList.remove('hidden');
+        toggle.setAttribute('aria-expanded', 'true');
+        toggle.classList.add('open');
+      }
+    });
+  }
   renderSearchSubFilters();
 }
 

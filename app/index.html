@@ -105,8 +105,24 @@
           <button class="search-filter" data-filter="history">歴史</button>
           <button class="search-filter" data-filter="science">科学者</button>
         </div>
-        <div id="searchEraFilter" class="era-filter"></div>
-        <div id="searchSortFilter" class="sort-filter"></div>
+        <button id="advSearchToggle" class="adv-search-toggle" aria-expanded="false">
+          <span class="adv-search-label">🔎 詳細検索（時代・国・並び替え）</span>
+          <span class="adv-search-arrow">▾</span>
+        </button>
+        <div id="advSearchPanel" class="adv-search-panel hidden">
+          <div class="adv-search-row">
+            <div class="adv-search-row-label">時代</div>
+            <div id="searchEraFilter" class="era-filter"></div>
+          </div>
+          <div class="adv-search-row">
+            <div class="adv-search-row-label">国・地域</div>
+            <div id="searchCountryFilter" class="era-filter"></div>
+          </div>
+          <div class="adv-search-row">
+            <div class="adv-search-row-label">並び替え</div>
+            <div id="searchSortFilter" class="sort-filter"></div>
+          </div>
+        </div>
       </div>
       <div id="tagsList"></div>
     </section>
