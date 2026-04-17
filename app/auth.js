@@ -337,6 +337,12 @@ function openAccountMenu() {
   });
 }
 
+// ai-consult.js 等からアクセスできるようにwindowにも公開
+window.FIREBASE_ENABLED = FIREBASE_ENABLED;
+window.openLoginModal = openLoginModal;
+window.pushToCloud = pushToCloud;
+onAuthChange((u) => { window.currentUser = u; });
+
 // 初期化
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => { initFirebase(); insertAccountButton(); });
