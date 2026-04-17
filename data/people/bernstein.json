@@ -1,0 +1,117 @@
+{
+  "id": "bernstein",
+  "name": "レナード・バーンスタイン",
+  "nameEn": "Leonard Bernstein",
+  "birth": 1918,
+  "death": 1990,
+  "country": "アメリカ",
+  "field": "作曲家・指揮者",
+  "summary": "『ウェスト・サイド物語』で世界を変えた作曲家＆ニューヨーク・フィル音楽監督。マーラーの復活を推進し、クラシックと現代を架橋した最大のスター。",
+  "events": [
+    {
+      "year": 1918,
+      "age": 0,
+      "title": "マサチューセッツのウクライナ系ユダヤ人家庭に誕生",
+      "detail": "本名はルイス。",
+      "tags": []
+    },
+    {
+      "year": 1943,
+      "age": 25,
+      "title": "ニューヨーク・フィル副指揮者、急な代役で大成功",
+      "detail": "指揮者ブルーノ・ワルターが病気で欠場、前日知らされて振った11月14日の演奏会が全米ラジオ中継で大反響。スター誕生。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1957,
+      "age": 39,
+      "title": "『ウェスト・サイド物語』初演",
+      "detail": "ロメオとジュリエットを50年代NYに置き換えたミュージカル。映画でも大ヒット。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1958,
+      "age": 40,
+      "title": "ニューヨーク・フィル音楽監督（アメリカ人初）",
+      "detail": "11年間の伝説的音楽監督時代。『ヤング・ピープルズ・コンサート』でクラシックを子供たちに。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1989,
+      "age": 71,
+      "title": "ベルリンの壁崩壊で『第九』歓喜",
+      "detail": "『歓喜(Freude)』を『自由(Freiheit)』に変えて指揮。",
+      "tags": []
+    },
+    {
+      "year": 1990,
+      "age": 72,
+      "title": "引退5日後に心不全で死去",
+      "detail": "最後まで仕事とタバコを愛した。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "音楽の意味は、言葉の外にある。",
+      "source": "『音楽の喜び』"
+    },
+    {
+      "text": "芸術家に何ができるか。芸術家には世界を変える力がある。",
+      "source": "ヒューストン大学の演説"
+    },
+    {
+      "text": "これは怒りと復讐を超えて、愛だけを残そうという試みだった。",
+      "source": "ベルリンでの演奏について"
+    }
+  ],
+  "relations": [
+    {
+      "name": "グスタフ・マーラー",
+      "id": "mahler",
+      "relation": "心酔した先人",
+      "note": "バーンスタインがマーラーを世界に再発見させた"
+    },
+    {
+      "name": "アーロン・コープランド",
+      "id": "copland",
+      "relation": "師",
+      "note": "アメリカ音楽の師"
+    }
+  ],
+  "places": [],
+  "books": [],
+  "works": [
+    {
+      "title": "ミュージカル『ウェスト・サイド物語』",
+      "year": 1957,
+      "type": "ミュージカル",
+      "description": "『トゥナイト』『マリア』『アメリカ』など永遠の名曲",
+      "youtubeId": "A5jcZKnvWD8"
+    },
+    {
+      "title": "キャンディード 序曲",
+      "year": 1956,
+      "type": "管弦楽",
+      "description": "陽気で機知に富む序曲",
+      "youtubeId": "ZUkpOuuiGVU"
+    },
+    {
+      "title": "ミサ曲",
+      "year": 1971,
+      "type": "劇的作品",
+      "description": "ケネディ・センター開幕のための意欲作",
+      "youtubeId": "PtJpC8b_fAQ"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Leonard_Bernstein_by_Jack_Mitchell_%28high_quality%29.jpg/500px-Leonard_Bernstein_by_Jack_Mitchell_%28high_quality%29.jpg",
+  "wikiTitle": "レナード・バーンスタイン"
+}

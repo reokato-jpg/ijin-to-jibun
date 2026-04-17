@@ -1,0 +1,121 @@
+{
+  "id": "ryuichi_sakamoto",
+  "name": "坂本龍一",
+  "nameEn": "Ryuichi Sakamoto",
+  "birth": 1952,
+  "death": 2023,
+  "country": "日本",
+  "field": "作曲家",
+  "summary": "YMOで世界を驚かせたポップ・レジェンドから、『戦場のメリークリスマス』『ラスト・エンペラー』の映画音楽で国際的な賞を獲得した『教授』。晩年は環境活動と自作の最期に向き合った。",
+  "events": [
+    {
+      "year": 1952,
+      "age": 0,
+      "title": "東京に出版社経営者の子として誕生",
+      "detail": "父・坂本一亀は三島由紀夫らの編集者。",
+      "tags": []
+    },
+    {
+      "year": 1978,
+      "age": 26,
+      "title": "YMO結成、高橋幸宏・細野晴臣と",
+      "detail": "テクノポップで世界を変えた。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1983,
+      "age": 31,
+      "title": "『戦場のメリークリスマス』出演＆音楽",
+      "detail": "デヴィッド・ボウイと共演。メインテーマは世界的ヒット。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1987,
+      "age": 35,
+      "title": "『ラスト・エンペラー』でアカデミー作曲賞",
+      "detail": "日本人初のオスカー。ベルトルッチ監督の大作。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 2014,
+      "age": 62,
+      "title": "咽頭がん、のち直腸がんと闘病",
+      "detail": "以後の生涯を治療と作曲に捧げる。",
+      "tags": [
+        "illness"
+      ]
+    },
+    {
+      "year": 2023,
+      "age": 71,
+      "title": "東京で死去",
+      "detail": "最後のアルバム『12』と、オンラインピアノコンサートを残して。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "Ars longa, vita brevis.（芸術は長く、人生は短い）",
+      "source": "坂本龍一が好んだ格言"
+    },
+    {
+      "text": "僕たちは地球の使用人だ。",
+      "source": "環境活動について"
+    }
+  ],
+  "relations": [
+    {
+      "name": "デヴィッド・ボウイ",
+      "relation": "共演者・友",
+      "note": "『戦場のメリークリスマス』で共演"
+    }
+  ],
+  "places": [
+    {
+      "name": "東京芸術大学",
+      "location": "東京都台東区",
+      "note": "出身校"
+    }
+  ],
+  "books": [
+    {
+      "title": "音楽は自由にする",
+      "author": "坂本龍一",
+      "asin": "4104751022",
+      "description": "自伝"
+    }
+  ],
+  "works": [
+    {
+      "title": "戦場のメリークリスマス（メインテーマ）",
+      "year": 1983,
+      "type": "映画音楽",
+      "description": "最も有名な日本発の映画音楽",
+      "youtubeId": "gUbwQGj1w5w"
+    },
+    {
+      "title": "Energy Flow",
+      "year": 1999,
+      "type": "ピアノ曲",
+      "description": "CMで国民的ヒット",
+      "youtubeId": "k0vXc1OmlPc"
+    },
+    {
+      "title": "アクア（Aqua）",
+      "year": 1999,
+      "type": "ピアノ曲",
+      "description": "娘のために書いた優美なピアノ曲",
+      "youtubeId": "HoH3QIFeMkc"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Ryuichi_Sakamoto_side.jpg/500px-Ryuichi_Sakamoto_side.jpg",
+  "wikiTitle": "坂本龍一"
+}

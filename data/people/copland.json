@@ -1,0 +1,96 @@
+{
+  "id": "copland",
+  "name": "アーロン・コープランド",
+  "nameEn": "Aaron Copland",
+  "birth": 1900,
+  "death": 1990,
+  "country": "アメリカ",
+  "field": "作曲家",
+  "summary": "『アパラチアの春』『市民のためのファンファーレ』でアメリカ音楽の音を確立した20世紀の巨匠。ゲイであることを秘めながら、開拓者精神の音楽を書き続けた。",
+  "events": [
+    {
+      "year": 1900,
+      "age": 0,
+      "title": "ニューヨーク・ブルックリンのユダヤ移民家庭に誕生",
+      "detail": "ロシアからの移民5男。",
+      "tags": []
+    },
+    {
+      "year": 1921,
+      "age": 21,
+      "title": "パリでナディア・ブーランジェに師事",
+      "detail": "アメリカ人作曲家の黄金世代を育てた名教師。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1944,
+      "age": 44,
+      "title": "『アパラチアの春』初演",
+      "detail": "ピューリッツァー賞受賞。マーサ・グレアム振付バレエ。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1953,
+      "age": 53,
+      "title": "マッカーシー赤狩りで召喚",
+      "detail": "共産主義疑惑で議会証言。作品演奏がキャンセルされる時期。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1990,
+      "age": 90,
+      "title": "ニューヨークで死去",
+      "detail": "アルツハイマー病の晩年だった。",
+      "tags": [
+        "loss",
+        "illness"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "すべての偉大な音楽は、愛と死の間で書かれている。",
+      "source": "コープランドの言葉"
+    }
+  ],
+  "relations": [
+    {
+      "name": "レナード・バーンスタイン",
+      "relation": "友・弟子筋",
+      "note": "コープランドを『アメリカ音楽の学長』と呼んだ"
+    }
+  ],
+  "places": [],
+  "books": [],
+  "works": [
+    {
+      "title": "バレエ『アパラチアの春』組曲",
+      "year": 1944,
+      "type": "バレエ",
+      "description": "ピューリッツァー賞。『シンプル・ギフツ』の変奏",
+      "youtubeId": "T_ON2eXYzzM"
+    },
+    {
+      "title": "市民のためのファンファーレ",
+      "year": 1942,
+      "type": "管弦楽",
+      "description": "戦時中の市民を讃える勇壮なファンファーレ",
+      "youtubeId": "6oSeZZtNYEU"
+    },
+    {
+      "title": "バレエ『ロデオ』",
+      "year": 1942,
+      "type": "バレエ",
+      "description": "西部カウボーイの音楽",
+      "youtubeId": "MEoJn5cmR80"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Aaron_Copland_1970.JPG/500px-Aaron_Copland_1970.JPG",
+  "wikiTitle": "アーロン・コープランド"
+}

@@ -1,0 +1,132 @@
+{
+  "id": "smetana",
+  "name": "ベドルジハ・スメタナ",
+  "nameEn": "Bedřich Smetana",
+  "birth": 1824,
+  "death": 1884,
+  "country": "チェコ",
+  "field": "作曲家",
+  "summary": "チェコ国民楽派の祖。『我が祖国』で自国の河と伝説を永遠の音楽にした。50歳で突然の聴覚喪失、晩年は精神病院で亡くなった悲劇の音楽家。",
+  "events": [
+    {
+      "year": 1824,
+      "age": 0,
+      "title": "リトミシュルに醸造所主の息子として誕生",
+      "detail": "18人兄弟の11番目、男子として最初に生き延びた子。",
+      "tags": []
+    },
+    {
+      "year": 1848,
+      "age": 24,
+      "title": "プラハ革命（ヨーロッパ1848年革命）に参加",
+      "detail": "バリケードを築きチェコ独立を歌った。以後チェコ民族音楽を志す。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1866,
+      "age": 42,
+      "title": "『売られた花嫁』初演で大成功",
+      "detail": "チェコ語オペラの金字塔。民族音楽の誇りを取り戻した。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1874,
+      "age": 50,
+      "title": "突然両耳が聞こえなくなる",
+      "detail": "8月に右耳、10月に左耳。ベートーヴェン以来の悲劇。",
+      "tags": [
+        "loss",
+        "illness",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1874,
+      "age": 50,
+      "title": "完全な聴覚喪失の中で『我が祖国』作曲開始",
+      "detail": "ブルタバ（モルダウ）など6曲の交響詩連作。『私の頭の中で聴く』",
+      "tags": [
+        "breakthrough",
+        "restart"
+      ]
+    },
+    {
+      "year": 1884,
+      "age": 60,
+      "title": "プラハの精神病院で死去",
+      "detail": "梅毒による進行麻痺で錯乱し、入院後3週間で逝った。",
+      "tags": [
+        "loss",
+        "illness"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "私の耳は死んでも、私の音楽は生き続ける。",
+      "source": "スメタナの言葉"
+    },
+    {
+      "text": "ブルタバの流れは、チェコの魂である。",
+      "source": "『我が祖国』序"
+    }
+  ],
+  "relations": [
+    {
+      "name": "フランツ・リスト",
+      "id": "liszt",
+      "relation": "支援者",
+      "note": "若きスメタナを応援した"
+    },
+    {
+      "name": "ドヴォルザーク",
+      "id": "dvorak",
+      "relation": "後輩",
+      "note": "スメタナの系譜を継いだチェコの国民楽派"
+    }
+  ],
+  "places": [
+    {
+      "name": "スメタナ博物館",
+      "location": "チェコ・プラハ",
+      "note": "カレル橋の横の博物館"
+    }
+  ],
+  "books": [],
+  "works": [
+    {
+      "title": "連作交響詩『我が祖国』",
+      "year": 1879,
+      "type": "管弦楽",
+      "description": "6曲連作の民族叙事詩",
+      "youtubeId": "9-ZFpOoJtSA"
+    },
+    {
+      "title": "交響詩『モルダウ（ブルタバ）』",
+      "year": 1874,
+      "type": "管弦楽",
+      "description": "2つの源流から大河へ。連作中の最有名曲",
+      "youtubeId": "lJ-yOZyfacY"
+    },
+    {
+      "title": "歌劇『売られた花嫁』序曲",
+      "year": 1866,
+      "type": "オペラ",
+      "description": "チェコ語オペラの金字塔",
+      "youtubeId": "n5IizcwFOoc"
+    },
+    {
+      "title": "弦楽四重奏曲第1番『わが生涯より』",
+      "year": 1876,
+      "type": "室内楽",
+      "description": "聴覚喪失の恐怖を音にした自伝的四重奏曲",
+      "youtubeId": "0H-E-SsdAhs"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Bedrich_Smetana.jpg/500px-Bedrich_Smetana.jpg",
+  "wikiTitle": "ベドルジハ・スメタナ"
+}

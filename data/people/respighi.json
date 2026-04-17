@@ -1,0 +1,96 @@
+{
+  "id": "respighi",
+  "name": "オットリーノ・レスピーギ",
+  "nameEn": "Ottorino Respighi",
+  "birth": 1879,
+  "death": 1936,
+  "country": "イタリア",
+  "field": "作曲家",
+  "summary": "『ローマの噴水』『ローマの松』『ローマの祭』で母なる古都をオーケストラで描いた色彩の巨匠。リムスキー＝コルサコフに学び、管弦楽法の頂点に達した。",
+  "events": [
+    {
+      "year": 1879,
+      "age": 0,
+      "title": "ボローニャに誕生",
+      "detail": "父はピアノ教師。",
+      "tags": []
+    },
+    {
+      "year": 1900,
+      "age": 21,
+      "title": "ロシアでリムスキー＝コルサコフに師事",
+      "detail": "5ヶ月だけの短い師事だが人生を決めた。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1917,
+      "age": 38,
+      "title": "『ローマの噴水』初演",
+      "detail": "4つの噴水の4つの時間。色彩の革命。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1924,
+      "age": 45,
+      "title": "『ローマの松』完成",
+      "detail": "アッピア街道の終章は管弦楽法の頂点。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1936,
+      "age": 56,
+      "title": "ローマで感染症により死去",
+      "detail": "歌劇『ルクレツィア』を未完で残した。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "古代は失われたのではない。音楽の中に眠っている。",
+      "source": "レスピーギの言葉"
+    }
+  ],
+  "relations": [
+    {
+      "name": "リムスキー＝コルサコフ",
+      "id": "rimsky_korsakov",
+      "relation": "師",
+      "note": "ペテルブルクで5ヶ月師事"
+    }
+  ],
+  "places": [],
+  "books": [],
+  "works": [
+    {
+      "title": "交響詩『ローマの松』",
+      "year": 1924,
+      "type": "管弦楽",
+      "description": "『アッピア街道の松』のクライマックスは圧巻",
+      "youtubeId": "7v4nrTfyCUU"
+    },
+    {
+      "title": "交響詩『ローマの噴水』",
+      "year": 1917,
+      "type": "管弦楽",
+      "description": "4つの噴水が刻む時間",
+      "youtubeId": "-SQ_LYdFZTQ"
+    },
+    {
+      "title": "交響詩『ローマの祭』",
+      "year": 1928,
+      "type": "管弦楽",
+      "description": "ローマ三部作の完結編",
+      "youtubeId": "3L7JlymQZLg"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/c/cc/Respighi_1935.jpg",
+  "wikiTitle": "オットリーノ・レスピーギ"
+}

@@ -1,0 +1,125 @@
+{
+  "id": "mussorgsky",
+  "name": "モデスト・ムソルグスキー",
+  "nameEn": "Modest Mussorgsky",
+  "birth": 1839,
+  "death": 1881,
+  "country": "ロシア",
+  "field": "作曲家",
+  "summary": "ロシア五人組の異才。音楽院で学ばず独学で『展覧会の絵』『ボリス・ゴドゥノフ』を書いた。アルコール依存で42歳で死去。死後リムスキー＝コルサコフが楽譜を整理し世界へ。",
+  "events": [
+    {
+      "year": 1839,
+      "age": 0,
+      "title": "カレヴォ村の地主の家に誕生",
+      "detail": "ロシア貴族の4男として。",
+      "tags": []
+    },
+    {
+      "year": 1858,
+      "age": 19,
+      "title": "陸軍を退役、音楽家への道",
+      "detail": "バラキレフに師事。ロシア五人組のメンバーに。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1861,
+      "age": 22,
+      "title": "農奴解放令で一家が没落",
+      "detail": "生活苦に陥り下級官吏として働きながら作曲。",
+      "tags": [
+        "poverty"
+      ]
+    },
+    {
+      "year": 1865,
+      "age": 26,
+      "title": "最愛の母が死去",
+      "detail": "この喪失から『死の歌と踊り』などの暗い傑作が生まれる。アルコール依存の始まり。",
+      "tags": [
+        "loss",
+        "heartbreak"
+      ]
+    },
+    {
+      "year": 1869,
+      "age": 30,
+      "title": "歌劇『ボリス・ゴドゥノフ』完成",
+      "detail": "民衆の声を主役にした新しい歴史オペラ。当時は奇怪と評された。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1874,
+      "age": 35,
+      "title": "『展覧会の絵』作曲",
+      "detail": "親友・画家ハルトマンの追悼展を巡る音楽的散歩。",
+      "tags": [
+        "breakthrough",
+        "loss"
+      ]
+    },
+    {
+      "year": 1881,
+      "age": 42,
+      "title": "ペテルブルクの病院でアルコール性せん妄により死去",
+      "detail": "肖像画はレーピンが死の直前に描いた赤い鼻の名作。",
+      "tags": [
+        "loss",
+        "illness"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "音楽は、魂と魂のあいだの電話である。",
+      "source": "ムソルグスキーの言葉"
+    },
+    {
+      "text": "真の芸術とは、人間そのものを描くことである。",
+      "source": "書簡"
+    }
+  ],
+  "relations": [
+    {
+      "name": "ミリイ・バラキレフ",
+      "relation": "師",
+      "note": "ロシア五人組の指導者"
+    },
+    {
+      "name": "リムスキー＝コルサコフ",
+      "relation": "同僚",
+      "note": "死後に楽譜を校訂・オーケストレーションした"
+    }
+  ],
+  "places": [],
+  "books": [],
+  "works": [
+    {
+      "title": "組曲『展覧会の絵』",
+      "year": 1874,
+      "type": "ピアノ曲",
+      "description": "親友の遺作を巡る音楽的散歩。ラヴェル編が有名",
+      "youtubeId": "YOuRA4Wf2HQ"
+    },
+    {
+      "title": "歌劇『ボリス・ゴドゥノフ』",
+      "year": 1869,
+      "type": "オペラ",
+      "description": "民衆を主役にしたロシア歴史オペラの傑作",
+      "youtubeId": "zQD8CYtDiqE"
+    },
+    {
+      "title": "交響詩『はげ山の一夜』",
+      "year": 1867,
+      "type": "管弦楽",
+      "description": "『ファンタジア』で世界的に有名に",
+      "youtubeId": "R3RF_3wMpF4"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Ilya_Repin_-_Portret_of_the_Composer_Modest_Petrovich_Mussorgsky_-_Google_Art_Project.jpg/500px-Ilya_Repin_-_Portret_of_the_Composer_Modest_Petrovich_Mussorgsky_-_Google_Art_Project.jpg",
+  "wikiTitle": "モデスト・ムソルグスキー"
+}

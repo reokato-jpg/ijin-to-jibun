@@ -1,0 +1,139 @@
+{
+  "id": "faure",
+  "name": "ガブリエル・フォーレ",
+  "nameEn": "Gabriel Fauré",
+  "birth": 1845,
+  "death": 1924,
+  "country": "フランス",
+  "field": "作曲家",
+  "summary": "『レクイエム』『夢のあとに』で優美な旋律を残したフランス後期ロマン派の象徴。サン=サーンスの弟子、ラヴェルの師。晩年は耳が遠くなりながら静かな内省の音楽を書いた。",
+  "events": [
+    {
+      "year": 1845,
+      "age": 0,
+      "title": "南仏パミエに小学校長の子として誕生",
+      "detail": "6人兄弟の末っ子。8歳でエコール・ニデルメイエールへ。",
+      "tags": []
+    },
+    {
+      "year": 1861,
+      "age": 16,
+      "title": "サン=サーンスに師事",
+      "detail": "25年後まで続く師弟愛。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1870,
+      "age": 25,
+      "title": "普仏戦争に従軍",
+      "detail": "狙撃兵として戦場へ。パリ・コミューンも目撃。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1888,
+      "age": 43,
+      "title": "『レクイエム』作曲",
+      "detail": "父・母の喪に書いた優美な死の音楽。『子守歌のような』と自ら評した。",
+      "tags": [
+        "breakthrough",
+        "loss"
+      ]
+    },
+    {
+      "year": 1905,
+      "age": 60,
+      "title": "パリ音楽院院長に",
+      "detail": "ドビュッシー・ラヴェルなどを育てる改革を実行。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1911,
+      "age": 66,
+      "title": "聴覚の衰え進行",
+      "detail": "特に高音と低音が歪んで聴こえる苦しい聴覚障害。それでも作曲は続けた。",
+      "tags": [
+        "illness"
+      ]
+    },
+    {
+      "year": 1924,
+      "age": 79,
+      "title": "パリで死去",
+      "detail": "国葬でレクイエムが演奏された。",
+      "tags": [
+        "loss",
+        "approval"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "音楽は、不可能なものへの渇望である。",
+      "source": "フォーレの手紙"
+    },
+    {
+      "text": "静けさと微光——それが私の音楽の本質だ。",
+      "source": "弟子への手紙"
+    }
+  ],
+  "relations": [
+    {
+      "name": "サン=サーンス",
+      "id": "saint_saens",
+      "relation": "師",
+      "note": "生涯の師であり友"
+    },
+    {
+      "name": "ラヴェル",
+      "id": "ravel",
+      "relation": "弟子",
+      "note": "優秀な門下生"
+    }
+  ],
+  "places": [],
+  "books": [],
+  "works": [
+    {
+      "title": "レクイエム ニ短調 作品48",
+      "year": 1888,
+      "type": "宗教曲",
+      "description": "優美で慈愛に満ちた『死の子守歌』",
+      "youtubeId": "BbODixvUrLw"
+    },
+    {
+      "title": "『夢のあとに』作品7-1",
+      "year": 1877,
+      "type": "歌曲",
+      "description": "最も愛される歌曲",
+      "youtubeId": "Xi_Q9wXJfqs"
+    },
+    {
+      "title": "パヴァーヌ 嬰ヘ短調 作品50",
+      "year": 1887,
+      "type": "管弦楽",
+      "description": "優雅な古典舞曲",
+      "youtubeId": "dlbKHhNuBmI"
+    },
+    {
+      "title": "シチリアーノ 作品78",
+      "year": 1893,
+      "type": "室内楽",
+      "description": "フルートとピアノのための名品",
+      "youtubeId": "yDKsE9WYX6c"
+    },
+    {
+      "title": "ノクターン第6番 変ニ長調 作品63",
+      "year": 1894,
+      "type": "ピアノ曲",
+      "description": "フォーレ中期の傑作ノクターン"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Gabriel_Faur%C3%A9_Paul_Nadar_1905.JPG/500px-Gabriel_Faur%C3%A9_Paul_Nadar_1905.JPG",
+  "wikiTitle": "ガブリエル・フォーレ"
+}

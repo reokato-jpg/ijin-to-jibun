@@ -1,0 +1,113 @@
+{
+  "id": "hisaishi",
+  "name": "久石譲",
+  "nameEn": "Joe Hisaishi",
+  "birth": 1950,
+  "death": null,
+  "country": "日本",
+  "field": "作曲家",
+  "summary": "スタジオジブリ・北野武作品の音楽で世界を魅了する作曲家。『となりのトトロ』『千と千尋の神隠し』『HANA-BI』。クラシック作曲家としての現代音楽作品も多数。",
+  "events": [
+    {
+      "year": 1950,
+      "age": 0,
+      "title": "長野県中野市に誕生",
+      "detail": "本名・藤澤守。",
+      "tags": []
+    },
+    {
+      "year": 1984,
+      "age": 34,
+      "title": "宮崎駿『風の谷のナウシカ』音楽",
+      "detail": "宮崎作品全作の音楽を担当する始まり。",
+      "tags": [
+        "turning_encounter",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1988,
+      "age": 38,
+      "title": "『となりのトトロ』公開",
+      "detail": "世界中の子供に愛される曲に。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1997,
+      "age": 47,
+      "title": "北野武『HANA-BI』音楽",
+      "detail": "ヴェネツィア金獅子賞。以後北野作品の音楽を担う。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 2001,
+      "age": 51,
+      "title": "『千と千尋の神隠し』アカデミー賞",
+      "detail": "日本のアニメを世界に伝えた記念作。",
+      "tags": [
+        "approval"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "音楽は映像の感情そのものである。",
+      "source": "久石譲の言葉"
+    },
+    {
+      "text": "シンプルで、美しく、心に残ること。",
+      "source": "作曲のモットー"
+    }
+  ],
+  "relations": [
+    {
+      "name": "宮崎駿",
+      "relation": "パートナー",
+      "note": "全ジブリ作品の音楽担当"
+    },
+    {
+      "name": "北野武",
+      "relation": "パートナー",
+      "note": "『HANA-BI』以降の北野作品"
+    }
+  ],
+  "places": [],
+  "books": [],
+  "works": [
+    {
+      "title": "となりのトトロ メインテーマ",
+      "year": 1988,
+      "type": "映画音楽",
+      "description": "世界中の子供に愛される旋律",
+      "youtubeId": "epPpXpu_2VY"
+    },
+    {
+      "title": "千と千尋の神隠し『あの夏へ』",
+      "year": 2001,
+      "type": "映画音楽",
+      "description": "ピアノで語る記憶と別れ",
+      "youtubeId": "TL3oq_k0IRQ"
+    },
+    {
+      "title": "Summer（菊次郎の夏）",
+      "year": 1999,
+      "type": "映画音楽",
+      "description": "北野武作品の代表曲",
+      "youtubeId": "YWgaf66mq1g"
+    },
+    {
+      "title": "Merry-Go-Round（ハウルの動く城）",
+      "year": 2004,
+      "type": "映画音楽",
+      "description": "ワルツ調の永遠の名曲",
+      "youtubeId": "i5J2dBWgFm4"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Joe_Hisaishi_2011.jpg/500px-Joe_Hisaishi_2011.jpg",
+  "wikiTitle": "久石譲"
+}

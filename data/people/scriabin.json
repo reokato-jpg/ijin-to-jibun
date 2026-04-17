@@ -1,0 +1,129 @@
+{
+  "id": "scriabin",
+  "name": "アレクサンドル・スクリャービン",
+  "nameEn": "Alexander Scriabin",
+  "birth": 1872,
+  "death": 1915,
+  "country": "ロシア",
+  "field": "作曲家",
+  "summary": "色と音楽を結合した『神秘和音』の創始者。ショパン的ピアノ曲から神秘主義へ進化し、『人類を変える大宇宙作品』を構想したまま43歳で死去。",
+  "events": [
+    {
+      "year": 1872,
+      "age": 0,
+      "title": "モスクワに誕生、生後1年で母をピアノ演奏中の結核で失う",
+      "detail": "母は有名なピアニスト。スクリャービンは母の血を引く。",
+      "tags": [
+        "parent_conflict",
+        "loss"
+      ]
+    },
+    {
+      "year": 1882,
+      "age": 10,
+      "title": "モスクワ音楽院へ、ラフマニノフと同級生",
+      "detail": "ピアノで金メダル、作曲で銀メダル（ラフマニノフは作曲金）。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1894,
+      "age": 22,
+      "title": "右手を壊しピアニスト生命の危機",
+      "detail": "リスト超絶技巧に挑戦しすぎた代償。左手のための曲で乗り切った。",
+      "tags": [
+        "pride_broken",
+        "illness"
+      ]
+    },
+    {
+      "year": 1904,
+      "age": 32,
+      "title": "妻子を捨ててタチアナへ",
+      "detail": "熱心なソリプシスト（唯我論者）として神秘主義に傾倒。",
+      "tags": [
+        "heartbreak",
+        "restart"
+      ]
+    },
+    {
+      "year": 1910,
+      "age": 38,
+      "title": "『プロメテウス』初演、世界初の色光楽器付き",
+      "detail": "音と色を対応させる光楽器『ルーチェ』を楽譜に記載。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1915,
+      "age": 43,
+      "title": "敗血症でモスクワに急死",
+      "detail": "唇のニキビから細菌感染。『神秘劇』構想を残したまま。",
+      "tags": [
+        "loss",
+        "illness"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "私は神である。",
+      "source": "日記（神秘主義時代）"
+    },
+    {
+      "text": "音楽は宇宙を変える力を持つ。",
+      "source": "スクリャービンの言葉"
+    }
+  ],
+  "relations": [
+    {
+      "name": "ラフマニノフ",
+      "id": "rachmaninoff",
+      "relation": "同級生・友",
+      "note": "モスクワ音楽院の同期"
+    }
+  ],
+  "places": [],
+  "books": [],
+  "works": [
+    {
+      "title": "ピアノソナタ第5番 作品53",
+      "year": 1907,
+      "type": "ピアノ曲",
+      "description": "『法悦の詩』の精神を込めた革新的ソナタ",
+      "youtubeId": "_bCGdLdlFdk"
+    },
+    {
+      "title": "法悦の詩 作品54",
+      "year": 1908,
+      "type": "管弦楽",
+      "description": "官能と恍惚の交響詩",
+      "youtubeId": "Ybs4o4L38Do"
+    },
+    {
+      "title": "プロメテウス 火の詩 作品60",
+      "year": 1910,
+      "type": "管弦楽",
+      "description": "色光楽器付きの神秘主義の極致",
+      "youtubeId": "4t8jNqKeVK8"
+    },
+    {
+      "title": "前奏曲集 作品11",
+      "year": 1896,
+      "type": "ピアノ曲",
+      "description": "ショパン的な24の前奏曲",
+      "youtubeId": "8LCH1UJpNiE"
+    },
+    {
+      "title": "エチュード嬰ニ短調 作品8-12",
+      "year": 1894,
+      "type": "ピアノ曲",
+      "description": "悲愴で激しい練習曲",
+      "youtubeId": "qctmUnKU7Mk"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Skrjabin_Alexander.jpg/500px-Skrjabin_Alexander.jpg",
+  "wikiTitle": "アレクサンドル・スクリャービン"
+}

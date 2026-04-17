@@ -1,0 +1,133 @@
+{
+  "id": "saint_saens",
+  "name": "カミーユ・サン＝サーンス",
+  "nameEn": "Camille Saint-Saëns",
+  "birth": 1835,
+  "death": 1921,
+  "country": "フランス",
+  "field": "作曲家",
+  "summary": "3歳でピアノ演奏、5歳で作曲を始めた天才。パリ国立歌劇場で2時間モーツァルトの全協奏曲を暗譜演奏。数学・天文学・考古学も学者並みの博識家。86年の生涯で300曲以上。",
+  "events": [
+    {
+      "year": 1835,
+      "age": 0,
+      "title": "パリで誕生、生後3ヶ月で父を失う",
+      "detail": "大叔母マソン夫人に育てられる。2歳半でピアノに向かう。",
+      "tags": [
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1846,
+      "age": 10,
+      "title": "パリ公開コンサートデビュー、アンコールでベートーヴェン32曲のソナタ全曲から1曲選択可能を提示",
+      "detail": "演奏会後、異例の反響。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1853,
+      "age": 17,
+      "title": "サン=メリー教会オルガニストに",
+      "detail": "マドレーヌ教会オルガニストを経て20年在職。リストは『世界最高のオルガニスト』と絶賛。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1871,
+      "age": 35,
+      "title": "国民音楽協会設立",
+      "detail": "フランス作曲家の自立を目指す。フランク・フォーレらと。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1878,
+      "age": 42,
+      "title": "長男アンドレを6歳で失う、同年次男も乳幼児死",
+      "detail": "同じ年に2人の息子を失い、結婚生活も崩壊。以後独居。",
+      "tags": [
+        "loss",
+        "heartbreak"
+      ]
+    },
+    {
+      "year": 1886,
+      "age": 51,
+      "title": "『動物の謝肉祭』作曲（生前は公開禁止）",
+      "detail": "ユーモアが自分の威厳を傷つけると恐れ、『白鳥』以外公開を禁じた。死後大ヒット。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1921,
+      "age": 86,
+      "title": "アルジェで肺炎により死去",
+      "detail": "冬を温かい地で過ごす習慣。最後まで世界を旅した。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "音楽は建築と科学の子供である。",
+      "source": "サン=サーンスの言葉"
+    },
+    {
+      "text": "趣味は不滅ではない。流行は滅びる。",
+      "source": "書簡"
+    }
+  ],
+  "relations": [
+    {
+      "name": "ガブリエル・フォーレ",
+      "relation": "弟子",
+      "note": "生涯最愛の弟子"
+    },
+    {
+      "name": "フランツ・リスト",
+      "id": "liszt",
+      "relation": "親友",
+      "note": "オルガンを絶賛した先輩"
+    }
+  ],
+  "places": [],
+  "books": [],
+  "works": [
+    {
+      "title": "交響曲第3番『オルガン付き』ハ短調 作品78",
+      "year": 1886,
+      "type": "交響曲",
+      "description": "オルガン付きの壮大な交響曲",
+      "youtubeId": "HfRQacLN6u0"
+    },
+    {
+      "title": "組曲『動物の謝肉祭』",
+      "year": 1886,
+      "type": "管弦楽",
+      "description": "『白鳥』『水族館』で永遠に愛される動物寓話",
+      "youtubeId": "S2Vl_KlM_-Y"
+    },
+    {
+      "title": "ヴァイオリン協奏曲第3番 ロ短調 作品61",
+      "year": 1880,
+      "type": "協奏曲",
+      "description": "サラサーテに捧げた名作",
+      "youtubeId": "PW6Bp7QmIAQ"
+    },
+    {
+      "title": "『死の舞踏』作品40",
+      "year": 1874,
+      "type": "管弦楽",
+      "description": "真夜中に踊る骸骨の交響詩",
+      "youtubeId": "YyknBTm_YyM"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Saintsaens.jpg/500px-Saintsaens.jpg",
+  "wikiTitle": "カミーユ・サン＝サーンス"
+}

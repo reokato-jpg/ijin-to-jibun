@@ -1,0 +1,89 @@
+{
+  "id": "palestrina",
+  "name": "ジョヴァンニ・パレストリーナ",
+  "nameEn": "Giovanni Pierluigi da Palestrina",
+  "birth": 1525,
+  "death": 1594,
+  "country": "イタリア",
+  "field": "作曲家",
+  "summary": "ルネサンス期ポリフォニー（多声部）の頂点。対抗宗教改革の中で、教会音楽の未来を守った『カトリック教会音楽の救世主』。104のミサ曲と250のモテットを残した。",
+  "events": [
+    {
+      "year": 1525,
+      "age": 0,
+      "title": "ローマ近郊パレストリーナに誕生",
+      "detail": "地名が後の姓になる。",
+      "tags": []
+    },
+    {
+      "year": 1551,
+      "age": 26,
+      "title": "バチカン、ジュリア礼拝堂楽長に",
+      "detail": "法王ユリウス3世に抜擢。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1555,
+      "age": 30,
+      "title": "法王パウロ4世により既婚を理由に罷免",
+      "detail": "妻の死、3人の子の死、自身の病まで苦難の時期。",
+      "tags": [
+        "pride_broken",
+        "loss"
+      ]
+    },
+    {
+      "year": 1567,
+      "age": 42,
+      "title": "『教皇マルケルスのミサ』",
+      "detail": "トリエント公会議の多声音楽禁止論に対して『多声部でも歌詞が聞こえる』証明と伝わる。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1594,
+      "age": 69,
+      "title": "ローマで死去",
+      "detail": "聖ペテロ大聖堂楽長のまま。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "すべての声部は、神に捧げる祈りである。",
+      "source": "パレストリーナの言葉"
+    }
+  ],
+  "relations": [],
+  "places": [],
+  "books": [],
+  "works": [
+    {
+      "title": "教皇マルケルスのミサ",
+      "year": 1567,
+      "type": "宗教曲",
+      "description": "パレストリーナ様式の完成",
+      "youtubeId": "CcXHZONL6ck"
+    },
+    {
+      "title": "モテット『シカット・ケルブス』",
+      "year": 1580,
+      "type": "宗教曲",
+      "description": "『鹿が谷川を慕うごとく』詩篇42篇",
+      "youtubeId": "M49N1-VDZHo"
+    },
+    {
+      "title": "ミゼレーレ",
+      "year": 1580,
+      "type": "宗教曲",
+      "description": "詩篇51篇による荘厳なミサ"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/1/18/Giovanni_Pierluigi_da_Palestrina.jpg",
+  "wikiTitle": "ジョヴァンニ・パレストリーナ"
+}

@@ -1,0 +1,175 @@
+{
+  "id": "grieg",
+  "name": "エドヴァルド・グリーグ",
+  "nameEn": "Edvard Grieg",
+  "birth": 1843,
+  "death": 1907,
+  "country": "ノルウェー",
+  "field": "作曲家",
+  "summary": "『ペール・ギュント』『ピアノ協奏曲イ短調』で北欧の精神を世界に伝えたノルウェー国民楽派の父。身長152cm、病弱な体で民族音楽を集めながら、フィヨルドの湖畔で孤高の音楽を書き続けた。",
+  "events": [
+    {
+      "year": 1843,
+      "age": 0,
+      "title": "ベルゲンに誕生",
+      "detail": "母ゲジーネはピアニスト、父はイギリス系商人。5歳からピアノを学ぶ。",
+      "tags": []
+    },
+    {
+      "year": 1858,
+      "age": 15,
+      "title": "ライプツィヒ音楽院へ",
+      "detail": "ヴァイオリニスト、オーレ・ブルの勧めで留学。4年間で結核を患う。",
+      "tags": [
+        "turning_encounter",
+        "illness"
+      ]
+    },
+    {
+      "year": 1864,
+      "age": 21,
+      "title": "作曲家リカルド・ノードロークと出会う",
+      "detail": "ノルウェー国民楽派の路線を決定づけた親友。翌年ノードロークは25歳で結核死。",
+      "tags": [
+        "turning_encounter",
+        "loss"
+      ]
+    },
+    {
+      "year": 1867,
+      "age": 24,
+      "title": "従妹ニーナと結婚",
+      "detail": "家族の反対を押し切って。生涯の伴侶で最良の歌手解釈者に。",
+      "tags": [
+        "turning_encounter",
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1868,
+      "age": 25,
+      "title": "『ピアノ協奏曲イ短調』完成",
+      "detail": "ロマン派協奏曲の名曲中の名曲。リストから絶賛される。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1869,
+      "age": 26,
+      "title": "一人娘アレクサンドラを肺炎で失う",
+      "detail": "13ヶ月の最愛の娘。二度と子はもうけなかった。",
+      "tags": [
+        "loss",
+        "heartbreak"
+      ]
+    },
+    {
+      "year": 1876,
+      "age": 32,
+      "title": "『ペール・ギュント』初演",
+      "detail": "イプセンの劇のため書いた付随音楽。『朝』『山の魔王の宮殿にて』など永遠の旋律。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1885,
+      "age": 42,
+      "title": "ベルゲン郊外トロルハウゲンに邸宅建設",
+      "detail": "『妖精の丘』の意。以後死ぬまでここで作曲。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1907,
+      "age": 64,
+      "title": "ベルゲンで死去",
+      "detail": "『時間がないのだ、もっと書きたい』が最後の言葉。妻ニーナが『永遠の別れ』を歌った。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "私の音楽は、フィヨルドの香りがしなければならない。",
+      "source": "グリーグの手紙"
+    },
+    {
+      "text": "ショパンから詩を、シューマンから独創性を、ワーグナーから力を、そしてノルウェーから魂を学んだ。",
+      "source": "自伝"
+    },
+    {
+      "text": "作曲家は自分を偽れない。その音楽はその人自身だ。",
+      "source": "書簡"
+    }
+  ],
+  "relations": [
+    {
+      "name": "ニーナ・ハーゲルプ",
+      "relation": "妻・従妹",
+      "years": "1867–1907",
+      "note": "生涯の理解者・歌手"
+    },
+    {
+      "name": "リカルド・ノードロク",
+      "relation": "親友",
+      "note": "ノルウェー国民楽派の同志。早世で深い喪失を残した"
+    },
+    {
+      "name": "フランツ・リスト",
+      "id": "liszt",
+      "relation": "応援者",
+      "note": "ピアノ協奏曲を見て絶賛した"
+    }
+  ],
+  "places": [
+    {
+      "name": "トロルハウゲン",
+      "location": "ノルウェー・ベルゲン",
+      "note": "グリーグが晩年を過ごした家と記念館"
+    }
+  ],
+  "books": [],
+  "works": [
+    {
+      "title": "ピアノ協奏曲 イ短調 作品16",
+      "year": 1868,
+      "type": "協奏曲",
+      "description": "ロマン派協奏曲の最高峰",
+      "youtubeId": "-oS76E5zdo8"
+    },
+    {
+      "title": "ペール・ギュント 組曲第1番『朝』",
+      "year": 1875,
+      "type": "管弦楽",
+      "description": "世界で最も有名な『朝の音楽』",
+      "youtubeId": "kOrj02vjU88"
+    },
+    {
+      "title": "『山の魔王の宮殿にて』",
+      "year": 1875,
+      "type": "管弦楽",
+      "description": "地底を駆け抜ける緊迫のクレッシェンド",
+      "youtubeId": "xkrB6ZNJqrM"
+    },
+    {
+      "title": "ホルベルク組曲 作品40",
+      "year": 1884,
+      "type": "管弦楽",
+      "description": "ノルウェーの劇作家への献呈曲",
+      "youtubeId": "7kUH3b1GPw0"
+    },
+    {
+      "title": "叙情小品集",
+      "year": 1867,
+      "type": "ピアノ曲",
+      "description": "66曲の小品集。グリーグの日記のような音楽",
+      "youtubeId": "KCnJKwfvAoY"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Edvard_Grieg_portrait_%28cropped%29.jpg/500px-Edvard_Grieg_portrait_%28cropped%29.jpg",
+  "wikiTitle": "エドヴァルド・グリーグ"
+}

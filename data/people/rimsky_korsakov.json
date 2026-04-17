@@ -1,0 +1,124 @@
+{
+  "id": "rimsky_korsakov",
+  "name": "ニコライ・リムスキー＝コルサコフ",
+  "nameEn": "Nikolai Rimsky-Korsakov",
+  "birth": 1844,
+  "death": 1908,
+  "country": "ロシア",
+  "field": "作曲家",
+  "summary": "海軍士官から作曲家へ転身したロシア五人組の一人。『シェエラザード』の官能的な響き、色彩豊かなオーケストレーションで知られる。ストラヴィンスキー・プロコフィエフを育てた。",
+  "events": [
+    {
+      "year": 1844,
+      "age": 0,
+      "title": "海軍士官家族の三男として誕生",
+      "detail": "12歳で海軍兵学校へ。",
+      "tags": []
+    },
+    {
+      "year": 1862,
+      "age": 18,
+      "title": "海軍練習艦『アルマーズ』で世界一周航海",
+      "detail": "ロンドン・ブラジル・ニューヨーク・セイロンを巡る。海のイメージは以後の作品に。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1865,
+      "age": 21,
+      "title": "バラキレフに師事、ロシア五人組に",
+      "detail": "独学の航海士が一気に作曲家に。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1871,
+      "age": 27,
+      "title": "ペテルブルク音楽院作曲教授に",
+      "detail": "自分が受けたこともない学問を教えることになり、猛勉強で和声学・対位法をマスター。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1888,
+      "age": 44,
+      "title": "『シェエラザード』作曲",
+      "detail": "千夜一夜物語から着想した色彩的な管弦楽の傑作。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1905,
+      "age": 61,
+      "title": "学生蜂起を擁護し音楽院から解雇",
+      "detail": "同僚が抗議辞職し復職。民主主義者の顔も。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1908,
+      "age": 64,
+      "title": "心臓発作で死去",
+      "detail": "最後のオペラ『金鶏』は検閲で初演できなかった。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "オーケストレーションは作曲である。",
+      "source": "『管弦楽法の原理』"
+    },
+    {
+      "text": "真の教師は、生徒に『自分の道を見つけよ』と言う者だ。",
+      "source": "書簡"
+    }
+  ],
+  "relations": [
+    {
+      "name": "イーゴリ・ストラヴィンスキー",
+      "id": "stravinsky",
+      "relation": "弟子",
+      "note": "最愛の弟子。死後も作曲の基礎として感謝した"
+    },
+    {
+      "name": "ムソルグスキー",
+      "id": "mussorgsky",
+      "relation": "同僚・親友",
+      "note": "死後に未完作を校訂した"
+    }
+  ],
+  "places": [],
+  "books": [],
+  "works": [
+    {
+      "title": "交響組曲『シェエラザード』作品35",
+      "year": 1888,
+      "type": "管弦楽",
+      "description": "千夜一夜物語の官能的な色彩",
+      "youtubeId": "QoCqr2bK7OM"
+    },
+    {
+      "title": "『熊蜂の飛行』",
+      "year": 1900,
+      "type": "管弦楽",
+      "description": "歌劇『サルタン皇帝の物語』より、超絶技巧の小品",
+      "youtubeId": "S8wuHvVoEQk"
+    },
+    {
+      "title": "スペイン奇想曲 作品34",
+      "year": 1887,
+      "type": "管弦楽",
+      "description": "華やかなスペイン情緒",
+      "youtubeId": "LkgZHb5SjbM"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Nikolay_A_Rimsky_Korsakov_1897.jpg/500px-Nikolay_A_Rimsky_Korsakov_1897.jpg",
+  "wikiTitle": "ニコライ・リムスキー＝コルサコフ"
+}

@@ -1,0 +1,129 @@
+{
+  "id": "berlioz",
+  "name": "エクトル・ベルリオーズ",
+  "nameEn": "Hector Berlioz",
+  "birth": 1803,
+  "death": 1869,
+  "country": "フランス",
+  "field": "作曲家",
+  "summary": "『幻想交響曲』でロマン派管弦楽を革新。アヘンによる陶酔体験を音楽にした革命児。オペラ・交響曲・批評・自伝に才を発揮、評価は死後50年待たねばならなかった。",
+  "events": [
+    {
+      "year": 1803,
+      "age": 0,
+      "title": "グルノーブル近郊コート・サン・タンドレの医師の家に誕生",
+      "detail": "父は息子を医者にしたがった。",
+      "tags": [
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1821,
+      "age": 18,
+      "title": "パリで医学校に通うが死体解剖に耐えられず音楽へ",
+      "detail": "父の激怒と仕送り停止で極貧に。",
+      "tags": [
+        "parent_conflict",
+        "restart",
+        "poverty"
+      ]
+    },
+    {
+      "year": 1827,
+      "age": 24,
+      "title": "英国女優ハリエット・スミッソンに恋",
+      "detail": "シェイクスピア劇のオフィーリア役。5年越しの片思いが『幻想交響曲』の種。",
+      "tags": [
+        "heartbreak",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1830,
+      "age": 26,
+      "title": "『幻想交響曲』初演＆ローマ大賞",
+      "detail": "失恋の苦痛を『芸術家の生涯のエピソード』として音楽化した革命的交響曲。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1833,
+      "age": 30,
+      "title": "ハリエットとついに結婚",
+      "detail": "しかし10年で別居。1854年彼女の死の数ヶ月後に内縁妻と結婚したが2人も先に死んだ。",
+      "tags": [
+        "heartbreak",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1867,
+      "age": 64,
+      "title": "一人息子ルイを黄熱病で失う",
+      "detail": "息子は海軍軍人だった。死を嘆いたベルリオーズは翌年から急速に衰弱。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1869,
+      "age": 65,
+      "title": "パリで死去",
+      "detail": "『最後に私を理解した』といったロシアの聴衆の思い出だけが慰めだった。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "音楽は愛である。私の愛は音楽である。",
+      "source": "『回想録』"
+    },
+    {
+      "text": "時間だけが、真の批評家である。",
+      "source": "書簡"
+    }
+  ],
+  "relations": [
+    {
+      "name": "フランツ・リスト",
+      "id": "liszt",
+      "relation": "親友",
+      "note": "同時代の理解者"
+    },
+    {
+      "name": "ハリエット・スミッソン",
+      "relation": "妻（最初）",
+      "note": "幻想交響曲の『永遠の女性』"
+    }
+  ],
+  "places": [],
+  "books": [],
+  "works": [
+    {
+      "title": "幻想交響曲 作品14",
+      "year": 1830,
+      "type": "交響曲",
+      "description": "失恋の幻覚を音楽化したロマン派の革命",
+      "youtubeId": "sNg6q4uxyuI"
+    },
+    {
+      "title": "劇的交響曲『ロメオとジュリエット』作品17",
+      "year": 1839,
+      "type": "交響曲",
+      "description": "シェイクスピアへの音楽的賛歌",
+      "youtubeId": "v4zDaKkrRBw"
+    },
+    {
+      "title": "歌劇『ファウストの劫罰』ラコッツィ行進曲",
+      "year": 1846,
+      "type": "管弦楽",
+      "description": "華やかな軍隊行進曲",
+      "youtubeId": "nqCLd1xdDvg"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/e/ee/Hector_Berlioz_Crop.jpg",
+  "wikiTitle": "エクトル・ベルリオーズ"
+}
