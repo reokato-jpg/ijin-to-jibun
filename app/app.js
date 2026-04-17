@@ -967,7 +967,9 @@ async function showPerson(id) {
 
   const html = `
     <!-- カバー画像 -->
-    <div class="profile-cover" style="background-image:url('${p.imageUrl || ''}')"></div>
+    <div class="profile-cover" style="background-image:url('${p.coverImage || p.imageUrl || ''}')">
+      ${p.coverImageCaption ? `<div class="profile-cover-caption">📍 ${p.coverImageCaption}</div>` : ''}
+    </div>
 
     <!-- プロフィールヘッダー -->
     <div class="profile-header">

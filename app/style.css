@@ -82,17 +82,33 @@ body {
   .article-card-inner .article-badges { margin-bottom: 6px; }
   .home-books { grid-template-columns: 1fr 1fr 1fr; max-width: 720px; margin-left: auto; margin-right: auto; }
   .category-filter, .era-filter, .sort-filter { justify-content: center; }
-  /* 人物詳細：ヘッダーを広めに */
-  .profile-cover { height: 220px; }
-  .profile-tabs {
-    max-width: 900px;
+  /* 人物詳細：本全体を読みやすい820px幅に統一 */
+  .profile-cover { height: 260px; }
+  #personDetail > .profile-header,
+  #personDetail > .routine-open-btn,
+  #personDetail > .profile-tabs,
+  #personDetail > .profile-tab-content {
+    max-width: 820px;
     margin-left: auto;
     margin-right: auto;
+  }
+  #personDetail > .profile-header { padding-left: 24px; padding-right: 24px; }
+  .profile-avatar { width: 120px; height: 120px; margin-top: -60px; font-size: 44px; border-width: 4px; }
+  .profile-name { font-size: 28px; }
+  .profile-handle { font-size: 15px; }
+  .profile-bio { font-size: 15px; line-height: 1.9; }
+  .profile-meta { font-size: 13px; }
+  .profile-stats { gap: 28px; padding: 14px 0; }
+  .profile-stat { font-size: 14px; }
+  .profile-stat strong { font-size: 20px; margin-right: 4px; }
+  .profile-tabs {
     justify-content: center;
     gap: 4px;
   }
-  .profile-tab { padding: 12px 20px; font-size: 14px; }
-  .profile-feed, .profile-tab-content { max-width: 860px; margin-left: auto; margin-right: auto; }
+  .profile-tab { padding: 14px 22px; font-size: 14px; }
+  .profile-feed, .profile-tab-content { margin-left: auto; margin-right: auto; padding: 0 24px; }
+  /* 画像クレジット・タブ内のバーも同じ幅に */
+  #personDetail > .profile-header .image-credit { font-size: 12px; padding: 8px 12px; }
   /* 本棚・書籍カード */
   .article-grid { grid-template-columns: repeat(3, 1fr); }
   /* ルーティンポップアップも広く */
