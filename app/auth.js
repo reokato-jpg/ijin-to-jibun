@@ -1,0 +1,337 @@
+// ==================== Firebase認証＋同期 ====================
+// 未設定でもアプリは通常動作（localStorageのみ）。
+// natsumi の Firebase プロジェクトを設定すると、ログインしたユーザーは
+// お気に入り・ルーティン・カスタムカテゴリなどが全端末で同期される。
+
+// Firebase 設定（natsumi が自分のプロジェクトの値に差し替える）
+const FIREBASE_CONFIG = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+const FIREBASE_ENABLED = FIREBASE_CONFIG.apiKey !== "YOUR_API_KEY";
+
+// 同期対象のlocalStorageキー
+const SYNC_KEYS = [
+  'ijin_fav_people',
+  'ijin_fav_events',
+  'ijin_fav_quotes',
+  'ijin_fav_routines',
+  'ijin_fav_works',
+  'ijin_my_routine',
+  'ijin_user_name',
+  'ijin_oshi_person',
+  'ijin_custom_routine_cats',
+  'ijin_notes',
+  'ijin_diary',
+  'ijin_likes',
+  'ijin_liked_by_me',
+  'ijin_comments',
+];
+
+let fbApp = null, fbAuth = null, fbDb = null;
+let currentUser = null;
+let authListeners = [];
+
+function onAuthChange(cb) {
+  authListeners.push(cb);
+  // 現在の状態を即時通知
+  cb(currentUser);
+}
+function emitAuth() {
+  authListeners.forEach(cb => { try { cb(currentUser); } catch {} });
+}
+
+async function initFirebase() {
+  if (!FIREBASE_ENABLED) {
+    console.log('[auth] Firebase未設定: 端末内ストレージのみで動作します');
+    emitAuth();
+    return;
+  }
+  try {
+    // Firebase v10 modular SDK (CDN経由で読み込み)
+    const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js');
+    const { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup } =
+      await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
+    const { getFirestore, doc, getDoc, setDoc } =
+      await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+
+    fbApp = initializeApp(FIREBASE_CONFIG);
+    fbAuth = getAuth(fbApp);
+    fbDb = getFirestore(fbApp);
+
+    // 外から使えるようwindow経由で公開
+    window.__fbLib = { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup, doc, getDoc, setDoc };
+
+    onAuthStateChanged(fbAuth, async (user) => {
+      currentUser = user;
+      if (user) {
+        await pullFromCloud(user);
+      }
+      emitAuth();
+      updateAccountUI();
+    });
+  } catch (err) {
+    console.error('[auth] Firebase初期化失敗:', err);
+    emitAuth();
+  }
+}
+
+async function pullFromCloud(user) {
+  try {
+    const { doc, getDoc } = window.__fbLib;
+    const snap = await getDoc(doc(fbDb, 'users', user.uid));
+    if (snap.exists()) {
+      const data = snap.data();
+      SYNC_KEYS.forEach(k => {
+        if (data[k] !== undefined) {
+          localStorage.setItem(k, JSON.stringify(data[k]));
+        }
+      });
+      console.log('[auth] クラウドから同期完了');
+      // 再描画をトリガー
+      if (typeof window.renderHomeBooks === 'function') window.renderHomeBooks();
+      if (typeof window.renderFavorites === 'function') window.renderFavorites();
+    } else {
+      // 初回ログイン → 端末のlocalStorageをクラウドへ
+      await pushToCloud(user);
+    }
+  } catch (e) {
+    console.error('[auth] pull失敗:', e);
+  }
+}
+
+async function pushToCloud(user) {
+  if (!user || !FIREBASE_ENABLED) return;
+  try {
+    const { doc, setDoc } = window.__fbLib;
+    const data = {};
+    SYNC_KEYS.forEach(k => {
+      const raw = localStorage.getItem(k);
+      if (raw !== null) {
+        try { data[k] = JSON.parse(raw); } catch { data[k] = raw; }
+      }
+    });
+    data.__updatedAt = new Date().toISOString();
+    await setDoc(doc(fbDb, 'users', user.uid), data, { merge: true });
+  } catch (e) {
+    console.error('[auth] push失敗:', e);
+  }
+}
+
+// localStorage.setItem を上書きして同期
+function hookLocalStorage() {
+  const origSet = Storage.prototype.setItem;
+  Storage.prototype.setItem = function(key, value) {
+    origSet.call(this, key, value);
+    if (currentUser && FIREBASE_ENABLED && SYNC_KEYS.includes(key)) {
+      // デバウンスして5秒以内の変更はまとめてpush
+      clearTimeout(hookLocalStorage._t);
+      hookLocalStorage._t = setTimeout(() => pushToCloud(currentUser), 2000);
+    }
+  };
+}
+hookLocalStorage();
+
+// ==================== UI ====================
+async function openLoginModal() {
+  if (!FIREBASE_ENABLED) {
+    alert('ログイン機能を使うには、Firebaseプロジェクトの設定が必要です。\n運営にお問い合わせください。');
+    return;
+  }
+  const existing = document.getElementById('authModal');
+  if (existing) existing.remove();
+  const modal = document.createElement('div');
+  modal.id = 'authModal';
+  modal.className = 'auth-modal';
+  modal.innerHTML = `
+    <div class="auth-modal-backdrop" data-close></div>
+    <div class="auth-modal-panel">
+      <button class="auth-modal-close" data-close>×</button>
+      <div class="auth-head">
+        <div class="auth-title">アカウント</div>
+        <div class="auth-sub">登録すると、お気に入り・推し・ルーティンが<br>全ての端末で同期されます。</div>
+      </div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-mode="login">ログイン</button>
+        <button class="auth-tab" data-mode="register">新規登録</button>
+      </div>
+      <form class="auth-form" id="authForm">
+        <label class="auth-label">メールアドレス
+          <input type="email" name="email" required autocomplete="email">
+        </label>
+        <label class="auth-label">パスワード（6文字以上）
+          <input type="password" name="password" required minlength="6" autocomplete="current-password">
+        </label>
+        <button type="submit" class="auth-submit">ログイン</button>
+        <div class="auth-divider"><span>または</span></div>
+        <button type="button" class="auth-google" id="authGoogle">
+          <span class="auth-google-icon">G</span> Googleで続ける
+        </button>
+        <div class="auth-error" id="authError"></div>
+        <div class="auth-footnote">登録せずに閉じても全機能使えます。登録するとそれらが保存されます。</div>
+      </form>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  requestAnimationFrame(() => modal.classList.add('open'));
+
+  let mode = 'login';
+  const form = modal.querySelector('#authForm');
+  const err = modal.querySelector('#authError');
+  const submit = modal.querySelector('.auth-submit');
+  modal.querySelectorAll('.auth-tab').forEach(t => {
+    t.addEventListener('click', () => {
+      mode = t.dataset.mode;
+      modal.querySelectorAll('.auth-tab').forEach(x => x.classList.toggle('active', x === t));
+      submit.textContent = mode === 'login' ? 'ログイン' : '新規登録する';
+    });
+  });
+  modal.querySelectorAll('[data-close]').forEach(el => {
+    el.addEventListener('click', () => {
+      modal.classList.remove('open');
+      setTimeout(() => modal.remove(), 200);
+    });
+  });
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    err.textContent = '';
+    const fd = new FormData(form);
+    const email = fd.get('email');
+    const pw = fd.get('password');
+    try {
+      const { signInWithEmailAndPassword, createUserWithEmailAndPassword } = window.__fbLib;
+      if (mode === 'login') {
+        await signInWithEmailAndPassword(fbAuth, email, pw);
+      } else {
+        await createUserWithEmailAndPassword(fbAuth, email, pw);
+        // 新規ユーザーは現在のlocalStorageをクラウドにアップ
+        setTimeout(() => currentUser && pushToCloud(currentUser), 500);
+      }
+      modal.classList.remove('open');
+      setTimeout(() => modal.remove(), 200);
+    } catch (ex) {
+      err.textContent = humanizeAuthError(ex);
+    }
+  });
+  modal.querySelector('#authGoogle').addEventListener('click', async () => {
+    try {
+      const { GoogleAuthProvider, signInWithPopup } = window.__fbLib;
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(fbAuth, provider);
+      modal.classList.remove('open');
+      setTimeout(() => modal.remove(), 200);
+    } catch (ex) {
+      err.textContent = humanizeAuthError(ex);
+    }
+  });
+}
+
+function humanizeAuthError(ex) {
+  const code = ex?.code || '';
+  const map = {
+    'auth/invalid-email': 'メールアドレスの形式が正しくありません',
+    'auth/email-already-in-use': 'このメールアドレスは既に使われています（ログインしてください）',
+    'auth/weak-password': 'パスワードが弱すぎます（6文字以上）',
+    'auth/wrong-password': 'パスワードが違います',
+    'auth/user-not-found': 'このメールアドレスは登録されていません（新規登録してください）',
+    'auth/too-many-requests': 'お試しが多すぎます。しばらくしてから再度お試しください',
+    'auth/popup-closed-by-user': 'Googleログインがキャンセルされました',
+  };
+  return map[code] || `ログインできませんでした (${code || ex.message})`;
+}
+
+async function logout() {
+  if (!FIREBASE_ENABLED || !fbAuth) return;
+  try {
+    const { signOut } = window.__fbLib;
+    await signOut(fbAuth);
+  } catch (e) { console.error(e); }
+}
+
+function updateAccountUI() {
+  const badge = document.getElementById('accountBadge');
+  if (!badge) return;
+  if (currentUser) {
+    const n = currentUser.displayName || currentUser.email?.split('@')[0] || 'ユーザー';
+    badge.innerHTML = `<span class="acc-dot"></span><span class="acc-name">${escapeSmall(n)}</span>`;
+    badge.classList.add('logged-in');
+  } else {
+    badge.innerHTML = `<span class="acc-icon">👤</span><span class="acc-name">ログイン</span>`;
+    badge.classList.remove('logged-in');
+  }
+}
+
+function escapeSmall(s) { return (s || '').replace(/[<>&]/g, ''); }
+
+// アカウントボタン挿入（初回）
+function insertAccountButton() {
+  // 既存のヘッダーに挿入
+  const headerActions = document.querySelector('.app-header') || document.querySelector('header');
+  if (!headerActions || document.getElementById('accountBadge')) return;
+  const btn = document.createElement('button');
+  btn.id = 'accountBadge';
+  btn.className = 'account-badge';
+  btn.innerHTML = `<span class="acc-icon">👤</span><span class="acc-name">ログイン</span>`;
+  btn.addEventListener('click', () => {
+    if (currentUser) {
+      // ログイン中：メニュー
+      openAccountMenu();
+    } else {
+      openLoginModal();
+    }
+  });
+  headerActions.appendChild(btn);
+  updateAccountUI();
+}
+
+function openAccountMenu() {
+  if (!currentUser) return;
+  const modal = document.createElement('div');
+  modal.id = 'authModal';
+  modal.className = 'auth-modal';
+  modal.innerHTML = `
+    <div class="auth-modal-backdrop" data-close></div>
+    <div class="auth-modal-panel auth-modal-menu">
+      <button class="auth-modal-close" data-close>×</button>
+      <div class="auth-head">
+        <div class="auth-title">${escapeSmall(currentUser.displayName || currentUser.email || '')}</div>
+        <div class="auth-sub">全端末でお気に入り・ルーティンが同期されています</div>
+      </div>
+      <div class="auth-menu">
+        <button class="auth-menu-btn" id="authSync">☁ クラウドに今すぐ同期</button>
+        <button class="auth-menu-btn auth-menu-danger" id="authLogout">ログアウト</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  requestAnimationFrame(() => modal.classList.add('open'));
+  modal.querySelectorAll('[data-close]').forEach(el => {
+    el.addEventListener('click', () => {
+      modal.classList.remove('open');
+      setTimeout(() => modal.remove(), 200);
+    });
+  });
+  modal.querySelector('#authSync').addEventListener('click', async () => {
+    await pushToCloud(currentUser);
+    alert('同期しました。');
+  });
+  modal.querySelector('#authLogout').addEventListener('click', async () => {
+    if (!confirm('ログアウトしますか？この端末のお気に入りはそのまま残ります。')) return;
+    await logout();
+    modal.classList.remove('open');
+    setTimeout(() => modal.remove(), 200);
+  });
+}
+
+// 初期化
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => { initFirebase(); insertAccountButton(); });
+} else {
+  initFirebase();
+  insertAccountButton();
+}
