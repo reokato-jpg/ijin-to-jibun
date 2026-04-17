@@ -182,5 +182,21 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Albert_Camus%2C_gagnant_de_prix_Nobel%2C_portrait_en_buste%2C_pos%C3%A9_au_bureau%2C_faisant_face_%C3%A0_gauche%2C_cigarette_de_tabagisme.jpg"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/d/dd/Schultz_dutch_booking.jpg",
-  "coverImageCaption": "ルルマラン墓地"
+  "coverImageCaption": "ルルマラン墓地",
+  "works": [
+    {
+      "title": "シーシュポスの神話 解説",
+      "year": 1942,
+      "type": "著作",
+      "description": "不条理の哲学。『山頂を目指す闘争が人間の心を満たす』。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%A2%E3%83%AB%E3%83%99%E3%83%BC%E3%83%AB%E3%83%BB%E3%82%AB%E3%83%9F%E3%83%A5%20%E3%82%B7%E3%83%BC%E3%82%B7%E3%83%A5%E3%83%9D%E3%82%B9%E3%81%AE%E7%A5%9E%E8%A9%B1%20%E8%A7%A3%E8%AA%AC"
+    },
+    {
+      "title": "異邦人",
+      "year": 1942,
+      "type": "著作",
+      "description": "『ママンが死んだ』不条理文学の金字塔。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%A2%E3%83%AB%E3%83%99%E3%83%BC%E3%83%AB%E3%83%BB%E3%82%AB%E3%83%9F%E3%83%A5%20%E7%95%B0%E9%82%A6%E4%BA%BA"
+    }
+  ]
 }

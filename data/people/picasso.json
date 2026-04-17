@@ -257,5 +257,14 @@
       "url": "https://www.museepicassoparis.fr/",
       "description": "マレ地区のサレ館を改装した、世界最大のピカソコレクション。"
     }
+  ],
+  "works": [
+    {
+      "title": "ゲルニカ 解説",
+      "year": 1937,
+      "type": "絵画",
+      "description": "ナチス空爆への怒りを描いた20世紀美術の象徴。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%91%E3%83%96%E3%83%AD%E3%83%BB%E3%83%94%E3%82%AB%E3%82%BD%20%E3%82%B2%E3%83%AB%E3%83%8B%E3%82%AB%20%E8%A7%A3%E8%AA%AC"
+    }
   ]
 }

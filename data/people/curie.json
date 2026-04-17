@@ -263,5 +263,14 @@
       "url": "https://musee.curie.fr/",
       "description": "マリーが40年働いた研究所を保存した博物館。"
     }
+  ],
+  "works": [
+    {
+      "title": "ラジウムの発見",
+      "year": 1898,
+      "type": "発見",
+      "description": "キュリー夫妻の放射能研究。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%9E%E3%83%AA%E3%83%BC%E3%83%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%BC%20%E3%83%A9%E3%82%B8%E3%82%A6%E3%83%A0%E3%81%AE%E7%99%BA%E8%A6%8B"
+    }
   ]
 }

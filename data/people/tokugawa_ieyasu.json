@@ -280,5 +280,14 @@
       "url": "http://www.toshogu.or.jp/",
       "description": "家康の遺品・刀剣・肖像画を展示。本殿は国宝。"
     }
+  ],
+  "works": [
+    {
+      "title": "関ヶ原の戦い 解説",
+      "year": 1600,
+      "type": "戦",
+      "description": "天下分け目の戦い。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E5%BE%B3%E5%B7%9D%E5%AE%B6%E5%BA%B7%20%E9%96%A2%E3%83%B6%E5%8E%9F%E3%81%AE%E6%88%A6%E3%81%84%20%E8%A7%A3%E8%AA%AC"
+    }
   ]
 }

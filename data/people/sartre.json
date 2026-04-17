@@ -201,5 +201,21 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Flickr_-_Government_Press_Office_%28GPO%29_-_Jean_Paul_Sartre_and_Simone_De_Beauvoir_welcomed_by_Avraham_Shlonsky_and_Leah_Goldberg_%28cropped%29.jpg"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Caf%C3%A9_de_Flore%2C_172_boulevard_Saint-Germain%2C_Paris_6e.jpg/330px-Caf%C3%A9_de_Flore%2C_172_boulevard_Saint-Germain%2C_Paris_6e.jpg",
-  "coverImageCaption": "カフェ・ド・フロール"
+  "coverImageCaption": "カフェ・ド・フロール",
+  "works": [
+    {
+      "title": "実存は本質に先立つ とは",
+      "year": 1945,
+      "type": "思想",
+      "description": "サルトル実存主義の中心命題。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%B8%E3%83%A3%E3%83%B3%EF%BC%9D%E3%83%9D%E3%83%BC%E3%83%AB%E3%83%BB%E3%82%B5%E3%83%AB%E3%83%88%E3%83%AB%20%E5%AE%9F%E5%AD%98%E3%81%AF%E6%9C%AC%E8%B3%AA%E3%81%AB%E5%85%88%E7%AB%8B%E3%81%A4%20%E3%81%A8%E3%81%AF"
+    },
+    {
+      "title": "存在と無 解説",
+      "year": 1943,
+      "type": "著作",
+      "description": "占領下パリで書かれた実存主義の聖典。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%B8%E3%83%A3%E3%83%B3%EF%BC%9D%E3%83%9D%E3%83%BC%E3%83%AB%E3%83%BB%E3%82%B5%E3%83%AB%E3%83%88%E3%83%AB%20%E5%AD%98%E5%9C%A8%E3%81%A8%E7%84%A1%20%E8%A7%A3%E8%AA%AC"
+    }
+  ]
 }

@@ -158,5 +158,14 @@
       "url": "https://www.amazon.co.jp/s?k=%E5%8C%97%E6%96%8E+%E7%A5%9E%E5%A5%88%E5%B7%9D%E6%B2%96%E6%B5%AA%E8%A3%8F",
       "description": "手ぬぐい・クリアファイル・マグカップ・Tシャツなど、浪裏モチーフの定番グッズ多数。"
     }
+  ],
+  "works": [
+    {
+      "title": "神奈川沖浪裏 解説",
+      "year": 1831,
+      "type": "浮世絵",
+      "description": "富嶽三十六景で最も有名な一枚。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E8%91%9B%E9%A3%BE%E5%8C%97%E6%96%8E%20%E7%A5%9E%E5%A5%88%E5%B7%9D%E6%B2%96%E6%B5%AA%E8%A3%8F%20%E8%A7%A3%E8%AA%AC"
+    }
   ]
 }

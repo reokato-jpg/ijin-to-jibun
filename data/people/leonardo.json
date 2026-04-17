@@ -256,5 +256,21 @@
       "url": "https://www.vinci-closluce.com/",
       "description": "ダ・ヴィンチ晩年の館。機械の復元モデルも展示。"
     }
+  ],
+  "works": [
+    {
+      "title": "モナ・リザの謎 解説",
+      "year": 1503,
+      "type": "絵画",
+      "description": "500年続く微笑の秘密。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%AC%E3%82%AA%E3%83%8A%E3%83%AB%E3%83%89%E3%83%BB%E3%83%80%E3%83%BB%E3%83%B4%E3%82%A3%E3%83%B3%E3%83%81%20%E3%83%A2%E3%83%8A%E3%83%BB%E3%83%AA%E3%82%B6%E3%81%AE%E8%AC%8E%20%E8%A7%A3%E8%AA%AC"
+    },
+    {
+      "title": "最後の晩餐 解説",
+      "year": 1495,
+      "type": "絵画",
+      "description": "12使徒の瞬間を捉えた壁画。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%AC%E3%82%AA%E3%83%8A%E3%83%AB%E3%83%89%E3%83%BB%E3%83%80%E3%83%BB%E3%83%B4%E3%82%A3%E3%83%B3%E3%83%81%20%E6%9C%80%E5%BE%8C%E3%81%AE%E6%99%A9%E9%A4%90%20%E8%A7%A3%E8%AA%AC"
+    }
   ]
 }

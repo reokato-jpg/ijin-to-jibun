@@ -222,5 +222,14 @@
     }
   ],
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/AkutagawaRyunosuke.jpg/330px-AkutagawaRyunosuke.jpg",
-  "coverImageCaption": "芥川龍之介記念館"
+  "coverImageCaption": "芥川龍之介記念館",
+  "works": [
+    {
+      "title": "羅生門 解説",
+      "year": 1915,
+      "type": "小説",
+      "description": "芥川のデビュー作。黒澤明『羅生門』の原作。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E8%8A%A5%E5%B7%9D%E9%BE%8D%E4%B9%8B%E4%BB%8B%20%E7%BE%85%E7%94%9F%E9%96%80%20%E8%A7%A3%E8%AA%AC"
+    }
+  ]
 }

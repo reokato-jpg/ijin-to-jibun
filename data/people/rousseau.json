@@ -193,5 +193,21 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Maurice_Quentin_de_La_Tour_-_Portrait_of_Jean-Jacques_Rousseau_-_WGA12360.jpg"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Paris_-_Eiffelturm_und_Marsfeld2.jpg/330px-Paris_-_Eiffelturm_und_Marsfeld2.jpg",
-  "coverImageCaption": "パンテオン"
+  "coverImageCaption": "パンテオン",
+  "works": [
+    {
+      "title": "社会契約論 解説",
+      "year": 1762,
+      "type": "著作",
+      "description": "『人間は自由なものとして生まれた』フランス革命の下地。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%B8%E3%83%A3%E3%83%B3%EF%BC%9D%E3%82%B8%E3%83%A3%E3%83%83%E3%82%AF%E3%83%BB%E3%83%AB%E3%82%BD%E3%83%BC%20%E7%A4%BE%E4%BC%9A%E5%A5%91%E7%B4%84%E8%AB%96%20%E8%A7%A3%E8%AA%AC"
+    },
+    {
+      "title": "エミール",
+      "year": 1762,
+      "type": "著作",
+      "description": "教育論の古典。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%B8%E3%83%A3%E3%83%B3%EF%BC%9D%E3%82%B8%E3%83%A3%E3%83%83%E3%82%AF%E3%83%BB%E3%83%AB%E3%82%BD%E3%83%BC%20%E3%82%A8%E3%83%9F%E3%83%BC%E3%83%AB"
+    }
+  ]
 }

@@ -195,5 +195,14 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Confucius_02.png"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/20230612_Dacheng_Dian%2C_Qufu_Kongmiao.jpg/330px-20230612_Dacheng_Dian%2C_Qufu_Kongmiao.jpg",
-  "coverImageCaption": "孔廟・孔林"
+  "coverImageCaption": "孔廟・孔林",
+  "works": [
+    {
+      "title": "論語 解説",
+      "year": -500,
+      "type": "著作",
+      "description": "『子曰く』で始まる東アジア2500年の倫理書。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E5%AD%94%E5%AD%90%20%E8%AB%96%E8%AA%9E%20%E8%A7%A3%E8%AA%AC"
+    }
+  ]
 }

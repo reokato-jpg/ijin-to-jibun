@@ -272,5 +272,14 @@
       "url": "https://www.google.com/search?q=%E9%BE%8D%E9%A6%AC%E7%94%9F%E8%AA%95%E7%A5%AD",
       "description": "11/15は龍馬誕生日＆命日。高知で盛大に祭りが行われる。"
     }
+  ],
+  "works": [
+    {
+      "title": "坂本龍馬とは",
+      "year": 1867,
+      "type": "歴史",
+      "description": "薩長同盟・大政奉還を成し遂げた男。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E5%9D%82%E6%9C%AC%E9%BE%8D%E9%A6%AC%20%E5%9D%82%E6%9C%AC%E9%BE%8D%E9%A6%AC%E3%81%A8%E3%81%AF"
+    }
   ]
 }

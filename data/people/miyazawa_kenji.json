@@ -248,5 +248,21 @@
       "url": "https://www.google.com/search?q=%E5%AE%AE%E6%B2%A2%E8%B3%A2%E6%B2%BB%E7%A5%AD",
       "description": "賢治の命日周辺に開催。朗読・演奏・講演など。"
     }
+  ],
+  "works": [
+    {
+      "title": "銀河鉄道の夜 解説",
+      "year": 1934,
+      "type": "小説",
+      "description": "未完の童話。『本当のさいはひ』を問う。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E5%AE%AE%E6%B2%A2%E8%B3%A2%E6%B2%BB%20%E9%8A%80%E6%B2%B3%E9%89%84%E9%81%93%E3%81%AE%E5%A4%9C%20%E8%A7%A3%E8%AA%AC"
+    },
+    {
+      "title": "雨ニモマケズ 解説",
+      "year": 1931,
+      "type": "詩",
+      "description": "手帳に書かれた遺作。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E5%AE%AE%E6%B2%A2%E8%B3%A2%E6%B2%BB%20%E9%9B%A8%E3%83%8B%E3%83%A2%E3%83%9E%E3%82%B1%E3%82%BA%20%E8%A7%A3%E8%AA%AC"
+    }
   ]
 }

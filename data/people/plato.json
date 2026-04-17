@@ -171,5 +171,28 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Plato_Pio-Clemetino_Inv305.jpg"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Plato_Pio-Clemetino_Inv305.jpg/330px-Plato_Pio-Clemetino_Inv305.jpg",
-  "coverImageCaption": "アカデメイア跡"
+  "coverImageCaption": "アカデメイア跡",
+  "works": [
+    {
+      "title": "イデア論 解説",
+      "year": -380,
+      "type": "思想",
+      "description": "プラトンの中心思想。現実の奥にある永遠の形相。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%97%E3%83%A9%E3%83%88%E3%83%B3%20%E3%82%A4%E3%83%87%E3%82%A2%E8%AB%96%20%E8%A7%A3%E8%AA%AC"
+    },
+    {
+      "title": "洞窟の比喩",
+      "year": -375,
+      "type": "思想",
+      "description": "『国家』第7巻の有名な比喩。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%97%E3%83%A9%E3%83%88%E3%83%B3%20%E6%B4%9E%E7%AA%9F%E3%81%AE%E6%AF%94%E5%96%A9"
+    },
+    {
+      "title": "国家論",
+      "year": -375,
+      "type": "著作",
+      "description": "哲人王、魂の三分説、理想国家。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%97%E3%83%A9%E3%83%88%E3%83%B3%20%E5%9B%BD%E5%AE%B6%E8%AB%96"
+    }
+  ]
 }

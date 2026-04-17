@@ -167,5 +167,14 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Heidegger_2_%281960%29.jpg"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Heidegger_2_%281960%29.jpg/330px-Heidegger_2_%281960%29.jpg",
-  "coverImageCaption": "トートナウベルクの山小屋"
+  "coverImageCaption": "トートナウベルクの山小屋",
+  "works": [
+    {
+      "title": "存在と時間 解説",
+      "year": 1927,
+      "type": "著作",
+      "description": "20世紀最大の哲学書。死への先駆。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%9E%E3%83%AB%E3%83%86%E3%82%A3%E3%83%B3%E3%83%BB%E3%83%8F%E3%82%A4%E3%83%87%E3%82%AC%E3%83%BC%20%E5%AD%98%E5%9C%A8%E3%81%A8%E6%99%82%E9%96%93%20%E8%A7%A3%E8%AA%AC"
+    }
+  ]
 }

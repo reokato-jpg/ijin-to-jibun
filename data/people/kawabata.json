@@ -197,5 +197,14 @@
     }
   ],
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Old_Amagi_Tunnel.jpg/330px-Old_Amagi_Tunnel.jpg",
-  "coverImageCaption": "伊豆の踊子文学碑"
+  "coverImageCaption": "伊豆の踊子文学碑",
+  "works": [
+    {
+      "title": "雪国 解説",
+      "year": 1948,
+      "type": "小説",
+      "description": "『国境の長いトンネル』から始まる。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E5%B7%9D%E7%AB%AF%E5%BA%B7%E6%88%90%20%E9%9B%AA%E5%9B%BD%20%E8%A7%A3%E8%AA%AC"
+    }
+  ]
 }

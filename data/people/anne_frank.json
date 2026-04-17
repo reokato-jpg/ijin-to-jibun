@@ -153,5 +153,14 @@
       "url": "https://www.annefrank.org/ja/",
       "description": "2年間潜伏した『後ろの家』が当時のまま保存されている。事前予約必須。"
     }
+  ],
+  "works": [
+    {
+      "title": "アンネの日記 解説",
+      "year": 1944,
+      "type": "日記",
+      "description": "隠れ家で書かれた不滅の記録。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%A2%E3%83%B3%E3%83%8D%E3%83%BB%E3%83%95%E3%83%A9%E3%83%B3%E3%82%AF%20%E3%82%A2%E3%83%B3%E3%83%8D%E3%81%AE%E6%97%A5%E8%A8%98%20%E8%A7%A3%E8%AA%AC"
+    }
   ]
 }

@@ -197,5 +197,21 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Arthur_Schopenhauer_by_J_Sch%C3%A4fer%2C_1859b.jpg"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Tabliczka_E40.svg/langja-330px-Tabliczka_E40.svg.png",
-  "coverImageCaption": "ショーペンハウアーアルヒーフ"
+  "coverImageCaption": "ショーペンハウアーアルヒーフ",
+  "works": [
+    {
+      "title": "意志と表象としての世界 解説",
+      "year": 1819,
+      "type": "著作",
+      "description": "世界は表象である、という宣言。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%A2%E3%83%AB%E3%83%88%E3%82%A5%E3%83%AB%E3%83%BB%E3%82%B7%E3%83%A7%E3%83%BC%E3%83%9A%E3%83%B3%E3%83%8F%E3%82%A6%E3%82%A2%E3%83%BC%20%E6%84%8F%E5%BF%97%E3%81%A8%E8%A1%A8%E8%B1%A1%E3%81%A8%E3%81%97%E3%81%A6%E3%81%AE%E4%B8%96%E7%95%8C%20%E8%A7%A3%E8%AA%AC"
+    },
+    {
+      "title": "ショーペンハウアーの幸福論",
+      "year": 1851,
+      "type": "著作",
+      "description": "『余録と補遺』のエッセイ。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%A2%E3%83%AB%E3%83%88%E3%82%A5%E3%83%AB%E3%83%BB%E3%82%B7%E3%83%A7%E3%83%BC%E3%83%9A%E3%83%B3%E3%83%8F%E3%82%A6%E3%82%A2%E3%83%BC%20%E3%82%B7%E3%83%A7%E3%83%BC%E3%83%9A%E3%83%B3%E3%83%8F%E3%82%A6%E3%82%A2%E3%83%BC%E3%81%AE%E5%B9%B8%E7%A6%8F%E8%AB%96"
+    }
+  ]
 }

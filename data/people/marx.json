@@ -214,5 +214,21 @@
     }
   ],
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/British_Museum_%28aerial%29.jpg/330px-British_Museum_%28aerial%29.jpg",
-  "coverImageCaption": "大英博物館閲覧室"
+  "coverImageCaption": "大英博物館閲覧室",
+  "works": [
+    {
+      "title": "資本論 解説",
+      "year": 1867,
+      "type": "著作",
+      "description": "資本主義の運動法則を暴いた大著。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%AB%E3%83%BC%E3%83%AB%E3%83%BB%E3%83%9E%E3%83%AB%E3%82%AF%E3%82%B9%20%E8%B3%87%E6%9C%AC%E8%AB%96%20%E8%A7%A3%E8%AA%AC"
+    },
+    {
+      "title": "共産党宣言",
+      "year": 1848,
+      "type": "著作",
+      "description": "『万国の労働者よ団結せよ』の40ページの小冊子。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%AB%E3%83%BC%E3%83%AB%E3%83%BB%E3%83%9E%E3%83%AB%E3%82%AF%E3%82%B9%20%E5%85%B1%E7%94%A3%E5%85%9A%E5%AE%A3%E8%A8%80"
+    }
+  ]
 }

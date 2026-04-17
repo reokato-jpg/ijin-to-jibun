@@ -339,6 +339,20 @@
       "type": "絵画",
       "description": "最晩年の一枚。自殺の数週間前、死の予感が充満する",
       "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Vincent_van_Gogh_%281853-1890%29_-_Wheat_Field_with_Crows_%281890%29.jpg/500px-Vincent_van_Gogh_%281853-1890%29_-_Wheat_Field_with_Crows_%281890%29.jpg"
+    },
+    {
+      "title": "ゴッホ ひまわり 解説",
+      "year": 1888,
+      "type": "絵画",
+      "description": "アルル時代の代表作。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%95%E3%82%A3%E3%83%B3%E3%82%BB%E3%83%B3%E3%83%88%E3%83%BB%E3%83%95%E3%82%A1%E3%83%B3%E3%83%BB%E3%82%B4%E3%83%83%E3%83%9B%20%E3%82%B4%E3%83%83%E3%83%9B%20%E3%81%B2%E3%81%BE%E3%82%8F%E3%82%8A%20%E8%A7%A3%E8%AA%AC"
+    },
+    {
+      "title": "星月夜 解説",
+      "year": 1889,
+      "type": "絵画",
+      "description": "サン=レミ療養院で描かれた傑作。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%95%E3%82%A3%E3%83%B3%E3%82%BB%E3%83%B3%E3%83%88%E3%83%BB%E3%83%95%E3%82%A1%E3%83%B3%E3%83%BB%E3%82%B4%E3%83%83%E3%83%9B%20%E6%98%9F%E6%9C%88%E5%A4%9C%20%E8%A7%A3%E8%AA%AC"
     }
   ],
   "places": [

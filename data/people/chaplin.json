@@ -210,5 +210,21 @@
       "url": "https://www.chaplinsworld.com/",
       "description": "晩年を過ごした自宅とスタジオを再現。名場面のセットで記念撮影可。"
     }
+  ],
+  "works": [
+    {
+      "title": "モダン・タイムス 解説",
+      "year": 1936,
+      "type": "映画",
+      "description": "機械文明批判の不朽の喜劇。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%81%E3%83%A3%E3%83%BC%E3%83%AB%E3%82%BA%E3%83%BB%E3%83%81%E3%83%A3%E3%83%83%E3%83%97%E3%83%AA%E3%83%B3%20%E3%83%A2%E3%83%80%E3%83%B3%E3%83%BB%E3%82%BF%E3%82%A4%E3%83%A0%E3%82%B9%20%E8%A7%A3%E8%AA%AC"
+    },
+    {
+      "title": "独裁者 ラスト演説",
+      "year": 1940,
+      "type": "映画",
+      "description": "6分間の不滅のスピーチ。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%81%E3%83%A3%E3%83%BC%E3%83%AB%E3%82%BA%E3%83%BB%E3%83%81%E3%83%A3%E3%83%83%E3%83%97%E3%83%AA%E3%83%B3%20%E7%8B%AC%E8%A3%81%E8%80%85%20%E3%83%A9%E3%82%B9%E3%83%88%E6%BC%94%E8%AA%AC"
+    }
   ]
 }

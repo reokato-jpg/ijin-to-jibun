@@ -1313,7 +1313,7 @@ async function showPerson(id) {
     <div class="profile-tab-content" data-ptab="works">
       <div class="works-intro">代表作をピックアップ。タップで${p.works[0].youtubeId ? 'YouTubeで聴く' : p.works[0].imageUrl ? '画像を拡大' : 'Amazonで見る'}。</div>
       <div class="works-list">
-        ${p.works.map(w => {
+        ${[...p.works].sort((a, b) => (a.year || 9999) - (b.year || 9999)).map(w => {
           if (w.youtubeId) {
             const ytUrl = `https://www.youtube.com/watch?v=${w.youtubeId}`;
             const searchQ = encodeURIComponent(`${p.name} ${w.title}`);
@@ -1633,12 +1633,23 @@ async function showPerson(id) {
   });
   bindFavButtons(container, p.id);
 
-  // 作品カード: YouTube / 画像拡大
-  container.querySelectorAll('.work-music').forEach(el => {
-    el.addEventListener('click', () => {
+  // 作品カード: YouTube / 画像拡大（search版は除外、Aタグのまま遷移）
+  container.querySelectorAll('.work-music:not(.work-music-search)').forEach(el => {
+    const thumb = el.querySelector('.work-thumb');
+    if (!thumb) return;
+    thumb.addEventListener('click', (e) => {
+      e.stopPropagation();
       const yt = el.dataset.yt;
       if (!yt) return;
-      el.innerHTML = `<iframe class="work-iframe" src="https://www.youtube.com/embed/${yt}?autoplay=1" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+      const ytUrl = `https://www.youtube.com/watch?v=${yt}`;
+      thumb.innerHTML = `
+        <iframe class="work-iframe" src="https://www.youtube.com/embed/${yt}?autoplay=1&rel=0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+        <a class="work-iframe-fallback" href="${ytUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">再生できない時は YouTube で開く →</a>
+      `;
+    });
+    // ボタンリンクや楽譜ボタンのクリックは別動作
+    el.querySelectorAll('.work-btn, .fav-btn').forEach(b => {
+      b.addEventListener('click', (ev) => ev.stopPropagation());
     });
   });
   // 映像作品カード: YouTubeで予告編再生

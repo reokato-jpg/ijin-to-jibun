@@ -173,5 +173,14 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Buddha_in_Sarnath_Museum_%28Dhammajak_Mutra%29.jpg"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Mahabodhitemple.jpg/330px-Mahabodhitemple.jpg",
-  "coverImageCaption": "ブッダガヤ・マハーボディ寺院"
+  "coverImageCaption": "ブッダガヤ・マハーボディ寺院",
+  "works": [
+    {
+      "title": "仏教の教え 解説",
+      "year": -528,
+      "type": "思想",
+      "description": "四諦・八正道・中道を分かりやすく。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%96%E3%83%83%E3%83%80%EF%BC%88%E9%87%88%E8%BF%A6%EF%BC%89%20%E4%BB%8F%E6%95%99%E3%81%AE%E6%95%99%E3%81%88%20%E8%A7%A3%E8%AA%AC"
+    }
+  ]
 }

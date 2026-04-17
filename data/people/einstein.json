@@ -252,5 +252,21 @@
       "url": "https://www.amazon.co.jp/s?k=%E3%82%A2%E3%82%A4%E3%83%B3%E3%82%B7%E3%83%A5%E3%82%BF%E3%82%A4%E3%83%B3+%E3%82%B0%E3%83%83%E3%82%BA",
       "description": "あの有名な舌を出した写真のTシャツ・マグカップ・ポスターなど。"
     }
+  ],
+  "works": [
+    {
+      "title": "相対性理論 解説",
+      "year": 1905,
+      "type": "理論",
+      "description": "特殊相対論と一般相対論をやさしく。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%A2%E3%83%AB%E3%83%99%E3%83%AB%E3%83%88%E3%83%BB%E3%82%A2%E3%82%A4%E3%83%B3%E3%82%B7%E3%83%A5%E3%82%BF%E3%82%A4%E3%83%B3%20%E7%9B%B8%E5%AF%BE%E6%80%A7%E7%90%86%E8%AB%96%20%E8%A7%A3%E8%AA%AC"
+    },
+    {
+      "title": "E=mc² の意味",
+      "year": 1905,
+      "type": "理論",
+      "description": "質量とエネルギーの等価性。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%A2%E3%83%AB%E3%83%99%E3%83%AB%E3%83%88%E3%83%BB%E3%82%A2%E3%82%A4%E3%83%B3%E3%82%B7%E3%83%A5%E3%82%BF%E3%82%A4%E3%83%B3%20E%3Dmc%C2%B2%20%E3%81%AE%E6%84%8F%E5%91%B3"
+    }
   ]
 }

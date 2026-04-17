@@ -155,5 +155,21 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Alan_Turing_az_1930-as_%C3%A9vekben.jpg"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Bletchley_Park_Mansion.jpg/330px-Bletchley_Park_Mansion.jpg",
-  "coverImageCaption": "ブレッチリー・パーク"
+  "coverImageCaption": "ブレッチリー・パーク",
+  "works": [
+    {
+      "title": "チューリングマシン 解説",
+      "year": 1936,
+      "type": "理論",
+      "description": "計算可能性の数学的定義。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%A2%E3%83%A9%E3%83%B3%E3%83%BB%E3%83%81%E3%83%A5%E3%83%BC%E3%83%AA%E3%83%B3%E3%82%B0%20%E3%83%81%E3%83%A5%E3%83%BC%E3%83%AA%E3%83%B3%E3%82%B0%E3%83%9E%E3%82%B7%E3%83%B3%20%E8%A7%A3%E8%AA%AC"
+    },
+    {
+      "title": "チューリング・テスト",
+      "year": 1950,
+      "type": "理論",
+      "description": "機械は考えられるか？AIの原点。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%A2%E3%83%A9%E3%83%B3%E3%83%BB%E3%83%81%E3%83%A5%E3%83%BC%E3%83%AA%E3%83%B3%E3%82%B0%20%E3%83%81%E3%83%A5%E3%83%BC%E3%83%AA%E3%83%B3%E3%82%B0%E3%83%BB%E3%83%86%E3%82%B9%E3%83%88"
+    }
+  ]
 }

@@ -154,5 +154,21 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Franz_Kafka%2C_1923.jpg"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Franz_Kafka%2C_1923.jpg/330px-Franz_Kafka%2C_1923.jpg",
-  "coverImageCaption": "カフカ博物館"
+  "coverImageCaption": "カフカ博物館",
+  "works": [
+    {
+      "title": "変身 解説",
+      "year": 1915,
+      "type": "小説",
+      "description": "毒虫になった男の物語。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%95%E3%83%A9%E3%83%B3%E3%83%84%E3%83%BB%E3%82%AB%E3%83%95%E3%82%AB%20%E5%A4%89%E8%BA%AB%20%E8%A7%A3%E8%AA%AC"
+    },
+    {
+      "title": "城 解説",
+      "year": 1926,
+      "type": "小説",
+      "description": "辿り着けない城。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%95%E3%83%A9%E3%83%B3%E3%83%84%E3%83%BB%E3%82%AB%E3%83%95%E3%82%AB%20%E5%9F%8E%20%E8%A7%A3%E8%AA%AC"
+    }
+  ]
 }

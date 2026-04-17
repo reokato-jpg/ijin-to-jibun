@@ -205,5 +205,14 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Simone_de_Beauvoir2.png"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Paris_14e_arrondissement_-_cimeti%C3%A8re_du_Montparnasse.JPG/330px-Paris_14e_arrondissement_-_cimeti%C3%A8re_du_Montparnasse.JPG",
-  "coverImageCaption": "モンパルナス墓地"
+  "coverImageCaption": "モンパルナス墓地",
+  "works": [
+    {
+      "title": "第二の性 解説",
+      "year": 1949,
+      "type": "著作",
+      "description": "『人は女に生まれるのではない、女になるのだ』。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%B7%E3%83%A2%E3%83%BC%E3%83%8C%E3%83%BB%E3%83%89%E3%83%BB%E3%83%9C%E3%83%BC%E3%83%B4%E3%82%A9%E3%83%AF%E3%83%BC%E3%83%AB%20%E7%AC%AC%E4%BA%8C%E3%81%AE%E6%80%A7%20%E8%A7%A3%E8%AA%AC"
+    }
+  ]
 }

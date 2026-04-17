@@ -157,5 +157,21 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Portrait_of_Sir_Isaac_Newton%2C_1689_%28brightened%29.jpg"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Google_Street_View_icon.svg/langja-330px-Google_Street_View_icon.svg.png",
-  "coverImageCaption": "ウールスソープ・マナー"
+  "coverImageCaption": "ウールスソープ・マナー",
+  "works": [
+    {
+      "title": "万有引力の法則 解説",
+      "year": 1687,
+      "type": "理論",
+      "description": "『プリンキピア』の核心。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%A2%E3%82%A4%E3%82%B6%E3%83%83%E3%82%AF%E3%83%BB%E3%83%8B%E3%83%A5%E3%83%BC%E3%83%88%E3%83%B3%20%E4%B8%87%E6%9C%89%E5%BC%95%E5%8A%9B%E3%81%AE%E6%B3%95%E5%89%87%20%E8%A7%A3%E8%AA%AC"
+    },
+    {
+      "title": "ニュートン運動の3法則",
+      "year": 1687,
+      "type": "理論",
+      "description": "近代物理学の出発点。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%A2%E3%82%A4%E3%82%B6%E3%83%83%E3%82%AF%E3%83%BB%E3%83%8B%E3%83%A5%E3%83%BC%E3%83%88%E3%83%B3%20%E3%83%8B%E3%83%A5%E3%83%BC%E3%83%88%E3%83%B3%E9%81%8B%E5%8B%95%E3%81%AE3%E6%B3%95%E5%89%87"
+    }
+  ]
 }

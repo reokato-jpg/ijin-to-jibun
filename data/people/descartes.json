@@ -169,5 +169,21 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Frans_Hals_-_Portret_van_Ren%C3%A9_Descartes.jpg"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/6/6a/Gottfried_Wilhelm_von_Leibniz.jpg",
-  "coverImageCaption": "デカルト記念館"
+  "coverImageCaption": "デカルト記念館",
+  "works": [
+    {
+      "title": "我思う、ゆえに我あり 解説",
+      "year": 1637,
+      "type": "思想",
+      "description": "『方法序説』の有名な命題を分かりやすく。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%AB%E3%83%8D%E3%83%BB%E3%83%87%E3%82%AB%E3%83%AB%E3%83%88%20%E6%88%91%E6%80%9D%E3%81%86%E3%80%81%E3%82%86%E3%81%88%E3%81%AB%E6%88%91%E3%81%82%E3%82%8A%20%E8%A7%A3%E8%AA%AC"
+    },
+    {
+      "title": "方法序説",
+      "year": 1637,
+      "type": "著作",
+      "description": "近代哲学の出発点。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%AB%E3%83%8D%E3%83%BB%E3%83%87%E3%82%AB%E3%83%AB%E3%83%88%20%E6%96%B9%E6%B3%95%E5%BA%8F%E8%AA%AC"
+    }
+  ]
 }

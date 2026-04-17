@@ -176,5 +176,21 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Photo_of_Michel_Foucault_on_1970_dustjacket_of_The_Order_of_Things.jpg"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Coll%C3%A8ge_de_France_logo.jpg/330px-Coll%C3%A8ge_de_France_logo.jpg",
-  "coverImageCaption": "コレージュ・ド・フランス"
+  "coverImageCaption": "コレージュ・ド・フランス",
+  "works": [
+    {
+      "title": "監獄の誕生 解説",
+      "year": 1975,
+      "type": "著作",
+      "description": "パノプティコンと規律権力の分析。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%9F%E3%82%B7%E3%82%A7%E3%83%AB%E3%83%BB%E3%83%95%E3%83%BC%E3%82%B3%E3%83%BC%20%E7%9B%A3%E7%8D%84%E3%81%AE%E8%AA%95%E7%94%9F%20%E8%A7%A3%E8%AA%AC"
+    },
+    {
+      "title": "権力とは何か（フーコー）",
+      "year": 1976,
+      "type": "思想",
+      "description": "権力は常に下から来る。",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%9F%E3%82%B7%E3%82%A7%E3%83%AB%E3%83%BB%E3%83%95%E3%83%BC%E3%82%B3%E3%83%BC%20%E6%A8%A9%E5%8A%9B%E3%81%A8%E3%81%AF%E4%BD%95%E3%81%8B%EF%BC%88%E3%83%95%E3%83%BC%E3%82%B3%E3%83%BC%EF%BC%89"
+    }
+  ]
 }
