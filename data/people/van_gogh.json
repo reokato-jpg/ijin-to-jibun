@@ -478,5 +478,7 @@
       "cast": "カーク・ダグラス",
       "description": "クラシックなゴッホ伝記映画の金字塔。"
     }
-  ]
+  ],
+  "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Van_Gogh_Museum.jpg/330px-Van_Gogh_Museum.jpg",
+  "coverImageCaption": "ファン・ゴッホ美術館"
 }

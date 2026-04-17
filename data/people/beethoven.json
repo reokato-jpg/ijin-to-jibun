@@ -268,5 +268,7 @@
       "cast": "ポール・リース",
       "description": "BBC制作の伝記ドラマ。耳が聞こえなくなる過程を丁寧に描く。"
     }
-  ]
+  ],
+  "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Beethoven-Haus.jpg/330px-Beethoven-Haus.jpg",
+  "coverImageCaption": "ベートーヴェン・ハウス（生家）"
 }

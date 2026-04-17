@@ -1388,6 +1388,25 @@ main { flex: 1; overflow-y: auto; background: var(--paper); }
   inset: 0;
   background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.5) 100%);
 }
+.profile-cover-caption {
+  position: absolute;
+  left: 14px;
+  bottom: 10px;
+  z-index: 2;
+  color: #fff;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(4px);
+  padding: 4px 12px;
+  border-radius: 14px;
+  font-size: 11px;
+  font-family: var(--font-jp);
+  letter-spacing: 0.05em;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  max-width: calc(100% - 28px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .profile-header {
   position: relative;
   padding: 0 4px 12px;

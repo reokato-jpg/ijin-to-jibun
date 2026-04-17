@@ -226,5 +226,7 @@
       "type": "歌曲",
       "description": "世界で最も歌われる子守歌"
     }
-  ]
+  ],
+  "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/JohannesBrahms.jpg/330px-JohannesBrahms.jpg",
+  "coverImageCaption": "ブラームス博物館"
 }

@@ -227,5 +227,7 @@
       "type": "室内楽",
       "description": "スターリン賞を受賞した美しい室内楽"
     }
-  ]
+  ],
+  "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Russie_-_Moscou_-_Novodevichy_4.jpg/330px-Russie_-_Moscou_-_Novodevichy_4.jpg",
+  "coverImageCaption": "ノヴォデヴィチ墓地"
 }
