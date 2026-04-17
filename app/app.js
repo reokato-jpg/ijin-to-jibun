@@ -722,6 +722,20 @@ function renderSortFilter() {
   });
 }
 
+// 画面幅が変わった時に本日のおすすめを再描画（6↔3切替）
+if (typeof window !== 'undefined' && !window.__peopleResizeBound) {
+  window.__peopleResizeBound = true;
+  let resizeTimer = null;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      if (typeof renderPeople === 'function' && document.getElementById('peopleList')) {
+        renderPeople(currentSearch || '');
+      }
+    }, 200);
+  });
+}
+
 function renderPeople(filter = '') {
   currentSearch = filter;
   const list = document.getElementById('peopleList');
@@ -734,11 +748,13 @@ function renderPeople(filter = '') {
     if (!q) return true;
     return (p.name + (p.nameEn || '') + p.field + p.country + p.summary).toLowerCase().includes(q);
   });
-  // 無条件（ホーム初期表示）のときは日替わり3人
+  // 無条件（ホーム初期表示）のときは日替わりでピック
+  // HP版（900px以上）なら6人、スマホなら3人
   const isDefault = !q && currentCategory === 'all' && currentEra === 'all';
   if (isDefault) {
     const seed = daySeed();
-    items = items.slice().sort((a, b) => ((hashStr(a.id) ^ seed) >>> 0) - ((hashStr(b.id) ^ seed) >>> 0)).slice(0, 3);
+    const pickCount = (typeof window !== 'undefined' && window.innerWidth >= 900) ? 6 : 3;
+    items = items.slice().sort((a, b) => ((hashStr(a.id) ^ seed) >>> 0) - ((hashStr(b.id) ^ seed) >>> 0)).slice(0, pickCount);
   } else {
     // 並び替え
     items.sort((a, b) => {
