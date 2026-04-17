@@ -1109,6 +1109,7 @@ async function showPerson(id) {
       ${(p.relations && p.relations.length > 0) ? '<button class="profile-tab" data-ptab="relations">人間関係</button>' : ''}
       ${(p.works && p.works.length > 0) ? '<button class="profile-tab" data-ptab="works">代表作</button>' : ''}
       ${(p.media && p.media.length > 0) ? '<button class="profile-tab" data-ptab="media">映画・ドラマ</button>' : ''}
+      <button class="profile-tab" data-ptab="happenings">イベント・グッズ</button>
       ${(p.books && p.books.length > 0) ? '<button class="profile-tab" data-ptab="books">関連本</button>' : ''}
       ${(p.places && p.places.length > 0) ? '<button class="profile-tab" data-ptab="places">聖地巡礼</button>' : ''}
       <button class="profile-tab" data-ptab="letters">手紙</button>
@@ -1332,6 +1333,54 @@ async function showPerson(id) {
       </div>
     </div>
     ` : ''}
+
+    <!-- イベント・グッズタブ -->
+    <div class="profile-tab-content" data-ptab="happenings">
+      ${(p.happenings && p.happenings.length > 0) ? `
+        <p class="happenings-intro">${p.name}の展覧会・イベント・商品など。期間限定のものもあるので公式サイトでご確認を。</p>
+        <div class="happenings-list">
+          ${p.happenings.map(h => {
+            const typeLabel = { exhibition: '🎨 展覧会', concert: '🎵 公演・演奏会', festival: '🎭 フェス・記念祭', goods: '🛍 グッズ', book_fair: '📚 ブックフェア', other: '✨ その他' }[h.type] || '✨ イベント';
+            const searchQ = encodeURIComponent(`${p.name} ${h.title}`);
+            return `
+              <div class="happening-card">
+                <div class="happening-type">${typeLabel}</div>
+                <div class="happening-title">${h.title}</div>
+                ${h.venue ? `<div class="happening-venue">📍 ${h.venue}</div>` : ''}
+                ${h.period ? `<div class="happening-period">📅 ${h.period}</div>` : ''}
+                ${h.description ? `<div class="happening-desc">${h.description}</div>` : ''}
+                <div class="happening-links">
+                  ${h.url ? `<a class="happening-btn happening-btn-main" href="${h.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">公式サイト →</a>` : ''}
+                  <a class="happening-btn" href="https://www.google.com/search?q=${searchQ}" target="_blank" rel="noopener" onclick="event.stopPropagation()">🔎 検索</a>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      ` : `
+        <div class="happenings-empty">
+          <div class="happenings-empty-icon">🎨</div>
+          <p class="happenings-empty-title">${p.name}関連のイベント情報</p>
+          <p class="happenings-empty-text">
+            現在登録されているイベント情報はありません。<br>
+            最新の展覧会・公演・グッズ情報は、以下で探せます。
+          </p>
+          <div class="happenings-empty-links">
+            <a class="happening-btn" href="https://www.google.com/search?q=${encodeURIComponent(p.name + ' 展覧会 2026')}" target="_blank" rel="noopener">🎨 展覧会を探す</a>
+            <a class="happening-btn" href="https://www.google.com/search?q=${encodeURIComponent(p.name + ' イベント')}" target="_blank" rel="noopener">🎭 イベントを探す</a>
+            <a class="happening-btn" href="https://www.google.com/search?q=${encodeURIComponent(p.name + ' グッズ')}" target="_blank" rel="noopener">🛍 グッズを探す</a>
+          </div>
+          <div class="happenings-ad-slot">
+            <div class="ad-slot-badge">AD</div>
+            <div class="ad-slot-main">
+              <div class="ad-slot-title">${p.name}関連の告知募集中</div>
+              <div class="ad-slot-sub">展示会・公演・書籍出版など、この枠でお知らせできます</div>
+              <a class="ad-slot-cta" href="mailto:natsumi.by.piano@gmail.com?subject=『偉人と自分。』${p.name}ページの広告掲載について">お問い合わせ →</a>
+            </div>
+          </div>
+        </div>
+      `}
+    </div>
 
     <!-- 映画・ドラマタブ -->
     ${(p.media && p.media.length > 0) ? `
@@ -2162,7 +2211,10 @@ function openMyRoutineEditor() {
         時間帯ごとに行動を入れていきます。24時間分を埋めてください（空白の時間は自動で休息になります）。
       </div>
       <div class="routine-edit-list" id="routineEditList"></div>
-      <button class="routine-edit-add" id="routineEditAdd">＋ 時間帯を追加</button>
+      <div class="routine-edit-btn-row">
+        <button class="routine-edit-add" id="routineEditAdd">＋ 時間帯を追加</button>
+        <button class="routine-edit-add routine-edit-addcat" id="routineEditAddCat">＋ カテゴリを追加</button>
+      </div>
       <div class="routine-edit-actions">
         <button class="routine-edit-cancel">キャンセル</button>
         <button class="routine-edit-save">保存</button>
@@ -2213,6 +2265,15 @@ function openMyRoutineEditor() {
   overlay.querySelector('#routineEditAdd').addEventListener('click', () => {
     state.push({ start: 12, end: 13, activity: '', cat: 'rest' });
     render();
+  });
+  overlay.querySelector('#routineEditAddCat').addEventListener('click', () => {
+    const label = prompt('新しいカテゴリの名前を入力してください\n（例：執筆、瞑想、ピアノ練習、家事、育児）');
+    if (!label || !label.trim()) return;
+    const colors = ['#7a2e3a', '#3d3a52', '#5e7254', '#b8952e', '#8a6a8a', '#8b5a7a', '#4a6b7a', '#c9633a'];
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    const key = 'custom_' + Date.now();
+    addCustomCat(key, label.trim(), color);
+    render(); // プルダウンに即反映
   });
   const close = () => overlay.remove();
   overlay.querySelector('.routine-edit-close').addEventListener('click', close);

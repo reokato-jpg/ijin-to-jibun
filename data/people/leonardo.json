@@ -238,5 +238,23 @@
     }
   ],
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Vinci%2C_Tuscany.JPG/330px-Vinci%2C_Tuscany.JPG",
-  "coverImageCaption": "レオナルド・ダ・ヴィンチの生家"
+  "coverImageCaption": "レオナルド・ダ・ヴィンチの生家",
+  "happenings": [
+    {
+      "type": "exhibition",
+      "title": "ルーヴル美術館 モナ・リザ",
+      "venue": "フランス・パリ",
+      "period": "通年",
+      "url": "https://www.louvre.fr/",
+      "description": "世界で最も有名な絵画を直接見られる。混雑するので朝一が吉。"
+    },
+    {
+      "type": "exhibition",
+      "title": "クロ・リュセ城",
+      "venue": "フランス・アンボワーズ",
+      "period": "通年",
+      "url": "https://www.vinci-closluce.com/",
+      "description": "ダ・ヴィンチ晩年の館。機械の復元モデルも展示。"
+    }
+  ]
 }

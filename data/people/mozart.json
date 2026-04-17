@@ -281,5 +281,23 @@
     }
   ],
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Wolfgang-amadeus-mozart_1.jpg/330px-Wolfgang-amadeus-mozart_1.jpg",
-  "coverImageCaption": "モーツァルトの生家"
+  "coverImageCaption": "モーツァルトの生家",
+  "happenings": [
+    {
+      "type": "exhibition",
+      "title": "モーツァルトハウス・ウィーン",
+      "venue": "オーストリア・ウィーン",
+      "period": "通年",
+      "url": "https://www.mozarthausvienna.at/",
+      "description": "『フィガロの結婚』を書いた住居が博物館に。"
+    },
+    {
+      "type": "festival",
+      "title": "ザルツブルク音楽祭",
+      "venue": "オーストリア・ザルツブルク",
+      "period": "毎年7月下旬〜8月",
+      "url": "https://www.salzburgerfestspiele.at/",
+      "description": "モーツァルト生誕の地で開かれる世界最高峰の音楽祭。"
+    }
+  ]
 }

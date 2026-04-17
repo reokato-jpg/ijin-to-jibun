@@ -277,5 +277,23 @@
     }
   ],
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Osamu_Dazai.jpg/330px-Osamu_Dazai.jpg",
-  "coverImageCaption": "斜陽館（太宰治記念館）"
+  "coverImageCaption": "斜陽館（太宰治記念館）",
+  "happenings": [
+    {
+      "type": "exhibition",
+      "title": "太宰治記念館 斜陽館",
+      "venue": "青森県五所川原市金木町",
+      "period": "通年",
+      "url": "https://dazai.or.jp/",
+      "description": "生家である旧津島家住宅。国重要文化財。"
+    },
+    {
+      "type": "festival",
+      "title": "桜桃忌",
+      "venue": "東京都三鷹市 禅林寺",
+      "period": "毎年6月19日",
+      "url": "https://www.google.com/search?q=%E6%A1%9C%E6%A1%83%E5%BF%8C",
+      "description": "太宰の誕生日にして遺体発見の日。全国から太宰ファンが集まる命日。"
+    }
+  ]
 }

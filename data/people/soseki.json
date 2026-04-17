@@ -474,5 +474,23 @@
     }
   ],
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Natsume_Soseki_Memorial_Museum_2017-10-08.jpg/330px-Natsume_Soseki_Memorial_Museum_2017-10-08.jpg",
-  "coverImageCaption": "漱石山房記念館"
+  "coverImageCaption": "漱石山房記念館",
+  "happenings": [
+    {
+      "type": "exhibition",
+      "title": "新宿区立 漱石山房記念館",
+      "venue": "東京都新宿区早稲田南町",
+      "period": "通年（月曜休）",
+      "url": "https://soseki-museum.jp/",
+      "description": "最期の日々を過ごした漱石山房を復元。自筆原稿・書簡を多数展示。"
+    },
+    {
+      "type": "exhibition",
+      "title": "東北大学史料館 漱石文庫",
+      "venue": "宮城県仙台市",
+      "period": "通年",
+      "url": "http://www2.archives.tohoku.ac.jp/",
+      "description": "漱石の蔵書・自筆資料を保管する国内最大級のコレクション。"
+    }
+  ]
 }

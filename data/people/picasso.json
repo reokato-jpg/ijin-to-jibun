@@ -239,5 +239,23 @@
     }
   ],
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Pablo_picasso_1.jpg/330px-Pablo_picasso_1.jpg",
-  "coverImageCaption": "ピカソ美術館"
+  "coverImageCaption": "ピカソ美術館",
+  "happenings": [
+    {
+      "type": "exhibition",
+      "title": "ピカソ美術館",
+      "venue": "スペイン・バルセロナ",
+      "period": "通年",
+      "url": "https://www.museupicasso.bcn.cat/",
+      "description": "青年期の作品を多く所蔵する、本人存命中に作られた唯一の美術館。"
+    },
+    {
+      "type": "exhibition",
+      "title": "国立ピカソ美術館",
+      "venue": "フランス・パリ",
+      "period": "通年",
+      "url": "https://www.museepicassoparis.fr/",
+      "description": "マレ地区のサレ館を改装した、世界最大のピカソコレクション。"
+    }
+  ]
 }

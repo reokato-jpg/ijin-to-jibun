@@ -235,5 +235,22 @@
     }
   ],
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Albert_Einstein_Head_cleaned.jpg/330px-Albert_Einstein_Head_cleaned.jpg",
-  "coverImageCaption": "アインシュタインの家"
+  "coverImageCaption": "アインシュタインの家",
+  "happenings": [
+    {
+      "type": "exhibition",
+      "title": "アインシュタイン・ハウス",
+      "venue": "スイス・ベルン",
+      "period": "通年",
+      "url": "https://www.einstein-bern.ch/",
+      "description": "特許庁時代に住み『奇跡の年』の論文を書いたアパート。"
+    },
+    {
+      "type": "goods",
+      "title": "アインシュタイン肖像グッズ",
+      "venue": "ミュージアムショップ・通販",
+      "url": "https://www.amazon.co.jp/s?k=%E3%82%A2%E3%82%A4%E3%83%B3%E3%82%B7%E3%83%A5%E3%82%BF%E3%82%A4%E3%83%B3+%E3%82%B0%E3%83%83%E3%82%BA",
+      "description": "あの有名な舌を出した写真のTシャツ・マグカップ・ポスターなど。"
+    }
+  ]
 }

@@ -200,5 +200,15 @@
     "licenseUrl": "",
     "credit": "Original publication : Magazine Photoplay No. 3, 1922 Immediate sources : this image also found at National Portrait Gallery",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Charlie_Chaplin_portrait_Getty_1739411952.jpg"
-  }
+  },
+  "happenings": [
+    {
+      "type": "exhibition",
+      "title": "チャップリン・ワールド",
+      "venue": "スイス・ヴェヴェイ",
+      "period": "通年",
+      "url": "https://www.chaplinsworld.com/",
+      "description": "晩年を過ごした自宅とスタジオを再現。名場面のセットで記念撮影可。"
+    }
+  ]
 }

@@ -243,5 +243,23 @@
     }
   ],
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/JohannesBrahms.jpg/330px-JohannesBrahms.jpg",
-  "coverImageCaption": "バッハの家（生家）"
+  "coverImageCaption": "バッハの家（生家）",
+  "happenings": [
+    {
+      "type": "exhibition",
+      "title": "バッハ博物館",
+      "venue": "ドイツ・ライプツィヒ",
+      "period": "通年",
+      "url": "https://www.bachmuseumleipzig.de/",
+      "description": "トーマス教会に隣接する世界有数のバッハ研究・展示施設。"
+    },
+    {
+      "type": "festival",
+      "title": "ライプツィヒ・バッハ音楽祭",
+      "venue": "ドイツ・ライプツィヒ",
+      "period": "毎年6月上旬",
+      "url": "https://www.bachfestleipzig.de/",
+      "description": "バッハゆかりの教会で10日間、世界中の演奏家が集う。"
+    }
+  ]
 }

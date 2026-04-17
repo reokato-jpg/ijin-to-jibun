@@ -230,5 +230,23 @@
     }
   ],
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Miyazawa_Kenji.jpg/330px-Miyazawa_Kenji.jpg",
-  "coverImageCaption": "宮沢賢治記念館"
+  "coverImageCaption": "宮沢賢治記念館",
+  "happenings": [
+    {
+      "type": "exhibition",
+      "title": "宮沢賢治記念館",
+      "venue": "岩手県花巻市",
+      "period": "通年",
+      "url": "https://www.city.hanamaki.iwate.jp/kanko/miyazawakenji/",
+      "description": "賢治の科学・音楽・宗教・文学を総合的に展示。"
+    },
+    {
+      "type": "festival",
+      "title": "宮沢賢治祭",
+      "venue": "花巻市",
+      "period": "毎年9月",
+      "url": "https://www.google.com/search?q=%E5%AE%AE%E6%B2%A2%E8%B3%A2%E6%B2%BB%E7%A5%AD",
+      "description": "賢治の命日周辺に開催。朗読・演奏・講演など。"
+    }
+  ]
 }

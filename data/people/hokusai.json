@@ -133,5 +133,30 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Katsushika_Hokusai-Self-Portrait-1839.jpg"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/2018_Sumida_Hokusai_Museum_2.jpg/330px-2018_Sumida_Hokusai_Museum_2.jpg",
-  "coverImageCaption": "すみだ北斎美術館"
+  "coverImageCaption": "すみだ北斎美術館",
+  "happenings": [
+    {
+      "type": "exhibition",
+      "title": "すみだ北斎美術館 常設展",
+      "venue": "東京都墨田区",
+      "period": "通年",
+      "url": "https://hokusai-museum.jp/",
+      "description": "北斎の生涯と作品を年代順に辿る常設展示。浮世絵の精密なレプリカと映像で楽しめる。"
+    },
+    {
+      "type": "exhibition",
+      "title": "北斎館",
+      "venue": "長野県小布施町",
+      "period": "通年",
+      "url": "https://hokusai-kan.com/",
+      "description": "晩年の天井画が見られる小布施町の北斎専門美術館。"
+    },
+    {
+      "type": "goods",
+      "title": "神奈川沖浪裏 グッズ",
+      "venue": "全国ミュージアムショップ・Amazon",
+      "url": "https://www.amazon.co.jp/s?k=%E5%8C%97%E6%96%8E+%E7%A5%9E%E5%A5%88%E5%B7%9D%E6%B2%96%E6%B5%AA%E8%A3%8F",
+      "description": "手ぬぐい・クリアファイル・マグカップ・Tシャツなど、浪裏モチーフの定番グッズ多数。"
+    }
+  ]
 }

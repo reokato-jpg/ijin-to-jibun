@@ -286,5 +286,23 @@
     }
   ],
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Beethoven-Haus.jpg/330px-Beethoven-Haus.jpg",
-  "coverImageCaption": "ベートーヴェン・ハウス（生家）"
+  "coverImageCaption": "ベートーヴェン・ハウス（生家）",
+  "happenings": [
+    {
+      "type": "exhibition",
+      "title": "ベートーヴェン・ハウス",
+      "venue": "ドイツ・ボン",
+      "period": "通年",
+      "url": "https://www.beethoven.de/",
+      "description": "生家博物館。自筆譜・楽器・遺品を展示。"
+    },
+    {
+      "type": "concert",
+      "title": "ベートーヴェン交響曲 演奏会",
+      "venue": "全国ホール・オーケストラ",
+      "period": "年中多数",
+      "url": "https://www.google.com/search?q=%E3%83%99%E3%83%BC%E3%83%88%E3%83%BC%E3%83%B4%E3%82%A7%E3%83%B3+%E4%BA%A4%E9%9F%BF%E6%9B%B2+%E6%BC%94%E5%A5%8F%E4%BC%9A",
+      "description": "特に年末の『第九』は日本の風物詩。"
+    }
+  ]
 }

@@ -480,5 +480,30 @@
     }
   ],
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Van_Gogh_Museum.jpg/330px-Van_Gogh_Museum.jpg",
-  "coverImageCaption": "ファン・ゴッホ美術館"
+  "coverImageCaption": "ファン・ゴッホ美術館",
+  "happenings": [
+    {
+      "type": "exhibition",
+      "title": "ファン・ゴッホ美術館",
+      "venue": "オランダ・アムステルダム",
+      "period": "通年",
+      "url": "https://www.vangoghmuseum.nl/ja",
+      "description": "世界最大のゴッホコレクション。『ひまわり』『アーモンドの花咲く枝』など。"
+    },
+    {
+      "type": "exhibition",
+      "title": "ゴッホ展 巡回",
+      "venue": "日本各地美術館",
+      "period": "不定期開催",
+      "url": "https://www.google.com/search?q=%E3%82%B4%E3%83%83%E3%83%9B%E5%B1%95+2026",
+      "description": "数年に一度、日本で大規模回顧展が開催される。公式サイトやSNSで最新情報を。"
+    },
+    {
+      "type": "goods",
+      "title": "ひまわり モチーフ商品",
+      "venue": "美術館ショップ・ネット通販",
+      "url": "https://www.amazon.co.jp/s?k=%E3%82%B4%E3%83%83%E3%83%9B+%E3%81%B2%E3%81%BE%E3%82%8F%E3%82%8A",
+      "description": "ポスター・マグカップ・Tシャツ・ジグソーパズル。ゴッホの『ひまわり』は最もグッズ化される絵画のひとつ。"
+    }
+  ]
 }

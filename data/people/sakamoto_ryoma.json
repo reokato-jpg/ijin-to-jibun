@@ -254,5 +254,23 @@
     }
   ],
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Sakamoto_Ryoma.jpg/330px-Sakamoto_Ryoma.jpg",
-  "coverImageCaption": "坂本龍馬生誕地"
+  "coverImageCaption": "坂本龍馬生誕地",
+  "happenings": [
+    {
+      "type": "exhibition",
+      "title": "高知県立坂本龍馬記念館",
+      "venue": "高知県高知市浦戸",
+      "period": "通年",
+      "url": "https://ryoma-kinenkan.jp/",
+      "description": "桂浜に面した龍馬専門の博物館。手紙と刀を常設展示。"
+    },
+    {
+      "type": "festival",
+      "title": "龍馬まつり・龍馬生誕祭",
+      "venue": "高知市",
+      "period": "毎年11月中旬",
+      "url": "https://www.google.com/search?q=%E9%BE%8D%E9%A6%AC%E7%94%9F%E8%AA%95%E7%A5%AD",
+      "description": "11/15は龍馬誕生日＆命日。高知で盛大に祭りが行われる。"
+    }
+  ]
 }

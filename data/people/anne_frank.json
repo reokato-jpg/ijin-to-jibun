@@ -143,5 +143,15 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Anne_Frank%2C_1942.jpg"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/AnneFrankMuseum.jpg/330px-AnneFrankMuseum.jpg",
-  "coverImageCaption": "アンネ・フランクの家"
+  "coverImageCaption": "アンネ・フランクの家",
+  "happenings": [
+    {
+      "type": "exhibition",
+      "title": "アンネ・フランクの家",
+      "venue": "オランダ・アムステルダム",
+      "period": "通年（要予約）",
+      "url": "https://www.annefrank.org/ja/",
+      "description": "2年間潜伏した『後ろの家』が当時のまま保存されている。事前予約必須。"
+    }
+  ]
 }

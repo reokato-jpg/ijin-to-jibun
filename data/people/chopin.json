@@ -451,5 +451,31 @@
       "cast": "ヤヌシュ・オレイニチャク",
       "description": "ノアン時代のショパンとサンドを描いた、耽美で濃密な芸術映画。"
     }
+  ],
+  "happenings": [
+    {
+      "type": "exhibition",
+      "title": "ショパン博物館",
+      "venue": "ポーランド・ワルシャワ",
+      "period": "通年",
+      "url": "https://muzeum.nifc.pl/ja/",
+      "description": "自筆譜・手紙・ピアノ・デスマスクを展示する最大のショパン博物館。"
+    },
+    {
+      "type": "festival",
+      "title": "ショパン国際ピアノコンクール",
+      "venue": "ポーランド・ワルシャワ",
+      "period": "5年に1回（次回2025開催予定）",
+      "url": "https://chopincompetition2025.com/",
+      "description": "世界最高峰のピアノコンクール。ショパン没後100年を機に1927年開始。"
+    },
+    {
+      "type": "concert",
+      "title": "ショパンの夕べ／ショパン生誕祭",
+      "venue": "日本各地ホール・サロン",
+      "period": "3月1日（誕生日）周辺",
+      "url": "https://www.google.com/search?q=%E3%82%B7%E3%83%A7%E3%83%91%E3%83%B3%E7%94%9F%E8%AA%95%E7%A5%AD",
+      "description": "毎年3月、世界中でショパン生誕を記念する演奏会が開かれる。"
+    }
   ]
 }

@@ -1955,6 +1955,203 @@ main { flex: 1; overflow-y: auto; background: var(--paper); }
   font-family: var(--font-jp);
 }
 .routine-legend-add:hover { background: var(--wine); color: #fff; }
+
+/* ================ 広告枠（ホーム・人物詳細） ================ */
+.ad-slot {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  border: 2px dashed var(--gold);
+  border-radius: 10px;
+  padding: 16px 18px;
+  background:
+    repeating-linear-gradient(45deg, rgba(184,149,46,0.03) 0px, rgba(184,149,46,0.03) 10px, transparent 10px, transparent 20px),
+    #fffdf6;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.ad-slot:hover {
+  border-color: var(--wine);
+  background:
+    repeating-linear-gradient(45deg, rgba(122,46,58,0.04) 0px, rgba(122,46,58,0.04) 10px, transparent 10px, transparent 20px),
+    #fff8e8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.ad-slot-inner {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+.ad-slot-badge {
+  flex-shrink: 0;
+  background: var(--gold);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-family: var(--font-en);
+}
+.ad-slot-main { flex: 1; min-width: 0; }
+.ad-slot-title {
+  font-family: var(--font-jp);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--wine);
+  margin-bottom: 4px;
+  letter-spacing: 0.05em;
+}
+.ad-slot-sub {
+  font-size: 12px;
+  color: var(--ink-3);
+  font-family: var(--font-jp);
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+.ad-slot-cta {
+  display: inline-block;
+  font-size: 11px;
+  color: var(--wine);
+  font-family: var(--font-jp);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* ================ イベント・グッズ タブ ================ */
+.happenings-intro {
+  color: var(--ink-3);
+  font-size: 12px;
+  margin: 10px 0 14px;
+  text-align: center;
+  font-family: var(--font-jp);
+}
+.happenings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.happening-card {
+  background: #fffdf6;
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--wine);
+  border-radius: 6px;
+  padding: 14px 16px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+}
+.happening-type {
+  font-size: 10px;
+  color: var(--wine);
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  margin-bottom: 4px;
+  font-family: var(--font-jp);
+}
+.happening-title {
+  font-family: var(--font-jp);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.happening-venue, .happening-period {
+  font-size: 12px;
+  color: var(--ink-3);
+  font-family: var(--font-jp);
+  margin-bottom: 2px;
+}
+.happening-desc {
+  font-size: 12px;
+  color: var(--ink-2);
+  font-family: var(--font-jp);
+  line-height: 1.6;
+  margin-top: 6px;
+}
+.happening-links {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+.happening-btn {
+  display: inline-block;
+  padding: 5px 12px;
+  font-size: 11px;
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--ink-2);
+  font-family: var(--font-jp);
+  white-space: nowrap;
+}
+.happening-btn-main {
+  background: var(--wine);
+  color: #fff;
+  border-color: var(--wine);
+  font-weight: 600;
+}
+.happening-btn:hover { background: #fffdf6; }
+.happening-btn-main:hover { background: var(--wine-dark); color: #fff; }
+
+.happenings-empty {
+  text-align: center;
+  padding: 30px 20px;
+  background: #fffdf6;
+  border: 1px dashed var(--rule);
+  border-radius: 8px;
+}
+.happenings-empty-icon { font-size: 42px; margin-bottom: 8px; }
+.happenings-empty-title {
+  font-family: var(--font-jp);
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+.happenings-empty-text {
+  font-size: 12px;
+  color: var(--ink-3);
+  font-family: var(--font-jp);
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+.happenings-empty-links {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+.happenings-ad-slot {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  background: #fff;
+  border: 2px dashed var(--gold);
+  border-radius: 8px;
+  text-align: left;
+  margin-top: 16px;
+}
+
+/* ルーティン編集：時間帯追加・カテゴリ追加ボタン */
+.routine-edit-btn-row {
+  display: flex;
+  gap: 8px;
+  margin: 10px 0;
+}
+.routine-edit-btn-row .routine-edit-add { flex: 1; margin: 0; }
+.routine-edit-addcat {
+  background: transparent !important;
+  color: var(--gold) !important;
+  border: 1px dashed var(--gold) !important;
+}
+.routine-edit-addcat:hover {
+  background: var(--gold) !important;
+  color: #fff !important;
+}
 /* ルーティンカード */
 .routine-card {
   position: relative;

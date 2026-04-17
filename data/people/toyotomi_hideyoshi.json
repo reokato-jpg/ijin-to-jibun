@@ -256,5 +256,23 @@
     }
   ],
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Nakamurakouen1.JPG/330px-Nakamurakouen1.JPG",
-  "coverImageCaption": "中村公園"
+  "coverImageCaption": "中村公園",
+  "happenings": [
+    {
+      "type": "exhibition",
+      "title": "大阪城天守閣",
+      "venue": "大阪府大阪市中央区",
+      "period": "通年",
+      "url": "https://www.osakacastle.net/",
+      "description": "秀吉の築いた天下の城。内部は博物館で展示も充実。"
+    },
+    {
+      "type": "festival",
+      "title": "豊国神社 例大祭",
+      "venue": "京都市東山区",
+      "period": "毎年9月18日",
+      "url": "https://www.google.com/search?q=%E8%B1%8A%E5%9B%BD%E7%A5%9E%E7%A4%BE+%E4%BE%8B%E5%A4%A7%E7%A5%AD",
+      "description": "秀吉の命日に行われる、豊国神社最大の祭典。"
+    }
+  ]
 }

@@ -253,5 +253,15 @@
     }
   ],
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Marie_Curie_c._1920s.jpg/330px-Marie_Curie_c._1920s.jpg",
-  "coverImageCaption": "キュリー博物館"
+  "coverImageCaption": "キュリー博物館",
+  "happenings": [
+    {
+      "type": "exhibition",
+      "title": "キュリー博物館",
+      "venue": "フランス・パリ",
+      "period": "火〜土（無料）",
+      "url": "https://musee.curie.fr/",
+      "description": "マリーが40年働いた研究所を保存した博物館。"
+    }
+  ]
 }
