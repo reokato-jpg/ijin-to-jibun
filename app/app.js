@@ -1346,6 +1346,32 @@ async function showPerson(id) {
               </div>
             `;
           }
+          // YouTube動画IDがなくても、検索URLがあれば再生可能なカードにする
+          if (w.youtubeSearchUrl || /作曲家|ピアニスト|音楽|指揮者/.test(p.field || '')) {
+            const searchQ = encodeURIComponent(`${p.name} ${w.title}`);
+            const ytSearch = w.youtubeSearchUrl || `https://www.youtube.com/results?search_query=${searchQ}`;
+            return `
+              <a class="work-card work-music work-music-search" href="${ytSearch}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+                ${favWorkBtn(p.id, w)}
+                <div class="work-thumb work-thumb-placeholder">
+                  <div class="work-play">🔎</div>
+                  <div class="work-thumb-label">YouTube で探す</div>
+                </div>
+                <div class="work-info">
+                  <div class="work-type">${w.type} · ${w.year}</div>
+                  <div class="work-title">${w.title}</div>
+                  <div class="work-desc">${w.description || ''}</div>
+                  <div class="work-links">
+                    <span class="work-btn work-btn-yt">
+                      <span class="work-btn-icon">▶</span> 演奏を探す
+                    </span>
+                    ${w.imslpUrl ? `<span class="work-btn work-btn-imslp">♫ IMSLP楽譜</span>` : ''}
+                    ${w.musescoreUrl ? `<span class="work-btn work-btn-musescore">🎼 Musescore</span>` : ''}
+                  </div>
+                </div>
+              </a>
+            `;
+          }
           // asin（本）
           const url = w.asin ? `https://www.amazon.co.jp/dp/${w.asin}` : '#';
           const cover = w.asin ? `https://images-na.ssl-images-amazon.com/images/P/${w.asin}.09.LZZZZZZZ.jpg` : '';
