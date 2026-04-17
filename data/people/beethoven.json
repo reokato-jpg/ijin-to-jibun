@@ -39,6 +39,16 @@
       ]
     },
     {
+      "year": 1795,
+      "age": 24,
+      "title": "ウィーンで公開ピアニストデビュー",
+      "detail": "自作の協奏曲第2番。即興演奏でモーツァルトを超えたと評された。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
       "year": 1798,
       "age": 28,
       "title": "難聴の最初の症状",
@@ -84,6 +94,16 @@
       "tags": [
         "heartbreak",
         "isolation"
+      ]
+    },
+    {
+      "year": 1816,
+      "age": 45,
+      "title": "甥カールの後見人に、養子訴訟",
+      "detail": "兄カスパールの死後、甥の後見を巡り義姉と法廷闘争。晩年の創作を大きく消耗させた。",
+      "tags": [
+        "heartbreak",
+        "parent_conflict"
       ]
     },
     {
