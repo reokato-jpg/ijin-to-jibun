@@ -2779,38 +2779,70 @@ main { flex: 1; overflow-y: auto; background: var(--paper); }
 .mood-ai-more {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   width: 100%;
-  padding: 14px 18px;
-  margin-top: 14px;
-  background: linear-gradient(135deg, #4a1822 0%, #7a2e3a 80%);
-  color: var(--gold-light);
-  border: 1px solid var(--gold);
-  border-radius: 10px;
+  padding: 18px 22px;
+  margin-top: 18px;
+  background: #fffdf6;
+  color: var(--ink);
+  border: 2px solid var(--wine);
+  border-radius: 12px;
   cursor: pointer;
   font-family: var(--font-jp);
   text-align: left;
-  transition: all 0.15s;
-  box-shadow: 0 2px 8px rgba(122,46,58,0.2);
+  transition: all 0.18s;
+  position: relative;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
 }
-.mood-ai-more:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(122,46,58,0.35); }
-.mood-ai-icon { font-size: 22px; flex-shrink: 0; }
-.mood-ai-texts { flex: 1; display: flex; flex-direction: column; }
+.mood-ai-more::before {
+  content: 'NEW';
+  position: absolute;
+  top: -10px;
+  right: 16px;
+  background: var(--gold);
+  color: #fff;
+  font-family: var(--font-en);
+  font-size: 10px;
+  font-weight: 900;
+  padding: 3px 10px;
+  border-radius: 10px;
+  letter-spacing: 0.1em;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+.mood-ai-more:hover {
+  background: var(--wine);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(122,46,58,0.3);
+}
+.mood-ai-more:hover .mood-ai-title,
+.mood-ai-more:hover .mood-ai-arrow { color: #fff; }
+.mood-ai-more:hover .mood-ai-sub { color: rgba(255,240,220,0.85); }
+
+.mood-ai-icon {
+  font-size: 32px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1));
+}
+.mood-ai-texts { flex: 1; display: flex; flex-direction: column; min-width: 0; }
 .mood-ai-title {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 700;
   letter-spacing: 0.05em;
-  color: var(--gold-light);
+  color: var(--wine);
+  line-height: 1.4;
+  margin-bottom: 4px;
 }
 .mood-ai-sub {
-  font-size: 10px;
-  color: rgba(255,240,200,0.75);
-  margin-top: 2px;
+  font-size: 11px;
+  color: var(--ink-3);
+  line-height: 1.5;
 }
 .mood-ai-arrow {
-  font-size: 18px;
-  color: var(--gold-light);
+  font-size: 20px;
+  color: var(--wine);
   flex-shrink: 0;
+  font-weight: 700;
 }
 
 /* 感情の本棚の説明文 */

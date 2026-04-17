@@ -676,6 +676,31 @@ function renderHomeBooks() {
   `).join('');
 }
 
+// ====================== IMSLP楽譜URL生成ヘルパー ======================
+// タイトルに含まれる作品番号（BWV, Op., K., D., HWV）を抽出してIMSLP検索へ
+function buildImslpUrl(person, work) {
+  const title = (work && work.title) || '';
+  // BWV 1007 / Op.23 / K.525 / D.759 / HWV 56 / Op.10-12 / RV425
+  const m = title.match(/(BWV|WoO|Op\.?|作品|K\.|KV|D\.|HWV|RV)\s*\.?\s*([0-9０-９]+(?:[-–]\d+)?)/i);
+  if (m) {
+    const cat = m[1].replace('作品', 'Op.');
+    const num = m[2].replace(/[０-９]/g, d => '０１２３４５６７８９'.indexOf(d));
+    const q = encodeURIComponent(`${cat} ${num}`);
+    return `https://imslp.org/index.php?search=${q}&title=Special%3ASearch&go=Go`;
+  }
+  // 作品番号が無ければ、作曲家のIMSLPカテゴリページへ
+  const nameEn = (person.nameEn || '').trim();
+  if (nameEn) {
+    // "Frédéric Chopin" → "Chopin%2C_Frédéric"
+    const parts = nameEn.split(' ');
+    const family = parts[parts.length - 1];
+    const given = parts.slice(0, -1).join(' ');
+    const cat = encodeURIComponent(`Category:${family},_${given}`);
+    return `https://imslp.org/wiki/${cat}`;
+  }
+  return `https://imslp.org/wiki/Main_Page`;
+}
+
 // ====================== 人物一覧 ======================
 function renderCategoryFilter() {
   const bar = document.getElementById('categoryFilter');
@@ -1318,6 +1343,7 @@ async function showPerson(id) {
             const ytUrl = `https://www.youtube.com/watch?v=${w.youtubeId}`;
             const searchQ = encodeURIComponent(`${p.name} ${w.title}`);
             const ytSearch = w.youtubeSearchUrl || `https://www.youtube.com/results?search_query=${searchQ}`;
+            const betterImslp = buildImslpUrl(p, w);
             return `
               <div class="work-card work-music" data-yt="${w.youtubeId}" data-search="${ytSearch}">
                 ${favWorkBtn(p.id, w)}
@@ -1335,9 +1361,9 @@ async function showPerson(id) {
                     <a class="work-btn work-btn-search" href="${ytSearch}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
                       <span class="work-btn-icon">🔎</span> 他の演奏
                     </a>
-                    ${w.imslpUrl ? `
-                      <a class="work-btn work-btn-imslp" href="${w.imslpUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-                        <span class="work-btn-icon">♫</span> IMSLP楽譜
+                    ${betterImslp ? `
+                      <a class="work-btn work-btn-imslp" href="${betterImslp}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+                        <span class="work-btn-icon">♫</span> 楽譜
                       </a>
                     ` : ''}
                     ${w.musescoreUrl ? `
@@ -1364,29 +1390,30 @@ async function showPerson(id) {
             `;
           }
           // YouTube動画IDがなくても、検索URLがあれば再生可能なカードにする
-          if (w.youtubeSearchUrl || /作曲家|ピアニスト|音楽|指揮者/.test(p.field || '')) {
+          if (w.youtubeSearchUrl || /作曲家|ピアニスト|音楽|指揮者|哲学|作家|小説家|科学|画家|武士|政治|軍人|戦国|幕末|維新/.test(p.field || '')) {
             const searchQ = encodeURIComponent(`${p.name} ${w.title}`);
             const ytSearch = w.youtubeSearchUrl || `https://www.youtube.com/results?search_query=${searchQ}`;
+            const isMusic = /作曲家|ピアニスト|音楽|指揮者/.test(p.field || '');
+            const betterImslp = isMusic ? buildImslpUrl(p, w) : '';
             return `
-              <a class="work-card work-music work-music-search" href="${ytSearch}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+              <div class="work-card work-music work-music-search">
                 ${favWorkBtn(p.id, w)}
-                <div class="work-thumb work-thumb-placeholder">
+                <a class="work-thumb work-thumb-placeholder" href="${ytSearch}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
                   <div class="work-play">🔎</div>
                   <div class="work-thumb-label">YouTube で探す</div>
-                </div>
+                </a>
                 <div class="work-info">
-                  <div class="work-type">${w.type} · ${w.year}</div>
+                  <div class="work-type">${w.type}${w.year ? ` · ${w.year}` : ''}</div>
                   <div class="work-title">${w.title}</div>
                   <div class="work-desc">${w.description || ''}</div>
                   <div class="work-links">
-                    <span class="work-btn work-btn-yt">
-                      <span class="work-btn-icon">▶</span> 演奏を探す
-                    </span>
-                    ${w.imslpUrl ? `<span class="work-btn work-btn-imslp">♫ IMSLP楽譜</span>` : ''}
-                    ${w.musescoreUrl ? `<span class="work-btn work-btn-musescore">🎼 Musescore</span>` : ''}
+                    <a class="work-btn work-btn-yt" href="${ytSearch}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+                      <span class="work-btn-icon">▶</span> ${isMusic ? '演奏を探す' : '解説動画を探す'}
+                    </a>
+                    ${betterImslp ? `<a class="work-btn work-btn-imslp" href="${betterImslp}" target="_blank" rel="noopener" onclick="event.stopPropagation()">♫ 楽譜</a>` : ''}
                   </div>
                 </div>
-              </a>
+              </div>
             `;
           }
           // asin（本）
