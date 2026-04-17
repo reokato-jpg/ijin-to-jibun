@@ -1412,18 +1412,97 @@ main { flex: 1; overflow-y: auto; background: var(--paper); }
 
 /* ================ 人物詳細（SNSプロフィール風） ================ */
 .profile-cover {
-  height: 120px;
+  height: 180px;
   background-size: cover;
   background-position: center 20%;
   position: relative;
   margin: -16px -16px 0;
   border-radius: 0;
+  overflow: hidden;
 }
-.profile-cover::after {
+/* 画像モード時のオーバーレイ（旧仕様用・未使用） */
+.profile-cover:not(.profile-cover-typo)::after {
   content: '';
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.5) 100%);
+}
+/* 名前を主役にしたタイポグラフィ版カバー */
+.profile-cover-typo {
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(184,149,46,0.15) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 90%, rgba(74,24,34,0.4) 0%, transparent 70%),
+    linear-gradient(135deg, #3a0f18 0%, #4a1822 40%, #2a0810 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.profile-cover-typo::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(45deg, rgba(184,149,46,0.04) 0px, rgba(184,149,46,0.04) 1px, transparent 1px, transparent 40px),
+    repeating-linear-gradient(-45deg, rgba(184,149,46,0.04) 0px, rgba(184,149,46,0.04) 1px, transparent 1px, transparent 40px);
+  pointer-events: none;
+}
+.profile-cover-frame {
+  position: relative;
+  text-align: center;
+  color: var(--gold-light);
+  padding: 14px 30px;
+  border-top: 1px solid rgba(184,149,46,0.35);
+  border-bottom: 1px solid rgba(184,149,46,0.35);
+  max-width: 90%;
+}
+.profile-cover-orn-top,
+.profile-cover-orn-bot {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  color: rgba(184,149,46,0.7);
+  letter-spacing: 0.4em;
+  background: linear-gradient(135deg, #3a0f18, #4a1822);
+  padding: 0 10px;
+  font-family: var(--font-en);
+}
+.profile-cover-orn-top { top: -7px; }
+.profile-cover-orn-bot { bottom: -7px; }
+.profile-cover-name {
+  font-family: var(--font-jp);
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  color: var(--gold-light);
+  text-shadow: 0 2px 4px rgba(0,0,0,0.6), 0 0 20px rgba(184,149,46,0.2);
+  line-height: 1.2;
+  padding: 8px 0 4px;
+}
+.profile-cover-name-en {
+  font-family: var(--font-en);
+  font-style: italic;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: rgba(245,222,179,0.7);
+  margin-top: 2px;
+}
+.profile-cover-dates {
+  font-family: var(--font-en);
+  font-size: 11px;
+  color: rgba(245,222,179,0.55);
+  letter-spacing: 0.2em;
+  margin-top: 4px;
+}
+@media (min-width: 900px) {
+  .profile-cover-name { font-size: 44px; letter-spacing: 0.25em; }
+  .profile-cover-name-en { font-size: 16px; }
+  .profile-cover-dates { font-size: 13px; }
+  .profile-cover-frame { padding: 18px 48px; }
+}
+@media (max-width: 420px) {
+  .profile-cover-name { font-size: 24px; letter-spacing: 0.15em; }
 }
 .profile-cover-caption {
   position: absolute;

@@ -1079,9 +1079,15 @@ async function showPerson(id) {
   const streamHtml = stream.map(s => s.html).join('');
 
   const html = `
-    <!-- カバー画像 -->
-    <div class="profile-cover" style="background-image:url('${p.coverImage || p.imageUrl || ''}')">
-      ${p.coverImageCaption ? `<div class="profile-cover-caption">📍 ${p.coverImageCaption}</div>` : ''}
+    <!-- カバー：名前を主役にした扉絵風 -->
+    <div class="profile-cover profile-cover-typo">
+      <div class="profile-cover-frame">
+        <div class="profile-cover-orn-top">❦ ── ◆ ── ❦</div>
+        <div class="profile-cover-name">${p.name}</div>
+        ${p.nameEn ? `<div class="profile-cover-name-en">${p.nameEn}</div>` : ''}
+        <div class="profile-cover-dates">${p.birth || '?'} — ${p.death || ''}</div>
+        <div class="profile-cover-orn-bot">❦ ── ◆ ── ❦</div>
+      </div>
     </div>
 
     <!-- プロフィールヘッダー -->
