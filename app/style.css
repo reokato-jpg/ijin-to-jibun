@@ -2819,6 +2819,44 @@ main { flex: 1; overflow-y: auto; background: var(--paper); }
   background: rgba(224,36,94,0.08);
 }
 .letter-card { position: relative; }
+
+/* ================ わたしの本 扉絵のインク瓶・万年筆 ================ */
+.open-page-left { position: relative; overflow: hidden; }
+.book-ornament {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.85;
+  filter: drop-shadow(2px 3px 4px rgba(0,0,0,0.2));
+}
+.book-ink {
+  width: 48px;
+  height: 48px;
+  left: 18px;
+  bottom: 28px;
+  transform: rotate(-6deg);
+}
+.book-pen {
+  width: 110px;
+  height: auto;
+  right: -12px;
+  top: 52px;
+  transform: rotate(18deg);
+}
+/* インクのしみ（万年筆の下に小さな点） */
+.book-pen::after {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 42px;
+  width: 4px;
+  height: 4px;
+  background: radial-gradient(circle, #4a1822 20%, transparent 70%);
+  border-radius: 50%;
+}
+@media (max-width: 520px) {
+  .book-ink { width: 36px; height: 36px; left: 10px; bottom: 18px; }
+  .book-pen { width: 80px; right: -8px; top: 32px; }
+}
 /* 旧LINE風スタイルの無効化 */
 .profile-feed.line-chat { background: transparent !important; padding: 0 !important; }
 .line-msg, .line-bubble, .line-date, .line-msg-avatar { display: none !important; }
