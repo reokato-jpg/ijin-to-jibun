@@ -1039,10 +1039,21 @@ async function showPerson(id) {
   });
   (p.books || []).forEach(b => {
     const cover = b.asin ? amazonCover(b.asin) : '';
-    const link = b.asin ? `<a class="x-post-embed-link" href="${amazonUrl(b.asin)}" target="_blank" rel="noopener">📖 Amazonで見る</a>` : '';
+    const amazon = b.asin ? amazonUrl(b.asin) : '';
+    const bookExtra = `
+      <div class="x-book-card">
+        ${cover ? `<a class="x-book-cover" href="${amazon}" target="_blank" rel="noopener" style="background-image:url('${cover}')" onclick="event.stopPropagation()"></a>` : ''}
+        <div class="x-book-info">
+          <div class="x-book-title">${b.title}</div>
+          <div class="x-book-author">${b.author || ''}</div>
+          ${b.description ? `<div class="x-book-desc">${b.description}</div>` : ''}
+          ${amazon ? `<a class="x-book-amazon" href="${amazon}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Amazonで見る</a>` : ''}
+        </div>
+      </div>
+    `;
     stream.push({ sortYear: 99999, sortPri: 6, html: xPostCard({
       icon: 'book', typeLabel: '📘 関連本',
-      title: b.title, body: b.description || `${b.author}`, image: cover, extra: link
+      title: null, body: null, extra: bookExtra
     })});
   });
   // アクセスごとにランダムシャッフル（Fisher-Yates）
