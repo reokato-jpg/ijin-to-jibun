@@ -1,0 +1,214 @@
+{
+  "id": "stravinsky",
+  "name": "イーゴリ・ストラヴィンスキー",
+  "nameEn": "Igor Stravinsky",
+  "birth": 1882,
+  "death": 1971,
+  "country": "ロシア → スイス → フランス → アメリカ",
+  "field": "作曲家",
+  "summary": "『春の祭典』で音楽史に衝撃を与え、89年の生涯で古典主義・新古典主義・十二音技法と作風を変え続けた20世紀音楽の巨人。2度の亡命。",
+  "events": [
+    {
+      "year": 1882,
+      "age": 0,
+      "title": "ペテルブルク郊外に誕生",
+      "detail": "父はマリインスキー劇場のバス歌手。法律を学んだ後音楽へ。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1882,
+      "age": 0,
+      "title": "サンクトペテルブルク近郊オラニエンバウムに誕生",
+      "detail": "父はマリインスキー劇場のバス歌手。音楽より法律を学ばされた。",
+      "tags": []
+    },
+    {
+      "year": 1902,
+      "age": 20,
+      "title": "リムスキー＝コルサコフの弟子に",
+      "detail": "法学部から一転、22歳で本格的に作曲を学ぶ遅いスタート。",
+      "tags": [
+        "restart",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1910,
+      "age": 28,
+      "title": "ディアギレフのバレエ・リュスで『火の鳥』初演",
+      "detail": "パリで一夜にして世界的スターに。以後20年ディアギレフと組む。",
+      "tags": [
+        "breakthrough",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1913,
+      "age": 30,
+      "title": "『春の祭典』パリ初演で大暴動",
+      "detail": "シャンゼリゼ劇場で観客が怒号し殴り合い。音楽史最大のスキャンダル。",
+      "tags": [
+        "breakthrough",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1913,
+      "age": 30,
+      "title": "『春の祭典』初演、音楽史上最大のスキャンダル",
+      "detail": "シャンゼリゼ劇場で殴り合いの大騒動。警察が出動。近代音楽の夜明けとなった。",
+      "tags": [
+        "breakthrough",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1914,
+      "age": 31,
+      "title": "革命で祖国を失う",
+      "detail": "スイスへ避難、以後二度とロシアに帰らない。",
+      "tags": [
+        "loss",
+        "escape"
+      ]
+    },
+    {
+      "year": 1917,
+      "age": 35,
+      "title": "ロシア革命で祖国と全財産を失う",
+      "detail": "領地も銀行口座も没収。以後二度と革命ロシアには戻らなかった。",
+      "tags": [
+        "loss",
+        "restart",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1920,
+      "age": 38,
+      "title": "新古典主義へ転回",
+      "detail": "『プルチネッラ』でバロック音楽を現代的に再生。『春の祭典』の革命児が古典へ。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1939,
+      "age": 57,
+      "title": "アメリカへ亡命",
+      "detail": "ハリウッドに定住。英語を学び直し、最後の作風転換へ。",
+      "tags": [
+        "restart",
+        "self_reinvention"
+      ]
+    },
+    {
+      "year": 1939,
+      "age": 57,
+      "title": "妻と娘、母を結核で相次ぎ失う",
+      "detail": "10年来の愛人ヴェラと結婚、同年アメリカへ移住。",
+      "tags": [
+        "loss",
+        "restart"
+      ]
+    },
+    {
+      "year": 1951,
+      "age": 69,
+      "title": "オペラ『放蕩者のなりゆき』",
+      "detail": "新古典主義の総決算。ホガースの銅版画から。",
+      "tags": []
+    },
+    {
+      "year": 1952,
+      "age": 70,
+      "title": "12音技法に転向、60代で作風を3度目に刷新",
+      "detail": "シェーンベルクの死後、最も批判していた技法を習得。最後まで実験を止めなかった。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1971,
+      "age": 88,
+      "title": "ニューヨークで死去",
+      "detail": "遺体はベネチアのセルゲイ・ディアギレフの隣に埋葬された。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "良い作曲家は模倣しない。盗む。",
+      "source": "インタビュー"
+    },
+    {
+      "text": "優れた作曲家は模倣せず、盗む。",
+      "source": "ストラヴィンスキーの言葉"
+    },
+    {
+      "text": "私の音楽は私である。私は音楽以外の何者でもない。",
+      "source": "自伝"
+    },
+    {
+      "text": "音楽は何も表現しない。ただ存在するだけだ。",
+      "source": "『音楽詩学』"
+    }
+  ],
+  "places": [
+    {
+      "name": "サン・ミケーレ島",
+      "location": "イタリア・ベネチア",
+      "note": "ディアギレフと並ぶ墓"
+    }
+  ],
+  "books": [
+    {
+      "title": "ストラヴィンスキー自伝",
+      "author": "ストラヴィンスキー",
+      "asin": "4560081328",
+      "description": "本人が語る自分の20世紀"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Igor_Stravinsky_LOC_32392u.jpg/500px-Igor_Stravinsky_LOC_32392u.jpg",
+  "wikiTitle": "イーゴリ・ストラヴィンスキー",
+  "imageCredit": {
+    "artist": "George Grantham Bain Collection",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "This image is available from the United States Library of Congress 's Prints and Photographs division under the digital ID ggbain.32392 . This tag does not indicate the copyright status of the attached work. A normal copyright tag is still required. See Commons:Licensing .",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Igor_Stravinsky_LOC_32392u.jpg"
+  },
+  "works": [
+    {
+      "title": "バレエ『春の祭典』",
+      "year": 1913,
+      "type": "バレエ",
+      "description": "近代音楽の夜明け。初演は大暴動",
+      "youtubeId": "EkwqPJZe8ms"
+    },
+    {
+      "title": "バレエ『火の鳥』",
+      "year": 1910,
+      "type": "バレエ",
+      "description": "一夜でパリの寵児となった処女バレエ",
+      "youtubeId": "pXMGK8dvMnQ"
+    },
+    {
+      "title": "バレエ『ペトルーシュカ』",
+      "year": 1911,
+      "type": "バレエ",
+      "description": "謝肉祭を舞台にした人形劇",
+      "youtubeId": "6GqJLTeGZI0"
+    },
+    {
+      "title": "兵士の物語",
+      "year": 1918,
+      "type": "室内楽劇",
+      "description": "悪魔と兵士の寓話。7人の奏者で上演できる小規模舞台作"
+    }
+  ]
+}

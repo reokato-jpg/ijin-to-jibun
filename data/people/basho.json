@@ -1,0 +1,160 @@
+{
+  "id": "basho",
+  "name": "松尾芭蕉",
+  "nameEn": "Matsuo Bashō",
+  "birth": 1644,
+  "death": 1694,
+  "country": "日本（江戸）",
+  "field": "俳人",
+  "summary": "『奥の細道』で俳諧を文学の高みへと引き上げた俳聖。伊賀の武士の家から江戸へ出て、旅を栖(すみか)とし、風雅の誠を極めた。『月日は百代の過客にして、行き交ふ年も又旅人なり』",
+  "events": [
+    {
+      "year": 1644,
+      "age": 0,
+      "title": "伊賀上野の郷士松尾与左衛門の次男として誕生",
+      "detail": "幼名・金作、後の甚七郎。",
+      "tags": []
+    },
+    {
+      "year": 1662,
+      "age": 18,
+      "title": "藤堂藩の嫡子・良忠に仕え俳諧を始める",
+      "detail": "若き主君と句を詠む生活。良忠の突然の死で浪人に。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1666,
+      "age": 22,
+      "title": "主君・藤堂良忠の死",
+      "detail": "遺髪を高野山に納めた後、芭蕉は江戸へ出る決意を固める。",
+      "tags": [
+        "loss",
+        "restart"
+      ]
+    },
+    {
+      "year": 1672,
+      "age": 28,
+      "title": "江戸へ",
+      "detail": "水道工事の事務、俳諧宗匠として生計を立てる。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1680,
+      "age": 36,
+      "title": "深川に芭蕉庵を結ぶ",
+      "detail": "弟子・杉風の世話で庭に植えられた芭蕉から『芭蕉』の号を採る。華やかな点取り俳諧を捨て、わび・さびへ。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1684,
+      "age": 40,
+      "title": "最初の旅『野ざらし紀行』",
+      "detail": "母の墓参を兼ね伊賀へ。『野ざらしを心に風のしむ身かな』。",
+      "tags": [
+        "restart",
+        "loss"
+      ]
+    },
+    {
+      "year": 1689,
+      "age": 45,
+      "title": "『奥の細道』の旅",
+      "detail": "3月27日江戸を発ち、東北・北陸を巡る150日・2400kmの旅。弟子曾良を伴い、不朽の紀行文の素材を得る。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1694,
+      "age": 50,
+      "title": "大阪で病没",
+      "detail": "10月12日、南御堂前の花屋仁左衛門宅で。辞世『旅に病んで夢は枯野をかけ廻る』。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "旅に病んで夢は枯野をかけ廻る",
+      "source": "辞世の句"
+    },
+    {
+      "text": "月日は百代の過客にして、行き交ふ年も又旅人なり。",
+      "source": "『奥の細道』冒頭"
+    },
+    {
+      "text": "古池や 蛙飛びこむ 水の音",
+      "source": "1686年の名句"
+    },
+    {
+      "text": "夏草や 兵どもが 夢の跡",
+      "source": "『奥の細道』平泉"
+    },
+    {
+      "text": "閑さや 岩にしみ入る 蝉の声",
+      "source": "『奥の細道』立石寺"
+    },
+    {
+      "text": "不易流行。",
+      "source": "芭蕉の俳論"
+    },
+    {
+      "text": "松のことは松に習え、竹のことは竹に習え。",
+      "source": "『三冊子』"
+    }
+  ],
+  "relations": [
+    {
+      "name": "河合曾良",
+      "relation": "弟子・同行者",
+      "note": "『奥の細道』の旅を共にした"
+    },
+    {
+      "name": "向井去来",
+      "relation": "弟子",
+      "note": "蕉門十哲の一人、『去来抄』を残す"
+    }
+  ],
+  "places": [
+    {
+      "name": "芭蕉庵史跡",
+      "location": "東京都江東区常盤",
+      "note": "深川の芭蕉庵跡地"
+    },
+    {
+      "name": "立石寺（山寺）",
+      "location": "山形県山形市",
+      "note": "『閑さや』の句の地"
+    },
+    {
+      "name": "中尊寺",
+      "location": "岩手県平泉町",
+      "note": "『夏草や』の句の地"
+    }
+  ],
+  "books": [
+    {
+      "title": "おくのほそ道",
+      "author": "松尾芭蕉",
+      "asin": "4003020200",
+      "description": "日本文学史上の紀行文学の金字塔"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Matsuo_Basho_by_Buson.jpg/500px-Matsuo_Basho_by_Buson.jpg",
+  "wikiTitle": "松尾芭蕉",
+  "imageCredit": {
+    "artist": "",
+    "license": "",
+    "licenseUrl": "",
+    "credit": "",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Matsuo_Basho_by_Buson.jpg"
+  }
+}

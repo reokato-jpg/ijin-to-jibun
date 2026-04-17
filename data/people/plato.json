@@ -1,0 +1,173 @@
+{
+  "id": "plato",
+  "name": "プラトン",
+  "nameEn": "Plato",
+  "birth": -427,
+  "death": -347,
+  "country": "古代ギリシャ",
+  "field": "哲学者",
+  "summary": "ソクラテスの弟子。アカデメイアを創立し、『国家』『饗宴』などの対話篇で西洋思想の基礎を築いた。『イデア論』で現実の奥にある永遠の形相を説いた。",
+  "events": [
+    {
+      "year": -427,
+      "age": 0,
+      "title": "アテネの名門貴族に誕生",
+      "detail": "本名アリストクレス。『プラトン』は『広い肩』の意の渾名。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": -408,
+      "age": 19,
+      "title": "ソクラテスと出会う",
+      "detail": "劇作家志望だったが、ソクラテスに出会い自作の悲劇をすべて燃やしたと伝わる。",
+      "tags": [
+        "turning_encounter",
+        "restart"
+      ]
+    },
+    {
+      "year": -404,
+      "age": 23,
+      "title": "三十人政権の叔父たちの恐怖政治を目撃",
+      "detail": "母方の叔父クリティアス、カルミデスの独裁。『正しい政治とは何か』の原体験。",
+      "tags": [
+        "pride_broken",
+        "isolation"
+      ]
+    },
+    {
+      "year": -399,
+      "age": 28,
+      "title": "師ソクラテス刑死に衝撃",
+      "detail": "政治家の道を諦め、哲学に生涯を捧げる決意。",
+      "tags": [
+        "loss",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": -388,
+      "age": 39,
+      "title": "シチリア島へ、ディオン王との出会い",
+      "detail": "哲学者王の理想を試そうとシラクサのディオニュシオス1世の宮廷へ。しかし王の怒りを買い奴隷として売られそうになった。",
+      "tags": [
+        "isolation",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": -387,
+      "age": 40,
+      "title": "アカデメイアを創立",
+      "detail": "西洋初の高等教育機関。900年続いた。",
+      "tags": [
+        "breakthrough",
+        "restart"
+      ]
+    },
+    {
+      "year": -375,
+      "age": 52,
+      "title": "『国家』完成",
+      "detail": "『洞窟の比喩』『哲人王』『魂の三分説』など、西洋思想の型を作った大著。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": -367,
+      "age": 60,
+      "title": "二度目のシチリア行き",
+      "detail": "若き王ディオニュシオス2世の哲学教育のため。挫折して帰国。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": -361,
+      "age": 66,
+      "title": "三度目のシチリア行きも失敗",
+      "detail": "親友ディオンが追放される。哲人政治の夢は完全に崩れた。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": -347,
+      "age": 80,
+      "title": "執筆中に死去",
+      "detail": "書斎でペンを握ったまま息を引き取ったと伝わる。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "哲学は驚きから始まる。",
+      "source": "『テアイテトス』"
+    },
+    {
+      "text": "良き始まりは半ばの成功である。",
+      "source": "伝承"
+    },
+    {
+      "text": "国家は、哲学者が王になるか、王が哲学者にならない限り、その悪から免れない。",
+      "source": "『国家』第5巻"
+    },
+    {
+      "text": "誰であれ、他人の苦しみに無関心でいる者は、人間と呼ぶに値しない。",
+      "source": "プラトンに帰される言葉"
+    },
+    {
+      "text": "真の知識とは、自分が何も知らないと知ることだ。",
+      "source": "『ソクラテスの弁明』記録"
+    }
+  ],
+  "relations": [
+    {
+      "name": "ソクラテス",
+      "id": "socrates",
+      "relation": "師",
+      "note": "刑死した師の言葉を対話篇に遺した"
+    },
+    {
+      "name": "アリストテレス",
+      "id": "aristotle",
+      "relation": "弟子",
+      "note": "アカデメイアで20年学んだ最高の弟子"
+    }
+  ],
+  "places": [
+    {
+      "name": "アカデメイア跡",
+      "location": "ギリシャ・アテネ",
+      "note": "プラトンが創立した学園の跡地、現・公園"
+    }
+  ],
+  "books": [
+    {
+      "title": "国家 上",
+      "author": "プラトン",
+      "asin": "4003360125",
+      "description": "哲学者王・イデア論・洞窟の比喩"
+    },
+    {
+      "title": "饗宴",
+      "author": "プラトン",
+      "asin": "4003360141",
+      "description": "愛について語る対話篇の最高傑作"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Plato_Pio-Clemetino_Inv305.jpg/500px-Plato_Pio-Clemetino_Inv305.jpg",
+  "wikiTitle": "プラトン",
+  "imageCredit": {
+    "artist": "Unknown artist Unknown artist",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Marie-Lan Nguyen (2006)",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Plato_Pio-Clemetino_Inv305.jpg"
+  }
+}

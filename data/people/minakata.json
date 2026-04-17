@@ -1,0 +1,144 @@
+{
+  "id": "minakata",
+  "name": "南方熊楠",
+  "nameEn": "Minakata Kumagusu",
+  "birth": 1867,
+  "death": 1941,
+  "country": "日本",
+  "field": "博物学者・民俗学者",
+  "summary": "18カ国語を操り、粘菌学・民俗学・人類学の全てに深くかかわった『知の巨人』。米英で14年を放浪し、大英博物館で研究。帰国後は熊野の自然を守る運動に生涯を捧げた。南方マンダラと呼ばれる独自の知の体系。",
+  "events": [
+    {
+      "year": 1867,
+      "age": 0,
+      "title": "和歌山に金物屋の次男として誕生",
+      "detail": "幼少から驚異的記憶力を示し、13歳までに105巻の百科事典を書き写した。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1884,
+      "age": 17,
+      "title": "東京大学予備門入学、夏目漱石・正岡子規と同期",
+      "detail": "秀才たちの中でも異彩を放った。ただし不満で2年で退学。",
+      "tags": [
+        "turning_encounter",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1886,
+      "age": 19,
+      "title": "米国留学、フロリダで粘菌採集",
+      "detail": "ミシガン・農業短大からフロリダまで。黒人奴隷の民俗にも触れた。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1892,
+      "age": 25,
+      "title": "ロンドンへ、大英博物館閲覧室で8年研究",
+      "detail": "サンスクリット・アラビア語・中国古典まで。学芸誌『ネイチャー』に51本の論文掲載。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1900,
+      "age": 33,
+      "title": "帰国、和歌山・田辺に定住",
+      "detail": "東京の学会には戻らず、粘菌と熊野の森の中で研究を続けた。",
+      "tags": [
+        "restart",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1906,
+      "age": 39,
+      "title": "松枝と結婚、一男一女をもうける",
+      "detail": "25歳年下の田辺の娘。熊楠の奇行を支え続けた。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1909,
+      "age": 42,
+      "title": "神社合祀反対運動",
+      "detail": "明治政府の神社合祀で鎮守の森が伐採される問題に激しく反対。柳田國男と合力。",
+      "tags": []
+    },
+    {
+      "year": 1929,
+      "age": 62,
+      "title": "昭和天皇に神島で進講",
+      "detail": "田辺湾の神島で粘菌採集を天皇に披露。後に『雨にけふる神島を見て、紀伊の国の生みし南方熊楠を思ふ』と御製。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1941,
+      "age": 74,
+      "title": "田辺で死去",
+      "detail": "『天井に紫の花が見える』と言い残し逝った。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "事不思議、物不思議、心不思議、理不思議。",
+      "source": "『南方二書』"
+    },
+    {
+      "text": "凡そ見るべきものは、すべて見よ。",
+      "source": "書簡"
+    },
+    {
+      "text": "学問は自分の楽しみのためにするものだ。",
+      "source": "南方の言葉"
+    }
+  ],
+  "relations": [
+    {
+      "name": "柳田國男",
+      "relation": "盟友",
+      "note": "民俗学の創始者。手紙で激論を交わした"
+    },
+    {
+      "name": "夏目漱石",
+      "id": "soseki",
+      "relation": "大学予備門の同期",
+      "note": "同じクラスにいたが親しくはなかった"
+    }
+  ],
+  "places": [
+    {
+      "name": "南方熊楠顕彰館",
+      "location": "和歌山県田辺市",
+      "note": "自宅・資料館"
+    }
+  ],
+  "books": [
+    {
+      "title": "南方マンダラ",
+      "author": "南方熊楠",
+      "asin": "4309463185",
+      "description": "独自の知の体系をまとめる"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Minakata-Kumagusu.jpg/500px-Minakata-Kumagusu.jpg",
+  "wikiTitle": "南方熊楠",
+  "imageCredit": {
+    "artist": "中山太郎",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "国会図書館デジタルコレクション",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Minakata-Kumagusu.jpg"
+  }
+}

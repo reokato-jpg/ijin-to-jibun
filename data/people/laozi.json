@@ -1,0 +1,146 @@
+{
+  "id": "laozi",
+  "name": "老子",
+  "nameEn": "Lao Tzu",
+  "birth": -571,
+  "death": -471,
+  "country": "古代中国",
+  "field": "哲学者",
+  "summary": "『道徳経』わずか五千字で東洋思想の半分を作った伝説の賢者。『道（タオ）』『無為自然』『上善は水の如し』。実在したかさえ定かでない。",
+  "events": [
+    {
+      "year": -571,
+      "age": 0,
+      "title": "楚の国で誕生（伝承）",
+      "detail": "母の胎内に81年いたという伝説。",
+      "tags": []
+    },
+    {
+      "year": -571,
+      "age": 0,
+      "title": "楚の国・苦県（現在の河南省鹿邑）で誕生（伝承）",
+      "detail": "母の胎内に81年いたという伝説。生まれたときすでに白髪で老いていた、ゆえに『老子』と名付けられたとも。",
+      "tags": []
+    },
+    {
+      "year": -521,
+      "age": 50,
+      "title": "周王朝の守蔵室の史（図書館長）",
+      "detail": "天下の典籍を守る官職。知の中心にいた。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": -517,
+      "age": 54,
+      "title": "若き孔子の訪問を受ける",
+      "detail": "魯の国から礼について問いに来た孔子に『驕気と多欲を去れ』と諭した。孔子は帰って『老子はまるで龍のようだ、捉えられぬ』と弟子に語ったと伝わる。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": -500,
+      "age": 71,
+      "title": "周の図書館長として働く",
+      "detail": "孔子が教えを請いに来たと伝わる。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": -500,
+      "age": 71,
+      "title": "周王朝の衰退を悟り、官を辞す",
+      "detail": "『隠れるに如かず』と判断。すべてを捨てる決意。",
+      "tags": [
+        "restart",
+        "isolation"
+      ]
+    },
+    {
+      "year": -480,
+      "age": 91,
+      "title": "水牛に乗って関を越え消える",
+      "detail": "関守の求めに応じ『道徳経』を書き残して西へ去ったと伝わる。",
+      "tags": [
+        "restart",
+        "isolation"
+      ]
+    },
+    {
+      "year": -480,
+      "age": 91,
+      "title": "水牛に乗って関を越え、西へ去って消える",
+      "detail": "函谷関で関守・尹喜に『あなたは隠遁する前に、道を書き残してください』と求められ、5000字の『道徳経』を書いて西へ去った。以後、行方知れず。",
+      "tags": [
+        "restart",
+        "isolation",
+        "breakthrough"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "上善は水の如し。",
+      "source": "『道徳経』第八章"
+    },
+    {
+      "text": "大道廃れて仁義あり。",
+      "source": "『道徳経』第十八章"
+    },
+    {
+      "text": "知る者は言わず、言う者は知らず。",
+      "source": "『道徳経』第五十六章"
+    },
+    {
+      "text": "道の道とすべきは、常の道にあらず。",
+      "source": "『道徳経』第一章 冒頭"
+    },
+    {
+      "text": "足るを知る者は富み、強めて行う者は志あり。",
+      "source": "『道徳経』第三十三章"
+    },
+    {
+      "text": "千里の行も、足下より始まる。",
+      "source": "『道徳経』第六十四章"
+    },
+    {
+      "text": "柔よく剛を制し、弱よく強を制す。",
+      "source": "『道徳経』第三十六章"
+    }
+  ],
+  "relations": [
+    {
+      "name": "孔子",
+      "id": "confucius",
+      "relation": "対話者（伝承）",
+      "note": "若き孔子が教えを請いに来たという伝説"
+    }
+  ],
+  "places": [
+    {
+      "name": "函谷関",
+      "location": "中国・河南省",
+      "note": "老子が『道徳経』を書き残して消えた関所"
+    }
+  ],
+  "books": [
+    {
+      "title": "老子",
+      "author": "蜂屋邦夫訳",
+      "asin": "4003320514",
+      "description": "五千字に凝縮された東洋思想の原典"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Lao-Tzu_on_his_buffalo%2C_followed_by_a_disciple.jpg/500px-Lao-Tzu_on_his_buffalo%2C_followed_by_a_disciple.jpg",
+  "wikiTitle": "老子",
+  "imageCredit": {
+    "artist": "Unknown author Unknown author",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "https://www.meisterdrucke.us/fine-art-prints/Chinese-School/420939/Lao-Tzu-%28c.604-531%29-on-his-buffalo%2C-followed-by-a-disciple-%28wc-on-paper%29.html",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Lao-Tzu_on_his_buffalo%2C_followed_by_a_disciple.jpg"
+  }
+}

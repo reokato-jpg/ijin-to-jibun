@@ -1,0 +1,209 @@
+{
+  "id": "kondo_isami",
+  "name": "近藤勇",
+  "nameEn": "Kondo Isami",
+  "birth": 1834,
+  "death": 1868,
+  "country": "日本",
+  "field": "武士・新選組局長",
+  "summary": "武蔵国多摩の農家に生まれながら、試衛館で剣を磨き、京都で新選組を率いて尊皇攘夷派と戦った。戊辰戦争で敗れ、板橋で斬首。",
+  "events": [
+    {
+      "year": 1834,
+      "age": 0,
+      "title": "多摩の農家に生まれる",
+      "detail": "百姓の三男として誕生。武士ではない身分から剣の道に入った。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1834,
+      "age": 0,
+      "title": "武州多摩・上石原の農家に生まれる",
+      "detail": "宮川久次郎の三男。幼名勝五郎。百姓の出ながら剣に秀でた。",
+      "tags": []
+    },
+    {
+      "year": 1848,
+      "age": 14,
+      "title": "天然理心流・近藤周助の弟子となる",
+      "detail": "3代目宗家の養子となり近藤家を継ぐ。",
+      "tags": [
+        "turning_encounter",
+        "restart"
+      ]
+    },
+    {
+      "year": 1858,
+      "age": 24,
+      "title": "天然理心流4代目宗家を継ぐ、市谷・試衛館道場主",
+      "detail": "土方・沖田・井上・山南ら生涯の仲間が集まる。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1863,
+      "age": 29,
+      "title": "浪士組に参加、京都へ",
+      "detail": "江戸から上洛した浪士組に参加。京都残留組として壬生浪士組を結成、後の新選組となる。",
+      "tags": [
+        "turning_encounter",
+        "restart"
+      ]
+    },
+    {
+      "year": 1863,
+      "age": 29,
+      "title": "浪士組に応募、京都へ",
+      "detail": "14代将軍徳川家茂上洛の警護。清河八郎の策略で決裂し、会津藩の預かりとなって壬生に残った。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1863,
+      "age": 29,
+      "title": "新選組局長に就任",
+      "detail": "芹沢鴨の粛清後、最高責任者に。武士でない百姓が武士を率いた。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1864,
+      "age": 30,
+      "title": "池田屋事件",
+      "detail": "尊皇攘夷派の謀議を襲撃、新選組の名を天下に轟かせた。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1864,
+      "age": 30,
+      "title": "池田屋事件の先陣",
+      "detail": "わずか4人で池田屋に突入。新選組の名を天下に轟かせた。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1867,
+      "age": 33,
+      "title": "幕臣取立て、旗本身分に",
+      "detail": "長年の望み『武士になる』を果たす。",
+      "tags": [
+        "approval",
+        "restart"
+      ]
+    },
+    {
+      "year": 1868,
+      "age": 34,
+      "title": "戊辰戦争で敗走",
+      "detail": "鳥羽伏見の戦いで敗れ、甲州でも敗北。流山で投降。",
+      "tags": [
+        "setback",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1868,
+      "age": 34,
+      "title": "板橋で斬首",
+      "detail": "武士としての切腹を許されず、農民として斬首された。享年34。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1868,
+      "age": 34,
+      "title": "甲州勝沼の戦いで敗走",
+      "detail": "大久保大和と改名し出陣するも新政府軍に敗北。",
+      "tags": [
+        "pride_broken"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "我れ誠の心、天に通ぜん。",
+      "source": "辞世を前にして"
+    },
+    {
+      "text": "誠の一字、これを貫く。",
+      "source": "新選組の旗印『誠』"
+    },
+    {
+      "text": "人は死すべき時に死なねばならぬ。",
+      "source": "近藤の言葉"
+    },
+    {
+      "text": "孤軍奮闘すれども、白刃紅を染む。",
+      "source": "獄中の辞世の漢詩"
+    },
+    {
+      "text": "靡かじな 我が額の傷 刀傷 誠を貫き ここに死すとも",
+      "source": "辞世の和歌とされる"
+    }
+  ],
+  "books": [
+    {
+      "title": "燃えよ剣",
+      "author": "司馬遼太郎",
+      "asin": "4101152063",
+      "description": "新選組の魂を描いた不朽の名作。土方と共に生きた近藤の姿"
+    },
+    {
+      "title": "新選組血風録",
+      "author": "司馬遼太郎",
+      "asin": "4041137047",
+      "description": "隊士たちの短篇集。局長・近藤勇の人間味が滲む"
+    }
+  ],
+  "places": [
+    {
+      "name": "壬生寺",
+      "location": "京都市中京区",
+      "note": "新選組の屯所跡。境内に近藤勇の胸像"
+    },
+    {
+      "name": "八木邸",
+      "location": "京都市中京区",
+      "note": "新選組最初の屯所。芹沢鴨暗殺の現場"
+    },
+    {
+      "name": "龍源寺（近藤勇墓所）",
+      "location": "東京都三鷹市",
+      "note": "遺髪が納められた近藤家菩提寺"
+    },
+    {
+      "name": "板橋近藤勇墓",
+      "location": "東京都板橋区",
+      "note": "刑死の地。土方歳三の慰霊碑と並ぶ"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Kondo_Isami02.jpg/500px-Kondo_Isami02.jpg",
+  "wikiTitle": "近藤勇",
+  "imageCredit": {
+    "artist": "Unknown author Unknown author",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "This image is available from the website of the National Diet Library",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kondo_Isami02.jpg"
+  },
+  "media": [
+    {
+      "title": "新選組！",
+      "year": 2004,
+      "type": "drama",
+      "country": "日本",
+      "cast": "香取慎吾",
+      "description": "三谷幸喜脚本の大河ドラマ。近藤勇を主役に新選組の青春群像を描いた。"
+    }
+  ]
+}

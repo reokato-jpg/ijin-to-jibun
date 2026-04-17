@@ -1,0 +1,169 @@
+{
+  "id": "heidegger",
+  "name": "マルティン・ハイデガー",
+  "nameEn": "Martin Heidegger",
+  "birth": 1889,
+  "death": 1976,
+  "country": "ドイツ",
+  "field": "哲学者",
+  "summary": "『存在と時間』で20世紀哲学を塗り替えた実存の思想家。死への先駆、本来性、世界内存在。ナチス加担の暗い影を負ったまま、黒い森で沈黙の哲学を続けた。",
+  "events": [
+    {
+      "year": 1889,
+      "age": 0,
+      "title": "メスキルヒの樽職人の子に",
+      "detail": "カトリックの片田舎で育つ。",
+      "tags": []
+    },
+    {
+      "year": 1909,
+      "age": 19,
+      "title": "イエズス会修練院に入るが2週間で心臓病で退去",
+      "detail": "神学の道を断念。以後信仰との格闘が生涯続く。",
+      "tags": [
+        "illness",
+        "pride_broken",
+        "restart"
+      ]
+    },
+    {
+      "year": 1919,
+      "age": 29,
+      "title": "フッサールの助手に",
+      "detail": "現象学の師のもとで10年。後に現象学を乗り越えることになる。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1924,
+      "age": 34,
+      "title": "18歳のハンナ・アーレントとの恋愛",
+      "detail": "既婚の教授と若きユダヤ人学生。4年続いた禁じられた関係。",
+      "tags": [
+        "heartbreak",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1927,
+      "age": 38,
+      "title": "『存在と時間』刊行",
+      "detail": "フッサールに捧げられた20世紀最大の哲学書。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1933,
+      "age": 44,
+      "title": "フライブルク大学総長就任、ナチス入党",
+      "detail": "生涯消えない汚点。翌年辞任。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1933,
+      "age": 44,
+      "title": "ナチス入党、フライブルク大学総長就任",
+      "detail": "生涯消えない汚点。ユダヤ人を大学から排除する立場となった。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1934,
+      "age": 45,
+      "title": "総長辞任",
+      "detail": "ナチス本部との路線対立で1年で辞任。しかし入党は敗戦まで続けた。",
+      "tags": []
+    },
+    {
+      "year": 1945,
+      "age": 56,
+      "title": "戦後、教職追放",
+      "detail": "連合国により5年間の大学追放。山小屋で思索を続けた。",
+      "tags": [
+        "pride_broken",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1966,
+      "age": 76,
+      "title": "『シュピーゲル』紙で戦後唯一の公式インタビュー",
+      "detail": "『死後にのみ公開』の条件で行われた。『ただ神のみが我々を救いうる』と結んだ。",
+      "tags": []
+    },
+    {
+      "year": 1976,
+      "age": 86,
+      "title": "故郷メスキルヒで没",
+      "detail": "晩年は黒い森の山小屋で思索し続けた。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "言葉は存在の家である。",
+      "source": "『ヒューマニズムについて』"
+    },
+    {
+      "text": "死への先駆的決意。",
+      "source": "『存在と時間』"
+    },
+    {
+      "text": "ただ神のみが、我々を救いうる。",
+      "source": "『シュピーゲル』紙インタビュー 1966"
+    },
+    {
+      "text": "問うこととは、思考の敬虔さである。",
+      "source": "『技術への問い』"
+    },
+    {
+      "text": "我々は存在を忘れている。そのことさえ忘れている。",
+      "source": "『存在と時間』"
+    }
+  ],
+  "relations": [
+    {
+      "name": "ハンナ・アーレント",
+      "id": "kant_hannah",
+      "relation": "弟子・恋人",
+      "note": "18歳のユダヤ人学生と35歳の師の禁断の関係"
+    },
+    {
+      "name": "サルトル",
+      "id": "sartre",
+      "relation": "思想的影響を与えた相手",
+      "note": "実存主義の直接の源流"
+    }
+  ],
+  "places": [
+    {
+      "name": "トートナウベルクの山小屋",
+      "location": "ドイツ・黒い森",
+      "note": "ハイデガーが生涯思索した山荘"
+    }
+  ],
+  "books": [
+    {
+      "title": "存在と時間 上",
+      "author": "ハイデガー",
+      "asin": "4480089454",
+      "description": "存在の意味を問う20世紀哲学の金字塔"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/6/64/Heidegger_2_%281960%29.jpg",
+  "wikiTitle": "マルティン・ハイデガー",
+  "imageCredit": {
+    "artist": "Willy Pragher",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "credit": "Landesarchiv Baden-Württenberg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Heidegger_2_%281960%29.jpg"
+  }
+}

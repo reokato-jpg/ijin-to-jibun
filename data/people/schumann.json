@@ -1,0 +1,425 @@
+{
+  "id": "schumann",
+  "name": "ロベルト・シューマン",
+  "nameEn": "Robert Schumann",
+  "birth": 1810,
+  "death": 1856,
+  "country": "ドイツ",
+  "field": "作曲家",
+  "summary": "ピアニストの夢を手の故障で絶たれ、作曲家へ転身。愛する人の父に猛反対されながら結婚を勝ち取るも、若い頃から抱えていた精神の病に最後は飲み込まれていく。愛と狂気のあいだを揺れ続けた人。",
+  "events": [
+    {
+      "year": 1810,
+      "age": 0,
+      "title": "ザクセンの書店主の家に生まれる",
+      "detail": "父は文学好きで、家には詩集と楽譜が溢れていた。『音楽家になるか、詩人になるか』で揺れる気質は生涯続く。のちに彼は批評家としても文章を書き、言葉と音を行き来する稀有な存在となる。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1826,
+      "age": 16,
+      "title": "父の死、姉エミーリエの自殺",
+      "detail": "同じ年に相次いで家族を失う。父の死はうつの始まり、姉の自殺は『自分も同じ血筋だ』という恐怖の始まり。以後、彼は『自分も狂うのではないか』という不安を抱え続けた。",
+      "tags": [
+        "loss",
+        "illness"
+      ]
+    },
+    {
+      "year": 1826,
+      "age": 16,
+      "title": "父と姉を相次いで失う",
+      "detail": "父は突然死、姉エミーリエは精神を病み入水自殺。母はロベルトを法律家にしようとした。",
+      "tags": [
+        "parent_conflict",
+        "loss"
+      ]
+    },
+    {
+      "year": 1828,
+      "age": 18,
+      "title": "母の意向でライプツィヒ大学の法学部へ",
+      "detail": "母は『音楽家は食えない』と法律家を望んだ。本人は講義に出ず、毎日ピアノを弾いていた。『やりたくないこと』を表面上こなしながら、内側で本当の夢が膨らんでいく。",
+      "tags": [
+        "parent_conflict",
+        "escape"
+      ]
+    },
+    {
+      "year": 1830,
+      "age": 20,
+      "title": "法学を捨て、音楽家を志す",
+      "detail": "母に『お願いだから音楽をやらせてほしい』と懇願の手紙を書き、ヴィーク教授のもとに弟子入り。親が敷いたレールから初めて外れた決断。",
+      "tags": [
+        "restart",
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1830,
+      "age": 20,
+      "title": "ヴィーク門下で指を壊し、ピアニストの道を断つ",
+      "detail": "指を鍛える器具で中指を傷め、演奏家としての道を失う。作曲家に賭けるしかなくなった。",
+      "tags": [
+        "pride_broken",
+        "restart",
+        "illness"
+      ]
+    },
+    {
+      "year": 1832,
+      "age": 22,
+      "title": "練習器具の無理使いで手指を故障、ピアニストの道が絶たれる",
+      "detail": "指を独立させる器具を自作し、指を吊り上げて練習していた結果、右手の中指が機能不全に。最大のアイデンティティを失う。『私は自分を壊した』と日記に記す。作曲家へ転身するしかなくなった。",
+      "tags": [
+        "pride_broken",
+        "setback",
+        "self_denial"
+      ]
+    },
+    {
+      "year": 1833,
+      "age": 23,
+      "title": "抑うつの最初の深刻な発作、自殺願望",
+      "detail": "高所恐怖と死への恐怖が同時に出現。『窓から飛び降りたい衝動』と戦う日々。若い頃から精神の病は既に芽吹いていた。",
+      "tags": [
+        "illness",
+        "self_denial",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1834,
+      "age": 23,
+      "title": "『新音楽時報』創刊",
+      "detail": "音楽批評誌を創刊、ショパン・ブラームスを『新しい道』と世に紹介した。『フロレスタン』『オイゼビウス』の筆名。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1835,
+      "age": 25,
+      "title": "師ヴィークの娘クララと恋に落ちる",
+      "detail": "16歳年下、9歳から知っていた少女との恋。ピアニストとしての才能もある少女だった。ヴィーク家に下宿していた頃の記憶が、少しずつ愛情に変わっていた。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1837,
+      "age": 27,
+      "title": "クララへの求婚、父ヴィークに激しく拒絶される",
+      "detail": "『娘をお前のような精神不安定な男にやれない』と猛反対。手紙も取り上げられ、会うことすら禁じられた。4年にわたる裁判闘争が始まる。",
+      "tags": [
+        "parent_conflict",
+        "heartbreak"
+      ]
+    },
+    {
+      "year": 1840,
+      "age": 29,
+      "title": "『歌の年』—師ヴィークを裁判で破りクララと結婚",
+      "detail": "クララの父は猛反対し裁判に。勝訴後の歓喜の中で140曲以上の歌曲を作った。『詩人の恋』もこの年。",
+      "tags": [
+        "turning_encounter",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1840,
+      "age": 30,
+      "title": "裁判に勝利、クララと結婚 — 『歌の年』",
+      "detail": "結婚の歓喜が創作を爆発させ、この年だけで歌曲を140曲以上書いた。『詩人と恋人の瞬間が同時に来た』と本人が記す、人生で最も幸福だった一年。",
+      "tags": [
+        "breakthrough",
+        "restart"
+      ]
+    },
+    {
+      "year": 1844,
+      "age": 34,
+      "title": "ロシア演奏旅行後、深刻な神経衰弱",
+      "detail": "妻クララの方が演奏家として有名になっていく現実。『クララの夫』と紹介される屈辱。嫉妬と劣等感が、元々あった病を悪化させていく。",
+      "tags": [
+        "jealousy",
+        "illness",
+        "self_denial"
+      ]
+    },
+    {
+      "year": 1853,
+      "age": 43,
+      "title": "若きブラームスと出会い、激賞する",
+      "detail": "20歳のブラームスがシューマン家の扉を叩いた日。『新しい天才が現れた』と批評文に書く。自分の創造力が衰える中で、次世代に希望を託した瞬間。ブラームスは以後、シューマン家を支え続けることになる。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1854,
+      "age": 43,
+      "title": "ライン川に投身、以後精神病院へ",
+      "detail": "幻聴に苦しみライン川に飛び込むが漁師に救われる。自らの望みでエンデニッヒの療養院に入る。",
+      "tags": [
+        "illness",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1854,
+      "age": 44,
+      "title": "ライン川に投身、精神病院へ",
+      "detail": "幻聴（死んだ友人シューベルトやメンデルスゾーンの声）に追いつめられ、謝肉祭の日にパジャマのままライン川に飛び込む。漁師に救助されるが、自ら精神病院への収容を希望。以後、死ぬまで施設から出ることはなかった。",
+      "tags": [
+        "illness",
+        "self_denial",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1856,
+      "age": 46,
+      "title": "精神病院で死去、クララは2年半で会えたのは2度だけ",
+      "detail": "医師は『面会は刺激になる』と会わせなかった。死の直前にようやく許可が下り、クララは夫に葡萄酒を飲ませた。それが最後だった。愛を勝ち取るために戦い、病に愛する人を奪われた生涯。",
+      "tags": [
+        "loss",
+        "illness"
+      ]
+    },
+    {
+      "year": 1856,
+      "age": 46,
+      "title": "療養院で死去、ブラームスとクララが看取る",
+      "detail": "2年半の療養の末、妻クララはほとんど面会を許されなかった。最期の数日だけ再会できた。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "name": "クララ・シューマン",
+      "relation": "妻",
+      "years": "1840–1856",
+      "note": "9歳年下の天才ピアニスト。4年の裁判闘争を経て結婚。彼の死後もブラームスと共に遺作を守り続けた"
+    },
+    {
+      "name": "フリードリヒ・ヴィーク",
+      "relation": "師 / 義父",
+      "years": "1830s–",
+      "note": "クララの父。結婚に猛反対し、長い裁判闘争の相手となった"
+    },
+    {
+      "name": "ヨハネス・ブラームス",
+      "relation": "後進 / 家族ぐるみの友人",
+      "years": "1853–",
+      "note": "20歳のブラームスを『新しい時代の天才』と激賞。シューマンの死後、クララと子供たちを生涯支えた"
+    },
+    {
+      "name": "フェリックス・メンデルスゾーン",
+      "relation": "盟友",
+      "years": "1830s–1847",
+      "note": "ライプツィヒでの親友。シューマン晩年の幻聴に『死んだメンデルスゾーンの声』が現れた"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "音楽を愛するとは、人を愛することに他ならない。",
+      "source": "『音楽と音楽家』より"
+    },
+    {
+      "text": "若者たちよ、古い音楽を学びたまえ。そしてその上に、自分自身の音を築きたまえ。",
+      "source": "『音楽のための家庭訓および生活訓』"
+    },
+    {
+      "text": "才能とは、絶望を美に変える力だ。",
+      "source": "日記"
+    },
+    {
+      "text": "音楽は心の普遍的な言語である。",
+      "source": "書簡"
+    },
+    {
+      "text": "若い芸術家は、自分の心の命じるままに書くべきだ。",
+      "source": "『音楽家のための家訓と人生訓』"
+    },
+    {
+      "text": "帽子を取れ、諸君、天才だ！",
+      "source": "ショパン作品を最初に評した有名な一文"
+    }
+  ],
+  "works": [
+    {
+      "title": "謝肉祭 作品9",
+      "year": 1835,
+      "type": "ピアノ曲",
+      "description": "クララへの思いを秘めた、架空の仮面舞踏会",
+      "youtubeId": "MyaexAq4DFk",
+      "imslpUrl": "https://imslp.org/wiki/Carnaval%2C_Op.9_(Schumann%2C_Robert)"
+    },
+    {
+      "title": "子供の情景 作品15（『トロイメライ』を含む）",
+      "year": 1838,
+      "type": "ピアノ曲",
+      "description": "大人が見つめる子供時代の夢。『トロイメライ』は彼の代名詞",
+      "youtubeId": "pXxx2MUiKcI",
+      "imslpUrl": "https://imslp.org/wiki/Kinderszenen%2C_Op.15_(Schumann%2C_Robert)"
+    },
+    {
+      "title": "クライスレリアーナ 作品16",
+      "year": 1838,
+      "type": "ピアノ曲",
+      "description": "狂気と天才の狭間。二重人格（フロレスタンとオイゼビウス）が交錯する",
+      "youtubeId": "Vvc3Nl_GHvE",
+      "imslpUrl": "https://imslp.org/wiki/Kreisleriana%2C_Op.16_(Schumann%2C_Robert)"
+    },
+    {
+      "title": "ピアノ協奏曲 イ短調 作品54",
+      "year": 1845,
+      "type": "管弦楽",
+      "description": "クララのために書いた、ロマン派最高峰の協奏曲",
+      "youtubeId": "BNM35aEhNMo",
+      "imslpUrl": "https://imslp.org/wiki/Piano_Concerto%2C_Op.54_(Schumann%2C_Robert)"
+    },
+    {
+      "title": "詩人の恋 作品48",
+      "year": 1840,
+      "type": "歌曲",
+      "description": "ハイネの詩による連作歌曲。失恋と苦しみの告白",
+      "youtubeId": "E3GUcF1Nq7U",
+      "imslpUrl": "https://imslp.org/wiki/Dichterliebe%2C_Op.48_(Schumann%2C_Robert)"
+    },
+    {
+      "title": "子供の情景 作品15（『トロイメライ』含む）",
+      "year": 1838,
+      "type": "ピアノ曲",
+      "description": "大人が子供の頃を振り返る13の小品",
+      "youtubeId": "wAbLbeLu2OI",
+      "imslpUrl": "https://imslp.org/wiki/Kinderszenen%2C_Op.15_(Schumann%2C_Robert)"
+    },
+    {
+      "title": "歌曲集『詩人の恋』作品48",
+      "year": 1840,
+      "type": "歌曲",
+      "description": "ハイネの詩による16の恋の歌",
+      "youtubeId": "K5M-WLTnnmI"
+    }
+  ],
+  "places": [
+    {
+      "name": "シューマンハウス（生家）",
+      "location": "ドイツ・ツヴィッカウ",
+      "note": "書籍商の家。博物館"
+    },
+    {
+      "name": "ライプツィヒ・シューマンハウス",
+      "location": "ドイツ・ライプツィヒ",
+      "note": "クララと新婚時代を過ごした家"
+    },
+    {
+      "name": "ボン旧墓地",
+      "location": "ドイツ・ボン",
+      "note": "クララと並ぶ墓"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Portrait_of_Robert_Schumann.jpg",
+  "wikiTitle": "ロベルト・シューマン",
+  "books": [
+    {
+      "title": "シューマン 全ピアノ作品の研究 上",
+      "author": "前田昭雄",
+      "asin": "4276131871",
+      "description": "作曲家の二面性（フロレスタンとオイゼビウス）が音楽にどう表れたか"
+    },
+    {
+      "title": "クララ・シューマン",
+      "author": "ナンシー・B・ライク",
+      "asin": "4393931882",
+      "description": "妻クララとの愛と葛藤。天才同士の関係から創作の本質を知る"
+    }
+  ],
+  "routine": [
+    {
+      "start": 0,
+      "end": 6,
+      "activity": "睡眠",
+      "cat": "sleep"
+    },
+    {
+      "start": 6,
+      "end": 7,
+      "activity": "起床・コーヒー",
+      "cat": "meal"
+    },
+    {
+      "start": 7,
+      "end": 12,
+      "activity": "作曲（朝が最も集中できた）",
+      "cat": "work"
+    },
+    {
+      "start": 12,
+      "end": 13,
+      "activity": "昼食・ビール",
+      "cat": "meal"
+    },
+    {
+      "start": 13,
+      "end": 16,
+      "activity": "音楽新報の編集・批評執筆",
+      "cat": "work"
+    },
+    {
+      "start": 16,
+      "end": 18,
+      "activity": "クララと連弾・散歩",
+      "cat": "social"
+    },
+    {
+      "start": 18,
+      "end": 19,
+      "activity": "夕食",
+      "cat": "meal"
+    },
+    {
+      "start": 19,
+      "end": 22,
+      "activity": "読書・日記を書く",
+      "cat": "rest"
+    },
+    {
+      "start": 22,
+      "end": 24,
+      "activity": "睡眠",
+      "cat": "sleep"
+    }
+  ],
+  "imageCredit": {
+    "artist": "Adolph von Menzel",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Vita Robert Schumann , photo by Michael Sondermann Presseamt Stadt Bonn",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Portrait_of_Robert_Schumann.jpg"
+  },
+  "media": [
+    {
+      "title": "愛の調べ",
+      "year": 1947,
+      "type": "movie",
+      "country": "アメリカ",
+      "director": "クラレンス・ブラウン",
+      "cast": "キャサリン・ヘプバーン（クララ役）",
+      "description": "クララ・ヴィーク視点で描くシューマン夫妻の物語。"
+    },
+    {
+      "title": "ブラームスはお好き",
+      "year": 1961,
+      "type": "movie",
+      "country": "アメリカ",
+      "description": "三角関係と芸術を描くサガン原作。シューマンとブラームスの関係を連想させる古典。"
+    }
+  ]
+}

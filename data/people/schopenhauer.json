@@ -1,0 +1,199 @@
+{
+  "id": "schopenhauer",
+  "name": "アルトゥル・ショーペンハウアー",
+  "nameEn": "Arthur Schopenhauer",
+  "birth": 1788,
+  "death": 1860,
+  "country": "ドイツ",
+  "field": "哲学者",
+  "summary": "『生きる意志』を根源と見た厭世主義の哲学者。30歳の主著『意志と表象としての世界』は30年無視され続けたが、晩年に爆発的人気を得た。",
+  "events": [
+    {
+      "year": 1788,
+      "age": 0,
+      "title": "ダンツィヒの裕福な商家に誕生",
+      "detail": "父は商人で後に自殺、母は当時人気の小説家。",
+      "tags": [
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1788,
+      "age": 0,
+      "title": "ダンツィヒの富裕商人の長男に誕生",
+      "detail": "父は成功した貿易商、母は後に流行作家となるヨハンナ。",
+      "tags": []
+    },
+    {
+      "year": 1805,
+      "age": 17,
+      "title": "父ハインリヒが運河に身を投げて自殺",
+      "detail": "鬱病の父の死。生涯彼を支配した財産の基盤となる。",
+      "tags": [
+        "parent_conflict",
+        "loss"
+      ]
+    },
+    {
+      "year": 1814,
+      "age": 26,
+      "title": "母ヨハンナと決別",
+      "detail": "母のサロンに集う文化人（ゲーテら）と衝突。階段から突き落とす事件を起こし、以後24年、母と会わず。",
+      "tags": [
+        "parent_conflict",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1819,
+      "age": 30,
+      "title": "『意志と表象としての世界』刊行、完全に無視される",
+      "detail": "『世界は私の表象である』で始まる主著。500部のうち売れたのは100部以下。",
+      "tags": [
+        "breakthrough",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1819,
+      "age": 31,
+      "title": "『意志と表象としての世界』出版",
+      "detail": "誰からも相手にされず。書庫で埃をかぶった。",
+      "tags": [
+        "setback",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1820,
+      "age": 32,
+      "title": "ベルリン大学でヘーゲルに対抗",
+      "detail": "同時間帯に講義を組んだが、学生は全員ヘーゲルへ。無名のまま30年。",
+      "tags": [
+        "jealousy",
+        "setback"
+      ]
+    },
+    {
+      "year": 1820,
+      "age": 32,
+      "title": "ベルリン大学でヘーゲルと同時間の講義を設定",
+      "detail": "挑発的に対抗するが聴講者は数人。ヘーゲルは満員。屈辱に終わる。",
+      "tags": [
+        "pride_broken",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1831,
+      "age": 43,
+      "title": "コレラ大流行でベルリンを逃げ出す",
+      "detail": "ヘーゲルはこのコレラで死ぬ。ショーペンハウアーはフランクフルトに移り、30年間同じ下宿で暮らす。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1851,
+      "age": 63,
+      "title": "『余録と補遺』刊行、突然の人気",
+      "detail": "平明な随筆集がベストセラーに。30年の孤独が報われた。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1851,
+      "age": 63,
+      "title": "『余録と補遺』で遅れた名声を得る",
+      "detail": "エッセイ集が英国で評判になり、世界中から手紙が来るようになる。63歳の遅い祝福。",
+      "tags": [
+        "approval",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1860,
+      "age": 72,
+      "title": "フランクフルトで死去",
+      "detail": "愛犬アトマと暮らした下宿で。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1860,
+      "age": 72,
+      "title": "フランクフルトで食卓のソファで死去",
+      "detail": "愛犬プードル『アートマン』と過ごした晩年。最期は一人朝食の後、ソファで眠るように。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "読書は他人にものを考えてもらうことである。",
+      "source": "『読書について』"
+    },
+    {
+      "text": "幸福の第一条件は、名誉ではなく健康である。",
+      "source": "『幸福について』"
+    },
+    {
+      "text": "世界は私の表象である。",
+      "source": "『意志と表象としての世界』冒頭"
+    },
+    {
+      "text": "人生は、退屈と苦痛のあいだを揺れ動く振り子である。",
+      "source": "『意志と表象としての世界』"
+    },
+    {
+      "text": "孤独であれるかどうかで、その人の器量が分かる。",
+      "source": "『余録と補遺』"
+    },
+    {
+      "text": "読書は、他人の頭で考えることである。",
+      "source": "『読書について』"
+    },
+    {
+      "text": "才能は的に当てる。天才は誰にも見えない的に当てる。",
+      "source": "『意志と表象としての世界』"
+    },
+    {
+      "text": "健康は全てではない。しかし健康がなければ全ては無である。",
+      "source": "『人生についての金言』"
+    }
+  ],
+  "places": [
+    {
+      "name": "ショーペンハウアーアルヒーフ",
+      "location": "ドイツ・フランクフルト",
+      "note": "大学に併設の記念施設"
+    }
+  ],
+  "books": [
+    {
+      "title": "読書について",
+      "author": "ショーペンハウアー",
+      "asin": "4334753264",
+      "description": "なぜ『考えて読むこと』が大切か"
+    },
+    {
+      "title": "幸福について",
+      "author": "ショーペンハウアー",
+      "asin": "4334753248",
+      "description": "人生を穏やかに生きるための知恵"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Arthur_Schopenhauer_by_J_Sch%C3%A4fer%2C_1859b.jpg/500px-Arthur_Schopenhauer_by_J_Sch%C3%A4fer%2C_1859b.jpg",
+  "wikiTitle": "アルトゥル・ショーペンハウアー",
+  "imageCredit": {
+    "artist": "Johann Schäfer",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Frankfurt am Main University Library",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Arthur_Schopenhauer_by_J_Sch%C3%A4fer%2C_1859b.jpg"
+  }
+}

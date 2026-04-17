@@ -1,0 +1,272 @@
+{
+  "id": "beethoven",
+  "name": "ルートヴィヒ・ヴァン・ベートーヴェン",
+  "nameEn": "Ludwig van Beethoven",
+  "birth": 1770,
+  "death": 1827,
+  "country": "ドイツ",
+  "field": "作曲家",
+  "summary": "ボン生まれ、ウィーンで活動。20代後半から進行性難聴に襲われながら『運命』『第九』などを書き、音楽史を変えた。",
+  "events": [
+    {
+      "year": 1770,
+      "age": 0,
+      "title": "ボンの宮廷音楽家の家に誕生",
+      "detail": "アルコール依存の父に鞭打たれ幼少期から神童教育を強いられた。",
+      "tags": [
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1787,
+      "age": 16,
+      "title": "母の死、父のアルコール依存の中で一家を支える",
+      "detail": "17歳で長男として二人の弟を養う。音楽家としての父はすでに崩れており、母を結核で失う。『私の最良の友を失った』と手紙に書いた。",
+      "tags": [
+        "parent_conflict",
+        "loss",
+        "poverty"
+      ]
+    },
+    {
+      "year": 1792,
+      "age": 22,
+      "title": "ウィーンに移住、ハイドンに師事",
+      "detail": "ボンの宮廷から派遣される。以後ウィーンが生涯の活動拠点になる。",
+      "tags": [
+        "turning_encounter",
+        "restart"
+      ]
+    },
+    {
+      "year": 1798,
+      "age": 28,
+      "title": "難聴の最初の症状",
+      "detail": "耳鳴りと聴力低下。音楽家にとっての死刑宣告。",
+      "tags": [
+        "illness",
+        "self_denial"
+      ]
+    },
+    {
+      "year": 1802,
+      "age": 32,
+      "title": "ハイリゲンシュタットの遺書",
+      "detail": "弟たちに宛てた自殺の決意書。しかし『芸術だけが私を引き止めた』と踏みとどまる。",
+      "tags": [
+        "self_denial",
+        "restart"
+      ]
+    },
+    {
+      "year": 1808,
+      "age": 37,
+      "title": "交響曲第5番『運命』・第6番『田園』同日初演",
+      "detail": "4時間に及ぶ地獄のような寒さのコンサート。聴衆は凍え、リハーサルは足りず、演奏は散々だったと伝わる。それでも歴史を変えた。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1808,
+      "age": 38,
+      "title": "交響曲第5番『運命』初演",
+      "detail": "『かく運命は扉を叩く』。耳が聞こえなくなる中で完成させた。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1812,
+      "age": 41,
+      "title": "『不滅の恋人』への手紙",
+      "detail": "宛先不明の熱烈な恋文3通が死後発見される。『私の天使、私のすべて、私自身』。相手は今も特定されない。ベートーヴェン最大の謎。",
+      "tags": [
+        "heartbreak",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1824,
+      "age": 53,
+      "title": "交響曲第9番初演、聴衆の拍手に気づかず",
+      "detail": "指揮台で自分の楽譜を見ていた彼に、歌手が振り向かせると、満場の喝采が目に入った。音は聞こえなかった。",
+      "tags": [
+        "breakthrough",
+        "approval",
+        "illness"
+      ]
+    },
+    {
+      "year": 1824,
+      "age": 54,
+      "title": "交響曲第9番『合唱付き』初演",
+      "detail": "指揮をとるも聴衆の拍手が聞こえず、振り返らせてもらい涙した。",
+      "tags": [
+        "breakthrough",
+        "loss"
+      ]
+    },
+    {
+      "year": 1827,
+      "age": 56,
+      "title": "ウィーンで死去",
+      "detail": "『諸君、喜劇は終わった』が最期の言葉と伝わる。2万人以上が葬儀に参列。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1827,
+      "age": 56,
+      "title": "ウィーンで死去、『喜劇は終わった』",
+      "detail": "雷鳴とともに意識を取り戻し、拳を天に突き上げて息絶えたと伝わる。葬列には2万人が集まり、シューベルトも松明を持って歩いた。",
+      "tags": [
+        "loss",
+        "approval"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "苦悩をつき抜けて歓喜に至れ。",
+      "source": "書簡"
+    },
+    {
+      "text": "諸君、喜劇は終わった。",
+      "source": "臨終の言葉"
+    },
+    {
+      "text": "運命は私の喉元を掴んだ。しかし私は決して屈服しない。",
+      "source": "書簡"
+    },
+    {
+      "text": "苦悩を通して歓喜へ。",
+      "source": "エルデーディ伯爵夫人への手紙"
+    },
+    {
+      "text": "真に偉大な人間に、不幸はふさわしい。",
+      "source": "日記"
+    },
+    {
+      "text": "ムジークは人類にとって、いかなる知恵や哲学より高い啓示である。",
+      "source": "ベッティーナ・ブレンターノへの手紙"
+    }
+  ],
+  "places": [
+    {
+      "name": "ベートーヴェン・ハウス（生家）",
+      "location": "ドイツ・ボン",
+      "note": "ボンゲン通り20番地。博物館として公開"
+    },
+    {
+      "name": "ハイリゲンシュタット遺書の家",
+      "location": "ウィーン",
+      "note": "絶望の遺書を書いた場所"
+    },
+    {
+      "name": "中央墓地",
+      "location": "ウィーン",
+      "note": "シューベルト、ブラームスと並ぶ墓"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Joseph_Karl_Stieler%27s_Beethoven_mit_dem_Manuskript_der_Missa_solemnis.jpg/500px-Joseph_Karl_Stieler%27s_Beethoven_mit_dem_Manuskript_der_Missa_solemnis.jpg",
+  "wikiTitle": "ルートヴィヒ・ヴァン・ベートーヴェン",
+  "imageCredit": {
+    "artist": "Joseph Karl Stieler",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Google Arts &amp; Culture , rotated and cropped to remove the potentially copyrighted photo of the frame.",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Joseph_Karl_Stieler%27s_Beethoven_mit_dem_Manuskript_der_Missa_solemnis.jpg"
+  },
+  "books": [
+    {
+      "title": "ベートーヴェン 現代との対話",
+      "author": "児島新",
+      "asin": "4000236814",
+      "description": "難聴と闘いながら書いた交響曲の秘密"
+    },
+    {
+      "title": "ベートーヴェンの手紙",
+      "author": "小松雄一郎 訳",
+      "asin": "4003351118",
+      "description": "ハイリゲンシュタットの遺書を含む書簡集"
+    }
+  ],
+  "works": [
+    {
+      "title": "交響曲第5番 ハ短調『運命』作品67",
+      "year": 1808,
+      "type": "交響曲",
+      "description": "『ダダダダーン』四つの音から宇宙が開ける",
+      "youtubeId": "fOk8Tm815lE"
+    },
+    {
+      "title": "交響曲第9番 ニ短調『合唱付き』作品125",
+      "year": 1824,
+      "type": "交響曲",
+      "description": "『歓喜の歌』。聾者が到達した最後の光",
+      "youtubeId": "t3217H8JppI"
+    },
+    {
+      "title": "ピアノソナタ第14番『月光』作品27-2",
+      "year": 1801,
+      "type": "ピアノ曲",
+      "description": "ジュリエッタに捧げられた幻想曲風ソナタ",
+      "youtubeId": "4591dCHe_sE",
+      "imslpUrl": "https://imslp.org/wiki/Piano_Sonata_No.14%2C_Op.27_No.2_(Beethoven%2C_Ludwig_van)"
+    },
+    {
+      "title": "ピアノソナタ第23番『熱情』作品57",
+      "year": 1805,
+      "type": "ピアノ曲",
+      "description": "ベートーヴェン自身『最も激しい曲』と呼んだ",
+      "youtubeId": "NydqXDF6aAM",
+      "imslpUrl": "https://imslp.org/wiki/Piano_Sonata_No.23%2C_Op.57_(Beethoven%2C_Ludwig_van)"
+    },
+    {
+      "title": "ヴァイオリン・ソナタ第9番『クロイツェル』作品47",
+      "year": 1803,
+      "type": "室内楽",
+      "description": "トルストイが同名小説を書いた、激情の二重奏",
+      "youtubeId": "xL_4tvvQuJg"
+    },
+    {
+      "title": "弦楽四重奏曲第14番 嬰ハ短調 作品131",
+      "year": 1826,
+      "type": "室内楽",
+      "description": "晩年の最も内省的な7楽章。シューベルトが死の床で聴きたがった",
+      "youtubeId": "mu4Nn8k5p0I"
+    }
+  ],
+  "media": [
+    {
+      "title": "不滅の恋／ベートーヴェン",
+      "year": 1994,
+      "type": "movie",
+      "country": "アメリカ",
+      "director": "バーナード・ローズ",
+      "cast": "ゲイリー・オールドマン",
+      "description": "死後発見された『不滅の恋人への手紙』の宛先を追う伝記映画。",
+      "youtubeId": "9JcVBj_xNzQ"
+    },
+    {
+      "title": "敬愛なるベートーヴェン",
+      "year": 2006,
+      "type": "movie",
+      "country": "アメリカ",
+      "director": "アニエスカ・ホランド",
+      "cast": "エド・ハリス／ダイアン・クルーガー",
+      "description": "第九初演を前に写譜係として働く若き女性とベートーヴェンの物語。"
+    },
+    {
+      "title": "運命の恋人",
+      "year": 2003,
+      "type": "drama",
+      "country": "イギリス",
+      "director": "アンドリュー・グリーヴ",
+      "cast": "ポール・リース",
+      "description": "BBC制作の伝記ドラマ。耳が聞こえなくなる過程を丁寧に描く。"
+    }
+  ]
+}

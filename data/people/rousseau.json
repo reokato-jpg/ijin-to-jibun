@@ -1,0 +1,195 @@
+{
+  "id": "rousseau",
+  "name": "ジャン＝ジャック・ルソー",
+  "nameEn": "Jean-Jacques Rousseau",
+  "birth": 1712,
+  "death": 1778,
+  "country": "スイス・フランス",
+  "field": "哲学者・作家",
+  "summary": "『社会契約論』でフランス革命を準備し、『エミール』で教育を変え、『告白』で近代自我の告白文学を発明した男。自分の子5人を孤児院に送った矛盾の人。",
+  "events": [
+    {
+      "year": 1712,
+      "age": 0,
+      "title": "ジュネーヴで誕生、母は産後9日で死去",
+      "detail": "時計職人の父に育てられる。",
+      "tags": [
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1722,
+      "age": 10,
+      "title": "父が決闘で追放、叔父に預けられる",
+      "detail": "父子は別離。十代の孤独が始まる。",
+      "tags": [
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1728,
+      "age": 16,
+      "title": "ジュネーヴを出奔、放浪の旅",
+      "detail": "ヴァランス夫人のもとで学問と愛を知る。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1731,
+      "age": 19,
+      "title": "ヴァランス夫人と同居、知性の開花",
+      "detail": "13歳年上の保護者であり愛人。『ママン』と呼んだ。『私の青春の真の誕生地』。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1745,
+      "age": 33,
+      "title": "テレーズ・ルヴァスールと事実婚",
+      "detail": "宿屋の女中だった文盲の女性。5人の子をもうけるが、全員孤児院に送った。",
+      "tags": [
+        "turning_encounter",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1749,
+      "age": 37,
+      "title": "『学問芸術論』でディジョン・アカデミー懸賞に入選",
+      "detail": "『学問の進歩は道徳を堕落させた』という逆説。無名のルソーを一夜で有名にした。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1761,
+      "age": 49,
+      "title": "『新エロイーズ』大ヒット",
+      "detail": "書簡体恋愛小説。18世紀最大のベストセラー。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1762,
+      "age": 50,
+      "title": "『社会契約論』『エミール』刊行",
+      "detail": "両書ともパリとジュネーヴで発禁、逮捕状。亡命生活へ。",
+      "tags": [
+        "breakthrough",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1762,
+      "age": 50,
+      "title": "『社会契約論』『エミール』刊行、両書とも発禁",
+      "detail": "パリとジュネーヴ両方で禁書・逮捕状。亡命生活へ。",
+      "tags": [
+        "breakthrough",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1766,
+      "age": 54,
+      "title": "ヒュームに招かれ英国へ、すぐに決裂",
+      "detail": "被害妄想的になり、恩人ヒュームを敵と決めつけた。晩年の精神の歪みが表面化。",
+      "tags": [
+        "heartbreak",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1770,
+      "age": 58,
+      "title": "『告白』原稿朗読会",
+      "detail": "14時間連続で自伝を朗読。衝撃的な自己開示で聴衆は言葉を失った。",
+      "tags": []
+    },
+    {
+      "year": 1778,
+      "age": 66,
+      "title": "エルムノンヴィルで客死",
+      "detail": "『告白』は死後刊行。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1778,
+      "age": 66,
+      "title": "エルムノンヴィルの隠棲地で客死",
+      "detail": "散歩中に倒れて。『告白』は死後刊行。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "人間は自由なものとして生まれたが、いたるところで鎖につながれている。",
+      "source": "『社会契約論』"
+    },
+    {
+      "text": "自然に帰れ。",
+      "source": "ルソー思想を要約する言葉"
+    },
+    {
+      "text": "私は自分を、他のどの人間とも同じではないと感じる。",
+      "source": "『告白』冒頭"
+    },
+    {
+      "text": "子供を不幸にする最も確実な方法は何か？ それは彼に常に何でも与えてやることだ。",
+      "source": "『エミール』"
+    },
+    {
+      "text": "忍耐は苦いが、その実は甘い。",
+      "source": "『エミール』"
+    },
+    {
+      "text": "服従し忍耐することを学ばぬ者は、命令する資格がない。",
+      "source": "『社会契約論』"
+    }
+  ],
+  "relations": [
+    {
+      "name": "ヴォルテール",
+      "relation": "論敵",
+      "note": "啓蒙思想の盟友のはずが、激しく対立した"
+    }
+  ],
+  "places": [
+    {
+      "name": "パンテオン",
+      "location": "フランス・パリ",
+      "note": "ヴォルテールと向かい合って眠る"
+    }
+  ],
+  "books": [
+    {
+      "title": "社会契約論",
+      "author": "ルソー",
+      "asin": "4003362330",
+      "description": "主権在民を説いた革命の書"
+    },
+    {
+      "title": "告白 上",
+      "author": "ルソー",
+      "asin": "4003362349",
+      "description": "近代自伝文学の原点"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Maurice_Quentin_de_La_Tour_-_Portrait_of_Jean-Jacques_Rousseau_-_WGA12360.jpg/500px-Maurice_Quentin_de_La_Tour_-_Portrait_of_Jean-Jacques_Rousseau_-_WGA12360.jpg",
+  "wikiTitle": "ジャン＝ジャック・ルソー",
+  "imageCredit": {
+    "artist": "Maurice Quentin de La Tour",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Web Gallery of Art : Image Info about artwork wga QS:P11807,\"l/la_tour/maurice/rousseau\"",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Maurice_Quentin_de_La_Tour_-_Portrait_of_Jean-Jacques_Rousseau_-_WGA12360.jpg"
+  }
+}

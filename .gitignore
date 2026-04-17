@@ -1,0 +1,20 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# エディタ
+.vscode/
+.idea/
+*.swp
+
+# Windows起動用bat（GitHubには不要）
+run.bat
+update_articles.bat
+
+# Python キャッシュ
+__pycache__/
+*.pyc
+
+# ローカル設定
+.env

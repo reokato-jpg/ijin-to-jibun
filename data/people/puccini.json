@@ -1,0 +1,197 @@
+{
+  "id": "puccini",
+  "name": "ジャコモ・プッチーニ",
+  "nameEn": "Giacomo Puccini",
+  "birth": 1858,
+  "death": 1924,
+  "country": "イタリア",
+  "field": "作曲家",
+  "summary": "『ラ・ボエーム』『トスカ』『蝶々夫人』『トゥーランドット』。メロディの天才と呼ばれたイタリア・オペラ最後の巨匠。未完の『トゥーランドット』を遺して他界。",
+  "events": [
+    {
+      "year": 1858,
+      "age": 0,
+      "title": "ルッカの音楽家一族に誕生",
+      "detail": "4代続く教会音楽家の家系。",
+      "tags": []
+    },
+    {
+      "year": 1876,
+      "age": 18,
+      "title": "ピサまで20km歩きヴェルディ『アイーダ』を観劇",
+      "detail": "これが生涯を決めた。『オペラ作曲家になる』と誓う。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1884,
+      "age": 26,
+      "title": "人妻エルヴィーラと駆け落ち",
+      "detail": "スキャンダルだが生涯の伴侶となる。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1893,
+      "age": 35,
+      "title": "『マノン・レスコー』成功で出版社リコルディと専属契約",
+      "detail": "ヴェルディの後継者として世に認められる。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1896,
+      "age": 38,
+      "title": "『ラ・ボエーム』初演、トスカニーニ指揮",
+      "detail": "批評は割れたが観客が熱狂。クラシックの最も愛される悲恋物語に。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1900,
+      "age": 41,
+      "title": "『トスカ』初演",
+      "detail": "ローマ・コンスタンツィ劇場で。爆弾脅迫の中での初日だった。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1903,
+      "age": 44,
+      "title": "自動車事故で大怪我、糖尿病発覚",
+      "detail": "8ヶ月の療養。治療中に『蝶々夫人』を書き続けた。",
+      "tags": [
+        "illness",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1904,
+      "age": 45,
+      "title": "『蝶々夫人』初演、初日は大失敗",
+      "detail": "改訂版で世界的成功。日本への関心を持った。",
+      "tags": [
+        "pride_broken",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1909,
+      "age": 50,
+      "title": "女中ドーリア自殺事件",
+      "detail": "妻の嫉妬妄想で疑いをかけられた女中が服毒自殺。検死で潔白が証明され、プッチーニ家は慰謝料を支払った。深い傷となる。",
+      "tags": [
+        "loss",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1923,
+      "age": 64,
+      "title": "喉頭癌と診断",
+      "detail": "愛煙家の代償。ブリュッセルで実験的放射線治療を受ける決意。",
+      "tags": [
+        "illness"
+      ]
+    },
+    {
+      "year": 1924,
+      "age": 65,
+      "title": "ブリュッセルで喉頭癌手術中に死去",
+      "detail": "『トゥーランドット』第3幕途中で絶筆。トスカニーニが初演でペンが止まった場所で指揮を中断した。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1924,
+      "age": 65,
+      "title": "ブリュッセルで手術中に心臓麻痺で死去",
+      "detail": "『トゥーランドット』第3幕途中で絶筆。翌年トスカニーニ初演時、ペンが止まった場所で指揮を中断した。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "偉大な愛だけが、偉大な痛みを与えてくれる。",
+      "source": "プッチーニの手紙"
+    },
+    {
+      "text": "私はただ小さな物語を書きたいのだ。そこで泣き、愛し、死ぬ人々の物語を。",
+      "source": "書簡"
+    },
+    {
+      "text": "最も美しい歌は、いつも歌われないまま終わる。",
+      "source": "プッチーニに帰される言葉"
+    }
+  ],
+  "relations": [
+    {
+      "name": "ヴェルディ",
+      "id": "verdi",
+      "relation": "憧れた先輩",
+      "note": "ヴェルディの『アイーダ』を観て作曲家を志した"
+    }
+  ],
+  "places": [
+    {
+      "name": "トッレ・デル・ラーゴ",
+      "location": "イタリア・トスカーナ",
+      "note": "プッチーニが作曲した湖畔の邸宅"
+    }
+  ],
+  "books": [],
+  "works": [
+    {
+      "title": "『トゥーランドット』誰も寝てはならぬ",
+      "type": "youtube",
+      "id": "cWc7vYjgnTs",
+      "note": "パヴァロッティの名唱"
+    },
+    {
+      "title": "歌劇『ラ・ボエーム』",
+      "year": 1896,
+      "type": "オペラ",
+      "description": "貧しい芸術家とお針子の4幕の悲恋。『私の名はミミ』の名アリア",
+      "youtubeId": "UYfhPDXLeDg"
+    },
+    {
+      "title": "歌劇『トスカ』",
+      "year": 1900,
+      "type": "オペラ",
+      "description": "ローマを舞台にした政治的サスペンス・オペラ。『歌に生き、愛に生き』",
+      "youtubeId": "_QT-SqeOu5Y"
+    },
+    {
+      "title": "歌劇『蝶々夫人』",
+      "year": 1904,
+      "type": "オペラ",
+      "description": "長崎を舞台にしたアメリカ人将校との悲恋",
+      "youtubeId": "xpsZzZ6P5gI"
+    },
+    {
+      "title": "歌劇『トゥーランドット』より『誰も寝てはならぬ』",
+      "year": 1924,
+      "type": "オペラ",
+      "description": "絶筆オペラの最高のアリア",
+      "youtubeId": "cWc7vYjgnTs"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/GiacomoPuccini.jpg/500px-GiacomoPuccini.jpg",
+  "wikiTitle": "ジャコモ・プッチーニ",
+  "imageCredit": {
+    "artist": "Unknown author Unknown author",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Unknown source Unknown source",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:GiacomoPuccini.jpg"
+  }
+}

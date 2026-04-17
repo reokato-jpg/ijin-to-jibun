@@ -1,0 +1,145 @@
+{
+  "id": "anne_frank",
+  "name": "アンネ・フランク",
+  "nameEn": "Anne Frank",
+  "birth": 1929,
+  "death": 1945,
+  "country": "ドイツ→オランダ",
+  "field": "日記作家",
+  "summary": "ナチス占領下アムステルダムの隠れ家で2年間書き続けた少女。15歳でベルゲン・ベルゼン収容所で病死した後、父オットーの手で日記が出版され、70以上の言語に翻訳されて全世界に読み継がれる。",
+  "events": [
+    {
+      "year": 1929,
+      "age": 0,
+      "title": "ドイツ・フランクフルトに誕生",
+      "detail": "ユダヤ系商人オットーとエディットの次女。姉マルゴー。",
+      "tags": []
+    },
+    {
+      "year": 1933,
+      "age": 4,
+      "title": "ナチスの台頭でアムステルダムへ移住",
+      "detail": "家族でオランダに逃れ、父は香料会社を経営。",
+      "tags": [
+        "restart",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1942,
+      "age": 13,
+      "title": "13歳の誕生日に日記をプレゼントされる",
+      "detail": "赤白格子模様の表紙。『キティ』と名付けて語りかけ始める。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1942,
+      "age": 13,
+      "title": "7月6日、プリンセンフラハトの隠れ家へ",
+      "detail": "姉への召喚状が届いた翌朝、家族で倉庫上階の『後ろの家』へ潜伏。以後2年1ヶ月、計8人が息を潜めて暮らす。",
+      "tags": [
+        "isolation",
+        "restart"
+      ]
+    },
+    {
+      "year": 1944,
+      "age": 15,
+      "title": "隠れ家で密告により発見、アウシュビッツへ",
+      "detail": "8月4日、ナチス親衛隊に踏み込まれる。誰が密告したかは今も不明。",
+      "tags": [
+        "pride_broken",
+        "loss"
+      ]
+    },
+    {
+      "year": 1944,
+      "age": 15,
+      "title": "アウシュビッツ→ベルゲン・ベルゼン移送",
+      "detail": "10月下旬、姉マルゴーと共に。母エディットはアウシュビッツで死亡。",
+      "tags": [
+        "loss",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1945,
+      "age": 15,
+      "title": "ベルゲン・ベルゼンでチフスにより死去",
+      "detail": "解放のわずか数週間前。正確な日付不明、2月末〜3月初。『天国の姉が呼んだ』と信じた少女。",
+      "tags": [
+        "loss",
+        "illness"
+      ]
+    },
+    {
+      "year": 1947,
+      "age": 15,
+      "title": "父オットーが日記を出版『アンネの日記』",
+      "detail": "6月25日、『後ろの家』のタイトルで初版。70以上の言語に翻訳され、3000万部以上売れ続ける。",
+      "tags": [
+        "approval"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "それでも私は、人間の本質は善であると信じている。",
+      "source": "『アンネの日記』1944年7月15日"
+    },
+    {
+      "text": "紙は人間より我慢強い。",
+      "source": "『アンネの日記』冒頭"
+    },
+    {
+      "text": "私は生き続けたい。死んだ後も！",
+      "source": "日記 1944年4月4日"
+    },
+    {
+      "text": "考えてごらん、私たちを取り巻く全ての美しさを。そして、幸せになろう。",
+      "source": "日記"
+    },
+    {
+      "text": "誰かが誰かを助けるのに、決して遅すぎることはない。",
+      "source": "日記"
+    }
+  ],
+  "relations": [
+    {
+      "name": "オットー・フランク",
+      "relation": "父",
+      "note": "隠れ家8人中唯一の生存者。日記を世に出した"
+    },
+    {
+      "name": "ペーター・ファン・ペルス",
+      "relation": "初恋の人",
+      "note": "隠れ家で一緒に暮らした少年。彼もマウトハウゼンで死亡"
+    }
+  ],
+  "places": [
+    {
+      "name": "アンネ・フランクの家",
+      "location": "オランダ・アムステルダム",
+      "note": "隠れ家のあった『プリンセン運河263』"
+    }
+  ],
+  "books": [
+    {
+      "title": "アンネの日記 増補新訂版",
+      "author": "アンネ・フランク",
+      "asin": "4167651203",
+      "description": "15歳の少女の不滅の記録"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Anne_Frank%2C_1942.jpg/500px-Anne_Frank%2C_1942.jpg",
+  "wikiTitle": "アンネ・フランク",
+  "imageCredit": {
+    "artist": "Photo Collection Anne Frank House",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "https://www.flickr.com/photos/collection_annefrankhouse/31957984331/",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Anne_Frank%2C_1942.jpg"
+  }
+}

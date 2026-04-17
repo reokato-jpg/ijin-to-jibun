@@ -1,0 +1,249 @@
+{
+  "id": "wagner",
+  "name": "リヒャルト・ワーグナー",
+  "nameEn": "Richard Wagner",
+  "birth": 1813,
+  "death": 1883,
+  "country": "ドイツ",
+  "field": "作曲家",
+  "summary": "『指環』『トリスタン』『パルジファル』で歌劇を『楽劇』に変えた革命家。借金と亡命と不倫と政治活動にまみれながら、バイロイト祝祭劇場を建てた。",
+  "events": [
+    {
+      "year": 1813,
+      "age": 0,
+      "title": "ライプツィヒに誕生、半年で父を失う",
+      "detail": "母は再婚し、俳優の養父のもとで育つ。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1813,
+      "age": 0,
+      "title": "ライプツィヒに誕生、6ヶ月で父を失う",
+      "detail": "生物学上の父の実否は今も謎。継父ガイヤーの血を引く可能性。",
+      "tags": [
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1849,
+      "age": 36,
+      "title": "ドレスデン革命に参加、亡命",
+      "detail": "政治活動で指名手配。スイスへ12年の亡命生活。",
+      "tags": [
+        "escape",
+        "self_reinvention"
+      ]
+    },
+    {
+      "year": 1849,
+      "age": 36,
+      "title": "ドレスデン五月革命に参加、逮捕状が出る",
+      "detail": "バリケード戦の最中に『革命は失敗した』と悟り、スイスへ亡命。13年の逃亡生活の始まり。",
+      "tags": [
+        "restart",
+        "isolation",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1854,
+      "age": 41,
+      "title": "ショーペンハウアーを読み衝撃を受ける",
+      "detail": "『意志と表象としての世界』を4度読み直し、以後の楽劇の哲学的基盤に。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1859,
+      "age": 46,
+      "title": "『トリスタンとイゾルデ』完成",
+      "detail": "後の現代音楽の源流となる和声革命。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1864,
+      "age": 51,
+      "title": "ルートヴィヒ2世の庇護",
+      "detail": "バイエルン若き狂王に救われる。以後、彼の支援で全てが実現。",
+      "tags": [
+        "turning_encounter",
+        "restart"
+      ]
+    },
+    {
+      "year": 1864,
+      "age": 51,
+      "title": "バイエルン王ルートヴィヒ2世に救われる",
+      "detail": "借金で追われていた時、18歳の新王が全借金を肩代わり。生涯続く異様な崇拝関係。",
+      "tags": [
+        "turning_encounter",
+        "restart"
+      ]
+    },
+    {
+      "year": 1870,
+      "age": 57,
+      "title": "コジマと結婚、友人ビューローから奪う形で",
+      "detail": "リストの娘で親友ビューローの妻だったコジマと。24歳年下の献身的な支え手。",
+      "tags": [
+        "turning_encounter",
+        "restart"
+      ]
+    },
+    {
+      "year": 1874,
+      "age": 61,
+      "title": "『ニーベルングの指環』4部作を26年かけて完成",
+      "detail": "16時間に及ぶ楽劇の大伽藍。世界の音楽劇を塗り替えた。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1876,
+      "age": 63,
+      "title": "バイロイト祝祭劇場開場、『指環』全曲初演",
+      "detail": "自分の作品のためだけに劇場を建てた前代未聞の偉業。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1876,
+      "age": 63,
+      "title": "バイロイト祝祭劇場こけら落とし",
+      "detail": "自作上演のためだけに建てた理想の劇場。今も毎夏『指環』が上演される。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1882,
+      "age": 69,
+      "title": "『パルジファル』初演、ニーチェ決別の象徴",
+      "detail": "キリスト教回帰に幻滅したニーチェは『反キリスト者』を書き始める。",
+      "tags": []
+    },
+    {
+      "year": 1883,
+      "age": 69,
+      "title": "ベネチアで心臓発作",
+      "detail": "最期まで新作を構想していた。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1883,
+      "age": 69,
+      "title": "ヴェネツィアで心臓発作、コジマの腕の中で死去",
+      "detail": "遺体はバイロイトへ運ばれ、自邸ヴァーンフリート荘に葬られた。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "私は時代のはるか先を歩いている。",
+      "source": "書簡"
+    },
+    {
+      "text": "音楽は究極の言語である。",
+      "source": "ワーグナーの論文"
+    },
+    {
+      "text": "芸術は、時代が真実を語れないとき、真実を語る。",
+      "source": "書簡"
+    },
+    {
+      "text": "私は世界に借りを作った。その借りは音楽で返す。",
+      "source": "ワーグナーに帰される言葉"
+    }
+  ],
+  "relations": [
+    {
+      "name": "ルートヴィヒ2世",
+      "relation": "パトロン",
+      "note": "バイエルン若き狂王。ワーグナーに無限の資金を注いだ"
+    },
+    {
+      "name": "フリードリヒ・ニーチェ",
+      "id": "nietzsche",
+      "relation": "崇拝者 → 決別",
+      "note": "父代わりと慕ったが、後に破綻"
+    }
+  ],
+  "places": [
+    {
+      "name": "バイロイト祝祭劇場",
+      "location": "ドイツ・バイロイト",
+      "note": "ワーグナー作品専用の劇場"
+    },
+    {
+      "name": "ヴィラ・ヴァーンフリート",
+      "location": "ドイツ・バイロイト",
+      "note": "ワーグナーの家・墓"
+    }
+  ],
+  "books": [
+    {
+      "title": "ワーグナー 政治と宗教のパトス",
+      "author": "吉田寛",
+      "asin": "4861824702",
+      "description": "天才と毒を併せ持つ巨人の評伝"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/RichardWagner.jpg/500px-RichardWagner.jpg",
+  "wikiTitle": "リヒャルト・ワーグナー",
+  "imageCredit": {
+    "artist": "Franz Hanfstaengl",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "https://www.flickr.com/photos/8460649@N05/10305635725",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:RichardWagner.jpg"
+  },
+  "works": [
+    {
+      "title": "歌劇『ニーベルングの指環』4部作",
+      "year": 1876,
+      "type": "楽劇",
+      "description": "16時間に及ぶ壮大な北欧神話の楽劇",
+      "youtubeId": "Jh5tL8oc7PQ"
+    },
+    {
+      "title": "歌劇『トリスタンとイゾルデ』",
+      "year": 1865,
+      "type": "楽劇",
+      "description": "『トリスタン和音』が調性を崩壊させた、愛と死のオペラ",
+      "youtubeId": "5i8iftr8SwE"
+    },
+    {
+      "title": "歌劇『タンホイザー』序曲",
+      "year": 1845,
+      "type": "楽劇",
+      "description": "最も愛される序曲",
+      "youtubeId": "GkhCk_QfPXw"
+    },
+    {
+      "title": "ワルキューレの騎行（『ワルキューレ』より）",
+      "year": 1870,
+      "type": "楽劇",
+      "description": "『地獄の黙示録』で世界中に知られた",
+      "youtubeId": "P73Z6291Pt8"
+    },
+    {
+      "title": "歌劇『マイスタージンガー』前奏曲",
+      "year": 1868,
+      "type": "楽劇",
+      "description": "晴れやかな愛と芸術の讃歌",
+      "youtubeId": "lOqlGyzRI0Q"
+    }
+  ]
+}

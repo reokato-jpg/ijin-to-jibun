@@ -1,0 +1,177 @@
+{
+  "id": "hemingway",
+  "name": "アーネスト・ヘミングウェイ",
+  "nameEn": "Ernest Hemingway",
+  "birth": 1899,
+  "death": 1961,
+  "country": "アメリカ",
+  "field": "小説家",
+  "summary": "『日はまた昇る』『誰がために鐘は鳴る』『老人と海』。第一次大戦の救急車運転手、スペイン内戦従軍記者、アフリカのサファリ。行動する作家の典型。61歳で愛用のショットガンで自死。",
+  "events": [
+    {
+      "year": 1899,
+      "age": 0,
+      "title": "イリノイ州オークパークに誕生",
+      "detail": "医師の父と声楽家の母。母は彼を双子の姉として育て、女装させた幼児期。後年『女装した白ウサギ』と呼んだ。",
+      "tags": [
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1918,
+      "age": 18,
+      "title": "第一次大戦イタリア戦線で負傷",
+      "detail": "赤十字救急車運転手として。230個の迫撃砲破片を受け、病院で7歳年上の看護師アグネスと恋。後に『武器よさらば』のモデル。",
+      "tags": [
+        "heartbreak",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1921,
+      "age": 21,
+      "title": "最初の妻ハドリーとパリへ",
+      "detail": "『失われた世代』の作家たちと交流。ガートルード・スタイン、ピカソ、スコット・フィッツジェラルド。",
+      "tags": [
+        "restart",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1926,
+      "age": 26,
+      "title": "『日はまた昇る』出版",
+      "detail": "パリのアメリカ人作家たちの頽廃と空虚を描く。処女長編で時代の声に。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1928,
+      "age": 28,
+      "title": "父クラレンスが拳銃自殺",
+      "detail": "糖尿病と鬱の父が頭を撃った。同じ銃で自らも死ぬことになる暗示。",
+      "tags": [
+        "loss",
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1936,
+      "age": 37,
+      "title": "スペイン内戦に従軍記者として参加",
+      "detail": "人民戦線を支持。マドリードで3人目の妻マーサ・ゲルホーンと出会う。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1940,
+      "age": 41,
+      "title": "『誰がために鐘は鳴る』大成功",
+      "detail": "スペイン内戦を舞台にした愛と死。50万部のベストセラー。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1952,
+      "age": 52,
+      "title": "『老人と海』刊行、ピュリッツァー賞",
+      "detail": "キューバの老漁夫サンチャゴと巨大なカジキの物語。『男は負けるためにつくられてはいない』。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1954,
+      "age": 54,
+      "title": "アフリカで2度の飛行機墜落を生還、ノーベル文学賞",
+      "detail": "『死亡記事』を自分で読んだ男。年末にノーベル賞。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1961,
+      "age": 61,
+      "title": "アイダホ州ケッチャムで愛用の猟銃で自死",
+      "detail": "父と同じ最期。FBI監視妄想と電気ショック療法で記憶も文章力も失い、書けなくなっていた。",
+      "tags": [
+        "loss",
+        "illness"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "人間は負けるためにつくられてはいない。人間は破壊されるかもしれないが、負けはしないのだ。",
+      "source": "『老人と海』"
+    },
+    {
+      "text": "勇気とは、困難に立ち向かう優雅さだ。(Grace under pressure.)",
+      "source": "ドロシー・パーカーへの手紙"
+    },
+    {
+      "text": "世界は誰でも打ち砕く。そして、砕かれた場所で多くの人間が強くなる。",
+      "source": "『武器よさらば』"
+    },
+    {
+      "text": "書くことで学んだ唯一のことは、書くことである。",
+      "source": "書簡"
+    },
+    {
+      "text": "一つの本当の文、君が知っている最も本当の文を書け。",
+      "source": "『移動祝祭日』"
+    }
+  ],
+  "relations": [
+    {
+      "name": "スコット・フィッツジェラルド",
+      "relation": "友人",
+      "note": "パリで励まし、後に距離を置いた"
+    },
+    {
+      "name": "メアリー・ウェルシュ",
+      "relation": "第4の妻",
+      "years": "1946–1961",
+      "note": "最後まで添い遂げた"
+    }
+  ],
+  "places": [
+    {
+      "name": "フィンカ・ビヒア",
+      "location": "キューバ・ハバナ郊外",
+      "note": "『老人と海』を書いた愛した家"
+    },
+    {
+      "name": "キーウェストの家",
+      "location": "米フロリダ州",
+      "note": "多指の猫の子孫が今も50匹棲む"
+    }
+  ],
+  "books": [
+    {
+      "title": "老人と海",
+      "author": "ヘミングウェイ",
+      "asin": "4102100016",
+      "description": "孤独な老漁夫と巨大なカジキ"
+    },
+    {
+      "title": "日はまた昇る",
+      "author": "ヘミングウェイ",
+      "asin": "4102100024",
+      "description": "失われた世代の青春"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/ErnestHemingway.jpg/500px-ErnestHemingway.jpg",
+  "wikiTitle": "アーネスト・ヘミングウェイ",
+  "imageCredit": {
+    "artist": "Lloyd Arnold",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "http://www.phoodie.info/2013/07/19/from-the-desk-of-ernest-hemingway-this-weekend-cuba-libre-celebrates-my-birthday/",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:ErnestHemingway.jpg"
+  }
+}

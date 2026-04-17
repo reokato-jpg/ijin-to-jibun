@@ -1,0 +1,223 @@
+{
+  "id": "okita_soji",
+  "name": "沖田総司",
+  "nameEn": "Okita Soji",
+  "birth": 1844,
+  "death": 1868,
+  "country": "日本",
+  "field": "武士・新選組一番隊組長",
+  "summary": "白河藩士の子に生まれ、10歳前から試衛館で剣を振るった天才剣士。新選組一番隊組長として数々の戦闘で活躍するも、結核により25歳で没。",
+  "events": [
+    {
+      "year": 1842,
+      "age": 0,
+      "title": "江戸・白河藩上屋敷で誕生",
+      "detail": "白河藩士の子。幼くして父を失い、姉の嫁ぎ先で育つ。",
+      "tags": [
+        "parent_conflict",
+        "loss"
+      ]
+    },
+    {
+      "year": 1844,
+      "age": 0,
+      "title": "白河藩士の家に生まれる",
+      "detail": "幼くして父を失い、試衛館に預けられる。9歳で近藤周助の内弟子となる。",
+      "tags": [
+        "parent_conflict",
+        "loss"
+      ]
+    },
+    {
+      "year": 1851,
+      "age": 9,
+      "title": "天然理心流・近藤周助の道場に入門",
+      "detail": "9歳で内弟子として住み込み。近藤勇（6歳年上）と兄弟のように育つ。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1859,
+      "age": 15,
+      "title": "試衛館で塾頭になる",
+      "detail": "天才剣士として頭角を現す。『天稟の才』と近藤勇も舌を巻く。",
+      "tags": [
+        "approval",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1861,
+      "age": 19,
+      "title": "天然理心流塾頭、近藤勇の後継者に",
+      "detail": "『天才』と呼ばれた剣の腕。『無心・無形の斬撃』を極めた。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1863,
+      "age": 21,
+      "title": "浪士組として京都へ、新選組一番隊組長",
+      "detail": "壬生浪士組から新選組へ。最年少ながら最強の剣士。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1863,
+      "age": 21,
+      "title": "芹沢鴨暗殺に関与",
+      "detail": "9月18日、新選組内紛の粛清。沖田は見張り役と伝わる。",
+      "tags": []
+    },
+    {
+      "year": 1864,
+      "age": 20,
+      "title": "池田屋事件で吐血",
+      "detail": "斬り込み中に喀血。結核の最初の兆候と言われる。",
+      "tags": [
+        "illness",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1864,
+      "age": 22,
+      "title": "池田屋事件、激闘の中で喀血",
+      "detail": "祇園祭宵山の夜の急襲。20数人を相手に大立ち回りを演じながら血を吐いて倒れた。結核の発症。",
+      "tags": [
+        "breakthrough",
+        "illness"
+      ]
+    },
+    {
+      "year": 1867,
+      "age": 23,
+      "title": "病状悪化、戦線離脱",
+      "detail": "療養のため江戸へ戻る。盟友たちが戊辰戦争へ向かう中、一人残される。",
+      "tags": [
+        "illness",
+        "isolation",
+        "blank_period"
+      ]
+    },
+    {
+      "year": 1867,
+      "age": 25,
+      "title": "病状悪化で戦列離脱",
+      "detail": "近藤勇との剣技試合中に喀血。以後表舞台から退く。",
+      "tags": [
+        "illness",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1868,
+      "age": 24,
+      "title": "千駄ヶ谷で病没",
+      "detail": "植木屋平五郎宅で息を引き取る。享年25。近藤・土方の訃報は届かなかった。",
+      "tags": [
+        "loss",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1868,
+      "age": 26,
+      "title": "鳥羽伏見敗戦を病床で聞く",
+      "detail": "江戸へ戻り、千駄ヶ谷の医師・松本良順宅で療養。",
+      "tags": [
+        "loss",
+        "illness"
+      ]
+    },
+    {
+      "year": 1868,
+      "age": 26,
+      "title": "江戸・千駄ヶ谷で死去",
+      "detail": "5月30日。親友近藤勇が板橋で処刑された2ヶ月後。享年26。庭先に来る黒猫を斬ることもできず『刀が届かない』と涙したという逸話。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "動けば雷電の如く、発すれば風雨の如し。",
+      "source": "剣技を評した言葉として"
+    },
+    {
+      "text": "動かねば闇にへだつや花と水。",
+      "source": "沖田の句"
+    },
+    {
+      "text": "剣は心なり。心正しからざれば剣もまた正しからず。",
+      "source": "沖田の言葉として伝わる"
+    },
+    {
+      "text": "命の火が消えるまで、ただ剣を振るのみ。",
+      "source": "沖田に帰される言葉"
+    }
+  ],
+  "places": [
+    {
+      "name": "沖田総司終焉の地",
+      "location": "東京都港区元麻布",
+      "note": "植木屋平五郎宅跡。現在は記念碑"
+    },
+    {
+      "name": "専称寺（沖田総司墓所）",
+      "location": "東京都港区元麻布",
+      "note": "沖田家菩提寺"
+    },
+    {
+      "name": "壬生寺",
+      "location": "京都市中京区",
+      "note": "新選組ゆかりの地"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Portrait_of_Okita_S%C5%8Dji.jpg/500px-Portrait_of_Okita_S%C5%8Dji.jpg",
+  "wikiTitle": "沖田総司",
+  "imageCredit": {
+    "artist": "Unknown author Unknown author",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "https://bakumatsu.org/events/view/410",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Portrait_of_Okita_S%C5%8Dji.jpg"
+  },
+  "books": [
+    {
+      "title": "沖田総司",
+      "author": "大内美予子",
+      "asin": "4404022379",
+      "description": "天才剣士の短い生涯を追う評伝"
+    },
+    {
+      "title": "新選組血風録",
+      "author": "司馬遼太郎",
+      "asin": "4041137047",
+      "description": "沖田の剣と病の描写が胸を打つ"
+    }
+  ],
+  "media": [
+    {
+      "title": "沖田総司",
+      "year": 1974,
+      "type": "movie",
+      "country": "日本",
+      "cast": "草刈正雄",
+      "description": "若き天才剣士の短い生涯を描く。"
+    },
+    {
+      "title": "るろうに剣心",
+      "year": 2012,
+      "type": "movie",
+      "country": "日本",
+      "cast": "佐藤健",
+      "description": "沖田本人ではないが、幕末剣客の系譜を描く人気シリーズ。"
+    }
+  ]
+}

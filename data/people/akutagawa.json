@@ -1,0 +1,224 @@
+{
+  "id": "akutagawa",
+  "name": "芥川龍之介",
+  "nameEn": "Akutagawa Ryunosuke",
+  "birth": 1892,
+  "death": 1927,
+  "country": "日本",
+  "field": "小説家",
+  "summary": "夏目漱石門下の天才。『羅生門』『鼻』で鮮烈にデビューし、短篇の名手となる。『ぼんやりした不安』を残し35歳で服毒自殺。",
+  "events": [
+    {
+      "year": 1892,
+      "age": 0,
+      "title": "東京・京橋に誕生、生後まもなく母が発狂",
+      "detail": "母に狂気があったことが生涯、彼を苦しめた。『僕の母は狂人だつた』（或阿呆の一生）",
+      "tags": [
+        "parent_conflict",
+        "illness",
+        "loss"
+      ]
+    },
+    {
+      "year": 1892,
+      "age": 0,
+      "title": "東京・京橋に誕生、生後7ヶ月で母が発狂",
+      "detail": "母の実家・芥川家に引き取られる。『私の母は狂人だった』と後に書く。",
+      "tags": [
+        "parent_conflict",
+        "loss"
+      ]
+    },
+    {
+      "year": 1913,
+      "age": 21,
+      "title": "東京帝国大学英文科入学、漱石山房に出入り",
+      "detail": "夏目漱石の門下生となり、絶賛されて文壇へ。",
+      "tags": [
+        "turning_encounter",
+        "approval"
+      ]
+    },
+    {
+      "year": 1914,
+      "age": 22,
+      "title": "『羅生門』発表",
+      "detail": "帝大在学中の執筆。冷徹な心理描写で文壇に衝撃。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1915,
+      "age": 23,
+      "title": "『羅生門』発表",
+      "detail": "学生時代の処女作。後の世界文学となる出発点。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1916,
+      "age": 24,
+      "title": "『鼻』を夏目漱石が絶賛",
+      "detail": "漱石から『大変面白く思ひました』と激励の書簡。師との短い交流が始まる。",
+      "tags": [
+        "turning_encounter",
+        "approval"
+      ]
+    },
+    {
+      "year": 1916,
+      "age": 24,
+      "title": "『鼻』で漱石に激賞される",
+      "detail": "『ただ一筆に独自の見所を出している』と手紙で絶賛された。",
+      "tags": [
+        "approval",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1918,
+      "age": 26,
+      "title": "塚本文と結婚",
+      "detail": "大阪毎日新聞社の海軍機関学校教授として安定した生活へ。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1921,
+      "age": 29,
+      "title": "中国特派員として上海・北京へ",
+      "detail": "体調を崩し帰国。以後、神経衰弱が深まる。",
+      "tags": [
+        "illness"
+      ]
+    },
+    {
+      "year": 1922,
+      "age": 30,
+      "title": "『藪の中』発表",
+      "detail": "後に黒澤明『羅生門』の原作に。真実の相対性を問う。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1927,
+      "age": 35,
+      "title": "『河童』発表",
+      "detail": "自身の精神を投影した寓話。既に深い鬱の中にあった。",
+      "tags": [
+        "illness",
+        "self_denial"
+      ]
+    },
+    {
+      "year": 1927,
+      "age": 35,
+      "title": "服毒自殺",
+      "detail": "田端の自宅で大量の睡眠薬を服用。『ぼんやりした不安』を遺書に残した。享年35。",
+      "tags": [
+        "loss",
+        "illness"
+      ]
+    },
+    {
+      "year": 1927,
+      "age": 35,
+      "title": "自宅で服毒自殺",
+      "detail": "7月24日未明、致死量の睡眠薬で。『ぼんやりした不安』を書き遺した。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "何か僕の将来に対する唯ぼんやりした不安。",
+      "source": "遺書『或旧友へ送る手記』"
+    },
+    {
+      "text": "人生は一行のボオドレエルにも若かない。",
+      "source": "『或阿呆の一生』"
+    },
+    {
+      "text": "人生は一箱のマッチに似ている。重大に扱うのはばかばかしい。重大に扱わなければ危険である。",
+      "source": "『侏儒の言葉』"
+    },
+    {
+      "text": "天才とは、僅かに我々と一歩を隔てたる狂人の謂である。",
+      "source": "『侏儒の言葉』"
+    },
+    {
+      "text": "僕は将来に対する唯ぼんやりした不安である。",
+      "source": "『或旧友へ送る手記』遺書"
+    },
+    {
+      "text": "人生は地獄よりも地獄的である。",
+      "source": "『侏儒の言葉』"
+    }
+  ],
+  "places": [
+    {
+      "name": "芥川龍之介記念館",
+      "location": "東京都北区田端",
+      "note": "田端文士村の中核。自宅跡周辺"
+    },
+    {
+      "name": "慈眼寺（墓所）",
+      "location": "東京都豊島区巣鴨",
+      "note": "夫人・母とともに眠る"
+    },
+    {
+      "name": "田端文士村記念館",
+      "location": "東京都北区田端",
+      "note": "漱石門下の文士たちが集った街の記憶"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/AkutagawaRyunosuke.jpg/500px-AkutagawaRyunosuke.jpg",
+  "wikiTitle": "芥川龍之介",
+  "imageCredit": {
+    "artist": "- The person in the photo is Ryunosuke Akutagawa.",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "credit": "\" 侏儒の言葉 \" book.",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:AkutagawaRyunosuke.jpg"
+  },
+  "books": [
+    {
+      "title": "羅生門・鼻",
+      "author": "芥川龍之介",
+      "asin": "4101025010",
+      "description": "デビュー作を含む短篇の傑作集"
+    },
+    {
+      "title": "侏儒の言葉・西方の人",
+      "author": "芥川龍之介",
+      "asin": "4101025029",
+      "description": "遺書に近い晩年の箴言と祈り"
+    }
+  ],
+  "media": [
+    {
+      "title": "羅生門",
+      "year": 1950,
+      "type": "movie",
+      "country": "日本",
+      "director": "黒澤明",
+      "cast": "三船敏郎／京マチ子",
+      "description": "芥川『藪の中』『羅生門』を原作とする世界の名作。ヴェネツィア金獅子賞。"
+    },
+    {
+      "title": "地獄変",
+      "year": 1969,
+      "type": "movie",
+      "country": "日本",
+      "director": "豊田四郎",
+      "cast": "中村錦之助",
+      "description": "芥川の代表短編『地獄変』を映画化。"
+    }
+  ]
+}

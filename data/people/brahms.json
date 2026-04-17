@@ -1,0 +1,230 @@
+{
+  "id": "brahms",
+  "name": "ヨハネス・ブラームス",
+  "nameEn": "Johannes Brahms",
+  "birth": 1833,
+  "death": 1897,
+  "country": "ドイツ",
+  "field": "作曲家",
+  "summary": "ハンブルクの貧しい家に生まれ、20歳でシューマン夫妻に見出される。師の死後、14歳年上のクララを生涯愛し続けた。独身のまま、シューマンの子供たちを支えた。",
+  "events": [
+    {
+      "year": 1833,
+      "age": 0,
+      "title": "ハンブルクの下町に誕生",
+      "detail": "父はコントラバス奏者。貧しさから酒場で伴奏をして家計を助けた。",
+      "tags": [
+        "poverty"
+      ]
+    },
+    {
+      "year": 1833,
+      "age": 0,
+      "title": "ハンブルクの貧しい音楽家の家に誕生",
+      "detail": "父はコントラバス奏者、母は20歳年上の裁縫婦。場末の酒場で少年時代からピアノを弾いて家計を支えた。",
+      "tags": [
+        "poverty",
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1853,
+      "age": 20,
+      "title": "シューマン夫妻との出会い",
+      "detail": "ロベルトが『新しい時代の天才』と激賞。以後クララを生涯愛した。",
+      "tags": [
+        "turning_encounter",
+        "approval"
+      ]
+    },
+    {
+      "year": 1853,
+      "age": 20,
+      "title": "シューマンを訪ね、『新しい道』の論文で絶賛される",
+      "detail": "シューマンは無名の青年を『救世主』として雑誌に発表。ブラームスの名を一夜で有名にした。",
+      "tags": [
+        "turning_encounter",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1854,
+      "age": 21,
+      "title": "シューマンが自殺未遂",
+      "detail": "ブラームスはクララと子供たちを献身的に支え始める。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1854,
+      "age": 21,
+      "title": "シューマンがライン川に投身、クララへの愛",
+      "detail": "療養院のシューマンに代わり、14歳年上の妻クララを支える。生涯続く秘めた愛の始まり。",
+      "tags": [
+        "heartbreak",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1868,
+      "age": 35,
+      "title": "『ドイツ・レクイエム』初演、作曲家として確立",
+      "detail": "母の死をきっかけに書かれた、プロテスタント流のレクイエム。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1876,
+      "age": 43,
+      "title": "交響曲第1番、21年の苦闘の末完成",
+      "detail": "ベートーヴェンの影に怯えながら書き上げた。『第10交響曲』と評された。",
+      "tags": [
+        "breakthrough",
+        "self_denial"
+      ]
+    },
+    {
+      "year": 1876,
+      "age": 43,
+      "title": "交響曲第1番完成、21年の苦闘",
+      "detail": "『ベートーヴェンの足音が背後から聞こえる』と言い続け21年。『ベートーヴェンの第10』と呼ばれた。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1896,
+      "age": 63,
+      "title": "クララ死去、翌年ブラームスも",
+      "detail": "クララの葬儀に向かう途中で体調を崩す。1年後にクララを追うように没。",
+      "tags": [
+        "loss",
+        "heartbreak"
+      ]
+    },
+    {
+      "year": 1896,
+      "age": 63,
+      "title": "クララ・シューマン死去",
+      "detail": "訃報の電車に飛び乗り間に合わず。『4つの厳粛な歌』を遺作として書く。",
+      "tags": [
+        "loss",
+        "heartbreak"
+      ]
+    },
+    {
+      "year": 1897,
+      "age": 63,
+      "title": "肝臓癌のためウィーンで死去",
+      "detail": "クララの死の11ヶ月後。生涯独身を貫いた。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "本当の音楽を作るのは、簡単なことではない。",
+      "source": "弟子への助言"
+    },
+    {
+      "text": "誰もが知っている曲を書くのは難しくない。誰にも書けない曲を書くのが難しいのだ。",
+      "source": "ブラームスの言葉"
+    },
+    {
+      "text": "偶然は存在しない。あらゆる偶然に見えるものの背後には、意味がある。",
+      "source": "書簡"
+    },
+    {
+      "text": "作曲は容易だ。難しいのは、余計な音符を机の下に落とすことだ。",
+      "source": "ブラームスに帰される言葉"
+    }
+  ],
+  "relations": [
+    {
+      "name": "ロベルト・シューマン",
+      "id": "schumann",
+      "relation": "恩師",
+      "note": "20歳で見いだしてくれた"
+    },
+    {
+      "name": "クララ・シューマン",
+      "relation": "生涯の想い人",
+      "note": "14歳年上のピアニスト。愛を告げずに支え続けた"
+    }
+  ],
+  "places": [
+    {
+      "name": "ブラームス博物館",
+      "location": "ドイツ・ハンブルク",
+      "note": "生地の記念施設"
+    },
+    {
+      "name": "中央墓地",
+      "location": "ウィーン",
+      "note": "ベートーヴェン・シューベルトと並ぶ"
+    }
+  ],
+  "books": [
+    {
+      "title": "ブラームス",
+      "author": "三宅幸夫",
+      "asin": "4393935225",
+      "description": "愛と孤独の生涯"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/JohannesBrahms.jpg/500px-JohannesBrahms.jpg",
+  "wikiTitle": "ヨハネス・ブラームス",
+  "imageCredit": {
+    "artist": "C. Brasch , Berlin ( biography )",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "http://wicr.uindy.edu/Education/Composers/BrahmsJ.html",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:JohannesBrahms.jpg"
+  },
+  "works": [
+    {
+      "title": "交響曲第1番 ハ短調 作品68",
+      "year": 1876,
+      "type": "交響曲",
+      "description": "21年の苦闘。『ベートーヴェンの第10』",
+      "youtubeId": "_YTIVqTc9YM"
+    },
+    {
+      "title": "交響曲第4番 ホ短調 作品98",
+      "year": 1885,
+      "type": "交響曲",
+      "description": "パッサカリアで締めくくられる、最も晩秋の交響曲",
+      "youtubeId": "hYwNRx_G_aA"
+    },
+    {
+      "title": "ハンガリー舞曲第5番",
+      "year": 1869,
+      "type": "管弦楽",
+      "description": "最も有名な舞曲",
+      "youtubeId": "Nzo3atXtm54"
+    },
+    {
+      "title": "ドイツ・レクイエム 作品45",
+      "year": 1868,
+      "type": "宗教曲",
+      "description": "『葬送ではなく、慰めのレクイエム』",
+      "youtubeId": "T7-GRG64bwY"
+    },
+    {
+      "title": "ヴァイオリン協奏曲 ニ長調 作品77",
+      "year": 1878,
+      "type": "協奏曲",
+      "description": "親友ヨアヒムに捧げた、三大ヴァイオリン協奏曲のひとつ",
+      "youtubeId": "KprLpfvu-8o"
+    },
+    {
+      "title": "子守歌 作品49-4",
+      "year": 1868,
+      "type": "歌曲",
+      "description": "世界で最も歌われる子守歌"
+    }
+  ]
+}

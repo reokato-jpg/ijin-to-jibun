@@ -1,0 +1,169 @@
+{
+  "id": "napoleon",
+  "name": "ナポレオン・ボナパルト",
+  "nameEn": "Napoleon Bonaparte",
+  "birth": 1769,
+  "death": 1821,
+  "country": "コルシカ・フランス",
+  "field": "軍人・皇帝",
+  "summary": "コルシカ島の貧しい小貴族の子から、革命フランス軍の将校を経て皇帝へ。ヨーロッパの大半を征服し、法典・教育・行政の近代化を進めた。エルバ島脱出→ワーテルロー敗北→セントヘレナ島流刑。50歳で孤島に没した。",
+  "events": [
+    {
+      "year": 1769,
+      "age": 0,
+      "title": "コルシカ島アジャクシオに誕生",
+      "detail": "フランスに併合された直後。イタリア系の小貴族。生涯コルシカ訛りを笑われた。",
+      "tags": []
+    },
+    {
+      "year": 1785,
+      "age": 16,
+      "title": "パリの陸軍士官学校を卒業、砲兵少尉",
+      "detail": "42位/58人の平凡な成績。しかし砲兵技術に秀でていた。",
+      "tags": []
+    },
+    {
+      "year": 1793,
+      "age": 24,
+      "title": "トゥーロン攻囲戦で英軍を追い払う",
+      "detail": "若き大尉の智略で一夜にして准将に。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1796,
+      "age": 26,
+      "title": "ジョゼフィーヌと結婚、イタリア遠征へ",
+      "detail": "6歳年上の未亡人への激しい恋。『ジョゼフィーヌを思って眠れない』という手紙を書きながら戦い勝ち続けた。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1799,
+      "age": 30,
+      "title": "ブリュメール18日クーデター、統領に",
+      "detail": "エジプト遠征から帰国し政権掌握。フランス革命の終着点。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1804,
+      "age": 34,
+      "title": "ノートルダムで皇帝に",
+      "detail": "教皇ピウス7世から冠を奪い自ら戴冠。『フランス人民の皇帝ナポレオン』。ダヴィッドの絵で有名。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1805,
+      "age": 36,
+      "title": "アウステルリッツの戦い（三帝会戦）",
+      "detail": "戦史上最大の戦術的勝利。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1812,
+      "age": 42,
+      "title": "ロシア遠征、モスクワの火災",
+      "detail": "60万の大軍がロシアの冬と焦土作戦で壊滅。生還は3万。運命が転じた。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1814,
+      "age": 44,
+      "title": "エルバ島に流刑",
+      "detail": "諸国連合軍にパリ陥落、譲位。地中海の小島へ。",
+      "tags": [
+        "loss",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1815,
+      "age": 45,
+      "title": "エルバ島を脱出し百日天下、ワーテルローで敗北",
+      "detail": "3月1日に上陸し、18日でパリに戻り帝位復帰。しかし6月18日ワーテルローで英プロイセン連合軍に敗北。",
+      "tags": [
+        "breakthrough",
+        "loss"
+      ]
+    },
+    {
+      "year": 1821,
+      "age": 51,
+      "title": "セントヘレナ島で胃癌により死去",
+      "detail": "南大西洋の絶海の孤島で6年。『フランス、軍、ジョゼフィーヌ…』が最期のうわごと。",
+      "tags": [
+        "loss",
+        "isolation"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "不可能という言葉は、フランス語にない。",
+      "source": "ナポレオンに帰される言葉"
+    },
+    {
+      "text": "勝利は、最も忍耐強い者のものだ。",
+      "source": "書簡"
+    },
+    {
+      "text": "私に大砲を与えよ。そうすれば世界を動かしてみせる。",
+      "source": "ナポレオンの言葉"
+    },
+    {
+      "text": "兵は神速を貴ぶ。",
+      "source": "ナポレオンの戦術原則"
+    },
+    {
+      "text": "想像力は世界を支配する。",
+      "source": "『セントヘレナ回想録』"
+    }
+  ],
+  "relations": [
+    {
+      "name": "ジョゼフィーヌ",
+      "relation": "皇后・最愛",
+      "years": "1796–1810",
+      "note": "離婚後も愛し続けた。彼女の死の報せにナポレオンは号泣した"
+    }
+  ],
+  "places": [
+    {
+      "name": "アンヴァリッド",
+      "location": "フランス・パリ",
+      "note": "ナポレオン廟。6重の棺に眠る"
+    },
+    {
+      "name": "セントヘレナ島ロングウッド邸",
+      "location": "英領セントヘレナ",
+      "note": "最期の幽閉地"
+    }
+  ],
+  "books": [
+    {
+      "title": "ナポレオン言行録",
+      "author": "オクターヴ・オブリ編",
+      "asin": "4003400216",
+      "description": "本人の言葉を集めた岩波文庫"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Fran%C3%A7ois_G%C3%A9rard_-_Napoleon_I_001.JPG/500px-Fran%C3%A7ois_G%C3%A9rard_-_Napoleon_I_001.JPG",
+  "wikiTitle": "ナポレオン・ボナパルト",
+  "imageCredit": {
+    "artist": "Workshop of François Gérard",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Geheugen van Nederland : Home : Info : Pic",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Fran%C3%A7ois_G%C3%A9rard_-_Napoleon_I_001.JPG"
+  }
+}

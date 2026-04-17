@@ -1,0 +1,231 @@
+{
+  "id": "shostakovich",
+  "name": "ドミトリー・ショスタコーヴィチ",
+  "nameEn": "Dmitri Shostakovich",
+  "birth": 1906,
+  "death": 1975,
+  "country": "ソ連",
+  "field": "作曲家",
+  "summary": "スターリン独裁下を生き抜いたソ連の作曲家。15曲の交響曲に体制への恐怖と抵抗を暗号のように込めた。公の『人民芸術家』と、私の『皮肉屋』の二重生活。",
+  "events": [
+    {
+      "year": 1906,
+      "age": 0,
+      "title": "ペテルブルクに誕生",
+      "detail": "父は化学技師、家庭は革命への共感を持っていた。",
+      "tags": []
+    },
+    {
+      "year": 1906,
+      "age": 0,
+      "title": "サンクトペテルブルクに誕生",
+      "detail": "父は化学者、母はピアニスト。1917年革命を11歳で目撃した世代。",
+      "tags": []
+    },
+    {
+      "year": 1925,
+      "age": 19,
+      "title": "交響曲第1番で国際的デビュー",
+      "detail": "19歳の卒業作品。一躍世界の注目を集める。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1925,
+      "age": 19,
+      "title": "交響曲第1番卒業作品、一夜で世界の作曲家に",
+      "detail": "19歳の試験作品が世界中で演奏され、若きソ連を代表する作曲家に。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1936,
+      "age": 29,
+      "title": "スターリンの粛清を警告される",
+      "detail": "オペラを批判され、プラウダ紙に『音楽ではなく混乱』と書かれた。寝る時もスーツケースを枕元に置いた。",
+      "tags": [
+        "setback",
+        "self_denial",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1936,
+      "age": 29,
+      "title": "プラウダ紙『音楽のかわりに荒唐無稽』でオペラ批判",
+      "detail": "スターリンが『ムツェンスクのマクベス夫人』を鑑賞中に退席し、2日後の社説で糾弾。枕元に逮捕用のカバンを置いて眠る日々が始まる。",
+      "tags": [
+        "pride_broken",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1937,
+      "age": 31,
+      "title": "交響曲第5番で復帰",
+      "detail": "『正当な批判への作曲家の応答』という副題。体制への服従と抵抗の二重の表現。",
+      "tags": [
+        "breakthrough",
+        "self_reinvention"
+      ]
+    },
+    {
+      "year": 1937,
+      "age": 31,
+      "title": "交響曲第5番で当局に『和解』",
+      "detail": "『正当な批判への実際的な創造的回答』と副題。恭順を装った二重の音楽。歴史的傑作となった。",
+      "tags": [
+        "breakthrough",
+        "restart"
+      ]
+    },
+    {
+      "year": 1941,
+      "age": 35,
+      "title": "包囲下のレニングラードで交響曲第7番『レニングラード』",
+      "detail": "消防団員として屋根で焼夷弾を消しながら作曲。ファシズムへの抵抗の象徴に。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1948,
+      "age": 42,
+      "title": "再び粛清、ジダーノフ批判",
+      "detail": "『形式主義』と糾弾され、公職を失う。以後も創作は続けた。",
+      "tags": [
+        "setback",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1948,
+      "age": 42,
+      "title": "ジダーノフ批判、二度目の糾弾",
+      "detail": "プロコフィエフらと共に『形式主義者』として公職剥奪。教授も解任される。",
+      "tags": [
+        "pride_broken",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1953,
+      "age": 46,
+      "title": "スターリン死後、交響曲第10番で自由を謳歌",
+      "detail": "10年封印していた交響曲。スターリン描写と言われる第2楽章の爆発的怒り。",
+      "tags": [
+        "breakthrough",
+        "restart"
+      ]
+    },
+    {
+      "year": 1960,
+      "age": 54,
+      "title": "党に入党、生涯の後悔",
+      "detail": "圧力に屈して入党。弦楽四重奏曲第8番は『自らの記念に』捧げた絶望の音楽。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1975,
+      "age": 68,
+      "title": "肺癌で死去",
+      "detail": "『真実を語ることができたのは音楽の中だけだった』",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1975,
+      "age": 68,
+      "title": "モスクワで肺癌により死去",
+      "detail": "『証言』とされる回想録が西側で出版され、彼の『二重の音楽』の真意が議論される。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "音楽を書くことは、恐怖の中でも生き続けることだった。",
+      "source": "『ショスタコーヴィチの証言』"
+    },
+    {
+      "text": "悲劇を描くことを恐れるな。それが音楽の義務だ。",
+      "source": "ショスタコーヴィチの言葉"
+    },
+    {
+      "text": "誰もが自分のラム酒を持っている。私のラム酒は音楽だ。",
+      "source": "書簡"
+    },
+    {
+      "text": "音楽は、独裁者の耳にも忍び込み、彼らを裁く。",
+      "source": "『証言』"
+    }
+  ],
+  "places": [
+    {
+      "name": "ノヴォデヴィチ墓地",
+      "location": "ロシア・モスクワ",
+      "note": "ロシア芸術家が眠る"
+    }
+  ],
+  "books": [
+    {
+      "title": "ショスタコーヴィチの証言",
+      "author": "ソロモン・ヴォルコフ",
+      "asin": "4120028283",
+      "description": "体制下を生きた作曲家の告白"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/%D0%9A%D0%BE%D0%BC%D0%BF%D0%BE%D0%B7%D0%B8%D1%82%D0%BE%D1%80_%D0%94%D0%BC%D0%B8%D1%82%D1%80%D0%B8%D0%B9_%D0%94%D0%BC%D0%B8%D1%82%D1%80%D0%B8%D0%B5%D0%B2%D0%B8%D1%87_%D0%A8%D0%BE%D1%81%D1%82%D0%B0%D0%BA%D0%BE%D0%B2%D0%B8%D1%87.jpg/500px-%D0%9A%D0%BE%D0%BC%D0%BF%D0%BE%D0%B7%D0%B8%D1%82%D0%BE%D1%80_%D0%94%D0%BC%D0%B8%D1%82%D1%80%D0%B8%D0%B9_%D0%94%D0%BC%D0%B8%D1%82%D1%80%D0%B8%D0%B5%D0%B2%D0%B8%D1%87_%D0%A8%D0%BE%D1%81%D1%82%D0%B0%D0%BA%D0%BE%D0%B2%D0%B8%D1%87.jpg",
+  "wikiTitle": "ドミトリー・ショスタコーヴィチ",
+  "imageCredit": {
+    "artist": "Unknown author Unknown author",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Original publication : Газета «Красная звезда» №86 (5150) от 12 апреля 1942 года Immediate source : Государственный каталог Музейного фонда Российской Федерации",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:%D0%9A%D0%BE%D0%BC%D0%BF%D0%BE%D0%B7%D0%B8%D1%82%D0%BE%D1%80_%D0%94%D0%BC%D0%B8%D1%82%D1%80%D0%B8%D0%B9_%D0%94%D0%BC%D0%B8%D1%82%D1%80%D0%B8%D0%B5%D0%B2%D0%B8%D1%87_%D0%A8%D0%BE%D1%81%D1%82%D0%B0%D0%BA%D0%BE%D0%B2%D0%B8%D1%87.jpg"
+  },
+  "works": [
+    {
+      "title": "交響曲第5番 ニ短調 作品47",
+      "year": 1937,
+      "type": "交響曲",
+      "description": "『当局への実際的な創造的回答』の二重の傑作",
+      "youtubeId": "Pa7vdLHZUlo"
+    },
+    {
+      "title": "交響曲第7番『レニングラード』作品60",
+      "year": 1941,
+      "type": "交響曲",
+      "description": "包囲下の都市で書かれた、ファシズム抵抗の象徴",
+      "youtubeId": "bTVlhYfdjFg"
+    },
+    {
+      "title": "ジャズ組曲第2番よりワルツ第2番",
+      "year": 1938,
+      "type": "管弦楽",
+      "description": "映画『アイズ ワイド シャット』で使用された哀愁のワルツ",
+      "youtubeId": "fJE9DoTu1WQ"
+    },
+    {
+      "title": "弦楽四重奏曲第8番 ハ短調 作品110",
+      "year": 1960,
+      "type": "室内楽",
+      "description": "『自らの記念に』捧げた絶望の音楽",
+      "youtubeId": "_P7FN4cQaf8"
+    },
+    {
+      "title": "ピアノ五重奏曲 ト短調 作品57",
+      "year": 1940,
+      "type": "室内楽",
+      "description": "スターリン賞を受賞した美しい室内楽"
+    }
+  ]
+}

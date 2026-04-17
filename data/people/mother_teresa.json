@@ -1,0 +1,135 @@
+{
+  "id": "mother_teresa",
+  "name": "マザー・テレサ",
+  "nameEn": "Mother Teresa",
+  "birth": 1910,
+  "death": 1997,
+  "country": "北マケドニア→インド",
+  "field": "修道女・慈善活動家",
+  "summary": "カルカッタの『死を待つ人々の家』を始めた20世紀の聖女。アルバニア系の修道女として渡印し、38歳で貧民街での奉仕を神の呼びかけと確信。『神の沈黙』と呼ぶ50年の霊的暗夜の中、微笑みを絶やさず貧者に仕えた。",
+  "events": [
+    {
+      "year": 1910,
+      "age": 0,
+      "title": "オスマン帝国領スコピエ(現北マケドニア)に誕生",
+      "detail": "本名アグネス・ゴンジャ・ボヤジュ。アルバニア系カトリック家庭。",
+      "tags": []
+    },
+    {
+      "year": 1928,
+      "age": 18,
+      "title": "ロレト修道会に入り、インドへ派遣",
+      "detail": "ダージリンとカルカッタで18年、女学校の教師として。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1946,
+      "age": 36,
+      "title": "ダージリン行きの列車で『呼び声の中の呼び声』",
+      "detail": "9月10日、『貧者の中の最も貧しい者に仕えよ』と神の声を聞いたと語る。生涯の転換点。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1948,
+      "age": 38,
+      "title": "修道院を出てカルカッタのスラムへ",
+      "detail": "青い縁のサリーに着替え、貧民街の路上で瀕死の人々を看取り始める。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1950,
+      "age": 40,
+      "title": "『神の愛の宣教者会』設立",
+      "detail": "12人の修道女と共に。現在は世界130カ国4500人以上の規模に。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1952,
+      "age": 42,
+      "title": "『死を待つ人々の家』開設",
+      "detail": "カーリー女神寺院に隣接する廃墟に。『一生に一度でも愛されたと感じて死なせたい』。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1979,
+      "age": 69,
+      "title": "ノーベル平和賞",
+      "detail": "『貧しい者の名において』受賞。晩餐会を辞退し、賞金を全てカルカッタに送った。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1997,
+      "age": 87,
+      "title": "カルカッタで死去、国葬",
+      "detail": "インド政府が国葬。没後、50年の日記が公開され、生涯『神の沈黙』に苦しんでいたことが明かされた。",
+      "tags": [
+        "loss",
+        "approval"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "大切なのは、どれだけ多くのことを成すかではなく、どれだけ愛を込めて成すかです。",
+      "source": "マザー・テレサの説教"
+    },
+    {
+      "text": "愛の反対は憎しみではなく、無関心です。",
+      "source": "マザー・テレサの言葉"
+    },
+    {
+      "text": "微笑みは、平和の始まりです。",
+      "source": "マザー・テレサの言葉"
+    },
+    {
+      "text": "家族の一人一人に、世界の誰よりも先に微笑みかけなさい。",
+      "source": "説教"
+    },
+    {
+      "text": "私たちは皆、愛されるために生まれてきました。",
+      "source": "ノーベル賞受賞演説 1979"
+    }
+  ],
+  "relations": [],
+  "places": [
+    {
+      "name": "マザーハウス",
+      "location": "インド・コルカタ",
+      "note": "『神の愛の宣教者会』本部"
+    },
+    {
+      "name": "死を待つ人々の家(ニルマル・ヒルダイ)",
+      "location": "インド・コルカタ",
+      "note": "カーリー寺院隣の本拠"
+    }
+  ],
+  "books": [
+    {
+      "title": "来て、わたしの光になりなさい",
+      "author": "マザー・テレサ",
+      "asin": "4863811314",
+      "description": "50年の霊的暗夜の日記"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/MotherTeresa_090.jpg/500px-MotherTeresa_090.jpg",
+  "wikiTitle": "マザー・テレサ",
+  "imageCredit": {
+    "artist": "Túrelio",
+    "license": "CC BY-SA 2.0 de",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/de/deed.en",
+    "credit": "own work (digitized on Kodak- PhotoCD (16 Base) from 35 mm photographic film )",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:MotherTeresa_090.jpg"
+  }
+}

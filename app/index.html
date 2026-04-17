@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#4a1822">
+<title>偉人と自分</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="app-header">
+    <button id="backBtn" class="back-btn" aria-label="戻る">‹</button>
+    <h1 id="appTitle">偉人と自分。</h1>
+    <button id="searchBtn" class="icon-btn" aria-label="検索">⌕</button>
+  </header>
+
+  <!-- タブ -->
+  <nav class="tabs" id="tabs">
+    <button class="tab active" data-view="people">ホーム</button>
+    <button class="tab" data-view="tags">検索</button>
+    <button class="tab" data-view="routines">ルーティン</button>
+    <button class="tab" data-view="articles">ブログ</button>
+    <button class="tab" data-view="favorites">わたしの本</button>
+  </nav>
+
+  <!-- 検索バー -->
+  <div id="searchBar" class="search-bar hidden">
+    <input id="searchInput" type="text" placeholder="名前・キーワード…" autocomplete="off">
+    <button id="searchClose">×</button>
+  </div>
+
+  <main id="main">
+    <!-- ホーム -->
+    <section id="view-people" class="view active">
+      <!-- ヒーロー -->
+      <div class="hero">
+        <div class="hero-frame">
+          <div class="hero-ornament top">❦ &nbsp;&nbsp;───&nbsp;&nbsp; ◆ &nbsp;&nbsp;───&nbsp;&nbsp; ❦</div>
+          <h2 class="hero-title">偉人と、自分。</h2>
+          <div class="hero-divider"><span></span></div>
+          <div class="hero-tagline">人は、同じ感情の流れの中で生きている。</div>
+          <div class="hero-sub">迷った時、逃げたくなった時、立ち止まった時。<br>偉人たちも、同じ場所を歩いた。</div>
+          <div id="heroStats" class="hero-stats"></div>
+          <div class="hero-ornament bottom">❦ &nbsp;&nbsp;───&nbsp;&nbsp; ◆ &nbsp;&nbsp;───&nbsp;&nbsp; ❦</div>
+        </div>
+      </div>
+
+      <!-- 推し偉人 -->
+      <div class="home-block">
+        <div class="home-block-label">推し偉人</div>
+        <div id="oshiSection"></div>
+      </div>
+
+      <!-- 今日の気分で案内人を選ぶ -->
+      <div class="home-block">
+        <div class="home-block-label">今日の気分は？</div>
+        <div id="personOfTheDay"></div>
+      </div>
+
+      <!-- 今日の言葉 -->
+      <div class="home-block">
+        <div class="home-block-label">今日の言葉</div>
+        <div id="quoteOfTheDay"></div>
+      </div>
+
+      <!-- 言葉のコレクション -->
+      <div class="home-block">
+        <div class="home-block-label">言葉のコレクション</div>
+        <div id="quoteCarousel" class="quote-carousel"></div>
+      </div>
+
+      <!-- 注目の感情 -->
+      <div class="home-block">
+        <div class="home-block-label">この感情をなぞる</div>
+        <div id="featuredTags" class="featured-tags"></div>
+      </div>
+
+      <!-- 偉人たちの本棚 -->
+      <div class="home-block">
+        <div class="home-block-label">偉人たちの本棚</div>
+        <div id="homeBooks" class="home-books"></div>
+      </div>
+
+      <!-- 本日のおすすめ -->
+      <div class="home-block">
+        <div class="home-block-label">本日のおすすめ</div>
+        <div id="peopleList" class="people-list"></div>
+      </div>
+    </section>
+
+    <!-- 検索 -->
+    <section id="view-tags" class="view">
+      <div class="search-panel">
+        <input id="searchBox" class="search-box" type="text" placeholder="名前・感情・キーワードで検索">
+        <div class="search-filters">
+          <button class="search-filter active" data-filter="all">すべて</button>
+          <button class="search-filter" data-filter="emotion">感情</button>
+          <button class="search-filter" data-filter="music">音楽家</button>
+          <button class="search-filter" data-filter="philo">哲学者</button>
+          <button class="search-filter" data-filter="literature">文学者</button>
+          <button class="search-filter" data-filter="art">画家</button>
+          <button class="search-filter" data-filter="history">歴史</button>
+          <button class="search-filter" data-filter="science">科学者</button>
+        </div>
+        <div id="searchEraFilter" class="era-filter"></div>
+        <div id="searchSortFilter" class="sort-filter"></div>
+      </div>
+      <div id="tagsList"></div>
+    </section>
+
+
+    <!-- ルーティン -->
+    <section id="view-routines" class="view">
+      <p class="intro">偉人たちの1日を覗いてみよう。</p>
+      <div id="routineLegend" class="routine-legend"></div>
+      <div id="routinesList"></div>
+    </section>
+
+    <!-- 読みもの -->
+    <section id="view-articles" class="view">
+      <div id="articlesHeader"></div>
+      <div id="articlesList"></div>
+    </section>
+
+    <!-- お気に入り -->
+    <section id="view-favorites" class="view">
+      <div id="favoritesList"></div>
+    </section>
+
+    <!-- 人物詳細 -->
+    <section id="view-person" class="view">
+      <div id="personDetail"></div>
+    </section>
+
+    <!-- タグ詳細 -->
+    <section id="view-tag" class="view">
+      <div id="tagDetail"></div>
+    </section>
+  </main>
+
+  <!-- 浮遊チャットウィジェット -->
+  <div class="chat-fab-wrap">
+    <div class="chat-call-bubble hidden" id="chatCallBubble">
+      <div class="chat-call-text" id="chatCallText"></div>
+      <div class="chat-call-who" id="chatCallWho"></div>
+    </div>
+    <button class="chat-fab" id="chatFab" aria-label="チャット">
+      <div class="chat-fab-icon">💬</div>
+      <div class="chat-fab-badge hidden" id="chatFabBadge">0</div>
+    </button>
+  </div>
+  <div class="chat-panel hidden" id="chatPanel">
+    <div class="chat-panel-header" id="chatPanelHeader">
+      <div id="chatPanelHead"></div>
+      <button class="chat-panel-close" id="chatPanelClose">×</button>
+    </div>
+    <div class="chat-panel-body" id="chatPanelBody"></div>
+    <form class="chat-panel-form" id="chatPanelForm">
+      <input class="chat-panel-input" id="chatPanelInput" type="text" placeholder="呼びかける／返事する...">
+      <button class="chat-panel-send" type="submit">▶</button>
+    </form>
+  </div>
+
+  <!-- 本が開くアニメーション用オーバーレイ -->
+  <div id="bookFlip" class="book-flip hidden">
+    <div class="book">
+      <div class="book-page-static left"></div>
+      <div class="book-page-static right"></div>
+      <div class="book-flipper">
+        <div class="book-flipper-front" id="bookCover"></div>
+        <div class="book-flipper-back"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

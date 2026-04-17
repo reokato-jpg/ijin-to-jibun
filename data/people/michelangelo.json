@@ -1,0 +1,163 @@
+{
+  "id": "michelangelo",
+  "name": "ミケランジェロ",
+  "nameEn": "Michelangelo Buonarroti",
+  "birth": 1475,
+  "death": 1564,
+  "country": "イタリア",
+  "field": "彫刻家・画家",
+  "summary": "『ダビデ像』『ピエタ』『最後の審判』『システィーナ礼拝堂天井画』。『私は彫刻家である』と生涯名乗り、依頼される絵画を嫌々描きながら西洋美術の最高峰を残した。88歳まで現役。",
+  "events": [
+    {
+      "year": 1475,
+      "age": 0,
+      "title": "トスカーナ・カプレーゼに下級官僚の子として誕生",
+      "detail": "母は6歳で失い、石工の乳母に育てられた。『私の骨はノミを叩く者の家で形作られた』。",
+      "tags": [
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1488,
+      "age": 13,
+      "title": "画家ギルランダイオに弟子入り",
+      "detail": "父は芸術を低い仕事と嫌ったが、息子の才能を認めた。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1489,
+      "age": 14,
+      "title": "ロレンツォ・デ・メディチの庭園アカデミーに迎えられる",
+      "detail": "『父なるロレンツォ』の邸宅に住み込み、古代彫刻を学ぶ。",
+      "tags": [
+        "approval",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1499,
+      "age": 24,
+      "title": "『ピエタ』完成、バチカン",
+      "detail": "サン・ピエトロ大聖堂に今もある24歳の傑作。自分の作と証するため夜こっそり銘を彫り込んだ、唯一署名のある作品。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1504,
+      "age": 29,
+      "title": "『ダビデ像』完成、フィレンツェ",
+      "detail": "5mの大理石から切り出した共和国の象徴。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1512,
+      "age": 37,
+      "title": "システィーナ礼拝堂天井画完成",
+      "detail": "4年間、首を反らせて描き続けた。目に絵の具が垂れ皮膚がただれた。『絵画は自分の仕事ではない』と恨みつつ傑作を残した。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1541,
+      "age": 66,
+      "title": "『最後の審判』公開",
+      "detail": "礼拝堂の祭壇壁面に。裸体が多すぎると批判され、死後弟子ヴォルテッラが『ふんどし描き』を命じられた。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1547,
+      "age": 72,
+      "title": "サン・ピエトロ大聖堂主任建築家に就任、無報酬で",
+      "detail": "『神と私の魂への奉仕』として報酬を拒んだ。",
+      "tags": []
+    },
+    {
+      "year": 1564,
+      "age": 88,
+      "title": "ローマで死去",
+      "detail": "『肉体を地に、魂を神に、財産を親戚に』が最期の言葉。遺体は甥の手でフィレンツェに運ばれた。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "私は大理石の中に天使を見た。そして、その天使を解放するまで彫り続けた。",
+      "source": "ミケランジェロの手紙"
+    },
+    {
+      "text": "彫刻とは、余分なものを取り除くことだ。",
+      "source": "ミケランジェロの言葉"
+    },
+    {
+      "text": "神と自然が与えた才能を活かさないことは、最大の罪である。",
+      "source": "書簡"
+    },
+    {
+      "text": "まだ学ぶべきことがある。",
+      "source": "87歳の時の言葉"
+    }
+  ],
+  "relations": [
+    {
+      "name": "ロレンツォ・デ・メディチ",
+      "relation": "パトロン",
+      "note": "14歳の才能を見抜いた『豪華王』"
+    },
+    {
+      "name": "ヴィットリア・コロンナ",
+      "relation": "精神的恋人",
+      "years": "1536–1547",
+      "note": "プラトニックな愛を交わした詩人・未亡人"
+    },
+    {
+      "name": "レオナルド・ダ・ヴィンチ",
+      "id": "leonardo",
+      "relation": "同時代ライバル",
+      "note": "23歳年上だが同じフィレンツェで競った"
+    }
+  ],
+  "places": [
+    {
+      "name": "システィーナ礼拝堂",
+      "location": "バチカン",
+      "note": "天井画と『最後の審判』"
+    },
+    {
+      "name": "アカデミア美術館",
+      "location": "イタリア・フィレンツェ",
+      "note": "『ダビデ像』が安置される"
+    },
+    {
+      "name": "ブオナローティ家",
+      "location": "イタリア・フィレンツェ",
+      "note": "愛した家、今は美術館"
+    }
+  ],
+  "books": [
+    {
+      "title": "ミケランジェロ伝",
+      "author": "ロマン・ロラン",
+      "asin": "4003254317",
+      "description": "ロランの『英雄伝』の一編"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Miguel_%C3%81ngel%2C_por_Daniele_da_Volterra_%28detalle%29.jpg/500px-Miguel_%C3%81ngel%2C_por_Daniele_da_Volterra_%28detalle%29.jpg",
+  "wikiTitle": "ミケランジェロ",
+  "imageCredit": {
+    "artist": "Attributed to Daniele da Volterra",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Metropolitan Museum of Art, online collection (The Met object ID 436771)",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Miguel_%C3%81ngel%2C_por_Daniele_da_Volterra_%28detalle%29.jpg"
+  }
+}

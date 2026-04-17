@@ -1,0 +1,147 @@
+{
+  "id": "noguchi_hideyo",
+  "name": "野口英世",
+  "nameEn": "Hideyo Noguchi",
+  "birth": 1876,
+  "death": 1928,
+  "country": "日本",
+  "field": "細菌学者・医師",
+  "summary": "福島の貧農の子から世界的細菌学者へ。1歳半で左手を囲炉裏で大火傷し不自由ながら医師を志し、渡米してロックフェラー研究所で梅毒スピロヘータ純粋培養に成功。51歳でアフリカの黄熱病研究中に自ら罹患して死去。",
+  "events": [
+    {
+      "year": 1876,
+      "age": 0,
+      "title": "福島県猪苗代の貧農の家に誕生",
+      "detail": "幼名・清作。",
+      "tags": [
+        "poverty"
+      ]
+    },
+    {
+      "year": 1877,
+      "age": 1,
+      "title": "1歳半で囲炉裏に落ち、左手の指が癒着",
+      "detail": "一生の障害となる傷。この手が『何の役にも立たない』と言われて、医学を志す原動力に。",
+      "tags": [
+        "parent_conflict",
+        "illness"
+      ]
+    },
+    {
+      "year": 1892,
+      "age": 15,
+      "title": "恩師小林栄と医師渡部鼎による左手手術",
+      "detail": "高等小学校卒業後、村人の募金で会津若松の医師に手術してもらい、指が動くようになった。",
+      "tags": [
+        "turning_encounter",
+        "restart"
+      ]
+    },
+    {
+      "year": 1897,
+      "age": 20,
+      "title": "医術開業試験に合格、医師に",
+      "detail": "東京で苦学しながら前期後期試験に連続合格。当時としては異例の若さ。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1900,
+      "age": 23,
+      "title": "アメリカ・ペンシルバニア大学へ渡航",
+      "detail": "片道切符と10ドルだけで。ビザも貯金もないまま。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1904,
+      "age": 27,
+      "title": "ロックフェラー医学研究所入所",
+      "detail": "蛇毒研究で認められる。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1911,
+      "age": 34,
+      "title": "梅毒スピロヘータ純粋培養に成功",
+      "detail": "当時最も恐れられた病の病原体を初めて培養。ノーベル賞候補に3度推薦された。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1915,
+      "age": 38,
+      "title": "15年ぶりの帰国、母シカと再会",
+      "detail": "文字も書けない母が息子のために仮名文字を覚え、ひらがなで書いた手紙『はやくきてくたされ』を生涯携えていた。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1928,
+      "age": 51,
+      "title": "英領ゴールドコースト（現ガーナ）で黄熱病により死去",
+      "detail": "自ら研究中の感染症に罹患。最後の言葉は『わからない(I don't understand)』。",
+      "tags": [
+        "loss",
+        "illness"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "忍耐は苦し。されど、その実は甘し。",
+      "source": "野口の揮毫"
+    },
+    {
+      "text": "努力——過去の過ちを恥じることも、未来の不確かさを嘆くこともない。",
+      "source": "書簡"
+    },
+    {
+      "text": "人は、誰でも自分の時間を金に換えることができる。しかし、過ぎた時間を取り戻すことはできない。",
+      "source": "書簡"
+    }
+  ],
+  "relations": [
+    {
+      "name": "小林栄",
+      "relation": "恩師",
+      "note": "高等小学校で野口の才能を見抜き、後援し続けた"
+    },
+    {
+      "name": "シカ",
+      "relation": "母",
+      "note": "文字も書けなかったが息子のためにひらがなを覚えた"
+    }
+  ],
+  "places": [
+    {
+      "name": "野口英世記念館",
+      "location": "福島県猪苗代町",
+      "note": "生家と記念館"
+    }
+  ],
+  "books": [
+    {
+      "title": "遠き落日",
+      "author": "渡辺淳一",
+      "asin": "4043407017",
+      "description": "光と影を描いた評伝小説"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Noguchi_Hideyo.jpg/500px-Noguchi_Hideyo.jpg",
+  "wikiTitle": "野口英世",
+  "imageCredit": {
+    "artist": "Unknown author Unknown author",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Noguchi Hideyo Memorial Hall",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Noguchi_Hideyo.jpg"
+  }
+}

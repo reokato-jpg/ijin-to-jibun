@@ -1,0 +1,175 @@
+{
+  "id": "dostoevsky",
+  "name": "フョードル・ドストエフスキー",
+  "nameEn": "Fyodor Dostoevsky",
+  "birth": 1821,
+  "death": 1881,
+  "country": "ロシア",
+  "field": "小説家",
+  "summary": "『罪と罰』『カラマーゾフの兄弟』。28歳で銃殺刑の処刑台に立ち、シベリア流刑4年を経て、神・悪・人間の深淵を書き続けた。賭博癖と癲癇と借金のなか、人間の魂の最も暗い場所を掘り続けた男。",
+  "events": [
+    {
+      "year": 1821,
+      "age": 0,
+      "title": "モスクワの貧民病院付き医師の子として誕生",
+      "detail": "厳格で酒乱の父、優しい母。病院の貧民と共に育った幼少期。",
+      "tags": [
+        "poverty"
+      ]
+    },
+    {
+      "year": 1837,
+      "age": 15,
+      "title": "母マリアが結核で死去",
+      "detail": "同年プーシキンも決闘で死去。父に工兵学校へ送られる。",
+      "tags": [
+        "loss",
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1839,
+      "age": 17,
+      "title": "父が農奴に殺害される",
+      "detail": "横暴な地主だった父が自領で殺された。生涯、父殺しのモチーフを書き続ける原体験。",
+      "tags": [
+        "loss",
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1849,
+      "age": 27,
+      "title": "政治結社ペトラシェフスキー会で逮捕、死刑判決",
+      "detail": "セミョーノフスキー練兵場で銃殺寸前、皇帝の特赦でシベリア流刑に減刑。『4分間で人生が変わった』。",
+      "tags": [
+        "pride_broken",
+        "restart"
+      ]
+    },
+    {
+      "year": 1854,
+      "age": 32,
+      "title": "オムスクの監獄を出て流刑兵士に",
+      "detail": "4年の徒刑を生き抜き、中央アジアの僻地で兵士となる。",
+      "tags": [
+        "isolation"
+      ]
+    },
+    {
+      "year": 1866,
+      "age": 44,
+      "title": "『罪と罰』『賭博者』同時期に完成",
+      "detail": "借金で追われ『賭博者』を26日で口述筆記。速記者アンナ・スニートキナと運命の出会い。",
+      "tags": [
+        "breakthrough",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1867,
+      "age": 45,
+      "title": "アンナと結婚、ヨーロッパへ逃亡",
+      "detail": "25歳年下の妻が生活と執筆を支える。賭博に狂いながら西欧を4年放浪。",
+      "tags": [
+        "turning_encounter",
+        "restart"
+      ]
+    },
+    {
+      "year": 1878,
+      "age": 57,
+      "title": "3歳の息子アリョーシャを癲癇で失う",
+      "detail": "自らの遺伝病で息子を失った絶望。『カラマーゾフの兄弟』の末弟アリョーシャはこの子の名を刻んだもの。",
+      "tags": [
+        "loss",
+        "illness"
+      ]
+    },
+    {
+      "year": 1880,
+      "age": 59,
+      "title": "『カラマーゾフの兄弟』完成",
+      "detail": "生涯の総決算。モスクワのプーシキン記念像除幕式での演説で聴衆は熱狂、失神者まで出た。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1881,
+      "age": 59,
+      "title": "ペテルブルクで肺出血により死去",
+      "detail": "『種まく者のたとえ』を聖書から読み上げてもらい、『信じよ、そして放たれよ』と妻に告げて逝った。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "美は世界を救う。",
+      "source": "『白痴』"
+    },
+    {
+      "text": "人間は慣れるものだ。どんなことにも、どんな場所にも。",
+      "source": "『死の家の記録』"
+    },
+    {
+      "text": "地獄とは何か？ もはや愛することができないという苦しみだ。",
+      "source": "『カラマーゾフの兄弟』"
+    },
+    {
+      "text": "もし神が存在しないなら、すべては許される。",
+      "source": "『カラマーゾフの兄弟』"
+    },
+    {
+      "text": "幸福は幸福の中にはなく、それを得る過程の中にのみある。",
+      "source": "書簡"
+    }
+  ],
+  "relations": [
+    {
+      "name": "アンナ・スニートキナ",
+      "relation": "妻",
+      "years": "1867–1881",
+      "note": "25歳年下、『賭博者』口述筆記で出会い、夫を支え続けた"
+    },
+    {
+      "name": "トルストイ",
+      "id": "tolstoy",
+      "relation": "同時代ライバル",
+      "note": "互いを評価しつつ、一度も直接会わなかった"
+    }
+  ],
+  "places": [
+    {
+      "name": "ドストエフスキー博物館",
+      "location": "ロシア・サンクトペテルブルク",
+      "note": "『カラマーゾフ』執筆の家"
+    }
+  ],
+  "books": [
+    {
+      "title": "罪と罰 上",
+      "author": "ドストエフスキー",
+      "asin": "4003261011",
+      "description": "貧しい学生ラスコーリニコフの犯罪と魂の彷徨"
+    },
+    {
+      "title": "カラマーゾフの兄弟 上",
+      "author": "ドストエフスキー",
+      "asin": "4102010076",
+      "description": "父殺しをめぐる三人の兄弟の神と魂の物語"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Vasily_Perov_-_%D0%9F%D0%BE%D1%80%D1%82%D1%80%D0%B5%D1%82_%D0%A4.%D0%9C.%D0%94%D0%BE%D1%81%D1%82%D0%BE%D0%B5%D0%B2%D1%81%D0%BA%D0%BE%D0%B3%D0%BE_-_Google_Art_Project.jpg/500px-Vasily_Perov_-_%D0%9F%D0%BE%D1%80%D1%82%D1%80%D0%B5%D1%82_%D0%A4.%D0%9C.%D0%94%D0%BE%D1%81%D1%82%D0%BE%D0%B5%D0%B2%D1%81%D0%BA%D0%BE%D0%B3%D0%BE_-_Google_Art_Project.jpg",
+  "wikiTitle": "フョードル・ドストエフスキー",
+  "imageCredit": {
+    "artist": "Vasily Perov",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Google Arts &amp; Culture — kgHBFHS7SpcayQ",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Vasily_Perov_-_%D0%9F%D0%BE%D1%80%D1%82%D1%80%D0%B5%D1%82_%D0%A4.%D0%9C.%D0%94%D0%BE%D1%81%D1%82%D0%BE%D0%B5%D0%B2%D1%81%D0%BA%D0%BE%D0%B3%D0%BE_-_Google_Art_Project.jpg"
+  }
+}

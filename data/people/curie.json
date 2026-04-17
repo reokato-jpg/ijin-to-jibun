@@ -1,0 +1,255 @@
+{
+  "id": "curie",
+  "name": "マリー・キュリー",
+  "nameEn": "Marie Curie",
+  "birth": 1867,
+  "death": 1934,
+  "country": "ポーランド → フランス",
+  "field": "物理学者・化学者",
+  "summary": "ポーランドから単身パリへ渡り、放射性元素ラジウム・ポロニウムを発見。女性初・史上唯一の2分野ノーベル賞受賞者。夫を事故で亡くし、長年の放射線被曝で血液の病に倒れた。",
+  "events": [
+    {
+      "year": 1867,
+      "age": 0,
+      "title": "ワルシャワの教師家庭に誕生",
+      "detail": "ロシア支配下のポーランドで、ポーランド語を教えることが禁じられていた時代。",
+      "tags": [
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1867,
+      "age": 0,
+      "title": "ポーランド・ワルシャワに教師の家の五女として誕生",
+      "detail": "本名マリア・スクウォドフスカ。ロシア帝国支配下のポーランド。",
+      "tags": [
+        "poverty"
+      ]
+    },
+    {
+      "year": 1876,
+      "age": 9,
+      "title": "長姉ゾフィアがチフスで死去、11歳で母も結核で死去",
+      "detail": "相次ぐ家族の死でマリーは無神論者に。",
+      "tags": [
+        "loss",
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1891,
+      "age": 24,
+      "title": "単身パリ・ソルボンヌへ",
+      "detail": "女性が大学に通えない祖国を離れ、屋根裏部屋で勉強。凍えながら物理を学ぶ。",
+      "tags": [
+        "restart",
+        "poverty",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1891,
+      "age": 24,
+      "title": "姉を頼ってパリへ、ソルボンヌで物理を学ぶ",
+      "detail": "屋根裏部屋で飢えながら学ぶ。失神することもあった。",
+      "tags": [
+        "poverty",
+        "restart",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1895,
+      "age": 28,
+      "title": "ピエール・キュリーと結婚",
+      "detail": "物理学者同士の結婚。研究の伴侶を得る。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1898,
+      "age": 31,
+      "title": "ポロニウム・ラジウムを発見",
+      "detail": "祖国ポーランドに因んで『ポロニウム』と命名。掘立小屋の研究室で、何トンもの鉱石から取り出した。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1903,
+      "age": 36,
+      "title": "ノーベル物理学賞受賞（夫と共同）",
+      "detail": "女性初の受賞。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1903,
+      "age": 36,
+      "title": "女性初のノーベル物理学賞",
+      "detail": "ピエール・ベクレルと共同受賞。授賞式には体調不良で出席できなかった。",
+      "tags": [
+        "approval",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1906,
+      "age": 38,
+      "title": "夫ピエール、馬車事故で急死",
+      "detail": "頭部を車輪に轢かれ即死。マリーは日記に『私の人生は完全に打ち砕かれた』と記す。",
+      "tags": [
+        "loss",
+        "self_denial"
+      ]
+    },
+    {
+      "year": 1906,
+      "age": 38,
+      "title": "夫ピエールが馬車事故で即死",
+      "detail": "雨のパリの街で。マリーはソルボンヌ史上初の女性教授として夫の後任に就く。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1911,
+      "age": 44,
+      "title": "2度目のノーベル賞（化学賞）",
+      "detail": "史上初の2分野受賞。夫を失った絶望の中で成し遂げた。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1911,
+      "age": 44,
+      "title": "ノーベル化学賞、同門ランジュヴァンとの不倫報道",
+      "detail": "史上初の2度のノーベル賞受賞と同時に、家庭のある物理学者との関係をスキャンダルに。マスコミに家を囲まれた。",
+      "tags": [
+        "pride_broken",
+        "heartbreak",
+        "approval"
+      ]
+    },
+    {
+      "year": 1914,
+      "age": 47,
+      "title": "第一次大戦、移動レントゲン車『プチ・キュリー』",
+      "detail": "自らハンドルを握り最前線へ。約100万人の負傷兵を診断した。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1934,
+      "age": 66,
+      "title": "再生不良性貧血で死去",
+      "detail": "長年の放射線被曝による血液の病。彼女の研究ノートは今も強い放射能を持つ。",
+      "tags": [
+        "illness",
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "人生で恐れるものは何もない。ただ理解すべきものがあるだけ。",
+      "source": "書簡"
+    },
+    {
+      "text": "人生には恐れるべきものなど何もない。理解すべきものがあるだけだ。",
+      "source": "娘エーヴへの言葉"
+    },
+    {
+      "text": "科学者の仕事において、物事そのものを見るべきであって、人を見てはいけない。",
+      "source": "自叙伝"
+    },
+    {
+      "text": "私はよく『なぜ女性は科学の仕事ができないのか』と問われる。本当の疑問は、なぜそう問われるのかだ。",
+      "source": "講演"
+    },
+    {
+      "text": "ひとつのことを達成するまで、私は決して諦めない。",
+      "source": "夫ピエールへの手紙"
+    }
+  ],
+  "relations": [
+    {
+      "name": "ピエール・キュリー",
+      "relation": "夫 / 共同研究者",
+      "years": "1895–1906",
+      "note": "ラジウム発見を共にした伴侶"
+    },
+    {
+      "name": "イレーヌ・ジョリオ＝キュリー",
+      "relation": "長女",
+      "years": "生涯",
+      "note": "母と同じくノーベル化学賞を受賞（1935）。母娘で受賞者"
+    }
+  ],
+  "places": [
+    {
+      "name": "キュリー博物館",
+      "location": "フランス・パリ",
+      "note": "ラジウム研究所の一部。実験室が公開"
+    },
+    {
+      "name": "マリー・キュリー博物館",
+      "location": "ポーランド・ワルシャワ",
+      "note": "生家を改装した博物館"
+    },
+    {
+      "name": "パンテオン",
+      "location": "フランス・パリ",
+      "note": "夫と共に国家的英雄として眠る"
+    }
+  ],
+  "books": [
+    {
+      "title": "キュリー夫人伝",
+      "author": "エーヴ・キュリー",
+      "asin": "4560093032",
+      "description": "娘が書いた決定版伝記"
+    },
+    {
+      "title": "マリー・キュリーの挑戦",
+      "author": "川島慶子",
+      "asin": "4901419943",
+      "description": "日本語で読める学問と生涯の入門書"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Marie_Curie_c._1920s.jpg/500px-Marie_Curie_c._1920s.jpg",
+  "wikiTitle": "マリー・キュリー",
+  "imageCredit": {
+    "artist": "Henri Manuel",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "cdn-images-1.medium.com",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Marie_Curie_c._1920s.jpg"
+  },
+  "media": [
+    {
+      "title": "ラジウム・ガールズ マリー・キュリーの挑戦",
+      "year": 2019,
+      "type": "movie",
+      "country": "イギリス",
+      "director": "マルジャン・サトラピ",
+      "cast": "ロザムンド・パイク",
+      "description": "原題『Radioactive』。科学の光と影を芸術的映像で描いた評伝。",
+      "youtubeId": "J9NQFACZYEU"
+    },
+    {
+      "title": "キュリー夫人",
+      "year": 1943,
+      "type": "movie",
+      "country": "アメリカ",
+      "director": "マーヴィン・ルロイ",
+      "cast": "グリア・ガーソン",
+      "description": "アカデミー賞7部門ノミネートの古典的伝記映画。"
+    }
+  ]
+}

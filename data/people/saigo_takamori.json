@@ -1,0 +1,245 @@
+{
+  "id": "saigo_takamori",
+  "name": "西郷隆盛",
+  "nameEn": "Saigo Takamori",
+  "birth": 1828,
+  "death": 1877,
+  "country": "日本",
+  "field": "薩摩藩士・明治維新の立役者",
+  "summary": "薩摩の下級武士から倒幕の中心人物となり明治政府を築きながら、征韓論に敗れ下野。最後は西南戦争で薩軍を率い自刃。最も愛された英雄。",
+  "events": [
+    {
+      "year": 1828,
+      "age": 0,
+      "title": "薩摩藩の下級武士の家に生まれる",
+      "detail": "7人兄弟の長男。父の死後、一家を支える。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1854,
+      "age": 26,
+      "title": "島津斉彬に抜擢される",
+      "detail": "敬愛する殿さま斉彬の側近に。しかし斉彬は急死、西郷は入水自殺を試みるも救われた。",
+      "tags": [
+        "turning_encounter",
+        "loss",
+        "self_denial"
+      ]
+    },
+    {
+      "year": 1854,
+      "age": 26,
+      "title": "島津斉彬に見出され庭方役に",
+      "detail": "下級武士から英明な藩主の側近に大抜擢。生涯の恩人となる。",
+      "tags": [
+        "turning_encounter",
+        "approval"
+      ]
+    },
+    {
+      "year": 1858,
+      "age": 30,
+      "title": "斉彬急死、僧月照と錦江湾で入水",
+      "detail": "主君を失った絶望で月照と共に入水するが西郷だけ蘇生。以後『生きのびてしまった者』として生きる。",
+      "tags": [
+        "loss",
+        "pride_broken",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1859,
+      "age": 31,
+      "title": "奄美大島へ流刑",
+      "detail": "安政の大獄を逃れ奄美へ。3年の流罪を経て維新の活動へ戻る。",
+      "tags": [
+        "blank_period",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1862,
+      "age": 34,
+      "title": "久光の怒りを買い徳之島・沖永良部島へ遠島",
+      "detail": "島の牢屋で死を覚悟した日々。この苦難が西郷の人格を練り上げたと後に語られる。",
+      "tags": [
+        "isolation",
+        "blank_period"
+      ]
+    },
+    {
+      "year": 1866,
+      "age": 38,
+      "title": "坂本龍馬の仲介で薩長同盟締結",
+      "detail": "犬猿の仲だった長州の桂小五郎と京都・小松邸で盟約。倒幕の決定的一歩。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1868,
+      "age": 40,
+      "title": "江戸城無血開城",
+      "detail": "勝海舟と会談、江戸百万の民を戦火から救う。倒幕最大の功労者に。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1868,
+      "age": 40,
+      "title": "江戸無血開城を勝海舟と談判",
+      "detail": "3月13日と14日、田町の屋敷で2日間。江戸100万人の町を戦火から救った。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1869,
+      "age": 41,
+      "title": "戊辰戦争終結、帰郷して私学校を開く",
+      "detail": "中央政府に入らず鹿児島に戻り若者を育てる。多くの門弟が慕って集まった。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1873,
+      "age": 45,
+      "title": "征韓論に敗れ下野",
+      "detail": "政府を去り鹿児島へ。私学校を開き武士たちを育てる。",
+      "tags": [
+        "setback",
+        "self_reinvention"
+      ]
+    },
+    {
+      "year": 1873,
+      "age": 45,
+      "title": "征韓論で破れ下野（明治六年政変）",
+      "detail": "大久保利通らと対立し辞職。600人以上の薩摩出身者が一斉に辞表。",
+      "tags": [
+        "pride_broken",
+        "restart",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1877,
+      "age": 49,
+      "title": "西南戦争、城山で自刃",
+      "detail": "私学校生に担がれ政府軍と戦う。城山で『もう、ここらでよか』と自刃。",
+      "tags": [
+        "loss",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1877,
+      "age": 49,
+      "title": "西南戦争勃発、城山で自刃",
+      "detail": "士族反乱の盟主に担ぎ出される形で挙兵。7ヶ月の戦いの末、鹿児島城山で別府晋介の介錯により自刃。",
+      "tags": [
+        "loss",
+        "pride_broken"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "敬天愛人",
+      "source": "座右の銘"
+    },
+    {
+      "text": "もう、ここらでよか。",
+      "source": "城山での最期の言葉"
+    },
+    {
+      "text": "命もいらず、名もいらず、官位も金もいらぬ人は、始末に困るもの也。",
+      "source": "『南洲翁遺訓』"
+    },
+    {
+      "text": "敬天愛人。",
+      "source": "西郷の揮毫"
+    },
+    {
+      "text": "児孫のために美田を買わず。",
+      "source": "西郷の詩"
+    },
+    {
+      "text": "人を相手にせず、天を相手にせよ。",
+      "source": "『南洲翁遺訓』"
+    },
+    {
+      "text": "事の成否を決するものは、其の志の如何にあり。",
+      "source": "西郷の言葉"
+    }
+  ],
+  "places": [
+    {
+      "name": "西郷隆盛像",
+      "location": "東京都台東区 上野公園",
+      "note": "最も有名な銅像。犬を連れた日常の姿"
+    },
+    {
+      "name": "西郷南洲顕彰館",
+      "location": "鹿児島市上竜尾町",
+      "note": "生涯を紹介する記念館"
+    },
+    {
+      "name": "城山",
+      "location": "鹿児島市城山町",
+      "note": "西南戦争最後の戦場、自刃の地"
+    },
+    {
+      "name": "西郷隆盛生誕地",
+      "location": "鹿児島市加治屋町",
+      "note": "下級武士が集住した維新の地"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Takamori_Saigo.jpg/500px-Takamori_Saigo.jpg",
+  "wikiTitle": "西郷隆盛",
+  "imageCredit": {
+    "artist": "Edoardo Chiossone (1833 - 1898)",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "『幕末・明治・大正 回顧八十年史』（1933年出版）",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Takamori_Saigo.jpg"
+  },
+  "books": [
+    {
+      "title": "翔ぶが如く",
+      "author": "司馬遼太郎",
+      "asin": "4101152284",
+      "description": "明治維新から西南戦争までの西郷を描いた大河"
+    },
+    {
+      "title": "南洲翁遺訓",
+      "author": "西郷隆盛（遺稿）",
+      "asin": "4006030029",
+      "description": "『敬天愛人』の精神が凝縮された言葉集"
+    }
+  ],
+  "media": [
+    {
+      "title": "西郷どん",
+      "year": 2018,
+      "type": "drama",
+      "country": "日本",
+      "cast": "鈴木亮平",
+      "description": "林真理子原作のNHK大河ドラマ。西南戦争までを描く。"
+    },
+    {
+      "title": "ラスト サムライ",
+      "year": 2003,
+      "type": "movie",
+      "country": "アメリカ",
+      "director": "エドワード・ズウィック",
+      "cast": "渡辺謙／トム・クルーズ",
+      "description": "西郷をモデルにした勝元のキャラクターで、武士道精神を世界に伝えた。",
+      "youtubeId": "hdd9OgXaKpg"
+    }
+  ]
+}

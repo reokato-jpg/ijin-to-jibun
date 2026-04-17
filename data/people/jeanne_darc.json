@@ -1,0 +1,164 @@
+{
+  "id": "jeanne_darc",
+  "name": "ジャンヌ・ダルク",
+  "nameEn": "Joan of Arc",
+  "birth": 1412,
+  "death": 1431,
+  "country": "フランス",
+  "field": "軍人・聖人",
+  "summary": "百年戦争末期、13歳で『大天使ミカエルの声』を聞き、17歳でフランス軍を率いてオルレアンを解放。シャルル7世を戴冠させた農民の少女。19歳で異端として火刑に処され、25年後に無罪、500年後に列聖された。",
+  "events": [
+    {
+      "year": 1412,
+      "age": 0,
+      "title": "ロレーヌ・ドンレミ村の農家に誕生",
+      "detail": "百年戦争のさなか。母親が織る麻の服を着た敬虔な少女。",
+      "tags": []
+    },
+    {
+      "year": 1425,
+      "age": 13,
+      "title": "初めての『声』を聞く",
+      "detail": "父の庭で、大天使ミカエル・聖カタリナ・聖マルガリータの声を聞いたと主張。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1429,
+      "age": 17,
+      "title": "王太子シャルルと謁見、オルレアン解放",
+      "detail": "シノン城で200人の中に隠れたシャルルを見分け、『声』の真実を示す。白い鎧と軍旗でオルレアンに到着し、9日で包囲を解いた。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1429,
+      "age": 17,
+      "title": "ランス大聖堂でシャルル7世戴冠",
+      "detail": "ジャンヌの側で王が即位。百年戦争の流れを変えた瞬間。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1430,
+      "age": 18,
+      "title": "コンピエーニュでブルゴーニュ派に捕縛、イングランドに売られる",
+      "detail": "1万フランの身代金で引き渡され、ルーアン塔に投獄。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1431,
+      "age": 19,
+      "title": "異端審問、火刑",
+      "detail": "男装と声を聞いた罪で。5月30日、ルーアン旧市場広場で薪の上に結ばれた。『イエスよ』と叫んで息絶えた。執行人は『聖女を焼いてしまった』と悔い涙したと記録にある。",
+      "tags": [
+        "loss",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1456,
+      "age": 19,
+      "title": "25年後、法王により無罪",
+      "detail": "復権裁判で異端判決取り消し。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1920,
+      "age": 19,
+      "title": "500年後、聖人に列せられる",
+      "detail": "ベネディクトゥス15世により列聖。フランスの二番目の守護聖人。",
+      "tags": [
+        "approval"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "恐れるな。神が私と共にいる。",
+      "source": "ジャンヌ・ダルクの言葉"
+    },
+    {
+      "text": "イエスよ。(Jésus!)",
+      "source": "火刑台での最期の叫び"
+    },
+    {
+      "text": "私は神の娘ではない。私はただの農民の娘だ。",
+      "source": "裁判記録"
+    },
+    {
+      "text": "生きて捕らわれるより、神の御心に従って戦い死ぬ方がましだ。",
+      "source": "裁判記録"
+    }
+  ],
+  "relations": [
+    {
+      "name": "シャルル7世",
+      "relation": "支えた王",
+      "note": "戴冠させたが後に彼女を見捨てた"
+    }
+  ],
+  "places": [
+    {
+      "name": "ドンレミ・ラ・ピュセル村",
+      "location": "フランス・ロレーヌ",
+      "note": "生家と教会"
+    },
+    {
+      "name": "ルーアン旧市場広場",
+      "location": "フランス・ルーアン",
+      "note": "火刑の地。現在はジャンヌ・ダルク教会"
+    },
+    {
+      "name": "オルレアン・サント・クロワ大聖堂",
+      "location": "フランス・オルレアン",
+      "note": "解放の中心、毎年5月にジャンヌ祭"
+    }
+  ],
+  "books": [
+    {
+      "title": "ジャンヌ・ダルク",
+      "author": "レジーヌ・ペルヌー",
+      "asin": "4560080305",
+      "description": "裁判記録に基づく評伝"
+    }
+  ],
+  "media": [
+    {
+      "title": "裁かるゝジャンヌ",
+      "year": 1928,
+      "type": "movie",
+      "country": "デンマーク",
+      "director": "カール・Th・ドライヤー",
+      "cast": "ルネ・ファルコネッティ",
+      "description": "映画史上最高のクローズアップと評される無声映画の傑作"
+    },
+    {
+      "title": "ジャンヌ・ダルク",
+      "year": 1999,
+      "type": "movie",
+      "country": "フランス",
+      "director": "リュック・ベッソン",
+      "cast": "ミラ・ジョヴォヴィッチ",
+      "description": "ベッソン監督による壮大な叙事詩",
+      "youtubeId": "nLPdAx0I77I"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Joan_of_Arc_miniature_graded.jpg/500px-Joan_of_Arc_miniature_graded.jpg",
+  "wikiTitle": "ジャンヌ・ダルク",
+  "imageCredit": {
+    "artist": "",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Derived from original commons upload at which is now in the history version: 01:39, 13. 8. 2005 Colour-graded to reveal more detail using GIMP software \"curves\" tool",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Joan_of_Arc_miniature_graded.jpg"
+  }
+}

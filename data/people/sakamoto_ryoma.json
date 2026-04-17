@@ -1,0 +1,256 @@
+{
+  "id": "sakamoto_ryoma",
+  "name": "坂本龍馬",
+  "nameEn": "Sakamoto Ryoma",
+  "birth": 1836,
+  "death": 1867,
+  "country": "日本",
+  "field": "志士・幕末の風雲児",
+  "summary": "土佐藩を脱藩し、薩長同盟を成立させ、大政奉還を画策した幕末最大の立役者。京都近江屋で暗殺される。享年31。",
+  "events": [
+    {
+      "year": 1836,
+      "age": 0,
+      "title": "土佐藩の郷士の家に生まれる",
+      "detail": "下級武士の家。幼少期は泣き虫だったが、姉の乙女に鍛えられた。",
+      "tags": [
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1846,
+      "age": 11,
+      "title": "姉乙女に剣術と学問を仕込まれる",
+      "detail": "泣き虫で塾を辞めさせられた弟を、姉が徹底的に鍛え上げた。乙女は身長5尺8寸(175cm)の大女で、『男勝り』の典型。",
+      "tags": [
+        "parent_conflict",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1853,
+      "age": 18,
+      "title": "江戸剣術修行、ペリー来航を目撃",
+      "detail": "千葉道場で北辰一刀流を学びながら黒船を見た。『攘夷』思想を胸に刻む。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1862,
+      "age": 26,
+      "title": "脱藩",
+      "detail": "土佐藩を抜け出し、江戸へ。勝海舟に弟子入りし世界を知る。",
+      "tags": [
+        "escape",
+        "turning_encounter",
+        "self_reinvention"
+      ]
+    },
+    {
+      "year": 1862,
+      "age": 27,
+      "title": "土佐を脱藩",
+      "detail": "脱藩は死罪。姉乙女に『日本を今一度せんたくいたし申候』と手紙を書き、江戸へ。",
+      "tags": [
+        "restart",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1862,
+      "age": 27,
+      "title": "勝海舟に弟子入り",
+      "detail": "暗殺するつもりで会いに行ったが、勝の開明的な話に心酔し弟子入り。『大口をあいた龍馬』",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1865,
+      "age": 29,
+      "title": "亀山社中を設立",
+      "detail": "日本初の商社。長崎を拠点に薩摩の武器を長州へ運ぶ仲介を始める。",
+      "tags": [
+        "breakthrough",
+        "restart"
+      ]
+    },
+    {
+      "year": 1866,
+      "age": 30,
+      "title": "薩長同盟成立",
+      "detail": "犬猿の仲だった薩摩と長州を結びつけた。倒幕への決定的一歩。",
+      "tags": [
+        "breakthrough",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1866,
+      "age": 31,
+      "title": "薩長同盟を成立させる",
+      "detail": "犬猿の仲だった西郷（薩摩）と桂（長州）を結ばせた。倒幕の決定的な一歩。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1866,
+      "age": 31,
+      "title": "寺田屋事件、お龍が裸で知らせに走る",
+      "detail": "伏見・寺田屋で幕吏に襲撃されるが、風呂場にいたお龍が裸のまま2階に駆け上がって知らせた。龍馬は銃で応戦し脱出。",
+      "tags": [
+        "pride_broken",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1866,
+      "age": 31,
+      "title": "日本初の新婚旅行で鹿児島の霧島へ",
+      "detail": "お龍との傷の療養を兼ねた温泉旅行。天逆鉾を引き抜いたと姉に書いた。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1867,
+      "age": 31,
+      "title": "大政奉還を画策",
+      "detail": "船中八策を起草。幕府から朝廷へ政権を返上させる構想。",
+      "tags": [
+        "breakthrough",
+        "self_reinvention"
+      ]
+    },
+    {
+      "year": 1867,
+      "age": 31,
+      "title": "近江屋で暗殺",
+      "detail": "京都・近江屋で中岡慎太郎とともに暗殺される。犯人は諸説あり謎のまま。享年31。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1867,
+      "age": 32,
+      "title": "大政奉還を実現",
+      "detail": "船中八策を後藤象二郎に示し、将軍慶喜に奉還を決意させる。無血革命。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1867,
+      "age": 32,
+      "title": "京都・近江屋で中岡慎太郎と共に暗殺される",
+      "detail": "11月15日の夜、何者かに斬殺される。犯人は長く不明。享年32。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "日本を今一度せんたくいたし申し候。",
+      "source": "姉・乙女への手紙"
+    },
+    {
+      "text": "世の人は我を何とも言わば言え、我が成すことは我のみぞ知る。",
+      "source": "伝承"
+    },
+    {
+      "text": "日本を今一度せんたくいたし申候。",
+      "source": "姉乙女への手紙 1863"
+    },
+    {
+      "text": "世の人は我を何とも言わば言え。我が成すことは我のみぞ知る。",
+      "source": "龍馬の愛唱句"
+    },
+    {
+      "text": "俺は議院の役人になるのはいやじゃ。世界の海援隊でもやろうかな。",
+      "source": "西郷隆盛への言葉"
+    },
+    {
+      "text": "何の志もなきところに、ぐずぐずして日を送るは、実に大馬鹿者なり。",
+      "source": "権平・乙女への手紙"
+    }
+  ],
+  "places": [
+    {
+      "name": "坂本龍馬生誕地",
+      "location": "高知県高知市上町",
+      "note": "生家跡の記念碑"
+    },
+    {
+      "name": "桂浜・坂本龍馬像",
+      "location": "高知県高知市浦戸",
+      "note": "太平洋を見つめる巨大銅像"
+    },
+    {
+      "name": "近江屋跡",
+      "location": "京都市中京区河原町",
+      "note": "暗殺の地。石碑のみ"
+    },
+    {
+      "name": "霊山護国神社",
+      "location": "京都市東山区",
+      "note": "中岡慎太郎と並ぶ墓。幕末志士の墓が並ぶ"
+    },
+    {
+      "name": "亀山社中記念館",
+      "location": "長崎市伊良林",
+      "note": "日本初の商社があった場所"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Sakamoto_Ryoma.jpg/500px-Sakamoto_Ryoma.jpg",
+  "wikiTitle": "坂本龍馬",
+  "imageCredit": {
+    "artist": "Unknown author Unknown author",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "This image is available from the website of the National Diet Library",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sakamoto_Ryoma.jpg"
+  },
+  "books": [
+    {
+      "title": "竜馬がゆく 1",
+      "author": "司馬遼太郎",
+      "asin": "4167105616",
+      "description": "坂本龍馬を国民的英雄にした歴史小説の傑作"
+    },
+    {
+      "title": "竜馬の手紙",
+      "author": "坂本龍馬（遺稿）",
+      "asin": "4062923386",
+      "description": "姉乙女への素朴で温かい手紙集"
+    }
+  ],
+  "media": [
+    {
+      "title": "龍馬伝",
+      "year": 2010,
+      "type": "drama",
+      "country": "日本",
+      "cast": "福山雅治",
+      "description": "NHK大河ドラマ。岩崎弥太郎の視点から龍馬の破天荒な生涯を描く。"
+    },
+    {
+      "title": "竜馬がゆく",
+      "year": 1968,
+      "type": "drama",
+      "country": "日本",
+      "description": "司馬遼太郎原作。龍馬ブームの原点となった初の大河ドラマ化。"
+    },
+    {
+      "title": "幕末純情伝",
+      "year": 1991,
+      "type": "movie",
+      "country": "日本",
+      "cast": "牧瀬里穂",
+      "description": "沖田総司が女性だったらという奇想天外な設定の幕末映画。"
+    }
+  ]
+}

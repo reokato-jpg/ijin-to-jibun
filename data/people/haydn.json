@@ -1,0 +1,194 @@
+{
+  "id": "haydn",
+  "name": "ヨーゼフ・ハイドン",
+  "nameEn": "Joseph Haydn",
+  "birth": 1732,
+  "death": 1809,
+  "country": "オーストリア",
+  "field": "作曲家",
+  "summary": "『交響曲の父』『弦楽四重奏の父』。エステルハージ家に30年仕え、モーツァルトの友、ベートーヴェンの師。『パパ・ハイドン』と慕われた温厚な巨匠。",
+  "events": [
+    {
+      "year": 1732,
+      "age": 0,
+      "title": "ローラウの車大工の家に誕生",
+      "detail": "農村の貧しい子供だった。",
+      "tags": [
+        "poverty"
+      ]
+    },
+    {
+      "year": 1740,
+      "age": 8,
+      "title": "ウィーンのシュテファン寺院少年聖歌隊に",
+      "detail": "美しいボーイ・ソプラノとして10年在籍。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1749,
+      "age": 17,
+      "title": "変声で聖歌隊を放逐、路頭に迷う",
+      "detail": "『一文無し、3着の粗末な服だけ』で屋根裏部屋に。ピアノ伴奏や作曲の雑用で食いつなぐ。",
+      "tags": [
+        "pride_broken",
+        "poverty",
+        "restart"
+      ]
+    },
+    {
+      "year": 1761,
+      "age": 29,
+      "title": "エステルハージ侯爵家の副楽長に",
+      "detail": "以後30年、一族に仕え続ける。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1781,
+      "age": 49,
+      "title": "モーツァルトと出会い親友に",
+      "detail": "24歳年下の天才と深い友情。互いに弦楽四重奏を献呈し合った。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1790,
+      "age": 58,
+      "title": "エステルハージ公死去、30年の宮仕え終わる",
+      "detail": "新公は音楽を重視せず楽団解散。ロンドンのザロモンが『25の夢みる客を連れてきた』。",
+      "tags": [
+        "restart",
+        "loss"
+      ]
+    },
+    {
+      "year": 1791,
+      "age": 59,
+      "title": "ロンドン旅行で熱狂を浴びる",
+      "detail": "オックスフォード大名誉博士号。『ロンドン交響曲』を書く。",
+      "tags": [
+        "approval",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1792,
+      "age": 60,
+      "title": "ウィーンでベートーヴェンを弟子に取る",
+      "detail": "22歳の激しい青年との関係は緊張に満ちていた。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1798,
+      "age": 66,
+      "title": "オラトリオ『天地創造』初演",
+      "detail": "ヘンデルに倣った晩年の大作。ウィーン宮廷で初演。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1809,
+      "age": 77,
+      "title": "ウィーン、ナポレオン侵攻のさなか死去",
+      "detail": "フランス兵も敬意を表し門番に立ったと伝わる。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "私の言葉が通じない国でも、音楽は通じた。",
+      "source": "ロンドンからの手紙"
+    },
+    {
+      "text": "年老いて弱くなったが、曲想は限りなく流れてくる。",
+      "source": "晩年の手紙"
+    },
+    {
+      "text": "神は喜びを好まれる。ゆえに私の音楽は喜ばしくあるべきだ。",
+      "source": "ハイドンの言葉"
+    }
+  ],
+  "relations": [
+    {
+      "name": "モーツァルト",
+      "id": "mozart",
+      "relation": "友・互いの師",
+      "note": "互いに天才と認め合った稀有な友情"
+    },
+    {
+      "name": "ベートーヴェン",
+      "id": "beethoven",
+      "relation": "弟子",
+      "note": "1792年からウィーンで師事"
+    }
+  ],
+  "places": [
+    {
+      "name": "エステルハージ宮殿",
+      "location": "ハンガリー・フェルテード",
+      "note": "30年間仕えた宮廷"
+    }
+  ],
+  "books": [],
+  "works": [
+    {
+      "title": "交響曲第94番『驚愕』",
+      "type": "youtube",
+      "id": "_t1dWJ5Vxlk",
+      "note": "居眠り客を起こすための一撃"
+    },
+    {
+      "title": "交響曲第94番 ト長調『驚愕』",
+      "year": 1791,
+      "type": "交響曲",
+      "description": "居眠り客を起こすための一撃",
+      "youtubeId": "_t1dWJ5Vxlk"
+    },
+    {
+      "title": "交響曲第45番 嬰ヘ短調『告別』",
+      "year": 1772,
+      "type": "交響曲",
+      "description": "最終楽章で楽員が順に退場する、休暇を求めた抗議の曲",
+      "youtubeId": "4w5oKj1OcyE"
+    },
+    {
+      "title": "オラトリオ『天地創造』",
+      "year": 1798,
+      "type": "宗教曲",
+      "description": "66歳の大作。『光あれ』の瞬間の劇的爆発",
+      "youtubeId": "2jGy0pXc0PY"
+    },
+    {
+      "title": "トランペット協奏曲 変ホ長調",
+      "year": 1796,
+      "type": "協奏曲",
+      "description": "当時の新しい有鍵トランペットのために書かれた名品",
+      "youtubeId": "cAwKWz5IcMY"
+    },
+    {
+      "title": "弦楽四重奏曲第77番『皇帝』第2楽章",
+      "year": 1797,
+      "type": "室内楽",
+      "description": "主題はのちにドイツ国歌となった",
+      "youtubeId": "DoHVBmldN8Q"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Haydn_portrait_by_Thomas_Hardy_%28small%29.jpg/500px-Haydn_portrait_by_Thomas_Hardy_%28small%29.jpg",
+  "wikiTitle": "ヨーゼフ・ハイドン",
+  "imageCredit": {
+    "artist": "Thomas Hardy",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "www.vanslageren.nl",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Haydn_portrait_by_Thomas_Hardy_%28small%29.jpg"
+  }
+}

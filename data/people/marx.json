@@ -1,0 +1,216 @@
+{
+  "id": "marx",
+  "name": "カール・マルクス",
+  "nameEn": "Karl Marx",
+  "birth": 1818,
+  "death": 1883,
+  "country": "ドイツ",
+  "field": "哲学者・経済学者",
+  "summary": "『資本論』で資本主義の運動法則を暴き、20世紀の世界を二分した革命思想の生みの親。亡命と貧困の生涯、大英博物館の席で思索し続けた。",
+  "events": [
+    {
+      "year": 1818,
+      "age": 0,
+      "title": "トリーアにユダヤ系弁護士の子として誕生",
+      "detail": "父は改宗プロテスタント。",
+      "tags": []
+    },
+    {
+      "year": 1836,
+      "age": 18,
+      "title": "ボン大学入学、決闘で傷を負う",
+      "detail": "飲み歩き決闘する放蕩学生だった。父が激怒してベルリン大学へ転校させる。",
+      "tags": [
+        "pride_broken",
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1841,
+      "age": 23,
+      "title": "イェーナ大学で哲学博士号、大学教授になれず",
+      "detail": "反体制的な論文のためプロイセンで教授になる道が閉ざされた。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1843,
+      "age": 25,
+      "title": "イェニー・フォン・ヴェストファーレンと結婚",
+      "detail": "子爵令嬢と貧乏青年の身分違いの結婚。7年の婚約の末。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1844,
+      "age": 26,
+      "title": "パリでエンゲルスと出会う",
+      "detail": "パレ・ロワイヤルのカフェで10日間語り明かし、生涯の盟友に。",
+      "tags": [
+        "turning_encounter",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1845,
+      "age": 27,
+      "title": "『ドイツ・イデオロギー』を書き『ネズミの齧るがままに任せる』",
+      "detail": "出版されずマルクス生前に陽の目を見なかった。",
+      "tags": [
+        "blank_period"
+      ]
+    },
+    {
+      "year": 1848,
+      "age": 30,
+      "title": "『共産党宣言』刊行",
+      "detail": "『万国の労働者よ、団結せよ』エンゲルスと共著。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1849,
+      "age": 31,
+      "title": "ロンドンへ亡命",
+      "detail": "以後生涯イギリスで過ごす。貧困と子の死に苦しむ。",
+      "tags": [
+        "isolation",
+        "restart"
+      ]
+    },
+    {
+      "year": 1850,
+      "age": 32,
+      "title": "ロンドンの屋根裏で極貧、3人の子を失う",
+      "detail": "エドガー、フランツィスカ、ギドー。『子供用の棺を買う金もない』と書く。",
+      "tags": [
+        "loss",
+        "poverty"
+      ]
+    },
+    {
+      "year": 1852,
+      "age": 34,
+      "title": "『ルイ・ボナパルトのブリュメール18日』",
+      "detail": "『歴史は繰り返す、一度目は悲劇として、二度目は茶番として』の冒頭句。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1864,
+      "age": 46,
+      "title": "第一インターナショナル結成",
+      "detail": "ロンドンで国際労働者協会を組織。実践家としても歩み始める。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1867,
+      "age": 49,
+      "title": "『資本論』第1巻刊行",
+      "detail": "大英博物館で20年読み続けた集大成。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1881,
+      "age": 63,
+      "title": "妻イェニー死去、翌年長女ジェニーも急死",
+      "detail": "最愛の妻の葬儀で『彼女なしに私の存在は想像できない』。娘の死が最後の打撃となる。",
+      "tags": [
+        "loss",
+        "heartbreak"
+      ]
+    },
+    {
+      "year": 1883,
+      "age": 64,
+      "title": "ロンドンで没",
+      "detail": "妻の死の2年後、書斎の椅子で息を引き取った。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "哲学者たちは世界をさまざまに解釈してきたにすぎない。大切なのは、それを変えることである。",
+      "source": "フォイエルバッハに関するテーゼ"
+    },
+    {
+      "text": "万国の労働者よ、団結せよ！",
+      "source": "『共産党宣言』"
+    },
+    {
+      "text": "歴史は繰り返す、一度目は悲劇として、二度目は茶番として。",
+      "source": "『ルイ・ボナパルトのブリュメール18日』"
+    },
+    {
+      "text": "宗教は、抑圧された生き物のため息であり、人民のアヘンである。",
+      "source": "『ヘーゲル法哲学批判序説』"
+    },
+    {
+      "text": "能力に応じて働き、必要に応じて受け取る。",
+      "source": "『ゴータ綱領批判』"
+    }
+  ],
+  "relations": [
+    {
+      "name": "エンゲルス",
+      "relation": "盟友・後援者",
+      "note": "マルクス一家を経済的に支え続けた生涯の友"
+    },
+    {
+      "name": "ヘーゲル",
+      "id": "hegel",
+      "relation": "思想的祖",
+      "note": "弁証法を唯物論的に逆立ちさせた"
+    }
+  ],
+  "places": [
+    {
+      "name": "大英博物館閲覧室",
+      "location": "イギリス・ロンドン",
+      "note": "『資本論』を書いた場所"
+    },
+    {
+      "name": "ハイゲート墓地",
+      "location": "イギリス・ロンドン",
+      "note": "マルクスの巨大な胸像がある墓"
+    }
+  ],
+  "books": [
+    {
+      "title": "共産党宣言",
+      "author": "マルクス・エンゲルス",
+      "asin": "4003412583",
+      "description": "世界を揺るがした40ページの小冊子"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Karl_Marx_by_John_Jabez_Edwin_Mayall_1875_-_Restored_%26_Adjusted_%283x4_cropped_b%29.png/500px-Karl_Marx_by_John_Jabez_Edwin_Mayall_1875_-_Restored_%26_Adjusted_%283x4_cropped_b%29.png",
+  "wikiTitle": "カール・マルクス",
+  "imageCredit": {
+    "artist": "John Jabez Edwin Mayall",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "https://sammlung.staedelmuseum.de/de/werk/portraet-karl-marx",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Karl_Marx_by_John_Jabez_Edwin_Mayall_1875_-_Restored_%26_Adjusted_%283x4_cropped_b%29.png"
+  },
+  "media": [
+    {
+      "title": "マルクス・エンゲルス",
+      "year": 2017,
+      "type": "movie",
+      "country": "仏・独・ベルギー",
+      "director": "ラウル・ペック",
+      "description": "若き日のマルクスとエンゲルスの出会いから『共産党宣言』まで。",
+      "youtubeId": "Sv_DxC9-5RM"
+    }
+  ]
+}

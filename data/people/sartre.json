@@ -1,0 +1,203 @@
+{
+  "id": "sartre",
+  "name": "ジャン＝ポール・サルトル",
+  "nameEn": "Jean-Paul Sartre",
+  "birth": 1905,
+  "death": 1980,
+  "country": "フランス",
+  "field": "哲学者・小説家",
+  "summary": "実存主義の旗手。『存在と無』『嘔吐』で戦後思想を牽引し、ボーヴォワールと契約結婚の関係を50年続けた。ノーベル文学賞を辞退した唯一の人物。",
+  "events": [
+    {
+      "year": 1905,
+      "age": 0,
+      "title": "パリに誕生、1歳で父を失う",
+      "detail": "厳格な祖父に育てられる。幼少期の孤独が実存主義の源に。",
+      "tags": [
+        "loss",
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1929,
+      "age": 23,
+      "title": "高等師範学校の教授資格試験で首席、ボーヴォワールは2位",
+      "detail": "この試験が二人の出会いだった。以後51年続く『契約結婚』が始まる。",
+      "tags": [
+        "breakthrough",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1929,
+      "age": 24,
+      "title": "シモーヌ・ド・ボーヴォワールと契約結婚",
+      "detail": "『他の愛もあり、すべてを打ち明け合う』。以後50年続く知の共同体。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1938,
+      "age": 33,
+      "title": "『嘔吐』刊行",
+      "detail": "実存主義小説の嚆矢。『存在は不条理だ』を文学に。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1940,
+      "age": 35,
+      "title": "ナチスの捕虜となる",
+      "detail": "9ヶ月の捕虜生活で『存在と無』の構想を練る。",
+      "tags": [
+        "isolation",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1943,
+      "age": 38,
+      "title": "『存在と無』刊行",
+      "detail": "第二次大戦下の執筆。『人間は自由の刑に処せられている』",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1943,
+      "age": 38,
+      "title": "『存在と無』刊行、実存主義の聖典",
+      "detail": "『人間は自由の刑に処されている』。占領下のパリで書かれた900ページ。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1945,
+      "age": 40,
+      "title": "『実存主義はヒューマニズムである』講演",
+      "detail": "パリ中から聴衆が詰めかけ、女性が失神するほどの大騒ぎ。一夜で『実存主義』が流行語に。",
+      "tags": [
+        "approval",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1952,
+      "age": 47,
+      "title": "カミュと革命暴力をめぐって決別",
+      "detail": "『レ・タン・モデルヌ』誌上で公開絶交状。10年の友情が終わった。",
+      "tags": [
+        "heartbreak",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1964,
+      "age": 59,
+      "title": "ノーベル文学賞を辞退",
+      "detail": "『作家を制度化したくない』と史上唯一の辞退。",
+      "tags": [
+        "pride_broken",
+        "self_reinvention"
+      ]
+    },
+    {
+      "year": 1968,
+      "age": 63,
+      "title": "五月革命で若者たちと連帯",
+      "detail": "ソルボンヌ占拠に駆けつけ、ルノー工場でビラを配る63歳。",
+      "tags": []
+    },
+    {
+      "year": 1980,
+      "age": 74,
+      "title": "パリで死去",
+      "detail": "葬儀には5万人が行列を作った。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1980,
+      "age": 74,
+      "title": "パリで死去、葬列5万人",
+      "detail": "ヒッピーと知識人と労働者が送った、20世紀最後の哲学者葬。",
+      "tags": [
+        "loss",
+        "approval"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "人間は自由の刑に処せられている。",
+      "source": "『存在と無』"
+    },
+    {
+      "text": "実存は本質に先立つ。",
+      "source": "『実存主義とは何か』"
+    },
+    {
+      "text": "人間は自由の刑に処されている。",
+      "source": "『実存主義はヒューマニズムである』"
+    },
+    {
+      "text": "地獄とは他人のことだ。",
+      "source": "戯曲『出口なし』"
+    },
+    {
+      "text": "自由とは、与えられた状況で何ができるかである。",
+      "source": "『存在と無』"
+    },
+    {
+      "text": "人は、彼が自ら作るところのもの以外の何ものでもない。",
+      "source": "『実存主義はヒューマニズムである』"
+    }
+  ],
+  "relations": [
+    {
+      "name": "シモーヌ・ド・ボーヴォワール",
+      "id": "beauvoir",
+      "relation": "生涯の伴侶・思想的パートナー",
+      "years": "1929–1980"
+    }
+  ],
+  "places": [
+    {
+      "name": "カフェ・ド・フロール",
+      "location": "フランス・パリ・サン=ジェルマン=デ=プレ",
+      "note": "ボーヴォワールと毎日通ったカフェ"
+    },
+    {
+      "name": "モンパルナス墓地",
+      "location": "フランス・パリ",
+      "note": "ボーヴォワールと並ぶ墓"
+    }
+  ],
+  "books": [
+    {
+      "title": "嘔吐",
+      "author": "サルトル",
+      "asin": "4409140078",
+      "description": "実存を生々しく描いた小説"
+    },
+    {
+      "title": "実存主義とは何か",
+      "author": "サルトル",
+      "asin": "4409030620",
+      "description": "サルトル哲学の最良の入門書"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Flickr_-_Government_Press_Office_%28GPO%29_-_Jean_Paul_Sartre_and_Simone_De_Beauvoir_welcomed_by_Avraham_Shlonsky_and_Leah_Goldberg_%28cropped%29.jpg/500px-Flickr_-_Government_Press_Office_%28GPO%29_-_Jean_Paul_Sartre_and_Simone_De_Beauvoir_welcomed_by_Avraham_Shlonsky_and_Leah_Goldberg_%28cropped%29.jpg",
+  "wikiTitle": "ジャン＝ポール・サルトル",
+  "imageCredit": {
+    "artist": "Moshe Milner",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "credit": "This is available from National Photo Collection of Israel, Photography dept. Government Press Office ( link ), under the digital ID D804-110 . This tag does not indicate the copyright status of the attached work. A normal copyright tag is still required. See Commons:Licensing for more information.",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Flickr_-_Government_Press_Office_%28GPO%29_-_Jean_Paul_Sartre_and_Simone_De_Beauvoir_welcomed_by_Avraham_Shlonsky_and_Leah_Goldberg_%28cropped%29.jpg"
+  }
+}

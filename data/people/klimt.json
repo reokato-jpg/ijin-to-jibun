@@ -1,0 +1,128 @@
+{
+  "id": "klimt",
+  "name": "グスタフ・クリムト",
+  "nameEn": "Gustav Klimt",
+  "birth": 1862,
+  "death": 1918,
+  "country": "オーストリア",
+  "field": "画家",
+  "summary": "『接吻』『アデーレ・ブロッホ＝バウアーの肖像』。世紀末ウィーンのウィーン分離派の中心。金箔と女体、装飾と官能の境界で21世紀に最も愛される画家の一人に。",
+  "events": [
+    {
+      "year": 1862,
+      "age": 0,
+      "title": "ウィーン近郊で貧しい金細工師の子に誕生",
+      "detail": "父エルンストから金箔細工の技を学んだことが後の『黄金様式』の源。",
+      "tags": [
+        "poverty"
+      ]
+    },
+    {
+      "year": 1883,
+      "age": 21,
+      "title": "弟エルンストらと『芸術家カンパニー』設立",
+      "detail": "劇場天井画など装飾画の共同工房で成功を収める。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1892,
+      "age": 30,
+      "title": "父エルンストと弟エルンスト相次いで死去",
+      "detail": "この喪失の後、保守的な歴史画から独自の象徴主義へと転換。",
+      "tags": [
+        "loss",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1897,
+      "age": 35,
+      "title": "ウィーン分離派を結成、初代会長",
+      "detail": "保守的な画家連盟から独立。『時代に芸術を、芸術に自由を』の標語。",
+      "tags": [
+        "restart",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1903,
+      "age": 41,
+      "title": "ラヴェンナ旅行でビザンティン・モザイクに出会う",
+      "detail": "黄金の聖像画に衝撃。以後の『黄金様式』の源泉。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1908,
+      "age": 45,
+      "title": "『接吻』制作",
+      "detail": "ウィーン分離派展で発表。ベルヴェデーレ美術館が即座に買い上げた。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1918,
+      "age": 55,
+      "title": "ウィーンで脳卒中とスペイン風邪で死去",
+      "detail": "同年弟子エゴン・シーレもスペイン風邪で。ウィーン世紀末芸術の終焉。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "芸術家の仕事は、見えないものを見せることだ。",
+      "source": "クリムトの言葉"
+    },
+    {
+      "text": "私について何かを知りたければ、私の絵を見るべきだ。",
+      "source": "クリムトの言葉"
+    }
+  ],
+  "relations": [
+    {
+      "name": "エミーリエ・フレーゲ",
+      "relation": "生涯の伴侶",
+      "note": "結婚はしなかったが27年連れ添った"
+    },
+    {
+      "name": "エゴン・シーレ",
+      "relation": "弟子",
+      "note": "最も才能ある若い弟子。同年にスペイン風邪で死去"
+    }
+  ],
+  "places": [
+    {
+      "name": "ベルヴェデーレ美術館",
+      "location": "オーストリア・ウィーン",
+      "note": "『接吻』『ユディト』を所蔵"
+    },
+    {
+      "name": "ウィーン分離派館",
+      "location": "オーストリア・ウィーン",
+      "note": "『ベートーヴェン・フリーズ』の展示"
+    }
+  ],
+  "books": [
+    {
+      "title": "クリムト 1862-1918",
+      "author": "ギル・ネレー",
+      "asin": "4887831854",
+      "description": "TASCHEN版"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Klimt.jpg/500px-Klimt.jpg",
+  "wikiTitle": "グスタフ・クリムト",
+  "imageCredit": {
+    "artist": "Josef Anton Trčka",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "http://www.ceskatelevize.cz/program/porady/146378/foto09/klimt.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Klimt.jpg"
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "categories": [
+    {
+      "id": "escape",
+      "name": "逃避",
+      "color": "#8B7E74",
+      "description": "現実から目を逸らし、向き合うことから逃げた時期"
+    },
+    {
+      "id": "setback",
+      "name": "挫折",
+      "color": "#6B4E4E",
+      "description": "目標に届かず、道を見失った経験"
+    },
+    {
+      "id": "burnout",
+      "name": "燃え尽き",
+      "color": "#8B6F4E",
+      "description": "成し遂げた後に訪れる虚脱と停滞"
+    },
+    {
+      "id": "heartbreak",
+      "name": "失恋",
+      "color": "#A67575",
+      "description": "叶わなかった恋、失った愛"
+    },
+    {
+      "id": "parent_conflict",
+      "name": "親との葛藤",
+      "color": "#6B5B4E",
+      "description": "親の期待・支配・不在がもたらした内的葛藤"
+    },
+    {
+      "id": "self_denial",
+      "name": "自己否定",
+      "color": "#555555",
+      "description": "自分の価値・存在を認められない時期"
+    },
+    {
+      "id": "pride_broken",
+      "name": "プライド崩壊",
+      "color": "#7A5C5C",
+      "description": "誇りの拠り所を失い、裸にされた経験"
+    },
+    {
+      "id": "blank_period",
+      "name": "空白の時期",
+      "color": "#999999",
+      "description": "動けずに止まってしまった時間"
+    },
+    {
+      "id": "turning_encounter",
+      "name": "転機となる出会い",
+      "color": "#4E7A6B",
+      "description": "人生を変えた人との邂逅"
+    },
+    {
+      "id": "restart",
+      "name": "再起",
+      "color": "#6B8E4E",
+      "description": "もう一度立ち上がった瞬間"
+    },
+    {
+      "id": "jealousy",
+      "name": "嫉妬",
+      "color": "#7A6B4E",
+      "description": "他者への羨望と焦り"
+    },
+    {
+      "id": "approval",
+      "name": "承認欲求",
+      "color": "#8B7A4E",
+      "description": "認められたいという渇き"
+    },
+    {
+      "id": "poverty",
+      "name": "経済的困窮",
+      "color": "#5C5C5C",
+      "description": "生活・金銭面での苦しみ"
+    },
+    {
+      "id": "illness",
+      "name": "病",
+      "color": "#6B4E6B",
+      "description": "身体・精神の病との格闘"
+    },
+    {
+      "id": "loss",
+      "name": "死別",
+      "color": "#3E3E3E",
+      "description": "大切な人を失った経験"
+    },
+    {
+      "id": "self_reinvention",
+      "name": "自己再構築",
+      "color": "#4E6B8E",
+      "description": "過去の自分を手放して作り直した経験"
+    },
+    {
+      "id": "isolation",
+      "name": "孤独",
+      "color": "#4E4E6B",
+      "description": "誰にも理解されないと感じた時期"
+    },
+    {
+      "id": "breakthrough",
+      "name": "ブレイクスルー",
+      "color": "#4E8E6B",
+      "description": "殻を破って新しい自分に至った瞬間"
+    }
+  ]
+}

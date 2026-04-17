@@ -1,0 +1,199 @@
+{
+  "id": "kawabata",
+  "name": "川端康成",
+  "nameEn": "Kawabata Yasunari",
+  "birth": 1899,
+  "death": 1972,
+  "country": "日本",
+  "field": "小説家",
+  "summary": "『伊豆の踊子』『雪国』『千羽鶴』で日本的美を描き、1968年ノーベル文学賞受賞。親友・三島由紀夫の自決の17か月後、72歳でガス自殺。",
+  "events": [
+    {
+      "year": 1899,
+      "age": 0,
+      "title": "大阪に誕生、すぐに両親を失う",
+      "detail": "2歳で父、3歳で母、7歳で祖母、10歳で姉、15歳で祖父を失う。『葬式の名人』と自称した。",
+      "tags": [
+        "loss",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1899,
+      "age": 0,
+      "title": "大阪に誕生、2歳で父・3歳で母を失う",
+      "detail": "祖父母に引き取られ、7歳で祖母・15歳で祖父も失い天涯孤独に。",
+      "tags": [
+        "parent_conflict",
+        "loss",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1924,
+      "age": 25,
+      "title": "横光利一らと『文藝時代』創刊",
+      "detail": "新感覚派運動の旗手となる。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1926,
+      "age": 27,
+      "title": "『伊豆の踊子』発表",
+      "detail": "旅芸人一座との短い出会いを描いた青春の名作。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1926,
+      "age": 27,
+      "title": "『伊豆の踊子』",
+      "detail": "高等学校時代の一人旅を小説化。川端の出発点。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1935,
+      "age": 36,
+      "title": "『雪国』連載開始（1948年完成）",
+      "detail": "『国境の長いトンネルを抜けると雪国であった』の書き出しで知られる代表作。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1937,
+      "age": 38,
+      "title": "『雪国』完成",
+      "detail": "12年かけて書き続けた越後湯沢を舞台にした代表作。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1948,
+      "age": 49,
+      "title": "日本ペンクラブ会長就任",
+      "detail": "戦後の日本文学界を代表する地位へ。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1968,
+      "age": 69,
+      "title": "ノーベル文学賞受賞",
+      "detail": "日本人初。授賞式で『美しい日本の私』と題した講演を行う。",
+      "tags": [
+        "approval",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1968,
+      "age": 69,
+      "title": "日本人初のノーベル文学賞",
+      "detail": "『美しい日本の私』と題した受賞講演。三島はこの受賞を『あれは川端の賞だ、私のじゃない』と涙した。",
+      "tags": [
+        "approval",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1970,
+      "age": 71,
+      "title": "三島由紀夫の自決",
+      "detail": "弟子のような親友を失う。『三島君が死んで、私はひとりになった』",
+      "tags": [
+        "loss",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1972,
+      "age": 72,
+      "title": "ガス自殺",
+      "detail": "逗子マリーナのマンション仕事場でガス栓を口にくわえた。遺書なし。",
+      "tags": [
+        "loss",
+        "self_denial"
+      ]
+    },
+    {
+      "year": 1972,
+      "age": 72,
+      "title": "逗子の仕事場でガス自殺",
+      "detail": "遺書はなかった。親友三島の自決から1年5ヶ月後。『不意の死は死ではない』が口癖だった。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "国境の長いトンネルを抜けると雪国であった。",
+      "source": "『雪国』冒頭"
+    },
+    {
+      "text": "美しい日本の私。",
+      "source": "ノーベル賞受賞記念講演"
+    },
+    {
+      "text": "自殺者はいかに悟達の境に入ろうとも、聖人の域には遠い。",
+      "source": "川端の随筆"
+    },
+    {
+      "text": "生きているということ、それはすなはち死に向いつつあるということである。",
+      "source": "『末期の眼』"
+    }
+  ],
+  "places": [
+    {
+      "name": "伊豆の踊子文学碑",
+      "location": "静岡県河津町",
+      "note": "天城峠・旅芸人との出会いの道"
+    },
+    {
+      "name": "高半ホテル",
+      "location": "新潟県湯沢町",
+      "note": "『雪国』執筆の宿。かすみの間が保存"
+    },
+    {
+      "name": "鎌倉文学館",
+      "location": "神奈川県鎌倉市",
+      "note": "鎌倉文士の拠点。川端の遺品も展示"
+    },
+    {
+      "name": "逗子マリーナ",
+      "location": "神奈川県逗子市",
+      "note": "最期の地"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Yasunari_Kawabata_1938.jpg/500px-Yasunari_Kawabata_1938.jpg",
+  "wikiTitle": "川端康成",
+  "imageCredit": {
+    "artist": "Unknown author Unknown author",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "http://mhsteger.tumblr.com/post/697607461/yasunari-kawabata-born-14-june-1899-died-16",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Yasunari_Kawabata_1938.jpg"
+  },
+  "books": [
+    {
+      "title": "雪国",
+      "author": "川端康成",
+      "asin": "4101001014",
+      "description": "ノーベル文学賞作家の代表作"
+    },
+    {
+      "title": "伊豆の踊子",
+      "author": "川端康成",
+      "asin": "4101001022",
+      "description": "若き日の旅と出会い"
+    }
+  ]
+}

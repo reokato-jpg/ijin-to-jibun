@@ -1,0 +1,237 @@
+{
+  "id": "einstein",
+  "name": "アルベルト・アインシュタイン",
+  "nameEn": "Albert Einstein",
+  "birth": 1879,
+  "death": 1955,
+  "country": "ドイツ → スイス → アメリカ",
+  "field": "理論物理学者",
+  "summary": "特許局の技師から相対性理論を打ち立てた20世紀最大の科学者。ナチスを逃れアメリカへ亡命、原爆開発を進言しながら後半生は平和運動に捧げた。",
+  "events": [
+    {
+      "year": 1879,
+      "age": 0,
+      "title": "ドイツ・ウルムに誕生",
+      "detail": "言葉を話すのが遅く、教師からは『何も成し遂げないだろう』と評された。",
+      "tags": [
+        "self_denial"
+      ]
+    },
+    {
+      "year": 1895,
+      "age": 16,
+      "title": "ギムナジウムを中退、ミュンヘンを離れる",
+      "detail": "軍隊式教育に馴染めず退学。父の事業失敗で一家がイタリアへ。以後、国籍を一度も持たない『無国籍』の時期を経る。",
+      "tags": [
+        "pride_broken",
+        "parent_conflict",
+        "restart"
+      ]
+    },
+    {
+      "year": 1902,
+      "age": 23,
+      "title": "スイス特許庁の三級審査官に",
+      "detail": "大学の職に就けず、友人の父のコネで就職。この『偉大なる暇つぶし』の時間が奇跡の年を生む。",
+      "tags": [
+        "restart",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1905,
+      "age": 26,
+      "title": "奇跡の年、特許局で書いた4本の論文",
+      "detail": "特殊相対性理論、光電効果、ブラウン運動、質量エネルギー等価性。物理学を書き換える。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1905,
+      "age": 26,
+      "title": "『奇跡の年』— 4本の論文で物理学を塗り替える",
+      "detail": "特殊相対性理論・光量子仮説・ブラウン運動・質量エネルギー等価。特許庁の机で、一人で書いた。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1915,
+      "age": 36,
+      "title": "一般相対性理論完成",
+      "detail": "8年かけて重力の新しい理論を構築。時空は曲がる、と。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1915,
+      "age": 36,
+      "title": "一般相対性理論を完成",
+      "detail": "10年の苦闘の末、重力を『時空の歪み』として定式化。翌年の日食観測で的中。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1919,
+      "age": 40,
+      "title": "日食観測で一般相対論が証明され世界的スターに",
+      "detail": "エディントンの遠征で星の光の曲がりが確認。翌日から『ニュートンを超えた男』として世界中の新聞1面に。",
+      "tags": [
+        "approval",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1921,
+      "age": 42,
+      "title": "ノーベル物理学賞（光電効果による）",
+      "detail": "相対論ではなく光量子仮説で受賞。賞金はすべて最初の妻ミレヴァに送った。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1933,
+      "age": 54,
+      "title": "ナチスを逃れアメリカへ亡命",
+      "detail": "ユダヤ人迫害から逃れプリンストンへ。二度とドイツに戻らなかった。",
+      "tags": [
+        "escape",
+        "loss"
+      ]
+    },
+    {
+      "year": 1933,
+      "age": 54,
+      "title": "ナチスから逃れ米国プリンストンへ",
+      "detail": "ドイツに二度と戻らなかった。『私の祖国は人類だ』と語る。",
+      "tags": [
+        "restart",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1939,
+      "age": 60,
+      "title": "ルーズベルト大統領に原爆開発を進言",
+      "detail": "ナチスの先を越すため署名。のちに『人生最大の過ち』と悔いた。",
+      "tags": [
+        "self_denial"
+      ]
+    },
+    {
+      "year": 1939,
+      "age": 60,
+      "title": "ルーズベルト大統領に核開発を促す書簡",
+      "detail": "シラードと連名。後に『人生最大の過ち』と悔いた。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1955,
+      "age": 76,
+      "title": "プリンストンで死去",
+      "detail": "大動脈瘤破裂。墓は作らず、遺灰は秘密の場所に撒かれた。脳は研究用に保存された。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "人生には二通りの生き方しかない。奇跡など全く起こらないかのように生きるか、すべてが奇跡であるかのように生きるか。",
+      "source": "書簡"
+    },
+    {
+      "text": "想像力は知識よりも重要である。",
+      "source": "インタビュー"
+    },
+    {
+      "text": "想像力は知識よりも重要である。知識には限界があるが、想像力は世界を包みこむ。",
+      "source": "『サタデー・イブニング・ポスト』1929"
+    },
+    {
+      "text": "神はサイコロを振らない。",
+      "source": "マックス・ボルンへの手紙 1926"
+    },
+    {
+      "text": "人生には二つの生き方しかない。奇跡などないかのように生きるか、すべてが奇跡であるかのように生きるか。",
+      "source": "アインシュタインに帰される言葉"
+    },
+    {
+      "text": "同じことを繰り返しながら違う結果を望むこと、それを狂気と呼ぶ。",
+      "source": "アインシュタインに帰される言葉"
+    },
+    {
+      "text": "学校で学んだことをすべて忘れたとき、残るものが教育である。",
+      "source": "1936年の講演"
+    },
+    {
+      "text": "私には特別な才能はありません。ただ情熱的に好奇心が旺盛なだけです。",
+      "source": "カール・ゼーリヒへの手紙 1952"
+    }
+  ],
+  "places": [
+    {
+      "name": "アインシュタインの家",
+      "location": "ベルン（スイス）",
+      "note": "特許局勤務時代の住居。『奇跡の年』の舞台"
+    },
+    {
+      "name": "プリンストン高等研究所",
+      "location": "アメリカ・ニュージャージー州",
+      "note": "晩年の研究の地"
+    },
+    {
+      "name": "アインシュタイン博物館",
+      "location": "ベルン歴史博物館内",
+      "note": "手稿や書簡を展示"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Albert_Einstein_Head_cleaned.jpg/500px-Albert_Einstein_Head_cleaned.jpg",
+  "wikiTitle": "アルベルト・アインシュタイン",
+  "imageCredit": {
+    "artist": "Orren Jack Turner",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "This image is available from the United States Library of Congress 's Prints and Photographs division under the digital ID cph.3b46036 . This tag does not indicate the copyright status of the attached work. A normal copyright tag is still required. See Commons:Licensing .",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Albert_Einstein_Head_cleaned.jpg"
+  },
+  "books": [
+    {
+      "title": "相対性理論",
+      "author": "アルベルト・アインシュタイン",
+      "asin": "4003394119",
+      "description": "本人による一般向け解説書"
+    },
+    {
+      "title": "アインシュタイン わが相対性理論",
+      "author": "アインシュタイン",
+      "asin": "4480093281",
+      "description": "思想と人生を語った自伝的エッセイ"
+    }
+  ],
+  "media": [
+    {
+      "title": "ジーニアス：アインシュタイン",
+      "year": 2017,
+      "type": "drama",
+      "country": "アメリカ",
+      "cast": "ジェフリー・ラッシュ／ジョニー・フリン",
+      "description": "ナショジオ製作。青年期から晩年まで全10話で描く伝記ドラマ。"
+    },
+    {
+      "title": "IQ たったひとりの恋人",
+      "year": 1994,
+      "type": "movie",
+      "country": "アメリカ",
+      "director": "フレッド・スケピシ",
+      "cast": "メグ・ライアン／ウォルター・マッソー",
+      "description": "アインシュタインの姪と自動車整備工のロマンチック・コメディ。"
+    }
+  ]
+}

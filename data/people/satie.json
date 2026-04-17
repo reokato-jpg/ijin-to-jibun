@@ -1,0 +1,245 @@
+{
+  "id": "satie",
+  "name": "エリック・サティ",
+  "nameEn": "Erik Satie",
+  "birth": 1866,
+  "death": 1925,
+  "country": "フランス",
+  "field": "作曲家",
+  "summary": "『ジムノペディ』で知られる奇人の作曲家。黒いベルベット服と大量の傘を集め、6キロ離れたモンマルトルから毎日歩いて通った。家具の音楽の発明者。",
+  "events": [
+    {
+      "year": 1866,
+      "age": 0,
+      "title": "ノルマンディーのオンフルールに誕生",
+      "detail": "音楽家になるも社会に馴染めなかった。",
+      "tags": [
+        "isolation"
+      ]
+    },
+    {
+      "year": 1866,
+      "age": 0,
+      "title": "ノルマンディー・オンフルールに誕生",
+      "detail": "4歳で母を失い、祖父母に引き取られる。その祖母も水死で失う。",
+      "tags": [
+        "parent_conflict",
+        "loss"
+      ]
+    },
+    {
+      "year": 1879,
+      "age": 13,
+      "title": "パリ音楽院入学、『最も怠惰な学生』と評される",
+      "detail": "7年在籍して何も学ばず。教師から『ピアノの才能ゼロ、作曲も怠惰』と酷評された。",
+      "tags": [
+        "pride_broken",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1887,
+      "age": 21,
+      "title": "キャバレー『黒猫』でピアニストに",
+      "detail": "モンマルトルの夜の世界へ。奇妙な服装で現れるボヘミアンとなる。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1888,
+      "age": 22,
+      "title": "『ジムノペディ』作曲",
+      "detail": "静けさと物憂さ。50年後ドビュッシーがオーケストレーションして世に広まった。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1888,
+      "age": 22,
+      "title": "『3つのジムノペディ』作曲",
+      "detail": "単調な和声進行と空虚な美の発見。当時は全く売れなかった。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1893,
+      "age": 27,
+      "title": "シュザンヌ・ヴァラドンとの6ヶ月の恋",
+      "detail": "唯一の恋愛。別れた日から手紙を書き続けたが送らなかった。",
+      "tags": [
+        "heartbreak",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1893,
+      "age": 27,
+      "title": "画家シュザンヌ・ヴァラドンとの6ヶ月の恋",
+      "detail": "生涯唯一の恋愛。彼女が去った日、サティは『凍えた悲しみだけが残った』と日記に。以後独身。",
+      "tags": [
+        "heartbreak",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1898,
+      "age": 32,
+      "title": "郊外アルクイユの小部屋に移住",
+      "detail": "パリまで徒歩で通う生活。27年間ここに住んだ。誰も部屋に入れなかった。",
+      "tags": [
+        "isolation",
+        "restart"
+      ]
+    },
+    {
+      "year": 1905,
+      "age": 39,
+      "title": "スコラ・カントルムに入学",
+      "detail": "39歳で改めて対位法を学び直す。『貧者の学校』で3年。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1917,
+      "age": 50,
+      "title": "バレエ『パラード』、コクトー・ピカソと",
+      "detail": "ピカソ衣装、コクトー脚本、マシーヌ振付。サイレン・タイプライターを使った前衛。大スキャンダル。",
+      "tags": [
+        "breakthrough",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1917,
+      "age": 51,
+      "title": "バレエ『パラード』",
+      "detail": "ピカソ衣装、コクトー台本、サティ音楽。前衛の爆発。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1920,
+      "age": 54,
+      "title": "『家具の音楽』提唱",
+      "detail": "『聞かれない音楽』としてのBGMの発明。休憩中にサティは『聴かないでください！』と叫んだ。",
+      "tags": []
+    },
+    {
+      "year": 1925,
+      "age": 59,
+      "title": "肝硬変で死去",
+      "detail": "死後、27年誰も入れなかった部屋から大量の傘と未発表楽譜が出てきた。",
+      "tags": [
+        "loss",
+        "illness"
+      ]
+    },
+    {
+      "year": 1925,
+      "age": 59,
+      "title": "アルクイユで肝硬変により死去",
+      "detail": "死後初めて友人たちが部屋に入り、発見された。ピアノの後ろの山のような未発表原稿、未開封のプレゼント、同じ傘が複数、ブラシが山積み。",
+      "tags": [
+        "loss",
+        "isolation"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "私は若すぎる世界で生まれるには、あまりにも老人すぎた。",
+      "source": "自伝的断章"
+    },
+    {
+      "text": "人生で一番大事なのは、退屈しないことだ。",
+      "source": "サティの日記"
+    },
+    {
+      "text": "家具の音楽——人々が聴かずに聴き流すための音楽。",
+      "source": "サティの新ジャンル提唱"
+    },
+    {
+      "text": "私は若すぎる世界に、歳を取りすぎて生まれた。",
+      "source": "サティの言葉"
+    },
+    {
+      "text": "聴かないでください！ 聴かないで！",
+      "source": "『家具の音楽』初演中に叫んだ言葉"
+    },
+    {
+      "text": "いつもと同じに、でも違うように。",
+      "source": "弟子への助言"
+    }
+  ],
+  "places": [
+    {
+      "name": "サティの家",
+      "location": "フランス・オンフルール",
+      "note": "生家を改装した奇想の博物館"
+    },
+    {
+      "name": "アルクイユ",
+      "location": "フランス・パリ南郊",
+      "note": "晩年30年暮らした部屋のあった場所"
+    }
+  ],
+  "books": [
+    {
+      "title": "サティ ありきたりの歓び",
+      "author": "秋山邦晴",
+      "asin": "4393936825",
+      "description": "奇人の音楽と日常"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Ericsatie.jpg/500px-Ericsatie.jpg",
+  "wikiTitle": "エリック・サティ",
+  "imageCredit": {
+    "artist": "Henri Manuel",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Étude Ader-Tajan, vente Jacques Guérin n°7, le 25 mai 1992, lot n°104",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ericsatie.jpg"
+  },
+  "works": [
+    {
+      "title": "3つのジムノペディ",
+      "year": 1888,
+      "type": "ピアノ曲",
+      "description": "『第1番』は20世紀で最も再生された曲のひとつ",
+      "youtubeId": "S-Xm7s9eGxU"
+    },
+    {
+      "title": "3つのグノシエンヌ",
+      "year": 1890,
+      "type": "ピアノ曲",
+      "description": "小節線のない幻想的なピアノ曲集",
+      "youtubeId": "2g5xkL4JEjc"
+    },
+    {
+      "title": "ヴェクサシオン",
+      "year": 1893,
+      "type": "ピアノ曲",
+      "description": "1ページのフレーズを840回繰り返す、約18時間の作品",
+      "youtubeId": "GeZKrDw7EZQ"
+    },
+    {
+      "title": "バレエ『パラード』",
+      "year": 1917,
+      "type": "バレエ",
+      "description": "タイプライター・サイレンが登場する前衛音楽の代表作",
+      "youtubeId": "xEQOebqTnN0"
+    },
+    {
+      "title": "ジュ・トゥ・ヴ",
+      "year": 1900,
+      "type": "歌曲",
+      "description": "『あなたが欲しい』。キャバレー時代のワルツ",
+      "youtubeId": "WFwJdyTsKCA"
+    }
+  ]
+}

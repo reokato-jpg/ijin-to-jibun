@@ -1,0 +1,262 @@
+{
+  "id": "mozart",
+  "name": "ヴォルフガング・アマデウス・モーツァルト",
+  "nameEn": "Wolfgang Amadeus Mozart",
+  "birth": 1756,
+  "death": 1791,
+  "country": "オーストリア",
+  "field": "作曲家",
+  "summary": "3歳でクラヴィーアを弾き、6歳から欧州を演奏旅行した神童。600曲超を遺し、35歳で謎の死を遂げた。『レクイエム』は未完のまま。",
+  "events": [
+    {
+      "year": 1756,
+      "age": 0,
+      "title": "ザルツブルクに誕生",
+      "detail": "父レオポルトは宮廷音楽家。姉ナンネルも音楽の才を持つ家庭に育つ。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1762,
+      "age": 6,
+      "title": "欧州演奏旅行始まる",
+      "detail": "父に連れられ幼くしてヨーロッパ中で演奏。マリア・テレジアの前でも弾いた。",
+      "tags": [
+        "approval",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1762,
+      "age": 6,
+      "title": "父レオポルトと欧州演奏旅行開始",
+      "detail": "マリア・テレジア、ルイ15世、ジョージ3世の前で演奏。6歳の天才児として欧州中を回る。父は家計と名声のため子供を酷使した。",
+      "tags": [
+        "approval",
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1777,
+      "age": 21,
+      "title": "母と二人でパリへ、母を失う",
+      "detail": "就職活動のための旅。パリで母が病没、彼は一人で遺体を見送った。",
+      "tags": [
+        "loss",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1778,
+      "age": 22,
+      "title": "パリで母を失う",
+      "detail": "就職活動のためのパリ滞在中、同行した母が病死。父への報告書で一足飛びに真実を告げる勇気が持てず、まず『母は重病です』と書いた。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1781,
+      "age": 25,
+      "title": "ザルツブルク大司教と決別、ウィーンへ",
+      "detail": "『尻を蹴飛ばされて』放逐された。フリーランス音楽家として生きる決意。当時としては異例の独立。",
+      "tags": [
+        "restart",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1782,
+      "age": 26,
+      "title": "コンスタンツェと結婚",
+      "detail": "父の反対を押し切って結婚。7人の子を産むも成人したのは2人。",
+      "tags": [
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1782,
+      "age": 26,
+      "title": "コンスタンツェ・ウェーバーと父の反対を押し切り結婚",
+      "detail": "ウェーバー家の次女と結婚。父レオポルトは最後まで祝福しなかった。",
+      "tags": [
+        "parent_conflict",
+        "restart"
+      ]
+    },
+    {
+      "year": 1786,
+      "age": 30,
+      "title": "『フィガロの結婚』初演",
+      "detail": "ダ・ポンテとのコンビで傑作連発。しかしウィーンの聴衆は冷淡になっていく。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1787,
+      "age": 31,
+      "title": "父レオポルト死去",
+      "detail": "長年確執のあった父が亡くなる。直前の手紙に『死は人生の最後の目的地ではなく、本当の親友です』と書いた。同年『ドン・ジョヴァンニ』を書く。",
+      "tags": [
+        "loss",
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1791,
+      "age": 35,
+      "title": "『レクイエム』未完のまま死去",
+      "detail": "匿名の依頼で書いた鎮魂曲。自らの死を予感した。死因は現在も諸説。貧民墓地に埋葬された。",
+      "tags": [
+        "loss",
+        "illness",
+        "poverty"
+      ]
+    },
+    {
+      "year": 1791,
+      "age": 35,
+      "title": "謎の依頼主からの『レクイエム』、未完のまま死去",
+      "detail": "黒衣の使者が匿名で依頼した鎮魂曲。モーツァルト自身『これは私のレクイエムだ』と予感しながら書き続け、『ラクリモサ』の8小節目で絶筆。12月5日没。貧民墓地に埋葬され、どこに眠るかもわからない。",
+      "tags": [
+        "loss",
+        "poverty"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "音楽は音符にあるのではなく、その間にある沈黙にある。",
+      "source": "伝承"
+    },
+    {
+      "text": "愛、愛、愛—これが音楽の精神である。",
+      "source": "書簡"
+    },
+    {
+      "text": "メロディは音楽の神髄である。",
+      "source": "書簡"
+    },
+    {
+      "text": "死は人生の真の最終目的である。そして死こそ人間の最良の友である。",
+      "source": "父への手紙 1787"
+    },
+    {
+      "text": "私は早く書く訳ではない。ただ、書く前に、もう全部頭の中で出来上がっているのだ。",
+      "source": "モーツァルトに帰される言葉"
+    }
+  ],
+  "places": [
+    {
+      "name": "モーツァルトの生家",
+      "location": "ザルツブルク（オーストリア）",
+      "note": "ゲトライデ通り9番地の黄色い家"
+    },
+    {
+      "name": "モーツァルト博物館（フィガロハウス）",
+      "location": "ウィーン旧市街",
+      "note": "『フィガロの結婚』を書いた住居"
+    },
+    {
+      "name": "聖マルクス墓地",
+      "location": "ウィーン",
+      "note": "貧民墓地に埋葬された。正確な位置は不明"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Wolfgang-amadeus-mozart_1.jpg/500px-Wolfgang-amadeus-mozart_1.jpg",
+  "wikiTitle": "ヴォルフガング・アマデウス・モーツァルト",
+  "imageCredit": {
+    "artist": "Barbara Krafft",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Deutsch, Otto Erich (1965) Mozart: A Documentary Biography . Stanford: Stanford University Press.",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Wolfgang-amadeus-mozart_1.jpg"
+  },
+  "books": [
+    {
+      "title": "モーツァルト 神に愛されし人",
+      "author": "吉田秀和",
+      "asin": "4309226965",
+      "description": "日本最高の音楽評論家による渾身のモーツァルト論"
+    },
+    {
+      "title": "モーツァルトの手紙",
+      "author": "柴田治三郎 訳",
+      "asin": "4003350510",
+      "description": "父・妻への書簡から人間モーツァルトが見える"
+    }
+  ],
+  "works": [
+    {
+      "title": "歌劇『フィガロの結婚』K.492",
+      "year": 1786,
+      "type": "オペラ",
+      "description": "ダ・ポンテとの黄金コンビ第一作。身分を越えた愛と赦し",
+      "youtubeId": "7NAOmgRGuHs"
+    },
+    {
+      "title": "歌劇『ドン・ジョヴァンニ』K.527",
+      "year": 1787,
+      "type": "オペラ",
+      "description": "父レオポルトの死の年に書かれた、死と笑いのオペラ",
+      "youtubeId": "3m1pF9UI_2E"
+    },
+    {
+      "title": "歌劇『魔笛』K.620",
+      "year": 1791,
+      "type": "オペラ",
+      "description": "死の2ヶ月前の初演。フリーメイスンの理想を描く",
+      "youtubeId": "yVmcF-Va9QA"
+    },
+    {
+      "title": "レクイエム ニ短調 K.626",
+      "year": 1791,
+      "type": "宗教曲",
+      "description": "『ラクリモサ』8小節目で絶筆。弟子ジュスマイヤーが補筆",
+      "youtubeId": "pSFBxOWrMNk"
+    },
+    {
+      "title": "ピアノ協奏曲第21番 ハ長調 K.467",
+      "year": 1785,
+      "type": "協奏曲",
+      "description": "第2楽章『エルヴィラ・マディガン』の永遠の旋律",
+      "youtubeId": "df-eLzao63I"
+    },
+    {
+      "title": "交響曲第40番 ト短調 K.550",
+      "year": 1788,
+      "type": "交響曲",
+      "description": "モーツァルト最後の夏に書かれた、最も憂いに満ちた交響曲",
+      "youtubeId": "JTc1mDieQI8"
+    },
+    {
+      "title": "アイネ・クライネ・ナハトムジーク K.525",
+      "year": 1787,
+      "type": "室内楽",
+      "description": "最も親しまれるセレナーデ",
+      "youtubeId": "o1dBg__wsuo"
+    }
+  ],
+  "media": [
+    {
+      "title": "アマデウス",
+      "year": 1984,
+      "type": "movie",
+      "country": "アメリカ",
+      "director": "ミロス・フォアマン",
+      "cast": "トム・ハルス／F.マーリー・エイブラハム",
+      "description": "アカデミー賞8部門受賞。天才モーツァルトと凡才サリエリの、嫉妬と畏怖の物語。",
+      "youtubeId": "7VZ-Pg_-I_M"
+    },
+    {
+      "title": "魔笛",
+      "year": 2006,
+      "type": "movie",
+      "country": "イギリス",
+      "director": "ケネス・ブラナー",
+      "description": "モーツァルトのオペラを第一次大戦の塹壕を舞台にブラナー監督が映像化。"
+    }
+  ]
+}

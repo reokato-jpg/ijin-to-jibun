@@ -1,0 +1,165 @@
+{
+  "id": "bartok",
+  "name": "ベーラ・バルトーク",
+  "nameEn": "Béla Bartók",
+  "birth": 1881,
+  "death": 1945,
+  "country": "ハンガリー",
+  "field": "作曲家",
+  "summary": "蝋管を抱えて東欧の村々を歩き、消えゆく民謡を録音した民族音楽学の祖。ナチスを嫌って渡米、白血病で貧窮のうちに没した誇り高き作曲家。",
+  "events": [
+    {
+      "year": 1881,
+      "age": 0,
+      "title": "ハンガリー・ナジセントミクローシュに誕生",
+      "detail": "父は農学校校長、7歳で死別。",
+      "tags": [
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1899,
+      "age": 18,
+      "title": "ブダペスト音楽院でドホナーニと学ぶ",
+      "detail": "演奏家として出発、シュトラウス『英雄の生涯』ピアノ版に衝撃を受ける。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1905,
+      "age": 24,
+      "title": "田舎娘の歌に民俗音楽への覚醒",
+      "detail": "汽車の中で偶然聞いた農民の歌。当時『ジプシー音楽=ハンガリー』と信じられていた通念が崩れる。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1906,
+      "age": 25,
+      "title": "コダーイと民謡採集を開始",
+      "detail": "エジソンの蝋管で農民の歌を録音。",
+      "tags": [
+        "breakthrough",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1911,
+      "age": 30,
+      "title": "オペラ『青ひげ公の城』完成",
+      "detail": "コンクールで落選、15年間初演されなかった唯一のオペラ。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1923,
+      "age": 42,
+      "title": "前妻と離婚、弟子ディッタと再婚",
+      "detail": "20歳年下のピアニスト。以後の協奏曲は彼女と二重奏で初演した。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1936,
+      "age": 55,
+      "title": "『弦チェレ』完成",
+      "detail": "弦楽器・打楽器・チェレスタのための音楽。20世紀音楽の金字塔。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1940,
+      "age": 59,
+      "title": "ナチスの迫害を避け米国へ亡命",
+      "detail": "コロンビア大学で研究。生活は苦しかった。",
+      "tags": [
+        "restart",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1943,
+      "age": 62,
+      "title": "『管弦楽のための協奏曲』完成",
+      "detail": "クーセヴィツキーの依頼で、病床の栄養失調状態で書いた最後の傑作。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1945,
+      "age": 64,
+      "title": "ニューヨークで白血病により死去",
+      "detail": "『もっと書きたいことがあったのに』が最期の言葉。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "芸術家の真の仕事は、時代の『正しい音』を探し出すことだ。",
+      "source": "バルトーク書簡"
+    },
+    {
+      "text": "民謡という泉から汲み上げぬ者は、枯れる。",
+      "source": "バルトークの論文"
+    },
+    {
+      "text": "もっと書きたいことがあったのに。",
+      "source": "最期の言葉 1945"
+    }
+  ],
+  "relations": [
+    {
+      "name": "コダーイ",
+      "relation": "盟友",
+      "note": "民謡採集の同志"
+    }
+  ],
+  "places": [],
+  "books": [],
+  "works": [
+    {
+      "title": "弦楽器、打楽器とチェレスタのための音楽",
+      "type": "youtube",
+      "id": "0f8g56VbjHg",
+      "note": "20世紀音楽の金字塔"
+    },
+    {
+      "title": "管弦楽のための協奏曲",
+      "year": 1943,
+      "type": "管弦楽",
+      "description": "亡命先ニューヨークで書いた最後の傑作",
+      "youtubeId": "I0jtt58DYxA"
+    },
+    {
+      "title": "ミクロコスモス",
+      "year": 1939,
+      "type": "ピアノ曲",
+      "description": "初心者から上級者まで育てる153曲のピアノ学習曲集",
+      "youtubeId": "V4V6iwOgMdE"
+    },
+    {
+      "title": "ルーマニア民俗舞曲",
+      "year": 1915,
+      "type": "ピアノ曲",
+      "description": "民謡採集の成果をまとめた6つの舞曲",
+      "youtubeId": "0MhMGBTDqEE"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/6/66/Bart%C3%B3k_B%C3%A9la_1927.jpg",
+  "wikiTitle": "ベーラ・バルトーク",
+  "imageCredit": {
+    "artist": "Unknown author Unknown author",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "http://w3.rz-berlin.mpg.de/cmp/bartok_9.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bart%C3%B3k_B%C3%A9la_1927.jpg"
+  }
+}

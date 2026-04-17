@@ -1,0 +1,135 @@
+{
+  "id": "hokusai",
+  "name": "葛飾北斎",
+  "nameEn": "Katsushika Hokusai",
+  "birth": 1760,
+  "death": 1849,
+  "country": "日本（江戸）",
+  "field": "浮世絵師",
+  "summary": "『富嶽三十六景』『北斎漫画』。生涯93回引越し、30回以上改号、90歳まで絵筆を握り続けた。『あと5年あれば本物の絵師になれる』が絶筆の言葉。ゴッホ・ドビュッシー・モネまで世界の芸術に影響を与えた。",
+  "events": [
+    {
+      "year": 1760,
+      "age": 0,
+      "title": "江戸・本所割下水に生まれる",
+      "detail": "幼名・時太郎、後の鉄蔵。幕府御用鏡師の養子となるが継承せず。",
+      "tags": [
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1779,
+      "age": 19,
+      "title": "勝川春章に弟子入り、『春朗』と名乗る",
+      "detail": "役者絵からスタート。25年修行。",
+      "tags": [
+        "restart",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1798,
+      "age": 38,
+      "title": "勝川派を破門、独立",
+      "detail": "狩野派の研究のため。以後『北斎辰政』を名乗る。",
+      "tags": [
+        "restart",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1814,
+      "age": 54,
+      "title": "『北斎漫画』初編刊行",
+      "detail": "遊びの下絵集のつもりが全15編、4000点のスケッチに。漫画の祖。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1831,
+      "age": 71,
+      "title": "『富嶽三十六景』刊行、『神奈川沖浪裏』",
+      "detail": "70歳を超えて到達した最高傑作。大波とその奥の富士。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1839,
+      "age": 79,
+      "title": "火事で画帳・道具をすべて失う",
+      "detail": "それでも翌日から新しい紙に描き始めた。",
+      "tags": [
+        "loss",
+        "pride_broken",
+        "restart"
+      ]
+    },
+    {
+      "year": 1849,
+      "age": 89,
+      "title": "浅草で死去",
+      "detail": "『あと5年あれば本物の絵師になれる、天よあと10年の命を』と言い遺した。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "我6歳より物の形状を写すの癖ありて、半百の頃よりしばしば画図を顕はせしといへども、七十歳前に画ける所はまことに取るに足るものなし。",
+      "source": "『富嶽百景』跋"
+    },
+    {
+      "text": "あと5年あれば、本物の絵師になれる。",
+      "source": "最期の言葉 1849"
+    },
+    {
+      "text": "画狂老人卍。",
+      "source": "晩年の号の一つ"
+    }
+  ],
+  "relations": [
+    {
+      "name": "葛飾応為",
+      "relation": "娘",
+      "note": "三女お栄。晩年は父娘で共作"
+    },
+    {
+      "name": "ゴッホ",
+      "id": "van_gogh",
+      "relation": "後世への影響",
+      "note": "北斎・広重を模写した"
+    }
+  ],
+  "places": [
+    {
+      "name": "すみだ北斎美術館",
+      "location": "東京都墨田区",
+      "note": "北斎が生涯93回引越した近所の記念館"
+    },
+    {
+      "name": "北斎館",
+      "location": "長野県小布施町",
+      "note": "晩年に天井画を描いた寺のある町"
+    }
+  ],
+  "books": [
+    {
+      "title": "北斎漫画",
+      "author": "葛飾北斎",
+      "asin": "4062137968",
+      "description": "江戸の万象を描いた巨人のスケッチ集"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Katsushika_Hokusai-Self-Portrait-1839.jpg/500px-Katsushika_Hokusai-Self-Portrait-1839.jpg",
+  "wikiTitle": "葛飾北斎",
+  "imageCredit": {
+    "artist": "",
+    "license": "",
+    "licenseUrl": "",
+    "credit": "",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Katsushika_Hokusai-Self-Portrait-1839.jpg"
+  }
+}

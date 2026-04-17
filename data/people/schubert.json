@@ -1,0 +1,226 @@
+{
+  "id": "schubert",
+  "name": "フランツ・シューベルト",
+  "nameEn": "Franz Schubert",
+  "birth": 1797,
+  "death": 1828,
+  "country": "オーストリア",
+  "field": "作曲家",
+  "summary": "600曲以上の歌曲で知られる『歌曲の王』。生涯ウィーンを離れず、貧困のうちに31歳で梅毒の合併症により没した。『未完成』交響曲と『冬の旅』が代表作。",
+  "events": [
+    {
+      "year": 1797,
+      "age": 0,
+      "title": "ウィーン郊外の教師の家に誕生",
+      "detail": "14人兄弟、9人が夭折。音楽的な家庭で育つ。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1797,
+      "age": 0,
+      "title": "ウィーン近郊の教師の家に誕生",
+      "detail": "14人兄弟の12番目。貧困の中で育った。",
+      "tags": [
+        "poverty"
+      ]
+    },
+    {
+      "year": 1808,
+      "age": 11,
+      "title": "宮廷礼拝堂少年合唱団に入団",
+      "detail": "サリエリに作曲を学ぶ特待生となる。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1814,
+      "age": 17,
+      "title": "『糸を紡ぐグレートヒェン』作曲、歌曲史の幕開け",
+      "detail": "ゲーテの詩に17歳で付けた完璧な歌曲。ドイツ・リートの誕生。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1815,
+      "age": 18,
+      "title": "1年で140曲を作曲",
+      "detail": "『魔王』『野ばら』含む驚異的な多作。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1815,
+      "age": 18,
+      "title": "1年で150曲以上の歌曲を量産",
+      "detail": "『魔王』もこの年。『神に取り憑かれた』ような創作の爆発。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1818,
+      "age": 21,
+      "title": "教師を辞めて作曲に専念",
+      "detail": "『シューベルティアーデ』と呼ばれる友人たちの集いで自作を披露。貧しくとも愛された。",
+      "tags": [
+        "restart",
+        "approval"
+      ]
+    },
+    {
+      "year": 1822,
+      "age": 25,
+      "title": "梅毒発症、『未完成』交響曲",
+      "detail": "生涯の闇の始まりにして、最も有名な楽曲。",
+      "tags": [
+        "illness",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1822,
+      "age": 25,
+      "title": "交響曲第7番『未完成』作曲、梅毒発症",
+      "detail": "2楽章で筆を置いた謎。同時に発症した梅毒が彼の晩年を蝕む。",
+      "tags": [
+        "illness",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1827,
+      "age": 30,
+      "title": "『冬の旅』連作歌曲",
+      "detail": "迫り来る死と失恋の暗い歌集。友人たちは暗さに困惑した。",
+      "tags": [
+        "loss",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1827,
+      "age": 30,
+      "title": "歌曲集『冬の旅』作曲",
+      "detail": "ミュラーの詩による24曲。絶望と孤独の旅路。『こんなに暗い歌を書いたことは我ながら驚く』と友人に漏らした。",
+      "tags": [
+        "breakthrough",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1827,
+      "age": 30,
+      "title": "敬愛するベートーヴェンの葬儀で松明を持つ",
+      "detail": "生涯憧れた巨匠の棺に最も近い位置にいた。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1828,
+      "age": 31,
+      "title": "腸チフスで死去",
+      "detail": "敬愛するベートーヴェンの隣に埋葬された。",
+      "tags": [
+        "loss",
+        "illness"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "私の終わりが来たとき、私はまだ表現すべきことを半分も表現していなかった。",
+      "source": "日記"
+    },
+    {
+      "text": "私は自分の悲しみを歌うために生まれてきた。",
+      "source": "日記 1824"
+    },
+    {
+      "text": "私の音楽を知りたければ、私の人生を知る必要はない。ただ聴いてくれればよい。",
+      "source": "シューベルトに帰される言葉"
+    },
+    {
+      "text": "自分の境遇に満足している人はない。皆、互いに羨み合う。世はそうしたものだ。",
+      "source": "書簡"
+    }
+  ],
+  "places": [
+    {
+      "name": "シューベルトの生家",
+      "location": "ウィーン9区",
+      "note": "博物館"
+    },
+    {
+      "name": "中央墓地",
+      "location": "ウィーン",
+      "note": "ベートーヴェンと並ぶ墓"
+    }
+  ],
+  "books": [
+    {
+      "title": "シューベルト",
+      "author": "クリストファー・H・ギブス",
+      "asin": "4393932285",
+      "description": "短い生涯と豊穣な音楽"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Franz_Schubert_by_Wilhelm_August_Rieder_1875.jpg/500px-Franz_Schubert_by_Wilhelm_August_Rieder_1875.jpg",
+  "wikiTitle": "フランツ・シューベルト",
+  "imageCredit": {
+    "artist": "Wilhelm August Rieder",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "https://sammlung.wienmuseum.at/en/object/125504-franz-schubert-komponist/",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Franz_Schubert_by_Wilhelm_August_Rieder_1875.jpg"
+  },
+  "works": [
+    {
+      "title": "魔王 D.328",
+      "year": 1815,
+      "type": "歌曲",
+      "description": "ゲーテの詩による、嵐の夜の馬上の物語",
+      "youtubeId": "JS91p-vmSf0"
+    },
+    {
+      "title": "アヴェ・マリア D.839",
+      "year": 1825,
+      "type": "歌曲",
+      "description": "『エレンの歌』として作曲された、祈りの旋律",
+      "youtubeId": "2H7FM4Uwliw"
+    },
+    {
+      "title": "交響曲第8番（旧7番）ロ短調『未完成』D.759",
+      "year": 1822,
+      "type": "交響曲",
+      "description": "2楽章しかない不滅の謎",
+      "youtubeId": "4Gnh4eE-ghs"
+    },
+    {
+      "title": "歌曲集『冬の旅』D.911",
+      "year": 1827,
+      "type": "歌曲",
+      "description": "24曲で綴る、失恋の旅",
+      "youtubeId": "CfRSt0lvpTo"
+    },
+    {
+      "title": "ピアノ五重奏曲 イ長調『ます』D.667",
+      "year": 1819,
+      "type": "室内楽",
+      "description": "同名歌曲を第4楽章に組み込んだ陽光の室内楽",
+      "youtubeId": "gu-HnzRQeWc"
+    },
+    {
+      "title": "即興曲 D.899 / D.935",
+      "year": 1827,
+      "type": "ピアノ曲",
+      "description": "晩年の内省的なピアノ小品集",
+      "youtubeId": "hfFtuvYSPM8"
+    }
+  ]
+}

@@ -1,0 +1,154 @@
+{
+  "id": "hegel",
+  "name": "ゲオルク・ヘーゲル",
+  "nameEn": "Georg Wilhelm Friedrich Hegel",
+  "birth": 1770,
+  "death": 1831,
+  "country": "ドイツ",
+  "field": "哲学者",
+  "summary": "ドイツ観念論の完成者。歴史を『絶対精神が自己を実現していく弁証法の運動』と捉え、正・反・合の論理で世界を説明した。難解だがマルクスやサルトルを生んだ源流。",
+  "events": [
+    {
+      "year": 1770,
+      "age": 0,
+      "title": "シュトゥットガルトに誕生",
+      "detail": "官吏の家に生まれる。ベートーヴェンと同い年。",
+      "tags": []
+    },
+    {
+      "year": 1788,
+      "age": 18,
+      "title": "テュービンゲン大学神学校でヘルダーリン・シェリングと同室",
+      "detail": "生涯の友となる天才たち。三人でフランス革命を祝して『自由の木』を植えた。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1801,
+      "age": 30,
+      "title": "イェーナ大学私講師に、シェリングの助手",
+      "detail": "遅いスタート。シェリングの陰に隠れた時期。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1806,
+      "age": 36,
+      "title": "イェーナでナポレオンを見る",
+      "detail": "『馬上の世界精神を見た』と書簡に記す。『精神現象学』を完成。",
+      "tags": [
+        "breakthrough",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1807,
+      "age": 36,
+      "title": "下宿のおかみと庶子、貧困",
+      "detail": "『精神現象学』刊行の年に婚外子ルートヴィヒ誕生。収入のため新聞編集者に。",
+      "tags": [
+        "poverty",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1816,
+      "age": 46,
+      "title": "ハイデルベルク大学教授、ようやく安定",
+      "detail": "46歳でやっと教授職。",
+      "tags": [
+        "restart",
+        "approval"
+      ]
+    },
+    {
+      "year": 1818,
+      "age": 48,
+      "title": "ベルリン大学教授",
+      "detail": "ドイツ哲学界の頂点へ。教室は熱狂した。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1829,
+      "age": 59,
+      "title": "ベルリン大学総長",
+      "detail": "プロイセン国家哲学者としての絶頂期。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1831,
+      "age": 61,
+      "title": "コレラで急死",
+      "detail": "最後の言葉は『俺を理解したのはひとりだけ、しかもそいつも誤解していた』と伝わる。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "理性的なものは現実的であり、現実的なものは理性的である。",
+      "source": "『法の哲学』序文"
+    },
+    {
+      "text": "ミネルヴァのふくろうは、たそがれに飛び立つ。",
+      "source": "『法の哲学』序文"
+    },
+    {
+      "text": "歴史が我々に教える唯一のことは、人類は歴史から何も学ばないということだ。",
+      "source": "『歴史哲学講義』"
+    },
+    {
+      "text": "ただ自分の限界を知る者のみが、自分を超えることができる。",
+      "source": "『精神現象学』"
+    },
+    {
+      "text": "真理は全体である。",
+      "source": "『精神現象学』序文"
+    }
+  ],
+  "relations": [
+    {
+      "name": "カント",
+      "id": "kant",
+      "relation": "先行者",
+      "note": "批判哲学の限界を乗り越えようとした"
+    },
+    {
+      "name": "マルクス",
+      "id": "marx",
+      "relation": "批判的継承者",
+      "note": "弁証法を唯物論に書き換えた"
+    }
+  ],
+  "places": [
+    {
+      "name": "ベルリン・ドロテーエン墓地",
+      "location": "ドイツ・ベルリン",
+      "note": "フィヒテの隣に眠る"
+    }
+  ],
+  "books": [
+    {
+      "title": "精神現象学 上",
+      "author": "ヘーゲル",
+      "asin": "4582761666",
+      "description": "意識が絶対知に到るまでの壮大な旅"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/0/08/Hegel_portrait_by_Schlesinger_1831.jpg",
+  "wikiTitle": "ゲオルク・ヘーゲル",
+  "imageCredit": {
+    "artist": "Jakob Schlesinger (1792-1855)",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Unknown source Unknown source",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hegel_portrait_by_Schlesinger_1831.jpg"
+  }
+}

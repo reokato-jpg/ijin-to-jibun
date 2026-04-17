@@ -1,0 +1,159 @@
+{
+  "id": "newton",
+  "name": "アイザック・ニュートン",
+  "nameEn": "Isaac Newton",
+  "birth": 1643,
+  "death": 1727,
+  "country": "イギリス",
+  "field": "物理学者・数学者",
+  "summary": "『プリンキピア』で万有引力と運動法則を定式化した近代科学の父。ペストで故郷に戻った2年間で微積分・光学・重力を同時に発見した『奇跡の年』。生涯独身、錬金術と聖書解釈にも没頭した複雑な天才。",
+  "events": [
+    {
+      "year": 1643,
+      "age": 0,
+      "title": "リンカーンシャーの村に未熟児として誕生",
+      "detail": "父は出生前に死去。『コップに入るほど小さい』と母は言った。3歳で母は再婚し祖母に預けられる。",
+      "tags": [
+        "parent_conflict",
+        "loss"
+      ]
+    },
+    {
+      "year": 1661,
+      "age": 18,
+      "title": "ケンブリッジ大学トリニティ・カレッジ入学",
+      "detail": "貧しい『給仕生』として。他学生の雑用で学費を稼ぐ。",
+      "tags": [
+        "restart",
+        "poverty"
+      ]
+    },
+    {
+      "year": 1665,
+      "age": 22,
+      "title": "ペストで大学閉鎖、郷里ウールスソープへ",
+      "detail": "以後18ヶ月の『奇跡の年』。微積分、光学、万有引力、すべてをこの期間に構想。リンゴはこの庭で見たと伝わる。",
+      "tags": [
+        "isolation",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1669,
+      "age": 26,
+      "title": "ケンブリッジ・ルーカス数学教授に就任",
+      "detail": "師バローが自ら辞して弟子に譲った異例の抜擢。",
+      "tags": [
+        "approval",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1687,
+      "age": 44,
+      "title": "『プリンキピア』刊行",
+      "detail": "ハレーの強い勧めと資金援助で。運動法則と万有引力を数学的に。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1693,
+      "age": 50,
+      "title": "神経衰弱で18ヶ月籠る",
+      "detail": "実験中の水銀中毒の可能性。手紙を焼き、友人ロックを敵視。回復後は科学研究をほぼ離れる。",
+      "tags": [
+        "illness",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1696,
+      "age": 53,
+      "title": "造幣局監事に転身",
+      "detail": "以後30年、贋金取り締まりの実務家として活躍。錬金術と聖書研究にも没頭。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1703,
+      "age": 60,
+      "title": "王立協会会長に就任",
+      "detail": "死ぬまで24年間、英国科学界に君臨。ライプニッツとの微積分優先権論争を最後まで戦った。",
+      "tags": [
+        "approval",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1727,
+      "age": 84,
+      "title": "ロンドンで死去",
+      "detail": "ウェストミンスター寺院に科学者として初めて国葬。ヴォルテールが葬列を見て驚いた。",
+      "tags": [
+        "loss",
+        "approval"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "私が遠くを見ることができたのは、巨人の肩の上に立ったからだ。",
+      "source": "フックへの手紙 1676"
+    },
+    {
+      "text": "私は海辺で遊ぶ子供のようなもの。目の前には真理の大海原が広がっている。",
+      "source": "最晩年の言葉"
+    },
+    {
+      "text": "仮説は作らない。(Hypotheses non fingo)",
+      "source": "『プリンキピア』第2版序文"
+    },
+    {
+      "text": "すべてを自らの眼で確かめよ。",
+      "source": "ニュートンに帰される言葉"
+    }
+  ],
+  "relations": [
+    {
+      "name": "エドモンド・ハレー",
+      "relation": "友人",
+      "note": "『プリンキピア』刊行を実現させた天文学者"
+    },
+    {
+      "name": "ライプニッツ",
+      "relation": "論敵",
+      "note": "微積分優先権をめぐり生涯対立"
+    }
+  ],
+  "places": [
+    {
+      "name": "ウールスソープ・マナー",
+      "location": "イギリス・リンカーンシャー",
+      "note": "生家、リンゴの木の庭"
+    },
+    {
+      "name": "ケンブリッジ大学トリニティ・カレッジ",
+      "location": "イギリス・ケンブリッジ",
+      "note": "『奇跡の年』以前と後の研究拠点"
+    }
+  ],
+  "books": [
+    {
+      "title": "プリンキピア",
+      "author": "アイザック・ニュートン",
+      "asin": "4061581090",
+      "description": "近代科学の聖典"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Portrait_of_Sir_Isaac_Newton%2C_1689_%28brightened%29.jpg/500px-Portrait_of_Sir_Isaac_Newton%2C_1689_%28brightened%29.jpg",
+  "wikiTitle": "アイザック・ニュートン",
+  "imageCredit": {
+    "artist": "Godfrey Kneller",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "File:Portrait of Sir Isaac Newton, 1689.jpg from https://exhibitions.lib.cam.ac.uk/linesofthought/artifacts",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Portrait_of_Sir_Isaac_Newton%2C_1689_%28brightened%29.jpg"
+  }
+}

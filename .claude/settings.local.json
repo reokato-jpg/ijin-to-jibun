@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx --version)",
+      "Bash(winget install:*)",
+      "Bash(\"/c/Users/USER/AppData/Local/Programs/Python/Python312/python.exe\" --version)",
+      "Bash(\"/c/Users/USER/AppData/Local/Microsoft/WindowsApps/python.exe\" --version)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(npx vercel:*)",
+      "Bash(rm -rf /tmp/ijin-deploy)",
+      "Bash(mkdir -p /tmp/ijin-deploy)",
+      "Bash(cp -r \"G:/共有ドライブ/Access Level 2/★新フォルダ★/システムフォルダ/偉人と自分。/app\" \"G:/共有ドライブ/Access Level 2/★新フォルダ★/システムフォルダ/偉人と自分。/data\" \"G:/共有ドライブ/Access Level 2/★新フォルダ★/システムフォルダ/偉人と自分。/api\" \"G:/共有ドライブ/Access Level 2/★新フォルダ★/システムフォルダ/偉人と自分。/vercel.json\" /tmp/ijin-deploy/)",
+      "Bash(netstat -ano)"
+    ]
+  }
+}

@@ -1,0 +1,225 @@
+{
+  "id": "liszt",
+  "name": "フランツ・リスト",
+  "nameEn": "Franz Liszt",
+  "birth": 1811,
+  "death": 1886,
+  "country": "ハンガリー",
+  "field": "作曲家・ピアニスト",
+  "summary": "史上初の『スーパースター・ピアニスト』。リストマニア（熱狂）を生み、手袋やハンカチが奪い合われた。晩年は僧籍に入り、内面的な遅い作品を書き続けた。",
+  "events": [
+    {
+      "year": 1811,
+      "age": 0,
+      "title": "ハンガリーに誕生",
+      "detail": "父はエステルハージ家の執事。",
+      "tags": []
+    },
+    {
+      "year": 1822,
+      "age": 11,
+      "title": "ウィーンでチェルニーの弟子に、ベートーヴェンに接吻される",
+      "detail": "10歳の神童の演奏後、老ベートーヴェンが額に接吻したという逸話。真偽は諸説。",
+      "tags": [
+        "approval",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1832,
+      "age": 20,
+      "title": "パリでパガニーニを聴き衝撃、『ピアノのパガニーニになる』と誓う",
+      "detail": "ヴァイオリンの超絶技巧をピアノに移植する決意。以後6時間の練習を日課に。",
+      "tags": [
+        "turning_encounter",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1833,
+      "age": 22,
+      "title": "マリー・ダグー伯爵夫人と駆け落ち",
+      "detail": "6歳年上の人妻。3人の子をもうける。次女コジマは後にビューロー→ワーグナーへ。",
+      "tags": [
+        "turning_encounter",
+        "heartbreak"
+      ]
+    },
+    {
+      "year": 1839,
+      "age": 28,
+      "title": "『超絶技巧練習曲』原型発表、ヨーロッパ演奏旅行開始",
+      "detail": "10年間で1000回以上の演奏会。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1839,
+      "age": 28,
+      "title": "演奏会旅行（リストマニア）開始",
+      "detail": "ハンガリー大洪水の慈善演奏から始まる10年の狂乱。観客は失神し、手袋を奪い合った。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1847,
+      "age": 36,
+      "title": "カロリーネ侯爵夫人と出会い、演奏家を引退",
+      "detail": "最後の演奏会はウクライナ。翌年ヴァイマールに落ち着き、作曲と指揮に専念。",
+      "tags": [
+        "turning_encounter",
+        "restart"
+      ]
+    },
+    {
+      "year": 1848,
+      "age": 37,
+      "title": "ヴァイマール宮廷楽長、演奏家引退",
+      "detail": "作曲と教育に専念。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1861,
+      "age": 50,
+      "title": "カロリーネとの結婚がローマ法皇に阻まれる",
+      "detail": "離婚禁止。結婚式当日の朝、皇帝からの差し止め。生涯正式な結婚は叶わなかった。",
+      "tags": [
+        "heartbreak",
+        "loss"
+      ]
+    },
+    {
+      "year": 1865,
+      "age": 54,
+      "title": "ローマで下級聖職者となる",
+      "detail": "『アベ・リスト』と呼ばれ黒衣を着た。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1870,
+      "age": 59,
+      "title": "娘コジマがワーグナーと結婚",
+      "detail": "親友ビューローから妻を奪う形で。一時は激怒したが晩年和解。",
+      "tags": [
+        "heartbreak"
+      ]
+    },
+    {
+      "year": 1886,
+      "age": 74,
+      "title": "バイロイトで娘の婿ワーグナーの祝祭を見ながら死去",
+      "detail": "『トリスタン！』と呟いたと伝わる。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1886,
+      "age": 74,
+      "title": "バイロイト祝祭劇場で風邪から肺炎、死去",
+      "detail": "娘婿ワーグナーはすでに3年前に他界。『トリスタン！』が最期の言葉と伝わる。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "技術を超えたところに、音楽がある。",
+      "source": "リストの言葉"
+    },
+    {
+      "text": "音楽は心の言語である。",
+      "source": "リストの書簡"
+    },
+    {
+      "text": "悲しみとは、私が最も深い歌を書ける素材である。",
+      "source": "日記"
+    },
+    {
+      "text": "天才は理解されない義務を持つ。",
+      "source": "リストに帰される言葉"
+    }
+  ],
+  "relations": [
+    {
+      "name": "ショパン",
+      "id": "chopin",
+      "relation": "親友",
+      "note": "パリ時代の同僚、ショパン伝記の最初の著者"
+    },
+    {
+      "name": "ワーグナー",
+      "id": "wagner",
+      "relation": "娘の夫・盟友",
+      "note": "娘コジマをビューローから奪われたが最終的に和解"
+    }
+  ],
+  "places": [
+    {
+      "name": "ヴァイマール・リスト邸",
+      "location": "ドイツ・ヴァイマール",
+      "note": "作曲・教授に専念した家"
+    }
+  ],
+  "books": [],
+  "works": [
+    {
+      "title": "ラ・カンパネラ",
+      "type": "youtube",
+      "id": "VeuPH5P6hGA",
+      "note": "超絶技巧の代名詞"
+    },
+    {
+      "title": "愛の夢 第3番",
+      "type": "youtube",
+      "id": "LdH1hSWGFGU",
+      "note": "最も愛される小品"
+    },
+    {
+      "title": "ピアノ・ソナタ ロ短調",
+      "year": 1853,
+      "type": "ピアノ曲",
+      "description": "ピアノソナタ史上の最高峰。一続きの30分の大作",
+      "youtubeId": "rfXbhYokyNM"
+    },
+    {
+      "title": "ハンガリー狂詩曲第2番",
+      "year": 1847,
+      "type": "ピアノ曲",
+      "description": "アニメ『トムとジェリー』でも有名な超絶技巧曲",
+      "youtubeId": "LdH1hSWGFGU"
+    },
+    {
+      "title": "交響詩『前奏曲』",
+      "year": 1854,
+      "type": "管弦楽",
+      "description": "『交響詩』というジャンルを創始した代表作",
+      "youtubeId": "ULDCwmDBaJA"
+    },
+    {
+      "title": "巡礼の年 第2年『イタリア』",
+      "year": 1858,
+      "type": "ピアノ曲",
+      "description": "『ダンテ・ソナタ』『ペトラルカのソネット』を含む旅の印象集",
+      "youtubeId": "d5d2EQYt6Zc"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Liszt_1858.jpg/500px-Liszt_1858.jpg",
+  "wikiTitle": "フランツ・リスト",
+  "imageCredit": {
+    "artist": "Franz Hanfstaengl",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Unknown source Unknown source",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Liszt_1858.jpg"
+  }
+}

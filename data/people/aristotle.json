@@ -1,0 +1,179 @@
+{
+  "id": "aristotle",
+  "name": "アリストテレス",
+  "nameEn": "Aristotle",
+  "birth": -384,
+  "death": -322,
+  "country": "古代ギリシャ",
+  "field": "哲学者",
+  "summary": "プラトンの弟子、アレクサンドロス大王の家庭教師。論理学・倫理学・政治学・生物学・詩学を体系化した『万学の祖』。リュケイオンを創立。",
+  "events": [
+    {
+      "year": -384,
+      "age": 0,
+      "title": "北ギリシャ・スタゲイラに誕生",
+      "detail": "父はマケドニア王の侍医。幼くして両親を失う。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": -367,
+      "age": 17,
+      "title": "プラトンのアカデメイアに入学",
+      "detail": "20年学び、プラトンの次世代の頭脳となる。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": -367,
+      "age": 17,
+      "title": "アテネのアカデメイア入学、プラトンに20年学ぶ",
+      "detail": "『アカデメイアの精神』と呼ばれるほど優秀な弟子。しかしプラトンのイデア論を徐々に批判していく。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": -347,
+      "age": 37,
+      "title": "プラトン死去、アカデメイア後継者になれず",
+      "detail": "プラトンの甥スペウシッポスが後継者に。アリストテレスはマケドニア王家の招きで小アジアへ旅立つ。",
+      "tags": [
+        "pride_broken",
+        "loss",
+        "restart"
+      ]
+    },
+    {
+      "year": -343,
+      "age": 41,
+      "title": "アレクサンドロス大王の家庭教師に",
+      "detail": "後の世界征服者を3年教育。哲学が現実政治と結びついた瞬間。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": -343,
+      "age": 41,
+      "title": "アレクサンドロス大王（13歳）の家庭教師に",
+      "detail": "3年間、マケドニア宮廷で未来の世界征服者を教育。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": -335,
+      "age": 49,
+      "title": "リュケイオンを創立",
+      "detail": "散歩しながら講義するスタイルから『逍遥学派』と呼ばれた。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": -335,
+      "age": 49,
+      "title": "アテネに戻りリュケイオン創設",
+      "detail": "散歩しながら講義したため『逍遥学派(ペリパトス派)』と呼ばれた。",
+      "tags": [
+        "restart",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": -323,
+      "age": 61,
+      "title": "アレクサンドロス急死、反マケドニア感情の中で亡命",
+      "detail": "『アテネ人が二度哲学に対して罪を犯さないように』(ソクラテスの処刑を引き合いに)とエウボイアへ逃れる。",
+      "tags": [
+        "restart",
+        "isolation"
+      ]
+    },
+    {
+      "year": -322,
+      "age": 62,
+      "title": "カルキスで病没",
+      "detail": "反マケドニア運動に巻き込まれアテネから逃れ、翌年没。",
+      "tags": [
+        "escape",
+        "loss"
+      ]
+    },
+    {
+      "year": -322,
+      "age": 62,
+      "title": "カルキスで胃病により死去",
+      "detail": "200以上の著作を残した万学の祖。現存は31冊のみ。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "人間は社会的な動物である。",
+      "source": "『政治学』"
+    },
+    {
+      "text": "徳とは習慣である。繰り返し行うことが、我々自身になる。",
+      "source": "『ニコマコス倫理学』"
+    },
+    {
+      "text": "人間は社会的動物である。",
+      "source": "『政治学』"
+    },
+    {
+      "text": "幸福は我々自身にかかっている。",
+      "source": "『ニコマコス倫理学』"
+    },
+    {
+      "text": "教育の根は苦いが、その実は甘い。",
+      "source": "アリストテレスに帰される言葉"
+    },
+    {
+      "text": "中庸こそ最高の徳である。",
+      "source": "『ニコマコス倫理学』"
+    },
+    {
+      "text": "我々がしばしば繰り返すものが、我々である。卓越とは行為ではなく習慣である。",
+      "source": "アリストテレスに帰される言葉"
+    },
+    {
+      "text": "プラトンは友人だ。だが真理はもっと親しい友人だ。",
+      "source": "アリストテレスに帰される言葉"
+    }
+  ],
+  "places": [
+    {
+      "name": "リュケイオン跡",
+      "location": "ギリシャ・アテネ",
+      "note": "アリストテレスの学園跡地"
+    },
+    {
+      "name": "スタゲイラ",
+      "location": "ギリシャ北部",
+      "note": "生誕地"
+    }
+  ],
+  "books": [
+    {
+      "title": "ニコマコス倫理学 上",
+      "author": "アリストテレス",
+      "asin": "4334750745",
+      "description": "幸福と徳について。西洋倫理学の古典"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Aristotle_Altemps_Inv8575.jpg/500px-Aristotle_Altemps_Inv8575.jpg",
+  "wikiTitle": "アリストテレス",
+  "imageCredit": {
+    "artist": "After Lysippos",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Jastrow (2006)",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aristotle_Altemps_Inv8575.jpg"
+  }
+}

@@ -1,0 +1,470 @@
+{
+  "id": "rachmaninoff",
+  "name": "セルゲイ・ラフマニノフ",
+  "nameEn": "Sergei Rachmaninoff",
+  "birth": 1873,
+  "death": 1943,
+  "country": "ロシア",
+  "field": "作曲家・ピアニスト",
+  "summary": "若くして期待の星となるも、初の交響曲を酷評され3年間動けなくなる。催眠療法によって復活した『逃げていた期間』の象徴的人物。革命で祖国を失い、亡命先で作曲家ではなく演奏家として生き延びた。",
+  "events": [
+    {
+      "year": 1873,
+      "age": 0,
+      "title": "ロシア貴族の家に誕生、祖父母はピアノを愛する教養人",
+      "detail": "父は軍人で放蕩家、母は厳格な音楽愛好家。家庭では両親の不和が日常的で、幼いセルゲイは音楽室に逃げ込んでピアノに向かった。音楽は最初から『居場所』だった。",
+      "tags": [
+        "parent_conflict",
+        "escape"
+      ]
+    },
+    {
+      "year": 1873,
+      "age": 0,
+      "title": "ロシア・ノヴゴロド県で貴族の子として誕生",
+      "detail": "家は裕福だったが、父の浪費で没落していく。",
+      "tags": []
+    },
+    {
+      "year": 1882,
+      "age": 9,
+      "title": "父の浪費で一家破産、領地を失う",
+      "detail": "裕福だった家が崩れ、ペテルブルクの狭いアパートへ。幼くして『何もかもを失う感覚』を知る。後年の亡命生活を予感させる少年時代。",
+      "tags": [
+        "loss",
+        "poverty"
+      ]
+    },
+    {
+      "year": 1882,
+      "age": 9,
+      "title": "父の放蕩で家族離散",
+      "detail": "姉エレーナは16歳で病死。ペテルブルク音楽院に入るがサボり癖で進級できず。",
+      "tags": [
+        "parent_conflict",
+        "loss",
+        "poverty"
+      ]
+    },
+    {
+      "year": 1885,
+      "age": 12,
+      "title": "両親が離婚、母の判断でモスクワの厳しい寄宿教師ズヴェーレフのもとへ",
+      "detail": "12歳で親元を離れ、徹底的に規律で育てられる。『朝は冷水で起こされ、一日中ピアノ』という生活。だがこの時期がなければピアニストにはなれなかった、と後年語っている。",
+      "tags": [
+        "parent_conflict",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1892,
+      "age": 19,
+      "title": "モスクワ音楽院を大金メダルで卒業、『前奏曲嬰ハ短調』大ヒット",
+      "detail": "卒業作品のオペラに最高評価、そして翌年発表の前奏曲が世界中で演奏される。19歳で『期待の星』。ただしこの曲があまりに有名になりすぎ、以後どこへ行っても『例の前奏曲を弾いて』と求められ、後年まで本人を苦しめた。",
+      "tags": [
+        "approval",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1893,
+      "age": 20,
+      "title": "チャイコフスキーの急死",
+      "detail": "尊敬し、自作を激賞してくれた大作曲家が54歳で急逝。『自分を認めてくれる唯一の存在』を失い、追悼のための悲歌三重奏曲を書く。以後、彼の作品には喪失と沈痛の色が付きまとう。",
+      "tags": [
+        "loss",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1897,
+      "age": 24,
+      "title": "交響曲第1番の初演が大失敗",
+      "detail": "指揮者が酒に酔っており演奏は崩壊、批評家に『地獄の音楽院の卒業試験か』と酷評される。スコアを引き裂いて帰宅。『作曲家としての自分』が完全に崩れた瞬間。",
+      "tags": [
+        "pride_broken",
+        "setback",
+        "self_denial"
+      ]
+    },
+    {
+      "year": 1897,
+      "age": 24,
+      "title": "3年間、ほぼ何も書けなくなる",
+      "detail": "一枚の譜面も書けず、友人たちを避け、酒と鬱の日々。『曲を書こうとすると手が震える』。やる気がないのではなく、自分と向き合うのが怖かった。典型的な空白の時期。",
+      "tags": [
+        "blank_period",
+        "escape",
+        "self_denial",
+        "burnout"
+      ]
+    },
+    {
+      "year": 1897,
+      "age": 24,
+      "title": "交響曲第1番大失敗、3年の鬱",
+      "detail": "初演は大酒飲みのグラズノフの指揮で散々な出来。批評家に『地獄の音楽院が作らせた』と酷評され、ピアノの前に座れなくなる。",
+      "tags": [
+        "pride_broken",
+        "blank_period"
+      ]
+    },
+    {
+      "year": 1899,
+      "age": 26,
+      "title": "ロンドンで演奏、収入は得るが作曲家としては死んだまま",
+      "detail": "演奏活動は続けている。だが『ピアニストとしてなら生きられる、作曲家は死んだ』と自分に言い聞かせていた。逃避の正当化。",
+      "tags": [
+        "escape"
+      ]
+    },
+    {
+      "year": 1900,
+      "age": 27,
+      "title": "ニコライ・ダール医師の催眠療法に通い始める",
+      "detail": "家族に説得され、週数回、毎回同じ言葉を暗示される。『あなたは協奏曲を書く。大変良いものが書ける。あなたは書ける』。他者に引きずり出される形で、氷が少しずつ溶けていった。",
+      "tags": [
+        "turning_encounter",
+        "restart"
+      ]
+    },
+    {
+      "year": 1900,
+      "age": 27,
+      "title": "ダール博士の催眠療法で復活",
+      "detail": "『あなたは協奏曲を書き上げる。それは素晴らしい出来になる』と暗示をかけ続けられ、『ピアノ協奏曲第2番』を完成。ダール博士に献呈された。",
+      "tags": [
+        "restart",
+        "turning_encounter",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1901,
+      "age": 28,
+      "title": "ピアノ協奏曲第2番完成 — ダールへ献呈",
+      "detail": "3年の沈黙を破る大傑作。献辞は『N. ダール氏へ』。医師に捧げられた協奏曲は他に類例がない。空白の時期が無駄ではなかったことを、作品そのものが証明した。",
+      "tags": [
+        "breakthrough",
+        "restart",
+        "self_reinvention"
+      ]
+    },
+    {
+      "year": 1902,
+      "age": 29,
+      "title": "従妹ナターリアと結婚",
+      "detail": "教会法では結婚できない関係だったが、特別許可を得て結婚。生涯の伴侶。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1909,
+      "age": 36,
+      "title": "ピアノ協奏曲第3番、アメリカ演奏旅行で初演",
+      "detail": "『世界で最も難しい協奏曲』の誕生。船の上で指だけを動かして練習した。国際的ピアニストとしての地位を確立。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1909,
+      "age": 36,
+      "title": "『ピアノ協奏曲第3番』、アメリカデビュー",
+      "detail": "自ら初演。最も難しい協奏曲の一つ。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1917,
+      "age": 44,
+      "title": "ロシア革命、家族を連れて国外へ脱出",
+      "detail": "財産をすべて残し、楽譜と衣服だけ持ってフィンランド経由で亡命。『もう祖国で作曲することはないだろう』と悟る。以後、死ぬまでロシアの土を踏まなかった。",
+      "tags": [
+        "loss",
+        "self_reinvention",
+        "blank_period"
+      ]
+    },
+    {
+      "year": 1917,
+      "age": 44,
+      "title": "ロシア革命で祖国を離れる",
+      "detail": "家族と橇でフィンランドへ逃れ、以後二度と故国に戻らなかった。『私の中のロシアは去った』",
+      "tags": [
+        "restart",
+        "loss",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1918,
+      "age": 45,
+      "title": "アメリカへ移住、生活のため演奏家専業になる",
+      "detail": "家族を養うため年100回超の演奏旅行。作曲のための時間はほぼ消える。『私はもう作曲家ではなくなった』と手紙に書く。亡命は彼から作曲する静けさを奪った。",
+      "tags": [
+        "poverty",
+        "self_denial"
+      ]
+    },
+    {
+      "year": 1918,
+      "age": 45,
+      "title": "アメリカへ、演奏家として生計を立てる",
+      "detail": "作曲家から超一流ピアニストへ。以後20年間、年50回以上のコンサート。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1931,
+      "age": 58,
+      "title": "『パガニーニの主題による狂詩曲』 — 亡命後の代表作",
+      "detail": "沈黙の年月を経て、スイスの別荘でようやく書かれた傑作。『若いころの自分が憑依したように書けた』と本人が語る。諦めていた作曲家としての自分が、一瞬だけ戻ってきた。",
+      "tags": [
+        "restart",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1934,
+      "age": 61,
+      "title": "『パガニーニの主題による狂詩曲』完成",
+      "detail": "晩年の最大の傑作。第18変奏の甘美な旋律は映画で何度も使われる。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1943,
+      "age": 69,
+      "title": "ビバリーヒルズで肺癌により死去",
+      "detail": "最期まで故国の土を踏むことはなかった。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1943,
+      "age": 70,
+      "title": "アメリカ市民権取得の直後、カリフォルニアで没",
+      "detail": "最期の枕元でも故郷の話をしていたという。ロシアを出てから26年、一度も帰らないまま異国で生涯を終えた。『私は亡命者だった』と最後まで自認していた。",
+      "tags": [
+        "loss",
+        "isolation"
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "name": "ピョートル・チャイコフスキー",
+      "relation": "先達 / 支援者",
+      "years": "1892–1893",
+      "note": "若きラフマニノフの作品を激賞した。1893年に急逝、ラフマニノフは追悼の三重奏曲を書いた"
+    },
+    {
+      "name": "ニコライ・ダール",
+      "relation": "主治医",
+      "years": "1900",
+      "note": "3年の沈黙を破るきっかけとなった催眠療法の医師。ピアノ協奏曲第2番はこの人への献呈曲"
+    },
+    {
+      "name": "セルゲイ・タネーエフ",
+      "relation": "恩師",
+      "years": "モスクワ音楽院時代",
+      "note": "作曲と対位法の師。厳格な古典的訓練を授けた"
+    },
+    {
+      "name": "フョードル・シャリアピン",
+      "relation": "親友",
+      "years": "1890s–1930s",
+      "note": "同じくロシアを愛した亡命者。ロシアのバス歌手で、互いに亡命後も交流を続けた"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "音楽は、言葉では足りない心の内を語るのに十分な力を持っている。",
+      "source": "晩年のインタビューより"
+    },
+    {
+      "text": "祖国を離れてから、私は自分の内側にあるすべての音を失った。",
+      "source": "亡命後、友人への手紙"
+    },
+    {
+      "text": "私は、作曲家として死んだ人間が、演奏家として生き延びているだけだ。",
+      "source": "アメリカでの演奏家時代の手紙"
+    },
+    {
+      "text": "音楽は心の中にある。そして心を揺さぶらなければ、それは音楽ではない。",
+      "source": "書簡"
+    },
+    {
+      "text": "一曲の中で、ただひとつの美しい瞬間があればよい。",
+      "source": "ラフマニノフの言葉"
+    }
+  ],
+  "works": [
+    {
+      "title": "前奏曲 嬰ハ短調 作品3-2",
+      "year": 1892,
+      "type": "ピアノ曲",
+      "description": "19歳のデビュー曲。世界中で弾かれすぎて本人を苦しめた鐘の音",
+      "youtubeId": "SGHTkHE9_rY",
+      "imslpUrl": "https://imslp.org/wiki/Morceaux_de_fantaisie%2C_Op.3_(Rachmaninoff%2C_Sergei)"
+    },
+    {
+      "title": "ピアノ協奏曲第2番 ハ短調 作品18",
+      "year": 1901,
+      "type": "管弦楽",
+      "description": "3年の沈黙を破った、ダール医師への献呈曲。復活の記念碑",
+      "youtubeId": "rEGOihjqO9w",
+      "imslpUrl": "https://imslp.org/wiki/Piano_Concerto_No.2%2C_Op.18_(Rachmaninoff%2C_Sergei)"
+    },
+    {
+      "title": "ピアノ協奏曲第3番 ニ短調 作品30",
+      "year": 1909,
+      "type": "管弦楽",
+      "description": "世界で最も難しい協奏曲の一つ。圧倒的な超絶技巧",
+      "youtubeId": "54WDPKSJCcQ",
+      "imslpUrl": "https://imslp.org/wiki/Piano_Concerto_No.3%2C_Op.30_(Rachmaninoff%2C_Sergei)"
+    },
+    {
+      "title": "ヴォカリーズ 作品34-14",
+      "year": 1912,
+      "type": "歌曲",
+      "description": "言葉のない歌。ロシアの広大な大地を思わせる哀愁",
+      "youtubeId": "LGK-M2Kw2Xo",
+      "imslpUrl": "https://imslp.org/wiki/14_Romances%2C_Op.34_(Rachmaninoff%2C_Sergei)"
+    },
+    {
+      "title": "パガニーニの主題による狂詩曲 作品43",
+      "year": 1934,
+      "type": "管弦楽",
+      "description": "亡命後の代表作。第18変奏は映画音楽の源流",
+      "youtubeId": "vHL1nxwz614",
+      "imslpUrl": "https://imslp.org/wiki/Rhapsody_on_a_Theme_of_Paganini%2C_Op.43_(Rachmaninoff%2C_Sergei)"
+    },
+    {
+      "title": "前奏曲 嬰ハ短調 作品3-2『鐘』",
+      "year": 1892,
+      "type": "ピアノ曲",
+      "description": "19歳で書いた出世作。演奏会で『あの曲を』とリクエストされ続けた",
+      "youtubeId": "TqEiwxN6OYc"
+    }
+  ],
+  "places": [
+    {
+      "name": "イワノフカ邸",
+      "location": "ロシア・タンボフ州",
+      "note": "作曲した夏の別邸。『鐘の音』のインスピレーション源"
+    },
+    {
+      "name": "セナール邸",
+      "location": "スイス・ルツェルン湖畔",
+      "note": "亡命後に建てた別荘。『パガニーニ狂詩曲』誕生の地"
+    },
+    {
+      "name": "ラフマニノフ博物館",
+      "location": "ロシア・ノヴゴロド近郊オネグ",
+      "note": "生家跡"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Sergei_Rachmaninoff_cph.3a40575.jpg/500px-Sergei_Rachmaninoff_cph.3a40575.jpg",
+  "wikiTitle": "セルゲイ・ラフマニノフ",
+  "books": [
+    {
+      "title": "ラフマニノフ 明らかにされる素顔",
+      "author": "セルゲイ・ベルテンソン",
+      "asin": "4276221862",
+      "description": "交響曲第1番の失敗と再起。挫折から復活した天才の実像"
+    },
+    {
+      "title": "ピアニストの系譜",
+      "author": "ハロルド・ショーンバーグ",
+      "asin": "4560035784",
+      "description": "ラフマニノフを含む巨匠ピアニストたちの演奏哲学と練習法"
+    }
+  ],
+  "routineStory": "アメリカ亡命後、スイス・ルツェルン湖畔の別荘『セナール（Senar）』での生活が最も知られる。妻と娘の記録によれば、朝のコーヒーの後、4時間以上のピアノ練習が日課。演奏旅行中でも船上でキーボード板を置いて指の運動を欠かさなかった。作曲は静かな夏の別荘で行われ、冬は演奏家としてアメリカを巡った。食事は質素で、ロシア料理を好んだ。",
+  "routineSource": "娘イリーナの回想録、妻ナターリアの記録、20世紀のピアニスト伝記（Robert Threlfall 等）",
+  "routine": [
+    {
+      "start": 0,
+      "end": 7,
+      "activity": "睡眠",
+      "cat": "sleep"
+    },
+    {
+      "start": 7,
+      "end": 8,
+      "activity": "起床・朝食",
+      "cat": "meal"
+    },
+    {
+      "start": 8,
+      "end": 12,
+      "activity": "ピアノ練習（4時間は必ず）",
+      "cat": "work"
+    },
+    {
+      "start": 12,
+      "end": 13,
+      "activity": "昼食",
+      "cat": "meal"
+    },
+    {
+      "start": 13,
+      "end": 15,
+      "activity": "作曲",
+      "cat": "work"
+    },
+    {
+      "start": 15,
+      "end": 17,
+      "activity": "散歩・ドライブ（車好き）",
+      "cat": "exercise"
+    },
+    {
+      "start": 17,
+      "end": 19,
+      "activity": "手紙・事務仕事",
+      "cat": "rest"
+    },
+    {
+      "start": 19,
+      "end": 20,
+      "activity": "夕食",
+      "cat": "meal"
+    },
+    {
+      "start": 20,
+      "end": 23,
+      "activity": "演奏会 or 楽譜の研究",
+      "cat": "work"
+    },
+    {
+      "start": 23,
+      "end": 24,
+      "activity": "就寝準備",
+      "cat": "sleep"
+    }
+  ],
+  "imageCredit": {
+    "artist": "Kubey-Rembrandt Studios (Philadephia, Pennsylvania)",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "This image is available from the United States Library of Congress 's Prints and Photographs division under the digital ID cph.3a40575 . This tag does not indicate the copyright status of the attached work. A normal copyright tag is still required. See Commons:Licensing .",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sergei_Rachmaninoff_cph.3a40575.jpg"
+  },
+  "media": [
+    {
+      "title": "ある愛の詩（Shine）",
+      "year": 1996,
+      "type": "movie",
+      "country": "オーストラリア",
+      "description": "ラフマニノフ『ピアノ協奏曲第3番』を軸にしたピアニスト伝記映画。"
+    }
+  ]
+}

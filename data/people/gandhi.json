@@ -1,0 +1,166 @@
+{
+  "id": "gandhi",
+  "name": "マハトマ・ガンジー",
+  "nameEn": "Mahatma Gandhi",
+  "birth": 1869,
+  "death": 1948,
+  "country": "インド",
+  "field": "思想家・活動家",
+  "summary": "非暴力不服従(サティヤーグラハ)でインド独立を勝ち取った『偉大なる魂』。弁護士からスタートし、南アフリカで人種差別と戦い、インドで塩の行進を率い、7度投獄されながら世界を変えた。独立の翌年、ヒンドゥー教徒に暗殺された。",
+  "events": [
+    {
+      "year": 1869,
+      "age": 0,
+      "title": "西インドのポルバンダルに宰相の子として誕生",
+      "detail": "熱心なヒンドゥー教徒の母の影響が大きい。",
+      "tags": []
+    },
+    {
+      "year": 1883,
+      "age": 13,
+      "title": "13歳でカストゥルバと結婚",
+      "detail": "当時のインド習慣による児童婚。後に最愛のパートナーとなる。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1888,
+      "age": 18,
+      "title": "ロンドンに法律留学",
+      "detail": "母には肉・酒・女を避ける誓いを立てて渡英。『トルストイの法への服従』も学ぶ。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1893,
+      "age": 24,
+      "title": "南アフリカの列車で一等車から引きずり降ろされる",
+      "detail": "一等車の切符を持ちながら『有色人種』として排除された夜。以後21年、南アでインド人の権利のために戦う。",
+      "tags": [
+        "pride_broken",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1915,
+      "age": 45,
+      "title": "インドへ帰国",
+      "detail": "南アでの経験を持ってインド独立運動へ。以後マハトマ(大いなる魂)と呼ばれる。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1930,
+      "age": 60,
+      "title": "『塩の行進』386km",
+      "detail": "英国の塩専売への抗議。24日間かけてダンディの海岸まで歩き、違法に塩を取って逮捕者6万人。世界の注目を集めた。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1942,
+      "age": 72,
+      "title": "『インドを去れ』運動、獄中へ",
+      "detail": "2年間獄中で妻カストゥルバを失う。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1947,
+      "age": 77,
+      "title": "インド独立、しかし印パ分離で200万人死亡",
+      "detail": "ヒンドゥー・イスラム対立を自らの断食で収めようとした。統一のインドの夢は叶わなかった。",
+      "tags": [
+        "breakthrough",
+        "loss"
+      ]
+    },
+    {
+      "year": 1948,
+      "age": 78,
+      "title": "ニューデリーで暗殺",
+      "detail": "1月30日、祈祷会場でヒンドゥー過激派ナトラム・ゴッセに銃撃された。3発目を受けながら『ヘ・ラーム(おお神よ)』と呟いて倒れた。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "世界に見たい変化があるなら、あなた自身がその変化になりなさい。",
+      "source": "ガンジーに帰される言葉"
+    },
+    {
+      "text": "目には目を、ですべてが見えなくなる。",
+      "source": "ガンジーに帰される言葉"
+    },
+    {
+      "text": "非暴力は人類が手にする最も強力な武器だ。",
+      "source": "自伝『真理の道』"
+    },
+    {
+      "text": "明日死ぬかのように生きよ。永遠に生きるかのように学べ。",
+      "source": "ガンジーに帰される言葉"
+    },
+    {
+      "text": "弱者は許すことができない。許しは強者の属性である。",
+      "source": "ガンジーの言葉"
+    }
+  ],
+  "relations": [
+    {
+      "name": "カストゥルバ",
+      "relation": "妻",
+      "years": "1883–1944",
+      "note": "13歳からの連れ合い、62年寄り添った"
+    },
+    {
+      "name": "トルストイ",
+      "id": "tolstoy",
+      "relation": "思想的師",
+      "note": "非暴力思想の文通相手"
+    }
+  ],
+  "places": [
+    {
+      "name": "ラージ・ガート",
+      "location": "インド・ニューデリー",
+      "note": "暗殺場所と火葬場、国民的聖地"
+    }
+  ],
+  "books": [
+    {
+      "title": "ガンジー 自伝",
+      "author": "M・K・ガンジー",
+      "asin": "4122018137",
+      "description": "『真理の道』"
+    }
+  ],
+  "media": [
+    {
+      "title": "ガンジー",
+      "year": 1982,
+      "type": "movie",
+      "country": "英・インド",
+      "director": "リチャード・アッテンボロー",
+      "cast": "ベン・キングズリー",
+      "description": "アカデミー賞8部門受賞の大伝記映画",
+      "youtubeId": "KwwX5fQh-Ls"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Mahatma-Gandhi%2C_studio%2C_1931.jpg/500px-Mahatma-Gandhi%2C_studio%2C_1931.jpg",
+  "wikiTitle": "マハトマ・ガンジー",
+  "imageCredit": {
+    "artist": "Elliott &amp; Fry",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "philogalichet.fr ( context )",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mahatma-Gandhi%2C_studio%2C_1931.jpg"
+  }
+}

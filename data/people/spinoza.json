@@ -1,0 +1,140 @@
+{
+  "id": "spinoza",
+  "name": "バルーフ・デ・スピノザ",
+  "nameEn": "Baruch Spinoza",
+  "birth": 1632,
+  "death": 1677,
+  "country": "オランダ",
+  "field": "哲学者",
+  "summary": "ユダヤ教団から破門されながらレンズ磨きで生計を立て、『エチカ』を書いた孤高の思想家。『神即自然』の汎神論。ドゥルーズが『王子』と呼んだ静かな革命家。",
+  "events": [
+    {
+      "year": 1632,
+      "age": 0,
+      "title": "アムステルダムのユダヤ商人の家に",
+      "detail": "ポルトガル系セファルディ。",
+      "tags": []
+    },
+    {
+      "year": 1654,
+      "age": 22,
+      "title": "父ミヒャエル死去、家業を継ぐも借金まみれ",
+      "detail": "姉との遺産争い、のちに放棄。",
+      "tags": [
+        "parent_conflict",
+        "loss"
+      ]
+    },
+    {
+      "year": 1656,
+      "age": 24,
+      "title": "ユダヤ教団から破門（ヘーレム）",
+      "detail": "『最も激しい呪いの文言』で追放。家族からも断絶。",
+      "tags": [
+        "isolation",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1661,
+      "age": 28,
+      "title": "レンズ磨きを始める",
+      "detail": "精密光学レンズの職人として生計を立てる。哲学のために最小限の生活を選んだ。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1670,
+      "age": 37,
+      "title": "『神学政治論』を匿名で刊行、発禁",
+      "detail": "聖書批判と信教の自由を説いた。ヨーロッパ全土で禁書に。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1673,
+      "age": 40,
+      "title": "ハイデルベルク大学教授職を辞退",
+      "detail": "思想の自由を失うことを恐れ、申し出を断る。『私は安定した職を求めていません』",
+      "tags": []
+    },
+    {
+      "year": 1676,
+      "age": 43,
+      "title": "ライプニッツが訪問",
+      "detail": "若きライプニッツが何時間も議論。後にライプニッツはこの訪問を『友人に隠した』。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1677,
+      "age": 44,
+      "title": "結核で死去",
+      "detail": "レンズ粉塵を吸い続けた肺で息を引き取る。『エチカ』は死後刊行。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "明日世界が滅ぶとしても、今日私はリンゴの木を植える。",
+      "source": "スピノザに帰される格言"
+    },
+    {
+      "text": "すべての高貴なものは稀であるとともに困難である。",
+      "source": "『エチカ』末尾"
+    },
+    {
+      "text": "自由な人間は死について考えない。彼の知恵は死ではなく生についての省察である。",
+      "source": "『エチカ』第4部"
+    },
+    {
+      "text": "私は人間の行為を笑わず、嘆かず、呪わず、ただ理解しようと努めた。",
+      "source": "『政治論』"
+    },
+    {
+      "text": "神即自然（Deus sive Natura）。",
+      "source": "『エチカ』"
+    },
+    {
+      "text": "憎しみは、愛によってのみ克服される。",
+      "source": "『エチカ』第4部"
+    }
+  ],
+  "relations": [
+    {
+      "name": "デカルト",
+      "id": "descartes",
+      "relation": "哲学的先行者",
+      "note": "デカルト哲学を出発点に独自の体系を築いた"
+    }
+  ],
+  "places": [
+    {
+      "name": "スピノザハウス",
+      "location": "オランダ・レインスブルフ",
+      "note": "哲学を書いた質素な家"
+    }
+  ],
+  "books": [
+    {
+      "title": "エチカ",
+      "author": "スピノザ",
+      "asin": "4003361539",
+      "description": "幾何学的秩序で書かれた神と自由の哲学"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Spinoza.jpg/500px-Spinoza.jpg",
+  "wikiTitle": "バルーフ・デ・スピノザ",
+  "imageCredit": {
+    "artist": "anonymous",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "This image has been extracted from another file",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Spinoza.jpg"
+  }
+}

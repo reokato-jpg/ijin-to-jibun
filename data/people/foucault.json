@@ -1,0 +1,178 @@
+{
+  "id": "foucault",
+  "name": "ミシェル・フーコー",
+  "nameEn": "Michel Foucault",
+  "birth": 1926,
+  "death": 1984,
+  "country": "フランス",
+  "field": "哲学者",
+  "summary": "権力・狂気・監獄・性を『歴史の考古学』として解き明かした20世紀後半最大の思想家。スキンヘッドと知的挑発で時代のアイコンに。エイズで早逝。",
+  "events": [
+    {
+      "year": 1926,
+      "age": 0,
+      "title": "ポワティエの外科医の子に",
+      "detail": "権威的な父との確執を抱える。",
+      "tags": [
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1948,
+      "age": 22,
+      "title": "高等師範学校入学、すぐに自殺未遂",
+      "detail": "同性愛への自己嫌悪と父との確執で重度の鬱。父はパリの名医に診せた。",
+      "tags": [
+        "pride_broken",
+        "parent_conflict",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1955,
+      "age": 29,
+      "title": "スウェーデン、ポーランド、ドイツを転々",
+      "detail": "フランスを離れ、ウプサラ大学の仏文講師などとして5年の『亡命』生活。",
+      "tags": [
+        "restart",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1961,
+      "age": 35,
+      "title": "『狂気の歴史』",
+      "detail": "理性の側から『狂気』を排除してきた歴史を暴く。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1961,
+      "age": 35,
+      "title": "『狂気の歴史』博士論文、出版",
+      "detail": "理性の側から『狂気』を排除してきた歴史を暴く。937ページの大著。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1963,
+      "age": 37,
+      "title": "ダニエル・デフェールと出会い、生涯の伴侶に",
+      "detail": "23年続いたパートナー。フーコーの全著作を看取った相手。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1966,
+      "age": 40,
+      "title": "『言葉と物』ベストセラー",
+      "detail": "『人間は海辺の砂に描かれた顔のように消え去る』というラストで知識人の必読書に。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1970,
+      "age": 44,
+      "title": "コレージュ・ド・フランス教授に就任",
+      "detail": "フランス最高学府の教授職。毎年公開講義で新しい主題を語った。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1975,
+      "age": 49,
+      "title": "『監獄の誕生』",
+      "detail": "パノプティコンと規律権力の分析。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1975,
+      "age": 49,
+      "title": "『監獄の誕生』刊行",
+      "detail": "パノプティコンと規律権力の分析。近代社会批判の到達点。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1976,
+      "age": 50,
+      "title": "『性の歴史 第1巻』刊行、以後8年間沈黙",
+      "detail": "構想の全面見直し。自らのセクシュアリティとの格闘。",
+      "tags": [
+        "blank_period"
+      ]
+    },
+    {
+      "year": 1984,
+      "age": 57,
+      "title": "パリでエイズにより死去",
+      "detail": "『性の歴史』執筆途上。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "人間はたぶん、海辺の砂に描かれた顔のように消え去るであろう。",
+      "source": "『言葉と物』"
+    },
+    {
+      "text": "権力は常に下から来る。",
+      "source": "『性の歴史 第1巻』"
+    },
+    {
+      "text": "知とは、それで考える武器である。",
+      "source": "講義録"
+    },
+    {
+      "text": "私は誰か？ などと問うな。私が変わらずに同じであれと求めるな。",
+      "source": "『知の考古学』"
+    },
+    {
+      "text": "どこにでも権力はある、なぜならどこからでも発するからだ。",
+      "source": "『性の歴史 第1巻』"
+    }
+  ],
+  "relations": [
+    {
+      "name": "サルトル",
+      "id": "sartre",
+      "relation": "論敵",
+      "note": "実存主義を批判した世代"
+    }
+  ],
+  "places": [
+    {
+      "name": "コレージュ・ド・フランス",
+      "location": "フランス・パリ",
+      "note": "フーコーが晩年講義した最高学府"
+    }
+  ],
+  "books": [
+    {
+      "title": "監獄の誕生",
+      "author": "フーコー",
+      "asin": "4105067036",
+      "description": "近代の権力が身体をどう飼い慣らしたか"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/c/ca/Photo_of_Michel_Foucault_on_1970_dustjacket_of_The_Order_of_Things.jpg",
+  "wikiTitle": "ミシェル・フーコー",
+  "imageCredit": {
+    "artist": "Jerry Bauer",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Original publication: Dust jacket of Foucault, Michel (1970) (in English) The Order of Things: An Archaeology of the Human Sciences (1st American ed.), Pantheon Books ISBN : 978-0-394-43952-5 . Immediate source: https://progressivegeographies.com/foucault-books/the-archaeology-of-foucault-research-and-writing-updates/",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Photo_of_Michel_Foucault_on_1970_dustjacket_of_The_Order_of_Things.jpg"
+  }
+}

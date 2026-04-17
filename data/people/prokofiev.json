@@ -1,0 +1,197 @@
+{
+  "id": "prokofiev",
+  "name": "セルゲイ・プロコフィエフ",
+  "nameEn": "Sergei Prokofiev",
+  "birth": 1891,
+  "death": 1953,
+  "country": "ロシア",
+  "field": "作曲家",
+  "summary": "『ピーターと狼』『ロメオとジュリエット』『古典交響曲』。革命を避けて渡米・パリ・そしてソ連に帰還。スターリンと同じ日に死に、死亡記事は埋もれた。",
+  "events": [
+    {
+      "year": 1891,
+      "age": 0,
+      "title": "ウクライナ東部の農場主の子に",
+      "detail": "5歳でピアノを弾き始める神童。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1914,
+      "age": 23,
+      "title": "ペテルブルク音楽院の卒業試験で一位",
+      "detail": "自作のピアノ協奏曲第1番を自ら弾いて優勝。伝統派を蹴散らした。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1918,
+      "age": 27,
+      "title": "革命を避けて日本経由でアメリカへ",
+      "detail": "シベリア鉄道・敦賀を経て。",
+      "tags": [
+        "restart",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1923,
+      "age": 32,
+      "title": "リーナ・リュベラと結婚",
+      "detail": "スペイン系の歌手との国際結婚。2人の息子をもうける。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1932,
+      "age": 41,
+      "title": "ソ連帰国を決意",
+      "detail": "亡命15年。『西欧では最初の一枚しか売れない』と判断。故国の豊かな伝統への渇望。",
+      "tags": []
+    },
+    {
+      "year": 1936,
+      "age": 45,
+      "title": "ソ連に帰国",
+      "detail": "以後『形式主義』批判と栄光を往復する苦難の後半生。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1936,
+      "age": 45,
+      "title": "ソ連に完全帰国",
+      "detail": "以後『形式主義』批判と栄光を往復する苦難の後半生。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1936,
+      "age": 45,
+      "title": "『ピーターと狼』初演",
+      "detail": "モスクワ少年音楽院のための教育作品。世界中の子供たちの最愛の曲に。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1941,
+      "age": 50,
+      "title": "リーナと別れ、25歳年下ミラと暮らす",
+      "detail": "正式離婚せずに同居。後にリーナはスパイ容疑でシベリア送りにされる。",
+      "tags": [
+        "heartbreak"
+      ]
+    },
+    {
+      "year": 1948,
+      "age": 57,
+      "title": "ジダーノフ批判、『形式主義者』として名指し",
+      "detail": "ショスタコーヴィチと並び糾弾される。この年の脳溢血で体力も失う。",
+      "tags": [
+        "pride_broken",
+        "illness"
+      ]
+    },
+    {
+      "year": 1953,
+      "age": 61,
+      "title": "スターリンと同日死去",
+      "detail": "独裁者の葬儀のため花すら手に入らなかった。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1953,
+      "age": 61,
+      "title": "スターリンと同日死去（3月5日）",
+      "detail": "独裁者の葬儀のため花すら手に入らず、新聞の死亡記事は数日後に小さく。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "自らを陳腐さから守る唯一の手段は、より良い作品を書き続けることだ。",
+      "source": "プロコフィエフの言葉"
+    },
+    {
+      "text": "私は常に新しいもの、独自のものを望んできた。",
+      "source": "自伝"
+    },
+    {
+      "text": "作曲家の義務は、自分の時代の人間について真実を語ることだ。",
+      "source": "プロコフィエフの言葉"
+    }
+  ],
+  "relations": [
+    {
+      "name": "ショスタコーヴィチ",
+      "id": "shostakovich",
+      "relation": "ソ連の同時代ライバル",
+      "note": "同じ政治的圧力に晒された二大作曲家"
+    }
+  ],
+  "places": [],
+  "books": [],
+  "works": [
+    {
+      "title": "ピアノ協奏曲第3番",
+      "type": "youtube",
+      "id": "gdLqA6GXa1U",
+      "note": "機械的なリズムと歌心"
+    },
+    {
+      "title": "ピーターと狼 作品67",
+      "year": 1936,
+      "type": "管弦楽",
+      "description": "ナレーションと管弦楽の子供向け物語",
+      "youtubeId": "t7-CLA5zXT0"
+    },
+    {
+      "title": "ピアノ協奏曲第3番 ハ長調 作品26",
+      "year": 1921,
+      "type": "協奏曲",
+      "description": "機械的なリズムと歌心",
+      "youtubeId": "gdLqA6GXa1U"
+    },
+    {
+      "title": "バレエ『ロメオとジュリエット』作品64",
+      "year": 1935,
+      "type": "バレエ",
+      "description": "『騎士たちの踊り』は最も有名な悲劇音楽",
+      "youtubeId": "h0KnIhlOvYM"
+    },
+    {
+      "title": "交響曲第1番『古典』ニ長調 作品25",
+      "year": 1917,
+      "type": "交響曲",
+      "description": "ハイドン風の新古典主義的傑作",
+      "youtubeId": "3tsI00uPs2s"
+    },
+    {
+      "title": "ピアノソナタ第7番『戦争ソナタ』作品83",
+      "year": 1942,
+      "type": "ピアノ曲",
+      "description": "戦時中の激しいソナタ。リヒテルが初演",
+      "youtubeId": "hohV2zyTUg0"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Sergei_Prokofiev_circa_1918_over_Chair_Bain.jpg/500px-Sergei_Prokofiev_circa_1918_over_Chair_Bain.jpg",
+  "wikiTitle": "セルゲイ・プロコフィエフ",
+  "imageCredit": {
+    "artist": "Bain News Service, publisher",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Library of Congress Catalog: https://lccn.loc.gov/2014708418 Image download: https://cdn.loc.gov/service/pnp/ggbain/28200/28258v.jpg Original url: https://www.loc.gov/pictures/item/2014708418/",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sergei_Prokofiev_circa_1918_over_Chair_Bain.jpg"
+  }
+}

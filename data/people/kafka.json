@@ -1,0 +1,156 @@
+{
+  "id": "kafka",
+  "name": "フランツ・カフカ",
+  "nameEn": "Franz Kafka",
+  "birth": 1883,
+  "death": 1924,
+  "country": "オーストリア＝ハンガリー（現チェコ）",
+  "field": "小説家",
+  "summary": "『変身』『城』『審判』。プラハの保険局員として昼働き、夜書き続けた。生前ほぼ無名で、親友マックス・ブロートに『遺稿は全て燃やせ』と遺言。ブロートが命令を無視したおかげで、20世紀文学は変わった。",
+  "events": [
+    {
+      "year": 1883,
+      "age": 0,
+      "title": "プラハにドイツ語話者のユダヤ商人の長男として誕生",
+      "detail": "威圧的な父ヘルマンとの関係が全作品の底流を成す。",
+      "tags": [
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1912,
+      "age": 29,
+      "title": "フェリーツェ・バウアーと文通開始、婚約と解消を繰り返す",
+      "detail": "5年で500通以上の手紙。二度の婚約、二度の解消。『結婚できない』自分への呪い。",
+      "tags": [
+        "heartbreak",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1912,
+      "age": 29,
+      "title": "『判決』を一晩で書き上げる",
+      "detail": "9月22日深夜から翌朝まで8時間通しで執筆。『文学における自分の誕生』と日記に書いた。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1915,
+      "age": 31,
+      "title": "『変身』発表",
+      "detail": "ある朝目覚めると毒虫に変わっていたグレゴール・ザムザ。20世紀文学の象徴。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1917,
+      "age": 34,
+      "title": "肺結核を発症",
+      "detail": "以後7年の闘病生活。昼間は労働者災害保険局で働き、夜書き続けた。",
+      "tags": [
+        "illness"
+      ]
+    },
+    {
+      "year": 1919,
+      "age": 36,
+      "title": "『父への手紙』執筆",
+      "detail": "100ページの父への告発。母を通じて渡そうとしたが届けられずに終わった。",
+      "tags": [
+        "parent_conflict",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1923,
+      "age": 40,
+      "title": "ベルリンへ、ドーラ・ディアマントと同棲",
+      "detail": "最愛の人。初めて父の家を離れた。短い幸福な日々。",
+      "tags": [
+        "turning_encounter",
+        "restart"
+      ]
+    },
+    {
+      "year": 1924,
+      "age": 40,
+      "title": "ウィーン郊外の療養所で死去",
+      "detail": "喉頭結核で話すことも水を飲むこともできず衰弱死。ドーラと医師が看取った。ブロートに『遺稿はすべて燃やしてくれ』と頼んだが実行されなかった。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "書物は、我々の内の凍った海を砕く斧でなければならない。",
+      "source": "オスカル・ポラック宛の手紙 1904"
+    },
+    {
+      "text": "正しい道は、綱の上にある。地面すれすれに張られていて、歩くというよりむしろ躓くためにあるような綱の上に。",
+      "source": "『日記』"
+    },
+    {
+      "text": "目的はあるが、道はない。我々が道と呼ぶものは、躊躇いに過ぎない。",
+      "source": "『日記』"
+    },
+    {
+      "text": "私はいつも消えようとしていた。",
+      "source": "ドーラへの手紙"
+    },
+    {
+      "text": "あまりにも多く考える者は、どんな決断もできなくなる。",
+      "source": "カフカに帰される言葉"
+    }
+  ],
+  "relations": [
+    {
+      "name": "マックス・ブロート",
+      "relation": "親友・遺稿管理者",
+      "note": "『すべて燃やせ』の遺言を無視して出版し、世界文学を救った"
+    },
+    {
+      "name": "ドーラ・ディアマント",
+      "relation": "最期の恋人",
+      "note": "19歳年下。ベルリンで同棲し最期を看取った"
+    }
+  ],
+  "places": [
+    {
+      "name": "カフカ博物館",
+      "location": "チェコ・プラハ",
+      "note": "カフカの手稿・写真を展示"
+    },
+    {
+      "name": "プラハ・ユダヤ人墓地",
+      "location": "チェコ・プラハ",
+      "note": "父母と並ぶ墓"
+    }
+  ],
+  "books": [
+    {
+      "title": "変身",
+      "author": "カフカ",
+      "asin": "4102071016",
+      "description": "毒虫に変身した男の物語"
+    },
+    {
+      "title": "城",
+      "author": "カフカ",
+      "asin": "410207103X",
+      "description": "測量士Kが辿り着けない城"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Franz_Kafka%2C_1923.jpg/500px-Franz_Kafka%2C_1923.jpg",
+  "wikiTitle": "フランツ・カフカ",
+  "imageCredit": {
+    "artist": "Unknown photographer",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Franz Kafka: Pictures of a Life by Klaus Wagenbach (1984), p. 209 and Kafka Bildarchiv . Photographer not identified. Exhibition Kafka: Making of an Icon , Morgan Library &amp; Museum ( PDF , page 25) Kafka: The Years of Insight by Reiner Stach (2013), fig. 70. Details about the photograph.",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Franz_Kafka%2C_1923.jpg"
+  }
+}

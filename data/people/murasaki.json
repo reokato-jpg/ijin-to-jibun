@@ -1,0 +1,147 @@
+{
+  "id": "murasaki",
+  "name": "紫式部",
+  "nameEn": "Murasaki Shikibu",
+  "birth": 978,
+  "death": 1016,
+  "country": "日本（平安）",
+  "field": "作家・歌人",
+  "summary": "世界最古の本格的長編小説『源氏物語』の作者。一条天皇の中宮彰子に仕える女房として、1000年読み継がれる光源氏の物語を書き上げた。本名も生没年も不詳の、書くことでしか存在しなかった人。",
+  "events": [
+    {
+      "year": 978,
+      "age": 0,
+      "title": "藤原北家の受領階級の家に誕生",
+      "detail": "父は学者・藤原為時、曾祖父は『百人一首』の藤原兼輔。幼少から漢籍を兄より早く覚えた。",
+      "tags": []
+    },
+    {
+      "year": 996,
+      "age": 18,
+      "title": "父が越前守に任ぜられ、共に下向",
+      "detail": "京を離れ越前で2年過ごす。海や北国の雪が後の筆致に影響した。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 999,
+      "age": 21,
+      "title": "藤原宣孝と結婚、娘・賢子誕生",
+      "detail": "20歳以上年上の受領の男との晩婚。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1001,
+      "age": 23,
+      "title": "夫・宣孝が疫病で急死",
+      "detail": "結婚わずか2年。この喪失が『源氏物語』執筆の引き金となったと推測される。",
+      "tags": [
+        "loss",
+        "heartbreak"
+      ]
+    },
+    {
+      "year": 1005,
+      "age": 27,
+      "title": "藤原道長の娘・中宮彰子に女房として出仕",
+      "detail": "一条天皇の后に漢籍を教える。『日本紀の御局』のあだ名。",
+      "tags": [
+        "restart",
+        "approval"
+      ]
+    },
+    {
+      "year": 1008,
+      "age": 30,
+      "title": "『源氏物語』の一部を道長が見て賞賛",
+      "detail": "『紫式部日記』にその様子が記される。『若紫はこなたに候ふか』と戯れた道長。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1010,
+      "age": 32,
+      "title": "『源氏物語』完成、54帖",
+      "detail": "光源氏の栄華と、その子孫の静かな転落まで。平安絵巻の頂点。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1016,
+      "age": 38,
+      "title": "宮仕えを退き、間もなく没したとされる",
+      "detail": "正確な没年は不明。静かに消えた。"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "身のうさは心のうちにしたひきていま九重に思ひ乱るる",
+      "source": "『紫式部日記』"
+    },
+    {
+      "text": "ものがたりなどこそ、うつしごとなれ。",
+      "source": "『紫式部日記』"
+    },
+    {
+      "text": "いかにしてわが身を知るやと思へど、わが心にも知られず。",
+      "source": "『源氏物語』"
+    },
+    {
+      "text": "人の心の花にうつろひ…",
+      "source": "『源氏物語』のモチーフ"
+    }
+  ],
+  "relations": [
+    {
+      "name": "藤原道長",
+      "relation": "パトロン",
+      "note": "彰子の父。『源氏物語』を庇護した権力者"
+    },
+    {
+      "name": "清少納言",
+      "relation": "同時代ライバル",
+      "note": "『紫式部日記』で『得意顔に侍りし人』と辛辣に評している"
+    }
+  ],
+  "places": [
+    {
+      "name": "石山寺",
+      "location": "滋賀県大津市",
+      "note": "『源氏物語』の着想を得た寺と伝わる"
+    },
+    {
+      "name": "廬山寺",
+      "location": "京都市上京区",
+      "note": "邸宅跡と伝わる寺"
+    }
+  ],
+  "books": [
+    {
+      "title": "新源氏物語 上",
+      "author": "田辺聖子",
+      "asin": "4101173125",
+      "description": "田辺聖子による名訳"
+    },
+    {
+      "title": "紫式部日記",
+      "author": "山本淳子訳",
+      "asin": "4043752016",
+      "description": "中宮彰子への出仕の日々"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Murasaki_Shikibu_-_Tosa_Mitsuoki.jpg/500px-Murasaki_Shikibu_-_Tosa_Mitsuoki.jpg",
+  "wikiTitle": "紫式部",
+  "imageCredit": {
+    "artist": "",
+    "license": "",
+    "licenseUrl": "",
+    "credit": "",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Murasaki_Shikibu_-_Tosa_Mitsuoki.jpg"
+  }
+}

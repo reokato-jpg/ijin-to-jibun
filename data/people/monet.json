@@ -1,0 +1,214 @@
+{
+  "id": "monet",
+  "name": "クロード・モネ",
+  "nameEn": "Claude Monet",
+  "birth": 1840,
+  "death": 1926,
+  "country": "フランス",
+  "field": "画家",
+  "summary": "印象派の旗手。同じ景色を時間と光で描き分け、晩年はジヴェルニーの庭で睡蓮の巨大連作に没頭した。",
+  "events": [
+    {
+      "year": 1840,
+      "age": 0,
+      "title": "パリに誕生",
+      "detail": "幼少期はル・アーヴルで過ごす。船乗りの風景が絵のルーツ。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1840,
+      "age": 0,
+      "title": "パリに商人の子として誕生、5歳でル・アーヴルへ移住",
+      "detail": "海辺の町で少年時代を過ごしたことが生涯の光の感覚を育てた。",
+      "tags": []
+    },
+    {
+      "year": 1858,
+      "age": 17,
+      "title": "風景画家ブーダンと出会う",
+      "detail": "『戸外制作』を教えられる。『ブーダンが目を開いてくれた』と回想。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1865,
+      "age": 24,
+      "title": "サロン初入選、最初のモデル・カミーユと出会う",
+      "detail": "後の妻。貧困の中でも絵を描き続ける。",
+      "tags": [
+        "breakthrough",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1872,
+      "age": 32,
+      "title": "『印象・日の出』制作",
+      "detail": "ル・アーヴル港を日の出直前に描いた習作。翌々年この絵から『印象派』の名が生まれる。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1874,
+      "age": 33,
+      "title": "第1回印象派展で『印象派』の蔑称が定着",
+      "detail": "批評家ルロワが『印象派』と揶揄したのを逆手に。ルノワール、シスレー、ドガらと。",
+      "tags": [
+        "pride_broken",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1874,
+      "age": 34,
+      "title": "第1回印象派展、『印象・日の出』",
+      "detail": "嘲笑された『印象』という言葉がやがて流派の名になる。",
+      "tags": [
+        "setback",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1879,
+      "age": 38,
+      "title": "妻カミーユ死去",
+      "detail": "32歳で逝く。臨終の顔の色の変化を絵に描いたことを後に悔いた。『色を記録してしまう自分への嫌悪』。",
+      "tags": [
+        "loss",
+        "heartbreak"
+      ]
+    },
+    {
+      "year": 1879,
+      "age": 39,
+      "title": "最初の妻カミーユ死去",
+      "detail": "貧困のうちに32歳で逝く。亡き妻の顔を描き続けた最期の肖像が残る。",
+      "tags": [
+        "loss",
+        "poverty"
+      ]
+    },
+    {
+      "year": 1883,
+      "age": 42,
+      "title": "ジヴェルニーに移住",
+      "detail": "セーヌ川支流の小さな村。43年後の死まで、この庭と睡蓮を描き続ける。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1883,
+      "age": 43,
+      "title": "ジヴェルニーに定住",
+      "detail": "以後43年、この庭と池を描き続けた。睡蓮の連作は彼の人生そのもの。",
+      "tags": [
+        "restart",
+        "self_reinvention"
+      ]
+    },
+    {
+      "year": 1892,
+      "age": 51,
+      "title": "再婚、連作『積みわら』『ルーアン大聖堂』",
+      "detail": "同じ対象を時間・光・季節で何枚も描く『連作』の手法を確立。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1908,
+      "age": 67,
+      "title": "白内障の症状が進行",
+      "detail": "色が黄色くかすむ視界。それでもアトリエに籠り巨大な睡蓮を描き続けた。",
+      "tags": [
+        "illness"
+      ]
+    },
+    {
+      "year": 1926,
+      "age": 86,
+      "title": "ジヴェルニーで死去",
+      "detail": "白内障で視力を失いながらも描き続けた。",
+      "tags": [
+        "illness",
+        "loss"
+      ]
+    },
+    {
+      "year": 1926,
+      "age": 86,
+      "title": "ジヴェルニーの庭で死去",
+      "detail": "『大装飾画』睡蓮連作はオランジュリー美術館に『平和の聖堂』として寄贈された。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "自然以外に先生はいらない。",
+      "source": "書簡"
+    },
+    {
+      "text": "私は一つの対象を描くのではない。その対象と自分の間にある空気を描くのだ。",
+      "source": "モネの書簡"
+    },
+    {
+      "text": "私にあるのは目しかない——なんと可哀そうなこの目よ、と思うほど。",
+      "source": "晩年の友人への言葉"
+    },
+    {
+      "text": "睡蓮は絵画を通して永遠に咲き続けねばならない。",
+      "source": "モネの言葉"
+    },
+    {
+      "text": "色彩とは、私の一日の強迫観念であり、喜びであり、苦しみだ。",
+      "source": "書簡"
+    }
+  ],
+  "places": [
+    {
+      "name": "モネの庭（ジヴェルニー）",
+      "location": "フランス・ノルマンディー",
+      "note": "睡蓮の池と日本風の橋。世界中から巡礼者が訪れる"
+    },
+    {
+      "name": "オランジュリー美術館",
+      "location": "パリ",
+      "note": "巨大な睡蓮の連作が円形展示"
+    },
+    {
+      "name": "マルモッタン・モネ美術館",
+      "location": "パリ16区",
+      "note": "『印象・日の出』を所蔵"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Claude_Monet_1899_Nadar.jpg/500px-Claude_Monet_1899_Nadar.jpg",
+  "wikiTitle": "クロード・モネ",
+  "imageCredit": {
+    "artist": "Nadar",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Claude_Monet_1899_Nadar.jpg"
+  },
+  "books": [
+    {
+      "title": "モネ 印象派の巨匠",
+      "author": "ダニエル・ヴィルデンシュタイン",
+      "asin": "4422701266",
+      "description": "決定版画集と評伝"
+    },
+    {
+      "title": "モネ、ジヴェルニーの家と庭",
+      "author": "ダニエル・ヴィルデンシュタイン",
+      "asin": "4434265610",
+      "description": "晩年の聖地を写真で紹介"
+    }
+  ]
+}

@@ -1,0 +1,228 @@
+{
+  "id": "handel",
+  "name": "ゲオルク・フリードリヒ・ヘンデル",
+  "nameEn": "George Frideric Handel",
+  "birth": 1685,
+  "death": 1759,
+  "country": "ドイツ → イギリス",
+  "field": "作曲家",
+  "summary": "バッハと同年生まれのバロック音楽のもう一方の巨匠。オペラの興行で大成功し倒産し、52歳で脳卒中から復活、晩年は盲目でオラトリオ『メサイア』を指揮した。",
+  "events": [
+    {
+      "year": 1685,
+      "age": 0,
+      "title": "ハレの外科医の家に誕生",
+      "detail": "音楽を嫌う父に隠れて屋根裏でクラヴィコードを弾いた少年時代。",
+      "tags": [
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1685,
+      "age": 0,
+      "title": "ドイツ・ハレに宮廷理髪師の子として誕生",
+      "detail": "父は60歳、息子を法律家にしたがった。バッハと同年生まれ。",
+      "tags": [
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1703,
+      "age": 18,
+      "title": "ハンブルクでオペラデビュー",
+      "detail": "自作オペラ『アルミーラ』成功。同僚マッテゾンと決闘し、大きなボタンで命を救われた逸話。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1706,
+      "age": 21,
+      "title": "イタリアへ留学、3年で最新流行を吸収",
+      "detail": "コレッリ、スカルラッティらと交流。『イタリア風のヘンデル』を身につけた。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1710,
+      "age": 25,
+      "title": "ハノーヴァー選帝侯楽長、のちロンドンへ",
+      "detail": "主君がジョージ1世として英国王に。ヘンデルも英国に帰化、『水上の音楽』で和解した。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1712,
+      "age": 27,
+      "title": "ロンドンに移住",
+      "detail": "以後47年イギリスで活動。のちに帰化。",
+      "tags": [
+        "restart",
+        "self_reinvention"
+      ]
+    },
+    {
+      "year": 1727,
+      "age": 42,
+      "title": "英国王戴冠式アンセム『司祭ザドク』作曲",
+      "detail": "以後、英国君主戴冠式で必ず演奏される曲に。",
+      "tags": [
+        "approval",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1737,
+      "age": 52,
+      "title": "脳卒中で右半身麻痺",
+      "detail": "オペラ興行の倒産と過労で倒れる。温泉療養で奇跡的に回復。",
+      "tags": [
+        "illness",
+        "setback"
+      ]
+    },
+    {
+      "year": 1737,
+      "age": 52,
+      "title": "脳卒中で右手麻痺",
+      "detail": "温泉療法で奇跡的に回復。しかしオペラ興行は破産寸前。",
+      "tags": [
+        "illness",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1741,
+      "age": 56,
+      "title": "『メサイア』を24日で作曲",
+      "detail": "没落の底で書かれた傑作。ダブリン初演は大成功。",
+      "tags": [
+        "breakthrough",
+        "restart"
+      ]
+    },
+    {
+      "year": 1741,
+      "age": 56,
+      "title": "『メサイア』を24日間で完成",
+      "detail": "破産寸前の状態で食事もせず書いた。『ハレルヤ』を書いたとき『天国が見えた』と涙した。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1742,
+      "age": 57,
+      "title": "ダブリンで『メサイア』初演",
+      "detail": "慈善公演として大成功。以後英国で最も愛されるオラトリオに。",
+      "tags": [
+        "approval",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1751,
+      "age": 66,
+      "title": "失明",
+      "detail": "白内障手術の失敗で視力を失う。口述筆記で作曲を続けた。",
+      "tags": [
+        "illness",
+        "loss"
+      ]
+    },
+    {
+      "year": 1759,
+      "age": 74,
+      "title": "『メサイア』指揮の8日後に死去",
+      "detail": "ウェストミンスター寺院に王のごとく葬られた。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1759,
+      "age": 74,
+      "title": "ロンドンで死去、ウェストミンスター寺院に",
+      "detail": "英国国葬。バッハと同い年のもう一人の巨匠。",
+      "tags": [
+        "loss",
+        "approval"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "もし私の音楽が聴衆を楽しませただけなら、申し訳なく思う。私は彼らを良くしたいのだ。",
+      "source": "ロンドン初演後"
+    },
+    {
+      "text": "人々を楽しませるためだけでなく、より良くするために書くのだ。",
+      "source": "『メサイア』に寄せて"
+    },
+    {
+      "text": "天国が見えた。偉大なる神そのものが見えた。",
+      "source": "『ハレルヤ・コーラス』を書きながら"
+    }
+  ],
+  "places": [
+    {
+      "name": "ヘンデル・ハウス博物館",
+      "location": "イギリス・ロンドン",
+      "note": "『メサイア』を作曲した住居"
+    },
+    {
+      "name": "ウェストミンスター寺院",
+      "location": "ロンドン",
+      "note": "遺体が眠る"
+    }
+  ],
+  "books": [
+    {
+      "title": "ヘンデル",
+      "author": "ジョナサン・キーツ",
+      "asin": "4393933079",
+      "description": "英国を魅了した巨匠の評伝"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/George_Frideric_Handel_by_Balthasar_Denner.jpg/500px-George_Frideric_Handel_by_Balthasar_Denner.jpg",
+  "wikiTitle": "ゲオルク・フリードリヒ・ヘンデル",
+  "imageCredit": {
+    "artist": "Attributed to Balthasar Denner",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "one or more third parties have made copyright claims against Wikimedia Commons in relation to the work from which this is sourced or a purely mechanical reproduction thereof . This may be due to recognition of the \" sweat of the brow \" doctrine, allowing works to be eligible for protection through skill and labour, and not purely by originality as is the case in the United States (where this website is hosted). These claims may or may not be valid in all jurisdictions. As such, use of this image in the jurisdiction of the claimant or other countries may be regarded as copyright infringement . Please see Commons:When to use the PD-Art tag for more information.",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:George_Frideric_Handel_by_Balthasar_Denner.jpg"
+  },
+  "works": [
+    {
+      "title": "メサイア HWV56",
+      "year": 1741,
+      "type": "宗教曲",
+      "description": "24日間で書かれた、英国で最も愛されるオラトリオ",
+      "youtubeId": "IUZEtVbJT5c"
+    },
+    {
+      "title": "水上の音楽 HWV348-350",
+      "year": 1717,
+      "type": "管弦楽",
+      "description": "ジョージ1世のテムズ川舟遊びのための組曲",
+      "youtubeId": "Lk-cHQvUWfI"
+    },
+    {
+      "title": "王宮の花火の音楽 HWV351",
+      "year": 1749,
+      "type": "管弦楽",
+      "description": "アーヘンの和約を祝うため書かれた",
+      "youtubeId": "NVbGOcKHSTk"
+    },
+    {
+      "title": "『リナルド』より『私を泣かせてください』",
+      "year": 1711,
+      "type": "オペラ",
+      "description": "オペラ史上の名アリアのひとつ",
+      "youtubeId": "DFLs6D0pzDs"
+    }
+  ]
+}

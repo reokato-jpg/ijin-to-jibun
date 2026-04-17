@@ -1,0 +1,121 @@
+{
+  "id": "vermeer",
+  "name": "ヨハネス・フェルメール",
+  "nameEn": "Johannes Vermeer",
+  "birth": 1632,
+  "death": 1675,
+  "country": "オランダ",
+  "field": "画家",
+  "summary": "『真珠の耳飾りの少女』『牛乳を注ぐ女』。オランダ黄金時代のデルフトで、室内の光だけを描き続けた画家。現存作わずか35点前後、生涯貧しく早逝。200年忘れられた後、20世紀に『北方のモナ・リザ』として復活。",
+  "events": [
+    {
+      "year": 1632,
+      "age": 0,
+      "title": "デルフトの宿屋兼絹織物商の家に誕生",
+      "detail": "父レイニエルは画商でもあった。",
+      "tags": []
+    },
+    {
+      "year": 1653,
+      "age": 21,
+      "title": "聖ルカ画家組合登録、カトリックのカタリーナ・ボルネスと結婚",
+      "detail": "プロテスタントだったフェルメールは改宗。義母の家に住み込む。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1656,
+      "age": 24,
+      "title": "初期代表作『取り持ち女』",
+      "detail": "唯一の物語画風作品。以後は室内画のみを描く。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1665,
+      "age": 33,
+      "title": "『真珠の耳飾りの少女』制作",
+      "detail": "永遠の謎の微笑。モデル不明のまま350年。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1672,
+      "age": 40,
+      "title": "仏蘭戦争でオランダ経済崩壊、画商業も破綻",
+      "detail": "『絵は売れず、パンも買えない』。11人の子を抱え借金が膨らむ。",
+      "tags": [
+        "poverty",
+        "loss"
+      ]
+    },
+    {
+      "year": 1675,
+      "age": 43,
+      "title": "デルフトで突然死",
+      "detail": "『数日のうちに元気から死へ』と妻が書く。43歳、14人の子のうち10人が生存していた。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1676,
+      "age": 43,
+      "title": "死後、妻が破産宣告",
+      "detail": "『パン屋への借金を2枚の絵で支払った』記録が残る。以後200年忘れられた。",
+      "tags": [
+        "poverty"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "光は、部屋の中で呼吸している。",
+      "source": "フェルメールに帰される言葉"
+    }
+  ],
+  "relations": [
+    {
+      "name": "カタリーナ・ボルネス",
+      "relation": "妻",
+      "note": "14人の子をもうけ、夫の死後は貧困に"
+    }
+  ],
+  "places": [
+    {
+      "name": "マウリッツハイス美術館",
+      "location": "オランダ・ハーグ",
+      "note": "『真珠の耳飾りの少女』を所蔵"
+    },
+    {
+      "name": "アムステルダム国立美術館",
+      "location": "オランダ・アムステルダム",
+      "note": "『牛乳を注ぐ女』『手紙を読む青衣の女』"
+    },
+    {
+      "name": "フェルメール・センター",
+      "location": "オランダ・デルフト",
+      "note": "生きた町に作られたフェルメール博物館"
+    }
+  ],
+  "books": [
+    {
+      "title": "真珠の耳飾りの少女",
+      "author": "トレイシー・シュヴァリエ",
+      "asin": "4560071276",
+      "description": "映画化された名作小説"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Vermeer_-_The_Geographer.JPG/500px-Vermeer_-_The_Geographer.JPG",
+  "wikiTitle": "ヨハネス・フェルメール",
+  "imageCredit": {
+    "artist": "",
+    "license": "",
+    "licenseUrl": "",
+    "credit": "",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Vermeer_-_The_Geographer.JPG"
+  }
+}

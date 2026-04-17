@@ -1,0 +1,258 @@
+{
+  "id": "toyotomi_hideyoshi",
+  "name": "豊臣秀吉",
+  "nameEn": "Toyotomi Hideyoshi",
+  "birth": 1537,
+  "death": 1598,
+  "country": "日本",
+  "field": "戦国武将・天下人",
+  "summary": "尾張の百姓の子から身を起こし、信長の草履取りから天下人へ。日本史上類を見ない成り上がり。晩年は朝鮮出兵で国力を疲弊させ、幼い秀頼を残して没。",
+  "events": [
+    {
+      "year": 1537,
+      "age": 0,
+      "title": "尾張・中村の百姓の家に誕生",
+      "detail": "父は足軽だったとも。『猿』と呼ばれた小柄な少年。",
+      "tags": [
+        "parent_conflict",
+        "poverty"
+      ]
+    },
+    {
+      "year": 1554,
+      "age": 17,
+      "title": "針売りをしながら今川家を経て信長に仕える",
+      "detail": "木下藤吉郎として草履取りから。寒い朝、信長の草履を懐で温めて差し出した逸話が有名。",
+      "tags": [
+        "poverty",
+        "restart"
+      ]
+    },
+    {
+      "year": 1558,
+      "age": 21,
+      "title": "信長に仕える",
+      "detail": "草履取りから始まり、知恵と愛嬌で出世していく。",
+      "tags": [
+        "turning_encounter",
+        "restart"
+      ]
+    },
+    {
+      "year": 1566,
+      "age": 29,
+      "title": "墨俣一夜城を築く（伝承）",
+      "detail": "敵地の川筋に一晩で城を築いたという伝説。真偽は諸説あり。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1573,
+      "age": 36,
+      "title": "浅井攻め、姉川の戦いで武功",
+      "detail": "近江長浜城主となり、羽柴姓を名乗る。一気に譜代の上に躍り出る。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1577,
+      "age": 40,
+      "title": "中国攻め（毛利征伐）開始",
+      "detail": "播磨・備前・備中を転戦。清水宗治を水攻めにして備中高松城を落とす寸前だった。",
+      "tags": []
+    },
+    {
+      "year": 1582,
+      "age": 45,
+      "title": "本能寺の変、中国大返し",
+      "detail": "10日で200kmを引き返し、山崎で明智光秀を破り天下人への階段を登る。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1583,
+      "age": 46,
+      "title": "賤ヶ岳の戦いで柴田勝家を破る",
+      "detail": "信長の後継者争いを制す。『賤ヶ岳七本槍』で若い武将を大抜擢。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1585,
+      "age": 48,
+      "title": "関白に任ぜられる",
+      "detail": "武士出身で初。藤原姓を賜り、翌年『豊臣』の姓を創る。百姓の子が貴族の頂点へ。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1588,
+      "age": 51,
+      "title": "刀狩令、身分制度の固定化",
+      "detail": "農民から武器を取り上げ、士農工商の区別を定着させた。自らの出世の道を閉ざす皮肉な政策。",
+      "tags": []
+    },
+    {
+      "year": 1590,
+      "age": 53,
+      "title": "天下統一完成",
+      "detail": "北条氏を倒し、日本全土を統一。農民出身が頂点に立った。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1591,
+      "age": 54,
+      "title": "実弟秀長の死",
+      "detail": "補佐役を失い判断力が崩れる。この年に千利休を切腹させ、甥の関白秀次も翌々年処刑する。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1592,
+      "age": 55,
+      "title": "文禄の役 — 朝鮮出兵",
+      "detail": "15万の大軍で朝鮮を攻めるが泥沼化。国力を疲弊させ民を苦しめた。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1593,
+      "age": 56,
+      "title": "待望の嫡男・秀頼誕生",
+      "detail": "57歳で授かった息子を溺愛。翌年、秀次一族を根絶やしにする原因となる。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1598,
+      "age": 61,
+      "title": "伏見城で死去",
+      "detail": "『露と落ち露と消えにし我が身かな 難波のことも夢のまた夢』と辞世を詠む。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1598,
+      "age": 61,
+      "title": "慶長の役の最中、伏見城で死去",
+      "detail": "『秀頼のこと頼み申す』と五大老に遺言。露のごとく消えた天下人。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "露と落ち露と消えにし我が身かな 難波のことも夢のまた夢",
+      "source": "辞世の句"
+    },
+    {
+      "text": "鳴かぬなら鳴かせてみせようホトトギス。",
+      "source": "性格を評する伝承の句"
+    },
+    {
+      "text": "主より大なるは不忠なり。",
+      "source": "秀吉の処世訓"
+    },
+    {
+      "text": "我、天下を取らんと欲するに非ず。太閤の道を極めんと欲するのみ。",
+      "source": "秀吉に帰される言葉"
+    }
+  ],
+  "relations": [
+    {
+      "name": "織田信長",
+      "id": "oda_nobunaga",
+      "relation": "主君",
+      "years": "1558–1582",
+      "note": "草履取りから一番家老まで引き上げてくれた恩人"
+    },
+    {
+      "name": "豊臣秀長",
+      "relation": "異父弟",
+      "years": "生涯",
+      "note": "兄を支え続けた影の宰相。弟の死後、秀吉は判断力を失った"
+    },
+    {
+      "name": "ねね（高台院）",
+      "relation": "正室",
+      "years": "1561–1598",
+      "note": "信長公認の恋愛結婚。秀吉の愚痴も愛人話も受け止めた"
+    }
+  ],
+  "places": [
+    {
+      "name": "中村公園",
+      "location": "愛知県名古屋市中村区",
+      "note": "秀吉の生誕地。豊国神社"
+    },
+    {
+      "name": "大阪城",
+      "location": "大阪府大阪市中央区",
+      "note": "秀吉が築いた天下の拠点"
+    },
+    {
+      "name": "醍醐寺",
+      "location": "京都市伏見区",
+      "note": "『醍醐の花見』の舞台"
+    },
+    {
+      "name": "豊国神社",
+      "location": "京都市東山区",
+      "note": "秀吉を祀る神社"
+    }
+  ],
+  "books": [
+    {
+      "title": "新史 太閤記",
+      "author": "司馬遼太郎",
+      "asin": "4101152268",
+      "description": "秀吉の若き日から天下統一までの物語"
+    },
+    {
+      "title": "豊臣秀吉",
+      "author": "山路愛山",
+      "asin": "4003311019",
+      "description": "明治の名著による古典的評伝"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Toyotomi_hideyoshi.jpg/500px-Toyotomi_hideyoshi.jpg",
+  "wikiTitle": "豊臣秀吉",
+  "imageCredit": {
+    "artist": "Kanō Mitsunobu",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "1. Shouzou.com [1] , Kōdai-ji temple warehouse, Kyoto, Japan",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Toyotomi_hideyoshi.jpg"
+  },
+  "media": [
+    {
+      "title": "太閤記",
+      "year": 1965,
+      "type": "drama",
+      "country": "日本",
+      "description": "NHK大河ドラマ第3作。最も有名な秀吉像を確立。"
+    },
+    {
+      "title": "関白秀吉",
+      "year": 1993,
+      "type": "movie",
+      "country": "日本",
+      "cast": "仲代達矢",
+      "description": "司馬遼太郎『新史 太閤記』を映像化。"
+    }
+  ]
+}

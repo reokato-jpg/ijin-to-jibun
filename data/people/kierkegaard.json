@@ -1,0 +1,189 @@
+{
+  "id": "kierkegaard",
+  "name": "セーレン・キルケゴール",
+  "nameEn": "Søren Kierkegaard",
+  "birth": 1813,
+  "death": 1855,
+  "country": "デンマーク",
+  "field": "哲学者",
+  "summary": "実存主義の先駆者。婚約破棄と自己批判の中で『あれか、これか』『死に至る病』を書き、42歳の若さで倒れた。『神の前に立つ単独者』。",
+  "events": [
+    {
+      "year": 1813,
+      "age": 0,
+      "title": "コペンハーゲンの商家に誕生",
+      "detail": "厳格なキリスト教の父に罪意識を叩き込まれて育つ。",
+      "tags": [
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1813,
+      "age": 0,
+      "title": "コペンハーゲンに、羊飼いから富豪になった父の7人目の子として誕生",
+      "detail": "父は82歳、母は44歳で彼を産んだ。父は若き羊飼い時代に神を呪った過去を引きずる敬虔なキリスト者。",
+      "tags": [
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1838,
+      "age": 25,
+      "title": "父の衝撃的な告白、『大地震』と呼ぶ体験",
+      "detail": "父が若い頃に神を呪い、また後に妻を妊娠させて再婚した告白。キルケゴールの全世界観が揺らぐ。",
+      "tags": [
+        "parent_conflict",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1840,
+      "age": 27,
+      "title": "レギーネ・オルセンと婚約",
+      "detail": "17歳の少女と。翌年、自分の暗い内面が彼女を不幸にすると一方的に婚約解消。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1841,
+      "age": 28,
+      "title": "レギーネ・オルセンとの婚約を自ら破棄",
+      "detail": "愛するがゆえに『自分は結婚するに値しない』と離れた。生涯彼女を想い続けた。",
+      "tags": [
+        "heartbreak",
+        "self_denial"
+      ]
+    },
+    {
+      "year": 1841,
+      "age": 28,
+      "title": "レギーネとの婚約解消",
+      "detail": "劇的な別れ。残りの人生をほぼ全ての著作で彼女に語りかけ続けた。『神と彼女と、私の全て』。",
+      "tags": [
+        "heartbreak",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1843,
+      "age": 30,
+      "title": "『あれか、これか』『おそれとおののき』",
+      "detail": "匿名と実名を使い分け、膨大な著作活動の始まり。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1843,
+      "age": 30,
+      "title": "『あれかこれか』『おそれとおののき』同年刊行",
+      "detail": "偽名で美的実存と倫理的実存を並立。キルケゴール最良の年。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1846,
+      "age": 33,
+      "title": "『コルサール』誌事件",
+      "detail": "風刺新聞に戯画化され、街で子供に指さされる日常に。有名になる屈辱。",
+      "tags": [
+        "pride_broken",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1849,
+      "age": 36,
+      "title": "『死に至る病』刊行",
+      "detail": "絶望を『死に至る病』として分析。実存主義の原点。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1855,
+      "age": 42,
+      "title": "路上で倒れ急死",
+      "detail": "所持金を使い果たした直後、コペンハーゲンの街で意識を失った。",
+      "tags": [
+        "loss",
+        "poverty"
+      ]
+    },
+    {
+      "year": 1855,
+      "age": 42,
+      "title": "街路で倒れ、42歳で死去",
+      "detail": "父の遺産をほぼ使い果たし、教会批判の連続発行を終えた直後。病床で兄の見舞いも拒んだ。",
+      "tags": [
+        "loss",
+        "isolation"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "あれか、これか。それが問題である。",
+      "source": "『あれか、これか』"
+    },
+    {
+      "text": "絶望は死に至る病である。",
+      "source": "『死に至る病』"
+    },
+    {
+      "text": "人生は後ろ向きにしか理解できないが、前向きに生きなければならない。",
+      "source": "日記 1843"
+    },
+    {
+      "text": "絶望とは、死に至る病である。",
+      "source": "『死に至る病』"
+    },
+    {
+      "text": "主体性こそ真理である。",
+      "source": "『後書』"
+    },
+    {
+      "text": "信仰とは、まさに個人が個体として絶対者に絶対的関係を持つことだ。",
+      "source": "『おそれとおののき』"
+    },
+    {
+      "text": "飛び込む決意より、飛び込まないための言い訳を、人は作り出す天才である。",
+      "source": "日記"
+    },
+    {
+      "text": "最大の危険、自分自身を失うことは、世界ではもっとも静かに進行する。",
+      "source": "『死に至る病』"
+    }
+  ],
+  "places": [
+    {
+      "name": "コペンハーゲン・アシステンス墓地",
+      "location": "デンマーク・コペンハーゲン",
+      "note": "父と並ぶ墓"
+    },
+    {
+      "name": "キルケゴール博物館",
+      "location": "デンマーク・コペンハーゲン",
+      "note": "遺品と草稿を展示"
+    }
+  ],
+  "books": [
+    {
+      "title": "死に至る病",
+      "author": "キルケゴール",
+      "asin": "4003363612",
+      "description": "『絶望とは自分自身であることを欲せぬこと』"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/S%C3%B8ren_Kierkegaard_%281813-1855%29_-_9642115677_%28cropped%29.jpg/500px-S%C3%B8ren_Kierkegaard_%281813-1855%29_-_9642115677_%28cropped%29.jpg",
+  "wikiTitle": "セーレン・キルケゴール",
+  "imageCredit": {
+    "artist": "The Royal Library, Denmark",
+    "license": "No restrictions",
+    "licenseUrl": "https://www.flickr.com/commons/usage/",
+    "credit": "https://www.flickr.com/photos/45270502@N06/9642115677/",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:S%C3%B8ren_Kierkegaard_%281813-1855%29_-_9642115677_%28cropped%29.jpg"
+  }
+}

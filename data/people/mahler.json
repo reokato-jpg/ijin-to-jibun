@@ -1,0 +1,216 @@
+{
+  "id": "mahler",
+  "name": "グスタフ・マーラー",
+  "nameEn": "Gustav Mahler",
+  "birth": 1860,
+  "death": 1911,
+  "country": "オーストリア",
+  "field": "作曲家・指揮者",
+  "summary": "ユダヤ人、ボヘミア人、オーストリア人—『三重に祖国を失った男』。9つの交響曲で巨大な宇宙を描き、愛娘の死と心臓病の末に50歳で没。妻アルマとの複雑な関係も有名。",
+  "events": [
+    {
+      "year": 1860,
+      "age": 0,
+      "title": "ボヘミアのユダヤ人家庭に誕生",
+      "detail": "14人兄弟のうち8人が夭折。死と隣り合わせの幼少期。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1860,
+      "age": 0,
+      "title": "ボヘミアのユダヤ人商家に生まれる",
+      "detail": "14人兄弟の2番目。8人が早世した。",
+      "tags": [
+        "parent_conflict",
+        "loss"
+      ]
+    },
+    {
+      "year": 1889,
+      "age": 29,
+      "title": "半年で父・母・姉を相次いで失う",
+      "detail": "『三重の喪失』。交響曲第1番『巨人』はこの喪失の年に完成された。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1897,
+      "age": 37,
+      "title": "ウィーン宮廷歌劇場音楽監督",
+      "detail": "指揮者として頂点に。しかしユダヤ人である限界を感じ、形だけカトリックに改宗。",
+      "tags": [
+        "approval",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1897,
+      "age": 37,
+      "title": "ウィーン宮廷歌劇場音楽監督に就任",
+      "detail": "就任のためユダヤ教からカトリックに改宗。反ユダヤ主義のウィーンで10年君臨した。",
+      "tags": [
+        "breakthrough",
+        "restart"
+      ]
+    },
+    {
+      "year": 1902,
+      "age": 41,
+      "title": "アルマ・シントラーと結婚",
+      "detail": "19歳年下の美貌の才媛。以後波乱の夫婦関係。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1907,
+      "age": 46,
+      "title": "長女マリア・アンナ(プッツル)を失い、心臓病を宣告",
+      "detail": "4歳の愛娘を猩紅熱で。同じ年に自身の心臓病も判明。『3つの打撃』と呼んだ。",
+      "tags": [
+        "loss",
+        "illness",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1907,
+      "age": 47,
+      "title": "長女マリアが猩紅熱で死去、心臓病と告知",
+      "detail": "1年で全てを失う。『大地の歌』はここから生まれた。",
+      "tags": [
+        "loss",
+        "illness"
+      ]
+    },
+    {
+      "year": 1908,
+      "age": 48,
+      "title": "『大地の歌』作曲、第9番を恐れ番号を付けず",
+      "detail": "『第9を書くと死ぬ』ジンクスを避けるため。しかし翌年第9番も書いた。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1910,
+      "age": 50,
+      "title": "アルマの不倫発覚、フロイトの診察を受ける",
+      "detail": "建築家グロピウスとの関係。オランダでフロイトと4時間散歩しながら精神分析を受けた。",
+      "tags": [
+        "heartbreak",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1911,
+      "age": 50,
+      "title": "細菌性心内膜炎で死去",
+      "detail": "第10交響曲未完のまま。『指揮をする時間がもう少しあれば』",
+      "tags": [
+        "loss",
+        "illness"
+      ]
+    },
+    {
+      "year": 1911,
+      "age": 50,
+      "title": "ウィーンで心内膜炎により死去",
+      "detail": "『モーツァルト！』が最期の言葉。未完の第10番を遺した。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "交響曲は世界のようでなければならない。それはすべてを包含せねばならない。",
+      "source": "シベリウスとの会話"
+    },
+    {
+      "text": "伝統とは火を守ることであり、灰を崇めることではない。",
+      "source": "マーラーの言葉"
+    },
+    {
+      "text": "私の時代はまだ来ていない。",
+      "source": "マーラーの予言。70年後のブームで的中した"
+    },
+    {
+      "text": "交響曲とは世界を建設することだ。",
+      "source": "シベリウスとの会話"
+    },
+    {
+      "text": "私は三重にホームレスである——オーストリアではボヘミア人、ドイツではオーストリア人、世界ではユダヤ人として。",
+      "source": "マーラーの言葉"
+    }
+  ],
+  "places": [
+    {
+      "name": "マーラーの作曲小屋",
+      "location": "オーストリア・マイアーニッヒ",
+      "note": "夏の避暑地。多くの交響曲が生まれた"
+    },
+    {
+      "name": "グリンツィング墓地",
+      "location": "ウィーン",
+      "note": "愛娘と並ぶ墓"
+    }
+  ],
+  "books": [
+    {
+      "title": "マーラー",
+      "author": "柴田南雄",
+      "asin": "4000038028",
+      "description": "『世界をまるごと歌う』交響曲の本質"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Gustav_Mahler_1909.jpg/500px-Gustav_Mahler_1909.jpg",
+  "wikiTitle": "グスタフ・マーラー",
+  "imageCredit": {
+    "artist": "Either Aimé Dupont's (1842–1900) [1] wife, Madame Etta Greer, or their son Albert Dupont. [2] Photoprint copyrighted by the studio A. Dupont, N.Y.",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "This image is available from the United States Library of Congress 's Prints and Photographs division under the digital ID cph.3a00825 . This tag does not indicate the copyright status of the attached work. A normal copyright tag is still required. See Commons:Licensing .",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Gustav_Mahler_1909.jpg"
+  },
+  "works": [
+    {
+      "title": "交響曲第2番『復活』ハ短調",
+      "year": 1894,
+      "type": "交響曲",
+      "description": "『お前は蘇る、我が心よ』合唱付きの大伽藍",
+      "youtubeId": "Sn6BjipdqpI"
+    },
+    {
+      "title": "交響曲第5番 嬰ハ短調",
+      "year": 1902,
+      "type": "交響曲",
+      "description": "第4楽章アダージェットは映画『ベニスに死す』で世界に広まった",
+      "youtubeId": "i5xT68Yw47U"
+    },
+    {
+      "title": "亡き子をしのぶ歌",
+      "year": 1904,
+      "type": "歌曲",
+      "description": "リュッケルトの詩に基づく。娘マリアの死を予言したかのような5曲",
+      "youtubeId": "5RN0g6Qk2n8"
+    },
+    {
+      "title": "大地の歌",
+      "year": 1908,
+      "type": "交響曲",
+      "description": "李白・王維らの漢詩による『第9を避けた第9番』",
+      "youtubeId": "7bQCzj2SG2w"
+    },
+    {
+      "title": "交響曲第9番 ニ長調",
+      "year": 1909,
+      "type": "交響曲",
+      "description": "別れの交響曲。第4楽章は消え入るように終わる",
+      "youtubeId": "OSyr4rtftM4"
+    }
+  ]
+}

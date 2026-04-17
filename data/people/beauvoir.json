@@ -1,0 +1,207 @@
+{
+  "id": "beauvoir",
+  "name": "シモーヌ・ド・ボーヴォワール",
+  "nameEn": "Simone de Beauvoir",
+  "birth": 1908,
+  "death": 1986,
+  "country": "フランス",
+  "field": "哲学者・小説家",
+  "summary": "『第二の性』で現代フェミニズムの礎を築いた哲学者。『人は女に生まれるのではない、女になるのだ』。サルトルとの契約結婚は50年続いた。",
+  "events": [
+    {
+      "year": 1908,
+      "age": 0,
+      "title": "パリの中産階級の家に誕生",
+      "detail": "厳格なカトリック教育を受ける。",
+      "tags": [
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1908,
+      "age": 0,
+      "title": "パリ・モンパルナスのブルジョワ家庭に誕生",
+      "detail": "父は弁護士、母は敬虔なカトリック。早熟で本を貪り読む少女だった。",
+      "tags": []
+    },
+    {
+      "year": 1929,
+      "age": 21,
+      "title": "サルトルと出会い契約結婚へ",
+      "detail": "教員試験で2位（サルトルは1位）。知と恋の共同体が始まる。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1929,
+      "age": 21,
+      "title": "高等教員資格試験で女性最年少合格、2位",
+      "detail": "1位はサルトル。審査員が長く議論した末のわずかな差。この試験が生涯の出会いに。",
+      "tags": [
+        "breakthrough",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1929,
+      "age": 21,
+      "title": "サルトルと『契約結婚』",
+      "detail": "2年ごとに更新する『必然的な愛』と『偶然の愛』を互いに許す関係。以後51年続いた。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1943,
+      "age": 35,
+      "title": "『招かれた女』で作家デビュー",
+      "detail": "サルトル・ボーヴォワール・オルガ(生徒)の三角関係を自伝的に描く。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1945,
+      "age": 37,
+      "title": "雑誌『レ・タン・モデルヌ』創刊メンバーに",
+      "detail": "サルトル・メルロ＝ポンティと共に戦後フランス知識人界の中心へ。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1947,
+      "age": 39,
+      "title": "米国の作家ネルソン・オルグレンとの激しい恋",
+      "detail": "シカゴで出会った『偶然の愛』が本当の恋となる。サルトルとの関係を壊さなかったのは奇跡。",
+      "tags": [
+        "turning_encounter",
+        "heartbreak"
+      ]
+    },
+    {
+      "year": 1949,
+      "age": 41,
+      "title": "『第二の性』刊行",
+      "detail": "『人は女に生まれるのではない、女になるのだ』。世界に衝撃。",
+      "tags": [
+        "breakthrough",
+        "self_reinvention"
+      ]
+    },
+    {
+      "year": 1949,
+      "age": 41,
+      "title": "『第二の性』刊行、『人は女に生まれるのではない、女になるのだ』",
+      "detail": "2週間で2万部売れる。ヴァチカンは禁書指定、同時にフェミニズムの聖典となった。",
+      "tags": [
+        "breakthrough",
+        "approval",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1958,
+      "age": 50,
+      "title": "『娘時代』以降の自伝4部作執筆開始",
+      "detail": "『女ざかり』『或る戦後』『決算のとき』。20世紀女性知識人の精神史。",
+      "tags": []
+    },
+    {
+      "year": 1964,
+      "age": 56,
+      "title": "母フランソワーズを癌で見送り『おだやかな死』を書く",
+      "detail": "『おだやかな死』は自伝ではない唯一の会心作。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1980,
+      "age": 72,
+      "title": "サルトルの死",
+      "detail": "『彼の死が私の中の何かを決定的に断ち切った』と『別れの儀式』に記す。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1980,
+      "age": 72,
+      "title": "サルトルの死去",
+      "detail": "最後は病床で添い遂げた。『サルトルの死は彼の側で眠れる幸福を私から奪った』",
+      "tags": [
+        "loss",
+        "heartbreak"
+      ]
+    },
+    {
+      "year": 1986,
+      "age": 78,
+      "title": "パリで死去",
+      "detail": "サルトルと並ぶ墓に。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "人は女に生まれるのではない、女になるのだ。",
+      "source": "『第二の性』"
+    },
+    {
+      "text": "愛は服従ではない。",
+      "source": "書簡"
+    },
+    {
+      "text": "自由とは選び続けることであり、選ばないという選びも選ぶことだ。",
+      "source": "『曖昧さの倫理のために』"
+    },
+    {
+      "text": "この世でいちばん重要なのは、自分の人生を選ぶ自由である。",
+      "source": "『自伝』"
+    },
+    {
+      "text": "老いは自覚よりも先に、他人の眼差しにやってくる。",
+      "source": "『老い』"
+    },
+    {
+      "text": "結婚することは、必ずしも愛することの証ではない。",
+      "source": "『第二の性』"
+    }
+  ],
+  "relations": [
+    {
+      "name": "ジャン＝ポール・サルトル",
+      "id": "sartre",
+      "relation": "生涯の伴侶",
+      "years": "1929–1980"
+    }
+  ],
+  "places": [
+    {
+      "name": "モンパルナス墓地",
+      "location": "フランス・パリ",
+      "note": "サルトルと並ぶ墓"
+    }
+  ],
+  "books": [
+    {
+      "title": "第二の性",
+      "author": "ボーヴォワール",
+      "asin": "4406029850",
+      "description": "フェミニズムの記念碑的名著"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Simone_de_Beauvoir2.png/500px-Simone_de_Beauvoir2.png",
+  "wikiTitle": "シモーヌ・ド・ボーヴォワール",
+  "imageCredit": {
+    "artist": "Moshe Milner",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "credit": "Crop of File:Flickr - Government Press Office (GPO) - Jean Paul Sartre and Simone De Beauvoir welcomed by Avraham Shlonsky and Leah Goldberg.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Simone_de_Beauvoir2.png"
+  }
+}

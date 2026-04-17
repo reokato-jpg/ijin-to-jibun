@@ -1,0 +1,204 @@
+{
+  "id": "chaplin",
+  "name": "チャールズ・チャップリン",
+  "nameEn": "Charlie Chaplin",
+  "birth": 1889,
+  "death": 1977,
+  "country": "イギリス→スイス",
+  "field": "映画監督・喜劇俳優",
+  "summary": "ロンドンの貧民街から世界一有名な映画人へ。山高帽とステッキの『放浪者チャーリー』で20世紀の笑いと涙を作り、『モダン・タイムス』『独裁者』で現代文明を批判した。米国から赤狩りで追放され、スイスで生涯を終える。",
+  "events": [
+    {
+      "year": 1889,
+      "age": 0,
+      "title": "ロンドン・ランベスの貧民街に誕生",
+      "detail": "両親とも舞台人。父はアル中で幼児期に失踪、母は精神を病み救貧院へ。",
+      "tags": [
+        "poverty",
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1894,
+      "age": 5,
+      "title": "母の代役で初舞台",
+      "detail": "喉を壊した母の代わりに舞台で歌い、観客から投げ銭を得た。『これが僕の最初で最後の音楽会』。",
+      "tags": [
+        "breakthrough",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1896,
+      "age": 7,
+      "title": "7歳で救貧院・孤児院を転々",
+      "detail": "母の入院で兄シドニーと施設に。『チャーリー』というキャラクターの源。",
+      "tags": [
+        "poverty",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1910,
+      "age": 21,
+      "title": "フレッド・カーノー劇団で渡米",
+      "detail": "最初のアメリカ巡業。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1914,
+      "age": 25,
+      "title": "キーストン映画社で『放浪者』キャラ誕生",
+      "detail": "『ヴェニスの子供自動車競走』で山高帽・ドタ靴・ステッキの原型。以後70本以上の短編を濫作。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1919,
+      "age": 30,
+      "title": "ユナイテッド・アーティスツ共同設立",
+      "detail": "ピックフォード、フェアバンクス、D.W.グリフィスと。芸術家の独立の歴史的一歩。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1925,
+      "age": 36,
+      "title": "『黄金狂時代』",
+      "detail": "アラスカゴールドラッシュを舞台に飢えの喜劇。パンダンスの名場面。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1936,
+      "age": 47,
+      "title": "『モダン・タイムス』",
+      "detail": "機械文明が人間を飲み込む寓話。トーキー全盛期に敢えて無声で。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1940,
+      "age": 51,
+      "title": "『独裁者』",
+      "detail": "ヒトラーを批判したラスト6分間のスピーチで世界を動かした。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1952,
+      "age": 63,
+      "title": "赤狩りで米入国禁止、スイスへ",
+      "detail": "『ライムライト』プロモーション中に米政府が再入国ビザを取り消し。以後20年スイス・ヴェヴェイに。",
+      "tags": [
+        "pride_broken",
+        "restart",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1972,
+      "age": 83,
+      "title": "20年ぶり渡米、アカデミー名誉賞で12分のスタンディング",
+      "detail": "史上最長のスタンディング・オベーション。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1977,
+      "age": 88,
+      "title": "スイス・ヴェヴェイで眠るように死去",
+      "detail": "クリスマスの朝、ウーナに看取られた。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "人生はクローズアップで見ると悲劇だが、ロングショットで見れば喜劇である。",
+      "source": "チャップリンの言葉"
+    },
+    {
+      "text": "私たちは考えすぎている。感じることが足りない。",
+      "source": "『独裁者』のラスト演説"
+    },
+    {
+      "text": "一日に一度も笑わない日は、失われた日だ。",
+      "source": "チャップリンに帰される言葉"
+    },
+    {
+      "text": "次の作品さ。",
+      "source": "『あなたの最高傑作は？』と問われて"
+    },
+    {
+      "text": "何もないところから全てを作り出したい。",
+      "source": "自伝"
+    }
+  ],
+  "relations": [
+    {
+      "name": "ウーナ・オニール",
+      "relation": "第4の妻",
+      "years": "1943–1977",
+      "note": "36歳年下、劇作家ユージン・オニールの娘。8人の子をもうけ、最期まで連れ添った"
+    },
+    {
+      "name": "兄シドニー",
+      "relation": "兄",
+      "note": "幼少期の保護者、後のマネージャー"
+    }
+  ],
+  "places": [
+    {
+      "name": "チャップリン・ワールド",
+      "location": "スイス・コルジエ＝シュル＝ヴェヴェイ",
+      "note": "晩年の自宅と博物館"
+    }
+  ],
+  "books": [
+    {
+      "title": "チャップリン自伝",
+      "author": "チャールズ・チャップリン",
+      "asin": "4105053019",
+      "description": "ロンドン貧民街からヴェヴェイまで"
+    }
+  ],
+  "media": [
+    {
+      "title": "ライムライト",
+      "year": 1952,
+      "type": "movie",
+      "country": "アメリカ",
+      "director": "チャールズ・チャップリン",
+      "description": "晩年の老道化師とバレリーナ。自伝的傑作",
+      "youtubeId": "5PaaGMyTL9w"
+    },
+    {
+      "title": "モダン・タイムス",
+      "year": 1936,
+      "type": "movie",
+      "country": "アメリカ",
+      "director": "チャールズ・チャップリン",
+      "description": "機械文明批判の不朽の喜劇",
+      "youtubeId": "DfDCp8bJJZo"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Charlie_Chaplin_portrait_Getty_1739411952.jpg/500px-Charlie_Chaplin_portrait_Getty_1739411952.jpg",
+  "wikiTitle": "チャールズ・チャップリン",
+  "imageCredit": {
+    "artist": "Strauss-Peyton Studio",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Original publication : Magazine Photoplay No. 3, 1922 Immediate sources : this image also found at National Portrait Gallery",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Charlie_Chaplin_portrait_Getty_1739411952.jpg"
+  }
+}

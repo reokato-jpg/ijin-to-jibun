@@ -1,0 +1,169 @@
+{
+  "id": "vivaldi",
+  "name": "アントニオ・ヴィヴァルディ",
+  "nameEn": "Antonio Vivaldi",
+  "birth": 1678,
+  "death": 1741,
+  "country": "イタリア",
+  "field": "作曲家",
+  "summary": "『四季』の作曲者。『赤毛の司祭』と呼ばれ、ヴェネツィアの孤児院でヴァイオリンを教えながら500以上の協奏曲を書いた。晩年は忘れ去られウィーンで客死。",
+  "events": [
+    {
+      "year": 1678,
+      "age": 0,
+      "title": "ヴェネツィアで誕生",
+      "detail": "父はサン・マルコのヴァイオリン奏者。",
+      "tags": []
+    },
+    {
+      "year": 1703,
+      "age": 25,
+      "title": "司祭に叙階、同年ピエタ院の教師に",
+      "detail": "喘息のためミサを執り行えず、作曲に専念。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1703,
+      "age": 25,
+      "title": "司祭に叙階、同年ピエタ院のヴァイオリン教師に",
+      "detail": "『赤毛の司祭(il Prete Rosso)』。喘息のためミサを執り行えず、作曲に専念。",
+      "tags": [
+        "restart",
+        "illness"
+      ]
+    },
+    {
+      "year": 1716,
+      "age": 38,
+      "title": "ピエタ慈善院音楽監督に昇格",
+      "detail": "孤児の少女たちの合奏団をヨーロッパ有数の楽団に育てた。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1725,
+      "age": 47,
+      "title": "『四季』を含む協奏曲集刊行",
+      "detail": "ヨーロッパ中で大ヒット。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1725,
+      "age": 47,
+      "title": "『和声と創意への試み』12曲（『四季』含む）出版",
+      "detail": "アムステルダムで刊行。『四季』は各曲に自作のソネットが添えられた『標題音楽』の嚆矢。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1727,
+      "age": 49,
+      "title": "歌姫アンナ・ジローとの関係が評判に",
+      "detail": "聖職者としての評判を落とす。ジローは生涯付き従い看病した。",
+      "tags": [
+        "heartbreak",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1737,
+      "age": 59,
+      "title": "フェラーラ興行失敗、枢機卿に上演を禁止される",
+      "detail": "『女と同居する司祭』として上演禁止。経済的にも精神的にも追い詰められる。",
+      "tags": [
+        "pride_broken",
+        "poverty"
+      ]
+    },
+    {
+      "year": 1741,
+      "age": 63,
+      "title": "ウィーンで貧窮のうちに客死",
+      "detail": "モーツァルトと同じ墓地に無名で埋葬された。",
+      "tags": [
+        "loss",
+        "isolation"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "音楽は感情の速記法である。",
+      "source": "ヴィヴァルディに帰される言葉"
+    },
+    {
+      "text": "春は来たり。喜びに満ちて鳥たちは歌う。",
+      "source": "『四季・春』のソネット"
+    }
+  ],
+  "relations": [
+    {
+      "name": "バッハ",
+      "id": "bach",
+      "relation": "心酔した同時代人",
+      "note": "バッハはヴィヴァルディの協奏曲を多数編曲した"
+    }
+  ],
+  "places": [
+    {
+      "name": "ピエタ慈善院",
+      "location": "イタリア・ヴェネツィア",
+      "note": "ヴィヴァルディが教え作曲した孤児院"
+    }
+  ],
+  "books": [],
+  "works": [
+    {
+      "title": "四季『春』",
+      "type": "youtube",
+      "id": "mFWQgxXM_b8",
+      "note": "最も有名なヴァイオリン協奏曲"
+    },
+    {
+      "title": "ヴァイオリン協奏曲集『四季』作品8",
+      "year": 1725,
+      "type": "協奏曲",
+      "description": "春・夏・秋・冬の4つのヴァイオリン協奏曲",
+      "youtubeId": "mFWQgxXM_b8"
+    },
+    {
+      "title": "グローリア ニ長調 RV589",
+      "year": 1715,
+      "type": "宗教曲",
+      "description": "孤児院の少女たちのために書かれた、最も愛される宗教曲",
+      "youtubeId": "m2IcBsg-mNg"
+    },
+    {
+      "title": "調和の霊感 作品3",
+      "year": 1711,
+      "type": "協奏曲",
+      "description": "バッハが多数編曲した12の協奏曲集",
+      "youtubeId": "ZbI71vdRYm4"
+    },
+    {
+      "title": "マンドリン協奏曲 ハ長調 RV425",
+      "year": 1725,
+      "type": "協奏曲",
+      "description": "マンドリンの最も有名な独奏曲",
+      "youtubeId": "8suqgHFC8cM"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Antonio_Vivaldi.jpg/500px-Antonio_Vivaldi.jpg",
+  "wikiTitle": "アントニオ・ヴィヴァルディ",
+  "imageCredit": {
+    "artist": "François Morellon la Cave",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "http://portrait.kaar.at/Musikgeschichte%2018.Jhd/image13.html",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Antonio_Vivaldi.jpg"
+  }
+}

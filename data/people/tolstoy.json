@@ -1,0 +1,160 @@
+{
+  "id": "tolstoy",
+  "name": "レフ・トルストイ",
+  "nameEn": "Leo Tolstoy",
+  "birth": 1828,
+  "death": 1910,
+  "country": "ロシア",
+  "field": "小説家・思想家",
+  "summary": "『戦争と平和』『アンナ・カレーニナ』。世界最高の小説家の一人でありながら、晩年は全ての芸術と名声を否定し、貧しい農民のように生きようとした。82歳で自邸を出奔し、小さな駅で死んだ。",
+  "events": [
+    {
+      "year": 1828,
+      "age": 0,
+      "title": "モスクワ南方ヤースナヤ・ポリャーナに伯爵家の四男として誕生",
+      "detail": "2歳で母、9歳で父を失い叔母たちに育てられる。",
+      "tags": [
+        "parent_conflict",
+        "loss"
+      ]
+    },
+    {
+      "year": 1851,
+      "age": 23,
+      "title": "カフカース戦線に従軍、処女作『幼年時代』",
+      "detail": "戦場の孤独で書き始めた自伝的小説。ネクラーソフに認められデビュー。",
+      "tags": [
+        "restart",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1862,
+      "age": 34,
+      "title": "18歳のソフィアと結婚",
+      "detail": "16歳年下の妻は『戦争と平和』を7回清書した。13人の子をもうけたが晩年は激しく対立する。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1869,
+      "age": 41,
+      "title": "『戦争と平和』完成",
+      "detail": "6年かけて書かれた1500ページの叙事詩。ナポレオン侵攻下の5つの家族の運命。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1877,
+      "age": 49,
+      "title": "『アンナ・カレーニナ』完成、精神的危機へ",
+      "detail": "完成と同時に『人生には意味があるのか』と自殺を考えるほどの危機に陥る。",
+      "tags": [
+        "breakthrough",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1879,
+      "age": 51,
+      "title": "『懺悔』執筆、原始キリスト教へ回帰",
+      "detail": "貴族の生活を捨て、自ら畑を耕し、貧しい農民のように生きると決意。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1901,
+      "age": 73,
+      "title": "ロシア正教会から破門",
+      "detail": "教会批判のため正式に破門される。しかし民衆のトルストイ崇拝は増すばかりだった。",
+      "tags": [
+        "pride_broken",
+        "approval"
+      ]
+    },
+    {
+      "year": 1910,
+      "age": 82,
+      "title": "自邸を秘密裏に出奔、アスターポヴォ駅で客死",
+      "detail": "妻との激しい対立に耐えかね、末娘アレクサンドラと医師だけを連れて家出。肺炎のため小さな駅長官舎で死去。最後の言葉は『真実を…僕は愛する、皆を…』。",
+      "tags": [
+        "loss",
+        "restart"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "幸福な家庭はすべて互いに似通ったものであり、不幸な家庭はいずれもそれぞれに不幸である。",
+      "source": "『アンナ・カレーニナ』冒頭"
+    },
+    {
+      "text": "人生の意味は、生きることそのものにある。",
+      "source": "『懺悔』"
+    },
+    {
+      "text": "誰もが世界を変えようと考えるが、自分自身を変えようとは誰も思わない。",
+      "source": "日記"
+    },
+    {
+      "text": "愛は動詞である。",
+      "source": "トルストイに帰される言葉"
+    },
+    {
+      "text": "真実は、心の中でささやかれる声である。",
+      "source": "『懺悔』"
+    }
+  ],
+  "relations": [
+    {
+      "name": "ソフィア・ベールス",
+      "relation": "妻",
+      "years": "1862–1910",
+      "note": "『戦争と平和』を7回清書した才媛。晩年は激しく対立"
+    },
+    {
+      "name": "ガンジー",
+      "id": "gandhi",
+      "relation": "文通した信奉者",
+      "note": "非暴力思想に影響を与えた"
+    }
+  ],
+  "places": [
+    {
+      "name": "ヤースナヤ・ポリャーナ",
+      "location": "ロシア・トゥーラ州",
+      "note": "生家・墓地。全ての代表作を書いた地"
+    },
+    {
+      "name": "アスターポヴォ駅",
+      "location": "ロシア・リペツク州",
+      "note": "最期の地。今もそのままの駅長室が保存"
+    }
+  ],
+  "books": [
+    {
+      "title": "戦争と平和 1",
+      "author": "トルストイ",
+      "asin": "4102060014",
+      "description": "ナポレオン侵攻下の5つの家族"
+    },
+    {
+      "title": "アンナ・カレーニナ 上",
+      "author": "トルストイ",
+      "asin": "4003261038",
+      "description": "『すべての幸福な家庭は…』"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/LNTolstoy.jpg/500px-LNTolstoy.jpg",
+  "wikiTitle": "レフ・トルストイ",
+  "imageCredit": {
+    "artist": "В.Г. Чертков",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "http://nizrp.ru/tolstoy_foto.htm http://www.tolstoy-museum.ru/collect/photo.html",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:LNTolstoy.jpg"
+  }
+}

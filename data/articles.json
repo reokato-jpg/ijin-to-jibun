@@ -1,0 +1,37 @@
+{
+  "author": {
+    "name": "natsumi",
+    "bio": "あなたと音楽、わたしの音楽。",
+    "noteUrl": "https://note.com/natsumi_by_piano"
+  },
+  "articles": [
+    {
+      "id": "nb910a090ba7b",
+      "title": "-♭2.免罪符- 逃げてばかりだった、私と音楽の話",
+      "date": "2026-04-16",
+      "url": "https://note.com/natsumi_by_piano/n/nb910a090ba7b",
+      "source": "note",
+      "category": "わたしの話",
+      "thumbnail": "https://assets.st-note.com/production/uploads/images/267995908/rectangle_large_type_2_a7c30253cf28a99c7f5990c9f286f82e.png?fit=bounds&quality=85&width=1280",
+      "description": "前回の記事では、大学を卒業したばかりの私が留学という目標を見失い、コロナ禍の中で自ら心のシャッターを下ろしてしまったところまでを書きました。第1話で書いた「留学行く行く詐欺」のような日々を、私はその後も足踏み状態のまま、約5年もの間続けてしまうことになります。続きをみる",
+      "relatedPeople": [],
+      "relatedTags": []
+    },
+    {
+      "id": "flat1-gimu",
+      "title": "-♭1.義務- 逃げてばかりだった、私と音楽の話",
+      "date": "2026-04-09",
+      "url": "https://note.com/natsumi_by_piano/n/n141006031d42",
+      "source": "note",
+      "category": "わたしの話",
+      "thumbnail": "https://assets.st-note.com/production/uploads/images/266038232/rectangle_large_type_2_f3841ac337a126e5cbb1e7e7946903f0.png?fit=bounds&quality=85&width=800",
+      "description": "変わりたいのに変われない5年間。ピアノが好きだったはずなのに、いつの間にか義務になっていた。感情のスイッチを切って、何も感じないようにやり過ごした日々のこと。",
+      "relatedPeople": [],
+      "relatedTags": [
+        "escape",
+        "blank_period",
+        "burnout"
+      ]
+    }
+  ]
+}

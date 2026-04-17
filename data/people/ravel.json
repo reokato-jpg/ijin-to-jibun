@@ -1,0 +1,237 @@
+{
+  "id": "ravel",
+  "name": "モーリス・ラヴェル",
+  "nameEn": "Maurice Ravel",
+  "birth": 1875,
+  "death": 1937,
+  "country": "フランス",
+  "field": "作曲家",
+  "summary": "『ボレロ』『水の戯れ』で精緻な色彩の音楽を書いた完璧主義者。生涯独身で、晩年は脳の障害で書けなくなり62歳で没した。小柄でダンディな孤独の人。",
+  "events": [
+    {
+      "year": 1875,
+      "age": 0,
+      "title": "バスク地方シブールに誕生",
+      "detail": "母はバスク人、父は発明家。バスクの民謡が生涯の感性に残る。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1875,
+      "age": 0,
+      "title": "南仏シブールに誕生、生後3ヶ月でパリへ",
+      "detail": "父は発明家、母はバスク人。『私にはバスク人の魂がある』と晩年に語った。",
+      "tags": []
+    },
+    {
+      "year": 1889,
+      "age": 14,
+      "title": "パリ音楽院入学、フォーレの弟子に",
+      "detail": "ピアノ・和声・作曲を学ぶ。ドビュッシー(13歳年上)と出会うのもこの時期。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1905,
+      "age": 30,
+      "title": "ローマ大賞で4年連続落選",
+      "detail": "音楽院アカデミズムとの決定的な亀裂。この事件がフランス音楽界に衝撃を与えた。",
+      "tags": [
+        "setback",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1905,
+      "age": 30,
+      "title": "ローマ大賞を5回落選、スキャンダルに",
+      "detail": "才能を認められながら保守的な審査で落選。マスコミが『ラヴェル事件』として批判、音楽院長更迭の引き金に。",
+      "tags": [
+        "pride_broken",
+        "approval"
+      ]
+    },
+    {
+      "year": 1912,
+      "age": 37,
+      "title": "バレエ『ダフニスとクロエ』完成",
+      "detail": "ディアギレフ委嘱、ニジンスキー振付。『交響的舞踊詩』ラヴェル最大規模の管弦楽。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1914,
+      "age": 39,
+      "title": "第一次大戦に志願",
+      "detail": "小柄で兵役不適格だったが、トラック運転手として従軍。",
+      "tags": [
+        "self_reinvention"
+      ]
+    },
+    {
+      "year": 1914,
+      "age": 39,
+      "title": "第一次大戦に志願、運転手として従軍",
+      "detail": "小柄で兵役不適格を押して志願。ヴェルダンの激戦地でトラックを運転した。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1917,
+      "age": 42,
+      "title": "母マリーを失う",
+      "detail": "最愛の母の死。『母を失った悲しみから立ち直れない』と手紙に書き、数年作曲できなかった。",
+      "tags": [
+        "loss",
+        "heartbreak",
+        "blank_period"
+      ]
+    },
+    {
+      "year": 1928,
+      "age": 53,
+      "title": "『ボレロ』初演",
+      "detail": "17分間同じリズムの繰り返し。『これは傑作だ、ただ音楽は全く入っていないが』（本人）",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1928,
+      "age": 53,
+      "title": "『ボレロ』完成",
+      "detail": "バレエダンサー・ルービンシュタインの依頼。『これは失敗作だ』と自ら予言したが、世界で最も演奏される管弦楽曲に。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1932,
+      "age": 57,
+      "title": "タクシー事故、脳の機能障害",
+      "detail": "曲は頭の中にあるのに書けなくなる。5年の苦しみの末没。",
+      "tags": [
+        "illness",
+        "loss"
+      ]
+    },
+    {
+      "year": 1932,
+      "age": 57,
+      "title": "タクシー事故で頭部打撲、失語症の始まり",
+      "detail": "前頭側頭型認知症の発症とも。音楽は頭の中に鳴っているが、書けない・弾けない地獄が始まる。",
+      "tags": [
+        "illness",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1937,
+      "age": 62,
+      "title": "脳手術の後遺症で死去",
+      "detail": "書けないまま沈黙のうちに。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1937,
+      "age": 62,
+      "title": "脳手術後、意識を取り戻さず死去",
+      "detail": "実験的な脳手術の2週間後。『ここにまだメロディーがある』と頭を指さした最後。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "私の音楽には秘密などない、ただ正直さがあるだけだ。",
+      "source": "インタビュー"
+    },
+    {
+      "text": "音楽とは、不可能な夢を、あたかも可能であるかのように語る言葉である。",
+      "source": "ラヴェルの言葉"
+    },
+    {
+      "text": "あなたは一流のガーシュウィンで、二流のラヴェルにはなるな。",
+      "source": "弟子入りを求めたガーシュウィンに"
+    },
+    {
+      "text": "ボレロ？ 不幸にも、音楽のない音楽だ。",
+      "source": "自作を評して"
+    }
+  ],
+  "places": [
+    {
+      "name": "ラヴェルの家（ル・ベルヴェデール）",
+      "location": "フランス・モンフォール=ラモリー",
+      "note": "ラヴェルが40歳から死ぬまで暮らした家。内装も本人デザイン"
+    }
+  ],
+  "books": [
+    {
+      "title": "ラヴェル 生涯と作品",
+      "author": "マドレーヌ・グート",
+      "asin": "4276225361",
+      "description": "緻密なラヴェル論"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Maurice_Ravel_1925.jpg/500px-Maurice_Ravel_1925.jpg",
+  "wikiTitle": "モーリス・ラヴェル",
+  "imageCredit": {
+    "artist": "Unknown author Unknown author The image holder, the Bibliothèque nationale de France has not identified a photographer. (Follow link and click on \"Detailed information\".)",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Bibliothèque nationale de France",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Maurice_Ravel_1925.jpg"
+  },
+  "works": [
+    {
+      "title": "ボレロ",
+      "year": 1928,
+      "type": "管弦楽",
+      "description": "同じリズムが17分間続く魔術的クレッシェンド",
+      "youtubeId": "mBe6v_4g3xc"
+    },
+    {
+      "title": "ピアノ協奏曲 ト長調",
+      "year": 1931,
+      "type": "協奏曲",
+      "description": "ジャズの影響も受けた晩年の光あふれる傑作",
+      "youtubeId": "bLuE3OStE3c"
+    },
+    {
+      "title": "亡き王女のためのパヴァーヌ",
+      "year": 1899,
+      "type": "ピアノ曲",
+      "description": "学生時代の小品。最も愛される旋律のひとつ",
+      "youtubeId": "LKEbT9Z2uv0"
+    },
+    {
+      "title": "ダフニスとクロエ 第2組曲",
+      "year": 1912,
+      "type": "バレエ",
+      "description": "『夜明け』『パントマイム』『全員の踊り』",
+      "youtubeId": "BkPtaTQN_z4"
+    },
+    {
+      "title": "クープランの墓",
+      "year": 1917,
+      "type": "ピアノ曲",
+      "description": "戦死した友人たちに捧げた組曲。各曲にそれぞれの友の名前",
+      "youtubeId": "d_JsYnUb8lg"
+    },
+    {
+      "title": "水の戯れ",
+      "year": 1901,
+      "type": "ピアノ曲",
+      "description": "印象主義ピアノ書法の出発点",
+      "youtubeId": "1QWKoonvDnU"
+    }
+  ]
+}

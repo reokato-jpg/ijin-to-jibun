@@ -1,0 +1,264 @@
+{
+  "id": "tokugawa_ieyasu",
+  "name": "徳川家康",
+  "nameEn": "Tokugawa Ieyasu",
+  "birth": 1543,
+  "death": 1616,
+  "country": "日本",
+  "field": "戦国武将・江戸幕府初代将軍",
+  "summary": "三河の弱小大名の家に生まれ、幼少期は人質として過ごしながら、信長・秀吉の時代を耐え抜き、75歳で天下を取って260年続く江戸幕府を開いた。『鳴かぬなら鳴くまで待とう』の忍耐の人。",
+  "events": [
+    {
+      "year": 1543,
+      "age": 0,
+      "title": "三河・岡崎に誕生",
+      "detail": "父は松平広忠、母は於大の方。両親は早くに離別。",
+      "tags": [
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1548,
+      "age": 5,
+      "title": "織田家の人質となる",
+      "detail": "尾張の敵方に送られる。6歳から14歳まで人質生活。忍耐の原体験。",
+      "tags": [
+        "isolation",
+        "blank_period"
+      ]
+    },
+    {
+      "year": 1555,
+      "age": 12,
+      "title": "今川義元のもとで元服、『元信』を名乗る",
+      "detail": "駿府での人質生活は14歳まで続き、厳しい師・太原雪斎に学んだ。",
+      "tags": [
+        "restart",
+        "approval"
+      ]
+    },
+    {
+      "year": 1560,
+      "age": 17,
+      "title": "桶狭間の戦い、独立",
+      "detail": "今川義元が討たれ、松平家として独立。信長と同盟を結ぶ。",
+      "tags": [
+        "turning_encounter",
+        "restart"
+      ]
+    },
+    {
+      "year": 1562,
+      "age": 19,
+      "title": "信長と清洲同盟",
+      "detail": "20年以上続く、戦国きっての強固な同盟。裏切らなかったことが家康の信用を作った。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1570,
+      "age": 27,
+      "title": "姉川の戦いで信長を助ける",
+      "detail": "浅井・朝倉連合軍を破る。信長の信任をさらに深めた。",
+      "tags": []
+    },
+    {
+      "year": 1572,
+      "age": 29,
+      "title": "三方ヶ原の戦いで武田信玄に惨敗",
+      "detail": "恐怖のあまり馬上で脱糞したと伝わる。自分の『しかめ面』を絵師に描かせ、生涯手元に置いた。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1579,
+      "age": 36,
+      "title": "嫡男・松平信康を自害させる",
+      "detail": "信長の命により、武田との内通を疑われた息子を切腹させた。妻・築山殿も殺害。一生消えない傷。",
+      "tags": [
+        "loss",
+        "parent_conflict",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1582,
+      "age": 39,
+      "title": "本能寺の変、堺から『神君伊賀越え』",
+      "detail": "わずかな供と堺にいたところへ信長横死の報。服部半蔵の手引きで決死の逃避行を成功させた。",
+      "tags": [
+        "loss",
+        "restart"
+      ]
+    },
+    {
+      "year": 1584,
+      "age": 41,
+      "title": "小牧・長久手で秀吉と戦い局地戦で勝つ",
+      "detail": "直接戦えば勝てる。しかし政治力では及ばず、翌年臣従。",
+      "tags": [
+        "breakthrough",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1590,
+      "age": 47,
+      "title": "関東移封 — 江戸への国替え",
+      "detail": "秀吉により先祖伝来の三河から関東へ。この湿地帯を200万石の大都市に育てる。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1600,
+      "age": 57,
+      "title": "関ヶ原の戦い",
+      "detail": "天下分け目の戦いに勝利。『三河の弱小』から天下人へ。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1603,
+      "age": 60,
+      "title": "征夷大将軍、江戸幕府開府",
+      "detail": "260年続く平和の時代の基礎を築く。",
+      "tags": [
+        "breakthrough",
+        "restart"
+      ]
+    },
+    {
+      "year": 1605,
+      "age": 62,
+      "title": "わずか2年で将軍職を秀忠に譲る",
+      "detail": "徳川が世襲することを天下に示し、豊臣との決別を明確化。",
+      "tags": []
+    },
+    {
+      "year": 1615,
+      "age": 72,
+      "title": "大坂夏の陣、豊臣家滅亡",
+      "detail": "秀吉の遺児秀頼・淀殿を滅ぼす。約束された恩を最後の最後で裏切った。",
+      "tags": []
+    },
+    {
+      "year": 1616,
+      "age": 73,
+      "title": "駿府で死去",
+      "detail": "『人の一生は重荷を負うて遠き道を行くが如し』の遺訓を残す。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "人の一生は重荷を負うて遠き道を行くが如し。急ぐべからず。",
+      "source": "東照宮御遺訓"
+    },
+    {
+      "text": "不自由を常と思えば不足なし。",
+      "source": "東照宮御遺訓"
+    },
+    {
+      "text": "鳴かぬなら鳴くまで待とうホトトギス。",
+      "source": "徳川家康を評する伝承の句"
+    },
+    {
+      "text": "怒りは敵と思え。",
+      "source": "東照宮御遺訓"
+    },
+    {
+      "text": "勝つことばかり知りて、負くることを知らざれば、害その身に至る。",
+      "source": "東照宮御遺訓"
+    }
+  ],
+  "relations": [
+    {
+      "name": "織田信長",
+      "id": "oda_nobunaga",
+      "relation": "同盟者",
+      "years": "1561–1582",
+      "note": "清洲同盟で結ばれた戦国の盟友"
+    },
+    {
+      "name": "豊臣秀吉",
+      "relation": "主君（形式上）",
+      "years": "1586–1598",
+      "note": "小牧・長久手で戦った後、臣従。秀吉の死を待って天下を取った"
+    },
+    {
+      "name": "石田三成",
+      "relation": "関ヶ原の敵",
+      "years": "1600",
+      "note": "豊臣政権を守ろうとした三成を倒して天下を得た"
+    }
+  ],
+  "places": [
+    {
+      "name": "岡崎城",
+      "location": "愛知県岡崎市",
+      "note": "生家の城。家康の聖地"
+    },
+    {
+      "name": "駿府城",
+      "location": "静岡県静岡市",
+      "note": "将軍退位後を過ごした城"
+    },
+    {
+      "name": "日光東照宮",
+      "location": "栃木県日光市",
+      "note": "家康を神として祀る霊廟"
+    },
+    {
+      "name": "久能山東照宮",
+      "location": "静岡県静岡市",
+      "note": "家康の遺体が最初に葬られた場所"
+    }
+  ],
+  "books": [
+    {
+      "title": "徳川家康 1",
+      "author": "山岡荘八",
+      "asin": "4061961128",
+      "description": "全26巻の大長編小説。家康の忍耐の一生を追う"
+    },
+    {
+      "title": "影武者徳川家康 上",
+      "author": "隆慶一郎",
+      "asin": "4101174113",
+      "description": "『関ヶ原で家康は死んでいた』という大胆な仮説の歴史小説"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Tokugawa_Ieyasu_kao.jpg/500px-Tokugawa_Ieyasu_kao.jpg",
+  "wikiTitle": "徳川家康",
+  "imageCredit": {
+    "artist": "Tokugawa Ieyasu",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "http://www.sbs-bunkafukushi.com/museum/collect/1057099.html",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tokugawa_Ieyasu_kao.jpg"
+  },
+  "media": [
+    {
+      "title": "どうする家康",
+      "year": 2023,
+      "type": "drama",
+      "country": "日本",
+      "cast": "松本潤",
+      "description": "NHK大河ドラマ。若き弱腰の家康が試練を重ねて天下人になるまで。"
+    },
+    {
+      "title": "徳川家康",
+      "year": 1983,
+      "type": "drama",
+      "country": "日本",
+      "cast": "滝田栄",
+      "description": "山岡荘八原作。50話にわたり家康75年の生涯を描いた大河。"
+    }
+  ]
+}

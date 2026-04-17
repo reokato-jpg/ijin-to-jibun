@@ -1,0 +1,161 @@
+{
+  "id": "socrates",
+  "name": "ソクラテス",
+  "nameEn": "Socrates",
+  "birth": -470,
+  "death": -399,
+  "country": "古代ギリシャ",
+  "field": "哲学者",
+  "summary": "書かれた著作を一切残さず、アテネの街頭で問答を繰り返した西洋哲学の祖。『無知の知』を説き、国家を堕落させた罪で死刑に処され、毒杯を自ら仰いだ。",
+  "events": [
+    {
+      "year": -470,
+      "age": 0,
+      "title": "アテネに石工の子として誕生",
+      "detail": "母は助産婦。『産婆術』と呼ぶ問答法の原点はここから。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": -431,
+      "age": 39,
+      "title": "ペロポネソス戦争に従軍",
+      "detail": "勇敢な戦士として何度も命を救った記録が残る。",
+      "tags": []
+    },
+    {
+      "year": -425,
+      "age": 45,
+      "title": "『知者は私ではない』デルポイの神託",
+      "detail": "友人カイレフォンが神託所で『ソクラテスより賢い者はいない』と聞く。驚いたソクラテスは各界の賢人を訪ね『自分が無知であることを知っている自分』が最も賢いと悟る。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": -406,
+      "age": 64,
+      "title": "アルギヌサイ海戦の裁判で唯一反対",
+      "detail": "将軍10人を一括で裁くのは違法と主張。群衆に脅されても屈しなかった。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": -404,
+      "age": 66,
+      "title": "三十人政権下、民主派殺害命令を拒む",
+      "detail": "サラミスのレオンの連行を命じられ『私は死ぬかもしれぬが悪はなさぬ』と拒否。",
+      "tags": [
+        "isolation"
+      ]
+    },
+    {
+      "year": -399,
+      "age": 70,
+      "title": "裁判で死刑判決、毒杯を仰ぐ",
+      "detail": "『国家の神を認めず若者を堕落させた』として告発。自ら毒ニンジンを飲んで死去。『汝自身を知れ』",
+      "tags": [
+        "loss",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": -399,
+      "age": 70,
+      "title": "告発・裁判・有罪判決",
+      "detail": "『若者を堕落させた罪』『国家の神を認めなかった罪』。自己弁論を拒否する形の弁明で、投票280対220で死刑。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": -399,
+      "age": 70,
+      "title": "毒杯を仰ぐ",
+      "detail": "クリトンの逃亡の勧めを断り、祭事のため刑執行が遅れた30日、対話を続けた。最期に『クリトン、アスクレピオスに鶏を捧げておいてくれ』と頼んだ。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "私が知っていることは、私が何も知らないということだけだ。",
+      "source": "『ソクラテスの弁明』"
+    },
+    {
+      "text": "汝自身を知れ。",
+      "source": "デルフォイの神託に由来"
+    },
+    {
+      "text": "大事なのは、ただ生きることではなく、善く生きることだ。",
+      "source": "『クリトン』"
+    },
+    {
+      "text": "吟味されない生は、生きるに値しない。",
+      "source": "『ソクラテスの弁明』38a"
+    },
+    {
+      "text": "クリトン、アスクレピオスに鶏を捧げておいてくれ。",
+      "source": "最期の言葉 『パイドン』"
+    },
+    {
+      "text": "結婚しなさい。良妻なら幸福になれる。悪妻なら哲学者になれる。",
+      "source": "ソクラテスに帰される言葉"
+    }
+  ],
+  "relations": [
+    {
+      "name": "プラトン",
+      "id": "plato",
+      "relation": "弟子",
+      "note": "ソクラテスの問答を記録に残した最大の継承者"
+    },
+    {
+      "name": "クセノフォン",
+      "relation": "弟子",
+      "note": "『ソクラテスの思い出』の著者"
+    }
+  ],
+  "places": [
+    {
+      "name": "アクロポリス・アゴラ",
+      "location": "ギリシャ・アテネ",
+      "note": "ソクラテスが問答を行った広場"
+    },
+    {
+      "name": "ソクラテスの牢獄",
+      "location": "ギリシャ・アテネ・フィロパポスの丘",
+      "note": "死刑を待った洞窟と伝わる場所"
+    }
+  ],
+  "books": [
+    {
+      "title": "ソクラテスの弁明・クリトン",
+      "author": "プラトン",
+      "asin": "4003360117",
+      "description": "裁判の記録。哲学の原点の書"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Socrate_du_Louvre.jpg/500px-Socrate_du_Louvre.jpg",
+  "wikiTitle": "ソクラテス",
+  "imageCredit": {
+    "artist": "Copy of Lysippos (?)",
+    "license": "CC BY-SA 2.5",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
+    "credit": "This file was derived from: Socrates Louvre.jpg Eric Gaba ( User:Sting ), July 2005.",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Socrate_du_Louvre.jpg"
+  },
+  "media": [
+    {
+      "title": "ソクラテス",
+      "year": 1971,
+      "type": "movie",
+      "country": "イタリア",
+      "director": "ロベルト・ロッセリーニ",
+      "description": "ロッセリーニ晩年の哲学者シリーズの傑作。裁判と最期までを淡々と描く。"
+    }
+  ]
+}

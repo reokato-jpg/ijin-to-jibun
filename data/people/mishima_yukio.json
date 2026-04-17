@@ -1,0 +1,238 @@
+{
+  "id": "mishima_yukio",
+  "name": "三島由紀夫",
+  "nameEn": "Mishima Yukio",
+  "birth": 1925,
+  "death": 1970,
+  "country": "日本",
+  "field": "小説家・劇作家",
+  "summary": "『金閣寺』『潮騒』の作家。45歳で市ヶ谷の自衛隊駐屯地に乗り込み、憲法改正を訴えた後に割腹自殺。戦後最大の文学的事件を起こした天才。",
+  "events": [
+    {
+      "year": 1925,
+      "age": 0,
+      "title": "東京・永田町に誕生、祖母に溺愛される",
+      "detail": "病弱な祖母に奪われるように育てられ、母と引き離された幼少期。",
+      "tags": [
+        "parent_conflict",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1925,
+      "age": 0,
+      "title": "東京・四谷に誕生、祖母夏子のもとで育つ",
+      "detail": "両親から引き離され、病弱な祖母の病室で12年間過ごす。異常に繊細な少年時代。",
+      "tags": [
+        "parent_conflict",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1944,
+      "age": 19,
+      "title": "学習院を首席で卒業、天皇から銀時計を賜る",
+      "detail": "昭和天皇に直接謁見。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1945,
+      "age": 20,
+      "title": "徴兵検査で不合格、敗戦を体験",
+      "detail": "生涯『死に損なった世代』という意識を抱える。",
+      "tags": [
+        "pride_broken",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1949,
+      "age": 24,
+      "title": "『仮面の告白』で衝撃デビュー",
+      "detail": "同性愛的傾向の告白が文壇を震撼させる。川端康成の推薦で世に出た。",
+      "tags": [
+        "breakthrough",
+        "self_reinvention"
+      ]
+    },
+    {
+      "year": 1949,
+      "age": 24,
+      "title": "『仮面の告白』刊行、衝撃デビュー",
+      "detail": "同性愛・異常性欲を告白体で描いた自伝的小説。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1956,
+      "age": 31,
+      "title": "『金閣寺』ベストセラー",
+      "detail": "美への執着と破壊を描く代表作。国際的名声を得る。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1956,
+      "age": 31,
+      "title": "『金閣寺』刊行、読売文学賞",
+      "detail": "放火僧の内面を描いた代表作。ノーベル賞候補に。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1958,
+      "age": 33,
+      "title": "杉山瑤子と結婚",
+      "detail": "川端康成の紹介。結婚しても肉体改造・武道への情熱は続く。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1965,
+      "age": 40,
+      "title": "『豊饒の海』四部作の執筆開始",
+      "detail": "生涯の総決算。輪廻転生を貫く4冊を5年で書き上げる。",
+      "tags": []
+    },
+    {
+      "year": 1968,
+      "age": 43,
+      "title": "楯の会を結成",
+      "detail": "民兵組織を自前で組織。ノーベル賞候補ながら、行動右翼へと傾斜。",
+      "tags": [
+        "self_reinvention"
+      ]
+    },
+    {
+      "year": 1968,
+      "age": 43,
+      "title": "楯の会結成",
+      "detail": "民族派の民兵組織。自衛隊での軍事訓練も行う。",
+      "tags": []
+    },
+    {
+      "year": 1970,
+      "age": 45,
+      "title": "市ヶ谷事件・割腹自殺",
+      "detail": "自衛隊総監室を占拠、檄文を読み上げた後、森田必勝と割腹。首は介錯された。",
+      "tags": [
+        "loss",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1970,
+      "age": 45,
+      "title": "市ヶ谷自衛隊駐屯地で割腹自殺",
+      "detail": "11月25日、『豊饒の海』第4巻を編集者に届けた直後、楯の会4人と総監室を占拠、バルコニーで演説後に割腹。介錯は介錯人に頼んだ。",
+      "tags": [
+        "loss",
+        "pride_broken"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "生死を超越するとは、死の側からあらためて生を眺めることだ。",
+      "source": "『葉隠入門』"
+    },
+    {
+      "text": "天皇陛下万歳。",
+      "source": "市ヶ谷バルコニー最後の言葉"
+    },
+    {
+      "text": "人生に意味はない。しかし生きるに値する。",
+      "source": "『葉隠入門』"
+    },
+    {
+      "text": "精神と肉体を、同時に満たすことが人生の理想であった。",
+      "source": "『太陽と鉄』"
+    },
+    {
+      "text": "死は常に同時並行した生の一面として存在している。",
+      "source": "『仮面の告白』"
+    },
+    {
+      "text": "美は私にとって、怨敵なのだ。",
+      "source": "『金閣寺』"
+    },
+    {
+      "text": "七たび人間に生れて、国難に赴かん。",
+      "source": "楯の会、辞世"
+    }
+  ],
+  "places": [
+    {
+      "name": "三島由紀夫文学館",
+      "location": "山梨県山中湖村",
+      "note": "自筆原稿・遺品を展示"
+    },
+    {
+      "name": "市ヶ谷駐屯地（旧・陸上自衛隊東部方面総監部）",
+      "location": "東京都新宿区市谷本村町",
+      "note": "事件の現場。現・防衛省"
+    },
+    {
+      "name": "多磨霊園（墓所）",
+      "location": "東京都府中市",
+      "note": "三島家の墓"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Yukio_Mishima%2C_1955_%28cropped_850%C3%97950_px%29.jpg/500px-Yukio_Mishima%2C_1955_%28cropped_850%C3%97950_px%29.jpg",
+  "wikiTitle": "三島由紀夫",
+  "imageCredit": {
+    "artist": "Ken Domon",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "https://unregardoblique.com/2018/02/04/ken-domon-yukio-mishima-1955/",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Yukio_Mishima%2C_1955_%28cropped_850%C3%97950_px%29.jpg"
+  },
+  "books": [
+    {
+      "title": "金閣寺",
+      "author": "三島由紀夫",
+      "asin": "4101050082",
+      "description": "美への執着と破壊。国際的代表作"
+    },
+    {
+      "title": "仮面の告白",
+      "author": "三島由紀夫",
+      "asin": "4101050015",
+      "description": "24歳の衝撃デビュー作"
+    },
+    {
+      "title": "潮騒",
+      "author": "三島由紀夫",
+      "asin": "4101050023",
+      "description": "素朴な恋を描いた青春小説"
+    }
+  ],
+  "media": [
+    {
+      "title": "MISHIMA: A Life in Four Chapters",
+      "year": 1985,
+      "type": "movie",
+      "country": "アメリカ",
+      "director": "ポール・シュレイダー",
+      "cast": "緒形拳",
+      "description": "スコセッシ・コッポラ製作総指揮。三島の生涯を4つの章で描く。日本では長く未公開だった伝説の映画。"
+    },
+    {
+      "title": "11.25自決の日 三島由紀夫と若者たち",
+      "year": 2012,
+      "type": "movie",
+      "country": "日本",
+      "director": "若松孝二",
+      "cast": "井浦新",
+      "description": "三島と楯の会の青年たちの最後の3ヶ月。"
+    }
+  ]
+}

@@ -1,0 +1,241 @@
+{
+  "id": "tchaikovsky",
+  "name": "ピョートル・チャイコフスキー",
+  "nameEn": "Pyotr Tchaikovsky",
+  "birth": 1840,
+  "death": 1893,
+  "country": "ロシア",
+  "field": "作曲家",
+  "summary": "『白鳥の湖』『くるみ割り人形』のロシアの旋律の王。同性愛を隠しながら結婚に失敗し、パトロンの未亡人と文通だけの精神的恋愛を続けた。",
+  "events": [
+    {
+      "year": 1840,
+      "age": 0,
+      "title": "ウラル地方の鉱山技師の家に誕生",
+      "detail": "非常に繊細で感情的な少年。14歳で母を失い生涯のトラウマに。",
+      "tags": [
+        "loss",
+        "illness"
+      ]
+    },
+    {
+      "year": 1840,
+      "age": 0,
+      "title": "ウラル地方ヴォトキンスクの鉱山技師の子に",
+      "detail": "姉ファニーによると『信じられないほど繊細な子』だった。",
+      "tags": []
+    },
+    {
+      "year": 1854,
+      "age": 14,
+      "title": "母アレクサンドラがコレラで死去",
+      "detail": "『私の人生で最も恐ろしい出来事』。生涯、母への深い愛着と喪失が音楽に現れた。",
+      "tags": [
+        "loss",
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1859,
+      "age": 19,
+      "title": "法律学校卒業、法務省書記官に",
+      "detail": "父の望みで官僚の道へ。",
+      "tags": []
+    },
+    {
+      "year": 1863,
+      "age": 23,
+      "title": "官職を辞めペテルブルク音楽院へ",
+      "detail": "遅いスタート。ルビンシテインに学ぶ。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1866,
+      "age": 26,
+      "title": "モスクワ音楽院教授に",
+      "detail": "『交響曲第1番・冬の日の幻想』を作曲するが心労で神経衰弱。",
+      "tags": [
+        "illness"
+      ]
+    },
+    {
+      "year": 1877,
+      "age": 37,
+      "title": "失敗結婚と自殺未遂",
+      "detail": "同性愛を隠すため教え子と結婚、数週間で破綻。川に身を投げようとした。",
+      "tags": [
+        "heartbreak",
+        "self_denial",
+        "illness"
+      ]
+    },
+    {
+      "year": 1877,
+      "age": 37,
+      "title": "フォン・メック夫人の支援開始",
+      "detail": "会わない約束で13年間文通と支援を続けた未亡人。『魂の伴侶』",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1877,
+      "age": 37,
+      "title": "アントニーナと悲惨な結婚、2ヶ月で別居",
+      "detail": "弟子からの熱烈な手紙に断りきれず結婚。同性愛者の苦悩と相まって川へ投身自殺未遂。弟に救われる。",
+      "tags": [
+        "heartbreak",
+        "pride_broken",
+        "restart"
+      ]
+    },
+    {
+      "year": 1877,
+      "age": 37,
+      "title": "メック夫人との14年の文通開始",
+      "detail": "『決して会わない』約束で、夫人から生活費援助。1200通以上の手紙を交わす。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1890,
+      "age": 50,
+      "title": "フォン・メック夫人、突然の絶縁",
+      "detail": "最大の支えを失う。『私の心は死んだ』と書き残した。",
+      "tags": [
+        "loss",
+        "heartbreak"
+      ]
+    },
+    {
+      "year": 1890,
+      "age": 50,
+      "title": "メック夫人から突然の絶縁",
+      "detail": "経済的にも精神的にも最大の支えを失う。『人生で最も冷酷な打撃』。",
+      "tags": [
+        "heartbreak",
+        "loss"
+      ]
+    },
+    {
+      "year": 1893,
+      "age": 53,
+      "title": "交響曲第6番『悲愴』初演9日後に急死",
+      "detail": "コレラか自殺かで諸説ある謎の死。自作の弔いとなった。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1893,
+      "age": 53,
+      "title": "『交響曲第6番 悲愴』初演9日後に死去",
+      "detail": "コレラの生水を飲み急死。自殺説・毒殺説もあり謎に包まれている。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "霊感は怠け者を訪れない。",
+      "source": "書簡"
+    },
+    {
+      "text": "音楽とは、言葉では表せない感情を表現するために与えられた言語である。",
+      "source": "メック夫人への手紙"
+    },
+    {
+      "text": "霊感は、客人ではなく友人である。呼んでも来ず、呼ばなくても来る。",
+      "source": "日記"
+    },
+    {
+      "text": "もしあなたが運命と戦うなら、戦いそのものが、人生を価値あるものにするだろう。",
+      "source": "書簡"
+    }
+  ],
+  "places": [
+    {
+      "name": "チャイコフスキーの家博物館",
+      "location": "ロシア・クリン",
+      "note": "最晩年を過ごした家"
+    },
+    {
+      "name": "アレクサンドル・ネフスキー大修道院墓地",
+      "location": "サンクトペテルブルク",
+      "note": "ロシア音楽家が眠る聖地"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Tchaikovsky2.jpg/500px-Tchaikovsky2.jpg",
+  "wikiTitle": "ピョートル・チャイコフスキー",
+  "imageCredit": {
+    "artist": "Unknown author Unknown author",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Evans, Edwin (1906) Tchaikovsky , Category:New York : E. P. Dutton &amp; Company, pp. Frontispiece Retrieved on 27 March 2009.",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tchaikovsky2.jpg"
+  },
+  "books": [
+    {
+      "title": "チャイコフスキーの生涯",
+      "author": "マックス・ベルナール",
+      "asin": "4276221641",
+      "description": "同性愛と創作の苦悩を描いた評伝"
+    },
+    {
+      "title": "わが音楽生活 チャイコフスキー自伝",
+      "author": "チャイコフスキー",
+      "asin": "4393931246",
+      "description": "本人の手紙から紡いだ心の記録"
+    }
+  ],
+  "media": [
+    {
+      "title": "チャイコフスキーの妻",
+      "year": 2022,
+      "type": "movie",
+      "country": "ロシア・仏",
+      "director": "キリル・セレブレンニコフ",
+      "description": "チャイコフスキーの苦悩に満ちた結婚を妻アントニーナの視点から描く。"
+    }
+  ],
+  "works": [
+    {
+      "title": "ピアノ協奏曲第1番 変ロ短調 作品23",
+      "year": 1875,
+      "type": "協奏曲",
+      "description": "壮大な序奏で始まる、最も有名な協奏曲のひとつ",
+      "youtubeId": "FlIBytuRw2A"
+    },
+    {
+      "title": "バレエ『白鳥の湖』作品20",
+      "year": 1877,
+      "type": "バレエ",
+      "description": "世界で最も愛されるバレエ音楽",
+      "youtubeId": "9cNQFB0TDfY"
+    },
+    {
+      "title": "バレエ『くるみ割り人形』作品71",
+      "year": 1892,
+      "type": "バレエ",
+      "description": "『花のワルツ』『金平糖の踊り』などクリスマスの定番"
+    },
+    {
+      "title": "交響曲第6番 ロ短調『悲愴』作品74",
+      "year": 1893,
+      "type": "交響曲",
+      "description": "死の9日前に自身が初演。第4楽章の消え入るような終結",
+      "youtubeId": "zNpaOLFJj9s"
+    },
+    {
+      "title": "ヴァイオリン協奏曲 ニ長調 作品35",
+      "year": 1878,
+      "type": "協奏曲",
+      "description": "三大ヴァイオリン協奏曲のひとつ",
+      "youtubeId": "2A_hNC98Iho"
+    }
+  ]
+}

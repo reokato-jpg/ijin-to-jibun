@@ -1,0 +1,196 @@
+{
+  "id": "nishida",
+  "name": "西田幾多郎",
+  "nameEn": "Nishida Kitaro",
+  "birth": 1870,
+  "death": 1945,
+  "country": "日本",
+  "field": "哲学者",
+  "summary": "日本最初のオリジナル哲学を打ち立てた『京都学派』の祖。『善の研究』『無の場所』で東洋思想と西洋哲学を接続した。禅の体験と論理が融合する独自の思想。",
+  "events": [
+    {
+      "year": 1870,
+      "age": 0,
+      "title": "石川県宇ノ気の地主の家に誕生",
+      "detail": "幼少期から学問を愛する少年だった。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1875,
+      "age": 5,
+      "title": "金沢近郊に富農の長男として誕生",
+      "detail": "加賀の旧家。古風な父と教養深い母のもとで育つ。",
+      "tags": []
+    },
+    {
+      "year": 1890,
+      "age": 20,
+      "title": "第四高等中学校を中退",
+      "detail": "体調不良と家庭の事情で。『選科生』として再出発。",
+      "tags": [
+        "setback",
+        "restart"
+      ]
+    },
+    {
+      "year": 1894,
+      "age": 24,
+      "title": "東京帝大選科で差別待遇",
+      "detail": "正規学生ではない『選科生』として、図書館も使用制限。この屈辱が思想の原動力に。",
+      "tags": [
+        "pride_broken",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1899,
+      "age": 29,
+      "title": "山口高校に赴任、鈴木大拙と旧交を温める",
+      "detail": "親友の禅仏教学者との議論が『純粋経験』概念の土台に。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1907,
+      "age": 37,
+      "title": "長女弥生が2歳で死去",
+      "detail": "以後5人の子を病で失う。個人的な悲しみが哲学を深めた。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1910,
+      "age": 40,
+      "title": "京都帝大助教授に",
+      "detail": "以後、京都学派の中心人物として後進を育てた。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1911,
+      "age": 41,
+      "title": "『善の研究』刊行",
+      "detail": "日本初の独創的哲学書。『純粋経験』の概念。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1913,
+      "age": 43,
+      "title": "京都帝大教授",
+      "detail": "『京都学派』の誕生。田辺元・三木清・西谷啓治らを育てる。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1918,
+      "age": 48,
+      "title": "妻寿美が脳溢血で寝たきりに",
+      "detail": "4年間自らおむつを替え看病。『哲学と看病で一日が終わる』と日記に。",
+      "tags": [
+        "loss",
+        "illness"
+      ]
+    },
+    {
+      "year": 1925,
+      "age": 55,
+      "title": "妻・寿美を失う",
+      "detail": "7年の看病の末。『哲学も何も空になった』。",
+      "tags": [
+        "loss",
+        "heartbreak"
+      ]
+    },
+    {
+      "year": 1927,
+      "age": 57,
+      "title": "『働くものから見るものへ』で『場所の論理』",
+      "detail": "『絶対無の場所』を語る独自の哲学へ。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1945,
+      "age": 75,
+      "title": "敗戦直前の鎌倉で死去",
+      "detail": "戦時中、軍部に利用されることを恐れつつ思索を続けた。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1945,
+      "age": 75,
+      "title": "鎌倉で敗戦直前に急死",
+      "detail": "6月7日、尿毒症で。終戦を見ずに逝った。最後の論文は『場所的論理と宗教的世界観』。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "我々の直接の実在は、意識現象以外のものではない。",
+      "source": "『善の研究』"
+    },
+    {
+      "text": "人は人、吾は吾なり、とにかくに、吾行く道を、吾は行くなり。",
+      "source": "西田の歌"
+    },
+    {
+      "text": "純粋経験において、主もなく客もない。",
+      "source": "『善の研究』"
+    },
+    {
+      "text": "考えるという事は、生きるという事である。",
+      "source": "『思索と体験』"
+    },
+    {
+      "text": "絶対無の場所。",
+      "source": "西田の独自用語"
+    },
+    {
+      "text": "我々は悲しみの故にこそ、深く感じ深く考えるのである。",
+      "source": "『思索と体験』"
+    }
+  ],
+  "places": [
+    {
+      "name": "哲学の道",
+      "location": "京都市左京区",
+      "note": "西田が思索しながら歩いた散歩道"
+    },
+    {
+      "name": "西田幾多郎記念哲学館",
+      "location": "石川県かほく市",
+      "note": "安藤忠雄設計の記念館"
+    }
+  ],
+  "books": [
+    {
+      "title": "善の研究",
+      "author": "西田幾多郎",
+      "asin": "4003312414",
+      "description": "日本初の独自哲学書"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Portrait-of-Kitaro-Nishida.png/500px-Portrait-of-Kitaro-Nishida.png",
+  "wikiTitle": "西田幾多郎",
+  "imageCredit": {
+    "artist": "Unknown author Unknown author",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "philosophiejaponaise.blogspot.com [1]",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Portrait-of-Kitaro-Nishida.png"
+  }
+}

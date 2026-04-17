@@ -1,0 +1,139 @@
+{
+  "id": "yukawa_hideki",
+  "name": "湯川秀樹",
+  "nameEn": "Hideki Yukawa",
+  "birth": 1907,
+  "death": 1981,
+  "country": "日本",
+  "field": "物理学者",
+  "summary": "中間子論で日本人初のノーベル賞受賞者。戦後の荒廃した日本に希望を与えた物理学者。晩年は核兵器廃絶のラッセル＝アインシュタイン宣言署名者となり、平和運動に尽くした。",
+  "events": [
+    {
+      "year": 1907,
+      "age": 0,
+      "title": "東京に地質学者小川琢治の三男として誕生",
+      "detail": "京大教授の家系で、兄弟も皆学者に。湯川家に婿入りして改姓。",
+      "tags": []
+    },
+    {
+      "year": 1929,
+      "age": 22,
+      "title": "京都帝大物理学科卒業、無給副手に",
+      "detail": "同期の朝永振一郎と共に日本の量子力学の黎明を担った。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1932,
+      "age": 25,
+      "title": "湯川スミと結婚、湯川姓となる",
+      "detail": "医師の婿養子。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1935,
+      "age": 28,
+      "title": "中間子論発表",
+      "detail": "日本数学物理学会誌に英語で。原子核内の力を伝える新粒子の存在を予言。当時は注目されなかった。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1947,
+      "age": 40,
+      "title": "パイ中間子発見で理論が実証",
+      "detail": "セシル・パウエルの宇宙線写真で予言粒子が見つかる。",
+      "tags": [
+        "approval",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1949,
+      "age": 42,
+      "title": "日本人初のノーベル物理学賞",
+      "detail": "敗戦で打ちひしがれた日本に希望を与えた。『湯川博士万歳』の号外。",
+      "tags": [
+        "approval",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1955,
+      "age": 48,
+      "title": "ラッセル＝アインシュタイン宣言に署名",
+      "detail": "アインシュタイン死去2日前、最後の11人の署名者に。以後、核兵器廃絶運動に人生を捧げる。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1981,
+      "age": 74,
+      "title": "京都で前立腺癌により死去",
+      "detail": "最後まで湯川奨学金で若い物理学者を支援し続けた。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "一日生きることは、一歩進むことでありたい。",
+      "source": "湯川の揮毫"
+    },
+    {
+      "text": "真実は常に少数派の側にある。",
+      "source": "湯川の言葉"
+    },
+    {
+      "text": "科学者は、自らの研究の結果について、人類に責任を持たねばならない。",
+      "source": "ラッセル=アインシュタイン宣言"
+    },
+    {
+      "text": "知識と感受性は、両輪である。",
+      "source": "随筆"
+    }
+  ],
+  "relations": [
+    {
+      "name": "朝永振一郎",
+      "relation": "盟友",
+      "note": "京大同期、二人目の日本人ノーベル物理学賞"
+    },
+    {
+      "name": "アインシュタイン",
+      "id": "einstein",
+      "relation": "共同署名者",
+      "note": "ラッセル＝アインシュタイン宣言で並んで署名"
+    }
+  ],
+  "places": [
+    {
+      "name": "湯川記念館",
+      "location": "京都大学",
+      "note": "湯川の業績を伝える記念館"
+    }
+  ],
+  "books": [
+    {
+      "title": "旅人——ある物理学者の回想",
+      "author": "湯川秀樹",
+      "asin": "4048837176",
+      "description": "若き日々を回想する名随筆"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Yukawa.jpg/500px-Yukawa.jpg",
+  "wikiTitle": "湯川秀樹",
+  "imageCredit": {
+    "artist": "Nobel Foundation archive",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "nobelprize.org [1]",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Yukawa.jpg"
+  }
+}

@@ -1,0 +1,184 @@
+{
+  "id": "camus",
+  "name": "アルベール・カミュ",
+  "nameEn": "Albert Camus",
+  "birth": 1913,
+  "death": 1960,
+  "country": "アルジェリア・フランス",
+  "field": "作家・哲学者",
+  "summary": "『異邦人』『ペスト』『シーシュポスの神話』。不条理の中でなお反抗し続けよと説いた作家。44歳でノーベル賞、46歳で自動車事故死。",
+  "events": [
+    {
+      "year": 1913,
+      "age": 0,
+      "title": "仏領アルジェリアの貧民街に誕生",
+      "detail": "父は翌年第一次大戦で戦死。母は聾唖の清掃婦。",
+      "tags": [
+        "parent_conflict",
+        "poverty"
+      ]
+    },
+    {
+      "year": 1930,
+      "age": 17,
+      "title": "結核を発症、サッカーを諦める",
+      "detail": "ゴールキーパーとして活躍していた青年が、喀血で挫折。『サッカー場で人生を学んだ』と後に語る。",
+      "tags": [
+        "illness",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1934,
+      "age": 21,
+      "title": "最初の結婚、すぐに破綻",
+      "detail": "モルヒネ中毒の妻シモーヌと。不安定な愛の始まり。",
+      "tags": [
+        "heartbreak"
+      ]
+    },
+    {
+      "year": 1940,
+      "age": 27,
+      "title": "フランスに渡りレジスタンス誌『コンバ』で活動",
+      "detail": "占領下のパリで地下出版紙の編集長。逮捕の危険と隣り合わせだった。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1942,
+      "age": 29,
+      "title": "『異邦人』『シーシュポスの神話』刊行",
+      "detail": "『ママンが死んだ。昨日だったか、今日だったかわからない。』",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1947,
+      "age": 34,
+      "title": "『ペスト』刊行、30万部の大成功",
+      "detail": "ナチス占領の比喩としての疫病小説。70年後のコロナ禍で再びベストセラーに。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1951,
+      "age": 37,
+      "title": "『反抗的人間』で共産主義を批判",
+      "detail": "『私は反抗する、ゆえに我らあり』と書いたが、サルトルと左翼知識人から袋叩きに。",
+      "tags": [
+        "pride_broken",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1952,
+      "age": 38,
+      "title": "サルトルとの公開決別",
+      "detail": "『レ・タン・モデルヌ』誌上の論争。10年の友情が終わる。",
+      "tags": [
+        "heartbreak"
+      ]
+    },
+    {
+      "year": 1956,
+      "age": 42,
+      "title": "アルジェリア戦争で『双方の暴力停止』を訴え、両方から敵視",
+      "detail": "ピエ・ノワール(フランス系入植者)の息子であり、アラブを愛した作家の宿命。",
+      "tags": [
+        "isolation",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1957,
+      "age": 44,
+      "title": "ノーベル文学賞受賞",
+      "detail": "史上2番目に若い受賞者。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1960,
+      "age": 46,
+      "title": "自動車事故で即死",
+      "detail": "ポケットに使われなかった汽車の切符があった。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "シーシュポスが幸福であると想像しなくてはならない。",
+      "source": "『シーシュポスの神話』"
+    },
+    {
+      "text": "真に重大な哲学上の問題はひとつしかない。自殺ということである。",
+      "source": "『シーシュポスの神話』"
+    },
+    {
+      "text": "私は反抗する、ゆえに我らあり。",
+      "source": "『反抗的人間』"
+    },
+    {
+      "text": "冬のさなかに、私は自分の内に、揺るぎない夏があることをついに知った。",
+      "source": "『夏』"
+    },
+    {
+      "text": "山頂を目指す闘争ということ自体が、人間の心を満たすのに十分である。",
+      "source": "『シーシュポスの神話』"
+    },
+    {
+      "text": "自由とは、より良くなる機会に他ならない。",
+      "source": "『反抗的人間』"
+    },
+    {
+      "text": "人生に意味が欠けていることは、それを生きる理由になる。",
+      "source": "『シーシュポスの神話』"
+    }
+  ],
+  "relations": [
+    {
+      "name": "サルトル",
+      "id": "sartre",
+      "relation": "盟友→決別",
+      "note": "革命暴力を巡って1952年に訣別"
+    }
+  ],
+  "places": [
+    {
+      "name": "ルルマラン墓地",
+      "location": "フランス・プロヴァンス",
+      "note": "カミュが眠る南仏の村"
+    }
+  ],
+  "books": [
+    {
+      "title": "異邦人",
+      "author": "カミュ",
+      "asin": "4102114017",
+      "description": "『太陽のせいだ』不条理文学の金字塔"
+    },
+    {
+      "title": "ペスト",
+      "author": "カミュ",
+      "asin": "4102114033",
+      "description": "疫病に閉ざされた街で問われる連帯"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Albert_Camus%2C_gagnant_de_prix_Nobel%2C_portrait_en_buste%2C_pos%C3%A9_au_bureau%2C_faisant_face_%C3%A0_gauche%2C_cigarette_de_tabagisme.jpg/500px-Albert_Camus%2C_gagnant_de_prix_Nobel%2C_portrait_en_buste%2C_pos%C3%A9_au_bureau%2C_faisant_face_%C3%A0_gauche%2C_cigarette_de_tabagisme.jpg",
+  "wikiTitle": "アルベール・カミュ",
+  "imageCredit": {
+    "artist": "Photograph by United Press International",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "This image is available from the United States Library of Congress 's Prints and Photographs division under the digital ID cph.3c08028 . This tag does not indicate the copyright status of the attached work. A normal copyright tag is still required. See Commons:Licensing .",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Albert_Camus%2C_gagnant_de_prix_Nobel%2C_portrait_en_buste%2C_pos%C3%A9_au_bureau%2C_faisant_face_%C3%A0_gauche%2C_cigarette_de_tabagisme.jpg"
+  }
+}

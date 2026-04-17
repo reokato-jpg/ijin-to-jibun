@@ -1,0 +1,216 @@
+{
+  "id": "takemitsu",
+  "name": "武満徹",
+  "nameEn": "Toru Takemitsu",
+  "birth": 1930,
+  "death": 1996,
+  "country": "日本",
+  "field": "作曲家",
+  "summary": "独学で20世紀日本を代表する作曲家に。『ノヴェンバー・ステップス』で日本の楽器と西洋オーケストラを融合、映画音楽『乱』『他人の顔』などでも世界的評価を得た。",
+  "events": [
+    {
+      "year": 1930,
+      "age": 0,
+      "title": "東京に誕生、すぐに満州へ",
+      "detail": "父の仕事で大陸で幼少期を過ごす。",
+      "tags": []
+    },
+    {
+      "year": 1930,
+      "age": 0,
+      "title": "東京に誕生、満州で幼年時代",
+      "detail": "父の仕事で中国東北部で過ごす。7歳で帰国。",
+      "tags": []
+    },
+    {
+      "year": 1944,
+      "age": 14,
+      "title": "勤労動員先の食堂で、禁断のシャンソン『聞かせてよ愛の言葉を』を聴く",
+      "detail": "下士官が持ち込んだ蓄音機。『これが音楽だ』と衝撃を受け作曲家を志す。戦時下の日本で初めて西洋音楽に出会った。",
+      "tags": [
+        "turning_encounter",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1945,
+      "age": 15,
+      "title": "敗戦で音楽に目覚める",
+      "detail": "ラジオから流れるシャンソン『パルレ・モワ・ダムール』に衝撃。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1950,
+      "age": 20,
+      "title": "新作曲派協会で作曲家デビュー",
+      "detail": "独学、正規の音楽教育なし。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1950,
+      "age": 20,
+      "title": "独学で作曲を始める",
+      "detail": "音楽大学には行かず、雑誌や楽譜を頼りに独学。結核の療養中に書き進めた。",
+      "tags": [
+        "restart",
+        "illness"
+      ]
+    },
+    {
+      "year": 1951,
+      "age": 21,
+      "title": "『実験工房』結成",
+      "detail": "瀧口修造を精神的支柱に、現代音楽・美術・映像の学際的実験集団。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1957,
+      "age": 27,
+      "title": "『弦楽のためのレクイエム』",
+      "detail": "早坂文雄の死を悼む。ストラヴィンスキーが来日時に激賞したことで世界に知られた。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1967,
+      "age": 37,
+      "title": "『ノヴェンバー・ステップス』初演",
+      "detail": "琵琶・尺八とオーケストラ。日本音楽の国際デビュー。",
+      "tags": [
+        "breakthrough",
+        "self_reinvention"
+      ]
+    },
+    {
+      "year": 1967,
+      "age": 37,
+      "title": "『ノヴェンバー・ステップス』ニューヨーク・フィル初演",
+      "detail": "小澤征爾指揮、琵琶・尺八・オーケストラ。東西の伝統が対峙する記念碑的作品。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1970,
+      "age": 40,
+      "title": "大阪万博・鉄鋼館で『ユニバーサル・ステージ』構成",
+      "detail": "日本の現代音楽が万博の晴れ舞台に。",
+      "tags": []
+    },
+    {
+      "year": 1980,
+      "age": 50,
+      "title": "『遠い呼び声の彼方へ！』完成",
+      "detail": "海外の委嘱作が増え、世界的作曲家としての地位を確立。",
+      "tags": []
+    },
+    {
+      "year": 1996,
+      "age": 65,
+      "title": "膀胱癌で死去",
+      "detail": "映画・現代音楽・ポピュラー全てで足跡を残した。",
+      "tags": [
+        "loss",
+        "illness"
+      ]
+    },
+    {
+      "year": 1996,
+      "age": 65,
+      "title": "東京で膀胱癌により死去",
+      "detail": "『夢の引用』未完のまま。約100本の映画音楽、200以上のコンサート作品を残した。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "音は沈黙の中から生まれ、沈黙の中へ還っていく。",
+      "source": "エッセイ"
+    },
+    {
+      "text": "音は本来、ただ美しく、ただそこにあるだけだ。",
+      "source": "武満の文集"
+    },
+    {
+      "text": "私は、沈黙とひとつひとつの音との対話を大切にしたい。",
+      "source": "『音、沈黙と測りあえるほどに』"
+    },
+    {
+      "text": "一つの木から一つの音が生まれるように、一つの音もまた宇宙を持っている。",
+      "source": "武満の言葉"
+    },
+    {
+      "text": "音楽とは、聴くものではなく、生きるものだ。",
+      "source": "文集"
+    }
+  ],
+  "places": [
+    {
+      "name": "軽井沢",
+      "location": "長野県北佐久郡",
+      "note": "山荘で多くの作品を書いた"
+    }
+  ],
+  "books": [
+    {
+      "title": "時の園丁",
+      "author": "武満徹",
+      "asin": "4106023202",
+      "description": "音と沈黙についての随筆"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Toru_Takemitsu_1961_Tokyo.jpg/500px-Toru_Takemitsu_1961_Tokyo.jpg",
+  "imageCredit": {
+    "artist": "",
+    "license": "",
+    "licenseUrl": "",
+    "credit": "",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Toru_Takemitsu_1961_Tokyo.jpg"
+  },
+  "works": [
+    {
+      "title": "ノヴェンバー・ステップス",
+      "year": 1967,
+      "type": "管弦楽",
+      "description": "琵琶・尺八・オーケストラの対話",
+      "youtubeId": "SFBT8uXkGtI"
+    },
+    {
+      "title": "弦楽のためのレクイエム",
+      "year": 1957,
+      "type": "管弦楽",
+      "description": "ストラヴィンスキーが激賞した出発点",
+      "youtubeId": "nDnS-gd9PPY"
+    },
+    {
+      "title": "How Slow the Wind",
+      "year": 1991,
+      "type": "管弦楽",
+      "description": "ディキンソンの詩から。晩年の静謐"
+    },
+    {
+      "title": "『乱』メインテーマ",
+      "year": 1985,
+      "type": "映画音楽",
+      "description": "黒澤明監督『乱』のために書かれた壮大な音楽",
+      "youtubeId": "cIRmMKqWDl0"
+    },
+    {
+      "title": "系図（ファミリー・ツリー）",
+      "year": 1992,
+      "type": "管弦楽",
+      "description": "谷川俊太郎の詩を若い女性が朗読する温かい作品"
+    }
+  ]
+}

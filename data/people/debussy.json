@@ -1,0 +1,246 @@
+{
+  "id": "debussy",
+  "name": "クロード・ドビュッシー",
+  "nameEn": "Claude Debussy",
+  "birth": 1862,
+  "death": 1918,
+  "country": "フランス",
+  "field": "作曲家",
+  "summary": "伝統的調性から解き放たれた『印象主義音楽』の父。『月の光』『海』『牧神の午後への前奏曲』で20世紀音楽の扉を開いた。",
+  "events": [
+    {
+      "year": 1862,
+      "age": 0,
+      "title": "サン=ジェルマン=アン=レーに誕生",
+      "detail": "陶器商の息子。貧しい家庭だったが、叔母に見いだされピアノを始める。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1862,
+      "age": 0,
+      "title": "サン＝ジェルマン＝アン＝レーの陶器店の子に誕生",
+      "detail": "父は後に逮捕されるほどの無頼派。幼少期は不安定だった。",
+      "tags": [
+        "parent_conflict",
+        "poverty"
+      ]
+    },
+    {
+      "year": 1872,
+      "age": 10,
+      "title": "パリ音楽院入学",
+      "detail": "既存の和声法を無視する『規則破りの学生』として有名。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1884,
+      "age": 22,
+      "title": "ローマ大賞受賞",
+      "detail": "フランス作曲家の登竜門を突破、ローマ留学へ。しかしアカデミズムに馴染めなかった。",
+      "tags": [
+        "approval",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1884,
+      "age": 22,
+      "title": "ローマ大賞を受賞",
+      "detail": "カンタータ『放蕩息子』で受賞。しかしローマ留学には馴染めなかった。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1889,
+      "age": 27,
+      "title": "パリ万博でガムラン音楽に出会う",
+      "detail": "ジャワの5音音階と打楽器群の響きに衝撃。以後の音楽観を決定的に変えた。",
+      "tags": [
+        "turning_encounter",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1894,
+      "age": 32,
+      "title": "『牧神の午後への前奏曲』",
+      "detail": "マラルメの詩に基づく革新的作品。『これからの音楽はここから始まる』（ブーレーズ）",
+      "tags": [
+        "breakthrough",
+        "self_reinvention"
+      ]
+    },
+    {
+      "year": 1894,
+      "age": 32,
+      "title": "『牧神の午後への前奏曲』初演",
+      "detail": "マラルメの詩に触発された夢幻的な管弦楽。『近代音楽はここから始まる』と後にブーレーズが評した。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1902,
+      "age": 40,
+      "title": "オペラ『ペレアスとメリザンド』初演",
+      "detail": "10年かけて書き上げた唯一のオペラ。従来のオペラの語法を完全に刷新した。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1904,
+      "age": 42,
+      "title": "愛人と駆け落ち、前妻が拳銃自殺未遂",
+      "detail": "世間に激しく非難されパリを一時離れる。",
+      "tags": [
+        "heartbreak",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1904,
+      "age": 42,
+      "title": "妻リリーを捨て、エマと出奔",
+      "detail": "リリーは拳銃自殺未遂。スキャンダルでパリ社交界から締め出される。",
+      "tags": [
+        "heartbreak",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1905,
+      "age": 43,
+      "title": "『海』完成、娘シュシュ誕生",
+      "detail": "日本の葛飾北斎『神奈川沖浪裏』の楽譜表紙は本人の指定。",
+      "tags": [
+        "breakthrough",
+        "restart"
+      ]
+    },
+    {
+      "year": 1909,
+      "age": 47,
+      "title": "直腸癌と診断",
+      "detail": "以後9年の闘病。それでも作曲を止めなかった。",
+      "tags": [
+        "illness"
+      ]
+    },
+    {
+      "year": 1918,
+      "age": 55,
+      "title": "大腸癌で死去",
+      "detail": "第一次大戦の砲声が響くパリで。ドイツ軍の砲撃を聞きながら最期を迎えた。",
+      "tags": [
+        "illness",
+        "loss"
+      ]
+    },
+    {
+      "year": 1918,
+      "age": 55,
+      "title": "ドイツ軍のパリ砲撃の中、死去",
+      "detail": "葬列は砲弾を避けながら墓地へ向かった。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "音楽は音と音の間のリズムと色彩の旋律で成り立つ。",
+      "source": "手紙より"
+    },
+    {
+      "text": "音楽は、音符と音符のあいだの、沈黙でできている。",
+      "source": "ドビュッシーに帰される言葉"
+    },
+    {
+      "text": "芸術は最も美しい嘘である。",
+      "source": "ドビュッシーの言葉"
+    },
+    {
+      "text": "音楽の規則はあなた自身である。",
+      "source": "弟子への言葉"
+    }
+  ],
+  "places": [
+    {
+      "name": "ドビュッシー博物館",
+      "location": "サン=ジェルマン=アン=レー",
+      "note": "生家を改装した記念館"
+    },
+    {
+      "name": "パッシー墓地",
+      "location": "パリ16区",
+      "note": "妻子と共に眠る"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Claude_Debussy_by_Atelier_Nadar.jpg/500px-Claude_Debussy_by_Atelier_Nadar.jpg",
+  "wikiTitle": "クロード・ドビュッシー",
+  "imageCredit": {
+    "artist": "Adam Cuerden",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "This file comes from Gallica Digital Library and is available under the digital ID btv1b53118843k/f1",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Claude_Debussy_by_Atelier_Nadar.jpg"
+  },
+  "books": [
+    {
+      "title": "ドビュッシー 想念のエクトプラズム",
+      "author": "松橋麻利",
+      "asin": "4393931904",
+      "description": "印象主義と呼ばれることを拒んだ作曲家の本質"
+    },
+    {
+      "title": "ドビュッシー書簡集",
+      "author": "音楽之友社編",
+      "asin": "4276225426",
+      "description": "音楽の革新者が遺した書簡"
+    }
+  ],
+  "works": [
+    {
+      "title": "月の光（ベルガマスク組曲より）",
+      "year": 1905,
+      "type": "ピアノ曲",
+      "description": "最も愛されるピアノ小品。ヴェルレーヌの詩から",
+      "youtubeId": "CvFH_6DNRCY",
+      "imslpUrl": "https://imslp.org/wiki/Suite_bergamasque_(Debussy%2C_Claude)"
+    },
+    {
+      "title": "牧神の午後への前奏曲",
+      "year": 1894,
+      "type": "管弦楽",
+      "description": "近代音楽の夜明け。ニジンスキーのバレエでも有名",
+      "youtubeId": "wWWWgwAkaeo"
+    },
+    {
+      "title": "交響詩『海』",
+      "year": 1905,
+      "type": "管弦楽",
+      "description": "北斎の浪を楽譜表紙に添えた海の三部作",
+      "youtubeId": "1Os5PFkdFyE"
+    },
+    {
+      "title": "アラベスク第1番",
+      "year": 1891,
+      "type": "ピアノ曲",
+      "description": "初期の優美な代表作",
+      "youtubeId": "ORzmDc7KcY0"
+    },
+    {
+      "title": "喜びの島",
+      "year": 1904,
+      "type": "ピアノ曲",
+      "description": "ヴァトーの絵画に着想を得た光あふれるピアノ曲",
+      "youtubeId": "QqZJwqAmVOs"
+    }
+  ]
+}

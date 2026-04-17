@@ -1,0 +1,229 @@
+{
+  "id": "oda_nobunaga",
+  "name": "織田信長",
+  "nameEn": "Oda Nobunaga",
+  "birth": 1534,
+  "death": 1582,
+  "country": "日本",
+  "field": "戦国武将",
+  "summary": "『うつけ』と呼ばれた若き尾張の大名が、桶狭間から天下統一目前まで駆け上がり、本能寺の変で49歳で燃え尽きた。",
+  "events": [
+    {
+      "year": 1534,
+      "age": 0,
+      "title": "尾張・勝幡城に誕生",
+      "detail": "奇行が多く『うつけ者』と呼ばれた少年時代。",
+      "tags": [
+        "self_denial"
+      ]
+    },
+    {
+      "year": 1534,
+      "age": 0,
+      "title": "尾張・勝幡城で誕生",
+      "detail": "父は織田信秀、母は土田御前。幼名『吉法師』。",
+      "tags": []
+    },
+    {
+      "year": 1546,
+      "age": 12,
+      "title": "元服、『うつけ者』と呼ばれる",
+      "detail": "奇抜な格好で町を闊歩。湯漬けを立ったまま食い、柿を丸ごとかじった。家臣たちは『家が滅ぶ』と嘆いた。",
+      "tags": [
+        "pride_broken",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1551,
+      "age": 17,
+      "title": "父信秀の葬儀で抹香を投げつける",
+      "detail": "正装もせず現れ、位牌に抹香を投げた。『うつけぶり』の頂点。",
+      "tags": [
+        "parent_conflict",
+        "loss"
+      ]
+    },
+    {
+      "year": 1553,
+      "age": 19,
+      "title": "傅役・平手政秀が諫死",
+      "detail": "信長の奇行を諫めるため腹を切った。信長は涙し、政秀寺を建立。",
+      "tags": [
+        "loss",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1560,
+      "age": 26,
+      "title": "桶狭間の戦い",
+      "detail": "2万5千の今川義元軍を3千で奇襲、首を討った。戦国の勢力図が一変。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1560,
+      "age": 26,
+      "title": "桶狭間の戦い — 2万の今川義元を奇襲で討つ",
+      "detail": "豪雨の中、わずか3千で本陣を突いた。『人間五十年、下天のうちを比ぶれば夢幻の如くなり』を舞って出陣。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1568,
+      "age": 34,
+      "title": "足利義昭を奉じて上洛",
+      "detail": "天皇・将軍を擁し、京を制す。『天下布武』の印を使い始める。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1571,
+      "age": 37,
+      "title": "比叡山焼き討ち",
+      "detail": "僧兵勢力を根絶。冷徹な革新者としての側面。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1575,
+      "age": 41,
+      "title": "長篠の戦い",
+      "detail": "三段撃ちで武田騎馬隊を撃破。戦術革命。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1575,
+      "age": 41,
+      "title": "長篠の戦い、鉄砲三千挺で武田騎馬軍団を粉砕",
+      "detail": "日本初の本格的銃撃戦。戦国の戦術が根本から変わった。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1576,
+      "age": 42,
+      "title": "安土城築城",
+      "detail": "5層7階の天守、黄金の茶室、キリスト教布教容認。世界を見据えた新都の構想。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1582,
+      "age": 48,
+      "title": "本能寺の変 — 明智光秀の謀反で自刃",
+      "detail": "6月2日未明。『是非に及ばず』と呟いて、燃える本能寺で自害した。遺体は見つからなかった。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1582,
+      "age": 49,
+      "title": "本能寺の変",
+      "detail": "家臣・明智光秀の謀反に遭い、炎の中で『是非に及ばず』と自刃。",
+      "tags": [
+        "loss",
+        "pride_broken"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "人間五十年、下天のうちを比ぶれば、夢幻の如くなり。",
+      "source": "敦盛を好んで舞った"
+    },
+    {
+      "text": "是非に及ばず。",
+      "source": "本能寺にて"
+    },
+    {
+      "text": "鳴かぬなら殺してしまえホトトギス。",
+      "source": "信長を評する伝承の句"
+    },
+    {
+      "text": "必死に生きてこそ、その生涯は光を放つ。",
+      "source": "信長に帰される言葉"
+    }
+  ],
+  "places": [
+    {
+      "name": "本能寺跡",
+      "location": "京都市中京区",
+      "note": "本能寺の変の地。現本能寺は別の場所"
+    },
+    {
+      "name": "清洲城",
+      "location": "愛知県清須市",
+      "note": "若き日の本拠"
+    },
+    {
+      "name": "岐阜城",
+      "location": "岐阜県岐阜市",
+      "note": "『天下布武』を宣言した城"
+    },
+    {
+      "name": "安土城跡",
+      "location": "滋賀県近江八幡市",
+      "note": "華麗な天主を持つ革新の城。現在は石垣のみ"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Odanobunaga.jpg/500px-Odanobunaga.jpg",
+  "wikiTitle": "織田信長",
+  "imageCredit": {
+    "artist": "狩野宗秀 (Kanō Sōshū, 1551 - 1601)",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "en:Image:Odanobunaga.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Odanobunaga.jpg"
+  },
+  "books": [
+    {
+      "title": "国盗り物語",
+      "author": "司馬遼太郎",
+      "asin": "4101152101",
+      "description": "信長と斎藤道三の出会いを描く戦国の叙事詩"
+    },
+    {
+      "title": "信長公記",
+      "author": "太田牛一",
+      "asin": "4044004811",
+      "description": "信長の家臣が記した一次資料"
+    }
+  ],
+  "media": [
+    {
+      "title": "麒麟がくる",
+      "year": 2020,
+      "type": "drama",
+      "country": "日本",
+      "cast": "染谷将太（信長役）／長谷川博己",
+      "description": "NHK大河ドラマ。明智光秀を主役に据え、信長を革新的に描いた。"
+    },
+    {
+      "title": "信長協奏曲",
+      "year": 2014,
+      "type": "drama",
+      "country": "日本",
+      "cast": "小栗旬",
+      "description": "高校生が戦国時代にタイムスリップして信長になる漫画原作ドラマ。"
+    },
+    {
+      "title": "影武者",
+      "year": 1980,
+      "type": "movie",
+      "country": "日本",
+      "director": "黒澤明",
+      "description": "武田信玄影武者の物語だが、信長も重要人物として登場。カンヌ・パルムドール。"
+    }
+  ]
+}

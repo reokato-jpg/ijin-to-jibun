@@ -1,0 +1,208 @@
+{
+  "id": "hijikata_toshizo",
+  "name": "土方歳三",
+  "nameEn": "Hijikata Toshizo",
+  "birth": 1835,
+  "death": 1869,
+  "country": "日本",
+  "field": "武士・新選組副長",
+  "summary": "多摩生まれの農家出身。新選組の鬼の副長として組織を統率し、戊辰戦争を最後まで戦い抜いた。箱館・五稜郭で戦死。享年35。",
+  "events": [
+    {
+      "year": 1835,
+      "age": 0,
+      "title": "多摩・石田村の農家に生まれる",
+      "detail": "薬売りをしながら剣を磨いた青年時代。近藤勇と出会い生涯の盟友となる。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1835,
+      "age": 0,
+      "title": "武州多摩・石田村の豪農の末子として誕生",
+      "detail": "父は生前、母は6歳で失う。『バラガキ(茨のような乱暴者)』と呼ばれ育つ。",
+      "tags": [
+        "parent_conflict",
+        "loss"
+      ]
+    },
+    {
+      "year": 1859,
+      "age": 24,
+      "title": "天然理心流・近藤勇と盟友に",
+      "detail": "義兄の縁で試衛館道場に通い始める。近藤・沖田・山南らと『兄弟の契り』を結ぶ。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1863,
+      "age": 28,
+      "title": "新選組結成、副長に就任",
+      "detail": "厳格な局中法度で組織を統制。『鬼の副長』と恐れられる。",
+      "tags": [
+        "approval",
+        "restart"
+      ]
+    },
+    {
+      "year": 1863,
+      "age": 28,
+      "title": "浪士組に加わり上洛、新選組を結成",
+      "detail": "芹沢鴨派を粛清し、副長として組織の鬼となる。『鬼の副長』の異名。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1864,
+      "age": 29,
+      "title": "池田屋事件",
+      "detail": "祇園祭前夜、潜伏中の尊攘派志士を急襲。新選組の名を天下に知らしめた。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1867,
+      "age": 32,
+      "title": "幕臣取立て、旗本となる",
+      "detail": "農民から旗本へ。近藤・土方ともに士分に昇格した。",
+      "tags": [
+        "approval",
+        "restart"
+      ]
+    },
+    {
+      "year": 1868,
+      "age": 33,
+      "title": "鳥羽伏見の戦いで敗北",
+      "detail": "薩長の近代兵器に敗北。『西洋式に学ばねば勝てない』と悟り、髪を切り洋装に。",
+      "tags": [
+        "setback",
+        "self_reinvention"
+      ]
+    },
+    {
+      "year": 1868,
+      "age": 33,
+      "title": "鳥羽・伏見の戦いで敗北、近藤勇処刑",
+      "detail": "甲州勝沼の敗北に続き近藤が板橋で斬首。慣れぬ西洋式軍装で北へ向かう。",
+      "tags": [
+        "loss",
+        "pride_broken",
+        "heartbreak"
+      ]
+    },
+    {
+      "year": 1869,
+      "age": 34,
+      "title": "箱館戦争",
+      "detail": "榎本武揚の蝦夷共和国に参加、陸軍奉行並に。最後まで幕府への忠義を貫いた。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1869,
+      "age": 34,
+      "title": "五稜郭近郊で戦死",
+      "detail": "一本木関門で敵弾に倒れる。享年35。『義に殉じた最後の武士』と称される。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1869,
+      "age": 34,
+      "title": "函館・五稜郭で戦死",
+      "detail": "5月11日、一本木関門で銃弾を受け落馬。34歳。『我に策あり、すでに足れり』が最後の言葉と伝わる。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "よしや身は蝦夷の島辺に朽ちぬとも魂は東の君やまもらん",
+      "source": "辞世の句"
+    },
+    {
+      "text": "たとえ身は蝦夷の島根に朽ちるとも 魂は東の君やまもらむ",
+      "source": "函館で詠んだ辞世"
+    },
+    {
+      "text": "知れば迷い、知らねば迷わず。",
+      "source": "土方の日記"
+    },
+    {
+      "text": "我が命、義に捧ぐ。",
+      "source": "土方に帰される言葉"
+    }
+  ],
+  "books": [
+    {
+      "title": "燃えよ剣 上",
+      "author": "司馬遼太郎",
+      "asin": "4101152063",
+      "description": "主人公・土方歳三を描いた司馬の代表作"
+    },
+    {
+      "title": "燃えよ剣 下",
+      "author": "司馬遼太郎",
+      "asin": "4101152071",
+      "description": "五稜郭での最期まで。函館の風が吹き抜ける後半"
+    }
+  ],
+  "places": [
+    {
+      "name": "土方歳三資料館",
+      "location": "東京都日野市石田",
+      "note": "生家に建つ資料館。遺品・愛刀・書が展示"
+    },
+    {
+      "name": "壬生寺",
+      "location": "京都市中京区",
+      "note": "新選組屯所跡。境内に隊士の墓"
+    },
+    {
+      "name": "五稜郭",
+      "location": "北海道函館市",
+      "note": "最後の戦いの舞台。函館奉行所"
+    },
+    {
+      "name": "土方歳三最期の地碑",
+      "location": "北海道函館市若松町",
+      "note": "銃弾に倒れた一本木関門の地"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Hijikata_Toshizo.jpg/500px-Hijikata_Toshizo.jpg",
+  "wikiTitle": "土方歳三",
+  "imageCredit": {
+    "artist": "Tamoto Kenzō",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "HIJIKATA Toshizo",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hijikata_Toshizo.jpg"
+  },
+  "media": [
+    {
+      "title": "燃えよ剣",
+      "year": 2021,
+      "type": "movie",
+      "country": "日本",
+      "director": "原田眞人",
+      "cast": "岡田准一",
+      "description": "司馬遼太郎原作の新選組小説を完全映画化。"
+    },
+    {
+      "title": "新選組！",
+      "year": 2004,
+      "type": "drama",
+      "country": "日本",
+      "cast": "香取慎吾（近藤勇）／山本耕史（土方）",
+      "description": "三谷幸喜脚本のNHK大河ドラマ。翌年『新選組！！土方歳三最期の一日』も放送。"
+    }
+  ]
+}

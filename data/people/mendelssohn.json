@@ -1,0 +1,199 @@
+{
+  "id": "mendelssohn",
+  "name": "フェリックス・メンデルスゾーン",
+  "nameEn": "Felix Mendelssohn",
+  "birth": 1809,
+  "death": 1847,
+  "country": "ドイツ",
+  "field": "作曲家",
+  "summary": "裕福なユダヤ系銀行家の家に生まれ、20歳で忘れられていたバッハ『マタイ受難曲』を蘇演。『結婚行進曲』『イタリア』『ヴァイオリン協奏曲』。姉ファニーを失い半年後に38歳で急逝。",
+  "events": [
+    {
+      "year": 1809,
+      "age": 0,
+      "title": "ハンブルクに誕生",
+      "detail": "哲学者モーゼス・メンデルスゾーンの孫。裕福で自由な環境。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1816,
+      "age": 7,
+      "title": "パリでピアノ公開デビュー",
+      "detail": "神童として欧州中に知られる。ゲーテも7歳の彼に魅了された。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1826,
+      "age": 17,
+      "title": "『真夏の夜の夢』序曲作曲",
+      "detail": "17歳で書いた管弦楽の傑作。16年後に劇付随音楽として完成。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1829,
+      "age": 20,
+      "title": "『マタイ受難曲』を百年ぶりに蘇演",
+      "detail": "バッハ再評価の決定的瞬間。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1829,
+      "age": 20,
+      "title": "バッハ『マタイ受難曲』を百年ぶりに蘇演",
+      "detail": "ベルリンジングアカデミーで指揮。バッハ再評価の決定的瞬間。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1835,
+      "age": 26,
+      "title": "ライプツィヒ・ゲヴァントハウス音楽監督",
+      "detail": "以後12年、ヨーロッパ最高の楽壇を築く。シューマン・ショパンとも交流。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1837,
+      "age": 28,
+      "title": "セシール・ジャンルノーと結婚",
+      "detail": "フランス系ユグノーの美しい牧師の娘と。5人の子をもうけた幸福な結婚。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1843,
+      "age": 34,
+      "title": "ライプツィヒ音楽院創設",
+      "detail": "シューマンを同僚に招いた欧州屈指の音楽学校。現存する。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1844,
+      "age": 35,
+      "title": "ヴァイオリン協奏曲ホ短調完成",
+      "detail": "親友ヴァイオリニストのダヴィッドに捧げた、三大協奏曲のひとつ。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1847,
+      "age": 38,
+      "title": "姉ファニーの急死の半年後、自身も急逝",
+      "detail": "脳卒中。『姉のもとへ行く』と繰り返したという。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1847,
+      "age": 38,
+      "title": "姉ファニー急死の半年後、自身も急逝",
+      "detail": "最愛の姉の訃報で倒れ、半年間で3度の脳卒中。11月4日に死去。『姉のもとへ行く』が最後の言葉。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "言葉では言い表せないものこそ、音楽で表現されるのだ。",
+      "source": "メンデルスゾーンの手紙"
+    },
+    {
+      "text": "音楽は一つの言語であり、国境を超えた人類共通の言葉である。",
+      "source": "書簡"
+    },
+    {
+      "text": "私は音楽でしか、自分の感情を正確に語れない。",
+      "source": "書簡"
+    }
+  ],
+  "relations": [
+    {
+      "name": "シューマン",
+      "id": "schumann",
+      "relation": "親友",
+      "note": "ライプツィヒで最も近い同僚作曲家"
+    },
+    {
+      "name": "バッハ",
+      "id": "bach",
+      "relation": "再発見した対象",
+      "note": "メンデルスゾーン無しに現代のバッハ像はない"
+    }
+  ],
+  "places": [
+    {
+      "name": "ライプツィヒ・ゲヴァントハウス",
+      "location": "ドイツ・ライプツィヒ",
+      "note": "音楽監督として12年君臨"
+    }
+  ],
+  "books": [],
+  "works": [
+    {
+      "title": "ヴァイオリン協奏曲ホ短調",
+      "type": "youtube",
+      "id": "o1dBg__wsuo",
+      "note": "三大協奏曲のひとつ"
+    },
+    {
+      "title": "ヴァイオリン協奏曲 ホ短調 作品64",
+      "year": 1844,
+      "type": "協奏曲",
+      "description": "三大ヴァイオリン協奏曲のひとつ",
+      "youtubeId": "o1dBg__wsuo"
+    },
+    {
+      "title": "交響曲第4番『イタリア』イ長調 作品90",
+      "year": 1833,
+      "type": "交響曲",
+      "description": "イタリア旅行の印象を描く陽光の交響曲",
+      "youtubeId": "j4ib3uQ0fiQ"
+    },
+    {
+      "title": "劇付随音楽『真夏の夜の夢』作品61",
+      "year": 1842,
+      "type": "劇付随音楽",
+      "description": "『結婚行進曲』で最も有名",
+      "youtubeId": "4sHWJfnUKn8"
+    },
+    {
+      "title": "無言歌集",
+      "year": 1845,
+      "type": "ピアノ曲",
+      "description": "歌詞のない歌。全48曲のピアノ小品",
+      "youtubeId": "sG7uT4sSxWY"
+    },
+    {
+      "title": "オラトリオ『エリヤ』作品70",
+      "year": 1846,
+      "type": "宗教曲",
+      "description": "ヘンデル以来のイギリス・オラトリオの傑作",
+      "youtubeId": "yp8VmPDMXMw"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Felix_Mendelssohn_Bartholdy_by_Eduard_Magnus_%281833%29.jpg/500px-Felix_Mendelssohn_Bartholdy_by_Eduard_Magnus_%281833%29.jpg",
+  "wikiTitle": "フェリックス・メンデルスゾーン",
+  "imageCredit": {
+    "artist": "Eduard Magnus",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Berlin State Library",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Felix_Mendelssohn_Bartholdy_by_Eduard_Magnus_%281833%29.jpg"
+  }
+}

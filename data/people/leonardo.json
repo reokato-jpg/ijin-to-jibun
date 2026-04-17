@@ -1,0 +1,240 @@
+{
+  "id": "leonardo",
+  "name": "レオナルド・ダ・ヴィンチ",
+  "nameEn": "Leonardo da Vinci",
+  "birth": 1452,
+  "death": 1519,
+  "country": "イタリア → フランス",
+  "field": "画家・科学者",
+  "summary": "絵画、彫刻、建築、解剖学、土木、飛行機、すべてにおいて時代を数百年先取りした万能の天才。完成した作品は少なく、多くがノートの走り書きに残された。",
+  "events": [
+    {
+      "year": 1452,
+      "age": 0,
+      "title": "ヴィンチ村に庶子として誕生",
+      "detail": "公証人の父と農家の娘の非嫡出子。正規教育を受けられず、独学で全てを学んだ。",
+      "tags": [
+        "parent_conflict",
+        "self_denial"
+      ]
+    },
+    {
+      "year": 1452,
+      "age": 0,
+      "title": "トスカーナ・ヴィンチ村で私生児として誕生",
+      "detail": "父は公証人セル・ピエロ、母は農婦カテリーナ。結婚することはなかった。",
+      "tags": [
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1466,
+      "age": 14,
+      "title": "ヴェロッキオ工房に弟子入り",
+      "detail": "師の絵に描いた天使があまりに巧く、師がその後筆を折ったと伝わる。",
+      "tags": [
+        "approval",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1466,
+      "age": 14,
+      "title": "フィレンツェのヴェロッキオ工房へ弟子入り",
+      "detail": "師ヴェロッキオは、レオナルドが描いた天使を見て以後絵筆を折ったと伝わる。",
+      "tags": [
+        "turning_encounter",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1482,
+      "age": 30,
+      "title": "ミラノのスフォルツァ公に仕える",
+      "detail": "自薦状には『戦争機械・橋・大砲を作れる』を10項目、最後に『絵も描けます』と書いた。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1495,
+      "age": 43,
+      "title": "『最後の晩餐』を描く",
+      "detail": "サンタ・マリア・デッレ・グラツィエ教会の食堂。実験的技法のため、彼の生前から剥がれ始めた。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1503,
+      "age": 51,
+      "title": "『モナ・リザ』制作開始",
+      "detail": "生涯手元に置き改筆し続けた謎の肖像画。14年の推敲。",
+      "tags": [
+        "self_denial",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1503,
+      "age": 51,
+      "title": "『モナ・リザ』制作開始、生涯手放さなかった",
+      "detail": "依頼主に渡さず、フランスまで持って行った。なぜ彼女が微笑むかは今も謎。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1513,
+      "age": 61,
+      "title": "ローマへ、しかしミケランジェロ・ラファエロの影に",
+      "detail": "若き天才たちの時代。最も創造的な仕事は背後に回された。",
+      "tags": [
+        "pride_broken",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1516,
+      "age": 64,
+      "title": "フランス王フランソワ1世に招かれる",
+      "detail": "クルー城の隣、クロ・リュセ館に『王の第一画家・建築家・機械技師』として迎えられた。",
+      "tags": [
+        "restart",
+        "approval"
+      ]
+    },
+    {
+      "year": 1519,
+      "age": 67,
+      "title": "フランス・アンボワーズで没",
+      "detail": "フランソワ1世の腕の中で息を引き取ったと伝わる。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1519,
+      "age": 67,
+      "title": "クロ・リュセで死去、王の腕の中で",
+      "detail": "フランソワ1世が『私は今日、真の人間を一人失った』と嘆いたと伝わる。7000ページの手稿を遺す。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "経験は最良の教師である。",
+      "source": "手稿ノート"
+    },
+    {
+      "text": "学ぶことをやめた者は、60歳でも20歳でも老人である。",
+      "source": "手稿ノート"
+    },
+    {
+      "text": "経験は決して誤らない。誤るのは、経験しないで判断を下すあなたたちの理性だ。",
+      "source": "アトランティコ手稿"
+    },
+    {
+      "text": "単純さは究極の洗練である。",
+      "source": "レオナルドに帰される言葉"
+    },
+    {
+      "text": "一度飛ぶ味を知ってしまった者は、地上を歩くときも目を天に向ける。そこに行ったことがあり、また行きたいから。",
+      "source": "手稿"
+    },
+    {
+      "text": "学習とは心を決して疲れさせず、決して後悔させず、決して失望させない唯一のものだ。",
+      "source": "手稿"
+    },
+    {
+      "text": "鉄は使わなければ錆びる。水は腐れば澱む。寒ければ凍る。そして、才能は使わなければ衰える。",
+      "source": "手稿"
+    }
+  ],
+  "relations": [
+    {
+      "name": "アンドレア・デル・ヴェロッキオ",
+      "relation": "師",
+      "years": "1466–",
+      "note": "フィレンツェの巨匠。若きレオナルドを見いだした"
+    },
+    {
+      "name": "フランチェスコ・メルツィ",
+      "relation": "弟子 / 後継者",
+      "years": "1506–1519",
+      "note": "最期まで付き従い、手稿ノートを守り抜いた"
+    },
+    {
+      "name": "フランソワ1世",
+      "relation": "最晩年のパトロン",
+      "years": "1516–1519",
+      "note": "フランスに招き、城を与えた"
+    }
+  ],
+  "places": [
+    {
+      "name": "レオナルド・ダ・ヴィンチの生家",
+      "location": "イタリア・トスカーナ州ヴィンチ村",
+      "note": "緑の丘に建つ素朴な農家"
+    },
+    {
+      "name": "アンボワーズ城・クロ・リュセ",
+      "location": "フランス・アンボワーズ",
+      "note": "最期を迎えた城"
+    },
+    {
+      "name": "ルーヴル美術館",
+      "location": "フランス・パリ",
+      "note": "『モナ・リザ』の所蔵"
+    },
+    {
+      "name": "サン・ピエトロ・イン・モントーリオ",
+      "location": "イタリア・ミラノ",
+      "note": "『最後の晩餐』のある教会"
+    }
+  ],
+  "books": [
+    {
+      "title": "レオナルド・ダ・ヴィンチの手記",
+      "author": "レオナルド・ダ・ヴィンチ",
+      "asin": "4003358244",
+      "description": "万能の天才が遺した膨大なメモと素描"
+    },
+    {
+      "title": "レオナルド・ダ・ヴィンチ 上",
+      "author": "ウォルター・アイザックソン",
+      "asin": "4163908277",
+      "description": "決定版評伝"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Leonardo_da_Vinci_-_presumed_self-portrait_-_WGA12798.jpg/500px-Leonardo_da_Vinci_-_presumed_self-portrait_-_WGA12798.jpg",
+  "wikiTitle": "レオナルド・ダ・ヴィンチ",
+  "imageCredit": {
+    "artist": "Leonardo da Vinci",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "https://www.latitudinex.com/europa/leonardo-valle-della-loira-rinascimento.html Web Gallery of Art : Image Info about artwork wga QS:P11807,\"l/leonardo/08heads/12selfpo\"",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Leonardo_da_Vinci_-_presumed_self-portrait_-_WGA12798.jpg"
+  },
+  "media": [
+    {
+      "title": "ダ・ヴィンチ・コード",
+      "year": 2006,
+      "type": "movie",
+      "country": "アメリカ",
+      "director": "ロン・ハワード",
+      "cast": "トム・ハンクス",
+      "description": "ルーヴル美術館を舞台に、ダ・ヴィンチの絵画に隠された秘密を追う。"
+    },
+    {
+      "title": "レオナルド・ダ・ヴィンチ",
+      "year": 2024,
+      "type": "doc",
+      "country": "アメリカ",
+      "director": "ケン・バーンズ",
+      "description": "PBS制作の4時間ドキュメンタリー。最新研究で解き明かす万能人。"
+    }
+  ]
+}

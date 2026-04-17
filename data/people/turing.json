@@ -1,0 +1,157 @@
+{
+  "id": "turing",
+  "name": "アラン・チューリング",
+  "nameEn": "Alan Turing",
+  "birth": 1912,
+  "death": 1954,
+  "country": "イギリス",
+  "field": "数学者・計算機科学者",
+  "summary": "チューリングマシンで計算機科学を生み、第二次大戦でエニグマ暗号を解読し連合軍勝利に貢献。戦後、同性愛で有罪となり化学的去勢を命じられ、41歳で青酸入りのリンゴを齧って死んだ。2013年にエリザベス女王が恩赦。",
+  "events": [
+    {
+      "year": 1912,
+      "age": 0,
+      "title": "ロンドンに植民地官吏の子として誕生",
+      "detail": "両親はインドに戻り、幼少期は里親と姉に育てられた。",
+      "tags": [
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1928,
+      "age": 16,
+      "title": "シャーボーン校で親友クリストファー・モーコムと出会う",
+      "detail": "知的で繊細な同級生との深い友情。翌年モーコムは結核で急死。チューリングは『精神の永続性』を問う道へ。",
+      "tags": [
+        "turning_encounter",
+        "heartbreak"
+      ]
+    },
+    {
+      "year": 1929,
+      "age": 17,
+      "title": "親友モーコムが結核で死去",
+      "detail": "『彼の精神はどこへ行ったのか』を問い続け、数学と物理を志す。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1936,
+      "age": 24,
+      "title": "論文『計算可能数について』、チューリングマシンを提唱",
+      "detail": "プリンストンでゲーデルと並んで計算理論を確立。『人工知能』の基礎理論。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1939,
+      "age": 27,
+      "title": "ブレッチリー・パークに配属、エニグマ解読チーム",
+      "detail": "『ボンブ』を設計し、ドイツ軍海軍エニグマを破る。連合軍勝利を2〜4年早めたと推定。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1945,
+      "age": 33,
+      "title": "戦後、国立物理研究所でACEコンピュータ設計",
+      "detail": "世界最初期のストアード・プログラム方式コンピュータ。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1950,
+      "age": 38,
+      "title": "論文『計算する機械と知性』、『チューリング・テスト』",
+      "detail": "『機械は考えられるか』を実験的に判定する方法を提案。人工知能研究の出発点。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1952,
+      "age": 39,
+      "title": "同性愛で有罪、化学的去勢を選ぶ",
+      "detail": "恋人との関係を盗難事件で警察に話したことが逮捕につながった。投獄か化学的去勢かで後者を選び、エストロゲン注射を1年受ける。",
+      "tags": [
+        "pride_broken",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1954,
+      "age": 41,
+      "title": "自宅で青酸入りのリンゴを齧って死去",
+      "detail": "ベッドサイドに食べかけのリンゴ。公式に自殺と判定されたが、事故説も根強く残る。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "機械は考えられるか？",
+      "source": "『計算する機械と知性』冒頭 1950"
+    },
+    {
+      "text": "完全を追い求めることは、時に最大の敵となる。",
+      "source": "チューリングに帰される言葉"
+    },
+    {
+      "text": "時として、誰からも期待されない者が、誰も想像できないことを成し遂げる。",
+      "source": "映画『イミテーション・ゲーム』"
+    }
+  ],
+  "relations": [
+    {
+      "name": "クリストファー・モーコム",
+      "relation": "最初の愛",
+      "note": "17歳で失った親友。以後の全てを動かした"
+    }
+  ],
+  "places": [
+    {
+      "name": "ブレッチリー・パーク",
+      "location": "イギリス・バッキンガムシャー",
+      "note": "エニグマ解読の地"
+    },
+    {
+      "name": "マンチェスター・サックヴィル公園",
+      "location": "イギリス・マンチェスター",
+      "note": "チューリングの座像"
+    }
+  ],
+  "books": [
+    {
+      "title": "エニグマ アラン・チューリング伝 上",
+      "author": "アンドリュー・ホッジス",
+      "asin": "4326951796",
+      "description": "決定版伝記"
+    }
+  ],
+  "media": [
+    {
+      "title": "イミテーション・ゲーム／エニグマと天才数学者の秘密",
+      "year": 2014,
+      "type": "movie",
+      "country": "英・米",
+      "director": "モルテン・ティルドゥム",
+      "cast": "ベネディクト・カンバーバッチ／キーラ・ナイトレイ",
+      "description": "エニグマ解読と晩年の悲劇を描いた伝記映画",
+      "youtubeId": "nuPZUUED5uk"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Alan_Turing_az_1930-as_%C3%A9vekben.jpg/500px-Alan_Turing_az_1930-as_%C3%A9vekben.jpg",
+  "wikiTitle": "アラン・チューリング",
+  "imageCredit": {
+    "artist": "Unknown author Unknown author",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "https://berichtenuithetverleden.wordpress.com/2013/01/29/alan-turing-1912-1954/",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Alan_Turing_az_1930-as_%C3%A9vekben.jpg"
+  }
+}

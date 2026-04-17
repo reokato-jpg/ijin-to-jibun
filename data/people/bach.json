@@ -1,0 +1,225 @@
+{
+  "id": "bach",
+  "name": "ヨハン・ゼバスティアン・バッハ",
+  "nameEn": "Johann Sebastian Bach",
+  "birth": 1685,
+  "death": 1750,
+  "country": "ドイツ",
+  "field": "作曲家・オルガン奏者",
+  "summary": "バロック音楽の頂点。ライプツィヒのトーマス教会カントルを25年務め、1000曲を超える宗教音楽と器楽曲を残した。20人の子の父。",
+  "events": [
+    {
+      "year": 1685,
+      "age": 0,
+      "title": "アイゼナハの音楽一家に誕生",
+      "detail": "10歳で両親を失い、長兄に育てられる。夜中にこっそり兄の楽譜を書き写した逸話が有名。",
+      "tags": [
+        "loss",
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1695,
+      "age": 9,
+      "title": "両親を相次いで失い、兄のもとへ",
+      "detail": "父ヨハン・アンブロシウスが死去、9歳で孤児に。兄ヨハン・クリストフのもとで育てられ、月光の下で禁じられた楽譜を書き写したと伝わる。",
+      "tags": [
+        "parent_conflict",
+        "loss",
+        "poverty"
+      ]
+    },
+    {
+      "year": 1705,
+      "age": 20,
+      "title": "リューベックへ400km徒歩の旅、ブクステフーデに会う",
+      "detail": "名オルガニスト、ブクステフーデのオルガン演奏を聴くため、職務を放棄して徒歩の旅。無許可の長期欠勤で帰任後に叱責された。",
+      "tags": [
+        "turning_encounter",
+        "restart"
+      ]
+    },
+    {
+      "year": 1708,
+      "age": 23,
+      "title": "ワイマール宮廷オルガニスト",
+      "detail": "最も多作なオルガン時代の始まり。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1720,
+      "age": 35,
+      "title": "妻マリア・バルバラが突然死",
+      "detail": "出張から戻ると、妻は既に埋葬された後だった。20人の子を産んだうち半数以上が早世。バッハの生涯は死に満ちている。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1723,
+      "age": 38,
+      "title": "ライプツィヒ・トーマス教会カントル就任",
+      "detail": "以後27年、膨大な教会音楽を生み出し続ける。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1723,
+      "age": 38,
+      "title": "ライプツィヒ・トーマス教会のカントルに就任",
+      "detail": "テレマンに断られての3番目の候補だった。以後27年、毎週日曜のカンタータを書き続ける。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1747,
+      "age": 62,
+      "title": "フリードリヒ大王の宮廷でテーマを与えられ『音楽の捧げもの』",
+      "detail": "ポツダムで王の主題に即興でフーガを作り驚嘆させた。帰宅後に6声のフーガを含む曲集として完成。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1750,
+      "age": 65,
+      "title": "失明して死去",
+      "detail": "晩年は視力を失う。『フーガの技法』は未完のまま。忘却され、100年後にメンデルスゾーンが復活させた。",
+      "tags": [
+        "illness",
+        "loss"
+      ]
+    },
+    {
+      "year": 1750,
+      "age": 65,
+      "title": "失明の中『フーガの技法』を書き続け死去",
+      "detail": "ロンドンから来た眼科医タイラーの手術に失敗し完全に失明。最後のフーガの『B-A-C-H』の署名で絶筆。死後100年近く忘れられた。",
+      "tags": [
+        "loss",
+        "isolation"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "音楽は神を讃え、人の心を喜ばすためにある。",
+      "source": "書簡より"
+    },
+    {
+      "text": "音楽の目的は神の栄光と心の慰めに他ならない。",
+      "source": "バッハの言葉"
+    },
+    {
+      "text": "私のように勤勉に働けば、誰でも同じことができるだろう。",
+      "source": "バッハに帰される言葉"
+    },
+    {
+      "text": "すべての和音は神を讃えるためにある。",
+      "source": "弟子への言葉"
+    }
+  ],
+  "places": [
+    {
+      "name": "バッハの家（生家）",
+      "location": "ドイツ・アイゼナハ",
+      "note": "博物館として公開"
+    },
+    {
+      "name": "聖トーマス教会",
+      "location": "ドイツ・ライプツィヒ",
+      "note": "バッハが27年働いた教会。遺体が埋葬される"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Johann_Sebastian_Bach.jpg/500px-Johann_Sebastian_Bach.jpg",
+  "wikiTitle": "ヨハン・ゼバスティアン・バッハ",
+  "imageCredit": {
+    "artist": "Elias Gottlob Haussmann",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "https://www.jsbach.net/bass/elements/bach-hausmann.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Johann_Sebastian_Bach.jpg"
+  },
+  "books": [
+    {
+      "title": "バッハ その生涯と音楽",
+      "author": "クリストフ・ヴォルフ",
+      "asin": "4393931777",
+      "description": "決定版評伝。バッハ研究の最高峰"
+    },
+    {
+      "title": "音楽の捧げもの・フーガの技法",
+      "author": "M. ジェフロア",
+      "asin": "4276130387",
+      "description": "晩年の謎めいた作品の解読"
+    }
+  ],
+  "works": [
+    {
+      "title": "マタイ受難曲 BWV244",
+      "year": 1727,
+      "type": "宗教曲",
+      "description": "キリスト受難の物語を3時間の大音楽劇に",
+      "youtubeId": "a4dftpAmswc"
+    },
+    {
+      "title": "無伴奏ヴァイオリン・パルティータ第2番 ニ短調 BWV1004",
+      "year": 1720,
+      "type": "器楽曲",
+      "description": "妻の死の年に書かれたとされる。『シャコンヌ』は絶品",
+      "youtubeId": "QV0WchBP9xk"
+    },
+    {
+      "title": "無伴奏チェロ組曲第1番 ト長調 BWV1007",
+      "year": 1720,
+      "type": "器楽曲",
+      "description": "カザルスが13歳の時に古本屋で発見し世に蘇らせた",
+      "youtubeId": "mGQLXRTl3Z0"
+    },
+    {
+      "title": "平均律クラヴィーア曲集 第1巻 BWV846-869",
+      "year": 1722,
+      "type": "鍵盤曲",
+      "description": "すべての調性を巡る『音楽の旧約聖書』",
+      "youtubeId": "YumoHGmKpRk",
+      "imslpUrl": "https://imslp.org/wiki/The_Well-Tempered_Clavier%2C_Book_I%2C_BWV_846-869_(Bach%2C_Johann_Sebastian)"
+    },
+    {
+      "title": "ゴルトベルク変奏曲 BWV988",
+      "year": 1741,
+      "type": "鍵盤曲",
+      "description": "不眠症の伯爵のために書かれた静かな宇宙",
+      "youtubeId": "Ahp2aw3TfnU"
+    },
+    {
+      "title": "ミサ曲 ロ短調 BWV232",
+      "year": 1749,
+      "type": "宗教曲",
+      "description": "プロテスタントのバッハが書いたカトリック・ミサの最高峰",
+      "youtubeId": "HhnZGKsZkhk"
+    },
+    {
+      "title": "トッカータとフーガ ニ短調 BWV565",
+      "year": 1710,
+      "type": "オルガン曲",
+      "description": "最も有名なオルガン曲",
+      "youtubeId": "ho9rZjlsyYY"
+    }
+  ],
+  "media": [
+    {
+      "title": "アンナ・マグダレーナ・バッハの年代記",
+      "year": 1968,
+      "type": "movie",
+      "country": "西独・伊",
+      "director": "ストローブ＝ユイレ",
+      "cast": "グスタフ・レオンハルト",
+      "description": "妻アンナの視点でバッハの日常を淡々と綴る、音楽学の名作映画。"
+    }
+  ]
+}

@@ -1,0 +1,169 @@
+{
+  "id": "kant",
+  "name": "イマヌエル・カント",
+  "nameEn": "Immanuel Kant",
+  "birth": 1724,
+  "death": 1804,
+  "country": "プロイセン",
+  "field": "哲学者",
+  "summary": "生涯ケーニヒスベルクの街を出なかった『近代哲学の父』。『純粋理性批判』『実践理性批判』で西洋哲学を根底から書き換えた。",
+  "events": [
+    {
+      "year": 1724,
+      "age": 0,
+      "title": "ケーニヒスベルクに誕生",
+      "detail": "敬虔主義の家庭。馬具職人の子として生まれた。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1724,
+      "age": 0,
+      "title": "ケーニヒスベルクに馬具職人の子として誕生",
+      "detail": "敬虔派プロテスタントの母の影響は生涯続いた。",
+      "tags": []
+    },
+    {
+      "year": 1737,
+      "age": 13,
+      "title": "母アンナの死",
+      "detail": "『私の母は、偉大な母だった』と後に弟子に語る。",
+      "tags": [
+        "loss",
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1755,
+      "age": 31,
+      "title": "ケーニヒスベルク大学の私講師に",
+      "detail": "以後15年、貧しい暮らしの中で論理学・地理学など多彩な講義。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1770,
+      "age": 46,
+      "title": "ケーニヒスベルク大学正教授就任",
+      "detail": "遅い栄達。15年の沈黙に入り大作を練り続ける。",
+      "tags": [
+        "blank_period"
+      ]
+    },
+    {
+      "year": 1770,
+      "age": 46,
+      "title": "ケーニヒスベルク大学正教授に就任",
+      "detail": "15年待ってようやく安定した職に。",
+      "tags": [
+        "breakthrough",
+        "restart"
+      ]
+    },
+    {
+      "year": 1781,
+      "age": 57,
+      "title": "『純粋理性批判』出版",
+      "detail": "『人間の認識能力の限界』を問う革命的書。哲学のコペルニクス的転回。",
+      "tags": [
+        "breakthrough",
+        "self_reinvention"
+      ]
+    },
+    {
+      "year": 1781,
+      "age": 57,
+      "title": "『純粋理性批判』刊行",
+      "detail": "11年の沈黙の後に現れた大著。『コペルニクス的転回』と後世呼ばれる。初版は理解されなかった。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1788,
+      "age": 64,
+      "title": "『実践理性批判』刊行",
+      "detail": "道徳法則の絶対性を打ち立てる。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1790,
+      "age": 66,
+      "title": "『判断力批判』で三批判書を完成",
+      "detail": "美と目的性を論じ、批判哲学の体系を閉じた。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1804,
+      "age": 80,
+      "title": "ケーニヒスベルクで死去",
+      "detail": "最期の言葉は『これでよい』。生涯未婚、散歩の時刻で町の人が時計を合わせたという伝説。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "我が上なる星空と、我が内なる道徳法則。",
+      "source": "『実践理性批判』結語"
+    },
+    {
+      "text": "啓蒙とは、人間が自ら招いた未成年状態から脱することである。",
+      "source": "『啓蒙とは何か』"
+    },
+    {
+      "text": "人格は、他人の目的のための手段としてではなく、常に同時に目的として扱われなければならない。",
+      "source": "『人倫の形而上学の基礎づけ』"
+    },
+    {
+      "text": "あえて賢くあれ。(Sapere aude!)",
+      "source": "『啓蒙とは何か』"
+    },
+    {
+      "text": "内容なき思惟は空虚であり、概念なき直観は盲目である。",
+      "source": "『純粋理性批判』"
+    }
+  ],
+  "places": [
+    {
+      "name": "カントの墓",
+      "location": "ロシア・カリーニングラード（旧ケーニヒスベルク）",
+      "note": "大聖堂の壁面に組み込まれた墓"
+    },
+    {
+      "name": "カント島（カント博物館）",
+      "location": "カリーニングラード",
+      "note": "現地では国民的英雄"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Immanuel_Kant_-_Gemaelde_1.jpg/500px-Immanuel_Kant_-_Gemaelde_1.jpg",
+  "wikiTitle": "イマヌエル・カント",
+  "imageCredit": {
+    "artist": "Johann Gottlieb Becker (1720-1782)",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "https://web.archive.org/web/20220308160432/https://andreasvieth.de/kant/das-bildmaterial",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Immanuel_Kant_-_Gemaelde_1.jpg"
+  },
+  "books": [
+    {
+      "title": "純粋理性批判 上",
+      "author": "イマヌエル・カント",
+      "asin": "4003362519",
+      "description": "近代哲学のコペルニクス的転回"
+    },
+    {
+      "title": "実践理性批判",
+      "author": "イマヌエル・カント",
+      "asin": "4003362543",
+      "description": "『我が内なる道徳法則』"
+    }
+  ]
+}

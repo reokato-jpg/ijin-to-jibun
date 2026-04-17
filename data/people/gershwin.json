@@ -1,0 +1,172 @@
+{
+  "id": "gershwin",
+  "name": "ジョージ・ガーシュウィン",
+  "nameEn": "George Gershwin",
+  "birth": 1898,
+  "death": 1937,
+  "country": "アメリカ",
+  "field": "作曲家",
+  "summary": "『ラプソディ・イン・ブルー』『パリのアメリカ人』『ポーギーとベス』。ロシア系ユダヤ人移民の子から、ジャズとクラシックを架橋した20世紀アメリカの音の顔に。38歳で脳腫瘍で死去。",
+  "events": [
+    {
+      "year": 1898,
+      "age": 0,
+      "title": "ニューヨーク・ブルックリンに誕生",
+      "detail": "ロシア系ユダヤ人移民の家庭。",
+      "tags": []
+    },
+    {
+      "year": 1912,
+      "age": 14,
+      "title": "両親が買ってくれたピアノに夢中に",
+      "detail": "兄のために買ったピアノを弟が独占。音楽教育もろくにないのに耳で弾いた。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1914,
+      "age": 15,
+      "title": "ティン・パン・アレーの出版社でピアノ・プラッガーに",
+      "detail": "15歳で中学をやめ週15ドルで楽譜を客に聴かせる仕事。当時最年少。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1919,
+      "age": 21,
+      "title": "『スワニー』大ヒット",
+      "detail": "アル・ジョルソンが歌い100万枚売れた。印税で初めて大金を手にする。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1924,
+      "age": 25,
+      "title": "『ラプソディ・イン・ブルー』初演",
+      "detail": "2週間で書き上げた。ジャズ交響楽の誕生。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1928,
+      "age": 30,
+      "title": "ヨーロッパ旅行、ラヴェルに弟子入り志願",
+      "detail": "『あなたは一流のガーシュウィンで、二流のラヴェルにはなるな』と断られた。",
+      "tags": [
+        "turning_encounter",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1935,
+      "age": 36,
+      "title": "『ポーギーとベス』初演",
+      "detail": "黒人キャストによるアメリカン・フォーク・オペラ。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1936,
+      "age": 37,
+      "title": "ハリウッドへ",
+      "detail": "『レッツ・ダンス』『シャル・ウィ・ダンス』など映画音楽へ。フレッド・アステアと組む。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1937,
+      "age": 38,
+      "title": "ハリウッドで脳腫瘍により急死",
+      "detail": "ピアノを弾いていて崩れ落ちた。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1937,
+      "age": 38,
+      "title": "演奏中に頭痛発作、脳腫瘍と判明",
+      "detail": "6月11日、ピアノを弾いていて崩れ落ちた。原因不明の激痛に数ヶ月苦しむ。",
+      "tags": [
+        "illness"
+      ]
+    },
+    {
+      "year": 1937,
+      "age": 38,
+      "title": "ビバリーヒルズで手術後死去",
+      "detail": "7月11日早朝、膠芽腫の緊急手術後に意識を取り戻さず。『ガーシュウィンは死なない。ガーシュウィン作品が生きている限り』とシェーンベルクが追悼。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "人生はジャズとよく似ている。即興で弾くときが一番いい。",
+      "source": "ガーシュウィンに帰される言葉"
+    },
+    {
+      "text": "真の音楽は、人が心の底で自然に感じるものから生まれる。",
+      "source": "ガーシュウィンの言葉"
+    },
+    {
+      "text": "ジャズは民衆の音楽だ。だから永遠に生きる。",
+      "source": "ガーシュウィンの言葉"
+    }
+  ],
+  "relations": [
+    {
+      "name": "ラヴェル",
+      "id": "ravel",
+      "relation": "憧れた師",
+      "note": "弟子入りを断られた『あなたは一流のガーシュウィンで、二流のラヴェルにはなるな』"
+    }
+  ],
+  "places": [],
+  "books": [],
+  "works": [
+    {
+      "title": "ラプソディ・イン・ブルー",
+      "type": "youtube",
+      "id": "ynEOo28lsbc",
+      "note": "ジャズとクラシックの融合"
+    },
+    {
+      "title": "パリのアメリカ人",
+      "year": 1928,
+      "type": "管弦楽",
+      "description": "タクシーのクラクションが登場する陽気な交響詩",
+      "youtubeId": "2_lVylvm_w4"
+    },
+    {
+      "title": "歌劇『ポーギーとベス』より『サマータイム』",
+      "year": 1935,
+      "type": "オペラ",
+      "description": "20世紀最も歌われた子守歌",
+      "youtubeId": "t6aiJlOZ1-A"
+    },
+    {
+      "title": "ピアノ協奏曲 ヘ調",
+      "year": 1925,
+      "type": "協奏曲",
+      "description": "『ラプソディ』の次に書いた本格的協奏曲",
+      "youtubeId": "ZtCPIOl6VDE"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/6/68/George_Gershwin_1937.jpg",
+  "wikiTitle": "ジョージ・ガーシュウィン",
+  "imageCredit": {
+    "artist": "Carl Van Vechten",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "This image is available from the United States Library of Congress 's Prints and Photographs division under the digital ID van.5a52009 . This tag does not indicate the copyright status of the attached work. A normal copyright tag is still required. See Commons:Licensing .",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:George_Gershwin_1937.jpg"
+  }
+}

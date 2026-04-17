@@ -1,0 +1,482 @@
+{
+  "id": "van_gogh",
+  "name": "フィンセント・ファン・ゴッホ",
+  "nameEn": "Vincent van Gogh",
+  "birth": 1853,
+  "death": 1890,
+  "country": "オランダ",
+  "field": "画家",
+  "summary": "27歳で画家を志すまで、職を転々とし失恋を繰り返した『遅咲き』の典型。生前売れた絵はほぼなく、弟テオの支援だけを命綱に描き続けた。本格的に活動したのはわずか10年、そのうち傑作はほぼ最後の2年間に集中している。",
+  "events": [
+    {
+      "year": 1853,
+      "age": 0,
+      "title": "オランダ、牧師の家に誕生 — 死産した兄と同じ名を受け継ぐ",
+      "detail": "1年前の同じ日に死産した兄『フィンセント』と同じ名前を付けられた。子どもの頃、家の近くの教会墓地に自分と同じ名前の墓石があるのを見て育つ。『自分は誰かの身代わりなのでは』という感覚が根底にあった。",
+      "tags": [
+        "parent_conflict",
+        "loss"
+      ]
+    },
+    {
+      "year": 1869,
+      "age": 16,
+      "title": "画商グーピル商会に入社 — 叔父のコネ",
+      "detail": "有力な叔父の紹介でロンドン、パリ支店を回る。最初は真面目に働いたが、客と衝突することが増え徐々に不適応に。『自分は商売に向いていない』という最初の敗北。",
+      "tags": [
+        "setback",
+        "approval"
+      ]
+    },
+    {
+      "year": 1869,
+      "age": 16,
+      "title": "グーピル画廊に就職、美術商の道へ",
+      "detail": "叔父の紹介でロンドン・パリ支店も経験。当初は真面目で将来有望な青年だった。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1873,
+      "age": 20,
+      "title": "ロンドンの下宿の娘に失恋、性格が激変",
+      "detail": "下宿の娘ウルスラに求愛するも、すでに婚約者がいた。打ちのめされ、商会での勤務態度が悪化。客を説教するようになり、ついに解雇へ。最初の失恋が人生の歯車を狂わせた。",
+      "tags": [
+        "heartbreak",
+        "self_denial"
+      ]
+    },
+    {
+      "year": 1876,
+      "age": 23,
+      "title": "画商を解雇、イギリスで教師・伝道師を目指すも挫折",
+      "detail": "聖書学校にも挫折、代用教員として薄給で働くうちに体調を崩す。『何をやってもうまくいかない男』として家族からも持て余される。",
+      "tags": [
+        "setback",
+        "blank_period",
+        "self_denial"
+      ]
+    },
+    {
+      "year": 1876,
+      "age": 23,
+      "title": "伝道師を志しベルギーの炭鉱村ボリナージュへ",
+      "detail": "炭鉱労働者と同じ粗末な小屋で暮らし、食料も与えた。しかし『過激すぎる』として教会から解任される。",
+      "tags": [
+        "isolation",
+        "pride_broken",
+        "restart"
+      ]
+    },
+    {
+      "year": 1879,
+      "age": 26,
+      "title": "ベルギーの炭鉱地帯で伝道師、熱心すぎて教会から解任",
+      "detail": "貧しい炭鉱夫たちと寝食を共にし、自分の服まで与えた。あまりに過激で狂信的だと教会が判断、契約を打ち切る。『神のために生きる』という道まで閉ざされた。",
+      "tags": [
+        "setback",
+        "self_denial",
+        "poverty",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1880,
+      "age": 27,
+      "title": "画家になる決意、弟テオへの長い手紙",
+      "detail": "何をやってもダメだった男が、絵だけは手放さなかった。弟テオに宛てて『私はようやく進むべき道を見つけた』と長い手紙を書く。以後、テオは兄の生活費を送り続けることになる。",
+      "tags": [
+        "restart",
+        "self_reinvention",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1880,
+      "age": 27,
+      "title": "27歳で画家になる決意",
+      "detail": "ブリュッセルで弟テオに『画家になる』と宣言。以後テオの仕送りで生きる。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1881,
+      "age": 28,
+      "title": "従姉ケーに求婚、『決して、断じて』と拒絶される",
+      "detail": "未亡人になった従姉に猛烈な求愛。ランプの炎に自分の手をかざして『この炎が消えるまでだけでも会わせてほしい』と親族に迫り、異常と見なされて家を追い出される。",
+      "tags": [
+        "heartbreak",
+        "self_denial",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1882,
+      "age": 29,
+      "title": "娼婦シーンと同棲 — 家族と決定的に対立",
+      "detail": "妊娠した娼婦を引き取り子ども2人と生活。『救いたい』という思いが、結局は自分のための同情だったと気づいていく。家族は激怒、父からは絶縁寸前の扱いを受ける。",
+      "tags": [
+        "parent_conflict",
+        "poverty",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1886,
+      "age": 33,
+      "title": "パリでテオと同居、印象派と出会って色彩が爆発",
+      "detail": "暗く重いオランダ時代の絵から、色鮮やかな作風へ激変。モネ、ルノワール、ゴーギャンと出会い、自分の絵が何を目指すべきか初めて見えてくる。",
+      "tags": [
+        "turning_encounter",
+        "self_reinvention",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1886,
+      "age": 33,
+      "title": "パリで印象派に出会い色彩が爆発",
+      "detail": "弟テオのアパートに住み、印象派・浮世絵に開眼。暗いオランダ絵画から一気に光と色の世界へ。",
+      "tags": [
+        "turning_encounter",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1888,
+      "age": 35,
+      "title": "南フランス・アルルへ移住、画家コロニーの夢",
+      "detail": "ゴーギャンと『芸術家の共同体』を作る夢を抱いてアルルへ。黄色い家を借り、最も多産な時期が始まる。『ひまわり』連作はゴーギャンを迎えるための飾りだった。",
+      "tags": [
+        "restart",
+        "breakthrough",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1888,
+      "age": 35,
+      "title": "ゴーギャンとの共同生活が2ヶ月で破綻、耳切り事件",
+      "detail": "性格の合わない二人は毎日口論。12月23日、発作的にゴーギャンに剃刀を向け、自分の耳の一部を切り落として娼館に届ける。憧れの画家に見限られ、夢の共同体は崩壊した。",
+      "tags": [
+        "isolation",
+        "illness",
+        "pride_broken",
+        "heartbreak"
+      ]
+    },
+    {
+      "year": 1888,
+      "age": 35,
+      "title": "アルルへ、『黄色い家』でゴーギャンと共同生活",
+      "detail": "理想の『画家の共同体』を夢見て準備。60日後に破綻、耳切り事件へ。",
+      "tags": [
+        "restart",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1888,
+      "age": 35,
+      "title": "12月、耳を切り落とす",
+      "detail": "ゴーギャンと激しい口論の後、左耳を剃刀で切り落とし娼婦に手渡す。ゴーギャンは翌朝パリへ去った。",
+      "tags": [
+        "pride_broken",
+        "illness",
+        "heartbreak"
+      ]
+    },
+    {
+      "year": 1889,
+      "age": 36,
+      "title": "サン=レミの療養院に自ら入院",
+      "detail": "『自分は危険だ』と自覚して精神病院へ。発作と小康を繰り返しながら、鉄格子越しの景色から『星月夜』を描く。最も有名な作品群は、最も病が重かった時期に生まれた。",
+      "tags": [
+        "illness",
+        "isolation",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1889,
+      "age": 36,
+      "title": "サン=レミの精神療養院に自ら入院",
+      "detail": "1年間で150点以上の傑作。『星月夜』『糸杉』はここで生まれた。",
+      "tags": [
+        "illness",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1890,
+      "age": 37,
+      "title": "オーヴェル=シュル=オワーズでピストル自殺",
+      "detail": "弟テオが経済的に困っているという手紙を受け取った直後、畑でピストルを撃ち、2日かけて死んだ。『この悲しみは永遠に続くだろう』がテオへの最後の言葉。画家として活動したのは10年。生前売れた絵は数点しかなかった。",
+      "tags": [
+        "loss",
+        "self_denial",
+        "poverty"
+      ]
+    },
+    {
+      "year": 1890,
+      "age": 37,
+      "title": "オーヴェルの麦畑で拳銃自殺",
+      "detail": "7月27日、麦畑で自らの腹を撃つ。テオの腕の中で『悲しみは永遠に続く(La tristesse durera toujours)』と呟き、2日後に死去。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1891,
+      "age": null,
+      "title": "兄の死の半年後、弟テオも急死",
+      "detail": "兄を失ったテオは精神的に崩壊し、6ヶ月後に33歳で死去。兄弟は並んで埋葬された。後にテオの妻ヨーが兄の手紙と絵を守り、世界中に広めたことで、ゴッホは死後になって20世紀最大の画家となった。",
+      "tags": [
+        "loss",
+        "breakthrough"
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "name": "テオ・ファン・ゴッホ",
+      "relation": "弟 / 生涯の支援者",
+      "years": "生涯",
+      "note": "画商として兄の生活費を送り続けた。ゴッホの死後半年で後を追うように急死"
+    },
+    {
+      "name": "ポール・ゴーギャン",
+      "relation": "憧れの画家 / 同居人",
+      "years": "1888",
+      "note": "アルルの『黄色い家』で2ヶ月共同生活。破綻し、耳切り事件の引き金となる"
+    },
+    {
+      "name": "ヨー・ボンゲル（テオの妻）",
+      "relation": "義妹",
+      "years": "1891–",
+      "note": "テオの死後、ゴッホ兄弟の手紙900通と絵画を守り抜き、世界に広めた真の功労者"
+    },
+    {
+      "name": "ポール・ガシェ医師",
+      "relation": "最期の主治医",
+      "years": "1890",
+      "note": "オーヴェル時代の医師。『ガシェ医師の肖像』のモデル"
+    }
+  ],
+  "quotes": [
+    {
+      "text": "偉大なことは、衝動でできるものではない。小さなことの積み重ねによって成し遂げられる。",
+      "source": "テオへの手紙"
+    },
+    {
+      "text": "星を見ると、いつも夢を見てしまう。",
+      "source": "テオへの手紙, 1888"
+    },
+    {
+      "text": "私はいつも、自分にはできないことをやろうとしてきた。そうすれば、できるようになるのではないかと信じて。",
+      "source": "テオへの手紙"
+    },
+    {
+      "text": "悲しみは永遠に続くだろう。",
+      "source": "自殺前夜、テオへの最後の言葉"
+    },
+    {
+      "text": "星を見るたびに夢を見る。",
+      "source": "テオへの手紙"
+    },
+    {
+      "text": "偉大なことは衝動からではなく、小さなことの積み重ねから生まれる。",
+      "source": "テオへの手紙"
+    },
+    {
+      "text": "私は自分の心で絵を描きたい。",
+      "source": "テオへの手紙"
+    },
+    {
+      "text": "悲しみは永遠に続く。",
+      "source": "最期の言葉 1890"
+    },
+    {
+      "text": "絵を描くとき、私は自分が何者か、何をすべきかを忘れる。",
+      "source": "手紙"
+    }
+  ],
+  "works": [
+    {
+      "title": "ジャガイモを食べる人々",
+      "year": 1885,
+      "type": "絵画",
+      "description": "暗いオランダ時代の代表作。貧しい農民の夕食を描いた",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Vincent_Van_Gogh_-_The_Potato_Eaters.jpg/500px-Vincent_Van_Gogh_-_The_Potato_Eaters.jpg"
+    },
+    {
+      "title": "ひまわり",
+      "year": 1888,
+      "type": "絵画",
+      "description": "アルル時代、ゴーギャンを迎えるために描いた連作",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Vincent_Willem_van_Gogh_127.jpg/400px-Vincent_Willem_van_Gogh_127.jpg"
+    },
+    {
+      "title": "夜のカフェテラス",
+      "year": 1888,
+      "type": "絵画",
+      "description": "アルルの夜空と黄色いカフェ。光と影の実験",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Vincent_Willem_van_Gogh_-_Cafe_Terrace_at_Night_%28Yorck%29.jpg/500px-Vincent_Willem_van_Gogh_-_Cafe_Terrace_at_Night_%28Yorck%29.jpg"
+    },
+    {
+      "title": "星月夜",
+      "year": 1889,
+      "type": "絵画",
+      "description": "サン=レミの療養院の鉄格子越しに見た空。渦巻く星々",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg/500px-Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg"
+    },
+    {
+      "title": "カラスのいる麦畑",
+      "year": 1890,
+      "type": "絵画",
+      "description": "最晩年の一枚。自殺の数週間前、死の予感が充満する",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Vincent_van_Gogh_%281853-1890%29_-_Wheat_Field_with_Crows_%281890%29.jpg/500px-Vincent_van_Gogh_%281853-1890%29_-_Wheat_Field_with_Crows_%281890%29.jpg"
+    }
+  ],
+  "places": [
+    {
+      "name": "ファン・ゴッホ美術館",
+      "location": "オランダ・アムステルダム",
+      "note": "世界最大のゴッホコレクション"
+    },
+    {
+      "name": "黄色い家跡",
+      "location": "フランス・アルル",
+      "note": "ゴーギャンと暮らした家。建物は戦争で消失"
+    },
+    {
+      "name": "サン=レミ=ド=プロヴァンス修道院",
+      "location": "フランス・サン=レミ",
+      "note": "療養した精神病院。『星月夜』はここで生まれた"
+    },
+    {
+      "name": "オーヴェル=シュル=オワーズ",
+      "location": "フランス・オーヴェル",
+      "note": "最期の地。弟テオと並ぶ墓、カラスの麦畑"
+    },
+    {
+      "name": "ゴッホの寝室",
+      "location": "オランダ・ヌエネン",
+      "note": "『ジャガイモを食べる人々』が描かれた村"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/VanGogh_1887_Selbstbildnis.jpg/500px-VanGogh_1887_Selbstbildnis.jpg",
+  "wikiTitle": "フィンセント・ファン・ゴッホ",
+  "books": [
+    {
+      "title": "ファン・ゴッホの手紙",
+      "author": "フィンセント・ファン・ゴッホ",
+      "asin": "4622018411",
+      "description": "弟テオへの手紙から、画家の孤独・情熱・金銭的困窮が生々しく伝わる"
+    },
+    {
+      "title": "ゴッホのあしあと",
+      "author": "原田マハ",
+      "asin": "4344427165",
+      "description": "ゴッホの人生を辿る旅エッセイ。作品の背景がわかると絵の見え方が変わる"
+    }
+  ],
+  "routineStory": "アルル時代（1888年）の生活は弟テオへの大量の手紙に詳しく残っている。日の出とともに起床、朝食なしで画材を背負い野外へ出て日没まで描き続けた。昼食はパンとチーズ、時にアブサン。夜は黄色い家（Yellow House）に戻り、ランプの下でさらに描き続けることもあった。『耕す農夫のように、朝から晩まで働くのだ』と手紙に書いている。食事はほとんど摂らず、コーヒーとタバコで精神を保っていたため体調は常に限界だった。",
+  "routineSource": "弟テオ宛書簡（『ファン・ゴッホの手紙』に900通以上収録）、精神医学者による伝記研究",
+  "routine": [
+    {
+      "start": 0,
+      "end": 5,
+      "activity": "睡眠",
+      "cat": "sleep"
+    },
+    {
+      "start": 5,
+      "end": 6,
+      "activity": "起床・コーヒーとパン",
+      "cat": "meal"
+    },
+    {
+      "start": 6,
+      "end": 12,
+      "activity": "屋外で絵を描く（朝の光を追う）",
+      "cat": "work"
+    },
+    {
+      "start": 12,
+      "end": 13,
+      "activity": "昼食（カフェで安い食事）",
+      "cat": "meal"
+    },
+    {
+      "start": 13,
+      "end": 17,
+      "activity": "絵を描く（午後の光）",
+      "cat": "work"
+    },
+    {
+      "start": 17,
+      "end": 18,
+      "activity": "アトリエで仕上げ・片付け",
+      "cat": "work"
+    },
+    {
+      "start": 18,
+      "end": 19,
+      "activity": "夕食",
+      "cat": "meal"
+    },
+    {
+      "start": 19,
+      "end": 22,
+      "activity": "テオへの手紙を書く・デッサン",
+      "cat": "rest"
+    },
+    {
+      "start": 22,
+      "end": 24,
+      "activity": "睡眠",
+      "cat": "sleep"
+    }
+  ],
+  "imageCredit": {
+    "artist": "Vincent van Gogh",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "[1]",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:VanGogh_1887_Selbstbildnis.jpg"
+  },
+  "media": [
+    {
+      "title": "ゴッホ 最期の手紙",
+      "year": 2017,
+      "type": "movie",
+      "country": "英・ポーランド",
+      "director": "ドロタ・コビエラ／ヒュー・ウェルチマン",
+      "description": "全編を125人の画家が油絵で描いた世界初の長編油絵アニメーション。",
+      "youtubeId": "CGzKnyhYDQI"
+    },
+    {
+      "title": "永遠の門 ゴッホの見た未来",
+      "year": 2018,
+      "type": "movie",
+      "country": "アメリカ・フランス",
+      "director": "ジュリアン・シュナーベル",
+      "cast": "ウィレム・デフォー",
+      "description": "デフォーが65歳でゴッホを演じた、晩年のアルル〜サン＝レミを描く。",
+      "youtubeId": "L-8nqVXy1Uw"
+    },
+    {
+      "title": "炎の人ゴッホ",
+      "year": 1956,
+      "type": "movie",
+      "country": "アメリカ",
+      "director": "ヴィンセント・ミネリ",
+      "cast": "カーク・ダグラス",
+      "description": "クラシックなゴッホ伝記映画の金字塔。"
+    }
+  ]
+}

@@ -1,0 +1,241 @@
+{
+  "id": "picasso",
+  "name": "パブロ・ピカソ",
+  "nameEn": "Pablo Picasso",
+  "birth": 1881,
+  "death": 1973,
+  "country": "スペイン / フランス",
+  "field": "画家・彫刻家",
+  "summary": "青の時代からキュビスム、ゲルニカまで、91年の生涯で作風を何度も塗り替え続けた20世紀最大の画家。愛人を変えるたび絵が変わった。",
+  "events": [
+    {
+      "year": 1881,
+      "age": 0,
+      "title": "スペイン・マラガに誕生",
+      "detail": "絵の教師である父に才能を見いだされ、10歳でアカデミーレベルの油絵を描いた。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1881,
+      "age": 0,
+      "title": "スペイン・マラガに画家の息子として誕生",
+      "detail": "最初の言葉は『ピス(鉛筆)』だったと伝わる。7歳で父の絵画教室に通い始める。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1895,
+      "age": 13,
+      "title": "妹コンチータを病で失い、父が絵筆を折る",
+      "detail": "『もう自分より上手い息子に敵わない』と父ホセが告白。ピカソは父を超えた瞬間を強く覚えていた。",
+      "tags": [
+        "loss",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1900,
+      "age": 19,
+      "title": "最初のパリ訪問、親友カサヘマスが失恋の末に自殺",
+      "detail": "ピサロへの紹介状で訪れたパリ。翌年カサヘマスがレストランで拳銃自殺。『青の時代』の引き金に。",
+      "tags": [
+        "loss",
+        "restart",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1901,
+      "age": 20,
+      "title": "青の時代、親友カサジェマスの自殺",
+      "detail": "親友の失恋自殺にショックを受け、青一色の悲哀の絵を描き始める。",
+      "tags": [
+        "loss",
+        "heartbreak"
+      ]
+    },
+    {
+      "year": 1904,
+      "age": 22,
+      "title": "モンマルトルの『洗濯船』に住む",
+      "detail": "ブラック・アポリネールらと貧しく熱狂的な生活。フェルナンド・オリヴィエと最初の恋。",
+      "tags": [
+        "restart",
+        "poverty"
+      ]
+    },
+    {
+      "year": 1907,
+      "age": 25,
+      "title": "『アヴィニョンの娘たち』完成",
+      "detail": "アフリカ彫刻との出会いからキュビスムへ。当時は友人たちにも理解されなかった。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1907,
+      "age": 26,
+      "title": "『アヴィニョンの娘たち』",
+      "detail": "キュビスムの誕生。友人たちにも理解されず、スタジオに長く隠された。",
+      "tags": [
+        "breakthrough",
+        "self_reinvention"
+      ]
+    },
+    {
+      "year": 1918,
+      "age": 36,
+      "title": "バレエ・リュスの衣装担当でオルガ・コクローヴァと結婚",
+      "detail": "ロシア貴族の踊り子との結婚で新古典主義の時代へ。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1937,
+      "age": 55,
+      "title": "『ゲルニカ』を制作",
+      "detail": "スペイン内戦中のゲルニカ爆撃への怒り。パリ万博に出品、反戦の象徴に。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1937,
+      "age": 55,
+      "title": "『ゲルニカ』",
+      "detail": "ナチスのバスク爆撃への怒りを、白黒のキャンバスに込めた20世紀美術の象徴。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1943,
+      "age": 61,
+      "title": "21歳のフランソワーズ・ジローと出会う",
+      "detail": "以後7年共に過ごし2人の子をもうけるが、フランソワーズは去る。『ピカソとともに生きた私』を書いた唯一の相手。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1961,
+      "age": 79,
+      "title": "ジャクリーヌ・ロックと結婚",
+      "detail": "45歳年下の最後の妻。晩年の11年を共に。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1973,
+      "age": 91,
+      "title": "南フランスで死去",
+      "detail": "最後まで絵筆を握り続けた。『絵を描くとは自分を描くことだ』。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1973,
+      "age": 91,
+      "title": "南仏ムージャンで死去",
+      "detail": "最後の朝食の席で。『もう飲まない。もう食べない。これが本当の幸せだった』と呟いたと伝わる。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "子どもは誰もが芸術家だ。問題はいかに大人になっても芸術家でいられるかだ。",
+      "source": "インタビュー"
+    },
+    {
+      "text": "芸術は人生の塵から魂を洗い落とす。",
+      "source": "書簡"
+    },
+    {
+      "text": "子供は皆、芸術家だ。問題は、大人になっても芸術家でいられるかどうかだ。",
+      "source": "ピカソの言葉"
+    },
+    {
+      "text": "私は探さない、見つけるのだ。",
+      "source": "ピカソの言葉"
+    },
+    {
+      "text": "絵画は色と形で書かれた詩だ。",
+      "source": "ピカソの言葉"
+    },
+    {
+      "text": "できると思えばできる、できないと思えばできない。",
+      "source": "ピカソに帰される言葉"
+    },
+    {
+      "text": "他人のように描けるようになるのに4年かかった。子供のように描けるようになるのに生涯かかった。",
+      "source": "ピカソの言葉"
+    }
+  ],
+  "places": [
+    {
+      "name": "ピカソ美術館",
+      "location": "スペイン・バルセロナ",
+      "note": "初期作品を収蔵。10代の圧巻の技量が見られる"
+    },
+    {
+      "name": "ピカソ国立美術館",
+      "location": "フランス・パリ",
+      "note": "パリで最も包括的なピカソ・コレクション"
+    },
+    {
+      "name": "ゲルニカ",
+      "location": "スペイン・ビスカヤ県",
+      "note": "爆撃の街。平和記念碑がある"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Pablo_picasso_1.jpg/500px-Pablo_picasso_1.jpg",
+  "wikiTitle": "パブロ・ピカソ",
+  "imageCredit": {
+    "artist": "Argentina . Revista Vea y Lea",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "https://www.magicasruinas.com.ar/revistero/internacional/pintura-pablo-picasso.htm",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Pablo_picasso_1.jpg"
+  },
+  "books": [
+    {
+      "title": "ピカソ伝 上",
+      "author": "ジョン・リチャードソン",
+      "asin": "4560039879",
+      "description": "世界的評価を得た決定版評伝"
+    },
+    {
+      "title": "ピカソ 私は探求する",
+      "author": "高階秀爾",
+      "asin": "4061489127",
+      "description": "作風の変遷を日本語で追う入門書"
+    }
+  ],
+  "media": [
+    {
+      "title": "ピカソ 天才の秘密",
+      "year": 1956,
+      "type": "doc",
+      "country": "フランス",
+      "director": "アンリ＝ジョルジュ・クルーゾー",
+      "description": "ピカソが画面の裏側からガラスに描く様子を撮影した、世紀の映像記録。"
+    },
+    {
+      "title": "ミッドナイト・イン・パリ",
+      "year": 2011,
+      "type": "movie",
+      "country": "アメリカ",
+      "director": "ウディ・アレン",
+      "description": "1920年代パリにタイムスリップした主人公がピカソ・ヘミングウェイらに出会う。"
+    }
+  ]
+}
