@@ -3236,6 +3236,28 @@ main { flex: 1; overflow-y: auto; background: var(--paper); }
   margin-top: 8px;
 }
 .x-book-amazon:hover { background: #e88a00; }
+
+/* 言葉のコレクションカードの星ボタン */
+.qc-card { position: relative; }
+.qc-fav {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  color: var(--gold);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: all 0.15s;
+  z-index: 2;
+}
+.qc-fav:hover { transform: scale(1.2); background: rgba(184,149,46,0.08); }
+.qc-fav.active { color: var(--wine); }
 .x-post-embed-link:hover { text-decoration: underline; }
 .x-post-tags {
   display: flex;

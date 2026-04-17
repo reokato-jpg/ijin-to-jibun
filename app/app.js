@@ -547,8 +547,11 @@ function renderQuoteCarousel() {
     const av = m.person.imageUrl
       ? `<div class="qc-avatar" style="background-image:url('${m.person.imageUrl}')"></div>`
       : `<div class="qc-avatar">${m.person.name.charAt(0)}</div>`;
+    const qk = quoteKey(m.person.id, m.quote);
+    const faved = favQuotes.has(qk);
     return `
       <div class="qc-card" data-id="${m.person.id}">
+        <button class="qc-fav ${faved ? 'active' : ''}" data-qc-fav="${qk}" aria-label="お気に入り" title="お気に入り">${faved ? '★' : '☆'}</button>
         <div class="qc-text">${m.quote.text}</div>
         <div class="qc-attrib">
           ${av}
@@ -561,7 +564,19 @@ function renderQuoteCarousel() {
     `;
   }).join('');
   container.querySelectorAll('.qc-card').forEach(el => {
-    el.addEventListener('click', () => showPerson(el.dataset.id));
+    el.addEventListener('click', (e) => {
+      if (e.target.closest('[data-qc-fav]')) return;
+      showPerson(el.dataset.id);
+    });
+  });
+  container.querySelectorAll('[data-qc-fav]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const key = btn.dataset.qcFav;
+      if (favQuotes.has(key)) { favQuotes.delete(key); btn.classList.remove('active'); btn.textContent = '☆'; }
+      else { favQuotes.add(key); btn.classList.add('active'); btn.textContent = '★'; }
+      saveSet(FAV_KEY_QUOTES, favQuotes);
+    });
   });
 }
 
