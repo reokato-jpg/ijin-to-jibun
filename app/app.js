@@ -2078,7 +2078,7 @@ function routineBarHtml(routine, showLabels) {
 // Googleカレンダー風の縦タイムライン表示
 function routineCalendarHtml(routine) {
   if (!routine || !routine.length) return '';
-  const HOUR_HEIGHT = 34;
+  const HOUR_HEIGHT = 44;
   const sorted = [...routine].sort((a,b) => a.start - b.start);
   let ruler = '';
   for (let h = 0; h <= 24; h++) {
