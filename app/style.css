@@ -2705,6 +2705,123 @@ main { flex: 1; overflow-y: auto; background: var(--paper); }
   font-family: var(--font-jp);
   font-size: 13px;
 }
+
+/* ================ 応援する（投げ銭） ================ */
+.support-card {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 18px 20px;
+  background: linear-gradient(135deg, #fffdf6 0%, #fbf3e0 100%);
+  border: 1px solid var(--gold);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(184,149,46,0.15);
+}
+.support-icon {
+  font-size: 34px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+.support-texts { flex: 1; min-width: 0; }
+.support-title {
+  font-family: var(--font-jp);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--wine);
+  margin-bottom: 5px;
+  letter-spacing: 0.05em;
+}
+.support-sub {
+  font-size: 12px;
+  color: var(--ink-2);
+  font-family: var(--font-jp);
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+.support-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.support-btn {
+  display: inline-block;
+  padding: 7px 14px;
+  background: var(--wine);
+  color: #fff;
+  text-decoration: none;
+  font-family: var(--font-jp);
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 14px;
+  letter-spacing: 0.04em;
+  transition: all 0.15s;
+}
+.support-btn:hover { background: var(--wine-dark); transform: translateY(-1px); }
+.support-btn-coffee {
+  background: #ffdd00;
+  color: #2a2a2a;
+}
+.support-btn-coffee:hover { background: #ffc400; color: #2a2a2a; }
+.support-btn-sub {
+  background: transparent;
+  color: var(--ink-3);
+  border: 1px solid var(--rule);
+}
+.support-btn-sub:hover { background: #fff; color: var(--wine); border-color: var(--wine); }
+
+/* TOP用のコンパクト広告枠 */
+.home-block-ad-top { margin-top: 4px; margin-bottom: 14px; }
+.ad-slot-compact { padding: 10px 14px; }
+.ad-slot-compact .ad-slot-title { font-size: 13px; margin-bottom: 2px; }
+.ad-slot-compact .ad-slot-sub { font-size: 11px; margin-bottom: 0; }
+
+/* 今日の気分下のAI誘導ボタン */
+.mood-ai-more {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 18px;
+  margin-top: 14px;
+  background: linear-gradient(135deg, #4a1822 0%, #7a2e3a 80%);
+  color: var(--gold-light);
+  border: 1px solid var(--gold);
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: var(--font-jp);
+  text-align: left;
+  transition: all 0.15s;
+  box-shadow: 0 2px 8px rgba(122,46,58,0.2);
+}
+.mood-ai-more:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(122,46,58,0.35); }
+.mood-ai-icon { font-size: 22px; flex-shrink: 0; }
+.mood-ai-texts { flex: 1; display: flex; flex-direction: column; }
+.mood-ai-title {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--gold-light);
+}
+.mood-ai-sub {
+  font-size: 10px;
+  color: rgba(255,240,200,0.75);
+  margin-top: 2px;
+}
+.mood-ai-arrow {
+  font-size: 18px;
+  color: var(--gold-light);
+  flex-shrink: 0;
+}
+
+/* 感情の本棚の説明文 */
+.search-section-desc {
+  color: var(--ink-3);
+  font-size: 12px;
+  margin: 4px 0 14px;
+  line-height: 1.7;
+  font-family: var(--font-jp);
+  padding: 0 4px;
+}
 /* ルーティンカード */
 .routine-card {
   position: relative;

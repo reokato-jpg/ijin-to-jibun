@@ -426,10 +426,27 @@ function renderPersonOfTheDay() {
       container.innerHTML = `
         <div class="mood-result-label">「${tag ? tag.name : '今日の気分'}」のあなたに贈る案内人</div>
         ${renderPersonCard(pick, '本日の案内人')}
+        <button class="mood-ai-more" id="moodAIMore">
+          <span class="mood-ai-icon">💫</span>
+          <span class="mood-ai-texts">
+            <span class="mood-ai-title">さらにAIで、あなたにより近い偉人を探す</span>
+            <span class="mood-ai-sub">無料登録で1日1回まで利用できます</span>
+          </span>
+          <span class="mood-ai-arrow">→</span>
+        </button>
         <button class="mood-reset" id="moodReset">別の気分を選び直す</button>
       `;
       container.querySelector('.person-of-the-day').addEventListener('click', (e) => {
         showPerson(e.currentTarget.dataset.id);
+      });
+      const aiBtn = container.querySelector('#moodAIMore');
+      if (aiBtn) aiBtn.addEventListener('click', () => {
+        if (typeof openAIConsultModal === 'function') {
+          // 今日の気分を初期テキストに載せる
+          window.__aiInitialText = tag ? `いまは「${tag.name}」という気持ち。` : '';
+          window.__aiInitialTag = saved.tagId;
+          openAIConsultModal();
+        }
       });
       container.querySelector('#moodReset').addEventListener('click', () => {
         localStorage.removeItem(MOOD_PICK_KEY);
@@ -1875,7 +1892,8 @@ function renderTags() {
 
   // 感情セクション
   if (tagItems.length > 0) {
-    html += `<div class="search-section-label">感情の本棚</div>`;
+    html += `<div class="search-section-label">感情の本棚</div>
+    <p class="search-section-desc">悲しみ、逃避、燃え尽き…。あなたが今感じている感情を選ぶと、その感情を乗り越えた偉人たちに出会えます。本の帯（背表紙）の数字は、その感情を経験した人数です。</p>`;
     html += `<div class="book-grid">${tagItems.map(t => {
       const color = spineColor('t_' + t.id);
       const bg = TAG_BG_MAP[color] || TAG_BG_MAP['spine-wine'];

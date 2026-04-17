@@ -132,7 +132,7 @@ function openAIConsultModal() {
       <div id="aiContent" class="ai-content hidden">
         <label class="auth-label">
           <span class="ai-label-text">いまの気持ち・悩み・起きたこと</span>
-          <textarea id="aiText" rows="4" placeholder="例：仕事を辞めて何もしたくない日が続いてる..."></textarea>
+          <textarea id="aiText" rows="4" placeholder="例：仕事を辞めて何もしたくない日が続いてる...">${window.__aiInitialText || ''}</textarea>
         </label>
         <div class="ai-label-text" style="margin-bottom:6px">どんな人の話を聞きたい？</div>
         <div class="ai-cats" id="aiCats">
@@ -301,6 +301,9 @@ function renderAIResult(container, reply, originalText) {
     });
   });
 }
+
+// グローバル公開
+window.openAIConsultModal = openAIConsultModal;
 
 // 初期化
 function initAIConsult() {
