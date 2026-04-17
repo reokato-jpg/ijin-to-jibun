@@ -2544,6 +2544,16 @@ main { flex: 1; overflow-y: auto; background: var(--paper); }
   background: var(--wine);
   color: #fff;
 }
+.work-btn-musescore {
+  background: #1f88be;
+  color: #fff;
+  border-color: #1f88be;
+}
+.work-btn-imslp {
+  background: #444;
+  color: #fff;
+  border-color: #444;
+}
 
 /* ================ X（Twitter）風タイムライン ================ */
 .x-feed {
@@ -2687,11 +2697,128 @@ main { flex: 1; overflow-y: auto; background: var(--paper); }
   display: flex;
   gap: 28px;
   margin-top: 8px;
+  font-size: 13px;
+  color: var(--ink-4);
+  font-family: var(--font-en);
+  align-items: center;
+}
+.x-action {
+  background: none;
+  border: none;
+  color: var(--ink-4);
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.x-action:hover { background: rgba(122,46,58,0.08); color: var(--wine); }
+.x-action.liked { color: #e0245e; }
+.x-action-like.liked { background: rgba(224,36,94,0.08); }
+.x-action-share:hover { color: #1d9bf0; background: rgba(29,155,240,0.08); }
+.x-action-count { font-size: 12px; }
+.x-post-comments {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--rule-soft);
+}
+.x-post-comments.hidden { display: none; }
+.x-comments-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 8px; }
+.x-comments-empty {
   font-size: 12px;
+  color: var(--ink-4);
+  text-align: center;
+  font-family: var(--font-jp);
+  padding: 6px 0;
+}
+.x-comment {
+  background: #fffdf6;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--rule-soft);
+}
+.x-comment-text {
+  font-family: var(--font-jp);
+  font-size: 13px;
+  color: var(--ink);
+  line-height: 1.5;
+  word-break: break-word;
+}
+.x-comment-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+}
+.x-comment-date {
+  font-size: 10px;
   color: var(--ink-4);
   font-family: var(--font-en);
 }
-.x-action { cursor: default; }
+.x-comment-delete {
+  background: none;
+  border: none;
+  color: var(--ink-4);
+  font-size: 10px;
+  cursor: pointer;
+  font-family: var(--font-jp);
+  padding: 2px 6px;
+  border-radius: 8px;
+}
+.x-comment-delete:hover { color: #e0245e; background: rgba(224,36,94,0.08); }
+.x-comment-form {
+  display: flex;
+  gap: 6px;
+}
+.x-comment-input {
+  flex: 1;
+  padding: 7px 10px;
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  font-size: 13px;
+  font-family: var(--font-jp);
+  outline: none;
+}
+.x-comment-input:focus { border-color: var(--wine); }
+.x-comment-send {
+  padding: 7px 14px;
+  background: var(--wine);
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: var(--font-jp);
+}
+.x-comment-send:hover { background: var(--wine-dark); }
+
+/* 手紙の通報ボタン */
+.letter-report-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: none;
+  border: none;
+  color: var(--ink-4);
+  font-size: 10px;
+  cursor: pointer;
+  font-family: var(--font-jp);
+  padding: 4px 8px;
+  border-radius: 10px;
+  opacity: 0.5;
+  transition: all 0.15s;
+}
+.letter-report-btn:hover {
+  opacity: 1;
+  color: #e0245e;
+  background: rgba(224,36,94,0.08);
+}
+.letter-card { position: relative; }
 /* 旧LINE風スタイルの無効化 */
 .profile-feed.line-chat { background: transparent !important; padding: 0 !important; }
 .line-msg, .line-bubble, .line-date, .line-msg-avatar { display: none !important; }

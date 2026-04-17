@@ -215,35 +215,50 @@
       "year": 1876,
       "type": "楽劇",
       "description": "16時間に及ぶ壮大な北欧神話の楽劇",
-      "youtubeId": "Jh5tL8oc7PQ"
+      "youtubeId": "Jh5tL8oc7PQ",
+      "imslpUrl": "https://imslp.org/index.php?search=Richard%20Wagner%20%E6%AD%8C%E5%8A%87%E3%80%8E%E3%83%8B%E3%83%BC%E3%83%99%E3%83%AB%E3%83%B3%E3%82%B0%E3%81%AE%E6%8C%87%E7%92%B0%E3%80%8F4%E9%83%A8%E4%BD%9C&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%83%AA%E3%83%92%E3%83%A3%E3%83%AB%E3%83%88%E3%83%BB%E3%83%AF%E3%83%BC%E3%82%B0%E3%83%8A%E3%83%BC%20%E6%AD%8C%E5%8A%87%E3%80%8E%E3%83%8B%E3%83%BC%E3%83%99%E3%83%AB%E3%83%B3%E3%82%B0%E3%81%AE%E6%8C%87%E7%92%B0%E3%80%8F4%E9%83%A8%E4%BD%9C",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%AA%E3%83%92%E3%83%A3%E3%83%AB%E3%83%88%E3%83%BB%E3%83%AF%E3%83%BC%E3%82%B0%E3%83%8A%E3%83%BC%20%E6%AD%8C%E5%8A%87%E3%80%8E%E3%83%8B%E3%83%BC%E3%83%99%E3%83%AB%E3%83%B3%E3%82%B0%E3%81%AE%E6%8C%87%E7%92%B0%E3%80%8F4%E9%83%A8%E4%BD%9C"
     },
     {
       "title": "歌劇『トリスタンとイゾルデ』",
       "year": 1865,
       "type": "楽劇",
       "description": "『トリスタン和音』が調性を崩壊させた、愛と死のオペラ",
-      "youtubeId": "5i8iftr8SwE"
+      "youtubeId": "5i8iftr8SwE",
+      "imslpUrl": "https://imslp.org/index.php?search=Richard%20Wagner%20%E6%AD%8C%E5%8A%87%E3%80%8E%E3%83%88%E3%83%AA%E3%82%B9%E3%82%BF%E3%83%B3%E3%81%A8%E3%82%A4%E3%82%BE%E3%83%AB%E3%83%87%E3%80%8F&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%83%AA%E3%83%92%E3%83%A3%E3%83%AB%E3%83%88%E3%83%BB%E3%83%AF%E3%83%BC%E3%82%B0%E3%83%8A%E3%83%BC%20%E6%AD%8C%E5%8A%87%E3%80%8E%E3%83%88%E3%83%AA%E3%82%B9%E3%82%BF%E3%83%B3%E3%81%A8%E3%82%A4%E3%82%BE%E3%83%AB%E3%83%87%E3%80%8F",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%AA%E3%83%92%E3%83%A3%E3%83%AB%E3%83%88%E3%83%BB%E3%83%AF%E3%83%BC%E3%82%B0%E3%83%8A%E3%83%BC%20%E6%AD%8C%E5%8A%87%E3%80%8E%E3%83%88%E3%83%AA%E3%82%B9%E3%82%BF%E3%83%B3%E3%81%A8%E3%82%A4%E3%82%BE%E3%83%AB%E3%83%87%E3%80%8F"
     },
     {
       "title": "歌劇『タンホイザー』序曲",
       "year": 1845,
       "type": "楽劇",
       "description": "最も愛される序曲",
-      "youtubeId": "GkhCk_QfPXw"
+      "youtubeId": "GkhCk_QfPXw",
+      "imslpUrl": "https://imslp.org/index.php?search=Richard%20Wagner%20%E6%AD%8C%E5%8A%87%E3%80%8E%E3%82%BF%E3%83%B3%E3%83%9B%E3%82%A4%E3%82%B6%E3%83%BC%E3%80%8F%E5%BA%8F%E6%9B%B2&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%83%AA%E3%83%92%E3%83%A3%E3%83%AB%E3%83%88%E3%83%BB%E3%83%AF%E3%83%BC%E3%82%B0%E3%83%8A%E3%83%BC%20%E6%AD%8C%E5%8A%87%E3%80%8E%E3%82%BF%E3%83%B3%E3%83%9B%E3%82%A4%E3%82%B6%E3%83%BC%E3%80%8F%E5%BA%8F%E6%9B%B2",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%AA%E3%83%92%E3%83%A3%E3%83%AB%E3%83%88%E3%83%BB%E3%83%AF%E3%83%BC%E3%82%B0%E3%83%8A%E3%83%BC%20%E6%AD%8C%E5%8A%87%E3%80%8E%E3%82%BF%E3%83%B3%E3%83%9B%E3%82%A4%E3%82%B6%E3%83%BC%E3%80%8F%E5%BA%8F%E6%9B%B2"
     },
     {
       "title": "ワルキューレの騎行（『ワルキューレ』より）",
       "year": 1870,
       "type": "楽劇",
       "description": "『地獄の黙示録』で世界中に知られた",
-      "youtubeId": "P73Z6291Pt8"
+      "youtubeId": "P73Z6291Pt8",
+      "imslpUrl": "https://imslp.org/index.php?search=Richard%20Wagner%20%E3%83%AF%E3%83%AB%E3%82%AD%E3%83%A5%E3%83%BC%E3%83%AC%E3%81%AE%E9%A8%8E%E8%A1%8C%EF%BC%88%E3%80%8E%E3%83%AF%E3%83%AB%E3%82%AD%E3%83%A5%E3%83%BC%E3%83%AC%E3%80%8F%E3%82%88%E3%82%8A%EF%BC%89&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%83%AA%E3%83%92%E3%83%A3%E3%83%AB%E3%83%88%E3%83%BB%E3%83%AF%E3%83%BC%E3%82%B0%E3%83%8A%E3%83%BC%20%E3%83%AF%E3%83%AB%E3%82%AD%E3%83%A5%E3%83%BC%E3%83%AC%E3%81%AE%E9%A8%8E%E8%A1%8C%EF%BC%88%E3%80%8E%E3%83%AF%E3%83%AB%E3%82%AD%E3%83%A5%E3%83%BC%E3%83%AC%E3%80%8F%E3%82%88%E3%82%8A%EF%BC%89",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%AA%E3%83%92%E3%83%A3%E3%83%AB%E3%83%88%E3%83%BB%E3%83%AF%E3%83%BC%E3%82%B0%E3%83%8A%E3%83%BC%20%E3%83%AF%E3%83%AB%E3%82%AD%E3%83%A5%E3%83%BC%E3%83%AC%E3%81%AE%E9%A8%8E%E8%A1%8C%EF%BC%88%E3%80%8E%E3%83%AF%E3%83%AB%E3%82%AD%E3%83%A5%E3%83%BC%E3%83%AC%E3%80%8F%E3%82%88%E3%82%8A%EF%BC%89"
     },
     {
       "title": "歌劇『マイスタージンガー』前奏曲",
       "year": 1868,
       "type": "楽劇",
       "description": "晴れやかな愛と芸術の讃歌",
-      "youtubeId": "lOqlGyzRI0Q"
+      "youtubeId": "lOqlGyzRI0Q",
+      "imslpUrl": "https://imslp.org/index.php?search=Richard%20Wagner%20%E6%AD%8C%E5%8A%87%E3%80%8E%E3%83%9E%E3%82%A4%E3%82%B9%E3%82%BF%E3%83%BC%E3%82%B8%E3%83%B3%E3%82%AC%E3%83%BC%E3%80%8F%E5%89%8D%E5%A5%8F%E6%9B%B2&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%83%AA%E3%83%92%E3%83%A3%E3%83%AB%E3%83%88%E3%83%BB%E3%83%AF%E3%83%BC%E3%82%B0%E3%83%8A%E3%83%BC%20%E6%AD%8C%E5%8A%87%E3%80%8E%E3%83%9E%E3%82%A4%E3%82%B9%E3%82%BF%E3%83%BC%E3%82%B8%E3%83%B3%E3%82%AC%E3%83%BC%E3%80%8F%E5%89%8D%E5%A5%8F%E6%9B%B2",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%AA%E3%83%92%E3%83%A3%E3%83%AB%E3%83%88%E3%83%BB%E3%83%AF%E3%83%BC%E3%82%B0%E3%83%8A%E3%83%BC%20%E6%AD%8C%E5%8A%87%E3%80%8E%E3%83%9E%E3%82%A4%E3%82%B9%E3%82%BF%E3%83%BC%E3%82%B8%E3%83%B3%E3%82%AC%E3%83%BC%E3%80%8F%E5%89%8D%E5%A5%8F%E6%9B%B2"
     }
   ],
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Festspielhaus.jpg/330px-Festspielhaus.jpg",

@@ -923,14 +923,21 @@ async function showPerson(id) {
     ? `<div class="x-avatar" style="background-image:url('${p.imageUrl}')"></div>`
     : `<div class="x-avatar x-avatar-fallback">${p.name.charAt(0)}</div>`;
 
-  function xPostCard({ year, age, icon, typeLabel, title, body, tags, image, extra, source }) {
+  function xPostCard({ year, age, icon, typeLabel, title, body, tags, image, extra, source, postKey }) {
     const tagChips = (tags || []).map(tid => {
       const t = DATA.tagMap[tid];
       return t ? `<span class="event-tag" data-tag="${t.id}">${t.name}</span>` : '';
     }).join('');
     const when = year ? `${year}年${age ? `・${age}歳` : ''}` : '';
+    const key = postKey || `p::${p.id}::${(title || body || '').slice(0, 32)}`;
+    const likeCount = getLikeCount(key);
+    const liked = isLiked(key);
+    const comments = (commentsData || {})[key] || [];
+    const shareText = `${title ? title + '\n' : ''}${body || ''}\n— ${p.name} 『偉人と自分。』より`;
+    const shareUrl = location.href.split('#')[0];
+    const shareHref = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
     return `
-      <article class="x-post">
+      <article class="x-post" data-post-key="${key}">
         ${xAvatar}
         <div class="x-post-body">
           <div class="x-post-head">
@@ -948,9 +955,32 @@ async function showPerson(id) {
           ${extra || ''}
           ${tagChips ? `<div class="x-post-tags">${tagChips}</div>` : ''}
           <div class="x-post-actions">
-            <span class="x-action">💬 ${Math.max(1, (body || '').length % 5)}</span>
-            <span class="x-action">🔁 ${Math.max(1, (title || body || '').length % 7)}</span>
-            <span class="x-action">♡ ${Math.max(3, (body || title || '').length % 11) * 3}</span>
+            <button class="x-action x-action-comment" data-comment-toggle="${key}" aria-label="コメント">
+              💬 <span class="x-action-count">${comments.length || ''}</span>
+            </button>
+            <a class="x-action x-action-share" href="${shareHref}" target="_blank" rel="noopener" aria-label="Xで共有" onclick="event.stopPropagation()">
+              ↗ 共有
+            </a>
+            <button class="x-action x-action-like ${liked ? 'liked' : ''}" data-like-toggle="${key}" aria-label="いいね">
+              ${liked ? '❤️' : '♡'} <span class="x-action-count">${likeCount || ''}</span>
+            </button>
+          </div>
+          <div class="x-post-comments hidden" data-comments-panel="${key}">
+            <div class="x-comments-list">
+              ${comments.map((c, i) => `
+                <div class="x-comment" data-comment-idx="${i}">
+                  <div class="x-comment-text">${escapeHtml(c.text)}</div>
+                  <div class="x-comment-meta">
+                    <span class="x-comment-date">${formatTs(c.ts)}</span>
+                    ${c.userId === 'me' || !c.userId ? `<button class="x-comment-delete" data-comment-delete="${key}|${i}">削除</button>` : ''}
+                  </div>
+                </div>
+              `).join('') || '<div class="x-comments-empty">まだコメントはありません</div>'}
+            </div>
+            <form class="x-comment-form" data-comment-form="${key}">
+              <input class="x-comment-input" type="text" placeholder="コメントを書く..." maxlength="500">
+              <button type="submit" class="x-comment-send">送信</button>
+            </form>
           </div>
         </div>
       </article>
@@ -1015,8 +1045,11 @@ async function showPerson(id) {
       title: b.title, body: b.description || `${b.author}`, image: cover, extra: link
     })});
   });
-  // 年代順、同年は種類順
-  stream.sort((a, b) => (a.sortYear - b.sortYear) || (a.sortPri - b.sortPri));
+  // アクセスごとにランダムシャッフル（Fisher-Yates）
+  for (let i = stream.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [stream[i], stream[j]] = [stream[j], stream[i]];
+  }
   const streamHtml = stream.map(s => s.html).join('');
 
   const html = `
@@ -1071,7 +1104,6 @@ async function showPerson(id) {
     <!-- ミニタブ -->
     <div class="profile-tabs">
       <button class="profile-tab active" data-ptab="stream">タイムライン</button>
-      <button class="profile-tab" data-ptab="posts">投稿</button>
       <button class="profile-tab" data-ptab="quotes">名言</button>
       <button class="profile-tab" data-ptab="timeline">年表</button>
       ${(p.relations && p.relations.length > 0) ? '<button class="profile-tab" data-ptab="relations">人間関係</button>' : ''}
@@ -1160,27 +1192,22 @@ async function showPerson(id) {
         return myLetters.map(l => {
           const d = new Date(l.ts || Date.now());
           const dateStr = `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+          const reportKey = `letter::${l.key}::${l.ts || ''}`;
           return `
             <div class="letter-card">
               <div class="letter-date">${dateStr}</div>
               <div class="letter-text">${escapeHtml(l.text)}</div>
+              <button class="letter-report-btn" data-report="${reportKey}" aria-label="通報">⚑ 通報</button>
             </div>
           `;
         }).join('');
       })()}
     </div>
 
-    <!-- タイムラインタブ（ぜんぶ流れてくる） -->
+    <!-- タイムラインタブ（ぜんぶ流れてくる・アクセス毎にランダム） -->
     <div class="profile-tab-content active" data-ptab="stream">
       <div class="x-feed">
         ${streamHtml}
-      </div>
-    </div>
-
-    <!-- 投稿タブ（出来事＋名言） -->
-    <div class="profile-tab-content" data-ptab="posts">
-      <div class="x-feed">
-        ${feedHtml.join('')}
       </div>
     </div>
 
@@ -1240,7 +1267,7 @@ async function showPerson(id) {
           if (w.youtubeId) {
             const ytUrl = `https://www.youtube.com/watch?v=${w.youtubeId}`;
             const searchQ = encodeURIComponent(`${p.name} ${w.title}`);
-            const ytSearch = `https://www.youtube.com/results?search_query=${searchQ}`;
+            const ytSearch = w.youtubeSearchUrl || `https://www.youtube.com/results?search_query=${searchQ}`;
             return `
               <div class="work-card work-music" data-yt="${w.youtubeId}" data-search="${ytSearch}">
                 ${favWorkBtn(p.id, w)}
@@ -1253,14 +1280,19 @@ async function showPerson(id) {
                   <div class="work-desc">${w.description || ''}</div>
                   <div class="work-links">
                     <a class="work-btn work-btn-yt" href="${ytUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-                      <span class="work-btn-icon">▶</span> YouTubeで聴く
+                      <span class="work-btn-icon">▶</span> 聴く
                     </a>
                     <a class="work-btn work-btn-search" href="${ytSearch}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-                      <span class="work-btn-icon">🔎</span> 他の演奏を探す
+                      <span class="work-btn-icon">🔎</span> 他の演奏
                     </a>
                     ${w.imslpUrl ? `
                       <a class="work-btn work-btn-imslp" href="${w.imslpUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-                        <span class="work-btn-icon">♫</span> 楽譜
+                        <span class="work-btn-icon">♫</span> IMSLP楽譜
+                      </a>
+                    ` : ''}
+                    ${w.musescoreUrl ? `
+                      <a class="work-btn work-btn-musescore" href="${w.musescoreUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+                        <span class="work-btn-icon">🎼</span> Musescore
                       </a>
                     ` : ''}
                   </div>
@@ -1358,6 +1390,57 @@ async function showPerson(id) {
   `;
   const container = document.getElementById('personDetail');
   container.innerHTML = html;
+
+  // Xポストのいいね・コメント・共有
+  container.querySelectorAll('[data-like-toggle]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const key = btn.dataset.likeToggle;
+      toggleLike(key);
+      const liked = isLiked(key);
+      btn.classList.toggle('liked', liked);
+      btn.querySelector('.x-action-count').textContent = getLikeCount(key) || '';
+      btn.firstChild.nodeValue = liked ? '❤️ ' : '♡ ';
+    });
+  });
+  container.querySelectorAll('[data-comment-toggle]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const key = btn.dataset.commentToggle;
+      const panel = container.querySelector(`[data-comments-panel="${CSS.escape(key)}"]`);
+      if (panel) panel.classList.toggle('hidden');
+    });
+  });
+  container.querySelectorAll('[data-comment-form]').forEach(form => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const key = form.dataset.commentForm;
+      const input = form.querySelector('.x-comment-input');
+      const text = (input.value || '').trim();
+      if (!text) return;
+      await submitComment(key, text);
+      input.value = '';
+      showPerson(p.id); // 再描画
+    });
+  });
+  container.querySelectorAll('[data-comment-delete]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const [key, idxStr] = btn.dataset.commentDelete.split('|');
+      const idx = Number(idxStr);
+      if (!confirm('このコメントを削除しますか？')) return;
+      deleteComment(key, idx);
+      showPerson(p.id);
+    });
+  });
+  // 手紙の通報ボタン
+  container.querySelectorAll('[data-report]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (!confirm('この手紙を通報しますか？\n不適切な内容を運営に知らせます。')) return;
+      reportItem('letter', btn.dataset.report);
+    });
+  });
 
   // ルーティンボタン → ポップアップ
   const routineBtn = container.querySelector('[data-routine-open]');
@@ -2216,6 +2299,74 @@ function renderRoutines() {
       btn.textContent = favRoutines.has(id) ? '★' : '☆';
     });
   });
+}
+
+// ====================== いいね機能 ======================
+const LIKES_KEY = 'ijin_likes';
+const LIKED_BY_ME_KEY = 'ijin_liked_by_me';
+function loadLikes() {
+  try { return JSON.parse(localStorage.getItem(LIKES_KEY) || '{}'); } catch { return {}; }
+}
+function saveLikes(obj) { localStorage.setItem(LIKES_KEY, JSON.stringify(obj)); }
+function loadLikedByMe() {
+  try { return new Set(JSON.parse(localStorage.getItem(LIKED_BY_ME_KEY) || '[]')); } catch { return new Set(); }
+}
+function saveLikedByMe(s) { localStorage.setItem(LIKED_BY_ME_KEY, JSON.stringify([...s])); }
+function getLikeCount(key) {
+  const all = loadLikes();
+  // 疑似グローバル件数（keyのハッシュから 0〜10 の固定オフセット + ユーザー分）
+  const baseline = (hashStr(key) % 11);
+  return baseline + (all[key] || 0);
+}
+function isLiked(key) { return loadLikedByMe().has(key); }
+function toggleLike(key) {
+  const likes = loadLikes();
+  const me = loadLikedByMe();
+  if (me.has(key)) {
+    me.delete(key);
+    likes[key] = Math.max(0, (likes[key] || 0) - 1);
+  } else {
+    me.add(key);
+    likes[key] = (likes[key] || 0) + 1;
+  }
+  saveLikes(likes);
+  saveLikedByMe(me);
+  return me.has(key);
+}
+
+function formatTs(ts) {
+  if (!ts) return '';
+  const d = new Date(ts);
+  if (isNaN(d.getTime())) return '';
+  return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function deleteComment(key, idx) {
+  // commentsDataから削除（自分のコメントのみ）
+  const arr = commentsData[key] || [];
+  if (idx < 0 || idx >= arr.length) return;
+  const c = arr[idx];
+  if (c.userId && c.userId !== 'me') return;
+  arr.splice(idx, 1);
+  commentsData[key] = arr;
+  // localStorageへ反映
+  try {
+    const local = JSON.parse(localStorage.getItem('ijin_comments') || '{}');
+    if (local[key]) {
+      local[key] = local[key].filter(x => !(x.ts === c.ts && x.text === c.text));
+      if (local[key].length === 0) delete local[key];
+      localStorage.setItem('ijin_comments', JSON.stringify(local));
+    }
+  } catch {}
+}
+
+function reportItem(kind, key) {
+  const reports = (() => {
+    try { return JSON.parse(localStorage.getItem('ijin_reports') || '[]'); } catch { return []; }
+  })();
+  reports.push({ kind, key, ts: new Date().toISOString() });
+  localStorage.setItem('ijin_reports', JSON.stringify(reports));
+  alert('通報を受け付けました。ありがとうございます。確認のうえ対応します。');
 }
 
 // ====================== つぶやきタイムライン（LINE風） ======================

@@ -129,28 +129,40 @@
       "title": "弦楽器、打楽器とチェレスタのための音楽",
       "type": "youtube",
       "id": "0f8g56VbjHg",
-      "note": "20世紀音楽の金字塔"
+      "note": "20世紀音楽の金字塔",
+      "imslpUrl": "https://imslp.org/index.php?search=B%C3%A9la%20Bart%C3%B3k%20%E5%BC%A6%E6%A5%BD%E5%99%A8%E3%80%81%E6%89%93%E6%A5%BD%E5%99%A8%E3%81%A8%E3%83%81%E3%82%A7%E3%83%AC%E3%82%B9%E3%82%BF%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E9%9F%B3%E6%A5%BD&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%83%99%E3%83%BC%E3%83%A9%E3%83%BB%E3%83%90%E3%83%AB%E3%83%88%E3%83%BC%E3%82%AF%20%E5%BC%A6%E6%A5%BD%E5%99%A8%E3%80%81%E6%89%93%E6%A5%BD%E5%99%A8%E3%81%A8%E3%83%81%E3%82%A7%E3%83%AC%E3%82%B9%E3%82%BF%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E9%9F%B3%E6%A5%BD",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%99%E3%83%BC%E3%83%A9%E3%83%BB%E3%83%90%E3%83%AB%E3%83%88%E3%83%BC%E3%82%AF%20%E5%BC%A6%E6%A5%BD%E5%99%A8%E3%80%81%E6%89%93%E6%A5%BD%E5%99%A8%E3%81%A8%E3%83%81%E3%82%A7%E3%83%AC%E3%82%B9%E3%82%BF%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E9%9F%B3%E6%A5%BD"
     },
     {
       "title": "管弦楽のための協奏曲",
       "year": 1943,
       "type": "管弦楽",
       "description": "亡命先ニューヨークで書いた最後の傑作",
-      "youtubeId": "I0jtt58DYxA"
+      "youtubeId": "I0jtt58DYxA",
+      "imslpUrl": "https://imslp.org/index.php?search=B%C3%A9la%20Bart%C3%B3k%20%E7%AE%A1%E5%BC%A6%E6%A5%BD%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E5%8D%94%E5%A5%8F%E6%9B%B2&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%83%99%E3%83%BC%E3%83%A9%E3%83%BB%E3%83%90%E3%83%AB%E3%83%88%E3%83%BC%E3%82%AF%20%E7%AE%A1%E5%BC%A6%E6%A5%BD%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E5%8D%94%E5%A5%8F%E6%9B%B2",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%99%E3%83%BC%E3%83%A9%E3%83%BB%E3%83%90%E3%83%AB%E3%83%88%E3%83%BC%E3%82%AF%20%E7%AE%A1%E5%BC%A6%E6%A5%BD%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E5%8D%94%E5%A5%8F%E6%9B%B2"
     },
     {
       "title": "ミクロコスモス",
       "year": 1939,
       "type": "ピアノ曲",
       "description": "初心者から上級者まで育てる153曲のピアノ学習曲集",
-      "youtubeId": "V4V6iwOgMdE"
+      "youtubeId": "V4V6iwOgMdE",
+      "imslpUrl": "https://imslp.org/index.php?search=B%C3%A9la%20Bart%C3%B3k%20%E3%83%9F%E3%82%AF%E3%83%AD%E3%82%B3%E3%82%B9%E3%83%A2%E3%82%B9&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%83%99%E3%83%BC%E3%83%A9%E3%83%BB%E3%83%90%E3%83%AB%E3%83%88%E3%83%BC%E3%82%AF%20%E3%83%9F%E3%82%AF%E3%83%AD%E3%82%B3%E3%82%B9%E3%83%A2%E3%82%B9",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%99%E3%83%BC%E3%83%A9%E3%83%BB%E3%83%90%E3%83%AB%E3%83%88%E3%83%BC%E3%82%AF%20%E3%83%9F%E3%82%AF%E3%83%AD%E3%82%B3%E3%82%B9%E3%83%A2%E3%82%B9"
     },
     {
       "title": "ルーマニア民俗舞曲",
       "year": 1915,
       "type": "ピアノ曲",
       "description": "民謡採集の成果をまとめた6つの舞曲",
-      "youtubeId": "0MhMGBTDqEE"
+      "youtubeId": "0MhMGBTDqEE",
+      "imslpUrl": "https://imslp.org/index.php?search=B%C3%A9la%20Bart%C3%B3k%20%E3%83%AB%E3%83%BC%E3%83%9E%E3%83%8B%E3%82%A2%E6%B0%91%E4%BF%97%E8%88%9E%E6%9B%B2&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%83%99%E3%83%BC%E3%83%A9%E3%83%BB%E3%83%90%E3%83%AB%E3%83%88%E3%83%BC%E3%82%AF%20%E3%83%AB%E3%83%BC%E3%83%9E%E3%83%8B%E3%82%A2%E6%B0%91%E4%BF%97%E8%88%9E%E6%9B%B2",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%99%E3%83%BC%E3%83%A9%E3%83%BB%E3%83%90%E3%83%AB%E3%83%88%E3%83%BC%E3%82%AF%20%E3%83%AB%E3%83%BC%E3%83%9E%E3%83%8B%E3%82%A2%E6%B0%91%E4%BF%97%E8%88%9E%E6%9B%B2"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/6/66/Bart%C3%B3k_B%C3%A9la_1927.jpg",

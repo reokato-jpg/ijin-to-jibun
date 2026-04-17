@@ -136,28 +136,40 @@
       "title": "ラプソディ・イン・ブルー",
       "type": "youtube",
       "id": "ynEOo28lsbc",
-      "note": "ジャズとクラシックの融合"
+      "note": "ジャズとクラシックの融合",
+      "imslpUrl": "https://imslp.org/index.php?search=George%20Gershwin%20%E3%83%A9%E3%83%97%E3%82%BD%E3%83%87%E3%82%A3%E3%83%BB%E3%82%A4%E3%83%B3%E3%83%BB%E3%83%96%E3%83%AB%E3%83%BC&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%B8%E3%83%A7%E3%83%BC%E3%82%B8%E3%83%BB%E3%82%AC%E3%83%BC%E3%82%B7%E3%83%A5%E3%82%A6%E3%82%A3%E3%83%B3%20%E3%83%A9%E3%83%97%E3%82%BD%E3%83%87%E3%82%A3%E3%83%BB%E3%82%A4%E3%83%B3%E3%83%BB%E3%83%96%E3%83%AB%E3%83%BC",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%B8%E3%83%A7%E3%83%BC%E3%82%B8%E3%83%BB%E3%82%AC%E3%83%BC%E3%82%B7%E3%83%A5%E3%82%A6%E3%82%A3%E3%83%B3%20%E3%83%A9%E3%83%97%E3%82%BD%E3%83%87%E3%82%A3%E3%83%BB%E3%82%A4%E3%83%B3%E3%83%BB%E3%83%96%E3%83%AB%E3%83%BC"
     },
     {
       "title": "パリのアメリカ人",
       "year": 1928,
       "type": "管弦楽",
       "description": "タクシーのクラクションが登場する陽気な交響詩",
-      "youtubeId": "2_lVylvm_w4"
+      "youtubeId": "2_lVylvm_w4",
+      "imslpUrl": "https://imslp.org/index.php?search=George%20Gershwin%20%E3%83%91%E3%83%AA%E3%81%AE%E3%82%A2%E3%83%A1%E3%83%AA%E3%82%AB%E4%BA%BA&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%B8%E3%83%A7%E3%83%BC%E3%82%B8%E3%83%BB%E3%82%AC%E3%83%BC%E3%82%B7%E3%83%A5%E3%82%A6%E3%82%A3%E3%83%B3%20%E3%83%91%E3%83%AA%E3%81%AE%E3%82%A2%E3%83%A1%E3%83%AA%E3%82%AB%E4%BA%BA",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%B8%E3%83%A7%E3%83%BC%E3%82%B8%E3%83%BB%E3%82%AC%E3%83%BC%E3%82%B7%E3%83%A5%E3%82%A6%E3%82%A3%E3%83%B3%20%E3%83%91%E3%83%AA%E3%81%AE%E3%82%A2%E3%83%A1%E3%83%AA%E3%82%AB%E4%BA%BA"
     },
     {
       "title": "歌劇『ポーギーとベス』より『サマータイム』",
       "year": 1935,
       "type": "オペラ",
       "description": "20世紀最も歌われた子守歌",
-      "youtubeId": "t6aiJlOZ1-A"
+      "youtubeId": "t6aiJlOZ1-A",
+      "imslpUrl": "https://imslp.org/index.php?search=George%20Gershwin%20%E6%AD%8C%E5%8A%87%E3%80%8E%E3%83%9D%E3%83%BC%E3%82%AE%E3%83%BC%E3%81%A8%E3%83%99%E3%82%B9%E3%80%8F%E3%82%88%E3%82%8A%E3%80%8E%E3%82%B5%E3%83%9E%E3%83%BC%E3%82%BF%E3%82%A4%E3%83%A0%E3%80%8F&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%B8%E3%83%A7%E3%83%BC%E3%82%B8%E3%83%BB%E3%82%AC%E3%83%BC%E3%82%B7%E3%83%A5%E3%82%A6%E3%82%A3%E3%83%B3%20%E6%AD%8C%E5%8A%87%E3%80%8E%E3%83%9D%E3%83%BC%E3%82%AE%E3%83%BC%E3%81%A8%E3%83%99%E3%82%B9%E3%80%8F%E3%82%88%E3%82%8A%E3%80%8E%E3%82%B5%E3%83%9E%E3%83%BC%E3%82%BF%E3%82%A4%E3%83%A0%E3%80%8F",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%B8%E3%83%A7%E3%83%BC%E3%82%B8%E3%83%BB%E3%82%AC%E3%83%BC%E3%82%B7%E3%83%A5%E3%82%A6%E3%82%A3%E3%83%B3%20%E6%AD%8C%E5%8A%87%E3%80%8E%E3%83%9D%E3%83%BC%E3%82%AE%E3%83%BC%E3%81%A8%E3%83%99%E3%82%B9%E3%80%8F%E3%82%88%E3%82%8A%E3%80%8E%E3%82%B5%E3%83%9E%E3%83%BC%E3%82%BF%E3%82%A4%E3%83%A0%E3%80%8F"
     },
     {
       "title": "ピアノ協奏曲 ヘ調",
       "year": 1925,
       "type": "協奏曲",
       "description": "『ラプソディ』の次に書いた本格的協奏曲",
-      "youtubeId": "ZtCPIOl6VDE"
+      "youtubeId": "ZtCPIOl6VDE",
+      "imslpUrl": "https://imslp.org/index.php?search=George%20Gershwin%20%E3%83%94%E3%82%A2%E3%83%8E%E5%8D%94%E5%A5%8F%E6%9B%B2%20%E3%83%98%E8%AA%BF&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%B8%E3%83%A7%E3%83%BC%E3%82%B8%E3%83%BB%E3%82%AC%E3%83%BC%E3%82%B7%E3%83%A5%E3%82%A6%E3%82%A3%E3%83%B3%20%E3%83%94%E3%82%A2%E3%83%8E%E5%8D%94%E5%A5%8F%E6%9B%B2%20%E3%83%98%E8%AA%BF",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%B8%E3%83%A7%E3%83%BC%E3%82%B8%E3%83%BB%E3%82%AC%E3%83%BC%E3%82%B7%E3%83%A5%E3%82%A6%E3%82%A3%E3%83%B3%20%E3%83%94%E3%82%A2%E3%83%8E%E5%8D%94%E5%A5%8F%E6%9B%B2%20%E3%83%98%E8%AA%BF"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/6/68/George_Gershwin_1937.jpg",

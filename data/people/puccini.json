@@ -154,35 +154,50 @@
       "title": "『トゥーランドット』誰も寝てはならぬ",
       "type": "youtube",
       "id": "cWc7vYjgnTs",
-      "note": "パヴァロッティの名唱"
+      "note": "パヴァロッティの名唱",
+      "imslpUrl": "https://imslp.org/index.php?search=Giacomo%20Puccini%20%E3%80%8E%E3%83%88%E3%82%A5%E3%83%BC%E3%83%A9%E3%83%B3%E3%83%89%E3%83%83%E3%83%88%E3%80%8F%E8%AA%B0%E3%82%82%E5%AF%9D%E3%81%A6%E3%81%AF%E3%81%AA%E3%82%89%E3%81%AC&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%B8%E3%83%A3%E3%82%B3%E3%83%A2%E3%83%BB%E3%83%97%E3%83%83%E3%83%81%E3%83%BC%E3%83%8B%20%E3%80%8E%E3%83%88%E3%82%A5%E3%83%BC%E3%83%A9%E3%83%B3%E3%83%89%E3%83%83%E3%83%88%E3%80%8F%E8%AA%B0%E3%82%82%E5%AF%9D%E3%81%A6%E3%81%AF%E3%81%AA%E3%82%89%E3%81%AC",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%B8%E3%83%A3%E3%82%B3%E3%83%A2%E3%83%BB%E3%83%97%E3%83%83%E3%83%81%E3%83%BC%E3%83%8B%20%E3%80%8E%E3%83%88%E3%82%A5%E3%83%BC%E3%83%A9%E3%83%B3%E3%83%89%E3%83%83%E3%83%88%E3%80%8F%E8%AA%B0%E3%82%82%E5%AF%9D%E3%81%A6%E3%81%AF%E3%81%AA%E3%82%89%E3%81%AC"
     },
     {
       "title": "歌劇『ラ・ボエーム』",
       "year": 1896,
       "type": "オペラ",
       "description": "貧しい芸術家とお針子の4幕の悲恋。『私の名はミミ』の名アリア",
-      "youtubeId": "UYfhPDXLeDg"
+      "youtubeId": "UYfhPDXLeDg",
+      "imslpUrl": "https://imslp.org/index.php?search=Giacomo%20Puccini%20%E6%AD%8C%E5%8A%87%E3%80%8E%E3%83%A9%E3%83%BB%E3%83%9C%E3%82%A8%E3%83%BC%E3%83%A0%E3%80%8F&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%B8%E3%83%A3%E3%82%B3%E3%83%A2%E3%83%BB%E3%83%97%E3%83%83%E3%83%81%E3%83%BC%E3%83%8B%20%E6%AD%8C%E5%8A%87%E3%80%8E%E3%83%A9%E3%83%BB%E3%83%9C%E3%82%A8%E3%83%BC%E3%83%A0%E3%80%8F",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%B8%E3%83%A3%E3%82%B3%E3%83%A2%E3%83%BB%E3%83%97%E3%83%83%E3%83%81%E3%83%BC%E3%83%8B%20%E6%AD%8C%E5%8A%87%E3%80%8E%E3%83%A9%E3%83%BB%E3%83%9C%E3%82%A8%E3%83%BC%E3%83%A0%E3%80%8F"
     },
     {
       "title": "歌劇『トスカ』",
       "year": 1900,
       "type": "オペラ",
       "description": "ローマを舞台にした政治的サスペンス・オペラ。『歌に生き、愛に生き』",
-      "youtubeId": "_QT-SqeOu5Y"
+      "youtubeId": "_QT-SqeOu5Y",
+      "imslpUrl": "https://imslp.org/index.php?search=Giacomo%20Puccini%20%E6%AD%8C%E5%8A%87%E3%80%8E%E3%83%88%E3%82%B9%E3%82%AB%E3%80%8F&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%B8%E3%83%A3%E3%82%B3%E3%83%A2%E3%83%BB%E3%83%97%E3%83%83%E3%83%81%E3%83%BC%E3%83%8B%20%E6%AD%8C%E5%8A%87%E3%80%8E%E3%83%88%E3%82%B9%E3%82%AB%E3%80%8F",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%B8%E3%83%A3%E3%82%B3%E3%83%A2%E3%83%BB%E3%83%97%E3%83%83%E3%83%81%E3%83%BC%E3%83%8B%20%E6%AD%8C%E5%8A%87%E3%80%8E%E3%83%88%E3%82%B9%E3%82%AB%E3%80%8F"
     },
     {
       "title": "歌劇『蝶々夫人』",
       "year": 1904,
       "type": "オペラ",
       "description": "長崎を舞台にしたアメリカ人将校との悲恋",
-      "youtubeId": "xpsZzZ6P5gI"
+      "youtubeId": "xpsZzZ6P5gI",
+      "imslpUrl": "https://imslp.org/index.php?search=Giacomo%20Puccini%20%E6%AD%8C%E5%8A%87%E3%80%8E%E8%9D%B6%E3%80%85%E5%A4%AB%E4%BA%BA%E3%80%8F&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%B8%E3%83%A3%E3%82%B3%E3%83%A2%E3%83%BB%E3%83%97%E3%83%83%E3%83%81%E3%83%BC%E3%83%8B%20%E6%AD%8C%E5%8A%87%E3%80%8E%E8%9D%B6%E3%80%85%E5%A4%AB%E4%BA%BA%E3%80%8F",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%B8%E3%83%A3%E3%82%B3%E3%83%A2%E3%83%BB%E3%83%97%E3%83%83%E3%83%81%E3%83%BC%E3%83%8B%20%E6%AD%8C%E5%8A%87%E3%80%8E%E8%9D%B6%E3%80%85%E5%A4%AB%E4%BA%BA%E3%80%8F"
     },
     {
       "title": "歌劇『トゥーランドット』より『誰も寝てはならぬ』",
       "year": 1924,
       "type": "オペラ",
       "description": "絶筆オペラの最高のアリア",
-      "youtubeId": "cWc7vYjgnTs"
+      "youtubeId": "cWc7vYjgnTs",
+      "imslpUrl": "https://imslp.org/index.php?search=Giacomo%20Puccini%20%E6%AD%8C%E5%8A%87%E3%80%8E%E3%83%88%E3%82%A5%E3%83%BC%E3%83%A9%E3%83%B3%E3%83%89%E3%83%83%E3%83%88%E3%80%8F%E3%82%88%E3%82%8A%E3%80%8E%E8%AA%B0%E3%82%82%E5%AF%9D%E3%81%A6%E3%81%AF%E3%81%AA%E3%82%89%E3%81%AC%E3%80%8F&title=Special%3ASearch&go=Go",
+      "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%B8%E3%83%A3%E3%82%B3%E3%83%A2%E3%83%BB%E3%83%97%E3%83%83%E3%83%81%E3%83%BC%E3%83%8B%20%E6%AD%8C%E5%8A%87%E3%80%8E%E3%83%88%E3%82%A5%E3%83%BC%E3%83%A9%E3%83%B3%E3%83%89%E3%83%83%E3%83%88%E3%80%8F%E3%82%88%E3%82%8A%E3%80%8E%E8%AA%B0%E3%82%82%E5%AF%9D%E3%81%A6%E3%81%AF%E3%81%AA%E3%82%89%E3%81%AC%E3%80%8F",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%B8%E3%83%A3%E3%82%B3%E3%83%A2%E3%83%BB%E3%83%97%E3%83%83%E3%83%81%E3%83%BC%E3%83%8B%20%E6%AD%8C%E5%8A%87%E3%80%8E%E3%83%88%E3%82%A5%E3%83%BC%E3%83%A9%E3%83%B3%E3%83%89%E3%83%83%E3%83%88%E3%80%8F%E3%82%88%E3%82%8A%E3%80%8E%E8%AA%B0%E3%82%82%E5%AF%9D%E3%81%A6%E3%81%AF%E3%81%AA%E3%82%89%E3%81%AC%E3%80%8F"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/GiacomoPuccini.jpg/500px-GiacomoPuccini.jpg",
