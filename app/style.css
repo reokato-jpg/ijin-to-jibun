@@ -2977,15 +2977,17 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
 }
 .support-hero-img {
   display: block;
-  width: 100%;
-  max-width: 100%;
+  width: 90%;
+  max-width: 520px;
   height: auto;
   max-height: 260px;
   object-fit: contain;
   object-position: center;
-  background: #faf6ec;
+  background: transparent;
   flex-basis: 100%;
-  margin: 0 auto 8px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 8px;
 }
 @media (min-width: 900px) {
   .support-hero-img { max-height: 320px; }
