@@ -60,6 +60,13 @@
       ]
     },
     {
+      "year": -490,
+      "age": 81,
+      "title": "道家思想の原型を弟子に口伝",
+      "detail": "後に『道徳経』として編纂される。",
+      "tags": []
+    },
+    {
       "year": -480,
       "age": 91,
       "title": "水牛に乗って関を越え消える",
@@ -77,6 +84,15 @@
       "tags": [
         "restart",
         "isolation",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": -480,
+      "age": 91,
+      "title": "『道徳経』81章5000字完成",
+      "detail": "短く凝縮された東洋思想の源流。",
+      "tags": [
         "breakthrough"
       ]
     }
