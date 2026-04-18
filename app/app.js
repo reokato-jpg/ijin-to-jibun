@@ -608,15 +608,33 @@ function renderPersonOfTheDay() {
     .filter(t => t.count > 0)
     .sort((a,b) => b.count - a.count);
 
+  const POSITIVE_TAGS = new Set(['joy','hope','love','creation','gratitude','serenity','curiosity','friendship','breakthrough','restart','approval','turning_encounter','self_reinvention']);
+  const positive = popularTags.filter(t => POSITIVE_TAGS.has(t.id));
+  const negative = popularTags.filter(t => !POSITIVE_TAGS.has(t.id));
   container.innerHTML = `
     <div class="mood-picker">
       <div class="mood-picker-title">今日のあなたの気分は？</div>
       <div class="mood-picker-sub">選ぶと、その感情を経験した偉人が今日の案内人になります</div>
-      <div class="mood-chips">
-        ${popularTags.map(t => `
-          <button class="mood-chip" data-mood="${t.id}" style="background:${t.color}">${t.name}</button>
-        `).join('')}
-      </div>
+      ${positive.length > 0 ? `
+        <div class="mood-section">
+          <div class="mood-section-label mood-section-positive">◆ 前向きな気持ち ◆</div>
+          <div class="mood-chips">
+            ${positive.map(t => `
+              <button class="mood-chip" data-mood="${t.id}" style="background:${t.color}">${t.name}</button>
+            `).join('')}
+          </div>
+        </div>
+      ` : ''}
+      ${negative.length > 0 ? `
+        <div class="mood-section">
+          <div class="mood-section-label mood-section-negative">◆ しんどい気持ち ◆</div>
+          <div class="mood-chips">
+            ${negative.map(t => `
+              <button class="mood-chip" data-mood="${t.id}" style="background:${t.color}">${t.name}</button>
+            `).join('')}
+          </div>
+        </div>
+      ` : ''}
     </div>
   `;
   container.querySelectorAll('.mood-chip').forEach(btn => {

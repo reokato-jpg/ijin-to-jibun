@@ -6613,6 +6613,19 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
   margin-bottom: 16px; letter-spacing: 0.05em;
 }
 .mood-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.mood-section { margin-top: 14px; }
+.mood-section-label {
+  text-align: center;
+  font-family: var(--font-jp);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed var(--rule);
+}
+.mood-section-positive { color: #c9a857; }
+.mood-section-negative { color: var(--wine); }
 .mood-chip {
   padding: 8px 14px; border-radius: 18px; border: 1px solid rgba(0,0,0,0.2);
   color: #ffffff; font-family: var(--font-jp); font-size: 13px; font-weight: 700;
