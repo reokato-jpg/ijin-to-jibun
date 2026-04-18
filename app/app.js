@@ -4905,12 +4905,14 @@ function bindEvents() {
       const searchBgm = document.getElementById('searchBgm');
       const routineBgm = document.getElementById('routineBgm');
       const blogBgm = document.getElementById('blogBgm');
-      [homeBgm, searchBgm, routineBgm, blogBgm].forEach(b => b && b.pause());
+      const favoritesBgm = document.getElementById('favoritesBgm');
+      [homeBgm, searchBgm, routineBgm, blogBgm, favoritesBgm].forEach(b => b && b.pause());
       let target = null;
       if (v === 'people') target = homeBgm;
       else if (v === 'tags') target = searchBgm;
       else if (v === 'routines') target = routineBgm;
       else if (v === 'articles') target = blogBgm;
+      else if (v === 'favorites') target = favoritesBgm;
       if (target) {
         target.volume = 0.35;
         target.play().catch(() => {});
