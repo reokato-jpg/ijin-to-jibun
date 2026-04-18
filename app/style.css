@@ -347,9 +347,8 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
   display: block;
   width: 100%;
   height: auto;
-  max-height: 480px;
-  object-fit: cover;
-  object-position: center;
+  object-fit: contain;
+  object-position: center top;
 }
 .hero-silhouette-overlay {
   padding: 18px 22px 22px;
