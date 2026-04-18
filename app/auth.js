@@ -329,7 +329,7 @@ function updateLoginNotice() {
   if (FIREBASE_ENABLED && !authResolved) return;
   if (!FIREBASE_ENABLED) return;
   if (existing) return;
-  if (localStorage.getItem('ijin_login_notice_dismissed') === '1') return;
+  // サイトを開くたびに未ログインなら必ず表示（dismissed をチェックしない）
 
   const popup = document.createElement('div');
   popup.id = 'loginNoticePopup';
