@@ -3,14 +3,15 @@
 // natsumi の Firebase プロジェクトを設定すると、ログインしたユーザーは
 // お気に入り・ルーティン・カスタムカテゴリなどが全端末で同期される。
 
-// Firebase 設定（natsumi が自分のプロジェクトの値に差し替える）
+// Firebase 設定
 const FIREBASE_CONFIG = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyBXGVMd29gucHn95sbqaQa6a5AFv4WJ5F4",
+  authDomain: "ijin-to-jibun.firebaseapp.com",
+  projectId: "ijin-to-jibun",
+  storageBucket: "ijin-to-jibun.firebasestorage.app",
+  messagingSenderId: "1083129327618",
+  appId: "1:1083129327618:web:9fcaf9612e3843fef8f71b",
+  measurementId: "G-QR29LVHLGV"
 };
 
 const FIREBASE_ENABLED = FIREBASE_CONFIG.apiKey !== "YOUR_API_KEY";
