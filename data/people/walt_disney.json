@@ -1,0 +1,129 @@
+{
+  "id": "walt_disney",
+  "name": "ウォルト・ディズニー",
+  "nameEn": "Walt Disney",
+  "birth": 1901,
+  "death": 1966,
+  "country": "アメリカ",
+  "field": "アニメーター・起業家",
+  "summary": "ミッキーマウスの生みの親、世界初の長編アニメ『白雪姫』、そしてディズニーランド。破産寸前を何度も乗り越え、22のアカデミー賞を獲得した夢の王国の建築家。",
+  "events": [
+    {
+      "year": 1901,
+      "age": 0,
+      "title": "シカゴで誕生、幼少期はミズーリ州マーセリン",
+      "detail": "この田舎町がメインストリートUSAのモデル。",
+      "tags": []
+    },
+    {
+      "year": 1923,
+      "age": 21,
+      "title": "最初の会社倒産、ハリウッドへ",
+      "detail": "カンザスシティのラフォグラム社破産。40ドルだけ持ってカリフォルニアへ。",
+      "tags": [
+        "pride_broken",
+        "restart"
+      ]
+    },
+    {
+      "year": 1927,
+      "age": 25,
+      "title": "配給会社にキャラ『オズワルド』を奪われる",
+      "detail": "大阪の商人のように権利を騙し取られた。列車で帰る途中ミッキーを考案。",
+      "tags": [
+        "pride_broken",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1928,
+      "age": 26,
+      "title": "『蒸気船ウィリー』でミッキー・マウスデビュー",
+      "detail": "世界初の同期音声アニメ。ウォルトが自ら声を当てた。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1937,
+      "age": 35,
+      "title": "『白雪姫』世界初の長編アニメ",
+      "detail": "『ディズニーの愚行』と呼ばれたが、大成功。ディズニー黄金時代の幕開け。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1941,
+      "age": 39,
+      "title": "スタジオでアニメーター・ストライキ",
+      "detail": "生涯の傷。以後、組合を嫌った。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1955,
+      "age": 53,
+      "title": "ディズニーランド開園",
+      "detail": "カリフォルニア・アナハイム。初日は大混乱だったが3ヶ月で100万人来場。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1966,
+      "age": 65,
+      "title": "肺がんで死去",
+      "detail": "フロリダのディズニー・ワールド建設途中。兄ロイが完成させた。",
+      "tags": [
+        "loss",
+        "illness"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "夢を見ることができれば、それは実現できる。",
+      "source": "ウォルト・ディズニーの言葉"
+    },
+    {
+      "text": "最も困難なことは、始めることだ。",
+      "source": "ディズニーの言葉"
+    },
+    {
+      "text": "笑いが生まれない作品は作らない。",
+      "source": "スタジオで"
+    },
+    {
+      "text": "ディズニーランドは決して完成しない。世界に想像力がある限り、成長し続ける。",
+      "source": "開園式典"
+    }
+  ],
+  "relations": [
+    {
+      "name": "ロイ・ディズニー",
+      "relation": "兄・事業パートナー",
+      "note": "経営を担った兄"
+    }
+  ],
+  "places": [
+    {
+      "name": "ディズニーランド",
+      "location": "米カリフォルニア州アナハイム",
+      "note": "世界初のテーマパーク"
+    }
+  ],
+  "books": [],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Walt_disney_portrait.jpg/500px-Walt_disney_portrait.jpg",
+  "wikiTitle": "ウォルト・ディズニー",
+  "imageCredit": {
+    "artist": "NASA",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "http://grin.hq.nasa.gov/ABSTRACTS/GPN-2000-000060.html",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Walt_disney_portrait.jpg"
+  },
+  "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Disneyland_Anaheim.jpg/330px-Disneyland_Anaheim.jpg",
+  "coverImageCaption": "ディズニーランド"
+}

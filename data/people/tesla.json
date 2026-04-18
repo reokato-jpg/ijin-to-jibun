@@ -1,0 +1,131 @@
+{
+  "id": "tesla",
+  "name": "ニコラ・テスラ",
+  "nameEn": "Nikola Tesla",
+  "birth": 1856,
+  "death": 1943,
+  "country": "クロアチア→アメリカ",
+  "field": "発明家",
+  "summary": "交流電気、ラジオ、無線送電の父。エジソンのライバルとして『電流戦争』を戦い勝利したが、晩年は鳩を愛するホテル住まいの奇人に。死後その業績は神話化した。",
+  "events": [
+    {
+      "year": 1856,
+      "age": 0,
+      "title": "クロアチアに正教会司祭の子として誕生",
+      "detail": "雷鳴の夜、助産婦が『闇の子』と呟いた。母は『いや光の子よ』と返した。",
+      "tags": []
+    },
+    {
+      "year": 1884,
+      "age": 27,
+      "title": "アメリカ渡航、エジソンの会社で働く",
+      "detail": "4ドルと詩集だけでニューヨークに到着。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1887,
+      "age": 30,
+      "title": "交流モーター発明",
+      "detail": "幾度も夢で見た回転磁界の原理を実現。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1893,
+      "age": 37,
+      "title": "シカゴ万博で交流電力システムを公開",
+      "detail": "エジソンの直流に勝利し、ナイアガラの発電所契約へ。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1895,
+      "age": 39,
+      "title": "ニューヨークの研究所が火災で全焼",
+      "detail": "全ての記録と発明品を失う。立ち直るまで数年を要した。",
+      "tags": [
+        "loss",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1899,
+      "age": 43,
+      "title": "コロラドの実験所で無線送電実験",
+      "detail": "人工雷で30km先の電球を点灯。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1901,
+      "age": 45,
+      "title": "ウォーデンクリフ・タワー建設",
+      "detail": "無線で世界に電力を送る夢の塔。資金難で中止、解体された。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1943,
+      "age": 86,
+      "title": "ニューヨークのホテルで独居死",
+      "detail": "鳩を愛した晩年。遺体は発見まで2日かかった。",
+      "tags": [
+        "loss",
+        "isolation"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "現在は彼らのものだ。しかし未来は私のものだ。",
+      "source": "書簡"
+    },
+    {
+      "text": "3と6と9の秘密を解けば、宇宙への鍵を持つことになる。",
+      "source": "テスラに帰される言葉"
+    },
+    {
+      "text": "私は鳩を愛している。鳩は私を愛している。",
+      "source": "晩年のインタビュー"
+    }
+  ],
+  "relations": [
+    {
+      "name": "トーマス・エジソン",
+      "id": "edison",
+      "relation": "元上司・ライバル",
+      "note": "電流戦争の相手"
+    },
+    {
+      "name": "ジョージ・ウェスティングハウス",
+      "relation": "パートナー",
+      "note": "交流電力事業を共にした"
+    }
+  ],
+  "places": [
+    {
+      "name": "ニコラ・テスラ博物館",
+      "location": "セルビア・ベオグラード",
+      "note": "遺灰と資料を保管"
+    }
+  ],
+  "books": [],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Tesla_Sarony.jpg/500px-Tesla_Sarony.jpg",
+  "wikiTitle": "ニコラ・テスラ",
+  "imageCredit": {
+    "artist": "Napoleon Sarony",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Marc Seifer Archive",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tesla_Sarony.jpg"
+  },
+  "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Tesla_Sarony.jpg/330px-Tesla_Sarony.jpg",
+  "coverImageCaption": "ニコラ・テスラ博物館"
+}

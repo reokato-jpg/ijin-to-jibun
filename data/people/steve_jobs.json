@@ -1,0 +1,182 @@
+{
+  "id": "steve_jobs",
+  "name": "スティーブ・ジョブズ",
+  "nameEn": "Steve Jobs",
+  "birth": 1955,
+  "death": 2011,
+  "country": "アメリカ",
+  "field": "起業家",
+  "summary": "Apple を創業、自社から追放されながらも再起しiPod・iPhone で世界を変えた。56歳で膵臓癌で死去するまで、シンプルさと美への執着を貫いた。",
+  "events": [
+    {
+      "year": 1955,
+      "age": 0,
+      "title": "カリフォルニアで未婚の母に誕生、すぐに養子に",
+      "detail": "生みの親はシリア系学生と米国人。養父母は労働者階級。",
+      "tags": [
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1973,
+      "age": 18,
+      "title": "リード大学退学、カリグラフィー受講",
+      "detail": "正規カリキュラムを捨て好きな授業だけ受けた。このカリグラフィーが後のMacフォントに。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1976,
+      "age": 21,
+      "title": "アップル創業、自宅ガレージで",
+      "detail": "スティーブ・ウォズニアックと共にApple I発売。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1984,
+      "age": 29,
+      "title": "Macintosh発表",
+      "detail": "スーパーボウル中のCM『1984』と共に世界を震撼。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1985,
+      "age": 30,
+      "title": "アップルから追放",
+      "detail": "CEOジョン・スカリーに負けた。『とても公的で痛い失敗』。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1986,
+      "age": 31,
+      "title": "ピクサー買収",
+      "detail": "ジョージ・ルーカスから1000万ドルで。後の『トイ・ストーリー』の礎。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1997,
+      "age": 42,
+      "title": "アップル復帰、CEO就任",
+      "detail": "倒産寸前だった会社を救うため。『iThink different』キャンペーン。",
+      "tags": [
+        "restart",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 2001,
+      "age": 46,
+      "title": "iPod発表",
+      "detail": "『1000曲をポケットに』音楽の消費を一変させた。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 2003,
+      "age": 48,
+      "title": "膵臓癌と診断",
+      "detail": "9ヶ月間、手術を拒み代替療法に。取返しのつかない決断と後に認めた。",
+      "tags": [
+        "illness",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 2005,
+      "age": 50,
+      "title": "スタンフォード大学卒業式演説",
+      "detail": "『Stay hungry, stay foolish』の有名な演説。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 2007,
+      "age": 52,
+      "title": "iPhone発表",
+      "detail": "電話・音楽・インターネットを1台に。現代生活を一変。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 2011,
+      "age": 56,
+      "title": "自宅で死去",
+      "detail": "家族に囲まれ『Oh wow. Oh wow. Oh wow.』と呟き息を引き取った。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "Stay hungry, stay foolish.",
+      "source": "スタンフォード演説 2005"
+    },
+    {
+      "text": "今日が人生最後の日だとしたら、今日やろうとしていることを本当にやりたいだろうか？",
+      "source": "スタンフォード演説"
+    },
+    {
+      "text": "デザインとは、どう見えるかどう感じるかだけではない。どう機能するかだ。",
+      "source": "ニューヨーク・タイムズ"
+    },
+    {
+      "text": "品質より量を重視する人がいる。私たちは品質だけを重視する。",
+      "source": "書簡"
+    },
+    {
+      "text": "点と点は、振り返ってみて初めてつながる。",
+      "source": "スタンフォード演説"
+    }
+  ],
+  "relations": [
+    {
+      "name": "スティーブ・ウォズニアック",
+      "relation": "共同創業者",
+      "note": "Apple の技術の心"
+    },
+    {
+      "name": "ジョナサン・アイブ",
+      "relation": "デザイン長官",
+      "note": "iMac/iPod/iPhone のデザイナー"
+    }
+  ],
+  "places": [
+    {
+      "name": "Apple Park",
+      "location": "米カリフォルニア州クパチーノ",
+      "note": "ジョブズが最後に設計を見届けた本社"
+    }
+  ],
+  "books": [
+    {
+      "title": "スティーブ・ジョブズ",
+      "author": "ウォルター・アイザックソン",
+      "asin": "4062171252",
+      "description": "公認伝記"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Steve_Jobs_Headshot_2010-CROP_%28cropped_2%29.jpg/500px-Steve_Jobs_Headshot_2010-CROP_%28cropped_2%29.jpg",
+  "wikiTitle": "スティーブ・ジョブズ",
+  "imageCredit": {
+    "artist": "Matthew Yohe ( talk )",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "credit": "I ( Matt Yohe ( talk )) created this work entirely by myself. ( Transferred from en.wikipedia to Commons by fetchcomms . )",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Steve_Jobs_Headshot_2010-CROP_%28cropped_2%29.jpg"
+  },
+  "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Aerial_view_of_Apple_Park_dllu.jpg/330px-Aerial_view_of_Apple_Park_dllu.jpg",
+  "coverImageCaption": "Apple Park"
+}

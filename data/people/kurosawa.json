@@ -1,0 +1,158 @@
+{
+  "id": "kurosawa",
+  "name": "黒澤明",
+  "nameEn": "Akira Kurosawa",
+  "birth": 1910,
+  "death": 1998,
+  "country": "日本",
+  "field": "映画監督",
+  "summary": "『羅生門』『七人の侍』『用心棒』で世界の映画史を塗り替えた『世界のクロサワ』。30本の長編、スピルバーグ・ルーカスの師匠。ヴェネツィア金獅子、アカデミー名誉賞。",
+  "events": [
+    {
+      "year": 1910,
+      "age": 0,
+      "title": "東京・大森に陸軍軍医の8番目の子として誕生",
+      "detail": "父は剣道指南役、姉兄が多い伸び伸びした少年時代。",
+      "tags": []
+    },
+    {
+      "year": 1933,
+      "age": 23,
+      "title": "兄須田貞明が自殺",
+      "detail": "映画弁士の兄が28歳で自死。黒澤映画の暗い影の源流。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1936,
+      "age": 26,
+      "title": "PCL映画（現・東宝）助監督",
+      "detail": "山本嘉次郎に師事。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1943,
+      "age": 33,
+      "title": "監督デビュー『姿三四郎』",
+      "detail": "戦時中のデビュー。当時の軍部から『英米風すぎる』と批判されたが大ヒット。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1950,
+      "age": 40,
+      "title": "『羅生門』ヴェネツィア金獅子賞",
+      "detail": "東洋の映画が世界に認められた記念碑。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1954,
+      "age": 44,
+      "title": "『七人の侍』公開",
+      "detail": "207分の大作。世界中でリメイク・引用される。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1971,
+      "age": 61,
+      "title": "『どですかでん』不振で自殺未遂",
+      "detail": "カミソリで首と腕を21箇所切った。家族に発見され救命。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1975,
+      "age": 65,
+      "title": "ソ連で『デルス・ウザーラ』でアカデミー外国語映画賞",
+      "detail": "日本で撮れなくなりソ連で撮った復活作。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1985,
+      "age": 75,
+      "title": "『乱』公開",
+      "detail": "シェイクスピア『リア王』を戦国日本に。武満徹音楽。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1998,
+      "age": 88,
+      "title": "東京で死去",
+      "detail": "最後まで『まあだだよ』を超える映画を撮ろうと準備していた。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "創造するということは、記憶すること。",
+      "source": "黒澤の言葉"
+    },
+    {
+      "text": "世界を映画に、映画を世界に。",
+      "source": "書簡"
+    },
+    {
+      "text": "自分を超えるものを作ろうとした日にだけ、本物の作品ができる。",
+      "source": "インタビュー"
+    },
+    {
+      "text": "いま生きていることが素晴らしい。",
+      "source": "『まあだだよ』"
+    }
+  ],
+  "relations": [
+    {
+      "name": "三船敏郎",
+      "relation": "盟友俳優",
+      "note": "16本の映画を共に。1965年に決裂"
+    },
+    {
+      "name": "武満徹",
+      "id": "takemitsu",
+      "relation": "晩年の音楽担当",
+      "note": "『乱』の音楽"
+    }
+  ],
+  "places": [
+    {
+      "name": "黒澤明記念サテライトスタジオ",
+      "location": "兵庫県豊岡市",
+      "note": "記念館"
+    }
+  ],
+  "books": [
+    {
+      "title": "蝦蟇の油",
+      "author": "黒澤明",
+      "asin": "4003311019",
+      "description": "自伝"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Kinema-Junpo-1960-December-Special-1.jpg/500px-Kinema-Junpo-1960-December-Special-1.jpg",
+  "wikiTitle": "黒澤明",
+  "imageCredit": {
+    "artist": "キネマ旬報社",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "『 キネマ旬報 』1960年12月増刊号。 \" Kinema Junpo \", Special December 1960 issue.",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kinema-Junpo-1960-December-Special-1.jpg"
+  },
+  "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Kinema-Junpo-1960-December-Special-1.jpg/330px-Kinema-Junpo-1960-December-Special-1.jpg",
+  "coverImageCaption": "黒澤明記念サテライトスタジオ"
+}

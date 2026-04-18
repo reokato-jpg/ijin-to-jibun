@@ -1,0 +1,155 @@
+{
+  "id": "marie_antoinette",
+  "name": "マリー・アントワネット",
+  "nameEn": "Marie Antoinette",
+  "birth": 1755,
+  "death": 1793,
+  "country": "オーストリア→フランス",
+  "field": "王妃",
+  "summary": "ハプスブルクの末娘、14歳でフランスに嫁ぎ王妃に。『パンがなければお菓子を食べればいい』（実際は言っていない）の悪名と共に37歳でギロチンに散った時代の象徴。",
+  "events": [
+    {
+      "year": 1755,
+      "age": 0,
+      "title": "ウィーン・シェーンブルン宮殿で誕生",
+      "detail": "神聖ローマ皇后マリア・テレジアの15番目の子。同日にリスボン大地震。",
+      "tags": []
+    },
+    {
+      "year": 1770,
+      "age": 14,
+      "title": "フランス皇太子ルイと政略結婚",
+      "detail": "7年戦争後の同盟のため。新婚初夜は気まずく、結婚は7年間完成しなかった。",
+      "tags": [
+        "heartbreak",
+        "restart"
+      ]
+    },
+    {
+      "year": 1774,
+      "age": 18,
+      "title": "ルイ16世即位、フランス王妃に",
+      "detail": "19歳の王と18歳の王妃。政治経験ゼロ。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1778,
+      "age": 22,
+      "title": "長女マリー・テレーズ誕生、結婚8年目",
+      "detail": "義兄ヨーゼフ2世の調停で夫婦仲改善。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1785,
+      "age": 29,
+      "title": "首飾り事件、無実ながら評判失墜",
+      "detail": "偽造された書簡で詐欺に利用され、民衆は王妃が浪費家と確信した。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1789,
+      "age": 33,
+      "title": "フランス革命勃発",
+      "detail": "7月14日のバスチーユ襲撃。秋にヴェルサイユから強制連行、パリへ。",
+      "tags": [
+        "pride_broken",
+        "restart"
+      ]
+    },
+    {
+      "year": 1791,
+      "age": 35,
+      "title": "ヴァレンヌ逃亡事件",
+      "detail": "家族でオーストリアへ亡命を試みるが国境手前で捕らえられる。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1793,
+      "age": 37,
+      "title": "夫ルイ16世処刑",
+      "detail": "1月21日。マリーは独房で8ヶ月耐える。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1793,
+      "age": 37,
+      "title": "10月16日、ギロチンで処刑",
+      "detail": "死刑執行人の足を踏み『失礼。わざとではありません』と最期の言葉。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "許します、私を死に追いやった者たちを。",
+      "source": "遺書"
+    },
+    {
+      "text": "失礼。わざとではありません。",
+      "source": "ギロチンの足下で執行人の足を踏み"
+    },
+    {
+      "text": "私は王妃であり、人質ではない。",
+      "source": "逃亡捕縛時"
+    }
+  ],
+  "relations": [
+    {
+      "name": "ルイ16世",
+      "relation": "夫",
+      "note": "気弱な名君で、共に断頭台へ"
+    },
+    {
+      "name": "アクセル・フォン・フェルセン",
+      "relation": "生涯の愛人",
+      "note": "スウェーデン伯爵。逃亡計画を立てた"
+    }
+  ],
+  "places": [
+    {
+      "name": "ヴェルサイユ宮殿",
+      "location": "フランス・ヴェルサイユ",
+      "note": "王妃時代の栄華"
+    },
+    {
+      "name": "プチ・トリアノン",
+      "location": "ヴェルサイユ内",
+      "note": "マリーが自由を求めた田舎風離宮"
+    },
+    {
+      "name": "コンシェルジュリー",
+      "location": "パリ",
+      "note": "処刑前の牢獄、いまも独房が残る"
+    }
+  ],
+  "books": [
+    {
+      "title": "マリー・アントワネット",
+      "author": "ツヴァイク",
+      "asin": "4047931977",
+      "description": "名作伝記"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Vig%C3%A9e-Lebrun_Marie_Antoinette_1783.jpg/500px-Vig%C3%A9e-Lebrun_Marie_Antoinette_1783.jpg",
+  "wikiTitle": "マリー・アントワネット",
+  "imageCredit": {
+    "artist": "Élisabeth Louise Vigée Le Brun",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Versailles",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Vig%C3%A9e-Lebrun_Marie_Antoinette_1783.jpg"
+  },
+  "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Versailles_Palace.jpg/330px-Versailles_Palace.jpg",
+  "coverImageCaption": "ヴェルサイユ宮殿"
+}

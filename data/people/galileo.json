@@ -1,0 +1,158 @@
+{
+  "id": "galileo",
+  "name": "ガリレオ・ガリレイ",
+  "nameEn": "Galileo Galilei",
+  "birth": 1564,
+  "death": 1642,
+  "country": "イタリア",
+  "field": "天文学者・物理学者",
+  "summary": "望遠鏡で木星の衛星と月の凹凸を観測し、地動説を証明。ローマ教会の異端審問で生涯幽閉となりながら『それでも地球は回っている』と呟いたと伝わる近代科学の父。",
+  "events": [
+    {
+      "year": 1564,
+      "age": 0,
+      "title": "ピサに音楽家の子として誕生",
+      "detail": "シェイクスピアと同い年。",
+      "tags": []
+    },
+    {
+      "year": 1583,
+      "age": 19,
+      "title": "ピサの大聖堂で振り子の等時性発見",
+      "detail": "吊り下げられたランプの揺れを自分の脈拍で測り気づいた。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1589,
+      "age": 25,
+      "title": "ピサ大学数学教授",
+      "detail": "落体の法則を実験で証明。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1609,
+      "age": 45,
+      "title": "望遠鏡を自作し空へ向ける",
+      "detail": "月のクレーター、木星の4衛星、金星の満ち欠けを発見。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1610,
+      "age": 46,
+      "title": "『星界の報告』出版",
+      "detail": "地動説を強く示唆する観測記録。世界的ベストセラー。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1616,
+      "age": 52,
+      "title": "第1回異端審問、地動説主張を禁止される",
+      "detail": "ベラルミーノ枢機卿から警告。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1632,
+      "age": 68,
+      "title": "『天文対話』出版、激怒を買う",
+      "detail": "地動説を擁護した3人の対話体。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1633,
+      "age": 69,
+      "title": "異端審問で有罪、自宅幽閉へ",
+      "detail": "地動説撤回を強要された。『それでも地球は回っている』と呟いたとされる。",
+      "tags": [
+        "pride_broken",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1638,
+      "age": 74,
+      "title": "『新科学対話』ライデンで出版",
+      "detail": "幽閉中に書いた力学の古典。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1642,
+      "age": 77,
+      "title": "アルチェトリで死去",
+      "detail": "目は失明していた。同年ニュートン誕生。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "それでも地球は回っている。",
+      "source": "異端審問後の伝承"
+    },
+    {
+      "text": "自然の書物は数学の言語で書かれている。",
+      "source": "『偽金鑑識官』"
+    },
+    {
+      "text": "真理を語る勇気をもて、たとえ世界がそれに反対しても。",
+      "source": "書簡"
+    },
+    {
+      "text": "私は太陽が回っているなどと言ったことはない。",
+      "source": "裁判記録"
+    }
+  ],
+  "relations": [
+    {
+      "name": "ヨハネス・ケプラー",
+      "id": "kepler",
+      "relation": "同時代の支持者",
+      "note": "手紙で相互に励ました"
+    }
+  ],
+  "places": [
+    {
+      "name": "ピサの斜塔",
+      "location": "イタリア・ピサ",
+      "note": "落体実験の伝承の地"
+    },
+    {
+      "name": "ヴィラ・イル・ジョイエッロ",
+      "location": "フィレンツェ近郊アルチェトリ",
+      "note": "晩年の幽閉先"
+    }
+  ],
+  "books": [
+    {
+      "title": "星界の報告",
+      "author": "ガリレオ",
+      "asin": "4006001657",
+      "description": "望遠鏡による宇宙観測の記録"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Justus_Sustermans_-_Portrait_of_Galileo_Galilei_%28Uffizi%29.jpg/500px-Justus_Sustermans_-_Portrait_of_Galileo_Galilei_%28Uffizi%29.jpg",
+  "wikiTitle": "ガリレオ・ガリレイ",
+  "imageCredit": {
+    "artist": "Justus Sustermans",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "https://www.uffizi.it/en/artworks/portrait-galileo-galilei-by-justus-sustermans%20",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Justus_Sustermans_-_Portrait_of_Galileo_Galilei_%28Uffizi%29.jpg"
+  },
+  "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Leaning_Tower_of_Pisa_%28April_2012%29.jpg/330px-Leaning_Tower_of_Pisa_%28April_2012%29.jpg",
+  "coverImageCaption": "ピサの斜塔"
+}

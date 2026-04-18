@@ -166,13 +166,13 @@
       "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%A2%E3%83%87%E3%82%B9%E3%83%88%E3%83%BB%E3%83%A0%E3%82%BD%E3%83%AB%E3%82%B0%E3%82%B9%E3%82%AD%E3%83%BC%20%E4%BA%A4%E9%9F%BF%E8%A9%A9%E3%80%8E%E3%81%AF%E3%81%92%E5%B1%B1%E3%81%AE%E4%B8%80%E5%A4%9C%E3%80%8F"
     }
   ],
-  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Ilya_Repin_-_Portret_of_the_Composer_Modest_Petrovich_Mussorgsky_-_Google_Art_Project.jpg/500px-Ilya_Repin_-_Portret_of_the_Composer_Modest_Petrovich_Mussorgsky_-_Google_Art_Project.jpg",
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/MussorgskySignature.png/500px-MussorgskySignature.png",
   "wikiTitle": "モデスト・ムソルグスキー",
   "imageCredit": {
-    "artist": "",
-    "license": "",
+    "artist": "Modest Mussorgsky",
+    "license": "Public domain",
     "licenseUrl": "",
-    "credit": "",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ilya_Repin_-_Portret_of_the_Composer_Modest_Petrovich_Mussorgsky_-_Google_Art_Project.jpg"
+    "credit": "https://imslp.org/wiki/Pictures_at_an_Exhibition_(Mussorgsky,_Modest)",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:MussorgskySignature.png"
   }
 }

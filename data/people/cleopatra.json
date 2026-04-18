@@ -1,0 +1,130 @@
+{
+  "id": "cleopatra",
+  "name": "クレオパトラ",
+  "nameEn": "Cleopatra VII",
+  "birth": -69,
+  "death": -30,
+  "country": "プトレマイオス朝エジプト",
+  "field": "女王",
+  "summary": "プトレマイオス朝最後の女王。カエサル、アントニウスという2人のローマ最強の男と愛と政治を絡ませ、エジプトを守ろうとした才女。9ヶ国語を操り、毒蛇で39歳の生涯を閉じた。",
+  "events": [
+    {
+      "year": -69,
+      "age": 0,
+      "title": "アレクサンドリア王家に誕生",
+      "detail": "プトレマイオス12世の娘。ギリシャ系王家だが初めてエジプト語を話した女王。",
+      "tags": []
+    },
+    {
+      "year": -51,
+      "age": 18,
+      "title": "弟プトレマイオス13世と共同統治開始",
+      "detail": "父の遺言で兄妹婚。すぐに権力闘争に。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": -48,
+      "age": 21,
+      "title": "カエサルとの出会い",
+      "detail": "絨毯に巻かれて密会。52歳のローマ独裁官との恋と政治協定。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": -47,
+      "age": 22,
+      "title": "息子カエサリオン誕生",
+      "detail": "カエサルとの息子と公表。ローマとエジプトの架け橋。",
+      "tags": []
+    },
+    {
+      "year": -44,
+      "age": 25,
+      "title": "カエサル暗殺",
+      "detail": "ローマで目撃、直ちにエジプトへ帰還。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": -41,
+      "age": 28,
+      "title": "タルソスでアントニウスと会見",
+      "detail": "黄金の船・愛の女神の装束でアントニウスを魅了。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": -31,
+      "age": 38,
+      "title": "アクティウムの海戦で敗北",
+      "detail": "オクタヴィアヌスに敗れる。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": -30,
+      "age": 39,
+      "title": "アレクサンドリアで自殺",
+      "detail": "アントニウス自殺の数日後、毒蛇に噛ませたとも毒薬とも。ローマの凱旋に辱められる前に。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "私はエジプトそのものだ。",
+      "source": "クレオパトラに帰される言葉"
+    },
+    {
+      "text": "男を愛するのは女の戦いである。",
+      "source": "伝承"
+    },
+    {
+      "text": "私の唇は絶対に別の者の前には開かない。",
+      "source": "オクタヴィアヌスへの手紙"
+    }
+  ],
+  "relations": [
+    {
+      "name": "ユリウス・カエサル",
+      "relation": "愛人・保護者",
+      "note": "21歳差の愛と政治"
+    },
+    {
+      "name": "マルクス・アントニウス",
+      "relation": "愛人・夫",
+      "note": "最期まで共に"
+    },
+    {
+      "name": "オクタヴィアヌス（アウグストゥス）",
+      "relation": "最大の敵",
+      "note": "初代ローマ皇帝"
+    }
+  ],
+  "places": [
+    {
+      "name": "アレクサンドリア",
+      "location": "エジプト",
+      "note": "王都。灯台・図書館の都"
+    }
+  ],
+  "books": [],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Kleopatra-VII.-Altes-Museum-Berlin1.jpg/500px-Kleopatra-VII.-Altes-Museum-Berlin1.jpg",
+  "wikiTitle": "クレオパトラ",
+  "imageCredit": {
+    "artist": "Louis le Grand",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "own work / Altes Museum Berlin (Berliner Museumsinsel)",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kleopatra-VII.-Altes-Museum-Berlin1.jpg"
+  },
+  "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Alexandria_%282007-05-018%29.jpg/330px-Alexandria_%282007-05-018%29.jpg",
+  "coverImageCaption": "アレクサンドリア"
+}

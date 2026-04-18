@@ -1,0 +1,164 @@
+{
+  "id": "miyazaki",
+  "name": "宮崎駿",
+  "nameEn": "Hayao Miyazaki",
+  "birth": 1941,
+  "death": null,
+  "country": "日本",
+  "field": "映画監督・アニメーター",
+  "summary": "スタジオジブリの魂。『となりのトトロ』『千と千尋の神隠し』『もののけ姫』で世界中の子供たちに魔法をかけた。引退宣言と撤回を繰り返し、83歳で『君たちはどう生きるか』を発表。",
+  "events": [
+    {
+      "year": 1941,
+      "age": 0,
+      "title": "東京・文京区に誕生",
+      "detail": "4人兄弟の次男。父は飛行機部品会社経営、少年時代を疎開で栃木で過ごす。",
+      "tags": []
+    },
+    {
+      "year": 1963,
+      "age": 22,
+      "title": "東映動画入社",
+      "detail": "学習院大学卒業後、アニメーターに。初任給1万9500円。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1964,
+      "age": 23,
+      "title": "東映動画でストライキ、高畑勲と出会う",
+      "detail": "労働組合活動で5歳年上の高畑と生涯の盟友となる。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1978,
+      "age": 37,
+      "title": "『未来少年コナン』TV監督デビュー",
+      "detail": "NHKの名作。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1984,
+      "age": 43,
+      "title": "『風の谷のナウシカ』公開",
+      "detail": "徳間書店の支援で独立。ジブリの原型。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1985,
+      "age": 44,
+      "title": "スタジオジブリ設立",
+      "detail": "高畑勲・鈴木敏夫と。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1988,
+      "age": 47,
+      "title": "『となりのトトロ』公開",
+      "detail": "興行は苦戦したが、世界中で愛される作品に。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1997,
+      "age": 56,
+      "title": "『もののけ姫』邦画史上最高興収",
+      "detail": "193億円。ジブリ最大のヒット。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 2002,
+      "age": 61,
+      "title": "『千と千尋』アカデミー長編アニメ賞",
+      "detail": "日本アニメ初のオスカー。ベルリン金熊賞も同時受賞。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 2013,
+      "age": 72,
+      "title": "『風立ちぬ』公開後に引退宣言",
+      "detail": "7回目の引退宣言。以後も撤回。",
+      "tags": []
+    },
+    {
+      "year": 2023,
+      "age": 82,
+      "title": "『君たちはどう生きるか』公開",
+      "detail": "10年ぶりの新作。アカデミー賞受賞。",
+      "tags": [
+        "breakthrough"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "世の中は糞みたいなもんですが、僕はそれでも、世界は生きる価値があると思って作ってきた。",
+      "source": "引退会見 2013"
+    },
+    {
+      "text": "大切なものは目に見えない。",
+      "source": "『風立ちぬ』"
+    },
+    {
+      "text": "アニメーションの仕事は、一生懸命生きている人を描くことだ。",
+      "source": "NHKインタビュー"
+    },
+    {
+      "text": "もう大人になってしまった自分に、子供の時を思い出させたい。",
+      "source": "インタビュー"
+    }
+  ],
+  "relations": [
+    {
+      "name": "高畑勲",
+      "relation": "盟友・師",
+      "note": "ジブリ共同創業者、先に逝った"
+    },
+    {
+      "name": "久石譲",
+      "id": "hisaishi",
+      "relation": "音楽",
+      "note": "全作品の音楽担当"
+    }
+  ],
+  "places": [
+    {
+      "name": "三鷹の森ジブリ美術館",
+      "location": "東京都三鷹市",
+      "note": "宮崎駿が全てを監修した美術館"
+    }
+  ],
+  "books": [
+    {
+      "title": "風の帰る場所",
+      "author": "宮崎駿",
+      "asin": "4167679272",
+      "description": "対談集"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/f/ff/HayaoMiyazakiCCJuly09.jpg",
+  "wikiTitle": "宮崎駿",
+  "imageCredit": {
+    "artist": "Natasha Baucas at https://www.flickr.com/photos/sdnatasha/",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "credit": "https://www.flickr.com/photos/sdnatasha/3768086664/",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:HayaoMiyazakiCCJuly09.jpg"
+  },
+  "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/%E4%B8%89%E9%B7%B9%E4%B9%8B%E6%A3%AE%E5%90%89%E5%8D%9C%E5%8A%9B%E7%BE%8E%E8%A1%93%E9%A4%A8_%2816202559242%29.jpg/330px-%E4%B8%89%E9%B7%B9%E4%B9%8B%E6%A3%AE%E5%90%89%E5%8D%9C%E5%8A%9B%E7%BE%8E%E8%A1%93%E9%A4%A8_%2816202559242%29.jpg",
+  "coverImageCaption": "三鷹の森ジブリ美術館"
+}

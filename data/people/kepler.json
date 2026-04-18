@@ -1,0 +1,129 @@
+{
+  "id": "kepler",
+  "name": "ヨハネス・ケプラー",
+  "nameEn": "Johannes Kepler",
+  "birth": 1571,
+  "death": 1630,
+  "country": "ドイツ",
+  "field": "天文学者",
+  "summary": "惑星運動の3法則を発見した近代天文学の父。母は魔女として告発され救出、7人の子のうち4人が乳幼児死。神秘主義的な宇宙の調和を求め続けた。",
+  "events": [
+    {
+      "year": 1571,
+      "age": 0,
+      "title": "ドイツ・ヴァイル・デア・シュタットで未熟児として誕生",
+      "detail": "家系は没落、父は傭兵でいなくなった。",
+      "tags": [
+        "poverty",
+        "parent_conflict"
+      ]
+    },
+    {
+      "year": 1600,
+      "age": 28,
+      "title": "プラハのティコ・ブラーエの助手に",
+      "detail": "超精密観測データへのアクセス。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1601,
+      "age": 29,
+      "title": "ティコの死、観測データ継承",
+      "detail": "皇帝数学官を継ぐ。",
+      "tags": [
+        "loss",
+        "restart"
+      ]
+    },
+    {
+      "year": 1609,
+      "age": 37,
+      "title": "『新天文学』で第1・第2法則発表",
+      "detail": "楕円軌道と面積速度一定。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1611,
+      "age": 39,
+      "title": "妻と息子を天然痘で失う",
+      "detail": "同時期にプラハの庇護者ルドルフ2世も退位。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1615,
+      "age": 43,
+      "title": "母カタリーナが魔女として告発",
+      "detail": "6年の裁判を戦い救出。自ら弁護に立った。",
+      "tags": [
+        "parent_conflict",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1619,
+      "age": 47,
+      "title": "第3法則発表、『世界の調和』",
+      "detail": "惑星の公転周期と距離の関係。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1630,
+      "age": 58,
+      "title": "レーゲンスブルクで病没",
+      "detail": "未払い給与の請求のため移動中だった。墓は戦争で失われた。",
+      "tags": [
+        "loss",
+        "poverty"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "幾何学こそ神の言語である。",
+      "source": "『宇宙の神秘』"
+    },
+    {
+      "text": "人は忘れる。しかし音楽と数学は忘れない。",
+      "source": "ケプラーの手記"
+    },
+    {
+      "text": "私はあなた方に貸しがある。未来の世代に支払ってもらおう。",
+      "source": "死の床"
+    }
+  ],
+  "relations": [
+    {
+      "name": "ガリレオ",
+      "id": "galileo",
+      "relation": "文通した同志",
+      "note": "二人で地動説を支えた"
+    }
+  ],
+  "places": [
+    {
+      "name": "ケプラー博物館",
+      "location": "ドイツ・ヴァイル・デア・シュタット",
+      "note": "生家が博物館に"
+    }
+  ],
+  "books": [],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/JKepler.jpg/500px-JKepler.jpg",
+  "wikiTitle": "ヨハネス・ケプラー",
+  "imageCredit": {
+    "artist": "August Köhler [1]",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Kepler-Museum in Weil der Stadt",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:JKepler.jpg"
+  },
+  "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/19-06-14-Graz-Murinsel-Schlo%C3%9Fberg-RalfR.jpg/330px-19-06-14-Graz-Murinsel-Schlo%C3%9Fberg-RalfR.jpg",
+  "coverImageCaption": "ケプラー博物館"
+}
