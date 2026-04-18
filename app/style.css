@@ -7192,7 +7192,7 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
 .open-book::after {
   content: '';
   position: absolute;
-  background-image: url('assets/stain.jpg');
+  background-image: url('assets/stain.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -8384,9 +8384,8 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
   margin: 10px auto 0;
   padding: 14px 18px;
   background:
-    url('assets/stain.jpg') right center / 120px auto no-repeat,
+    url('assets/stain.png') right center / 120px auto no-repeat,
     linear-gradient(180deg, #fffdf7 0%, #faf5e8 100%);
-  background-blend-mode: multiply, normal;
   border: 1.5px solid var(--gold);
   border-radius: 8px;
   font-family: var(--font-jp);
@@ -8482,12 +8481,11 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
   padding: 28px 24px 20px;
   box-shadow: 0 8px 30px rgba(0,0,0,0.3);
   background-image:
-    url('assets/stain.jpg'),
+    url('assets/stain.png'),
     repeating-linear-gradient(to bottom, transparent 0 33px, rgba(184,149,46,0.1) 33px 34px);
   background-size: 180px auto, auto;
   background-position: right -30px top -20px, 0 0;
   background-repeat: no-repeat, repeat;
-  background-blend-mode: multiply, normal;
   font-family: var(--font-jp);
 }
 .letter-modal-close {
