@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://reokato-jpg.github.io/ijin-to-jibun/sitemap.xml
+Sitemap: https://ijin-to-jibun.com/sitemap.xml

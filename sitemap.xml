@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://reokato-jpg.github.io/ijin-to-jibun/</loc>
+    <loc>https://ijin-to-jibun.com/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://reokato-jpg.github.io/ijin-to-jibun/app/</loc>
+    <loc>https://ijin-to-jibun.com/app/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://reokato-jpg.github.io/ijin-to-jibun/app/terms.html</loc>
+    <loc>https://ijin-to-jibun.com/app/terms.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://reokato-jpg.github.io/ijin-to-jibun/app/privacy.html</loc>
+    <loc>https://ijin-to-jibun.com/app/privacy.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
