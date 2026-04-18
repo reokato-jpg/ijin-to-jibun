@@ -8446,6 +8446,78 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
   margin: 0 4px;
 }
 
+/* ================ フォローボタン ================ */
+.follow-btn {
+  padding: 6px 14px;
+  background: linear-gradient(135deg, var(--wine) 0%, var(--wine-dark) 100%);
+  color: var(--gold-light);
+  border: 1px solid var(--gold);
+  border-radius: 18px;
+  font-family: var(--font-jp);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: all 0.15s;
+}
+.follow-btn:hover { transform: translateY(-1px); }
+.follow-btn.active {
+  background: #fff;
+  color: var(--wine);
+  border-color: var(--wine);
+}
+.follow-btn.disabled {
+  background: #eee;
+  color: var(--ink-4);
+  border-color: #ccc;
+  cursor: pointer;
+  opacity: 0.85;
+}
+.follow-btn.disabled:hover {
+  background: #f0ece2;
+  color: var(--ink-3);
+}
+
+/* 今日のカレンダー拡張 */
+.cal-date-head {
+  text-align: center;
+  font-family: var(--font-jp);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--wine-dark);
+  margin-bottom: 10px;
+  letter-spacing: 0.1em;
+}
+.cal-label.event { background: rgba(122,46,58,0.1); color: var(--wine); }
+.cal-event-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 2px 0;
+}
+.cal-event-detail {
+  font-size: 11px;
+  color: var(--ink-3);
+  line-height: 1.6;
+}
+.cal-list-more.hidden { display: none; }
+.cal-more-btn {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  padding: 9px;
+  background: rgba(184,149,46,0.1);
+  border: 1px dashed var(--gold);
+  border-radius: 6px;
+  color: var(--wine);
+  font-family: var(--font-jp);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+}
+.cal-more-btn:hover { background: rgba(184,149,46,0.18); }
+
 /* ================ X風プロフィール情報 ================ */
 .profile-xmeta {
   display: flex;

@@ -455,7 +455,16 @@ function renderCalendarToday() {
   const d = now.getDate();
   const births = DATA.people.filter(p => p.birthMonth === m && p.birthDay === d);
   const deaths = DATA.people.filter(p => p.deathMonth === m && p.deathDay === d);
-  if (births.length === 0 && deaths.length === 0) {
+  // この日に起きた偉人たちの出来事（年月日がeventにあれば）
+  const dayEvents = [];
+  DATA.people.forEach(p => {
+    (p.events || []).forEach(e => {
+      if (e.month === m && e.day === d) {
+        dayEvents.push({ person: p, event: e });
+      }
+    });
+  });
+  if (births.length === 0 && deaths.length === 0 && dayEvents.length === 0) {
     block.style.display = 'none';
     return;
   }
@@ -482,14 +491,60 @@ function renderCalendarToday() {
       </article>
     `;
   };
+  const eventHtml = (item) => {
+    const p = item.person;
+    const e = item.event;
+    const initial = (p.name || '?').charAt(0);
+    const avatar = p.imageUrl
+      ? `<div class="cal-avatar" style="background-image:url('${p.imageUrl}')"></div>`
+      : `<div class="cal-avatar no-img">${initial}</div>`;
+    return `
+      <article class="cal-card cal-card-event" data-person-id="${p.id}">
+        ${avatar}
+        <div class="cal-body">
+          <div class="cal-label event">📜 この日の出来事</div>
+          <div class="cal-name">${e.year}年 ${p.name}</div>
+          <div class="cal-event-title">${e.title}</div>
+          ${e.detail ? `<div class="cal-event-detail">${e.detail.slice(0, 80)}${e.detail.length > 80 ? '…' : ''}</div>` : ''}
+        </div>
+      </article>
+    `;
+  };
 
-  let html = '';
-  if (births.length) html += births.map(p => cardHtml(p, 'birth')).join('');
-  if (deaths.length) html += deaths.map(p => cardHtml(p, 'death')).join('');
-  container.innerHTML = html;
+  // 初期表示は最大3件、それ以上は折りたたみ
+  const LIMIT = 3;
+  const allItems = [
+    ...births.map(p => ({ kind: 'birth', p, html: cardHtml(p, 'birth') })),
+    ...deaths.map(p => ({ kind: 'death', p, html: cardHtml(p, 'death') })),
+    ...dayEvents.map(it => ({ kind: 'event', p: it.person, html: eventHtml(it) })),
+  ];
+  const visible = allItems.slice(0, LIMIT);
+  const hidden = allItems.slice(LIMIT);
+
+  const visibleHtml = visible.map(x => x.html).join('');
+  const hiddenHtml = hidden.map(x => x.html).join('');
+
+  container.innerHTML = `
+    <div class="cal-date-head">${m}月${d}日（${['日','月','火','水','木','金','土'][now.getDay()]}）</div>
+    <div class="cal-list">${visibleHtml}</div>
+    ${hidden.length > 0 ? `
+      <div class="cal-list cal-list-more hidden" id="calMoreList">${hiddenHtml}</div>
+      <button class="cal-more-btn" id="calMoreBtn">もっと見る (${hidden.length}件)</button>
+    ` : ''}
+  `;
   container.querySelectorAll('.cal-card').forEach(el => {
     el.addEventListener('click', () => showPerson(el.dataset.personId));
   });
+  const moreBtn = container.querySelector('#calMoreBtn');
+  if (moreBtn) {
+    moreBtn.addEventListener('click', () => {
+      const more = container.querySelector('#calMoreList');
+      more?.classList.toggle('hidden');
+      moreBtn.textContent = more?.classList.contains('hidden')
+        ? `もっと見る (${hidden.length}件)`
+        : '閉じる';
+    });
+  }
 }
 
 // ====================== 偉人の広場 ======================
@@ -1939,7 +1994,15 @@ async function showPerson(id) {
           <div class="profile-handle">@${handle}</div>
         </div>
         <div class="profile-action-btns">
-          ${favPersonBtn(p.id)}
+          ${(() => {
+            const loggedIn = (typeof currentUser !== 'undefined' && currentUser);
+            const following = isFavPerson(p.id);
+            if (loggedIn) {
+              return `<button class="follow-btn ${following ? 'active' : ''}" data-follow-toggle="${p.id}">${following ? '✓ フォロー中' : '＋ フォロー'}</button>`;
+            } else {
+              return `<button class="follow-btn disabled" data-follow-login="1" title="会員登録すると偉人をフォローできます">＋ フォロー（会員のみ）</button>`;
+            }
+          })()}
           <button class="oshi-set-btn ${getOshi() === p.id ? 'active' : ''}" data-oshi-set="${p.id}">
             ${getOshi() === p.id ? '♡ 推し中' : '♡ 推しにする'}
           </button>
@@ -2647,6 +2710,26 @@ async function showPerson(id) {
     });
   });
 
+  // フォロー切替
+  const followBtn = container.querySelector('[data-follow-toggle]');
+  if (followBtn) {
+    followBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const pid = followBtn.dataset.followToggle;
+      toggleFavPerson(pid);
+      const on = isFavPerson(pid);
+      followBtn.classList.toggle('active', on);
+      followBtn.textContent = on ? '✓ フォロー中' : '＋ フォロー';
+    });
+  }
+  // 未ログイン時のフォローボタン → ログイン誘導
+  const followLogin = container.querySelector('[data-follow-login]');
+  if (followLogin) {
+    followLogin.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (typeof openLoginModal === 'function') openLoginModal();
+    });
+  }
   // 推し設定
   const oshiBtn = container.querySelector('[data-oshi-set]');
   if (oshiBtn) {
