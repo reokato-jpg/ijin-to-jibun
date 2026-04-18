@@ -1134,10 +1134,10 @@ function playBookFlip({ title, subtitle, imageUrl }) {
       cover.classList.remove('cover-with-photo');
       cover.innerHTML = `
         <div class="book-cover-inner">
-          <div class="book-cover-ornament">❦ ─── ◆ ─── ❦</div>
+          <div class="book-cover-ornament">─── ◆ ───</div>
           <div class="book-cover-name">${title}</div>
           <div class="book-cover-dates">${subtitle || ''}</div>
-          <div class="book-cover-ornament">❦ ─── ◆ ─── ❦</div>
+          <div class="book-cover-ornament">─── ◆ ───</div>
         </div>
       `;
     }
@@ -2162,9 +2162,9 @@ function renderTags() {
         <a class="article-card tag-book-card" data-tag="${t.id}" style="background:${bg}">
           <div class="article-author-name tag-book-count">${t.count} の軌跡</div>
           <div class="tag-book-center">
-            <div class="cover-tag-ornament">❦</div>
+            <div class="cover-tag-ornament">◆</div>
             <div class="tag-book-name">${t.name}</div>
-            <div class="cover-tag-ornament">❦</div>
+            <div class="cover-tag-ornament">◆</div>
           </div>
           <div class="article-card-inner tag-book-inner">
             <div class="tag-book-desc">${t.description}</div>
@@ -3797,10 +3797,10 @@ function renderFavorites() {
       <div class="my-book-empty">
         <div class="my-book-empty-cover">
           <div class="my-book-empty-inner">
-            <div class="my-book-empty-ornament">❦</div>
+            <div class="my-book-empty-ornament">◆</div>
             <div class="my-book-empty-title">あなたの本</div>
             <div class="my-book-empty-sub">まだ白紙です</div>
-            <div class="my-book-empty-ornament">❦</div>
+            <div class="my-book-empty-ornament">◆</div>
           </div>
         </div>
         <div class="my-book-empty-text">
@@ -3951,9 +3951,9 @@ function renderFavorites() {
         <a class="article-card tag-book-card" data-tag="${t.id}" style="background:${bg}">
           <div class="article-author-name tag-book-count">${count} の軌跡</div>
           <div class="tag-book-center">
-            <div class="cover-tag-ornament">❦</div>
+            <div class="cover-tag-ornament">◆</div>
             <div class="tag-book-name">${t.name}</div>
-            <div class="cover-tag-ornament">❦</div>
+            <div class="cover-tag-ornament">◆</div>
           </div>
           <div class="article-card-inner tag-book-inner">
             <div class="tag-book-desc">${t.description}</div>
