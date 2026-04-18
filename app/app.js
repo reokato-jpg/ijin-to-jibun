@@ -3014,7 +3014,7 @@ function openLetterModal(p) {
           <b>後日、AIと連動予定</b>（偉人ごとの人格・思想を踏まえた返信）。
         </div>
         <textarea class="letter-textarea" id="letterTextarea" rows="10"
-          placeholder="${p.name}さんへ、今の自分の気持ちを綴ってください。&#10;&#10;時を超えた誰かに宛てた手紙は、本当は自分自身への手紙でもあります。"></textarea>
+          placeholder="${p.name}さんへ、今の自分の気持ちを綴ってください。&#10;&#10;時を超えた誰かに宛てた手紙は、自分自身への手紙でもあります。"></textarea>
         <div class="letter-footer-date">${new Date().toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
         <div class="letter-hint">※ この手紙は『わたしの本』に保管されます。登録すると、端末を変えても消えません。</div>
       </div>
