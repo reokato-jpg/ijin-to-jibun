@@ -581,7 +581,7 @@ function getTodaysGroupMembers() {
 }
 
 // 今日の流れ：朝5時スタート、30分に1通。メンバーの名言から順番に引く
-const CHAT_SLOT_MS = 30 * 60 * 1000; // 30分
+const CHAT_SLOT_MS = 15 * 60 * 1000; // 15分（より頻繁に）
 const CHAT_START_HOUR = 5;
 const CHAT_LAST_READ_KEY = 'ijin_chat_last_slot';
 
@@ -665,10 +665,23 @@ function renderSquareInto(container) {
 function renderLineGroup(container) {
   const { messages, members } = getGroupMessages();
   const selfPosts = loadSelfPosts();
+  const quickReplies = loadQuickReplies();
 
-  // 自分の投稿を時系列に混ぜる
+  // 自分の投稿 + 偉人の即応を時系列に混ぜる
+  const quickReplyMsgs = quickReplies.map(qr => {
+    const person = DATA.people.find(p => p.id === qr.personId);
+    if (!person) return null;
+    return {
+      type: 'quote',
+      person,
+      quote: { text: qr.quoteText, source: qr.quoteSource },
+      ts: qr.ts,
+    };
+  }).filter(Boolean);
+
   const merged = [
     ...messages,
+    ...quickReplyMsgs,
     ...selfPosts.map(s => ({ type: 'self', id: s.id, text: s.text, ts: new Date(s.date).getTime() })),
   ].sort((a, b) => a.ts - b.ts);
 
@@ -1604,7 +1617,7 @@ function setMuted(on) {
 function applyMuteState() {
   const muted = isMuted();
   // 全BGMをミュート／ミュート解除
-  ['homeBgm', 'searchBgm', 'routineBgm', 'blogBgm', 'favoritesBgm'].forEach(id => {
+  ['homeBgm', 'searchBgm', 'routineBgm', 'blogBgm', 'favoritesBgm', 'squareBgm'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.muted = muted;
   });
@@ -1626,9 +1639,46 @@ function initMuteToggle() {
   });
 }
 
+// 自分のつぶやきに対する偉人の即応（ローカルのみの演出）
+const QUICK_REPLY_KEY = 'ijin_quick_replies';
+function loadQuickReplies() {
+  try { return JSON.parse(localStorage.getItem(QUICK_REPLY_KEY) || '[]'); }
+  catch { return []; }
+}
+function saveQuickReply(entry) {
+  const list = loadQuickReplies();
+  list.push(entry);
+  // 50件まで保持
+  localStorage.setItem(QUICK_REPLY_KEY, JSON.stringify(list.slice(-50)));
+}
+
+function scheduleQuickReply(userText) {
+  const members = getTodaysGroupMembers();
+  if (members.length === 0) return;
+  const person = members[Math.floor(Math.random() * members.length)];
+  const qs = person.quotes || [];
+  if (qs.length === 0) return;
+  const q = qs[Math.floor(Math.random() * qs.length)];
+  const delay = 5000 + Math.random() * 7000; // 5〜12秒
+  setTimeout(() => {
+    saveQuickReply({
+      personId: person.id,
+      quoteText: q.text,
+      quoteSource: q.source || '',
+      ts: Date.now(),
+    });
+    if (!document.getElementById('chatPanel')?.classList.contains('hidden')) {
+      renderChatPanel();
+    } else {
+      // パネルが閉じてたらバッジ更新のみ
+      updateChatBadge();
+    }
+  }, delay);
+}
+
 // BGM全停止
 function stopAllBgm() {
-  ['homeBgm', 'searchBgm', 'routineBgm', 'blogBgm', 'favoritesBgm'].forEach(id => {
+  ['homeBgm', 'searchBgm', 'routineBgm', 'blogBgm', 'favoritesBgm', 'squareBgm'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.pause();
   });
@@ -4314,6 +4364,7 @@ function renderChatPanel() {
   }
 }
 
+let __chatPanelTimer = null;
 function openChatPanel() {
   document.getElementById('chatPanel').classList.remove('hidden');
   document.getElementById('chatFab').classList.add('hidden');
@@ -4322,10 +4373,33 @@ function openChatPanel() {
   const { messages } = getGroupMessages();
   localStorage.setItem(CHAT_LAST_READ_KEY, String(messages.length));
   updateChatBadge();
+  // 広場BGMを流す（他のBGMは停止）
+  stopAllBgm();
+  const bgm = document.getElementById('squareBgm');
+  if (bgm && !isMuted()) {
+    bgm.volume = 0.35;
+    bgm.play().catch(() => {});
+  }
+  // 60秒ごとに自動再描画（新しいつぶやきを反映）
+  if (__chatPanelTimer) clearInterval(__chatPanelTimer);
+  __chatPanelTimer = setInterval(() => {
+    if (!document.getElementById('chatPanel')?.classList.contains('hidden')) {
+      const before = getGroupMessages().messages.length;
+      renderChatPanel();
+      const after = getGroupMessages().messages.length;
+      if (after > before) {
+        // 新着があれば既読を更新
+        localStorage.setItem(CHAT_LAST_READ_KEY, String(after));
+      }
+    }
+  }, 60 * 1000);
 }
 function closeChatPanel() {
   document.getElementById('chatPanel').classList.add('hidden');
   document.getElementById('chatFab').classList.remove('hidden');
+  const bgm = document.getElementById('squareBgm');
+  if (bgm) bgm.pause();
+  if (__chatPanelTimer) { clearInterval(__chatPanelTimer); __chatPanelTimer = null; }
   updateChatBadge();
 }
 
@@ -4348,6 +4422,8 @@ function initChatWidget() {
     saveSelfPost(text);
     input.value = '';
     renderChatPanel();
+    // 偉人がすぐに応答（5〜12秒後にランダムな今日のメンバーから）
+    scheduleQuickReply(text);
   }
   // フォーム送信・ボタンクリック・Enter全部拾う
   form.addEventListener('submit', (e) => { e.preventDefault(); doSend(); });
