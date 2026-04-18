@@ -5839,7 +5839,7 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
 
 .article-author-name {
   text-align: center;
-  font-size: 14px;
+  font-size: 10px;
   font-weight: 900;
   color: #f0d690;
   letter-spacing: 0.05em;

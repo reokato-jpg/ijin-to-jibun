@@ -539,7 +539,7 @@ function renderDailyMission() {
         <div class="mission-challenge">${challenges[kind]}</div>
       </div>
       <div class="mission-actions">
-        <button class="mission-btn mission-open">📖 ${person.name}を読む</button>
+        <button class="mission-btn mission-open"><img class="icon-img" src="assets/icons/book.png" alt="">${person.name}を読む</button>
       </div>
     </article>
   `;
@@ -1329,7 +1329,7 @@ async function showPerson(id) {
       </div>
     `;
     stream.push({ sortYear: 99999, sortPri: 6, html: xPostCard({
-      icon: 'book', typeLabel: '📘 関連本',
+      icon: 'book', typeLabel: '関連本',
       title: null, body: null, extra: bookExtra
     })});
   });
@@ -1793,7 +1793,7 @@ async function showPerson(id) {
           <a class="book-card-cover-link" href="${amz}" target="_blank" rel="noopener sponsored" onclick="event.stopPropagation()">
             ${cover
               ? `<img class="book-card-cover-img" src="${cover}" alt="${b.title}" loading="lazy" onerror="this.parentElement.classList.add('no-cover');this.remove()">`
-              : `<div class="book-card-cover-placeholder">📖</div>`}
+              : `<div class="book-card-cover-placeholder"><img class="icon-img icon-img-xl" src="assets/icons/book.png" alt=""></div>`}
           </a>
           <div class="book-card-info">
             <a class="book-card-title-link" href="${amz}" target="_blank" rel="noopener sponsored" onclick="event.stopPropagation()">${b.title}</a>
