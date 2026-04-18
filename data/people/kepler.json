@@ -163,5 +163,9 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:JKepler.jpg"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/19-06-14-Graz-Murinsel-Schlo%C3%9Fberg-RalfR.jpg/330px-19-06-14-Graz-Murinsel-Schlo%C3%9Fberg-RalfR.jpg",
-  "coverImageCaption": "ケプラー博物館"
+  "coverImageCaption": "ケプラー博物館",
+  "birthMonth": 12,
+  "birthDay": 27,
+  "deathMonth": 11,
+  "deathDay": 15
 }

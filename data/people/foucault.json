@@ -175,5 +175,9 @@
       "description": "権力は常に下から来る。",
       "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%9F%E3%82%B7%E3%82%A7%E3%83%AB%E3%83%BB%E3%83%95%E3%83%BC%E3%82%B3%E3%83%BC%20%E6%A8%A9%E5%8A%9B%E3%81%A8%E3%81%AF%E4%BD%95%E3%81%8B%EF%BC%88%E3%83%95%E3%83%BC%E3%82%B3%E3%83%BC%EF%BC%89"
     }
-  ]
+  ],
+  "birthMonth": 10,
+  "birthDay": 15,
+  "deathMonth": 6,
+  "deathDay": 25
 }

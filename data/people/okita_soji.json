@@ -203,5 +203,7 @@
     }
   ],
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Imado-jinja_2021-12_ac_%281%29.jpg/330px-Imado-jinja_2021-12_ac_%281%29.jpg",
-  "coverImageCaption": "沖田総司終焉の地"
+  "coverImageCaption": "沖田総司終焉の地",
+  "deathMonth": 7,
+  "deathDay": 19
 }

@@ -274,5 +274,9 @@
     "licenseUrl": "",
     "credit": "This file comes from Gallica Digital Library and is available under the digital ID btv1b8417521d",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Dvorak.jpg"
-  }
+  },
+  "birthMonth": 9,
+  "birthDay": 8,
+  "deathMonth": 5,
+  "deathDay": 1
 }

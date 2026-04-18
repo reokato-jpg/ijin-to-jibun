@@ -227,5 +227,9 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Felix_Mendelssohn_Bartholdy_by_Eduard_Magnus_%281833%29.jpg"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Gewandhausorchester_Logo_2015.svg/langja-330px-Gewandhausorchester_Logo_2015.svg.png",
-  "coverImageCaption": "ライプツィヒ・ゲヴァントハウス"
+  "coverImageCaption": "ライプツィヒ・ゲヴァントハウス",
+  "birthMonth": 2,
+  "birthDay": 3,
+  "deathMonth": 11,
+  "deathDay": 4
 }

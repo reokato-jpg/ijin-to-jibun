@@ -299,5 +299,9 @@
       "url": "https://www.google.com/search?q=%E6%A1%9C%E6%A1%83%E5%BF%8C",
       "description": "太宰の誕生日にして遺体発見の日。全国から太宰ファンが集まる命日。"
     }
-  ]
+  ],
+  "birthMonth": 6,
+  "birthDay": 19,
+  "deathMonth": 6,
+  "deathDay": 13
 }

@@ -212,5 +212,9 @@
     }
   ],
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Hijikata_Toshizo_Museum_2024-05-26.jpg/330px-Hijikata_Toshizo_Museum_2024-05-26.jpg",
-  "coverImageCaption": "土方歳三資料館"
+  "coverImageCaption": "土方歳三資料館",
+  "birthMonth": 5,
+  "birthDay": 31,
+  "deathMonth": 6,
+  "deathDay": 20
 }

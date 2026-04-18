@@ -249,5 +249,9 @@
     }
   ],
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/JohannesBrahms.jpg/330px-JohannesBrahms.jpg",
-  "coverImageCaption": "ブラームス博物館"
+  "coverImageCaption": "ブラームス博物館",
+  "birthMonth": 5,
+  "birthDay": 7,
+  "deathMonth": 4,
+  "deathDay": 3
 }

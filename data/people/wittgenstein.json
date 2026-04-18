@@ -459,5 +459,9 @@
     }
   ],
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Wittgenstein1920.jpg/330px-Wittgenstein1920.jpg",
-  "coverImageCaption": "ハウス・ウィトゲンシュタイン"
+  "coverImageCaption": "ハウス・ウィトゲンシュタイン",
+  "birthMonth": 4,
+  "birthDay": 26,
+  "deathMonth": 4,
+  "deathDay": 29
 }

@@ -202,5 +202,9 @@
     }
   ],
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/%E4%B8%8A%E9%87%8E%E5%85%AC%E5%9C%92%E8%88%AA%E7%A9%BA%E5%86%99%E7%9C%9F1984.jpg/330px-%E4%B8%8A%E9%87%8E%E5%85%AC%E5%9C%92%E8%88%AA%E7%A9%BA%E5%86%99%E7%9C%9F1984.jpg",
-  "coverImageCaption": "西郷隆盛像"
+  "coverImageCaption": "西郷隆盛像",
+  "birthMonth": 1,
+  "birthDay": 23,
+  "deathMonth": 9,
+  "deathDay": 24
 }

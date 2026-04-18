@@ -190,5 +190,9 @@
       "description": "サティヤーグラハ、塩の行進。",
       "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%9E%E3%83%8F%E3%83%88%E3%83%9E%E3%83%BB%E3%82%AC%E3%83%B3%E3%82%B8%E3%83%BC%20%E3%82%AC%E3%83%B3%E3%82%B8%E3%83%BC%E3%81%AE%E9%9D%9E%E6%9A%B4%E5%8A%9B%E6%80%9D%E6%83%B3"
     }
-  ]
+  ],
+  "birthMonth": 10,
+  "birthDay": 2,
+  "deathMonth": 1,
+  "deathDay": 30
 }

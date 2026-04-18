@@ -236,5 +236,9 @@
       "description": "明智光秀の謀反の謎。",
       "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E7%B9%94%E7%94%B0%E4%BF%A1%E9%95%B7%20%E6%9C%AC%E8%83%BD%E5%AF%BA%E3%81%AE%E5%A4%89%20%E3%81%AA%E3%81%9C%E8%B5%B7%E3%81%8D%E3%81%9F%E3%81%8B"
     }
-  ]
+  ],
+  "birthMonth": 6,
+  "birthDay": 23,
+  "deathMonth": 6,
+  "deathDay": 21
 }

@@ -176,5 +176,9 @@
       "description": "『人は女に生まれるのではない、女になるのだ』。",
       "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%B7%E3%83%A2%E3%83%BC%E3%83%8C%E3%83%BB%E3%83%89%E3%83%BB%E3%83%9C%E3%83%BC%E3%83%B4%E3%82%A9%E3%83%AF%E3%83%BC%E3%83%AB%20%E7%AC%AC%E4%BA%8C%E3%81%AE%E6%80%A7%20%E8%A7%A3%E8%AA%AC"
     }
-  ]
+  ],
+  "birthMonth": 1,
+  "birthDay": 9,
+  "deathMonth": 4,
+  "deathDay": 14
 }

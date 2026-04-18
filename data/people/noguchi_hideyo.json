@@ -177,5 +177,9 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Noguchi_Hideyo.jpg"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Hideyo_Noguchi_Memorial_Hall.JPG/330px-Hideyo_Noguchi_Memorial_Hall.JPG",
-  "coverImageCaption": "野口英世記念館"
+  "coverImageCaption": "野口英世記念館",
+  "birthMonth": 11,
+  "birthDay": 9,
+  "deathMonth": 5,
+  "deathDay": 21
 }

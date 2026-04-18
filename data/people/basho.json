@@ -186,5 +186,9 @@
       "description": "『月日は百代の過客にして』150日の旅。",
       "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E6%9D%BE%E5%B0%BE%E8%8A%AD%E8%95%89%20%E5%A5%A5%E3%81%AE%E7%B4%B0%E9%81%93%20%E8%A7%A3%E8%AA%AC"
     }
-  ]
+  ],
+  "birthMonth": 1,
+  "birthDay": 1,
+  "deathMonth": 11,
+  "deathDay": 28
 }

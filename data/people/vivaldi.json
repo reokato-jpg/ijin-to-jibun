@@ -231,5 +231,9 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Antonio_Vivaldi.jpg"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Ospedale_della_Piet%C3%A0.jpg/330px-Ospedale_della_Piet%C3%A0.jpg",
-  "coverImageCaption": "ピエタ慈善院"
+  "coverImageCaption": "ピエタ慈善院",
+  "birthMonth": 3,
+  "birthDay": 4,
+  "deathMonth": 7,
+  "deathDay": 28
 }

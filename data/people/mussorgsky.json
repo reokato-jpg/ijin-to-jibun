@@ -209,5 +209,9 @@
     "licenseUrl": "",
     "credit": "https://imslp.org/wiki/Pictures_at_an_Exhibition_(Mussorgsky,_Modest)",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:MussorgskySignature.png"
-  }
+  },
+  "birthMonth": 3,
+  "birthDay": 9,
+  "deathMonth": 3,
+  "deathDay": 16
 }

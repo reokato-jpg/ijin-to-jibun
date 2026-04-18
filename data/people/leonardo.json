@@ -293,5 +293,9 @@
       "description": "12使徒の瞬間を捉えた壁画。",
       "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%AC%E3%82%AA%E3%83%8A%E3%83%AB%E3%83%89%E3%83%BB%E3%83%80%E3%83%BB%E3%83%B4%E3%82%A3%E3%83%B3%E3%83%81%20%E6%9C%80%E5%BE%8C%E3%81%AE%E6%99%A9%E9%A4%90%20%E8%A7%A3%E8%AA%AC"
     }
-  ]
+  ],
+  "birthMonth": 4,
+  "birthDay": 15,
+  "deathMonth": 5,
+  "deathDay": 2
 }

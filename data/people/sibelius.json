@@ -244,5 +244,9 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sibelius_with_notes.jpg"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Ainola.JPG/330px-Ainola.JPG",
-  "coverImageCaption": "アイノラ"
+  "coverImageCaption": "アイノラ",
+  "birthMonth": 12,
+  "birthDay": 8,
+  "deathMonth": 9,
+  "deathDay": 20
 }

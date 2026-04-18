@@ -408,5 +408,9 @@
       "country": "アメリカ",
       "description": "三角関係と芸術を描くサガン原作。シューマンとブラームスの関係を連想させる古典。"
     }
-  ]
+  ],
+  "birthMonth": 6,
+  "birthDay": 8,
+  "deathMonth": 7,
+  "deathDay": 29
 }

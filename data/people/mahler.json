@@ -234,5 +234,9 @@
     }
   ],
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Gustav_Mahler_1909.jpg/330px-Gustav_Mahler_1909.jpg",
-  "coverImageCaption": "マーラーの作曲小屋"
+  "coverImageCaption": "マーラーの作曲小屋",
+  "birthMonth": 7,
+  "birthDay": 7,
+  "deathMonth": 5,
+  "deathDay": 18
 }

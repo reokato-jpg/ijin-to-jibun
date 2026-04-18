@@ -202,5 +202,9 @@
       "description": "近代哲学の出発点。",
       "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%AB%E3%83%8D%E3%83%BB%E3%83%87%E3%82%AB%E3%83%AB%E3%83%88%20%E6%96%B9%E6%B3%95%E5%BA%8F%E8%AA%AC"
     }
-  ]
+  ],
+  "birthMonth": 3,
+  "birthDay": 31,
+  "deathMonth": 2,
+  "deathDay": 11
 }

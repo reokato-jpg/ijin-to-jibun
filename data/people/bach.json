@@ -302,5 +302,9 @@
       "url": "https://www.bachfestleipzig.de/",
       "description": "バッハゆかりの教会で10日間、世界中の演奏家が集う。"
     }
-  ]
+  ],
+  "birthMonth": 3,
+  "birthDay": 21,
+  "deathMonth": 7,
+  "deathDay": 28
 }

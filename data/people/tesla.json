@@ -167,5 +167,9 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tesla_Sarony.jpg"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Tesla_Sarony.jpg/330px-Tesla_Sarony.jpg",
-  "coverImageCaption": "ニコラ・テスラ博物館"
+  "coverImageCaption": "ニコラ・テスラ博物館",
+  "birthMonth": 7,
+  "birthDay": 10,
+  "deathMonth": 1,
+  "deathDay": 7
 }

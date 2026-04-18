@@ -199,5 +199,9 @@
     "licenseUrl": "",
     "credit": "eBay item ( archive link )",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aaron_Copland_1970.JPG"
-  }
+  },
+  "birthMonth": 11,
+  "birthDay": 14,
+  "deathMonth": 12,
+  "deathDay": 2
 }

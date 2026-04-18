@@ -440,6 +440,52 @@ function todaySeed() {
   return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
 }
 
+function renderCalendarToday() {
+  const block = document.getElementById('calendarBlock');
+  const container = document.getElementById('calendarToday');
+  if (!block || !container || !DATA.people) return;
+  const now = new Date();
+  const m = now.getMonth() + 1;
+  const d = now.getDate();
+  const births = DATA.people.filter(p => p.birthMonth === m && p.birthDay === d);
+  const deaths = DATA.people.filter(p => p.deathMonth === m && p.deathDay === d);
+  if (births.length === 0 && deaths.length === 0) {
+    block.style.display = 'none';
+    return;
+  }
+  block.style.display = '';
+
+  const cardHtml = (p, type) => {
+    const initial = (p.name || '?').charAt(0);
+    const avatar = p.imageUrl
+      ? `<div class="cal-avatar" style="background-image:url('${p.imageUrl}')"></div>`
+      : `<div class="cal-avatar no-img">${initial}</div>`;
+    const years = type === 'birth'
+      ? `生誕 ${now.getFullYear() - (p.birth || now.getFullYear())} 年目`
+      : `没後 ${now.getFullYear() - (p.death || now.getFullYear())} 年`;
+    const label = type === 'birth' ? '🎂 誕生日' : '🕯 命日';
+    return `
+      <article class="cal-card" data-person-id="${p.id}">
+        ${avatar}
+        <div class="cal-body">
+          <div class="cal-label ${type}">${label}</div>
+          <div class="cal-name">${p.name}</div>
+          <div class="cal-meta">${p.birth || '?'}–${p.death || ''} ／ ${p.field || ''}</div>
+          <div class="cal-years">${years}</div>
+        </div>
+      </article>
+    `;
+  };
+
+  let html = '';
+  if (births.length) html += births.map(p => cardHtml(p, 'birth')).join('');
+  if (deaths.length) html += deaths.map(p => cardHtml(p, 'death')).join('');
+  container.innerHTML = html;
+  container.querySelectorAll('.cal-card').forEach(el => {
+    el.addEventListener('click', () => showPerson(el.dataset.personId));
+  });
+}
+
 function renderDailyMission() {
   const container = document.getElementById('dailyMission');
   if (!container || !DATA.people || DATA.people.length === 0) return;
@@ -4163,6 +4209,7 @@ function bindEvents() {
   renderUpdates();
   renderOshi();
   renderDailyMission();
+  renderCalendarToday();
   renderPersonOfTheDay();
   renderQuoteOfTheDay();
   renderQuoteCarousel();

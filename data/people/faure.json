@@ -236,5 +236,9 @@
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
     "credit": "Uploaded by Flopinot2012 on 2013-10-05",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Gabriel_Faur%C3%A9_Paul_Nadar_1905.JPG"
-  }
+  },
+  "birthMonth": 5,
+  "birthDay": 12,
+  "deathMonth": 11,
+  "deathDay": 4
 }

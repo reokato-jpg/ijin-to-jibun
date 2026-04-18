@@ -290,5 +290,9 @@
       "description": "天下分け目の戦い。",
       "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E5%BE%B3%E5%B7%9D%E5%AE%B6%E5%BA%B7%20%E9%96%A2%E3%83%B6%E5%8E%9F%E3%81%AE%E6%88%A6%E3%81%84%20%E8%A7%A3%E8%AA%AC"
     }
-  ]
+  ],
+  "birthMonth": 1,
+  "birthDay": 31,
+  "deathMonth": 6,
+  "deathDay": 1
 }

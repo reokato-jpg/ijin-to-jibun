@@ -164,5 +164,9 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Klimt.jpg"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Vatican_Museums_Spiral_Staircase_2012.jpg/330px-Vatican_Museums_Spiral_Staircase_2012.jpg",
-  "coverImageCaption": "ベルヴェデーレ美術館"
+  "coverImageCaption": "ベルヴェデーレ美術館",
+  "birthMonth": 7,
+  "birthDay": 14,
+  "deathMonth": 2,
+  "deathDay": 6
 }

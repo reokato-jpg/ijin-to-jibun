@@ -221,5 +221,7 @@
     "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
     "credit": "Flickr",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Joe_Hisaishi_2011.jpg"
-  }
+  },
+  "birthMonth": 12,
+  "birthDay": 6
 }

@@ -169,5 +169,9 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Fran%C3%A7ois_G%C3%A9rard_-_Napoleon_I_001.JPG"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/D%C3%B4me_des_Invalides%2C_Paris.jpg/330px-D%C3%B4me_des_Invalides%2C_Paris.jpg",
-  "coverImageCaption": "アンヴァリッド"
+  "coverImageCaption": "アンヴァリッド",
+  "birthMonth": 8,
+  "birthDay": 15,
+  "deathMonth": 5,
+  "deathDay": 5
 }

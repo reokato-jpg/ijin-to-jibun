@@ -206,5 +206,9 @@
     }
   ],
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Mibu-dera_Kyoto_Japan01s3.jpg/330px-Mibu-dera_Kyoto_Japan01s3.jpg",
-  "coverImageCaption": "壬生寺"
+  "coverImageCaption": "壬生寺",
+  "birthMonth": 11,
+  "birthDay": 9,
+  "deathMonth": 5,
+  "deathDay": 17
 }

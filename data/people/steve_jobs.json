@@ -186,5 +186,9 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Steve_Jobs_Headshot_2010-CROP_%28cropped_2%29.jpg"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Aerial_view_of_Apple_Park_dllu.jpg/330px-Aerial_view_of_Apple_Park_dllu.jpg",
-  "coverImageCaption": "Apple Park"
+  "coverImageCaption": "Apple Park",
+  "birthMonth": 2,
+  "birthDay": 24,
+  "deathMonth": 10,
+  "deathDay": 5
 }

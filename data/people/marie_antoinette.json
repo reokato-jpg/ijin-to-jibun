@@ -191,5 +191,9 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Vig%C3%A9e-Lebrun_Marie_Antoinette_1783.jpg"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Versailles_Palace.jpg/330px-Versailles_Palace.jpg",
-  "coverImageCaption": "ヴェルサイユ宮殿"
+  "coverImageCaption": "ヴェルサイユ宮殿",
+  "birthMonth": 11,
+  "birthDay": 2,
+  "deathMonth": 10,
+  "deathDay": 16
 }

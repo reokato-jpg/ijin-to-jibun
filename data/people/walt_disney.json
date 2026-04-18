@@ -204,5 +204,9 @@
       "description": "森の仔鹿バンビの成長",
       "url": "https://www.amazon.co.jp/dp/B0C5PD8GTK?tag="
     }
-  ]
+  ],
+  "birthMonth": 12,
+  "birthDay": 5,
+  "deathMonth": 12,
+  "deathDay": 15
 }

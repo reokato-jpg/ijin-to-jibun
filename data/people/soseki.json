@@ -449,5 +449,9 @@
       "url": "http://www2.archives.tohoku.ac.jp/",
       "description": "漱石の蔵書・自筆資料を保管する国内最大級のコレクション。"
     }
-  ]
+  ],
+  "birthMonth": 2,
+  "birthDay": 9,
+  "deathMonth": 12,
+  "deathDay": 9
 }

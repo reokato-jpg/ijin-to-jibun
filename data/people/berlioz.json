@@ -213,5 +213,9 @@
     "licenseUrl": "",
     "credit": "Berkshire Fine Arts: http://www.berkshirefinearts.com/show_article.php?article_id=151&amp;category=Music",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hector_Berlioz_Crop.jpg"
-  }
+  },
+  "birthMonth": 12,
+  "birthDay": 11,
+  "deathMonth": 3,
+  "deathDay": 8
 }

@@ -341,5 +341,9 @@
       "url": "https://www.salzburgerfestspiele.at/",
       "description": "モーツァルト生誕の地で開かれる世界最高峰の音楽祭。"
     }
-  ]
+  ],
+  "birthMonth": 1,
+  "birthDay": 27,
+  "deathMonth": 12,
+  "deathDay": 5
 }

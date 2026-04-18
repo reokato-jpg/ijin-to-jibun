@@ -267,5 +267,9 @@
       "musescoreUrl": "https://musescore.com/sheetmusic?text=%E3%82%AF%E3%83%AD%E3%83%BC%E3%83%89%E3%83%BB%E3%83%89%E3%83%93%E3%83%A5%E3%83%83%E3%82%B7%E3%83%BC%20%E5%96%9C%E3%81%B3%E3%81%AE%E5%B3%B6",
       "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%AF%E3%83%AD%E3%83%BC%E3%83%89%E3%83%BB%E3%83%89%E3%83%93%E3%83%A5%E3%83%83%E3%82%B7%E3%83%BC%20%E5%96%9C%E3%81%B3%E3%81%AE%E5%B3%B6"
     }
-  ]
+  ],
+  "birthMonth": 8,
+  "birthDay": 22,
+  "deathMonth": 3,
+  "deathDay": 25
 }

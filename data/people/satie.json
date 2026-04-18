@@ -219,5 +219,9 @@
     }
   ],
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Ericsatie.jpg/330px-Ericsatie.jpg",
-  "coverImageCaption": "サティの家"
+  "coverImageCaption": "サティの家",
+  "birthMonth": 5,
+  "birthDay": 17,
+  "deathMonth": 7,
+  "deathDay": 1
 }

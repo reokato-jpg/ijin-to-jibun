@@ -274,5 +274,9 @@
     "licenseUrl": "https://www.flickr.com/commons/usage/",
     "credit": "[Edvard Grieg portrait]",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Edvard_Grieg_portrait_%28cropped%29.jpg"
-  }
+  },
+  "birthMonth": 6,
+  "birthDay": 15,
+  "deathMonth": 9,
+  "deathDay": 4
 }

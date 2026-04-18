@@ -204,5 +204,9 @@
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
     "credit": "User:X4n6",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Leonard_Bernstein_by_Jack_Mitchell_%28high_quality%29.jpg"
-  }
+  },
+  "birthMonth": 8,
+  "birthDay": 25,
+  "deathMonth": 10,
+  "deathDay": 14
 }

@@ -220,5 +220,9 @@
     "licenseUrl": "",
     "credit": "http://w3.rz-berlin.mpg.de/cmp/bartok_9.jpg",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bart%C3%B3k_B%C3%A9la_1927.jpg"
-  }
+  },
+  "birthMonth": 3,
+  "birthDay": 25,
+  "deathMonth": 9,
+  "deathDay": 26
 }

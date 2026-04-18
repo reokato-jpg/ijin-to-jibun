@@ -273,5 +273,9 @@
     }
   ],
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Festspielhaus.jpg/330px-Festspielhaus.jpg",
-  "coverImageCaption": "バイロイト祝祭劇場"
+  "coverImageCaption": "バイロイト祝祭劇場",
+  "birthMonth": 5,
+  "birthDay": 22,
+  "deathMonth": 2,
+  "deathDay": 13
 }

@@ -243,5 +243,9 @@
     "licenseUrl": "",
     "credit": "Encyclopedia Britannica - first published in Arthur Elson: Modern Composers of Europe L.C. Page &amp; Co 1904 (facing page 194)",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bedrich_Smetana.jpg"
-  }
+  },
+  "birthMonth": 3,
+  "birthDay": 2,
+  "deathMonth": 5,
+  "deathDay": 12
 }

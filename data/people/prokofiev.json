@@ -221,5 +221,9 @@
     "licenseUrl": "",
     "credit": "Library of Congress Catalog: https://lccn.loc.gov/2014708418 Image download: https://cdn.loc.gov/service/pnp/ggbain/28200/28258v.jpg Original url: https://www.loc.gov/pictures/item/2014708418/",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sergei_Prokofiev_circa_1918_over_Chair_Bain.jpg"
-  }
+  },
+  "birthMonth": 4,
+  "birthDay": 23,
+  "deathMonth": 3,
+  "deathDay": 5
 }

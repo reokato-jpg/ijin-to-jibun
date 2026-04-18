@@ -220,5 +220,9 @@
     "licenseUrl": "",
     "credit": "svobodanews.ru ; removed PD watermark",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Nikolay_A_Rimsky_Korsakov_1897.jpg"
-  }
+  },
+  "birthMonth": 3,
+  "birthDay": 6,
+  "deathMonth": 6,
+  "deathDay": 20
 }

@@ -184,5 +184,9 @@
     "licenseUrl": "",
     "credit": "Encyclopaedia Britannica",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Respighi_1935.jpg"
-  }
+  },
+  "birthMonth": 7,
+  "birthDay": 9,
+  "deathMonth": 4,
+  "deathDay": 18
 }

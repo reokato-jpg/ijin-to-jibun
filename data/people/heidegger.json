@@ -168,5 +168,9 @@
       "description": "20世紀最大の哲学書。死への先駆。",
       "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%9E%E3%83%AB%E3%83%86%E3%82%A3%E3%83%B3%E3%83%BB%E3%83%8F%E3%82%A4%E3%83%87%E3%82%AC%E3%83%BC%20%E5%AD%98%E5%9C%A8%E3%81%A8%E6%99%82%E9%96%93%20%E8%A7%A3%E8%AA%AC"
     }
-  ]
+  ],
+  "birthMonth": 9,
+  "birthDay": 26,
+  "deathMonth": 5,
+  "deathDay": 26
 }

@@ -187,5 +187,7 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Joan_of_Arc_miniature_graded.jpg"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Coat_of_Arms_of_Domr%C3%A9my-la-Pucelle.svg/langja-330px-Coat_of_Arms_of_Domr%C3%A9my-la-Pucelle.svg.png",
-  "coverImageCaption": "ドンレミ・ラ・ピュセル村"
+  "coverImageCaption": "ドンレミ・ラ・ピュセル村",
+  "deathMonth": 5,
+  "deathDay": 30
 }

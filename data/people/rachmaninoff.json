@@ -439,5 +439,9 @@
     }
   ],
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Sergei_Rachmaninoff_cph.3a40575.jpg/330px-Sergei_Rachmaninoff_cph.3a40575.jpg",
-  "coverImageCaption": "イワノフカ邸"
+  "coverImageCaption": "イワノフカ邸",
+  "birthMonth": 4,
+  "birthDay": 1,
+  "deathMonth": 3,
+  "deathDay": 28
 }

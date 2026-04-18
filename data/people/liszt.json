@@ -277,5 +277,9 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Franz_Liszt.png"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Franz_Liszt.png/330px-Franz_Liszt.png",
-  "coverImageCaption": "ヴァイマール・リスト邸"
+  "coverImageCaption": "ヴァイマール・リスト邸",
+  "birthMonth": 10,
+  "birthDay": 22,
+  "deathMonth": 7,
+  "deathDay": 31
 }

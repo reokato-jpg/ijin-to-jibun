@@ -185,5 +185,9 @@
       "description": "『子曰く』で始まる東アジア2500年の倫理書。",
       "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E5%AD%94%E5%AD%90%20%E8%AB%96%E8%AA%9E%20%E8%A7%A3%E8%AA%AC"
     }
-  ]
+  ],
+  "birthMonth": 10,
+  "birthDay": 9,
+  "deathMonth": 3,
+  "deathDay": 9
 }

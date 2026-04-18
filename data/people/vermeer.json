@@ -167,5 +167,7 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Vermeer_autograph.png"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Mauritshuis25102007.jpg/330px-Mauritshuis25102007.jpg",
-  "coverImageCaption": "マウリッツハイス美術館"
+  "coverImageCaption": "マウリッツハイス美術館",
+  "deathMonth": 12,
+  "deathDay": 15
 }

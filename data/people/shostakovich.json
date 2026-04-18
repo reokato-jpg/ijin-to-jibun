@@ -250,5 +250,9 @@
     }
   ],
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Russie_-_Moscou_-_Novodevichy_4.jpg/330px-Russie_-_Moscou_-_Novodevichy_4.jpg",
-  "coverImageCaption": "ノヴォデヴィチ墓地"
+  "coverImageCaption": "ノヴォデヴィチ墓地",
+  "birthMonth": 9,
+  "birthDay": 25,
+  "deathMonth": 8,
+  "deathDay": 9
 }

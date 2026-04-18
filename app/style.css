@@ -8183,3 +8183,69 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
   .mission-sub { font-size: 11px; }
   .mission-challenge { font-size: 12px; padding: 9px 10px; }
 }
+
+/* ================ 今日の偉人カレンダー ================ */
+.cal-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  background: #fffdf7;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.cal-card:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(122,46,58,0.1); }
+.cal-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  border: 2px solid var(--gold);
+  flex-shrink: 0;
+}
+.cal-avatar.no-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--wine);
+  color: var(--gold-light);
+  font-family: var(--font-jp);
+  font-size: 24px;
+  font-weight: 700;
+}
+.cal-body { flex: 1; min-width: 0; }
+.cal-label {
+  display: inline-block;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 2px;
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+  font-family: var(--font-jp);
+  font-weight: 600;
+}
+.cal-label.birth { background: rgba(184,149,46,0.15); color: var(--wine); }
+.cal-label.death { background: rgba(61,78,62,0.15); color: var(--green-deep); }
+.cal-name {
+  font-family: var(--font-jp);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 3px;
+}
+.cal-meta {
+  font-size: 11px;
+  color: var(--ink-3);
+  font-family: var(--font-jp);
+}
+.cal-years {
+  font-size: 11px;
+  color: var(--wine);
+  font-family: var(--font-en);
+  letter-spacing: 0.05em;
+  margin-top: 3px;
+}

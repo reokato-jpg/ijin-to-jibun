@@ -254,5 +254,9 @@
     }
   ],
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Chiesa_di_S.Michele_in_Isola%2C_north_exposure.jpg/330px-Chiesa_di_S.Michele_in_Isola%2C_north_exposure.jpg",
-  "coverImageCaption": "サン・ミケーレ島"
+  "coverImageCaption": "サン・ミケーレ島",
+  "birthMonth": 6,
+  "birthDay": 18,
+  "deathMonth": 4,
+  "deathDay": 6
 }
