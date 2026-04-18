@@ -2140,6 +2140,10 @@ async function showTag(tagId) {
     title: tag.name,
     subtitle: '感情の書'
   });
+  // 感情詳細内の絞り込み状態（セッション内）
+  window.__tagFilter = window.__tagFilter || { cat: 'all', era: 'all', country: 'all', sort: 'birth_asc' };
+  const f = window.__tagFilter;
+
   // 人物ごとに出来事をまとめる
   const byPerson = new Map();
   DATA.people.forEach(p => {
@@ -2151,8 +2155,48 @@ async function showTag(tagId) {
       });
     }
   });
-  const matches = [...byPerson.values()]
-    .sort((a, b) => (a.person.birth || 0) - (b.person.birth || 0));
+  let matches = [...byPerson.values()];
+  // カテゴリ
+  if (f.cat !== 'all') {
+    matches = matches.filter(m => categoryOf(m.person.field) === f.cat);
+  }
+  // 時代
+  if (f.era !== 'all' && ERA_RULES[f.cat]) {
+    matches = matches.filter(m => eraOf(f.cat, m.person.birth) === f.era);
+  }
+  // 国
+  if (f.country !== 'all') {
+    matches = matches.filter(m => normalizeCountry(m.person.country) === f.country);
+  }
+  // 並び替え
+  matches.sort((a, b) => {
+    if (f.sort === 'name') return (a.person.name || '').localeCompare(b.person.name || '', 'ja');
+    const ay = a.person.birth == null ? 9999 : a.person.birth;
+    const by = b.person.birth == null ? 9999 : b.person.birth;
+    return f.sort === 'birth_desc' ? by - ay : ay - by;
+  });
+
+  // カテゴリ件数・国件数の集計
+  const allMatches = [...byPerson.values()];
+  const catCounts = { all: allMatches.length };
+  allMatches.forEach(m => {
+    const c = categoryOf(m.person.field);
+    catCounts[c] = (catCounts[c] || 0) + 1;
+  });
+  const filteredByCat = f.cat === 'all' ? allMatches : allMatches.filter(m => categoryOf(m.person.field) === f.cat);
+  const countryCounts = {};
+  filteredByCat.forEach(m => {
+    const c = normalizeCountry(m.person.country);
+    if (c) countryCounts[c] = (countryCounts[c] || 0) + 1;
+  });
+  const eraRules = ERA_RULES[f.cat] || null;
+  const eraCounts = {};
+  if (eraRules) {
+    filteredByCat.forEach(m => {
+      const e = eraOf(f.cat, m.person.birth);
+      if (e) eraCounts[e] = (eraCounts[e] || 0) + 1;
+    });
+  }
   // 感情タグ詳細 = 本の中身風
   const html = `
     <div class="tag-book-page">
@@ -2167,7 +2211,51 @@ async function showTag(tagId) {
       </div>
 
       <div class="tag-book-section-title">
-        <span>この感情を経験した人々</span>
+        <span>この感情を経験した人々 <span class="tag-match-count">(${matches.length}人${f.cat === 'all' && f.era === 'all' && f.country === 'all' ? '' : ` / ${allMatches.length}人中`})</span></span>
+      </div>
+
+      <!-- 詳細検索 -->
+      <button id="tagAdvSearchToggle" class="adv-search-toggle ${f.cat !== 'all' || f.era !== 'all' || f.country !== 'all' ? 'open' : ''}">
+        <span class="adv-search-label">🔎 詳細検索（カテゴリ・時代・国・並び替え）${f.cat !== 'all' || f.era !== 'all' || f.country !== 'all' ? '（絞り込み中）' : ''}</span>
+        <span class="adv-search-arrow">▾</span>
+      </button>
+      <div id="tagAdvSearchPanel" class="adv-search-panel ${f.cat !== 'all' || f.era !== 'all' || f.country !== 'all' ? '' : 'hidden'}">
+        <div class="adv-search-row">
+          <div class="adv-search-row-label">カテゴリ</div>
+          <div class="era-filter" id="tagCatFilter">
+            ${['all', ...CATEGORY_RULES.map(r => r.id)].filter(id => id === 'all' || catCounts[id]).map(id => {
+              const name = id === 'all' ? 'すべて' : CAT_NAME[id];
+              const active = f.cat === id ? 'active' : '';
+              return `<button class="era-chip ${active}" data-tcat="${id}">${name}<span class="cat-count">${catCounts[id] || 0}</span></button>`;
+            }).join('')}
+          </div>
+        </div>
+        ${eraRules ? `
+          <div class="adv-search-row">
+            <div class="adv-search-row-label">時代</div>
+            <div class="era-filter" id="tagEraFilter">
+              <button class="era-chip ${f.era === 'all' ? 'active' : ''}" data-tera="all">全時代<span class="cat-count">${filteredByCat.length}</span></button>
+              ${eraRules.filter(r => eraCounts[r.id]).map(r => `<button class="era-chip ${f.era === r.id ? 'active' : ''}" data-tera="${r.id}">${r.name}<span class="cat-count">${eraCounts[r.id]}</span></button>`).join('')}
+            </div>
+          </div>
+        ` : ''}
+        <div class="adv-search-row">
+          <div class="adv-search-row-label">国・地域</div>
+          <div class="era-filter" id="tagCountryFilter">
+            <button class="era-chip ${f.country === 'all' ? 'active' : ''}" data-tcountry="all">全ての国<span class="cat-count">${filteredByCat.length}</span></button>
+            ${Object.keys(countryCounts).sort((a,b) => countryCounts[b] - countryCounts[a] || a.localeCompare(b,'ja')).map(c => `<button class="era-chip ${f.country === c ? 'active' : ''}" data-tcountry="${c}">${c}<span class="cat-count">${countryCounts[c]}</span></button>`).join('')}
+          </div>
+        </div>
+        <div class="adv-search-row">
+          <div class="adv-search-row-label">並び替え</div>
+          <div class="sort-filter" id="tagSortFilter">
+            ${[
+              {id:'birth_asc', name:'年代順（古い順）'},
+              {id:'birth_desc', name:'年代順（新しい順）'},
+              {id:'name', name:'名前順'}
+            ].map(o => `<button class="sort-chip ${f.sort===o.id?'active':''}" data-tsort="${o.id}">${o.name}</button>`).join('')}
+          </div>
+        </div>
       </div>
 
       ${matches.length === 0
@@ -2232,6 +2320,42 @@ async function showTag(tagId) {
   // 人物ヘッダータップ → 人物詳細
   container.querySelectorAll('.tpg-person-header').forEach(el => {
     el.addEventListener('click', () => showPerson(el.dataset.id));
+  });
+  // 詳細検索トグル
+  const advToggle = container.querySelector('#tagAdvSearchToggle');
+  const advPanel = container.querySelector('#tagAdvSearchPanel');
+  if (advToggle && advPanel) {
+    advToggle.addEventListener('click', () => {
+      advPanel.classList.toggle('hidden');
+      advToggle.classList.toggle('open');
+    });
+  }
+  // カテゴリ・時代・国・並びチップ
+  container.querySelectorAll('[data-tcat]').forEach(el => {
+    el.addEventListener('click', () => {
+      window.__tagFilter.cat = el.dataset.tcat;
+      window.__tagFilter.era = 'all';  // カテゴリ変えたら時代リセット
+      window.__tagFilter.country = 'all';
+      showTag(tagId);
+    });
+  });
+  container.querySelectorAll('[data-tera]').forEach(el => {
+    el.addEventListener('click', () => {
+      window.__tagFilter.era = el.dataset.tera;
+      showTag(tagId);
+    });
+  });
+  container.querySelectorAll('[data-tcountry]').forEach(el => {
+    el.addEventListener('click', () => {
+      window.__tagFilter.country = el.dataset.tcountry;
+      showTag(tagId);
+    });
+  });
+  container.querySelectorAll('[data-tsort]').forEach(el => {
+    el.addEventListener('click', () => {
+      window.__tagFilter.sort = el.dataset.tsort;
+      showTag(tagId);
+    });
   });
   bindFavButtons(container);
   // 「棚に飾る」ボタン
