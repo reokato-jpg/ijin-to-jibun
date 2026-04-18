@@ -234,5 +234,61 @@
   "birthMonth": 11,
   "birthDay": 7,
   "deathMonth": 7,
-  "deathDay": 4
+  "deathDay": 4,
+  "routine": [
+    {
+      "start": 0,
+      "end": 6,
+      "activity": "睡眠（研究所での仮眠を含む）",
+      "cat": "sleep"
+    },
+    {
+      "start": 6,
+      "end": 7,
+      "activity": "起床・質素な朝食",
+      "cat": "meal"
+    },
+    {
+      "start": 7,
+      "end": 9,
+      "activity": "娘イレーヌとマリアの身支度",
+      "cat": "social"
+    },
+    {
+      "start": 9,
+      "end": 13,
+      "activity": "ソルボンヌで講義・研究所で実験",
+      "cat": "work"
+    },
+    {
+      "start": 13,
+      "end": 14,
+      "activity": "昼食（食事を忘れることも）",
+      "cat": "meal"
+    },
+    {
+      "start": 14,
+      "end": 19,
+      "activity": "ラジウム分離の実験（鉄鍋で鉱石を煮詰める）",
+      "cat": "work"
+    },
+    {
+      "start": 19,
+      "end": 20,
+      "activity": "帰宅・娘たちと夕食",
+      "cat": "meal"
+    },
+    {
+      "start": 20,
+      "end": 22,
+      "activity": "論文執筆・手紙",
+      "cat": "work"
+    },
+    {
+      "start": 22,
+      "end": 24,
+      "activity": "ピエールの遺した研究ノートを読む",
+      "cat": "leisure"
+    }
+  ]
 }

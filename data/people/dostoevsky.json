@@ -196,5 +196,61 @@
   "birthMonth": 11,
   "birthDay": 11,
   "deathMonth": 1,
-  "deathDay": 28
+  "deathDay": 28,
+  "routine": [
+    {
+      "start": 0,
+      "end": 4,
+      "activity": "執筆（深夜に最も冴える）",
+      "cat": "work"
+    },
+    {
+      "start": 4,
+      "end": 11,
+      "activity": "睡眠（朝まで寝る）",
+      "cat": "sleep"
+    },
+    {
+      "start": 11,
+      "end": 12,
+      "activity": "起床・強いお茶",
+      "cat": "meal"
+    },
+    {
+      "start": 12,
+      "end": 13,
+      "activity": "朝食兼昼食",
+      "cat": "meal"
+    },
+    {
+      "start": 13,
+      "end": 15,
+      "activity": "手紙・新聞",
+      "cat": "work"
+    },
+    {
+      "start": 15,
+      "end": 17,
+      "activity": "街歩き（ペテルブルクの貧民街）",
+      "cat": "exercise"
+    },
+    {
+      "start": 17,
+      "end": 18,
+      "activity": "夕食",
+      "cat": "meal"
+    },
+    {
+      "start": 18,
+      "end": 23,
+      "activity": "妻アンナが速記するのを口述",
+      "cat": "work"
+    },
+    {
+      "start": 23,
+      "end": 24,
+      "activity": "濃いお茶・再び執筆",
+      "cat": "work"
+    }
+  ]
 }

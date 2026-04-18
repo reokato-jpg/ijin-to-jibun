@@ -198,5 +198,55 @@
   "birthMonth": 7,
   "birthDay": 3,
   "deathMonth": 6,
-  "deathDay": 3
+  "deathDay": 3,
+  "routine": [
+    {
+      "start": 0,
+      "end": 3,
+      "activity": "執筆（小説はこの時間にしか書けない）",
+      "cat": "work"
+    },
+    {
+      "start": 3,
+      "end": 8,
+      "activity": "睡眠",
+      "cat": "sleep"
+    },
+    {
+      "start": 8,
+      "end": 14,
+      "activity": "労働者傷害保険協会で勤務",
+      "cat": "work"
+    },
+    {
+      "start": 14,
+      "end": 15,
+      "activity": "昼食（家族と）",
+      "cat": "meal"
+    },
+    {
+      "start": 15,
+      "end": 18,
+      "activity": "長めの昼寝",
+      "cat": "sleep"
+    },
+    {
+      "start": 18,
+      "end": 19,
+      "activity": "夕食",
+      "cat": "meal"
+    },
+    {
+      "start": 19,
+      "end": 22,
+      "activity": "散歩・水泳・フェリス宛の手紙",
+      "cat": "leisure"
+    },
+    {
+      "start": 22,
+      "end": 24,
+      "activity": "自室に戻り執筆準備",
+      "cat": "work"
+    }
+  ]
 }

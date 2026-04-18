@@ -190,5 +190,55 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Miguel_%C3%81ngel%2C_por_Daniele_da_Volterra_%28detalle%29.jpg"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Musei_vaticani%2C_cappella_sistina%2C_retro_02.JPG/330px-Musei_vaticani%2C_cappella_sistina%2C_retro_02.JPG",
-  "coverImageCaption": "システィーナ礼拝堂"
+  "coverImageCaption": "システィーナ礼拝堂",
+  "routine": [
+    {
+      "start": 0,
+      "end": 5,
+      "activity": "睡眠（短時間・長靴のまま眠ることも）",
+      "cat": "sleep"
+    },
+    {
+      "start": 5,
+      "end": 6,
+      "activity": "起床・パンとワイン",
+      "cat": "meal"
+    },
+    {
+      "start": 6,
+      "end": 12,
+      "activity": "システィーナ礼拝堂の足場で制作（首を反らせたまま）",
+      "cat": "work"
+    },
+    {
+      "start": 12,
+      "end": 13,
+      "activity": "昼食（立ったまま・現場で）",
+      "cat": "meal"
+    },
+    {
+      "start": 13,
+      "end": 18,
+      "activity": "制作続行",
+      "cat": "work"
+    },
+    {
+      "start": 18,
+      "end": 19,
+      "activity": "簡素な夕食",
+      "cat": "meal"
+    },
+    {
+      "start": 19,
+      "end": 22,
+      "activity": "スケッチ・詩作（恋愛詩を残した）",
+      "cat": "work"
+    },
+    {
+      "start": 22,
+      "end": 24,
+      "activity": "就寝（服を着たまま・足で筆の汚れを床に拭う）",
+      "cat": "sleep"
+    }
+  ]
 }

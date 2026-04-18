@@ -233,5 +233,43 @@
   "birthMonth": 10,
   "birthDay": 25,
   "deathMonth": 4,
-  "deathDay": 8
+  "deathDay": 8,
+  "routine": [
+    {
+      "start": 0,
+      "end": 3,
+      "activity": "アトリエで制作",
+      "cat": "work"
+    },
+    {
+      "start": 3,
+      "end": 11,
+      "activity": "睡眠（深夜に寝て昼前に起きる）",
+      "cat": "sleep"
+    },
+    {
+      "start": 11,
+      "end": 15,
+      "activity": "朝食兼昼食・新聞・郵便",
+      "cat": "meal"
+    },
+    {
+      "start": 15,
+      "end": 19,
+      "activity": "来客対応（アトリエで友人・画商と議論）",
+      "cat": "social"
+    },
+    {
+      "start": 19,
+      "end": 20,
+      "activity": "夕食（遅い夕食）",
+      "cat": "meal"
+    },
+    {
+      "start": 20,
+      "end": 24,
+      "activity": "本格的な制作（夜が最も生産的）",
+      "cat": "work"
+    }
+  ]
 }

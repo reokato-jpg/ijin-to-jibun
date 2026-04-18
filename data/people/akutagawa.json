@@ -215,5 +215,67 @@
   "birthMonth": 3,
   "birthDay": 1,
   "deathMonth": 7,
-  "deathDay": 24
+  "deathDay": 24,
+  "routine": [
+    {
+      "start": 0,
+      "end": 2,
+      "activity": "執筆終了・煙草",
+      "cat": "work"
+    },
+    {
+      "start": 2,
+      "end": 9,
+      "activity": "睡眠（不眠症に悩まされた）",
+      "cat": "sleep"
+    },
+    {
+      "start": 9,
+      "end": 10,
+      "activity": "起床・ベロナール・コーヒー",
+      "cat": "meal"
+    },
+    {
+      "start": 10,
+      "end": 12,
+      "activity": "朝食・新聞",
+      "cat": "meal"
+    },
+    {
+      "start": 12,
+      "end": 14,
+      "activity": "友人来訪・菊池寛との議論",
+      "cat": "social"
+    },
+    {
+      "start": 14,
+      "end": 15,
+      "activity": "昼食",
+      "cat": "meal"
+    },
+    {
+      "start": 15,
+      "end": 18,
+      "activity": "書斎で構想・古書に目を通す",
+      "cat": "work"
+    },
+    {
+      "start": 18,
+      "end": 19,
+      "activity": "夕食",
+      "cat": "meal"
+    },
+    {
+      "start": 19,
+      "end": 22,
+      "activity": "雑誌の連載執筆",
+      "cat": "work"
+    },
+    {
+      "start": 22,
+      "end": 24,
+      "activity": "創作の本格執筆",
+      "cat": "work"
+    }
+  ]
 }

@@ -194,5 +194,67 @@
   "birthMonth": 2,
   "birthDay": 11,
   "deathMonth": 10,
-  "deathDay": 18
+  "deathDay": 18,
+  "routine": [
+    {
+      "start": 0,
+      "end": 4,
+      "activity": "研究室で作業",
+      "cat": "work"
+    },
+    {
+      "start": 4,
+      "end": 9,
+      "activity": "仮眠（机や椅子で）",
+      "cat": "sleep"
+    },
+    {
+      "start": 9,
+      "end": 10,
+      "activity": "朝食・コーヒー",
+      "cat": "meal"
+    },
+    {
+      "start": 10,
+      "end": 12,
+      "activity": "研究・実験",
+      "cat": "work"
+    },
+    {
+      "start": 12,
+      "end": 13,
+      "activity": "昼食（10分、本を読みながら）",
+      "cat": "meal"
+    },
+    {
+      "start": 13,
+      "end": 15,
+      "activity": "研究",
+      "cat": "work"
+    },
+    {
+      "start": 15,
+      "end": 16,
+      "activity": "30分の昼寝（有名な片手に鉄球を握って）",
+      "cat": "sleep"
+    },
+    {
+      "start": 16,
+      "end": 19,
+      "activity": "実験・発明",
+      "cat": "work"
+    },
+    {
+      "start": 19,
+      "end": 20,
+      "activity": "家族と夕食",
+      "cat": "meal"
+    },
+    {
+      "start": 20,
+      "end": 24,
+      "activity": "研究室へ戻り実験",
+      "cat": "work"
+    }
+  ]
 }

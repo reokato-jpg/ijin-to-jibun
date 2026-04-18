@@ -303,5 +303,67 @@
   "birthMonth": 6,
   "birthDay": 19,
   "deathMonth": 6,
-  "deathDay": 13
+  "deathDay": 13,
+  "routine": [
+    {
+      "start": 0,
+      "end": 3,
+      "activity": "バーで酒（玉川上水の三鷹周辺）",
+      "cat": "social"
+    },
+    {
+      "start": 3,
+      "end": 10,
+      "activity": "睡眠（朝はほぼ寝ている）",
+      "cat": "sleep"
+    },
+    {
+      "start": 10,
+      "end": 11,
+      "activity": "起床・頭痛薬・カルモチン",
+      "cat": "meal"
+    },
+    {
+      "start": 11,
+      "end": 12,
+      "activity": "散歩・銭湯",
+      "cat": "exercise"
+    },
+    {
+      "start": 12,
+      "end": 14,
+      "activity": "友人・編集者来訪",
+      "cat": "social"
+    },
+    {
+      "start": 14,
+      "end": 16,
+      "activity": "自宅で執筆（口述筆記のことも）",
+      "cat": "work"
+    },
+    {
+      "start": 16,
+      "end": 18,
+      "activity": "外出・飲み屋・愛人宅",
+      "cat": "social"
+    },
+    {
+      "start": 18,
+      "end": 19,
+      "activity": "夕食（ほぼ取らない日も）",
+      "cat": "meal"
+    },
+    {
+      "start": 19,
+      "end": 22,
+      "activity": "酒場で連載の構想",
+      "cat": "leisure"
+    },
+    {
+      "start": 22,
+      "end": 24,
+      "activity": "帰宅して執筆",
+      "cat": "work"
+    }
+  ]
 }

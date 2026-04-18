@@ -254,5 +254,61 @@
   "birthMonth": 3,
   "birthDay": 14,
   "deathMonth": 4,
-  "deathDay": 18
+  "deathDay": 18,
+  "routine": [
+    {
+      "start": 0,
+      "end": 9,
+      "activity": "睡眠（最低10時間）",
+      "cat": "sleep"
+    },
+    {
+      "start": 9,
+      "end": 10,
+      "activity": "朝食・コーヒーを淹れる",
+      "cat": "meal"
+    },
+    {
+      "start": 10,
+      "end": 13,
+      "activity": "プリンストン高等研究所で思考",
+      "cat": "work"
+    },
+    {
+      "start": 13,
+      "end": 14,
+      "activity": "昼食（家で）",
+      "cat": "meal"
+    },
+    {
+      "start": 14,
+      "end": 15,
+      "activity": "昼寝（欠かさない）",
+      "cat": "sleep"
+    },
+    {
+      "start": 15,
+      "end": 19,
+      "activity": "研究・訪問者との議論",
+      "cat": "work"
+    },
+    {
+      "start": 19,
+      "end": 20,
+      "activity": "夕食・ヴァイオリン演奏",
+      "cat": "leisure"
+    },
+    {
+      "start": 20,
+      "end": 22,
+      "activity": "手紙執筆・書斎",
+      "cat": "work"
+    },
+    {
+      "start": 22,
+      "end": 24,
+      "activity": "読書・就寝準備",
+      "cat": "leisure"
+    }
+  ]
 }

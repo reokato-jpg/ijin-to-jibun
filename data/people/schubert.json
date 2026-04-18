@@ -253,5 +253,61 @@
   "birthMonth": 1,
   "birthDay": 31,
   "deathMonth": 11,
-  "deathDay": 19
+  "deathDay": 19,
+  "routine": [
+    {
+      "start": 0,
+      "end": 6,
+      "activity": "睡眠",
+      "cat": "sleep"
+    },
+    {
+      "start": 6,
+      "end": 7,
+      "activity": "起床・コーヒー",
+      "cat": "meal"
+    },
+    {
+      "start": 7,
+      "end": 13,
+      "activity": "作曲（眼鏡をかけたまま寝て、起きて即座に書き始めるため）",
+      "cat": "work"
+    },
+    {
+      "start": 13,
+      "end": 14,
+      "activity": "昼食",
+      "cat": "meal"
+    },
+    {
+      "start": 14,
+      "end": 17,
+      "activity": "友人ショーバー宅・シューベルティアーデ（演奏サロン）",
+      "cat": "social"
+    },
+    {
+      "start": 17,
+      "end": 18,
+      "activity": "散歩",
+      "cat": "exercise"
+    },
+    {
+      "start": 18,
+      "end": 19,
+      "activity": "夕食（居酒屋で）",
+      "cat": "meal"
+    },
+    {
+      "start": 19,
+      "end": 22,
+      "activity": "歌曲の作曲・詩人との打ち合わせ",
+      "cat": "work"
+    },
+    {
+      "start": 22,
+      "end": 24,
+      "activity": "友人と酒場",
+      "cat": "social"
+    }
+  ]
 }

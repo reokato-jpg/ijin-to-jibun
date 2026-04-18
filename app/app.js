@@ -1974,6 +1974,38 @@ let currentSearchQuery = '';
 let currentSearchEra = 'all';
 let currentSearchSort = 'birth_asc';
 let currentSearchCountry = 'all';
+let currentSearchRoutine = 'all';
+
+// ルーティンから特徴を抽出
+function routineTraits(routine) {
+  if (!routine || routine.length === 0) return null;
+  let sleepTotal = 0;
+  let firstWake = null;
+  let lastSleepStart = null;
+  routine.forEach(r => {
+    if (r.cat === 'sleep') {
+      const dur = r.end > r.start ? r.end - r.start : (24 - r.start) + r.end;
+      sleepTotal += dur;
+      if (firstWake === null || r.end < firstWake) firstWake = r.end;
+      if (lastSleepStart === null || r.start > lastSleepStart) lastSleepStart = r.start;
+    }
+  });
+  return { sleepTotal, wake: firstWake, bed: lastSleepStart };
+}
+
+function personMatchesRoutineFilter(p, filter) {
+  if (filter === 'all') return true;
+  const t = routineTraits(p.routine);
+  if (!t) return false;
+  switch (filter) {
+    case 'short_sleep': return t.sleepTotal > 0 && t.sleepTotal < 6;
+    case 'long_sleep': return t.sleepTotal >= 9;
+    case 'early_riser': return t.wake !== null && t.wake <= 6;
+    case 'night_owl': return t.bed !== null && (t.bed >= 24 || t.bed <= 3 || t.bed === 0);
+    case 'has_routine': return true;
+    default: return true;
+  }
+}
 
 // 国名を地域に正規化（同国異表記をまとめる）
 function normalizeCountry(c) {
@@ -2001,7 +2033,36 @@ function renderSearchSubFilters() {
   const eraBar = document.getElementById('searchEraFilter');
   const sortBar = document.getElementById('searchSortFilter');
   const countryBar = document.getElementById('searchCountryFilter');
+  const routineBar = document.getElementById('searchRoutineFilter');
   if (!eraBar || !sortBar) return;
+
+  // ルーティンフィルタ
+  if (routineBar) {
+    const cat = currentSearchFilter;
+    const targetPeople = DATA.people.filter(p => {
+      if (cat === 'all' || cat === 'emotion') return true;
+      return categoryOf(p.field) === cat;
+    });
+    const options = [
+      { id: 'all', name: '指定なし', count: targetPeople.length },
+      { id: 'has_routine', name: 'ルーティンあり', count: targetPeople.filter(p => p.routine && p.routine.length > 2).length },
+      { id: 'short_sleep', name: 'ショートスリーパー(<6h)', count: targetPeople.filter(p => personMatchesRoutineFilter(p, 'short_sleep')).length },
+      { id: 'long_sleep', name: 'ロングスリーパー(≥9h)', count: targetPeople.filter(p => personMatchesRoutineFilter(p, 'long_sleep')).length },
+      { id: 'early_riser', name: '朝型(6時前起床)', count: targetPeople.filter(p => personMatchesRoutineFilter(p, 'early_riser')).length },
+      { id: 'night_owl', name: '夜型(深夜就寝)', count: targetPeople.filter(p => personMatchesRoutineFilter(p, 'night_owl')).length },
+    ];
+    routineBar.innerHTML = options.filter(o => o.id === 'all' || o.count > 0).map(o => {
+      const active = currentSearchRoutine === o.id ? 'active' : '';
+      return `<button class="era-chip ${active}" data-sroutine="${o.id}">${o.name}<span class="cat-count">${o.count}</span></button>`;
+    }).join('');
+    routineBar.querySelectorAll('[data-sroutine]').forEach(el => {
+      el.addEventListener('click', () => {
+        currentSearchRoutine = el.dataset.sroutine;
+        renderSearchSubFilters();
+        renderTags();
+      });
+    });
+  }
   // 国フィルター（対象カテゴリの人物から出現する国を集計）
   if (countryBar) {
     const cat = currentSearchFilter;
@@ -2135,6 +2196,10 @@ function renderTags() {
     if (currentSearchCountry !== 'all') {
       personItems = personItems.filter(p => normalizeCountry(p.country) === currentSearchCountry);
     }
+    // ルーティン絞り込み
+    if (currentSearchRoutine !== 'all') {
+      personItems = personItems.filter(p => personMatchesRoutineFilter(p, currentSearchRoutine));
+    }
     // 並び替え
     personItems.sort((a, b) => {
       if (currentSearchSort === 'name') return (a.name || '').localeCompare(b.name || '', 'ja');
@@ -2242,6 +2307,7 @@ function bindSearchPanel() {
       currentSearchFilter = btn.dataset.filter;
       currentSearchEra = 'all';
       currentSearchCountry = 'all';
+      currentSearchRoutine = 'all';
       filters.forEach(b => b.classList.toggle('active', b === btn));
       renderSearchSubFilters();
       renderTags();

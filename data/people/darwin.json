@@ -201,5 +201,103 @@
   "birthMonth": 2,
   "birthDay": 12,
   "deathMonth": 4,
-  "deathDay": 19
+  "deathDay": 19,
+  "routine": [
+    {
+      "start": 0,
+      "end": 7,
+      "activity": "睡眠",
+      "cat": "sleep"
+    },
+    {
+      "start": 7,
+      "end": 8,
+      "activity": "散歩・冷水浴",
+      "cat": "exercise"
+    },
+    {
+      "start": 8,
+      "end": 8,
+      "activity": "朝食",
+      "cat": "meal"
+    },
+    {
+      "start": 8,
+      "end": 9,
+      "activity": "手紙を読む",
+      "cat": "leisure"
+    },
+    {
+      "start": 9,
+      "end": 10,
+      "activity": "書斎で執筆（午前中で1日の仕事をほぼ終える）",
+      "cat": "work"
+    },
+    {
+      "start": 10,
+      "end": 10,
+      "activity": "妻エマが読んでくれる小説を聴く",
+      "cat": "leisure"
+    },
+    {
+      "start": 10,
+      "end": 12,
+      "activity": "執筆再開",
+      "cat": "work"
+    },
+    {
+      "start": 12,
+      "end": 13,
+      "activity": "サンドウォーク（考え事しながらの散歩）",
+      "cat": "exercise"
+    },
+    {
+      "start": 13,
+      "end": 14,
+      "activity": "昼食",
+      "cat": "meal"
+    },
+    {
+      "start": 14,
+      "end": 15,
+      "activity": "新聞を読む・ソファで休息",
+      "cat": "leisure"
+    },
+    {
+      "start": 15,
+      "end": 16,
+      "activity": "手紙の返信",
+      "cat": "work"
+    },
+    {
+      "start": 16,
+      "end": 17,
+      "activity": "2回目の散歩",
+      "cat": "exercise"
+    },
+    {
+      "start": 17,
+      "end": 18,
+      "activity": "書斎で休息・妻が朗読",
+      "cat": "leisure"
+    },
+    {
+      "start": 18,
+      "end": 19,
+      "activity": "夕食",
+      "cat": "meal"
+    },
+    {
+      "start": 19,
+      "end": 22,
+      "activity": "家族とバックギャモン・朗読",
+      "cat": "social"
+    },
+    {
+      "start": 22,
+      "end": 24,
+      "activity": "ベッドで読書",
+      "cat": "leisure"
+    }
+  ]
 }

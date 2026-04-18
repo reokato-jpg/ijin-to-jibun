@@ -173,5 +173,55 @@
   "birthMonth": 4,
   "birthDay": 15,
   "deathMonth": 12,
-  "deathDay": 29
+  "deathDay": 29,
+  "routine": [
+    {
+      "start": 0,
+      "end": 3,
+      "activity": "研究・粘菌観察",
+      "cat": "work"
+    },
+    {
+      "start": 3,
+      "end": 9,
+      "activity": "睡眠",
+      "cat": "sleep"
+    },
+    {
+      "start": 9,
+      "end": 10,
+      "activity": "起床・お茶",
+      "cat": "meal"
+    },
+    {
+      "start": 10,
+      "end": 14,
+      "activity": "野山で粘菌・変形菌の採集",
+      "cat": "exercise"
+    },
+    {
+      "start": 14,
+      "end": 15,
+      "activity": "昼食（質素）",
+      "cat": "meal"
+    },
+    {
+      "start": 15,
+      "end": 20,
+      "activity": "標本整理・スケッチ・手紙（南方書簡）",
+      "cat": "work"
+    },
+    {
+      "start": 20,
+      "end": 21,
+      "activity": "夕食・酒",
+      "cat": "meal"
+    },
+    {
+      "start": 21,
+      "end": 24,
+      "activity": "欧文論文の執筆（ネイチャー等に投稿）",
+      "cat": "work"
+    }
+  ]
 }

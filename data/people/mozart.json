@@ -345,5 +345,67 @@
   "birthMonth": 1,
   "birthDay": 27,
   "deathMonth": 12,
-  "deathDay": 5
+  "deathDay": 5,
+  "routine": [
+    {
+      "start": 0,
+      "end": 5,
+      "activity": "睡眠（4-5時間程度）",
+      "cat": "sleep"
+    },
+    {
+      "start": 5,
+      "end": 6,
+      "activity": "起床・散髪・身支度",
+      "cat": "exercise"
+    },
+    {
+      "start": 6,
+      "end": 9,
+      "activity": "作曲（朝が最も冴える）",
+      "cat": "work"
+    },
+    {
+      "start": 9,
+      "end": 13,
+      "activity": "レッスン・貴族の邸宅訪問",
+      "cat": "work"
+    },
+    {
+      "start": 13,
+      "end": 14,
+      "activity": "昼食",
+      "cat": "meal"
+    },
+    {
+      "start": 14,
+      "end": 17,
+      "activity": "手紙・楽譜の清書",
+      "cat": "work"
+    },
+    {
+      "start": 17,
+      "end": 18,
+      "activity": "コンサートやオペラのリハーサル",
+      "cat": "work"
+    },
+    {
+      "start": 18,
+      "end": 19,
+      "activity": "夕食",
+      "cat": "meal"
+    },
+    {
+      "start": 19,
+      "end": 23,
+      "activity": "演奏会・サロン",
+      "cat": "social"
+    },
+    {
+      "start": 23,
+      "end": 24,
+      "activity": "帰宅して作曲",
+      "cat": "work"
+    }
+  ]
 }

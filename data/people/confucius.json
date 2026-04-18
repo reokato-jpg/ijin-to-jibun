@@ -189,5 +189,67 @@
   "birthMonth": 10,
   "birthDay": 9,
   "deathMonth": 3,
-  "deathDay": 9
+  "deathDay": 9,
+  "routine": [
+    {
+      "start": 0,
+      "end": 6,
+      "activity": "睡眠",
+      "cat": "sleep"
+    },
+    {
+      "start": 6,
+      "end": 7,
+      "activity": "起床・朝の礼",
+      "cat": "leisure"
+    },
+    {
+      "start": 7,
+      "end": 8,
+      "activity": "朝食",
+      "cat": "meal"
+    },
+    {
+      "start": 8,
+      "end": 12,
+      "activity": "弟子に教える（『六芸』礼・楽・射・御・書・数）",
+      "cat": "work"
+    },
+    {
+      "start": 12,
+      "end": 13,
+      "activity": "昼食",
+      "cat": "meal"
+    },
+    {
+      "start": 13,
+      "end": 16,
+      "activity": "諸侯との対話・政治議論",
+      "cat": "work"
+    },
+    {
+      "start": 16,
+      "end": 18,
+      "activity": "琴を弾く・詩を誦す",
+      "cat": "leisure"
+    },
+    {
+      "start": 18,
+      "end": 19,
+      "activity": "夕食",
+      "cat": "meal"
+    },
+    {
+      "start": 19,
+      "end": 21,
+      "activity": "弟子と議論（『論語』の問答はここから）",
+      "cat": "social"
+    },
+    {
+      "start": 21,
+      "end": 24,
+      "activity": "自省（一日三省）",
+      "cat": "leisure"
+    }
+  ]
 }

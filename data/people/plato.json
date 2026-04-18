@@ -194,5 +194,67 @@
     }
   ],
   "birthMonth": 5,
-  "birthDay": 7
+  "birthDay": 7,
+  "routine": [
+    {
+      "start": 0,
+      "end": 6,
+      "activity": "睡眠",
+      "cat": "sleep"
+    },
+    {
+      "start": 6,
+      "end": 8,
+      "activity": "オリーブ畑を散歩・瞑想",
+      "cat": "exercise"
+    },
+    {
+      "start": 8,
+      "end": 9,
+      "activity": "朝食",
+      "cat": "meal"
+    },
+    {
+      "start": 9,
+      "end": 12,
+      "activity": "アカデメイアで講義",
+      "cat": "work"
+    },
+    {
+      "start": 12,
+      "end": 13,
+      "activity": "昼食",
+      "cat": "meal"
+    },
+    {
+      "start": 13,
+      "end": 17,
+      "activity": "対話篇の執筆",
+      "cat": "work"
+    },
+    {
+      "start": 17,
+      "end": 19,
+      "activity": "弟子との議論",
+      "cat": "social"
+    },
+    {
+      "start": 19,
+      "end": 20,
+      "activity": "夕食",
+      "cat": "meal"
+    },
+    {
+      "start": 20,
+      "end": 23,
+      "activity": "数学・幾何学の研究",
+      "cat": "work"
+    },
+    {
+      "start": 23,
+      "end": 24,
+      "activity": "読書・就寝",
+      "cat": "leisure"
+    }
+  ]
 }

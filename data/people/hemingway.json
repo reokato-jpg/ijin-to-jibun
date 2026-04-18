@@ -187,5 +187,55 @@
   "birthMonth": 7,
   "birthDay": 21,
   "deathMonth": 7,
-  "deathDay": 2
+  "deathDay": 2,
+  "routine": [
+    {
+      "start": 0,
+      "end": 5,
+      "activity": "睡眠",
+      "cat": "sleep"
+    },
+    {
+      "start": 5,
+      "end": 6,
+      "activity": "夜明けに起床",
+      "cat": "exercise"
+    },
+    {
+      "start": 6,
+      "end": 12,
+      "activity": "立って執筆（400-500語の日課を書き終えるまで）",
+      "cat": "work"
+    },
+    {
+      "start": 12,
+      "end": 13,
+      "activity": "昼食・ダイキリまたはモヒート",
+      "cat": "meal"
+    },
+    {
+      "start": 13,
+      "end": 16,
+      "activity": "フィッシング・狩猟・水泳",
+      "cat": "exercise"
+    },
+    {
+      "start": 16,
+      "end": 19,
+      "activity": "読書・手紙",
+      "cat": "leisure"
+    },
+    {
+      "start": 19,
+      "end": 20,
+      "activity": "夕食（妻や友人と）",
+      "cat": "meal"
+    },
+    {
+      "start": 20,
+      "end": 24,
+      "activity": "バーで酒・会話",
+      "cat": "social"
+    }
+  ]
 }

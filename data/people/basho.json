@@ -190,5 +190,73 @@
   "birthMonth": 1,
   "birthDay": 1,
   "deathMonth": 11,
-  "deathDay": 28
+  "deathDay": 28,
+  "routine": [
+    {
+      "start": 0,
+      "end": 5,
+      "activity": "睡眠",
+      "cat": "sleep"
+    },
+    {
+      "start": 5,
+      "end": 6,
+      "activity": "起床・夜明けを見る",
+      "cat": "exercise"
+    },
+    {
+      "start": 6,
+      "end": 8,
+      "activity": "句作・門弟と歩く",
+      "cat": "work"
+    },
+    {
+      "start": 8,
+      "end": 9,
+      "activity": "朝粥",
+      "cat": "meal"
+    },
+    {
+      "start": 9,
+      "end": 12,
+      "activity": "旅の記録・句を推敲",
+      "cat": "work"
+    },
+    {
+      "start": 12,
+      "end": 13,
+      "activity": "昼食（握り飯・茶）",
+      "cat": "meal"
+    },
+    {
+      "start": 13,
+      "end": 17,
+      "activity": "旅路を歩く（1日30km）",
+      "cat": "exercise"
+    },
+    {
+      "start": 17,
+      "end": 19,
+      "activity": "宿場で句会",
+      "cat": "social"
+    },
+    {
+      "start": 19,
+      "end": 20,
+      "activity": "夕食",
+      "cat": "meal"
+    },
+    {
+      "start": 20,
+      "end": 22,
+      "activity": "日記をつける・明日の道程を確認",
+      "cat": "work"
+    },
+    {
+      "start": 22,
+      "end": 24,
+      "activity": "就寝準備",
+      "cat": "sleep"
+    }
+  ]
 }

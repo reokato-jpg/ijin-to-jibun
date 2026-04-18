@@ -306,5 +306,67 @@
   "birthMonth": 3,
   "birthDay": 21,
   "deathMonth": 7,
-  "deathDay": 28
+  "deathDay": 28,
+  "routine": [
+    {
+      "start": 0,
+      "end": 6,
+      "activity": "睡眠",
+      "cat": "sleep"
+    },
+    {
+      "start": 6,
+      "end": 7,
+      "activity": "起床・礼拝",
+      "cat": "leisure"
+    },
+    {
+      "start": 7,
+      "end": 8,
+      "activity": "朝食（家族20名近くと）",
+      "cat": "meal"
+    },
+    {
+      "start": 8,
+      "end": 12,
+      "activity": "教会オルガン練習・作曲",
+      "cat": "work"
+    },
+    {
+      "start": 12,
+      "end": 13,
+      "activity": "昼食",
+      "cat": "meal"
+    },
+    {
+      "start": 13,
+      "end": 16,
+      "activity": "聖トーマス学校で音楽教育",
+      "cat": "work"
+    },
+    {
+      "start": 16,
+      "end": 18,
+      "activity": "カンタータの作曲・写譜",
+      "cat": "work"
+    },
+    {
+      "start": 18,
+      "end": 19,
+      "activity": "夕食",
+      "cat": "meal"
+    },
+    {
+      "start": 19,
+      "end": 21,
+      "activity": "家族との音楽会（『音楽の提供』は家庭から）",
+      "cat": "social"
+    },
+    {
+      "start": 21,
+      "end": 24,
+      "activity": "就寝準備・読書",
+      "cat": "leisure"
+    }
+  ]
 }

@@ -194,5 +194,91 @@
   "birthMonth": 10,
   "birthDay": 2,
   "deathMonth": 1,
-  "deathDay": 30
+  "deathDay": 30,
+  "routine": [
+    {
+      "start": 0,
+      "end": 4,
+      "activity": "睡眠",
+      "cat": "sleep"
+    },
+    {
+      "start": 4,
+      "end": 5,
+      "activity": "起床・沐浴・瞑想",
+      "cat": "exercise"
+    },
+    {
+      "start": 5,
+      "end": 6,
+      "activity": "祈り・聖書朗読",
+      "cat": "leisure"
+    },
+    {
+      "start": 6,
+      "end": 7,
+      "activity": "糸紡ぎ車で綿を紡ぐ（毎日の日課）",
+      "cat": "work"
+    },
+    {
+      "start": 7,
+      "end": 8,
+      "activity": "朝食（果物とナッツ）",
+      "cat": "meal"
+    },
+    {
+      "start": 8,
+      "end": 12,
+      "activity": "手紙・会議・新聞記事執筆",
+      "cat": "work"
+    },
+    {
+      "start": 12,
+      "end": 13,
+      "activity": "昼食（菜食）",
+      "cat": "meal"
+    },
+    {
+      "start": 13,
+      "end": 14,
+      "activity": "短い昼寝",
+      "cat": "sleep"
+    },
+    {
+      "start": 14,
+      "end": 17,
+      "activity": "インド独立運動の活動",
+      "cat": "work"
+    },
+    {
+      "start": 17,
+      "end": 18,
+      "activity": "長い散歩",
+      "cat": "exercise"
+    },
+    {
+      "start": 18,
+      "end": 19,
+      "activity": "夕食（最後の食事）",
+      "cat": "meal"
+    },
+    {
+      "start": 19,
+      "end": 20,
+      "activity": "祈りの集会（プラールタナー）",
+      "cat": "leisure"
+    },
+    {
+      "start": 20,
+      "end": 22,
+      "activity": "マッサージを受けながら手紙に返信",
+      "cat": "work"
+    },
+    {
+      "start": 22,
+      "end": 24,
+      "activity": "読書・就寝",
+      "cat": "leisure"
+    }
+  ]
 }

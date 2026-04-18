@@ -173,5 +173,67 @@
   "birthMonth": 8,
   "birthDay": 15,
   "deathMonth": 5,
-  "deathDay": 5
+  "deathDay": 5,
+  "routine": [
+    {
+      "start": 0,
+      "end": 4,
+      "activity": "睡眠（戦役中は3-4時間のみ）",
+      "cat": "sleep"
+    },
+    {
+      "start": 4,
+      "end": 5,
+      "activity": "起床・書類決裁",
+      "cat": "work"
+    },
+    {
+      "start": 5,
+      "end": 7,
+      "activity": "秘書に口述筆記",
+      "cat": "work"
+    },
+    {
+      "start": 7,
+      "end": 8,
+      "activity": "朝食（10分で済ませる）",
+      "cat": "meal"
+    },
+    {
+      "start": 8,
+      "end": 13,
+      "activity": "政務・地図検討・作戦会議",
+      "cat": "work"
+    },
+    {
+      "start": 13,
+      "end": 14,
+      "activity": "昼食",
+      "cat": "meal"
+    },
+    {
+      "start": 14,
+      "end": 19,
+      "activity": "政務・謁見",
+      "cat": "work"
+    },
+    {
+      "start": 19,
+      "end": 20,
+      "activity": "夕食（家族と30分）",
+      "cat": "meal"
+    },
+    {
+      "start": 20,
+      "end": 22,
+      "activity": "読書（風呂で本を読むのが好み）",
+      "cat": "leisure"
+    },
+    {
+      "start": 22,
+      "end": 24,
+      "activity": "執務続行",
+      "cat": "work"
+    }
+  ]
 }

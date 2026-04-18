@@ -190,5 +190,67 @@
   "birthMonth": 2,
   "birthDay": 24,
   "deathMonth": 10,
-  "deathDay": 5
+  "deathDay": 5,
+  "routine": [
+    {
+      "start": 0,
+      "end": 6,
+      "activity": "睡眠",
+      "cat": "sleep"
+    },
+    {
+      "start": 6,
+      "end": 7,
+      "activity": "起床・瞑想・ヨガ",
+      "cat": "exercise"
+    },
+    {
+      "start": 7,
+      "end": 8,
+      "activity": "黒のタートルネック＋リーバイス（服の選択を廃止）",
+      "cat": "meal"
+    },
+    {
+      "start": 8,
+      "end": 10,
+      "activity": "朝食（フルータリアン・ニンジン主食の時期も）",
+      "cat": "meal"
+    },
+    {
+      "start": 10,
+      "end": 12,
+      "activity": "重要会議（毎週月曜の全社戦略会議）",
+      "cat": "work"
+    },
+    {
+      "start": 12,
+      "end": 13,
+      "activity": "昼食",
+      "cat": "meal"
+    },
+    {
+      "start": 13,
+      "end": 18,
+      "activity": "デザインスタジオ・プロトタイプ検討",
+      "cat": "work"
+    },
+    {
+      "start": 18,
+      "end": 19,
+      "activity": "家族と夕食（キッチンで簡素に）",
+      "cat": "meal"
+    },
+    {
+      "start": 19,
+      "end": 22,
+      "activity": "自宅で仕事メール・製品アイデア",
+      "cat": "work"
+    },
+    {
+      "start": 22,
+      "end": 24,
+      "activity": "家族と過ごす・読書",
+      "cat": "leisure"
+    }
+  ]
 }

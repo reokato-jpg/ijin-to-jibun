@@ -193,5 +193,67 @@
   "birthMonth": 6,
   "birthDay": 28,
   "deathMonth": 7,
-  "deathDay": 2
+  "deathDay": 2,
+  "routine": [
+    {
+      "start": 0,
+      "end": 6,
+      "activity": "睡眠",
+      "cat": "sleep"
+    },
+    {
+      "start": 6,
+      "end": 7,
+      "activity": "起床・コーヒー",
+      "cat": "meal"
+    },
+    {
+      "start": 7,
+      "end": 10,
+      "activity": "楽譜の筆写（生計手段）",
+      "cat": "work"
+    },
+    {
+      "start": 10,
+      "end": 13,
+      "activity": "執筆（『社会契約論』等はこの時間）",
+      "cat": "work"
+    },
+    {
+      "start": 13,
+      "end": 14,
+      "activity": "昼食",
+      "cat": "meal"
+    },
+    {
+      "start": 14,
+      "end": 16,
+      "activity": "植物採集（パリ郊外・スイス）",
+      "cat": "exercise"
+    },
+    {
+      "start": 16,
+      "end": 18,
+      "activity": "ピアノを弾く・作曲",
+      "cat": "leisure"
+    },
+    {
+      "start": 18,
+      "end": 19,
+      "activity": "夕食",
+      "cat": "meal"
+    },
+    {
+      "start": 19,
+      "end": 22,
+      "activity": "読書・手紙",
+      "cat": "leisure"
+    },
+    {
+      "start": 22,
+      "end": 24,
+      "activity": "散歩・瞑想（孤独な散歩者の夢想）",
+      "cat": "exercise"
+    }
+  ]
 }

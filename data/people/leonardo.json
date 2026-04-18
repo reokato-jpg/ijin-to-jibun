@@ -297,5 +297,67 @@
   "birthMonth": 4,
   "birthDay": 15,
   "deathMonth": 5,
-  "deathDay": 2
+  "deathDay": 2,
+  "routine": [
+    {
+      "start": 0,
+      "end": 4,
+      "activity": "実験記録・スケッチ",
+      "cat": "work"
+    },
+    {
+      "start": 4,
+      "end": 5,
+      "activity": "解剖学の観察（夜間に死体を解剖）",
+      "cat": "work"
+    },
+    {
+      "start": 5,
+      "end": 9,
+      "activity": "分割睡眠（20分×数回のウベルマン睡眠と伝わる）",
+      "cat": "sleep"
+    },
+    {
+      "start": 9,
+      "end": 10,
+      "activity": "朝食（ベジタリアン）",
+      "cat": "meal"
+    },
+    {
+      "start": 10,
+      "end": 13,
+      "activity": "工房で絵画制作（『最後の晩餐』時は1日中動かず、または1筆だけ）",
+      "cat": "work"
+    },
+    {
+      "start": 13,
+      "end": 14,
+      "activity": "昼食",
+      "cat": "meal"
+    },
+    {
+      "start": 14,
+      "end": 18,
+      "activity": "発明・工学スケッチ",
+      "cat": "work"
+    },
+    {
+      "start": 18,
+      "end": 19,
+      "activity": "友人と歓談",
+      "cat": "social"
+    },
+    {
+      "start": 19,
+      "end": 20,
+      "activity": "夕食",
+      "cat": "meal"
+    },
+    {
+      "start": 20,
+      "end": 24,
+      "activity": "手記（鏡文字で書き続けた）",
+      "cat": "work"
+    }
+  ]
 }

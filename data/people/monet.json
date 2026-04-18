@@ -196,5 +196,73 @@
   "birthMonth": 11,
   "birthDay": 14,
   "deathMonth": 12,
-  "deathDay": 5
+  "deathDay": 5,
+  "routine": [
+    {
+      "start": 0,
+      "end": 5,
+      "activity": "睡眠",
+      "cat": "sleep"
+    },
+    {
+      "start": 5,
+      "end": 6,
+      "activity": "起床（日の出と共に）",
+      "cat": "exercise"
+    },
+    {
+      "start": 6,
+      "end": 10,
+      "activity": "庭園で制作（朝の光を捉える）",
+      "cat": "work"
+    },
+    {
+      "start": 10,
+      "end": 11,
+      "activity": "朝食（がっしり食べる）",
+      "cat": "meal"
+    },
+    {
+      "start": 11,
+      "end": 14,
+      "activity": "制作（異なる時刻の光を記録）",
+      "cat": "work"
+    },
+    {
+      "start": 14,
+      "end": 15,
+      "activity": "昼食",
+      "cat": "meal"
+    },
+    {
+      "start": 15,
+      "end": 18,
+      "activity": "制作（夕方の光）",
+      "cat": "work"
+    },
+    {
+      "start": 18,
+      "end": 19,
+      "activity": "散策・ジヴェルニーの庭",
+      "cat": "exercise"
+    },
+    {
+      "start": 19,
+      "end": 20,
+      "activity": "夕食（妻アリス・家族と）",
+      "cat": "meal"
+    },
+    {
+      "start": 20,
+      "end": 22,
+      "activity": "新聞・手紙",
+      "cat": "leisure"
+    },
+    {
+      "start": 22,
+      "end": 24,
+      "activity": "早めの就寝",
+      "cat": "sleep"
+    }
+  ]
 }

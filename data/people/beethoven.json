@@ -342,5 +342,79 @@
   "birthMonth": 12,
   "birthDay": 16,
   "deathMonth": 3,
-  "deathDay": 26
+  "deathDay": 26,
+  "routine": [
+    {
+      "start": 0,
+      "end": 5,
+      "activity": "睡眠",
+      "cat": "sleep"
+    },
+    {
+      "start": 5,
+      "end": 6,
+      "activity": "起床・コーヒー（豆を必ず60粒数えて淹れる）",
+      "cat": "meal"
+    },
+    {
+      "start": 6,
+      "end": 10,
+      "activity": "作曲（最も集中する時間）",
+      "cat": "work"
+    },
+    {
+      "start": 10,
+      "end": 11,
+      "activity": "長い散歩（ポケットにメモ帳、楽想を書きとめる）",
+      "cat": "exercise"
+    },
+    {
+      "start": 11,
+      "end": 12,
+      "activity": "作曲",
+      "cat": "work"
+    },
+    {
+      "start": 12,
+      "end": 13,
+      "activity": "昼食",
+      "cat": "meal"
+    },
+    {
+      "start": 13,
+      "end": 15,
+      "activity": "昼寝",
+      "cat": "sleep"
+    },
+    {
+      "start": 15,
+      "end": 17,
+      "activity": "第2の散歩（ウィーンの森を歩き回る）",
+      "cat": "exercise"
+    },
+    {
+      "start": 17,
+      "end": 19,
+      "activity": "酒場で新聞・ビール1杯",
+      "cat": "leisure"
+    },
+    {
+      "start": 19,
+      "end": 20,
+      "activity": "夕食",
+      "cat": "meal"
+    },
+    {
+      "start": 20,
+      "end": 22,
+      "activity": "読書・構想メモ",
+      "cat": "leisure"
+    },
+    {
+      "start": 22,
+      "end": 24,
+      "activity": "就寝準備",
+      "cat": "sleep"
+    }
+  ]
 }

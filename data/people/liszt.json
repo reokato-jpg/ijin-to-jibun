@@ -281,5 +281,67 @@
   "birthMonth": 10,
   "birthDay": 22,
   "deathMonth": 7,
-  "deathDay": 31
+  "deathDay": 31,
+  "routine": [
+    {
+      "start": 0,
+      "end": 4,
+      "activity": "ピアノ練習・作曲",
+      "cat": "work"
+    },
+    {
+      "start": 4,
+      "end": 8,
+      "activity": "睡眠",
+      "cat": "sleep"
+    },
+    {
+      "start": 8,
+      "end": 9,
+      "activity": "起床・朝食",
+      "cat": "meal"
+    },
+    {
+      "start": 9,
+      "end": 12,
+      "activity": "弟子の指導（無料レッスン、朝から晩まで）",
+      "cat": "work"
+    },
+    {
+      "start": 12,
+      "end": 13,
+      "activity": "昼食",
+      "cat": "meal"
+    },
+    {
+      "start": 13,
+      "end": 16,
+      "activity": "作曲・楽譜の校閲",
+      "cat": "work"
+    },
+    {
+      "start": 16,
+      "end": 18,
+      "activity": "社交・サロン",
+      "cat": "social"
+    },
+    {
+      "start": 18,
+      "end": 19,
+      "activity": "夕食",
+      "cat": "meal"
+    },
+    {
+      "start": 19,
+      "end": 22,
+      "activity": "演奏会・リサイタル",
+      "cat": "work"
+    },
+    {
+      "start": 22,
+      "end": 24,
+      "activity": "夜の瞑想（晩年は僧侶に）",
+      "cat": "leisure"
+    }
+  ]
 }

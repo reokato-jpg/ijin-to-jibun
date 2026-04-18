@@ -254,5 +254,67 @@
   "birthMonth": 9,
   "birthDay": 25,
   "deathMonth": 8,
-  "deathDay": 9
+  "deathDay": 9,
+  "routine": [
+    {
+      "start": 0,
+      "end": 7,
+      "activity": "睡眠",
+      "cat": "sleep"
+    },
+    {
+      "start": 7,
+      "end": 8,
+      "activity": "起床・コーヒー",
+      "cat": "meal"
+    },
+    {
+      "start": 8,
+      "end": 12,
+      "activity": "作曲（とにかく速く書く、1日1交響曲の逸話）",
+      "cat": "work"
+    },
+    {
+      "start": 12,
+      "end": 13,
+      "activity": "昼食",
+      "cat": "meal"
+    },
+    {
+      "start": 13,
+      "end": 15,
+      "activity": "レニングラード音楽院で教える",
+      "cat": "work"
+    },
+    {
+      "start": 15,
+      "end": 17,
+      "activity": "サッカー観戦（熱狂的ファン）",
+      "cat": "leisure"
+    },
+    {
+      "start": 17,
+      "end": 19,
+      "activity": "家族との時間",
+      "cat": "social"
+    },
+    {
+      "start": 19,
+      "end": 20,
+      "activity": "夕食",
+      "cat": "meal"
+    },
+    {
+      "start": 20,
+      "end": 22,
+      "activity": "執筆・手紙・楽譜点検",
+      "cat": "work"
+    },
+    {
+      "start": 22,
+      "end": 24,
+      "activity": "ウォッカ・煙草・就寝準備",
+      "cat": "leisure"
+    }
+  ]
 }

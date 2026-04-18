@@ -240,5 +240,61 @@
   "birthMonth": 5,
   "birthDay": 5,
   "deathMonth": 3,
-  "deathDay": 14
+  "deathDay": 14,
+  "routine": [
+    {
+      "start": 0,
+      "end": 5,
+      "activity": "執筆（『資本論』はこの時間に）",
+      "cat": "work"
+    },
+    {
+      "start": 5,
+      "end": 12,
+      "activity": "睡眠",
+      "cat": "sleep"
+    },
+    {
+      "start": 12,
+      "end": 13,
+      "activity": "起床・コーヒー",
+      "cat": "meal"
+    },
+    {
+      "start": 13,
+      "end": 14,
+      "activity": "朝食兼昼食",
+      "cat": "meal"
+    },
+    {
+      "start": 14,
+      "end": 17,
+      "activity": "大英博物館図書館で調査（毎日通った）",
+      "cat": "work"
+    },
+    {
+      "start": 17,
+      "end": 19,
+      "activity": "街を散歩・パブ巡り",
+      "cat": "exercise"
+    },
+    {
+      "start": 19,
+      "end": 20,
+      "activity": "夕食（家族と）",
+      "cat": "meal"
+    },
+    {
+      "start": 20,
+      "end": 22,
+      "activity": "エンゲルスとの手紙往復",
+      "cat": "work"
+    },
+    {
+      "start": 22,
+      "end": 24,
+      "activity": "深夜執筆の準備・煙草",
+      "cat": "work"
+    }
+  ]
 }

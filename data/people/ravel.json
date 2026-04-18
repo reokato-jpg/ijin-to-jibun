@@ -253,5 +253,61 @@
   "birthMonth": 3,
   "birthDay": 7,
   "deathMonth": 12,
-  "deathDay": 28
+  "deathDay": 28,
+  "routine": [
+    {
+      "start": 0,
+      "end": 3,
+      "activity": "ピアノ室で作曲（昼夜逆転）",
+      "cat": "work"
+    },
+    {
+      "start": 3,
+      "end": 11,
+      "activity": "睡眠",
+      "cat": "sleep"
+    },
+    {
+      "start": 11,
+      "end": 12,
+      "activity": "起床・コーヒー・煙草",
+      "cat": "meal"
+    },
+    {
+      "start": 12,
+      "end": 13,
+      "activity": "朝食（11時のブランチ）",
+      "cat": "meal"
+    },
+    {
+      "start": 13,
+      "end": 16,
+      "activity": "庭園の散歩（鳥を観察）",
+      "cat": "exercise"
+    },
+    {
+      "start": 16,
+      "end": 18,
+      "activity": "友人と会食・議論",
+      "cat": "social"
+    },
+    {
+      "start": 18,
+      "end": 19,
+      "activity": "軽い夕食",
+      "cat": "meal"
+    },
+    {
+      "start": 19,
+      "end": 22,
+      "activity": "読書・ストラヴィンスキー等のスコア研究",
+      "cat": "leisure"
+    },
+    {
+      "start": 22,
+      "end": 24,
+      "activity": "深夜の作曲開始",
+      "cat": "work"
+    }
+  ]
 }

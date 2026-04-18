@@ -206,5 +206,73 @@
   "birthMonth": 4,
   "birthDay": 22,
   "deathMonth": 2,
-  "deathDay": 12
+  "deathDay": 12,
+  "routine": [
+    {
+      "start": 0,
+      "end": 5,
+      "activity": "睡眠（必ず5時間）",
+      "cat": "sleep"
+    },
+    {
+      "start": 5,
+      "end": 6,
+      "activity": "起床（召使が『起きる時間です』と告げる）",
+      "cat": "meal"
+    },
+    {
+      "start": 6,
+      "end": 7,
+      "activity": "紅茶1杯・パイプ1本・読書",
+      "cat": "leisure"
+    },
+    {
+      "start": 7,
+      "end": 9,
+      "activity": "大学で講義",
+      "cat": "work"
+    },
+    {
+      "start": 9,
+      "end": 12,
+      "activity": "執筆",
+      "cat": "work"
+    },
+    {
+      "start": 12,
+      "end": 13,
+      "activity": "昼食（唯一の食事、友人2-3人と歓談）",
+      "cat": "meal"
+    },
+    {
+      "start": 13,
+      "end": 15,
+      "activity": "昼食後の会話",
+      "cat": "social"
+    },
+    {
+      "start": 15,
+      "end": 16,
+      "activity": "菩提樹並木を散歩（毎日同じ時刻、ケーニヒスベルクの市民が時計代わりに）",
+      "cat": "exercise"
+    },
+    {
+      "start": 16,
+      "end": 19,
+      "activity": "読書（本は必ず机の決まった位置に）",
+      "cat": "leisure"
+    },
+    {
+      "start": 19,
+      "end": 22,
+      "activity": "執筆・講義準備",
+      "cat": "work"
+    },
+    {
+      "start": 22,
+      "end": 24,
+      "activity": "就寝準備・毛布に包まる",
+      "cat": "sleep"
+    }
+  ]
 }

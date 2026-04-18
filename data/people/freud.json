@@ -255,5 +255,61 @@
   "birthMonth": 5,
   "birthDay": 6,
   "deathMonth": 9,
-  "deathDay": 23
+  "deathDay": 23,
+  "routine": [
+    {
+      "start": 0,
+      "end": 7,
+      "activity": "睡眠",
+      "cat": "sleep"
+    },
+    {
+      "start": 7,
+      "end": 8,
+      "activity": "起床・ひげを整える（毎日床屋を呼んだ）",
+      "cat": "exercise"
+    },
+    {
+      "start": 8,
+      "end": 9,
+      "activity": "朝食・ウィーンの新聞",
+      "cat": "meal"
+    },
+    {
+      "start": 9,
+      "end": 13,
+      "activity": "患者の診察（8人、各45分）",
+      "cat": "work"
+    },
+    {
+      "start": 13,
+      "end": 14,
+      "activity": "昼食（正確に1時間）",
+      "cat": "meal"
+    },
+    {
+      "start": 14,
+      "end": 15,
+      "activity": "市街散歩・葉巻",
+      "cat": "exercise"
+    },
+    {
+      "start": 15,
+      "end": 21,
+      "activity": "診察（さらに6時間）",
+      "cat": "work"
+    },
+    {
+      "start": 21,
+      "end": 22,
+      "activity": "家族と夕食",
+      "cat": "meal"
+    },
+    {
+      "start": 22,
+      "end": 24,
+      "activity": "執筆・手紙・さらに葉巻（1日20本）",
+      "cat": "work"
+    }
+  ]
 }

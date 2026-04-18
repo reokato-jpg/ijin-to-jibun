@@ -209,5 +209,61 @@
       "description": "四諦・八正道・中道を分かりやすく。",
       "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%96%E3%83%83%E3%83%80%EF%BC%88%E9%87%88%E8%BF%A6%EF%BC%89%20%E4%BB%8F%E6%95%99%E3%81%AE%E6%95%99%E3%81%88%20%E8%A7%A3%E8%AA%AC"
     }
+  ],
+  "routine": [
+    {
+      "start": 0,
+      "end": 4,
+      "activity": "睡眠（4時間で十分という戒律）",
+      "cat": "sleep"
+    },
+    {
+      "start": 4,
+      "end": 5,
+      "activity": "起床・瞑想",
+      "cat": "leisure"
+    },
+    {
+      "start": 5,
+      "end": 7,
+      "activity": "阿羅漢たちと瞑想",
+      "cat": "leisure"
+    },
+    {
+      "start": 7,
+      "end": 8,
+      "activity": "托鉢（村々を歩いて施しを請う）",
+      "cat": "exercise"
+    },
+    {
+      "start": 8,
+      "end": 12,
+      "activity": "1日1食の食事（正午まで）",
+      "cat": "meal"
+    },
+    {
+      "start": 12,
+      "end": 14,
+      "activity": "静かな時間（樹下での瞑想）",
+      "cat": "leisure"
+    },
+    {
+      "start": 14,
+      "end": 18,
+      "activity": "弟子・信者への説法",
+      "cat": "work"
+    },
+    {
+      "start": 18,
+      "end": 22,
+      "activity": "阿羅漢との議論",
+      "cat": "social"
+    },
+    {
+      "start": 22,
+      "end": 24,
+      "activity": "瞑想（睡眠前の行）",
+      "cat": "leisure"
+    }
   ]
 }
