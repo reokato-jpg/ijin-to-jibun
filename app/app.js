@@ -2333,7 +2333,7 @@ async function showPerson(id) {
       <button class="profile-tab active" data-ptab="stream">タイムライン</button>
       <button class="profile-tab" data-ptab="quotes">名言</button>
       <button class="profile-tab" data-ptab="timeline">年表</button>
-      ${(p.relations && p.relations.length > 0) ? '<button class="profile-tab" data-ptab="relations">人間関係</button>' : ''}
+      ${(p.relations && p.relations.length > 0) ? '<button class="profile-tab" data-ptab="relations">フォロー・フォロワー</button>' : ''}
       ${(p.works && p.works.length > 0) ? '<button class="profile-tab" data-ptab="works">代表作</button>' : ''}
       ${(p.media && p.media.length > 0) ? '<button class="profile-tab" data-ptab="media">映画・ドラマ</button>' : ''}
       <button class="profile-tab" data-ptab="happenings">イベント</button>
@@ -2383,29 +2383,87 @@ async function showPerson(id) {
       </div>
     ` : ''}
 
-    <!-- 人間関係タブ -->
-    ${(p.relations && p.relations.length > 0) ? `
-      <div class="profile-tab-content" data-ptab="relations">
-        <div class="relations-grid">
-          ${p.relations.map(r => {
-            const linked = r.id ? DATA.people.find(x => x.id === r.id) : null;
-            const avatar = linked && linked.imageUrl
-              ? `<div class="relation-avatar" style="background-image:url('${linked.imageUrl}')"></div>`
-              : `<div class="relation-avatar no-img">${(linked || r).name.charAt(0)}</div>`;
-            return `
-              <div class="relation-item ${linked ? 'linked' : ''}" ${linked ? `data-id="${linked.id}"` : ''}>
-                ${avatar}
-                <div class="relation-info">
-                  <div class="relation-name">${(linked ? linked.name : r.name)}${linked ? ' <span class="relation-linked-badge">→</span>' : ''}</div>
-                  <div class="relation-role">${r.relation}${r.years ? ` · ${r.years}` : ''}</div>
-                  ${r.note ? `<div class="relation-note">${r.note}</div>` : ''}
+    <!-- フォロー・フォロワータブ -->
+    ${(p.relations && p.relations.length > 0) ? (() => {
+      // 関係を分類
+      const BLOCK_KW = ['宿敵','敵', 'ライバル','対立','裏切','論敵','抗争','競争','暗殺','刺客','暗殺者','抗命','反発','確執','不仲','宗教的対立','批判者','批判'];
+      const isBlock = (r) => {
+        const text = (r.relation || '') + ' ' + (r.note || '');
+        return BLOCK_KW.some(kw => text.includes(kw));
+      };
+      const following = p.relations.filter(r => !isBlock(r));
+      const blocked = p.relations.filter(r => isBlock(r));
+      const userName = getUserName();
+      const userFollower = isFollowedByPerson(p.id) && userName;
+
+      const renderItem = (r, variant) => {
+        const linked = r.id ? DATA.people.find(x => x.id === r.id) : null;
+        const avatar = linked && linked.imageUrl
+          ? `<div class="relation-avatar" style="background-image:url('${linked.imageUrl}')"></div>`
+          : `<div class="relation-avatar no-img">${(linked || r).name.charAt(0)}</div>`;
+        return `
+          <div class="relation-item ${linked ? 'linked' : ''} ${variant}" ${linked ? `data-id="${linked.id}"` : ''}>
+            ${avatar}
+            <div class="relation-info">
+              <div class="relation-name">${(linked ? linked.name : r.name)}${linked ? ' <span class="relation-linked-badge">→</span>' : ''}</div>
+              <div class="relation-role">${r.relation}${r.years ? ` · ${r.years}` : ''}</div>
+              ${r.note ? `<div class="relation-note">${r.note}</div>` : ''}
+            </div>
+          </div>
+        `;
+      };
+
+      return `
+        <div class="profile-tab-content" data-ptab="relations">
+          <div class="rel-tabs">
+            <button class="rel-tab active" data-reltab="following">フォロー中 (${following.length})</button>
+            <button class="rel-tab" data-reltab="followers">フォロワー (${following.length}${userFollower ? '+1' : ''})</button>
+            ${blocked.length > 0 ? `<button class="rel-tab" data-reltab="blocked">ブロック中 (${blocked.length})</button>` : ''}
+          </div>
+
+          <div class="rel-section active" data-relsec="following">
+            <div class="rel-section-head">${p.name}がフォローしている人</div>
+            <div class="relations-grid">
+              ${following.map(r => renderItem(r, 'following')).join('')}
+            </div>
+          </div>
+
+          <div class="rel-section" data-relsec="followers">
+            <div class="rel-section-head">${p.name}をフォローしている人</div>
+            ${userFollower ? `
+              <div class="rel-subhead">ユーザー</div>
+              <div class="relations-grid">
+                <div class="relation-item relation-user">
+                  <div class="relation-avatar no-img">👤</div>
+                  <div class="relation-info">
+                    <div class="relation-name">${userName}</div>
+                    <div class="relation-role">あなた（Lv.${getStampLevel(p.id)}達成）</div>
+                  </div>
                 </div>
               </div>
-            `;
-          }).join('')}
+            ` : `
+              <div class="rel-subhead">ユーザー</div>
+              <div class="rel-empty-user">
+                ${!userName ? '名前を設定してクイズに挑戦しよう' : `クイズでLv.3以上になると${p.name}にフォローされます（現在Lv.${getStampLevel(p.id)}）`}
+              </div>
+            `}
+            <div class="rel-subhead">偉人</div>
+            <div class="relations-grid">
+              ${following.map(r => renderItem(r, 'following')).join('')}
+            </div>
+          </div>
+
+          ${blocked.length > 0 ? `
+            <div class="rel-section" data-relsec="blocked">
+              <div class="rel-section-head rel-section-block">歴史的にブロック関係にある人</div>
+              <div class="relations-grid">
+                ${blocked.map(r => renderItem(r, 'blocked')).join('')}
+              </div>
+            </div>
+          ` : ''}
         </div>
-      </div>
-    ` : ''}
+      `;
+    })() : ''}
 
     <!-- 手紙タブ：自分が送ったコメントを残す -->
     <div class="profile-tab-content" data-ptab="letters">
@@ -2892,6 +2950,16 @@ async function showPerson(id) {
   container.querySelectorAll('.relation-item.linked').forEach(el => {
     el.addEventListener('click', () => {
       if (el.dataset.id) showPerson(el.dataset.id);
+    });
+  });
+
+  // フォロー/フォロワー/ブロック タブ内切替
+  container.querySelectorAll('[data-reltab]').forEach(tab => {
+    tab.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const target = tab.dataset.reltab;
+      container.querySelectorAll('.rel-tab').forEach(t => t.classList.toggle('active', t === tab));
+      container.querySelectorAll('.rel-section').forEach(s => s.classList.toggle('active', s.dataset.relsec === target));
     });
   });
 
