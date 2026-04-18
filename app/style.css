@@ -4844,9 +4844,9 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
   .book-ink { width: 36px; height: 36px; left: 10px; bottom: 18px; }
   .book-pen { width: 80px; right: -8px; top: 32px; }
 }
-/* 旧LINE風スタイルの無効化 */
+/* 旧LINE風スタイルの無効化（プロフィール用のみ） */
 .profile-feed.line-chat { background: transparent !important; padding: 0 !important; }
-.line-msg, .line-bubble, .line-date, .line-msg-avatar { display: none !important; }
+.profile-feed .line-bubble, .profile-feed .line-date, .profile-feed .line-msg-avatar { display: none !important; }
 
 /* ================ 詳細検索トグル ================ */
 .adv-search-toggle {
