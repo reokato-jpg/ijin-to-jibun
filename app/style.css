@@ -8884,6 +8884,152 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
   .life-digest-body { font-size: 14px; padding: 14px 20px 18px; }
 }
 
+/* ================ 偉人の広場（LINE風） ================ */
+.line-group-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: linear-gradient(180deg, #fffdf7 0%, #faf5e8 100%);
+  border-bottom: 1px solid var(--gold);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+.line-group-avatars { display: flex; }
+.line-avatar-mini {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+}
+.line-avatar-mini.no-img {
+  display: flex; align-items: center; justify-content: center;
+  background: var(--wine);
+  color: var(--gold-light);
+  font-family: var(--font-jp);
+  font-size: 12px;
+  font-weight: 700;
+}
+.line-group-info { flex: 1; min-width: 0; }
+.line-group-name {
+  font-family: var(--font-jp);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--wine-dark);
+}
+.line-group-sub {
+  font-size: 10px;
+  color: var(--ink-3);
+  margin-top: 2px;
+}
+
+.line-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 8px;
+  background: #d8dde3;
+  min-height: 300px;
+}
+.line-date-sep {
+  align-self: center;
+  background: rgba(0,0,0,0.25);
+  color: #fff;
+  font-size: 10px;
+  padding: 3px 12px;
+  border-radius: 12px;
+  margin: 8px 0 4px;
+  letter-spacing: 0.05em;
+}
+
+.line-msg { display: flex; gap: 8px; margin-top: 4px; }
+.line-msg-them { align-items: flex-start; }
+.line-msg-me { justify-content: flex-end; }
+
+.line-avatar {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  flex-shrink: 0;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+.line-avatar.no-img {
+  display: flex; align-items: center; justify-content: center;
+  background: var(--wine);
+  color: var(--gold-light);
+  font-family: var(--font-jp);
+  font-weight: 700;
+}
+.line-avatar-spacer { width: 36px; flex-shrink: 0; }
+
+.line-msg-inner { min-width: 0; max-width: calc(100% - 44px); }
+.line-msg-name {
+  font-family: var(--font-jp);
+  font-size: 11px;
+  color: #555;
+  margin-bottom: 2px;
+  padding-left: 4px;
+}
+.line-msg-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+}
+.line-msg-bubble {
+  background: #fff;
+  padding: 8px 12px;
+  border-radius: 4px 16px 16px 16px;
+  font-family: var(--font-jp);
+  font-size: 13px;
+  line-height: 1.6;
+  color: #1a1a1a;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+  white-space: pre-wrap;
+  word-break: break-word;
+  cursor: pointer;
+  max-width: 100%;
+}
+.line-msg-src {
+  font-size: 10px;
+  color: var(--ink-4);
+  margin-top: 4px;
+  font-style: italic;
+}
+.line-msg-time {
+  font-size: 9px;
+  color: rgba(0,0,0,0.45);
+  white-space: nowrap;
+}
+
+.line-msg-wrap {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  max-width: 80%;
+}
+.line-msg-bubble-me {
+  background: #a4d88b;
+  padding: 8px 12px;
+  border-radius: 16px 4px 16px 16px;
+  font-family: var(--font-jp);
+  font-size: 13px;
+  line-height: 1.6;
+  color: #1a1a1a;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.line-msg-time-me {
+  font-size: 9px;
+  color: rgba(0,0,0,0.45);
+  white-space: nowrap;
+}
+
 /* ================ 偉人の広場 ================ */
 .square-intro {
   font-family: var(--font-jp);

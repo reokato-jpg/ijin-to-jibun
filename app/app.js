@@ -564,127 +564,162 @@ function renderSquare() {
   renderSquareInto(container);
 }
 
+// 今日参加する5人の偉人を決定論的に選出
+function getTodaysGroupMembers() {
+  if (!DATA.people || DATA.people.length === 0) return [];
+  const d = new Date();
+  const seed = d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+  const quotable = DATA.people.filter(p => (p.quotes || []).length > 0);
+  let s = seed;
+  const arr = [...quotable];
+  for (let i = arr.length - 1; i > 0; i--) {
+    s = (s * 9301 + 49297) % 233280;
+    const j = s % (i + 1);
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr.slice(0, 5);
+}
+
+// 今日の流れ：朝5時スタート、30分に1通。メンバーの名言から順番に引く
+const CHAT_SLOT_MS = 30 * 60 * 1000; // 30分
+const CHAT_START_HOUR = 5;
+
+function getGroupMessages() {
+  const members = getTodaysGroupMembers();
+  if (members.length === 0) return { messages: [], members };
+  const d = new Date();
+  const seed = d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+  const start = new Date();
+  start.setHours(CHAT_START_HOUR, 0, 0, 0);
+  const now = Date.now();
+  const elapsed = now - start.getTime();
+  // 何スロット経過したか（負なら0）
+  const slots = Math.max(0, Math.floor(elapsed / CHAT_SLOT_MS)) + 1;
+  // 各スロットでメンバーを順番に、その偉人の名言を順に選ぶ
+  const messages = [];
+  const perPersonIdx = {};
+  let s = seed;
+  for (let i = 0; i < slots; i++) {
+    // メンバー選出：ラウンドロビンだが決定的にシャッフル
+    s = (s * 9301 + 49297) % 233280;
+    const memberIdx = (i + (s % members.length)) % members.length;
+    const person = members[memberIdx];
+    const qs = person.quotes || [];
+    if (qs.length === 0) continue;
+    perPersonIdx[person.id] = perPersonIdx[person.id] || 0;
+    const q = qs[perPersonIdx[person.id] % qs.length];
+    perPersonIdx[person.id]++;
+    const ts = start.getTime() + i * CHAT_SLOT_MS;
+    messages.push({ type: 'quote', person, quote: q, ts });
+  }
+  return { messages, members };
+}
+
 function renderSquareInto(container) {
   if (!container || !DATA.people) return;
-  const quotes = getSquareQuotes(20);
+  // LINE風グループチャット
+  return renderLineGroup(container);
+}
+
+function renderLineGroup(container) {
+  const { messages, members } = getGroupMessages();
   const selfPosts = loadSelfPosts();
-  // 混ぜて時刻降順
+
+  // 自分の投稿を時系列に混ぜる
   const merged = [
-    ...quotes.map(q => ({ type: 'quote', ts: q.ts, person: q.person, quote: q.quote })),
-    ...selfPosts.map(s => ({ type: 'self', ts: new Date(s.date).getTime(), id: s.id, text: s.text, date: s.date })),
-  ];
-  merged.sort((a, b) => b.ts - a.ts);
+    ...messages,
+    ...selfPosts.map(s => ({ type: 'self', id: s.id, text: s.text, ts: new Date(s.date).getTime() })),
+  ].sort((a, b) => a.ts - b.ts);
 
-  const composeHtml = `
-    <div class="square-compose">
-      <textarea class="square-compose-input" id="squareComposeInput" rows="2"
-        maxlength="280"
-        placeholder="今日の気持ちをつぶやく（280字まで）"></textarea>
-      <div class="square-compose-actions">
-        <span class="square-compose-note">※連絡先・暴言は投稿できません</span>
-        <button class="square-compose-send" id="squareComposeSend">つぶやく</button>
-      </div>
-    </div>
-  `;
-
-  const formatTime = (ts) => {
+  const fmtTime = (ts) => {
     const d = new Date(ts);
-    const h = String(d.getHours()).padStart(2, '0');
-    const m = String(d.getMinutes()).padStart(2, '0');
-    return `${h}:${m}`;
+    return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
   };
 
-  const itemsHtml = merged.map(item => {
-    if (item.type === 'quote') {
-      const p = item.person;
-      const q = item.quote;
-      const avatar = p.imageUrl
-        ? `<div class="square-avatar" style="background-image:url('${p.imageUrl}')"></div>`
-        : `<div class="square-avatar no-img">${p.name.charAt(0)}</div>`;
-      return `
-        <article class="square-item" data-person-id="${p.id}">
-          ${avatar}
-          <div class="square-body">
-            <div class="square-head">
-              <span class="square-name">${p.name}</span>
-              <span class="square-handle">@${p.nameEn ? p.nameEn.split(' ').pop().toLowerCase() : p.id}</span>
-              <span class="square-time">${formatTime(item.ts)}</span>
-            </div>
-            <div class="square-text">${q.text}</div>
-            ${q.source ? `<div class="square-source">— ${q.source}</div>` : ''}
-            <div class="square-actions">
-              <button class="square-reply" data-reply-to="${p.id}">手紙で返信</button>
-              <button class="square-view" data-view-person="${p.id}">プロフィールを見る</button>
-            </div>
-          </div>
-        </article>
-      `;
-    } else {
-      return `
-        <article class="square-item square-item-self" data-self-id="${item.id}">
-          <div class="square-avatar square-avatar-self">あ</div>
-          <div class="square-body">
-            <div class="square-head">
-              <span class="square-name">あなた</span>
-              <span class="square-time">${formatTime(item.ts)}</span>
-              <button class="square-self-delete" data-del-self="${item.id}" aria-label="削除">×</button>
-            </div>
-            <div class="square-text">${escapeHtml(item.text)}</div>
-          </div>
-        </article>
-      `;
-    }
+  // グループヘッダー：参加メンバーのアバター重ね
+  const headerAvatars = members.slice(0, 5).map((p, i) => {
+    const img = p.imageUrl ? `style="background-image:url('${p.imageUrl}');margin-left:${i === 0 ? 0 : -8}px"` : `style="margin-left:${i === 0 ? 0 : -8}px"`;
+    return p.imageUrl
+      ? `<div class="line-avatar-mini" ${img}></div>`
+      : `<div class="line-avatar-mini no-img" ${img}>${p.name.charAt(0)}</div>`;
   }).join('');
 
+  // メッセージ表示
+  let prevAuthor = null;
+  let prevDate = null;
+  const bubbles = [];
+  merged.forEach(m => {
+    const d = new Date(m.ts);
+    const dateKey = `${d.getMonth()+1}/${d.getDate()}`;
+    // 日付区切り
+    if (dateKey !== prevDate) {
+      bubbles.push(`<div class="line-date-sep">${d.toLocaleDateString('ja-JP', { month: 'long', day: 'numeric', weekday: 'short' })}</div>`);
+      prevDate = dateKey;
+      prevAuthor = null;
+    }
+    if (m.type === 'self') {
+      bubbles.push(`
+        <div class="line-msg line-msg-me">
+          <div class="line-msg-wrap">
+            <div class="line-msg-time-me">${fmtTime(m.ts)}</div>
+            <div class="line-msg-bubble-me">${escapeHtml(m.text)}</div>
+          </div>
+        </div>
+      `);
+      prevAuthor = 'me';
+    } else {
+      const p = m.person;
+      const showAvatar = prevAuthor !== p.id;
+      const avatar = showAvatar
+        ? (p.imageUrl
+          ? `<div class="line-avatar" style="background-image:url('${p.imageUrl}')" data-person-id="${p.id}"></div>`
+          : `<div class="line-avatar no-img" data-person-id="${p.id}">${p.name.charAt(0)}</div>`)
+        : `<div class="line-avatar-spacer"></div>`;
+      bubbles.push(`
+        <div class="line-msg line-msg-them">
+          ${avatar}
+          <div class="line-msg-inner">
+            ${showAvatar ? `<div class="line-msg-name">${p.name}</div>` : ''}
+            <div class="line-msg-row">
+              <div class="line-msg-bubble" data-person-id="${p.id}" data-quote="${escapeHtml(m.quote.text).slice(0,40)}">${m.quote.text}${m.quote.source ? `<div class="line-msg-src">— ${m.quote.source}</div>` : ''}</div>
+              <div class="line-msg-time">${fmtTime(m.ts)}</div>
+            </div>
+          </div>
+        </div>
+      `);
+      prevAuthor = p.id;
+    }
+  });
+
   container.innerHTML = `
-    <div class="square-intro">偉人たちが時を超えて、名言をつぶやき合っています。あなたも加わってみませんか。</div>
-    ${composeHtml}
-    <div class="square-feed">${itemsHtml}</div>
+    <div class="line-group-header">
+      <div class="line-group-avatars">${headerAvatars}</div>
+      <div class="line-group-info">
+        <div class="line-group-name">偉人の広場</div>
+        <div class="line-group-sub">今日の参加者 ${members.length}人 · 30分ごとにつぶやきます</div>
+      </div>
+    </div>
+    <div class="line-feed">${bubbles.join('')}</div>
   `;
 
-  // つぶやき送信
-  const sendBtn = container.querySelector('#squareComposeSend');
-  const input = container.querySelector('#squareComposeInput');
-  sendBtn?.addEventListener('click', () => {
-    const text = (input.value || '').trim();
-    if (!text) return;
-    const err = validatePost(text);
-    if (err) { alert(err); return; }
-    saveSelfPost(text);
-    input.value = '';
-    renderSquare();
-  });
+  // スクロール最下部へ
+  setTimeout(() => {
+    const feed = container.querySelector('.line-feed');
+    if (feed) feed.scrollTop = feed.scrollHeight;
+  }, 50);
 
-  // 手紙で返信
-  container.querySelectorAll('[data-reply-to]').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const pid = btn.dataset.replyTo;
-      const person = DATA.people.find(p => p.id === pid);
-      if (person) openLetterModal(person);
-    });
-  });
-  // プロフィール
-  container.querySelectorAll('[data-view-person]').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      showPerson(btn.dataset.viewPerson);
-    });
-  });
-  // つぶやき全体タップ → プロフィール
-  container.querySelectorAll('.square-item:not(.square-item-self)').forEach(el => {
+  // アバタータップで偉人プロフィール
+  container.querySelectorAll('[data-person-id]').forEach(el => {
     el.addEventListener('click', (e) => {
-      if (e.target.closest('button')) return;
-      showPerson(el.dataset.personId);
-    });
-  });
-  // 自分のつぶやき削除
-  container.querySelectorAll('[data-del-self]').forEach(btn => {
-    btn.addEventListener('click', (e) => {
       e.stopPropagation();
-      if (!confirm('このつぶやきを削除しますか？')) return;
-      deleteSelfPost(btn.dataset.delSelf);
-      renderSquare();
+      const pid = el.dataset.personId;
+      // メッセージバブルタップ時は手紙返信
+      if (el.classList.contains('line-msg-bubble')) {
+        const person = DATA.people.find(p => p.id === pid);
+        if (person) openLetterModal(person);
+      } else {
+        showPerson(pid);
+      }
     });
   });
 }
