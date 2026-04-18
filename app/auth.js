@@ -284,12 +284,24 @@ function humanizeAuthError(ex) {
   return map[code] || `ログインできませんでした (${code || ex.message})`;
 }
 
-async function logout() {
+async function logout(clearLocal = false) {
   if (!FIREBASE_ENABLED || !fbAuth) return;
   try {
     const { signOut } = window.__fbLib;
     await signOut(fbAuth);
   } catch (e) { console.error(e); }
+  // 端末のデータもクリア
+  if (clearLocal) {
+    SYNC_KEYS.forEach(k => localStorage.removeItem(k));
+    // 追加の一時データも
+    localStorage.removeItem('ijin_mood_pick');
+    localStorage.removeItem('ijin_chat_last_slot');
+    localStorage.removeItem('ijin_chat_seen');
+    localStorage.removeItem('ijin_quick_replies');
+    localStorage.removeItem('ijin_login_notice_dismissed');
+    // ページ再読込でUI更新
+    setTimeout(() => window.location.reload(), 300);
+  }
 }
 
 function updateAccountUI() {
@@ -428,8 +440,17 @@ function openAccountMenu() {
     alert('同期しました。');
   });
   modal.querySelector('#authLogout').addEventListener('click', async () => {
-    if (!confirm('ログアウトしますか？この端末のお気に入りはそのまま残ります。')) return;
-    await logout();
+    const choice = prompt(
+      'ログアウト方法を選んでください：\n' +
+      '  1 … ログアウトのみ（この端末のお気に入り・手紙・日記は残す）\n' +
+      '  2 … ログアウト＋この端末のデータを全て削除\n' +
+      '  キャンセルで中止',
+      '1'
+    );
+    if (!choice || (choice !== '1' && choice !== '2')) return;
+    const clearLocal = (choice === '2');
+    if (clearLocal && !confirm('本当に削除しますか？\nこの端末のお気に入り・手紙・日記・つぶやき等が全て消えます。\n（クラウドには残っているので、再ログインで復元できます）')) return;
+    await logout(clearLocal);
     modal.classList.remove('open');
     setTimeout(() => modal.remove(), 200);
   });
