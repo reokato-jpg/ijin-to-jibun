@@ -8165,6 +8165,241 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
   box-shadow: inset 0 0 0 1px rgba(184,149,46,0.2);
 }
 
+/* ================ 偉人への手紙 ================ */
+.letter-write-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 820px;
+  margin: 10px auto 0;
+  padding: 14px 18px;
+  background: linear-gradient(180deg, #fffdf7 0%, #faf5e8 100%);
+  border: 1.5px solid var(--gold);
+  border-radius: 8px;
+  font-family: var(--font-jp);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--wine-dark);
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  transition: all 0.15s;
+}
+.letter-write-btn:hover {
+  background: linear-gradient(180deg, #fbf3e0 0%, #f6edd4 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(184,149,46,0.2);
+}
+.letter-write-icon { font-size: 18px; color: var(--gold); }
+.letter-write-label { flex: 1; text-align: left; }
+.letter-write-arrow { font-size: 14px; color: var(--wine); opacity: 0.7; }
+
+.letter-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.letter-modal.open { opacity: 1; pointer-events: auto; }
+.letter-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(45,20,25,0.55);
+  backdrop-filter: blur(3px);
+}
+.letter-modal-panel {
+  position: relative;
+  background: #fffdf6;
+  width: min(92vw, 540px);
+  max-height: 92vh;
+  overflow-y: auto;
+  border-radius: 10px;
+  padding: 28px 24px 20px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  background-image:
+    repeating-linear-gradient(to bottom, transparent 0 33px, rgba(184,149,46,0.1) 33px 34px);
+  font-family: var(--font-jp);
+}
+.letter-modal-close {
+  position: absolute;
+  top: 8px; right: 12px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--ink-3);
+  cursor: pointer;
+}
+.letter-modal-head { text-align: center; margin-bottom: 16px; }
+.letter-modal-to {
+  font-size: 11px;
+  color: var(--gold);
+  letter-spacing: 0.3em;
+  margin-bottom: 6px;
+}
+.letter-modal-name {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--wine-dark);
+  letter-spacing: 0.1em;
+  margin-bottom: 3px;
+}
+.letter-modal-sub {
+  font-size: 11px;
+  color: var(--ink-4);
+  letter-spacing: 0.05em;
+}
+.letter-textarea {
+  width: 100%;
+  border: 1px dashed var(--rule);
+  background: transparent;
+  padding: 12px;
+  font-family: var(--font-jp);
+  font-size: 14px;
+  line-height: 1.95;
+  color: var(--ink);
+  resize: vertical;
+  min-height: 180px;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+.letter-textarea:focus { outline: none; border-color: var(--gold); }
+.letter-footer-date {
+  text-align: right;
+  font-size: 11px;
+  color: var(--ink-4);
+  margin-top: 10px;
+  font-family: var(--font-en);
+}
+.letter-hint {
+  font-size: 10px;
+  color: var(--ink-4);
+  margin-top: 10px;
+  line-height: 1.6;
+}
+.letter-modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+.letter-btn-cancel, .letter-btn-send {
+  flex: 1;
+  padding: 11px;
+  border: none;
+  border-radius: 22px;
+  font-family: var(--font-jp);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+}
+.letter-btn-cancel { background: #eee; color: var(--ink-3); }
+.letter-btn-cancel:hover { background: #e0e0e0; }
+.letter-btn-send {
+  background: linear-gradient(135deg, var(--wine) 0%, var(--wine-dark) 100%);
+  color: var(--gold-light);
+  border: 1px solid var(--gold);
+}
+.letter-btn-send:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(122,46,58,0.3); }
+
+.letter-sent { text-align: center; padding: 30px 10px 20px; }
+.letter-sent-icon { font-size: 48px; color: var(--gold); margin-bottom: 14px; }
+.letter-sent-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--wine-dark);
+  margin-bottom: 12px;
+  letter-spacing: 0.1em;
+}
+.letter-sent-sub {
+  font-size: 13px;
+  color: var(--ink-2);
+  line-height: 1.9;
+  margin-bottom: 18px;
+}
+.letter-sent-hint {
+  font-size: 11px;
+  color: var(--ink-3);
+  background: rgba(184,149,46,0.08);
+  padding: 10px 14px;
+  border-radius: 4px;
+  margin-bottom: 14px;
+  line-height: 1.7;
+}
+.letter-sent-login-btn {
+  padding: 10px 22px;
+  background: linear-gradient(135deg, var(--wine) 0%, var(--wine-dark) 100%);
+  color: var(--gold-light);
+  border: 1px solid var(--gold);
+  border-radius: 22px;
+  font-family: var(--font-jp);
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  margin-bottom: 14px;
+}
+.letter-sent-done {
+  background: none;
+  border: 1px solid var(--rule);
+  padding: 8px 20px;
+  border-radius: 20px;
+  color: var(--ink-3);
+  font-family: var(--font-jp);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* 手紙エントリ（わたしの本内） */
+.letter-entry {
+  padding: 16px 18px 14px;
+  margin-bottom: 14px;
+  background: #fffdf6;
+  border: 1px dashed var(--gold);
+  border-radius: 6px;
+  position: relative;
+  font-family: var(--font-jp);
+}
+.letter-entry-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed var(--rule);
+}
+.letter-entry-to {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--wine-dark);
+  letter-spacing: 0.08em;
+}
+.letter-entry-delete {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: var(--ink-4);
+  cursor: pointer;
+  padding: 0 4px;
+}
+.letter-entry-delete:hover { color: var(--wine); }
+.letter-entry-text {
+  font-size: 13px;
+  line-height: 2;
+  color: var(--ink-2);
+  margin-bottom: 10px;
+  white-space: pre-wrap;
+}
+.letter-entry-date {
+  text-align: right;
+  font-size: 10px;
+  color: var(--ink-4);
+  font-family: var(--font-en);
+}
+
 /* ================ ルーティンを登録 ================ */
 .routine-adopt-section {
   margin-top: 18px;

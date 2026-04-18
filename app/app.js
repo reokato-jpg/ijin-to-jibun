@@ -1163,9 +1163,24 @@ function playBookFlip({ title, subtitle, imageUrl }) {
 }
 
 // ====================== 人物詳細 ======================
+// しおり（最近読んだ偉人）
+const BOOKMARK_KEY = 'ijin_bookmarks';
+function loadBookmarks() {
+  try { return JSON.parse(localStorage.getItem(BOOKMARK_KEY) || '[]'); }
+  catch { return []; }
+}
+function saveBookmark(personId) {
+  if (!personId) return;
+  const list = loadBookmarks().filter(b => b.id !== personId);
+  list.unshift({ id: personId, at: Date.now() });
+  // 最新20人まで保持
+  localStorage.setItem(BOOKMARK_KEY, JSON.stringify(list.slice(0, 20)));
+}
+
 async function showPerson(id) {
   const p = DATA.people.find(x => x.id === id);
   if (!p) return;
+  saveBookmark(id);
   // アニメーション再生中に裏で詳細を描画
   const flipPromise = playBookFlip({
     title: p.name,
@@ -1389,6 +1404,12 @@ async function showPerson(id) {
         <span class="routine-open-arrow">→</span>
       </button>
     ` : ''}
+
+    <button class="letter-write-btn" data-letter-write="1">
+      <span class="letter-write-icon">✉</span>
+      <span class="letter-write-label">${p.name}に手紙を書く</span>
+      <span class="letter-write-arrow">→</span>
+    </button>
 
     <!-- ミニタブ -->
     <div class="profile-tabs">
@@ -1895,6 +1916,12 @@ async function showPerson(id) {
   const routineBtn = container.querySelector('[data-routine-open]');
   if (routineBtn) {
     routineBtn.addEventListener('click', () => openRoutineModal(p));
+  }
+
+  // 手紙を書くボタン
+  const letterBtn = container.querySelector('[data-letter-write]');
+  if (letterBtn) {
+    letterBtn.addEventListener('click', () => openLetterModal(p));
   }
 
   // ミニタブ切り替え
@@ -2636,6 +2663,111 @@ if (typeof window !== 'undefined' && !window.__routinePeekBound) {
     const pid = card.dataset.peekId;
     const p = (typeof DATA !== 'undefined') && DATA.people.find(x => x.id === pid);
     if (p) openRoutineModal(p);
+  });
+}
+
+// ====================== 偉人への手紙 ======================
+const LETTERS_KEY = 'ijin_letters';
+function loadLetters() {
+  try { return JSON.parse(localStorage.getItem(LETTERS_KEY) || '[]'); }
+  catch { return []; }
+}
+function saveLetter(personId, text) {
+  if (!text || !text.trim()) return null;
+  const letters = loadLetters();
+  const entry = {
+    id: 'L' + Date.now(),
+    personId,
+    text: text.trim(),
+    date: new Date().toISOString(),
+  };
+  letters.unshift(entry);
+  localStorage.setItem(LETTERS_KEY, JSON.stringify(letters));
+  return entry;
+}
+function deleteLetter(id) {
+  const letters = loadLetters().filter(l => l.id !== id);
+  localStorage.setItem(LETTERS_KEY, JSON.stringify(letters));
+}
+
+function openLetterModal(p) {
+  const existing = document.getElementById('letterModal');
+  if (existing) existing.remove();
+
+  const modal = document.createElement('div');
+  modal.id = 'letterModal';
+  modal.className = 'letter-modal';
+  modal.innerHTML = `
+    <div class="letter-modal-backdrop" data-close="1"></div>
+    <div class="letter-modal-panel">
+      <button class="letter-modal-close" data-close="1" aria-label="閉じる">×</button>
+      <div class="letter-modal-head">
+        <div class="letter-modal-to">─── 拝啓 ───</div>
+        <div class="letter-modal-name">${p.name} 様</div>
+        <div class="letter-modal-sub">${p.birth || '?'}–${p.death || ''} ／ ${p.field}</div>
+      </div>
+      <div class="letter-modal-body">
+        <textarea class="letter-textarea" id="letterTextarea" rows="10"
+          placeholder="${p.name}さんへ、今の自分の気持ちを綴ってください。&#10;&#10;時を超えた誰かに宛てた手紙は、本当は自分自身への手紙でもあります。"></textarea>
+        <div class="letter-footer-date">${new Date().toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
+        <div class="letter-hint">※ この手紙は『わたしの本』に保管されます。登録すると、端末を変えても消えません。</div>
+      </div>
+      <div class="letter-modal-actions">
+        <button class="letter-btn-cancel" data-close="1">閉じる</button>
+        <button class="letter-btn-send" id="letterSend">✉ 投函する</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  requestAnimationFrame(() => modal.classList.add('open'));
+
+  modal.querySelectorAll('[data-close]').forEach(el => {
+    el.addEventListener('click', () => {
+      modal.classList.remove('open');
+      setTimeout(() => modal.remove(), 200);
+    });
+  });
+  modal.querySelector('#letterSend').addEventListener('click', () => {
+    const text = modal.querySelector('#letterTextarea').value;
+    if (!text.trim()) {
+      alert('何か書いてから投函してください。');
+      return;
+    }
+    const entry = saveLetter(p.id, text);
+    if (entry) {
+      // 投函完了画面に切替
+      const panel = modal.querySelector('.letter-modal-panel');
+      panel.innerHTML = `
+        <button class="letter-modal-close" data-close="1" aria-label="閉じる">×</button>
+        <div class="letter-sent">
+          <div class="letter-sent-icon">✉</div>
+          <div class="letter-sent-title">投函しました</div>
+          <div class="letter-sent-sub">
+            あなたの手紙は<br>『わたしの本 → 偉人への手紙』に保管されました。
+          </div>
+          ${typeof currentUser !== 'undefined' && currentUser ? `
+            <div class="letter-sent-hint">数日後、${p.name}さんからの返信が届くかもしれません。</div>
+          ` : `
+            <div class="letter-sent-hint">登録すると、端末を変えても消えずに残ります。<br>将来、${p.name}さんからの返信も届きます。</div>
+            <button class="letter-sent-login-btn" id="letterSentLogin">🔑 本棚の鍵を受け取る</button>
+          `}
+          <button class="letter-sent-done" data-close="1">閉じる</button>
+        </div>
+      `;
+      panel.querySelector('[data-close]')?.addEventListener('click', () => {
+        modal.classList.remove('open');
+        setTimeout(() => modal.remove(), 200);
+      });
+      const loginBtn = panel.querySelector('#letterSentLogin');
+      if (loginBtn) loginBtn.addEventListener('click', () => {
+        modal.remove();
+        if (typeof openLoginModal === 'function') openLoginModal();
+      });
+      panel.querySelector('.letter-sent-done')?.addEventListener('click', () => {
+        modal.classList.remove('open');
+        setTimeout(() => modal.remove(), 200);
+      });
+    }
   });
 }
 
@@ -3894,8 +4026,17 @@ function renderFavorites() {
   const favTagSet = loadSet(FAV_TAGS_KEY);
   const favTagItems = DATA.tags.filter(t => favTagSet.has(t.id));
   const diaryEntries = loadDiary();
-  const totalCollections = favPeopleItems.length + favEventItems.length + favQuoteItems.length + favRoutineItems.length + favTagItems.length;
-  const totalItems = totalCollections + diaryEntries.length;
+  const letterEntries = loadLetters();
+  // しおり（最近読んだ、お気に入り登録済みは除外、最大6人）
+  const bookmarks = loadBookmarks();
+  const favPeopleSetForBm = new Set(favPeopleItems.map(p => p.id));
+  const recentlyReadItems = bookmarks
+    .filter(b => !favPeopleSetForBm.has(b.id))
+    .map(b => DATA.people.find(p => p.id === b.id))
+    .filter(Boolean)
+    .slice(0, 6);
+  const totalCollections = favPeopleItems.length + favEventItems.length + favQuoteItems.length + favRoutineItems.length + favTagItems.length + recentlyReadItems.length;
+  const totalItems = totalCollections + diaryEntries.length + letterEntries.length;
 
   if (totalItems === 0) {
     const isLoggedIn = typeof currentUser !== 'undefined' && currentUser;
@@ -3944,11 +4085,13 @@ function renderFavorites() {
   // 目次を先に組み立てる
   const kanjiNum = ['一','二','三','四','五','六','七','八','九','十'];
   const tocItems = [];
+  if (recentlyReadItems.length > 0) tocItems.push({ id: 'chap-recent', title: '続きから読む', count: recentlyReadItems.length });
   if (favPeopleItems.length > 0) tocItems.push({ id: 'chap-people', title: 'お手本にしたい人', count: favPeopleItems.length });
   if (favQuoteItems.length > 0) tocItems.push({ id: 'chap-quotes', title: '心に留める言葉', count: favQuoteItems.length });
   if (favTagItems.length > 0) tocItems.push({ id: 'chap-tags', title: '向き合いたい感情', count: favTagItems.length });
   if (favRoutineItems.length > 0) tocItems.push({ id: 'chap-routines', title: '取り入れたいルーティン', count: favRoutineItems.length });
   if (favEventItems.length > 0) tocItems.push({ id: 'chap-events', title: 'なぞりたい瞬間', count: favEventItems.length });
+  if (letterEntries.length > 0) tocItems.push({ id: 'chap-letters', title: '偉人への手紙', count: letterEntries.length });
   tocItems.push({ id: 'chap-diary', title: 'わたしの日記', count: diaryEntries.length });
 
   const userName = getUserName();
@@ -3997,6 +4140,35 @@ function renderFavorites() {
   // 章番号を自動で降る
   let chapIdx = 0;
   const nextChap = () => kanjiNum[chapIdx++] || (chapIdx);
+
+  // 続きから読む（しおり）
+  if (recentlyReadItems.length > 0) {
+    html += `
+      <div class="my-book-chapter" id="chap-recent">
+        <div class="my-book-chapter-label">第${nextChap()}章</div>
+        <div class="my-book-chapter-title">続きから読む</div>
+        <div class="my-book-chapter-line"></div>
+        <div class="my-book-chapter-intro">最近しおりを挟んだ偉人たち。</div>
+      </div>
+      <div class="book-grid" style="margin-bottom:20px">
+    `;
+    html += recentlyReadItems.map(p => {
+      const bg = p.imageUrl ? `style="background-image:url('${p.imageUrl}')"` : '';
+      return `
+        <div class="person-book ${p.imageUrl ? '' : 'no-img'}" data-id="${p.id}" ${bg}>
+          <div class="cover-bookmark"></div>
+          <div class="person-book-overlay"></div>
+          ${!p.imageUrl ? `<div class="person-book-placeholder">${p.name.charAt(0)}</div>` : ''}
+          <div class="person-book-info">
+            ${p.nameEn ? `<div class="person-book-en">${p.nameEn}</div>` : ''}
+            <div class="person-book-name">${p.name}</div>
+            <div class="person-book-meta">${p.birth || '?'}–${p.death || ''} ／ ${p.field}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+    html += `</div>`;
+  }
 
   // 第一章: お手本にしたい人
   if (favPeopleItems.length > 0) {
@@ -4138,6 +4310,33 @@ function renderFavorites() {
     `).join('');
   }
 
+  // 偉人への手紙
+  if (letterEntries.length > 0) {
+    html += `
+      <div class="my-book-chapter" id="chap-letters">
+        <div class="my-book-chapter-label">第${nextChap()}章</div>
+        <div class="my-book-chapter-title">偉人への手紙</div>
+        <div class="my-book-chapter-line"></div>
+      </div>
+    `;
+    html += letterEntries.map(l => {
+      const person = DATA.people.find(p => p.id === l.personId);
+      if (!person) return '';
+      const date = new Date(l.date);
+      const dateStr = date.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' });
+      return `
+        <article class="letter-entry" data-letter-id="${l.id}">
+          <div class="letter-entry-head">
+            <div class="letter-entry-to">${person.name} 様</div>
+            <button class="letter-entry-delete" data-del-letter="${l.id}" aria-label="削除">×</button>
+          </div>
+          <div class="letter-entry-text">${l.text.replace(/\n/g, '<br>')}</div>
+          <div class="letter-entry-date">${dateStr}</div>
+        </article>
+      `;
+    }).join('');
+  }
+
   // 日記章（常に表示）
   html += `
     <div class="my-book-chapter" id="chap-diary">
@@ -4253,6 +4452,15 @@ function renderFavorites() {
       });
     });
   }
+  // 手紙の削除
+  list.querySelectorAll('[data-del-letter]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (confirm('この手紙を削除しますか？')) {
+        deleteLetter(btn.dataset.delLetter);
+        renderFavorites();
+      }
+    });
+  });
 }
 
 // ====================== お気に入りボタンのバインド ======================

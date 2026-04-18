@@ -32,6 +32,8 @@ const SYNC_KEYS = [
   'ijin_likes',
   'ijin_liked_by_me',
   'ijin_comments',
+  'ijin_bookmarks',
+  'ijin_letters',
 ];
 
 let fbApp = null, fbAuth = null, fbDb = null;
