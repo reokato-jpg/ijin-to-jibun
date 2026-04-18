@@ -88,19 +88,37 @@ async function pullFromCloud(user) {
     const snap = await getDoc(doc(fbDb, 'users', user.uid));
     if (snap.exists()) {
       const data = snap.data();
+      // ローカルに未ログイン時の変更があればマージ（優先: 件数の多い方）
       SYNC_KEYS.forEach(k => {
-        if (data[k] !== undefined) {
-          localStorage.setItem(k, JSON.stringify(data[k]));
+        const cloudVal = data[k];
+        let localVal = null;
+        try { localVal = JSON.parse(localStorage.getItem(k) || 'null'); } catch {}
+        if (cloudVal === undefined && localVal !== null) return; // ローカルのみ
+        if (localVal === null) {
+          if (cloudVal !== undefined) localStorage.setItem(k, JSON.stringify(cloudVal));
+          return;
+        }
+        // 両方ある場合、配列や Set（お気に入り）はマージ
+        if (Array.isArray(cloudVal) && Array.isArray(localVal)) {
+          const merged = [...new Set([...cloudVal, ...localVal])];
+          localStorage.setItem(k, JSON.stringify(merged));
+        } else {
+          // オブジェクトや他はクラウド優先
+          localStorage.setItem(k, JSON.stringify(cloudVal !== undefined ? cloudVal : localVal));
         }
       });
       console.log('[auth] クラウドから同期完了');
-      // 再描画をトリガー
-      if (typeof window.renderHomeBooks === 'function') window.renderHomeBooks();
-      if (typeof window.renderFavorites === 'function') window.renderFavorites();
+      // マージした結果をクラウドへ書き戻し
+      await pushToCloud(user);
     } else {
       // 初回ログイン → 端末のlocalStorageをクラウドへ
       await pushToCloud(user);
     }
+    // 再描画をトリガー
+    if (typeof window.renderHomeBooks === 'function') window.renderHomeBooks();
+    if (typeof window.renderFavorites === 'function') window.renderFavorites();
+    if (typeof window.renderPeople === 'function') window.renderPeople();
+    if (typeof window.renderOshi === 'function') window.renderOshi();
   } catch (e) {
     console.error('[auth] pull失敗:', e);
   }
@@ -268,6 +286,40 @@ function updateAccountUI() {
     badge.innerHTML = `<span class="acc-icon">👤</span><span class="acc-name">ログイン</span>`;
     badge.classList.remove('logged-in');
   }
+  updateLoginNotice();
+}
+
+// ログインしていない時だけ、ホームの上部に注意バナーを表示
+function updateLoginNotice() {
+  const existing = document.getElementById('loginNotice');
+  if (currentUser) {
+    if (existing) existing.remove();
+    return;
+  }
+  if (!FIREBASE_ENABLED) return;
+  if (existing) return;
+  const home = document.querySelector('#view-people');
+  if (!home) return;
+  // 既に閉じた履歴があればスキップ
+  if (localStorage.getItem('ijin_login_notice_dismissed') === '1') return;
+  const banner = document.createElement('div');
+  banner.id = 'loginNotice';
+  banner.className = 'login-notice';
+  banner.innerHTML = `
+    <div class="login-notice-icon">💾</div>
+    <div class="login-notice-text">
+      <div class="login-notice-title">未ログインです</div>
+      <div class="login-notice-sub">お気に入り・推し・ルーティンはこの端末にのみ保存されます。<br>登録すると、<b>端末を変えても・データを消しても残る</b>ように。</div>
+    </div>
+    <button class="login-notice-btn" id="loginNoticeBtn">登録する</button>
+    <button class="login-notice-close" id="loginNoticeClose" aria-label="閉じる">×</button>
+  `;
+  home.insertBefore(banner, home.firstChild);
+  banner.querySelector('#loginNoticeBtn').addEventListener('click', openLoginModal);
+  banner.querySelector('#loginNoticeClose').addEventListener('click', () => {
+    localStorage.setItem('ijin_login_notice_dismissed', '1');
+    banner.remove();
+  });
 }
 
 function escapeSmall(s) { return (s || '').replace(/[<>&]/g, ''); }
