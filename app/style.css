@@ -157,9 +157,21 @@ body {
   z-index: 10;
   box-shadow: 0 2px 6px rgba(0,0,0,0.25);
 }
-.app-header > .back-btn {
+.app-header .header-left {
   justify-self: start;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
+.header-logo {
+  color: var(--gold-light);
+  font-size: 20px;
+  line-height: 1;
+  opacity: 0.85;
+  display: inline-block;
+}
+/* 戻るボタンが見える時（詳細画面）はロゴを隠す */
+.back-btn.visible ~ .header-logo { display: none; }
 .app-header h1 {
   /* 中央セル：コンテナ中央に自動配置 */
   font-size: 19px;
