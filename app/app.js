@@ -1592,8 +1592,9 @@ async function showPerson(id) {
           if (amazonUrl && !stores.some(s => s.name === 'Amazon')) {
             stores.unshift({ name: 'Amazon', url: amazonUrl });
           }
-          const searchQ = encodeURIComponent(`${m.title} ${m.type === 'drama' ? 'ドラマ' : m.type === 'anime' ? 'アニメ' : '映画'} DVD`);
-          const fallbackUrl = `https://www.amazon.co.jp/s?k=${searchQ}`;
+          // タイトルだけで検索（『映画 DVD』などの余計な語を付けるとヒット率が下がるため）
+          const searchQ = encodeURIComponent(m.title);
+          const fallbackUrl = `https://www.amazon.co.jp/s?k=${searchQ}${AMAZON_TAG ? `&tag=${AMAZON_TAG}` : ''}`;
           return `
             <div class="media-card">
               ${amazonCoverUrl ? `
