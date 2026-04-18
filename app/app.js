@@ -5048,7 +5048,6 @@ function bindEvents() {
   renderHeroStats();
   renderUpdates();
   renderOshi();
-  renderDailyMission();
   renderCalendarToday();
   renderPersonOfTheDay();
   renderQuoteOfTheDay();

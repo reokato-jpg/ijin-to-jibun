@@ -9186,6 +9186,76 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
 }
 .square-reply:hover, .square-view:hover { background: rgba(122,46,58,0.06); }
 
+/* ================ スポンサー・広告主募集カード ================ */
+.sponsor-card {
+  display: block;
+  padding: 22px 22px 18px;
+  background:
+    radial-gradient(ellipse at top right, rgba(212,176,85,0.15) 0%, transparent 60%),
+    linear-gradient(180deg, #fffdf7 0%, #faf5e8 100%);
+  border: 1.5px dashed var(--gold);
+  border-radius: 10px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.sponsor-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(184,149,46,0.2);
+  border-style: solid;
+}
+.sponsor-card-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.sponsor-card-badge {
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, var(--gold) 0%, #b08530 100%);
+  padding: 3px 10px;
+  border-radius: 10px;
+  letter-spacing: 0.1em;
+  font-family: var(--font-en);
+}
+.sponsor-card-title {
+  font-family: var(--font-jp);
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--wine-dark);
+  letter-spacing: 0.06em;
+}
+.sponsor-card-body {
+  font-family: var(--font-jp);
+  font-size: 12.5px;
+  color: var(--ink-2);
+  line-height: 1.85;
+  margin-bottom: 14px;
+}
+.sponsor-card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  background: linear-gradient(135deg, var(--wine) 0%, var(--wine-dark) 100%);
+  color: var(--gold-light);
+  border: 1px solid var(--gold);
+  border-radius: 18px;
+  font-family: var(--font-jp);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+.sponsor-card-arrow { font-size: 14px; }
+@media (min-width: 900px) {
+  .sponsor-card-title { font-size: 18px; }
+  .sponsor-card-body { font-size: 13.5px; }
+}
+
 /* ================ 本日のミッション ================ */
 .mission-card {
   position: relative;
