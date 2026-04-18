@@ -25,6 +25,15 @@
       ]
     },
     {
+      "year": 1880,
+      "age": 22,
+      "title": "ミラノ音楽院入学、ポンキエッリに師事",
+      "detail": "『ジョコンダ』の作曲家から直接教えを受ける。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
       "year": 1884,
       "age": 26,
       "title": "人妻エルヴィーラと駆け落ち",
@@ -34,10 +43,29 @@
       ]
     },
     {
+      "year": 1884,
+      "age": 26,
+      "title": "『妖精ヴィッリ』初演で注目",
+      "detail": "リコルディ社が若き才能を発掘、以後専属契約。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
       "year": 1893,
       "age": 35,
       "title": "『マノン・レスコー』成功で出版社リコルディと専属契約",
       "detail": "ヴェルディの後継者として世に認められる。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1893,
+      "age": 35,
+      "title": "『マノン・レスコー』ミラノ初演大成功",
+      "detail": "ヴェルディの後継者と認められた瞬間。",
       "tags": [
         "breakthrough",
         "approval"
@@ -79,6 +107,15 @@
       "tags": [
         "pride_broken",
         "breakthrough"
+      ]
+    },
+    {
+      "year": 1908,
+      "age": 50,
+      "title": "メトロポリタン歌劇場で『西部の娘』世界初演",
+      "detail": "トスカニーニ指揮、エンリコ・カルーソー主役。",
+      "tags": [
+        "approval"
       ]
     },
     {

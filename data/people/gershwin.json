@@ -34,10 +34,28 @@
       ]
     },
     {
+      "year": 1916,
+      "age": 18,
+      "title": "最初の歌『When You Want 'Em, You Can't Get 'Em』",
+      "detail": "5ドルで売った最初の出版作品。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
       "year": 1919,
       "age": 21,
       "title": "『スワニー』大ヒット",
       "detail": "アル・ジョルソンが歌い100万枚売れた。印税で初めて大金を手にする。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1919,
+      "age": 21,
+      "title": "ミュージカル『ラ・ラ・ルシル』",
+      "detail": "初のブロードウェイ・ミュージカル全曲担当。",
       "tags": [
         "breakthrough"
       ]
