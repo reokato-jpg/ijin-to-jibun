@@ -530,17 +530,21 @@ main { flex: 1; overflow-y: auto; background: var(--paper); }
   line-height: 1;
 }
 .qod-text {
-  font-size: 17px;
-  line-height: 2.1;
+  font-size: 20px;
+  line-height: 2;
   color: var(--ink);
   font-family: var(--font-jp);
   padding-left: 28px;
   margin-bottom: 14px;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+@media (min-width: 900px) {
+  .qod-text { font-size: 22px; }
 }
 .qod-attrib {
   text-align: right;
-  font-size: 11px;
+  font-size: 13px;
   color: var(--ink-3);
   letter-spacing: 0.08em;
   cursor: pointer;
@@ -681,7 +685,7 @@ main { flex: 1; overflow-y: auto; background: var(--paper); }
   line-height: 1;
 }
 .qc-text {
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.95;
   color: var(--ink);
   font-family: var(--font-jp);
@@ -689,7 +693,7 @@ main { flex: 1; overflow-y: auto; background: var(--paper); }
   padding-top: 4px;
   flex: 1;
   margin-bottom: 10px;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.04em;
   display: -webkit-box;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
