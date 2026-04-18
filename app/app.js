@@ -2675,15 +2675,62 @@ function loadLetters() {
 function saveLetter(personId, text) {
   if (!text || !text.trim()) return null;
   const letters = loadLetters();
+  const person = DATA.people.find(p => p.id === personId);
+  // 2〜3日後に返信が届く設定（現実感＋期待感）
+  const replyDelayDays = 2 + Math.floor(Math.random() * 2);
+  const replyAt = new Date(Date.now() + replyDelayDays * 24 * 60 * 60 * 1000).toISOString();
   const entry = {
     id: 'L' + Date.now(),
     personId,
     text: text.trim(),
     date: new Date().toISOString(),
+    reply: person ? {
+      text: generateReply(person, text.trim()),
+      deliverAt: replyAt,
+    } : null,
   };
   letters.unshift(entry);
   localStorage.setItem(LETTERS_KEY, JSON.stringify(letters));
   return entry;
+}
+
+// 偉人の名言と感情判定から返信を組み立てる（ルールベース、将来AIに差し替え可能）
+function generateReply(person, letterText) {
+  const quote = (person.quotes && person.quotes.length)
+    ? person.quotes[Math.floor(Math.random() * person.quotes.length)]
+    : null;
+  const name = person.name;
+  const detectedTag = (typeof detectTagsFromText === 'function')
+    ? detectTagsFromText(letterText)[0]
+    : 'isolation';
+
+  const openings = {
+    escape: `あなたの手紙を読み、逃げたくなる夜のことを思い出しました。`,
+    setback: `私も、何度も倒れました。だからこそ、あなたの挫折の重みがわかります。`,
+    burnout: `燃え尽きるほど、あなたは燃えた。それはきっと、何かを本気で愛した証です。`,
+    isolation: `孤独を知る人にしか、書けない言葉がありますね。`,
+    heartbreak: `心が痛むのは、それだけ深く誰かを想ったからです。`,
+    loss: `失った人の分まで、あなたが生きる。それもまた愛の続きです。`,
+    approval: `誰かに認められたい、という願いは、誰もが抱く祈りのようなものでしょう。`,
+    blank_period: `何もできない時期もまた、内側で何かが育つ大切な時間です。`,
+    pride_broken: `屈辱は、自分を作り直すための材料です。私もそうでした。`,
+    illness: `体が思うようにならない時、心だけが動いていることがあります。`,
+    restart: `立ち上がろうとするあなたを、私はもう知っています。`,
+    poverty: `持たないことは、時に、最も自由な状態です。`,
+    turning_encounter: `人生を変える出会いを求めているなら、それはもう始まっています。`,
+    breakthrough: `突き抜ける瞬間の前には、必ず闇があるのです。`,
+    parent_conflict: `親との葛藤は、自分を作る最初の戦いです。`,
+    self_denial: `あなたが自分を責める理由を、私は受け取りました。`,
+  };
+  const opening = openings[detectedTag] || openings.isolation;
+
+  const body = quote
+    ? `私は生前、こう言ったことがあります。\n\n　「${quote.text}」\n\n${quote.source ? `（${quote.source}）\n\n` : ''}この言葉が、今のあなたに少しだけ届きますように。`
+    : `あなたが書いてくれた一字一字を、時を超えて受け取りました。\n\n私が生きた時代と、あなたの時代は違います。けれどきっと、人の心の根のところは、そう変わらないのでしょう。`;
+
+  const closing = `\n\n焦らなくていい。立ち止まっていい。あなたの本棚に、私の席があることを、忘れないでください。\n\n敬具\n${name}`;
+
+  return opening + `\n\n` + body + closing;
 }
 function deleteLetter(id) {
   const letters = loadLetters().filter(l => l.id !== id);
@@ -4324,6 +4371,35 @@ function renderFavorites() {
       if (!person) return '';
       const date = new Date(l.date);
       const dateStr = date.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' });
+      // 返信の配達状況
+      let replyHtml = '';
+      if (l.reply) {
+        const deliverTime = new Date(l.reply.deliverAt).getTime();
+        const now = Date.now();
+        if (now >= deliverTime) {
+          const replyDateStr = new Date(l.reply.deliverAt).toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' });
+          replyHtml = `
+            <div class="letter-reply">
+              <div class="letter-reply-head">
+                <span class="letter-reply-badge">✉ 返信が届きました</span>
+                <span class="letter-reply-from">— ${person.name}より</span>
+              </div>
+              <div class="letter-reply-text">${l.reply.text.replace(/\n/g, '<br>')}</div>
+              <div class="letter-reply-date">${replyDateStr} 着</div>
+            </div>
+          `;
+        } else {
+          const waitDays = Math.ceil((deliverTime - now) / (24 * 60 * 60 * 1000));
+          replyHtml = `
+            <div class="letter-reply-pending">
+              <span class="letter-reply-pending-icon">✈</span>
+              <span class="letter-reply-pending-text">
+                ${person.name}への手紙を配達中… あと${waitDays}日で返信が届きます。
+              </span>
+            </div>
+          `;
+        }
+      }
       return `
         <article class="letter-entry" data-letter-id="${l.id}">
           <div class="letter-entry-head">
@@ -4331,7 +4407,8 @@ function renderFavorites() {
             <button class="letter-entry-delete" data-del-letter="${l.id}" aria-label="削除">×</button>
           </div>
           <div class="letter-entry-text">${l.text.replace(/\n/g, '<br>')}</div>
-          <div class="letter-entry-date">${dateStr}</div>
+          <div class="letter-entry-date">${dateStr} 投函</div>
+          ${replyHtml}
         </article>
       `;
     }).join('');

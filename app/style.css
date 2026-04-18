@@ -8498,6 +8498,86 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
   font-family: var(--font-en);
 }
 
+.letter-reply-pending {
+  margin-top: 12px;
+  padding: 12px 14px;
+  background: rgba(184,149,46,0.08);
+  border: 1px dashed var(--gold);
+  border-radius: 4px;
+  font-family: var(--font-jp);
+  font-size: 12px;
+  color: var(--wine);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.letter-reply-pending-icon {
+  font-size: 18px;
+  animation: letter-fly 2.5s ease-in-out infinite;
+}
+@keyframes letter-fly {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(6px); }
+}
+.letter-reply-pending-text { flex: 1; line-height: 1.6; }
+
+.letter-reply {
+  margin-top: 14px;
+  padding: 16px 18px 14px;
+  background: linear-gradient(180deg, #fffaf0 0%, #fbf3e0 100%);
+  border: 1.5px solid var(--gold);
+  border-radius: 6px;
+  position: relative;
+  font-family: var(--font-jp);
+}
+.letter-reply::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 20px;
+  width: 16px;
+  height: 16px;
+  background: #fffaf0;
+  border-top: 1.5px solid var(--gold);
+  border-left: 1.5px solid var(--gold);
+  transform: rotate(45deg);
+}
+.letter-reply-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(184,149,46,0.3);
+}
+.letter-reply-badge {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--wine);
+  background: rgba(184,149,46,0.2);
+  padding: 3px 10px;
+  border-radius: 12px;
+  letter-spacing: 0.08em;
+}
+.letter-reply-from {
+  font-size: 11px;
+  color: var(--ink-3);
+  font-style: italic;
+}
+.letter-reply-text {
+  font-size: 13px;
+  line-height: 2;
+  color: var(--ink);
+  white-space: pre-wrap;
+  margin-bottom: 10px;
+}
+.letter-reply-date {
+  text-align: right;
+  font-size: 10px;
+  color: var(--ink-4);
+  font-family: var(--font-en);
+}
+
 /* ================ ルーティンを登録 ================ */
 .routine-adopt-section {
   margin-top: 18px;
