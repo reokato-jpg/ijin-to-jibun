@@ -673,8 +673,11 @@ function renderHomeBooks() {
     <a class="home-book-card" href="${amazonUrl(b.asin)}" target="_blank" rel="noopener">
       <div class="home-book-cover-wrap">
         <div class="home-book-cover">
-          <img src="${amazonCover(b.asin)}" alt="${b.title}" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('no-cover');">
+          <img src="${amazonCover(b.asin)}" alt="${b.title}" loading="lazy"
+               onload="if(this.naturalWidth<50){this.style.display='none';this.parentElement.classList.add('no-cover');}"
+               onerror="this.style.display='none';this.parentElement.classList.add('no-cover');">
           <div class="home-book-fallback">
+            <div class="home-book-fallback-ornament">❦</div>
             <div class="home-book-fallback-title">${b.title}</div>
             <div class="home-book-fallback-author">${b.author || ''}</div>
           </div>

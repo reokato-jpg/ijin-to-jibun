@@ -3346,6 +3346,11 @@ main { flex: 1; overflow-y: auto; background: var(--paper); }
   border-bottom: 3px solid var(--wine);
 }
 .home-book-cover.no-cover .home-book-fallback { display: flex; }
+.home-book-fallback-ornament {
+  font-size: 18px;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
 .home-book-fallback-title {
   font-family: var(--font-jp);
   font-weight: 700;
