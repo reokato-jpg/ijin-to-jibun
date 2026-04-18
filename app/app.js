@@ -1358,6 +1358,16 @@ async function showPerson(id) {
         <span>${p.birth}–${p.death || ''}</span>
       </div>
       <div class="profile-bio">${p.summary}</div>
+      ${p.lifeDigest ? `
+        <details class="life-digest">
+          <summary class="life-digest-summary">
+            <span class="life-digest-icon">📖</span>
+            <span class="life-digest-label">人生ダイジェスト（もっと読む）</span>
+            <span class="life-digest-arrow">▾</span>
+          </summary>
+          <div class="life-digest-body">${p.lifeDigest}</div>
+        </details>
+      ` : ''}
       ${p.imageCredit ? `
         <div class="image-credit">
           画像: ${p.imageCredit.artist || '作者不詳'} /
