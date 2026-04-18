@@ -1486,6 +1486,39 @@ function playBookFlip({ title, subtitle, imageUrl }) {
 }
 
 // ====================== 人物詳細 ======================
+// 訪問回数・足跡
+const VISITS_KEY = 'ijin_visits';
+const LAST_VISIT_KEY = 'ijin_last_visit_day';
+
+function loadVisits() {
+  try { return JSON.parse(localStorage.getItem(VISITS_KEY) || '{}'); }
+  catch { return {}; }
+}
+function recordVisit(personId) {
+  // 1日1回のみカウント
+  const today = new Date().toISOString().slice(0, 10);
+  let lastVisit = {};
+  try { lastVisit = JSON.parse(localStorage.getItem(LAST_VISIT_KEY) || '{}'); }
+  catch {}
+  if (lastVisit[personId] === today) return;
+  lastVisit[personId] = today;
+  localStorage.setItem(LAST_VISIT_KEY, JSON.stringify(lastVisit));
+  const visits = loadVisits();
+  visits[personId] = (visits[personId] || 0) + 1;
+  localStorage.setItem(VISITS_KEY, JSON.stringify(visits));
+}
+function getVisitCount(personId) {
+  return loadVisits()[personId] || 0;
+}
+function totalFootprints() {
+  const v = loadVisits();
+  return Object.values(v).reduce((a, b) => a + b, 0);
+}
+// 偉人がユーザーをフォローしているか（スタンプ3以上で相互フォロー）
+function isFollowedByPerson(personId) {
+  return getStampLevel(personId) >= 3;
+}
+
 // しおり（最近読んだ偉人）
 const BOOKMARK_KEY = 'ijin_bookmarks';
 function loadBookmarks() {
@@ -1725,6 +1758,7 @@ async function showPerson(id) {
   if (!p) return;
   playBookOpenFx();
   saveBookmark(id);
+  recordVisit(id);
   // アニメーション再生中に裏で詳細を描画
   const flipPromise = playBookFlip({
     title: p.name,
@@ -1916,6 +1950,31 @@ async function showPerson(id) {
         <span>${p.country}</span>
         <span>${p.birth}–${p.death || ''}</span>
       </div>
+      <div class="profile-xmeta">
+        ${(p.birthMonth && p.birthDay) ? `<span class="profile-xmeta-item">🎂 ${p.birthMonth}/${p.birthDay}${p.birth ? `（${p.birth}年生）` : ''}</span>` : ''}
+        ${(p.deathMonth && p.deathDay) ? `<span class="profile-xmeta-item">🕯 ${p.deathMonth}/${p.deathDay}${p.death ? `（${p.death}年没）` : ''}</span>` : ''}
+        ${p.country ? `<span class="profile-xmeta-item">📍 ${p.country}</span>` : ''}
+        <span class="profile-xmeta-item">👣 ${getVisitCount(p.id)}回訪問</span>
+      </div>
+      <div class="profile-social">
+        ${isFollowedByPerson(p.id) ? `
+          <div class="profile-follow-badge">✓ ${p.name}があなたをフォローしています</div>
+        ` : `
+          <div class="profile-follow-hint">Lv.3以上で${p.name}があなたをフォローします</div>
+        `}
+        ${(() => {
+          const userName = getUserName();
+          if (isFollowedByPerson(p.id) && userName) {
+            return `
+              <div class="profile-followers">
+                <div class="profile-followers-label">フォロワー</div>
+                <div class="profile-followers-list"><span class="profile-follower-chip">${userName}</span></div>
+              </div>
+            `;
+          }
+          return '';
+        })()}
+      </div>
       <div class="profile-bio">${p.summary}</div>
       ${p.lifeDigest ? `
         <details class="life-digest">
@@ -1998,9 +2057,9 @@ async function showPerson(id) {
       <span class="quiz-open-arrow">→</span>
     </button>
 
-    <button class="letter-write-btn" data-letter-write="1">
+    <button class="letter-write-btn ${isFollowedByPerson(p.id) ? 'followed' : ''}" data-letter-write="1">
       <img class="icon-img icon-img-lg" src="assets/icons/quill.png" alt="">
-      <span class="letter-write-label">${p.name}に手紙を書く</span>
+      <span class="letter-write-label">${isFollowedByPerson(p.id) ? `${p.name}と手紙のやりとり` : `${p.name}に手紙を書く`}</span>
       <span class="letter-write-beta">β版</span>
       <span class="letter-write-arrow">→</span>
     </button>
@@ -5113,7 +5172,7 @@ function renderFavorites() {
             ${title ? `✎ 称号を変更（現在：${title}）` : '🏆 称号を選ぶ'}
           </button>
           <div class="title-page-stamp-count">
-            獲得スタンプ <strong>${totalStamps()}</strong> 個
+            獲得スタンプ <strong>${totalStamps()}</strong> 個 ／ 足跡 <strong>${totalFootprints()}</strong>
           </div>
           <div class="title-page-bottom">─── ◆ ───</div>
         </div>
