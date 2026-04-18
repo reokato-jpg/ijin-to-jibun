@@ -10,7 +10,10 @@
       "Bash(rm -rf /tmp/ijin-deploy)",
       "Bash(mkdir -p /tmp/ijin-deploy)",
       "Bash(cp -r \"G:/共有ドライブ/Access Level 2/★新フォルダ★/システムフォルダ/偉人と自分。/app\" \"G:/共有ドライブ/Access Level 2/★新フォルダ★/システムフォルダ/偉人と自分。/data\" \"G:/共有ドライブ/Access Level 2/★新フォルダ★/システムフォルダ/偉人と自分。/api\" \"G:/共有ドライブ/Access Level 2/★新フォルダ★/システムフォルダ/偉人と自分。/vercel.json\" /tmp/ijin-deploy/)",
-      "Bash(netstat -ano)"
+      "Bash(netstat -ano)",
+      "Bash(vercel --version)",
+      "Bash(vercel whoami:*)",
+      "Bash(vercel deploy:*)"
     ]
   }
 }

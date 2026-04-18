@@ -3727,6 +3727,133 @@ main { flex: 1; overflow-y: auto; background: var(--paper); }
 }
 .home-footer-links a:hover { color: var(--wine); text-decoration: underline; }
 .home-footer-sep { color: var(--ink-4); margin: 0 4px; font-size: 11px; }
+
+/* ================================================================
+   モバイル崩れ防止（520px以下）
+   HP版の広いデザインが漏れないよう、モバイルは安全側に上書き
+   ================================================================ */
+@media (max-width: 520px) {
+  /* 全般：はみ出し防止 */
+  * { max-width: 100%; box-sizing: border-box; }
+  img, video { max-width: 100%; height: auto; }
+
+  /* 書籍カード（詳細版） — 縦積み */
+  .book-card {
+    grid-template-columns: 80px 1fr;
+    gap: 12px;
+    padding: 12px;
+  }
+  .book-card-cover-link { width: 80px; }
+  .book-card-title-link { font-size: 14px; }
+  .book-card-desc { font-size: 11px; }
+  .book-card-actions { gap: 4px; }
+  .book-card-link { font-size: 10px; padding: 4px 8px; }
+
+  /* Amazon 書籍カード（タイムライン内） */
+  .x-book-card {
+    grid-template-columns: 70px 1fr;
+    gap: 10px;
+    padding: 10px;
+  }
+  .x-book-cover { width: 70px; }
+  .x-book-title { font-size: 13px; }
+  .x-book-amazon { padding: 6px 14px; font-size: 11px; }
+
+  /* X タイムライン ポスト */
+  .x-post { padding: 10px 12px; gap: 8px; }
+  .x-post-title { font-size: 14px; }
+  .x-post-text { font-size: 13px; }
+  .x-post-actions { gap: 16px; }
+  .x-post-media { aspect-ratio: 16/9; }
+
+  /* Amazon購入カード */
+  .media-card {
+    grid-template-columns: 70px 1fr;
+    gap: 10px;
+    padding: 10px;
+  }
+  .media-cover { width: 70px; }
+  .media-title { font-size: 14px; }
+  .media-desc { font-size: 11px; }
+  .media-links { gap: 4px; flex-wrap: wrap; }
+  .media-btn { font-size: 10px; padding: 5px 10px; }
+
+  /* ルーティンカード — アクションボタンが重ならないように */
+  .routine-card-actions { gap: 6px; flex-wrap: wrap; }
+  .routine-card-actions .routine-copy-btn,
+  .routine-card-actions .routine-peek-btn { font-size: 10px; padding: 6px 8px; }
+
+  /* イベント・グッズカード */
+  .happening-title { font-size: 13px; }
+  .happening-desc { font-size: 11px; }
+  .happening-btn { font-size: 10px; padding: 4px 10px; }
+  .happening-links { flex-wrap: wrap; gap: 4px; }
+
+  /* AI相談ボタン */
+  .ai-consult-card { padding: 14px 16px; gap: 10px; }
+  .ai-consult-title { font-size: 13px; }
+  .ai-consult-sub { font-size: 10px; }
+
+  /* 応援カード */
+  .support-card { padding: 14px 16px; gap: 10px; }
+  .support-title { font-size: 13px; }
+  .support-sub { font-size: 11px; }
+
+  /* mood-ai-more 誘導ボタン */
+  .mood-ai-more { padding: 14px 16px; }
+  .mood-ai-title { font-size: 12px; }
+  .mood-ai-sub { font-size: 9px; }
+
+  /* 使い方ガイド */
+  .howto-label { font-size: 13px; }
+  .howto-body { padding: 0 14px 14px; }
+  .howto-step-title { font-size: 12px; }
+  .howto-step-desc { font-size: 11px; }
+
+  /* お知らせ（リリースノート） */
+  .updates-title { font-size: 13px; }
+  .updates-body { font-size: 11px; }
+
+  /* 今日の言葉（モバイルでは少し抑える） */
+  .qod-text { font-size: 17px; line-height: 1.9; padding-left: 20px; }
+  .qc-text { font-size: 13px; padding-left: 18px; }
+
+  /* 人物詳細：本文パディング調整 */
+  .profile-cover { height: 120px; }
+  .profile-cover-name { font-size: 22px; letter-spacing: 0.12em; padding: 6px 0 3px; }
+  .profile-cover-name-en { font-size: 11px; }
+  .profile-cover-dates { font-size: 10px; }
+
+  /* ヒーロー */
+  .hero-tagline { font-size: 14px; }
+  .hero-sub { font-size: 11px; line-height: 1.7; }
+
+  /* 詳細検索パネル */
+  .adv-search-toggle { padding: 9px 12px; font-size: 11px; }
+  .adv-search-panel { padding: 10px 12px; }
+
+  /* アカウントバッジ */
+  .account-badge { padding: 4px 8px; font-size: 10px; }
+  .acc-name { max-width: 60px; }
+
+  /* ヘッダータイトル */
+  .app-header h1 { font-size: 16px; letter-spacing: 0.15em; }
+
+  /* 感情の本棚の説明 */
+  .search-section-desc { font-size: 11px; padding: 0 8px; }
+}
+
+/* ================================================================
+   超小型モバイル（360px以下・iPhone SE等）
+   ================================================================ */
+@media (max-width: 360px) {
+  .app-header h1 { font-size: 14px; letter-spacing: 0.1em; }
+  .account-badge .acc-name { display: none; }
+  .book-card { grid-template-columns: 70px 1fr; }
+  .book-card-cover-link { width: 70px; }
+  .profile-cover-name { font-size: 18px; }
+  .qod-text { font-size: 15px; }
+}
 .home-footer-copyright {
   text-align: center;
   font-size: 9px;
