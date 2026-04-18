@@ -4883,6 +4883,16 @@ function bindEvents() {
       if (v === 'routines') renderRoutines();
       if (v === 'articles') renderArticles();
       if (v === 'favorites') renderFavorites();
+      // 検索タブ=偉人の広場のBGM
+      const bgm = document.getElementById('searchBgm');
+      if (bgm) {
+        if (v === 'tags') {
+          bgm.volume = 0.35;
+          bgm.play().catch(() => {}); // ブロックされても無視
+        } else {
+          bgm.pause();
+        }
+      }
     });
   });
   document.getElementById('backBtn').addEventListener('click', goBack);
