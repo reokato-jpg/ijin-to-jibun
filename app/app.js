@@ -640,12 +640,17 @@ function renderHomeBooks() {
   const picked = [];
   const usedAsins = new Set();
 
+  // ASINがある本だけピックする
+  const hasValidAsin = (b) => b && b.asin && /^[A-Z0-9]{10}$/i.test(b.asin);
+
   const pushBookOf = (pid, label) => {
     if (!pid) return;
     const p = DATA.people.find(x => x.id === pid);
-    if (!p || !(p.books || []).length) return;
-    const b = p.books[seed % p.books.length];
-    if (!b.asin || usedAsins.has(b.asin)) return;
+    if (!p) return;
+    const validBooks = (p.books || []).filter(hasValidAsin);
+    if (!validBooks.length) return;
+    const b = validBooks[seed % validBooks.length];
+    if (usedAsins.has(b.asin)) return;
     usedAsins.add(b.asin);
     picked.push({ ...b, person: p, label });
   };
@@ -655,10 +660,10 @@ function renderHomeBooks() {
     if (t && t.personId) pushBookOf(t.personId, '本日の案内人');
   } catch (e) {}
 
-  // 残りをランダム（日替わり）で埋める
+  // 残りをランダム（日替わり）で埋める — ASIN必須
   const all = [];
   DATA.people.forEach(p => {
-    (p.books || []).forEach(b => { if (b.asin && !usedAsins.has(b.asin)) all.push({ ...b, person: p }); });
+    (p.books || []).forEach(b => { if (hasValidAsin(b) && !usedAsins.has(b.asin)) all.push({ ...b, person: p }); });
   });
   all.sort((a, b) => ((hashStr(a.asin) ^ seed) >>> 0) - ((hashStr(b.asin) ^ seed) >>> 0));
   // HP版は6冊、スマホは3冊
@@ -670,17 +675,12 @@ function renderHomeBooks() {
   const container = document.getElementById('homeBooks');
   if (!container || picked.length === 0) return;
   container.innerHTML = picked.map(b => `
-    <a class="home-book-card" href="${amazonUrl(b.asin)}" target="_blank" rel="noopener">
+    <a class="home-book-card" href="${amazonUrl(b.asin)}" target="_blank" rel="noopener" data-asin="${b.asin}">
       <div class="home-book-cover-wrap">
         <div class="home-book-cover">
           <img src="${amazonCover(b.asin)}" alt="${b.title}" loading="lazy"
-               onload="if(this.naturalWidth<50){this.style.display='none';this.parentElement.classList.add('no-cover');}"
-               onerror="this.style.display='none';this.parentElement.classList.add('no-cover');">
-          <div class="home-book-fallback">
-            <div class="home-book-fallback-ornament">❦</div>
-            <div class="home-book-fallback-title">${b.title}</div>
-            <div class="home-book-fallback-author">${b.author || ''}</div>
-          </div>
+               onload="if(this.naturalWidth<50){this.closest('.home-book-card').style.display='none';}"
+               onerror="this.closest('.home-book-card').style.display='none';">
         </div>
         ${b.label ? `<div class="home-book-ribbon">${b.label}</div>` : ''}
       </div>
