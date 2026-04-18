@@ -1376,7 +1376,7 @@ async function showPerson(id) {
       ${p.lifeDigest ? `
         <details class="life-digest">
           <summary class="life-digest-summary">
-            <span class="life-digest-icon">📖</span>
+            <img class="icon-img icon-img-lg" src="assets/icons/book.png" alt="">
             <span class="life-digest-label">人生ダイジェスト（もっと読む）</span>
             <span class="life-digest-arrow">▾</span>
           </summary>
