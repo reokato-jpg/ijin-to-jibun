@@ -184,12 +184,14 @@
     {
       "name": "バイロイト祝祭劇場",
       "location": "ドイツ・バイロイト",
-      "note": "ワーグナー作品専用の劇場"
+      "note": "ワーグナー作品専用の劇場",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Festspielhaus.jpg/330px-Festspielhaus.jpg"
     },
     {
       "name": "ヴィラ・ヴァーンフリート",
       "location": "ドイツ・バイロイト",
-      "note": "ワーグナーの家・墓"
+      "note": "ワーグナーの家・墓",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Georg_von_Rosen_-_Oden_som_vandringsman%2C_1886_%28Odin%2C_the_Wanderer%29.jpg/330px-Georg_von_Rosen_-_Oden_som_vandringsman%2C_1886_%28Odin%2C_the_Wanderer%29.jpg"
     }
   ],
   "books": [

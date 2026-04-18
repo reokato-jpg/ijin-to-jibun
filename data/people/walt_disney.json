@@ -111,7 +111,8 @@
     {
       "name": "ディズニーランド",
       "location": "米カリフォルニア州アナハイム",
-      "note": "世界初のテーマパーク"
+      "note": "世界初のテーマパーク",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Disneyland_Anaheim.jpg/330px-Disneyland_Anaheim.jpg"
     }
   ],
   "books": [],

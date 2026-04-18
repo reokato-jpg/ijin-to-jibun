@@ -130,17 +130,20 @@
     {
       "name": "マウリッツハイス美術館",
       "location": "オランダ・ハーグ",
-      "note": "『真珠の耳飾りの少女』を所蔵"
+      "note": "『真珠の耳飾りの少女』を所蔵",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Mauritshuis25102007.jpg/330px-Mauritshuis25102007.jpg"
     },
     {
       "name": "アムステルダム国立美術館",
       "location": "オランダ・アムステルダム",
-      "note": "『牛乳を注ぐ女』『手紙を読む青衣の女』"
+      "note": "『牛乳を注ぐ女』『手紙を読む青衣の女』",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Rijksmuseum_Amsterdam.jpg/330px-Rijksmuseum_Amsterdam.jpg"
     },
     {
       "name": "フェルメール・センター",
       "location": "オランダ・デルフト",
-      "note": "生きた町に作られたフェルメール博物館"
+      "note": "生きた町に作られたフェルメール博物館",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/e/e5/Vermeer_autograph.png"
     }
   ],
   "books": [

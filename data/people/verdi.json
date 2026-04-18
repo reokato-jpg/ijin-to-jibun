@@ -187,12 +187,14 @@
     {
       "name": "サンターガタ荘",
       "location": "イタリア・ブッセート",
-      "note": "ヴェルディが晩年を過ごした農場"
+      "note": "ヴェルディが晩年を過ごした農場",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Busseto-Piazza_Verdi_1.jpg/330px-Busseto-Piazza_Verdi_1.jpg"
     },
     {
       "name": "カーサ・ヴェルディ",
       "location": "イタリア・ミラノ",
-      "note": "引退音楽家のために建てた養老院。自身もここに眠る"
+      "note": "引退音楽家のために建てた養老院。自身もここに眠る",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Flag_of_Italy.svg/langja-330px-Flag_of_Italy.svg.png"
     }
   ],
   "books": [],

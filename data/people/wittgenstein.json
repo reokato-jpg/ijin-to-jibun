@@ -384,22 +384,26 @@
     {
       "name": "ハウス・ウィトゲンシュタイン",
       "location": "オーストリア・ウィーン",
-      "note": "姉のために設計した邸宅。現在は公開建築"
+      "note": "姉のために設計した邸宅。現在は公開建築",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Wittgenstein1920.jpg/330px-Wittgenstein1920.jpg"
     },
     {
       "name": "トリニティ・カレッジ",
       "location": "イギリス・ケンブリッジ",
-      "note": "師ラッセルと出会い、哲学を学んだ場所"
+      "note": "師ラッセルと出会い、哲学を学んだ場所",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Sae_Kitamura_by_Wikipedia_15.jpg/330px-Sae_Kitamura_by_Wikipedia_15.jpg"
     },
     {
       "name": "ウィトゲンシュタインの小屋",
       "location": "ノルウェー・スクヨルデン",
-      "note": "フィヨルドの孤独な小屋。『論考』執筆の地"
+      "note": "フィヨルドの孤独な小屋。『論考』執筆の地",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Ludwig_Wittgenstein.jpg/330px-Ludwig_Wittgenstein.jpg"
     },
     {
       "name": "アスカロン（ガルウェー）",
       "location": "アイルランド西部",
-      "note": "晩年を過ごした漁村"
+      "note": "晩年を過ごした漁村",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Flag_of_Ireland.svg/langja-330px-Flag_of_Ireland.svg.png"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Ludwig_Wittgenstein.jpg/500px-Ludwig_Wittgenstein.jpg",
