@@ -8165,6 +8165,104 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
   box-shadow: inset 0 0 0 1px rgba(184,149,46,0.2);
 }
 
+/* ================ 本棚の鍵ポップアップ ================ */
+.key-popup {
+  position: fixed;
+  inset: 0;
+  z-index: 250;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.key-popup.open { pointer-events: auto; opacity: 1; }
+.key-popup-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(30,12,16,0.55);
+  backdrop-filter: blur(4px);
+}
+.key-popup-panel {
+  position: relative;
+  width: min(90vw, 400px);
+  padding: 32px 26px 22px;
+  background: linear-gradient(180deg, #fffdf7 0%, #faf5e8 100%);
+  border: 2px solid var(--gold);
+  border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.35), 0 0 0 1px rgba(184,149,46,0.3);
+  font-family: var(--font-jp);
+  text-align: center;
+  transform: translateY(10px) scale(0.96);
+  transition: transform 0.25s ease;
+}
+.key-popup.open .key-popup-panel { transform: translateY(0) scale(1); }
+.key-popup-icon {
+  font-size: 42px;
+  margin-bottom: 14px;
+  filter: drop-shadow(0 2px 6px rgba(184,149,46,0.4));
+}
+.key-popup-title {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--wine-dark);
+  margin-bottom: 16px;
+  letter-spacing: 0.08em;
+  line-height: 1.5;
+}
+.key-popup-sub {
+  font-size: 12.5px;
+  line-height: 1.9;
+  color: var(--ink-2);
+  margin-bottom: 22px;
+  letter-spacing: 0.04em;
+}
+.key-popup-sub b { color: var(--wine-dark); }
+.key-popup-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.key-popup-no, .key-popup-yes {
+  flex: 1;
+  padding: 12px 10px;
+  border-radius: 24px;
+  font-family: var(--font-jp);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  transition: all 0.15s;
+}
+.key-popup-no {
+  background: transparent;
+  border: 1px solid var(--rule);
+  color: var(--ink-3);
+}
+.key-popup-no:hover { background: rgba(0,0,0,0.03); }
+.key-popup-yes {
+  background: linear-gradient(135deg, var(--wine) 0%, var(--wine-dark) 100%);
+  color: var(--gold-light);
+  border: 1px solid var(--gold);
+  box-shadow: 0 3px 10px rgba(122,46,58,0.3);
+}
+.key-popup-yes:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(122,46,58,0.4);
+}
+.key-popup-note {
+  font-size: 10px;
+  color: var(--ink-4);
+  line-height: 1.7;
+  letter-spacing: 0.02em;
+}
+@media (max-width: 360px) {
+  .key-popup-panel { padding: 24px 18px 16px; }
+  .key-popup-title { font-size: 15px; }
+  .key-popup-sub { font-size: 11.5px; }
+}
+
 /* ================ 偉人への手紙 ================ */
 .letter-write-btn {
   display: flex;

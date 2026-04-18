@@ -38,6 +38,7 @@ const SYNC_KEYS = [
 
 let fbApp = null, fbAuth = null, fbDb = null;
 let currentUser = null;
+let authResolved = false;
 let authListeners = [];
 
 function onAuthChange(cb) {
@@ -72,6 +73,7 @@ async function initFirebase() {
 
     onAuthStateChanged(fbAuth, async (user) => {
       currentUser = user;
+      authResolved = true;
       if (user) {
         await pullFromCloud(user);
       }
@@ -303,35 +305,59 @@ function updateAccountUI() {
   updateLoginNotice();
 }
 
-// 未ログインバナー（物語の文脈で登録を促す）
+// 本棚の鍵ポップアップ（未ログイン時、認証確定後に1度だけ表示）
 function updateLoginNotice() {
-  const existing = document.getElementById('loginNotice');
+  const existing = document.getElementById('loginNoticePopup');
   if (currentUser) {
     if (existing) existing.remove();
     return;
   }
+  // 認証状態が確定するまで表示しない（ログイン済みユーザーに一瞬出る問題を防止）
+  if (FIREBASE_ENABLED && !authResolved) return;
   if (!FIREBASE_ENABLED) return;
   if (existing) return;
-  const home = document.querySelector('#view-people');
-  if (!home) return;
   if (localStorage.getItem('ijin_login_notice_dismissed') === '1') return;
-  const banner = document.createElement('div');
-  banner.id = 'loginNotice';
-  banner.className = 'login-notice';
-  banner.innerHTML = `
-    <div class="login-notice-icon">🔑</div>
-    <div class="login-notice-text">
-      <div class="login-notice-title">あなたの本棚を、開きませんか。</div>
-      <div class="login-notice-sub">夜、どうしても眠れないとき。朝、立ち上がれないとき。<br>その記録を、夜明けに消えてしまわないよう<b>あなただけの本棚</b>にしまっておきませんか。</div>
+
+  const popup = document.createElement('div');
+  popup.id = 'loginNoticePopup';
+  popup.className = 'key-popup';
+  popup.innerHTML = `
+    <div class="key-popup-backdrop" data-close="1"></div>
+    <div class="key-popup-panel">
+      <div class="key-popup-icon">🔑</div>
+      <div class="key-popup-title">本棚の鍵を受け取りますか？</div>
+      <div class="key-popup-sub">
+        夜、どうしても眠れないとき。<br>
+        朝、どうしても立ち上がれないとき。<br><br>
+        その記録を、夜明けに消えてしまわないよう<br>
+        <b>あなただけの本棚</b>にしまっておきませんか。
+      </div>
+      <div class="key-popup-actions">
+        <button class="key-popup-no" data-close="1">いいえ</button>
+        <button class="key-popup-yes" id="keyPopupYes">はい、鍵を受け取る</button>
+      </div>
+      <div class="key-popup-note">
+        登録しなくても全機能使えます。<br>
+        登録すると、お気に入り・手紙・ルーティンが端末を変えても残ります。
+      </div>
     </div>
-    <button class="login-notice-btn" id="loginNoticeBtn">🔑 本棚の鍵を受け取る</button>
-    <button class="login-notice-close" id="loginNoticeClose" aria-label="閉じる">×</button>
   `;
-  home.insertBefore(banner, home.firstChild);
-  banner.querySelector('#loginNoticeBtn').addEventListener('click', openLoginModal);
-  banner.querySelector('#loginNoticeClose').addEventListener('click', () => {
+  document.body.appendChild(popup);
+  requestAnimationFrame(() => popup.classList.add('open'));
+
+  const close = () => {
     localStorage.setItem('ijin_login_notice_dismissed', '1');
-    banner.remove();
+    popup.classList.remove('open');
+    setTimeout(() => popup.remove(), 200);
+  };
+  popup.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', close));
+  popup.querySelector('#keyPopupYes').addEventListener('click', () => {
+    localStorage.setItem('ijin_login_notice_dismissed', '1');
+    popup.classList.remove('open');
+    setTimeout(() => {
+      popup.remove();
+      openLoginModal();
+    }, 200);
   });
 }
 
