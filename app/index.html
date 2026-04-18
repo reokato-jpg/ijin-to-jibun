@@ -94,16 +94,18 @@
   <main id="main">
     <!-- ホーム -->
     <section id="view-people" class="view active">
-      <!-- ヒーロー -->
-      <div class="hero">
-        <div class="hero-frame">
-          <div class="hero-ornament top">─── ◆ ───</div>
-          <h2 class="hero-title">偉人と、自分。</h2>
-          <div class="hero-divider"><span></span></div>
-          <div class="hero-tagline">人は、同じ感情の流れの中で生きている。</div>
-          <div class="hero-sub">迷った時、逃げたくなった時、立ち止まった時。<br>偉人たちも、同じ場所を歩いた。</div>
+      <!-- ヒーロー（シルエット画像版） -->
+      <div class="hero-silhouette">
+        <img class="hero-silhouette-img" src="assets/hero-silhouette.jpg" alt="偉人と自分。" loading="eager">
+        <div class="hero-silhouette-overlay">
+          <div class="hero-silhouette-tagline">人は、同じ感情の流れの中で生きている。</div>
+          <div class="hero-silhouette-sub">迷った時、逃げたくなった時、立ち止まった時。<br>偉人たちも、同じ場所を歩いた。</div>
           <div id="heroStats" class="hero-stats"></div>
-          <div class="hero-ornament bottom">─── ◆ ───</div>
+          <button class="hero-silhouette-btn" id="heroToMyBook">
+            <span class="hero-silhouette-btn-icon">📖</span>
+            <span>わたしの本を開く</span>
+            <span class="hero-silhouette-btn-arrow">→</span>
+          </button>
         </div>
       </div>
 

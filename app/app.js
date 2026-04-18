@@ -4633,6 +4633,11 @@ function bindEvents() {
     });
   });
   document.getElementById('backBtn').addEventListener('click', goBack);
+  // ヒーローの「わたしの本を開く」ボタン
+  document.getElementById('heroToMyBook')?.addEventListener('click', () => {
+    const favTab = document.querySelector('.tab[data-view="favorites"]');
+    if (favTab) favTab.click();
+  });
   const searchBtnEl = document.getElementById('searchBtn');
   if (searchBtnEl) searchBtnEl.addEventListener('click', () => {
     const bar = document.getElementById('searchBar');
