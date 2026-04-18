@@ -1949,6 +1949,13 @@ async function showPerson(id) {
       </button>
     ` : ''}
 
+    <button class="quiz-open-btn" data-quiz-open="1">
+      <span class="quiz-open-icon">❓</span>
+      <span class="quiz-open-label">私のこと、どこまで知ってる？</span>
+      ${getStampLevel(p.id) > 0 ? `<span class="quiz-open-level">Lv.${getStampLevel(p.id)}</span>` : ''}
+      <span class="quiz-open-arrow">→</span>
+    </button>
+
     <button class="letter-write-btn" data-letter-write="1">
       <img class="icon-img icon-img-lg" src="assets/icons/quill.png" alt="">
       <span class="letter-write-label">${p.name}に手紙を書く</span>
@@ -2467,6 +2474,11 @@ async function showPerson(id) {
   const letterBtn = container.querySelector('[data-letter-write]');
   if (letterBtn) {
     letterBtn.addEventListener('click', () => openLetterModal(p));
+  }
+  // クイズボタン
+  const quizBtn = container.querySelector('[data-quiz-open]');
+  if (quizBtn) {
+    quizBtn.addEventListener('click', () => openQuizModal(p));
   }
 
   // ミニタブ切り替え
@@ -3210,6 +3222,263 @@ if (typeof window !== 'undefined' && !window.__routinePeekBound) {
     const p = (typeof DATA !== 'undefined') && DATA.people.find(x => x.id === pid);
     if (p) openRoutineModal(p);
   });
+}
+
+// ====================== 親密度テスト（偉人クイズ） ======================
+const STAMPS_KEY = 'ijin_stamps';
+const TITLE_KEY = 'ijin_current_title';
+
+function loadStamps() {
+  try { return JSON.parse(localStorage.getItem(STAMPS_KEY) || '{}'); }
+  catch { return {}; }
+}
+function saveStamps(obj) {
+  localStorage.setItem(STAMPS_KEY, JSON.stringify(obj));
+}
+function grantStamp(personId) {
+  const stamps = loadStamps();
+  stamps[personId] = (stamps[personId] || 0) + 1;
+  saveStamps(stamps);
+}
+function getStampLevel(personId) {
+  return loadStamps()[personId] || 0;
+}
+function totalStamps() {
+  return Object.values(loadStamps()).reduce((a, b) => a + b, 0);
+}
+
+// 称号（総スタンプ数に応じた段階）
+const TITLES = [
+  { min: 0, name: '', label: '' },
+  { min: 1, name: '読者', label: '読者' },
+  { min: 3, name: '弟子', label: '弟子' },
+  { min: 7, name: '同志', label: '同志' },
+  { min: 15, name: '継承者', label: '継承者' },
+  { min: 30, name: '賢者', label: '賢者' },
+  { min: 60, name: '書斎の主', label: '書斎の主' },
+];
+function availableTitles() {
+  const total = totalStamps();
+  return TITLES.filter(t => t.min <= total);
+}
+function currentTitle() {
+  return localStorage.getItem(TITLE_KEY) || '';
+}
+function setCurrentTitle(name) {
+  if (name) localStorage.setItem(TITLE_KEY, name);
+  else localStorage.removeItem(TITLE_KEY);
+}
+
+// クイズを動的生成（既存データ＋ダミー選択肢）
+function shuffleArr(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function generateQuizzes(person) {
+  const quizzes = [];
+  const others = DATA.people.filter(x => x.id !== person.id);
+
+  // Q1: 職業
+  if (person.field) {
+    const distractors = shuffleArr(others.map(o => o.field).filter(f => f && f !== person.field))
+      .filter((v, i, a) => a.indexOf(v) === i).slice(0, 3);
+    if (distractors.length >= 3) {
+      quizzes.push({
+        q: `${person.name}の職業・分野は？`,
+        options: shuffleArr([person.field, ...distractors]),
+        answer: person.field,
+      });
+    }
+  }
+  // Q2: 出身国
+  if (person.country) {
+    const distractors = shuffleArr(others.map(o => normalizeCountry(o.country)).filter(c => c && c !== normalizeCountry(person.country)))
+      .filter((v, i, a) => a.indexOf(v) === i).slice(0, 3);
+    if (distractors.length >= 3) {
+      quizzes.push({
+        q: `${person.name}の出身国は？`,
+        options: shuffleArr([normalizeCountry(person.country), ...distractors]),
+        answer: normalizeCountry(person.country),
+      });
+    }
+  }
+  // Q3: 生年（±20年の範囲で惑わす）
+  if (person.birth) {
+    const y = person.birth;
+    const distractors = shuffleArr([y - 20, y - 10, y + 10, y + 25, y - 30, y + 15])
+      .filter((v, i, a) => a.indexOf(v) === i).slice(0, 3);
+    quizzes.push({
+      q: `${person.name}は何年に生まれた？`,
+      options: shuffleArr([y, ...distractors]).map(String),
+      answer: String(y),
+    });
+  }
+  // Q4+: 代表的な出来事から
+  const memorableEvents = (person.events || []).filter(e => (e.title || '').length > 5).slice(0, 5);
+  memorableEvents.forEach(ev => {
+    if (!ev.year || !ev.title) return;
+    const distractors = shuffleArr(
+      others.flatMap(o => (o.events || []).map(e => e.title))
+        .filter(t => t && t.length > 5 && t !== ev.title)
+    ).filter((v, i, a) => a.indexOf(v) === i).slice(0, 3);
+    if (distractors.length >= 3) {
+      quizzes.push({
+        q: `${ev.year}年、${person.name}は何をした？`,
+        options: shuffleArr([ev.title, ...distractors]),
+        answer: ev.title,
+      });
+    }
+  });
+  // Q(N+): 名言（どの偉人の言葉？）
+  const quotes = (person.quotes || []).slice(0, 3);
+  quotes.forEach(q => {
+    if (!q.text || q.text.length > 100) return;
+    const distractors = shuffleArr(others.map(o => o.name)).slice(0, 3);
+    if (distractors.length >= 3) {
+      quizzes.push({
+        q: `この言葉の主は？\n「${q.text}」`,
+        options: shuffleArr([person.name, ...distractors]),
+        answer: person.name,
+      });
+    }
+  });
+  return shuffleArr(quizzes);
+}
+
+function openQuizModal(person) {
+  const existing = document.getElementById('quizModal');
+  if (existing) existing.remove();
+
+  const pool = generateQuizzes(person);
+  if (pool.length === 0) {
+    alert('まだこの偉人のクイズが用意できません。');
+    return;
+  }
+
+  const modal = document.createElement('div');
+  modal.id = 'quizModal';
+  modal.className = 'quiz-modal';
+
+  // ステップ1: 問題数選択
+  const showPicker = () => {
+    const maxN = pool.length;
+    const options = [3, 5, 10].filter(n => n <= maxN);
+    if (options.length === 0) options.push(maxN);
+    if (!options.includes(maxN)) options.push(maxN);
+    modal.innerHTML = `
+      <div class="quiz-backdrop" data-close="1"></div>
+      <div class="quiz-panel">
+        <button class="quiz-close" data-close="1" aria-label="閉じる">×</button>
+        <div class="quiz-head">
+          <div class="quiz-head-title">私のこと、どこまで知ってる？</div>
+          <div class="quiz-head-sub">${person.name} の世界を、どこまで旅する？</div>
+        </div>
+        <div class="quiz-picker">
+          ${options.map(n => `<button class="quiz-pick-btn" data-pick-count="${n}">${n}問 挑戦</button>`).join('')}
+        </div>
+        <div class="quiz-note">全問正解で${person.name}のスタンプを獲得！</div>
+      </div>
+    `;
+    modal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', close));
+    modal.querySelectorAll('[data-pick-count]').forEach(btn => {
+      btn.addEventListener('click', () => startQuiz(parseInt(btn.dataset.pickCount, 10)));
+    });
+  };
+
+  let currentIdx = 0;
+  let correct = 0;
+  let selectedPool = [];
+
+  const startQuiz = (count) => {
+    selectedPool = pool.slice(0, count);
+    currentIdx = 0;
+    correct = 0;
+    showQuestion();
+  };
+
+  const showQuestion = () => {
+    if (currentIdx >= selectedPool.length) return showResult();
+    const q = selectedPool[currentIdx];
+    const panel = modal.querySelector('.quiz-panel') || modal;
+    modal.innerHTML = `
+      <div class="quiz-backdrop" data-close="1"></div>
+      <div class="quiz-panel">
+        <button class="quiz-close" data-close="1" aria-label="閉じる">×</button>
+        <div class="quiz-progress">
+          <span>${currentIdx + 1} / ${selectedPool.length}</span>
+          <span class="quiz-progress-bar"><span style="width:${((currentIdx) / selectedPool.length) * 100}%"></span></span>
+        </div>
+        <div class="quiz-question">${q.q.replace(/\n/g, '<br>')}</div>
+        <div class="quiz-options">
+          ${q.options.map((opt, i) => `<button class="quiz-option" data-opt-idx="${i}" data-opt="${escapeHtml(opt)}">${opt}</button>`).join('')}
+        </div>
+      </div>
+    `;
+    modal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', close));
+    modal.querySelectorAll('.quiz-option').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const selected = btn.dataset.opt;
+        const isCorrect = selected === q.answer;
+        btn.classList.add(isCorrect ? 'correct' : 'wrong');
+        // 正解ボタンもハイライト
+        modal.querySelectorAll('.quiz-option').forEach(b => {
+          if (b.dataset.opt === q.answer) b.classList.add('correct');
+          b.disabled = true;
+        });
+        if (isCorrect) correct++;
+        setTimeout(() => {
+          currentIdx++;
+          showQuestion();
+        }, 1000);
+      });
+    });
+  };
+
+  const showResult = () => {
+    const total = selectedPool.length;
+    const allCorrect = (correct === total);
+    if (allCorrect) {
+      grantStamp(person.id);
+      if (typeof playKeyUnlockSound === 'function') playKeyUnlockSound();
+    }
+    const level = getStampLevel(person.id);
+    modal.innerHTML = `
+      <div class="quiz-backdrop" data-close="1"></div>
+      <div class="quiz-panel">
+        <button class="quiz-close" data-close="1" aria-label="閉じる">×</button>
+        <div class="quiz-result">
+          <div class="quiz-result-score">${correct} / ${total}</div>
+          <div class="quiz-result-msg">
+            ${allCorrect ? `✨ 全問正解！${person.name}のスタンプを獲得` : correct >= total * 0.7 ? 'あと少し…！もう一度挑戦して全問正解を目指そう。' : 'もう一度読み返してから、再挑戦してみよう。'}
+          </div>
+          ${allCorrect ? `
+            <div class="quiz-stamp">
+              <div class="quiz-stamp-visual">🏷</div>
+              <div class="quiz-stamp-name">${person.name}の親密度 Lv.${level}</div>
+            </div>
+          ` : ''}
+          <button class="quiz-retry" id="quizRetry">もう一度</button>
+          <button class="quiz-done" data-close="1">閉じる</button>
+        </div>
+      </div>
+    `;
+    modal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', close));
+    modal.querySelector('#quizRetry').addEventListener('click', () => showPicker());
+  };
+
+  const close = () => {
+    modal.classList.remove('open');
+    setTimeout(() => modal.remove(), 200);
+  };
+
+  document.body.appendChild(modal);
+  requestAnimationFrame(() => modal.classList.add('open'));
+  showPicker();
 }
 
 // ====================== 偉人への手紙 ======================
@@ -4778,7 +5047,9 @@ function renderFavorites() {
   tocItems.push({ id: 'chap-diary', title: 'わたしの日記', count: diaryEntries.length });
 
   const userName = getUserName();
-  const bookTitle = userName ? `${userName}の本` : 'わたしの本';
+  const title = currentTitle();
+  const displayName = userName ? `${title ? `【${title}】` : ''}${userName}` : '';
+  const bookTitle = displayName ? `${displayName}の本` : 'わたしの本';
 
   let html = `
     <div class="open-book">
@@ -4796,6 +5067,12 @@ function renderFavorites() {
           <button class="title-page-edit-name" id="editNameBtn">
             ${userName ? '✎ 名前を変更' : '✎ 名前を設定'}
           </button>
+          <button class="title-page-edit-name" id="editTitleBtn">
+            ${title ? `✎ 称号を変更（現在：${title}）` : '🏆 称号を選ぶ'}
+          </button>
+          <div class="title-page-stamp-count">
+            獲得スタンプ <strong>${totalStamps()}</strong> 個
+          </div>
           <div class="title-page-bottom">─── ◆ ───</div>
         </div>
       </div>
@@ -5179,6 +5456,30 @@ function renderFavorites() {
       if (name === null) return;
       setUserName(name);
       renderFavorites();
+    });
+  }
+  // 称号選択
+  const editTitle = list.querySelector('#editTitleBtn');
+  if (editTitle) {
+    editTitle.addEventListener('click', () => {
+      const avail = availableTitles().filter(t => t.name);
+      if (avail.length === 0) {
+        alert('まだ称号を獲得していません。\nクイズを解いて偉人のスタンプを集めましょう。');
+        return;
+      }
+      const cur = currentTitle();
+      const list = avail.map((t, i) => `${i + 1}. ${t.name}（総スタンプ${t.min}以上）`).join('\n');
+      const input = prompt(
+        `称号を選択（番号入力・0で外す）\n現在：${cur || 'なし'}\n\n${list}`,
+        '0'
+      );
+      if (input === null) return;
+      const n = parseInt(input, 10);
+      if (n === 0) { setCurrentTitle(''); renderFavorites(); return; }
+      if (n >= 1 && n <= avail.length) {
+        setCurrentTitle(avail[n - 1].name);
+        renderFavorites();
+      }
     });
   }
 

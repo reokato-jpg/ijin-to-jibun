@@ -8432,6 +8432,250 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
   .key-popup-sub { font-size: 11.5px; }
 }
 
+/* 称号・スタンプ表示 */
+.title-page-stamp-count {
+  margin-top: 10px;
+  font-family: var(--font-jp);
+  font-size: 11px;
+  color: var(--ink-3);
+  letter-spacing: 0.05em;
+}
+.title-page-stamp-count strong {
+  color: var(--wine);
+  font-size: 14px;
+  margin: 0 4px;
+}
+
+/* ================ 親密度クイズ ================ */
+.quiz-open-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 820px;
+  margin: 10px auto 0;
+  padding: 14px 18px;
+  background: linear-gradient(180deg, #fff7e8 0%, #faecc8 100%);
+  border: 1.5px solid var(--gold);
+  border-radius: 8px;
+  font-family: var(--font-jp);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--wine-dark);
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  transition: all 0.15s;
+}
+.quiz-open-btn:hover {
+  background: linear-gradient(180deg, #faecc8 0%, #f5e0a9 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(184,149,46,0.25);
+}
+.quiz-open-icon { font-size: 18px; }
+.quiz-open-label { flex: 1; text-align: left; }
+.quiz-open-level {
+  font-size: 11px;
+  background: var(--wine);
+  color: var(--gold-light);
+  padding: 3px 10px;
+  border-radius: 10px;
+  letter-spacing: 0.05em;
+  font-family: var(--font-en);
+}
+.quiz-open-arrow { font-size: 14px; color: var(--wine); opacity: 0.7; }
+
+.quiz-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 210;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+.quiz-modal.open { opacity: 1; pointer-events: auto; }
+.quiz-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(45,20,25,0.55);
+  backdrop-filter: blur(3px);
+}
+.quiz-panel {
+  position: relative;
+  width: min(92vw, 500px);
+  max-height: 90vh;
+  overflow-y: auto;
+  background: linear-gradient(180deg, #fffdf7 0%, #faf5e8 100%);
+  border: 2px solid var(--gold);
+  border-radius: 12px;
+  padding: 28px 24px 22px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+  font-family: var(--font-jp);
+  text-align: center;
+}
+.quiz-close {
+  position: absolute;
+  top: 10px; right: 14px;
+  background: none;
+  border: none;
+  font-size: 22px;
+  color: var(--ink-3);
+  cursor: pointer;
+}
+.quiz-head-title {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--wine-dark);
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+.quiz-head-sub {
+  font-size: 12px;
+  color: var(--ink-3);
+  margin-bottom: 20px;
+}
+.quiz-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 18px 0 14px;
+}
+.quiz-pick-btn {
+  padding: 12px 16px;
+  background: linear-gradient(135deg, var(--wine) 0%, var(--wine-dark) 100%);
+  color: var(--gold-light);
+  border: 1px solid var(--gold);
+  border-radius: 22px;
+  font-family: var(--font-jp);
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  letter-spacing: 0.08em;
+  transition: all 0.15s;
+}
+.quiz-pick-btn:hover { transform: translateY(-1px); }
+.quiz-note {
+  font-size: 11px;
+  color: var(--ink-4);
+  margin-top: 8px;
+}
+.quiz-progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--ink-3);
+  margin-bottom: 16px;
+  font-family: var(--font-en);
+}
+.quiz-progress-bar {
+  flex: 1;
+  height: 4px;
+  background: rgba(184,149,46,0.2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.quiz-progress-bar span {
+  display: block;
+  height: 100%;
+  background: var(--wine);
+  transition: width 0.3s;
+}
+.quiz-question {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--ink);
+  margin: 14px 0 20px;
+  font-weight: 600;
+  text-align: left;
+  white-space: pre-wrap;
+}
+.quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.quiz-option {
+  padding: 11px 14px;
+  background: #fff;
+  border: 1.5px solid var(--rule);
+  border-radius: 8px;
+  font-family: var(--font-jp);
+  font-size: 13px;
+  color: var(--ink);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s;
+}
+.quiz-option:hover:not(:disabled) {
+  border-color: var(--gold);
+  background: #fffbef;
+}
+.quiz-option.correct {
+  background: #e8f5e9;
+  border-color: #4caf50;
+  color: #2e7d32;
+  font-weight: 700;
+}
+.quiz-option.wrong {
+  background: #ffebee;
+  border-color: #d32f2f;
+  color: #c62828;
+}
+.quiz-result {
+  padding: 10px 0;
+}
+.quiz-result-score {
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--wine-dark);
+  font-family: var(--font-display);
+  margin-bottom: 10px;
+}
+.quiz-result-msg {
+  font-size: 13px;
+  line-height: 1.85;
+  color: var(--ink-2);
+  margin-bottom: 16px;
+}
+.quiz-stamp {
+  padding: 14px;
+  background: rgba(184,149,46,0.12);
+  border: 1px dashed var(--gold);
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+.quiz-stamp-visual {
+  font-size: 36px;
+  margin-bottom: 6px;
+}
+.quiz-stamp-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--wine-dark);
+}
+.quiz-retry, .quiz-done {
+  padding: 10px 24px;
+  margin: 4px 6px;
+  border-radius: 20px;
+  font-family: var(--font-jp);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.quiz-retry {
+  background: linear-gradient(135deg, var(--wine) 0%, var(--wine-dark) 100%);
+  color: var(--gold-light);
+  border: 1px solid var(--gold);
+}
+.quiz-done {
+  background: transparent;
+  border: 1px solid var(--rule);
+  color: var(--ink-3);
+}
+
 /* ================ 偉人への手紙 ================ */
 .letter-write-btn {
   display: flex;
