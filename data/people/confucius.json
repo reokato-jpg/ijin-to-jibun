@@ -14,8 +14,8 @@
       "title": "魯の国、下級貴族の子に",
       "detail": "3歳で父を失い、貧しく育つ。",
       "tags": [
-        "parent_conflict",
-        "poverty"
+        "poverty",
+        "bereavement"
       ]
     },
     {
@@ -24,9 +24,9 @@
       "title": "父死去、母と貧困の中で育つ",
       "detail": "母の実家を頼らず、自らの力で学問を積んだ。『吾十有五にして学に志す』。",
       "tags": [
-        "parent_conflict",
         "loss",
-        "poverty"
+        "poverty",
+        "bereavement"
       ]
     },
     {

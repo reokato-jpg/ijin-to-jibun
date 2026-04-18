@@ -13,9 +13,7 @@
       "age": 0,
       "title": "ワルシャワの教師家庭に誕生",
       "detail": "ロシア支配下のポーランドで、ポーランド語を教えることが禁じられていた時代。",
-      "tags": [
-        "parent_conflict"
-      ]
+      "tags": []
     },
     {
       "year": 1876,
@@ -24,7 +22,7 @@
       "detail": "相次ぐ家族の死でマリーは無神論者に。",
       "tags": [
         "loss",
-        "parent_conflict"
+        "bereavement"
       ]
     },
     {

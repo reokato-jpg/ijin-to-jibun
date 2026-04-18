@@ -13,9 +13,7 @@
       "age": 0,
       "title": "ボンの宮廷音楽家の家に誕生",
       "detail": "アルコール依存の父に鞭打たれ幼少期から神童教育を強いられた。",
-      "tags": [
-        "parent_conflict"
-      ]
+      "tags": []
     },
     {
       "year": 1770,
@@ -30,9 +28,9 @@
       "title": "母の死、父のアルコール依存の中で一家を支える",
       "detail": "17歳で長男として二人の弟を養う。音楽家としての父はすでに崩れており、母を結核で失う。『私の最良の友を失った』と手紙に書いた。",
       "tags": [
-        "parent_conflict",
         "loss",
-        "poverty"
+        "poverty",
+        "bereavement"
       ]
     },
     {
@@ -128,7 +126,7 @@
       "detail": "兄カスパールの死後、甥の後見を巡り義姉と法廷闘争。晩年の創作を大きく消耗させた。",
       "tags": [
         "heartbreak",
-        "parent_conflict"
+        "bereavement"
       ]
     },
     {

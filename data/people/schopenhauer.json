@@ -13,9 +13,7 @@
       "age": 0,
       "title": "ダンツィヒの裕福な商家に誕生",
       "detail": "父は商人で後に自殺、母は当時人気の小説家。",
-      "tags": [
-        "parent_conflict"
-      ]
+      "tags": []
     },
     {
       "year": 1805,
@@ -23,8 +21,8 @@
       "title": "父ハインリヒが運河に身を投げて自殺",
       "detail": "鬱病の父の死。生涯彼を支配した財産の基盤となる。",
       "tags": [
-        "parent_conflict",
-        "loss"
+        "loss",
+        "bereavement"
       ]
     },
     {

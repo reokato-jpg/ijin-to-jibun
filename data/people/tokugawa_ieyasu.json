@@ -13,9 +13,7 @@
       "age": 0,
       "title": "三河・岡崎に誕生",
       "detail": "父は松平広忠、母は於大の方。両親は早くに離別。",
-      "tags": [
-        "parent_conflict"
-      ]
+      "tags": []
     },
     {
       "year": 1548,
@@ -79,8 +77,8 @@
       "detail": "信長の命により、武田との内通を疑われた息子を切腹させた。妻・築山殿も殺害。一生消えない傷。",
       "tags": [
         "loss",
-        "parent_conflict",
-        "pride_broken"
+        "pride_broken",
+        "bereavement"
       ]
     },
     {

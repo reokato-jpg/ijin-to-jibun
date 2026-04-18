@@ -13,9 +13,7 @@
       "age": 0,
       "title": "ジュネーヴで誕生、母は産後9日で死去",
       "detail": "時計職人の父に育てられる。",
-      "tags": [
-        "parent_conflict"
-      ]
+      "tags": []
     },
     {
       "year": 1722,
@@ -23,7 +21,7 @@
       "title": "父が決闘で追放、叔父に預けられる",
       "detail": "父子は別離。十代の孤独が始まる。",
       "tags": [
-        "parent_conflict"
+        "bereavement"
       ]
     },
     {
