@@ -3937,7 +3937,10 @@ main { flex: 1; overflow-y: auto; background: var(--paper); }
   .profile-cover-dates { font-size: 10px; }
 
   /* ヒーロー */
-  .hero-tagline { font-size: 14px; }
+  .hero-frame { padding: 16px 12px 12px; }
+  .hero-title { font-size: 19px; letter-spacing: 0.15em; margin-bottom: 8px; }
+  .hero-ornament { font-size: 9px; letter-spacing: 0.1em; }
+  .hero-tagline { font-size: 13px; letter-spacing: 0.12em; }
   .hero-sub { font-size: 11px; line-height: 1.7; }
 
   /* 詳細検索パネル */
