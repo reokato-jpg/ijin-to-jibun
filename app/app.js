@@ -2007,12 +2007,12 @@ function personMatchesRoutineFilter(p, filter) {
   }
 }
 
-// 国名を地域に正規化（同国異表記をまとめる）
+// 国名を地域に正規化（同国異表記をまとめる）／生まれた国を採用
 function normalizeCountry(c) {
   if (!c) return '';
   const s = String(c);
-  // スラッシュや読点で分割された最初の国を採用
-  const first = s.split(/[／\/・,、]/)[0].trim();
+  // スラッシュ・→・などで分割、最初（生まれの国）を採用
+  const first = s.split(/→|[→／\/・,、]/)[0].trim();
   const map = {
     '日本（平安）': '日本', '日本（江戸）': '日本',
     'オーストリア＝ハンガリー（現チェコ）': 'オーストリア',
