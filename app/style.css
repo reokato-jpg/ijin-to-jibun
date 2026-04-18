@@ -2951,6 +2951,7 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
 .support-card {
   position: relative;
   display: flex;
+  flex-wrap: wrap;
   gap: 16px;
   align-items: flex-start;
   padding: 22px 22px 20px;
@@ -2963,6 +2964,19 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
     inset 0 0 0 1px rgba(255,255,255,0.5),
     0 4px 20px rgba(184,149,46,0.25);
   overflow: hidden;
+}
+.support-hero-img {
+  display: block;
+  width: calc(100% + 44px);
+  margin: -22px -22px 14px;
+  max-height: 180px;
+  object-fit: cover;
+  object-position: center 30%;
+  flex-basis: 100%;
+  border-bottom: 1px solid rgba(184,149,46,0.3);
+}
+@media (min-width: 900px) {
+  .support-hero-img { max-height: 220px; }
 }
 .support-card::before {
   content: '';
