@@ -2057,6 +2057,27 @@ async function showPerson(id) {
       <span class="quiz-open-arrow">→</span>
     </button>
 
+    ${(() => {
+      const lv = getStampLevel(p.id);
+      const stamps = Array.from({length: lv}, (_, i) => `<div class="stamp-seal">★</div>`).join('');
+      const nextGoal = lv < 3 ? 3 : lv < 5 ? 5 : lv < 10 ? 10 : null;
+      return `
+        <div class="profile-stamps">
+          <div class="profile-stamps-head">
+            <div class="profile-stamps-title">${p.name}のスタンプ</div>
+            <div class="profile-stamps-count">Lv.${lv}</div>
+          </div>
+          ${lv > 0 ? `<div class="profile-stamps-row">${stamps}</div>` : `<div class="profile-stamps-empty">まだスタンプがありません</div>`}
+          <div class="profile-stamps-criteria">
+            <div class="stamp-criteria-head">🏷 スタンプの貯め方</div>
+            <div class="stamp-criteria-item">・クイズ全問正解で +1</div>
+            <div class="stamp-criteria-item">・Lv.3 で${p.name}があなたをフォロー</div>
+            ${nextGoal ? `<div class="stamp-criteria-goal">あと <b>${nextGoal - lv}</b> 個で次の段階</div>` : '<div class="stamp-criteria-goal">✨ マスターレベル達成</div>'}
+          </div>
+        </div>
+      `;
+    })()}
+
     <button class="letter-write-btn ${isFollowedByPerson(p.id) ? 'followed' : ''}" data-letter-write="1">
       <img class="icon-img icon-img-lg" src="assets/icons/quill.png" alt="">
       <span class="letter-write-label">${isFollowedByPerson(p.id) ? `${p.name}と手紙のやりとり` : `${p.name}に手紙を書く`}</span>
@@ -5136,6 +5157,9 @@ function renderFavorites() {
   // 目次を先に組み立てる
   const kanjiNum = ['一','二','三','四','五','六','七','八','九','十'];
   const tocItems = [];
+  const stampsMap = loadStamps();
+  const stampedPeople = Object.keys(stampsMap).filter(k => stampsMap[k] > 0).map(id => DATA.people.find(p => p.id === id)).filter(Boolean);
+  if (stampedPeople.length > 0) tocItems.push({ id: 'chap-stamps', title: 'スタンプ帳', count: stampedPeople.length });
   if (recentlyReadItems.length > 0) tocItems.push({ id: 'chap-recent', title: '続きから読む', count: recentlyReadItems.length });
   if (favPeopleItems.length > 0) tocItems.push({ id: 'chap-people', title: 'お手本にしたい人', count: favPeopleItems.length });
   if (favQuoteItems.length > 0) tocItems.push({ id: 'chap-quotes', title: '心に留める言葉', count: favQuoteItems.length });
@@ -5201,6 +5225,43 @@ function renderFavorites() {
   // 章番号を自動で降る
   let chapIdx = 0;
   const nextChap = () => kanjiNum[chapIdx++] || (chapIdx);
+
+  // スタンプ帳
+  if (stampedPeople.length > 0) {
+    html += `
+      <div class="my-book-chapter" id="chap-stamps">
+        <div class="my-book-chapter-label">第${nextChap()}章</div>
+        <div class="my-book-chapter-title">スタンプ帳</div>
+        <div class="my-book-chapter-line"></div>
+        <div class="my-book-chapter-intro">親密度クイズで集めたスタンプ一覧。称号は総スタンプ数で決まります。</div>
+      </div>
+      <div class="stamp-criteria-box">
+        <div class="stamp-criteria-title">🏷 称号の段階</div>
+        <div class="stamp-criteria-list">
+          ${TITLES.filter(t => t.name).map(t => {
+            const met = totalStamps() >= t.min;
+            return `<div class="stamp-criteria-row ${met ? 'met' : ''}"><span class="stamp-criteria-min">${t.min}+</span><span class="stamp-criteria-name">${met ? '✓ ' : ''}${t.name}</span></div>`;
+          }).join('')}
+        </div>
+      </div>
+      <div class="stamp-book-grid">
+        ${stampedPeople.map(p => {
+          const lv = stampsMap[p.id];
+          const avatar = p.imageUrl
+            ? `<div class="stamp-book-avatar" style="background-image:url('${p.imageUrl}')"></div>`
+            : `<div class="stamp-book-avatar noimg">${p.name.charAt(0)}</div>`;
+          return `
+            <div class="stamp-book-card" data-id="${p.id}">
+              ${avatar}
+              <div class="stamp-book-name">${p.name}</div>
+              <div class="stamp-book-level">Lv.${lv}</div>
+              <div class="stamp-book-seals">${'★'.repeat(lv)}</div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+  }
 
   // 続きから読む（しおり）
   if (recentlyReadItems.length > 0) {
@@ -5626,6 +5687,10 @@ function renderFavorites() {
         renderFavorites();
       }
     });
+  });
+  // スタンプカード → 偉人プロフィールへ
+  list.querySelectorAll('.stamp-book-card').forEach(el => {
+    el.addEventListener('click', () => showPerson(el.dataset.id));
   });
   // つぶやきの削除
   list.querySelectorAll('[data-del-tweet]').forEach(btn => {
