@@ -3928,13 +3928,13 @@ main { flex: 1; overflow-y: auto; background: var(--paper); }
   .adv-search-toggle { padding: 9px 12px; font-size: 11px; }
   .adv-search-panel { padding: 10px 12px; }
 
-  /* アカウントバッジ（モバイルではアイコンのみでタイトル中央のスペースを確保） */
-  .account-badge { padding: 4px 6px; font-size: 10px; }
-  .account-badge .acc-name { display: none; }
+  /* アカウントバッジ（モバイル：小さめに表示してタイトルと両立） */
+  .account-badge { padding: 3px 7px; font-size: 10px; }
+  .acc-name { max-width: 44px; font-size: 10px; }
 
   /* ヘッダー：検索アイコンを小さくしてタイトル重なりを防止 */
   .app-header { padding: 14px 10px; }
-  .app-header .icon-btn { width: 28px; height: 28px; font-size: 20px; }
+  .app-header .icon-btn { width: 26px; height: 26px; font-size: 18px; }
   .app-header .header-right { gap: 4px; }
 
   /* ヘッダータイトル */
