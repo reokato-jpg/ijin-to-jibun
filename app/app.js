@@ -1436,6 +1436,7 @@ function saveBookmark(personId) {
 // ページめくり効果音（Web Audio API で合成）
 let __pageFlipAudioCtx = null;
 function playPageFlipSound() {
+  if (isMuted()) return;
   try {
     const AC = window.AudioContext || window.webkitAudioContext;
     if (!AC) return;
@@ -1470,6 +1471,115 @@ function playPageFlipSound() {
     src.start(now);
     src.stop(now + 0.4);
   } catch (e) { /* ignore */ }
+}
+
+// 鍵が開く音（Web Audio APIで合成：金属クリック＋回転＋解錠クリック）
+function playKeyUnlockSound() {
+  if (isMuted()) return;
+  try {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    if (!__pageFlipAudioCtx) __pageFlipAudioCtx = new AC();
+    const ctx = __pageFlipAudioCtx;
+    if (ctx.state === 'suspended') ctx.resume();
+    const now = ctx.currentTime;
+
+    // 1. 最初の金属的なクリック音（鍵を差し込む）
+    const makeClick = (t, freq, dur, volume) => {
+      const osc = ctx.createOscillator();
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(freq, t);
+      osc.frequency.exponentialRampToValueAtTime(freq * 0.5, t + dur);
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(volume, t + 0.003);
+      g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+      const hp = ctx.createBiquadFilter();
+      hp.type = 'bandpass';
+      hp.frequency.value = freq;
+      hp.Q.value = 8;
+      osc.connect(hp).connect(g).connect(ctx.destination);
+      osc.start(t);
+      osc.stop(t + dur + 0.01);
+    };
+
+    // 鍵カチッ（差し込み）
+    makeClick(now, 3000, 0.04, 0.3);
+    makeClick(now + 0.02, 2400, 0.05, 0.25);
+
+    // 2. 鍵を回す音（メカニカルな摩擦音）
+    const bufSize = ctx.sampleRate * 0.35;
+    const noiseBuf = ctx.createBuffer(1, bufSize, ctx.sampleRate);
+    const data = noiseBuf.getChannelData(0);
+    for (let i = 0; i < bufSize; i++) {
+      const t = i / bufSize;
+      // 中央で山になるエンベロープ
+      const env = Math.sin(t * Math.PI);
+      data[i] = (Math.random() * 2 - 1) * env * 0.25;
+    }
+    const src = ctx.createBufferSource();
+    src.buffer = noiseBuf;
+    const bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.setValueAtTime(800, now + 0.08);
+    bp.frequency.linearRampToValueAtTime(1600, now + 0.4);
+    bp.Q.value = 4;
+    const gTurn = ctx.createGain();
+    gTurn.gain.setValueAtTime(0.6, now + 0.08);
+    gTurn.gain.exponentialRampToValueAtTime(0.01, now + 0.45);
+    src.connect(bp).connect(gTurn).connect(ctx.destination);
+    src.start(now + 0.08);
+    src.stop(now + 0.5);
+
+    // 3. 解錠カチャン（より低い音）
+    makeClick(now + 0.45, 1200, 0.08, 0.4);
+    makeClick(now + 0.48, 800, 0.12, 0.35);
+
+    // 4. 最後の余韻（鈴のような金属音）
+    const bell = ctx.createOscillator();
+    bell.type = 'sine';
+    bell.frequency.setValueAtTime(2400, now + 0.5);
+    const gBell = ctx.createGain();
+    gBell.gain.setValueAtTime(0, now + 0.5);
+    gBell.gain.linearRampToValueAtTime(0.2, now + 0.51);
+    gBell.gain.exponentialRampToValueAtTime(0.001, now + 1.0);
+    bell.connect(gBell).connect(ctx.destination);
+    bell.start(now + 0.5);
+    bell.stop(now + 1.05);
+  } catch (e) { /* ignore */ }
+}
+
+// ミュート状態管理
+const MUTE_KEY = 'ijin_muted';
+function isMuted() { return localStorage.getItem(MUTE_KEY) === '1'; }
+function setMuted(on) {
+  if (on) localStorage.setItem(MUTE_KEY, '1');
+  else localStorage.removeItem(MUTE_KEY);
+}
+
+function applyMuteState() {
+  const muted = isMuted();
+  // 全BGMをミュート／ミュート解除
+  ['homeBgm', 'searchBgm', 'routineBgm', 'blogBgm', 'favoritesBgm'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.muted = muted;
+  });
+  // ボタン表示更新
+  const btn = document.getElementById('muteToggle');
+  if (btn) {
+    btn.textContent = muted ? '🔇' : '🔊';
+    btn.classList.toggle('muted', muted);
+  }
+}
+
+function initMuteToggle() {
+  const btn = document.getElementById('muteToggle');
+  if (!btn) return;
+  applyMuteState();
+  btn.addEventListener('click', () => {
+    setMuted(!isMuted());
+    applyMuteState();
+  });
 }
 
 // BGM全停止
@@ -5007,7 +5117,7 @@ function bindEvents() {
       else if (v === 'routines') target = routineBgm;
       else if (v === 'articles') target = blogBgm;
       else if (v === 'favorites') target = favoritesBgm;
-      if (target) {
+      if (target && !isMuted()) {
         target.volume = 0.35;
         target.play().catch(() => {});
       }
@@ -5045,6 +5155,7 @@ function bindEvents() {
   await loadData();
   await loadComments();
   bindEvents();
+  initMuteToggle();
   renderHeroStats();
   renderUpdates();
   renderOshi();

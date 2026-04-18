@@ -354,11 +354,13 @@ function updateLoginNotice() {
   popup.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', close));
   popup.querySelector('#keyPopupYes').addEventListener('click', () => {
     localStorage.setItem('ijin_login_notice_dismissed', '1');
+    // 鍵が開く音
+    if (typeof playKeyUnlockSound === 'function') playKeyUnlockSound();
     popup.classList.remove('open');
     setTimeout(() => {
       popup.remove();
       openLoginModal();
-    }, 200);
+    }, 800);
   });
 }
 
