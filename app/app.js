@@ -2672,11 +2672,35 @@ function loadLetters() {
   try { return JSON.parse(localStorage.getItem(LETTERS_KEY) || '[]'); }
   catch { return []; }
 }
+// AI返信のエンドポイント（Vercel等にデプロイした /api/letter-reply）
+// 設定されていない/失敗時はルールベース返信にフォールバック
+const LETTER_REPLY_ENDPOINT = '/api/letter-reply';
+
+async function fetchAIReply(person, letterText) {
+  try {
+    const res = await fetch(LETTER_REPLY_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        personName: person.name,
+        personField: person.field,
+        personEra: `${person.birth || '?'}–${person.death || ''}`,
+        letterText: letterText.slice(0, 1200),
+        quotes: (person.quotes || []).slice(0, 5),
+      }),
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data?.reply || null;
+  } catch {
+    return null;
+  }
+}
+
 function saveLetter(personId, text) {
   if (!text || !text.trim()) return null;
   const letters = loadLetters();
   const person = DATA.people.find(p => p.id === personId);
-  // 2〜3日後に返信が届く設定（現実感＋期待感）
   const replyDelayDays = 2 + Math.floor(Math.random() * 2);
   const replyAt = new Date(Date.now() + replyDelayDays * 24 * 60 * 60 * 1000).toISOString();
   const entry = {
@@ -2685,12 +2709,24 @@ function saveLetter(personId, text) {
     text: text.trim(),
     date: new Date().toISOString(),
     reply: person ? {
-      text: generateReply(person, text.trim()),
+      text: generateReply(person, text.trim()), // 即時にルールベース版を保存
       deliverAt: replyAt,
+      source: 'rule',
     } : null,
   };
   letters.unshift(entry);
   localStorage.setItem(LETTERS_KEY, JSON.stringify(letters));
+  // 裏でAI返信を取得し、成功したら差し替え
+  if (person) {
+    fetchAIReply(person, text.trim()).then(aiReply => {
+      if (!aiReply) return;
+      const cur = loadLetters();
+      const idx = cur.findIndex(l => l.id === entry.id);
+      if (idx === -1) return;
+      cur[idx].reply = { text: aiReply, deliverAt: replyAt, source: 'ai' };
+      localStorage.setItem(LETTERS_KEY, JSON.stringify(cur));
+    });
+  }
   return entry;
 }
 
