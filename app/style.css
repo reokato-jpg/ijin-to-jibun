@@ -8585,6 +8585,46 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
   letter-spacing: 0.03em;
 }
 
+/* ================ 聖地巡礼チェックイン ================ */
+.place-card.checked {
+  background: rgba(184,149,46,0.08);
+  border-color: var(--gold);
+}
+.place-card.checked .place-pin {
+  color: var(--gold);
+  font-weight: 700;
+}
+.place-visited {
+  display: inline-block;
+  padding: 2px 8px;
+  background: var(--gold);
+  color: var(--wine-dark);
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-left: 6px;
+  font-family: var(--font-en);
+}
+.place-checkin-btn {
+  padding: 5px 12px;
+  background: linear-gradient(135deg, var(--wine) 0%, var(--wine-dark) 100%);
+  color: var(--gold-light);
+  border: 1px solid var(--gold);
+  border-radius: 14px;
+  font-family: var(--font-jp);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.03em;
+}
+.place-checkin-btn:hover { transform: translateY(-1px); }
+.place-checkin-btn.done {
+  background: #fff;
+  color: var(--wine);
+  border-color: var(--wine);
+}
+
 /* ================ フォローボタン ================ */
 .follow-btn {
   padding: 6px 14px;

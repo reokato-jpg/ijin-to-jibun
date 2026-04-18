@@ -1684,6 +1684,43 @@ function playBookFlip({ title, subtitle, imageUrl }) {
 }
 
 // ====================== 人物詳細 ======================
+// 聖地巡礼チェックイン
+const CHECKINS_KEY = 'ijin_checkins';
+function loadCheckins() {
+  try { return JSON.parse(localStorage.getItem(CHECKINS_KEY) || '{}'); }
+  catch { return {}; }
+}
+function saveCheckins(obj) {
+  localStorage.setItem(CHECKINS_KEY, JSON.stringify(obj));
+}
+function checkinKey(personId, place) {
+  return `${personId}::${(place.name || '').slice(0, 30)}`;
+}
+function isCheckedIn(personId, place) {
+  const k = checkinKey(personId, place);
+  return !!loadCheckins()[k];
+}
+function toggleCheckin(personId, place) {
+  const k = checkinKey(personId, place);
+  const all = loadCheckins();
+  if (all[k]) {
+    delete all[k];
+    saveCheckins(all);
+    return false;
+  }
+  all[k] = {
+    personId,
+    name: place.name,
+    location: place.location,
+    ts: Date.now(),
+  };
+  saveCheckins(all);
+  return true;
+}
+function totalCheckins() {
+  return Object.keys(loadCheckins()).length;
+}
+
 // 訪問回数・足跡
 const VISITS_KEY = 'ijin_visits';
 const LAST_VISIT_KEY = 'ijin_last_visit_day';
@@ -2321,17 +2358,22 @@ async function showPerson(id) {
             const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(primaryQuery)}`;
             const altUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.location)}`;
             const webUrl = `https://www.google.com/search?q=${encodeURIComponent(nameOnly + ' ' + place.location)}`;
+            const checkedIn = isCheckedIn(p.id, place);
+            const placeIdx = p.places.indexOf(place);
             return `
-              <div class="place-card">
-                <div class="place-pin">📍</div>
+              <div class="place-card ${checkedIn ? 'checked' : ''}">
+                <div class="place-pin">${checkedIn ? '✓' : '📍'}</div>
                 <div class="place-info">
-                  <div class="place-name">${place.name}</div>
+                  <div class="place-name">${place.name}${checkedIn ? ' <span class="place-visited">訪問済み</span>' : ''}</div>
                   <div class="place-location">${place.location}</div>
                   ${place.note ? `<div class="place-note">${place.note}</div>` : ''}
                   <div class="place-links">
                     <a class="place-link" href="${mapUrl}" target="_blank" rel="noopener">地図で見る</a>
                     <a class="place-link place-link-sub" href="${altUrl}" target="_blank" rel="noopener">周辺地域</a>
                     <a class="place-link place-link-sub" href="${webUrl}" target="_blank" rel="noopener">詳しく調べる</a>
+                    <button class="place-checkin-btn ${checkedIn ? 'done' : ''}" data-checkin-idx="${placeIdx}">
+                      ${checkedIn ? '✓ 訪問済み' : '📍 ここに行った'}
+                    </button>
                   </div>
                 </div>
               </div>
@@ -2850,6 +2892,61 @@ async function showPerson(id) {
   container.querySelectorAll('.relation-item.linked').forEach(el => {
     el.addEventListener('click', () => {
       if (el.dataset.id) showPerson(el.dataset.id);
+    });
+  });
+
+  // 聖地巡礼チェックイン
+  container.querySelectorAll('[data-checkin-idx]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const idx = parseInt(btn.dataset.checkinIdx, 10);
+      const place = p.places[idx];
+      if (!place) return;
+      if (isCheckedIn(p.id, place)) {
+        if (!confirm('この訪問記録を取り消しますか？')) return;
+        toggleCheckin(p.id, place);
+        showPerson(p.id); // 再描画
+        return;
+      }
+      // GPS確認（任意。エラーでも手動チェックインは可能）
+      const doCheckin = () => {
+        toggleCheckin(p.id, place);
+        // スタンプ付与（クイズとは別のcheck-insスタンプ）
+        grantStamp(p.id);
+        if (typeof playKeyUnlockSound === 'function') playKeyUnlockSound();
+        alert(`✓ ${place.name} に訪問記録を追加しました。\n${p.name}のスタンプ+1を獲得！`);
+        showPerson(p.id);
+      };
+      const useGPS = confirm('📍 位置情報を使って本当にそこに居るか確認しますか？\nOK: GPS確認あり／キャンセル: 手動でチェックイン');
+      if (useGPS && navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            // 場所のGPS座標がない場合は信用してチェックイン
+            if (!place.lat || !place.lng) {
+              alert('この場所の座標データがまだありません。手動でチェックインします。');
+              doCheckin();
+              return;
+            }
+            const R = 6371; // 地球半径km
+            const dLat = (place.lat - pos.coords.latitude) * Math.PI / 180;
+            const dLng = (place.lng - pos.coords.longitude) * Math.PI / 180;
+            const a = Math.sin(dLat/2)**2 + Math.cos(pos.coords.latitude * Math.PI / 180) * Math.cos(place.lat * Math.PI / 180) * Math.sin(dLng/2)**2;
+            const dist = 2 * R * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            if (dist < 1.0) {
+              doCheckin();
+            } else {
+              alert(`場所から約${dist.toFixed(1)}km離れています。もう少し近づいてから試してください。`);
+            }
+          },
+          (err) => {
+            alert('位置情報が取得できませんでした。手動でチェックインします。');
+            doCheckin();
+          },
+          { timeout: 10000 }
+        );
+      } else {
+        doCheckin();
+      }
     });
   });
 
@@ -5432,7 +5529,7 @@ function renderFavorites() {
             </div>
           </div>
           <div class="title-page-stamp-count">
-            獲得スタンプ <strong>${totalStamps()}</strong> 個 ／ 足跡 <strong>${totalFootprints()}</strong>
+            獲得スタンプ <strong>${totalStamps()}</strong> 個 ／ 足跡 <strong>${totalFootprints()}</strong> ／ 聖地巡礼 <strong>${totalCheckins()}</strong>
           </div>
           <div class="title-page-bottom">─── ◆ ───</div>
         </div>
