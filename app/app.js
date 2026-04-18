@@ -4044,7 +4044,8 @@ function bindEvents() {
     });
   });
   document.getElementById('backBtn').addEventListener('click', goBack);
-  document.getElementById('searchBtn').addEventListener('click', () => {
+  const searchBtnEl = document.getElementById('searchBtn');
+  if (searchBtnEl) searchBtnEl.addEventListener('click', () => {
     const bar = document.getElementById('searchBar');
     bar.classList.toggle('hidden');
     if (!bar.classList.contains('hidden')) {

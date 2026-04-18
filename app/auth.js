@@ -289,37 +289,10 @@ function updateAccountUI() {
   updateLoginNotice();
 }
 
-// ログインしていない時だけ、ホームの上部に注意バナーを表示
+// 未ログインバナーは非表示
 function updateLoginNotice() {
   const existing = document.getElementById('loginNotice');
-  if (currentUser) {
-    if (existing) existing.remove();
-    return;
-  }
-  if (!FIREBASE_ENABLED) return;
-  if (existing) return;
-  const home = document.querySelector('#view-people');
-  if (!home) return;
-  // 既に閉じた履歴があればスキップ
-  if (localStorage.getItem('ijin_login_notice_dismissed') === '1') return;
-  const banner = document.createElement('div');
-  banner.id = 'loginNotice';
-  banner.className = 'login-notice';
-  banner.innerHTML = `
-    <div class="login-notice-icon">🔑</div>
-    <div class="login-notice-text">
-      <div class="login-notice-title">未ログインです</div>
-      <div class="login-notice-sub">お気に入り・推し・ルーティンはこの端末にのみ保存されます。<br>登録すると、<b>端末を変えても・データを消しても残る</b>ように。</div>
-    </div>
-    <button class="login-notice-btn" id="loginNoticeBtn">登録する</button>
-    <button class="login-notice-close" id="loginNoticeClose" aria-label="閉じる">×</button>
-  `;
-  home.insertBefore(banner, home.firstChild);
-  banner.querySelector('#loginNoticeBtn').addEventListener('click', openLoginModal);
-  banner.querySelector('#loginNoticeClose').addEventListener('click', () => {
-    localStorage.setItem('ijin_login_notice_dismissed', '1');
-    banner.remove();
-  });
+  if (existing) existing.remove();
 }
 
 function escapeSmall(s) { return (s || '').replace(/[<>&]/g, ''); }
