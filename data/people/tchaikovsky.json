@@ -13,10 +13,7 @@
       "age": 0,
       "title": "ウラル地方の鉱山技師の家に誕生",
       "detail": "非常に繊細で感情的な少年。14歳で母を失い生涯のトラウマに。",
-      "tags": [
-        "loss",
-        "illness"
-      ]
+      "tags": []
     },
     {
       "year": 1854,
@@ -88,8 +85,7 @@
       "detail": "弟子からの熱烈な手紙に断りきれず結婚。同性愛者の苦悩と相まって川へ投身自殺未遂。弟に救われる。",
       "tags": [
         "heartbreak",
-        "pride_broken",
-        "restart"
+        "pride_broken"
       ]
     },
     {
