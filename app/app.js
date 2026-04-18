@@ -583,6 +583,35 @@ function getTodaysGroupMembers() {
 // 今日の流れ：朝5時スタート、30分に1通。メンバーの名言から順番に引く
 const CHAT_SLOT_MS = 30 * 60 * 1000; // 30分
 const CHAT_START_HOUR = 5;
+const CHAT_LAST_READ_KEY = 'ijin_chat_last_slot';
+
+// ルーティンから、特定時刻に合うメッセージを生成
+function routineGreeting(person, hour) {
+  const r = person.routine;
+  if (!r || r.length === 0) return null;
+  // この時刻を含むブロック
+  const block = r.find(b => {
+    if (b.start < b.end) return hour >= b.start && hour < b.end;
+    // 日付をまたぐ睡眠
+    return hour >= b.start || hour < b.end;
+  });
+  if (!block) return null;
+  const activity = block.activity || '';
+  // 起床（sleepが終わる時刻）
+  const wakeBlock = r.find(b => b.cat === 'sleep' && b.end === hour);
+  if (wakeBlock) {
+    const opts = [`おはよう。今日も始まった。`, `目を覚ました。${activity.replace('睡眠', '朝')}の時間だ。`];
+    return opts[Math.floor(Math.random() * opts.length)];
+  }
+  const c = block.cat;
+  if (c === 'sleep') return `そろそろ寝る時間だ。${activity}。`;
+  if (c === 'meal') return `${activity}の時間。`;
+  if (c === 'work') return `今は${activity}。集中する時間だ。`;
+  if (c === 'exercise') return `体を動かす。${activity}。`;
+  if (c === 'leisure') return `少し休む。${activity}。`;
+  if (c === 'social') return `${activity}。人と話す時間。`;
+  return null;
+}
 
 function getGroupMessages() {
   const members = getTodaysGroupMembers();
@@ -591,9 +620,11 @@ function getGroupMessages() {
   const seed = d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
   const start = new Date();
   start.setHours(CHAT_START_HOUR, 0, 0, 0);
+  // 現在時刻が5時より前（深夜）なら前日の5時をスタートとする
+  if (start.getTime() > Date.now()) start.setDate(start.getDate() - 1);
   const now = Date.now();
   const elapsed = now - start.getTime();
-  // 何スロット経過したか（負なら0）
+  // 何スロット経過したか
   const slots = Math.max(0, Math.floor(elapsed / CHAT_SLOT_MS)) + 1;
   // 各スロットでメンバーを順番に、その偉人の名言を順に選ぶ
   const messages = [];
@@ -604,12 +635,22 @@ function getGroupMessages() {
     s = (s * 9301 + 49297) % 233280;
     const memberIdx = (i + (s % members.length)) % members.length;
     const person = members[memberIdx];
+    const ts = start.getTime() + i * CHAT_SLOT_MS;
+    const slotDate = new Date(ts);
+    const slotHour = slotDate.getHours();
+    // ルーティンに合うメッセージ（3割）、なければ名言
+    const wantRoutine = (i % 3 === 0);
+    let routineMsg = null;
+    if (wantRoutine) routineMsg = routineGreeting(person, slotHour);
+    if (routineMsg) {
+      messages.push({ type: 'routine', person, text: routineMsg, ts });
+      continue;
+    }
     const qs = person.quotes || [];
     if (qs.length === 0) continue;
     perPersonIdx[person.id] = perPersonIdx[person.id] || 0;
     const q = qs[perPersonIdx[person.id] % qs.length];
     perPersonIdx[person.id]++;
-    const ts = start.getTime() + i * CHAT_SLOT_MS;
     messages.push({ type: 'quote', person, quote: q, ts });
   }
   return { messages, members };
@@ -675,13 +716,16 @@ function renderLineGroup(container) {
           ? `<div class="line-avatar" style="background-image:url('${p.imageUrl}')" data-person-id="${p.id}"></div>`
           : `<div class="line-avatar no-img" data-person-id="${p.id}">${p.name.charAt(0)}</div>`)
         : `<div class="line-avatar-spacer"></div>`;
+      const bodyHtml = m.type === 'routine'
+        ? `<div class="line-msg-bubble line-msg-bubble-routine" data-person-id="${p.id}">${escapeHtml(m.text)}</div>`
+        : `<div class="line-msg-bubble" data-person-id="${p.id}">${m.quote.text}${m.quote.source ? `<div class="line-msg-src">— ${m.quote.source}</div>` : ''}</div>`;
       bubbles.push(`
         <div class="line-msg line-msg-them">
           ${avatar}
           <div class="line-msg-inner">
             ${showAvatar ? `<div class="line-msg-name">${p.name}</div>` : ''}
             <div class="line-msg-row">
-              <div class="line-msg-bubble" data-person-id="${p.id}" data-quote="${escapeHtml(m.quote.text).slice(0,40)}">${m.quote.text}${m.quote.source ? `<div class="line-msg-src">— ${m.quote.source}</div>` : ''}</div>
+              ${bodyHtml}
               <div class="line-msg-time">${fmtTime(m.ts)}</div>
             </div>
           </div>
@@ -4018,13 +4062,13 @@ function setSeenCount(personId, n) {
 }
 
 function computeUnreadCount() {
-  const companion = getTodaysCompanion();
-  if (!companion) return 0;
-  const all = getCompanionPosts(companion.person);
-  const elapsed = Date.now() - companion.chatStart;
-  const unlock = Math.min(all.length, Math.floor(elapsed / CHAT_INTERVAL_MS) + 1);
-  const seen = getSeenCount(companion.person.id);
-  return Math.max(0, unlock - seen);
+  // 偉人の広場の未読（現在のスロット数 - 最後に読んだスロット数）
+  try {
+    if (typeof DATA === 'undefined' || !DATA.people) return 0;
+    const { messages } = getGroupMessages();
+    const lastRead = parseInt(localStorage.getItem(CHAT_LAST_READ_KEY) || '0', 10);
+    return Math.max(0, messages.length - lastRead);
+  } catch { return 0; }
 }
 
 function updateChatBadge() {
@@ -4274,14 +4318,9 @@ function openChatPanel() {
   document.getElementById('chatPanel').classList.remove('hidden');
   document.getElementById('chatFab').classList.add('hidden');
   renderChatPanel();
-  // 既読にする
-  const companion = getTodaysCompanion();
-  if (companion) {
-    const all = getCompanionPosts(companion.person);
-    const elapsed = Date.now() - companion.chatStart;
-    const unlock = Math.min(all.length, Math.floor(elapsed / CHAT_INTERVAL_MS) + 1);
-    setSeenCount(companion.person.id, unlock);
-  }
+  // 広場の最新スロットを既読に
+  const { messages } = getGroupMessages();
+  localStorage.setItem(CHAT_LAST_READ_KEY, String(messages.length));
   updateChatBadge();
 }
 function closeChatPanel() {
@@ -4549,6 +4588,13 @@ function renderFavorites() {
   favEventItems.sort((a, b) => a.event.year - b.event.year);
 
   const favRoutineItems = DATA.people.filter(p => favRoutines.has(p.id) && p.routine && p.routine.length);
+  // 代表作
+  const favWorkItems = [];
+  DATA.people.forEach(p => {
+    (p.works || []).forEach(w => {
+      if (favWorks.has(workKey(p.id, w))) favWorkItems.push({ person: p, work: w });
+    });
+  });
   const FAV_TAGS_KEY = 'ijin_fav_tags';
   const favTagSet = loadSet(FAV_TAGS_KEY);
   const favTagItems = DATA.tags.filter(t => favTagSet.has(t.id));
@@ -4563,7 +4609,7 @@ function renderFavorites() {
     .map(b => DATA.people.find(p => p.id === b.id))
     .filter(Boolean)
     .slice(0, 6);
-  const totalCollections = favPeopleItems.length + favEventItems.length + favQuoteItems.length + favRoutineItems.length + favTagItems.length + recentlyReadItems.length;
+  const totalCollections = favPeopleItems.length + favEventItems.length + favQuoteItems.length + favRoutineItems.length + favTagItems.length + recentlyReadItems.length + favWorkItems.length;
   const totalItems = totalCollections + diaryEntries.length + letterEntries.length + selfPostEntries.length;
 
   if (totalItems === 0) {
@@ -4618,6 +4664,7 @@ function renderFavorites() {
   if (favQuoteItems.length > 0) tocItems.push({ id: 'chap-quotes', title: '心に留める言葉', count: favQuoteItems.length });
   if (favTagItems.length > 0) tocItems.push({ id: 'chap-tags', title: '向き合いたい感情', count: favTagItems.length });
   if (favRoutineItems.length > 0) tocItems.push({ id: 'chap-routines', title: '取り入れたいルーティン', count: favRoutineItems.length });
+  if (favWorkItems.length > 0) tocItems.push({ id: 'chap-works', title: '心に残る代表作', count: favWorkItems.length });
   if (favEventItems.length > 0) tocItems.push({ id: 'chap-events', title: 'なぞりたい瞬間', count: favEventItems.length });
   if (letterEntries.length > 0) tocItems.push({ id: 'chap-letters', title: '偉人への手紙', count: letterEntries.length });
   if (selfPostEntries.length > 0) tocItems.push({ id: 'chap-tweets', title: 'わたしのつぶやき', count: selfPostEntries.length });
@@ -4814,6 +4861,29 @@ function renderFavorites() {
           </div>
           ${routineBarHtml(p.routine, false)}
           <div class="routine-card-hint">タップで詳しく見る</div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // 心に残る代表作
+  if (favWorkItems.length > 0) {
+    html += `
+      <div class="my-book-chapter" id="chap-works">
+        <div class="my-book-chapter-label">第${nextChap()}章</div>
+        <div class="my-book-chapter-title">心に残る代表作</div>
+        <div class="my-book-chapter-line"></div>
+      </div>
+    `;
+    html += favWorkItems.map(m => {
+      const searchQ = encodeURIComponent(`${m.person.name} ${m.work.title}`);
+      return `
+        <div class="fav-work-card" data-id="${m.person.id}">
+          ${favWorkBtn(m.person.id, m.work)}
+          <div class="fav-work-person">${m.person.name}</div>
+          <div class="fav-work-type">${m.work.type || ''}${m.work.year ? ` · ${m.work.year}` : ''}</div>
+          <div class="fav-work-title">${m.work.title}</div>
+          ${m.work.description ? `<div class="fav-work-desc">${m.work.description}</div>` : ''}
         </div>
       `;
     }).join('');
@@ -5088,6 +5158,17 @@ function bindFavButtons(container, contextPersonId = null) {
       saveSet(FAV_KEY_QUOTES, favQuotes);
       btn.classList.toggle('active');
       btn.textContent = favQuotes.has(k) ? '★' : '☆';
+    });
+  });
+  container.querySelectorAll('[data-fav-work]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      const k = btn.dataset.favWork;
+      if (favWorks.has(k)) favWorks.delete(k); else favWorks.add(k);
+      saveSet(FAV_KEY_WORKS, favWorks);
+      btn.classList.toggle('active');
+      btn.textContent = favWorks.has(k) ? '🔖' : '📑';
     });
   });
 }

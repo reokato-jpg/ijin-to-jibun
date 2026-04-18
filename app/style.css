@@ -8756,6 +8756,51 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
   font-family: var(--font-en);
 }
 
+/* 心に残る代表作（わたしの本） */
+.fav-work-card {
+  padding: 14px 16px 12px;
+  margin-bottom: 10px;
+  background: #fffdf6;
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--gold);
+  border-radius: 4px;
+  position: relative;
+  font-family: var(--font-jp);
+  cursor: pointer;
+}
+.fav-work-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.fav-work-person {
+  font-size: 11px;
+  color: var(--ink-4);
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+.fav-work-type {
+  display: inline-block;
+  font-size: 10px;
+  color: var(--wine);
+  background: rgba(184,149,46,0.1);
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-bottom: 6px;
+}
+.fav-work-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--wine-dark);
+  margin-bottom: 4px;
+}
+.fav-work-desc {
+  font-size: 11.5px;
+  color: var(--ink-3);
+  line-height: 1.7;
+}
+.fav-work-card .fav-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
 /* わたしのつぶやき */
 .tweet-entry {
   padding: 12px 14px 10px;
