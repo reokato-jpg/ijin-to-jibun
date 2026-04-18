@@ -3010,7 +3010,7 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
   line-height: 1;
   filter: drop-shadow(0 2px 4px rgba(184,149,46,0.4));
 }
-.support-texts { flex: 1; min-width: 0; position: relative; z-index: 1; }
+.support-texts { flex: 1 1 100%; min-width: 0; position: relative; z-index: 1; }
 .support-title {
   font-family: var(--font-jp);
   font-weight: 800;
@@ -3021,8 +3021,7 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
   line-height: 1.5;
 }
 .support-title::before {
-  content: '✦ ';
-  color: var(--gold);
+  content: '';
 }
 .support-sub {
   font-size: 12.5px;
