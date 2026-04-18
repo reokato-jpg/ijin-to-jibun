@@ -100,7 +100,19 @@ async function pullFromCloud(user) {
         }
         // 両方ある場合、配列や Set（お気に入り）はマージ
         if (Array.isArray(cloudVal) && Array.isArray(localVal)) {
-          const merged = [...new Set([...cloudVal, ...localVal])];
+          let merged;
+          // オブジェクト配列（id付き）は id でユニーク化、それ以外はSetで
+          const sample = cloudVal[0] ?? localVal[0];
+          if (sample && typeof sample === 'object' && sample.id !== undefined) {
+            const seen = new Set();
+            merged = [...cloudVal, ...localVal].filter(item => {
+              if (!item || seen.has(item.id)) return false;
+              seen.add(item.id);
+              return true;
+            });
+          } else {
+            merged = [...new Set([...cloudVal, ...localVal])];
+          }
           localStorage.setItem(k, JSON.stringify(merged));
         } else {
           // オブジェクトや他はクラウド優先
