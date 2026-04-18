@@ -1212,11 +1212,11 @@ async function showPerson(id) {
     <!-- カバー：名前を主役にした扉絵風 -->
     <div class="profile-cover profile-cover-typo">
       <div class="profile-cover-frame">
-        <div class="profile-cover-orn-top">❦ ── ◆ ── ❦</div>
+        <div class="profile-cover-orn-top">─── ◆ ───</div>
         <div class="profile-cover-name">${p.name}</div>
         ${p.nameEn ? `<div class="profile-cover-name-en">${p.nameEn}</div>` : ''}
         <div class="profile-cover-dates">${p.birth || '?'} — ${p.death || ''}</div>
-        <div class="profile-cover-orn-bot">❦ ── ◆ ── ❦</div>
+        <div class="profile-cover-orn-bot">─── ◆ ───</div>
       </div>
     </div>
 
@@ -3718,7 +3718,7 @@ function renderFavorites() {
       <!-- 左ページ: 扉絵（タイトルページ） -->
       <div class="open-page open-page-left">
         <div class="title-page">
-          <div class="title-page-top">❦ ── ◆ ── ❦</div>
+          <div class="title-page-top">─── ◆ ───</div>
           <div class="title-page-title">${bookTitle}</div>
           <div class="title-page-sub">My Own Book of Virtue</div>
           <div class="title-page-divider"><span></span></div>
@@ -3729,7 +3729,7 @@ function renderFavorites() {
           <button class="title-page-edit-name" id="editNameBtn">
             ${userName ? '✎ 名前を変更' : '✎ 名前を設定'}
           </button>
-          <div class="title-page-bottom">❦ ── ◆ ── ❦</div>
+          <div class="title-page-bottom">─── ◆ ───</div>
         </div>
       </div>
       <!-- 右ページ: 目次 -->
