@@ -325,6 +325,8 @@ main { flex: 1; overflow-y: auto; background: var(--paper); }
 /* ================ ヒーロー（古書の扉絵風） ================ */
 .hero {
   margin: -16px -18px 28px;
+  max-width: none;
+  width: auto;
   padding: 10px;
   background: #ffffff;
   border-bottom: 3px double var(--wine);
