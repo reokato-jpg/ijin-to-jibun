@@ -3494,6 +3494,20 @@ main { flex: 1; overflow-y: auto; background: var(--paper); }
   font-weight: 700;
 }
 .media-btn-amazon:hover { background: #e88a00; color: #fff; }
+.media-btn-rakuten {
+  background: #bf0000;
+  color: #fff;
+  border-color: #bf0000;
+  font-weight: 700;
+}
+.media-btn-rakuten:hover { background: #990000; color: #fff; }
+.media-btn-store {
+  background: var(--wine);
+  color: #fff;
+  border-color: var(--wine);
+  font-weight: 700;
+}
+.media-btn-store:hover { background: var(--wine-dark); color: #fff; }
 .work-btn-search {
   background: #fff;
   color: var(--wine);

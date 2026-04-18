@@ -1362,7 +1362,7 @@ async function showPerson(id) {
             const ytSearch = w.youtubeSearchUrl || `https://www.youtube.com/results?search_query=${searchQ}`;
             const betterImslp = buildImslpUrl(p, w);
             return `
-              <a class="work-card work-music work-music-search" href="${ytSearch}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+              <div class="work-card work-music work-music-search" data-open-url="${ytSearch}">
                 ${favWorkBtn(p.id, w)}
                 <div class="work-thumb work-thumb-placeholder">
                   <div class="work-play">▶</div>
@@ -1373,12 +1373,12 @@ async function showPerson(id) {
                   <div class="work-title">${w.title}</div>
                   <div class="work-desc">${w.description || ''}</div>
                   <div class="work-links">
-                    <span class="work-btn work-btn-yt"><span class="work-btn-icon">▶</span> YouTubeで聴く</span>
+                    <a class="work-btn work-btn-yt" href="${ytSearch}" target="_blank" rel="noopener" onclick="event.stopPropagation()"><span class="work-btn-icon">▶</span> YouTubeで聴く</a>
                     ${betterImslp ? `<a class="work-btn work-btn-imslp" href="${betterImslp}" target="_blank" rel="noopener" onclick="event.stopPropagation()">♫ 楽譜</a>` : ''}
                     ${isMusic ? `<a class="work-btn work-btn-musescore" href="${buildMusescoreUrl(p, w)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">🎼 Musescore</a>` : ''}
                   </div>
                 </div>
-              </a>
+              </div>
             `;
           }
           if (w.imageUrl) {
@@ -1399,7 +1399,7 @@ async function showPerson(id) {
             const searchQ = encodeURIComponent(`${p.name} ${w.title}`);
             const ytSearch = w.youtubeSearchUrl || `https://www.youtube.com/results?search_query=${searchQ}`;
             return `
-              <a class="work-card work-music work-music-search" href="${ytSearch}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+              <div class="work-card work-music work-music-search" data-open-url="${ytSearch}">
                 ${favWorkBtn(p.id, w)}
                 <div class="work-thumb work-thumb-placeholder">
                   <div class="work-play">🔎</div>
@@ -1410,10 +1410,10 @@ async function showPerson(id) {
                   <div class="work-title">${w.title}</div>
                   <div class="work-desc">${w.description || ''}</div>
                   <div class="work-links">
-                    <span class="work-btn work-btn-yt"><span class="work-btn-icon">▶</span> 解説動画を探す</span>
+                    <a class="work-btn work-btn-yt" href="${ytSearch}" target="_blank" rel="noopener" onclick="event.stopPropagation()"><span class="work-btn-icon">▶</span> 解説動画を探す</a>
                   </div>
                 </div>
-              </a>
+              </div>
             `;
           }
           // asin（本）
@@ -1487,23 +1487,29 @@ async function showPerson(id) {
     <!-- 映画・ドラマタブ -->
     ${(p.media && p.media.length > 0) ? `
     <div class="profile-tab-content" data-ptab="media">
-      <p class="media-intro">${p.name}を描いた映画・ドラマ・アニメ。タップで${p.media[0].youtubeId ? '予告編を再生' : '詳しく調べる'}。</p>
+      <p class="media-intro">${p.name}の映画・ドラマ・アニメ。購入ページで作品をチェックできます。</p>
       <div class="media-list">
         ${p.media.map(m => {
           const typeLabel = { movie: '🎬 映画', drama: '📺 ドラマ', anime: '🎞 アニメ', doc: '📹 ドキュメンタリー' }[m.type] || '🎬 作品';
           const thumb = m.youtubeId
             ? `https://i.ytimg.com/vi/${m.youtubeId}/mqdefault.jpg`
             : (m.imageUrl || '');
-          const ytSearchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(`${m.title} 予告編`)}`;
-          const searchQ = encodeURIComponent(`${m.title} ${m.year || ''} ${m.type === 'drama' ? 'ドラマ' : '映画'}`);
-          const wikiUrl = `https://ja.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(m.title)}`;
           const amazonUrl = m.asin ? `https://www.amazon.co.jp/dp/${m.asin}` : '';
           const amazonCoverUrl = m.asin ? `https://images-na.ssl-images-amazon.com/images/P/${m.asin}.09.LZZZZZZZ.jpg` : '';
           const thumbFinal = amazonCoverUrl || thumb;
+          // 将来の拡張用：stores配列があればそこから、なければAmazon単独
+          // 例: m.stores = [{name:'楽天', url:'https://...'}, {name:'Amazon', url:'...'}]
+          const stores = Array.isArray(m.stores) ? m.stores : [];
+          if (amazonUrl && !stores.some(s => s.name === 'Amazon')) {
+            stores.unshift({ name: 'Amazon', url: amazonUrl });
+          }
+          // 購入先が無い場合は検索フォールバック
+          const searchQ = encodeURIComponent(`${m.title} ${m.type === 'drama' ? 'ドラマ' : m.type === 'anime' ? 'アニメ' : '映画'} DVD`);
+          const fallbackUrl = `https://www.amazon.co.jp/s?k=${searchQ}`;
           return `
             <div class="media-card">
               <div class="media-thumb" ${thumbFinal ? `style="background-image:url('${thumbFinal}')"` : ''}>
-                ${!thumbFinal ? '<div class="media-thumb-fallback">🎬</div>' : '<div class="media-play">▶</div>'}
+                ${!thumbFinal ? '<div class="media-thumb-fallback">🎬</div>' : ''}
               </div>
               <div class="media-info">
                 <div class="media-type">${typeLabel}${m.year ? ` · ${m.year}` : ''}${m.country ? ` · ${m.country}` : ''}</div>
@@ -1512,9 +1518,10 @@ async function showPerson(id) {
                 ${m.director ? `<div class="media-cast">監督: ${m.director}</div>` : ''}
                 ${m.description ? `<div class="media-desc">${m.description}</div>` : ''}
                 <div class="media-links">
-                  ${amazonUrl ? `<a class="media-btn media-btn-amazon" href="${amazonUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">📦 Amazonで見る</a>` : ''}
-                  <a class="media-btn media-btn-yt" href="${ytSearchUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()"><span>▶</span> 予告編を探す</a>
-                  <a class="media-btn media-btn-sub" href="${wikiUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">📖 詳細</a>
+                  ${stores.length > 0
+                    ? stores.map(s => `<a class="media-btn media-btn-${s.name === 'Amazon' ? 'amazon' : s.name === '楽天' ? 'rakuten' : 'store'}" href="${s.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${s.name === 'Amazon' ? '📦' : s.name === '楽天' ? '🛒' : '🎬'} ${s.name}で見る</a>`).join('')
+                    : `<a class="media-btn media-btn-amazon" href="${fallbackUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">📦 Amazonで探す</a>`
+                  }
                 </div>
               </div>
             </div>
@@ -1662,34 +1669,18 @@ async function showPerson(id) {
   });
   bindFavButtons(container, p.id);
 
-  // 作品カード: サムネイルクリックで YouTube検索 を新しいタブで開く
-  // （特定の動画IDは削除される事が多いので、検索ページに飛ばす）
-  container.querySelectorAll('.work-music:not(.work-music-search)').forEach(el => {
-    const thumb = el.querySelector('.work-thumb');
-    if (!thumb) return;
-    const searchUrl = el.dataset.search;
-    if (!searchUrl) return;
-    thumb.style.cursor = 'pointer';
-    thumb.addEventListener('click', (e) => {
-      e.stopPropagation();
-      window.open(searchUrl, '_blank', 'noopener');
-    });
-    el.querySelectorAll('.work-btn, .fav-btn').forEach(b => {
-      b.addEventListener('click', (ev) => ev.stopPropagation());
+  // 作品カード: カード全体のクリックで data-open-url を新しいタブで開く
+  container.querySelectorAll('.work-card[data-open-url]').forEach(el => {
+    el.style.cursor = 'pointer';
+    el.addEventListener('click', (e) => {
+      // ボタン・お気に入りは除外
+      if (e.target.closest('.fav-btn')) return;
+      if (e.target.closest('.work-btn')) return;
+      if (e.target.closest('a')) return;
+      window.open(el.dataset.openUrl, '_blank', 'noopener');
     });
   });
-  // 映像作品カード: サムネイルクリックで YouTube検索を新しいタブで開く
-  container.querySelectorAll('.media-card[data-yt]').forEach(el => {
-    const thumb = el.querySelector('.media-thumb');
-    if (!thumb) return;
-    const title = el.querySelector('.media-title')?.textContent || '';
-    const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(`${p.name} ${title} 予告編`)}`;
-    thumb.style.cursor = 'pointer';
-    thumb.addEventListener('click', (e) => {
-      e.stopPropagation();
-      window.open(searchUrl, '_blank', 'noopener');
-    });
-  });
+  // 映像作品カード：Amazon等の購入ボタンのみなので、カード自体にはハンドラ不要
   container.querySelectorAll('.work-image').forEach(el => {
     el.addEventListener('click', () => {
       const url = el.dataset.img;
