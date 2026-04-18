@@ -174,6 +174,9 @@ async function openLoginModal() {
         </button>
         <div class="auth-error" id="authError"></div>
         <div class="auth-footnote">登録せずに閉じても全機能使えます。登録するとそれらが保存されます。</div>
+        <div class="auth-legal">
+          登録は <a href="terms.html" target="_blank">利用規約</a> と <a href="privacy.html" target="_blank">プライバシーポリシー</a> に同意したものとみなします。
+        </div>
       </form>
     </div>
   `;

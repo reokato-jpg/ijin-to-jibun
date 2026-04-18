@@ -144,12 +144,14 @@
     {
       "name": "カフカ博物館",
       "location": "チェコ・プラハ",
-      "note": "カフカの手稿・写真を展示"
+      "note": "カフカの手稿・写真を展示",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Franz_Kafka%2C_1923.jpg/330px-Franz_Kafka%2C_1923.jpg"
     },
     {
       "name": "プラハ・ユダヤ人墓地",
       "location": "チェコ・プラハ",
-      "note": "父母と並ぶ墓"
+      "note": "父母と並ぶ墓",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Prague_collage_2018.jpg/330px-Prague_collage_2018.jpg"
     }
   ],
   "books": [

@@ -143,17 +143,20 @@
     {
       "name": "ブッダガヤ・マハーボディ寺院",
       "location": "インド・ビハール州",
-      "note": "悟りを開いた菩提樹の場所"
+      "note": "悟りを開いた菩提樹の場所",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Mahabodhitemple.jpg/330px-Mahabodhitemple.jpg"
     },
     {
       "name": "ルンビニ",
       "location": "ネパール",
-      "note": "釈迦の生誕地"
+      "note": "釈迦の生誕地",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/BRP_Lumbini_Mayadevi_temple.jpg/330px-BRP_Lumbini_Mayadevi_temple.jpg"
     },
     {
       "name": "サルナート（鹿野苑）",
       "location": "インド・ヴァーラーナシー",
-      "note": "初転法輪の地"
+      "note": "初転法輪の地",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Dhamek_Stupa%2C_Sarnath.jpg/330px-Dhamek_Stupa%2C_Sarnath.jpg"
     }
   ],
   "books": [

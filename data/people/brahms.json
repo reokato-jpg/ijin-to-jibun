@@ -159,12 +159,14 @@
     {
       "name": "ブラームス博物館",
       "location": "ドイツ・ハンブルク",
-      "note": "生地の記念施設"
+      "note": "生地の記念施設",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/JohannesBrahms.jpg/330px-JohannesBrahms.jpg"
     },
     {
       "name": "中央墓地",
       "location": "ウィーン",
-      "note": "ベートーヴェン・シューベルトと並ぶ"
+      "note": "ベートーヴェン・シューベルトと並ぶ",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Simmering_%28Wien%29_-_Luegerkirche_%281%29.JPG/330px-Simmering_%28Wien%29_-_Luegerkirche_%281%29.JPG"
     }
   ],
   "books": [

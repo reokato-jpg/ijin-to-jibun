@@ -162,12 +162,14 @@
     {
       "name": "すみだ北斎美術館",
       "location": "東京都墨田区",
-      "note": "北斎が生涯93回引越した近所の記念館"
+      "note": "北斎が生涯93回引越した近所の記念館",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/2018_Sumida_Hokusai_Museum_2.jpg/330px-2018_Sumida_Hokusai_Museum_2.jpg"
     },
     {
       "name": "北斎館",
       "location": "長野県小布施町",
-      "note": "晩年に天井画を描いた寺のある町"
+      "note": "晩年に天井画を描いた寺のある町",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Hokusai_Museum.jpg/330px-Hokusai_Museum.jpg"
     }
   ],
   "books": [

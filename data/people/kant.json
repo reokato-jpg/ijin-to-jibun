@@ -135,12 +135,14 @@
     {
       "name": "カントの墓",
       "location": "ロシア・カリーニングラード（旧ケーニヒスベルク）",
-      "note": "大聖堂の壁面に組み込まれた墓"
+      "note": "大聖堂の壁面に組み込まれた墓",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/AMANO_Teiyu.jpg/330px-AMANO_Teiyu.jpg"
     },
     {
       "name": "カント島（カント博物館）",
       "location": "カリーニングラード",
-      "note": "現地では国民的英雄"
+      "note": "現地では国民的英雄",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/%E3%81%AE%E3%81%BC%E3%82%8A%E3%81%B9%E3%81%A4%E3%82%AF%E3%83%9E%E7%89%A7%E5%A0%B41.jpg/330px-%E3%81%AE%E3%81%BC%E3%82%8A%E3%81%B9%E3%81%A4%E3%82%AF%E3%83%9E%E7%89%A7%E5%A0%B41.jpg"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Immanuel_Kant_-_Gemaelde_1.jpg/500px-Immanuel_Kant_-_Gemaelde_1.jpg",

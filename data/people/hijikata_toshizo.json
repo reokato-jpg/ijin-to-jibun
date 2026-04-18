@@ -159,22 +159,26 @@
     {
       "name": "土方歳三資料館",
       "location": "東京都日野市石田",
-      "note": "生家に建つ資料館。遺品・愛刀・書が展示"
+      "note": "生家に建つ資料館。遺品・愛刀・書が展示",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Hijikata_Toshizo_Museum_2024-05-26.jpg/330px-Hijikata_Toshizo_Museum_2024-05-26.jpg"
     },
     {
       "name": "壬生寺",
       "location": "京都市中京区",
-      "note": "新選組屯所跡。境内に隊士の墓"
+      "note": "新選組屯所跡。境内に隊士の墓",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Mibu-dera_Kyoto_Japan01s3.jpg/330px-Mibu-dera_Kyoto_Japan01s3.jpg"
     },
     {
       "name": "五稜郭",
       "location": "北海道函館市",
-      "note": "最後の戦いの舞台。函館奉行所"
+      "note": "最後の戦いの舞台。函館奉行所",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Hakodate_Goryokaku_Panorama_1.JPG/330px-Hakodate_Goryokaku_Panorama_1.JPG"
     },
     {
       "name": "土方歳三最期の地碑",
       "location": "北海道函館市若松町",
-      "note": "銃弾に倒れた一本木関門の地"
+      "note": "銃弾に倒れた一本木関門の地",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Hijikata_Toshizo.jpg/330px-Hijikata_Toshizo.jpg"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Hijikata_Toshizo.jpg/500px-Hijikata_Toshizo.jpg",

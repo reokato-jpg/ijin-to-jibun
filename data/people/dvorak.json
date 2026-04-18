@@ -178,12 +178,14 @@
     {
       "name": "ドヴォルザーク記念館",
       "location": "チェコ・プラハ",
-      "note": "最晩年の住居が博物館に"
+      "note": "最晩年の住居が博物館に",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Jan_hus_1.jpg/330px-Jan_hus_1.jpg"
     },
     {
       "name": "ネラホゼヴェス",
       "location": "チェコ中部",
-      "note": "生家"
+      "note": "生家",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Nelahozeves%2C_Dvo%C5%99%C3%A1k%C5%AFv_d%C5%AFm_-_celek.jpg/330px-Nelahozeves%2C_Dvo%C5%99%C3%A1k%C5%AFv_d%C5%AFm_-_celek.jpg"
     }
   ],
   "books": [],

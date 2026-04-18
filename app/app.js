@@ -1,8 +1,9 @@
 // ====================== Amazon アフィリエイト設定 ======================
-const AMAZON_TAG = 'placeholder-22'; // ← ここを自分のAmazonアソシエイトタグに変更
+// natsumi のAmazonアソシエイトIDをセット。全Amazonリンクに自動付与される。
+const AMAZON_TAG = ''; // 例: 'natsumipiano-22'
 
 function amazonUrl(asin) {
-  return `https://www.amazon.co.jp/dp/${asin}?tag=${AMAZON_TAG}`;
+  return `https://www.amazon.co.jp/dp/${asin}${AMAZON_TAG ? `?tag=${AMAZON_TAG}` : ''}`;
 }
 function amazonCover(asin) {
   return `https://images-fe.ssl-images-amazon.com/images/P/${asin}.09.LZZZZZZZ.jpg`;
@@ -25,6 +26,10 @@ async function loadData() {
     const articlesData = await articlesRes.json();
     DATA.articles = articlesData.articles || [];
     DATA.articleAuthor = articlesData.author || {};
+    try {
+      const updRes = await fetch('../data/updates.json' + bust, { cache: 'no-store' });
+      DATA.updates = await updRes.json();
+    } catch { DATA.updates = []; }
     DATA.tags = tagsData.categories;
     DATA.tagMap = Object.fromEntries(DATA.tags.map(t => [t.id, t]));
 
@@ -676,9 +681,45 @@ function renderHomeBooks() {
   `).join('');
 }
 
-// ====================== Amazon アフィリエイト タグ ======================
-// natsumi のAmazonアソシエイトIDをセットすると、全Amazonリンクに自動付与
-const AMAZON_AFFIL_TAG = ''; // 例: 'natsumi-22'
+// ====================== お知らせ（リリースノート） ======================
+function renderUpdates() {
+  const el = document.getElementById('updatesFeed');
+  if (!el) return;
+  const list = DATA.updates || [];
+  if (list.length === 0) { el.innerHTML = '<div class="updates-empty">更新情報はまだありません。</div>'; return; }
+  // 最新3件をデフォルト表示、展開で全部
+  const shown = list.slice(0, 3);
+  const hidden = list.slice(3);
+  el.innerHTML = `
+    <div class="updates-list">
+      ${shown.map(u => updateItemHtml(u)).join('')}
+      ${hidden.length > 0 ? `
+        <details class="updates-more">
+          <summary>もっと見る (${hidden.length}件)</summary>
+          <div class="updates-list-more">${hidden.map(u => updateItemHtml(u)).join('')}</div>
+        </details>
+      ` : ''}
+    </div>
+  `;
+}
+function updateItemHtml(u) {
+  const tagClass = {
+    '新機能': 'updates-tag-new',
+    '追加': 'updates-tag-add',
+    '改善': 'updates-tag-improve',
+    '修正': 'updates-tag-fix',
+  }[u.tag] || '';
+  return `
+    <div class="updates-item">
+      <div class="updates-meta">
+        <span class="updates-date">${u.date || ''}</span>
+        ${u.tag ? `<span class="updates-tag ${tagClass}">${u.tag}</span>` : ''}
+      </div>
+      <div class="updates-title">${u.title}</div>
+      ${u.body ? `<div class="updates-body">${u.body}</div>` : ''}
+    </div>
+  `;
+}
 
 // ====================== 楽譜URL生成ヘルパー ======================
 // 作品番号（BWV/Op./K./D./HWV/RV）を抽出
@@ -1203,7 +1244,8 @@ async function showPerson(id) {
       ${(p.relations && p.relations.length > 0) ? '<button class="profile-tab" data-ptab="relations">人間関係</button>' : ''}
       ${(p.works && p.works.length > 0) ? '<button class="profile-tab" data-ptab="works">代表作</button>' : ''}
       ${(p.media && p.media.length > 0) ? '<button class="profile-tab" data-ptab="media">映画・ドラマ</button>' : ''}
-      <button class="profile-tab" data-ptab="happenings">イベント・グッズ</button>
+      <button class="profile-tab" data-ptab="happenings">イベント</button>
+      <button class="profile-tab" data-ptab="goods">グッズ</button>
       ${(p.books && p.books.length > 0) ? '<button class="profile-tab" data-ptab="books">関連本</button>' : ''}
       ${(p.places && p.places.length > 0) ? '<button class="profile-tab" data-ptab="places">聖地巡礼</button>' : ''}
       <button class="profile-tab" data-ptab="letters">手紙</button>
@@ -1225,8 +1267,8 @@ async function showPerson(id) {
             const altUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.location)}`;
             const webUrl = `https://www.google.com/search?q=${encodeURIComponent(nameOnly + ' ' + place.location)}`;
             return `
-              <div class="place-card">
-                <div class="place-pin">📍</div>
+              <div class="place-card ${place.image ? 'has-image' : ''}">
+                ${place.image ? `<div class="place-image" style="background-image:url('${place.image}')"></div>` : '<div class="place-pin">📍</div>'}
                 <div class="place-info">
                   <div class="place-name">${place.name}</div>
                   <div class="place-location">${place.location}</div>
@@ -1440,52 +1482,88 @@ async function showPerson(id) {
     </div>
     ` : ''}
 
-    <!-- イベント・グッズタブ -->
+    <!-- イベントタブ -->
     <div class="profile-tab-content" data-ptab="happenings">
-      ${(p.happenings && p.happenings.length > 0) ? `
-        <p class="happenings-intro">${p.name}の展覧会・イベント・商品など。期間限定のものもあるので公式サイトでご確認を。</p>
-        <div class="happenings-list">
-          ${p.happenings.map(h => {
-            const typeLabel = { exhibition: '🎨 展覧会', concert: '🎵 公演・演奏会', festival: '🎭 フェス・記念祭', goods: '🛍 グッズ', book_fair: '📚 ブックフェア', other: '✨ その他' }[h.type] || '✨ イベント';
-            const searchQ = encodeURIComponent(`${p.name} ${h.title}`);
-            return `
-              <div class="happening-card">
-                <div class="happening-type">${typeLabel}</div>
-                <div class="happening-title">${h.title}</div>
-                ${h.venue ? `<div class="happening-venue">📍 ${h.venue}</div>` : ''}
-                ${h.period ? `<div class="happening-period">📅 ${h.period}</div>` : ''}
-                ${h.description ? `<div class="happening-desc">${h.description}</div>` : ''}
-                <div class="happening-links">
-                  ${h.url ? `<a class="happening-btn happening-btn-main" href="${h.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">公式サイト →</a>` : ''}
-                  <a class="happening-btn" href="https://www.google.com/search?q=${searchQ}" target="_blank" rel="noopener" onclick="event.stopPropagation()">🔎 検索</a>
-                </div>
+      ${(() => {
+        const events = (p.happenings || []).filter(h => h.type !== 'goods');
+        if (events.length === 0) {
+          return `
+            <div class="happenings-empty">
+              <div class="happenings-empty-icon">🎨</div>
+              <p class="happenings-empty-title">${p.name}関連のイベント情報</p>
+              <p class="happenings-empty-text">登録されているイベントはありません。<br>最新の情報は以下で探せます。</p>
+              <div class="happenings-empty-links">
+                <a class="happening-btn" href="https://www.google.com/search?q=${encodeURIComponent(p.name + ' 展覧会 2026')}" target="_blank" rel="noopener">🎨 展覧会を探す</a>
+                <a class="happening-btn" href="https://www.google.com/search?q=${encodeURIComponent(p.name + ' イベント')}" target="_blank" rel="noopener">🎭 イベントを探す</a>
+                <a class="happening-btn" href="https://www.google.com/search?q=${encodeURIComponent(p.name + ' 公演')}" target="_blank" rel="noopener">🎵 公演を探す</a>
               </div>
-            `;
-          }).join('')}
-        </div>
-      ` : `
-        <div class="happenings-empty">
-          <div class="happenings-empty-icon">🎨</div>
-          <p class="happenings-empty-title">${p.name}関連のイベント情報</p>
-          <p class="happenings-empty-text">
-            現在登録されているイベント情報はありません。<br>
-            最新の展覧会・公演・グッズ情報は、以下で探せます。
-          </p>
-          <div class="happenings-empty-links">
-            <a class="happening-btn" href="https://www.google.com/search?q=${encodeURIComponent(p.name + ' 展覧会 2026')}" target="_blank" rel="noopener">🎨 展覧会を探す</a>
-            <a class="happening-btn" href="https://www.google.com/search?q=${encodeURIComponent(p.name + ' イベント')}" target="_blank" rel="noopener">🎭 イベントを探す</a>
-            <a class="happening-btn" href="https://www.google.com/search?q=${encodeURIComponent(p.name + ' グッズ')}" target="_blank" rel="noopener">🛍 グッズを探す</a>
-          </div>
-          <div class="happenings-ad-slot">
-            <div class="ad-slot-badge">AD</div>
-            <div class="ad-slot-main">
-              <div class="ad-slot-title">${p.name}関連の告知募集中</div>
-              <div class="ad-slot-sub">展示会・公演・書籍出版など、この枠でお知らせできます</div>
-              <a class="ad-slot-cta" href="mailto:natsumi.by.piano@gmail.com?subject=『偉人と自分。』${p.name}ページの広告掲載について">お問い合わせ →</a>
             </div>
+          `;
+        }
+        return `
+          <p class="happenings-intro">${p.name}の展覧会・公演・記念祭など。期間限定のものは公式サイトで要確認。</p>
+          <div class="happenings-list">
+            ${events.map(h => {
+              const typeLabel = { exhibition: '🎨 展覧会', concert: '🎵 公演・演奏会', festival: '🎭 フェス・記念祭', book_fair: '📚 ブックフェア', other: '✨ その他' }[h.type] || '✨ イベント';
+              const searchQ = encodeURIComponent(`${p.name} ${h.title}`);
+              return `
+                <div class="happening-card">
+                  <div class="happening-type">${typeLabel}</div>
+                  <div class="happening-title">${h.title}</div>
+                  ${h.venue ? `<div class="happening-venue">📍 ${h.venue}</div>` : ''}
+                  ${h.period ? `<div class="happening-period">📅 ${h.period}</div>` : ''}
+                  ${h.description ? `<div class="happening-desc">${h.description}</div>` : ''}
+                  <div class="happening-links">
+                    ${h.url ? `<a class="happening-btn happening-btn-main" href="${h.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">公式サイト →</a>` : ''}
+                    <a class="happening-btn" href="https://www.google.com/search?q=${searchQ}" target="_blank" rel="noopener" onclick="event.stopPropagation()">🔎 検索</a>
+                  </div>
+                </div>
+              `;
+            }).join('')}
           </div>
-        </div>
-      `}
+        `;
+      })()}
+    </div>
+
+    <!-- グッズタブ -->
+    <div class="profile-tab-content" data-ptab="goods">
+      ${(() => {
+        const goods = (p.happenings || []).filter(h => h.type === 'goods');
+        if (goods.length === 0) {
+          return `
+            <div class="happenings-empty">
+              <div class="happenings-empty-icon">🛍</div>
+              <p class="happenings-empty-title">${p.name}関連のグッズ</p>
+              <p class="happenings-empty-text">登録されているグッズはありません。<br>Amazon・楽天で探せます。</p>
+              <div class="happenings-empty-links">
+                <a class="happening-btn happening-btn-main" href="https://www.amazon.co.jp/s?k=${encodeURIComponent(p.name + ' グッズ')}${AMAZON_TAG ? `&tag=${AMAZON_TAG}` : ''}" target="_blank" rel="noopener sponsored">📦 Amazonで探す</a>
+                <a class="happening-btn" href="https://search.rakuten.co.jp/search/mall/${encodeURIComponent(p.name)}/" target="_blank" rel="noopener">🛒 楽天で探す</a>
+              </div>
+            </div>
+          `;
+        }
+        return `
+          <p class="happenings-intro">${p.name}関連の商品・グッズ。</p>
+          <div class="happenings-list">
+            ${goods.map(h => {
+              const searchQ = encodeURIComponent(`${p.name} ${h.title}`);
+              return `
+                <div class="happening-card">
+                  <div class="happening-type">🛍 グッズ</div>
+                  <div class="happening-title">${h.title}</div>
+                  ${h.venue ? `<div class="happening-venue">📍 ${h.venue}</div>` : ''}
+                  ${h.description ? `<div class="happening-desc">${h.description}</div>` : ''}
+                  <div class="happening-links">
+                    ${h.url ? `<a class="happening-btn happening-btn-main" href="${h.url}" target="_blank" rel="noopener sponsored" onclick="event.stopPropagation()">📦 商品を見る</a>` : ''}
+                    <a class="happening-btn" href="https://www.amazon.co.jp/s?k=${searchQ}${AMAZON_TAG ? `&tag=${AMAZON_TAG}` : ''}" target="_blank" rel="noopener sponsored">📦 Amazon</a>
+                    <a class="happening-btn" href="https://search.rakuten.co.jp/search/mall/${encodeURIComponent(p.name + ' ' + h.title)}/" target="_blank" rel="noopener">🛒 楽天</a>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `;
+      })()}
     </div>
 
     <!-- 映画・ドラマタブ -->
@@ -1498,7 +1576,7 @@ async function showPerson(id) {
           const thumb = m.youtubeId
             ? `https://i.ytimg.com/vi/${m.youtubeId}/mqdefault.jpg`
             : (m.imageUrl || '');
-          const amazonUrl = m.asin ? `https://www.amazon.co.jp/dp/${m.asin}${AMAZON_AFFIL_TAG ? `?tag=${AMAZON_AFFIL_TAG}` : ''}` : '';
+          const amazonUrl = m.asin ? `https://www.amazon.co.jp/dp/${m.asin}${AMAZON_TAG ? `?tag=${AMAZON_TAG}` : ''}` : '';
           // Amazon商品画像（パッケージ画像）
           const amazonCoverUrl = m.asin ? `https://images-na.ssl-images-amazon.com/images/P/${m.asin}.09.LZZZZZZZ.jpg` : '';
           const stores = Array.isArray(m.stores) ? m.stores : [];
@@ -1537,17 +1615,31 @@ async function showPerson(id) {
     <!-- 本棚タブ -->
     ${(p.books && p.books.length > 0) ? `
     <div class="profile-tab-content" data-ptab="books">
-      ${p.books.map(b => `
+      <p class="books-intro">${p.name}を深く知るための本。タイトル・表紙タップでAmazonへ。</p>
+      ${p.books.map(b => {
+        const amz = b.asin ? amazonUrl(b.asin) : `https://www.amazon.co.jp/s?k=${encodeURIComponent(b.title + ' ' + (b.author||''))}`;
+        const cover = b.asin ? amazonCover(b.asin) : '';
+        return `
         <div class="book-card">
-          <div class="book-card-cover" style="background-image:url('${amazonCover(b.asin)}')"></div>
+          <a class="book-card-cover-link" href="${amz}" target="_blank" rel="noopener sponsored" onclick="event.stopPropagation()">
+            ${cover
+              ? `<img class="book-card-cover-img" src="${cover}" alt="${b.title}" loading="lazy" onerror="this.parentElement.classList.add('no-cover');this.remove()">`
+              : `<div class="book-card-cover-placeholder">📖</div>`}
+          </a>
           <div class="book-card-info">
-            <div class="book-card-title">${b.title}</div>
-            <div class="book-card-author">${b.author}</div>
-            <div class="book-card-desc">${b.description}</div>
-            <a class="book-card-link" href="${amazonUrl(b.asin)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Amazonで見る</a>
+            <a class="book-card-title-link" href="${amz}" target="_blank" rel="noopener sponsored" onclick="event.stopPropagation()">${b.title}</a>
+            <div class="book-card-author">${b.author || ''}</div>
+            ${b.publisher ? `<div class="book-card-meta">${b.publisher}${b.year ? ` · ${b.year}年刊` : ''}${b.pages ? ` · ${b.pages}頁` : ''}</div>` : ''}
+            ${b.description ? `<div class="book-card-desc">${b.description}</div>` : ''}
+            <div class="book-card-actions">
+              <a class="book-card-link book-card-amazon" href="${amz}" target="_blank" rel="noopener sponsored" onclick="event.stopPropagation()">📦 Amazonで見る</a>
+              ${b.rakutenUrl ? `<a class="book-card-link book-card-rakuten" href="${b.rakutenUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">🛒 楽天</a>` : ''}
+              <a class="book-card-link book-card-sub" href="https://www.google.com/search?q=${encodeURIComponent(b.title + ' ' + (b.author||'') + ' 書評')}" target="_blank" rel="noopener" onclick="event.stopPropagation()">🔎 書評を探す</a>
+            </div>
           </div>
         </div>
-      `).join('')}
+        `;
+      }).join('')}
     </div>
     ` : ''}
   `;
@@ -3850,6 +3942,7 @@ function bindEvents() {
   await loadComments();
   bindEvents();
   renderHeroStats();
+  renderUpdates();
   renderOshi();
   renderPersonOfTheDay();
   renderQuoteOfTheDay();

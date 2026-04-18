@@ -161,12 +161,14 @@
     {
       "name": "コペンハーゲン・アシステンス墓地",
       "location": "デンマーク・コペンハーゲン",
-      "note": "父と並ぶ墓"
+      "note": "父と並ぶ墓",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Christian_Bohr_u016a.jpg/330px-Christian_Bohr_u016a.jpg"
     },
     {
       "name": "キルケゴール博物館",
       "location": "デンマーク・コペンハーゲン",
-      "note": "遺品と草稿を展示"
+      "note": "遺品と草稿を展示",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Copenhagen_Collage.jpg/330px-Copenhagen_Collage.jpg"
     }
   ],
   "books": [

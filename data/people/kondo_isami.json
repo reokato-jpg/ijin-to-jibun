@@ -169,22 +169,26 @@
     {
       "name": "壬生寺",
       "location": "京都市中京区",
-      "note": "新選組の屯所跡。境内に近藤勇の胸像"
+      "note": "新選組の屯所跡。境内に近藤勇の胸像",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Mibu-dera_Kyoto_Japan01s3.jpg/330px-Mibu-dera_Kyoto_Japan01s3.jpg"
     },
     {
       "name": "八木邸",
       "location": "京都市中京区",
-      "note": "新選組最初の屯所。芹沢鴨暗殺の現場"
+      "note": "新選組最初の屯所。芹沢鴨暗殺の現場",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/%E5%85%AB%E6%9C%A8%E9%82%B8.jpg/330px-%E5%85%AB%E6%9C%A8%E9%82%B8.jpg"
     },
     {
       "name": "龍源寺（近藤勇墓所）",
       "location": "東京都三鷹市",
-      "note": "遺髪が納められた近藤家菩提寺"
+      "note": "遺髪が納められた近藤家菩提寺",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Kondo_Isami02.jpg/330px-Kondo_Isami02.jpg"
     },
     {
       "name": "板橋近藤勇墓",
       "location": "東京都板橋区",
-      "note": "刑死の地。土方歳三の慰霊碑と並ぶ"
+      "note": "刑死の地。土方歳三の慰霊碑と並ぶ",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Kondo_Isami02.jpg/330px-Kondo_Isami02.jpg"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Kondo_Isami02.jpg/500px-Kondo_Isami02.jpg",

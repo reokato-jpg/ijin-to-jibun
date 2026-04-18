@@ -132,17 +132,20 @@
     {
       "name": "ドンレミ・ラ・ピュセル村",
       "location": "フランス・ロレーヌ",
-      "note": "生家と教会"
+      "note": "生家と教会",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Coat_of_Arms_of_Domr%C3%A9my-la-Pucelle.svg/langja-330px-Coat_of_Arms_of_Domr%C3%A9my-la-Pucelle.svg.png"
     },
     {
       "name": "ルーアン旧市場広場",
       "location": "フランス・ルーアン",
-      "note": "火刑の地。現在はジャンヌ・ダルク教会"
+      "note": "火刑の地。現在はジャンヌ・ダルク教会",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Blason_Sotteville-l%C3%A8s-Rouen.svg/langja-330px-Blason_Sotteville-l%C3%A8s-Rouen.svg.png"
     },
     {
       "name": "オルレアン・サント・クロワ大聖堂",
       "location": "フランス・オルレアン",
-      "note": "解放の中心、毎年5月にジャンヌ祭"
+      "note": "解放の中心、毎年5月にジャンヌ祭",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Coat_of_Arms_of_Bordeaux_%28Variant_with_grapes%29.svg/langja-330px-Coat_of_Arms_of_Bordeaux_%28Variant_with_grapes%29.svg.png"
     }
   ],
   "books": [

@@ -143,12 +143,14 @@
     {
       "name": "フィンカ・ビヒア",
       "location": "キューバ・ハバナ郊外",
-      "note": "『老人と海』を書いた愛した家"
+      "note": "『老人と海』を書いた愛した家",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Ernest_Hemingway_The_old_man_Jonathan_Cape_1952_Title.jpg/330px-Ernest_Hemingway_The_old_man_Jonathan_Cape_1952_Title.jpg"
     },
     {
       "name": "キーウェストの家",
       "location": "米フロリダ州",
-      "note": "多指の猫の子孫が今も50匹棲む"
+      "note": "多指の猫の子孫が今も50匹棲む",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Key_west_2001.JPG/330px-Key_west_2001.JPG"
     }
   ],
   "books": [

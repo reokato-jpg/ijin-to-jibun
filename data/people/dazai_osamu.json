@@ -184,22 +184,26 @@
     {
       "name": "斜陽館（太宰治記念館）",
       "location": "青森県五所川原市金木町",
-      "note": "生家。大地主津島家の豪邸"
+      "note": "生家。大地主津島家の豪邸",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Osamu_Dazai.jpg/330px-Osamu_Dazai.jpg"
     },
     {
       "name": "玉川上水",
       "location": "東京都三鷹市",
-      "note": "入水自殺の地。三鷹下連雀"
+      "note": "入水自殺の地。三鷹下連雀",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/TamagawaJosui_fromMikageBridge.JPG/330px-TamagawaJosui_fromMikageBridge.JPG"
     },
     {
       "name": "太宰治文学サロン",
       "location": "東京都三鷹市下連雀",
-      "note": "晩年を過ごした三鷹の記念館"
+      "note": "晩年を過ごした三鷹の記念館",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Osamu_Dazai.jpg/330px-Osamu_Dazai.jpg"
     },
     {
       "name": "禅林寺（墓所）",
       "location": "東京都三鷹市下連雀",
-      "note": "森鷗外の墓の斜向かいに眠る"
+      "note": "森鷗外の墓の斜向かいに眠る",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/251213_Nanzen-ji_Kyoto_Japan01s3.jpg/330px-251213_Nanzen-ji_Kyoto_Japan01s3.jpg"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Osamu_Dazai.jpg/500px-Osamu_Dazai.jpg",

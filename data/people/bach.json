@@ -147,12 +147,14 @@
     {
       "name": "バッハの家（生家）",
       "location": "ドイツ・アイゼナハ",
-      "note": "博物館として公開"
+      "note": "博物館として公開",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/JohannesBrahms.jpg/330px-JohannesBrahms.jpg"
     },
     {
       "name": "聖トーマス教会",
       "location": "ドイツ・ライプツィヒ",
-      "note": "バッハが27年働いた教会。遺体が埋葬される"
+      "note": "バッハが27年働いた教会。遺体が埋葬される",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Thomaskirche_Leipzig_-_2014_12_30.webm/330px--Thomaskirche_Leipzig_-_2014_12_30.webm.jpg"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Johann_Sebastian_Bach.jpg/500px-Johann_Sebastian_Bach.jpg",

@@ -199,17 +199,20 @@
     {
       "name": "ジークムント・フロイト博物館",
       "location": "オーストリア・ウィーン",
-      "note": "ベルクガッセ19番地の診療所兼自宅"
+      "note": "ベルクガッセ19番地の診療所兼自宅",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Berggasse_Vienna_March_2007_002.jpg/330px-Berggasse_Vienna_March_2007_002.jpg"
     },
     {
       "name": "フロイト博物館ロンドン",
       "location": "イギリス・ロンドン",
-      "note": "亡命先の最後の家"
+      "note": "亡命先の最後の家",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Sigmund_Freud%2C_by_Max_Halberstadt_%28cropped%29.jpg/330px-Sigmund_Freud%2C_by_Max_Halberstadt_%28cropped%29.jpg"
     },
     {
       "name": "中央墓地",
       "location": "ウィーン",
-      "note": "遺灰はロンドンのゴルダース・グリーン"
+      "note": "遺灰はロンドンのゴルダース・グリーン",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Simmering_%28Wien%29_-_Luegerkirche_%281%29.JPG/330px-Simmering_%28Wien%29_-_Luegerkirche_%281%29.JPG"
     }
   ],
   "books": [

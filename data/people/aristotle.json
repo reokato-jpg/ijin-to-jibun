@@ -151,12 +151,14 @@
     {
       "name": "リュケイオン跡",
       "location": "ギリシャ・アテネ",
-      "note": "アリストテレスの学園跡地"
+      "note": "アリストテレスの学園跡地",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Kings_Agis_and_Cleomenes.jpg/330px-Kings_Agis_and_Cleomenes.jpg"
     },
     {
       "name": "スタゲイラ",
       "location": "ギリシャ北部",
-      "note": "生誕地"
+      "note": "生誕地",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Greece.svg/langja-330px-Flag_of_Greece.svg.png"
     }
   ],
   "books": [

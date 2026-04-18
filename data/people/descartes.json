@@ -143,12 +143,14 @@
     {
       "name": "デカルト記念館",
       "location": "フランス・デカルト村",
-      "note": "生家を改装した博物館"
+      "note": "生家を改装した博物館",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/6/6a/Gottfried_Wilhelm_von_Leibniz.jpg"
     },
     {
       "name": "サン=ジェルマン=デ=プレ教会",
       "location": "フランス・パリ",
-      "note": "デカルトの墓"
+      "note": "デカルトの墓",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Abbaye_de_Saint-Germain-des-Pr%C3%A9s_140131_1.jpg/330px-Abbaye_de_Saint-Germain-des-Pr%C3%A9s_140131_1.jpg"
     }
   ],
   "books": [

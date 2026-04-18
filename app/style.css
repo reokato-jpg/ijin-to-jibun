@@ -3535,6 +3535,215 @@ main { flex: 1; overflow-y: auto; background: var(--paper); }
   font-weight: 700;
 }
 .media-btn-store:hover { background: var(--wine-dark); color: #fff; }
+
+/* ================ お知らせ（リリースノート） ================ */
+.updates-feed {
+  background: #fffdf6;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.updates-list { display: flex; flex-direction: column; gap: 10px; }
+.updates-item {
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--rule-soft);
+}
+.updates-item:last-child { border-bottom: none; }
+.updates-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.updates-date {
+  font-size: 10px;
+  color: var(--ink-4);
+  font-family: var(--font-en);
+  letter-spacing: 0.05em;
+}
+.updates-tag {
+  font-size: 9px;
+  padding: 1px 7px;
+  border-radius: 10px;
+  background: var(--ink-4);
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  font-family: var(--font-jp);
+}
+.updates-tag-new { background: var(--wine); }
+.updates-tag-add { background: var(--gold); }
+.updates-tag-improve { background: #5e7254; }
+.updates-tag-fix { background: #4a6b7a; }
+.updates-title {
+  font-family: var(--font-jp);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--ink);
+  margin-bottom: 3px;
+}
+.updates-body {
+  font-size: 12px;
+  color: var(--ink-2);
+  font-family: var(--font-jp);
+  line-height: 1.6;
+}
+.updates-more {
+  margin-top: 4px;
+}
+.updates-more summary {
+  font-size: 12px;
+  color: var(--wine);
+  cursor: pointer;
+  text-align: center;
+  padding: 8px;
+  font-family: var(--font-jp);
+  list-style: none;
+}
+.updates-more summary::-webkit-details-marker { display: none; }
+.updates-more summary:hover { text-decoration: underline; }
+.updates-list-more { margin-top: 10px; }
+.updates-empty { color: var(--ink-4); text-align: center; font-family: var(--font-jp); padding: 10px; font-size: 13px; }
+
+/* ================ 認証モーダル：利用規約リンク ================ */
+.auth-legal {
+  text-align: center;
+  font-size: 10px;
+  color: var(--ink-4);
+  margin-top: 10px;
+  font-family: var(--font-jp);
+  line-height: 1.6;
+}
+.auth-legal a { color: var(--wine); text-decoration: underline; }
+
+/* ================ フッター（利用規約リンク） ================ */
+.home-footer {
+  text-align: center;
+  padding: 20px 0;
+  border-top: 1px solid var(--rule-soft);
+  margin-top: 24px;
+}
+.home-footer-links a {
+  color: var(--ink-3);
+  text-decoration: none;
+  font-size: 11px;
+  font-family: var(--font-jp);
+  letter-spacing: 0.05em;
+}
+.home-footer-links a:hover { color: var(--wine); text-decoration: underline; }
+.home-footer-sep { color: var(--ink-4); margin: 0 4px; font-size: 11px; }
+
+/* ================ 聖地：画像表示 ================ */
+.place-card.has-image { padding: 0; overflow: hidden; }
+.place-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-size: cover;
+  background-position: center;
+  background-color: #e8e0d0;
+}
+.place-card.has-image .place-info { padding: 12px 14px; }
+.place-card.has-image .place-pin { display: none; }
+
+/* ================ 本の詳細カード（拡張版） ================ */
+.books-intro {
+  color: var(--ink-3);
+  font-size: 12px;
+  margin: 10px 0 14px;
+  text-align: center;
+  font-family: var(--font-jp);
+}
+.book-card {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 16px;
+  padding: 14px;
+  background: #fffdf6;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  margin-bottom: 12px;
+  align-items: start;
+}
+.book-card-cover-link {
+  display: block;
+  text-decoration: none;
+  width: 100px;
+  transition: transform 0.15s;
+}
+.book-card-cover-link:hover { transform: translateY(-2px); }
+.book-card-cover-img {
+  width: 100%;
+  aspect-ratio: 2 / 2.9;
+  object-fit: cover;
+  border-radius: 2px;
+  box-shadow:
+    inset 0 0 0 1px rgba(0,0,0,0.12),
+    3px 4px 10px rgba(0,0,0,0.2);
+}
+.book-card-cover-placeholder {
+  width: 100%;
+  aspect-ratio: 2 / 2.9;
+  background: linear-gradient(135deg, #fffdf6 0%, #e8dcc8 100%);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  color: var(--ink-4);
+}
+.book-card-cover-link.no-cover .book-card-cover-placeholder { display: flex; }
+.book-card-title-link {
+  display: block;
+  text-decoration: none;
+  font-family: var(--font-jp);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--ink);
+  line-height: 1.4;
+  margin-bottom: 4px;
+}
+.book-card-title-link:hover { color: var(--wine); }
+.book-card-author {
+  font-size: 12px;
+  color: var(--wine);
+  font-family: var(--font-jp);
+  margin-bottom: 2px;
+}
+.book-card-meta {
+  font-size: 11px;
+  color: var(--ink-4);
+  font-family: var(--font-jp);
+  margin-bottom: 6px;
+  letter-spacing: 0.03em;
+}
+.book-card-desc {
+  font-size: 12px;
+  color: var(--ink-2);
+  font-family: var(--font-jp);
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+.book-card-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.book-card-link {
+  display: inline-block;
+  padding: 5px 10px;
+  font-size: 11px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-family: var(--font-jp);
+  font-weight: 600;
+}
+.book-card-amazon { background: #ff9900; color: #fff; }
+.book-card-amazon:hover { background: #e88a00; color: #fff; }
+.book-card-rakuten { background: #bf0000; color: #fff; }
+.book-card-rakuten:hover { background: #990000; color: #fff; }
+.book-card-sub { background: transparent; color: var(--ink-3); border: 1px solid var(--rule); }
+.book-card-sub:hover { color: var(--wine); border-color: var(--wine); }
 .work-btn-search {
   background: #fff;
   color: var(--wine);

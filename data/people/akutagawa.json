@@ -165,17 +165,20 @@
     {
       "name": "芥川龍之介記念館",
       "location": "東京都北区田端",
-      "note": "田端文士村の中核。自宅跡周辺"
+      "note": "田端文士村の中核。自宅跡周辺",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/AkutagawaRyunosuke.jpg/330px-AkutagawaRyunosuke.jpg"
     },
     {
       "name": "慈眼寺（墓所）",
       "location": "東京都豊島区巣鴨",
-      "note": "夫人・母とともに眠る"
+      "note": "夫人・母とともに眠る",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Somei_Reien%2C_Tokyo.jpg/330px-Somei_Reien%2C_Tokyo.jpg"
     },
     {
       "name": "田端文士村記念館",
       "location": "東京都北区田端",
-      "note": "漱石門下の文士たちが集った街の記憶"
+      "note": "漱石門下の文士たちが集った街の記憶",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/TabataBunshimuraKinenkan20120109.jpg/330px-TabataBunshimuraKinenkan20120109.jpg"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/AkutagawaRyunosuke.jpg/500px-AkutagawaRyunosuke.jpg",

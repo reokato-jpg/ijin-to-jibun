@@ -151,12 +151,14 @@
     {
       "name": "ダウン・ハウス",
       "location": "イギリス・ケント州",
-      "note": "40年間住み『種の起源』を書いた家"
+      "note": "40年間住み『種の起源』を書いた家",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/House_headoffice.jpg/330px-House_headoffice.jpg"
     },
     {
       "name": "ガラパゴス諸島",
       "location": "エクアドル",
-      "note": "フィンチと出会った進化論発祥の地"
+      "note": "フィンチと出会った進化論発祥の地",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Galapagos-satellite-esislandnames.jpg/330px-Galapagos-satellite-esislandnames.jpg"
     }
   ],
   "books": [

@@ -354,27 +354,32 @@
     {
       "name": "ショパン生家",
       "location": "ポーランド・ジェラゾヴァ・ヴォラ",
-      "note": "ワルシャワ郊外の生家。小さな博物館"
+      "note": "ワルシャワ郊外の生家。小さな博物館",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Chopins_Unterschrift.svg/langja-330px-Chopins_Unterschrift.svg.png"
     },
     {
       "name": "ショパン博物館",
       "location": "ポーランド・ワルシャワ",
-      "note": "自筆譜・遺品を展示する国立博物館"
+      "note": "自筆譜・遺品を展示する国立博物館",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Zamek_Ostrogskich_w_Warszawie_2022.jpg/330px-Zamek_Ostrogskich_w_Warszawie_2022.jpg"
     },
     {
       "name": "ペール・ラシェーズ墓地",
       "location": "フランス・パリ20区",
-      "note": "墓所。心臓だけはワルシャワへ"
+      "note": "墓所。心臓だけはワルシャワへ",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Pere_Lachaise_Chemin_Errazu.jpg/330px-Pere_Lachaise_Chemin_Errazu.jpg"
     },
     {
       "name": "聖十字架教会",
       "location": "ポーランド・ワルシャワ",
-      "note": "心臓が柱に納められている"
+      "note": "心臓が柱に納められている",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/2/28/Christian_cross.gif"
     },
     {
       "name": "ヴァルルデモーサ",
       "location": "スペイン・マヨルカ島",
-      "note": "サンドと過ごした修道院跡。前奏曲集の舞台"
+      "note": "サンドと過ごした修道院跡。前奏曲集の舞台",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Mallorca.jpg/330px-Mallorca.jpg"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Frederic_Chopin_photo.jpeg/500px-Frederic_Chopin_photo.jpeg",

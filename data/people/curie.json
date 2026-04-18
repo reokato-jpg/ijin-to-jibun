@@ -203,17 +203,20 @@
     {
       "name": "キュリー博物館",
       "location": "フランス・パリ",
-      "note": "ラジウム研究所の一部。実験室が公開"
+      "note": "ラジウム研究所の一部。実験室が公開",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Marie_Curie_c._1920s.jpg/330px-Marie_Curie_c._1920s.jpg"
     },
     {
       "name": "マリー・キュリー博物館",
       "location": "ポーランド・ワルシャワ",
-      "note": "生家を改装した博物館"
+      "note": "生家を改装した博物館",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Marie_Curie_c._1920s.jpg/330px-Marie_Curie_c._1920s.jpg"
     },
     {
       "name": "パンテオン",
       "location": "フランス・パリ",
-      "note": "夫と共に国家的英雄として眠る"
+      "note": "夫と共に国家的英雄として眠る",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Paris_-_Eiffelturm_und_Marsfeld2.jpg/330px-Paris_-_Eiffelturm_und_Marsfeld2.jpg"
     }
   ],
   "books": [

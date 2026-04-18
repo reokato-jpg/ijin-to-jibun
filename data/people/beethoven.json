@@ -177,17 +177,20 @@
     {
       "name": "ベートーヴェン・ハウス（生家）",
       "location": "ドイツ・ボン",
-      "note": "ボンゲン通り20番地。博物館として公開"
+      "note": "ボンゲン通り20番地。博物館として公開",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Beethoven-Haus.jpg/330px-Beethoven-Haus.jpg"
     },
     {
       "name": "ハイリゲンシュタット遺書の家",
       "location": "ウィーン",
-      "note": "絶望の遺書を書いた場所"
+      "note": "絶望の遺書を書いた場所",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Beethoven_Heiligenstaedter_Testament.jpg/330px-Beethoven_Heiligenstaedter_Testament.jpg"
     },
     {
       "name": "中央墓地",
       "location": "ウィーン",
-      "note": "シューベルト、ブラームスと並ぶ墓"
+      "note": "シューベルト、ブラームスと並ぶ墓",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Simmering_%28Wien%29_-_Luegerkirche_%281%29.JPG/330px-Simmering_%28Wien%29_-_Luegerkirche_%281%29.JPG"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Joseph_Karl_Stieler%27s_Beethoven_mit_dem_Manuskript_der_Missa_solemnis.jpg/500px-Joseph_Karl_Stieler%27s_Beethoven_mit_dem_Manuskript_der_Missa_solemnis.jpg",

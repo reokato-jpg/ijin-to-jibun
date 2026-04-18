@@ -155,22 +155,26 @@
     {
       "name": "伊豆の踊子文学碑",
       "location": "静岡県河津町",
-      "note": "天城峠・旅芸人との出会いの道"
+      "note": "天城峠・旅芸人との出会いの道",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Old_Amagi_Tunnel.jpg/330px-Old_Amagi_Tunnel.jpg"
     },
     {
       "name": "高半ホテル",
       "location": "新潟県湯沢町",
-      "note": "『雪国』執筆の宿。かすみの間が保存"
+      "note": "『雪国』執筆の宿。かすみの間が保存",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Palace-Hotel-Tokyo-01.jpg/330px-Palace-Hotel-Tokyo-01.jpg"
     },
     {
       "name": "鎌倉文学館",
       "location": "神奈川県鎌倉市",
-      "note": "鎌倉文士の拠点。川端の遺品も展示"
+      "note": "鎌倉文士の拠点。川端の遺品も展示",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/230128_Kamakura_Museum_of_Literature_Kamakura_Kanagawa_pref_Japan01s3.jpg/330px-230128_Kamakura_Museum_of_Literature_Kamakura_Kanagawa_pref_Japan01s3.jpg"
     },
     {
       "name": "逗子マリーナ",
       "location": "神奈川県逗子市",
-      "note": "最期の地"
+      "note": "最期の地",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Zushi_Marina_02.jpg/330px-Zushi_Marina_02.jpg"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Yasunari_Kawabata_1938.jpg/500px-Yasunari_Kawabata_1938.jpg",

@@ -182,12 +182,14 @@
     {
       "name": "ヘンデル・ハウス博物館",
       "location": "イギリス・ロンドン",
-      "note": "『メサイア』を作曲した住居"
+      "note": "『メサイア』を作曲した住居",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/George_Frideric_Handel_by_Balthasar_Denner.jpg/330px-George_Frideric_Handel_by_Balthasar_Denner.jpg"
     },
     {
       "name": "ウェストミンスター寺院",
       "location": "ロンドン",
-      "note": "遺体が眠る"
+      "note": "遺体が眠る",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Westminster_Abbey_-_West_Door.jpg/330px-Westminster_Abbey_-_West_Door.jpg"
     }
   ],
   "books": [

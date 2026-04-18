@@ -174,12 +174,14 @@
     {
       "name": "ドビュッシー博物館",
       "location": "サン=ジェルマン=アン=レー",
-      "note": "生家を改装した記念館"
+      "note": "生家を改装した記念館",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Claude_Debussy_by_Atelier_Nadar.jpg/330px-Claude_Debussy_by_Atelier_Nadar.jpg"
     },
     {
       "name": "パッシー墓地",
       "location": "パリ16区",
-      "note": "妻子と共に眠る"
+      "note": "妻子と共に眠る",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Passy.JPG/330px-Passy.JPG"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Claude_Debussy_by_Atelier_Nadar.jpg/500px-Claude_Debussy_by_Atelier_Nadar.jpg",
