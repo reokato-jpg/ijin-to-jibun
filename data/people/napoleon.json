@@ -141,12 +141,14 @@
     {
       "name": "アンヴァリッド",
       "location": "フランス・パリ",
-      "note": "ナポレオン廟。6重の棺に眠る"
+      "note": "ナポレオン廟。6重の棺に眠る",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/D%C3%B4me_des_Invalides%2C_Paris.jpg/330px-D%C3%B4me_des_Invalides%2C_Paris.jpg"
     },
     {
       "name": "セントヘレナ島ロングウッド邸",
       "location": "英領セントヘレナ",
-      "note": "最期の幽閉地"
+      "note": "最期の幽閉地",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Fran%C3%A7ois_G%C3%A9rard_-_Napoleon_I_001.JPG/330px-Fran%C3%A7ois_G%C3%A9rard_-_Napoleon_I_001.JPG"
     }
   ],
   "books": [

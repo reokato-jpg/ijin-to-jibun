@@ -154,12 +154,14 @@
     {
       "name": "シューベルトの生家",
       "location": "ウィーン9区",
-      "note": "博物館"
+      "note": "博物館",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Franz_Schubert_Signature.svg/langja-330px-Franz_Schubert_Signature.svg.png"
     },
     {
       "name": "中央墓地",
       "location": "ウィーン",
-      "note": "ベートーヴェンと並ぶ墓"
+      "note": "ベートーヴェンと並ぶ墓",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Simmering_%28Wien%29_-_Luegerkirche_%281%29.JPG/330px-Simmering_%28Wien%29_-_Luegerkirche_%281%29.JPG"
     }
   ],
   "books": [

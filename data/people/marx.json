@@ -181,12 +181,14 @@
     {
       "name": "大英博物館閲覧室",
       "location": "イギリス・ロンドン",
-      "note": "『資本論』を書いた場所"
+      "note": "『資本論』を書いた場所",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/British_Museum_%28aerial%29.jpg/330px-British_Museum_%28aerial%29.jpg"
     },
     {
       "name": "ハイゲート墓地",
       "location": "イギリス・ロンドン",
-      "note": "マルクスの巨大な胸像がある墓"
+      "note": "マルクスの巨大な胸像がある墓",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/High-cemetery-circle.jpg/330px-High-cemetery-circle.jpg"
     }
   ],
   "books": [

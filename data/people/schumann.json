@@ -327,17 +327,20 @@
     {
       "name": "シューマンハウス（生家）",
       "location": "ドイツ・ツヴィッカウ",
-      "note": "書籍商の家。博物館"
+      "note": "書籍商の家。博物館",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Portrait_of_Robert_Schumann.jpg/330px-Portrait_of_Robert_Schumann.jpg"
     },
     {
       "name": "ライプツィヒ・シューマンハウス",
       "location": "ドイツ・ライプツィヒ",
-      "note": "クララと新婚時代を過ごした家"
+      "note": "クララと新婚時代を過ごした家",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Portrait_of_Robert_Schumann.jpg/330px-Portrait_of_Robert_Schumann.jpg"
     },
     {
       "name": "ボン旧墓地",
       "location": "ドイツ・ボン",
-      "note": "クララと並ぶ墓"
+      "note": "クララと並ぶ墓",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Flagge_der_kreisfreien_Stadt_Bonn.svg/langja-330px-Flagge_der_kreisfreien_Stadt_Bonn.svg.png"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Portrait_of_Robert_Schumann.jpg",

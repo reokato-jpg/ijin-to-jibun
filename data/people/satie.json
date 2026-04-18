@@ -180,12 +180,14 @@
     {
       "name": "サティの家",
       "location": "フランス・オンフルール",
-      "note": "生家を改装した奇想の博物館"
+      "note": "生家を改装した奇想の博物館",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Ericsatie.jpg/330px-Ericsatie.jpg"
     },
     {
       "name": "アルクイユ",
       "location": "フランス・パリ南郊",
-      "note": "晩年30年暮らした部屋のあった場所"
+      "note": "晩年30年暮らした部屋のあった場所",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Blason_arcueil_94.svg/langja-330px-Blason_arcueil_94.svg.png"
     }
   ],
   "books": [

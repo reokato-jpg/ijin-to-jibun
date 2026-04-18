@@ -166,17 +166,20 @@
     {
       "name": "沖田総司終焉の地",
       "location": "東京都港区元麻布",
-      "note": "植木屋平五郎宅跡。現在は記念碑"
+      "note": "植木屋平五郎宅跡。現在は記念碑",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Imado-jinja_2021-12_ac_%281%29.jpg/330px-Imado-jinja_2021-12_ac_%281%29.jpg"
     },
     {
       "name": "専称寺（沖田総司墓所）",
       "location": "東京都港区元麻布",
-      "note": "沖田家菩提寺"
+      "note": "沖田家菩提寺",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Portrait_of_Okita_S%C5%8Dji.jpg/330px-Portrait_of_Okita_S%C5%8Dji.jpg"
     },
     {
       "name": "壬生寺",
       "location": "京都市中京区",
-      "note": "新選組ゆかりの地"
+      "note": "新選組ゆかりの地",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Mibu-dera_Kyoto_Japan01s3.jpg/330px-Mibu-dera_Kyoto_Japan01s3.jpg"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Portrait_of_Okita_S%C5%8Dji.jpg/500px-Portrait_of_Okita_S%C5%8Dji.jpg",

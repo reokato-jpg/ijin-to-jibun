@@ -146,17 +146,20 @@
     {
       "name": "システィーナ礼拝堂",
       "location": "バチカン",
-      "note": "天井画と『最後の審判』"
+      "note": "天井画と『最後の審判』",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Musei_vaticani%2C_cappella_sistina%2C_retro_02.JPG/330px-Musei_vaticani%2C_cappella_sistina%2C_retro_02.JPG"
     },
     {
       "name": "アカデミア美術館",
       "location": "イタリア・フィレンツェ",
-      "note": "『ダビデ像』が安置される"
+      "note": "『ダビデ像』が安置される",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Collage_Firenze.jpg/330px-Collage_Firenze.jpg"
     },
     {
       "name": "ブオナローティ家",
       "location": "イタリア・フィレンツェ",
-      "note": "愛した家、今は美術館"
+      "note": "愛した家、今は美術館",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Miguel_%C3%81ngel%2C_por_Daniele_da_Volterra_%28detalle%29.jpg/330px-Miguel_%C3%81ngel%2C_por_Daniele_da_Volterra_%28detalle%29.jpg"
     }
   ],
   "books": [

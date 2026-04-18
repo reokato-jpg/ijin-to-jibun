@@ -165,22 +165,26 @@
     {
       "name": "宮沢賢治記念館",
       "location": "岩手県花巻市矢沢",
-      "note": "作品と愛用の品々を展示"
+      "note": "作品と愛用の品々を展示",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Miyazawa_Kenji.jpg/330px-Miyazawa_Kenji.jpg"
     },
     {
       "name": "イーハトーブ館",
       "location": "岩手県花巻市高松",
-      "note": "文学世界を体感できる"
+      "note": "文学世界を体感できる",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/%E8%8A%B1%E5%B7%BB%E6%B8%A9%E6%B3%89_%E3%83%90%E3%83%A9%E5%9C%92%E3%81%A8%E3%83%9B%E3%83%86%E3%83%AB3%E9%A4%A8.jpg/330px-%E8%8A%B1%E5%B7%BB%E6%B8%A9%E6%B3%89_%E3%83%90%E3%83%A9%E5%9C%92%E3%81%A8%E3%83%9B%E3%83%86%E3%83%AB3%E9%A4%A8.jpg"
     },
     {
       "name": "羅須地人協会跡",
       "location": "岩手県花巻市下根子桜",
-      "note": "農民運動の拠点"
+      "note": "農民運動の拠点",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Rasuchijin.jpg/330px-Rasuchijin.jpg"
     },
     {
       "name": "銀河鉄道の夜のモデル・岩手軽便鉄道跡",
       "location": "岩手県花巻",
-      "note": "『銀河鉄道』の着想源"
+      "note": "『銀河鉄道』の着想源",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Iwate-SL_galaxy_running_on_the_Megane%28eye_glasses%29_Bridge-m.jpg/330px-Iwate-SL_galaxy_running_on_the_Megane%28eye_glasses%29_Bridge-m.jpg"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Miyazawa_Kenji.jpg/500px-Miyazawa_Kenji.jpg",

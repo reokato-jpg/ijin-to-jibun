@@ -129,12 +129,14 @@
     {
       "name": "マザーハウス",
       "location": "インド・コルカタ",
-      "note": "『神の愛の宣教者会』本部"
+      "note": "『神の愛の宣教者会』本部",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Kolkata_Imgs.jpg/330px-Kolkata_Imgs.jpg"
     },
     {
       "name": "死を待つ人々の家(ニルマル・ヒルダイ)",
       "location": "インド・コルカタ",
-      "note": "カーリー寺院隣の本拠"
+      "note": "カーリー寺院隣の本拠",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Kolkata_Imgs.jpg/330px-Kolkata_Imgs.jpg"
     }
   ],
   "books": [

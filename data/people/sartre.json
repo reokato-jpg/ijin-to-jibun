@@ -169,12 +169,14 @@
     {
       "name": "カフェ・ド・フロール",
       "location": "フランス・パリ・サン=ジェルマン=デ=プレ",
-      "note": "ボーヴォワールと毎日通ったカフェ"
+      "note": "ボーヴォワールと毎日通ったカフェ",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Caf%C3%A9_de_Flore%2C_172_boulevard_Saint-Germain%2C_Paris_6e.jpg/330px-Caf%C3%A9_de_Flore%2C_172_boulevard_Saint-Germain%2C_Paris_6e.jpg"
     },
     {
       "name": "モンパルナス墓地",
       "location": "フランス・パリ",
-      "note": "ボーヴォワールと並ぶ墓"
+      "note": "ボーヴォワールと並ぶ墓",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Paris_14e_arrondissement_-_cimeti%C3%A8re_du_Montparnasse.JPG/330px-Paris_14e_arrondissement_-_cimeti%C3%A8re_du_Montparnasse.JPG"
     }
   ],
   "books": [

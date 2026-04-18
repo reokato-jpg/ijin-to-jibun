@@ -3472,33 +3472,36 @@ function renderArticles() {
     }).join('');
     const authorName = (DATA.articleAuthor && DATA.articleAuthor.name) || '';
     return `
-      <div class="article-card-wrap">
-        <a class="article-card" href="${art.url}" target="_blank" rel="noopener">
-          ${authorName ? `<div class="article-author-name">${authorName}</div>` : ''}
-          ${art.thumbnail ? `<div class="article-thumb" style="background-image:url('${art.thumbnail}')"></div>` : ''}
-        </a>
-        <a class="article-caption" href="${art.url}" target="_blank" rel="noopener">
+      <a class="article-card" href="${art.url}" target="_blank" rel="noopener">
+        ${authorName ? `<div class="article-author-name">${authorName}</div>` : ''}
+        ${art.thumbnail ? `<div class="article-thumb" style="background-image:url('${art.thumbnail}')"></div>` : ''}
+        <div class="article-card-inner">
           <div class="article-badges">
             <span class="article-source">${art.source || 'web'}</span>
             ${art.category ? `<span class="article-category">${art.category}</span>` : ''}
           </div>
-          <div class="article-title">${art.title}</div>
-          ${art.description ? `<div class="article-desc">${art.description}</div>` : ''}
-          ${art.date ? `<div class="article-date">${art.date}</div>` : ''}
-        </a>
-      </div>
+          <h3 class="article-title">${art.title}</h3>
+          <p class="article-desc">${art.description || ''}</p>
+          <div class="article-meta">
+            <span class="article-date">${art.date || ''}</span>
+          </div>
+          ${(tagChips || personLinks) ? `
+            <div class="article-relations">
+              ${tagChips}${personLinks}
+            </div>
+          ` : ''}
+        </div>
+      </a>
     `;
   });
   // 3の倍数に満たない場合、空の本で埋める
   const remainder = articlesHtml.length % 3;
   const fillCount = remainder === 0 ? 0 : 3 - remainder;
   const placeholders = Array(fillCount).fill(0).map(() => `
-    <div class="article-card-wrap">
-      <div class="article-card article-card-empty">
-        <div class="article-card-empty-inner">
-          <div class="article-card-empty-ornament">❦</div>
-          <div class="article-card-empty-text">Coming soon</div>
-        </div>
+    <div class="article-card article-card-empty">
+      <div class="article-card-empty-inner">
+        <div class="article-card-empty-ornament">❦</div>
+        <div class="article-card-empty-text">Coming soon</div>
       </div>
     </div>
   `);

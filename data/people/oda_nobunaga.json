@@ -159,22 +159,26 @@
     {
       "name": "本能寺跡",
       "location": "京都市中京区",
-      "note": "本能寺の変の地。現本能寺は別の場所"
+      "note": "本能寺の変の地。現本能寺は別の場所",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/%E6%9C%AC%E8%83%BD%E5%AF%BA%E6%9C%AC%E5%A0%82.jpg/330px-%E6%9C%AC%E8%83%BD%E5%AF%BA%E6%9C%AC%E5%A0%82.jpg"
     },
     {
       "name": "清洲城",
       "location": "愛知県清須市",
-      "note": "若き日の本拠"
+      "note": "若き日の本拠",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/%E6%B8%85%E6%B4%B2%E5%9F%8E%E5%85%AC%E5%9C%92%E5%81%B4%E3%81%8B%E3%82%89%E3%81%AE%E6%B8%85%E6%B4%B2%E5%9F%8E.jpg/330px-%E6%B8%85%E6%B4%B2%E5%9F%8E%E5%85%AC%E5%9C%92%E5%81%B4%E3%81%8B%E3%82%89%E3%81%AE%E6%B8%85%E6%B4%B2%E5%9F%8E.jpg"
     },
     {
       "name": "岐阜城",
       "location": "岐阜県岐阜市",
-      "note": "『天下布武』を宣言した城"
+      "note": "『天下布武』を宣言した城",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/%E5%B2%90%E9%98%9C%E5%9F%8E_%E5%A4%A9%E5%AE%88%E9%96%A3.jpg/330px-%E5%B2%90%E9%98%9C%E5%9F%8E_%E5%A4%A9%E5%AE%88%E9%96%A3.jpg"
     },
     {
       "name": "安土城跡",
       "location": "滋賀県近江八幡市",
-      "note": "華麗な天主を持つ革新の城。現在は石垣のみ"
+      "note": "華麗な天主を持つ革新の城。現在は石垣のみ",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/%E5%AE%89%E5%9C%9F%E5%9F%8E_%E5%A4%A9%E5%AE%88%E9%96%A3%E5%9D%80.jpg/330px-%E5%AE%89%E5%9C%9F%E5%9F%8E_%E5%A4%A9%E5%AE%88%E9%96%A3%E5%9D%80.jpg"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Odanobunaga.jpg/500px-Odanobunaga.jpg",

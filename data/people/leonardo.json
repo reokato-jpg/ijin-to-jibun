@@ -185,22 +185,26 @@
     {
       "name": "レオナルド・ダ・ヴィンチの生家",
       "location": "イタリア・トスカーナ州ヴィンチ村",
-      "note": "緑の丘に建つ素朴な農家"
+      "note": "緑の丘に建つ素朴な農家",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Vinci%2C_Tuscany.JPG/330px-Vinci%2C_Tuscany.JPG"
     },
     {
       "name": "アンボワーズ城・クロ・リュセ",
       "location": "フランス・アンボワーズ",
-      "note": "最期を迎えた城"
+      "note": "最期を迎えた城",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Amboise_Hof.JPG/330px-Amboise_Hof.JPG"
     },
     {
       "name": "ルーヴル美術館",
       "location": "フランス・パリ",
-      "note": "『モナ・リザ』の所蔵"
+      "note": "『モナ・リザ』の所蔵",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Cour_Napol%C3%A9on_from_the_northwest_in_2014_%281%29.jpg/330px-Cour_Napol%C3%A9on_from_the_northwest_in_2014_%281%29.jpg"
     },
     {
       "name": "サン・ピエトロ・イン・モントーリオ",
       "location": "イタリア・ミラノ",
-      "note": "『最後の晩餐』のある教会"
+      "note": "『最後の晩餐』のある教会",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Basilica_Sancti_Petri_blue_hour.jpg/330px-Basilica_Sancti_Petri_blue_hour.jpg"
     }
   ],
   "books": [

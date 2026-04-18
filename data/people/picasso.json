@@ -184,17 +184,20 @@
     {
       "name": "ピカソ美術館",
       "location": "スペイン・バルセロナ",
-      "note": "初期作品を収蔵。10代の圧巻の技量が見られる"
+      "note": "初期作品を収蔵。10代の圧巻の技量が見られる",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Pablo_picasso_1.jpg/330px-Pablo_picasso_1.jpg"
     },
     {
       "name": "ピカソ国立美術館",
       "location": "フランス・パリ",
-      "note": "パリで最も包括的なピカソ・コレクション"
+      "note": "パリで最も包括的なピカソ・コレクション",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Pablo_picasso_1.jpg/330px-Pablo_picasso_1.jpg"
     },
     {
       "name": "ゲルニカ",
       "location": "スペイン・ビスカヤ県",
-      "note": "爆撃の街。平和記念碑がある"
+      "note": "爆撃の街。平和記念碑がある",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Gernika2.jpg/330px-Gernika2.jpg"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Pablo_picasso_1.jpg/500px-Pablo_picasso_1.jpg",

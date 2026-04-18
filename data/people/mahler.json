@@ -151,12 +151,14 @@
     {
       "name": "マーラーの作曲小屋",
       "location": "オーストリア・マイアーニッヒ",
-      "note": "夏の避暑地。多くの交響曲が生まれた"
+      "note": "夏の避暑地。多くの交響曲が生まれた",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Gustav_Mahler_1909.jpg/330px-Gustav_Mahler_1909.jpg"
     },
     {
       "name": "グリンツィング墓地",
       "location": "ウィーン",
-      "note": "愛娘と並ぶ墓"
+      "note": "愛娘と並ぶ墓",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Flag_of_Salzburg%2C_Vienna%2C_Vorarlberg.svg/langja-330px-Flag_of_Salzburg%2C_Vienna%2C_Vorarlberg.svg.png"
     }
   ],
   "books": [

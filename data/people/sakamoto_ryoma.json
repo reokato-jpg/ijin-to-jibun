@@ -186,27 +186,32 @@
     {
       "name": "坂本龍馬生誕地",
       "location": "高知県高知市上町",
-      "note": "生家跡の記念碑"
+      "note": "生家跡の記念碑",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Sakamoto_Ryoma.jpg/330px-Sakamoto_Ryoma.jpg"
     },
     {
       "name": "桂浜・坂本龍馬像",
       "location": "高知県高知市浦戸",
-      "note": "太平洋を見つめる巨大銅像"
+      "note": "太平洋を見つめる巨大銅像",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Sakamoto_Ryoma.jpg/330px-Sakamoto_Ryoma.jpg"
     },
     {
       "name": "近江屋跡",
       "location": "京都市中京区河原町",
-      "note": "暗殺の地。石碑のみ"
+      "note": "暗殺の地。石碑のみ",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Oumiyaato-1.jpg/330px-Oumiyaato-1.jpg"
     },
     {
       "name": "霊山護国神社",
       "location": "京都市東山区",
-      "note": "中岡慎太郎と並ぶ墓。幕末志士の墓が並ぶ"
+      "note": "中岡慎太郎と並ぶ墓。幕末志士の墓が並ぶ",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Kyoto_Ryozen_Gokoku_Shrine01-r.jpg/330px-Kyoto_Ryozen_Gokoku_Shrine01-r.jpg"
     },
     {
       "name": "亀山社中記念館",
       "location": "長崎市伊良林",
-      "note": "日本初の商社があった場所"
+      "note": "日本初の商社があった場所",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/2_Chome_Irabayashi%2C_Nagasaki-shi%2C_Nagasaki-ken_850-0802%2C_Japan_-_panoramio.jpg/330px-2_Chome_Irabayashi%2C_Nagasaki-shi%2C_Nagasaki-ken_850-0802%2C_Japan_-_panoramio.jpg"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Sakamoto_Ryoma.jpg/500px-Sakamoto_Ryoma.jpg",

@@ -363,22 +363,26 @@
     {
       "name": "ニーチェハウス（シルスマリア）",
       "location": "スイス・エンガディン地方",
-      "note": "夏の執筆地。『ツァラトゥストラ』の着想の地"
+      "note": "夏の執筆地。『ツァラトゥストラ』の着想の地",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Switzerland_adm_location_map.svg/langja-330px-Switzerland_adm_location_map.svg.png"
     },
     {
       "name": "ニーチェアルヒーフ（ワイマール）",
       "location": "ドイツ・ワイマール",
-      "note": "最晩年を過ごした場所。妹に管理された"
+      "note": "最晩年を過ごした場所。妹に管理された",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Germany_%283-2%29.svg/langja-330px-Flag_of_Germany_%283-2%29.svg.png"
     },
     {
       "name": "レッケン村（生家）",
       "location": "ドイツ・ザクセン=アンハルト州",
-      "note": "牧師の家に生まれた村"
+      "note": "牧師の家に生まれた村",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Flag_of_Saxony-Anhalt_%28state%29.svg/langja-330px-Flag_of_Saxony-Anhalt_%28state%29.svg.png"
     },
     {
       "name": "トリノ・カルロ・アルベルト広場",
       "location": "イタリア・トリノ",
-      "note": "馬を抱きしめて精神崩壊した運命の地"
+      "note": "馬を抱きしめて精神崩壊した運命の地",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Turin_Montage.png/330px-Turin_Montage.png"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Nietzsche1882.jpg/500px-Nietzsche1882.jpg",

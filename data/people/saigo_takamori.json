@@ -181,22 +181,26 @@
     {
       "name": "西郷隆盛像",
       "location": "東京都台東区 上野公園",
-      "note": "最も有名な銅像。犬を連れた日常の姿"
+      "note": "最も有名な銅像。犬を連れた日常の姿",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/%E4%B8%8A%E9%87%8E%E5%85%AC%E5%9C%92%E8%88%AA%E7%A9%BA%E5%86%99%E7%9C%9F1984.jpg/330px-%E4%B8%8A%E9%87%8E%E5%85%AC%E5%9C%92%E8%88%AA%E7%A9%BA%E5%86%99%E7%9C%9F1984.jpg"
     },
     {
       "name": "西郷南洲顕彰館",
       "location": "鹿児島市上竜尾町",
-      "note": "生涯を紹介する記念館"
+      "note": "生涯を紹介する記念館",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Saig%C5%8D_Nansh%C5%AB_Memorial_Hall_at_2021.jpg/330px-Saig%C5%8D_Nansh%C5%AB_Memorial_Hall_at_2021.jpg"
     },
     {
       "name": "城山",
       "location": "鹿児島市城山町",
-      "note": "西南戦争最後の戦場、自刃の地"
+      "note": "西南戦争最後の戦場、自刃の地",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/%E5%9B%9B%E5%B7%9D_%E9%9D%92%E5%9F%8E%E5%B1%B1-%E7%B4%A2%E9%81%93%E4%B8%8B%E5%8F%A3%E7%AB%99_-_panoramio.jpg/330px-%E5%9B%9B%E5%B7%9D_%E9%9D%92%E5%9F%8E%E5%B1%B1-%E7%B4%A2%E9%81%93%E4%B8%8B%E5%8F%A3%E7%AB%99_-_panoramio.jpg"
     },
     {
       "name": "西郷隆盛生誕地",
       "location": "鹿児島市加治屋町",
-      "note": "下級武士が集住した維新の地"
+      "note": "下級武士が集住した維新の地",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Takamori_Saigo.jpg/330px-Takamori_Saigo.jpg"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Takamori_Saigo.jpg/500px-Takamori_Saigo.jpg",

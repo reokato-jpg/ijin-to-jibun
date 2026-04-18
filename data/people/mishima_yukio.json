@@ -173,17 +173,20 @@
     {
       "name": "三島由紀夫文学館",
       "location": "山梨県山中湖村",
-      "note": "自筆原稿・遺品を展示"
+      "note": "自筆原稿・遺品を展示",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Mishima_Yukio_Literature_Museum.JPG/330px-Mishima_Yukio_Literature_Museum.JPG"
     },
     {
       "name": "市ヶ谷駐屯地（旧・陸上自衛隊東部方面総監部）",
       "location": "東京都新宿区市谷本村町",
-      "note": "事件の現場。現・防衛省"
+      "note": "事件の現場。現・防衛省",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/JGSDF_Eastern_Army_%282019%29.svg/langja-330px-JGSDF_Eastern_Army_%282019%29.svg.png"
     },
     {
       "name": "多磨霊園（墓所）",
       "location": "東京都府中市",
-      "note": "三島家の墓"
+      "note": "三島家の墓",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Tama_Cemetery_Entrance.jpg/330px-Tama_Cemetery_Entrance.jpg"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Yukio_Mishima%2C_1955_%28cropped_850%C3%97950_px%29.jpg/500px-Yukio_Mishima%2C_1955_%28cropped_850%C3%97950_px%29.jpg",

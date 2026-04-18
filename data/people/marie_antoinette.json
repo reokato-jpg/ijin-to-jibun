@@ -120,17 +120,20 @@
     {
       "name": "ヴェルサイユ宮殿",
       "location": "フランス・ヴェルサイユ",
-      "note": "王妃時代の栄華"
+      "note": "王妃時代の栄華",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Versailles_Palace.jpg/330px-Versailles_Palace.jpg"
     },
     {
       "name": "プチ・トリアノン",
       "location": "ヴェルサイユ内",
-      "note": "マリーが自由を求めた田舎風離宮"
+      "note": "マリーが自由を求めた田舎風離宮",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Petit_Trianon_facade_nord.jpg/330px-Petit_Trianon_facade_nord.jpg"
     },
     {
       "name": "コンシェルジュリー",
       "location": "パリ",
-      "note": "処刑前の牢獄、いまも独房が残る"
+      "note": "処刑前の牢獄、いまも独房が残る",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Conciergerie_von_N.JPG/330px-Conciergerie_von_N.JPG"
     }
   ],
   "books": [

@@ -168,12 +168,14 @@
     {
       "name": "哲学の道",
       "location": "京都市左京区",
-      "note": "西田が思索しながら歩いた散歩道"
+      "note": "西田が思索しながら歩いた散歩道",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Path_of_Philosophy_%283612088653%29.jpg/330px-Path_of_Philosophy_%283612088653%29.jpg"
     },
     {
       "name": "西田幾多郎記念哲学館",
       "location": "石川県かほく市",
-      "note": "安藤忠雄設計の記念館"
+      "note": "安藤忠雄設計の記念館",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Nishida_Museum.jpg/330px-Nishida_Museum.jpg"
     }
   ],
   "books": [

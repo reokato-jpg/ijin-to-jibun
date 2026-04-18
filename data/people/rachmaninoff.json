@@ -371,17 +371,20 @@
     {
       "name": "イワノフカ邸",
       "location": "ロシア・タンボフ州",
-      "note": "作曲した夏の別邸。『鐘の音』のインスピレーション源"
+      "note": "作曲した夏の別邸。『鐘の音』のインスピレーション源",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Sergei_Rachmaninoff_cph.3a40575.jpg/330px-Sergei_Rachmaninoff_cph.3a40575.jpg"
     },
     {
       "name": "セナール邸",
       "location": "スイス・ルツェルン湖畔",
-      "note": "亡命後に建てた別荘。『パガニーニ狂詩曲』誕生の地"
+      "note": "亡命後に建てた別荘。『パガニーニ狂詩曲』誕生の地",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Luzerner_Konzerthaus_am_See.JPG/330px-Luzerner_Konzerthaus_am_See.JPG"
     },
     {
       "name": "ラフマニノフ博物館",
       "location": "ロシア・ノヴゴロド近郊オネグ",
-      "note": "生家跡"
+      "note": "生家跡",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/View_of_Westward_from_Sky_Deck_MIRAI360%2C_Nishiki_Naka_Ward_Nagoya_2022.jpg/330px-View_of_Westward_from_Sky_Deck_MIRAI360%2C_Nishiki_Naka_Ward_Nagoya_2022.jpg"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Sergei_Rachmaninoff_cph.3a40575.jpg/500px-Sergei_Rachmaninoff_cph.3a40575.jpg",

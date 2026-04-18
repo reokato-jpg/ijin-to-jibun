@@ -140,12 +140,14 @@
     {
       "name": "石山寺",
       "location": "滋賀県大津市",
-      "note": "『源氏物語』の着想を得た寺と伝わる"
+      "note": "『源氏物語』の着想を得た寺と伝わる",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Ishiyamadera29n4272.jpg/330px-Ishiyamadera29n4272.jpg"
     },
     {
       "name": "廬山寺",
       "location": "京都市上京区",
-      "note": "邸宅跡と伝わる寺"
+      "note": "邸宅跡と伝わる寺",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/240224_Rozan-ji_Kyoto_Japan04s3.jpg/330px-240224_Rozan-ji_Kyoto_Japan04s3.jpg"
     }
   ],
   "books": [

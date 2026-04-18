@@ -179,17 +179,20 @@
     {
       "name": "モーツァルトの生家",
       "location": "ザルツブルク（オーストリア）",
-      "note": "ゲトライデ通り9番地の黄色い家"
+      "note": "ゲトライデ通り9番地の黄色い家",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Wolfgang-amadeus-mozart_1.jpg/330px-Wolfgang-amadeus-mozart_1.jpg"
     },
     {
       "name": "モーツァルト博物館（フィガロハウス）",
       "location": "ウィーン旧市街",
-      "note": "『フィガロの結婚』を書いた住居"
+      "note": "『フィガロの結婚』を書いた住居",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/AMB_Japanese_Verbs.pdf/page1-330px-AMB_Japanese_Verbs.pdf.jpg"
     },
     {
       "name": "聖マルクス墓地",
       "location": "ウィーン",
-      "note": "貧民墓地に埋葬された。正確な位置は不明"
+      "note": "貧民墓地に埋葬された。正確な位置は不明",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Karl_Marx_by_John_Jabez_Edwin_Mayall_1875_-_Restored_%26_Adjusted_%283x4_cropped_b%29.png/330px-Karl_Marx_by_John_Jabez_Edwin_Mayall_1875_-_Restored_%26_Adjusted_%283x4_cropped_b%29.png"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Wolfgang-amadeus-mozart_1.jpg/500px-Wolfgang-amadeus-mozart_1.jpg",

@@ -175,17 +175,20 @@
     {
       "name": "モネの庭（ジヴェルニー）",
       "location": "フランス・ノルマンディー",
-      "note": "睡蓮の池と日本風の橋。世界中から巡礼者が訪れる"
+      "note": "睡蓮の池と日本風の橋。世界中から巡礼者が訪れる",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Claude_Monet_1899_Nadar.jpg/330px-Claude_Monet_1899_Nadar.jpg"
     },
     {
       "name": "オランジュリー美術館",
       "location": "パリ",
-      "note": "巨大な睡蓮の連作が円形展示"
+      "note": "巨大な睡蓮の連作が円形展示",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Mus%C3%A9e_de_l%E2%80%99Orangerie_exterior.JPG/330px-Mus%C3%A9e_de_l%E2%80%99Orangerie_exterior.JPG"
     },
     {
       "name": "マルモッタン・モネ美術館",
       "location": "パリ16区",
-      "note": "『印象・日の出』を所蔵"
+      "note": "『印象・日の出』を所蔵",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Mus%C3%A9e_Marmottan.JPG/330px-Mus%C3%A9e_Marmottan.JPG"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Claude_Monet_1899_Nadar.jpg/500px-Claude_Monet_1899_Nadar.jpg",

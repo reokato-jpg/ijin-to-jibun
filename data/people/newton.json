@@ -157,12 +157,14 @@
     {
       "name": "ウールスソープ・マナー",
       "location": "イギリス・リンカーンシャー",
-      "note": "生家、リンゴの木の庭"
+      "note": "生家、リンゴの木の庭",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Google_Street_View_icon.svg/langja-330px-Google_Street_View_icon.svg.png"
     },
     {
       "name": "ケンブリッジ大学トリニティ・カレッジ",
       "location": "イギリス・ケンブリッジ",
-      "note": "『奇跡の年』以前と後の研究拠点"
+      "note": "『奇跡の年』以前と後の研究拠点",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/TrinityCollegeCamGreatCourt.jpg/330px-TrinityCollegeCamGreatCourt.jpg"
     }
   ],
   "books": [
