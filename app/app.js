@@ -1410,19 +1410,15 @@ async function showPerson(id) {
       <div class="works-intro">代表作をピックアップ。タップで YouTube の検索結果が開きます。</div>
       <div class="works-list">
         ${[...p.works].sort((a, b) => (a.year || 9999) - (b.year || 9999)).map(w => {
-          // 作曲家・音楽家：サムネは使わずクリーンなカード
+          // 作曲家・音楽家：サムネなしのクリーンなカード
           const isMusic = /作曲家|ピアニスト|音楽|指揮者/.test(p.field || '');
           if (w.youtubeId || isMusic) {
             const searchQ = encodeURIComponent(`${p.name} ${w.title}`);
             const ytSearch = w.youtubeSearchUrl || `https://www.youtube.com/results?search_query=${searchQ}`;
             const betterImslp = buildImslpUrl(p, w);
             return `
-              <div class="work-card work-music work-music-search" data-open-url="${ytSearch}">
+              <div class="work-card work-music work-music-text" data-open-url="${ytSearch}">
                 ${favWorkBtn(p.id, w)}
-                <div class="work-thumb work-thumb-placeholder">
-                  <div class="work-play">▶</div>
-                  <div class="work-thumb-label">YouTube で聴く</div>
-                </div>
                 <div class="work-info">
                   <div class="work-type">${w.type}${w.year ? ` · ${w.year}` : ''}</div>
                   <div class="work-title">${w.title}</div>
@@ -1449,23 +1445,19 @@ async function showPerson(id) {
               </div>
             `;
           }
-          // 哲学・文学・科学などのyoutube解説動画検索カード
+          // 哲学・文学・科学などのyoutube解説動画検索カード（サムネなし）
           if (w.youtubeSearchUrl || /哲学|作家|小説家|科学|画家|武士|政治|軍人|戦国|幕末|維新/.test(p.field || '')) {
             const searchQ = encodeURIComponent(`${p.name} ${w.title}`);
             const ytSearch = w.youtubeSearchUrl || `https://www.youtube.com/results?search_query=${searchQ}`;
             return `
-              <div class="work-card work-music work-music-search" data-open-url="${ytSearch}">
+              <div class="work-card work-music work-music-text" data-open-url="${ytSearch}">
                 ${favWorkBtn(p.id, w)}
-                <div class="work-thumb work-thumb-placeholder">
-                  <div class="work-play">🔎</div>
-                  <div class="work-thumb-label">YouTube で調べる</div>
-                </div>
                 <div class="work-info">
                   <div class="work-type">${w.type}${w.year ? ` · ${w.year}` : ''}</div>
                   <div class="work-title">${w.title}</div>
                   <div class="work-desc">${w.description || ''}</div>
                   <div class="work-links">
-                    <a class="work-btn work-btn-yt" href="${ytSearch}" target="_blank" rel="noopener" onclick="event.stopPropagation()"><span class="work-btn-icon">▶</span> 解説動画を探す</a>
+                    <a class="work-btn work-btn-yt" href="${ytSearch}" target="_blank" rel="noopener" onclick="event.stopPropagation()"><span class="work-btn-icon">🔎</span> 解説動画を探す</a>
                   </div>
                 </div>
               </div>

@@ -92,9 +92,27 @@
       ]
     },
     {
+      "year": 2004,
+      "age": 49,
+      "title": "膵臓癌（神経内分泌腫瘍）発覚、9ヶ月後に手術",
+      "detail": "9ヶ月間代替療法にこだわり手術を遅らせた。",
+      "tags": [
+        "illness"
+      ]
+    },
+    {
       "year": 2005,
       "age": 50,
       "title": "スタンフォード大学卒業式演説",
+      "detail": "『Stay hungry, stay foolish』の有名な演説。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 2005,
+      "age": 50,
+      "title": "スタンフォード大学卒業式講演",
       "detail": "『Stay hungry, stay foolish』の有名な演説。",
       "tags": [
         "breakthrough"

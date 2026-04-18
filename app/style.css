@@ -103,6 +103,7 @@ body {
   .category-filter, .era-filter, .sort-filter { justify-content: center; }
   /* 人物詳細：本全体を読みやすい820px幅に統一 */
   .profile-cover { height: 260px; }
+  #personDetail > .profile-cover,
   #personDetail > .profile-header,
   #personDetail > .routine-open-btn,
   #personDetail > .profile-tabs,
@@ -145,7 +146,7 @@ body {
 /* ================ ヘッダー ================ */
 .app-header {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: 40px 1fr 80px;
   align-items: center;
   padding: 14px 16px;
   background:
