@@ -214,6 +214,7 @@ body {
 .tabs.hidden { display: none; }
 .tab {
   flex: 1;
+  min-width: 0;
   padding: 14px 0;
   background: none;
   border: none;
@@ -224,6 +225,15 @@ body {
   transition: all 0.2s;
   font-family: inherit;
   letter-spacing: 0.1em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (max-width: 520px) {
+  .tab { font-size: 12px; letter-spacing: 0.05em; padding: 12px 2px; }
+}
+@media (max-width: 360px) {
+  .tab { font-size: 11px; letter-spacing: 0.02em; }
 }
 .tab.active {
   color: var(--gold-light);
