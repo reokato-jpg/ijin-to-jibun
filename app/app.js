@@ -446,6 +446,149 @@ function todaySeed() {
   return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
 }
 
+// ====================== あなたに似た偉人（趣味・好きなもの） ======================
+const MY_TRAITS_KEY = 'ijin_my_traits';
+function loadMyTraits() {
+  try { return JSON.parse(localStorage.getItem(MY_TRAITS_KEY) || '{}'); }
+  catch { return {}; }
+}
+function saveMyTraits(obj) {
+  localStorage.setItem(MY_TRAITS_KEY, JSON.stringify(obj));
+}
+
+// DBから全traitの選択肢を集計
+function collectAllTraitOptions() {
+  const counts = { foods: {}, hobbies: {}, likes: {} };
+  (DATA.people || []).forEach(p => {
+    const t = p.traits;
+    if (!t) return;
+    ['foods', 'hobbies', 'likes'].forEach(cat => {
+      (t[cat] || []).forEach(item => {
+        counts[cat][item] = (counts[cat][item] || 0) + 1;
+      });
+    });
+  });
+  // 出現数でソート（最低2件の偉人に共通するものだけ）
+  const topN = (obj, n) => Object.entries(obj).filter(([, c]) => c >= 2).sort((a, b) => b[1] - a[1]).slice(0, n).map(([k]) => k);
+  return {
+    foods: topN(counts.foods, 20),
+    hobbies: topN(counts.hobbies, 20),
+    likes: topN(counts.likes, 20),
+  };
+}
+
+function findMatchingPeople(myTraits, limit = 6) {
+  const mine = {
+    foods: new Set(myTraits.foods || []),
+    hobbies: new Set(myTraits.hobbies || []),
+    likes: new Set(myTraits.likes || []),
+  };
+  const totalSelected = mine.foods.size + mine.hobbies.size + mine.likes.size;
+  if (totalSelected === 0) return [];
+  const scored = (DATA.people || []).map(p => {
+    const t = p.traits;
+    if (!t) return { p, score: 0, matches: [] };
+    const matches = [];
+    let score = 0;
+    ['foods', 'hobbies', 'likes'].forEach(cat => {
+      (t[cat] || []).forEach(item => {
+        if (mine[cat].has(item)) {
+          score++;
+          matches.push({ cat, item });
+        }
+      });
+    });
+    return { p, score, matches };
+  }).filter(x => x.score > 0).sort((a, b) => b.score - a.score);
+  return scored.slice(0, limit);
+}
+
+function renderTraitsMatch() {
+  const container = document.getElementById('traitsMatchSection');
+  if (!container || !DATA.people) return;
+  const my = loadMyTraits();
+  const selectedCount = (my.foods || []).length + (my.hobbies || []).length + (my.likes || []).length;
+
+  const options = collectAllTraitOptions();
+  const makeChips = (cat, catLabel) => {
+    const selected = new Set(my[cat] || []);
+    return `
+      <div class="match-cat">
+        <div class="match-cat-label">${catLabel}</div>
+        <div class="match-chips">
+          ${options[cat].map(opt => {
+            const on = selected.has(opt);
+            return `<button class="match-chip ${on ? 'active' : ''}" data-match-chip data-cat="${cat}" data-opt="${escapeHtml(opt)}">${opt}</button>`;
+          }).join('')}
+        </div>
+      </div>
+    `;
+  };
+
+  const matches = findMatchingPeople(my, 6);
+  const matchesHtml = matches.length > 0 ? `
+    <div class="match-results">
+      <div class="match-results-label">あなたと共通点のある偉人 (${matches.length}人)</div>
+      <div class="book-grid">
+        ${matches.map(m => {
+          const p = m.p;
+          const bg = p.imageUrl ? `style="background-image:url('${p.imageUrl}')"` : '';
+          return `
+            <div class="person-book ${p.imageUrl ? '' : 'no-img'}" data-id="${p.id}" ${bg}>
+              <div class="match-score">${m.score} 共通</div>
+              <div class="person-book-overlay"></div>
+              ${!p.imageUrl ? `<div class="person-book-placeholder">${p.name.charAt(0)}</div>` : ''}
+              <div class="person-book-info">
+                <div class="person-book-name">${p.name}</div>
+                <div class="person-book-meta">${m.matches.slice(0, 2).map(x => x.item).join(' · ')}</div>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    </div>
+  ` : (selectedCount > 0 ? '<div class="match-empty">一致する偉人が見つかりませんでした。別の項目を試してください。</div>' : '');
+
+  container.innerHTML = `
+    <details class="match-card" ${selectedCount === 0 ? 'open' : ''}>
+      <summary class="match-summary">
+        <span class="match-summary-icon">🫖</span>
+        <span class="match-summary-text">${selectedCount > 0 ? `あなたの好み ${selectedCount}個選択中` : 'あなたの趣味・好きなものを選んで偉人を探す'}</span>
+        <span class="match-summary-arrow">▾</span>
+      </summary>
+      <div class="match-body">
+        <div class="match-intro">気になる項目をタップして選択（複数可）。<br>共通点の多い偉人が下に表示されます。</div>
+        ${makeChips('foods', '🍽 好きな食べ物・飲み物')}
+        ${makeChips('hobbies', '🎨 趣味・日課')}
+        ${makeChips('likes', '❤ 好きなもの')}
+        ${selectedCount > 0 ? `<button class="match-clear" id="matchClear">選択をクリア</button>` : ''}
+      </div>
+    </details>
+    ${matchesHtml}
+  `;
+
+  container.querySelectorAll('[data-match-chip]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const cat = btn.dataset.cat;
+      const opt = btn.dataset.opt;
+      const t = loadMyTraits();
+      t[cat] = t[cat] || [];
+      const idx = t[cat].indexOf(opt);
+      if (idx >= 0) t[cat].splice(idx, 1);
+      else t[cat].push(opt);
+      saveMyTraits(t);
+      renderTraitsMatch();
+    });
+  });
+  container.querySelector('#matchClear')?.addEventListener('click', () => {
+    saveMyTraits({});
+    renderTraitsMatch();
+  });
+  container.querySelectorAll('.person-book').forEach(el => {
+    el.addEventListener('click', () => showPerson(el.dataset.id));
+  });
+}
+
 function renderCalendarToday() {
   const block = document.getElementById('calendarBlock');
   const container = document.getElementById('calendarToday');
@@ -5897,6 +6040,7 @@ function bindEvents() {
   renderHeroStats();
   renderUpdates();
   renderOshi();
+  renderTraitsMatch();
   renderCalendarToday();
   renderPersonOfTheDay();
   renderQuoteOfTheDay();

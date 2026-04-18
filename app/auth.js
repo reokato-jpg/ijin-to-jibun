@@ -39,6 +39,7 @@ const SYNC_KEYS = [
   'ijin_current_title',
   'ijin_visits',
   'ijin_last_visit_day',
+  'ijin_my_traits',
 ];
 
 let fbApp = null, fbAuth = null, fbDb = null;
