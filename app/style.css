@@ -312,9 +312,15 @@ main { flex: 1; overflow-y: auto; background: var(--paper); }
 .hero-img {
   display: block;
   width: 100%;
+  max-width: 520px;
   height: auto;
+  max-height: 260px;
   object-fit: contain;
   background: #fff;
+  margin: 0 auto;
+}
+@media (min-width: 900px) {
+  .hero-img { max-width: 680px; max-height: 340px; }
 }
 .hero-image::before { display: none; }
 .hero-tagline-below {
