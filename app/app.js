@@ -560,6 +560,11 @@ function getSquareQuotes(limit = 20) {
 
 function renderSquare() {
   const container = document.getElementById('squareSection');
+  if (!container) return;
+  renderSquareInto(container);
+}
+
+function renderSquareInto(container) {
   if (!container || !DATA.people) return;
   const quotes = getSquareQuotes(20);
   const selfPosts = loadSelfPosts();
@@ -3878,6 +3883,25 @@ function renderChatPanel() {
   const form = document.getElementById('chatPanelForm');
   if (!body || !head) return;
 
+  // 偉人の広場モード
+  head.innerHTML = `
+    <div class="chat-panel-head-info">
+      <div class="chat-panel-head-name">偉人の広場</div>
+      <div class="chat-panel-head-status">名言をつぶやき合う場所</div>
+    </div>
+  `;
+  head.style.cursor = 'default';
+  head.onclick = null;
+  if (form) form.style.display = '';
+  // 入力欄のプレースホルダー
+  const input = document.getElementById('chatPanelInput');
+  if (input) input.placeholder = '今の気持ちをつぶやく（280字まで・連絡先/暴言NG）';
+  // 広場の中身を描画
+  renderSquareInto(body);
+  return;
+
+  // （以下は以前の「今日の話し相手」ロジック。disabled）
+  // eslint-disable-next-line no-unreachable
   const companion = getTodaysCompanion();
   if (!companion) {
     head.innerHTML = `<div class="chat-panel-head-name">今日の話し相手</div>`;
@@ -4079,18 +4103,11 @@ function initChatWidget() {
   async function doSend() {
     const text = input.value.trim();
     if (!text) return;
-    const companion = getTodaysCompanion();
-    if (!companion) {
-      alert('まずホームで今日の気分を選んでください。');
-      return;
-    }
-    const body = document.getElementById('chatPanelBody');
-    // メッセージが未送信でも呼びかけ可能。その場合は "call" キー
-    const key = (body && body.dataset.latestKey) || `call::${companion.person.id}`;
-    await submitComment(key, text);
+    // 広場に自分のつぶやきを投稿（コンテンツフィルタ適用）
+    const err = validatePost(text);
+    if (err) { alert(err); return; }
+    saveSelfPost(text);
     input.value = '';
-    // 呼びかけると偉人が次の言葉で応える（1通アンロック）
-    advanceChatUnlock();
     renderChatPanel();
   }
   // フォーム送信・ボタンクリック・Enter全部拾う
@@ -4883,15 +4900,16 @@ function bindEvents() {
       if (v === 'routines') renderRoutines();
       if (v === 'articles') renderArticles();
       if (v === 'favorites') renderFavorites();
-      // 検索タブ=偉人の広場のBGM
-      const bgm = document.getElementById('searchBgm');
-      if (bgm) {
-        if (v === 'tags') {
-          bgm.volume = 0.35;
-          bgm.play().catch(() => {}); // ブロックされても無視
-        } else {
-          bgm.pause();
-        }
+      // タブごとのBGM
+      const searchBgm = document.getElementById('searchBgm');
+      const routineBgm = document.getElementById('routineBgm');
+      [searchBgm, routineBgm].forEach(b => b && b.pause());
+      if (v === 'tags' && searchBgm) {
+        searchBgm.volume = 0.35;
+        searchBgm.play().catch(() => {});
+      } else if (v === 'routines' && routineBgm) {
+        routineBgm.volume = 0.35;
+        routineBgm.play().catch(() => {});
       }
     });
   });
@@ -4933,7 +4951,6 @@ function bindEvents() {
   renderDailyMission();
   renderCalendarToday();
   renderPersonOfTheDay();
-  renderSquare();
   renderQuoteOfTheDay();
   renderQuoteCarousel();
   renderFeaturedTags();
