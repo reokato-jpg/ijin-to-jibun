@@ -1433,9 +1433,63 @@ function saveBookmark(personId) {
   localStorage.setItem(BOOKMARK_KEY, JSON.stringify(list.slice(0, 20)));
 }
 
+// ページめくり効果音（Web Audio API で合成）
+let __pageFlipAudioCtx = null;
+function playPageFlipSound() {
+  try {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    if (!__pageFlipAudioCtx) __pageFlipAudioCtx = new AC();
+    const ctx = __pageFlipAudioCtx;
+    if (ctx.state === 'suspended') ctx.resume();
+    const now = ctx.currentTime;
+    // ホワイトノイズで紙がすれる音を合成
+    const bufferSize = ctx.sampleRate * 0.35;
+    const noiseBuf = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+    const data = noiseBuf.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      // 前半は弱く、中盤で強く、後半で減衰
+      const t = i / bufferSize;
+      const envelope = t < 0.5 ? t * 2 : (1 - t) * 2;
+      data[i] = (Math.random() * 2 - 1) * envelope * 0.35;
+    }
+    const src = ctx.createBufferSource();
+    src.buffer = noiseBuf;
+    // ハイパスフィルタで紙の擦れ感
+    const hp = ctx.createBiquadFilter();
+    hp.type = 'highpass';
+    hp.frequency.value = 2000;
+    // ローパスで上を削って自然に
+    const lp = ctx.createBiquadFilter();
+    lp.type = 'lowpass';
+    lp.frequency.value = 8000;
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(0.6, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+    src.connect(hp).connect(lp).connect(gain).connect(ctx.destination);
+    src.start(now);
+    src.stop(now + 0.4);
+  } catch (e) { /* ignore */ }
+}
+
+// BGM全停止
+function stopAllBgm() {
+  ['homeBgm', 'searchBgm', 'routineBgm', 'blogBgm', 'favoritesBgm'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.pause();
+  });
+}
+
+// 本を開いたときの演出：ページめくり音 + BGM停止
+function playBookOpenFx() {
+  stopAllBgm();
+  playPageFlipSound();
+}
+
 async function showPerson(id) {
   const p = DATA.people.find(x => x.id === id);
   if (!p) return;
+  playBookOpenFx();
   saveBookmark(id);
   // アニメーション再生中に裏で詳細を描画
   const flipPromise = playBookFlip({
@@ -2631,6 +2685,7 @@ function bindSearchPanel() {
 async function showTag(tagId) {
   const tag = DATA.tagMap[tagId];
   if (!tag) return;
+  playBookOpenFx();
   const FAV_TAGS_KEY = 'ijin_fav_tags';
   const favTags = loadSet(FAV_TAGS_KEY);
   const flipPromise = playBookFlip({
@@ -4361,6 +4416,10 @@ function renderArticles() {
     </div>
   `);
   list.innerHTML = `<div class="article-grid">${articlesHtml.join('')}${placeholders.join('')}</div>`;
+  // ブログカードクリックでページめくり音＋BGM停止
+  list.querySelectorAll('a.article-card').forEach(a => {
+    a.addEventListener('click', () => playBookOpenFx());
+  });
 }
 
 // ====================== お気に入り ======================
