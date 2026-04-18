@@ -1494,6 +1494,11 @@ function saveBookmark(personId) {
 let __pageFlipAudioCtx = null;
 function playPageFlipSound() {
   if (isMuted()) return;
+  // MP3を優先再生、失敗したら合成音にフォールバック
+  const el = document.getElementById('sfxPageFlip');
+  if (el) {
+    try { el.currentTime = 0; el.volume = 0.6; el.play().catch(() => {}); return; } catch {}
+  }
   try {
     const AC = window.AudioContext || window.webkitAudioContext;
     if (!AC) return;
@@ -1639,6 +1644,20 @@ function initMuteToggle() {
   });
 }
 
+// 効果音：送信・受信
+function playSfxSend() {
+  if (isMuted()) return;
+  const el = document.getElementById('sfxSend');
+  if (!el) return;
+  try { el.currentTime = 0; el.volume = 0.65; el.play().catch(() => {}); } catch {}
+}
+function playSfxReceive() {
+  if (isMuted()) return;
+  const el = document.getElementById('sfxReceive');
+  if (!el) return;
+  try { el.currentTime = 0; el.volume = 0.5; el.play().catch(() => {}); } catch {}
+}
+
 // 自分のつぶやきに対する偉人の即応（ローカルのみの演出）
 const QUICK_REPLY_KEY = 'ijin_quick_replies';
 function loadQuickReplies() {
@@ -1667,6 +1686,7 @@ function scheduleQuickReply(userText) {
       quoteSource: q.source || '',
       ts: Date.now(),
     });
+    playSfxReceive();
     if (!document.getElementById('chatPanel')?.classList.contains('hidden')) {
       renderChatPanel();
     } else {
@@ -4420,6 +4440,7 @@ function initChatWidget() {
     const err = validatePost(text);
     if (err) { alert(err); return; }
     saveSelfPost(text);
+    playSfxSend();
     input.value = '';
     renderChatPanel();
     // 偉人がすぐに応答（5〜12秒後にランダムな今日のメンバーから）
