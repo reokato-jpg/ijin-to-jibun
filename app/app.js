@@ -1927,6 +1927,47 @@ async function showPerson(id) {
           <div class="life-digest-body">${p.lifeDigest}</div>
         </details>
       ` : ''}
+      ${p.traits ? `
+        <details class="traits-card">
+          <summary class="traits-summary">
+            <span class="traits-icon">🫖</span>
+            <span class="traits-label">好きなもの・趣味・性格</span>
+            <span class="traits-arrow">▾</span>
+          </summary>
+          <div class="traits-body">
+            ${p.traits.personality ? `
+              <div class="traits-section">
+                <div class="traits-sec-label">性格</div>
+                <div class="traits-sec-text">${p.traits.personality}</div>
+              </div>
+            ` : ''}
+            ${(p.traits.foods || []).length ? `
+              <div class="traits-section">
+                <div class="traits-sec-label">好きな食べ物・飲み物</div>
+                <div class="traits-sec-chips">${p.traits.foods.map(x => `<span class="traits-chip">${x}</span>`).join('')}</div>
+              </div>
+            ` : ''}
+            ${(p.traits.hobbies || []).length ? `
+              <div class="traits-section">
+                <div class="traits-sec-label">趣味・日課</div>
+                <div class="traits-sec-chips">${p.traits.hobbies.map(x => `<span class="traits-chip">${x}</span>`).join('')}</div>
+              </div>
+            ` : ''}
+            ${(p.traits.likes || []).length ? `
+              <div class="traits-section">
+                <div class="traits-sec-label">好きなもの</div>
+                <div class="traits-sec-chips">${p.traits.likes.map(x => `<span class="traits-chip">${x}</span>`).join('')}</div>
+              </div>
+            ` : ''}
+            ${(p.traits.dislikes || []).length ? `
+              <div class="traits-section">
+                <div class="traits-sec-label">苦手なもの</div>
+                <div class="traits-sec-chips">${p.traits.dislikes.map(x => `<span class="traits-chip traits-chip-neg">${x}</span>`).join('')}</div>
+              </div>
+            ` : ''}
+          </div>
+        </details>
+      ` : ''}
       ${p.imageCredit ? `
         <div class="image-credit">
           画像: ${p.imageCredit.artist || '作者不詳'} /

@@ -160,5 +160,29 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kleopatra-VII.-Altes-Museum-Berlin1.jpg"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Alexandria_%282007-05-018%29.jpg/330px-Alexandria_%282007-05-018%29.jpg",
-  "coverImageCaption": "アレクサンドリア"
+  "coverImageCaption": "アレクサンドリア",
+  "traits": {
+    "foods": [
+      "ワイン（エジプト産）",
+      "デーツ",
+      "蜂蜜",
+      "薔薇水"
+    ],
+    "hobbies": [
+      "学問（9ヶ国語を操った）",
+      "医学・薬草",
+      "文学",
+      "演出（船や部屋の美しい演出）"
+    ],
+    "personality": "知的で戦略家。美貌より知性と話術で男たちを魅了した。最後は毒蛇アスピスに噛ませて自死、エジプトの誇りを守った。",
+    "likes": [
+      "学問",
+      "船旅",
+      "贅沢な装い"
+    ],
+    "dislikes": [
+      "ローマの属国化",
+      "妹アルシノエ"
+    ]
+  }
 }

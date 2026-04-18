@@ -9618,6 +9618,77 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
   .sponsor-card-body { font-size: 13.5px; }
 }
 
+/* ================ 性格・趣味・食べ物カード ================ */
+.traits-card {
+  margin: 8px 0 0;
+  background: linear-gradient(180deg, #fffdf7 0%, #faf5e8 100%);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.traits-summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  font-family: var(--font-jp);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--wine);
+  transition: background 0.15s;
+}
+.traits-summary::-webkit-details-marker { display: none; }
+.traits-summary:hover { background: rgba(184,149,46,0.08); }
+.traits-icon { font-size: 16px; }
+.traits-label { flex: 1; letter-spacing: 0.05em; }
+.traits-arrow {
+  font-size: 12px;
+  color: var(--gold);
+  transition: transform 0.2s;
+}
+.traits-card[open] .traits-arrow { transform: rotate(180deg); }
+.traits-body {
+  padding: 8px 16px 14px;
+  border-top: 1px dashed var(--rule);
+}
+.traits-section {
+  margin-top: 12px;
+}
+.traits-sec-label {
+  font-family: var(--font-jp);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--wine-dark);
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+}
+.traits-sec-text {
+  font-family: var(--font-jp);
+  font-size: 12.5px;
+  line-height: 1.85;
+  color: var(--ink-2);
+}
+.traits-sec-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.traits-chip {
+  display: inline-block;
+  padding: 4px 10px;
+  background: rgba(184,149,46,0.15);
+  color: var(--wine);
+  border-radius: 14px;
+  font-size: 11px;
+  font-family: var(--font-jp);
+}
+.traits-chip-neg {
+  background: rgba(122,46,58,0.1);
+  color: var(--wine-dark);
+}
+
 /* ================ 本日のミッション ================ */
 .mission-card {
   position: relative;
