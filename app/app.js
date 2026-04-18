@@ -1408,6 +1408,7 @@ async function showPerson(id) {
     <button class="letter-write-btn" data-letter-write="1">
       <span class="letter-write-icon">✉</span>
       <span class="letter-write-label">${p.name}に手紙を書く</span>
+      <span class="letter-write-beta">β版</span>
       <span class="letter-write-arrow">→</span>
     </button>
 
@@ -2672,11 +2673,12 @@ function loadLetters() {
   try { return JSON.parse(localStorage.getItem(LETTERS_KEY) || '[]'); }
   catch { return []; }
 }
-// AI返信のエンドポイント（Vercel等にデプロイした /api/letter-reply）
-// 設定されていない/失敗時はルールベース返信にフォールバック
-const LETTER_REPLY_ENDPOINT = '/api/letter-reply';
+// AI返信のエンドポイント（β版では無効化・後日AIと連動予定）
+// 有効化時: '/api/letter-reply' を設定。失敗時はルールベース返信にフォールバック
+const LETTER_REPLY_ENDPOINT = null;
 
 async function fetchAIReply(person, letterText) {
+  if (!LETTER_REPLY_ENDPOINT) return null; // β版では無効
   try {
     const res = await fetch(LETTER_REPLY_ENDPOINT, {
       method: 'POST',
@@ -2790,6 +2792,11 @@ function openLetterModal(p) {
         <div class="letter-modal-sub">${p.birth || '?'}–${p.death || ''} ／ ${p.field}</div>
       </div>
       <div class="letter-modal-body">
+        <div class="letter-beta-notice">
+          <span class="letter-beta-badge">β版</span>
+          現在の返信は固定テンプレート方式です。<br>
+          <b>後日、AIと連動予定</b>（偉人ごとの人格・思想を踏まえた返信）。
+        </div>
         <textarea class="letter-textarea" id="letterTextarea" rows="10"
           placeholder="${p.name}さんへ、今の自分の気持ちを綴ってください。&#10;&#10;時を超えた誰かに宛てた手紙は、本当は自分自身への手紙でもあります。"></textarea>
         <div class="letter-footer-date">${new Date().toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
@@ -4414,11 +4421,13 @@ function renderFavorites() {
         const now = Date.now();
         if (now >= deliverTime) {
           const replyDateStr = new Date(l.reply.deliverAt).toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' });
+          const isAI = l.reply.source === 'ai';
           replyHtml = `
             <div class="letter-reply">
               <div class="letter-reply-head">
                 <span class="letter-reply-badge">✉ 返信が届きました</span>
                 <span class="letter-reply-from">— ${person.name}より</span>
+                ${!isAI ? '<span class="letter-reply-beta" title="後日AIと連動予定">β版</span>' : ''}
               </div>
               <div class="letter-reply-text">${l.reply.text.replace(/\n/g, '<br>')}</div>
               <div class="letter-reply-date">${replyDateStr} 着</div>
