@@ -1497,7 +1497,9 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
   background-size: cover;
   background-position: center 20%;
   position: relative;
-  margin: -16px -16px 0;
+  margin: -16px -18px 0;
+  max-width: none;
+  width: auto;
   border-radius: 0;
   overflow: hidden;
 }
