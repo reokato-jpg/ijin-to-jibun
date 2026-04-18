@@ -172,8 +172,26 @@ const DIARY_KEY = 'ijin_diary';
 const NOTES_KEY = 'ijin_notes';
 
 function loadDiary() {
-  try { return JSON.parse(localStorage.getItem(DIARY_KEY) || '[]'); }
-  catch { return []; }
+  try {
+    const arr = JSON.parse(localStorage.getItem(DIARY_KEY) || '[]');
+    // id重複 or (同一 text+date) 重複を除去（過去の同期バグ対策）
+    const seen = new Set();
+    const seenKey = new Set();
+    const clean = [];
+    for (const e of arr) {
+      if (!e) continue;
+      const key = (e.text || '') + '|' + (e.date || '');
+      if (e.id && seen.has(e.id)) continue;
+      if (seenKey.has(key)) continue;
+      if (e.id) seen.add(e.id);
+      seenKey.add(key);
+      clean.push(e);
+    }
+    if (clean.length !== arr.length) {
+      localStorage.setItem(DIARY_KEY, JSON.stringify(clean));
+    }
+    return clean;
+  } catch { return []; }
 }
 function saveDiary(entries) {
   localStorage.setItem(DIARY_KEY, JSON.stringify(entries));
