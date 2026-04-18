@@ -434,6 +434,77 @@ function renderPersonCard(pick, label) {
   `;
 }
 
+// 日付を数値化（YYYYMMDD → 整数）。日本時間で「今日」を判定
+function todaySeed() {
+  const d = new Date();
+  return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+}
+
+function renderDailyMission() {
+  const container = document.getElementById('dailyMission');
+  if (!container || !DATA.people || DATA.people.length === 0) return;
+  const seed = todaySeed();
+  const person = DATA.people[seed % DATA.people.length];
+  if (!person) return;
+
+  // ミッション素材を探す（優先: events に tag 付き > quotes > routine > summary）
+  let kind = null, text = null, sub = null;
+  const events = (person.events || []).filter(e => (e.title || '').length > 3);
+  const quotes = person.quotes || [];
+
+  if (events.length > 0) {
+    const ev = events[(seed >> 3) % events.length];
+    kind = 'episode';
+    text = ev.title;
+    sub = ev.detail ? String(ev.detail).slice(0, 80) : '';
+  } else if (quotes.length > 0) {
+    const q = quotes[seed % quotes.length];
+    kind = 'quote';
+    text = q.text || '';
+    sub = q.source || '';
+  }
+
+  if (!text) return;
+
+  // その偉人を真似る提案（種別ごとに異なる1行）
+  const challenges = {
+    episode: `${person.name}が同じ日にしたように、あなたも今日、小さな一歩を選んでみませんか。`,
+    quote: `今日はこの言葉を胸に、一つだけ行動してみる日にしませんか。`,
+  };
+
+  const initial = (person.name || '?').charAt(0);
+  const avatar = person.imageUrl
+    ? `<div class="mission-avatar" style="background-image:url('${person.imageUrl}')"></div>`
+    : `<div class="mission-avatar no-img">${initial}</div>`;
+
+  container.innerHTML = `
+    <article class="mission-card" data-person-id="${person.id}">
+      <div class="mission-head">
+        ${avatar}
+        <div class="mission-head-text">
+          <div class="mission-date">${new Date().toLocaleDateString('ja-JP', { month: 'long', day: 'numeric', weekday: 'short' })}</div>
+          <div class="mission-person">${person.name}<span class="mission-person-en">${person.nameEn || ''}</span></div>
+        </div>
+      </div>
+      <div class="mission-body">
+        <div class="mission-label">${kind === 'quote' ? '今日の一言' : '今日の逸話'}</div>
+        <div class="mission-text">${text}</div>
+        ${sub ? `<div class="mission-sub">${sub}</div>` : ''}
+        <div class="mission-challenge">${challenges[kind]}</div>
+      </div>
+      <div class="mission-actions">
+        <button class="mission-btn mission-open">📖 ${person.name}を読む</button>
+      </div>
+    </article>
+  `;
+
+  container.querySelector('.mission-open')?.addEventListener('click', () => showPerson(person.id));
+  container.querySelector('.mission-card')?.addEventListener('click', (e) => {
+    if (e.target.closest('.mission-btn')) return;
+    showPerson(person.id);
+  });
+}
+
 function renderPersonOfTheDay() {
   const container = document.getElementById('personOfTheDay');
   if (!container || DATA.people.length === 0) return;
@@ -4091,6 +4162,7 @@ function bindEvents() {
   renderHeroStats();
   renderUpdates();
   renderOshi();
+  renderDailyMission();
   renderPersonOfTheDay();
   renderQuoteOfTheDay();
   renderQuoteCarousel();
