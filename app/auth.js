@@ -306,7 +306,7 @@ function updateLoginNotice() {
   banner.id = 'loginNotice';
   banner.className = 'login-notice';
   banner.innerHTML = `
-    <div class="login-notice-icon">💾</div>
+    <div class="login-notice-icon">🔑</div>
     <div class="login-notice-text">
       <div class="login-notice-title">未ログインです</div>
       <div class="login-notice-sub">お気に入り・推し・ルーティンはこの端末にのみ保存されます。<br>登録すると、<b>端末を変えても・データを消しても残る</b>ように。</div>
