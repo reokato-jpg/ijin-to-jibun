@@ -6463,6 +6463,53 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
   line-height: 2;
   letter-spacing: 0.05em;
   font-family: var(--font-jp);
+  text-align: center;
+}
+.my-book-empty-hero {
+  font-size: 15px;
+  color: var(--wine-dark);
+  line-height: 1.95;
+  margin: 18px 0 14px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+.my-book-empty-body {
+  margin-bottom: 12px;
+}
+.my-book-empty-poem {
+  font-size: 12px;
+  color: var(--ink-4);
+  font-style: italic;
+  margin-top: 18px;
+  letter-spacing: 0.08em;
+}
+.my-book-empty-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 20px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, var(--wine) 0%, var(--wine-dark) 100%);
+  color: var(--gold-light);
+  border: 1px solid var(--gold);
+  border-radius: 24px;
+  font-family: var(--font-jp);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(122,46,58,0.3);
+  transition: all 0.2s;
+}
+.my-book-empty-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(122,46,58,0.4);
+}
+.my-book-empty-note {
+  margin-top: 10px;
+  font-size: 10px;
+  color: var(--ink-4);
+  letter-spacing: 0.05em;
 }
 
 /* 気分選択チップ + 推し */

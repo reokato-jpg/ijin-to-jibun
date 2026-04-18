@@ -184,12 +184,12 @@ async function openLoginModal() {
     <div class="auth-modal-panel">
       <button class="auth-modal-close" data-close>×</button>
       <div class="auth-head">
-        <div class="auth-title">アカウント</div>
-        <div class="auth-sub">登録すると、お気に入り・推し・ルーティンが<br>全ての端末で同期されます。</div>
+        <div class="auth-title">本棚の鍵を受け取る</div>
+        <div class="auth-sub">夜、どうしても眠れないとき。<br>朝、どうしても立ち上がれないとき。<br>その記録を、夜明けに消えてしまわないよう<br><b>あなただけの本棚</b>にしまっておきませんか。</div>
       </div>
       <div class="auth-tabs">
-        <button class="auth-tab active" data-mode="login">ログイン</button>
-        <button class="auth-tab" data-mode="register">新規登録</button>
+        <button class="auth-tab active" data-mode="login">戻ってきた方</button>
+        <button class="auth-tab" data-mode="register">はじめての方</button>
       </div>
       <form class="auth-form" id="authForm">
         <label class="auth-label">メールアドレス
@@ -198,7 +198,7 @@ async function openLoginModal() {
         <label class="auth-label">パスワード（6文字以上）
           <input type="password" name="password" required minlength="6" autocomplete="current-password">
         </label>
-        <button type="submit" class="auth-submit">ログイン</button>
+        <button type="submit" class="auth-submit">本棚の鍵を受け取る</button>
         <div class="auth-divider"><span>または</span></div>
         <button type="button" class="auth-google" id="authGoogle">
           <span class="auth-google-icon">G</span> Googleで続ける
@@ -222,7 +222,7 @@ async function openLoginModal() {
     t.addEventListener('click', () => {
       mode = t.dataset.mode;
       modal.querySelectorAll('.auth-tab').forEach(x => x.classList.toggle('active', x === t));
-      submit.textContent = mode === 'login' ? 'ログイン' : '新規登録する';
+      submit.textContent = mode === 'login' ? 'おかえりなさい、開く' : '本棚の鍵を受け取る';
     });
   });
   modal.querySelectorAll('[data-close]').forEach(el => {
@@ -295,16 +295,42 @@ function updateAccountUI() {
     badge.innerHTML = `<span class="acc-dot"></span><span class="acc-name">${escapeSmall(n)}</span>`;
     badge.classList.add('logged-in');
   } else {
-    badge.innerHTML = `<span class="acc-icon">👤</span><span class="acc-name">ログイン</span>`;
+    badge.innerHTML = `<span class="acc-icon">🔑</span><span class="acc-name">本棚の鍵</span>`;
     badge.classList.remove('logged-in');
   }
   updateLoginNotice();
 }
 
-// 未ログインバナーは非表示
+// 未ログインバナー（物語の文脈で登録を促す）
 function updateLoginNotice() {
   const existing = document.getElementById('loginNotice');
-  if (existing) existing.remove();
+  if (currentUser) {
+    if (existing) existing.remove();
+    return;
+  }
+  if (!FIREBASE_ENABLED) return;
+  if (existing) return;
+  const home = document.querySelector('#view-people');
+  if (!home) return;
+  if (localStorage.getItem('ijin_login_notice_dismissed') === '1') return;
+  const banner = document.createElement('div');
+  banner.id = 'loginNotice';
+  banner.className = 'login-notice';
+  banner.innerHTML = `
+    <div class="login-notice-icon">🔑</div>
+    <div class="login-notice-text">
+      <div class="login-notice-title">あなたの本棚を、開きませんか。</div>
+      <div class="login-notice-sub">夜、どうしても眠れないとき。朝、立ち上がれないとき。<br>その記録を、夜明けに消えてしまわないよう<b>あなただけの本棚</b>にしまっておきませんか。</div>
+    </div>
+    <button class="login-notice-btn" id="loginNoticeBtn">🔑 本棚の鍵を受け取る</button>
+    <button class="login-notice-close" id="loginNoticeClose" aria-label="閉じる">×</button>
+  `;
+  home.insertBefore(banner, home.firstChild);
+  banner.querySelector('#loginNoticeBtn').addEventListener('click', openLoginModal);
+  banner.querySelector('#loginNoticeClose').addEventListener('click', () => {
+    localStorage.setItem('ijin_login_notice_dismissed', '1');
+    banner.remove();
+  });
 }
 
 function escapeSmall(s) { return (s || '').replace(/[<>&]/g, ''); }

@@ -3898,6 +3898,7 @@ function renderFavorites() {
   const totalItems = totalCollections + diaryEntries.length;
 
   if (totalItems === 0) {
+    const isLoggedIn = typeof currentUser !== 'undefined' && currentUser;
     list.innerHTML = `
       <div class="my-book-empty">
         <div class="my-book-empty-cover">
@@ -3909,12 +3910,30 @@ function renderFavorites() {
           </div>
         </div>
         <div class="my-book-empty-text">
-          お気に入りの人物・出来事・名言の <b>☆</b> をタップすると<br>
-          ここに集まって、<br>
-          <b>あなただけの一冊</b>ができあがります。
+          <p class="my-book-empty-hero">
+            夜、どうしても眠れないとき。<br>
+            朝、どうしても立ち上がれないとき。
+          </p>
+          <p class="my-book-empty-body">
+            偉人の言葉・出来事・ルーティンの <b>☆</b> をタップすると<br>
+            ここに集まって、<br>
+            <b>あなただけの一冊</b>ができあがります。
+          </p>
+          <p class="my-book-empty-body my-book-empty-poem">
+            その心細い夜の記録を、<br>
+            夜明けに消えてしまわないように。
+          </p>
+          ${!isLoggedIn ? `
+            <button class="my-book-empty-btn" id="myBookLoginBtn">🔑 本棚の鍵を受け取る</button>
+            <p class="my-book-empty-note">登録すると、端末を変えても消えずに残ります。</p>
+          ` : ''}
         </div>
       </div>
     `;
+    const loginBtn = list.querySelector('#myBookLoginBtn');
+    if (loginBtn) loginBtn.addEventListener('click', () => {
+      if (typeof openLoginModal === 'function') openLoginModal();
+    });
     return;
   }
 
