@@ -329,7 +329,8 @@ function updateLoginNotice() {
   if (FIREBASE_ENABLED && !authResolved) return;
   if (!FIREBASE_ENABLED) return;
   if (existing) return;
-  // サイトを開くたびに未ログインなら必ず表示（dismissed をチェックしない）
+  // 「今後表示しない」がチェックされていたら出さない
+  if (localStorage.getItem('ijin_login_notice_never') === '1') return;
 
   const popup = document.createElement('div');
   popup.id = 'loginNoticePopup';
@@ -349,6 +350,10 @@ function updateLoginNotice() {
         <button class="key-popup-no" data-close="1">いいえ</button>
         <button class="key-popup-yes" id="keyPopupYes">鍵を受け取る</button>
       </div>
+      <label class="key-popup-never">
+        <input type="checkbox" id="keyPopupNever">
+        <span>今後表示しない</span>
+      </label>
       <div class="key-popup-note">
         登録しなくても全機能使えます。<br>
         登録すると、お気に入り・手紙・ルーティンが端末を変えても残ります。
@@ -358,14 +363,18 @@ function updateLoginNotice() {
   document.body.appendChild(popup);
   requestAnimationFrame(() => popup.classList.add('open'));
 
+  const maybeSetNever = () => {
+    const cb = popup.querySelector('#keyPopupNever');
+    if (cb && cb.checked) localStorage.setItem('ijin_login_notice_never', '1');
+  };
   const close = () => {
-    localStorage.setItem('ijin_login_notice_dismissed', '1');
+    maybeSetNever();
     popup.classList.remove('open');
     setTimeout(() => popup.remove(), 200);
   };
   popup.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', close));
   popup.querySelector('#keyPopupYes').addEventListener('click', () => {
-    localStorage.setItem('ijin_login_notice_dismissed', '1');
+    maybeSetNever();
     // 鍵が開く音
     if (typeof playKeyUnlockSound === 'function') playKeyUnlockSound();
     popup.classList.remove('open');

@@ -8375,6 +8375,24 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
   transform: translateY(-1px);
   box-shadow: 0 5px 14px rgba(122,46,58,0.4);
 }
+.key-popup-never {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 10px;
+  font-family: var(--font-jp);
+  font-size: 11px;
+  color: var(--ink-3);
+  cursor: pointer;
+  user-select: none;
+}
+.key-popup-never input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  accent-color: var(--wine);
+  cursor: pointer;
+}
 .key-popup-note {
   font-size: 10px;
   color: var(--ink-4);
