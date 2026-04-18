@@ -1352,40 +1352,33 @@ async function showPerson(id) {
     <!-- 代表作タブ -->
     ${(p.works && p.works.length > 0) ? `
     <div class="profile-tab-content" data-ptab="works">
-      <div class="works-intro">代表作をピックアップ。タップで${p.works[0].youtubeId ? 'YouTubeで聴く' : p.works[0].imageUrl ? '画像を拡大' : 'Amazonで見る'}。</div>
+      <div class="works-intro">代表作をピックアップ。タップで YouTube の検索結果が開きます。</div>
       <div class="works-list">
         ${[...p.works].sort((a, b) => (a.year || 9999) - (b.year || 9999)).map(w => {
-          if (w.youtubeId) {
+          // 作曲家・音楽家：サムネは使わずクリーンなカード
+          const isMusic = /作曲家|ピアニスト|音楽|指揮者/.test(p.field || '');
+          if (w.youtubeId || isMusic) {
             const searchQ = encodeURIComponent(`${p.name} ${w.title}`);
             const ytSearch = w.youtubeSearchUrl || `https://www.youtube.com/results?search_query=${searchQ}`;
             const betterImslp = buildImslpUrl(p, w);
             return `
-              <div class="work-card work-music" data-yt="${w.youtubeId}" data-search="${ytSearch}">
+              <a class="work-card work-music work-music-search" href="${ytSearch}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
                 ${favWorkBtn(p.id, w)}
-                <div class="work-thumb" style="background-image:url('https://i.ytimg.com/vi/${w.youtubeId}/mqdefault.jpg')">
+                <div class="work-thumb work-thumb-placeholder">
                   <div class="work-play">▶</div>
+                  <div class="work-thumb-label">YouTube で聴く</div>
                 </div>
                 <div class="work-info">
-                  <div class="work-type">${w.type} · ${w.year}</div>
+                  <div class="work-type">${w.type}${w.year ? ` · ${w.year}` : ''}</div>
                   <div class="work-title">${w.title}</div>
                   <div class="work-desc">${w.description || ''}</div>
                   <div class="work-links">
-                    <a class="work-btn work-btn-yt" href="${ytSearch}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-                      <span class="work-btn-icon">▶</span> YouTubeで聴く
-                    </a>
-                    ${betterImslp ? `
-                      <a class="work-btn work-btn-imslp" href="${betterImslp}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-                        <span class="work-btn-icon">♫</span> 楽譜
-                      </a>
-                    ` : ''}
-                    ${(w.musescoreUrl || /作曲家|ピアニスト|音楽|指揮者/.test(p.field || '')) ? `
-                      <a class="work-btn work-btn-musescore" href="${buildMusescoreUrl(p, w)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-                        <span class="work-btn-icon">🎼</span> Musescore
-                      </a>
-                    ` : ''}
+                    <span class="work-btn work-btn-yt"><span class="work-btn-icon">▶</span> YouTubeで聴く</span>
+                    ${betterImslp ? `<a class="work-btn work-btn-imslp" href="${betterImslp}" target="_blank" rel="noopener" onclick="event.stopPropagation()">♫ 楽譜</a>` : ''}
+                    ${isMusic ? `<a class="work-btn work-btn-musescore" href="${buildMusescoreUrl(p, w)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">🎼 Musescore</a>` : ''}
                   </div>
                 </div>
-              </div>
+              </a>
             `;
           }
           if (w.imageUrl) {
@@ -1401,31 +1394,26 @@ async function showPerson(id) {
               </div>
             `;
           }
-          // YouTube動画IDがなくても、検索URLがあれば再生可能なカードにする
-          if (w.youtubeSearchUrl || /作曲家|ピアニスト|音楽|指揮者|哲学|作家|小説家|科学|画家|武士|政治|軍人|戦国|幕末|維新/.test(p.field || '')) {
+          // 哲学・文学・科学などのyoutube解説動画検索カード
+          if (w.youtubeSearchUrl || /哲学|作家|小説家|科学|画家|武士|政治|軍人|戦国|幕末|維新/.test(p.field || '')) {
             const searchQ = encodeURIComponent(`${p.name} ${w.title}`);
             const ytSearch = w.youtubeSearchUrl || `https://www.youtube.com/results?search_query=${searchQ}`;
-            const isMusic = /作曲家|ピアニスト|音楽|指揮者/.test(p.field || '');
-            const betterImslp = isMusic ? buildImslpUrl(p, w) : '';
             return `
-              <div class="work-card work-music work-music-search">
+              <a class="work-card work-music work-music-search" href="${ytSearch}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
                 ${favWorkBtn(p.id, w)}
-                <a class="work-thumb work-thumb-placeholder" href="${ytSearch}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+                <div class="work-thumb work-thumb-placeholder">
                   <div class="work-play">🔎</div>
-                  <div class="work-thumb-label">YouTube で探す</div>
-                </a>
+                  <div class="work-thumb-label">YouTube で調べる</div>
+                </div>
                 <div class="work-info">
                   <div class="work-type">${w.type}${w.year ? ` · ${w.year}` : ''}</div>
                   <div class="work-title">${w.title}</div>
                   <div class="work-desc">${w.description || ''}</div>
                   <div class="work-links">
-                    <a class="work-btn work-btn-yt" href="${ytSearch}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-                      <span class="work-btn-icon">▶</span> ${isMusic ? '演奏を探す' : '解説動画を探す'}
-                    </a>
-                    ${betterImslp ? `<a class="work-btn work-btn-imslp" href="${betterImslp}" target="_blank" rel="noopener" onclick="event.stopPropagation()">♫ 楽譜</a>` : ''}
+                    <span class="work-btn work-btn-yt"><span class="work-btn-icon">▶</span> 解説動画を探す</span>
                   </div>
                 </div>
-              </div>
+              </a>
             `;
           }
           // asin（本）
