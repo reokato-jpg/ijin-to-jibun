@@ -1495,22 +1495,21 @@ async function showPerson(id) {
             ? `https://i.ytimg.com/vi/${m.youtubeId}/mqdefault.jpg`
             : (m.imageUrl || '');
           const amazonUrl = m.asin ? `https://www.amazon.co.jp/dp/${m.asin}` : '';
+          // Amazon商品画像（パッケージ画像）
           const amazonCoverUrl = m.asin ? `https://images-na.ssl-images-amazon.com/images/P/${m.asin}.09.LZZZZZZZ.jpg` : '';
-          const thumbFinal = amazonCoverUrl || thumb;
-          // 将来の拡張用：stores配列があればそこから、なければAmazon単独
-          // 例: m.stores = [{name:'楽天', url:'https://...'}, {name:'Amazon', url:'...'}]
           const stores = Array.isArray(m.stores) ? m.stores : [];
           if (amazonUrl && !stores.some(s => s.name === 'Amazon')) {
             stores.unshift({ name: 'Amazon', url: amazonUrl });
           }
-          // 購入先が無い場合は検索フォールバック
           const searchQ = encodeURIComponent(`${m.title} ${m.type === 'drama' ? 'ドラマ' : m.type === 'anime' ? 'アニメ' : '映画'} DVD`);
           const fallbackUrl = `https://www.amazon.co.jp/s?k=${searchQ}`;
           return `
             <div class="media-card">
-              <div class="media-thumb" ${thumbFinal ? `style="background-image:url('${thumbFinal}')"` : ''}>
-                ${!thumbFinal ? '<div class="media-thumb-fallback">🎬</div>' : ''}
-              </div>
+              ${amazonCoverUrl ? `
+                <a class="media-cover" href="${amazonUrl || fallbackUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+                  <img src="${amazonCoverUrl}" alt="${m.title}" loading="lazy" onerror="this.parentElement.style.display='none'">
+                </a>
+              ` : ''}
               <div class="media-info">
                 <div class="media-type">${typeLabel}${m.year ? ` · ${m.year}` : ''}${m.country ? ` · ${m.country}` : ''}</div>
                 <div class="media-title">${m.title}</div>
@@ -1519,8 +1518,8 @@ async function showPerson(id) {
                 ${m.description ? `<div class="media-desc">${m.description}</div>` : ''}
                 <div class="media-links">
                   ${stores.length > 0
-                    ? stores.map(s => `<a class="media-btn media-btn-${s.name === 'Amazon' ? 'amazon' : s.name === '楽天' ? 'rakuten' : 'store'}" href="${s.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${s.name === 'Amazon' ? '📦' : s.name === '楽天' ? '🛒' : '🎬'} ${s.name}で見る</a>`).join('')
-                    : `<a class="media-btn media-btn-amazon" href="${fallbackUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">📦 Amazonで探す</a>`
+                    ? stores.map(s => `<a class="media-btn media-btn-${s.name === 'Amazon' ? 'amazon' : s.name === '楽天' ? 'rakuten' : 'store'}" href="${s.url}" target="_blank" rel="noopener sponsored" onclick="event.stopPropagation()">${s.name === 'Amazon' ? '📦' : s.name === '楽天' ? '🛒' : '🎬'} ${s.name}で見る</a>`).join('')
+                    : `<a class="media-btn media-btn-amazon" href="${fallbackUrl}" target="_blank" rel="noopener sponsored" onclick="event.stopPropagation()">📦 Amazonで探す</a>`
                   }
                 </div>
               </div>

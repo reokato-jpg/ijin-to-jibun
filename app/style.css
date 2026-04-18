@@ -3382,17 +3382,43 @@ main { flex: 1; overflow-y: auto; background: var(--paper); }
 }
 .media-card {
   display: grid;
-  grid-template-columns: 140px 1fr;
-  gap: 12px;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: flex-start;
   background: #fffdf6;
   border: 1px solid var(--rule);
   border-radius: 6px;
   overflow: hidden;
   box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  padding: 14px;
+}
+.media-card:has(.media-info:only-child),
+.media-card:not(:has(.media-cover)) {
+  grid-template-columns: 1fr;
+}
+/* Amazonパッケージ画像（縦長DVD/Blu-rayのジャケット想定） */
+.media-cover {
+  width: 90px;
+  display: block;
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: transform 0.15s;
+}
+.media-cover:hover { transform: translateY(-2px); }
+.media-cover img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 3px;
+  box-shadow:
+    inset 0 0 0 1px rgba(0,0,0,0.12),
+    0 2px 6px rgba(0,0,0,0.15);
+  background: #e8e0d0;
 }
 @media (max-width: 520px) {
-  .media-card { grid-template-columns: 110px 1fr; }
+  .media-cover { width: 70px; }
 }
+/* 旧デザイン用（使われなくなるが保持） */
 .media-thumb {
   background: #1a1a1a;
   background-size: cover;
@@ -3403,6 +3429,7 @@ main { flex: 1; overflow-y: auto; background: var(--paper); }
   display: flex;
   align-items: center;
   justify-content: center;
+  display: none;
 }
 .media-play {
   position: absolute;
