@@ -1399,14 +1399,14 @@ async function showPerson(id) {
 
     ${(p.routine && p.routine.length > 0) ? `
       <button class="routine-open-btn" data-routine-open="1">
-        <span class="routine-open-icon">🕐</span>
+        <img class="icon-img icon-img-lg" src="assets/icons/clock.png" alt="">
         <span class="routine-open-label">1日のルーティンを見る</span>
         <span class="routine-open-arrow">→</span>
       </button>
     ` : ''}
 
     <button class="letter-write-btn" data-letter-write="1">
-      <span class="letter-write-icon">✉</span>
+      <img class="icon-img icon-img-lg" src="assets/icons/quill.png" alt="">
       <span class="letter-write-label">${p.name}に手紙を書く</span>
       <span class="letter-write-beta">β版</span>
       <span class="letter-write-arrow">→</span>

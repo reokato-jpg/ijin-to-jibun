@@ -324,7 +324,7 @@ function updateLoginNotice() {
   popup.innerHTML = `
     <div class="key-popup-backdrop" data-close="1"></div>
     <div class="key-popup-panel">
-      <div class="key-popup-icon">🔑</div>
+      <div class="key-popup-icon"><img class="icon-img icon-img-xl" src="assets/icons/star.png" alt=""></div>
       <div class="key-popup-title">本棚の鍵を受け取りますか？</div>
       <div class="key-popup-sub">
         夜、どうしても眠れないとき。<br>

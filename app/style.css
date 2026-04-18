@@ -322,6 +322,18 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
   font-family: var(--font-jp);
 }
 
+/* ================ アイコン画像（絵文字代替） ================ */
+.icon-img {
+  display: inline-block;
+  height: 1.2em;
+  width: auto;
+  vertical-align: -0.2em;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.08));
+}
+.icon-img-lg { height: 1.6em; }
+.icon-img-xl { height: 2.4em; }
+
 /* ================ ヒーロー（シルエット画像版） ================ */
 .hero-silhouette {
   position: relative;
