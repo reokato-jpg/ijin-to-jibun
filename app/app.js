@@ -1078,7 +1078,7 @@ async function showPerson(id) {
     const likeCount = getLikeCount(key);
     const liked = isLiked(key);
     const comments = (commentsData || {})[key] || [];
-    const shareText = `${title ? title + '\n' : ''}${body || ''}\n— ${p.name} 『偉人と自分。』より`;
+    const shareText = `${title ? title + '\n' : ''}${body || ''}\n— ${p.name} 『偉人と自分。』より\n\n#偉人と自分 #ijin_to_jibun`;
     const shareUrl = location.href.split('#')[0];
     const shareHref = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
     return `
