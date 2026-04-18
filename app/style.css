@@ -7178,11 +7178,7 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
   display: flex;
   max-width: 680px;
   margin: 16px auto 36px;
-  background:
-    url('assets/stain.jpg') left 10% top 20% / 180px auto no-repeat,
-    url('assets/stain.jpg') right 5% bottom 15% / 140px auto no-repeat,
-    #fffcf3;
-  background-blend-mode: multiply, multiply, normal;
+  background: #fffcf3;
   border: 2px solid var(--wine-dark);
   border-radius: 4px;
   box-shadow:
@@ -7191,6 +7187,29 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
     0 20px 40px rgba(0,0,0,0.12);
   position: relative;
   overflow: hidden;
+}
+.open-book::before,
+.open-book::after {
+  content: '';
+  position: absolute;
+  background-image: url('assets/stain.jpg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  opacity: 0.85;
+  z-index: 1;
+}
+.open-book::before {
+  width: 180px; height: 180px;
+  top: 8%; left: 4%;
+  z-index: 5;
+}
+.open-book::after {
+  width: 160px; height: 160px;
+  bottom: 6%; right: 6%;
+  z-index: 5;
 }
 /* 中央の綴じ目 */
 .open-book::before {
