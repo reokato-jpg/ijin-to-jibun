@@ -1356,7 +1356,6 @@ async function showPerson(id) {
       <div class="works-list">
         ${[...p.works].sort((a, b) => (a.year || 9999) - (b.year || 9999)).map(w => {
           if (w.youtubeId) {
-            const ytUrl = `https://www.youtube.com/watch?v=${w.youtubeId}`;
             const searchQ = encodeURIComponent(`${p.name} ${w.title}`);
             const ytSearch = w.youtubeSearchUrl || `https://www.youtube.com/results?search_query=${searchQ}`;
             const betterImslp = buildImslpUrl(p, w);
@@ -1371,11 +1370,8 @@ async function showPerson(id) {
                   <div class="work-title">${w.title}</div>
                   <div class="work-desc">${w.description || ''}</div>
                   <div class="work-links">
-                    <a class="work-btn work-btn-yt" href="${ytUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-                      <span class="work-btn-icon">▶</span> 聴く
-                    </a>
-                    <a class="work-btn work-btn-search" href="${ytSearch}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-                      <span class="work-btn-icon">🔎</span> 他の演奏
+                    <a class="work-btn work-btn-yt" href="${ytSearch}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+                      <span class="work-btn-icon">▶</span> YouTubeで聴く
                     </a>
                     ${betterImslp ? `
                       <a class="work-btn work-btn-imslp" href="${betterImslp}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
@@ -1676,35 +1672,32 @@ async function showPerson(id) {
   });
   bindFavButtons(container, p.id);
 
-  // 作品カード: サムネイルクリックでYouTubeを新しいタブで開く（埋め込み制限を回避）
+  // 作品カード: サムネイルクリックで YouTube検索 を新しいタブで開く
+  // （特定の動画IDは削除される事が多いので、検索ページに飛ばす）
   container.querySelectorAll('.work-music:not(.work-music-search)').forEach(el => {
     const thumb = el.querySelector('.work-thumb');
     if (!thumb) return;
-    const yt = el.dataset.yt;
-    if (!yt) return;
-    const ytUrl = `https://www.youtube.com/watch?v=${yt}`;
-    // サムネイルを直接リンクに
+    const searchUrl = el.dataset.search;
+    if (!searchUrl) return;
     thumb.style.cursor = 'pointer';
     thumb.addEventListener('click', (e) => {
       e.stopPropagation();
-      window.open(ytUrl, '_blank', 'noopener');
+      window.open(searchUrl, '_blank', 'noopener');
     });
-    // ボタンリンクや楽譜ボタンのクリックは別動作
     el.querySelectorAll('.work-btn, .fav-btn').forEach(b => {
       b.addEventListener('click', (ev) => ev.stopPropagation());
     });
   });
-  // 映像作品カード: サムネイルクリックでYouTubeを新しいタブで開く
+  // 映像作品カード: サムネイルクリックで YouTube検索を新しいタブで開く
   container.querySelectorAll('.media-card[data-yt]').forEach(el => {
     const thumb = el.querySelector('.media-thumb');
     if (!thumb) return;
-    const yt = el.dataset.yt;
-    if (!yt) return;
-    const ytUrl = `https://www.youtube.com/watch?v=${yt}`;
+    const title = el.querySelector('.media-title')?.textContent || '';
+    const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(`${p.name} ${title} 予告編`)}`;
     thumb.style.cursor = 'pointer';
     thumb.addEventListener('click', (e) => {
       e.stopPropagation();
-      window.open(ytUrl, '_blank', 'noopener');
+      window.open(searchUrl, '_blank', 'noopener');
     });
   });
   container.querySelectorAll('.work-image').forEach(el => {
