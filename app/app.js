@@ -1267,8 +1267,8 @@ async function showPerson(id) {
             const altUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.location)}`;
             const webUrl = `https://www.google.com/search?q=${encodeURIComponent(nameOnly + ' ' + place.location)}`;
             return `
-              <div class="place-card ${place.image ? 'has-image' : ''}">
-                ${place.image ? `<div class="place-image" style="background-image:url('${place.image}')"></div>` : '<div class="place-pin">📍</div>'}
+              <div class="place-card">
+                <div class="place-pin">📍</div>
                 <div class="place-info">
                   <div class="place-name">${place.name}</div>
                   <div class="place-location">${place.location}</div>

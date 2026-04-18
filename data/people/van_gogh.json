@@ -381,27 +381,32 @@
     {
       "name": "ファン・ゴッホ美術館",
       "location": "オランダ・アムステルダム",
-      "note": "世界最大のゴッホコレクション"
+      "note": "世界最大のゴッホコレクション",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Van_Gogh_Museum.jpg/330px-Van_Gogh_Museum.jpg"
     },
     {
       "name": "黄色い家跡",
       "location": "フランス・アルル",
-      "note": "ゴーギャンと暮らした家。建物は戦争で消失"
+      "note": "ゴーギャンと暮らした家。建物は戦争で消失",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Grand_canyon_of_yellowstone.JPG/330px-Grand_canyon_of_yellowstone.JPG"
     },
     {
       "name": "サン=レミ=ド=プロヴァンス修道院",
       "location": "フランス・サン=レミ",
-      "note": "療養した精神病院。『星月夜』はここで生まれた"
+      "note": "療養した精神病院。『星月夜』はここで生まれた",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Blason_de_la_ville_de_Saint-R%C3%A9my-de-Provence_%2813%29.svg/langja-330px-Blason_de_la_ville_de_Saint-R%C3%A9my-de-Provence_%2813%29.svg.png"
     },
     {
       "name": "オーヴェル=シュル=オワーズ",
       "location": "フランス・オーヴェル",
-      "note": "最期の地。弟テオと並ぶ墓、カラスの麦畑"
+      "note": "最期の地。弟テオと並ぶ墓、カラスの麦畑",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Blason_ville_fr_Auvers-sur-Oise_%28Val-d%27Oise%29.svg/langja-330px-Blason_ville_fr_Auvers-sur-Oise_%28Val-d%27Oise%29.svg.png"
     },
     {
       "name": "ゴッホの寝室",
       "location": "オランダ・ヌエネン",
-      "note": "『ジャガイモを食べる人々』が描かれた村"
+      "note": "『ジャガイモを食べる人々』が描かれた村",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Vincent_Willem_van_Gogh_137.jpg/330px-Vincent_Willem_van_Gogh_137.jpg"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/VanGogh_1887_Selbstbildnis.jpg/500px-VanGogh_1887_Selbstbildnis.jpg",

@@ -161,12 +161,14 @@
     {
       "name": "チャイコフスキーの家博物館",
       "location": "ロシア・クリン",
-      "note": "最晩年を過ごした家"
+      "note": "最晩年を過ごした家",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/S7001904.JPG/330px-S7001904.JPG"
     },
     {
       "name": "アレクサンドル・ネフスキー大修道院墓地",
       "location": "サンクトペテルブルク",
-      "note": "ロシア音楽家が眠る聖地"
+      "note": "ロシア音楽家が眠る聖地",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Alexander_Nevsky_Lavra.jpg/330px-Alexander_Nevsky_Lavra.jpg"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Tchaikovsky2.jpg/500px-Tchaikovsky2.jpg",

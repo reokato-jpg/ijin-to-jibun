@@ -202,22 +202,26 @@
     {
       "name": "岡崎城",
       "location": "愛知県岡崎市",
-      "note": "生家の城。家康の聖地"
+      "note": "生家の城。家康の聖地",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Okazakijo-3-cropped.jpg/330px-Okazakijo-3-cropped.jpg"
     },
     {
       "name": "駿府城",
       "location": "静岡県静岡市",
-      "note": "将軍退位後を過ごした城"
+      "note": "将軍退位後を過ごした城",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Sunpu_Castle_Tatsumi_Yagura_201015a.jpg/330px-Sunpu_Castle_Tatsumi_Yagura_201015a.jpg"
     },
     {
       "name": "日光東照宮",
       "location": "栃木県日光市",
-      "note": "家康を神として祀る霊廟"
+      "note": "家康を神として祀る霊廟",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Nikko_Toshogu_Yomeimon_Gate_2024.jpg/330px-Nikko_Toshogu_Yomeimon_Gate_2024.jpg"
     },
     {
       "name": "久能山東照宮",
       "location": "静岡県静岡市",
-      "note": "家康の遺体が最初に葬られた場所"
+      "note": "家康の遺体が最初に葬られた場所",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/%E4%B9%85%E8%83%BD%E5%B1%B1%E6%9D%B1%E7%85%A7%E5%AE%AE%E6%A5%BC%E9%96%80.png/330px-%E4%B9%85%E8%83%BD%E5%B1%B1%E6%9D%B1%E7%85%A7%E5%AE%AE%E6%A5%BC%E9%96%80.png"
     }
   ],
   "books": [

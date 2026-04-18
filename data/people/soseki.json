@@ -370,27 +370,32 @@
     {
       "name": "漱石山房記念館",
       "location": "東京都新宿区早稲田南町",
-      "note": "晩年の自宅・書斎を復元した記念館"
+      "note": "晩年の自宅・書斎を復元した記念館",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Natsume_Soseki_Memorial_Museum_2017-10-08.jpg/330px-Natsume_Soseki_Memorial_Museum_2017-10-08.jpg"
     },
     {
       "name": "坊っちゃんの舞台・松山",
       "location": "愛媛県松山市",
-      "note": "道後温泉、松山中学跡など"
+      "note": "道後温泉、松山中学跡など",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Manuscripts_of_%22Botchan%22.jpg/330px-Manuscripts_of_%22Botchan%22.jpg"
     },
     {
       "name": "修善寺温泉",
       "location": "静岡県伊豆市",
-      "note": "『修善寺の大患』で大吐血した菊屋旅館"
+      "note": "『修善寺の大患』で大吐血した菊屋旅館",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/181124_Shuzenji_Onsen_Izu_Shizuoka_pref_Japan01s3.jpg/330px-181124_Shuzenji_Onsen_Izu_Shizuoka_pref_Japan01s3.jpg"
     },
     {
       "name": "雑司ヶ谷霊園（墓所）",
       "location": "東京都豊島区",
-      "note": "文豪たちが眠る霊園"
+      "note": "文豪たちが眠る霊園",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Map_Tokyo_special_wards.svg/langja-330px-Map_Tokyo_special_wards.svg.png"
     },
     {
       "name": "夏目漱石記念館",
       "location": "ロンドン（元下宿跡）",
-      "note": "ロンドン留学時代の下宿"
+      "note": "ロンドン留学時代の下宿",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Natsume_Soseki_photo.jpg/330px-Natsume_Soseki_photo.jpg"
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Natsume_Soseki_photo.jpg/500px-Natsume_Soseki_photo.jpg",

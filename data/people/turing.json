@@ -143,12 +143,14 @@
     {
       "name": "ブレッチリー・パーク",
       "location": "イギリス・バッキンガムシャー",
-      "note": "エニグマ解読の地"
+      "note": "エニグマ解読の地",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Bletchley_Park_Mansion.jpg/330px-Bletchley_Park_Mansion.jpg"
     },
     {
       "name": "マンチェスター・サックヴィル公園",
       "location": "イギリス・マンチェスター",
-      "note": "チューリングの座像"
+      "note": "チューリングの座像",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Lossy-page1-2658px-Nelson%27s_Pillar%2C_Sackville-Street%2C_Dublin_RMG_PU3914_%28cropped%29.jpg/330px-Lossy-page1-2658px-Nelson%27s_Pillar%2C_Sackville-Street%2C_Dublin_RMG_PU3914_%28cropped%29.jpg"
     }
   ],
   "books": [

@@ -145,12 +145,14 @@
     {
       "name": "アクロポリス・アゴラ",
       "location": "ギリシャ・アテネ",
-      "note": "ソクラテスが問答を行った広場"
+      "note": "ソクラテスが問答を行った広場",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Attica_06-13_Athens_50_View_from_Philopappos_-_Acropolis_Hill.jpg/330px-Attica_06-13_Athens_50_View_from_Philopappos_-_Acropolis_Hill.jpg"
     },
     {
       "name": "ソクラテスの牢獄",
       "location": "ギリシャ・アテネ・フィロパポスの丘",
-      "note": "死刑を待った洞窟と伝わる場所"
+      "note": "死刑を待った洞窟と伝わる場所",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/f/ff/Athens_map.png"
     }
   ],
   "books": [

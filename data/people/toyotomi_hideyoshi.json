@@ -197,22 +197,26 @@
     {
       "name": "中村公園",
       "location": "愛知県名古屋市中村区",
-      "note": "秀吉の生誕地。豊国神社"
+      "note": "秀吉の生誕地。豊国神社",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Nakamurakouen1.JPG/330px-Nakamurakouen1.JPG"
     },
     {
       "name": "大阪城",
       "location": "大阪府大阪市中央区",
-      "note": "秀吉が築いた天下の拠点"
+      "note": "秀吉が築いた天下の拠点",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Osaka_Castle_02bs3200.jpg/330px-Osaka_Castle_02bs3200.jpg"
     },
     {
       "name": "醍醐寺",
       "location": "京都市伏見区",
-      "note": "『醍醐の花見』の舞台"
+      "note": "『醍醐の花見』の舞台",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Daigoji_Kyoto01s5s4110.jpg/330px-Daigoji_Kyoto01s5s4110.jpg"
     },
     {
       "name": "豊国神社",
       "location": "京都市東山区",
-      "note": "秀吉を祀る神社"
+      "note": "秀吉を祀る神社",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Monument_of_Toyotomi_Hideyoshi_birthplace.jpg/330px-Monument_of_Toyotomi_Hideyoshi_birthplace.jpg"
     }
   ],
   "books": [
