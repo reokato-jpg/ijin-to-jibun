@@ -4901,15 +4901,17 @@ function bindEvents() {
       if (v === 'articles') renderArticles();
       if (v === 'favorites') renderFavorites();
       // タブごとのBGM
+      const homeBgm = document.getElementById('homeBgm');
       const searchBgm = document.getElementById('searchBgm');
       const routineBgm = document.getElementById('routineBgm');
-      [searchBgm, routineBgm].forEach(b => b && b.pause());
-      if (v === 'tags' && searchBgm) {
-        searchBgm.volume = 0.35;
-        searchBgm.play().catch(() => {});
-      } else if (v === 'routines' && routineBgm) {
-        routineBgm.volume = 0.35;
-        routineBgm.play().catch(() => {});
+      [homeBgm, searchBgm, routineBgm].forEach(b => b && b.pause());
+      let target = null;
+      if (v === 'people') target = homeBgm;
+      else if (v === 'tags') target = searchBgm;
+      else if (v === 'routines') target = routineBgm;
+      if (target) {
+        target.volume = 0.35;
+        target.play().catch(() => {});
       }
     });
   });
