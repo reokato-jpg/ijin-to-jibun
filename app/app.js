@@ -3634,7 +3634,6 @@ function renderArticles() {
   const placeholders = Array(fillCount).fill(0).map(() => `
     <div class="article-card article-card-empty">
       <div class="article-card-empty-inner">
-        <div class="article-card-empty-ornament">❦</div>
         <div class="article-card-empty-text">Coming soon</div>
       </div>
     </div>
