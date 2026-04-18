@@ -486,6 +486,204 @@ function renderCalendarToday() {
   });
 }
 
+// ====================== 偉人の広場 ======================
+const SELF_POSTS_KEY = 'ijin_self_posts';
+function loadSelfPosts() {
+  try { return JSON.parse(localStorage.getItem(SELF_POSTS_KEY) || '[]'); }
+  catch { return []; }
+}
+function saveSelfPost(text) {
+  if (!text || !text.trim()) return null;
+  const posts = loadSelfPosts();
+  const entry = { id: 'S' + Date.now(), text: text.trim(), date: new Date().toISOString() };
+  posts.unshift(entry);
+  localStorage.setItem(SELF_POSTS_KEY, JSON.stringify(posts));
+  return entry;
+}
+function deleteSelfPost(id) {
+  const posts = loadSelfPosts().filter(p => p.id !== id);
+  localStorage.setItem(SELF_POSTS_KEY, JSON.stringify(posts));
+}
+
+// コンテンツフィルタ（連絡先・暴言対策）
+const FORBIDDEN_PATTERNS = [
+  { re: /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/, msg: 'メールアドレスは書けません' },
+  { re: /\d{2,4}[-\s]?\d{2,4}[-\s]?\d{3,4}/, msg: '電話番号は書けません' },
+  { re: /(https?:\/\/|www\.|\.com|\.jp|\.net)/i, msg: 'URLは書けません' },
+  { re: /(LINE|ライン).{0,3}(id|ID|アカウント)/i, msg: 'LINE IDは共有できません' },
+  { re: /(Insta|インスタ|@[a-zA-Z0-9_]{3,})/i, msg: 'SNS IDは書けません' },
+  { re: /(死ね|殺す|消えろ|クソ|ブス|死ねばいい|ゴミ|バカ野郎|アホ死ね)/, msg: '誹謗中傷は投稿できません' },
+];
+function validatePost(text) {
+  for (const { re, msg } of FORBIDDEN_PATTERNS) {
+    if (re.test(text)) return msg;
+  }
+  return null;
+}
+
+// 今日の広場（日替わり偉人名言＋自分の投稿をミックス）
+function getSquareQuotes(limit = 20) {
+  const d = new Date();
+  const daySeed = d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+  const pool = [];
+  (DATA.people || []).forEach(p => {
+    (p.quotes || []).forEach(q => pool.push({ person: p, quote: q }));
+  });
+  // 決定的シャッフル
+  let s = daySeed;
+  const arr = [...pool];
+  for (let i = arr.length - 1; i > 0; i--) {
+    s = (s * 9301 + 49297) % 233280;
+    const j = s % (i + 1);
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  // 同じ偉人が連続しないように
+  const picked = [];
+  const usedIds = new Set();
+  for (const item of arr) {
+    if (picked.length >= limit) break;
+    if (picked.length < limit / 2 && usedIds.has(item.person.id)) continue;
+    picked.push(item);
+    usedIds.add(item.person.id);
+  }
+  // 各投稿に擬似的な投稿時刻を付ける（今日の朝5時〜現在の範囲）
+  const morning = new Date();
+  morning.setHours(5, 0, 0, 0);
+  const now = Date.now();
+  const range = now - morning.getTime();
+  return picked.map((item, i) => ({
+    ...item,
+    // 順番を「古い順」からtimestamp散らす
+    ts: morning.getTime() + (range * (i + 1)) / (picked.length + 1),
+  }));
+}
+
+function renderSquare() {
+  const container = document.getElementById('squareSection');
+  if (!container || !DATA.people) return;
+  const quotes = getSquareQuotes(20);
+  const selfPosts = loadSelfPosts();
+  // 混ぜて時刻降順
+  const merged = [
+    ...quotes.map(q => ({ type: 'quote', ts: q.ts, person: q.person, quote: q.quote })),
+    ...selfPosts.map(s => ({ type: 'self', ts: new Date(s.date).getTime(), id: s.id, text: s.text, date: s.date })),
+  ];
+  merged.sort((a, b) => b.ts - a.ts);
+
+  const composeHtml = `
+    <div class="square-compose">
+      <textarea class="square-compose-input" id="squareComposeInput" rows="2"
+        maxlength="280"
+        placeholder="今日の気持ちをつぶやく（280字まで）"></textarea>
+      <div class="square-compose-actions">
+        <span class="square-compose-note">※連絡先・暴言は投稿できません</span>
+        <button class="square-compose-send" id="squareComposeSend">つぶやく</button>
+      </div>
+    </div>
+  `;
+
+  const formatTime = (ts) => {
+    const d = new Date(ts);
+    const h = String(d.getHours()).padStart(2, '0');
+    const m = String(d.getMinutes()).padStart(2, '0');
+    return `${h}:${m}`;
+  };
+
+  const itemsHtml = merged.map(item => {
+    if (item.type === 'quote') {
+      const p = item.person;
+      const q = item.quote;
+      const avatar = p.imageUrl
+        ? `<div class="square-avatar" style="background-image:url('${p.imageUrl}')"></div>`
+        : `<div class="square-avatar no-img">${p.name.charAt(0)}</div>`;
+      return `
+        <article class="square-item" data-person-id="${p.id}">
+          ${avatar}
+          <div class="square-body">
+            <div class="square-head">
+              <span class="square-name">${p.name}</span>
+              <span class="square-handle">@${p.nameEn ? p.nameEn.split(' ').pop().toLowerCase() : p.id}</span>
+              <span class="square-time">${formatTime(item.ts)}</span>
+            </div>
+            <div class="square-text">${q.text}</div>
+            ${q.source ? `<div class="square-source">— ${q.source}</div>` : ''}
+            <div class="square-actions">
+              <button class="square-reply" data-reply-to="${p.id}">手紙で返信</button>
+              <button class="square-view" data-view-person="${p.id}">プロフィールを見る</button>
+            </div>
+          </div>
+        </article>
+      `;
+    } else {
+      return `
+        <article class="square-item square-item-self" data-self-id="${item.id}">
+          <div class="square-avatar square-avatar-self">あ</div>
+          <div class="square-body">
+            <div class="square-head">
+              <span class="square-name">あなた</span>
+              <span class="square-time">${formatTime(item.ts)}</span>
+              <button class="square-self-delete" data-del-self="${item.id}" aria-label="削除">×</button>
+            </div>
+            <div class="square-text">${escapeHtml(item.text)}</div>
+          </div>
+        </article>
+      `;
+    }
+  }).join('');
+
+  container.innerHTML = `
+    <div class="square-intro">偉人たちが時を超えて、名言をつぶやき合っています。あなたも加わってみませんか。</div>
+    ${composeHtml}
+    <div class="square-feed">${itemsHtml}</div>
+  `;
+
+  // つぶやき送信
+  const sendBtn = container.querySelector('#squareComposeSend');
+  const input = container.querySelector('#squareComposeInput');
+  sendBtn?.addEventListener('click', () => {
+    const text = (input.value || '').trim();
+    if (!text) return;
+    const err = validatePost(text);
+    if (err) { alert(err); return; }
+    saveSelfPost(text);
+    input.value = '';
+    renderSquare();
+  });
+
+  // 手紙で返信
+  container.querySelectorAll('[data-reply-to]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const pid = btn.dataset.replyTo;
+      const person = DATA.people.find(p => p.id === pid);
+      if (person) openLetterModal(person);
+    });
+  });
+  // プロフィール
+  container.querySelectorAll('[data-view-person]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showPerson(btn.dataset.viewPerson);
+    });
+  });
+  // つぶやき全体タップ → プロフィール
+  container.querySelectorAll('.square-item:not(.square-item-self)').forEach(el => {
+    el.addEventListener('click', (e) => {
+      if (e.target.closest('button')) return;
+      showPerson(el.dataset.personId);
+    });
+  });
+  // 自分のつぶやき削除
+  container.querySelectorAll('[data-del-self]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (!confirm('このつぶやきを削除しますか？')) return;
+      deleteSelfPost(btn.dataset.delSelf);
+      renderSquare();
+    });
+  });
+}
+
 function renderDailyMission() {
   const container = document.getElementById('dailyMission');
   if (!container || !DATA.people || DATA.people.length === 0) return;
@@ -4135,6 +4333,7 @@ function renderFavorites() {
   const favTagItems = DATA.tags.filter(t => favTagSet.has(t.id));
   const diaryEntries = loadDiary();
   const letterEntries = loadLetters();
+  const selfPostEntries = loadSelfPosts();
   // しおり（最近読んだ、お気に入り登録済みは除外、最大6人）
   const bookmarks = loadBookmarks();
   const favPeopleSetForBm = new Set(favPeopleItems.map(p => p.id));
@@ -4144,7 +4343,7 @@ function renderFavorites() {
     .filter(Boolean)
     .slice(0, 6);
   const totalCollections = favPeopleItems.length + favEventItems.length + favQuoteItems.length + favRoutineItems.length + favTagItems.length + recentlyReadItems.length;
-  const totalItems = totalCollections + diaryEntries.length + letterEntries.length;
+  const totalItems = totalCollections + diaryEntries.length + letterEntries.length + selfPostEntries.length;
 
   if (totalItems === 0) {
     const isLoggedIn = typeof currentUser !== 'undefined' && currentUser;
@@ -4200,6 +4399,7 @@ function renderFavorites() {
   if (favRoutineItems.length > 0) tocItems.push({ id: 'chap-routines', title: '取り入れたいルーティン', count: favRoutineItems.length });
   if (favEventItems.length > 0) tocItems.push({ id: 'chap-events', title: 'なぞりたい瞬間', count: favEventItems.length });
   if (letterEntries.length > 0) tocItems.push({ id: 'chap-letters', title: '偉人への手紙', count: letterEntries.length });
+  if (selfPostEntries.length > 0) tocItems.push({ id: 'chap-tweets', title: 'わたしのつぶやき', count: selfPostEntries.length });
   tocItems.push({ id: 'chap-diary', title: 'わたしの日記', count: diaryEntries.length });
 
   const userName = getUserName();
@@ -4477,6 +4677,32 @@ function renderFavorites() {
     }).join('');
   }
 
+  // わたしのつぶやき
+  if (selfPostEntries.length > 0) {
+    html += `
+      <div class="my-book-chapter" id="chap-tweets">
+        <div class="my-book-chapter-label">第${nextChap()}章</div>
+        <div class="my-book-chapter-title">わたしのつぶやき</div>
+        <div class="my-book-chapter-line"></div>
+        <div class="my-book-chapter-intro">偉人の広場に投げかけた、あなた自身の言葉。</div>
+      </div>
+    `;
+    html += selfPostEntries.map(s => {
+      const d = new Date(s.date);
+      const dateStr = d.toLocaleDateString('ja-JP', { month: 'long', day: 'numeric' });
+      const timeStr = `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+      return `
+        <article class="tweet-entry" data-tweet-id="${s.id}">
+          <div class="tweet-entry-head">
+            <span class="tweet-entry-date">${dateStr} ${timeStr}</span>
+            <button class="tweet-entry-delete" data-del-tweet="${s.id}" aria-label="削除">×</button>
+          </div>
+          <div class="tweet-entry-text">${escapeHtml(s.text)}</div>
+        </article>
+      `;
+    }).join('');
+  }
+
   // 日記章（常に表示）
   html += `
     <div class="my-book-chapter" id="chap-diary">
@@ -4601,6 +4827,15 @@ function renderFavorites() {
       }
     });
   });
+  // つぶやきの削除
+  list.querySelectorAll('[data-del-tweet]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (confirm('このつぶやきを削除しますか？')) {
+        deleteSelfPost(btn.dataset.delTweet);
+        renderFavorites();
+      }
+    });
+  });
 }
 
 // ====================== お気に入りボタンのバインド ======================
@@ -4688,6 +4923,7 @@ function bindEvents() {
   renderDailyMission();
   renderCalendarToday();
   renderPersonOfTheDay();
+  renderSquare();
   renderQuoteOfTheDay();
   renderQuoteCarousel();
   renderFeaturedTags();

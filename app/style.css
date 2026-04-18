@@ -8756,6 +8756,42 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
   font-family: var(--font-en);
 }
 
+/* わたしのつぶやき */
+.tweet-entry {
+  padding: 12px 14px 10px;
+  margin-bottom: 10px;
+  background: #fffdf6;
+  border-left: 3px solid var(--gold);
+  border-radius: 4px;
+  font-family: var(--font-jp);
+}
+.tweet-entry-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.tweet-entry-date {
+  font-size: 10px;
+  color: var(--ink-4);
+  font-family: var(--font-en);
+}
+.tweet-entry-delete {
+  background: none;
+  border: none;
+  font-size: 14px;
+  color: var(--ink-4);
+  cursor: pointer;
+  padding: 0 4px;
+}
+.tweet-entry-delete:hover { color: var(--wine); }
+.tweet-entry-text {
+  font-size: 13px;
+  line-height: 1.9;
+  color: var(--ink-2);
+  white-space: pre-wrap;
+}
+
 /* ================ ルーティンを登録 ================ */
 .routine-adopt-section {
   margin-top: 18px;
@@ -8847,6 +8883,162 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
   .life-digest-summary { font-size: 14px; padding: 12px 18px; }
   .life-digest-body { font-size: 14px; padding: 14px 20px 18px; }
 }
+
+/* ================ 偉人の広場 ================ */
+.square-intro {
+  font-family: var(--font-jp);
+  font-size: 12px;
+  color: var(--ink-3);
+  line-height: 1.7;
+  padding: 0 4px 10px;
+}
+.square-compose {
+  padding: 12px 14px;
+  background: linear-gradient(180deg, #fffdf7 0%, #faf5e8 100%);
+  border: 1px solid var(--gold);
+  border-radius: 8px;
+  margin-bottom: 14px;
+}
+.square-compose-input {
+  width: 100%;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 8px 10px;
+  font-family: var(--font-jp);
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--ink);
+  resize: vertical;
+  box-sizing: border-box;
+  background: #fff;
+}
+.square-compose-input:focus { outline: none; border-color: var(--gold); }
+.square-compose-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+  gap: 8px;
+}
+.square-compose-note {
+  font-size: 10px;
+  color: var(--ink-4);
+}
+.square-compose-send {
+  padding: 8px 18px;
+  background: linear-gradient(135deg, var(--wine) 0%, var(--wine-dark) 100%);
+  color: var(--gold-light);
+  border: 1px solid var(--gold);
+  border-radius: 18px;
+  font-family: var(--font-jp);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+}
+.square-compose-send:hover { transform: translateY(-1px); }
+
+.square-feed { display: flex; flex-direction: column; gap: 8px; }
+.square-item {
+  display: flex;
+  gap: 10px;
+  padding: 12px;
+  background: #fffdf6;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: box-shadow 0.15s;
+}
+.square-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.square-item-self {
+  background: rgba(184,149,46,0.08);
+  border-color: var(--gold);
+  cursor: default;
+}
+.square-avatar {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  border: 2px solid var(--gold);
+  flex-shrink: 0;
+}
+.square-avatar.no-img, .square-avatar-self {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--wine);
+  color: var(--gold-light);
+  font-family: var(--font-jp);
+  font-weight: 700;
+  font-size: 18px;
+}
+.square-body { flex: 1; min-width: 0; }
+.square-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+  font-family: var(--font-jp);
+  flex-wrap: wrap;
+}
+.square-name {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--wine-dark);
+}
+.square-handle {
+  font-size: 11px;
+  color: var(--ink-4);
+  font-family: var(--font-en);
+}
+.square-time {
+  font-size: 11px;
+  color: var(--ink-4);
+  font-family: var(--font-en);
+  margin-left: auto;
+}
+.square-self-delete {
+  background: none;
+  border: none;
+  color: var(--ink-4);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0 4px;
+}
+.square-self-delete:hover { color: var(--wine); }
+.square-text {
+  font-family: var(--font-jp);
+  font-size: 13px;
+  line-height: 1.85;
+  color: var(--ink);
+  white-space: pre-wrap;
+}
+.square-source {
+  font-size: 10px;
+  color: var(--ink-4);
+  margin-top: 4px;
+  font-style: italic;
+}
+.square-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px dashed var(--rule-soft);
+}
+.square-reply, .square-view {
+  background: none;
+  border: 1px solid var(--rule);
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-family: var(--font-jp);
+  font-size: 11px;
+  color: var(--wine);
+  cursor: pointer;
+  letter-spacing: 0.03em;
+}
+.square-reply:hover, .square-view:hover { background: rgba(122,46,58,0.06); }
 
 /* ================ 本日のミッション ================ */
 .mission-card {

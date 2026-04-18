@@ -34,6 +34,7 @@ const SYNC_KEYS = [
   'ijin_comments',
   'ijin_bookmarks',
   'ijin_letters',
+  'ijin_self_posts',
 ];
 
 let fbApp = null, fbAuth = null, fbDb = null;
