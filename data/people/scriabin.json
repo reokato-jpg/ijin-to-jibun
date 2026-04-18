@@ -238,5 +238,26 @@
   "birthDay": 6,
   "deathMonth": 4,
   "deathDay": 27,
-  "lifeDigest": "ロシアの作曲家、ピアニスト。作曲者自身はフランス語風にAlexandreScriàbine（もしくはScriabine）と綴ることを好んだ。英語ではAlexanderScriabin,ドイツ語ではAlexanderSkrjabinとなる。また、日本ではスクリアビンと表記される場合もある。"
+  "lifeDigest": "ロシアの作曲家、ピアニスト。作曲者自身はフランス語風にAlexandreScriàbine（もしくはScriabine）と綴ることを好んだ。英語ではAlexanderScriabin,ドイツ語ではAlexanderSkrjabinとなる。また、日本ではスクリアビンと表記される場合もある。",
+  "traits": {
+    "foods": [
+      "菜食寄り",
+      "紅茶",
+      "薄いスープ"
+    ],
+    "hobbies": [
+      "神秘主義の読書",
+      "色彩と音階の対応を研究",
+      "ピアノ即興"
+    ],
+    "personality": "音を色で感じる共感覚者、自称メシア。『神秘劇』で世界を終わらせようと企てた壮大な狂人。",
+    "likes": [
+      "神智学",
+      "色光ピアノ"
+    ],
+    "dislikes": [
+      "凡庸さ",
+      "地上的な制約"
+    ]
+  }
 }

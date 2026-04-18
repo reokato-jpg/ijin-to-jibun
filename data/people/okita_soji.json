@@ -207,5 +207,25 @@
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Imado-jinja_2021-12_ac_%281%29.jpg/330px-Imado-jinja_2021-12_ac_%281%29.jpg",
   "coverImageCaption": "沖田総司終焉の地",
   "deathMonth": 7,
-  "deathDay": 19
+  "deathDay": 19,
+  "traits": {
+    "foods": [
+      "甘味（饅頭・羊羹が好物）",
+      "酒（少量）"
+    ],
+    "hobbies": [
+      "子供と遊ぶ（近所の子に慕われた）",
+      "剣術",
+      "歌"
+    ],
+    "personality": "明朗で爽やか。新選組最強の剣士でありながら子供と遊ぶ明るさを持っていた。肺結核で25歳の若さで没。",
+    "likes": [
+      "子供たち",
+      "甘味",
+      "近藤勇への忠誠"
+    ],
+    "dislikes": [
+      "病に伏せること"
+    ]
+  }
 }

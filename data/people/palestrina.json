@@ -211,5 +211,23 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Giovanni_Pierluigi_da_Palestrina.jpg"
   },
   "deathMonth": 2,
-  "deathDay": 2
+  "deathDay": 2,
+  "traits": {
+    "foods": [
+      "ローマの素朴な食事",
+      "ワイン"
+    ],
+    "hobbies": [
+      "教会で歌うこと",
+      "弟子の指導"
+    ],
+    "personality": "カトリック反宗教改革の音楽家。対位法の頂点を極めた。家族を疫病で失っても神への奉仕を続けた。",
+    "likes": [
+      "ミサ曲",
+      "教会の静寂"
+    ],
+    "dislikes": [
+      "世俗音楽の侵入"
+    ]
+  }
 }

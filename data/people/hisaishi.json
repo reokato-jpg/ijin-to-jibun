@@ -229,5 +229,24 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Joe_Hisaishi_2011.jpg"
   },
   "birthMonth": 12,
-  "birthDay": 6
+  "birthDay": 6,
+  "traits": {
+    "foods": [
+      "日本食（健康志向）",
+      "緑茶"
+    ],
+    "hobbies": [
+      "映画鑑賞",
+      "読書",
+      "ミニマル音楽の研究"
+    ],
+    "personality": "物静かで知的。宮崎駿と40年、対照的な二人が日本のアニメ音楽を世界の表舞台へ押し上げた名伯楽。",
+    "likes": [
+      "ミニマル音楽（ライヒ等）",
+      "宮崎作品"
+    ],
+    "dislikes": [
+      "派手な演出"
+    ]
+  }
 }
