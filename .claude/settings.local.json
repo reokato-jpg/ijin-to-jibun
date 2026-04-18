@@ -13,7 +13,8 @@
       "Bash(netstat -ano)",
       "Bash(vercel --version)",
       "Bash(vercel whoami:*)",
-      "Bash(vercel deploy:*)"
+      "Bash(vercel deploy:*)",
+      "WebFetch(domain:tsukuriba.vercel.app)"
     ]
   }
 }
