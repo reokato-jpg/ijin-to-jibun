@@ -30,7 +30,8 @@
       "title": "藤原宣孝と結婚、娘・賢子誕生",
       "detail": "20歳以上年上の受領の男との晩婚。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "love"
       ]
     },
     {
@@ -40,7 +41,8 @@
       "detail": "結婚わずか2年。この喪失が『源氏物語』執筆の引き金となったと推測される。",
       "tags": [
         "loss",
-        "heartbreak"
+        "heartbreak",
+        "love"
       ]
     },
     {
@@ -78,7 +80,9 @@
       "title": "『源氏物語』完成、54帖",
       "detail": "光源氏の栄華と、その子孫の静かな転落まで。平安絵巻の頂点。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation",
+        "serenity"
       ]
     },
     {
@@ -88,14 +92,18 @@
       "detail": "当時の女性読者を夢中にさせた。",
       "tags": [
         "approval",
-        "breakthrough"
+        "breakthrough",
+        "hope"
       ]
     },
     {
       "year": 1016,
       "age": 38,
       "title": "宮仕えを退き、間もなく没したとされる",
-      "detail": "正確な没年は不明。静かに消えた。"
+      "detail": "正確な没年は不明。静かに消えた。",
+      "tags": [
+        "serenity"
+      ]
     }
   ],
   "quotes": [

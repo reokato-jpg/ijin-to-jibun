@@ -30,7 +30,8 @@
       "title": "マルゲリータ・バレッツィと結婚",
       "detail": "恩人の娘。幸福な時代の始まり。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "love"
       ]
     },
     {
@@ -39,7 +40,8 @@
       "title": "長女ヴィルジニア死去、1840年長男イチーリオ死去",
       "detail": "結婚3年で子供2人を相次いで失う。",
       "tags": [
-        "loss"
+        "loss",
+        "love"
       ]
     },
     {
@@ -48,7 +50,8 @@
       "title": "妻と2人の子を2年で相次いで失う",
       "detail": "絶望し作曲を断つ決意。",
       "tags": [
-        "loss"
+        "loss",
+        "hope"
       ]
     },
     {
@@ -58,7 +61,8 @@
       "detail": "『行け我が想いよ金色の翼に乗って』はイタリア第二の国歌に。",
       "tags": [
         "breakthrough",
-        "restart"
+        "restart",
+        "joy"
       ]
     },
     {
@@ -68,7 +72,8 @@
       "detail": "初日は失敗、のち世界で最も愛されるオペラに。",
       "tags": [
         "pride_broken",
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {
@@ -86,7 +91,8 @@
       "title": "ジュゼッピーナ・ストレッポーニと再婚",
       "detail": "10年同棲の後、信仰上の理由で避けていた結婚を決断。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "love"
       ]
     },
     {
@@ -102,7 +108,8 @@
       "title": "『アイーダ』カイロ初演",
       "detail": "スエズ運河開通を記念して依頼されたオペラ。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {
@@ -112,7 +119,9 @@
       "detail": "引退を撤回し74歳で新境地へ。シェイクスピア＋ボーイト台本。",
       "tags": [
         "restart",
-        "breakthrough"
+        "breakthrough",
+        "creation",
+        "serenity"
       ]
     },
     {
@@ -130,7 +139,8 @@
       "title": "音楽家のための引退者の家『カーサ・ヴェルディ』建設",
       "detail": "『私の全ての作品よりも誇れる』と遺言で書いた。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "serenity"
       ]
     },
     {

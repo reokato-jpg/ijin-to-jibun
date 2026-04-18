@@ -31,7 +31,8 @@
       "title": "パリ音楽院入学を外国人で初めて拒否される",
       "detail": "院長ケルビーニに拒絶された屈辱、独学で戦う決意に。",
       "tags": [
-        "pride_broken"
+        "pride_broken",
+        "hope"
       ]
     },
     {
@@ -40,7 +41,8 @@
       "title": "父アダムの死",
       "detail": "父のマネージメントから解放される。『結婚は人を卑しくする』の遺言。",
       "tags": [
-        "loss"
+        "loss",
+        "love"
       ]
     },
     {
@@ -50,7 +52,8 @@
       "detail": "ヴァイオリンの超絶技巧をピアノに移植する決意。以後6時間の練習を日課に。",
       "tags": [
         "turning_encounter",
-        "breakthrough"
+        "breakthrough",
+        "hope"
       ]
     },
     {
@@ -70,7 +73,8 @@
       "detail": "10年間で1000回以上の演奏会。",
       "tags": [
         "breakthrough",
-        "approval"
+        "approval",
+        "creation"
       ]
     },
     {
@@ -99,7 +103,9 @@
       "detail": "最後の演奏会はウクライナ。翌年ヴァイマールに落ち着き、作曲と指揮に専念。",
       "tags": [
         "turning_encounter",
-        "restart"
+        "restart",
+        "love",
+        "serenity"
       ]
     },
     {
@@ -108,7 +114,8 @@
       "title": "ヴァイマール宮廷楽長、演奏家引退",
       "detail": "作曲と教育に専念。",
       "tags": [
-        "restart"
+        "restart",
+        "serenity"
       ]
     },
     {
@@ -116,7 +123,9 @@
       "age": 45,
       "title": "ヴァイマールでワーグナー『タンホイザー』初演指揮",
       "detail": "ワーグナーの理解者として彼の音楽を世に送り出した。",
-      "tags": []
+      "tags": [
+        "creation"
+      ]
     },
     {
       "year": 1861,
@@ -125,7 +134,8 @@
       "detail": "離婚禁止。結婚式当日の朝、皇帝からの差し止め。生涯正式な結婚は叶わなかった。",
       "tags": [
         "heartbreak",
-        "loss"
+        "loss",
+        "love"
       ]
     },
     {
@@ -143,7 +153,9 @@
       "title": "娘コジマがワーグナーと結婚",
       "detail": "親友ビューローから妻を奪う形で。一時は激怒したが晩年和解。",
       "tags": [
-        "heartbreak"
+        "heartbreak",
+        "love",
+        "friendship"
       ]
     },
     {

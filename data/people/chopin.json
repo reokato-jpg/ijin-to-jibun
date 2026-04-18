@@ -48,7 +48,8 @@
       "title": "ワルシャワ音楽院へ",
       "detail": "作曲を学ぶが、体の弱さと人見知りで集団生活に馴染めない。『友達と騒ぐより、一人で弾いているほうがいい』と手紙に書く。若くして内向と孤独が固まる。",
       "tags": [
-        "isolation"
+        "isolation",
+        "curiosity"
       ]
     },
     {
@@ -58,7 +59,8 @@
       "detail": "音楽院の声楽科の同級生。打ち明けられず『ピアノ協奏曲第2番 ヘ短調』の第2楽章に想いを込めた。『僕の理想の人を見つけた』と友人ティトゥスへの手紙に書くが、一度も言葉にできなかった。",
       "tags": [
         "heartbreak",
-        "self_denial"
+        "self_denial",
+        "love"
       ]
     },
     {
@@ -68,7 +70,8 @@
       "detail": "ピアノ協奏曲第2番で聴衆を虜に。『詩的センスで聴衆を沈黙させた』と批評。",
       "tags": [
         "breakthrough",
-        "approval"
+        "approval",
+        "joy"
       ]
     },
     {
@@ -89,7 +92,8 @@
       "detail": "パリへ向かう途中のシュトゥットガルトで、ワルシャワ陥落の報せを受ける。激情のまま書き上げた作品。『なぜ私はここにいて、鍵盤しか叩けないのか』という無力感が、そのまま音になった。",
       "tags": [
         "restart",
-        "self_denial"
+        "self_denial",
+        "creation"
       ]
     },
     {
@@ -99,7 +103,8 @@
       "detail": "控えめな音量と繊細な表現で、大ホールではなくサロン向きの演奏家として名を上げる。リスト、ベルリオーズ、メンデルスゾーンらと交流。だが本人は華やかな社交を苦手とし、演奏会もほとんど開かなかった。",
       "tags": [
         "breakthrough",
-        "approval"
+        "approval",
+        "joy"
       ]
     },
     {
@@ -108,7 +113,9 @@
       "title": "『エチュード 作品10』出版、リストに献呈",
       "detail": "リストは『我々よりも先を行く者だ』と評した。",
       "tags": [
-        "approval"
+        "approval",
+        "creation",
+        "gratitude"
       ]
     },
     {
@@ -128,7 +135,8 @@
       "tags": [
         "heartbreak",
         "illness",
-        "self_denial"
+        "self_denial",
+        "love"
       ]
     },
     {
@@ -137,7 +145,8 @@
       "title": "プレイエル社のピアノに出会う",
       "detail": "『元気な時はエラール、具合が悪い時はプレイエル』。繊細な音色で知られるプレイエルを生涯愛用。『このピアノは私そのものだ』と語った。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "love"
       ]
     },
     {
@@ -148,7 +157,8 @@
       "tags": [
         "turning_encounter",
         "illness",
-        "isolation"
+        "isolation",
+        "love"
       ]
     },
     {
@@ -157,7 +167,10 @@
       "title": "サンドの田舎ノアンで夏を過ごす、創作の黄金期",
       "detail": "パリを離れた穏やかな土地で、ソナタ、バラード、ノクターンなど代表作が次々と生まれる。サンドの庇護のもと、最も多く曲を書いた時期。ただし二人の関係は徐々に『恋人』から『看護と被看護』へ変質していく。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "love",
+        "creation",
+        "serenity"
       ]
     },
     {
@@ -183,7 +196,10 @@
       "age": 34,
       "title": "『ピアノソナタ第3番』完成",
       "detail": "ノアンの最後の穏やかな夏。サンドとの関係の終わりを予感させる、長大で内省的な最後のソナタ。",
-      "tags": []
+      "tags": [
+        "creation",
+        "serenity"
+      ]
     },
     {
       "year": 1847,
@@ -193,7 +209,9 @@
       "tags": [
         "heartbreak",
         "burnout",
-        "isolation"
+        "isolation",
+        "love",
+        "creation"
       ]
     },
     {

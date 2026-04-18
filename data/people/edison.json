@@ -22,7 +22,8 @@
       "detail": "教師に『頭が混乱している』と言われた。母が家庭教育を引き受け、以後家で学ぶ。",
       "tags": [
         "pride_broken",
-        "parent_conflict"
+        "parent_conflict",
+        "curiosity"
       ]
     },
     {
@@ -31,7 +32,9 @@
       "title": "駅長の息子を救い、電信技術を学ぶ",
       "detail": "感謝した駅長が電信の技を伝授。放浪の電信技師時代へ。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "gratitude",
+        "curiosity"
       ]
     },
     {
@@ -104,7 +107,8 @@
       "title": "エジソン＝テスラの電流戦争に敗北",
       "detail": "直流を押したエジソンに対し、交流のテスラが勝利。",
       "tags": [
-        "pride_broken"
+        "pride_broken",
+        "joy"
       ]
     },
     {

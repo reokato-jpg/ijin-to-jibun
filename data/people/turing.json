@@ -22,7 +22,9 @@
       "detail": "知的で繊細な同級生との深い友情。翌年モーコムは結核で急死。チューリングは『精神の永続性』を問う道へ。",
       "tags": [
         "turning_encounter",
-        "heartbreak"
+        "heartbreak",
+        "love",
+        "friendship"
       ]
     },
     {
@@ -31,7 +33,9 @@
       "title": "親友モーコムが結核で死去",
       "detail": "『彼の精神はどこへ行ったのか』を問い続け、数学と物理を志す。",
       "tags": [
-        "loss"
+        "loss",
+        "hope",
+        "friendship"
       ]
     },
     {
@@ -58,7 +62,8 @@
       "title": "ブレッチリー・パークに配属、エニグマ解読チーム",
       "detail": "『ボンブ』を設計し、ドイツ軍海軍エニグマを破る。連合軍勝利を2〜4年早めたと推定。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "joy"
       ]
     },
     {
@@ -85,7 +90,8 @@
       "title": "論文『計算する機械と知性』、『チューリング・テスト』",
       "detail": "『機械は考えられるか』を実験的に判定する方法を提案。人工知能研究の出発点。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "curiosity"
       ]
     },
     {
@@ -95,7 +101,8 @@
       "detail": "恋人との関係を盗難事件で警察に話したことが逮捕につながった。投獄か化学的去勢かで後者を選び、エストロゲン注射を1年受ける。",
       "tags": [
         "pride_broken",
-        "isolation"
+        "isolation",
+        "love"
       ]
     },
     {

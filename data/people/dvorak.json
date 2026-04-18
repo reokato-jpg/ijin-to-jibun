@@ -37,7 +37,9 @@
       "age": 30,
       "title": "無名のまま『Hymnus』作曲",
       "detail": "愛国詩に基づくチェコ語合唱曲。後に作品20として出版。",
-      "tags": []
+      "tags": [
+        "creation"
+      ]
     },
     {
       "year": 1873,
@@ -46,7 +48,8 @@
       "detail": "かつての生徒ヨセフィーナ（アンナの姉）に片思いしていた。ヨセフィーナは生涯の心の人。",
       "tags": [
         "heartbreak",
-        "turning_encounter"
+        "turning_encounter",
+        "love"
       ]
     },
     {
@@ -56,7 +59,8 @@
       "detail": "ブラームスが審査員。その後ブラームスから楽譜出版社ジムロックを紹介され一夜で世界的作曲家に。",
       "tags": [
         "turning_encounter",
-        "approval"
+        "approval",
+        "creation"
       ]
     },
     {
@@ -118,7 +122,8 @@
       "title": "『新世界より』作曲、カーネギーホール初演",
       "detail": "黒人霊歌・インディアン旋律に触発。最も愛される交響曲の一つに。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {
@@ -127,7 +132,8 @@
       "title": "ホームシックでチェコへ帰国",
       "detail": "アメリカの喧騒に疲れた。以後プラハでチェコの田舎と鳩と機関車を愛する生活。",
       "tags": [
-        "restart"
+        "restart",
+        "love"
       ]
     },
     {

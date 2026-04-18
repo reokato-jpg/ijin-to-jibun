@@ -22,7 +22,8 @@
       "detail": "解剖実習に耐えられず退学。父に『猟犬と鼠取りにしか興味のない恥』と罵倒される。",
       "tags": [
         "pride_broken",
-        "parent_conflict"
+        "parent_conflict",
+        "curiosity"
       ]
     },
     {
@@ -32,7 +33,9 @@
       "detail": "ケンブリッジ神学卒業直後、恩師ヘンズロウの推薦で。",
       "tags": [
         "restart",
-        "turning_encounter"
+        "turning_encounter",
+        "gratitude",
+        "curiosity"
       ]
     },
     {
@@ -50,7 +53,8 @@
       "title": "従姉エマと結婚",
       "detail": "結婚の是非を損得勘定のリストで検討した有名なメモが残る。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "love"
       ]
     },
     {
@@ -60,7 +64,8 @@
       "detail": "最愛の娘を失い神への信仰を決定的に喪失。『種の起源』へと向かう深い動機。",
       "tags": [
         "loss",
-        "heartbreak"
+        "heartbreak",
+        "love"
       ]
     },
     {
@@ -70,7 +75,8 @@
       "detail": "20年温めた理論を先取りされそうになり、共同発表に合意。翌年急いで本にした。",
       "tags": [
         "pride_broken",
-        "restart"
+        "restart",
+        "creation"
       ]
     },
     {
@@ -96,7 +102,9 @@
       "age": 63,
       "title": "『人間と動物の感情表現』出版",
       "detail": "表情・感情の進化を論じた先駆的著作。",
-      "tags": []
+      "tags": [
+        "creation"
+      ]
     },
     {
       "year": 1882,

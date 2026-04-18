@@ -21,7 +21,9 @@
       "title": "海軍兵学校卒業と同時にバラキレフに出会う",
       "detail": "アマチュア作曲家のまま世界周遊航海に出される。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "love",
+        "curiosity"
       ]
     },
     {
@@ -30,7 +32,8 @@
       "title": "海軍練習艦『アルマーズ』で世界一周航海",
       "detail": "ロンドン・ブラジル・ニューヨーク・セイロンを巡る。海のイメージは以後の作品に。",
       "tags": [
-        "restart"
+        "restart",
+        "curiosity"
       ]
     },
     {
@@ -39,7 +42,8 @@
       "title": "バラキレフに師事、ロシア五人組に",
       "detail": "独学の航海士が一気に作曲家に。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "curiosity"
       ]
     },
     {
@@ -48,7 +52,9 @@
       "title": "3年の航海から戻り『交響曲第1番』初演",
       "detail": "ロシア人作曲家による最初の交響曲として注目される。",
       "tags": [
-        "approval"
+        "approval",
+        "creation",
+        "curiosity"
       ]
     },
     {
@@ -138,7 +144,8 @@
       "title": "心臓発作で死去",
       "detail": "最後のオペラ『金鶏』は検閲で初演できなかった。",
       "tags": [
-        "loss"
+        "loss",
+        "creation"
       ]
     }
   ],

@@ -13,7 +13,9 @@
       "age": 0,
       "title": "東京に出版社経営者の子として誕生",
       "detail": "父・坂本一亀は三島由紀夫らの編集者。",
-      "tags": []
+      "tags": [
+        "creation"
+      ]
     },
     {
       "year": 1976,
@@ -98,7 +100,8 @@
       "title": "アルバム『async』発表、復帰",
       "detail": "死と向き合った静謐な作品群。",
       "tags": [
-        "restart"
+        "restart",
+        "creation"
       ]
     },
     {
@@ -107,7 +110,8 @@
       "title": "直腸がん発覚",
       "detail": "最晩年は『12』という病床の日記的アルバムを完成。",
       "tags": [
-        "illness"
+        "illness",
+        "creation"
       ]
     },
     {

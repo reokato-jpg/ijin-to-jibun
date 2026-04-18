@@ -32,7 +32,8 @@
       "title": "独学でオペラ『ヴェーヴェルレイ』序曲を書き上げる",
       "detail": "医者をやめ作曲家になる決心を確定した作品。",
       "tags": [
-        "restart"
+        "restart",
+        "creation"
       ]
     },
     {
@@ -42,7 +43,8 @@
       "detail": "シェイクスピア劇のオフィーリア役。5年越しの片思いが『幻想交響曲』の種。",
       "tags": [
         "heartbreak",
-        "turning_encounter"
+        "turning_encounter",
+        "love"
       ]
     },
     {
@@ -51,7 +53,8 @@
       "title": "ベートーヴェンの交響曲を初めて聴く",
       "detail": "『交響曲第3番英雄』パリ初演。以後ベートーヴェン信奉者に。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "creation"
       ]
     },
     {
@@ -60,7 +63,9 @@
       "title": "『幻想交響曲』初演＆ローマ大賞",
       "detail": "失恋の苦痛を『芸術家の生涯のエピソード』として音楽化した革命的交響曲。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "love",
+        "creation"
       ]
     },
     {
@@ -70,7 +75,8 @@
       "detail": "しかし10年で別居。1854年彼女の死の数ヶ月後に内縁妻と結婚したが2人も先に死んだ。",
       "tags": [
         "heartbreak",
-        "turning_encounter"
+        "turning_encounter",
+        "love"
       ]
     },
     {
@@ -79,7 +85,8 @@
       "title": "『レクイエム』初演、フランス軍戦没者記念",
       "detail": "16本のトランペットを含む超大編成。革命的管弦楽。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {
@@ -98,7 +105,9 @@
       "detail": "パリで聴衆が集まらず大赤字。ロシアで救われた。",
       "tags": [
         "pride_broken",
-        "poverty"
+        "poverty",
+        "creation",
+        "gratitude"
       ]
     },
     {
@@ -106,7 +115,9 @@
       "age": 50,
       "title": "妻ハリエット死去、半年後マリー・レシオと結婚",
       "detail": "ハリエットが生涯の傷跡を残した。",
-      "tags": []
+      "tags": [
+        "love"
+      ]
     },
     {
       "year": 1856,

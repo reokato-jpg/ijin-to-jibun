@@ -22,7 +22,8 @@
       "detail": "劇作家志望だったが、ソクラテスに出会い自作の悲劇をすべて燃やしたと伝わる。",
       "tags": [
         "turning_encounter",
-        "restart"
+        "restart",
+        "love"
       ]
     },
     {
@@ -41,7 +42,8 @@
       "title": "師ソクラテス刑死に衝撃",
       "detail": "政治家の道を諦め、哲学に生涯を捧げる決意。",
       "tags": [
-        "loss"
+        "loss",
+        "hope"
       ]
     },
     {
@@ -51,7 +53,8 @@
       "detail": "哲学者王の理想を試そうとシラクサのディオニュシオス1世の宮廷へ。しかし王の怒りを買い奴隷として売られそうになった。",
       "tags": [
         "isolation",
-        "pride_broken"
+        "pride_broken",
+        "love"
       ]
     },
     {
@@ -70,7 +73,8 @@
       "title": "『国家』完成",
       "detail": "『洞窟の比喩』『哲人王』『魂の三分説』など、西洋思想の型を作った大著。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {
@@ -88,7 +92,9 @@
       "title": "三度目のシチリア行きも失敗",
       "detail": "親友ディオンが追放される。哲人政治の夢は完全に崩れた。",
       "tags": [
-        "loss"
+        "loss",
+        "hope",
+        "friendship"
       ]
     },
     {

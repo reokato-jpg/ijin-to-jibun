@@ -31,7 +31,9 @@
       "detail": "プラトンの甥スペウシッポスが後継者に。アリストテレスはマケドニア王家の招きで小アジアへ旅立つ。",
       "tags": [
         "pride_broken",
-        "loss"
+        "loss",
+        "hope",
+        "curiosity"
       ]
     },
     {
@@ -40,7 +42,8 @@
       "title": "レスボス島で海洋生物の観察に没頭",
       "detail": "後の『動物誌』の元となる500種の観察記録。現地の漁師から学ぶ。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "curiosity"
       ]
     },
     {
@@ -59,7 +62,8 @@
       "detail": "先妻ピュティアスの死後。息子ニコマコスを得る。『ニコマコス倫理学』の献呈先。",
       "tags": [
         "loss",
-        "turning_encounter"
+        "turning_encounter",
+        "gratitude"
       ]
     },
     {

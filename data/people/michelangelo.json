@@ -31,7 +31,8 @@
       "detail": "『父なるロレンツォ』の邸宅に住み込み、古代彫刻を学ぶ。",
       "tags": [
         "approval",
-        "turning_encounter"
+        "turning_encounter",
+        "curiosity"
       ]
     },
     {
@@ -49,7 +50,8 @@
       "title": "『ピエタ』完成、バチカン",
       "detail": "サン・ピエトロ大聖堂に今もある24歳の傑作。自分の作と証するため夜こっそり銘を彫り込んだ、唯一署名のある作品。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {
@@ -58,7 +60,8 @@
       "title": "『ダビデ像』完成、フィレンツェ",
       "detail": "5mの大理石から切り出した共和国の象徴。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {
@@ -67,7 +70,8 @@
       "title": "システィーナ礼拝堂天井画完成",
       "detail": "4年間、首を反らせて描き続けた。目に絵の具が垂れ皮膚がただれた。『絵画は自分の仕事ではない』と恨みつつ傑作を残した。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {

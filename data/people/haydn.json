@@ -50,7 +50,8 @@
       "title": "マリア・アンナ・ケラーと結婚",
       "detail": "本命の妹に振られ姉と結婚。不幸な結婚生活。",
       "tags": [
-        "heartbreak"
+        "heartbreak",
+        "love"
       ]
     },
     {
@@ -77,7 +78,10 @@
       "title": "モーツァルトと出会い親友に",
       "detail": "24歳年下の天才と深い友情。互いに弦楽四重奏を献呈し合った。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "love",
+        "gratitude",
+        "friendship"
       ]
     },
     {
@@ -86,7 +90,8 @@
       "title": "エステルハージ公死去、30年の宮仕え終わる",
       "detail": "新公は音楽を重視せず楽団解散。ロンドンのザロモンが『25の夢みる客を連れてきた』。",
       "tags": [
-        "loss"
+        "loss",
+        "hope"
       ]
     },
     {
@@ -114,7 +119,8 @@
       "title": "ロンドン公演で熱狂的歓迎、オックスフォード名誉博士",
       "detail": "『驚愕』『軍隊』交響曲を作曲。収入は生涯の総額に匹敵。",
       "tags": [
-        "approval"
+        "approval",
+        "joy"
       ]
     },
     {
@@ -132,7 +138,8 @@
       "title": "オラトリオ『天地創造』初演",
       "detail": "ヘンデルに倣った晩年の大作。ウィーン宮廷で初演。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {

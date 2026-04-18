@@ -28,7 +28,8 @@
       "title": "ルクレツィアと結婚",
       "detail": "家族のため、教会楽長の職を取るため結婚。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "love"
       ]
     },
     {
@@ -65,7 +66,8 @@
       "title": "『マルチェルス教皇のミサ』発表",
       "detail": "トレント公会議でポリフォニーを救ったとされる伝説の作品。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {
@@ -119,7 +121,9 @@
       "title": "裕福な毛皮商の寡婦と再婚",
       "detail": "経済的に安定、作曲出版に専念できるように。",
       "tags": [
-        "restart"
+        "restart",
+        "creation",
+        "serenity"
       ]
     },
     {
@@ -136,7 +140,9 @@
       "age": 69,
       "title": "自作全曲集の出版契約を結ぶ",
       "detail": "死の2ヶ月前に成立。",
-      "tags": []
+      "tags": [
+        "creation"
+      ]
     }
   ],
   "quotes": [

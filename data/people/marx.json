@@ -40,7 +40,8 @@
       "title": "イェニー・フォン・ヴェストファーレンと結婚",
       "detail": "子爵令嬢と貧乏青年の身分違いの結婚。7年の婚約の末。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "love"
       ]
     },
     {
@@ -50,7 +51,9 @@
       "detail": "パレ・ロワイヤルのカフェで10日間語り明かし、生涯の盟友に。",
       "tags": [
         "turning_encounter",
-        "breakthrough"
+        "breakthrough",
+        "love",
+        "friendship"
       ]
     },
     {
@@ -59,7 +62,8 @@
       "title": "『ドイツ・イデオロギー』を書き『ネズミの齧るがままに任せる』",
       "detail": "出版されずマルクス生前に陽の目を見なかった。",
       "tags": [
-        "blank_period"
+        "blank_period",
+        "creation"
       ]
     },
     {
@@ -125,7 +129,8 @@
       "detail": "最愛の妻の葬儀で『彼女なしに私の存在は想像できない』。娘の死が最後の打撃となる。",
       "tags": [
         "loss",
-        "heartbreak"
+        "heartbreak",
+        "love"
       ]
     },
     {

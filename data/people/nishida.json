@@ -13,7 +13,9 @@
       "age": 0,
       "title": "石川県宇ノ気の地主の家に誕生",
       "detail": "幼少期から学問を愛する少年だった。",
-      "tags": []
+      "tags": [
+        "love"
+      ]
     },
     {
       "year": 1875,
@@ -48,7 +50,8 @@
       "title": "山口高校に赴任、鈴木大拙と旧交を温める",
       "detail": "親友の禅仏教学者との議論が『純粋経験』概念の土台に。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "friendship"
       ]
     },
     {

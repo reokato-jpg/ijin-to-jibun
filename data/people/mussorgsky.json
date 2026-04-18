@@ -38,7 +38,8 @@
       "detail": "貴族階級の将校キャリアを捨てる。バラキレフに師事。",
       "tags": [
         "restart",
-        "parent_conflict"
+        "parent_conflict",
+        "hope"
       ]
     },
     {
@@ -57,7 +58,8 @@
       "detail": "この喪失から『死の歌と踊り』などの暗い傑作が生まれる。アルコール依存の始まり。",
       "tags": [
         "loss",
-        "heartbreak"
+        "heartbreak",
+        "love"
       ]
     },
     {
@@ -65,7 +67,11 @@
       "age": 29,
       "title": "『結婚』未完オペラ制作",
       "detail": "ゴーゴリ原作の会話体オペラ、実験的作品。",
-      "tags": []
+      "tags": [
+        "love",
+        "creation",
+        "curiosity"
+      ]
     },
     {
       "year": 1869,
@@ -73,7 +79,9 @@
       "title": "歌劇『ボリス・ゴドゥノフ』完成",
       "detail": "民衆の声を主役にした新しい歴史オペラ。当時は奇怪と評された。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "hope",
+        "creation"
       ]
     },
     {
@@ -82,7 +90,8 @@
       "title": "『ボリス・ゴドゥノフ』初演改訂版",
       "detail": "以前は民衆合唱が不足と拒否された。改訂版で成功。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {
@@ -92,7 +101,8 @@
       "detail": "親友・画家ハルトマンの追悼展を巡る音楽的散歩。",
       "tags": [
         "breakthrough",
-        "loss"
+        "loss",
+        "friendship"
       ]
     },
     {
@@ -101,7 +111,8 @@
       "title": "親友ハルトマンの追悼展",
       "detail": "2月、ペテルブルクで開催、ムソルグスキーは深く打ちのめされる。",
       "tags": [
-        "loss"
+        "loss",
+        "friendship"
       ]
     },
     {

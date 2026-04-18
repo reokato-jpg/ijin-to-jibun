@@ -21,7 +21,8 @@
       "title": "ライプツィヒ大学で音楽を志す",
       "detail": "法律から音楽へ。ベートーヴェン第九に夢中。",
       "tags": [
-        "restart"
+        "restart",
+        "hope"
       ]
     },
     {
@@ -69,7 +70,8 @@
       "title": "『トリスタンとイゾルデ』完成",
       "detail": "後の現代音楽の源流となる和声革命。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {
@@ -88,7 +90,8 @@
       "detail": "バイエルン若き狂王に救われる。以後、彼の支援で全てが実現。",
       "tags": [
         "turning_encounter",
-        "restart"
+        "restart",
+        "gratitude"
       ]
     },
     {
@@ -98,7 +101,10 @@
       "detail": "リストの娘で親友ビューローの妻だったコジマと。24歳年下の献身的な支え手。",
       "tags": [
         "turning_encounter",
-        "restart"
+        "restart",
+        "love",
+        "gratitude",
+        "friendship"
       ]
     },
     {
@@ -107,7 +113,8 @@
       "title": "『ニーベルングの指環』4部作を26年かけて完成",
       "detail": "16時間に及ぶ楽劇の大伽藍。世界の音楽劇を塗り替えた。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {
@@ -116,7 +123,8 @@
       "title": "バイロイト祝祭劇場開場、『指環』全曲初演",
       "detail": "自分の作品のためだけに劇場を建てた前代未聞の偉業。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {
@@ -126,7 +134,8 @@
       "detail": "壮大な借金を抱えたが世界的大成功。",
       "tags": [
         "breakthrough",
-        "approval"
+        "approval",
+        "joy"
       ]
     },
     {
@@ -134,7 +143,9 @@
       "age": 69,
       "title": "『パルジファル』初演、ニーチェ決別の象徴",
       "detail": "キリスト教回帰に幻滅したニーチェは『反キリスト者』を書き始める。",
-      "tags": []
+      "tags": [
+        "creation"
+      ]
     },
     {
       "year": 1883,

@@ -37,7 +37,8 @@
       "title": "官職を辞めペテルブルク音楽院へ",
       "detail": "遅いスタート。ルビンシテインに学ぶ。",
       "tags": [
-        "restart"
+        "restart",
+        "curiosity"
       ]
     },
     {
@@ -55,7 +56,8 @@
       "title": "ピアノ協奏曲第1番、ルビンシテインに『弾けない』と酷評",
       "detail": "ニコライ・ルビンシテインの前で演奏し『下品で演奏不可能』と言われる。献呈先変更。",
       "tags": [
-        "pride_broken"
+        "pride_broken",
+        "gratitude"
       ]
     },
     {
@@ -66,7 +68,8 @@
       "tags": [
         "heartbreak",
         "self_denial",
-        "illness"
+        "illness",
+        "love"
       ]
     },
     {
@@ -75,7 +78,8 @@
       "title": "フォン・メック夫人の支援開始",
       "detail": "会わない約束で13年間文通と支援を続けた未亡人。『魂の伴侶』",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "love"
       ]
     },
     {
@@ -85,7 +89,9 @@
       "detail": "弟子からの熱烈な手紙に断りきれず結婚。同性愛者の苦悩と相まって川へ投身自殺未遂。弟に救われる。",
       "tags": [
         "heartbreak",
-        "pride_broken"
+        "pride_broken",
+        "love",
+        "gratitude"
       ]
     },
     {
@@ -94,7 +100,8 @@
       "title": "『1812年』序曲初演、モスクワ",
       "detail": "大砲の使用で有名。当初は『雑多な曲』と自ら評した。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {
@@ -113,7 +120,8 @@
       "detail": "最大の支えを失う。『私の心は死んだ』と書き残した。",
       "tags": [
         "loss",
-        "heartbreak"
+        "heartbreak",
+        "gratitude"
       ]
     },
     {
@@ -131,7 +139,8 @@
       "title": "交響曲第6番『悲愴』初演9日後に急死",
       "detail": "コレラか自殺かで諸説ある謎の死。自作の弔いとなった。",
       "tags": [
-        "loss"
+        "loss",
+        "creation"
       ]
     }
   ],

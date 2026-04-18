@@ -39,7 +39,8 @@
       "title": "人妻エルヴィーラと駆け落ち",
       "detail": "スキャンダルだが生涯の伴侶となる。",
       "tags": [
-        "restart"
+        "restart",
+        "love"
       ]
     },
     {
@@ -48,7 +49,8 @@
       "title": "『妖精ヴィッリ』初演で注目",
       "detail": "リコルディ社が若き才能を発掘、以後専属契約。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {
@@ -58,7 +60,8 @@
       "detail": "ヴェルディの後継者として世に認められる。",
       "tags": [
         "breakthrough",
-        "approval"
+        "approval",
+        "creation"
       ]
     },
     {
@@ -67,7 +70,9 @@
       "title": "『ラ・ボエーム』初演、トスカニーニ指揮",
       "detail": "批評は割れたが観客が熱狂。クラシックの最も愛される悲恋物語に。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "love",
+        "creation"
       ]
     },
     {
@@ -76,7 +81,8 @@
       "title": "『トスカ』初演",
       "detail": "ローマ・コンスタンツィ劇場で。爆弾脅迫の中での初日だった。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {
@@ -96,7 +102,8 @@
       "detail": "改訂版で世界的成功。日本への関心を持った。",
       "tags": [
         "pride_broken",
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {
@@ -105,7 +112,8 @@
       "title": "メトロポリタン歌劇場で『西部の娘』世界初演",
       "detail": "トスカニーニ指揮、エンリコ・カルーソー主役。",
       "tags": [
-        "approval"
+        "approval",
+        "creation"
       ]
     },
     {
@@ -124,7 +132,9 @@
       "title": "喉頭癌と診断",
       "detail": "愛煙家の代償。ブリュッセルで実験的放射線治療を受ける決意。",
       "tags": [
-        "illness"
+        "illness",
+        "hope",
+        "curiosity"
       ]
     },
     {
@@ -133,7 +143,8 @@
       "title": "ブリュッセルで喉頭癌手術中に死去",
       "detail": "『トゥーランドット』第3幕途中で絶筆。トスカニーニが初演でペンが止まった場所で指揮を中断した。",
       "tags": [
-        "loss"
+        "loss",
+        "creation"
       ]
     }
   ],

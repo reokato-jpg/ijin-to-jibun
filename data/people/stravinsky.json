@@ -22,7 +22,8 @@
       "detail": "法学部から一転、22歳で本格的に作曲を学ぶ遅いスタート。",
       "tags": [
         "restart",
-        "turning_encounter"
+        "turning_encounter",
+        "curiosity"
       ]
     },
     {
@@ -41,7 +42,9 @@
       "detail": "パリで一夜にして世界的スターに。以後20年ディアギレフと組む。",
       "tags": [
         "breakthrough",
-        "turning_encounter"
+        "turning_encounter",
+        "joy",
+        "creation"
       ]
     },
     {
@@ -51,7 +54,8 @@
       "detail": "シャンゼリゼ劇場で観客が怒号し殴り合い。音楽史最大のスキャンダル。",
       "tags": [
         "breakthrough",
-        "pride_broken"
+        "pride_broken",
+        "creation"
       ]
     },
     {
@@ -71,7 +75,8 @@
       "detail": "第一次大戦でロシアから。『結婚』『兵士の物語』を書く。",
       "tags": [
         "restart",
-        "isolation"
+        "isolation",
+        "love"
       ]
     },
     {
@@ -119,7 +124,8 @@
       "title": "妻と娘、母を結核で相次ぎ失う",
       "detail": "10年来の愛人ヴェラと結婚、同年アメリカへ移住。",
       "tags": [
-        "restart"
+        "restart",
+        "love"
       ]
     },
     {
@@ -144,7 +150,8 @@
       "title": "12音技法に転向、60代で作風を3度目に刷新",
       "detail": "シェーンベルクの死後、最も批判していた技法を習得。最後まで実験を止めなかった。",
       "tags": [
-        "restart"
+        "restart",
+        "curiosity"
       ]
     },
     {

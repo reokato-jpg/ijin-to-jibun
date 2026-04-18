@@ -334,7 +334,7 @@ function updateLoginNotice() {
       </div>
       <div class="key-popup-actions">
         <button class="key-popup-no" data-close="1">いいえ</button>
-        <button class="key-popup-yes" id="keyPopupYes">はい、鍵を受け取る</button>
+        <button class="key-popup-yes" id="keyPopupYes">鍵を受け取る</button>
       </div>
       <div class="key-popup-note">
         登録しなくても全機能使えます。<br>

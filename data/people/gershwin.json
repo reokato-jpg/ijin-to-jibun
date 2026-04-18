@@ -21,7 +21,8 @@
       "title": "両親が買ってくれたピアノに夢中に",
       "detail": "兄のために買ったピアノを弟が独占。音楽教育もろくにないのに耳で弾いた。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "hope"
       ]
     },
     {
@@ -30,7 +31,8 @@
       "title": "ティン・パン・アレーの出版社でピアノ・プラッガーに",
       "detail": "15歳で中学をやめ週15ドルで楽譜を客に聴かせる仕事。当時最年少。",
       "tags": [
-        "restart"
+        "restart",
+        "creation"
       ]
     },
     {
@@ -39,7 +41,8 @@
       "title": "最初の歌『When You Want 'Em, You Can't Get 'Em』",
       "detail": "5ドルで売った最初の出版作品。",
       "tags": [
-        "restart"
+        "restart",
+        "creation"
       ]
     },
     {
@@ -66,7 +69,8 @@
       "title": "『ラプソディ・イン・ブルー』初演",
       "detail": "2週間で書き上げた。ジャズ交響楽の誕生。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {
@@ -85,7 +89,8 @@
       "title": "『ポーギーとベス』初演",
       "detail": "黒人キャストによるアメリカン・フォーク・オペラ。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {

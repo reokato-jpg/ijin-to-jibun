@@ -30,7 +30,9 @@
       "title": "東映動画でストライキ、高畑勲と出会う",
       "detail": "労働組合活動で5歳年上の高畑と生涯の盟友となる。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "love",
+        "friendship"
       ]
     },
     {
@@ -39,7 +41,8 @@
       "title": "『未来少年コナン』TV監督デビュー",
       "detail": "NHKの名作。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "hope"
       ]
     },
     {
@@ -101,7 +104,9 @@
       "age": 72,
       "title": "『風立ちぬ』公開後に引退宣言",
       "detail": "7回目の引退宣言。以後も撤回。",
-      "tags": []
+      "tags": [
+        "serenity"
+      ]
     },
     {
       "year": 2023,

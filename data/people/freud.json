@@ -21,7 +21,8 @@
       "title": "パリでシャルコーに学ぶ",
       "detail": "催眠によるヒステリー治療を学ぶ。精神分析の原点。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "curiosity"
       ]
     },
     {
@@ -30,7 +31,8 @@
       "title": "マルタ・ベルナイスと結婚、4年の婚約期間を経て",
       "detail": "財政難で4年待たされた婚約。6人の子をもうけ、特に末子アンナが精神分析を継ぐ。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "love"
       ]
     },
     {
@@ -39,7 +41,8 @@
       "title": "親友ブロイアーと共著『ヒステリー研究』",
       "detail": "アンナ・O の症例から精神分析誕生。しかし師弟関係はこの数年で破綻する。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "friendship"
       ]
     },
     {
@@ -48,7 +51,8 @@
       "title": "父ヤーコプの死",
       "detail": "『父の死は、人生で最も重要な出来事だ』と書く。自己分析と『夢判断』の出発点。",
       "tags": [
-        "loss"
+        "loss",
+        "hope"
       ]
     },
     {
@@ -58,7 +62,9 @@
       "detail": "無意識の発見。発売直後は売れず、6年で600部しか売れなかった。",
       "tags": [
         "breakthrough",
-        "setback"
+        "setback",
+        "hope",
+        "creation"
       ]
     },
     {
@@ -88,7 +94,8 @@
       "detail": "5年続いた親子のような関係の終わり。『王子の裏切り』として記憶される。",
       "tags": [
         "loss",
-        "pride_broken"
+        "pride_broken",
+        "curiosity"
       ]
     },
     {

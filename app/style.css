@@ -8337,13 +8337,14 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
 }
 .key-popup-no, .key-popup-yes {
   flex: 1;
-  padding: 12px 10px;
+  padding: 12px 6px;
   border-radius: 24px;
   font-family: var(--font-jp);
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 700;
   cursor: pointer;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
   transition: all 0.15s;
 }
 .key-popup-no {

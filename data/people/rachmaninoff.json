@@ -14,7 +14,8 @@
       "title": "ロシア貴族の家に誕生、祖父母はピアノを愛する教養人",
       "detail": "父は軍人で放蕩家、母は厳格な音楽愛好家。家庭では両親の不和が日常的で、幼いセルゲイは音楽室に逃げ込んでピアノに向かった。音楽は最初から『居場所』だった。",
       "tags": [
-        "escape"
+        "escape",
+        "love"
       ]
     },
     {
@@ -61,7 +62,8 @@
       "detail": "卒業作品のオペラに最高評価、そして翌年発表の前奏曲が世界中で演奏される。19歳で『期待の星』。ただしこの曲があまりに有名になりすぎ、以後どこへ行っても『例の前奏曲を弾いて』と求められ、後年まで本人を苦しめた。",
       "tags": [
         "approval",
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {
@@ -81,7 +83,8 @@
       "tags": [
         "pride_broken",
         "setback",
-        "self_denial"
+        "self_denial",
+        "creation"
       ]
     },
     {
@@ -123,7 +126,9 @@
       "tags": [
         "breakthrough",
         "restart",
-        "self_reinvention"
+        "self_reinvention",
+        "creation",
+        "gratitude"
       ]
     },
     {
@@ -132,7 +137,8 @@
       "title": "従妹ナターリアと結婚",
       "detail": "教会法では結婚できない関係だったが、特別許可を得て結婚。生涯の伴侶。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "love"
       ]
     },
     {
@@ -150,7 +156,8 @@
       "title": "ピアノ協奏曲第3番、アメリカ演奏旅行で初演",
       "detail": "『世界で最も難しい協奏曲』の誕生。船の上で指だけを動かして練習した。国際的ピアニストとしての地位を確立。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {
@@ -199,7 +206,8 @@
       "title": "『パガニーニの主題による狂詩曲』完成",
       "detail": "晩年の最大の傑作。第18変奏の甘美な旋律は映画で何度も使われる。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {

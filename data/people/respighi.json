@@ -30,7 +30,8 @@
       "title": "第1ヴィオラ奏者としてペテルブルク赴任",
       "detail": "ロシアでリムスキー＝コルサコフに学ぶ。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "curiosity"
       ]
     },
     {
@@ -49,7 +50,9 @@
       "detail": "トスカニーニが再演し国際的評価を得る。",
       "tags": [
         "breakthrough",
-        "approval"
+        "approval",
+        "joy",
+        "creation"
       ]
     },
     {
@@ -58,7 +61,8 @@
       "title": "『ローマの噴水』初演",
       "detail": "4つの噴水の4つの時間。色彩の革命。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {
@@ -67,7 +71,8 @@
       "title": "エルサと結婚",
       "detail": "生徒のソプラノ歌手。以後二人三脚で作品を送り出す。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "love"
       ]
     },
     {
@@ -76,7 +81,8 @@
       "title": "『ローマの松』完成",
       "detail": "アッピア街道の終章は管弦楽法の頂点。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {
@@ -85,7 +91,8 @@
       "title": "アメリカ演奏旅行で熱狂的歓迎",
       "detail": "カーネギーホールで自作指揮。",
       "tags": [
-        "approval"
+        "approval",
+        "joy"
       ]
     },
     {
@@ -100,7 +107,9 @@
       "age": 56,
       "title": "歌劇『ルクレツィア』作曲途中",
       "detail": "未完のまま妻エルサが完成させた。",
-      "tags": []
+      "tags": [
+        "creation"
+      ]
     },
     {
       "year": 1936,

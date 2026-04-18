@@ -21,7 +21,9 @@
       "title": "風景画家ブーダンと出会う",
       "detail": "『戸外制作』を教えられる。『ブーダンが目を開いてくれた』と回想。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "love",
+        "creation"
       ]
     },
     {
@@ -31,7 +33,8 @@
       "detail": "後の妻。貧困の中でも絵を描き続ける。",
       "tags": [
         "breakthrough",
-        "turning_encounter"
+        "turning_encounter",
+        "love"
       ]
     },
     {
@@ -40,7 +43,8 @@
       "title": "『印象・日の出』制作",
       "detail": "ル・アーヴル港を日の出直前に描いた習作。翌々年この絵から『印象派』の名が生まれる。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {

@@ -30,7 +30,8 @@
       "title": "ニューヨーク・フィル副指揮者、急な代役で大成功",
       "detail": "指揮者ブルーノ・ワルターが病気で欠場、前日知らされて振った11月14日の演奏会が全米ラジオ中継で大反響。スター誕生。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "joy"
       ]
     },
     {
@@ -48,7 +49,8 @@
       "title": "フェリシア・モンテアレグレと結婚",
       "detail": "チリ出身の女優。3人の子をもうけるが、彼の同性愛で複雑な関係。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "love"
       ]
     },
     {
@@ -66,7 +68,8 @@
       "title": "『ウェスト・サイド物語』初演",
       "detail": "ロメオとジュリエットを50年代NYに置き換えたミュージカル。映画でも大ヒット。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {
@@ -84,7 +87,8 @@
       "title": "『ミサ曲』ケネディ・センターでの初演",
       "detail": "殺されたJFKの思い出に。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {
@@ -110,7 +114,9 @@
       "age": 71,
       "title": "ベルリンの壁崩壊で『第九』歓喜",
       "detail": "『歓喜(Freude)』を『自由(Freiheit)』に変えて指揮。",
-      "tags": []
+      "tags": [
+        "joy"
+      ]
     },
     {
       "year": 1990,
@@ -118,7 +124,8 @@
       "title": "引退5日後に心不全で死去",
       "detail": "最後まで仕事とタバコを愛した。",
       "tags": [
-        "loss"
+        "loss",
+        "serenity"
       ]
     }
   ],

@@ -22,7 +22,9 @@
       "detail": "ロベルトが『新しい時代の天才』と激賞。以後クララを生涯愛した。",
       "tags": [
         "turning_encounter",
-        "approval"
+        "approval",
+        "hope",
+        "love"
       ]
     },
     {
@@ -40,7 +42,8 @@
       "title": "シューマンが自殺未遂",
       "detail": "ブラームスはクララと子供たちを献身的に支え始める。",
       "tags": [
-        "loss"
+        "loss",
+        "gratitude"
       ]
     },
     {
@@ -49,7 +52,8 @@
       "title": "ピアノ協奏曲第1番初演失敗",
       "detail": "ハノーファーで拍手なく、3公演目で『3人の敵意ある聴衆から3度のヒス』。",
       "tags": [
-        "pride_broken"
+        "pride_broken",
+        "creation"
       ]
     },
     {
@@ -58,7 +62,8 @@
       "title": "『ドイツ・レクイエム』初演、作曲家として確立",
       "detail": "母の死をきっかけに書かれた、プロテスタント流のレクイエム。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {
@@ -68,7 +73,8 @@
       "detail": "ベートーヴェンの影に怯えながら書き上げた。『第10交響曲』と評された。",
       "tags": [
         "breakthrough",
-        "self_denial"
+        "self_denial",
+        "creation"
       ]
     },
     {
@@ -86,7 +92,8 @@
       "title": "引退宣言、しかし翌年に名曲量産",
       "detail": "『クラリネット三重奏曲』以降、晩年の傑作群が生まれた。",
       "tags": [
-        "restart"
+        "restart",
+        "serenity"
       ]
     },
     {

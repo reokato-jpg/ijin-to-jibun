@@ -30,7 +30,8 @@
       "title": "盛岡高等農林学校を首席で卒業",
       "detail": "農家の貧困を目の当たりにし、農民のために生きると決意。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "hope"
       ]
     },
     {
@@ -40,7 +41,8 @@
       "detail": "国柱会に傾倒し東京へ。愛する妹トシの病で花巻に戻る。",
       "tags": [
         "escape",
-        "loss"
+        "loss",
+        "love"
       ]
     },
     {
@@ -60,7 +62,8 @@
       "detail": "最愛の妹を失う。『あめゆじゆとてちてけんじや』の絶唱を残す。",
       "tags": [
         "loss",
-        "isolation"
+        "isolation",
+        "love"
       ]
     },
     {
@@ -69,7 +72,8 @@
       "title": "『注文の多い料理店』『春と修羅』自費出版",
       "detail": "どちらも売れなかった。200部以下。生前の評価はほぼゼロ。",
       "tags": [
-        "pride_broken"
+        "pride_broken",
+        "creation"
       ]
     },
     {
@@ -79,7 +83,8 @@
       "detail": "農民として生きる決意。土を耕し、音楽と芸術を教えた。",
       "tags": [
         "self_reinvention",
-        "restart"
+        "restart",
+        "hope"
       ]
     },
     {

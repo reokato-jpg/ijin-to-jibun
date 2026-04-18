@@ -30,7 +30,8 @@
       "title": "オルガン交響曲がアメリカ初演",
       "detail": "ブーランジェと共演。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {
@@ -39,7 +40,8 @@
       "title": "ガッゲンハイム奨学金でヨーロッパ留学",
       "detail": "ナディア・ブーランジェから米国帰国後もアドバイスを受ける。",
       "tags": [
-        "restart"
+        "restart",
+        "curiosity"
       ]
     },
     {
@@ -57,7 +59,9 @@
       "age": 37,
       "title": "『コープランド・セッションズ・スコア』",
       "detail": "ニューヨークの若手作曲家ための出版社を共同設立。",
-      "tags": []
+      "tags": [
+        "creation"
+      ]
     },
     {
       "year": 1938,
@@ -65,7 +69,8 @@
       "title": "バレエ『ビリー・ザ・キッド』初演",
       "detail": "アメリカン・サウンドの確立作。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {
@@ -74,7 +79,8 @@
       "title": "『アパラチアの春』初演",
       "detail": "ピューリッツァー賞受賞。マーサ・グレアム振付バレエ。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {

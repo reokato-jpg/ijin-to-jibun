@@ -13,7 +13,9 @@
       "age": 0,
       "title": "ベルゲンに誕生",
       "detail": "母ゲジーネはピアニスト、父はイギリス系商人。5歳からピアノを学ぶ。",
-      "tags": []
+      "tags": [
+        "curiosity"
+      ]
     },
     {
       "year": 1858,
@@ -22,7 +24,8 @@
       "detail": "ヴァイオリニスト、オーレ・ブルの勧めで留学。4年間で結核を患う。",
       "tags": [
         "turning_encounter",
-        "illness"
+        "illness",
+        "curiosity"
       ]
     },
     {
@@ -41,7 +44,9 @@
       "detail": "ノルウェー国民楽派の路線を決定づけた親友。翌年ノードロークは25歳で結核死。",
       "tags": [
         "turning_encounter",
-        "loss"
+        "loss",
+        "love",
+        "friendship"
       ]
     },
     {
@@ -50,7 +55,8 @@
       "title": "コペンハーゲンでニルス・ゲーゼに学ぶ",
       "detail": "デンマークの大作曲家から北欧民族音楽の重要性を知る。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "curiosity"
       ]
     },
     {
@@ -67,7 +73,8 @@
       "detail": "家族の反対を押し切って。生涯の伴侶で最良の歌手解釈者に。",
       "tags": [
         "turning_encounter",
-        "parent_conflict"
+        "parent_conflict",
+        "love"
       ]
     },
     {
@@ -76,7 +83,8 @@
       "title": "『ピアノ協奏曲イ短調』完成",
       "detail": "ロマン派協奏曲の名曲中の名曲。リストから絶賛される。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {
@@ -86,7 +94,8 @@
       "detail": "13ヶ月の最愛の娘。二度と子はもうけなかった。",
       "tags": [
         "loss",
-        "heartbreak"
+        "heartbreak",
+        "love"
       ]
     },
     {
@@ -104,7 +113,8 @@
       "title": "『ペール・ギュント』初演",
       "detail": "イプセンの劇のため書いた付随音楽。『朝』『山の魔王の宮殿にて』など永遠の旋律。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {
@@ -128,7 +138,9 @@
       "age": 49,
       "title": "銀婚式を祝う演奏会",
       "detail": "ニーナと25年の結婚記念。",
-      "tags": []
+      "tags": [
+        "love"
+      ]
     },
     {
       "year": 1901,

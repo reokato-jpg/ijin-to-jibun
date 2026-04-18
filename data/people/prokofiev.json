@@ -43,7 +43,9 @@
       "title": "『3つのオレンジへの恋』シカゴ初演",
       "detail": "亡命中のアメリカでの成功。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "love",
+        "creation"
       ]
     },
     {
@@ -52,7 +54,8 @@
       "title": "リーナ・リュベラと結婚",
       "detail": "スペイン系の歌手との国際結婚。2人の息子をもうける。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "love"
       ]
     },
     {
@@ -67,7 +70,9 @@
       "age": 41,
       "title": "ソ連帰国を決意",
       "detail": "亡命15年。『西欧では最初の一枚しか売れない』と判断。故国の豊かな伝統への渇望。",
-      "tags": []
+      "tags": [
+        "hope"
+      ]
     },
     {
       "year": 1936,
@@ -75,7 +80,8 @@
       "title": "ソ連に帰国",
       "detail": "以後『形式主義』批判と栄光を往復する苦難の後半生。",
       "tags": [
-        "restart"
+        "restart",
+        "joy"
       ]
     },
     {
@@ -84,7 +90,9 @@
       "title": "『ピーターと狼』初演",
       "detail": "モスクワ少年音楽院のための教育作品。世界中の子供たちの最愛の曲に。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "love",
+        "creation"
       ]
     },
     {

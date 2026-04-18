@@ -14,7 +14,9 @@
       "title": "多摩・石田村の農家に生まれる",
       "detail": "薬売りをしながら剣を磨いた青年時代。近藤勇と出会い生涯の盟友となる。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "love",
+        "friendship"
       ]
     },
     {
@@ -24,7 +26,8 @@
       "detail": "商人には向かず。姉の婿の道場で剣術を学ぶことに。",
       "tags": [
         "pride_broken",
-        "restart"
+        "restart",
+        "curiosity"
       ]
     },
     {
@@ -42,7 +45,8 @@
       "title": "天然理心流・近藤勇と盟友に",
       "detail": "義兄の縁で試衛館道場に通い始める。近藤・沖田・山南らと『兄弟の契り』を結ぶ。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "friendship"
       ]
     },
     {
@@ -91,7 +95,8 @@
       "detail": "流山で近藤が新政府軍に捕まる直前、土方は脱出し土方一人で戦い続けることに。",
       "tags": [
         "loss",
-        "isolation"
+        "isolation",
+        "friendship"
       ]
     },
     {

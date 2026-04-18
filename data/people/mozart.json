@@ -31,7 +31,8 @@
       "title": "ロンドンでJ.C.バッハに学ぶ",
       "detail": "『ロンドンのバッハ』から交響曲・オペラ技法を学ぶ。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "curiosity"
       ]
     },
     {
@@ -69,7 +70,8 @@
       "title": "マンハイムでアロイジア・ウェーバーに恋",
       "detail": "後の妻コンスタンツェの姉。叶わぬ初恋。",
       "tags": [
-        "heartbreak"
+        "heartbreak",
+        "love"
       ]
     },
     {
@@ -88,7 +90,8 @@
       "detail": "『尻を蹴飛ばされて』放逐された。フリーランス音楽家として生きる決意。当時としては異例の独立。",
       "tags": [
         "restart",
-        "pride_broken"
+        "pride_broken",
+        "hope"
       ]
     },
     {
@@ -97,7 +100,8 @@
       "title": "コンスタンツェと結婚",
       "detail": "父の反対を押し切って結婚。7人の子を産むも成人したのは2人。",
       "tags": [
-        "parent_conflict"
+        "parent_conflict",
+        "love"
       ]
     },
     {
@@ -124,7 +128,9 @@
       "title": "『フィガロの結婚』初演",
       "detail": "ダ・ポンテとのコンビで傑作連発。しかしウィーンの聴衆は冷淡になっていく。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "love",
+        "creation"
       ]
     },
     {
@@ -133,7 +139,8 @@
       "title": "父レオポルト死去",
       "detail": "長年確執のあった父が亡くなる。直前の手紙に『死は人生の最後の目的地ではなく、本当の親友です』と書いた。同年『ドン・ジョヴァンニ』を書く。",
       "tags": [
-        "loss"
+        "loss",
+        "friendship"
       ]
     },
     {

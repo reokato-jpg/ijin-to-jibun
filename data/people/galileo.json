@@ -30,7 +30,8 @@
       "title": "ピサ大学数学教授",
       "detail": "落体の法則を実験で証明。",
       "tags": [
-        "approval"
+        "approval",
+        "curiosity"
       ]
     },
     {
@@ -57,7 +58,8 @@
       "title": "『星界の報告』出版",
       "detail": "地動説を強く示唆する観測記録。世界的ベストセラー。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {
@@ -65,7 +67,9 @@
       "age": 48,
       "title": "『太陽黒点に関する書簡』出版",
       "detail": "太陽も完璧ではないと暴露、教会と対立始まる。",
-      "tags": []
+      "tags": [
+        "creation"
+      ]
     },
     {
       "year": 1616,
@@ -89,7 +93,8 @@
       "title": "『天文対話』出版、激怒を買う",
       "detail": "地動説を擁護した3人の対話体。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {
@@ -108,7 +113,8 @@
       "title": "『新科学対話』ライデンで出版",
       "detail": "幽閉中に書いた力学の古典。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {

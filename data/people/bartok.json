@@ -21,7 +21,8 @@
       "title": "ブダペスト音楽院でドホナーニと学ぶ",
       "detail": "演奏家として出発、シュトラウス『英雄の生涯』ピアノ版に衝撃を受ける。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "curiosity"
       ]
     },
     {
@@ -67,7 +68,8 @@
       "title": "マールタと結婚（16歳）",
       "detail": "教え子。9歳の息子ベーラを残して1923年に離婚。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "love"
       ]
     },
     {
@@ -76,7 +78,8 @@
       "title": "オペラ『青ひげ公の城』完成",
       "detail": "コンクールで落選、15年間初演されなかった唯一のオペラ。",
       "tags": [
-        "pride_broken"
+        "pride_broken",
+        "creation"
       ]
     },
     {
@@ -85,7 +88,8 @@
       "title": "前妻と離婚、弟子ディッタと再婚",
       "detail": "20歳年下のピアニスト。以後の協奏曲は彼女と二重奏で初演した。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "creation"
       ]
     },
     {
@@ -94,7 +98,8 @@
       "title": "『弦チェレ』完成",
       "detail": "弦楽器・打楽器・チェレスタのための音楽。20世紀音楽の金字塔。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {
@@ -114,7 +119,8 @@
       "detail": "最愛の母の死を待って出国。以後帰国叶わず。",
       "tags": [
         "pride_broken",
-        "loss"
+        "loss",
+        "love"
       ]
     },
     {
@@ -123,7 +129,8 @@
       "title": "『管弦楽のための協奏曲』完成",
       "detail": "クーセヴィツキーの依頼で、病床の栄養失調状態で書いた最後の傑作。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {

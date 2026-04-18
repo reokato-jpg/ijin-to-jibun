@@ -29,7 +29,8 @@
       "detail": "17歳で長男として二人の弟を養う。音楽家としての父はすでに崩れており、母を結核で失う。『私の最良の友を失った』と手紙に書いた。",
       "tags": [
         "loss",
-        "poverty"
+        "poverty",
+        "gratitude"
       ]
     },
     {
@@ -39,7 +40,9 @@
       "detail": "以後ウィーンを離れず。ハイドンとの師弟関係は緊張含み。",
       "tags": [
         "turning_encounter",
-        "restart"
+        "restart",
+        "curiosity",
+        "friendship"
       ]
     },
     {
@@ -77,7 +80,8 @@
       "title": "ハイリゲンシュタットの遺書",
       "detail": "弟たちに宛てた自殺の決意書。しかし『芸術だけが私を引き止めた』と踏みとどまる。",
       "tags": [
-        "self_denial"
+        "self_denial",
+        "hope"
       ]
     },
     {
@@ -86,7 +90,8 @@
       "title": "『レオノーレ』（のち『フィデリオ』）初演失敗",
       "detail": "ナポレオン軍占領下のウィーンで。3度の改訂を経る。",
       "tags": [
-        "pride_broken"
+        "pride_broken",
+        "creation"
       ]
     },
     {
@@ -95,7 +100,8 @@
       "title": "交響曲第5番『運命』・第6番『田園』同日初演",
       "detail": "4時間に及ぶ地獄のような寒さのコンサート。聴衆は凍え、リハーサルは足りず、演奏は散々だったと伝わる。それでも歴史を変えた。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {
@@ -105,7 +111,8 @@
       "detail": "宛先不明の熱烈な恋文3通が死後発見される。『私の天使、私のすべて、私自身』。相手は今も特定されない。ベートーヴェン最大の謎。",
       "tags": [
         "heartbreak",
-        "isolation"
+        "isolation",
+        "love"
       ]
     },
     {
@@ -124,7 +131,8 @@
       "detail": "兄カスパールの死後、甥の後見を巡り義姉と法廷闘争。晩年の創作を大きく消耗させた。",
       "tags": [
         "heartbreak",
-        "loss"
+        "loss",
+        "creation"
       ]
     },
     {
@@ -145,7 +153,9 @@
       "tags": [
         "breakthrough",
         "approval",
-        "illness"
+        "illness",
+        "joy",
+        "creation"
       ]
     },
     {

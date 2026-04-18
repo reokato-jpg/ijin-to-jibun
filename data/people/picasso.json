@@ -32,7 +32,9 @@
       "detail": "ピサロへの紹介状で訪れたパリ。翌年カサヘマスがレストランで拳銃自殺。『青の時代』の引き金に。",
       "tags": [
         "loss",
-        "isolation"
+        "isolation",
+        "love",
+        "friendship"
       ]
     },
     {
@@ -42,7 +44,9 @@
       "detail": "親友の失恋自殺にショックを受け、青一色の悲哀の絵を描き始める。",
       "tags": [
         "loss",
-        "heartbreak"
+        "heartbreak",
+        "love",
+        "friendship"
       ]
     },
     {
@@ -52,7 +56,9 @@
       "detail": "ブラック・アポリネールらと貧しく熱狂的な生活。フェルナンド・オリヴィエと最初の恋。",
       "tags": [
         "restart",
-        "poverty"
+        "poverty",
+        "joy",
+        "love"
       ]
     },
     {
@@ -61,7 +67,9 @@
       "title": "『アヴィニョンの娘たち』完成",
       "detail": "アフリカ彫刻との出会いからキュビスムへ。当時は友人たちにも理解されなかった。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "love",
+        "creation"
       ]
     },
     {
@@ -70,7 +78,8 @@
       "title": "バレエ・リュスの衣装担当でオルガ・コクローヴァと結婚",
       "detail": "ロシア貴族の踊り子との結婚で新古典主義の時代へ。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "love"
       ]
     },
     {
@@ -79,7 +88,8 @@
       "title": "『ゲルニカ』を制作",
       "detail": "スペイン内戦中のゲルニカ爆撃への怒り。パリ万博に出品、反戦の象徴に。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {
@@ -88,7 +98,8 @@
       "title": "21歳のフランソワーズ・ジローと出会う",
       "detail": "以後7年共に過ごし2人の子をもうけるが、フランソワーズは去る。『ピカソとともに生きた私』を書いた唯一の相手。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "love"
       ]
     },
     {
@@ -97,7 +108,8 @@
       "title": "ジャクリーヌ・ロックと結婚",
       "detail": "45歳年下の最後の妻。晩年の11年を共に。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "love"
       ]
     },
     {

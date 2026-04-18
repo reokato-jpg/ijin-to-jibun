@@ -42,7 +42,8 @@
       "detail": "当時最大の芸術家に『私の弟のようだ』と抱きしめられる。父を失った少年が、父の代わりを見つけた瞬間。以後10年、ワーグナー崇拝が彼の思想の中心となる。",
       "tags": [
         "turning_encounter",
-        "approval"
+        "approval",
+        "love"
       ]
     },
     {
@@ -52,7 +53,8 @@
       "detail": "博士号も教授資格もないまま、恩師の推薦だけで古典文献学の教授に。周囲の期待を一身に背負う。天才として祭り上げられ、降りられなくなる。",
       "tags": [
         "approval",
-        "pride_broken"
+        "pride_broken",
+        "gratitude"
       ]
     },
     {
@@ -107,7 +109,9 @@
       "tags": [
         "heartbreak",
         "isolation",
-        "self_denial"
+        "self_denial",
+        "love",
+        "friendship"
       ]
     },
     {
@@ -117,7 +121,8 @@
       "detail": "妹エリーザベトの妨害もあり、唯一の『魂の伴侶』を失う。『ツァラトゥストラ』はこの失恋の後に書かれた。",
       "tags": [
         "heartbreak",
-        "isolation"
+        "isolation",
+        "love"
       ]
     },
     {
@@ -129,7 +134,9 @@
         "restart",
         "self_reinvention",
         "breakthrough",
-        "isolation"
+        "isolation",
+        "love",
+        "creation"
       ]
     },
     {
@@ -146,7 +153,8 @@
       "detail": "『この人を見よ』『アンチクリスト』『偶像の黄昏』など、後世に残る代表作を次々と書き上げる。本人は『すべてが見えている、天才的に冴えている』と姉に手紙を書く。だが周囲から見ればすでに異様な高揚状態だった。",
       "tags": [
         "breakthrough",
-        "illness"
+        "illness",
+        "creation"
       ]
     },
     {

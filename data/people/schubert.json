@@ -21,7 +21,8 @@
       "title": "宮廷礼拝堂少年合唱団に入団",
       "detail": "サリエリに作曲を学ぶ特待生となる。",
       "tags": [
-        "approval"
+        "approval",
+        "curiosity"
       ]
     },
     {
@@ -68,7 +69,8 @@
       "title": "『魔王』出版、初の商業的成功",
       "detail": "作品番号1、オーナーのペンニンガー社と契約。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {
@@ -78,7 +80,8 @@
       "detail": "生涯の闇の始まりにして、最も有名な楽曲。",
       "tags": [
         "illness",
-        "breakthrough"
+        "breakthrough",
+        "creation"
       ]
     },
     {
@@ -86,7 +89,9 @@
       "age": 28,
       "title": "オーストリア夏の旅、生涯最高の幸せな季節",
       "detail": "フォーグルとオーストリア南部を旅行。のち『大ハ長調交響曲』構想。",
-      "tags": []
+      "tags": [
+        "joy"
+      ]
     },
     {
       "year": 1827,
@@ -95,7 +100,8 @@
       "detail": "迫り来る死と失恋の暗い歌集。友人たちは暗さに困惑した。",
       "tags": [
         "loss",
-        "breakthrough"
+        "breakthrough",
+        "love"
       ]
     },
     {
@@ -104,7 +110,8 @@
       "title": "敬愛するベートーヴェンの葬儀で松明を持つ",
       "detail": "生涯憧れた巨匠の棺に最も近い位置にいた。",
       "tags": [
-        "loss"
+        "loss",
+        "love"
       ]
     },
     {
@@ -114,7 +121,8 @@
       "detail": "敬愛するベートーヴェンの隣に埋葬された。",
       "tags": [
         "loss",
-        "illness"
+        "illness",
+        "love"
       ]
     },
     {

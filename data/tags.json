@@ -107,6 +107,54 @@
       "name": "ブレイクスルー",
       "color": "#4E8E6B",
       "description": "殻を破って新しい自分に至った瞬間"
+    },
+    {
+      "id": "joy",
+      "name": "歓喜",
+      "color": "#d4a83a",
+      "description": "湧き上がる喜び、人生の光の瞬間"
+    },
+    {
+      "id": "hope",
+      "name": "希望",
+      "color": "#6ba8c0",
+      "description": "未来を信じる力、まだ見ぬ景色への憧れ"
+    },
+    {
+      "id": "love",
+      "name": "愛",
+      "color": "#c06a7a",
+      "description": "誰かを深く想う気持ち、心を捧げる時"
+    },
+    {
+      "id": "creation",
+      "name": "創造",
+      "color": "#8b7ab8",
+      "description": "何かを生み出し、世界に形を与える歓び"
+    },
+    {
+      "id": "gratitude",
+      "name": "感謝",
+      "color": "#b8986b",
+      "description": "誰かのおかげで、今の自分がいると気づいた瞬間"
+    },
+    {
+      "id": "serenity",
+      "name": "平穏",
+      "color": "#7ab89e",
+      "description": "嵐の後の静けさ、心が整った時間"
+    },
+    {
+      "id": "curiosity",
+      "name": "好奇心",
+      "color": "#c9a857",
+      "description": "知りたい、試したい、未知へ踏み出す衝動"
+    },
+    {
+      "id": "friendship",
+      "name": "友情",
+      "color": "#8ba878",
+      "description": "ともに歩く誰かがいた時間"
     }
   ]
 }

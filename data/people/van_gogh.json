@@ -41,7 +41,8 @@
       "detail": "下宿の娘ウルスラに求愛するも、すでに婚約者がいた。打ちのめされ、商会での勤務態度が悪化。客を説教するようになり、ついに解雇へ。最初の失恋が人生の歯車を狂わせた。",
       "tags": [
         "heartbreak",
-        "self_denial"
+        "self_denial",
+        "love"
       ]
     },
     {
@@ -52,7 +53,8 @@
       "tags": [
         "setback",
         "blank_period",
-        "self_denial"
+        "self_denial",
+        "hope"
       ]
     },
     {
@@ -86,7 +88,8 @@
       "tags": [
         "restart",
         "self_reinvention",
-        "turning_encounter"
+        "turning_encounter",
+        "hope"
       ]
     },
     {
@@ -128,7 +131,9 @@
       "tags": [
         "turning_encounter",
         "self_reinvention",
-        "breakthrough"
+        "breakthrough",
+        "hope",
+        "love"
       ]
     },
     {
@@ -139,7 +144,8 @@
       "tags": [
         "restart",
         "breakthrough",
-        "turning_encounter"
+        "turning_encounter",
+        "hope"
       ]
     },
     {
@@ -151,7 +157,8 @@
         "isolation",
         "illness",
         "pride_broken",
-        "heartbreak"
+        "heartbreak",
+        "hope"
       ]
     },
     {

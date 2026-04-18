@@ -31,7 +31,8 @@
       "title": "プラハ革命（ヨーロッパ1848年革命）に参加",
       "detail": "バリケードを築きチェコ独立を歌った。以後チェコ民族音楽を志す。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "hope"
       ]
     },
     {
@@ -59,7 +60,9 @@
       "title": "スウェーデンから帰国、プラハでチェコ音楽運動",
       "detail": "チェコ独立を音楽で支える決意。",
       "tags": [
-        "restart"
+        "restart",
+        "hope",
+        "gratitude"
       ]
     },
     {
@@ -86,7 +89,9 @@
       "title": "『売られた花嫁』初演で大成功",
       "detail": "チェコ語オペラの金字塔。民族音楽の誇りを取り戻した。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "joy",
+        "creation"
       ]
     },
     {
@@ -124,7 +129,9 @@
       "age": 51,
       "title": "失聴の中で『わが祖国』作曲開始",
       "detail": "『モルダウ』を含む交響詩集。6曲を10年かけ完成。",
-      "tags": []
+      "tags": [
+        "creation"
+      ]
     },
     {
       "year": 1876,
@@ -132,7 +139,9 @@
       "title": "聴覚喪失の中で『モルダウ』初演成功",
       "detail": "自身は会場で聴けなかったが聴衆の歓喜を身体で感じた。",
       "tags": [
-        "breakthrough"
+        "breakthrough",
+        "joy",
+        "creation"
       ]
     },
     {

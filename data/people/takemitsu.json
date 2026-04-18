@@ -22,7 +22,9 @@
       "detail": "下士官が持ち込んだ蓄音機。『これが音楽だ』と衝撃を受け作曲家を志す。戦時下の日本で初めて西洋音楽に出会った。",
       "tags": [
         "turning_encounter",
-        "breakthrough"
+        "breakthrough",
+        "hope",
+        "love"
       ]
     },
     {
@@ -59,7 +61,8 @@
       "title": "『実験工房』結成",
       "detail": "瀧口修造を精神的支柱に、現代音楽・美術・映像の学際的実験集団。",
       "tags": [
-        "turning_encounter"
+        "turning_encounter",
+        "curiosity"
       ]
     },
     {
@@ -68,7 +71,8 @@
       "title": "『実験工房』第1回公演",
       "detail": "瀧口修造中心の前衛芸術集団、以後音楽・美術・映像の融合。",
       "tags": [
-        "restart"
+        "restart",
+        "curiosity"
       ]
     },
     {
@@ -97,7 +101,8 @@
       "detail": "琵琶・尺八とオーケストラ。日本音楽の国際デビュー。",
       "tags": [
         "breakthrough",
-        "self_reinvention"
+        "self_reinvention",
+        "creation"
       ]
     },
     {
@@ -119,7 +124,9 @@
       "age": 50,
       "title": "『遠い呼び声の彼方へ！』完成",
       "detail": "海外の委嘱作が増え、世界的作曲家としての地位を確立。",
-      "tags": []
+      "tags": [
+        "creation"
+      ]
     },
     {
       "year": 1996,
