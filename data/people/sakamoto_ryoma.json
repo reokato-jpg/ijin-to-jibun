@@ -239,14 +239,16 @@
       "type": "drama",
       "country": "日本",
       "cast": "福山雅治",
-      "description": "NHK大河ドラマ。岩崎弥太郎の視点から龍馬の破天荒な生涯を描く。"
+      "description": "NHK大河ドラマ。岩崎弥太郎の視点から龍馬の破天荒な生涯を描く。",
+      "asin": "B003VUO6P2"
     },
     {
       "title": "竜馬がゆく",
       "year": 1968,
       "type": "drama",
       "country": "日本",
-      "description": "司馬遼太郎原作。龍馬ブームの原点となった初の大河ドラマ化。"
+      "description": "司馬遼太郎原作。龍馬ブームの原点となった初の大河ドラマ化。",
+      "asin": "B0002OSRGM"
     },
     {
       "title": "幕末純情伝",

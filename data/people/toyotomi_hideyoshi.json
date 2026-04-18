@@ -244,7 +244,8 @@
       "year": 1965,
       "type": "drama",
       "country": "日本",
-      "description": "NHK大河ドラマ第3作。最も有名な秀吉像を確立。"
+      "description": "NHK大河ドラマ第3作。最も有名な秀吉像を確立。",
+      "asin": "B005LWJGPQ"
     },
     {
       "title": "関白秀吉",
@@ -252,7 +253,8 @@
       "type": "movie",
       "country": "日本",
       "cast": "仲代達矢",
-      "description": "司馬遼太郎『新史 太閤記』を映像化。"
+      "description": "司馬遼太郎『新史 太閤記』を映像化。",
+      "asin": "B0002ZHGV2"
     }
   ],
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Nakamurakouen1.JPG/330px-Nakamurakouen1.JPG",

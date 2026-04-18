@@ -229,7 +229,8 @@
       "type": "drama",
       "country": "日本",
       "cast": "鈴木亮平",
-      "description": "林真理子原作のNHK大河ドラマ。西南戦争までを描く。"
+      "description": "林真理子原作のNHK大河ドラマ。西南戦争までを描く。",
+      "asin": "B078TKXLQM"
     },
     {
       "title": "ラスト サムライ",
@@ -239,7 +240,8 @@
       "director": "エドワード・ズウィック",
       "cast": "渡辺謙／トム・クルーズ",
       "description": "西郷をモデルにした勝元のキャラクターで、武士道精神を世界に伝えた。",
-      "youtubeId": "hdd9OgXaKpg"
+      "youtubeId": "hdd9OgXaKpg",
+      "asin": "B00AJGLKBM"
     }
   ],
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/%E4%B8%8A%E9%87%8E%E5%85%AC%E5%9C%92%E8%88%AA%E7%A9%BA%E5%86%99%E7%9C%9F1984.jpg/330px-%E4%B8%8A%E9%87%8E%E5%85%AC%E5%9C%92%E8%88%AA%E7%A9%BA%E5%86%99%E7%9C%9F1984.jpg",

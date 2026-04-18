@@ -676,6 +676,10 @@ function renderHomeBooks() {
   `).join('');
 }
 
+// ====================== Amazon アフィリエイト タグ ======================
+// natsumi のAmazonアソシエイトIDをセットすると、全Amazonリンクに自動付与
+const AMAZON_AFFIL_TAG = ''; // 例: 'natsumi-22'
+
 // ====================== 楽譜URL生成ヘルパー ======================
 // 作品番号（BWV/Op./K./D./HWV/RV）を抽出
 function extractCatalog(title) {
@@ -1494,7 +1498,7 @@ async function showPerson(id) {
           const thumb = m.youtubeId
             ? `https://i.ytimg.com/vi/${m.youtubeId}/mqdefault.jpg`
             : (m.imageUrl || '');
-          const amazonUrl = m.asin ? `https://www.amazon.co.jp/dp/${m.asin}` : '';
+          const amazonUrl = m.asin ? `https://www.amazon.co.jp/dp/${m.asin}${AMAZON_AFFIL_TAG ? `?tag=${AMAZON_AFFIL_TAG}` : ''}` : '';
           // Amazon商品画像（パッケージ画像）
           const amazonCoverUrl = m.asin ? `https://images-na.ssl-images-amazon.com/images/P/${m.asin}.09.LZZZZZZZ.jpg` : '';
           const stores = Array.isArray(m.stores) ? m.stores : [];

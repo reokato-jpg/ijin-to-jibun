@@ -227,7 +227,8 @@
       "type": "doc",
       "country": "フランス",
       "director": "アンリ＝ジョルジュ・クルーゾー",
-      "description": "ピカソが画面の裏側からガラスに描く様子を撮影した、世紀の映像記録。"
+      "description": "ピカソが画面の裏側からガラスに描く様子を撮影した、世紀の映像記録。",
+      "asin": "B00005UUUD"
     },
     {
       "title": "ミッドナイト・イン・パリ",
@@ -235,7 +236,8 @@
       "type": "movie",
       "country": "アメリカ",
       "director": "ウディ・アレン",
-      "description": "1920年代パリにタイムスリップした主人公がピカソ・ヘミングウェイらに出会う。"
+      "description": "1920年代パリにタイムスリップした主人公がピカソ・ヘミングウェイらに出会う。",
+      "asin": "B009AKL4VY"
     }
   ],
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Pablo_picasso_1.jpg/330px-Pablo_picasso_1.jpg",
