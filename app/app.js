@@ -5421,6 +5421,16 @@ function renderFavorites() {
           <button class="title-page-edit-name" id="editTitleBtn">
             ${title ? `✎ 称号を変更（現在：${title}）` : '🏆 称号を選ぶ'}
           </button>
+          <div class="title-page-social">
+            <div class="title-page-social-item">
+              <div class="title-page-social-num">${favPeople.size}</div>
+              <div class="title-page-social-lbl">フォロー中</div>
+            </div>
+            <div class="title-page-social-item">
+              <div class="title-page-social-num">${DATA.people.filter(p => isFollowedByPerson(p.id)).length}</div>
+              <div class="title-page-social-lbl">偉人からフォロー</div>
+            </div>
+          </div>
           <div class="title-page-stamp-count">
             獲得スタンプ <strong>${totalStamps()}</strong> 個 ／ 足跡 <strong>${totalFootprints()}</strong>
           </div>

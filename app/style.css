@@ -8433,6 +8433,29 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
 }
 
 /* 称号・スタンプ表示 */
+.title-page-social {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin: 12px 0 8px;
+}
+.title-page-social-item {
+  text-align: center;
+}
+.title-page-social-num {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--wine-dark);
+  line-height: 1;
+}
+.title-page-social-lbl {
+  font-family: var(--font-jp);
+  font-size: 10px;
+  color: var(--ink-3);
+  margin-top: 2px;
+  letter-spacing: 0.1em;
+}
 .title-page-stamp-count {
   margin-top: 10px;
   font-family: var(--font-jp);
