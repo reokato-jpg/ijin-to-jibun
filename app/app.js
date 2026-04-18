@@ -1676,34 +1676,35 @@ async function showPerson(id) {
   });
   bindFavButtons(container, p.id);
 
-  // 作品カード: YouTube / 画像拡大（search版は除外、Aタグのまま遷移）
+  // 作品カード: サムネイルクリックでYouTubeを新しいタブで開く（埋め込み制限を回避）
   container.querySelectorAll('.work-music:not(.work-music-search)').forEach(el => {
     const thumb = el.querySelector('.work-thumb');
     if (!thumb) return;
+    const yt = el.dataset.yt;
+    if (!yt) return;
+    const ytUrl = `https://www.youtube.com/watch?v=${yt}`;
+    // サムネイルを直接リンクに
+    thumb.style.cursor = 'pointer';
     thumb.addEventListener('click', (e) => {
       e.stopPropagation();
-      const yt = el.dataset.yt;
-      if (!yt) return;
-      const ytUrl = `https://www.youtube.com/watch?v=${yt}`;
-      thumb.innerHTML = `
-        <iframe class="work-iframe" src="https://www.youtube.com/embed/${yt}?autoplay=1&rel=0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
-        <a class="work-iframe-fallback" href="${ytUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">再生できない時は YouTube で開く →</a>
-      `;
+      window.open(ytUrl, '_blank', 'noopener');
     });
     // ボタンリンクや楽譜ボタンのクリックは別動作
     el.querySelectorAll('.work-btn, .fav-btn').forEach(b => {
       b.addEventListener('click', (ev) => ev.stopPropagation());
     });
   });
-  // 映像作品カード: YouTubeで予告編再生
+  // 映像作品カード: サムネイルクリックでYouTubeを新しいタブで開く
   container.querySelectorAll('.media-card[data-yt]').forEach(el => {
     const thumb = el.querySelector('.media-thumb');
     if (!thumb) return;
+    const yt = el.dataset.yt;
+    if (!yt) return;
+    const ytUrl = `https://www.youtube.com/watch?v=${yt}`;
+    thumb.style.cursor = 'pointer';
     thumb.addEventListener('click', (e) => {
       e.stopPropagation();
-      const yt = el.dataset.yt;
-      if (!yt) return;
-      thumb.innerHTML = `<iframe class="media-iframe" src="https://www.youtube.com/embed/${yt}?autoplay=1" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+      window.open(ytUrl, '_blank', 'noopener');
     });
   });
   container.querySelectorAll('.work-image').forEach(el => {
