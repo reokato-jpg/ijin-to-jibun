@@ -623,6 +623,33 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
 }
 
 /* ================ 今日の言葉 ================ */
+.qod-attrib {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+.qod-avatar {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  border: 2px solid var(--gold);
+  flex-shrink: 0;
+}
+.qod-avatar-noimg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--wine);
+  color: var(--gold-light);
+  font-family: var(--font-jp);
+  font-weight: 700;
+  font-size: 18px;
+}
+.qod-attrib-text { display: flex; flex-direction: column; gap: 2px; }
+.qod-source { font-size: 11px; color: var(--ink-4); }
+
 .quote-of-the-day {
   background: #ffffff;
   border: 1px solid var(--rule);

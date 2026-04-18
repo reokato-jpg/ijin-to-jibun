@@ -354,13 +354,19 @@ function renderQuoteOfTheDay() {
   const qk = quoteKey(pick.person.id, pick.quote);
   const faved = favQuotes.has(qk);
   const collectedCount = favQuotes.size;
+  const avatar = pick.person.imageUrl
+    ? `<div class="qod-avatar" style="background-image:url('${pick.person.imageUrl}')"></div>`
+    : `<div class="qod-avatar qod-avatar-noimg">${pick.person.name.charAt(0)}</div>`;
   container.innerHTML = `
     <div class="quote-of-the-day">
       <button class="qod-fav ${faved ? 'active' : ''}" data-qod-fav="${qk}" aria-label="お気に入り">${faved ? '★' : '☆'}</button>
       <div class="qod-text">${pick.quote.text}</div>
       <div class="qod-attrib" data-id="${pick.person.id}">
-        <span class="qod-name">— ${pick.person.name}</span>
-        ${pick.quote.source ? `(${pick.quote.source})` : ''}
+        ${avatar}
+        <div class="qod-attrib-text">
+          <span class="qod-name">— ${pick.person.name}</span>
+          ${pick.quote.source ? `<span class="qod-source">(${pick.quote.source})</span>` : ''}
+        </div>
       </div>
       ${collectedCount > 0 ? `
         <button class="qod-collection-link" data-open-quotes="1">
@@ -1328,13 +1334,17 @@ function renderPeople(filter = '') {
     if (!q) return true;
     return (p.name + (p.nameEn || '') + p.field + p.country + p.summary).toLowerCase().includes(q);
   });
-  // 無条件（ホーム初期表示）のときは日替わりでピック
-  // HP版（900px以上）なら6人、スマホなら3人
+  // 無条件（ホーム初期表示）のときは表示するたびにランダムに選出
   const isDefault = !q && currentCategory === 'all' && currentEra === 'all';
   if (isDefault) {
-    const seed = daySeed();
     const pickCount = (typeof window !== 'undefined' && window.innerWidth >= 900) ? 6 : 3;
-    items = items.slice().sort((a, b) => ((hashStr(a.id) ^ seed) >>> 0) - ((hashStr(b.id) ^ seed) >>> 0)).slice(0, pickCount);
+    // 完全ランダムシャッフル（Fisher-Yates）
+    const shuffled = items.slice();
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    items = shuffled.slice(0, pickCount);
   } else {
     // 並び替え
     items.sort((a, b) => {
@@ -2788,8 +2798,8 @@ function renderTags() {
 
   let html = '';
 
-  // 感情セクション
-  if (tagItems.length > 0) {
+  // 感情セクション（一時非表示）
+  if (false && tagItems.length > 0) {
     html += `<div class="search-section-label">感情の本棚</div>
     <p class="search-section-desc">悲しみ、逃避、燃え尽き…。あなたが今感じている感情を選ぶと、その感情を乗り越えた偉人たちに出会えます。本の帯（背表紙）の数字は、その感情を経験した人数です。</p>`;
     html += `<div class="book-grid">${tagItems.map(t => {
