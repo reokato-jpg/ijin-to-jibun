@@ -8118,6 +8118,52 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
   box-shadow: inset 0 0 0 1px rgba(184,149,46,0.2);
 }
 
+/* ================ ルーティンを登録 ================ */
+.routine-adopt-section {
+  margin-top: 18px;
+  padding: 14px 16px 16px;
+  background: linear-gradient(180deg, #fffdf7 0%, #faf5e8 100%);
+  border: 1px solid var(--gold);
+  border-radius: 8px;
+}
+.routine-adopt-label {
+  font-family: var(--font-jp);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--wine-dark);
+  margin-bottom: 10px;
+  letter-spacing: 0.05em;
+}
+.routine-adopt-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.routine-adopt-btn {
+  flex: 1 1 30%;
+  min-width: 90px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 9px 10px;
+  background: var(--wine);
+  color: var(--gold-light);
+  border: 1px solid var(--gold);
+  border-radius: 20px;
+  font-family: var(--font-jp);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.routine-adopt-btn:hover { background: var(--wine-dark); transform: translateY(-1px); }
+.routine-adopt-btn.done {
+  background: #3d4e3e;
+  color: #fff;
+}
+.routine-adopt-icon { font-size: 14px; }
+
 /* ================ 人生ダイジェスト ================ */
 .life-digest {
   margin: 12px 0 0;

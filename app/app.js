@@ -2661,6 +2661,10 @@ function openRoutineModal(p) {
         ${p.routineSource ? `<div class="routine-source">出典：${p.routineSource}</div>` : ''}
         ${routineBarHtml(p.routine, false)}
         ${routineCalendarHtml(p.routine)}
+        <div class="routine-adopt-section">
+          <div class="routine-adopt-label">このルーティンを『わたしのルーティン』に登録</div>
+          <div class="routine-adopt-buttons" id="routineAdoptButtons"></div>
+        </div>
       </div>
     </div>
   `;
@@ -2672,6 +2676,31 @@ function openRoutineModal(p) {
       setTimeout(() => modal.remove(), 200);
     });
   });
+  // 登録ボタンを動的に生成（各スロット）
+  const adoptContainer = modal.querySelector('#routineAdoptButtons');
+  if (adoptContainer) {
+    const store = loadRoutineStore();
+    store.slots.forEach((slot, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'routine-adopt-btn';
+      btn.innerHTML = `<span class="routine-adopt-icon">＋</span><span>${slot.name}</span>`;
+      btn.addEventListener('click', () => {
+        const hasExisting = slot.entries && slot.entries.length > 0;
+        if (hasExisting && !confirm(`『${slot.name}』には既にルーティンがあります。${p.name}のルーティンで上書きしますか？`)) return;
+        // 偉人のルーティンをコピー（activity末尾に注釈）
+        const store2 = loadRoutineStore();
+        store2.slots[i].entries = p.routine.map(e => ({ ...e }));
+        saveRoutineStore(store2);
+        btn.classList.add('done');
+        btn.innerHTML = `<span class="routine-adopt-icon">✓</span><span>${slot.name}に登録</span>`;
+        setTimeout(() => {
+          btn.classList.remove('done');
+          btn.innerHTML = `<span class="routine-adopt-icon">＋</span><span>${slot.name}</span>`;
+        }, 2000);
+      });
+      adoptContainer.appendChild(btn);
+    });
+  }
 }
 
 function routineBarHtml(routine, showLabels) {
