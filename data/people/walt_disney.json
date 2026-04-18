@@ -125,5 +125,47 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Walt_disney_portrait.jpg"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Disneyland_Anaheim.jpg/330px-Disneyland_Anaheim.jpg",
-  "coverImageCaption": "ディズニーランド"
+  "coverImageCaption": "ディズニーランド",
+  "media": [
+    {
+      "title": "白雪姫",
+      "year": 1937,
+      "type": "anime",
+      "country": "アメリカ",
+      "director": "ウォルト・ディズニー",
+      "description": "世界初の長編アニメーション",
+      "asin": "B072VTVMVD",
+      "url": "https://www.amazon.co.jp/dp/B072VTVMVD?tag="
+    },
+    {
+      "title": "ファンタジア",
+      "year": 1940,
+      "type": "anime",
+      "country": "アメリカ",
+      "director": "ウォルト・ディズニー",
+      "description": "クラシック音楽とアニメの融合",
+      "asin": "B06XG2VCKB",
+      "url": "https://www.amazon.co.jp/dp/B06XG2VCKB?tag="
+    },
+    {
+      "title": "ダンボ",
+      "year": 1941,
+      "type": "anime",
+      "country": "アメリカ",
+      "director": "ウォルト・ディズニー",
+      "description": "大きな耳の子象の物語",
+      "asin": "B07D1BQCXR",
+      "url": "https://www.amazon.co.jp/dp/B07D1BQCXR?tag="
+    },
+    {
+      "title": "バンビ",
+      "year": 1942,
+      "type": "anime",
+      "country": "アメリカ",
+      "director": "ウォルト・ディズニー",
+      "description": "森の仔鹿バンビの成長",
+      "asin": "B0C5PD8GTK",
+      "url": "https://www.amazon.co.jp/dp/B0C5PD8GTK?tag="
+    }
+  ]
 }

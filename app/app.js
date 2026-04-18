@@ -1494,14 +1494,16 @@ async function showPerson(id) {
           const thumb = m.youtubeId
             ? `https://i.ytimg.com/vi/${m.youtubeId}/mqdefault.jpg`
             : (m.imageUrl || '');
-          const ytUrl = m.youtubeId ? `https://www.youtube.com/watch?v=${m.youtubeId}` : '';
+          const ytSearchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(`${m.title} 予告編`)}`;
           const searchQ = encodeURIComponent(`${m.title} ${m.year || ''} ${m.type === 'drama' ? 'ドラマ' : '映画'}`);
           const wikiUrl = `https://ja.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(m.title)}`;
+          const amazonUrl = m.asin ? `https://www.amazon.co.jp/dp/${m.asin}` : '';
+          const amazonCoverUrl = m.asin ? `https://images-na.ssl-images-amazon.com/images/P/${m.asin}.09.LZZZZZZZ.jpg` : '';
+          const thumbFinal = amazonCoverUrl || thumb;
           return `
-            <div class="media-card" ${m.youtubeId ? `data-yt="${m.youtubeId}"` : ''}>
-              <div class="media-thumb" ${thumb ? `style="background-image:url('${thumb}')"` : ''}>
-                ${m.youtubeId ? '<div class="media-play">▶</div>' : ''}
-                ${!thumb ? '<div class="media-thumb-fallback">🎬</div>' : ''}
+            <div class="media-card">
+              <div class="media-thumb" ${thumbFinal ? `style="background-image:url('${thumbFinal}')"` : ''}>
+                ${!thumbFinal ? '<div class="media-thumb-fallback">🎬</div>' : '<div class="media-play">▶</div>'}
               </div>
               <div class="media-info">
                 <div class="media-type">${typeLabel}${m.year ? ` · ${m.year}` : ''}${m.country ? ` · ${m.country}` : ''}</div>
@@ -1510,8 +1512,8 @@ async function showPerson(id) {
                 ${m.director ? `<div class="media-cast">監督: ${m.director}</div>` : ''}
                 ${m.description ? `<div class="media-desc">${m.description}</div>` : ''}
                 <div class="media-links">
-                  ${ytUrl ? `<a class="media-btn media-btn-yt" href="${ytUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()"><span>▶</span> 予告編</a>` : ''}
-                  <a class="media-btn" href="https://www.google.com/search?q=${searchQ}" target="_blank" rel="noopener" onclick="event.stopPropagation()">🔎 検索</a>
+                  ${amazonUrl ? `<a class="media-btn media-btn-amazon" href="${amazonUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">📦 Amazonで見る</a>` : ''}
+                  <a class="media-btn media-btn-yt" href="${ytSearchUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()"><span>▶</span> 予告編を探す</a>
                   <a class="media-btn media-btn-sub" href="${wikiUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">📖 詳細</a>
                 </div>
               </div>
@@ -2207,6 +2209,7 @@ if (typeof window !== 'undefined' && !window.__routinePeekBound) {
     if (!card) return;
     if (e.target.closest('.fav-btn')) return;
     if (e.target.closest('.routine-copy-btn')) return;
+    if (e.target.closest('[data-goto-person]')) return;
     const pid = card.dataset.peekId;
     const p = (typeof DATA !== 'undefined') && DATA.people.find(x => x.id === pid);
     if (p) openRoutineModal(p);
@@ -2477,15 +2480,15 @@ function renderRoutines() {
 
   html += DATA.people.filter(p => p.routine && p.routine.length).map(p => {
     const avatar = p.imageUrl
-      ? `<div class="routine-avatar" style="background-image:url('${p.imageUrl}')"></div>`
-      : `<div class="routine-avatar">${p.name.charAt(0)}</div>`;
+      ? `<button class="routine-avatar routine-avatar-link" data-goto-person="${p.id}" style="background-image:url('${p.imageUrl}')" aria-label="${p.name}のプロフィール"></button>`
+      : `<button class="routine-avatar routine-avatar-link" data-goto-person="${p.id}" aria-label="${p.name}のプロフィール">${p.name.charAt(0)}</button>`;
     return `
       <div class="routine-card" data-id="${p.id}">
         ${favRoutineBtn(p.id)}
         <div class="routine-card-header">
           ${avatar}
           <div class="routine-card-info">
-            <div class="routine-person-name">${p.name}</div>
+            <button class="routine-person-name routine-person-name-link" data-goto-person="${p.id}">${p.name}</button>
             <div class="routine-person-sub">${p.field} / ${p.country}</div>
           </div>
         </div>
@@ -2506,6 +2509,7 @@ function renderRoutines() {
       if (e.target.closest('.fav-btn')) return;
       if (e.target.closest('.routine-copy-btn')) return;
       if (e.target.closest('.routine-peek-btn')) return;
+      if (e.target.closest('[data-goto-person]')) return;
       const p = DATA.people.find(x => x.id === el.dataset.id);
       if (p) openRoutineModal(p);
     });
@@ -2515,6 +2519,13 @@ function renderRoutines() {
       e.stopPropagation();
       const p = DATA.people.find(x => x.id === btn.dataset.peekId);
       if (p) openRoutineModal(p);
+    });
+  });
+  // アバター・名前タップ → 人物プロフィールへ
+  list.querySelectorAll('[data-goto-person]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showPerson(btn.dataset.gotoPerson);
     });
   });
 

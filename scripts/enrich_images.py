@@ -52,9 +52,17 @@ def fetch_thumbnail(title: str, size: int = 400):
     thumb = page.get("thumbnail", {}).get("source")
     return thumb
 
+SIGNATURE_KEYWORDS = ["signature", "unterschrift", "autograph", "kaou", ".svg"]
+
+
 def process(person_file: Path):
     data = json.loads(person_file.read_text(encoding="utf-8"))
     pid = data["id"]
+    # 既に有効なポートレートがあればスキップ（署名・花押等を上書きしないため）
+    existing = (data.get("imageUrl") or "").lower()
+    if existing and not any(k in existing for k in SIGNATURE_KEYWORDS):
+        print(f"  [SKIP] {pid}: 既に有効な画像あり")
+        return
     # wikiTitle があればそれを使う。なければデフォルト辞書、最後は name
     title = data.get("wikiTitle") or DEFAULT_WIKI_TITLES.get(pid) or data.get("name")
     if not title:
@@ -68,6 +76,10 @@ def process(person_file: Path):
         return
     if not url:
         print(f"    見つからず")
+        return
+    # 取得した画像が署名系ならスキップ
+    if any(k in url.lower() for k in SIGNATURE_KEYWORDS):
+        print(f"    署名系URLなのでスキップ")
         return
     data["imageUrl"] = url
     if "wikiTitle" not in data:

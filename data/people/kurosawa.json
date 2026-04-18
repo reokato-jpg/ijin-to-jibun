@@ -154,5 +154,61 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kinema-Junpo-1960-December-Special-1.jpg"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Kinema-Junpo-1960-December-Special-1.jpg/330px-Kinema-Junpo-1960-December-Special-1.jpg",
-  "coverImageCaption": "黒澤明記念サテライトスタジオ"
+  "coverImageCaption": "黒澤明記念サテライトスタジオ",
+  "media": [
+    {
+      "title": "七人の侍",
+      "year": 1954,
+      "type": "movie",
+      "country": "日本",
+      "director": "黒澤明",
+      "cast": "三船敏郎",
+      "description": "207分の大作。世界中でリメイクされた",
+      "asin": "B00K6JRC1E",
+      "url": "https://www.amazon.co.jp/dp/B00K6JRC1E?tag="
+    },
+    {
+      "title": "羅生門",
+      "year": 1950,
+      "type": "movie",
+      "country": "日本",
+      "director": "黒澤明",
+      "cast": "三船敏郎／京マチ子",
+      "description": "ヴェネツィア金獅子賞",
+      "asin": "B07FCRLGWS",
+      "url": "https://www.amazon.co.jp/dp/B07FCRLGWS?tag="
+    },
+    {
+      "title": "用心棒",
+      "year": 1961,
+      "type": "movie",
+      "country": "日本",
+      "director": "黒澤明",
+      "cast": "三船敏郎",
+      "description": "西部劇へ影響を与えた一匹狼",
+      "asin": "B07FCS8T7V",
+      "url": "https://www.amazon.co.jp/dp/B07FCS8T7V?tag="
+    },
+    {
+      "title": "生きる",
+      "year": 1952,
+      "type": "movie",
+      "country": "日本",
+      "director": "黒澤明",
+      "cast": "志村喬",
+      "description": "死を宣告された市役所員の最後の仕事",
+      "asin": "B07FCRQ3KC",
+      "url": "https://www.amazon.co.jp/dp/B07FCRQ3KC?tag="
+    },
+    {
+      "title": "乱",
+      "year": 1985,
+      "type": "movie",
+      "country": "日本",
+      "director": "黒澤明",
+      "description": "リア王を戦国日本に。武満徹音楽",
+      "asin": "B00B4OAOWG",
+      "url": "https://www.amazon.co.jp/dp/B00B4OAOWG?tag="
+    }
+  ]
 }

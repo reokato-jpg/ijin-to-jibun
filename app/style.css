@@ -3487,6 +3487,13 @@ main { flex: 1; overflow-y: auto; background: var(--paper); }
   background: transparent;
   color: var(--ink-3);
 }
+.media-btn-amazon {
+  background: #ff9900;
+  color: #fff;
+  border-color: #ff9900;
+  font-weight: 700;
+}
+.media-btn-amazon:hover { background: #e88a00; color: #fff; }
 .work-btn-search {
   background: #fff;
   color: var(--wine);
@@ -4196,6 +4203,28 @@ main { flex: 1; overflow-y: auto; background: var(--paper); }
 
 /* ルーティンカード：タップで開くヒント */
 .routine-card[data-peek-id] { cursor: pointer; }
+.routine-avatar-link {
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.routine-avatar-link:hover {
+  transform: scale(1.08);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.routine-person-name-link {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: var(--font-jp);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  text-align: left;
+}
+.routine-person-name-link:hover { color: var(--wine); text-decoration: underline; }
 .routine-card[data-peek-id]:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0,0,0,0.12);

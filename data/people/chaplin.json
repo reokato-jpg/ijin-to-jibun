@@ -180,7 +180,8 @@
       "country": "アメリカ",
       "director": "チャールズ・チャップリン",
       "description": "晩年の老道化師とバレリーナ。自伝的傑作",
-      "youtubeId": "5PaaGMyTL9w"
+      "youtubeId": "5PaaGMyTL9w",
+      "asin": "B09G2D2TWL"
     },
     {
       "title": "モダン・タイムス",
@@ -189,7 +190,38 @@
       "country": "アメリカ",
       "director": "チャールズ・チャップリン",
       "description": "機械文明批判の不朽の喜劇",
-      "youtubeId": "DfDCp8bJJZo"
+      "youtubeId": "DfDCp8bJJZo",
+      "asin": "B09G2CRYHB"
+    },
+    {
+      "title": "独裁者",
+      "year": 1940,
+      "type": "movie",
+      "country": "アメリカ",
+      "director": "チャップリン",
+      "description": "6分間の不滅のスピーチ",
+      "asin": "B09G2D2TWJ",
+      "url": "https://www.amazon.co.jp/dp/B09G2D2TWJ?tag="
+    },
+    {
+      "title": "街の灯",
+      "year": 1931,
+      "type": "movie",
+      "country": "アメリカ",
+      "director": "チャップリン",
+      "description": "盲目の花売り娘との恋",
+      "asin": "B09G2CRYH9",
+      "url": "https://www.amazon.co.jp/dp/B09G2CRYH9?tag="
+    },
+    {
+      "title": "黄金狂時代",
+      "year": 1925,
+      "type": "movie",
+      "country": "アメリカ",
+      "director": "チャップリン",
+      "description": "『パンダンス』の名場面",
+      "asin": "B09G2D2TWF",
+      "url": "https://www.amazon.co.jp/dp/B09G2D2TWF?tag="
     }
   ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Charlie_Chaplin_portrait_Getty_1739411952.jpg/500px-Charlie_Chaplin_portrait_Getty_1739411952.jpg",

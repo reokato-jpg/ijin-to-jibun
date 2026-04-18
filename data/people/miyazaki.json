@@ -160,5 +160,97 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:HayaoMiyazakiCCJuly09.jpg"
   },
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/%E4%B8%89%E9%B7%B9%E4%B9%8B%E6%A3%AE%E5%90%89%E5%8D%9C%E5%8A%9B%E7%BE%8E%E8%A1%93%E9%A4%A8_%2816202559242%29.jpg/330px-%E4%B8%89%E9%B7%B9%E4%B9%8B%E6%A3%AE%E5%90%89%E5%8D%9C%E5%8A%9B%E7%BE%8E%E8%A1%93%E9%A4%A8_%2816202559242%29.jpg",
-  "coverImageCaption": "三鷹の森ジブリ美術館"
+  "coverImageCaption": "三鷹の森ジブリ美術館",
+  "media": [
+    {
+      "title": "となりのトトロ",
+      "year": 1988,
+      "type": "anime",
+      "country": "日本",
+      "director": "宮崎駿",
+      "description": "姉妹とトトロの夏。ジブリの魂",
+      "asin": "B00005R5J6",
+      "url": "https://www.amazon.co.jp/dp/B00005R5J6?tag="
+    },
+    {
+      "title": "千と千尋の神隠し",
+      "year": 2001,
+      "type": "anime",
+      "country": "日本",
+      "director": "宮崎駿",
+      "description": "アカデミー長編アニメ賞。日本アニメを世界に。",
+      "asin": "B00005R5J0",
+      "url": "https://www.amazon.co.jp/dp/B00005R5J0?tag="
+    },
+    {
+      "title": "風の谷のナウシカ",
+      "year": 1984,
+      "type": "anime",
+      "country": "日本",
+      "director": "宮崎駿",
+      "description": "ジブリの出発点。腐海と王蟲の物語",
+      "asin": "B00005R5GH",
+      "url": "https://www.amazon.co.jp/dp/B00005R5GH?tag="
+    },
+    {
+      "title": "もののけ姫",
+      "year": 1997,
+      "type": "anime",
+      "country": "日本",
+      "director": "宮崎駿",
+      "description": "邦画最高興収193億円。自然と人の葛藤",
+      "asin": "B00005R5GP",
+      "url": "https://www.amazon.co.jp/dp/B00005R5GP?tag="
+    },
+    {
+      "title": "魔女の宅急便",
+      "year": 1989,
+      "type": "anime",
+      "country": "日本",
+      "director": "宮崎駿",
+      "description": "少女の成長物語。『ルージュの伝言』",
+      "asin": "B00005R5GI",
+      "url": "https://www.amazon.co.jp/dp/B00005R5GI?tag="
+    },
+    {
+      "title": "ハウルの動く城",
+      "year": 2004,
+      "type": "anime",
+      "country": "日本",
+      "director": "宮崎駿",
+      "description": "戦争と愛と老い。久石譲の名曲",
+      "asin": "B00091Q6O2",
+      "url": "https://www.amazon.co.jp/dp/B00091Q6O2?tag="
+    },
+    {
+      "title": "紅の豚",
+      "year": 1992,
+      "type": "anime",
+      "country": "日本",
+      "director": "宮崎駿",
+      "description": "『カッコイイとは、こういうことさ』",
+      "asin": "B00005R5GJ",
+      "url": "https://www.amazon.co.jp/dp/B00005R5GJ?tag="
+    },
+    {
+      "title": "風立ちぬ",
+      "year": 2013,
+      "type": "anime",
+      "country": "日本",
+      "director": "宮崎駿",
+      "description": "堀越二郎と零戦。最後の宣言",
+      "asin": "B00FYIZ2K8",
+      "url": "https://www.amazon.co.jp/dp/B00FYIZ2K8?tag="
+    },
+    {
+      "title": "君たちはどう生きるか",
+      "year": 2023,
+      "type": "anime",
+      "country": "日本",
+      "director": "宮崎駿",
+      "description": "10年ぶりの新作。アカデミー賞",
+      "asin": "B0CXLYB27J",
+      "url": "https://www.amazon.co.jp/dp/B0CXLYB27J?tag="
+    }
+  ]
 }
