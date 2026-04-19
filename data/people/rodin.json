@@ -1,0 +1,144 @@
+{
+  "name": "オーギュスト・ロダン",
+  "nameEn": "Auguste Rodin",
+  "birth": 1840,
+  "death": 1917,
+  "country": "フランス",
+  "field": "彫刻家",
+  "summary": "『考える人』『接吻』『地獄の門』——近代彫刻の父。アカデミズムを打ち砕き、粘土に魂を吹き込んだ。",
+  "events": [
+    {
+      "year": 1840,
+      "age": 0,
+      "title": "パリの下層中産階級の家に生まれる",
+      "detail": "",
+      "tags": []
+    },
+    {
+      "year": 1857,
+      "age": 17,
+      "title": "国立美術学校（エコール・デ・ボザール）の入試に3度落ちる",
+      "detail": "公式な芸術教育から排除される。",
+      "tags": [
+        "setback"
+      ]
+    },
+    {
+      "year": 1864,
+      "age": 24,
+      "title": "生涯のパートナー、ローズ・ブーレを見つける",
+      "detail": "53年後に正式結婚。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1876,
+      "age": 36,
+      "title": "イタリア旅行、ミケランジェロに衝撃",
+      "detail": "『自由になった』と後年語る。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1880,
+      "age": 40,
+      "title": "『地獄の門』委嘱",
+      "detail": "ダンテ『神曲』をテーマ。37年かけても未完のまま死去。この大作から『考える人』『接吻』などが派生。",
+      "tags": [
+        "creation",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1884,
+      "age": 44,
+      "title": "愛弟子カミーユ・クローデルと出会う",
+      "detail": "激しい愛と芸術的共鳴、そして破局（カミーユは精神病院で晩年を過ごす）。",
+      "tags": [
+        "turning_encounter",
+        "loss"
+      ]
+    },
+    {
+      "year": 1900,
+      "age": 60,
+      "title": "パリ万博で個展、国際的名声",
+      "detail": "",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1917,
+      "age": 77,
+      "title": "ムードンで死去、ローズも直前に逝く",
+      "detail": "",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "真の芸術家は、大理石の中にすでに像を見る。彼はそれを解放するだけだ。",
+      "source": "ロダンに帰される言葉（ミケランジェロの教えを継承）"
+    },
+    {
+      "text": "忍耐も、一種の天才である。",
+      "source": "『芸術について』"
+    },
+    {
+      "text": "彫刻とは、余分なものを取り除く芸術だ。",
+      "source": "ロダンの語録"
+    },
+    {
+      "text": "自然の中には、醜いものは何もない。",
+      "source": "『芸術について』"
+    },
+    {
+      "text": "遅い者はしばしば最善の者である。",
+      "source": "弟子への言葉"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/9/94/Auguste_Rodin_by_George_Charles_Beresford_%28NPG_x6573%29.jpg",
+  "wikiTitle": "オーギュスト・ロダン",
+  "imageCredit": {
+    "artist": "George Charles Beresford (1902)",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "National Portrait Gallery",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Auguste_Rodin_by_George_Charles_Beresford_(NPG_x6573).jpg"
+  },
+  "birthMonth": 11,
+  "birthDay": 12,
+  "deathMonth": 11,
+  "deathDay": 17,
+  "lifeDigest": "フランスの彫刻家、近代彫刻の父。アカデミズム彫刻を打破し、荒々しい表面処理と未完成の美、運動感のある人体表現で新時代を切り開いた。『考える人』『カレーの市民』『接吻』『バルザック像』など代表作多数。弟子に愛人カミーユ・クローデル、詩人リルケ（秘書）。",
+  "traits": {
+    "foods": [
+      "フランス家庭料理",
+      "ワイン",
+      "チーズ"
+    ],
+    "hobbies": [
+      "デッサン（1日に何枚も）",
+      "古代彫刻の収集",
+      "読書（ダンテ・ボードレール）"
+    ],
+    "personality": "情熱的で仕事中毒、同時に優柔不断で恋多き人生。弟子・助手たちを大事にしつつ、カミーユを捨てたことで生涯の負い目も。",
+    "likes": [
+      "運動する人体",
+      "ゴシック建築",
+      "ダンテ『神曲』",
+      "日本の浮世絵"
+    ],
+    "dislikes": [
+      "アカデミズムの型",
+      "仕上げすぎた彫刻",
+      "批評家"
+    ]
+  },
+  "id": "rodin"
+}

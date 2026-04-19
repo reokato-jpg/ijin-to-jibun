@@ -1,0 +1,131 @@
+{
+  "name": "ジョン・ロック",
+  "nameEn": "John Locke",
+  "birth": 1632,
+  "death": 1704,
+  "country": "イギリス",
+  "field": "哲学者",
+  "summary": "経験論の父。『人間知性論』で人の心は生まれたときは白紙（タブラ・ラサ）と説き、『統治二論』で自由と所有権を擁護、アメリカ独立宣言・フランス人権宣言の礎となった。",
+  "events": [
+    {
+      "year": 1632,
+      "age": 0,
+      "title": "サマセット州リントンで生まれる",
+      "detail": "父はピューリタンの弁護士。",
+      "tags": []
+    },
+    {
+      "year": 1667,
+      "age": 35,
+      "title": "シャフツベリ伯爵の侍医・秘書に",
+      "detail": "以後政治的パトロンとなる。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1683,
+      "age": 51,
+      "title": "オランダへ亡命",
+      "detail": "反国王派疑惑で身の危険。",
+      "tags": [
+        "setback"
+      ]
+    },
+    {
+      "year": 1689,
+      "age": 57,
+      "title": "名誉革命後にイギリス帰国",
+      "detail": "",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1689,
+      "age": 57,
+      "title": "『統治二論』刊行",
+      "detail": "社会契約論・抵抗権・所有権の古典。",
+      "tags": [
+        "creation",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1690,
+      "age": 58,
+      "title": "『人間知性論』刊行",
+      "detail": "生得観念を否定、経験論の基礎を確立。",
+      "tags": [
+        "creation",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1704,
+      "age": 72,
+      "title": "エセックスの友人宅で死去",
+      "detail": "",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "心は生まれたときは、何も書かれていない白い紙のようなものだ。",
+      "source": "『人間知性論』第2巻"
+    },
+    {
+      "text": "人は、何ぴとにもその生命、健康、自由、所有物を害する権利を持たない。",
+      "source": "『統治二論』"
+    },
+    {
+      "text": "新しい意見は常に疑われ、しばしば反対される。それは共通のものではないという理由だけで。",
+      "source": "『人間知性論』序"
+    },
+    {
+      "text": "読書は単に知識を供給するに過ぎない。それを自分のものにするのは思考である。",
+      "source": "ロックの随筆"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/d/db/Godfrey_Kneller_-_Portrait_of_John_Locke_%28Hermitage%29.jpg",
+  "wikiTitle": "ジョン・ロック",
+  "imageCredit": {
+    "artist": "Godfrey Kneller (1697)",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Hermitage Museum",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Godfrey_Kneller_-_Portrait_of_John_Locke_(Hermitage).jpg"
+  },
+  "birthMonth": 8,
+  "birthDay": 29,
+  "deathMonth": 10,
+  "deathDay": 28,
+  "lifeDigest": "イギリスの哲学者、『イギリス経験論の父』。『人間知性論』で人間の知識はすべて経験から得られると主張し、生得観念を否定した。『統治二論』では自然権としての生命・自由・所有権を説き、抵抗権を擁護。その政治思想はアメリカ独立宣言、フランス人権宣言、立憲民主主義の思想的基礎となった。",
+  "traits": {
+    "foods": [
+      "紅茶",
+      "質素な朝食",
+      "野菜中心の食事"
+    ],
+    "hobbies": [
+      "植物学",
+      "医学",
+      "庭園設計"
+    ],
+    "personality": "穏やかで慎重、生涯独身。友人ニュートンとは親交があり、晩年は隠棲して著述に専念。",
+    "likes": [
+      "経験・観察",
+      "寛容",
+      "立憲君主制",
+      "庭"
+    ],
+    "dislikes": [
+      "生得観念",
+      "絶対王政",
+      "宗教的不寛容"
+    ]
+  },
+  "id": "john_locke"
+}

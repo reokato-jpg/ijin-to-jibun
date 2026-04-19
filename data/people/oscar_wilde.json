@@ -1,0 +1,128 @@
+{
+  "name": "オスカー・ワイルド",
+  "nameEn": "Oscar Wilde",
+  "birth": 1854,
+  "death": 1900,
+  "country": "アイルランド",
+  "field": "作家・劇作家・詩人",
+  "summary": "『サロメ』『ドリアン・グレイの肖像』。機知と美を愛したダンディズムの頂点。同性愛で投獄され、パリで客死。",
+  "events": [
+    {
+      "year": 1854,
+      "age": 0,
+      "title": "ダブリンの医師の家に生まれる",
+      "detail": "",
+      "tags": []
+    },
+    {
+      "year": 1878,
+      "age": 24,
+      "title": "オックスフォード大学で詩『ラヴェンナ』がニューディゲート賞",
+      "detail": "",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1890,
+      "age": 36,
+      "title": "『ドリアン・グレイの肖像』刊行",
+      "detail": "肖像画だけが歳を取る耽美小説。『不道徳』と非難を浴びる。",
+      "tags": [
+        "creation",
+        "setback"
+      ]
+    },
+    {
+      "year": 1895,
+      "age": 40,
+      "title": "『真面目が肝心』ロンドン初演、空前の成功",
+      "detail": "",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1895,
+      "age": 40,
+      "title": "同性愛で起訴、2年の重労働の刑",
+      "detail": "恋人アルフレッド・ダグラス卿の父クィーンズベリー侯爵との訴訟に敗れる。",
+      "tags": [
+        "loss",
+        "setback"
+      ]
+    },
+    {
+      "year": 1900,
+      "age": 46,
+      "title": "パリの安ホテルで客死",
+      "detail": "『この壁紙と私、どちらかが消えねばならぬ』が最期の言葉。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "誘惑に打ち勝つ唯一の方法は、それに屈することだ。",
+      "source": "『ドリアン・グレイの肖像』"
+    },
+    {
+      "text": "私はシンプルな趣味の持ち主だ——最高のもので満足する。",
+      "source": "ワイルドに帰される格言"
+    },
+    {
+      "text": "成功には敵が必要だ。",
+      "source": "『ドリアン・グレイの肖像』"
+    },
+    {
+      "text": "どぶの中で寝ころんでいても、星を見つめている者もいる。",
+      "source": "『ウィンダミア卿夫人の扇』"
+    },
+    {
+      "text": "自分自身でいなさい。他の役はもう埋まっている。",
+      "source": "ワイルドの言葉"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/4/44/Oscar_Wilde_by_Napoleon_Sarony._Three-quarter-length_photograph%2C_seated.jpg",
+  "wikiTitle": "オスカー・ワイルド",
+  "imageCredit": {
+    "artist": "Napoleon Sarony (1882)",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Library of Congress",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Oscar_Wilde_by_Napoleon_Sarony._Three-quarter-length_photograph,_seated.jpg"
+  },
+  "birthMonth": 10,
+  "birthDay": 16,
+  "deathMonth": 11,
+  "deathDay": 30,
+  "lifeDigest": "アイルランド出身の劇作家・小説家・詩人。『ドリアン・グレイの肖像』や『サロメ』、社会喜劇『真面目が肝心』などで機知に富んだ会話と耽美的世界を描いた。同性愛をめぐる裁判で有罪となり2年間レディング監獄に収監、その体験は『獄中記（De Profundis）』として残された。出獄後はパリに亡命し46歳で客死。",
+  "traits": {
+    "foods": [
+      "シャンパン",
+      "ランチ重視",
+      "ゴルマン食堂の定食"
+    ],
+    "hobbies": [
+      "機知に富んだ会話",
+      "流行の先端を行く服装",
+      "社交界"
+    ],
+    "personality": "才気煥発でダンディズムの権化、機知の即興は相手を選ばない。獄中で自己の深みに至ったが、出獄後は精神も身体も消耗しきっていた。",
+    "likes": [
+      "美",
+      "詩",
+      "緑のカーネーション",
+      "機知",
+      "パリ"
+    ],
+    "dislikes": [
+      "偽善",
+      "凡庸",
+      "ヴィクトリア朝道徳"
+    ]
+  },
+  "id": "oscar_wilde"
+}

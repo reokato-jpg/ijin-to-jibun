@@ -1,0 +1,147 @@
+{
+  "name": "アンリ・マティス",
+  "nameEn": "Henri Matisse",
+  "birth": 1869,
+  "death": 1954,
+  "country": "フランス",
+  "field": "画家・彫刻家",
+  "summary": "フォーヴィスム（野獣派）の父。色彩の喜びを生涯追い続けた20世紀美術の巨人。晩年、病床で始めた『切り絵』は新たな頂点となった。",
+  "events": [
+    {
+      "year": 1869,
+      "age": 0,
+      "title": "北フランスの穀物商の家に生まれる",
+      "detail": "",
+      "tags": []
+    },
+    {
+      "year": 1890,
+      "age": 21,
+      "title": "盲腸の療養中に絵画と出会う",
+      "detail": "母親が絵具セットを贈ってくれた。『別の次元に運ばれた』。",
+      "tags": [
+        "turning_encounter",
+        "restart"
+      ]
+    },
+    {
+      "year": 1905,
+      "age": 36,
+      "title": "サロン・ドートンヌで『野獣派』の名を得る",
+      "detail": "原色の大胆な使用で『野獣の檻』と評される。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1910,
+      "age": 41,
+      "title": "『ダンス』『音楽』完成",
+      "detail": "ロシア人実業家シチューキンの依頼。",
+      "tags": [
+        "creation",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1941,
+      "age": 72,
+      "title": "腸癌の大手術、余命を宣告される",
+      "detail": "しかし奇跡的に生還。『新しい人生』が始まる。",
+      "tags": [
+        "illness",
+        "restart"
+      ]
+    },
+    {
+      "year": 1947,
+      "age": 78,
+      "title": "ヴァンス・ロザリオ礼拝堂の設計開始",
+      "detail": "『生涯の傑作』と自ら語る総合芸術。",
+      "tags": [
+        "creation"
+      ]
+    },
+    {
+      "year": 1948,
+      "age": 79,
+      "title": "『切り絵』の時代",
+      "detail": "ベッドから起き上がれなくなり、色紙をハサミで切り抜く新技法を創造。",
+      "tags": [
+        "creation",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1954,
+      "age": 84,
+      "title": "ニースで死去",
+      "detail": "",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "芸術家は、毎朝新しく生まれたように世界を見なければならない。",
+      "source": "『画家ノート』"
+    },
+    {
+      "text": "正確さは真実ではない。",
+      "source": "マティスの言葉"
+    },
+    {
+      "text": "色は、心を打つエネルギーである。",
+      "source": "インタビュー"
+    },
+    {
+      "text": "絵画の役目は装飾ではなく、扉を開くことだ。",
+      "source": "『画家ノート』"
+    },
+    {
+      "text": "花を咲かせ続けたければ、小さなハサミを大切にしなさい。",
+      "source": "晩年の言葉"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/7/76/Henri_Matisse%2C_1913%2C_photograph_by_Alvin_Langdon_Coburn.jpg",
+  "wikiTitle": "アンリ・マティス",
+  "imageCredit": {
+    "artist": "Alvin Langdon Coburn (1913)",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "George Eastman Museum",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Henri_Matisse,_1913,_photograph_by_Alvin_Langdon_Coburn.jpg"
+  },
+  "birthMonth": 12,
+  "birthDay": 31,
+  "deathMonth": 11,
+  "deathDay": 3,
+  "lifeDigest": "20世紀を代表するフランスの画家。ピカソと並ぶモダンアートの二大巨頭。原色を大胆に用いた初期のフォーヴィスム、装飾的な中期作品、病床で始めた晩年の『切り絵（paper cuts）』まで、一生を通じて色彩の喜びを追求した。南仏ニースのロザリオ礼拝堂は総合芸術の傑作として知られる。",
+  "traits": {
+    "foods": [
+      "南仏料理",
+      "ワイン",
+      "フルーツ",
+      "シーフード"
+    ],
+    "hobbies": [
+      "音楽（ヴァイオリン演奏）",
+      "旅行",
+      "金魚・鳥を飼う"
+    ],
+    "personality": "几帳面で真面目、病床でもアシスタントに指示して創作を続けた。生涯を通じて『色彩の歓び』を信じ抜いた。",
+    "likes": [
+      "南仏の光",
+      "金魚",
+      "アラベスク模様",
+      "ニース"
+    ],
+    "dislikes": [
+      "暗い色調",
+      "理論ばかりの批評",
+      "同時代の悲観主義"
+    ]
+  },
+  "id": "matisse"
+}

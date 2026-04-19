@@ -1,0 +1,144 @@
+{
+  "name": "レンブラント・ファン・レイン",
+  "nameEn": "Rembrandt van Rijn",
+  "birth": 1606,
+  "death": 1669,
+  "country": "オランダ",
+  "field": "画家・版画家",
+  "summary": "オランダ黄金時代の巨匠。光と影で魂を描いた『夜警』『テュルプ博士の解剖学講義』。約80点に及ぶ自画像で己の人生を描き尽くした。",
+  "events": [
+    {
+      "year": 1606,
+      "age": 0,
+      "title": "レイデンの製粉業者の家に生まれる",
+      "detail": "",
+      "tags": []
+    },
+    {
+      "year": 1631,
+      "age": 25,
+      "title": "アムステルダムに移住、肖像画家として成功",
+      "detail": "",
+      "tags": [
+        "restart",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1634,
+      "age": 28,
+      "title": "サスキアと結婚",
+      "detail": "富裕な市長の姪、幸福な結婚生活。",
+      "tags": [
+        "turning_encounter",
+        "love"
+      ]
+    },
+    {
+      "year": 1642,
+      "age": 36,
+      "title": "『夜警』完成、サスキア死去",
+      "detail": "名作と最愛の喪失が同年。",
+      "tags": [
+        "creation",
+        "breakthrough",
+        "loss"
+      ]
+    },
+    {
+      "year": 1656,
+      "age": 50,
+      "title": "破産",
+      "detail": "美術品コレクションも豪邸も失う。",
+      "tags": [
+        "setback",
+        "loss"
+      ]
+    },
+    {
+      "year": 1663,
+      "age": 57,
+      "title": "内縁の妻ヘンドリッキェ死去",
+      "detail": "",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1668,
+      "age": 62,
+      "title": "息子ティトゥスも死去",
+      "detail": "老いた画家は完全に独りになる。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1669,
+      "age": 63,
+      "title": "貧困のうちにアムステルダムで死去",
+      "detail": "晩年の自画像はこの世で最も深い眼差しを残した。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "芸術を選ぶことは、平和な生活を捨てることだ。",
+      "source": "レンブラントの手紙"
+    },
+    {
+      "text": "光を描こうとするな。暗闇を描け。そこに光は現れる。",
+      "source": "弟子への言葉"
+    },
+    {
+      "text": "作品は完成しない。ただ放棄されるだけだ。",
+      "source": "レンブラントに帰される言葉"
+    },
+    {
+      "text": "人生で最も大切なのは、自分の道を見失わぬことだ。",
+      "source": "伝承"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/b/bd/Rembrandt_van_Rijn_-_Self-Portrait_-_Google_Art_Project.jpg",
+  "wikiTitle": "レンブラント・ファン・レイン",
+  "imageCredit": {
+    "artist": "Rembrandt van Rijn (Self-Portrait)",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Google Art Project / National Gallery of Art, Washington",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Rembrandt_van_Rijn_-_Self-Portrait_-_Google_Art_Project.jpg"
+  },
+  "birthMonth": 7,
+  "birthDay": 15,
+  "deathMonth": 10,
+  "deathDay": 4,
+  "lifeDigest": "オランダ黄金時代を代表する画家・版画家・銅版画家。ドラマチックな光と影（キアロスクーロ）の扱いと心理描写の深さで、西洋絵画史上最高の巨匠の一人とされる。『夜警』『テュルプ博士の解剖学講義』『放蕩息子の帰還』などの傑作を遺した。生涯で約80点の自画像を描き、その変遷は人生そのもの。",
+  "traits": {
+    "foods": [
+      "オランダ料理",
+      "ニシンの酢漬け",
+      "ビール",
+      "パン"
+    ],
+    "hobbies": [
+      "美術品収集",
+      "エッチング",
+      "自画像を描く",
+      "聖書研究"
+    ],
+    "personality": "情熱的で頑固、流行に迎合せず自己の表現を貫いた。浪費癖があり破産するが、晩年の困窮の中でこそ至高の作品を残した。",
+    "likes": [
+      "光と影",
+      "肖像画",
+      "聖書の物語",
+      "東方趣味"
+    ],
+    "dislikes": [
+      "平板な画",
+      "顧客の注文への妥協"
+    ]
+  },
+  "id": "rembrandt"
+}

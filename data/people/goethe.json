@@ -1,0 +1,130 @@
+{
+  "name": "ヨハン・ヴォルフガング・フォン・ゲーテ",
+  "nameEn": "Johann Wolfgang von Goethe",
+  "birth": 1749,
+  "death": 1832,
+  "country": "ドイツ",
+  "field": "詩人・作家・科学者・政治家",
+  "summary": "『ファウスト』『若きウェルテルの悩み』の大詩人。ドイツ古典主義文学の最高峰にして博物学者でもあった巨人。",
+  "events": [
+    {
+      "year": 1749,
+      "age": 0,
+      "title": "フランクフルトの富裕な法律家の家に生まれる",
+      "detail": "",
+      "tags": []
+    },
+    {
+      "year": 1774,
+      "age": 25,
+      "title": "『若きウェルテルの悩み』刊行、全欧で大ブーム",
+      "detail": "自殺が流行するほどの熱狂。ナポレオンも愛読。",
+      "tags": [
+        "breakthrough",
+        "creation"
+      ]
+    },
+    {
+      "year": 1775,
+      "age": 26,
+      "title": "ワイマール公国宮廷に招かれる",
+      "detail": "公爵カール・アウグストの親友・顧問となり、以後生涯ワイマールを拠点に。",
+      "tags": [
+        "turning_encounter",
+        "restart"
+      ]
+    },
+    {
+      "year": 1786,
+      "age": 37,
+      "title": "イタリア旅行（〜1788）",
+      "detail": "古代ローマ芸術に圧倒され人生観が一変。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1808,
+      "age": 59,
+      "title": "『ファウスト 第一部』完成",
+      "detail": "魂を悪魔メフィストフェレスに売る学者の物語。",
+      "tags": [
+        "creation",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1832,
+      "age": 82,
+      "title": "ワイマールで死去。『もっと光を！』と遺言",
+      "detail": "『ファウスト第二部』は死の前年に完成。",
+      "tags": [
+        "loss",
+        "creation"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "人間は努力するかぎり、迷うものだ。",
+      "source": "『ファウスト』"
+    },
+    {
+      "text": "一日を終えれば、その日は終わったのだ。",
+      "source": "ゲーテ箴言"
+    },
+    {
+      "text": "時間が欲しければ、時間を作り出しなさい。",
+      "source": "書簡より"
+    },
+    {
+      "text": "何事も、できると信じて始めよ。",
+      "source": "ゲーテに帰される言葉"
+    },
+    {
+      "text": "もっと光を！",
+      "source": "最期の言葉"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/0/0e/Goethe_%28Stieler_1828%29.jpg",
+  "wikiTitle": "ヨハン・ヴォルフガング・フォン・ゲーテ",
+  "imageCredit": {
+    "artist": "Joseph Karl Stieler (1828)",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Neue Pinakothek, Munich",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Goethe_(Stieler_1828).jpg"
+  },
+  "birthMonth": 8,
+  "birthDay": 28,
+  "deathMonth": 3,
+  "deathDay": 22,
+  "lifeDigest": "18世紀末から19世紀前半を代表するドイツの詩人・劇作家・小説家・自然科学者・政治家。ワイマール公国の宰相を務めるかたわら、『若きウェルテルの悩み』『ファウスト』『ヴィルヘルム・マイスター』などを執筆し、ドイツ古典主義文学の頂点とされる。色彩論や植物形態学など自然科学にも深く傾倒した万能の知性。",
+  "traits": {
+    "foods": [
+      "ワイン",
+      "ソーセージ",
+      "フランクフルト料理",
+      "コーヒー"
+    ],
+    "hobbies": [
+      "植物採集",
+      "スケッチ",
+      "光学実験",
+      "イタリア旅行"
+    ],
+    "personality": "好奇心旺盛、情熱と理性のバランス。82歳まで創作を続けた情熱家で、73歳で19歳のウルリケに求婚した逸話も。",
+    "likes": [
+      "古代ローマ彫刻",
+      "色彩",
+      "自然",
+      "イタリア"
+    ],
+    "dislikes": [
+      "偏狭な宗教",
+      "感傷過多",
+      "ナポレオンへの盲従（最初は尊敬したが）"
+    ]
+  },
+  "id": "goethe"
+}

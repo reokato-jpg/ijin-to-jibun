@@ -1,0 +1,125 @@
+{
+  "name": "ウィリアム・シェイクスピア",
+  "nameEn": "William Shakespeare",
+  "birth": 1564,
+  "death": 1616,
+  "country": "イギリス",
+  "field": "劇作家・詩人",
+  "summary": "『ハムレット』『マクベス』『ロミオとジュリエット』——人類文学の頂点とされる英国の劇作家。",
+  "events": [
+    {
+      "year": 1564,
+      "age": 0,
+      "title": "ストラトフォード・アポン・エイヴォンに生まれる",
+      "detail": "手袋商人の息子。洗礼日4月26日、誕生日は4月23日と推定（聖ゲオルギオスの日）。",
+      "tags": []
+    },
+    {
+      "year": 1582,
+      "age": 18,
+      "title": "8歳年上のアン・ハサウェイと結婚",
+      "detail": "3人の子をもうける。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1594,
+      "age": 30,
+      "title": "ロンドンで劇団『宮内大臣一座』の主要作家に",
+      "detail": "グローブ座の共同経営者。",
+      "tags": [
+        "restart",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1600,
+      "age": 36,
+      "title": "『ハムレット』初演",
+      "detail": "『生きるか、死ぬか——』の独白。",
+      "tags": [
+        "creation",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1606,
+      "age": 42,
+      "title": "『マクベス』『リア王』相次いで発表",
+      "detail": "四大悲劇の中核。",
+      "tags": [
+        "creation"
+      ]
+    },
+    {
+      "year": 1616,
+      "age": 52,
+      "title": "故郷ストラトフォードで死去",
+      "detail": "墓碑に『我が骨を動かすものは呪われよ』。洗礼日と同じ4月23日に没したとされる。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "生きるべきか、死ぬべきか、それが問題だ。",
+      "source": "『ハムレット』第3幕第1場"
+    },
+    {
+      "text": "人生は歩く影にすぎぬ。舞台の上で小一時間わめきちらして消えてゆく下手な役者だ。",
+      "source": "『マクベス』第5幕第5場"
+    },
+    {
+      "text": "恋は盲目で、恋人たちは自分の愚行を見ない。",
+      "source": "『ヴェニスの商人』"
+    },
+    {
+      "text": "名前ってなんなの？ バラをほかの名で呼んでも、同じように香るはず。",
+      "source": "『ロミオとジュリエット』"
+    },
+    {
+      "text": "全世界は舞台、すべての男も女もただの役者に過ぎない。",
+      "source": "『お気に召すまま』"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/2/21/William_Shakespeare_by_John_Taylor%2C_edited.jpg",
+  "wikiTitle": "ウィリアム・シェイクスピア",
+  "imageCredit": {
+    "artist": "John Taylor (attributed)",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "National Portrait Gallery, London",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:William_Shakespeare_by_John_Taylor,_edited.jpg"
+  },
+  "birthMonth": 4,
+  "birthDay": 23,
+  "deathMonth": 4,
+  "deathDay": 23,
+  "lifeDigest": "イングランド・ルネサンス演劇を代表する劇作家・詩人。『ハムレット』『マクベス』『リア王』『オセロー』の四大悲劇、『夏の夜の夢』などの喜劇、歴史劇あわせて約37編の戯曲と154のソネットを遺した。英語圏文学の最重要人物とされ、英語そのものの語彙や比喩表現に計り知れない影響を与えた。",
+  "traits": {
+    "foods": [
+      "エール（ビール）",
+      "マトン",
+      "パン",
+      "チーズ"
+    ],
+    "hobbies": [
+      "劇作",
+      "俳優としての出演",
+      "ソネット（14行詩）の執筆"
+    ],
+    "personality": "謎めいた私生活。故郷では裕福な商人として振る舞い、ロンドンでは劇壇の中核。人間のあらゆる感情を見抜く観察眼。",
+    "likes": [
+      "演劇",
+      "言葉遊び",
+      "詩"
+    ],
+    "dislikes": [
+      "清教徒の劇場閉鎖運動",
+      "偽善"
+    ]
+  },
+  "id": "shakespeare"
+}

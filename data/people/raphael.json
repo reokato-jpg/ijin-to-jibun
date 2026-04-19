@@ -1,0 +1,132 @@
+{
+  "name": "ラファエロ・サンツィオ",
+  "nameEn": "Raphael",
+  "birth": 1483,
+  "death": 1520,
+  "country": "イタリア",
+  "field": "画家・建築家",
+  "summary": "ルネサンス三大巨匠の一人。優美と調和の体現者。37歳で夭折したが、バチカン『アテネの学堂』など天才の完璧を遺した。",
+  "events": [
+    {
+      "year": 1483,
+      "age": 0,
+      "title": "ウルビーノの宮廷画家の家に生まれる",
+      "detail": "11歳で母、17歳で父を失う。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1500,
+      "age": 17,
+      "title": "ペルジーノのもとで修業",
+      "detail": "",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1504,
+      "age": 21,
+      "title": "フィレンツェに移りレオナルドとミケランジェロから学ぶ",
+      "detail": "",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1508,
+      "age": 25,
+      "title": "ローマに招かれ、バチカン宮殿『署名の間』を依頼される",
+      "detail": "",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1511,
+      "age": 28,
+      "title": "『アテネの学堂』完成",
+      "detail": "古代の賢人たちを一堂に集めた西洋絵画の最高傑作の一つ。",
+      "tags": [
+        "creation",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1514,
+      "age": 31,
+      "title": "サン・ピエトロ大聖堂の主任建築家に",
+      "detail": "ブラマンテの後任。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1520,
+      "age": 37,
+      "title": "高熱で急逝（聖金曜日）",
+      "detail": "『キリストの変容』を未完成のまま残す。『ラファエロが死んだとき、自然も死にたいと思った』——墓碑銘。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "絵を描くとは、見る方法を学ぶことだ。",
+      "source": "ラファエロの手紙"
+    },
+    {
+      "text": "美は、諸元素の完全な調和から生まれる。",
+      "source": "カスティリオーネへの手紙"
+    },
+    {
+      "text": "私は、自分の理想を描く。見たままの自然ではなく。",
+      "source": "ラファエロに帰される言葉"
+    },
+    {
+      "text": "天才は、借り物を完成させる者だ。",
+      "source": "伝承"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f6/Raffaello_Sanzio.jpg",
+  "wikiTitle": "ラファエロ・サンティ",
+  "imageCredit": {
+    "artist": "Raphael (Self-portrait)",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Uffizi Gallery, Florence",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Raffaello_Sanzio.jpg"
+  },
+  "birthMonth": 4,
+  "birthDay": 6,
+  "deathMonth": 4,
+  "deathDay": 6,
+  "lifeDigest": "イタリア盛期ルネサンスを代表する画家・建築家。レオナルド・ダ・ヴィンチ、ミケランジェロと並び『三大巨匠』と称される。優美な聖母子像、バチカン宮殿署名の間の壁画『アテネの学堂』『聖体の論議』、サン・ピエトロ大聖堂設計などの大作を残した。37歳の若さで夭折。",
+  "traits": {
+    "foods": [
+      "イタリア料理",
+      "ワイン",
+      "パン",
+      "オリーブオイル"
+    ],
+    "hobbies": [
+      "古典研究",
+      "建築設計",
+      "女性肖像画を描く"
+    ],
+    "personality": "温和で社交的、弟子や協力者に深く愛された。工房を効率的に運営し大量の依頼をこなした組織運営の才も。",
+    "likes": [
+      "古代彫刻",
+      "調和",
+      "恋人フォルナリーナ",
+      "宮廷の華やかさ"
+    ],
+    "dislikes": [
+      "ミケランジェロとの競争に巻き込まれること",
+      "粗野な振る舞い"
+    ]
+  },
+  "id": "raphael"
+}

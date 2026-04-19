@@ -1,0 +1,127 @@
+{
+  "name": "ヴォルテール",
+  "nameEn": "Voltaire",
+  "birth": 1694,
+  "death": 1778,
+  "country": "フランス",
+  "field": "哲学者・作家",
+  "summary": "啓蒙思想の象徴。『カンディード』で独断論を一刀両断した風刺の巨匠。『私はあなたの意見に反対だが、あなたがそれを言う権利は命がけで守る』の精神。",
+  "events": [
+    {
+      "year": 1694,
+      "age": 0,
+      "title": "パリの公証人の家に生まれる",
+      "detail": "本名フランソワ＝マリー・アルエ。",
+      "tags": []
+    },
+    {
+      "year": 1717,
+      "age": 22,
+      "title": "風刺詩で告発され、バスティーユに11ヶ月投獄",
+      "detail": "獄中で『ヴォルテール』の筆名を創出。",
+      "tags": [
+        "setback"
+      ]
+    },
+    {
+      "year": 1726,
+      "age": 31,
+      "title": "イギリス亡命（〜1729）",
+      "detail": "ニュートン、ロックに感化され思想が一変。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1755,
+      "age": 60,
+      "title": "リスボン大地震に衝撃",
+      "detail": "楽観論（『この世は神が作った最善の世界』）への疑念が深まる。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1759,
+      "age": 64,
+      "title": "『カンディード』刊行",
+      "detail": "ライプニッツの『最善説』を風刺。『我が庭を耕さねばならぬ』で終わる名作。",
+      "tags": [
+        "creation",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1778,
+      "age": 83,
+      "title": "28年ぶりにパリに凱旋、熱狂的歓迎の中で死去",
+      "detail": "教会は埋葬を拒否、甥が遺体を修道院に運び埋葬。",
+      "tags": [
+        "approval",
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "我が庭を耕さねばならぬ。",
+      "source": "『カンディード』最後の言葉"
+    },
+    {
+      "text": "常識は、それほど一般的ではない。",
+      "source": "『哲学辞典』"
+    },
+    {
+      "text": "神がいなかったら、発明する必要があるだろう。",
+      "source": "『三人の偽善者』への書簡"
+    },
+    {
+      "text": "完璧は善の敵である。",
+      "source": "『哲学辞典』"
+    },
+    {
+      "text": "分別とは、言うことを見つけるより、言わぬことを見つけることだ。",
+      "source": "ヴォルテールの手紙"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f2/Atelier_de_Nicolas_de_Largilli%C3%A8re%2C_portrait_de_Voltaire%2C_d%C3%A9tail_%28mus%C3%A9e_Carnavalet%29_-002.jpg",
+  "wikiTitle": "ヴォルテール",
+  "imageCredit": {
+    "artist": "Atelier de Nicolas de Largillière",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Musée Carnavalet, Paris",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Atelier_de_Nicolas_de_Largilli%C3%A8re,_portrait_de_Voltaire,_d%C3%A9tail_(mus%C3%A9e_Carnavalet)_-002.jpg"
+  },
+  "birthMonth": 11,
+  "birthDay": 21,
+  "deathMonth": 5,
+  "deathDay": 30,
+  "lifeDigest": "フランス啓蒙思想を代表する哲学者・作家・歴史家。本名はフランソワ＝マリー・アルエ。小説『カンディード』、戯曲、詩、歴史書、書簡集など膨大な著作を通じて宗教的狂信・専制政治・不寛容を厳しく批判した。『私はあなたの意見に反対だが、あなたがそれを言う権利は命がけで守る』という言葉は後世の創作だが、彼の精神を象徴する。フランス革命の思想的前駆。",
+  "traits": {
+    "foods": [
+      "コーヒー（日に40杯とも）",
+      "パン",
+      "フランス料理"
+    ],
+    "hobbies": [
+      "風刺詩を書く",
+      "膨大な書簡交換",
+      "時計製造（晩年フェルネ）"
+    ],
+    "personality": "機知・皮肉・論争好き。生涯に20000通を超える手紙を残した。敵が多い一方、ヨーロッパ中の王侯知識人と文通。",
+    "likes": [
+      "理性",
+      "寛容",
+      "イギリスの議会制度",
+      "ニュートン物理学"
+    ],
+    "dislikes": [
+      "狂信",
+      "カトリック教会の権威主義",
+      "偽善",
+      "奴隷制"
+    ]
+  },
+  "id": "voltaire"
+}

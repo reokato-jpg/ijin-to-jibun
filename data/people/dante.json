@@ -1,0 +1,143 @@
+{
+  "name": "ダンテ・アリギエーリ",
+  "nameEn": "Dante Alighieri",
+  "birth": 1265,
+  "death": 1321,
+  "country": "イタリア",
+  "field": "詩人・政治家",
+  "summary": "『神曲』——地獄・煉獄・天国を旅する叙事詩で、西洋文学の頂点を極めた中世最大の詩人。",
+  "events": [
+    {
+      "year": 1265,
+      "age": 0,
+      "title": "フィレンツェの中流家庭に生まれる",
+      "detail": "",
+      "tags": []
+    },
+    {
+      "year": 1274,
+      "age": 9,
+      "title": "ベアトリーチェ・ポルティナーリに出会う",
+      "detail": "生涯変わらぬ心の恋人、彼女を主題に『新生』『神曲』を書く。",
+      "tags": [
+        "turning_encounter",
+        "love"
+      ]
+    },
+    {
+      "year": 1290,
+      "age": 25,
+      "title": "ベアトリーチェが若くして死去",
+      "detail": "",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1300,
+      "age": 35,
+      "title": "フィレンツェ共和国の最高行政官プリオーレに選出",
+      "detail": "",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1302,
+      "age": 37,
+      "title": "政争に敗れ永久追放、財産没収",
+      "detail": "フィレンツェには二度と帰れなかった。",
+      "tags": [
+        "setback",
+        "loss"
+      ]
+    },
+    {
+      "year": 1308,
+      "age": 43,
+      "title": "『神曲』を書き始める",
+      "detail": "亡命生活の孤独の中で。『地獄篇』『煉獄篇』『天国篇』の三部作。",
+      "tags": [
+        "creation"
+      ]
+    },
+    {
+      "year": 1320,
+      "age": 55,
+      "title": "『神曲』完成",
+      "detail": "",
+      "tags": [
+        "creation",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1321,
+      "age": 56,
+      "title": "マラリアでラヴェンナにて死去",
+      "detail": "フィレンツェは700年後の2008年にダンテの追放を撤回した。",
+      "tags": [
+        "loss",
+        "illness"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "ここを過ぎれば憂愁の都。ここを過ぎれば永遠の苦しみ。一切の望みを捨てよ、ここを入る者よ。",
+      "source": "『神曲 地獄篇』第3歌"
+    },
+    {
+      "text": "我が人生の道の半ばで、正道を踏み外した私は、暗い森の中にいた。",
+      "source": "『神曲 地獄篇』第1歌 冒頭"
+    },
+    {
+      "text": "最も大きな悲しみは、幸福だったときを思い出すことだ。",
+      "source": "『神曲 地獄篇』第5歌"
+    },
+    {
+      "text": "愛は、太陽とすべての星を動かす。",
+      "source": "『神曲 天国篇』最後の行"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/e/ea/Bargello_-_Kapelle_Fresko_2a.jpg",
+  "wikiTitle": "ダンテ・アリギエーリ",
+  "imageCredit": {
+    "artist": "Attributed to Giotto (c.1336)",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Bargello Palace, Florence",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bargello_-_Kapelle_Fresko_2a.jpg"
+  },
+  "birthMonth": 5,
+  "birthDay": 21,
+  "deathMonth": 9,
+  "deathDay": 14,
+  "lifeDigest": "イタリア・ルネサンスの先駆となった詩人。フィレンツェ共和国の政治家でもあったが党派抗争に敗れ、生涯のほとんどを亡命生活で過ごした。その困苦の中で書かれた叙事詩『神曲』（La Divina Commedia）は、地獄・煉獄・天国の三界を旅する壮大な構想のもと、トスカーナ方言をイタリア文学の共通語に引き上げた。『イタリア語の父』。",
+  "traits": {
+    "foods": [
+      "パン",
+      "ワイン",
+      "オリーブ",
+      "質素な亡命中の食事"
+    ],
+    "hobbies": [
+      "神学研究",
+      "古典ラテン文学の読書",
+      "ベアトリーチェを詩に詠む"
+    ],
+    "personality": "誇り高く頑固、政治的信念を曲げず追放されても撤回を拒否。内省的で神秘主義的、同時に鋭い政治批判の目を持つ。",
+    "likes": [
+      "ベアトリーチェ",
+      "古代ローマ（ウェルギリウス）",
+      "スコラ哲学（アクィナス）",
+      "星々"
+    ],
+    "dislikes": [
+      "教皇庁の世俗的権力",
+      "フィレンツェの党派争い",
+      "堕落した聖職者"
+    ]
+  },
+  "id": "dante"
+}
