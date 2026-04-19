@@ -199,6 +199,63 @@ async function fetchUserFollowersOfPerson(personId) {
 }
 window.fetchUserFollowersOfPerson = fetchUserFollowersOfPerson;
 
+// 全会員の公開プロフィール（名前・称号・アバター・trait・SNS・フォロー偉人一覧）を取得
+async function fetchAllUserProfiles() {
+  if (!FIREBASE_ENABLED || !fbDb || !window.__fbLib) return [];
+  try {
+    const { collection, getDocs } = window.__fbLib;
+    const snap = await getDocs(collection(fbDb, 'users'));
+    const users = [];
+    snap.forEach(docSnap => {
+      const uid = docSnap.id;
+      const d = docSnap.data();
+      const name = d.ijin_user_name || '';
+      if (!name) return; // 名前未設定は非表示
+      const traits = d.ijin_my_traits || {};
+      const sns = traits.sns || {};
+      const hasSns = sns.x || sns.instagram || sns.note || sns.facebook;
+      const followingIjin = Array.isArray(d.ijin_fav_people) ? d.ijin_fav_people : [];
+      const stamps = d.ijin_stamps || {};
+      let stampTotal = 0;
+      Object.values(stamps).forEach(v => {
+        if (typeof v === 'number') stampTotal += v;
+        else if (v && typeof v === 'object') stampTotal += Object.values(v).reduce((a,b)=>a+(b||0),0);
+      });
+      users.push({
+        uid,
+        name,
+        title: d.ijin_current_title || '',
+        avatar: d.ijin_user_avatar || '',
+        birthMonth: traits.birthMonth || null,
+        birthDay: traits.birthDay || null,
+        hometown: traits.hometown || '',
+        traits: {
+          foods: traits.foods || [],
+          hobbies: traits.hobbies || [],
+          likes: traits.likes || [],
+          dislikes: traits.dislikes || [],
+        },
+        sns: {
+          x: sns.x || '',
+          instagram: sns.instagram || '',
+          note: sns.note || '',
+          facebook: sns.facebook || '',
+        },
+        hasSns: !!hasSns,
+        followingIjin,
+        ijinCount: followingIjin.length,
+        stampTotal,
+        isMe: currentUser && uid === currentUser.uid,
+      });
+    });
+    return users;
+  } catch (e) {
+    console.error('[auth] user list 取得失敗:', e);
+    return [];
+  }
+}
+window.fetchAllUserProfiles = fetchAllUserProfiles;
+
 // localStorage.setItem を上書きして同期
 function hookLocalStorage() {
   const origSet = Storage.prototype.setItem;

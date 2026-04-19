@@ -951,6 +951,15 @@ function openMemberSettings() {
       ${renderChips('likes', '❤ 好きなもの', options.likes)}
       ${renderChips('dislikes', '🚫 苦手なもの', options.likes)}
 
+      <div class="settings-section">
+        <div class="settings-sec-label">🔗 SNS・ブログ（任意・会員同士で公開）</div>
+        <div class="settings-sns-row"><span class="settings-sns-ic">𝕏</span><input type="url" class="settings-input" id="settingsSnsX" value="${(my.sns?.x || '').replace(/"/g,'&quot;')}" placeholder="https://x.com/..."></div>
+        <div class="settings-sns-row"><span class="settings-sns-ic">📸</span><input type="url" class="settings-input" id="settingsSnsIg" value="${(my.sns?.instagram || '').replace(/"/g,'&quot;')}" placeholder="https://instagram.com/..."></div>
+        <div class="settings-sns-row"><span class="settings-sns-ic">📝</span><input type="url" class="settings-input" id="settingsSnsNote" value="${(my.sns?.note || '').replace(/"/g,'&quot;')}" placeholder="https://note.com/..."></div>
+        <div class="settings-sns-row"><span class="settings-sns-ic">f</span><input type="url" class="settings-input" id="settingsSnsFb" value="${(my.sns?.facebook || '').replace(/"/g,'&quot;')}" placeholder="https://facebook.com/..."></div>
+        <div class="settings-sec-hint">連携を解除するには、欄を空にして保存してください。設定した項目のみ他の会員から閲覧できます。</div>
+      </div>
+
       <div class="settings-actions">
         <button class="settings-save" id="settingsSave">保存</button>
       </div>
@@ -1027,6 +1036,18 @@ function openMemberSettings() {
     ['foods','hobbies','likes','dislikes'].forEach(cat => {
       t[cat] = Array.from(modal.querySelectorAll(`[data-setting-chip][data-cat="${cat}"].active`)).map(b => b.dataset.opt);
     });
+    // SNS連携
+    const clean = (v) => {
+      const s = (v || '').trim();
+      if (!s) return '';
+      return /^https?:\/\//i.test(s) ? s : '';
+    };
+    t.sns = {
+      x: clean(modal.querySelector('#settingsSnsX')?.value),
+      instagram: clean(modal.querySelector('#settingsSnsIg')?.value),
+      note: clean(modal.querySelector('#settingsSnsNote')?.value),
+      facebook: clean(modal.querySelector('#settingsSnsFb')?.value),
+    };
     saveMyTraits(t);
     close();
     if (typeof renderTraitsMatch === 'function') renderTraitsMatch();
@@ -1034,6 +1055,120 @@ function openMemberSettings() {
     if (typeof renderTodayBirthday === 'function') renderTodayBirthday();
   });
 }
+
+// ============ 会員ディレクトリ（会員同士でつながる） ============
+async function openUsersDirectory() {
+  const existing = document.getElementById('usersDirModal');
+  if (existing) existing.remove();
+  const modal = document.createElement('div');
+  modal.id = 'usersDirModal';
+  modal.className = 'settings-modal';
+  modal.innerHTML = `
+    <div class="settings-backdrop" data-close="1"></div>
+    <div class="settings-panel">
+      <button class="settings-close" data-close="1" aria-label="閉じる">×</button>
+      <div class="settings-head">👥 会員を探す</div>
+      <div class="settings-sec-hint">『偉人と自分。』に登録している会員の一覧です。名前・誕生日・好きなもの・フォロー偉人・SNSリンクのみ公開されます。</div>
+      <div id="usersDirBody" class="users-dir-list">読み込み中…</div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  requestAnimationFrame(() => modal.classList.add('open'));
+  const close = () => { modal.classList.remove('open'); setTimeout(() => modal.remove(), 200); };
+  modal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', close));
+
+  const body = modal.querySelector('#usersDirBody');
+  if (typeof window.fetchAllUserProfiles !== 'function') {
+    body.innerHTML = '<div class="users-dir-empty">会員機能が利用できません。</div>';
+    return;
+  }
+  const users = await window.fetchAllUserProfiles();
+  if (!users || users.length === 0) {
+    body.innerHTML = '<div class="users-dir-empty">まだ会員がいません。</div>';
+    return;
+  }
+  users.sort((a, b) => (b.isMe ? 1 : 0) - (a.isMe ? 1 : 0) || b.stampTotal - a.stampTotal);
+  body.innerHTML = users.map(u => renderUserDirCard(u)).join('');
+  body.querySelectorAll('[data-user-open]').forEach(el => {
+    el.addEventListener('click', () => openUserProfileModal(el.dataset.userOpen, users));
+  });
+}
+function renderUserDirCard(u) {
+  const av = u.avatar
+    ? `<div class="users-dir-av" style="background-image:url('${u.avatar}')"></div>`
+    : `<div class="users-dir-av no-img">${(u.name || '?').charAt(0)}</div>`;
+  const snsIcons = [
+    u.sns.x && `<a class="users-dir-sns" href="${u.sns.x}" target="_blank" rel="noopener" title="X">𝕏</a>`,
+    u.sns.instagram && `<a class="users-dir-sns" href="${u.sns.instagram}" target="_blank" rel="noopener" title="Instagram">📸</a>`,
+    u.sns.note && `<a class="users-dir-sns" href="${u.sns.note}" target="_blank" rel="noopener" title="Note">📝</a>`,
+    u.sns.facebook && `<a class="users-dir-sns" href="${u.sns.facebook}" target="_blank" rel="noopener" title="Facebook">f</a>`,
+  ].filter(Boolean).join('');
+  return `
+    <div class="users-dir-card" data-user-open="${u.uid}">
+      ${av}
+      <div class="users-dir-main">
+        <div class="users-dir-name">
+          ${u.title ? `<span class="users-dir-title">【${u.title}】</span>` : ''}
+          ${escapeHtml(u.name)}${u.isMe ? ' <span class="users-dir-me">(あなた)</span>' : ''}
+        </div>
+        <div class="users-dir-meta">偉人フォロー ${u.ijinCount}人 · スタンプ ${u.stampTotal}個</div>
+        <div class="users-dir-sns-row" onclick="event.stopPropagation()">${snsIcons}</div>
+      </div>
+    </div>
+  `;
+}
+function openUserProfileModal(uid, usersCache) {
+  const u = (usersCache || []).find(x => x.uid === uid);
+  if (!u) return;
+  const existing = document.getElementById('userProfileModal');
+  if (existing) existing.remove();
+  const modal = document.createElement('div');
+  modal.id = 'userProfileModal';
+  modal.className = 'settings-modal';
+  const av = u.avatar
+    ? `<div class="user-prof-av" style="background-image:url('${u.avatar}')"></div>`
+    : `<div class="user-prof-av no-img">${(u.name || '?').charAt(0)}</div>`;
+  const chip = (arr) => arr && arr.length ? arr.map(x => `<span class="user-prof-chip">${escapeHtml(x)}</span>`).join('') : '<span class="user-prof-empty">—</span>';
+  const sns = [
+    u.sns.x && `<a class="user-prof-sns" href="${u.sns.x}" target="_blank" rel="noopener">𝕏 X</a>`,
+    u.sns.instagram && `<a class="user-prof-sns" href="${u.sns.instagram}" target="_blank" rel="noopener">📸 Instagram</a>`,
+    u.sns.note && `<a class="user-prof-sns" href="${u.sns.note}" target="_blank" rel="noopener">📝 Note</a>`,
+    u.sns.facebook && `<a class="user-prof-sns" href="${u.sns.facebook}" target="_blank" rel="noopener">f Facebook</a>`,
+  ].filter(Boolean).join('');
+  const ijinSample = (u.followingIjin || []).slice(0, 12).map(id => {
+    const p = DATA.people.find(x => x.id === id);
+    if (!p) return '';
+    return `<button class="user-prof-ijin" data-jump-person="${p.id}">${p.name}</button>`;
+  }).join('');
+  modal.innerHTML = `
+    <div class="settings-backdrop" data-close="1"></div>
+    <div class="settings-panel">
+      <button class="settings-close" data-close="1" aria-label="閉じる">×</button>
+      <div class="user-prof-head">
+        ${av}
+        <div>
+          <div class="user-prof-name">${u.title ? `<span class="users-dir-title">【${u.title}】</span>` : ''}${escapeHtml(u.name)}</div>
+          <div class="user-prof-meta">偉人フォロー ${u.ijinCount}人 · スタンプ ${u.stampTotal}個</div>
+        </div>
+      </div>
+      ${u.birthMonth && u.birthDay ? `<div class="user-prof-row"><b>🎂 誕生日</b> ${u.birthMonth}/${u.birthDay}</div>` : ''}
+      ${u.hometown ? `<div class="user-prof-row"><b>📍 出身</b> ${escapeHtml(u.hometown)}</div>` : ''}
+      <div class="user-prof-row"><b>🍽 好きな食べ物</b><div class="user-prof-chips">${chip(u.traits.foods)}</div></div>
+      <div class="user-prof-row"><b>🎨 趣味</b><div class="user-prof-chips">${chip(u.traits.hobbies)}</div></div>
+      <div class="user-prof-row"><b>❤ 好きなもの</b><div class="user-prof-chips">${chip(u.traits.likes)}</div></div>
+      ${sns ? `<div class="user-prof-row"><b>🔗 SNS</b><div class="user-prof-sns-row">${sns}</div></div>` : ''}
+      ${ijinSample ? `<div class="user-prof-row"><b>📚 フォロー中の偉人</b><div class="user-prof-ijin-list">${ijinSample}</div></div>` : ''}
+    </div>
+  `;
+  document.body.appendChild(modal);
+  requestAnimationFrame(() => modal.classList.add('open'));
+  const close = () => { modal.classList.remove('open'); setTimeout(() => modal.remove(), 200); };
+  modal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', close));
+  modal.querySelectorAll('[data-jump-person]').forEach(b => {
+    b.addEventListener('click', () => { close(); showPerson(b.dataset.jumpPerson); });
+  });
+}
+window.openUsersDirectory = openUsersDirectory;
 
 function renderCalendarToday() {
   const block = document.getElementById('calendarBlock');
@@ -2776,9 +2911,7 @@ async function showPerson(id) {
       <div class="profile-social">
         ${isFollowedByPerson(p.id) ? `
           <div class="profile-follow-badge">✓ ${p.name}があなたをフォローしています</div>
-        ` : `
-          <div class="profile-follow-hint">Lv.3以上で${p.name}があなたをフォローします</div>
-        `}
+        ` : ''}
         ${(() => {
           const userName = getUserName();
           if (isFollowedByPerson(p.id) && userName) {
@@ -3062,7 +3195,7 @@ async function showPerson(id) {
             ` : `
               <div class="rel-subhead">ユーザー</div>
               <div class="rel-empty-user">
-                ${!userName ? '名前を設定してクイズに挑戦しよう' : `クイズでLv.3以上になると${p.name}にフォローされます（現在Lv.${getStampLevel(p.id)}）`}
+                ${!userName ? '名前を設定してクイズに挑戦しよう' : `まだフォローされていません`}
               </div>
             `}
             <div class="rel-subhead">偉人</div>
@@ -5278,7 +5411,7 @@ function openSocialListModal(initialTab) {
       body.innerHTML = renderPersonList(
         followerPeople,
         p => `スタンプ ${getStampLevel(p.id)} 個`,
-        'まだ偉人からフォローされていません。親密度クイズでスタンプを3つ以上集めると、その偉人があなたをフォローし返します。'
+        'まだ偉人からフォローされていません。'
       );
     } else {
       body.innerHTML = renderBlocked(blockedItems);
@@ -5466,7 +5599,7 @@ function openPersonRelationsModal(p, initialTab) {
       body.innerHTML = `
         <div class="social-list-userfollowers"></div>
         ${peopleSection}
-        ${following.length === 0 ? `<div class="social-list-empty" data-fallback-empty>${p.name}のフォロワーはまだいません。クイズでLv.3以上になるとあなたがフォロワーに加わります（現在Lv.${getStampLevel(p.id)}）。</div>` : ''}
+        ${following.length === 0 ? `<div class="social-list-empty" data-fallback-empty>${p.name}のフォロワーはまだいません。</div>` : ''}
       `;
       loadAndRenderUserFollowers().then(() => {
         // 読者が見つかった場合はフォールバック空メッセージを隠す
@@ -6803,6 +6936,9 @@ function renderFavorites() {
               <div class="title-page-social-lbl">ブロック中</div>
             </button>
           </div>
+          ${(typeof currentUser !== 'undefined' && currentUser) ? `
+            <button class="title-page-edit-name" id="openUsersDirBtn">👥 会員を探す</button>
+          ` : ''}
           <div class="title-page-stamp-count">
             獲得スタンプ <strong>${totalStamps()}</strong> 個 ／ 足跡 <strong>${totalFootprints()}</strong> ／ 聖地巡礼 <strong>${totalCheckins()}</strong>
           </div>
@@ -7239,6 +7375,11 @@ function renderFavorites() {
   const editName = list.querySelector('#editNameBtn');
   if (editName) {
     editName.addEventListener('click', () => openNameEditModal());
+  }
+  // 会員ディレクトリ
+  const dirBtn = list.querySelector('#openUsersDirBtn');
+  if (dirBtn) {
+    dirBtn.addEventListener('click', () => openUsersDirectory());
   }
   // 称号選択
   const editTitle = list.querySelector('#editTitleBtn');
