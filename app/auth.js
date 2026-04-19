@@ -631,7 +631,12 @@ function openAccountMenu() {
 window.FIREBASE_ENABLED = FIREBASE_ENABLED;
 window.openLoginModal = openLoginModal;
 window.pushToCloud = pushToCloud;
-onAuthChange((u) => { window.currentUser = u; });
+onAuthChange((u) => {
+  window.currentUser = u;
+  // ログイン状態に依存するUIを再描画
+  try { if (typeof window.renderTraitsMatch === 'function') window.renderTraitsMatch(); } catch {}
+  try { if (typeof window.renderFavorites === 'function') window.renderFavorites(); } catch {}
+});
 
 // 初期化
 if (document.readyState === 'loading') {

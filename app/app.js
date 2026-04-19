@@ -555,6 +555,8 @@ function findSameBirthdayPeople(month, day) {
   return (DATA.people || []).filter(p => p.birthMonth === month && p.birthDay === day);
 }
 
+window.renderTraitsMatch = renderTraitsMatch;
+window.renderFavorites = () => { try { renderFavorites(); } catch {} };
 function renderTraitsMatch() {
   const container = document.getElementById('traitsMatchSection');
   if (!container || !DATA.people) return;
