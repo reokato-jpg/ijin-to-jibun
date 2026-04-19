@@ -478,25 +478,86 @@ function saveMyTraits(obj) {
   localStorage.setItem(MY_TRAITS_KEY, JSON.stringify(obj));
 }
 
-// DBから全traitの選択肢を集計
+// DBから全traitの選択肢を集計（＋ユーザー向けの普遍的な選択肢を合成）
+const CURATED_TRAIT_OPTIONS = {
+  foods: [
+    'コーヒー','紅茶','緑茶','ワイン','ビール','日本酒','ウイスキー','シャンパン',
+    'パン','ご飯','麺類','寿司','ラーメン','パスタ','ピザ','カレー',
+    '和食','洋食','中華','フランス料理','イタリア料理','エスニック',
+    '肉料理','魚料理','野菜','果物','チョコレート','スイーツ','アイスクリーム',
+    'チーズ','卵料理','スープ','朝食をしっかり','質素な食事','外食','自炊'
+  ],
+  hobbies: [
+    '読書','映画鑑賞','音楽鑑賞','楽器演奏','歌う','絵を描く','写真','書道',
+    '散歩','ランニング','筋トレ','ヨガ','瞑想','登山','サイクリング','水泳',
+    '旅行','カフェ巡り','美術館・博物館','演劇鑑賞','ライブ・コンサート',
+    '料理','お菓子作り','ガーデニング','園芸','ペットと過ごす',
+    'ゲーム','将棋・囲碁','チェス','パズル','カードゲーム',
+    'SNS','YouTube','ポッドキャスト','日記を書く','手紙を書く',
+    '早起き','夜更かし','温泉・銭湯','友人と語らう','一人で過ごす'
+  ],
+  likes: [
+    '自然','海','山','森','川','星空','満月','朝日','夕焼け','雨の音','雪',
+    '音楽','クラシック音楽','ジャズ','ポップス','ロック','和楽器の音',
+    '文学','詩','小説','エッセイ','漫画','古典',
+    '哲学','数学','科学','歴史','語学',
+    '犬','猫','鳥','花','植物','観葉植物',
+    '静けさ','一人の時間','家族','友人','恋人','仲間',
+    '旅','見知らぬ街','古い建物','図書館','本屋',
+    '挑戦','創作','学び','自由','美しいもの','シンプルなもの'
+  ],
+  dislikes: [
+    '騒音','人混み','満員電車','急かされること','ルーティン',
+    '嘘','偽善','裏切り','陰口','マウント','詮索',
+    '早起き','夜更かし','残業','会議','書類仕事',
+    '虫','爬虫類','高所','閉所','暗い場所',
+    '怒号','威圧','暴力','戦争','差別','理不尽',
+    '無関心','冷笑','見栄','贅沢な浪費','依存'
+  ],
+};
 function collectAllTraitOptions() {
   const counts = { foods: {}, hobbies: {}, likes: {}, dislikes: {} };
+  // 偉人名の集合（選択肢として混入した偉人名を除外するため）
+  const personNames = new Set();
+  (DATA.people || []).forEach(p => {
+    if (p.name) {
+      personNames.add(p.name);
+      p.name.split(/[・\s]/).filter(s => s && s.length >= 2).forEach(part => personNames.add(part));
+    }
+    if (p.nameEn) personNames.add(p.nameEn);
+  });
+  const isPersonNameLike = (s) => {
+    for (const nm of personNames) { if (nm && s.includes(nm)) return true; }
+    return false;
+  };
   (DATA.people || []).forEach(p => {
     const t = p.traits;
     if (!t) return;
     ['foods', 'hobbies', 'likes', 'dislikes'].forEach(cat => {
       (t[cat] || []).forEach(item => {
+        if (typeof item !== 'string' || !item.trim()) return;
+        if (isPersonNameLike(item)) return; // 偉人名を含む選択肢は除外
         counts[cat][item] = (counts[cat][item] || 0) + 1;
       });
     });
   });
-  // 出現数でソート（最低2件の偉人に共通するものだけ）
-  const topN = (obj, n) => Object.entries(obj).filter(([, c]) => c >= 2).sort((a, b) => b[1] - a[1]).slice(0, n).map(([k]) => k);
+  // 出現1回以上も含めて出現数でソート、上位のみ
+  const topFromDb = (obj, n) => Object.entries(obj)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, n)
+    .map(([k]) => k);
+  const merge = (cat, dbLimit, curated) => {
+    const fromDb = topFromDb(counts[cat], dbLimit);
+    const seen = new Set(fromDb);
+    // 偉人固有じゃない普遍選択肢を合成
+    curated.forEach(c => { if (!seen.has(c) && !isPersonNameLike(c)) { fromDb.push(c); seen.add(c); } });
+    return fromDb;
+  };
   return {
-    foods: topN(counts.foods, 20),
-    hobbies: topN(counts.hobbies, 20),
-    likes: topN(counts.likes, 20),
-    dislikes: topN(counts.dislikes, 20),
+    foods: merge('foods', 30, CURATED_TRAIT_OPTIONS.foods),
+    hobbies: merge('hobbies', 30, CURATED_TRAIT_OPTIONS.hobbies),
+    likes: merge('likes', 30, CURATED_TRAIT_OPTIONS.likes),
+    dislikes: merge('dislikes', 25, CURATED_TRAIT_OPTIONS.dislikes),
   };
 }
 
@@ -951,7 +1012,7 @@ function openMemberSettings() {
       ${renderChips('foods', '🍽 好きな食べ物・飲み物', options.foods)}
       ${renderChips('hobbies', '🎨 趣味・日課', options.hobbies)}
       ${renderChips('likes', '❤ 好きなもの', options.likes)}
-      ${renderChips('dislikes', '🚫 苦手なもの', options.likes)}
+      ${renderChips('dislikes', '🚫 苦手なもの', options.dislikes)}
 
       <div class="settings-section">
         <div class="settings-sec-label">🔗 SNS・ブログ（任意・会員同士で公開）</div>
