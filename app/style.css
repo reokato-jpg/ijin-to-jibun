@@ -9321,6 +9321,289 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
   border: 1px solid var(--gold) !important;
 }
 
+/* ================ フォロー通知トースト（LINE風） ================ */
+.follow-toast {
+  position: fixed;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-120%);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: rgba(40,20,24,0.96);
+  color: #fff;
+  border: 1.5px solid var(--gold);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  font-family: var(--font-jp);
+  width: min(94vw, 380px);
+  cursor: pointer;
+  transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+.follow-toast.show { transform: translateX(-50%) translateY(0); }
+.follow-toast-avatar {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  border: 2px solid var(--gold);
+  flex-shrink: 0;
+}
+.follow-toast-avatar.no-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--wine);
+  color: var(--gold-light);
+  font-weight: 700;
+  font-size: 18px;
+}
+.follow-toast-body { flex: 1; min-width: 0; }
+.follow-toast-title {
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  color: var(--gold-light);
+}
+.follow-toast-msg {
+  font-size: 11px;
+  color: #e8dec8;
+  margin-top: 2px;
+}
+.follow-toast-close {
+  background: none;
+  border: none;
+  color: #ccc;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* ================ 会員設定モーダル ================ */
+.settings-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 250;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.settings-modal.open { pointer-events: auto; opacity: 1; }
+.settings-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(30,12,16,0.55);
+  backdrop-filter: blur(4px);
+}
+.settings-panel {
+  position: relative;
+  width: min(92vw, 520px);
+  max-height: 90vh;
+  overflow-y: auto;
+  background: linear-gradient(180deg, #fffdf7 0%, #faf5e8 100%);
+  border: 2px solid var(--gold);
+  border-radius: 12px;
+  padding: 22px 22px 18px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+  font-family: var(--font-jp);
+}
+.settings-close {
+  position: absolute;
+  top: 10px; right: 14px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--ink-3);
+  cursor: pointer;
+}
+.settings-head {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--wine-dark);
+  letter-spacing: 0.1em;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 14px;
+}
+.settings-section { margin-bottom: 14px; }
+.settings-sec-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--wine);
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+.settings-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.settings-birthday {
+  display: flex;
+  gap: 10px;
+}
+.settings-birthday select {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  font-family: var(--font-jp);
+  font-size: 13px;
+  background: #fff;
+}
+.settings-input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  font-family: var(--font-jp);
+  font-size: 13px;
+  background: #fff;
+  box-sizing: border-box;
+}
+.settings-avatar-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.settings-avatar-preview {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  background-color: #eee;
+  border: 2px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  color: var(--ink-4);
+  flex-shrink: 0;
+}
+.settings-avatar-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.settings-avatar-upload {
+  padding: 8px 14px;
+  background: var(--wine);
+  color: var(--gold-light);
+  border: 1px solid var(--gold);
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+}
+.settings-avatar-clear {
+  padding: 6px 12px;
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  color: var(--ink-3);
+  font-size: 11px;
+  cursor: pointer;
+}
+.settings-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+.settings-save {
+  padding: 10px 24px;
+  background: linear-gradient(135deg, var(--wine) 0%, var(--wine-dark) 100%);
+  color: var(--gold-light);
+  border: 1px solid var(--gold);
+  border-radius: 20px;
+  font-family: var(--font-jp);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+}
+
+/* ================ 使い方ポップアップ ================ */
+.howto-card-btn {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--gold);
+  background: linear-gradient(180deg, #fffdf7 0%, #faf5e8 100%);
+  border-radius: 8px;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+}
+.howto-card-btn:hover { background: rgba(184,149,46,0.08); }
+.howto-card-btn .howto-summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  font-family: var(--font-jp);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--wine-dark);
+}
+.howto-card-btn .howto-label { flex: 1; letter-spacing: 0.05em; }
+.howto-card-btn .howto-arrow { color: var(--wine); font-size: 14px; }
+.howto-popup-source { display: none !important; }
+
+.howto-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 260;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.howto-modal.open { pointer-events: auto; opacity: 1; }
+.howto-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(30,12,16,0.55);
+  backdrop-filter: blur(4px);
+}
+.howto-modal-panel {
+  position: relative;
+  width: min(92vw, 560px);
+  max-height: 90vh;
+  overflow-y: auto;
+  background: linear-gradient(180deg, #fffdf7 0%, #faf5e8 100%);
+  border: 2px solid var(--gold);
+  border-radius: 12px;
+  padding: 22px 22px 18px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+  font-family: var(--font-jp);
+}
+.howto-modal-close {
+  position: absolute;
+  top: 10px; right: 14px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--ink-3);
+  cursor: pointer;
+}
+.howto-modal-head {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--wine-dark);
+  letter-spacing: 0.1em;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 14px;
+}
+
 /* ================ 聖地巡礼チェックイン ================ */
 .place-card.checked {
   background: rgba(184,149,46,0.08);

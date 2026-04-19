@@ -43,6 +43,7 @@ const SYNC_KEYS = [
   'ijin_checkins',
   'ijin_quiz_answered',
   'ijin_quiz_ever_stamped',
+  'ijin_user_avatar',
 ];
 
 let fbApp = null, fbAuth = null, fbDb = null;

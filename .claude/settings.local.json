@@ -14,7 +14,22 @@
       "Bash(vercel --version)",
       "Bash(vercel whoami:*)",
       "Bash(vercel deploy:*)",
-      "WebFetch(domain:tsukuriba.vercel.app)"
+      "WebFetch(domain:tsukuriba.vercel.app)",
+      "Bash(cp \"/c/Users/USER/Downloads/video-1776557958518.mp4\" \"G:/共有ドライブ/Access Level 2/★新フォルダ★/システムフォルダ/偉人と自分。/app/assets/guide/welcome.mp4\")",
+      "Bash(cp \"/c/Users/USER/Downloads/video-1776557501333.mp4\" \"G:/共有ドライブ/Access Level 2/★新フォルダ★/システムフォルダ/偉人と自分。/app/assets/guide/reading.mp4\")",
+      "Bash(cp \"/c/Users/USER/Downloads/video-1776557953900.mp4\" \"G:/共有ドライブ/Access Level 2/★新フォルダ★/システムフォルダ/偉人と自分。/app/assets/guide/pointing.mp4\")",
+      "Bash(cp \"/c/Users/USER/Downloads/video-1776557955809.mp4\" \"G:/共有ドライブ/Access Level 2/★新フォルダ★/システムフォルダ/偉人と自分。/app/assets/guide/base.mp4\")",
+      "Bash(grep -n '${p\\\\.birth || '\"'\"'?'\"'\"'}.*${p\\\\.death' \"G:/共有ドライブ/Access Level 2/★新フォルダ★/システムフォルダ/偉人と自分。/app/app.js\")",
+      "Bash(sed -i \"s|\\\\${p\\\\.birth || '?'}–\\\\${p\\\\.death || ''}|\\\\${fmtYearRange\\(p.birth, p.death\\)}|g\" app.js)",
+      "Bash(sed -i \"s|\\\\${p\\\\.birth || '?'}-\\\\${p\\\\.death || ''}|\\\\${fmtYearRange\\(p.birth, p.death\\)}|g\" app.js)",
+      "Bash(python -c ':*)",
+      "Bash(python)",
+      "Bash(pip install:*)",
+      "Bash(python -c \"from PIL import Image; print\\('OK'\\)\")",
+      "Bash(gh auth:*)",
+      "Read(//c/Users/USER/**)",
+      "Bash(git config:*)",
+      "WebFetch(domain:github.com)"
     ]
   }
 }

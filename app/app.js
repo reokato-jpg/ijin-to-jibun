@@ -718,28 +718,46 @@ function renderTodayBirthday() {
   const now = new Date();
   const m = now.getMonth() + 1;
   const d = now.getDate();
-  const births = DATA.people.filter(p => p.birthMonth === m && p.birthDay === d);
+  let births = DATA.people.filter(p => p.birthMonth === m && p.birthDay === d);
+  let isUpcoming = false;
+  // 今日の誕生日がなければ、近日（±7日以内）の誕生日を表示
+  if (births.length === 0) {
+    const todayInt = m * 100 + d;
+    const withBirthday = DATA.people.filter(p => p.birthMonth && p.birthDay);
+    const withDist = withBirthday.map(p => {
+      const b = p.birthMonth * 100 + p.birthDay;
+      let dist = b - todayInt;
+      if (dist < 0) dist += 1231; // 翌年扱い
+      return { p, dist };
+    }).sort((a, b) => a.dist - b.dist);
+    births = withDist.slice(0, 3).map(x => x.p);
+    isUpcoming = true;
+  }
   if (births.length === 0) {
     block.style.display = 'none';
     return;
   }
   block.style.display = '';
+  // ラベルも更新
+  const labelEl = block.querySelector('.home-block-label');
+  if (labelEl) labelEl.textContent = isUpcoming ? '🎂 近日の誕生日' : '🎂 今日が誕生日の偉人';
   const my = (typeof loadMyTraits === 'function') ? loadMyTraits() : {};
   const sameAsMe = (my.birthMonth && my.birthDay &&
     parseInt(my.birthMonth,10) === m && parseInt(my.birthDay,10) === d);
   list.innerHTML = `
-    <div class="today-birthday-date">${m}月${d}日 生まれ${sameAsMe ? '<span class="today-birthday-same">🎉 あなたと同じ誕生日！</span>' : ''}</div>
+    <div class="today-birthday-date">${isUpcoming ? '今日は該当なし。次の誕生日：' : `${m}月${d}日 生まれ`}${sameAsMe ? '<span class="today-birthday-same">🎉 あなたと同じ誕生日！</span>' : ''}</div>
     <div class="today-birthday-grid">
       ${births.map(p => {
         const avatar = p.imageUrl
           ? `<div class="today-birthday-avatar" style="background-image:url('${p.imageUrl}')"></div>`
           : `<div class="today-birthday-avatar no-img">${p.name.charAt(0)}</div>`;
-        const years = p.birth ? `${now.getFullYear() - p.birth} 年目` : '';
+        const years = p.birth && !isUpcoming ? `${now.getFullYear() - p.birth} 年目` : '';
+        const upcomingLabel = isUpcoming ? `${p.birthMonth}/${p.birthDay}` : '';
         return `
           <button class="today-birthday-card" data-person-id="${p.id}">
             ${avatar}
             <div class="today-birthday-info">
-              <div class="today-birthday-name">${p.name}</div>
+              <div class="today-birthday-name">${p.name}${upcomingLabel ? ` <span class="today-birthday-date-label">${upcomingLabel}</span>` : ''}</div>
               <div class="today-birthday-meta">${fmtYearRange(p.birth, p.death)} ／ ${p.field || ''}</div>
               ${years ? `<div class="today-birthday-years">🎂 生誕 ${years}</div>` : ''}
             </div>
@@ -750,6 +768,161 @@ function renderTodayBirthday() {
   `;
   list.querySelectorAll('[data-person-id]').forEach(el => {
     el.addEventListener('click', () => showPerson(el.dataset.personId));
+  });
+}
+
+// ====================== 会員設定モーダル ======================
+function openMemberSettings() {
+  const existing = document.getElementById('memberSettingsModal');
+  if (existing) existing.remove();
+
+  const my = loadMyTraits();
+  const options = collectAllTraitOptions();
+
+  const modal = document.createElement('div');
+  modal.id = 'memberSettingsModal';
+  modal.className = 'settings-modal';
+
+  const renderChips = (cat, catLabel, opts) => {
+    const selected = new Set(my[cat] || []);
+    return `
+      <div class="settings-section">
+        <div class="settings-sec-label">${catLabel}</div>
+        <div class="settings-chips">
+          ${opts.map(opt => {
+            const on = selected.has(opt);
+            return `<button class="match-chip ${on ? 'active' : ''}" data-setting-chip data-cat="${cat}" data-opt="${escapeHtml(opt)}">${opt}</button>`;
+          }).join('')}
+        </div>
+      </div>
+    `;
+  };
+
+  modal.innerHTML = `
+    <div class="settings-backdrop" data-close="1"></div>
+    <div class="settings-panel">
+      <button class="settings-close" data-close="1" aria-label="閉じる">×</button>
+      <div class="settings-head">⚙ 自分のことを設定</div>
+
+      <div class="settings-section settings-avatar-section">
+        <div class="settings-sec-label">プロフィール画像</div>
+        <div class="settings-avatar-row">
+          <div class="settings-avatar-preview" id="settingsAvatarPreview" style="${localStorage.getItem('ijin_user_avatar') ? `background-image:url('${localStorage.getItem('ijin_user_avatar')}')` : ''}">
+            ${localStorage.getItem('ijin_user_avatar') ? '' : '👤'}
+          </div>
+          <div class="settings-avatar-actions">
+            <label class="settings-avatar-upload">
+              <input type="file" id="settingsAvatarInput" accept="image/*" style="display:none">
+              画像を選ぶ
+            </label>
+            ${localStorage.getItem('ijin_user_avatar') ? `<button class="settings-avatar-clear" id="settingsAvatarClear">削除</button>` : ''}
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-sec-label">誕生日</div>
+        <div class="settings-birthday">
+          <select id="settingsBirthMonth">
+            <option value="">月</option>
+            ${Array.from({length: 12}, (_, i) => `<option value="${i+1}" ${my.birthMonth == i+1 ? 'selected' : ''}>${i+1}月</option>`).join('')}
+          </select>
+          <select id="settingsBirthDay">
+            <option value="">日</option>
+            ${Array.from({length: 31}, (_, i) => `<option value="${i+1}" ${my.birthDay == i+1 ? 'selected' : ''}>${i+1}日</option>`).join('')}
+          </select>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-sec-label">出身地（任意）</div>
+        <input type="text" class="settings-input" id="settingsHometown" value="${my.hometown || ''}" placeholder="例：東京都">
+      </div>
+
+      ${renderChips('foods', '🍽 好きな食べ物・飲み物', options.foods)}
+      ${renderChips('hobbies', '🎨 趣味・日課', options.hobbies)}
+      ${renderChips('likes', '❤ 好きなもの', options.likes)}
+      ${renderChips('dislikes', '🚫 苦手なもの', options.likes)}
+
+      <div class="settings-actions">
+        <button class="settings-save" id="settingsSave">保存</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  requestAnimationFrame(() => modal.classList.add('open'));
+
+  const close = () => {
+    modal.classList.remove('open');
+    setTimeout(() => modal.remove(), 200);
+  };
+  modal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', close));
+
+  // チップのトグル
+  modal.querySelectorAll('[data-setting-chip]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.classList.toggle('active');
+    });
+  });
+
+  // アバター画像アップロード
+  const avatarInput = modal.querySelector('#settingsAvatarInput');
+  const avatarPreview = modal.querySelector('#settingsAvatarPreview');
+  const avatarClear = modal.querySelector('#settingsAvatarClear');
+  if (avatarInput) {
+    avatarInput.addEventListener('change', (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      if (file.size > 2 * 1024 * 1024) {
+        alert('画像は2MB以下にしてください。');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        // リサイズ（最大 240x240）
+        const img = new Image();
+        img.onload = () => {
+          const size = 240;
+          const canvas = document.createElement('canvas');
+          canvas.width = size; canvas.height = size;
+          const ctx = canvas.getContext('2d');
+          // クロップして正方形に
+          const minSide = Math.min(img.width, img.height);
+          const sx = (img.width - minSide) / 2;
+          const sy = (img.height - minSide) / 2;
+          ctx.drawImage(img, sx, sy, minSide, minSide, 0, 0, size, size);
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+          localStorage.setItem('ijin_user_avatar', dataUrl);
+          avatarPreview.style.backgroundImage = `url('${dataUrl}')`;
+          avatarPreview.textContent = '';
+        };
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+  if (avatarClear) {
+    avatarClear.addEventListener('click', () => {
+      localStorage.removeItem('ijin_user_avatar');
+      avatarPreview.style.backgroundImage = '';
+      avatarPreview.textContent = '👤';
+      avatarClear.remove();
+    });
+  }
+
+  modal.querySelector('#settingsSave').addEventListener('click', () => {
+    const t = loadMyTraits();
+    t.birthMonth = parseInt(modal.querySelector('#settingsBirthMonth').value, 10) || null;
+    t.birthDay = parseInt(modal.querySelector('#settingsBirthDay').value, 10) || null;
+    t.hometown = modal.querySelector('#settingsHometown').value.trim();
+    ['foods','hobbies','likes','dislikes'].forEach(cat => {
+      t[cat] = Array.from(modal.querySelectorAll(`[data-setting-chip][data-cat="${cat}"].active`)).map(b => b.dataset.opt);
+    });
+    saveMyTraits(t);
+    close();
+    if (typeof renderTraitsMatch === 'function') renderTraitsMatch();
+    if (typeof renderFavorites === 'function') renderFavorites();
+    if (typeof renderTodayBirthday === 'function') renderTodayBirthday();
   });
 }
 
@@ -2648,7 +2821,9 @@ async function showPerson(id) {
               <div class="rel-subhead">ユーザー</div>
               <div class="relations-grid">
                 <div class="relation-item relation-user">
-                  <div class="relation-avatar no-img">👤</div>
+                  ${localStorage.getItem('ijin_user_avatar')
+                    ? `<div class="relation-avatar" style="background-image:url('${localStorage.getItem('ijin_user_avatar')}')"></div>`
+                    : `<div class="relation-avatar no-img">👤</div>`}
                   <div class="relation-info">
                     <div class="relation-name">${userName}</div>
                     <div class="relation-role">あなた（Lv.${getStampLevel(p.id)}達成）</div>
@@ -3175,9 +3350,11 @@ async function showPerson(id) {
     });
   });
 
-  // 関連する偉人（リンク付き）
-  container.querySelectorAll('.relation-item.linked').forEach(el => {
-    el.addEventListener('click', () => {
+  // 関連する偉人（リンク付き／全タブ対象）
+  container.querySelectorAll('.relation-item[data-id]').forEach(el => {
+    el.style.cursor = 'pointer';
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
       if (el.dataset.id) showPerson(el.dataset.id);
     });
   });
@@ -4017,9 +4194,67 @@ function grantStamp(personId, source = 'quiz') {
   if (typeof cur === 'number') bd = { quiz: cur };
   else if (cur && typeof cur === 'object') bd = { ...cur };
   else bd = {};
+  const before = Object.values(bd).reduce((a,b) => a + (b || 0), 0);
   bd[source] = (bd[source] || 0) + 1;
   stamps[personId] = bd;
   saveStamps(stamps);
+  const after = before + 1;
+  // Lv.3到達時に『偉人からフォロー』を反映＋通知
+  if (before < 3 && after >= 3) {
+    try { if (typeof renderFavorites === 'function') renderFavorites(); } catch {}
+    const person = DATA.people.find(p => p.id === personId);
+    if (person) showFollowToast(person);
+  }
+}
+
+// LINE風のフォロー通知トースト
+function showFollowToast(person) {
+  // アプリ外でもタブ非アクティブ時はブラウザ通知
+  if (document.hidden && 'Notification' in window && Notification.permission === 'granted') {
+    try {
+      new Notification(`${person.name} があなたをフォローしました`, {
+        body: '『偉人と自分。』であなたのことをもっと知りたがっています。',
+        icon: person.imageUrl || '/app/assets/icon-192.png',
+        tag: `follow-${person.id}`,
+      });
+    } catch {}
+  }
+  // 許可未設定なら静かにリクエスト
+  if ('Notification' in window && Notification.permission === 'default') {
+    try { Notification.requestPermission(); } catch {}
+  }
+  // アプリ内トースト（常に表示）
+  const toast = document.createElement('div');
+  toast.className = 'follow-toast';
+  const avatar = person.imageUrl
+    ? `<div class="follow-toast-avatar" style="background-image:url('${person.imageUrl}')"></div>`
+    : `<div class="follow-toast-avatar no-img">${person.name.charAt(0)}</div>`;
+  toast.innerHTML = `
+    ${avatar}
+    <div class="follow-toast-body">
+      <div class="follow-toast-title">${person.name}</div>
+      <div class="follow-toast-msg">あなたをフォローしました</div>
+    </div>
+    <button class="follow-toast-close" aria-label="閉じる">×</button>
+  `;
+  document.body.appendChild(toast);
+  requestAnimationFrame(() => toast.classList.add('show'));
+  toast.addEventListener('click', (e) => {
+    if (e.target.closest('.follow-toast-close')) {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 300);
+    } else {
+      toast.classList.remove('show');
+      setTimeout(() => {
+        toast.remove();
+        showPerson(person.id);
+      }, 300);
+    }
+  });
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 300);
+  }, 6000);
 }
 function getStampLevel(personId) {
   const bd = getStampBreakdown(personId);
@@ -6309,6 +6544,15 @@ function renderFavorites() {
           <button class="title-page-edit-name" id="editNameBtn">
             ${userName ? '✎ 名前を変更' : '✎ 名前を設定'}
           </button>
+          ${(typeof currentUser !== 'undefined' && currentUser) ? `
+            <button class="title-page-edit-name" id="openSettingsBtn">
+              ⚙ 自分のことを設定
+            </button>
+          ` : `
+            <button class="title-page-edit-name" id="openSettingsBtn" data-locked="1">
+              🔒 自分のことを設定（会員登録後）
+            </button>
+          `}
           <button class="title-page-edit-name" id="editTitleBtn">
             ${title ? `✎ 称号を変更（現在：${title}）` : '🏆 称号を選ぶ'}
           </button>
@@ -6747,6 +6991,17 @@ function renderFavorites() {
     });
   });
 
+  // 会員設定ボタン
+  const settingsBtn = list.querySelector('#openSettingsBtn');
+  if (settingsBtn) {
+    settingsBtn.addEventListener('click', () => {
+      if (settingsBtn.dataset.locked) {
+        if (typeof openLoginModal === 'function') openLoginModal();
+      } else {
+        openMemberSettings();
+      }
+    });
+  }
   // 名前変更
   const editName = list.querySelector('#editNameBtn');
   if (editName) {
@@ -6903,6 +7158,28 @@ function bindEvents() {
     const favTab = document.querySelector('.tab[data-view="favorites"]');
     if (favTab) favTab.click();
   });
+  // このサイトの使い方ポップアップ
+  document.getElementById('howtoOpenBtn')?.addEventListener('click', () => {
+    const src = document.getElementById('howtoCard');
+    const body = src?.querySelector('.howto-body');
+    if (!body) return;
+    const modal = document.createElement('div');
+    modal.className = 'howto-modal';
+    modal.innerHTML = `
+      <div class="howto-modal-backdrop" data-close="1"></div>
+      <div class="howto-modal-panel">
+        <button class="howto-modal-close" data-close="1" aria-label="閉じる">×</button>
+        <div class="howto-modal-head">このサイトの使い方</div>
+        <div class="howto-modal-body">${body.innerHTML}</div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+    requestAnimationFrame(() => modal.classList.add('open'));
+    modal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', () => {
+      modal.classList.remove('open');
+      setTimeout(() => modal.remove(), 200);
+    }));
+  });
   const searchBtnEl = document.getElementById('searchBtn');
   if (searchBtnEl) searchBtnEl.addEventListener('click', () => {
     const bar = document.getElementById('searchBar');
@@ -6929,14 +7206,14 @@ function bindEvents() {
 const GUIDE_NAME = 'ラビン';
 const GUIDE_COPY = {
   hero: [
-    'ようこそ、本棚へ。ぼく、ラビン。まずは気分から本を選んでみよう。',
+    'ようこそ、本棚へ。ぼく、ラビン。120人の偉人が待ってるよ。',
     'はじめまして。歴史の案内人、ラビンです。',
     '僕と一緒に、歴史の旅に出よう。',
   ],
   howto: [
-    'この本棚の歩き方を、3分で案内するよ。',
-    '使い方、ここでひとつずつお見せします。',
-    'はじめての方に、読み方をひとつだけ。',
+    '初めての方は、まずこれを読んでね。',
+    '使い方を3分で案内するよ。タップして開こう。',
+    '本棚の歩き方、ここで手短にお伝えします。',
   ],
   match: [
     '気になるものをひとつ選べば大丈夫。',
@@ -6944,9 +7221,9 @@ const GUIDE_COPY = {
     'あなたに似た一冊が、きっと見つかる。',
   ],
   tags: [
-    '今日の気分は、どれ？',
-    '感情で、本を探せる棚です。',
-    '眠れない夜にも、誰かが同じ夜を歩いた。',
+    '時代・国・ルーティンで、偉人を探せるよ。',
+    '朝型？夜型？共通点から偉人を見つけよう。',
+    '似たリズムの偉人を、ここで探してみて。',
   ],
   routines: [
     '偉人たちの1日を、覗いてみる？',
