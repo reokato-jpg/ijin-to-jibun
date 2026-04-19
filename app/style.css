@@ -2545,6 +2545,7 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
   border-radius: 50%;
   background-size: contain; background-repeat: no-repeat;
   background-position: center;
+  background-color: #fff8ee;
   border: 1.5px solid var(--gold);
   display: inline-block;
   vertical-align: middle;
@@ -6907,7 +6908,7 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 .relation-avatar {
   width: 48px; height: 48px; border-radius: 50%;
   background-size: contain; background-repeat: no-repeat; background-position: center top;
-  background-color: var(--paper-warm); border: 1px solid var(--rule);
+  background-color: #fff8ee; border: 1px solid var(--rule);
   flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
   font-size: 18px; color: var(--wine); font-family: var(--font-jp); font-weight: 700;
@@ -9158,7 +9159,7 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
   border-radius: 50%;
   background-size: contain; background-repeat: no-repeat;
   background-position: center;
-  background-color: #f1ead9;
+  background-color: #fff8ee;
   flex-shrink: 0;
   border: 1px solid var(--rule-soft);
 }
@@ -9948,6 +9949,7 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
   border-radius: 50%;
   background-size: contain; background-repeat: no-repeat;
   background-position: center;
+  background-color: #fff8ee;
   border: 2px solid var(--gold);
   flex-shrink: 0;
 }
@@ -10103,7 +10105,7 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
   border-radius: 50%;
   background-size: contain; background-repeat: no-repeat;
   background-position: center;
-  background-color: #eee;
+  background-color: #fff8ee;
   border: 2px solid var(--gold);
   display: flex;
   align-items: center;
@@ -12410,7 +12412,7 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 .users-dir-empty { text-align: center; padding: 30px; color: var(--ink-4); font-size: 13px; }
 .users-dir-card { display: flex; gap: 12px; padding: 10px 12px; background: #fff8ee; border: 1px solid #e7dcc2; border-radius: 10px; cursor: pointer; transition: transform .15s ease, box-shadow .15s ease; }
 .users-dir-card:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-.users-dir-av { width: 44px; height: 44px; border-radius: 50%; background-size: contain; background-repeat: no-repeat; background-position: center; background-color: #e7dcc2; flex-shrink: 0; }
+.users-dir-av { width: 44px; height: 44px; border-radius: 50%; background-size: contain; background-repeat: no-repeat; background-position: center; background-color: #fff8ee; flex-shrink: 0; }
 .users-dir-av.no-img { display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--wine); font-weight: 700; }
 .users-dir-main { flex: 1; min-width: 0; }
 .users-dir-name { font-size: 14px; font-weight: 700; color: var(--ink); }
@@ -12422,7 +12424,7 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 .users-dir-sns:hover { background: var(--gold-light); }
 /* 会員プロフィール詳細 */
 .user-prof-head { display: flex; gap: 14px; align-items: center; margin-bottom: 16px; }
-.user-prof-av { width: 64px; height: 64px; border-radius: 50%; background-size: contain; background-repeat: no-repeat; background-position: center; background-color: #e7dcc2; flex-shrink: 0; }
+.user-prof-av { width: 64px; height: 64px; border-radius: 50%; background-size: contain; background-repeat: no-repeat; background-position: center; background-color: #fff8ee; flex-shrink: 0; }
 .user-prof-av.no-img { display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--wine); font-weight: 700; }
 .user-prof-name { font-size: 18px; font-weight: 700; }
 .user-prof-meta { font-size: 12px; color: var(--ink-3); margin-top: 2px; }
