@@ -55,6 +55,10 @@ html {
     background-image: url('assets/bg-pc.jpg?v=1');
   }
 }
+html.view-no-bg {
+  background-image: none;
+  background-color: var(--paper-outer);
+}
 body {
   display: flex;
   flex-direction: column;
@@ -299,7 +303,7 @@ body {
 }
 
 /* ================ ビュー切り替え ================ */
-main { flex: 1; overflow-y: auto; overflow-x: hidden; background: transparent; scrollbar-gutter: stable both-edges; }
+main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); scrollbar-gutter: stable both-edges; }
 .view { display: none; padding: 16px 18px 80px; }
 .view.active { display: block; }
 

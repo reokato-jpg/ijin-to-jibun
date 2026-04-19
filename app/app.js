@@ -309,6 +309,8 @@ const history = [];
 
 function showView(name, pushHistory = true) {
   if (pushHistory && history[history.length - 1] !== name) history.push(name);
+  // わたしの本タブは背景画像なし（独自の本デザインを活かす）
+  document.documentElement.classList.toggle('view-no-bg', name === 'favorites');
   views.forEach(v => {
     const el = document.getElementById(`view-${v}`);
     const isActive = v === name;
