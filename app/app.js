@@ -186,6 +186,10 @@ function getUserName() {
 function setUserName(name) {
   if (name && name.trim()) localStorage.setItem(USER_NAME_KEY, name.trim());
   else localStorage.removeItem(USER_NAME_KEY);
+  // 即時Firestore同期（リロード時の上書き防止）
+  if (typeof window.pushToCloud === 'function' && typeof currentUser !== 'undefined' && currentUser) {
+    window.pushToCloud(currentUser).catch(() => {});
+  }
 }
 
 const MAX_ROUTINE_SLOTS = 3;
@@ -521,6 +525,9 @@ function loadMyTraits() {
 }
 function saveMyTraits(obj) {
   localStorage.setItem(MY_TRAITS_KEY, JSON.stringify(obj));
+  if (typeof window.pushToCloud === 'function' && typeof currentUser !== 'undefined' && currentUser) {
+    window.pushToCloud(currentUser).catch(() => {});
+  }
 }
 
 // DBから全traitの選択肢を集計（＋ユーザー向けの普遍的な選択肢を合成）
