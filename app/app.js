@@ -7187,9 +7187,10 @@ function renderFavorites() {
     `;
     html += recentlyReadItems.map(p => {
       const bg = p.imageUrl ? `style="background-image:url('${p.imageUrl}')"` : '';
+      const following = isFavPerson(p.id);
       return `
         <div class="person-book ${p.imageUrl ? '' : 'no-img'}" data-id="${p.id}" ${bg}>
-          <div class="cover-bookmark"></div>
+          <button class="person-book-follow ${following ? 'active' : ''}" data-follow-toggle="${p.id}">${following ? '✓ フォロー中' : '＋ フォロー'}</button>
           <div class="person-book-overlay"></div>
           ${!p.imageUrl ? `<div class="person-book-placeholder">${p.name.charAt(0)}</div>` : ''}
           <div class="person-book-info">
@@ -7499,9 +7500,21 @@ function renderFavorites() {
   list.innerHTML = html;
 
   list.querySelectorAll('.book-cover-card, .person-book').forEach(el => {
-    el.addEventListener('click', () => {
+    el.addEventListener('click', (e) => {
+      if (e.target.closest('[data-follow-toggle]')) return;
       if (el.dataset.id) showPerson(el.dataset.id);
       else if (el.dataset.tag) showTag(el.dataset.tag);
+    });
+  });
+  // 続きから読むのフォローボタン
+  list.querySelectorAll('[data-follow-toggle]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const pid = btn.dataset.followToggle;
+      toggleFavPerson(pid);
+      const on = isFavPerson(pid);
+      btn.classList.toggle('active', on);
+      btn.textContent = on ? '✓ フォロー中' : '＋ フォロー';
     });
   });
   list.querySelectorAll('.tag-event, .my-book-quote').forEach(el => {

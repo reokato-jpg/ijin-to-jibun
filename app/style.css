@@ -11796,6 +11796,28 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
   cursor: pointer;
 }
 .guide-hello-ok:hover { transform: translateY(-1px); }
+/* 『続きから読む』のフォローボタン（表紙左上のリボン位置） */
+.person-book-follow {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 3;
+  padding: 4px 10px;
+  background: rgba(120, 30, 50, 0.9);
+  color: var(--gold-light);
+  border: 1px solid var(--gold);
+  border-radius: 999px;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  backdrop-filter: blur(2px);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+.person-book-follow.active {
+  background: rgba(120, 90, 30, 0.92);
+  color: #fff;
+}
+.person-book-follow:hover { transform: translateY(-1px); }
 
 /* ========== 会員ディレクトリ ========== */
 .settings-sns-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
