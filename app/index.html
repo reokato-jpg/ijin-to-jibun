@@ -70,7 +70,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20260420t">
+<link rel="stylesheet" href="style.css?v=20260420u">
 </head>
 <body>
   <header class="app-header">
@@ -514,6 +514,33 @@
           </button>
           <button class="phone-icon phone-icon-oshi-slot" id="phoneOshiSlot" data-phone-action="oshi" hidden></button>
         </div>
+        <!-- 偉人の広場（アプリ風、LINEライク） -->
+        <div class="phone-plaza-app" id="phonePlazaApp" hidden>
+          <div class="plaza-app-head">
+            <button class="plaza-app-back" type="button" aria-label="戻る">‹</button>
+            <span class="plaza-app-title">偉人の広場</span>
+          </div>
+          <div class="plaza-app-body">
+            <div class="plaza-tab-panel" data-plaza-panel="friends">
+              <div class="plaza-friends-head">友だち</div>
+              <div class="plaza-friends-list" id="plazaFriendsList"></div>
+            </div>
+            <div class="plaza-tab-panel" data-plaza-panel="talks" hidden>
+              <div class="plaza-friends-head">トーク</div>
+              <div class="plaza-talks-list" id="plazaTalksList"></div>
+            </div>
+          </div>
+          <div class="plaza-app-tabs">
+            <button class="plaza-app-tab active" data-plaza-tab="friends">
+              <span class="plaza-app-tab-ic">👥</span>
+              <span>友だち</span>
+            </button>
+            <button class="plaza-app-tab" data-plaza-tab="talks">
+              <span class="plaza-app-tab-ic">💬</span>
+              <span>トーク</span>
+            </button>
+          </div>
+        </div>
       </div>
       <button class="phone-home-btn" data-phone-close="1" aria-label="閉じる"></button>
     </div>
@@ -566,8 +593,8 @@
     </div>
   </div>
 
-  <script src="app.js?v=20260420t"></script>
-  <script src="auth.js?v=20260420t" type="module"></script>
+  <script src="app.js?v=20260420u"></script>
+  <script src="auth.js?v=20260420u" type="module"></script>
   <script src="ai-consult.js"></script>
 </body>
 </html>

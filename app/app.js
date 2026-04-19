@@ -3394,18 +3394,121 @@ function initPhoneMenu() {
   menu.querySelectorAll('[data-phone-action]').forEach(el => {
     el.addEventListener('click', () => {
       const action = el.dataset.phoneAction;
+      if (action === 'plaza') {
+        // スマホ内で偉人の広場アプリを開く
+        openPhonePlazaApp();
+        return;
+      }
       close();
       setTimeout(() => {
         if (action === 'settings') {
           if (typeof openMemberSettings === 'function') openMemberSettings();
-        } else if (action === 'plaza') {
-          // 偉人の広場（チャット）を開く
-          document.getElementById('chatFab')?.click();
         } else if (action === 'oshi') {
           const pid = el.dataset.phonePerson;
           if (pid && typeof showPerson === 'function') showPerson(pid);
         }
       }, 260);
+    });
+  });
+  // 偉人の広場アプリ（LINEライクなタブ切替）
+  function openPhonePlazaApp() {
+    const plaza = document.getElementById('phonePlazaApp');
+    if (!plaza) return;
+    plaza.hidden = false;
+    renderPlazaFriends();
+    renderPlazaTalks();
+  }
+  function closePhonePlazaApp() {
+    const plaza = document.getElementById('phonePlazaApp');
+    if (plaza) plaza.hidden = true;
+  }
+  function renderPlazaFriends() {
+    const list = document.getElementById('plazaFriendsList');
+    if (!list) return;
+    // 偉人の広場の今日のメンバー＋フォロー中の偉人を友だち一覧に
+    const favIds = (typeof favPeople !== 'undefined') ? [...favPeople] : [];
+    const friends = favIds.map(id => DATA.people.find(p => p.id === id)).filter(Boolean);
+    if (friends.length === 0) {
+      list.innerHTML = '<div class="plaza-empty">まだ友だちはいません。<br>偉人をフォローすると、ここに追加されます。</div>';
+      return;
+    }
+    list.innerHTML = friends.map(p => {
+      const bg = p.imageUrl ? `style="background-image:url('${p.imageUrl}')"` : '';
+      return `
+        <button class="plaza-friend-item" data-plaza-friend="${p.id}">
+          <div class="plaza-friend-av" ${bg}>${p.imageUrl ? '' : (p.name?.charAt(0) || '?')}</div>
+          <div class="plaza-friend-info">
+            <div class="plaza-friend-name">${p.name}</div>
+            <div class="plaza-friend-status">${p.field || ''}</div>
+          </div>
+        </button>
+      `;
+    }).join('');
+    list.querySelectorAll('[data-plaza-friend]').forEach(b => {
+      b.addEventListener('click', () => {
+        const pid = b.dataset.plazaFriend;
+        close();
+        setTimeout(() => showPerson(pid), 260);
+      });
+    });
+  }
+  function renderPlazaTalks() {
+    const list = document.getElementById('plazaTalksList');
+    if (!list) return;
+    // 手紙（letters）から会話スレッド一覧を構築
+    const letters = (typeof loadLetters === 'function') ? loadLetters() : [];
+    const byPerson = {};
+    letters.forEach(l => {
+      if (!byPerson[l.personId]) byPerson[l.personId] = [];
+      byPerson[l.personId].push(l);
+    });
+    // 今日の広場メンバーも「未読」として表示
+    const todayMembers = (typeof getTodaysGroupMembers === 'function') ? getTodaysGroupMembers() : [];
+    const threadPersonIds = [...new Set([...Object.keys(byPerson), ...todayMembers.map(p => p.id)])];
+    if (threadPersonIds.length === 0) {
+      list.innerHTML = '<div class="plaza-empty">まだトークはありません。<br>手紙を送ると、ここに履歴が残ります。</div>';
+      return;
+    }
+    const items = threadPersonIds.map(pid => {
+      const p = DATA.people.find(x => x.id === pid);
+      if (!p) return null;
+      const msgs = byPerson[pid] || [];
+      const last = msgs[msgs.length - 1];
+      const preview = last ? (last.body || last.text || '').slice(0, 30) : '今日の広場にいます';
+      const dateStr = last ? new Date(last.ts || Date.now()).toLocaleDateString('ja-JP', {month:'numeric',day:'numeric'}) : '';
+      const bg = p.imageUrl ? `style="background-image:url('${p.imageUrl}')"` : '';
+      return `
+        <button class="plaza-talk-item" data-plaza-talk="${p.id}">
+          <div class="plaza-friend-av" ${bg}>${p.imageUrl ? '' : (p.name?.charAt(0) || '?')}</div>
+          <div class="plaza-talk-info">
+            <div class="plaza-talk-head">
+              <span class="plaza-talk-name">${p.name}</span>
+              <span class="plaza-talk-date">${dateStr}</span>
+            </div>
+            <div class="plaza-talk-preview">${escapeHtml(preview)}</div>
+          </div>
+        </button>
+      `;
+    }).filter(Boolean).join('');
+    list.innerHTML = items;
+    list.querySelectorAll('[data-plaza-talk]').forEach(b => {
+      b.addEventListener('click', () => {
+        const pid = b.dataset.plazaTalk;
+        close();
+        setTimeout(() => showPerson(pid), 260);
+      });
+    });
+  }
+  // タブ切替
+  const plaza = document.getElementById('phonePlazaApp');
+  plaza?.querySelector('.plaza-app-back')?.addEventListener('click', closePhonePlazaApp);
+  plaza?.querySelectorAll('[data-plaza-tab]').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const which = tab.dataset.plazaTab;
+      plaza.querySelectorAll('.plaza-app-tab').forEach(t => t.classList.toggle('active', t === tab));
+      plaza.querySelectorAll('.plaza-tab-panel').forEach(p => {
+        p.hidden = (p.dataset.plazaPanel !== which);
+      });
     });
   });
   window.renderOshiSlot = renderOshiSlot;
