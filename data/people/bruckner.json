@@ -144,5 +144,34 @@
       "youtubeSearchUrl": "https://www.youtube.com/results?search_query=Bruckner+Symphony+9"
     }
   ],
-  "id": "bruckner"
+  "id": "bruckner",
+  "relations": [
+    {
+      "id": "wagner",
+      "name": "ワーグナー",
+      "relation": "崇拝する先達",
+      "note": "1873年にバイロイトで会い、第3交響曲を献呈。"
+    },
+    {
+      "id": "beethoven",
+      "name": "ベートーヴェン",
+      "relation": "敬愛する先達"
+    },
+    {
+      "id": "mahler",
+      "name": "マーラー",
+      "relation": "後継者・弟子筋"
+    },
+    {
+      "id": "brahms",
+      "name": "ブラームス",
+      "relation": "ライバル・不仲",
+      "note": "ワーグナー派 vs ブラームス派の代理戦争の渦中に。"
+    },
+    {
+      "name": "エドゥアルト・ハンスリック",
+      "relation": "批判者",
+      "note": "ウィーンの評論家。ブルックナー作品を執拗に酷評。"
+    }
+  ]
 }

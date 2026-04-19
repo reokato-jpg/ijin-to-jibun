@@ -227,5 +227,30 @@
     "dislikes": [
       "病に伏せること"
     ]
-  }
+  },
+  "relations": [
+    {
+      "id": "kondo_isami",
+      "name": "近藤勇",
+      "relation": "師・局長"
+    },
+    {
+      "id": "hijikata_toshizo",
+      "name": "土方歳三",
+      "relation": "副長・兄貴分"
+    },
+    {
+      "name": "永倉新八",
+      "relation": "同志"
+    },
+    {
+      "name": "斎藤一",
+      "relation": "同志"
+    },
+    {
+      "name": "結核",
+      "relation": "早世の病",
+      "years": "1868"
+    }
+  ]
 }

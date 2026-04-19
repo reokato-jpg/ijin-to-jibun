@@ -121,5 +121,31 @@
       "偽善"
     ]
   },
-  "id": "shakespeare"
+  "id": "shakespeare",
+  "relations": [
+    {
+      "name": "クリストファー・マーロウ",
+      "relation": "同時代のライバル・先輩"
+    },
+    {
+      "name": "ベン・ジョンソン",
+      "relation": "盟友・後輩"
+    },
+    {
+      "name": "アン・ハサウェイ",
+      "relation": "妻"
+    },
+    {
+      "name": "サウサンプトン伯爵",
+      "relation": "パトロン"
+    },
+    {
+      "name": "グローブ座",
+      "relation": "生涯の舞台"
+    },
+    {
+      "name": "エリザベス1世",
+      "relation": "女王パトロン"
+    }
+  ]
 }

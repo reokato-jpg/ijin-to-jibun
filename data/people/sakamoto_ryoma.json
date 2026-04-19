@@ -274,5 +274,43 @@
       "狭い藩閥",
       "旧態依然"
     ]
-  }
+  },
+  "relations": [
+    {
+      "id": "saigo_takamori",
+      "name": "西郷隆盛",
+      "relation": "薩長同盟の同志",
+      "years": "1866"
+    },
+    {
+      "name": "桂小五郎",
+      "relation": "長州代表の同志"
+    },
+    {
+      "name": "勝海舟",
+      "relation": "師・恩人"
+    },
+    {
+      "name": "中岡慎太郎",
+      "relation": "盟友"
+    },
+    {
+      "name": "千葉佐那",
+      "relation": "婚約した女剣士"
+    },
+    {
+      "name": "お龍",
+      "relation": "妻"
+    },
+    {
+      "id": "kondo_isami",
+      "name": "近藤勇",
+      "relation": "敵対する幕府方"
+    },
+    {
+      "name": "見廻組",
+      "relation": "暗殺者",
+      "years": "1867"
+    }
+  ]
 }

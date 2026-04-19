@@ -128,5 +128,33 @@
       "粗野な振る舞い"
     ]
   },
-  "id": "raphael"
+  "id": "raphael",
+  "relations": [
+    {
+      "id": "leonardo",
+      "name": "レオナルド・ダ・ヴィンチ",
+      "relation": "敬愛する先達"
+    },
+    {
+      "id": "michelangelo",
+      "name": "ミケランジェロ",
+      "relation": "ライバル"
+    },
+    {
+      "name": "ペルジーノ",
+      "relation": "師"
+    },
+    {
+      "name": "教皇ユリウス2世",
+      "relation": "パトロン"
+    },
+    {
+      "name": "教皇レオ10世",
+      "relation": "パトロン・友人"
+    },
+    {
+      "name": "マルガリータ",
+      "relation": "愛した女性・モデル"
+    }
+  ]
 }

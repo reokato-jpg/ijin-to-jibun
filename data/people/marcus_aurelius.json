@@ -121,5 +121,32 @@
       "無駄話"
     ]
   },
-  "id": "marcus_aurelius"
+  "id": "marcus_aurelius",
+  "relations": [
+    {
+      "id": "seneca",
+      "name": "セネカ",
+      "relation": "敬愛する先達"
+    },
+    {
+      "name": "エピクテトス",
+      "relation": "思想的師"
+    },
+    {
+      "name": "ルスティクス",
+      "relation": "師"
+    },
+    {
+      "name": "ピウス帝",
+      "relation": "養父・皇帝の師"
+    },
+    {
+      "name": "コンモドゥス",
+      "relation": "失望した息子"
+    },
+    {
+      "name": "ウェルス",
+      "relation": "共同皇帝"
+    }
+  ]
 }

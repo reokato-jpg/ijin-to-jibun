@@ -143,5 +143,34 @@
       "同時代の悲観主義"
     ]
   },
-  "id": "matisse"
+  "id": "matisse",
+  "relations": [
+    {
+      "id": "picasso",
+      "name": "ピカソ",
+      "relation": "生涯のライバル",
+      "note": "互いを『北極と南極』と呼び合った。"
+    },
+    {
+      "name": "ギュスターヴ・モロー",
+      "relation": "師"
+    },
+    {
+      "name": "ドラン",
+      "relation": "盟友"
+    },
+    {
+      "id": "monet",
+      "name": "モネ",
+      "relation": "敬愛する先達"
+    },
+    {
+      "name": "セザンヌ",
+      "relation": "敬愛する先達"
+    },
+    {
+      "name": "リディア・デレクトルスカヤ",
+      "relation": "モデル・晩年の秘書"
+    }
+  ]
 }

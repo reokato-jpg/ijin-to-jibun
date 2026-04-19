@@ -120,5 +120,33 @@
       "死の恐怖"
     ]
   },
-  "id": "seneca"
+  "id": "seneca",
+  "relations": [
+    {
+      "name": "ネロ帝",
+      "relation": "弟子・後に死を命じた暴君",
+      "note": "幼少期の家庭教師だったが、反逆疑惑で自害を命じられた。"
+    },
+    {
+      "name": "エピクテトス",
+      "relation": "ストア哲学の後進"
+    },
+    {
+      "id": "marcus_aurelius",
+      "name": "マルクス・アウレリウス",
+      "relation": "後世の継承者"
+    },
+    {
+      "name": "パウリナ",
+      "relation": "妻"
+    },
+    {
+      "name": "カリグラ帝",
+      "relation": "迫害者"
+    },
+    {
+      "name": "クラウディウス帝",
+      "relation": "追放者"
+    }
+  ]
 }

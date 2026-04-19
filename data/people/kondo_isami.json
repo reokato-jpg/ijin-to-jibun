@@ -233,5 +233,40 @@
       "規律を乱す者",
       "裏切り"
     ]
-  }
+  },
+  "relations": [
+    {
+      "id": "hijikata_toshizo",
+      "name": "土方歳三",
+      "relation": "盟友・副長"
+    },
+    {
+      "id": "okita_soji",
+      "name": "沖田総司",
+      "relation": "愛弟子・一番隊組長"
+    },
+    {
+      "name": "永倉新八",
+      "relation": "同志"
+    },
+    {
+      "name": "芹沢鴨",
+      "relation": "排除した敵",
+      "years": "1863"
+    },
+    {
+      "id": "sakamoto_ryoma",
+      "name": "坂本龍馬",
+      "relation": "対立する志士"
+    },
+    {
+      "name": "勝海舟",
+      "relation": "敬意ある敵方"
+    },
+    {
+      "name": "新政府軍",
+      "relation": "最後の敵",
+      "years": "1868"
+    }
+  ]
 }

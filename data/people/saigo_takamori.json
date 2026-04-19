@@ -233,5 +233,34 @@
       "陰謀",
       "明治政府の欧化"
     ]
-  }
+  },
+  "relations": [
+    {
+      "name": "大久保利通",
+      "relation": "盟友から宿敵へ"
+    },
+    {
+      "name": "勝海舟",
+      "relation": "江戸無血開城の盟友",
+      "years": "1868"
+    },
+    {
+      "name": "島津斉彬",
+      "relation": "師・主君"
+    },
+    {
+      "id": "sakamoto_ryoma",
+      "name": "坂本龍馬",
+      "relation": "盟友"
+    },
+    {
+      "name": "桐野利秋",
+      "relation": "腹心"
+    },
+    {
+      "name": "明治政府",
+      "relation": "決起の相手",
+      "years": "1877"
+    }
+  ]
 }

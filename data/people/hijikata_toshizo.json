@@ -243,5 +243,44 @@
       "隊規を乱す者",
       "新政府軍"
     ]
-  }
+  },
+  "relations": [
+    {
+      "id": "kondo_isami",
+      "name": "近藤勇",
+      "relation": "盟友・局長",
+      "note": "天然理心流の同門。"
+    },
+    {
+      "id": "okita_soji",
+      "name": "沖田総司",
+      "relation": "同志・弟分"
+    },
+    {
+      "name": "永倉新八",
+      "relation": "同志"
+    },
+    {
+      "name": "斎藤一",
+      "relation": "同志"
+    },
+    {
+      "name": "山南敬助",
+      "relation": "副長・切腹させた同志",
+      "years": "1865"
+    },
+    {
+      "name": "芹沢鴨",
+      "relation": "排除した敵"
+    },
+    {
+      "name": "榎本武揚",
+      "relation": "函館政権の同志"
+    },
+    {
+      "id": "sakamoto_ryoma",
+      "name": "坂本龍馬",
+      "relation": "敵対した志士"
+    }
+  ]
 }

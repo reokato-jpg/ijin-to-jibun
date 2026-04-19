@@ -135,5 +135,31 @@
       "youtubeSearchUrl": "https://www.youtube.com/results?search_query=Paganini+Violin+Concerto+1"
     }
   ],
-  "id": "paganini"
+  "id": "paganini",
+  "relations": [
+    {
+      "id": "liszt",
+      "name": "リスト",
+      "relation": "讃えた後世"
+    },
+    {
+      "id": "berlioz",
+      "name": "ベルリオーズ",
+      "relation": "作品の委嘱者"
+    },
+    {
+      "id": "brahms",
+      "name": "ブラームス",
+      "relation": "後世の継承者"
+    },
+    {
+      "id": "rachmaninoff",
+      "name": "ラフマニノフ",
+      "relation": "後世の継承者"
+    },
+    {
+      "name": "悪魔との契約の噂",
+      "relation": "生涯ついて回った中傷"
+    }
+  ]
 }

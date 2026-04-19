@@ -125,5 +125,31 @@
       "youtubeSearchUrl": "https://www.youtube.com/results?search_query=Bizet+Arlesienne"
     }
   ],
-  "id": "bizet"
+  "id": "bizet",
+  "relations": [
+    {
+      "id": "berlioz",
+      "name": "ベルリオーズ",
+      "relation": "敬愛する先達"
+    },
+    {
+      "id": "tchaikovsky",
+      "name": "チャイコフスキー",
+      "relation": "讃えた後世",
+      "note": "『カルメンは10年後に最も人気のオペラになる』と予言。"
+    },
+    {
+      "name": "シャルル・グノー",
+      "relation": "師"
+    },
+    {
+      "name": "アレヴィ",
+      "relation": "師・義父"
+    },
+    {
+      "name": "初演の批評家たち",
+      "relation": "批判者",
+      "note": "『カルメン』初演は酷評、3ヶ月後に失意のまま没した。"
+    }
+  ]
 }

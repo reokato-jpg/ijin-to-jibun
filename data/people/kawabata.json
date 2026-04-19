@@ -229,5 +229,32 @@
     "dislikes": [
       "俗な華やかさ"
     ]
-  }
+  },
+  "relations": [
+    {
+      "id": "mishima_yukio",
+      "name": "三島由紀夫",
+      "relation": "弟子・後輩",
+      "note": "文壇に推薦。三島自決の衝撃が晩年の自殺の一因とも。"
+    },
+    {
+      "id": "akutagawa",
+      "name": "芥川龍之介",
+      "relation": "敬愛する先輩"
+    },
+    {
+      "id": "dazai_osamu",
+      "name": "太宰治",
+      "relation": "対立した後輩"
+    },
+    {
+      "name": "横光利一",
+      "relation": "新感覚派の盟友"
+    },
+    {
+      "name": "ノーベル文学賞",
+      "relation": "日本人初受賞",
+      "years": "1968"
+    }
+  ]
 }

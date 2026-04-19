@@ -139,5 +139,37 @@
       "愚かさ"
     ]
   },
-  "id": "bertrand_russell"
+  "id": "bertrand_russell",
+  "relations": [
+    {
+      "id": "wittgenstein",
+      "name": "ウィトゲンシュタイン",
+      "relation": "弟子・後に論敵"
+    },
+    {
+      "name": "ホワイトヘッド",
+      "relation": "共著者",
+      "note": "『プリンキピア・マテマティカ』を10年かけて共著。"
+    },
+    {
+      "name": "G.E.ムーア",
+      "relation": "盟友"
+    },
+    {
+      "id": "john_locke",
+      "name": "ジョン・ロック",
+      "relation": "敬愛する先達"
+    },
+    {
+      "id": "einstein",
+      "name": "アインシュタイン",
+      "relation": "反核の同志",
+      "note": "1955年『ラッセル＝アインシュタイン宣言』。"
+    },
+    {
+      "name": "ヘーゲル哲学",
+      "relation": "批判",
+      "note": "若き日に心酔するも後に痛烈に批判、分析哲学へ転向。"
+    }
+  ]
 }

@@ -127,5 +127,34 @@
       "宗教的不寛容"
     ]
   },
-  "id": "john_locke"
+  "id": "john_locke",
+  "relations": [
+    {
+      "name": "シャフツベリ伯爵",
+      "relation": "パトロン"
+    },
+    {
+      "name": "ニュートン",
+      "relation": "交友"
+    },
+    {
+      "name": "デカルト",
+      "relation": "批判的継承"
+    },
+    {
+      "name": "ホッブズ",
+      "relation": "論敵",
+      "note": "『リヴァイアサン』の絶対主義を批判、抵抗権を主張。"
+    },
+    {
+      "id": "bertrand_russell",
+      "name": "ラッセル",
+      "relation": "後世の継承者"
+    },
+    {
+      "name": "アメリカ合衆国建国",
+      "relation": "思想的父",
+      "note": "独立宣言・合衆国憲法に影響。"
+    }
+  ]
 }

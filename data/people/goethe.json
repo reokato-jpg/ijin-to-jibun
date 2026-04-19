@@ -126,5 +126,36 @@
       "ナポレオンへの盲従（最初は尊敬したが）"
     ]
   },
-  "id": "goethe"
+  "id": "goethe",
+  "relations": [
+    {
+      "name": "フリードリヒ・シラー",
+      "relation": "盟友",
+      "years": "1794-1805"
+    },
+    {
+      "id": "beethoven",
+      "name": "ベートーヴェン",
+      "relation": "文豪と音楽家の対面",
+      "years": "1812"
+    },
+    {
+      "id": "schubert",
+      "name": "シューベルト",
+      "relation": "歌曲の主題"
+    },
+    {
+      "name": "クリスティアーネ・ヴルピウス",
+      "relation": "妻"
+    },
+    {
+      "name": "ナポレオン・ボナパルト",
+      "relation": "敬意と複雑な関係",
+      "years": "1808"
+    },
+    {
+      "name": "ヘルダー",
+      "relation": "師"
+    }
+  ]
 }

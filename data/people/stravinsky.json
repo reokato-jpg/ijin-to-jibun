@@ -287,5 +287,39 @@
       "自分の過去作品",
       "ロシア革命"
     ]
-  }
+  },
+  "relations": [
+    {
+      "name": "リムスキー＝コルサコフ",
+      "relation": "師"
+    },
+    {
+      "name": "ディアギレフ",
+      "relation": "バレエ・リュスの委嘱者"
+    },
+    {
+      "id": "ravel",
+      "name": "ラヴェル",
+      "relation": "交友"
+    },
+    {
+      "id": "debussy",
+      "name": "ドビュッシー",
+      "relation": "敬愛する先達"
+    },
+    {
+      "name": "バランシン",
+      "relation": "振付の盟友"
+    },
+    {
+      "name": "パリの聴衆",
+      "relation": "『春の祭典』暴動の相手",
+      "years": "1913"
+    },
+    {
+      "id": "shostakovich",
+      "name": "ショスタコーヴィチ",
+      "relation": "祖国の後輩"
+    }
+  ]
 }
