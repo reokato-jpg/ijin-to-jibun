@@ -373,8 +373,8 @@ function toggleFavEvent(personId, event) {
 }
 
 // ====================== ビュー切替 ======================
-const views = ['people', 'tags', 'routines', 'articles', 'favorites', 'person', 'tag'];
-const tabViewNames = ['people', 'tags', 'routines', 'articles', 'favorites'];
+const views = ['people', 'tags', 'history', 'routines', 'articles', 'favorites', 'person', 'tag'];
+const tabViewNames = ['people', 'tags', 'history', 'routines', 'articles', 'favorites'];
 const history = [];
 
 function showView(name, pushHistory = true) {
@@ -6310,6 +6310,211 @@ function openAddCatDialog() {
   renderRoutines();
 }
 
+// ====================== 歴史年表（時代別／ジャンル別／全体） ======================
+// 全ジャンル共通の大きな時代区分
+const ERA_GLOBAL = [
+  { id: 'g_ancient',   name: '古代',        yStart: -9999, yEnd: 500,   desc: '文明の黎明〜古代ローマ・ギリシャ・日本古代' },
+  { id: 'g_medieval',  name: '中世',        yStart: 500,   yEnd: 1500,  desc: '平安〜戦国前夜、ルネサンス以前' },
+  { id: 'g_early_mod', name: '近世',        yStart: 1500,  yEnd: 1780,  desc: 'ルネサンス・バロック・江戸初期' },
+  { id: 'g_modern',    name: '近代',        yStart: 1780,  yEnd: 1900,  desc: '革命・産業化・明治維新' },
+  { id: 'g_contemp',   name: '現代',        yStart: 1900,  yEnd: 9999,  desc: '20世紀〜現在' },
+];
+function globalEraOf(birth) {
+  if (birth == null) return null;
+  return (ERA_GLOBAL.find(e => birth >= e.yStart && birth < e.yEnd) || {}).id;
+}
+// 時代×ジャンルの「中心となる偉人」（手動定義）
+const TIMELINE_CENTRAL = {
+  'g_ancient':   { philo: ['plato', 'aristotle', 'socrates'], literature: ['murasaki'], history: [], music: [], art: [], science: [], other: ['confucius','laozi','buddha','cleopatra','jeanne_darc'] },
+  'g_medieval':  { philo: ['dante'], literature: ['dante','basho'], music: [], art: ['leonardo','michelangelo'], science: ['galileo'], history: ['oda_nobunaga','tokugawa_ieyasu'] },
+  'g_early_mod': { music: ['bach','handel','mozart','haydn'], philo: ['descartes','spinoza','kant','john_locke','rousseau'], art: ['vermeer','rembrandt'], science: ['newton','kepler'], literature: ['shakespeare','voltaire'], history: ['toyotomi_hideyoshi'] },
+  'g_modern':    { music: ['beethoven','schubert','chopin','schumann','brahms','wagner','tchaikovsky'], philo: ['nietzsche','schopenhauer','hegel','kierkegaard','marx'], art: ['monet','van_gogh','rodin','klimt'], literature: ['dostoevsky','tolstoy','soseki','akutagawa','goethe','dickens','oscar_wilde'], science: ['darwin','curie'], history: ['napoleon','sakamoto_ryoma','saigo_takamori','hijikata_toshizo','kondo_isami','okita_soji'] },
+  'g_contemp':   { music: ['stravinsky','shostakovich','bernstein','takemitsu','hisaishi','ryuichi_sakamoto'], philo: ['sartre','camus','heidegger','foucault','wittgenstein','bertrand_russell','nishida'], art: ['picasso','matisse','miyazaki'], literature: ['kafka','hemingway','dazai_osamu','kawabata','mishima_yukio','miyazawa_kenji'], science: ['einstein','tesla','edison','turing','yukawa_hideki','seaborg','freud'], history: ['gandhi','mother_teresa','anne_frank','chaplin','walt_disney','steve_jobs','kurosawa'] },
+};
+function renderHistoryTimeline() {
+  const body = document.getElementById('historyBody');
+  if (!body || !DATA.people) return;
+  const mode = document.querySelector('.hist-mode.active')?.dataset?.hlmode || 'era';
+  if (mode === 'era') renderHistoryEra(body);
+  else if (mode === 'genre') renderHistoryGenre(body);
+  else renderHistoryAll(body);
+}
+function tlPersonCard(p, opts = {}) {
+  const bg = p.imageUrl ? `style="background-image:url('${p.imageUrl}')"` : '';
+  const central = opts.central ? 'tl-person-central' : '';
+  return `
+    <button class="tl-person ${central} ${p.imageUrl ? '' : 'no-img'}" data-id="${p.id}" ${bg}>
+      ${central ? '<span class="tl-person-crown">★</span>' : ''}
+      ${!p.imageUrl ? `<span class="tl-person-ph">${p.name.charAt(0)}</span>` : ''}
+      <span class="tl-person-shade"></span>
+      <span class="tl-person-name">${p.name}</span>
+      <span class="tl-person-year">${fmtYearRange(p.birth, p.death)}</span>
+    </button>
+  `;
+}
+function renderHistoryEra(body) {
+  // 大時代ごとに、各ジャンルの偉人を整理
+  const html = ERA_GLOBAL.map(era => {
+    const all = DATA.people.filter(p => p.birth != null && globalEraOf(p.birth) === era.id);
+    if (all.length === 0) return '';
+    const byCat = {};
+    all.forEach(p => {
+      const c = categoryOf(p.field);
+      (byCat[c] = byCat[c] || []).push(p);
+    });
+    const centrals = new Set();
+    Object.values(TIMELINE_CENTRAL[era.id] || {}).forEach(arr => arr.forEach(id => centrals.add(id)));
+    const catOrder = ['philo','music','art','literature','science','history','other'];
+    const catLabel = { philo:'🤔 哲学', music:'🎵 音楽', art:'🎨 美術', literature:'📚 文学', science:'🔬 科学', history:'⚔ 歴史', other:'◇ その他' };
+    return `
+      <div class="tl-era" id="tl-era-${era.id}">
+        <div class="tl-era-head">
+          <h3 class="tl-era-name">${era.name}</h3>
+          <div class="tl-era-years">${fmtYear(era.yStart === -9999 ? '' : era.yStart) || '古代'} 〜 ${era.yEnd === 9999 ? '現在' : fmtYear(era.yEnd)}</div>
+          <div class="tl-era-desc">${era.desc}</div>
+          <div class="tl-era-count">${all.length} 名</div>
+        </div>
+        ${catOrder.filter(c => byCat[c] && byCat[c].length).map(c => {
+          const sorted = byCat[c].sort((a,b) => (a.birth||0) - (b.birth||0));
+          return `
+            <div class="tl-cat">
+              <div class="tl-cat-head">${catLabel[c] || c} <span class="tl-cat-count">${sorted.length}</span></div>
+              <div class="tl-person-grid">
+                ${sorted.map(p => tlPersonCard(p, { central: centrals.has(p.id) })).join('')}
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+  }).join('');
+  body.innerHTML = `
+    <div class="tl-era-jump" id="tlEraJump">
+      ${ERA_GLOBAL.map(e => `<button class="tl-jump-btn" data-jump="tl-era-${e.id}">${e.name}</button>`).join('')}
+    </div>
+    <div class="tl-intro">★ は各時代・ジャンルの<strong>中心となった偉人</strong>（編集部選定）</div>
+    ${html}
+  `;
+  bindTimelineEvents(body);
+}
+function renderHistoryGenre(body) {
+  const cats = [
+    { id: 'music',      name: '🎵 音楽' },
+    { id: 'philo',      name: '🤔 哲学' },
+    { id: 'literature', name: '📚 文学' },
+    { id: 'art',        name: '🎨 美術' },
+    { id: 'science',    name: '🔬 科学' },
+    { id: 'history',    name: '⚔ 歴史' },
+  ];
+  const html = cats.map(cat => {
+    const people = DATA.people.filter(p => categoryOf(p.field) === cat.id && p.birth != null)
+      .sort((a, b) => a.birth - b.birth);
+    if (people.length === 0) return '';
+    const eraRules = ERA_RULES[cat.id] || [];
+    const eraOfPerson = (p) => {
+      for (const r of eraRules) if (r.match(p.birth)) return r;
+      return null;
+    };
+    // 時代セクションに分ける
+    const byEra = {};
+    const uncat = [];
+    people.forEach(p => {
+      const e = eraOfPerson(p);
+      if (e) (byEra[e.id] = byEra[e.id] || { era: e, people: [] }).people.push(p);
+      else uncat.push(p);
+    });
+    const centrals = new Set();
+    Object.values(TIMELINE_CENTRAL).forEach(era => (era[cat.id] || []).forEach(id => centrals.add(id)));
+    return `
+      <div class="tl-genre" id="tl-genre-${cat.id}">
+        <div class="tl-genre-head">
+          <h3 class="tl-genre-name">${cat.name}</h3>
+          <div class="tl-genre-count">${people.length} 名 ／ ${fmtYear(people[0].birth)} 〜 ${fmtYear(people[people.length-1].birth)}</div>
+        </div>
+        ${eraRules.map(r => {
+          const bucket = byEra[r.id];
+          if (!bucket) return '';
+          return `
+            <div class="tl-gera">
+              <div class="tl-gera-head">${r.name}</div>
+              <div class="tl-person-grid">
+                ${bucket.people.map(p => tlPersonCard(p, { central: centrals.has(p.id) })).join('')}
+              </div>
+            </div>
+          `;
+        }).join('')}
+        ${uncat.length ? `
+          <div class="tl-gera">
+            <div class="tl-gera-head">その他</div>
+            <div class="tl-person-grid">${uncat.map(p => tlPersonCard(p, { central: centrals.has(p.id) })).join('')}</div>
+          </div>
+        ` : ''}
+      </div>
+    `;
+  }).join('');
+  body.innerHTML = `
+    <div class="tl-era-jump">
+      ${cats.map(c => `<button class="tl-jump-btn" data-jump="tl-genre-${c.id}">${c.name}</button>`).join('')}
+    </div>
+    ${html}
+  `;
+  bindTimelineEvents(body);
+}
+function renderHistoryAll(body) {
+  // 生年順の一本スクロール年表
+  const people = DATA.people.filter(p => p.birth != null).sort((a, b) => a.birth - b.birth);
+  const centrals = new Set();
+  Object.values(TIMELINE_CENTRAL).forEach(era => {
+    Object.values(era).forEach(arr => arr.forEach(id => centrals.add(id)));
+  });
+  // 100年ごとにグルーピング
+  const byCentury = {};
+  people.forEach(p => {
+    const c = Math.floor(p.birth / 100) * 100;
+    (byCentury[c] = byCentury[c] || []).push(p);
+  });
+  const keys = Object.keys(byCentury).map(k => parseInt(k, 10)).sort((a, b) => a - b);
+  const fmtCentury = (c) => {
+    if (c < 0) return `紀元前${Math.abs(c)}年台`;
+    return `${c}年台`;
+  };
+  const html = keys.map(c => {
+    const arr = byCentury[c];
+    return `
+      <div class="tl-century">
+        <div class="tl-century-label">${fmtCentury(c)} <span class="tl-century-count">${arr.length}名</span></div>
+        <div class="tl-person-grid">
+          ${arr.map(p => tlPersonCard(p, { central: centrals.has(p.id) })).join('')}
+        </div>
+      </div>
+    `;
+  }).join('');
+  body.innerHTML = `
+    <div class="tl-intro">全 ${people.length} 名を生年順に。★ は時代・ジャンルの代表格。</div>
+    ${html}
+  `;
+  bindTimelineEvents(body);
+}
+function bindTimelineEvents(body) {
+  body.querySelectorAll('.tl-person').forEach(b => {
+    b.addEventListener('click', () => showPerson(b.dataset.id));
+  });
+  body.querySelectorAll('[data-jump]').forEach(b => {
+    b.addEventListener('click', () => {
+      const el = document.getElementById(b.dataset.jump);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+}
+function bindHistoryTabs() {
+  document.querySelectorAll('.hist-mode').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.hist-mode').forEach(b => b.classList.toggle('active', b === btn));
+      renderHistoryTimeline();
+    });
+  });
+}
+
 function renderRoutines() {
   // 凡例
   const legend = document.getElementById('routineLegend');
@@ -8066,6 +8271,7 @@ function bindEvents() {
       showView(v);
       if (v === 'people') renderPeople();
       if (v === 'tags') renderTags();
+      if (v === 'history') renderHistoryTimeline();
       if (v === 'routines') renderRoutines();
       if (v === 'articles') renderArticles();
       if (v === 'favorites') renderFavorites();
@@ -8413,6 +8619,8 @@ window.renderBookshelfGuides = renderBookshelfGuides;
   initChatWidget();
   renderRoutines();
   renderFavorites();
+  bindHistoryTabs();
+  renderHistoryTimeline();
   renderBookshelfGuides();
   initGuideCharaObserver();
   // 内部判定：フォローバック＋誕生日通知＋リムーブ条件

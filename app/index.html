@@ -87,6 +87,7 @@
   <nav class="tabs" id="tabs">
     <button class="tab active" data-view="people">ホーム</button>
     <button class="tab" data-view="tags">検索</button>
+    <button class="tab" data-view="history">年表</button>
     <button class="tab" data-view="routines">ルーティン</button>
     <button class="tab" data-view="articles">ブログ</button>
     <button class="tab" data-view="favorites">わたしの本</button>
@@ -384,6 +385,20 @@
       <div id="tagsList"></div>
     </section>
 
+
+    <!-- 年表（時代・ジャンル別に歴史の流れを見る） -->
+    <section id="view-history" class="view">
+      <div class="hist-head">
+        <h2 class="hist-title">🕰 歴史年表</h2>
+        <p class="hist-sub">時代ごと、ジャンルごとに、歴史の流れを辿ろう。</p>
+      </div>
+      <div class="hist-modes" id="histModes">
+        <button class="hist-mode active" data-hlmode="era">時代別</button>
+        <button class="hist-mode" data-hlmode="genre">ジャンル別</button>
+        <button class="hist-mode" data-hlmode="all">全体年表</button>
+      </div>
+      <div id="historyBody"></div>
+    </section>
 
     <!-- ルーティン -->
     <section id="view-routines" class="view">

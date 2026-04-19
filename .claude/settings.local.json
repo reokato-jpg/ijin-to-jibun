@@ -30,7 +30,11 @@
       "Read(//c/Users/USER/**)",
       "Bash(git config:*)",
       "WebFetch(domain:github.com)",
-      "Bash(grep -iE \"\\\\.\\(png|jpg|jpeg\\)$\")"
+      "Bash(grep -iE \"\\\\.\\(png|jpg|jpeg\\)$\")",
+      "Bash(grep -n \"Lv\\\\.3\\\\|Lv\\\\.\\\\${\" \"G:/共有ドライブ/Access Level 2/★新フォルダ★/システムフォルダ/偉人と自分。/app/app.js\")",
+      "Bash(grep -n \"スタンプ.*貯め方\\\\|stamp-criteria-item\\\\|Lv\\\\.3.*\\\\${p.name}\\\\|\\\\${p.name}.*フォロー\\\\|クイズでLv\" \"G:/共有ドライブ/Access Level 2/★新フォルダ★/システムフォルダ/偉人と自分。/app/app.js\")",
+      "Bash(grep -n \"getStampLevel.*達成\\\\|Lv\\\\\\\\.\\\\\\\\\\\\${getStampLevel\\\\|達成\\\\\\\\\\)\\\\`\" \"G:/共有ドライブ/Access Level 2/★新フォルダ★/システムフォルダ/偉人と自分。/app/app.js\")",
+      "Bash(python scripts/add_relations_batch.py)"
     ]
   }
 }
