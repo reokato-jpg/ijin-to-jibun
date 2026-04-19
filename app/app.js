@@ -315,8 +315,7 @@ function showView(name, pushHistory = true) {
     t.classList.toggle('active', t.dataset.view === name);
   });
   document.getElementById('backBtn').classList.toggle('visible', history.length > 1);
-  // ヘッダーは常に「偉人と自分。」固定
-  document.getElementById('appTitle').textContent = '偉人と自分。';
+  // ヘッダーは常にロゴ画像を保持（テキスト上書きするとimgが消える）
   window.scrollTo(0, 0);
   document.getElementById('main').scrollTo(0, 0);
 }
