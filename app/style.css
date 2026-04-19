@@ -61,8 +61,8 @@ body {
   max-width: 560px;
   margin: 0 auto;
   min-height: 100vh;
-  background: rgba(255,255,255,0.92);
-  box-shadow: 0 0 30px rgba(0,0,0,0.18);
+  background: transparent;
+  box-shadow: 0 0 30px rgba(0,0,0,0.25);
 }
 
 /* ================ 横に広いHP版レイアウト ================ */
@@ -299,7 +299,7 @@ body {
 }
 
 /* ================ ビュー切り替え ================ */
-main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); scrollbar-gutter: stable both-edges; }
+main { flex: 1; overflow-y: auto; overflow-x: hidden; background: transparent; scrollbar-gutter: stable both-edges; }
 .view { display: none; padding: 16px 18px 80px; }
 .view.active { display: block; }
 
