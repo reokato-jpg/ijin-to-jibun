@@ -349,7 +349,11 @@ function updateAccountUI() {
   if (!badge) return;
   if (currentUser) {
     const n = currentUser.displayName || currentUser.email?.split('@')[0] || 'ユーザー';
-    badge.innerHTML = `<span class="acc-dot"></span><span class="acc-name">${escapeSmall(n)}</span>`;
+    const avatar = localStorage.getItem('ijin_user_avatar');
+    const avatarHtml = avatar
+      ? `<span class="acc-avatar" style="background-image:url('${avatar}')"></span>`
+      : `<span class="acc-dot"></span>`;
+    badge.innerHTML = `${avatarHtml}<span class="acc-name">${escapeSmall(n)}</span>`;
     badge.classList.add('logged-in');
   } else {
     badge.innerHTML = `<span class="acc-icon">🔑</span><span class="acc-name">本棚の鍵</span>`;
@@ -357,6 +361,8 @@ function updateAccountUI() {
   }
   updateLoginNotice();
 }
+// グローバル公開（app.jsから再描画できるように）
+window.updateAccountUI = updateAccountUI;
 
 // 本棚の鍵ポップアップ（未ログイン時、認証確定後に1度だけ表示）
 function updateLoginNotice() {

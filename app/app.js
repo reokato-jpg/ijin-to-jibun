@@ -771,6 +771,60 @@ function renderTodayBirthday() {
   });
 }
 
+// ====================== マップポップアップ（タイトルタップ） ======================
+function openMapPopup() {
+  const existing = document.getElementById('mapPopup');
+  if (existing) { existing.remove(); return; }
+  const modal = document.createElement('div');
+  modal.id = 'mapPopup';
+  modal.className = 'map-popup';
+  const maps = [
+    { view: 'people',    title: 'ホーム',        sub: '本棚の扉',       path: 'M 10 80 Q 40 40, 80 60 T 170 30' },
+    { view: 'tags',      title: '検索',          sub: '探求の地図',     path: 'M 20 40 Q 60 80, 100 50 Q 140 20, 180 60' },
+    { view: 'routines',  title: 'ルーティン',    sub: '偉人の1日',      path: 'M 15 50 Q 50 20, 90 60 Q 130 100, 175 50' },
+    { view: 'articles',  title: 'ブログ',        sub: '読み物の庭',     path: 'M 20 60 Q 60 30, 100 70 T 180 40' },
+    { view: 'favorites', title: 'わたしの本',    sub: '自分だけの一冊', path: 'M 10 60 Q 50 90, 100 50 Q 150 10, 180 70' },
+  ];
+  modal.innerHTML = `
+    <div class="map-popup-backdrop" data-close="1"></div>
+    <div class="map-popup-panel">
+      <button class="map-popup-close" data-close="1" aria-label="閉じる">×</button>
+      <div class="map-popup-head">📜 案内図</div>
+      <div class="map-popup-grid">
+        ${maps.map(m => `
+          <button class="map-tile" data-go-view="${m.view}">
+            <svg class="map-tile-svg" viewBox="0 0 200 100" preserveAspectRatio="none">
+              <rect x="2" y="2" width="196" height="96" fill="#fdf8ec" stroke="#7a4f2a" stroke-width="1.5" stroke-dasharray="3 2" rx="2"/>
+              <path d="${m.path}" stroke="#4a2f1a" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-dasharray="2 3"/>
+              <circle cx="170" cy="30" r="3" fill="#7a2e3a"/>
+              <text x="170" y="20" text-anchor="middle" font-size="8" fill="#4a2f1a" font-family="serif">✕</text>
+            </svg>
+            <div class="map-tile-label">
+              <div class="map-tile-title">${m.title}</div>
+              <div class="map-tile-sub">${m.sub}</div>
+            </div>
+          </button>
+        `).join('')}
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  requestAnimationFrame(() => modal.classList.add('open'));
+  const close = () => {
+    modal.classList.remove('open');
+    setTimeout(() => modal.remove(), 200);
+  };
+  modal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', close));
+  modal.querySelectorAll('[data-go-view]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const v = btn.dataset.goView;
+      close();
+      const tab = document.querySelector(`.tab[data-view="${v}"]`);
+      if (tab) tab.click();
+    });
+  });
+}
+
 // ====================== 名前変更モーダル ======================
 function openNameEditModal() {
   const existing = document.getElementById('nameEditModal');
@@ -939,6 +993,7 @@ function openMemberSettings() {
           localStorage.setItem('ijin_user_avatar', dataUrl);
           avatarPreview.style.backgroundImage = `url('${dataUrl}')`;
           avatarPreview.textContent = '';
+          if (typeof window.updateAccountUI === 'function') window.updateAccountUI();
         };
         img.src = ev.target.result;
       };
@@ -951,6 +1006,7 @@ function openMemberSettings() {
       avatarPreview.style.backgroundImage = '';
       avatarPreview.textContent = '👤';
       avatarClear.remove();
+      if (typeof window.updateAccountUI === 'function') window.updateAccountUI();
     });
   }
 
@@ -7190,6 +7246,8 @@ function bindEvents() {
     });
   });
   document.getElementById('backBtn').addEventListener('click', goBack);
+  // ヘッダーのタイトルロゴ → マップポップアップ
+  document.getElementById('appTitle')?.addEventListener('click', () => openMapPopup());
   // ヒーローの「わたしの本を開く」ボタン
   document.getElementById('heroToMyBook')?.addEventListener('click', () => {
     const favTab = document.querySelector('.tab[data-view="favorites"]');
