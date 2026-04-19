@@ -45,6 +45,19 @@ async function loadData() {
 }
 
 // ====================== カテゴリ分類 ======================
+// 紀元前/紀元後の年表記フォーマット
+function fmtYear(y) {
+  if (y === null || y === undefined || y === '') return '';
+  const n = Number(y);
+  if (Number.isNaN(n)) return String(y);
+  return n < 0 ? `紀元前${Math.abs(n)}` : String(n);
+}
+function fmtYearRange(birth, death) {
+  const b = (birth === null || birth === undefined || birth === '') ? '?' : fmtYear(birth);
+  const d = (death === null || death === undefined || death === '') ? '' : fmtYear(death);
+  return `${b}–${d}`;
+}
+
 const CATEGORY_RULES = [
   { id: 'music',    name: '音楽家',   match: (f) => /作曲家|ピアニスト|演奏家|音楽|指揮者/.test(f) },
   { id: 'philo',    name: '哲学者',   match: (f) => /哲学/.test(f) },
@@ -433,7 +446,7 @@ function renderPersonCard(pick, label) {
       <div class="potd-content">
         <div class="potd-label-line">${label}</div>
         <div class="potd-name">${pick.name}</div>
-        <div class="potd-meta">${pick.birth || '?'}-${pick.death || ''} ／ ${pick.country} ／ ${pick.field}</div>
+        <div class="potd-meta">${fmtYearRange(pick.birth, pick.death)} ／ ${pick.country} ／ ${pick.field}</div>
         <div class="potd-summary">${pick.summary}</div>
       </div>
     </div>
@@ -458,11 +471,11 @@ function saveMyTraits(obj) {
 
 // DBから全traitの選択肢を集計
 function collectAllTraitOptions() {
-  const counts = { foods: {}, hobbies: {}, likes: {} };
+  const counts = { foods: {}, hobbies: {}, likes: {}, dislikes: {} };
   (DATA.people || []).forEach(p => {
     const t = p.traits;
     if (!t) return;
-    ['foods', 'hobbies', 'likes'].forEach(cat => {
+    ['foods', 'hobbies', 'likes', 'dislikes'].forEach(cat => {
       (t[cat] || []).forEach(item => {
         counts[cat][item] = (counts[cat][item] || 0) + 1;
       });
@@ -474,7 +487,17 @@ function collectAllTraitOptions() {
     foods: topN(counts.foods, 20),
     hobbies: topN(counts.hobbies, 20),
     likes: topN(counts.likes, 20),
+    dislikes: topN(counts.dislikes, 20),
   };
+}
+
+// 全偉人の出身国（birthplace候補）を集計
+function collectCountryOptions() {
+  const counts = {};
+  (DATA.people || []).forEach(p => {
+    if (p.country) counts[p.country] = (counts[p.country] || 0) + 1;
+  });
+  return Object.entries(counts).sort((a,b) => b[1] - a[1]).map(([k]) => k);
 }
 
 function findMatchingPeople(myTraits, limit = 6) {
@@ -482,34 +505,58 @@ function findMatchingPeople(myTraits, limit = 6) {
     foods: new Set(myTraits.foods || []),
     hobbies: new Set(myTraits.hobbies || []),
     likes: new Set(myTraits.likes || []),
+    dislikes: new Set(myTraits.dislikes || []),
   };
-  const totalSelected = mine.foods.size + mine.hobbies.size + mine.likes.size;
+  const myBirthM = parseInt(myTraits.birthMonth, 10) || 0;
+  const myBirthD = parseInt(myTraits.birthDay, 10) || 0;
+  const myCountry = (myTraits.country || '').trim();
+  const totalSelected = mine.foods.size + mine.hobbies.size + mine.likes.size + mine.dislikes.size
+    + (myBirthM && myBirthD ? 1 : 0) + (myCountry ? 1 : 0);
   if (totalSelected === 0) return [];
   const scored = (DATA.people || []).map(p => {
     const t = p.traits;
-    if (!t) return { p, score: 0, matches: [] };
     const matches = [];
     let score = 0;
-    ['foods', 'hobbies', 'likes'].forEach(cat => {
-      (t[cat] || []).forEach(item => {
-        if (mine[cat].has(item)) {
-          score++;
-          matches.push({ cat, item });
-        }
+    if (t) {
+      ['foods', 'hobbies', 'likes', 'dislikes'].forEach(cat => {
+        (t[cat] || []).forEach(item => {
+          if (mine[cat].has(item)) {
+            score++;
+            matches.push({ cat, item });
+          }
+        });
       });
-    });
+    }
+    if (myBirthM && myBirthD && p.birthMonth === myBirthM && p.birthDay === myBirthD) {
+      score += 3;
+      matches.push({ cat: 'birth', item: `同じ誕生日 ${myBirthM}/${myBirthD}` });
+    }
+    if (myCountry && p.country && p.country === myCountry) {
+      score++;
+      matches.push({ cat: 'country', item: `同郷 ${myCountry}` });
+    }
     return { p, score, matches };
   }).filter(x => x.score > 0).sort((a, b) => b.score - a.score);
   return scored.slice(0, limit);
+}
+
+// 誕生日一致する偉人を返す
+function findSameBirthdayPeople(month, day) {
+  if (!month || !day) return [];
+  return (DATA.people || []).filter(p => p.birthMonth === month && p.birthDay === day);
 }
 
 function renderTraitsMatch() {
   const container = document.getElementById('traitsMatchSection');
   if (!container || !DATA.people) return;
   const my = loadMyTraits();
-  const selectedCount = (my.foods || []).length + (my.hobbies || []).length + (my.likes || []).length;
+  const chipCount = (my.foods || []).length + (my.hobbies || []).length + (my.likes || []).length + (my.dislikes || []).length;
+  const profileCount = (my.birthMonth && my.birthDay ? 1 : 0) + (my.country ? 1 : 0);
+  const selectedCount = chipCount + profileCount;
+  const isLoggedIn = typeof currentUser !== 'undefined' && currentUser;
 
   const options = collectAllTraitOptions();
+  const countryOptions = collectCountryOptions();
   const makeChips = (cat, catLabel) => {
     const selected = new Set(my[cat] || []);
     return `
@@ -524,6 +571,34 @@ function renderTraitsMatch() {
       </div>
     `;
   };
+
+  // 同じ誕生日の偉人
+  const sameBd = (my.birthMonth && my.birthDay)
+    ? findSameBirthdayPeople(parseInt(my.birthMonth,10), parseInt(my.birthDay,10))
+    : [];
+  const sameBdHtml = (my.birthMonth && my.birthDay) ? `
+    <div class="match-results match-birthday">
+      <div class="match-results-label">🎂 あなたと同じ誕生日（${my.birthMonth}月${my.birthDay}日）の偉人 ${sameBd.length > 0 ? `(${sameBd.length}人)` : ''}</div>
+      ${sameBd.length > 0 ? `
+        <div class="book-grid">
+          ${sameBd.map(p => {
+            const bg = p.imageUrl ? `style="background-image:url('${p.imageUrl}')"` : '';
+            return `
+              <div class="person-book ${p.imageUrl ? '' : 'no-img'}" data-id="${p.id}" ${bg}>
+                <div class="match-score match-score-birth">🎂</div>
+                <div class="person-book-overlay"></div>
+                ${!p.imageUrl ? `<div class="person-book-placeholder">${p.name.charAt(0)}</div>` : ''}
+                <div class="person-book-info">
+                  <div class="person-book-name">${p.name}</div>
+                  <div class="person-book-meta">${fmtYearRange(p.birth, p.death)} ／ ${p.field || ''}</div>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      ` : `<div class="match-empty">同じ誕生日の偉人はまだ登録されていません。</div>`}
+    </div>
+  ` : '';
 
   const matches = findMatchingPeople(my, 6);
   const matchesHtml = matches.length > 0 ? `
@@ -549,21 +624,57 @@ function renderTraitsMatch() {
     </div>
   ` : (selectedCount > 0 ? '<div class="match-empty">一致する偉人が見つかりませんでした。別の項目を試してください。</div>' : '');
 
+  // プロフィール入力欄（会員限定）
+  const profileHtml = isLoggedIn ? `
+    <div class="match-profile">
+      <div class="match-cat-label">👤 あなたのプロフィール（会員限定）</div>
+      <div class="match-profile-row">
+        <label class="match-profile-label">誕生日
+          <span class="match-profile-inline">
+            <select class="match-profile-input" data-profile="birthMonth">
+              <option value="">月</option>
+              ${Array.from({length:12},(_,i)=>i+1).map(m => `<option value="${m}" ${String(my.birthMonth||'')===String(m)?'selected':''}>${m}月</option>`).join('')}
+            </select>
+            <select class="match-profile-input" data-profile="birthDay">
+              <option value="">日</option>
+              ${Array.from({length:31},(_,i)=>i+1).map(d => `<option value="${d}" ${String(my.birthDay||'')===String(d)?'selected':''}>${d}日</option>`).join('')}
+            </select>
+          </span>
+        </label>
+        <label class="match-profile-label">出身地
+          <input list="matchCountryOptions" class="match-profile-input" data-profile="country" value="${escapeHtml(my.country||'')}" placeholder="例: 日本">
+          <datalist id="matchCountryOptions">
+            ${countryOptions.map(c => `<option value="${escapeHtml(c)}">`).join('')}
+          </datalist>
+        </label>
+      </div>
+    </div>
+  ` : `
+    <div class="match-profile match-profile-locked">
+      <div class="match-profile-lock-head">🔒 誕生日・出身地の登録は会員限定です</div>
+      <div class="match-profile-lock-sub">登録すると、同じ誕生日の偉人を探せます。</div>
+      <button class="match-profile-login-btn" id="matchProfileLoginBtn">🔑 本棚の鍵を受け取る</button>
+    </div>
+  `;
+
   container.innerHTML = `
     <details class="match-card" ${selectedCount === 0 ? 'open' : ''}>
       <summary class="match-summary">
         <span class="match-summary-icon">🫖</span>
-        <span class="match-summary-text">${selectedCount > 0 ? `あなたの好み ${selectedCount}個選択中` : 'あなたの趣味・好きなものを選んで偉人を探す'}</span>
+        <span class="match-summary-text">${selectedCount > 0 ? `あなたの好み ${selectedCount}個登録中` : 'あなたの好み・誕生日を登録して偉人を探す'}</span>
         <span class="match-summary-arrow">▾</span>
       </summary>
       <div class="match-body">
         <div class="match-intro">気になる項目をタップして選択（複数可）。<br>共通点の多い偉人が下に表示されます。</div>
+        ${profileHtml}
         ${makeChips('foods', '🍽 好きな食べ物・飲み物')}
         ${makeChips('hobbies', '🎨 趣味・日課')}
         ${makeChips('likes', '❤ 好きなもの')}
+        ${makeChips('dislikes', '✖ 嫌いなもの')}
         ${selectedCount > 0 ? `<button class="match-clear" id="matchClear">選択をクリア</button>` : ''}
       </div>
     </details>
+    ${sameBdHtml}
     ${matchesHtml}
   `;
 
@@ -580,12 +691,65 @@ function renderTraitsMatch() {
       renderTraitsMatch();
     });
   });
+  container.querySelectorAll('[data-profile]').forEach(el => {
+    el.addEventListener('change', () => {
+      const t = loadMyTraits();
+      t[el.dataset.profile] = el.value;
+      saveMyTraits(t);
+      renderTraitsMatch();
+    });
+  });
+  container.querySelector('#matchProfileLoginBtn')?.addEventListener('click', () => {
+    if (typeof openLoginModal === 'function') openLoginModal();
+  });
   container.querySelector('#matchClear')?.addEventListener('click', () => {
     saveMyTraits({});
     renderTraitsMatch();
   });
   container.querySelectorAll('.person-book').forEach(el => {
     el.addEventListener('click', () => showPerson(el.dataset.id));
+  });
+}
+
+function renderTodayBirthday() {
+  const block = document.getElementById('todayBirthdayBlock');
+  const list = document.getElementById('todayBirthdayList');
+  if (!block || !list || !DATA.people) return;
+  const now = new Date();
+  const m = now.getMonth() + 1;
+  const d = now.getDate();
+  const births = DATA.people.filter(p => p.birthMonth === m && p.birthDay === d);
+  if (births.length === 0) {
+    block.style.display = 'none';
+    return;
+  }
+  block.style.display = '';
+  const my = (typeof loadMyTraits === 'function') ? loadMyTraits() : {};
+  const sameAsMe = (my.birthMonth && my.birthDay &&
+    parseInt(my.birthMonth,10) === m && parseInt(my.birthDay,10) === d);
+  list.innerHTML = `
+    <div class="today-birthday-date">${m}月${d}日 生まれ${sameAsMe ? '<span class="today-birthday-same">🎉 あなたと同じ誕生日！</span>' : ''}</div>
+    <div class="today-birthday-grid">
+      ${births.map(p => {
+        const avatar = p.imageUrl
+          ? `<div class="today-birthday-avatar" style="background-image:url('${p.imageUrl}')"></div>`
+          : `<div class="today-birthday-avatar no-img">${p.name.charAt(0)}</div>`;
+        const years = p.birth ? `${now.getFullYear() - p.birth} 年目` : '';
+        return `
+          <button class="today-birthday-card" data-person-id="${p.id}">
+            ${avatar}
+            <div class="today-birthday-info">
+              <div class="today-birthday-name">${p.name}</div>
+              <div class="today-birthday-meta">${fmtYearRange(p.birth, p.death)} ／ ${p.field || ''}</div>
+              ${years ? `<div class="today-birthday-years">🎂 生誕 ${years}</div>` : ''}
+            </div>
+          </button>
+        `;
+      }).join('')}
+    </div>
+  `;
+  list.querySelectorAll('[data-person-id]').forEach(el => {
+    el.addEventListener('click', () => showPerson(el.dataset.personId));
   });
 }
 
@@ -628,7 +792,7 @@ function renderCalendarToday() {
         <div class="cal-body">
           <div class="cal-label ${type}">${label}</div>
           <div class="cal-name">${p.name}</div>
-          <div class="cal-meta">${p.birth || '?'}–${p.death || ''} ／ ${p.field || ''}</div>
+          <div class="cal-meta">${fmtYearRange(p.birth, p.death)} ／ ${p.field || ''}</div>
           <div class="cal-years">${years}</div>
         </div>
       </article>
@@ -1181,7 +1345,7 @@ function renderOshi() {
       <div class="oshi-info">
         <div class="oshi-label">♡ わたしの推し</div>
         <div class="oshi-name">${p.name}</div>
-        <div class="oshi-meta">${p.birth || '?'}-${p.death || ''} ／ ${p.field}</div>
+        <div class="oshi-meta">${fmtYearRange(p.birth, p.death)} ／ ${p.field}</div>
       </div>
     </div>
   `;
@@ -1530,7 +1694,13 @@ function renderPeople(filter = '') {
       if (eraOf(currentCategory, p.birth) !== currentEra) return false;
     }
     if (!q) return true;
-    return (p.name + (p.nameEn || '') + p.field + p.country + p.summary).toLowerCase().includes(q);
+    const nameBlob = (p.name + ' ' + (p.nameEn || '')).toLowerCase();
+    const traits = p.traits || {};
+    const traitsBlob = []
+      .concat(traits.hobbies || [], traits.foods || [], traits.likes || [], traits.dislikes || [])
+      .join(' ')
+      .toLowerCase();
+    return nameBlob.includes(q) || traitsBlob.includes(q);
   });
   // 無条件（ホーム初期表示）のときは表示するたびにランダムに選出
   const isDefault = !q && currentCategory === 'all' && currentEra === 'all';
@@ -1560,13 +1730,13 @@ function renderPeople(filter = '') {
     const bg = p.imageUrl ? `style="background-image:url('${p.imageUrl}')"` : '';
     return `
       <div class="person-book ${p.imageUrl ? '' : 'no-img'}" data-id="${p.id}" ${bg}>
-        <button class="person-book-bookmark ${isFavPerson(p.id) ? 'active' : ''}" data-fav-toggle="${p.id}" aria-label="お気に入り"></button>
+        <button class="person-book-follow ${isFavPerson(p.id) ? 'active' : ''}" data-fav-toggle="${p.id}" aria-label="${isFavPerson(p.id) ? 'フォロー中' : 'フォロー'}">${isFavPerson(p.id) ? '✓ フォロー中' : '＋ フォロー'}</button>
         <div class="person-book-overlay"></div>
         ${!p.imageUrl ? `<div class="person-book-placeholder">${p.name.charAt(0)}</div>` : ''}
         <div class="person-book-info">
           ${p.nameEn ? `<div class="person-book-en">${p.nameEn}</div>` : ''}
           <div class="person-book-name">${p.name}</div>
-          <div class="person-book-meta">${p.birth || '?'}–${p.death || ''} ／ ${p.field}</div>
+          <div class="person-book-meta">${fmtYearRange(p.birth, p.death)} ／ ${p.field}</div>
         </div>
       </div>
     `;
@@ -1998,7 +2168,7 @@ async function showPerson(id) {
   const flipPromise = playBookFlip({
     title: p.name,
     nameEn: p.nameEn,
-    subtitle: `${p.birth || '?'}–${p.death || ''} ／ ${p.field}`,
+    subtitle: `${fmtYearRange(p.birth, p.death)} ／ ${p.field}`,
     imageUrl: p.imageUrl
   });
   const events = [...p.events].sort((a, b) => a.year - b.year);
@@ -2157,11 +2327,11 @@ async function showPerson(id) {
     <!-- カバー：名前を主役にした扉絵風 -->
     <div class="profile-cover profile-cover-typo">
       <div class="profile-cover-frame">
-        <div class="profile-cover-orn-top">─── ◆ ───</div>
+        <div class="profile-cover-orn-top">◆</div>
         <div class="profile-cover-name">${p.name}</div>
         ${p.nameEn ? `<div class="profile-cover-name-en">${p.nameEn}</div>` : ''}
-        <div class="profile-cover-dates">${p.birth || '?'} — ${p.death || ''}</div>
-        <div class="profile-cover-orn-bot">─── ◆ ───</div>
+        <div class="profile-cover-dates">${fmtYearRange(p.birth, p.death)}</div>
+        <div class="profile-cover-orn-bot">◆</div>
       </div>
     </div>
 
@@ -2191,11 +2361,11 @@ async function showPerson(id) {
       <div class="profile-meta">
         <span>${p.field}</span>
         <span>${p.country}</span>
-        <span>${p.birth}–${p.death || ''}</span>
+        <span>${fmtYearRange(p.birth, p.death)}</span>
       </div>
       <div class="profile-xmeta">
-        ${(p.birthMonth && p.birthDay) ? `<span class="profile-xmeta-item">🎂 ${p.birthMonth}/${p.birthDay}${p.birth ? `（${p.birth}年生）` : ''}</span>` : ''}
-        ${(p.deathMonth && p.deathDay) ? `<span class="profile-xmeta-item">🕯 ${p.deathMonth}/${p.deathDay}${p.death ? `（${p.death}年没）` : ''}</span>` : ''}
+        ${(p.birthMonth && p.birthDay) ? `<span class="profile-xmeta-item">🎂 ${p.birthMonth}/${p.birthDay}${p.birth ? `（${fmtYear(p.birth)}年生）` : ''}</span>` : ''}
+        ${(p.deathMonth && p.deathDay) ? `<span class="profile-xmeta-item">🕯 ${p.deathMonth}/${p.deathDay}${p.death ? `（${fmtYear(p.death)}年没）` : ''}</span>` : ''}
         ${p.country ? `<span class="profile-xmeta-item">📍 ${p.country}</span>` : ''}
         <span class="profile-xmeta-item">👣 ${getVisitCount(p.id)}回訪問</span>
       </div>
@@ -2241,6 +2411,32 @@ async function showPerson(id) {
         <div class="profile-stat"><strong>${quotesCount}</strong>名言</div>
         <div class="profile-stat"><strong>${tagsUsed.size}</strong>感情</div>
       </div>
+      ${(() => {
+        const BLOCK_KW = ['宿敵','敵','ライバル','対立','裏切','論敵','抗争','競争','暗殺','刺客','暗殺者','抗命','反発','確執','不仲','宗教的対立','批判者','批判'];
+        const isBlk = (r) => BLOCK_KW.some(kw => ((r.relation||'')+(r.note||'')).includes(kw));
+        const rels = p.relations || [];
+        const fol = rels.filter(r => !isBlk(r)).length;
+        const blk = rels.filter(r => isBlk(r)).length;
+        const userName = getUserName();
+        const userFollower = isFollowedByPerson(p.id) && userName ? 1 : 0;
+        const followerCount = fol + userFollower;
+        return `
+          <div class="profile-x-social">
+            <button class="profile-x-social-item" data-person-social="following">
+              <span class="profile-x-social-num">${fol}</span>
+              <span class="profile-x-social-lbl">フォロー中</span>
+            </button>
+            <button class="profile-x-social-item" data-person-social="followers">
+              <span class="profile-x-social-num">${followerCount}</span>
+              <span class="profile-x-social-lbl">フォロワー</span>
+            </button>
+            <button class="profile-x-social-item" data-person-social="blocked">
+              <span class="profile-x-social-num">${blk}</span>
+              <span class="profile-x-social-lbl">ブロック中</span>
+            </button>
+          </div>
+        `;
+      })()}
     </div>
 
     ${(p.routine && p.routine.length > 0) ? `
@@ -2302,8 +2498,17 @@ async function showPerson(id) {
 
     ${(() => {
       const lv = getStampLevel(p.id);
+      const bd = getStampBreakdown(p.id);
       const stamps = Array.from({length: lv}, (_, i) => `<div class="stamp-seal">★</div>`).join('');
       const nextGoal = lv < 3 ? 3 : lv < 5 ? 5 : lv < 10 ? 10 : null;
+      const bdRows = Object.entries(bd)
+        .filter(([,n]) => n > 0)
+        .map(([k,n]) => `
+          <div class="stamp-breakdown-item">
+            <span class="stamp-breakdown-src">${STAMP_SOURCE_LABELS[k] || k}</span>
+            <span class="stamp-breakdown-num">${n} 個</span>
+          </div>
+        `).join('');
       return `
         <div class="profile-stamps">
           <div class="profile-stamps-head">
@@ -2311,9 +2516,16 @@ async function showPerson(id) {
             <div class="profile-stamps-count">Lv.${lv}</div>
           </div>
           ${lv > 0 ? `<div class="profile-stamps-row">${stamps}</div>` : `<div class="profile-stamps-empty">まだスタンプがありません</div>`}
+          ${bdRows ? `
+            <div class="stamp-breakdown">
+              <div class="stamp-breakdown-head">取得内訳</div>
+              ${bdRows}
+            </div>
+          ` : ''}
           <div class="profile-stamps-criteria">
             <div class="stamp-criteria-head">🏷 スタンプの貯め方</div>
             <div class="stamp-criteria-item">・クイズ全問正解で +1</div>
+            <div class="stamp-criteria-item">・聖地巡礼チェックインで +1（GPS確認推奨）</div>
             <div class="stamp-criteria-item">・Lv.3 で${p.name}があなたをフォロー</div>
             ${nextGoal ? `<div class="stamp-criteria-goal">あと <b>${nextGoal - lv}</b> 個で次の段階</div>` : '<div class="stamp-criteria-goal">✨ マスターレベル達成</div>'}
           </div>
@@ -2329,18 +2541,20 @@ async function showPerson(id) {
     </button>
 
     <!-- ミニタブ -->
-    <div class="profile-tabs">
-      <button class="profile-tab active" data-ptab="stream">タイムライン</button>
-      <button class="profile-tab" data-ptab="quotes">名言</button>
-      <button class="profile-tab" data-ptab="timeline">年表</button>
-      ${(p.relations && p.relations.length > 0) ? '<button class="profile-tab" data-ptab="relations">フォロー・フォロワー</button>' : ''}
-      ${(p.works && p.works.length > 0) ? '<button class="profile-tab" data-ptab="works">代表作</button>' : ''}
-      ${(p.media && p.media.length > 0) ? '<button class="profile-tab" data-ptab="media">映画・ドラマ</button>' : ''}
-      <button class="profile-tab" data-ptab="happenings">イベント</button>
-      <button class="profile-tab" data-ptab="goods">グッズ</button>
-      ${(p.books && p.books.length > 0) ? '<button class="profile-tab" data-ptab="books">関連本</button>' : ''}
-      ${(p.places && p.places.length > 0) ? '<button class="profile-tab" data-ptab="places">聖地巡礼</button>' : ''}
-      <button class="profile-tab" data-ptab="letters">手紙</button>
+    <div class="profile-tabs-wrap">
+      <div class="profile-tabs">
+        <button class="profile-tab active" data-ptab="stream">タイムライン</button>
+        <button class="profile-tab" data-ptab="quotes">名言</button>
+        <button class="profile-tab" data-ptab="timeline">年表</button>
+        ${(p.relations && p.relations.length > 0) ? '<button class="profile-tab" data-ptab="relations">フォロー・フォロワー</button>' : ''}
+        ${(p.works && p.works.length > 0) ? '<button class="profile-tab" data-ptab="works">代表作</button>' : ''}
+        ${(p.media && p.media.length > 0) ? '<button class="profile-tab" data-ptab="media">映画・ドラマ</button>' : ''}
+        <button class="profile-tab" data-ptab="happenings">イベント</button>
+        <button class="profile-tab" data-ptab="goods">グッズ</button>
+        ${(p.books && p.books.length > 0) ? '<button class="profile-tab" data-ptab="books">関連本</button>' : ''}
+        ${(p.places && p.places.length > 0) ? '<button class="profile-tab" data-ptab="places">聖地巡礼</button>' : ''}
+        <button class="profile-tab" data-ptab="letters">手紙</button>
+      </div>
     </div>
 
     <!-- 聖地巡礼タブ -->
@@ -2918,6 +3132,21 @@ async function showPerson(id) {
     });
   });
 
+  // プロフィールタブの横スクロールヒント（←→）制御
+  const tabsWrap = container.querySelector('.profile-tabs-wrap');
+  const tabsInner = tabsWrap?.querySelector('.profile-tabs');
+  if (tabsWrap && tabsInner) {
+    const updateHint = () => {
+      const maxScroll = tabsInner.scrollWidth - tabsInner.clientWidth;
+      const isScrollable = maxScroll > 2;
+      tabsWrap.classList.toggle('no-scroll', !isScrollable);
+      tabsWrap.classList.toggle('scrolled-end', tabsInner.scrollLeft >= maxScroll - 2);
+    };
+    tabsInner.addEventListener('scroll', updateHint);
+    window.addEventListener('resize', updateHint);
+    setTimeout(updateHint, 50);
+  }
+
   container.querySelectorAll('.event-tag').forEach(el => {
     el.addEventListener('click', () => showTag(el.dataset.tag));
   });
@@ -2976,23 +3205,28 @@ async function showPerson(id) {
         showPerson(p.id); // 再描画
         return;
       }
-      // GPS確認（任意。エラーでも手動チェックインは可能）
-      const doCheckin = () => {
+      // GPS確認 or 手動チェックイン
+      const doCheckin = (source) => {
         toggleCheckin(p.id, place);
-        // スタンプ付与（クイズとは別のcheck-insスタンプ）
-        grantStamp(p.id);
+        // スタンプ付与（source: 'checkin_gps' or 'checkin_manual'）
+        grantStamp(p.id, source || 'checkin_manual');
         if (typeof playKeyUnlockSound === 'function') playKeyUnlockSound();
         alert(`✓ ${place.name} に訪問記録を追加しました。\n${p.name}のスタンプ+1を獲得！`);
         showPerson(p.id);
       };
-      const useGPS = confirm('📍 位置情報を使って本当にそこに居るか確認しますか？\nOK: GPS確認あり／キャンセル: 手動でチェックイン');
-      if (useGPS && navigator.geolocation) {
+      const useGPS = confirm('📍 位置情報を使って本当にそこに居るか確認しますか？\nOK: GPS確認あり（現地でのみスタンプ獲得）／キャンセル: 手動でチェックイン');
+      if (useGPS) {
+        if (!navigator.geolocation) {
+          alert('この端末では位置情報が利用できません。手動チェックインを使う場合はキャンセルして再実行してください。');
+          return;
+        }
         navigator.geolocation.getCurrentPosition(
           (pos) => {
-            // 場所のGPS座標がない場合は信用してチェックイン
+            // 場所のGPS座標がない場合はGPS判定できないので中止
             if (!place.lat || !place.lng) {
-              alert('この場所の座標データがまだありません。手動でチェックインします。');
-              doCheckin();
+              if (confirm(`この場所の座標データがまだありません。\nGPS判定をせずに手動でチェックインしますか？（スタンプ獲得）`)) {
+                doCheckin('checkin_manual');
+              }
               return;
             }
             const R = 6371; // 地球半径km
@@ -3001,19 +3235,21 @@ async function showPerson(id) {
             const a = Math.sin(dLat/2)**2 + Math.cos(pos.coords.latitude * Math.PI / 180) * Math.cos(place.lat * Math.PI / 180) * Math.sin(dLng/2)**2;
             const dist = 2 * R * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
             if (dist < 1.0) {
-              doCheckin();
+              doCheckin('checkin_gps');
             } else {
-              alert(`場所から約${dist.toFixed(1)}km離れています。もう少し近づいてから試してください。`);
+              alert(`場所から約${dist.toFixed(1)}km離れています。もう少し近づいてから試してください。\n（GPS判定モードではスタンプは付与されません）`);
             }
           },
           (err) => {
-            alert('位置情報が取得できませんでした。手動でチェックインします。');
-            doCheckin();
+            alert('位置情報が取得できませんでした。\n設定で位置情報の使用を許可するか、キャンセル→手動チェックインを選んで再実行してください。\n（GPS判定モードではスタンプは付与されません）');
           },
-          { timeout: 10000 }
+          { timeout: 10000, enableHighAccuracy: true }
         );
       } else {
-        doCheckin();
+        // 手動 — 明示確認
+        if (confirm(`手動でチェックインします（実際に訪問したことを前提としてください）。\nスタンプを獲得しますか？`)) {
+          doCheckin('checkin_manual');
+        }
       }
     });
   });
@@ -3030,6 +3266,14 @@ async function showPerson(id) {
       followBtn.textContent = on ? '✓ フォロー中' : '＋ フォロー';
     });
   }
+  // 偉人のフォロー中／フォロワー／ブロック中 → ポップアップ
+  container.querySelectorAll('[data-person-social]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openPersonRelationsModal(p, btn.dataset.personSocial);
+    });
+  });
+
   // 未ログイン時のフォローボタン → ログイン誘導
   const followLogin = container.querySelector('[data-follow-login]');
   if (followLogin) {
@@ -3288,12 +3532,14 @@ function renderTags() {
         if (categoryOf(p.field) !== f) return false;
       }
       if (!q) return true;
-      const blob = (p.name + (p.nameEn || '') + p.field + p.country + p.summary).toLowerCase();
-      const tagMatch = (p.events || []).some(e => (e.tags || []).some(tid => {
-        const t = DATA.tagMap[tid];
-        return t && t.name.toLowerCase().includes(q);
-      }));
-      return blob.includes(q) || tagMatch;
+      // 名前と趣味・好きなもの（食べ物・趣味・好きなもの・嫌いなもの）でのみヒット
+      const nameBlob = (p.name + ' ' + (p.nameEn || '')).toLowerCase();
+      const traits = p.traits || {};
+      const traitsBlob = []
+        .concat(traits.hobbies || [], traits.foods || [], traits.likes || [], traits.dislikes || [])
+        .join(' ')
+        .toLowerCase();
+      return nameBlob.includes(q) || traitsBlob.includes(q);
     });
     // 時代絞り込み
     if (currentSearchEra !== 'all' && ERA_RULES[f]) {
@@ -3362,13 +3608,13 @@ function renderTags() {
       const bg = p.imageUrl ? `style="background-image:url('${p.imageUrl}')"` : '';
       return `
         <div class="person-book ${p.imageUrl ? '' : 'no-img'}" data-id="${p.id}" ${bg}>
-          <button class="person-book-bookmark ${isFavPerson(p.id) ? 'active' : ''}" data-fav-toggle="${p.id}" aria-label="お気に入り"></button>
+          <button class="person-book-follow ${isFavPerson(p.id) ? 'active' : ''}" data-fav-toggle="${p.id}" aria-label="${isFavPerson(p.id) ? 'フォロー中' : 'フォロー'}">${isFavPerson(p.id) ? '✓ フォロー中' : '＋ フォロー'}</button>
           <div class="person-book-overlay"></div>
           ${!p.imageUrl ? `<div class="person-book-placeholder">${p.name.charAt(0)}</div>` : ''}
           <div class="person-book-info">
             ${p.nameEn ? `<div class="person-book-en">${p.nameEn}</div>` : ''}
             <div class="person-book-name">${p.name}</div>
-            <div class="person-book-meta">${p.birth || '?'}–${p.death || ''} ／ ${p.field}</div>
+            <div class="person-book-meta">${fmtYearRange(p.birth, p.death)} ／ ${p.field}</div>
           </div>
         </div>
       `;
@@ -3394,9 +3640,16 @@ function bindBookmarkToggle(container) {
   container.querySelectorAll('[data-fav-toggle]').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
+      e.preventDefault();
       const id = btn.dataset.favToggle;
       toggleFavPerson(id);
-      btn.classList.toggle('active');
+      const on = isFavPerson(id);
+      btn.classList.toggle('active', on);
+      // フォローボタン形式のみラベル切替（旧リボン型にはテキストなし）
+      if (btn.classList.contains('person-book-follow')) {
+        btn.textContent = on ? '✓ フォロー中' : '＋ フォロー';
+        btn.setAttribute('aria-label', on ? 'フォロー中' : 'フォロー');
+      }
     });
   });
 }
@@ -3748,17 +4001,44 @@ function loadStamps() {
 function saveStamps(obj) {
   localStorage.setItem(STAMPS_KEY, JSON.stringify(obj));
 }
-function grantStamp(personId) {
+// 内訳を取得：{ quiz: N, checkin_gps: N, checkin_manual: N, ... } の形へ正規化
+function getStampBreakdown(personId) {
+  const raw = loadStamps()[personId];
+  if (raw === undefined || raw === null) return {};
+  // 旧フォーマット（数値）は quiz として扱う
+  if (typeof raw === 'number') return { quiz: raw };
+  if (typeof raw === 'object') return { ...raw };
+  return {};
+}
+function grantStamp(personId, source = 'quiz') {
   const stamps = loadStamps();
-  stamps[personId] = (stamps[personId] || 0) + 1;
+  const cur = stamps[personId];
+  let bd;
+  if (typeof cur === 'number') bd = { quiz: cur };
+  else if (cur && typeof cur === 'object') bd = { ...cur };
+  else bd = {};
+  bd[source] = (bd[source] || 0) + 1;
+  stamps[personId] = bd;
   saveStamps(stamps);
 }
 function getStampLevel(personId) {
-  return loadStamps()[personId] || 0;
+  const bd = getStampBreakdown(personId);
+  return Object.values(bd).reduce((a, b) => a + (b || 0), 0);
 }
 function totalStamps() {
-  return Object.values(loadStamps()).reduce((a, b) => a + b, 0);
+  const all = loadStamps();
+  let total = 0;
+  Object.values(all).forEach(v => {
+    if (typeof v === 'number') total += v;
+    else if (v && typeof v === 'object') total += Object.values(v).reduce((a,b) => a + (b||0), 0);
+  });
+  return total;
 }
+const STAMP_SOURCE_LABELS = {
+  quiz: '📝 親密度クイズ',
+  checkin_gps: '📍 聖地巡礼（GPS確認）',
+  checkin_manual: '📍 聖地巡礼（手動）',
+};
 
 // 称号（総スタンプ数に応じた段階）
 const TITLES = [
@@ -3802,6 +4082,7 @@ function generateQuizzes(person) {
       .filter((v, i, a) => a.indexOf(v) === i).slice(0, 3);
     if (distractors.length >= 3) {
       quizzes.push({
+        id: `field:${person.id}`,
         q: `${person.name}の職業・分野は？`,
         options: shuffleArr([person.field, ...distractors]),
         answer: person.field,
@@ -3814,6 +4095,7 @@ function generateQuizzes(person) {
       .filter((v, i, a) => a.indexOf(v) === i).slice(0, 3);
     if (distractors.length >= 3) {
       quizzes.push({
+        id: `country:${person.id}`,
         q: `${person.name}の出身国は？`,
         options: shuffleArr([normalizeCountry(person.country), ...distractors]),
         answer: normalizeCountry(person.country),
@@ -3826,6 +4108,7 @@ function generateQuizzes(person) {
     const distractors = shuffleArr([y - 20, y - 10, y + 10, y + 25, y - 30, y + 15])
       .filter((v, i, a) => a.indexOf(v) === i).slice(0, 3);
     quizzes.push({
+      id: `birth:${person.id}`,
       q: `${person.name}は何年に生まれた？`,
       options: shuffleArr([y, ...distractors]).map(String),
       answer: String(y),
@@ -3841,6 +4124,7 @@ function generateQuizzes(person) {
     ).filter((v, i, a) => a.indexOf(v) === i).slice(0, 3);
     if (distractors.length >= 3) {
       quizzes.push({
+        id: `event:${person.id}:${ev.year}:${(ev.title||'').slice(0,20)}`,
         q: `${ev.year}年、${person.name}は何をした？`,
         options: shuffleArr([ev.title, ...distractors]),
         answer: ev.title,
@@ -3854,6 +4138,7 @@ function generateQuizzes(person) {
     const distractors = shuffleArr(others.map(o => o.name)).slice(0, 3);
     if (distractors.length >= 3) {
       quizzes.push({
+        id: `quote:${person.id}:${(q.text||'').slice(0,30)}`,
         q: `この言葉の主は？\n「${q.text}」`,
         options: shuffleArr([person.name, ...distractors]),
         answer: person.name,
@@ -3863,12 +4148,57 @@ function generateQuizzes(person) {
   return shuffleArr(quizzes);
 }
 
+// 解答済みクイズ管理（スタンプは別。問題リセットしてもスタンプは減らない）
+// ijin_quiz_answered : 出題除外用（リセットで消える）
+// ijin_quiz_ever_stamped : スタンプ重複防止用（リセットでも残る）
+const QUIZ_ANSWERED_KEY = 'ijin_quiz_answered';
+const QUIZ_EVER_STAMPED_KEY = 'ijin_quiz_ever_stamped';
+function loadAnsweredQuiz() {
+  try { return JSON.parse(localStorage.getItem(QUIZ_ANSWERED_KEY) || '{}'); }
+  catch { return {}; }
+}
+function saveAnsweredQuiz(obj) {
+  localStorage.setItem(QUIZ_ANSWERED_KEY, JSON.stringify(obj));
+}
+function loadEverStamped() {
+  try { return JSON.parse(localStorage.getItem(QUIZ_EVER_STAMPED_KEY) || '{}'); }
+  catch { return {}; }
+}
+function saveEverStamped(obj) {
+  localStorage.setItem(QUIZ_EVER_STAMPED_KEY, JSON.stringify(obj));
+}
+function isQuizAnswered(personId, qId) {
+  const all = loadAnsweredQuiz();
+  return Array.isArray(all[personId]) && all[personId].includes(qId);
+}
+function isQuizEverStamped(personId, qId) {
+  const all = loadEverStamped();
+  return Array.isArray(all[personId]) && all[personId].includes(qId);
+}
+function markQuizAnswered(personId, qId) {
+  const all = loadAnsweredQuiz();
+  if (!Array.isArray(all[personId])) all[personId] = [];
+  if (!all[personId].includes(qId)) all[personId].push(qId);
+  saveAnsweredQuiz(all);
+}
+function markQuizEverStamped(personId, qId) {
+  const all = loadEverStamped();
+  if (!Array.isArray(all[personId])) all[personId] = [];
+  if (!all[personId].includes(qId)) all[personId].push(qId);
+  saveEverStamped(all);
+}
+function resetAnsweredQuiz(personId) {
+  const all = loadAnsweredQuiz();
+  delete all[personId];
+  saveAnsweredQuiz(all);
+}
+
 function openQuizModal(person) {
   const existing = document.getElementById('quizModal');
   if (existing) existing.remove();
 
-  const pool = generateQuizzes(person);
-  if (pool.length === 0) {
+  const allPool = generateQuizzes(person);
+  if (allPool.length === 0) {
     alert('まだこの偉人のクイズが用意できません。');
     return;
   }
@@ -3877,12 +4207,46 @@ function openQuizModal(person) {
   modal.id = 'quizModal';
   modal.className = 'quiz-modal';
 
+  let gainedThisSession = 0;
+
+  // 未出題プールを取得（解答済みを除外）
+  const getRemaining = () => allPool.filter(q => !isQuizAnswered(person.id, q.id));
+
   // ステップ1: 問題数選択
   const showPicker = () => {
-    const maxN = pool.length;
-    const options = [3, 5, 10].filter(n => n <= maxN);
+    const remaining = getRemaining();
+    const totalPool = allPool.length;
+    const answeredCount = totalPool - remaining.length;
+    const maxN = remaining.length;
+
+    if (maxN === 0) {
+      modal.innerHTML = `
+        <div class="quiz-backdrop" data-close="1"></div>
+        <div class="quiz-panel">
+          <button class="quiz-close" data-close="1" aria-label="閉じる">×</button>
+          <div class="quiz-head">
+            <div class="quiz-head-title">全問クリア！🏆</div>
+            <div class="quiz-head-sub">${person.name} のクイズは全て正解しています（${totalPool}問）</div>
+          </div>
+          <div class="quiz-note">進捗をリセットすると、もう一度挑戦できます。<br><b>スタンプは減りません</b>が、再び正解してもスタンプは増えません。</div>
+          <div class="quiz-picker-actions">
+            <button class="quiz-reset-btn" id="quizResetBtn">🔄 進捗をリセット</button>
+            <button class="quiz-done" data-close="1">閉じる</button>
+          </div>
+        </div>
+      `;
+      modal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', close));
+      modal.querySelector('#quizResetBtn').addEventListener('click', () => {
+        if (confirm('このクイズの進捗をリセットしますか？\n（スタンプはそのまま残ります。再度正解してもスタンプは増えません）')) {
+          resetAnsweredQuiz(person.id);
+          showPicker();
+        }
+      });
+      return;
+    }
+
+    const options = [1, 3, 5, 10].filter(n => n <= maxN);
     if (options.length === 0) options.push(maxN);
-    if (!options.includes(maxN)) options.push(maxN);
     modal.innerHTML = `
       <div class="quiz-backdrop" data-close="1"></div>
       <div class="quiz-panel">
@@ -3891,33 +4255,52 @@ function openQuizModal(person) {
           <div class="quiz-head-title">私のこと、どこまで知ってる？</div>
           <div class="quiz-head-sub">${person.name} の世界を、どこまで旅する？</div>
         </div>
+        <div class="quiz-progress-info">
+          未出題 <b>${maxN}</b> 問 ／ 解答済み ${answeredCount} 問 ／ 全 ${totalPool} 問
+        </div>
         <div class="quiz-picker">
           ${options.map(n => `<button class="quiz-pick-btn" data-pick-count="${n}">${n}問 挑戦</button>`).join('')}
         </div>
-        <div class="quiz-note">全問正解で${person.name}のスタンプを獲得！</div>
+        <div class="quiz-note">1問正解ごとに${person.name}のスタンプ +1<br><small>※過去に正解した問題は再出題されません</small></div>
+        ${answeredCount > 0 ? `
+          <button class="quiz-reset-btn-small" id="quizResetBtnSmall">🔄 進捗をリセット（スタンプは残ります）</button>
+        ` : ''}
       </div>
     `;
     modal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', close));
     modal.querySelectorAll('[data-pick-count]').forEach(btn => {
       btn.addEventListener('click', () => startQuiz(parseInt(btn.dataset.pickCount, 10)));
     });
+    modal.querySelector('#quizResetBtnSmall')?.addEventListener('click', () => {
+      if (confirm('このクイズの進捗をリセットしますか？\n（スタンプはそのまま残ります。リセット後の再挑戦ではスタンプは増えません）')) {
+        resetAnsweredQuiz(person.id);
+        showPicker();
+      }
+    });
   };
 
   let currentIdx = 0;
   let correct = 0;
   let selectedPool = [];
+  let isAfterReset = false;
 
   const startQuiz = (count) => {
-    selectedPool = pool.slice(0, count);
+    const remaining = getRemaining();
+    const answeredTotal = allPool.length - remaining.length;
+    // リセット直後（過去に正解記録があったがゼロに戻った）はスタンプ付与を無効化
+    // 通常は「未出題 = 過去に一度も正解していない」なのでスタンプ付与対象
+    // ただしユーザーがリセットしたセッションではスタンプを増やさない必要がある
+    isAfterReset = !!modal._quizWasReset;
+    selectedPool = remaining.slice(0, count);
     currentIdx = 0;
     correct = 0;
+    gainedThisSession = 0;
     showQuestion();
   };
 
   const showQuestion = () => {
     if (currentIdx >= selectedPool.length) return showResult();
     const q = selectedPool[currentIdx];
-    const panel = modal.querySelector('.quiz-panel') || modal;
     modal.innerHTML = `
       <div class="quiz-backdrop" data-close="1"></div>
       <div class="quiz-panel">
@@ -3938,12 +4321,21 @@ function openQuizModal(person) {
         const selected = btn.dataset.opt;
         const isCorrect = selected === q.answer;
         btn.classList.add(isCorrect ? 'correct' : 'wrong');
-        // 正解ボタンもハイライト
         modal.querySelectorAll('.quiz-option').forEach(b => {
           if (b.dataset.opt === q.answer) b.classList.add('correct');
           b.disabled = true;
         });
-        if (isCorrect) correct++;
+        if (isCorrect) {
+          correct++;
+          // 過去に一度もスタンプを付与していなければ付与（リセット後の再挑戦では付与しない）
+          if (!isQuizEverStamped(person.id, q.id)) {
+            grantStamp(person.id, 'quiz');
+            markQuizEverStamped(person.id, q.id);
+            gainedThisSession++;
+            if (typeof playKeyUnlockSound === 'function') playKeyUnlockSound();
+          }
+          markQuizAnswered(person.id, q.id);
+        }
         setTimeout(() => {
           currentIdx++;
           showQuestion();
@@ -3955,10 +4347,6 @@ function openQuizModal(person) {
   const showResult = () => {
     const total = selectedPool.length;
     const allCorrect = (correct === total);
-    if (allCorrect) {
-      grantStamp(person.id);
-      if (typeof playKeyUnlockSound === 'function') playKeyUnlockSound();
-    }
     const level = getStampLevel(person.id);
     modal.innerHTML = `
       <div class="quiz-backdrop" data-close="1"></div>
@@ -3967,15 +4355,19 @@ function openQuizModal(person) {
         <div class="quiz-result">
           <div class="quiz-result-score">${correct} / ${total}</div>
           <div class="quiz-result-msg">
-            ${allCorrect ? `✨ 全問正解！${person.name}のスタンプを獲得` : correct >= total * 0.7 ? 'あと少し…！もう一度挑戦して全問正解を目指そう。' : 'もう一度読み返してから、再挑戦してみよう。'}
+            ${allCorrect ? '✨ 全問正解！' : correct >= total * 0.7 ? 'あと少し…！' : 'もう一度読み返してから、再挑戦してみよう。'}
           </div>
-          ${allCorrect ? `
+          ${gainedThisSession > 0 ? `
             <div class="quiz-stamp">
               <div class="quiz-stamp-visual">🏷</div>
-              <div class="quiz-stamp-name">${person.name}の親密度 Lv.${level}</div>
+              <div class="quiz-stamp-name">+${gainedThisSession} スタンプ獲得！（${person.name} Lv.${level}）</div>
+            </div>
+          ` : correct > 0 ? `
+            <div class="quiz-stamp quiz-stamp-muted">
+              <div class="quiz-stamp-name">過去に正解した問題のためスタンプは加算されません（Lv.${level}）</div>
             </div>
           ` : ''}
-          <button class="quiz-retry" id="quizRetry">もう一度</button>
+          <button class="quiz-retry" id="quizRetry">続けて挑戦</button>
           <button class="quiz-done" data-close="1">閉じる</button>
         </div>
       </div>
@@ -4013,7 +4405,7 @@ async function fetchAIReply(person, letterText) {
       body: JSON.stringify({
         personName: person.name,
         personField: person.field,
-        personEra: `${person.birth || '?'}–${person.death || ''}`,
+        personEra: `${fmtYearRange(person.birth, person.death)}`,
         letterText: letterText.slice(0, 1200),
         quotes: (person.quotes || []).slice(0, 5),
       }),
@@ -4116,7 +4508,7 @@ function openLetterModal(p) {
       <div class="letter-modal-head">
         <div class="letter-modal-to">─── 拝啓 ───</div>
         <div class="letter-modal-name">${p.name} 様</div>
-        <div class="letter-modal-sub">${p.birth || '?'}–${p.death || ''} ／ ${p.field}</div>
+        <div class="letter-modal-sub">${fmtYearRange(p.birth, p.death)} ／ ${p.field}</div>
       </div>
       <div class="letter-modal-body">
         <div class="letter-beta-notice">
@@ -4310,6 +4702,334 @@ function routineDetailListHtml(routine) {
       <span>${r.activity}</span>
     </div>`;
   }).join('')}</div>`;
+}
+
+// フォロー偉人の relations から論敵・宿敵を集約（ブロックリスト扱い）
+function collectBlockedFromFollowed() {
+  const BLOCK_KW = ['宿敵','敵','ライバル','対立','裏切','論敵','抗争','競争','暗殺','刺客','暗殺者','抗命','反発','確執','不仲','宗教的対立','批判者','批判'];
+  const isBlock = (r) => {
+    const text = (r.relation || '') + ' ' + (r.note || '');
+    return BLOCK_KW.some(kw => text.includes(kw));
+  };
+  const seen = new Map(); // key: linked id or name → {name, linkedId, via:[{personId, relation, note}]}
+  DATA.people.filter(p => favPeople.has(p.id)).forEach(p => {
+    (p.relations || []).filter(isBlock).forEach(r => {
+      const key = r.id || `name:${r.name}`;
+      if (!seen.has(key)) {
+        seen.set(key, { name: r.name, linkedId: r.id || null, via: [] });
+      }
+      seen.get(key).via.push({ personId: p.id, personName: p.name, relation: r.relation, note: r.note });
+    });
+  });
+  return [...seen.values()];
+}
+
+// フォロー中／フォロワー／ブロック 一覧ポップアップ（X風タブ）
+function openSocialListModal(initialTab) {
+  const tab = (['following','followers','blocked'].includes(initialTab)) ? initialTab : 'following';
+
+  const followingPeople = DATA.people.filter(p => favPeople.has(p.id));
+  const followerPeople = DATA.people.filter(p => isFollowedByPerson(p.id));
+  const blockedItems = collectBlockedFromFollowed();
+
+  const overlay = document.createElement('div');
+  overlay.className = 'routine-edit-overlay social-list-overlay';
+  overlay.innerHTML = `
+    <div class="routine-edit-modal social-list-modal">
+      <div class="social-list-tabs">
+        <button class="social-list-tab" data-stab="following">
+          <span class="social-list-tab-num">${followingPeople.length}</span>
+          <span class="social-list-tab-lbl">フォロー中</span>
+        </button>
+        <button class="social-list-tab" data-stab="followers">
+          <span class="social-list-tab-num">${followerPeople.length}</span>
+          <span class="social-list-tab-lbl">フォロワー</span>
+        </button>
+        <button class="social-list-tab" data-stab="blocked">
+          <span class="social-list-tab-num">${blockedItems.length}</span>
+          <span class="social-list-tab-lbl">ブロック中</span>
+        </button>
+        <button class="social-list-close" aria-label="閉じる">×</button>
+      </div>
+      <div class="social-list-body"></div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+
+  const body = overlay.querySelector('.social-list-body');
+
+  function renderPersonList(people, subFn, emptyMsg) {
+    if (people.length === 0) {
+      return `<div class="social-list-empty">${emptyMsg}</div>`;
+    }
+    return `<div class="social-list-grid">${people.map(p => {
+      const av = p.imageUrl
+        ? `<div class="social-list-avatar" style="background-image:url('${p.imageUrl}')"></div>`
+        : `<div class="social-list-avatar no-img">${p.name.charAt(0)}</div>`;
+      return `
+        <button class="social-list-item" data-person="${p.id}">
+          ${av}
+          <div class="social-list-meta">
+            <div class="social-list-name">${p.name}</div>
+            <div class="social-list-sub">${subFn(p)}</div>
+          </div>
+        </button>
+      `;
+    }).join('')}</div>`;
+  }
+
+  function renderBlocked(items) {
+    if (items.length === 0) {
+      return `<div class="social-list-empty">フォロー中の偉人に、歴史的な敵・ライバル・論敵はいません。</div>`;
+    }
+    return `<div class="social-list-grid">${items.map(it => {
+      const linked = it.linkedId ? DATA.people.find(x => x.id === it.linkedId) : null;
+      const av = linked && linked.imageUrl
+        ? `<div class="social-list-avatar" style="background-image:url('${linked.imageUrl}')"></div>`
+        : `<div class="social-list-avatar no-img">${it.name.charAt(0)}</div>`;
+      const viaList = it.via.map(v => `${v.personName}の${v.relation}`).join('・');
+      return `
+        <button class="social-list-item ${linked ? '' : 'no-link'}" ${linked ? `data-person="${linked.id}"` : 'disabled'}>
+          ${av}
+          <div class="social-list-meta">
+            <div class="social-list-name">${it.name}</div>
+            <div class="social-list-sub">${viaList}</div>
+          </div>
+        </button>
+      `;
+    }).join('')}</div>`;
+  }
+
+  function showTab(t) {
+    overlay.querySelectorAll('.social-list-tab').forEach(el => {
+      el.classList.toggle('active', el.dataset.stab === t);
+    });
+    if (t === 'following') {
+      body.innerHTML = renderPersonList(
+        followingPeople,
+        p => isFollowedByPerson(p.id) ? '相互フォロー' : (p.field || ''),
+        'まだ誰もフォローしていません。気になる偉人のページで「＋ フォロー」を押してください。'
+      );
+    } else if (t === 'followers') {
+      body.innerHTML = renderPersonList(
+        followerPeople,
+        p => `スタンプ ${getStampLevel(p.id)} 個`,
+        'まだ偉人からフォローされていません。親密度クイズでスタンプを3つ以上集めると、その偉人があなたをフォローし返します。'
+      );
+    } else {
+      body.innerHTML = renderBlocked(blockedItems);
+    }
+    body.querySelectorAll('[data-person]').forEach(el => {
+      el.addEventListener('click', () => {
+        const id = el.dataset.person;
+        close();
+        showPerson(id);
+      });
+    });
+  }
+
+  const close = () => overlay.remove();
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+  overlay.querySelector('.social-list-close').addEventListener('click', close);
+  overlay.querySelectorAll('.social-list-tab').forEach(el => {
+    el.addEventListener('click', () => showTab(el.dataset.stab));
+  });
+
+  showTab(tab);
+}
+
+// 称号選択モーダル（上品なデザイン）
+function openTitlePickerModal() {
+  const all = TITLES.filter(t => t.name);
+  const total = totalStamps();
+  const cur = currentTitle();
+  const overlay = document.createElement('div');
+  overlay.className = 'routine-edit-overlay title-picker-overlay';
+  overlay.innerHTML = `
+    <div class="routine-edit-modal title-picker-modal">
+      <div class="title-picker-head">
+        <div class="title-picker-head-ornament">─── ◆ ───</div>
+        <h3 class="title-picker-title">称号を選ぶ</h3>
+        <div class="title-picker-sub">獲得スタンプ <strong>${total}</strong> 個</div>
+        <button class="routine-edit-close title-picker-close" aria-label="閉じる">×</button>
+      </div>
+      <div class="title-picker-list">
+        <button class="title-picker-item ${!cur ? 'selected' : ''}" data-title-pick="">
+          <div class="title-picker-item-name">なし</div>
+          <div class="title-picker-item-desc">称号を表示しない</div>
+          ${!cur ? '<div class="title-picker-item-check">✓</div>' : ''}
+        </button>
+        ${all.map(t => {
+          const unlocked = total >= t.min;
+          const selected = cur === t.name;
+          return `
+            <button class="title-picker-item ${unlocked ? '' : 'locked'} ${selected ? 'selected' : ''}" data-title-pick="${escapeHtml(t.name)}" ${unlocked ? '' : 'disabled'}>
+              <div class="title-picker-item-name">${unlocked ? '🏆' : '🔒'} ${t.name}</div>
+              <div class="title-picker-item-desc">総スタンプ ${t.min} 以上${unlocked ? '' : `（あと ${t.min - total} 個）`}</div>
+              ${selected ? '<div class="title-picker-item-check">✓</div>' : ''}
+            </button>
+          `;
+        }).join('')}
+      </div>
+      <div class="title-picker-foot">段階: 読者 → 弟子 → 同志 → 継承者 → 賢者 → 書斎の主</div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  const close = () => overlay.remove();
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+  overlay.querySelector('.title-picker-close').addEventListener('click', close);
+  overlay.querySelectorAll('[data-title-pick]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      setCurrentTitle(btn.dataset.titlePick);
+      close();
+      if (typeof renderFavorites === 'function') renderFavorites();
+    });
+  });
+}
+
+// 偉人のフォロー中／フォロワー／ブロック中 ポップアップ（X風タブ）
+function openPersonRelationsModal(p, initialTab) {
+  const tab = (['following','followers','blocked'].includes(initialTab)) ? initialTab : 'following';
+  const BLOCK_KW = ['宿敵','敵','ライバル','対立','裏切','論敵','抗争','競争','暗殺','刺客','暗殺者','抗命','反発','確執','不仲','宗教的対立','批判者','批判'];
+  const isBlk = (r) => BLOCK_KW.some(kw => ((r.relation||'')+(r.note||'')).includes(kw));
+  const rels = p.relations || [];
+  const following = rels.filter(r => !isBlk(r));
+  const blocked = rels.filter(r => isBlk(r));
+  const userName = getUserName();
+  const userFollower = isFollowedByPerson(p.id) && userName;
+  const followerCount = following.length + (userFollower ? 1 : 0);
+
+  const overlay = document.createElement('div');
+  overlay.className = 'routine-edit-overlay social-list-overlay';
+  overlay.innerHTML = `
+    <div class="routine-edit-modal social-list-modal">
+      <div class="social-list-head-name">${p.name}</div>
+      <div class="social-list-tabs">
+        <button class="social-list-tab" data-stab="following">
+          <span class="social-list-tab-num">${following.length}</span>
+          <span class="social-list-tab-lbl">フォロー中</span>
+        </button>
+        <button class="social-list-tab" data-stab="followers">
+          <span class="social-list-tab-num">${followerCount}</span>
+          <span class="social-list-tab-lbl">フォロワー</span>
+        </button>
+        <button class="social-list-tab" data-stab="blocked">
+          <span class="social-list-tab-num">${blocked.length}</span>
+          <span class="social-list-tab-lbl">ブロック中</span>
+        </button>
+        <button class="social-list-close" aria-label="閉じる">×</button>
+      </div>
+      <div class="social-list-body"></div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  const body = overlay.querySelector('.social-list-body');
+
+  function renderRelItem(r) {
+    const linked = r.id ? DATA.people.find(x => x.id === r.id) : null;
+    const av = linked && linked.imageUrl
+      ? `<div class="social-list-avatar" style="background-image:url('${linked.imageUrl}')"></div>`
+      : `<div class="social-list-avatar no-img">${(linked || r).name.charAt(0)}</div>`;
+    const sub = `${r.relation || ''}${r.years ? ` · ${r.years}` : ''}${r.note ? `｜${r.note}` : ''}`;
+    return `
+      <button class="social-list-item ${linked ? '' : 'no-link'}" ${linked ? `data-person="${linked.id}"` : 'disabled'}>
+        ${av}
+        <div class="social-list-meta">
+          <div class="social-list-name">${linked ? linked.name : r.name}</div>
+          <div class="social-list-sub">${sub}</div>
+        </div>
+      </button>
+    `;
+  }
+  function renderUserChip() {
+    return `
+      <div class="social-list-item social-list-item-user">
+        <div class="social-list-avatar no-img">👤</div>
+        <div class="social-list-meta">
+          <div class="social-list-name">${userName}（あなた）</div>
+          <div class="social-list-sub">Lv.${getStampLevel(p.id)}達成 · 相互フォロー</div>
+        </div>
+      </div>
+    `;
+  }
+  function renderUserFollower(u) {
+    const title = u.title ? `【${u.title}】` : '';
+    return `
+      <div class="social-list-item social-list-item-realuser">
+        <div class="social-list-avatar no-img">👤</div>
+        <div class="social-list-meta">
+          <div class="social-list-name">${title}${u.name || '名無しの読者'}</div>
+          <div class="social-list-sub">スタンプ ${u.stampCount} 個</div>
+        </div>
+      </div>
+    `;
+  }
+  async function loadAndRenderUserFollowers() {
+    const userFollowersWrap = overlay.querySelector('.social-list-userfollowers');
+    if (!userFollowersWrap) return;
+    const fbReady = (typeof window.fetchUserFollowersOfPerson === 'function');
+    if (fbReady) {
+      userFollowersWrap.innerHTML = `<div class="social-list-loading">読者を読み込み中…</div>`;
+    }
+    const users = fbReady ? await window.fetchUserFollowersOfPerson(p.id) : [];
+    const totalUsers = users.length + (userFollower ? 1 : 0);
+    const countBadge = overlay.querySelector('.social-list-tab[data-stab="followers"] .social-list-tab-num');
+    if (countBadge) countBadge.textContent = (following.length + totalUsers);
+    if (users.length === 0 && !userFollower) {
+      userFollowersWrap.innerHTML = '';
+      return;
+    }
+    userFollowersWrap.innerHTML = `
+      <div class="social-list-subhead">👤 ユーザー（${totalUsers}）</div>
+      <div class="social-list-grid">
+        ${userFollower ? renderUserChip() : ''}
+        ${users.map(renderUserFollower).join('')}
+      </div>
+    `;
+  }
+
+  function showTab(t) {
+    overlay.querySelectorAll('.social-list-tab').forEach(el => el.classList.toggle('active', el.dataset.stab === t));
+    if (t === 'following') {
+      body.innerHTML = following.length === 0
+        ? `<div class="social-list-empty">${p.name}が歴史的にフォローしていた人は登録されていません。</div>`
+        : `<div class="social-list-grid">${following.map(renderRelItem).join('')}</div>`;
+    } else if (t === 'followers') {
+      const peopleSection = following.length > 0 ? `
+        <div class="social-list-subhead">🏛 偉人（${following.length}）</div>
+        <div class="social-list-grid">${following.map(renderRelItem).join('')}</div>
+      ` : '';
+      body.innerHTML = `
+        <div class="social-list-userfollowers"></div>
+        ${peopleSection}
+        ${following.length === 0 ? `<div class="social-list-empty" data-fallback-empty>${p.name}のフォロワーはまだいません。クイズでLv.3以上になるとあなたがフォロワーに加わります（現在Lv.${getStampLevel(p.id)}）。</div>` : ''}
+      `;
+      loadAndRenderUserFollowers().then(() => {
+        // 読者が見つかった場合はフォールバック空メッセージを隠す
+        const fe = body.querySelector('[data-fallback-empty]');
+        const hasUsers = body.querySelector('.social-list-userfollowers')?.children.length > 0;
+        if (fe && hasUsers) fe.remove();
+      });
+    } else {
+      body.innerHTML = blocked.length === 0
+        ? `<div class="social-list-empty">${p.name}の歴史的な敵・ライバル・論敵は登録されていません。</div>`
+        : `<div class="social-list-grid">${blocked.map(renderRelItem).join('')}</div>`;
+    }
+    body.querySelectorAll('[data-person]').forEach(el => {
+      el.addEventListener('click', () => {
+        const id = el.dataset.person;
+        close();
+        showPerson(id);
+      });
+    });
+  }
+  const close = () => overlay.remove();
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+  overlay.querySelector('.social-list-close').addEventListener('click', close);
+  overlay.querySelectorAll('.social-list-tab').forEach(el => {
+    el.addEventListener('click', () => showTab(el.dataset.stab));
+  });
+  showTab(tab);
 }
 
 // ルーティン編集モーダル
@@ -5405,6 +6125,11 @@ function renderArticles() {
         Note をフォローする →
       </a>
     </div>
+    <div class="articles-coming-soon">
+      <div class="articles-coming-soon-badge">Coming Soon</div>
+      <div class="articles-coming-soon-title">✍ 有料会員の方は、ご自身のNoteやブログをここに埋め込めるようになります</div>
+      <div class="articles-coming-soon-sub">近日実装予定。あなたの書いた記事を、偉人たちの物語と並べて本棚に並べられるようになります。</div>
+    </div>
   `;
   if (DATA.articles.length === 0) {
     list.innerHTML = '<div class="empty">まだ記事がありません</div>';
@@ -5527,6 +6252,7 @@ function renderFavorites() {
             その心細い夜の記録を、<br>
             夜明けに消えてしまわないように。
           </p>
+          ${renderGuideChara({ pose: 'welcome', copyKey: 'mybookEmpty', size: 'md', layout: 'below' })}
           ${!isLoggedIn ? `
             <button class="my-book-empty-btn" id="myBookLoginBtn">🔑 本棚の鍵を受け取る</button>
             <p class="my-book-empty-note">登録すると、端末を変えても消えずに残ります。</p>
@@ -5572,7 +6298,7 @@ function renderFavorites() {
       <!-- 左ページ: 扉絵（タイトルページ） -->
       <div class="open-page open-page-left">
         <div class="title-page">
-          <div class="title-page-top">─── ◆ ───</div>
+          <div class="title-page-top">◆</div>
           <div class="title-page-title">${bookTitle}</div>
           <div class="title-page-sub">My Own Book of Virtue</div>
           <div class="title-page-divider"><span></span></div>
@@ -5587,19 +6313,23 @@ function renderFavorites() {
             ${title ? `✎ 称号を変更（現在：${title}）` : '🏆 称号を選ぶ'}
           </button>
           <div class="title-page-social">
-            <div class="title-page-social-item">
+            <button class="title-page-social-item" data-open-social="following">
               <div class="title-page-social-num">${favPeople.size}</div>
               <div class="title-page-social-lbl">フォロー中</div>
-            </div>
-            <div class="title-page-social-item">
+            </button>
+            <button class="title-page-social-item" data-open-social="followers">
               <div class="title-page-social-num">${DATA.people.filter(p => isFollowedByPerson(p.id)).length}</div>
-              <div class="title-page-social-lbl">偉人からフォロー</div>
-            </div>
+              <div class="title-page-social-lbl">フォロワー</div>
+            </button>
+            <button class="title-page-social-item" data-open-social="blocked">
+              <div class="title-page-social-num">${collectBlockedFromFollowed().length}</div>
+              <div class="title-page-social-lbl">ブロック中</div>
+            </button>
           </div>
           <div class="title-page-stamp-count">
             獲得スタンプ <strong>${totalStamps()}</strong> 個 ／ 足跡 <strong>${totalFootprints()}</strong> ／ 聖地巡礼 <strong>${totalCheckins()}</strong>
           </div>
-          <div class="title-page-bottom">─── ◆ ───</div>
+          <div class="title-page-bottom">◆</div>
         </div>
       </div>
       <!-- 右ページ: 目次 -->
@@ -5685,7 +6415,7 @@ function renderFavorites() {
           <div class="person-book-info">
             ${p.nameEn ? `<div class="person-book-en">${p.nameEn}</div>` : ''}
             <div class="person-book-name">${p.name}</div>
-            <div class="person-book-meta">${p.birth || '?'}–${p.death || ''} ／ ${p.field}</div>
+            <div class="person-book-meta">${fmtYearRange(p.birth, p.death)} ／ ${p.field}</div>
           </div>
         </div>
       `;
@@ -5713,7 +6443,7 @@ function renderFavorites() {
           <div class="person-book-info">
             ${p.nameEn ? `<div class="person-book-en">${p.nameEn}</div>` : ''}
             <div class="person-book-name">${p.name}</div>
-            <div class="person-book-meta">${p.birth || '?'}–${p.death || ''} ／ ${p.field}</div>
+            <div class="person-book-meta">${fmtYearRange(p.birth, p.death)} ／ ${p.field}</div>
           </div>
         </div>
       `;
@@ -6010,6 +6740,13 @@ function renderFavorites() {
   });
   bindFavButtons(list);
 
+  // フォロー中／フォロワー ポップアップ
+  list.querySelectorAll('[data-open-social]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      openSocialListModal(btn.dataset.openSocial);
+    });
+  });
+
   // 名前変更
   const editName = list.querySelector('#editNameBtn');
   if (editName) {
@@ -6024,26 +6761,7 @@ function renderFavorites() {
   // 称号選択
   const editTitle = list.querySelector('#editTitleBtn');
   if (editTitle) {
-    editTitle.addEventListener('click', () => {
-      const avail = availableTitles().filter(t => t.name);
-      if (avail.length === 0) {
-        alert('まだ称号を獲得していません。\nクイズを解いて偉人のスタンプを集めましょう。');
-        return;
-      }
-      const cur = currentTitle();
-      const list = avail.map((t, i) => `${i + 1}. ${t.name}（総スタンプ${t.min}以上）`).join('\n');
-      const input = prompt(
-        `称号を選択（番号入力・0で外す）\n現在：${cur || 'なし'}\n\n${list}`,
-        '0'
-      );
-      if (input === null) return;
-      const n = parseInt(input, 10);
-      if (n === 0) { setCurrentTitle(''); renderFavorites(); return; }
-      if (n >= 1 && n <= avail.length) {
-        setCurrentTitle(avail[n - 1].name);
-        renderFavorites();
-      }
-    });
+    editTitle.addEventListener('click', () => openTitlePickerModal());
   }
 
   // 目次クリック → スクロール
@@ -6206,6 +6924,181 @@ function bindEvents() {
   });
 }
 
+// ====================== 歴史の案内人 ラビン ======================
+// 文言パターン（1箇所あたり3案。表示ごとにランダム選択）
+const GUIDE_NAME = 'ラビン';
+const GUIDE_COPY = {
+  hero: [
+    'ようこそ、本棚へ。ぼく、ラビン。まずは気分から本を選んでみよう。',
+    'はじめまして。歴史の案内人、ラビンです。',
+    '僕と一緒に、歴史の旅に出よう。',
+  ],
+  howto: [
+    'この本棚の歩き方を、3分で案内するよ。',
+    '使い方、ここでひとつずつお見せします。',
+    'はじめての方に、読み方をひとつだけ。',
+  ],
+  match: [
+    '気になるものをひとつ選べば大丈夫。',
+    '好きなもの・誕生日——共通点を辿ってみて。',
+    'あなたに似た一冊が、きっと見つかる。',
+  ],
+  tags: [
+    '今日の気分は、どれ？',
+    '感情で、本を探せる棚です。',
+    '眠れない夜にも、誰かが同じ夜を歩いた。',
+  ],
+  routines: [
+    '偉人たちの1日を、覗いてみる？',
+    'バッハの朝、漱石の夜——見てみよう。',
+    '時間で見ると、また違う本になるよ。',
+  ],
+  articles: [
+    'この章は、ここから始まります。',
+    '静かに読んでいってね。',
+    '読み終えたら、そっと栞を挟もう。',
+  ],
+  mybookEmpty: [
+    '最初の一枚は、気になる言葉ひとつでいいよ。',
+    'まだ白紙。ゆっくり編んでいこう。',
+    '☆や♡を押すと、ここに綴じていくよ。',
+  ],
+  login: [
+    '本棚の鍵を受け取ると、この一冊を残しておけるよ。',
+    '端末が変わっても、本は消えない。',
+    'いつでも外せるし、戻ってこれる。',
+  ],
+};
+
+// ガイドキャラのHTML生成（inline / corner / below / solo）
+// opts: { pose, copyKey, size('sm'|'md'|'lg'), layout('inline'|'below'), copyIndex, once }
+function renderGuideChara(opts) {
+  const { pose = 'welcome', copyKey, copyText, size = 'sm', layout = 'inline', copyIndex } = opts;
+  const pool = copyText ? [copyText] : (GUIDE_COPY[copyKey] || []);
+  if (pool.length === 0) return '';
+  const text = copyIndex !== undefined
+    ? pool[copyIndex % pool.length]
+    : pool[Math.floor(Math.random() * pool.length)];
+  return `
+    <aside class="guide-chara guide-size-${size} guide-layout-${layout}" data-pose="${pose}">
+      <div class="guide-chara-video-wrap">
+        <video class="guide-chara-video" autoplay loop muted playsinline preload="metadata" aria-hidden="true">
+          <source src="assets/guide/${pose}.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="guide-chara-bubble">
+        <div class="guide-chara-bubble-tail" aria-hidden="true"></div>
+        <div class="guide-chara-name">${GUIDE_NAME}</div>
+        <div class="guide-chara-text">${text}</div>
+      </div>
+    </aside>
+  `;
+}
+
+// 挿入補助: 指定セレクタの直下に1回だけ挿入
+function injectGuideBefore(selector, html) {
+  const target = document.querySelector(selector);
+  if (!target) return;
+  if (target.previousElementSibling?.classList?.contains('guide-chara')) return;
+  const tmpl = document.createElement('template');
+  tmpl.innerHTML = html.trim();
+  target.parentNode.insertBefore(tmpl.content.firstElementChild, target);
+}
+function injectGuideInto(selector, html, position = 'afterbegin') {
+  const target = document.querySelector(selector);
+  if (!target) return;
+  if (position === 'afterbegin' && target.firstElementChild?.classList?.contains('guide-chara')) return;
+  if (position === 'beforeend' && target.lastElementChild?.classList?.contains('guide-chara')) return;
+  target.insertAdjacentHTML(position, html);
+}
+
+// IntersectionObserverで画面外の動画を一時停止（CPU節約）
+function initGuideCharaObserver() {
+  if (!('IntersectionObserver' in window)) return;
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(ent => {
+      const v = ent.target.querySelector('video');
+      if (!v) return;
+      if (ent.isIntersecting) { v.play().catch(() => {}); }
+      else { v.pause(); }
+    });
+  }, { threshold: 0.15 });
+  const scan = () => {
+    document.querySelectorAll('.guide-chara').forEach(el => {
+      if (el.dataset.guideObserved) return;
+      el.dataset.guideObserved = '1';
+      io.observe(el);
+    });
+  };
+  scan();
+  // 動的に追加されたガイドも監視対象に
+  const mo = new MutationObserver(scan);
+  mo.observe(document.body, { childList: true, subtree: true });
+}
+
+// 各配置箇所にガイドキャラを配置
+function renderBookshelfGuides() {
+  // 1. ヒーロー直下: 初回訪問時のみ（localStorageで制御）
+  const HERO_KEY = 'ijin_guide_hero_seen';
+  const heroSeen = localStorage.getItem(HERO_KEY);
+  if (!heroSeen) {
+    const heroSection = document.querySelector('.hero-silhouette');
+    if (heroSection && !heroSection.parentNode.querySelector('.guide-hero-wrap')) {
+      const html = `
+        <div class="guide-hero-wrap">
+          ${renderGuideChara({ pose: 'welcome', copyKey: 'hero', size: 'lg', layout: 'below' })}
+          <button class="guide-hero-dismiss" aria-label="閉じる">閉じる ×</button>
+        </div>
+      `;
+      heroSection.insertAdjacentHTML('afterend', html);
+      const wrap = heroSection.parentNode.querySelector('.guide-hero-wrap');
+      wrap?.querySelector('.guide-hero-dismiss')?.addEventListener('click', () => {
+        localStorage.setItem(HERO_KEY, '1');
+        wrap.remove();
+      });
+    }
+  }
+
+  // 2. はじめての方へ: 見出しの横
+  const howtoLabel = [...document.querySelectorAll('.home-block-label')].find(e => e.textContent.trim() === 'はじめての方へ');
+  if (howtoLabel && !howtoLabel.parentNode.querySelector('.guide-chara')) {
+    howtoLabel.parentNode.insertAdjacentHTML('beforeend',
+      renderGuideChara({ pose: 'welcome', copyKey: 'howto', size: 'sm', layout: 'inline' }));
+  }
+
+  // 3. あなたに似た偉人を探す: セクション内先頭
+  const matchSec = document.getElementById('traitsMatchSection');
+  if (matchSec && !matchSec.querySelector('.guide-chara')) {
+    matchSec.insertAdjacentHTML('afterbegin',
+      renderGuideChara({ pose: 'pointing', copyKey: 'match', size: 'sm', layout: 'inline' }));
+  }
+
+  // 4. 感情の本棚（検索タブの感情一覧）: #tagsList の上
+  const tagsContainer = document.getElementById('tagsList');
+  if (tagsContainer && !tagsContainer.parentNode.querySelector('.guide-tags-chara')) {
+    const html = `<div class="guide-tags-chara">${renderGuideChara({ pose: 'reading', copyKey: 'tags', size: 'sm', layout: 'inline' })}</div>`;
+    tagsContainer.insertAdjacentHTML('beforebegin', html);
+  }
+
+  // 5. ルーティンから探す: #routinesList の上
+  const routinesContainer = document.getElementById('routinesList');
+  if (routinesContainer && !routinesContainer.parentNode.querySelector('.guide-routines-chara')) {
+    const html = `<div class="guide-routines-chara">${renderGuideChara({ pose: 'reading', copyKey: 'routines', size: 'sm', layout: 'inline' })}</div>`;
+    routinesContainer.insertAdjacentHTML('beforebegin', html);
+  }
+
+  // 6. 記事タブ: 著者ヘッダー直後、Coming Soonの下
+  const articlesComing = document.querySelector('.articles-coming-soon');
+  if (articlesComing && !articlesComing.nextElementSibling?.classList?.contains('guide-chara')) {
+    articlesComing.insertAdjacentHTML('afterend',
+      renderGuideChara({ pose: 'reading', copyKey: 'articles', size: 'sm', layout: 'inline' }));
+  }
+
+  // 7. わたしの本 空状態 はrenderFavoritesで挿入されるのでそこでフック
+  // 8. ログインモーダルは openLoginModal 内で挿入
+}
+window.renderBookshelfGuides = renderBookshelfGuides;
+
 // ====================== 起動 ======================
 (async () => {
   await loadData();
@@ -6216,6 +7109,7 @@ function bindEvents() {
   renderUpdates();
   renderOshi();
   renderTraitsMatch();
+  renderTodayBirthday();
   renderCalendarToday();
   renderPersonOfTheDay();
   renderQuoteOfTheDay();
@@ -6231,5 +7125,7 @@ function bindEvents() {
   initChatWidget();
   renderRoutines();
   renderFavorites();
+  renderBookshelfGuides();
+  initGuideCharaObserver();
   history.push('people');
 })();

@@ -111,6 +111,12 @@
         </div>
       </div>
 
+      <!-- 🎂 今日が誕生日の偉人（トップ強調） -->
+      <div class="home-block" id="todayBirthdayBlock" style="display:none">
+        <div class="home-block-label">🎂 今日が誕生日の偉人</div>
+        <div id="todayBirthdayList" class="today-birthday-list"></div>
+      </div>
+
       <!-- 広告主募集 -->
       <div class="home-block">
         <div class="home-block-label">スポンサー・広告主募集</div>
@@ -133,6 +139,103 @@
         </a>
       </div>
 
+      <!-- はじめての方へ（使い方ガイド） -->
+      <div class="home-block">
+        <div class="home-block-label">はじめての方へ</div>
+        <details class="howto-card" id="howtoCard">
+          <summary class="howto-summary">
+            <img class="icon-img icon-img-lg" src="assets/icons/book.png" alt="">
+            <span class="howto-label">このサイトの使い方（3分で分かる）</span>
+            <span class="howto-arrow">▾</span>
+          </summary>
+          <div class="howto-body">
+            <p class="howto-intro">
+              『偉人と自分。』は、<b>今の自分の気持ち</b>と、<b>偉人たちの人生</b>を重ねて読む本棚です。
+            </p>
+
+            <div class="howto-step">
+              <div class="howto-step-num">1</div>
+              <div class="howto-step-text">
+                <div class="howto-step-title">今日が誕生日の偉人に出会う</div>
+                <div class="howto-step-desc">ホーム最上部に<b>🎂 今日が誕生日の偉人</b>を表示。会員登録して誕生日を設定すると、<b>あなたと同じ誕生日の偉人</b>も探せます。</div>
+              </div>
+            </div>
+
+            <div class="howto-step">
+              <div class="howto-step-num">2</div>
+              <div class="howto-step-text">
+                <div class="howto-step-title">あなたに似た偉人を探す</div>
+                <div class="howto-step-desc">好きな食べ物・趣味・好きなもの・嫌いなものを選ぶと、共通点の多い偉人TOP6が表示されます。会員なら誕生日・出身地も加味。</div>
+              </div>
+            </div>
+
+            <div class="howto-step">
+              <div class="howto-step-num">3</div>
+              <div class="howto-step-text">
+                <div class="howto-step-title">偉人の本を開く</div>
+                <div class="howto-step-desc">本棚や検索から偉人をタップ。<b>タイムライン</b>で出来事・名言・代表作・映画・関連本が一つの流れで読めます。フォロー中/フォロワー/ブロック中で人間関係も確認できます。</div>
+              </div>
+            </div>
+
+            <div class="howto-step">
+              <div class="howto-step-num">4</div>
+              <div class="howto-step-text">
+                <div class="howto-step-title">親密度クイズとスタンプ</div>
+                <div class="howto-step-desc">偉人ページの「<b>私のこと、どこまで知ってる？</b>」から1/3/5/10問のクイズに挑戦。1問正解ごとに<b>+1スタンプ</b>。過去に正解した問題は再出題されません。Lv.3到達でその偉人があなたをフォローします。</div>
+              </div>
+            </div>
+
+            <div class="howto-step">
+              <div class="howto-step-num">5</div>
+              <div class="howto-step-text">
+                <div class="howto-step-title">聖地巡礼チェックイン</div>
+                <div class="howto-step-desc">偉人ゆかりの地に実際に行ったら「<b>📍 ここに行った</b>」ボタンでGPSチェックイン。±1km以内の距離でスタンプ獲得。取得内訳は偉人ページで確認できます。</div>
+              </div>
+            </div>
+
+            <div class="howto-step">
+              <div class="howto-step-num">6</div>
+              <div class="howto-step-text">
+                <div class="howto-step-title">感情で探す・名前や趣味で検索する</div>
+                <div class="howto-step-desc">上部「<b>検索</b>」タブの感情の本棚から、『逃避』『挫折』『ブレイクスルー』など18種の感情で偉人を辿れます。検索窓は<b>名前・趣味（例：チェス、ピアノ）</b>でヒット。</div>
+              </div>
+            </div>
+
+            <div class="howto-step">
+              <div class="howto-step-num">7</div>
+              <div class="howto-step-text">
+                <div class="howto-step-title">自分の本を編む</div>
+                <div class="howto-step-desc">名言の☆・推し偉人の♡・お気に入りのルーティン・手紙・日記・つぶやきを集めると、「<b>わたしの本</b>」タブに自分だけの一冊が編まれます。獲得スタンプ数で<b>称号</b>も選べます。</div>
+              </div>
+            </div>
+
+            <div class="howto-step">
+              <div class="howto-step-num">8</div>
+              <div class="howto-step-text">
+                <div class="howto-step-title">ログインすると全端末で同期</div>
+                <div class="howto-step-desc">右上の<b>🔑本棚の鍵</b>から登録すると、お気に入り・推し・ルーティン・プロフィール・スタンプなどがスマホ⇄PCで同期。<b>AI相談</b>（1日1回）も使えるように。</div>
+              </div>
+            </div>
+
+            <div class="howto-tips">
+              <div class="howto-tips-title">💡 便利な機能</div>
+              <ul>
+                <li><b>💬 チャット</b> — 右下のボタンから、今日の案内人とメッセージのやり取りができます</li>
+                <li><b>🕐 ルーティン</b> — バッハや漱石の1日を真似できる。自分のルーティンも保存可</li>
+                <li><b>📝 手紙</b> — 偉人に手紙を書くと「わたしの本」に保管されます</li>
+                <li><b>📖 ブログ</b> — 運営の記事＋近日、有料会員は自分のNote/ブログを埋め込み可（実装予定）</li>
+                <li><b>🔎 詳細検索</b> — 時代・国・ルーティンで絞り込み</li>
+              </ul>
+            </div>
+
+            <div class="howto-footer">
+              「こんな機能欲しい」「この偉人も入れて」などのご要望は、<br>
+              <a href="https://note.com/natsumi_by_piano" target="_blank" rel="noopener">natsumi のNote</a> のコメントにお書きください。すぐに対応します🌿
+            </div>
+          </div>
+        </details>
+      </div>
+
       <!-- あなたに似た偉人 -->
       <div class="home-block">
         <div class="home-block-label">あなたに似た偉人を探す</div>
@@ -152,80 +255,6 @@
       </div>
       -->
       <div id="personOfTheDay" style="display:none"></div>
-
-
-      <!-- はじめての方へ（使い方ガイド） -->
-      <div class="home-block">
-        <div class="home-block-label">はじめての方へ</div>
-        <details class="howto-card" id="howtoCard">
-          <summary class="howto-summary">
-            <img class="icon-img icon-img-lg" src="assets/icons/book.png" alt="">
-            <span class="howto-label">このサイトの使い方（3分で分かる）</span>
-            <span class="howto-arrow">▾</span>
-          </summary>
-          <div class="howto-body">
-            <p class="howto-intro">
-              『偉人と自分。』は、<b>今の自分の気持ち</b>と、<b>偉人たちの人生</b>を重ねて読む本棚です。
-            </p>
-
-            <div class="howto-step">
-              <div class="howto-step-num">1</div>
-              <div class="howto-step-text">
-                <div class="howto-step-title">今日の気分を選ぶ</div>
-                <div class="howto-step-desc">ホームの「<b>今日の気分は？</b>」で感情を1つ選ぶと、その感情を経験した偉人が<b>本日の案内人</b>として現れます。毎日違う偉人と出会えます。</div>
-              </div>
-            </div>
-
-            <div class="howto-step">
-              <div class="howto-step-num">2</div>
-              <div class="howto-step-text">
-                <div class="howto-step-title">偉人の本を開く</div>
-                <div class="howto-step-desc">本棚や検索から偉人をタップ。<b>タイムライン</b>で出来事・名言・代表作・映画・関連本が一つの流れで読めます。</div>
-              </div>
-            </div>
-
-            <div class="howto-step">
-              <div class="howto-step-num">3</div>
-              <div class="howto-step-text">
-                <div class="howto-step-title">感情で探す</div>
-                <div class="howto-step-desc">上部「<b>検索</b>」タブの<b>感情の本棚</b>から、『逃避』『挫折』『ブレイクスルー』など18種の感情で偉人を辿れます。</div>
-              </div>
-            </div>
-
-            <div class="howto-step">
-              <div class="howto-step-num">4</div>
-              <div class="howto-step-text">
-                <div class="howto-step-title">自分の本を編む</div>
-                <div class="howto-step-desc">名言の☆・推し偉人の♡・お気に入りのルーティンを集めると、「<b>わたしの本</b>」タブに自分だけの一冊が編まれていきます。</div>
-              </div>
-            </div>
-
-            <div class="howto-step">
-              <div class="howto-step-num">5</div>
-              <div class="howto-step-text">
-                <div class="howto-step-title">ログインすると全端末で同期</div>
-                <div class="howto-step-desc">右上の<b>👤ログイン</b>で登録すると、お気に入り・推し・ルーティンなどがスマホ⇄PCで同期されます。<b>AI相談</b>（1日1回）も使えるように。</div>
-              </div>
-            </div>
-
-            <div class="howto-tips">
-              <div class="howto-tips-title">💡 便利な機能</div>
-              <ul>
-                <li><b>💬 チャット</b> — 右下のボタンから、今日の案内人とメッセージのやり取りができます</li>
-                <li><b>🕐 ルーティン</b> — バッハや漱石の1日を真似できる。自分のルーティンは3つまで保存可</li>
-                <li><b>📍 聖地巡礼</b> — 偉人ゆかりの地のGoogleマップリンク</li>
-                <li><b>🔎 詳細検索</b> — カテゴリ・時代・国で絞り込み（検索タブ・感情詳細ページ）</li>
-                <li><b>📝 手紙</b> — 偉人に送ったコメントは「手紙」タブに残ります</li>
-              </ul>
-            </div>
-
-            <div class="howto-footer">
-              「こんな機能欲しい」「この偉人も入れて」などのご要望は、<br>
-              <a href="https://note.com/natsumi_by_piano" target="_blank" rel="noopener">natsumi のNote</a> のコメントにお書きください。すぐに対応します🌿
-            </div>
-          </div>
-        </details>
-      </div>
 
       <!-- お知らせ（リリースノート・新機能告知） -->
       <div class="home-block">
@@ -302,10 +331,9 @@
     <!-- 検索 -->
     <section id="view-tags" class="view">
       <div class="search-panel">
-        <input id="searchBox" class="search-box" type="text" placeholder="名前・感情・キーワードで検索">
+        <input id="searchBox" class="search-box" type="text" placeholder="名前・趣味で検索（例：チェス、ピアノ）">
         <div class="search-filters">
           <button class="search-filter active" data-filter="all">すべて</button>
-          <button class="search-filter" data-filter="emotion">感情</button>
           <button class="search-filter" data-filter="music">音楽家</button>
           <button class="search-filter" data-filter="philo">哲学者</button>
           <button class="search-filter" data-filter="literature">文学者</button>
@@ -390,8 +418,8 @@
       <div class="chat-call-text" id="chatCallText"></div>
       <div class="chat-call-who" id="chatCallWho"></div>
     </div>
-    <button class="chat-fab" id="chatFab" aria-label="チャット">
-      <div class="chat-fab-icon">💬</div>
+    <button class="chat-fab" id="chatFab" aria-label="偉人の広場">
+      <img class="chat-fab-icon" src="assets/icons/chat-bubble.png" alt="">
       <div class="chat-fab-badge hidden" id="chatFabBadge">0</div>
     </button>
   </div>

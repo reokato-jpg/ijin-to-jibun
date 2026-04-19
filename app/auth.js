@@ -41,6 +41,8 @@ const SYNC_KEYS = [
   'ijin_last_visit_day',
   'ijin_my_traits',
   'ijin_checkins',
+  'ijin_quiz_answered',
+  'ijin_quiz_ever_stamped',
 ];
 
 let fbApp = null, fbAuth = null, fbDb = null;
@@ -68,7 +70,7 @@ async function initFirebase() {
     const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js');
     const { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup } =
       await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
-    const { getFirestore, doc, getDoc, setDoc } =
+    const { getFirestore, doc, getDoc, setDoc, collection, getDocs } =
       await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
 
     fbApp = initializeApp(FIREBASE_CONFIG);
@@ -76,7 +78,7 @@ async function initFirebase() {
     fbDb = getFirestore(fbApp);
 
     // 外から使えるようwindow経由で公開
-    window.__fbLib = { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup, doc, getDoc, setDoc };
+    window.__fbLib = { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup, doc, getDoc, setDoc, collection, getDocs };
 
     onAuthStateChanged(fbAuth, async (user) => {
       currentUser = user;
@@ -164,6 +166,37 @@ async function pushToCloud(user) {
     console.error('[auth] push失敗:', e);
   }
 }
+
+// 指定偉人をフォローしているユーザーを全取得
+async function fetchUserFollowersOfPerson(personId) {
+  if (!FIREBASE_ENABLED || !fbDb || !window.__fbLib) return [];
+  try {
+    const { collection, getDocs } = window.__fbLib;
+    const snap = await getDocs(collection(fbDb, 'users'));
+    const followers = [];
+    snap.forEach(docSnap => {
+      const uid = docSnap.id;
+      if (currentUser && uid === currentUser.uid) return; // 自分は除外（別表記）
+      const data = docSnap.data();
+      const favs = data.ijin_fav_people;
+      if (!Array.isArray(favs)) return;
+      if (!favs.includes(personId)) return;
+      const name = data.ijin_user_name || '';
+      const title = data.ijin_current_title || '';
+      const stamps = data.ijin_stamps || {};
+      const raw = stamps[personId];
+      let stampCount = 0;
+      if (typeof raw === 'number') stampCount = raw;
+      else if (raw && typeof raw === 'object') stampCount = Object.values(raw).reduce((a,b) => a + (b || 0), 0);
+      followers.push({ uid, name, title, stampCount });
+    });
+    return followers;
+  } catch (e) {
+    console.error('[auth] user followers 取得失敗:', e);
+    return [];
+  }
+}
+window.fetchUserFollowersOfPerson = fetchUserFollowersOfPerson;
 
 // localStorage.setItem を上書きして同期
 function hookLocalStorage() {
@@ -346,6 +379,18 @@ function updateLoginNotice() {
     <div class="key-popup-panel">
       <div class="key-popup-icon"><img class="icon-img icon-img-xl" src="assets/icons/star.png" alt=""></div>
       <div class="key-popup-title">本棚の鍵を受け取りますか？</div>
+      <aside class="guide-chara guide-size-sm guide-layout-inline" data-pose="pointing">
+        <div class="guide-chara-video-wrap">
+          <video class="guide-chara-video" autoplay loop muted playsinline preload="metadata" aria-hidden="true">
+            <source src="assets/guide/pointing.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="guide-chara-bubble">
+          <div class="guide-chara-bubble-tail" aria-hidden="true"></div>
+          <div class="guide-chara-name">ラビン</div>
+          <div class="guide-chara-text">本棚の鍵を受け取ると、この一冊を残しておけるよ。</div>
+        </div>
+      </aside>
       <div class="key-popup-sub">
         夜、どうしても眠れないとき。<br>
         朝、どうしても立ち上がれないとき。<br><br>
