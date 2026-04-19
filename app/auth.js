@@ -158,7 +158,14 @@ async function pullFromCloud(user) {
             }
             localStorage.setItem(k, JSON.stringify(merged));
           } else {
-            localStorage.setItem(k, JSON.stringify(cloudVal !== undefined ? cloudVal : localVal));
+            // 文字列/非配列：ローカルに値があればそれを優先（未同期の最新入力を尊重）
+            // ローカルが空でクラウドに値があればクラウド採用、両方あればローカル優先
+            const localEmpty = (localVal === null || localVal === '' ||
+              (typeof localVal === 'object' && localVal && Object.keys(localVal).length === 0));
+            if (localEmpty && cloudVal !== undefined) {
+              localStorage.setItem(k, JSON.stringify(cloudVal));
+            }
+            // ローカルに既に値があるときは上書きしない（ここで何もしない）
           }
         });
         console.log('[auth] クラウドから同期完了');
