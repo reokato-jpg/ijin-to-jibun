@@ -388,6 +388,7 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); 
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  margin-top: 22px;
   padding: 12px 24px;
   background: linear-gradient(135deg, var(--wine) 0%, var(--wine-dark) 100%);
   color: var(--gold-light);
