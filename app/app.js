@@ -2930,7 +2930,6 @@ async function showPerson(id) {
             <div class="stamp-criteria-head">🏷 スタンプの貯め方</div>
             <div class="stamp-criteria-item">・クイズ全問正解で +1</div>
             <div class="stamp-criteria-item">・聖地巡礼チェックインで +1（GPS確認推奨）</div>
-            <div class="stamp-criteria-item">・Lv.3 で${p.name}があなたをフォロー</div>
             ${nextGoal ? `<div class="stamp-criteria-goal">あと <b>${nextGoal - lv}</b> 個で次の段階</div>` : '<div class="stamp-criteria-goal">✨ マスターレベル達成</div>'}
           </div>
         </div>
