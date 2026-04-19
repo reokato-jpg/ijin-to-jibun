@@ -303,7 +303,7 @@ body {
 }
 
 /* ================ ビュー切り替え ================ */
-main { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--paper); scrollbar-gutter: stable both-edges; }
+main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,255,0.78); scrollbar-gutter: stable both-edges; }
 .view { display: none; padding: 16px 18px 80px; }
 .view.active { display: block; }
 
