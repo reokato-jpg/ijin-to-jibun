@@ -7382,7 +7382,7 @@ function bindEvents() {
   });
   document.getElementById('backBtn').addEventListener('click', goBack);
   // ヘッダーのタイトルロゴ → マップポップアップ
-  document.getElementById('appTitle')?.addEventListener('click', () => openMapPopup());
+  document.getElementById('appTitle')?.addEventListener('click', () => showView('people'));
   // ヒーローの「わたしの本を開く」ボタン
   document.getElementById('heroToMyBook')?.addEventListener('click', () => {
     const favTab = document.querySelector('.tab[data-view="favorites"]');
