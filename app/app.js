@@ -1056,6 +1056,83 @@ function openMemberSettings() {
   });
 }
 
+// ============ 会員プロフィールのシェア（ID / URL / QR） ============
+function getMyShareInfo() {
+  const uid = (typeof currentUser !== 'undefined' && currentUser) ? currentUser.uid : '';
+  const origin = location.origin + location.pathname.replace(/[^/]*$/, '');
+  const url = uid ? `${origin}?user=${encodeURIComponent(uid)}` : '';
+  return { uid, url };
+}
+function openShareMyProfileModal() {
+  const { uid, url } = getMyShareInfo();
+  const existing = document.getElementById('shareMyProfileModal');
+  if (existing) existing.remove();
+  const modal = document.createElement('div');
+  modal.id = 'shareMyProfileModal';
+  modal.className = 'settings-modal';
+  const qrApi = url
+    ? `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(url)}`
+    : '';
+  modal.innerHTML = `
+    <div class="settings-backdrop" data-close="1"></div>
+    <div class="settings-panel">
+      <button class="settings-close" data-close="1" aria-label="閉じる">×</button>
+      <div class="settings-head">🔗 マイプロフィールをシェア</div>
+      ${uid ? `
+        <div class="settings-sec-hint">このIDやURLを相手に送ると、あなたのプロフィールを表示できます。</div>
+        <div class="share-qr-wrap">
+          <img class="share-qr" src="${qrApi}" alt="QRコード" loading="lazy">
+        </div>
+        <div class="share-row">
+          <div class="share-label">あなたのID</div>
+          <div class="share-field">
+            <input type="text" readonly id="shareMyId" value="${uid}">
+            <button class="share-copy" data-copy="#shareMyId">コピー</button>
+          </div>
+        </div>
+        <div class="share-row">
+          <div class="share-label">シェアURL</div>
+          <div class="share-field">
+            <input type="text" readonly id="shareMyUrl" value="${url}">
+            <button class="share-copy" data-copy="#shareMyUrl">コピー</button>
+          </div>
+        </div>
+        ${navigator.share ? `<button class="share-native" id="shareNativeBtn">📤 共有する</button>` : ''}
+      ` : `
+        <div class="users-dir-empty">会員登録後にシェアIDが発行されます。</div>
+      `}
+    </div>
+  `;
+  document.body.appendChild(modal);
+  requestAnimationFrame(() => modal.classList.add('open'));
+  const close = () => { modal.classList.remove('open'); setTimeout(() => modal.remove(), 200); };
+  modal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', close));
+  modal.querySelectorAll('[data-copy]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const inp = modal.querySelector(btn.dataset.copy);
+      if (!inp) return;
+      inp.select(); inp.setSelectionRange(0, inp.value.length);
+      try { navigator.clipboard.writeText(inp.value); } catch { document.execCommand('copy'); }
+      const orig = btn.textContent; btn.textContent = '✓ コピー済';
+      setTimeout(() => { btn.textContent = orig; }, 1500);
+    });
+  });
+  modal.querySelector('#shareNativeBtn')?.addEventListener('click', () => {
+    navigator.share({ title: '偉人と自分。 マイプロフィール', url }).catch(() => {});
+  });
+}
+window.openShareMyProfileModal = openShareMyProfileModal;
+
+// URL検索（?user=<uid>）→ プロフィール直接表示
+async function openUserProfileById(uid) {
+  if (!uid) return;
+  if (typeof window.fetchUserProfileById !== 'function') return;
+  const u = await window.fetchUserProfileById(uid);
+  if (!u) { alert('このIDの会員は見つかりませんでした。'); return; }
+  openUserProfileModal(u.uid, [u]);
+}
+window.openUserProfileById = openUserProfileById;
+
 // ============ 会員ディレクトリ（会員同士でつながる） ============
 async function openUsersDirectory() {
   const existing = document.getElementById('usersDirModal');
@@ -1069,6 +1146,10 @@ async function openUsersDirectory() {
       <button class="settings-close" data-close="1" aria-label="閉じる">×</button>
       <div class="settings-head">👥 会員を探す</div>
       <div class="settings-sec-hint">『偉人と自分。』に登録している会員の一覧です。名前・誕生日・好きなもの・フォロー偉人・SNSリンクのみ公開されます。</div>
+      <div class="users-dir-search-row">
+        <input type="text" class="users-dir-search" id="usersDirSearch" placeholder="🔍 名前 or IDで検索">
+        <button class="users-dir-id-jump" id="usersDirIdJump" title="IDで開く">IDで開く →</button>
+      </div>
       <div id="usersDirBody" class="users-dir-list">読み込み中…</div>
     </div>
   `;
@@ -1088,9 +1169,33 @@ async function openUsersDirectory() {
     return;
   }
   users.sort((a, b) => (b.isMe ? 1 : 0) - (a.isMe ? 1 : 0) || b.stampTotal - a.stampTotal);
-  body.innerHTML = users.map(u => renderUserDirCard(u)).join('');
-  body.querySelectorAll('[data-user-open]').forEach(el => {
-    el.addEventListener('click', () => openUserProfileModal(el.dataset.userOpen, users));
+  const render = (list) => {
+    body.innerHTML = list.length === 0
+      ? '<div class="users-dir-empty">該当する会員はいませんでした。</div>'
+      : list.map(u => renderUserDirCard(u)).join('');
+    body.querySelectorAll('[data-user-open]').forEach(el => {
+      el.addEventListener('click', () => openUserProfileModal(el.dataset.userOpen, users));
+    });
+  };
+  render(users);
+  // 検索（名前 or UID部分一致）
+  const search = modal.querySelector('#usersDirSearch');
+  search?.addEventListener('input', () => {
+    const q = search.value.trim().toLowerCase();
+    if (!q) { render(users); return; }
+    const filtered = users.filter(u => (u.name || '').toLowerCase().includes(q) || (u.uid || '').toLowerCase().includes(q));
+    render(filtered);
+  });
+  // IDで直接開く（完全一致）
+  modal.querySelector('#usersDirIdJump')?.addEventListener('click', async () => {
+    const q = (search?.value || '').trim();
+    if (!q) { search?.focus(); return; }
+    const found = users.find(u => u.uid === q);
+    if (found) { openUserProfileModal(found.uid, users); return; }
+    // キャッシュになければ単発fetch
+    const u = await window.fetchUserProfileById?.(q);
+    if (u) openUserProfileModal(u.uid, [u, ...users]);
+    else alert('このIDの会員は見つかりませんでした。');
   });
 }
 function renderUserDirCard(u) {
@@ -6938,6 +7043,7 @@ function renderFavorites() {
           </div>
           ${(typeof currentUser !== 'undefined' && currentUser) ? `
             <button class="title-page-edit-name" id="openUsersDirBtn">👥 会員を探す</button>
+            <button class="title-page-edit-name" id="shareMyProfileBtn">🔗 マイIDをシェア</button>
           ` : ''}
           <div class="title-page-stamp-count">
             獲得スタンプ <strong>${totalStamps()}</strong> 個 ／ 足跡 <strong>${totalFootprints()}</strong> ／ 聖地巡礼 <strong>${totalCheckins()}</strong>
@@ -7381,6 +7487,10 @@ function renderFavorites() {
   if (dirBtn) {
     dirBtn.addEventListener('click', () => openUsersDirectory());
   }
+  const shareBtn = list.querySelector('#shareMyProfileBtn');
+  if (shareBtn) {
+    shareBtn.addEventListener('click', () => openShareMyProfileModal());
+  }
   // 称号選択
   const editTitle = list.querySelector('#editTitleBtn');
   if (editTitle) {
@@ -7784,5 +7894,13 @@ window.renderBookshelfGuides = renderBookshelfGuides;
     runFollowBackScan();
     runBirthdayNotifications();
   } catch (e) { console.warn('followback/bday', e); }
+  // ?user=<uid> でシェアURL経由の会員プロフィールを開く
+  try {
+    const qp = new URLSearchParams(location.search);
+    const sharedUid = qp.get('user');
+    if (sharedUid) {
+      setTimeout(() => openUserProfileById(sharedUid), 800);
+    }
+  } catch {}
   history.push('people');
 })();

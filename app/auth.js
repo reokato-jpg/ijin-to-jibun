@@ -256,6 +256,53 @@ async function fetchAllUserProfiles() {
 }
 window.fetchAllUserProfiles = fetchAllUserProfiles;
 
+// 指定uidの会員プロフィールを取得（URL/ID検索用）
+async function fetchUserProfileById(uid) {
+  if (!FIREBASE_ENABLED || !fbDb || !window.__fbLib || !uid) return null;
+  try {
+    const { doc, getDoc } = window.__fbLib;
+    const snap = await getDoc(doc(fbDb, 'users', uid));
+    if (!snap.exists()) return null;
+    const d = snap.data();
+    const name = d.ijin_user_name || '';
+    if (!name) return null;
+    const traits = d.ijin_my_traits || {};
+    const sns = traits.sns || {};
+    const followingIjin = Array.isArray(d.ijin_fav_people) ? d.ijin_fav_people : [];
+    const stamps = d.ijin_stamps || {};
+    let stampTotal = 0;
+    Object.values(stamps).forEach(v => {
+      if (typeof v === 'number') stampTotal += v;
+      else if (v && typeof v === 'object') stampTotal += Object.values(v).reduce((a,b)=>a+(b||0),0);
+    });
+    return {
+      uid, name,
+      title: d.ijin_current_title || '',
+      avatar: d.ijin_user_avatar || '',
+      birthMonth: traits.birthMonth || null,
+      birthDay: traits.birthDay || null,
+      hometown: traits.hometown || '',
+      traits: {
+        foods: traits.foods || [], hobbies: traits.hobbies || [],
+        likes: traits.likes || [], dislikes: traits.dislikes || [],
+      },
+      sns: {
+        x: sns.x || '', instagram: sns.instagram || '',
+        note: sns.note || '', facebook: sns.facebook || '',
+      },
+      hasSns: !!(sns.x || sns.instagram || sns.note || sns.facebook),
+      followingIjin,
+      ijinCount: followingIjin.length,
+      stampTotal,
+      isMe: currentUser && uid === currentUser.uid,
+    };
+  } catch (e) {
+    console.error('[auth] user profile 取得失敗:', e);
+    return null;
+  }
+}
+window.fetchUserProfileById = fetchUserProfileById;
+
 // localStorage.setItem を上書きして同期
 function hookLocalStorage() {
   const origSet = Storage.prototype.setItem;

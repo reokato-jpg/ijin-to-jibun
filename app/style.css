@@ -11832,3 +11832,20 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 .user-prof-ijin-list { display: flex; flex-wrap: wrap; gap: 5px; }
 .user-prof-ijin { padding: 3px 10px; background: #fff; border: 1px solid var(--rule-soft); border-radius: 999px; font-size: 11px; color: var(--wine); cursor: pointer; }
 .user-prof-ijin:hover { background: var(--gold-light); }
+
+/* 会員ディレクトリの検索欄 */
+.users-dir-search-row { display: flex; gap: 6px; margin-top: 10px; }
+.users-dir-search { flex: 1; padding: 8px 10px; border: 1px solid var(--rule-soft); border-radius: 8px; font-size: 13px; background: #fff; }
+.users-dir-id-jump { padding: 8px 14px; border: 1px solid var(--wine); background: var(--wine); color: var(--gold-light); border-radius: 8px; font-size: 12px; cursor: pointer; white-space: nowrap; }
+.users-dir-id-jump:hover { background: var(--wine-dark); }
+
+/* マイプロフィールシェア */
+.share-qr-wrap { text-align: center; margin: 14px 0; }
+.share-qr { width: 200px; height: 200px; border: 1px solid var(--rule-soft); border-radius: 8px; background: #fff; padding: 6px; }
+.share-row { margin-bottom: 12px; }
+.share-label { font-size: 11px; color: var(--ink-3); letter-spacing: 0.1em; margin-bottom: 4px; font-weight: 600; }
+.share-field { display: flex; gap: 6px; }
+.share-field input { flex: 1; padding: 8px 10px; border: 1px solid var(--rule-soft); border-radius: 6px; font-size: 12px; background: #fff8ee; color: var(--ink); font-family: monospace; }
+.share-copy { padding: 8px 14px; border: 1px solid var(--wine); background: #fff; color: var(--wine); border-radius: 6px; font-size: 12px; cursor: pointer; white-space: nowrap; }
+.share-copy:hover { background: var(--wine); color: var(--gold-light); }
+.share-native { display: block; width: 100%; margin-top: 6px; padding: 10px; border: 1.5px solid var(--gold); background: linear-gradient(135deg, var(--wine) 0%, var(--wine-dark) 100%); color: var(--gold-light); border-radius: 999px; font-size: 13px; letter-spacing: 0.1em; cursor: pointer; }
