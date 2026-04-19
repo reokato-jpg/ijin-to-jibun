@@ -344,11 +344,18 @@ function toggleFavPerson(id) {
     else delete map[id];
     localStorage.setItem('ijin_unfollowed_at', JSON.stringify(map));
   } catch {}
+  // フォロー追加時はフォローバック条件を再評価、解除時は forcedFollows からも除外を検討
+  try {
+    if (!wasFollowing && typeof checkFollowBackEligibility === 'function') checkFollowBackEligibility(id);
+    if (wasFollowing && typeof runFollowBackRemoval === 'function') runFollowBackRemoval();
+  } catch {}
 }
 function toggleFavEvent(personId, event) {
   const k = eventKey(personId, event);
   if (favEvents.has(k)) favEvents.delete(k); else favEvents.add(k);
   saveSet(FAV_KEY_EVENTS, favEvents);
+  // いいね数更新 → フォローバック条件を再評価
+  try { if (typeof checkFollowBackEligibility === 'function') checkFollowBackEligibility(personId); } catch {}
 }
 
 // ====================== ビュー切替 ======================
@@ -2740,6 +2747,8 @@ function recordVisit(personId) {
   const visits = loadVisits();
   visits[personId] = (visits[personId] || 0) + 1;
   localStorage.setItem(VISITS_KEY, JSON.stringify(visits));
+  // 訪問数更新のタイミングでフォローバック条件を再評価
+  try { if (typeof checkFollowBackEligibility === 'function') checkFollowBackEligibility(personId); } catch {}
 }
 function getVisitCount(personId) {
   return loadVisits()[personId] || 0;
@@ -2748,7 +2757,7 @@ function totalFootprints() {
   const v = loadVisits();
   return Object.values(v).reduce((a, b) => a + b, 0);
 }
-// 偉人がユーザーをフォローしているか（スタンプ3以上 or エリジビリティ判定通過）
+// 偉人がユーザーをフォローしているか（内部エリジビリティ判定通過で forcedFollows に追加された偉人のみ）
 const FORCED_FOLLOW_KEY = 'ijin_forced_follows';
 const USER_UNFOLLOWED_AT_KEY = 'ijin_unfollowed_at';
 const USER_FOLLOWED_AT_KEY = 'ijin_followed_at';
@@ -2761,7 +2770,9 @@ function saveForcedFollows(set) {
   localStorage.setItem(FORCED_FOLLOW_KEY, JSON.stringify([...set]));
 }
 function isFollowedByPerson(personId) {
-  if (getStampLevel(personId) >= 3) return true;
+  // 自分がその偉人をフォローしていない場合は、偉人からもフォローされない
+  if (!isFavPerson(personId)) return false;
+  // 内部判定条件を満たした偉人のみがフォローバック（forcedFollows）する
   return loadForcedFollows().has(personId);
 }
 // 1日1回ユーザーが「いいね」した偉人の集計（favQuotesから逆算）
@@ -2792,6 +2803,8 @@ function userNotFollowingPersonBlocks(person) {
 // フォローバック条件を満たすか（※内部判定。UIに露出しない）
 function meetsFollowBackCriteria(person) {
   if (!person) return false;
+  // 大前提：自分がその偉人をフォローしていない限り、フォローバックは起きない
+  if (!isFavPerson(person.id)) return false;
   if (getVisitCount(person.id) < 10) return false;
   if (getLikesForPerson(person.id) < 10) return false;
   if (!userNotFollowingPersonBlocks(person)) return false;
@@ -4997,13 +5010,10 @@ function grantStamp(personId, source = 'quiz') {
   bd[source] = (bd[source] || 0) + 1;
   stamps[personId] = bd;
   saveStamps(stamps);
-  const after = before + 1;
-  // Lv.3到達時に『偉人からフォロー』を反映＋通知
-  if (before < 3 && after >= 3) {
-    try { if (typeof renderFavorites === 'function') renderFavorites(); } catch {}
-    const person = DATA.people.find(p => p.id === personId);
-    if (person) showFollowToast(person);
-  }
+  // スタンプ獲得は内部のフォローバック判定材料の一つに過ぎないため、
+  // ここで直接フォロー関連の表示変更・通知は行わない。
+  // （実際の判定は checkFollowBackEligibility が内部条件を見て行う）
+  try { checkFollowBackEligibility(personId); } catch {}
 }
 
 // LINE風のフォロー通知トースト

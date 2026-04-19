@@ -706,7 +706,7 @@ function openAccountMenu() {
         </label>
         <label class="settings-item settings-item-toggle">
           <span class="settings-item-icon">🏛</span>
-          <span class="settings-item-body"><b>偉人からのフォロー</b><small>クイズLv.3達成でフォローされた時</small></span>
+          <span class="settings-item-body"><b>偉人からのフォロー</b><small>偉人があなたをフォローした時</small></span>
           <input type="checkbox" class="settings-toggle" id="togNotifyIjinFollow">
         </label>
       </div>
