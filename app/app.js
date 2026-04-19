@@ -1000,7 +1000,6 @@ const AVATAR_PRESETS = [
   { id: 'raccoon', name: 'ラクーン' },
   { id: 'cat', name: '猫' }, { id: 'fox', name: 'キツネ' },
   { id: 'bear', name: 'クマ' }, { id: 'deer', name: 'シカ' },
-  { id: 'chick', name: 'ヒヨコ' },
   { id: 'tiger', name: 'トラ' }, { id: 'lion', name: 'ライオン' },
   { id: 'panda', name: 'パンダ' }, { id: 'otter', name: 'カワウソ' },
   { id: 'hamster', name: 'ハムスター' },
@@ -1388,72 +1387,10 @@ function openSnsLinksModal() {
 }
 window.openSnsLinksModal = openSnsLinksModal;
 
-// プロフィール編集モーダル（名前・称号・誕生日・出身地・SNSをまとめて編集）
+// プロフィール編集（統一版：openMemberSettings を呼ぶエイリアス）
+// アバター・名前・称号・誕生日・出身地・趣味・好きなもの・嫌いなもの・SNS をまとめて編集
 function openEditProfileModal() {
-  const existing = document.getElementById('editProfileModal');
-  if (existing) existing.remove();
-  const traits = (typeof loadMyTraits === 'function') ? loadMyTraits() : {};
-  const m = document.createElement('div');
-  m.id = 'editProfileModal';
-  m.className = 'settings-modal';
-  const countries = (typeof collectCountryOptions === 'function') ? collectCountryOptions() : [];
-  m.innerHTML = `
-    <div class="settings-backdrop" data-close="1"></div>
-    <div class="settings-panel">
-      <button class="settings-close" data-close="1" aria-label="閉じる">×</button>
-      <div class="settings-head">✎ プロフィール編集</div>
-      <form id="editProfForm" class="sns-form">
-        <label class="sns-field">
-          <span class="sns-label">名前</span>
-          <input name="name" type="text" placeholder="natsumi" value="${escapeHtml(getUserName())}">
-        </label>
-        <label class="sns-field">
-          <span class="sns-label">🎂 誕生日</span>
-          <span style="display:flex;gap:8px">
-            <select name="birthMonth" style="flex:1">
-              <option value="">月</option>
-              ${Array.from({length:12},(_,i)=>i+1).map(n => `<option value="${n}" ${String(traits.birthMonth||'')===String(n)?'selected':''}>${n}月</option>`).join('')}
-            </select>
-            <select name="birthDay" style="flex:1">
-              <option value="">日</option>
-              ${Array.from({length:31},(_,i)=>i+1).map(n => `<option value="${n}" ${String(traits.birthDay||'')===String(n)?'selected':''}>${n}日</option>`).join('')}
-            </select>
-          </span>
-        </label>
-        <label class="sns-field">
-          <span class="sns-label">📍 出身地</span>
-          <input name="hometown" type="text" list="editProfCountries" placeholder="例：日本" value="${escapeHtml(traits.hometown || traits.country || '')}">
-          <datalist id="editProfCountries">
-            ${countries.map(c => `<option value="${escapeHtml(c)}">`).join('')}
-          </datalist>
-        </label>
-        <div class="sns-actions">
-          <button type="button" class="sns-cancel" data-close="1">キャンセル</button>
-          <button type="submit" class="sns-save">保存</button>
-        </div>
-      </form>
-    </div>
-  `;
-  document.body.appendChild(m);
-  requestAnimationFrame(() => m.classList.add('open'));
-  const close = () => { m.classList.remove('open'); setTimeout(() => m.remove(), 200); };
-  m.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', close));
-  m.querySelector('#editProfForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const fd = new FormData(e.target);
-    const name = (fd.get('name') || '').toString().trim();
-    if (typeof setUserName === 'function') setUserName(name);
-    const t = (typeof loadMyTraits === 'function') ? loadMyTraits() : {};
-    t.birthMonth = (fd.get('birthMonth') || '').toString();
-    t.birthDay = (fd.get('birthDay') || '').toString();
-    t.hometown = (fd.get('hometown') || '').toString().trim();
-    t.country = t.hometown; // 後方互換
-    if (typeof saveMyTraits === 'function') saveMyTraits(t);
-    close();
-    if (typeof renderFavorites === 'function') renderFavorites();
-    if (typeof renderTraitsMatch === 'function') renderTraitsMatch();
-    alert('プロフィールを保存しました。');
-  });
+  if (typeof openMemberSettings === 'function') return openMemberSettings();
 }
 window.openEditProfileModal = openEditProfileModal;
 
