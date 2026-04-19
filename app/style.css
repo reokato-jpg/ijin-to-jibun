@@ -12494,6 +12494,40 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
   padding-left: 4px;
   font-weight: 600;
 }
+
+/* 偉人からのフォローヒント */
+.follow-hint-block {
+  padding: 0;
+  background: none;
+}
+.follow-hint-inner {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, rgba(255,248,238,0.9) 0%, rgba(248,230,200,0.8) 100%);
+  border: 1px solid var(--gold);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(120,80,20,0.08);
+}
+.follow-hint-icon {
+  font-size: 28px;
+  color: var(--wine);
+  flex-shrink: 0;
+}
+.follow-hint-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--wine-dark);
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+}
+.follow-hint-text {
+  font-size: 11px;
+  color: var(--ink-3);
+  line-height: 1.7;
+}
+
 /* プリセットアバター選択グリッド */
 .settings-preset-label {
   font-size: 11px;
