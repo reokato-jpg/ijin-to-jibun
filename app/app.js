@@ -2719,7 +2719,6 @@ async function showPerson(id) {
         <button class="profile-tab active" data-ptab="stream">タイムライン</button>
         <button class="profile-tab" data-ptab="quotes">名言</button>
         <button class="profile-tab" data-ptab="timeline">年表</button>
-        ${(p.relations && p.relations.length > 0) ? '<button class="profile-tab" data-ptab="relations">フォロー・フォロワー</button>' : ''}
         ${(p.works && p.works.length > 0) ? '<button class="profile-tab" data-ptab="works">代表作</button>' : ''}
         ${(p.media && p.media.length > 0) ? '<button class="profile-tab" data-ptab="media">映画・ドラマ</button>' : ''}
         <button class="profile-tab" data-ptab="happenings">イベント</button>
