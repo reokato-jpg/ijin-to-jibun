@@ -285,8 +285,16 @@ function eventKey(personId, event) {
 function isFavPerson(id) { return favPeople.has(id); }
 function isFavEvent(personId, event) { return favEvents.has(eventKey(personId, event)); }
 function toggleFavPerson(id) {
-  if (favPeople.has(id)) favPeople.delete(id); else favPeople.add(id);
+  const wasFollowing = favPeople.has(id);
+  if (wasFollowing) favPeople.delete(id); else favPeople.add(id);
   saveSet(FAV_KEY_PEOPLE, favPeople);
+  // ユーザーが解除した時刻を記録（内部リムーブ判定で使用）
+  try {
+    const map = JSON.parse(localStorage.getItem('ijin_unfollowed_at') || '{}');
+    if (wasFollowing) map[id] = Date.now();
+    else delete map[id];
+    localStorage.setItem('ijin_unfollowed_at', JSON.stringify(map));
+  } catch {}
 }
 function toggleFavEvent(personId, event) {
   const k = eventKey(personId, event);
@@ -2191,9 +2199,130 @@ function totalFootprints() {
   const v = loadVisits();
   return Object.values(v).reduce((a, b) => a + b, 0);
 }
-// 偉人がユーザーをフォローしているか（スタンプ3以上で相互フォロー）
+// 偉人がユーザーをフォローしているか（スタンプ3以上 or エリジビリティ判定通過）
+const FORCED_FOLLOW_KEY = 'ijin_forced_follows';
+const USER_UNFOLLOWED_AT_KEY = 'ijin_unfollowed_at';
+const USER_FOLLOWED_AT_KEY = 'ijin_followed_at';
+const BDAY_GREETED_KEY = 'ijin_bday_greeted';
+function loadForcedFollows() {
+  try { return new Set(JSON.parse(localStorage.getItem(FORCED_FOLLOW_KEY) || '[]')); }
+  catch { return new Set(); }
+}
+function saveForcedFollows(set) {
+  localStorage.setItem(FORCED_FOLLOW_KEY, JSON.stringify([...set]));
+}
 function isFollowedByPerson(personId) {
-  return getStampLevel(personId) >= 3;
+  if (getStampLevel(personId) >= 3) return true;
+  return loadForcedFollows().has(personId);
+}
+// 1日1回ユーザーが「いいね」した偉人の集計（favQuotesから逆算）
+function getLikesForPerson(personId) {
+  let n = 0;
+  favQuotes.forEach(k => { if (k.startsWith(personId + '::')) n++; });
+  favEvents.forEach(k => { if (k.startsWith(personId + '::')) n++; });
+  return n;
+}
+// 設定済みのユーザー特性と偉人の共通項チェック
+function hasCommonTraitWith(person) {
+  const mine = loadMyTraits();
+  if (!mine || (!mine.foods?.length && !mine.hobbies?.length && !mine.likes?.length && !mine.dislikes?.length)) return false;
+  const pt = person.traits || {};
+  for (const cat of ['foods','hobbies','likes','dislikes']) {
+    const mineSet = new Set(mine[cat] || []);
+    for (const it of (pt[cat] || [])) { if (mineSet.has(it)) return true; }
+  }
+  return false;
+}
+// ユーザーが、その偉人がブロックしている人をフォローしていないか
+function userNotFollowingPersonBlocks(person) {
+  const blocks = (person.rivals || person.blocks || []).map(b => b.id || b);
+  if (!blocks.length) return true;
+  for (const bid of blocks) { if (favPeople.has(bid)) return false; }
+  return true;
+}
+// フォローバック条件を満たすか（※内部判定。UIに露出しない）
+function meetsFollowBackCriteria(person) {
+  if (!person) return false;
+  if (getVisitCount(person.id) < 10) return false;
+  if (getLikesForPerson(person.id) < 10) return false;
+  if (!userNotFollowingPersonBlocks(person)) return false;
+  if (!hasCommonTraitWith(person)) return false;
+  return true;
+}
+function checkFollowBackEligibility(personId) {
+  const person = DATA.people.find(p => p.id === personId);
+  if (!person) return;
+  if (isFollowedByPerson(personId)) return;
+  if (!meetsFollowBackCriteria(person)) return;
+  const set = loadForcedFollows();
+  if (set.has(personId)) return;
+  set.add(personId);
+  saveForcedFollows(set);
+  // 追加日を記録（誕生日手紙リムーブ判定で使用）
+  try {
+    const map = JSON.parse(localStorage.getItem(USER_FOLLOWED_AT_KEY) || '{}');
+    map[personId] = Date.now();
+    localStorage.setItem(USER_FOLLOWED_AT_KEY, JSON.stringify(map));
+  } catch {}
+  try { if (typeof renderFavorites === 'function') renderFavorites(); } catch {}
+  showFollowToast(person);
+}
+// 全偉人に対してエリジビリティを再評価
+function runFollowBackScan() {
+  (DATA.people || []).forEach(p => checkFollowBackEligibility(p.id));
+}
+// 誕生日通知（今日が誕生日の、フォロー中の偉人）
+function runBirthdayNotifications() {
+  const today = new Date();
+  const todayKey = `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`;
+  let greeted = {};
+  try { greeted = JSON.parse(localStorage.getItem(BDAY_GREETED_KEY) || '{}'); } catch {}
+  (DATA.people || []).forEach(p => {
+    if (!favPeople.has(p.id)) return;
+    if (p.birthMonth !== (today.getMonth()+1) || p.birthDay !== today.getDate()) return;
+    if (greeted[p.id] === todayKey) return;
+    greeted[p.id] = todayKey;
+    const msg = `今日は${p.name}の誕生日です。お祝いしましょう。`;
+    // アプリ外通知
+    if ('Notification' in window && Notification.permission === 'granted') {
+      try { new Notification('🎂 誕生日のお知らせ', { body: msg, icon: p.imageUrl || '/app/assets/icon-192.png', tag: `bday-${p.id}-${todayKey}` }); } catch {}
+    }
+    // アプリ内トースト
+    showFollowToast({ id: p.id, name: '🎂 ' + p.name, imageUrl: p.imageUrl });
+  });
+  localStorage.setItem(BDAY_GREETED_KEY, JSON.stringify(greeted));
+}
+// フォローバック解除条件の定期チェック
+function runFollowBackRemoval() {
+  const set = loadForcedFollows();
+  if (set.size === 0) return;
+  let unfollowedAt = {};
+  let followedAt = {};
+  try { unfollowedAt = JSON.parse(localStorage.getItem(USER_UNFOLLOWED_AT_KEY) || '{}'); } catch {}
+  try { followedAt = JSON.parse(localStorage.getItem(USER_FOLLOWED_AT_KEY) || '{}'); } catch {}
+  const letters = (typeof loadLetters === 'function') ? loadLetters() : [];
+  const now = Date.now();
+  const DAY = 86400000;
+  const today = new Date();
+  let changed = false;
+  [...set].forEach(pid => {
+    const p = DATA.people.find(x => x.id === pid);
+    if (!p) return;
+    // a) ユーザーが解除済みで15日経過
+    if (unfollowedAt[pid] && now - unfollowedAt[pid] > 15 * DAY) {
+      set.delete(pid); changed = true; return;
+    }
+    // b) 誕生日から1ヶ月経過し、その間に「おめでとう」を含む手紙が送られていない
+    if (p.birthMonth && p.birthDay) {
+      const thisYearBd = new Date(today.getFullYear(), p.birthMonth - 1, p.birthDay).getTime();
+      const sinceBd = now - thisYearBd;
+      if (sinceBd > 30 * DAY && sinceBd < 365 * DAY) {
+        const wrote = letters.some(L => L.personId === pid && L.ts >= thisYearBd && L.ts <= thisYearBd + 30 * DAY && /おめでとう/.test(L.body || L.text || ''));
+        if (!wrote) { set.delete(pid); changed = true; }
+      }
+    }
+  });
+  if (changed) saveForcedFollows(set);
 }
 
 // しおり（最近読んだ偉人）
@@ -2436,6 +2565,7 @@ async function showPerson(id) {
   playBookOpenFx();
   saveBookmark(id);
   recordVisit(id);
+  try { checkFollowBackEligibility(id); } catch {}
   // アニメーション再生中に裏で詳細を描画
   const flipPromise = playBookFlip({
     title: p.name,
@@ -6623,8 +6753,12 @@ function renderFavorites() {
 
   const userName = getUserName();
   const title = currentTitle();
-  const displayName = userName ? `${title ? `【${title}】` : ''}${userName}` : '';
-  const bookTitle = displayName ? `${displayName}の本` : 'わたしの本';
+  // 称号は上段・名前は下段の2行表示（文字詰まり防止）
+  const bookTitle = userName
+    ? (title
+        ? `<span class="book-title-badge">【${title}】</span><br><span class="book-title-name">${userName}の本</span>`
+        : `${userName}の本`)
+    : 'わたしの本';
 
   let html = `
     <div class="open-book">
@@ -7409,25 +7543,29 @@ function initGuideCharaObserver() {
 
 // 各配置箇所にガイドキャラを配置
 function renderBookshelfGuides() {
-  // 1. ヒーロー直下: 初回訪問時のみ（localStorageで制御）
+  // 1. 初回訪問時のみポップアップで挨拶（2回目以降は出さない）
   const HERO_KEY = 'ijin_guide_hero_seen';
-  const heroSeen = localStorage.getItem(HERO_KEY);
-  if (!heroSeen) {
-    const heroSection = document.querySelector('.hero-silhouette');
-    if (heroSection && !heroSection.parentNode.querySelector('.guide-hero-wrap')) {
-      const html = `
-        <div class="guide-hero-wrap">
-          ${renderGuideChara({ pose: 'welcome', copyKey: 'hero', size: 'lg', layout: 'below' })}
-          <button class="guide-hero-dismiss" aria-label="閉じる">閉じる ×</button>
-        </div>
-      `;
-      heroSection.insertAdjacentHTML('afterend', html);
-      const wrap = heroSection.parentNode.querySelector('.guide-hero-wrap');
-      wrap?.querySelector('.guide-hero-dismiss')?.addEventListener('click', () => {
-        localStorage.setItem(HERO_KEY, '1');
-        wrap.remove();
-      });
-    }
+  if (!localStorage.getItem(HERO_KEY) && !document.querySelector('.guide-hello-modal')) {
+    const modal = document.createElement('div');
+    modal.className = 'guide-hello-modal';
+    modal.innerHTML = `
+      <div class="guide-hello-backdrop"></div>
+      <div class="guide-hello-card" role="dialog" aria-label="歴史の案内人 ラビンからの挨拶">
+        <button class="guide-hello-close" aria-label="閉じる">×</button>
+        ${renderGuideChara({ pose: 'welcome', copyText: 'はじめまして、歴史の案内人、ラビンです。', size: 'lg', layout: 'below' })}
+        <button class="guide-hello-ok">はじめる</button>
+      </div>
+    `;
+    document.body.appendChild(modal);
+    const close = () => {
+      localStorage.setItem(HERO_KEY, '1');
+      modal.classList.add('closing');
+      setTimeout(() => modal.remove(), 260);
+    };
+    modal.querySelector('.guide-hello-close').addEventListener('click', close);
+    modal.querySelector('.guide-hello-ok').addEventListener('click', close);
+    modal.querySelector('.guide-hello-backdrop').addEventListener('click', close);
+    requestAnimationFrame(() => modal.classList.add('show'));
   }
 
   // 2. はじめての方へ: 見出しの横
@@ -7498,5 +7636,11 @@ window.renderBookshelfGuides = renderBookshelfGuides;
   renderFavorites();
   renderBookshelfGuides();
   initGuideCharaObserver();
+  // 内部判定：フォローバック＋誕生日通知＋リムーブ条件
+  try {
+    runFollowBackRemoval();
+    runFollowBackScan();
+    runBirthdayNotifications();
+  } catch (e) { console.warn('followback/bday', e); }
   history.push('people');
 })();
