@@ -344,10 +344,24 @@ function toggleFavPerson(id) {
     else delete map[id];
     localStorage.setItem('ijin_unfollowed_at', JSON.stringify(map));
   } catch {}
-  // フォロー追加時はフォローバック条件を再評価、解除時は forcedFollows からも除外を検討
+  // フォロー追加時: フォローバック条件を再評価
+  // フォロー解除時: 前提条件（現在フォロー中）が崩れるので forcedFollows からも即除外
   try {
-    if (!wasFollowing && typeof checkFollowBackEligibility === 'function') checkFollowBackEligibility(id);
-    if (wasFollowing && typeof runFollowBackRemoval === 'function') runFollowBackRemoval();
+    if (!wasFollowing && typeof checkFollowBackEligibility === 'function') {
+      checkFollowBackEligibility(id);
+    }
+    if (wasFollowing) {
+      // 現在フォローしていないユーザーは、他の条件を満たしていてもフォローバック対象外。
+      // したがって forcedFollows からも即座に除外する（時間経過を待たない）。
+      try {
+        const set = loadForcedFollows();
+        if (set.has(id)) {
+          set.delete(id);
+          saveForcedFollows(set);
+        }
+      } catch {}
+      if (typeof runFollowBackRemoval === 'function') runFollowBackRemoval();
+    }
   } catch {}
 }
 function toggleFavEvent(personId, event) {
@@ -2769,10 +2783,19 @@ function loadForcedFollows() {
 function saveForcedFollows(set) {
   localStorage.setItem(FORCED_FOLLOW_KEY, JSON.stringify([...set]));
 }
+// ============================================================================
+// フォローバック判定ロジック（※内部のみ・UIに露出させない）
+// ----------------------------------------------------------------------------
+// 【旧ルール撤廃】「クイズ Lv.3 以上で自動フォロー」は廃止済み。
+//   → スタンプの数はフォローバック判定に直接は使わない（条件の一つでもない）。
+// 【前提条件】ユーザーがその偉人を「現在フォローしている」場合にのみ
+//   フォローバックの判定を行う。未フォローなら他の条件を満たしても対象外。
+// ============================================================================
 function isFollowedByPerson(personId) {
-  // 自分がその偉人をフォローしていない場合は、偉人からもフォローされない
+  // 前提: 自分がその偉人を現在フォローしていない → 偉人からもフォローされない
   if (!isFavPerson(personId)) return false;
-  // 内部判定条件を満たした偉人のみがフォローバック（forcedFollows）する
+  // 内部条件（meetsFollowBackCriteria）を満たしたとき forcedFollows に追加され、
+  // それに含まれる偉人だけが「フォロー中」と判定される
   return loadForcedFollows().has(personId);
 }
 // 1日1回ユーザーが「いいね」した偉人の集計（favQuotesから逆算）
@@ -2801,9 +2824,15 @@ function userNotFollowingPersonBlocks(person) {
   return true;
 }
 // フォローバック条件を満たすか（※内部判定。UIに露出しない）
+// 前提：ユーザーがこの偉人を現在フォローしていること。
+// 次の4条件をすべて満たすと forcedFollows に追加される:
+//   1) 訪問回数 >= 10
+//   2) いいね（お気に入り名言・出来事）>= 10
+//   3) その偉人がブロック（論敵・宿敵等）としている偉人を自分がフォローしていない
+//   4) ユーザーの traits とこの偉人の traits に共通項が一つ以上ある
 function meetsFollowBackCriteria(person) {
   if (!person) return false;
-  // 大前提：自分がその偉人をフォローしていない限り、フォローバックは起きない
+  // 【大前提】ユーザーが現在この偉人をフォロー中でなければ一切評価しない
   if (!isFavPerson(person.id)) return false;
   if (getVisitCount(person.id) < 10) return false;
   if (getLikesForPerson(person.id) < 10) return false;
