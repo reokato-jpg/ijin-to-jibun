@@ -3638,7 +3638,7 @@ async function showPerson(id) {
                     : `<div class="relation-avatar no-img">👤</div>`}
                   <div class="relation-info">
                     <div class="relation-name">${userName}</div>
-                    <div class="relation-role">あなた（Lv.${getStampLevel(p.id)}達成）</div>
+                    <div class="relation-role">あなた · 相互フォロー</div>
                   </div>
                 </div>
               </div>
@@ -6097,7 +6097,7 @@ function openPersonRelationsModal(p, initialTab) {
         <div class="social-list-avatar no-img">👤</div>
         <div class="social-list-meta">
           <div class="social-list-name">${userName}（あなた）</div>
-          <div class="social-list-sub">Lv.${getStampLevel(p.id)}達成 · 相互フォロー</div>
+          <div class="social-list-sub">相互フォロー</div>
         </div>
       </div>
     `;
