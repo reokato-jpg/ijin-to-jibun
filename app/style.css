@@ -12495,6 +12495,18 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
   font-weight: 600;
 }
 
+.settings-title-btn {
+  width: 100%;
+  padding: 10px 14px;
+  background: #fff8ee;
+  border: 1px solid var(--rule-soft);
+  border-radius: 8px;
+  text-align: left;
+  font-size: 13px;
+  color: var(--ink);
+  cursor: pointer;
+}
+.settings-title-btn:hover { border-color: var(--gold); }
 /* 偉人からのフォローヒント */
 .follow-hint-block {
   padding: 0;

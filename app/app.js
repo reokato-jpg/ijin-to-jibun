@@ -1062,6 +1062,16 @@ function openMemberSettings() {
       </div>
 
       <div class="settings-section">
+        <div class="settings-sec-label">名前</div>
+        <input type="text" class="settings-input" id="settingsUserName" value="${(getUserName() || '').replace(/"/g,'&quot;')}" placeholder="例：さくら" maxlength="20">
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-sec-label">称号</div>
+        <button type="button" class="settings-title-btn" id="settingsTitleBtn">${currentTitle() ? `現在：${currentTitle()}` : '称号を選ぶ（スタンプ獲得数に応じて）'} →</button>
+      </div>
+
+      <div class="settings-section">
         <div class="settings-sec-label">誕生日</div>
         <div class="settings-birthday">
           <select id="settingsBirthMonth">
@@ -1187,8 +1197,22 @@ function openMemberSettings() {
     if (cur.includes(`/avatars/${btn.dataset.preset}.`)) btn.classList.add('selected');
   });
 
+  // 称号ボタン → 称号選択モーダル
+  modal.querySelector('#settingsTitleBtn')?.addEventListener('click', () => {
+    openTitlePickerModal();
+    // モーダル閉じた後にボタン表記を更新
+    const update = () => {
+      const btn = modal.querySelector('#settingsTitleBtn');
+      if (btn) btn.textContent = currentTitle() ? `現在：${currentTitle()} →` : '称号を選ぶ（スタンプ獲得数に応じて） →';
+    };
+    setTimeout(update, 400);
+  });
+
   modal.querySelector('#settingsSave').addEventListener('click', () => {
     const t = loadMyTraits();
+    // 名前保存
+    const nameInp = modal.querySelector('#settingsUserName');
+    if (nameInp) setUserName(nameInp.value || '');
     t.birthMonth = parseInt(modal.querySelector('#settingsBirthMonth').value, 10) || null;
     t.birthDay = parseInt(modal.querySelector('#settingsBirthDay').value, 10) || null;
     t.hometown = modal.querySelector('#settingsHometown').value.trim();
@@ -7489,21 +7513,6 @@ function renderFavorites() {
             <div class="title-page-meta-item"><strong>${totalItems}</strong><span>編</span></div>
           </div>
           <div class="title-page-date">更新 ${dateStr}</div>
-          <button class="title-page-edit-name" id="editNameBtn">
-            ${userName ? '✎ 名前を変更' : '✎ 名前を設定'}
-          </button>
-          ${(typeof currentUser !== 'undefined' && currentUser) ? `
-            <button class="title-page-edit-name" id="openSettingsBtn">
-              ⚙ プロフィール編集
-            </button>
-          ` : `
-            <button class="title-page-edit-name" id="openSettingsBtn" data-locked="1">
-              🔒 自分のことを設定（会員登録後）
-            </button>
-          `}
-          <button class="title-page-edit-name" id="editTitleBtn">
-            ${title ? `✎ 称号を変更（現在：${title}）` : '🏆 称号を選ぶ'}
-          </button>
           <div class="title-page-social">
             <button class="title-page-social-item" data-open-social="following">
               <div class="title-page-social-num" id="tpFollowingNum">${favPeople.size + loadUserFollows().size}</div>
@@ -7955,22 +7964,6 @@ function renderFavorites() {
     });
   });
 
-  // 会員設定ボタン
-  const settingsBtn = list.querySelector('#openSettingsBtn');
-  if (settingsBtn) {
-    settingsBtn.addEventListener('click', () => {
-      if (settingsBtn.dataset.locked) {
-        if (typeof openLoginModal === 'function') openLoginModal();
-      } else {
-        openMemberSettings();
-      }
-    });
-  }
-  // 名前変更
-  const editName = list.querySelector('#editNameBtn');
-  if (editName) {
-    editName.addEventListener('click', () => openNameEditModal());
-  }
   // 会員ディレクトリ
   const dirBtn = list.querySelector('#openUsersDirBtn');
   if (dirBtn) {
@@ -7979,11 +7972,6 @@ function renderFavorites() {
   const shareBtn = list.querySelector('#shareMyProfileBtn');
   if (shareBtn) {
     shareBtn.addEventListener('click', () => openShareMyProfileModal());
-  }
-  // 称号選択
-  const editTitle = list.querySelector('#editTitleBtn');
-  if (editTitle) {
-    editTitle.addEventListener('click', () => openTitlePickerModal());
   }
 
   // 目次クリック → スクロール
