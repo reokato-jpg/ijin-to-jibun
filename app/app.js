@@ -4102,10 +4102,10 @@ function renderSearchSubFilters() {
     const options = [
       { id: 'all', name: '指定なし', count: targetPeople.length },
       { id: 'has_routine', name: 'ルーティンあり', count: targetPeople.filter(p => p.routine && p.routine.length > 2).length },
-      { id: 'short_sleep', name: 'ショートスリーパー(<6h)', count: targetPeople.filter(p => personMatchesRoutineFilter(p, 'short_sleep')).length },
-      { id: 'long_sleep', name: 'ロングスリーパー(≥9h)', count: targetPeople.filter(p => personMatchesRoutineFilter(p, 'long_sleep')).length },
-      { id: 'early_riser', name: '朝型(6時前起床)', count: targetPeople.filter(p => personMatchesRoutineFilter(p, 'early_riser')).length },
-      { id: 'night_owl', name: '夜型(深夜就寝)', count: targetPeople.filter(p => personMatchesRoutineFilter(p, 'night_owl')).length },
+      { id: 'short_sleep', name: 'ショートスリーパー', count: targetPeople.filter(p => personMatchesRoutineFilter(p, 'short_sleep')).length },
+      { id: 'long_sleep', name: 'ロングスリーパー', count: targetPeople.filter(p => personMatchesRoutineFilter(p, 'long_sleep')).length },
+      { id: 'early_riser', name: '朝型', count: targetPeople.filter(p => personMatchesRoutineFilter(p, 'early_riser')).length },
+      { id: 'night_owl', name: '夜型', count: targetPeople.filter(p => personMatchesRoutineFilter(p, 'night_owl')).length },
     ];
     routineBar.innerHTML = options.filter(o => o.id === 'all' || o.count > 0).map(o => {
       const active = currentSearchRoutine === o.id ? 'active' : '';
