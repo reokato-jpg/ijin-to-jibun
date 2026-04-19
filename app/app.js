@@ -524,42 +524,44 @@ function saveMyTraits(obj) {
 }
 
 // DBから全traitの選択肢を集計（＋ユーザー向けの普遍的な選択肢を合成）
-const CURATED_TRAIT_OPTIONS = {
+// カテゴリごとにサブグループを持たせる
+const TRAIT_GROUPS = {
   foods: [
-    'コーヒー','紅茶','緑茶','ワイン','ビール','日本酒','ウイスキー','シャンパン',
-    'パン','ご飯','麺類','寿司','ラーメン','パスタ','ピザ','カレー',
-    '和食','洋食','中華','フランス料理','イタリア料理','エスニック',
-    '肉料理','魚料理','野菜','果物','チョコレート','スイーツ','アイスクリーム',
-    'チーズ','卵料理','スープ','朝食をしっかり','質素な食事','外食','自炊'
+    { label: '🍷 飲み物', items: ['コーヒー','紅茶','緑茶','ワイン','ビール','日本酒','ウイスキー','シャンパン','濃いコーヒー','水','牛乳'] },
+    { label: '🍚 主食', items: ['パン','ご飯','麺類','寿司','ラーメン','パスタ','ピザ','カレー','黒パン','うどん','そば'] },
+    { label: '🍱 料理ジャンル', items: ['和食','洋食','中華','フランス料理','イタリア料理','エスニック','ロシア料理','オランダ料理'] },
+    { label: '🍖 食材・食事スタイル', items: ['肉料理','魚料理','野菜','果物','ステーキ','オリーブ','スープ','卵料理','菜食主義','朝食をしっかり','質素な食事','外食','自炊'] },
+    { label: '🍰 甘いもの', items: ['チョコレート','スイーツ','アイスクリーム','チーズ','タバコ'] },
   ],
   hobbies: [
-    '読書','映画鑑賞','音楽鑑賞','楽器演奏','歌う','絵を描く','写真','書道',
-    '散歩','ランニング','筋トレ','ヨガ','瞑想','登山','サイクリング','水泳',
-    '旅行','カフェ巡り','美術館・博物館','演劇鑑賞','ライブ・コンサート',
-    '料理','お菓子作り','ガーデニング','園芸','ペットと過ごす',
-    'ゲーム','将棋・囲碁','チェス','パズル','カードゲーム',
-    'SNS','YouTube','ポッドキャスト','日記を書く','手紙を書く',
-    '早起き','夜更かし','温泉・銭湯','友人と語らう','一人で過ごす'
+    { label: '📖 文化・芸術', items: ['読書','映画鑑賞','音楽鑑賞','楽器演奏','歌う','絵を描く','写真','書道','演劇鑑賞','ライブ・コンサート','美術館・博物館','詩を書く','日記を書く','手紙を書く'] },
+    { label: '🏃 運動・アウトドア', items: ['散歩','ランニング','筋トレ','ヨガ','瞑想','登山','サイクリング','水泳','旅行','温泉・銭湯','ハイキング'] },
+    { label: '🎨 制作・生活', items: ['料理','お菓子作り','ガーデニング','園芸','ペットと過ごす','カフェ巡り'] },
+    { label: '🎲 遊び', items: ['ゲーム','将棋・囲碁','チェス','パズル','カードゲーム','賭博'] },
+    { label: '📱 デジタル', items: ['SNS','YouTube','ポッドキャスト'] },
+    { label: '☀️ リズム', items: ['早起き','夜更かし','友人と語らう','一人で過ごす'] },
   ],
   likes: [
-    '自然','海','山','森','川','星空','満月','朝日','夕焼け','雨の音','雪',
-    '音楽','クラシック音楽','ジャズ','ポップス','ロック','和楽器の音',
-    '文学','詩','小説','エッセイ','漫画','古典',
-    '哲学','数学','科学','歴史','語学',
-    '犬','猫','鳥','花','植物','観葉植物',
-    '静けさ','一人の時間','家族','友人','恋人','仲間',
-    '旅','見知らぬ街','古い建物','図書館','本屋',
-    '挑戦','創作','学び','自由','美しいもの','シンプルなもの'
+    { label: '🌿 自然・風景', items: ['自然','海','山','森','川','星空','満月','朝日','夕焼け','雨の音','雪'] },
+    { label: '🎵 音楽', items: ['音楽','クラシック音楽','ジャズ','ポップス','ロック','和楽器の音'] },
+    { label: '📚 文学・学問', items: ['文学','詩','小説','エッセイ','漫画','古典','哲学','数学','科学','歴史','語学'] },
+    { label: '🐾 動植物', items: ['犬','猫','鳥','花','植物','観葉植物'] },
+    { label: '👥 人・関係', items: ['家族','友人','恋人','仲間'] },
+    { label: '🧘 時間・場所', items: ['静けさ','一人の時間','旅','見知らぬ街','古い建物','図書館','本屋'] },
+    { label: '✨ 価値観', items: ['挑戦','創作','学び','自由','美しいもの','シンプルなもの'] },
   ],
   dislikes: [
-    '騒音','人混み','満員電車','急かされること','ルーティン',
-    '嘘','偽善','裏切り','陰口','マウント','詮索',
-    '早起き','夜更かし','残業','会議','書類仕事',
-    '虫','爬虫類','高所','閉所','暗い場所',
-    '怒号','威圧','暴力','戦争','差別','理不尽',
-    '無関心','冷笑','見栄','贅沢な浪費','依存'
+    { label: '🔊 環境', items: ['騒音','人混み','満員電車','急かされること','ルーティン','暗い場所'] },
+    { label: '🗣 人間関係', items: ['嘘','偽善','裏切り','陰口','マウント','詮索','無関心','冷笑'] },
+    { label: '💼 仕事・生活', items: ['早起き','夜更かし','残業','会議','書類仕事','見栄','贅沢な浪費'] },
+    { label: '😱 恐怖', items: ['虫','爬虫類','高所','閉所'] },
+    { label: '⚡ 理不尽', items: ['怒号','威圧','暴力','戦争','差別','理不尽','依存'] },
   ],
 };
+// フラットアクセス用のエイリアス
+const CURATED_TRAIT_OPTIONS = Object.fromEntries(
+  Object.entries(TRAIT_GROUPS).map(([cat, groups]) => [cat, groups.flatMap(g => g.items)])
+);
 function collectAllTraitOptions() {
   const counts = { foods: {}, hobbies: {}, likes: {}, dislikes: {} };
   // 偉人名の集合（選択肢として混入した偉人名を除外するため）
@@ -1026,7 +1028,7 @@ function openMemberSettings() {
     <div class="settings-backdrop" data-close="1"></div>
     <div class="settings-panel">
       <button class="settings-close" data-close="1" aria-label="閉じる">×</button>
-      <div class="settings-head">⚙ 自分のことを設定</div>
+      <div class="settings-head">⚙ プロフィール編集</div>
 
       <div class="settings-section settings-avatar-section">
         <div class="settings-sec-label">プロフィール画像</div>
@@ -1137,6 +1139,10 @@ function openMemberSettings() {
           avatarPreview.style.backgroundImage = `url('${dataUrl}')`;
           avatarPreview.textContent = '';
           if (typeof window.updateAccountUI === 'function') window.updateAccountUI();
+          // 即時Firestore同期（デバウンスを待たない）
+          if (typeof window.pushToCloud === 'function' && typeof currentUser !== 'undefined' && currentUser) {
+            window.pushToCloud(currentUser).catch(() => {});
+          }
         };
         img.src = ev.target.result;
       };
@@ -1150,6 +1156,9 @@ function openMemberSettings() {
       avatarPreview.textContent = '👤';
       avatarClear.remove();
       if (typeof window.updateAccountUI === 'function') window.updateAccountUI();
+      if (typeof window.pushToCloud === 'function' && typeof currentUser !== 'undefined' && currentUser) {
+        window.pushToCloud(currentUser).catch(() => {});
+      }
     });
   }
   // プリセットアバター選択
@@ -1162,6 +1171,9 @@ function openMemberSettings() {
       avatarPreview.textContent = '';
       modal.querySelectorAll('[data-preset]').forEach(b => b.classList.toggle('selected', b === btn));
       if (typeof window.updateAccountUI === 'function') window.updateAccountUI();
+      if (typeof window.pushToCloud === 'function' && typeof currentUser !== 'undefined' && currentUser) {
+        window.pushToCloud(currentUser).catch(() => {});
+      }
     });
     // 現在選択中のマーク
     const cur = localStorage.getItem('ijin_user_avatar') || '';
@@ -7475,7 +7487,7 @@ function renderFavorites() {
           </button>
           ${(typeof currentUser !== 'undefined' && currentUser) ? `
             <button class="title-page-edit-name" id="openSettingsBtn">
-              ⚙ 自分のことを設定
+              ⚙ プロフィール編集
             </button>
           ` : `
             <button class="title-page-edit-name" id="openSettingsBtn" data-locked="1">
