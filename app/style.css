@@ -12494,3 +12494,52 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
   padding-left: 4px;
   font-weight: 600;
 }
+/* プリセットアバター選択グリッド */
+.settings-preset-label {
+  font-size: 11px;
+  color: var(--ink-3);
+  letter-spacing: 0.1em;
+  margin: 14px 0 6px;
+  font-weight: 600;
+}
+.settings-preset-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+.settings-preset-item {
+  position: relative;
+  padding: 4px;
+  border: 2px solid transparent;
+  background: #fff8ee;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+.settings-preset-item img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: contain;
+  display: block;
+}
+.settings-preset-item:hover { transform: translateY(-1px); border-color: var(--gold); }
+.settings-preset-item.selected {
+  border-color: var(--wine);
+  background: #fff;
+  box-shadow: 0 0 0 2px rgba(120,30,50,0.15);
+}
+.settings-preset-item.selected::after {
+  content: '✓';
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: var(--wine);
+  color: var(--gold-light);
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

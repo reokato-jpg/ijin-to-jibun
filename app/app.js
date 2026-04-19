@@ -985,6 +985,17 @@ function openNameEditModal() {
 }
 
 // ====================== 会員設定モーダル ======================
+const AVATAR_PRESETS = [
+  { id: 'dog', name: '犬' }, { id: 'squirrel', name: 'リス' },
+  { id: 'sheep', name: '羊' }, { id: 'penguin', name: 'ペンギン' },
+  { id: 'raccoon', name: 'ラクーン' },
+  { id: 'cat', name: '猫' }, { id: 'fox', name: 'キツネ' },
+  { id: 'bear', name: 'クマ' }, { id: 'deer', name: 'シカ' },
+  { id: 'chick', name: 'ヒヨコ' },
+  { id: 'tiger', name: 'トラ' }, { id: 'lion', name: 'ライオン' },
+  { id: 'panda', name: 'パンダ' }, { id: 'otter', name: 'カワウソ' },
+  { id: 'hamster', name: 'ハムスター' },
+];
 function openMemberSettings() {
   const existing = document.getElementById('memberSettingsModal');
   if (existing) existing.remove();
@@ -1030,6 +1041,14 @@ function openMemberSettings() {
             </label>
             ${localStorage.getItem('ijin_user_avatar') ? `<button class="settings-avatar-clear" id="settingsAvatarClear">削除</button>` : ''}
           </div>
+        </div>
+        <div class="settings-preset-label">または、アイコンを選ぶ</div>
+        <div class="settings-preset-grid" id="settingsPresetGrid">
+          ${AVATAR_PRESETS.map(p => `
+            <button class="settings-preset-item" data-preset="${p.id}" title="${p.name}" type="button" aria-label="${p.name}">
+              <img src="assets/avatars/${p.id}.png?v=1" alt="${p.name}" loading="lazy">
+            </button>
+          `).join('')}
         </div>
       </div>
 
@@ -1133,6 +1152,21 @@ function openMemberSettings() {
       if (typeof window.updateAccountUI === 'function') window.updateAccountUI();
     });
   }
+  // プリセットアバター選択
+  modal.querySelectorAll('[data-preset]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.preset;
+      const url = `assets/avatars/${id}.png?v=1`;
+      localStorage.setItem('ijin_user_avatar', url);
+      avatarPreview.style.backgroundImage = `url('${url}')`;
+      avatarPreview.textContent = '';
+      modal.querySelectorAll('[data-preset]').forEach(b => b.classList.toggle('selected', b === btn));
+      if (typeof window.updateAccountUI === 'function') window.updateAccountUI();
+    });
+    // 現在選択中のマーク
+    const cur = localStorage.getItem('ijin_user_avatar') || '';
+    if (cur.includes(`/avatars/${btn.dataset.preset}.`)) btn.classList.add('selected');
+  });
 
   modal.querySelector('#settingsSave').addEventListener('click', () => {
     const t = loadMyTraits();
