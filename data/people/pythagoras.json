@@ -1,0 +1,105 @@
+{
+  "name": "ピュタゴラス",
+  "nameEn": "Pythagoras",
+  "birth": -570,
+  "death": -495,
+  "country": "古代ギリシャ",
+  "field": "哲学者・数学者",
+  "summary": "『万物は数なり』。数と音律に宇宙の調和を見出した神秘主義者にして、三平方の定理で知られる数学の祖。",
+  "events": [
+    {
+      "year": -570,
+      "age": 0,
+      "title": "サモス島に生まれる",
+      "detail": "",
+      "tags": []
+    },
+    {
+      "year": -530,
+      "age": 40,
+      "title": "南イタリアのクロトンでピュタゴラス教団を創設",
+      "detail": "秘儀的な学問と生活の共同体。",
+      "tags": [
+        "restart",
+        "creation"
+      ]
+    },
+    {
+      "year": -500,
+      "age": 70,
+      "title": "音階の数理的関係を発見",
+      "detail": "鍛冶屋の音を聞き、弦の長さと音程の関係を見出す。",
+      "tags": [
+        "breakthrough",
+        "creation"
+      ]
+    },
+    {
+      "year": -495,
+      "age": 75,
+      "title": "メタポンティオンで没す",
+      "detail": "教団は彼の死後も続き、プラトンにも影響を与えた。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "万物は数なり。",
+      "source": "ピュタゴラス学派の標語"
+    },
+    {
+      "text": "沈黙は、人が学べる最高の技術である。",
+      "source": "ピュタゴラスに帰される言葉"
+    },
+    {
+      "text": "魂の健康は、肉体の健康と同じく大切である。",
+      "source": "伝記に引かれる言葉"
+    },
+    {
+      "text": "友とは、もう一人の自分である。",
+      "source": "ピュタゴラス派"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/4/48/Kapitolinischer_Pythagoras_adjusted.jpg",
+  "wikiTitle": "ピタゴラス",
+  "imageCredit": {
+    "artist": "Roman bust",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Capitoline Museums, Rome",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kapitolinischer_Pythagoras_adjusted.jpg"
+  },
+  "birthMonth": 1,
+  "birthDay": 1,
+  "deathMonth": 1,
+  "deathDay": 1,
+  "lifeDigest": "古代ギリシャの哲学者、数学者、宗教家。南イタリアのクロトンにピュタゴラス教団を創設し、数こそが宇宙の根本原理であるとする思想を広めた。音律の数学的関係の発見は西洋音楽理論の起源。いわゆる『ピタゴラスの定理』のほか、天体の運行を調和（ハーモニー）と捉える『天球の音楽』の概念でも知られる。",
+  "traits": {
+    "foods": [
+      "パン",
+      "蜂蜜",
+      "野菜",
+      "豆（ただしソラマメだけは忌避）"
+    ],
+    "hobbies": [
+      "数の神秘を研究",
+      "音律実験",
+      "瞑想"
+    ],
+    "personality": "神秘主義と厳格な教団生活。弟子は5年間沈黙を守るよう命じられた。菜食主義者。",
+    "likes": [
+      "数",
+      "音楽",
+      "調和",
+      "幾何学"
+    ],
+    "dislikes": [
+      "ソラマメ",
+      "不調和",
+      "無秩序"
+    ]
+  },
+  "id": "pythagoras"
+}

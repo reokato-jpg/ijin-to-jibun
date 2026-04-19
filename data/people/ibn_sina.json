@@ -1,0 +1,100 @@
+{
+  "name": "イブン・スィーナー",
+  "nameEn": "Ibn Sina (Avicenna)",
+  "birth": 980,
+  "death": 1037,
+  "country": "ペルシア（イスラム世界）",
+  "field": "哲学者・医師・科学者",
+  "summary": "イスラム黄金期の巨人。『医学典範』は17世紀までヨーロッパの医学教科書だった、中世最大の知性。",
+  "events": [
+    {
+      "year": 980,
+      "age": 0,
+      "title": "ブハラ近郊に生まれる",
+      "detail": "10歳でクルアーンを暗唱。",
+      "tags": []
+    },
+    {
+      "year": 996,
+      "age": 16,
+      "title": "独学で医学をマスター",
+      "detail": "サーマーン朝の王を治療し宮廷に招かれる。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1020,
+      "age": 40,
+      "title": "『医学典範』完成",
+      "detail": "ヨーロッパで7世紀にわたり医学教科書として使われた百科全書。",
+      "tags": [
+        "creation",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1037,
+      "age": 57,
+      "title": "ハマダーンで死去",
+      "detail": "生涯を通じて政治・医学・哲学の間を駆け抜けた。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "真に存在するものは必然的に存在する。偶然に存在するものは、その存在の原因を他に持つ。",
+      "source": "『治癒の書』"
+    },
+    {
+      "text": "世界は無限ではなく、時間は永遠である。",
+      "source": "イブン・スィーナーの形而上学"
+    },
+    {
+      "text": "医学は、身体を健康に保つ方法を知り、健康を損なう方法を知る技術である。",
+      "source": "『医学典範』"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/7/70/Avicenna-miniatur.jpg",
+  "wikiTitle": "イブン・スィーナー",
+  "imageCredit": {
+    "artist": "Unknown medieval Persian miniature",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Wikimedia Commons",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Avicenna-miniatur.jpg"
+  },
+  "birthMonth": 8,
+  "birthDay": 23,
+  "deathMonth": 6,
+  "deathDay": 22,
+  "lifeDigest": "中世イスラム世界最大の哲学者・医師。ラテン名アヴィセンナ。『医学典範（Al-Qanun fi al-Tibb）』はヨーロッパで17世紀まで医学の標準教科書として使われた。アリストテレス哲学をイスラム神学と融合させ、後の西欧スコラ哲学にも決定的な影響を与えた。",
+  "traits": {
+    "foods": [
+      "ペルシア料理",
+      "ワイン",
+      "ナッツ",
+      "甘いデザート"
+    ],
+    "hobbies": [
+      "医学書を著す",
+      "論理学の研究",
+      "アリストテレス研究"
+    ],
+    "personality": "驚異的な記憶力と執筆速度で知られ、40冊以上の著作を残した万能の知性。",
+    "likes": [
+      "論理",
+      "神秘主義",
+      "医療",
+      "アリストテレス"
+    ],
+    "dislikes": [
+      "迷信",
+      "不誠実な医者",
+      "思考停止"
+    ]
+  },
+  "id": "ibn_sina"
+}

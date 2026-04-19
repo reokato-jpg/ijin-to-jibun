@@ -1,0 +1,135 @@
+{
+  "name": "武田信玄",
+  "nameEn": "Takeda Shingen",
+  "birth": 1521,
+  "death": 1573,
+  "country": "日本（甲斐）",
+  "field": "戦国大名",
+  "summary": "甲斐の虎。風林火山の旗の下、上杉謙信と川中島で激突を重ねた戦国最強の騎馬軍団を率いた名将。",
+  "events": [
+    {
+      "year": 1521,
+      "age": 0,
+      "title": "甲斐源氏・武田信虎の嫡男として生まれる",
+      "detail": "",
+      "tags": []
+    },
+    {
+      "year": 1541,
+      "age": 20,
+      "title": "父信虎を追放、家督を継ぐ",
+      "detail": "",
+      "tags": [
+        "restart",
+        "setback"
+      ]
+    },
+    {
+      "year": 1553,
+      "age": 32,
+      "title": "第一次川中島の戦い、上杉謙信と初対決",
+      "detail": "以後5度にわたる宿命のライバル。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1561,
+      "age": 40,
+      "title": "第四次川中島の戦い",
+      "detail": "戦国史上最大級の激戦。『鞭声粛々』で知られる。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1572,
+      "age": 51,
+      "title": "西上作戦、三方ヶ原で織田・徳川連合軍を撃破",
+      "detail": "徳川家康を生涯で最も追い詰めた。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1573,
+      "age": 52,
+      "title": "信濃・駒場で病没",
+      "detail": "上洛目前で倒れる。遺言により3年間死は秘匿された。",
+      "tags": [
+        "illness",
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "人は城、人は石垣、人は堀。情けは味方、仇は敵なり。",
+      "source": "武田信玄家訓"
+    },
+    {
+      "text": "疾きこと風の如く、徐かなること林の如く、侵掠すること火の如く、動かざること山の如し。",
+      "source": "軍旗『風林火山』"
+    },
+    {
+      "text": "渋柿は渋柿として使え。接木をして甘くすることなど要らぬ。",
+      "source": "信玄語録"
+    },
+    {
+      "text": "勝ち方は、五分をもって上とし、七分を中とし、十分をもって下とす。",
+      "source": "甲陽軍鑑"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/3/33/Takeda_Harunobu.jpg",
+  "wikiTitle": "武田信玄",
+  "imageCredit": {
+    "artist": "Unknown",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Seikei-en, Koufu",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Takeda_Shingen.jpg"
+  },
+  "birthMonth": 12,
+  "birthDay": 1,
+  "deathMonth": 5,
+  "deathDay": 13,
+  "lifeDigest": "甲斐国の戦国大名。武田家第19代当主。領国経営の名手として知られ、信玄堤など治水事業にも力を入れた。『風林火山』の軍旗のもと、上杉謙信と川中島で5度激突した逸話は有名。三方ヶ原の戦いでは徳川家康を打ち破ったが、上洛の途上で病没。家康が生涯最も恐れた武将として知られる。",
+  "traits": {
+    "foods": [
+      "ほうとう",
+      "甲州ぶどう酒",
+      "雑穀"
+    ],
+    "hobbies": [
+      "和歌",
+      "禅",
+      "軍学研究"
+    ],
+    "personality": "冷徹でありながら家臣を大切にした。『人は城』の名言通り、領国経営と人心掌握の名人。",
+    "likes": [
+      "兵学",
+      "禅",
+      "家臣団の団結"
+    ],
+    "dislikes": [
+      "裏切り",
+      "軽率な行動",
+      "無能な将"
+    ]
+  },
+  "rivals": [
+    {
+      "id": "uesugi_kenshin",
+      "name": "上杉謙信"
+    },
+    {
+      "id": "oda_nobunaga",
+      "name": "織田信長"
+    },
+    {
+      "id": "tokugawa_ieyasu",
+      "name": "徳川家康"
+    }
+  ],
+  "id": "takeda_shingen"
+}

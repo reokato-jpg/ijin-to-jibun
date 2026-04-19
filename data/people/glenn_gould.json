@@ -1,0 +1,125 @@
+{
+  "name": "グレン・グールド",
+  "nameEn": "Glenn Gould",
+  "birth": 1932,
+  "death": 1982,
+  "country": "カナダ",
+  "field": "ピアニスト",
+  "summary": "バッハ『ゴルトベルク変奏曲』の伝説的録音を残した20世紀最大の異才ピアニスト。32歳でステージから引退し録音だけの世界へ。",
+  "events": [
+    {
+      "year": 1932,
+      "age": 0,
+      "title": "トロントの音楽一家に生まれる",
+      "detail": "3歳で絶対音感を示す。",
+      "tags": []
+    },
+    {
+      "year": 1955,
+      "age": 23,
+      "title": "『ゴルトベルク変奏曲』初録音",
+      "detail": "前代未聞のテンポと透明感。クラシック界に衝撃。",
+      "tags": [
+        "breakthrough",
+        "creation"
+      ]
+    },
+    {
+      "year": 1957,
+      "age": 25,
+      "title": "ソ連公演で大センセーション",
+      "detail": "西側演奏家として初のソ連公演。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1964,
+      "age": 31,
+      "title": "32歳でコンサート活動を完全引退",
+      "detail": "以後は録音・放送・執筆のみ。",
+      "tags": [
+        "self_reinvention",
+        "restart"
+      ]
+    },
+    {
+      "year": 1981,
+      "age": 49,
+      "title": "『ゴルトベルク変奏曲』再録音",
+      "detail": "26年後、まったく異なる解釈で。生前最後の大プロジェクト。",
+      "tags": [
+        "creation",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1982,
+      "age": 50,
+      "title": "トロントで脳卒中により急逝",
+      "detail": "",
+      "tags": [
+        "illness",
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "私は、聴衆のためではなく、自分自身のために演奏する。",
+      "source": "グールドのインタビュー"
+    },
+    {
+      "text": "音楽の目的は、芸術家と聴き手の両方が、静けさの中で自分自身に向き合うことだ。",
+      "source": "『未来のコンサート』"
+    },
+    {
+      "text": "演奏会は死んだ。録音こそが芸術だ。",
+      "source": "引退宣言"
+    },
+    {
+      "text": "人々は、バッハの音楽を『複雑』と言う。私にとってそれは『明晰』そのものだ。",
+      "source": "ドキュメンタリー"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/9/9d/Glenn_Gould_1.png",
+  "wikiTitle": "グレン・グールド",
+  "imageCredit": {
+    "artist": "CBC Television",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "CBC (Canadian Broadcasting Corporation)",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Glenn_Gould_1.png"
+  },
+  "birthMonth": 9,
+  "birthDay": 25,
+  "deathMonth": 10,
+  "deathDay": 4,
+  "lifeDigest": "カナダのピアニスト、作曲家。バッハ演奏の革命家として20世紀最重要のピアニストの一人。1955年と1981年の『ゴルトベルク変奏曲』の録音はクラシック音楽史上のマイルストーン。32歳でコンサート活動を引退し、以後はスタジオ録音と放送・執筆に専念、『コンサートは死んだ』という過激な発言でも知られた。",
+  "traits": {
+    "foods": [
+      "スクランブルエッグ",
+      "アラーレット（塩漬けマス）",
+      "薄味の食事"
+    ],
+    "hobbies": [
+      "ラジオドキュメンタリー制作",
+      "執筆",
+      "夜の運転"
+    ],
+    "personality": "極端な孤独を愛し、握手を恐れた。真夏でも手袋とコートを手放さず、独自のリズムで生きた。電話魔でもある。",
+    "likes": [
+      "バッハ",
+      "カナダの寒さ",
+      "孤独",
+      "動物（特に犬）"
+    ],
+    "dislikes": [
+      "握手",
+      "聴衆",
+      "温暖な気候",
+      "モーツァルト（公言していた）"
+    ]
+  },
+  "id": "glenn_gould"
+}

@@ -70,7 +70,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20260419o">
+<link rel="stylesheet" href="style.css?v=20260420t">
 </head>
 <body>
   <header class="app-header">
@@ -386,18 +386,13 @@
     </section>
 
 
-    <!-- 年表（時代・ジャンル別に歴史の流れを見る） -->
+    <!-- 年表（分野ごと・時代ごとに歴史を辿る） -->
     <section id="view-history" class="view">
       <div class="hist-head">
         <h2 class="hist-title">🕰 歴史年表</h2>
-        <p class="hist-sub">時代ごと、ジャンルごとに、歴史の流れを辿ろう。</p>
+        <p class="hist-sub">分野を選び、時代を辿る。<br>気になる時代をタップすると、その時代を生きた偉人が現れる。</p>
       </div>
-      <div class="hist-modes" id="histModes">
-        <button class="hist-mode active" data-hlmode="era">時代別</button>
-        <button class="hist-mode" data-hlmode="genre">ジャンル別</button>
-        <button class="hist-mode" data-hlmode="all">全体年表</button>
-      </div>
-      <div id="historyBody"></div>
+      <div id="eraCategories" class="era-categories"></div>
     </section>
 
     <!-- ルーティン -->
@@ -429,8 +424,100 @@
     </section>
   </main>
 
+  <!-- 起動時のウェルカムアニメーション -->
+  <div id="welcomeIntro" class="welcome-intro" hidden>
+    <div class="welcome-intro-bubble">さあ、偉人に会いに行こう</div>
+    <video class="welcome-intro-video" muted playsinline autoplay preload="auto" aria-hidden="true">
+      <source src="assets/guide/welcome-intro.webm?v=1" type="video/webm">
+      <source src="assets/guide/welcome-intro.mp4" type="video/mp4">
+    </video>
+    <audio id="welcomeIntroVoice" src="assets/guide/voice-go.mp3" preload="auto"></audio>
+  </div>
+
   <!-- 音のオンオフ切替ボタン -->
   <button id="muteToggle" class="mute-toggle" aria-label="音のオンオフ" title="音のオンオフ">🔊</button>
+
+  <!-- キャラアニメ（WebM+alpha 背景透過、mp4フォールバック） -->
+  <button id="powerHintAnim" class="power-hint-anim" type="button" aria-label="キャラクター">
+    <video class="power-hint-video" muted playsinline autoplay loop preload="metadata" aria-hidden="true">
+      <source src="assets/guide/rabin.webm?v=1" type="video/webm">
+      <source src="assets/guide/rabin.mp4" type="video/mp4">
+    </video>
+    <audio id="powerHintVoice" src="assets/guide/voice-go.mp3" preload="auto"></audio>
+  </button>
+
+  <!-- 左下の電源ボタン -->
+  <button id="powerBtn" class="power-btn" aria-label="電源 — メニューを開く" title="メニュー">
+    <img src="assets/power-btn.png" alt="電源">
+  </button>
+
+  <!-- スマホ風メニュー -->
+  <div id="phoneMenu" class="phone-menu" aria-hidden="true">
+    <div class="phone-menu-backdrop" data-phone-close="1"></div>
+    <div class="phone-frame">
+      <button class="phone-close-btn" data-phone-close="1" aria-label="スマホを閉じる" title="スマホを閉じる">×</button>
+      <img class="phone-frame-img" src="assets/phone/phone.png?v=1" alt="">
+      <div class="phone-screen">
+        <!-- ステータスバー -->
+        <div class="phone-status">
+          <div class="phone-status-left">
+            <span class="phone-clock" id="phoneClock">--:--</span>
+            <span class="phone-notif" id="phoneNotif" hidden>
+              <span class="phone-notif-ic" id="phoneNotifIc">✉</span>
+              <span class="phone-notif-badge" id="phoneNotifBadge">0</span>
+            </span>
+          </div>
+          <div class="phone-status-right">
+            <span class="phone-signal" aria-label="Ijin mobile">
+              <svg viewBox="0 0 20 14" width="16" height="11"><rect x="0" y="9" width="3" height="5" rx="0.5"/><rect x="5" y="6" width="3" height="8" rx="0.5"/><rect x="10" y="3" width="3" height="11" rx="0.5"/><rect x="15" y="0" width="3" height="14" rx="0.5"/></svg>
+              <span class="phone-carrier">Ijin</span>
+            </span>
+            <span class="phone-battery" id="phoneBattery">
+              <span class="phone-battery-pct" id="phoneBatteryPct">100%</span>
+              <span class="phone-battery-icon" aria-hidden="true">
+                <span class="phone-battery-fill" id="phoneBatteryFill"></span>
+              </span>
+            </span>
+          </div>
+        </div>
+        <!-- 好きな言葉バナー（毎回ランダム） -->
+        <div class="phone-quote-banner" id="phoneQuoteBanner" hidden>
+          <div class="phone-quote-text" id="phoneQuoteText"></div>
+          <div class="phone-quote-src" id="phoneQuoteSrc"></div>
+        </div>
+        <div class="phone-grid">
+          <button class="phone-icon" data-phone-view="tags">
+            <img src="assets/phone/icon-history.png?v=1" alt="">
+            <span>検索</span>
+          </button>
+          <button class="phone-icon" data-phone-view="history">
+            <img src="assets/phone/icon-tags.png?v=1" alt="">
+            <span>年表</span>
+          </button>
+          <button class="phone-icon" data-phone-view="routines">
+            <img src="assets/phone/icon-routines.png?v=1" alt="">
+            <span>ルーティン</span>
+          </button>
+          <button class="phone-icon" data-phone-view="favorites">
+            <span class="phone-icon-badge" id="phoneBadgeFavorites" hidden></span>
+            <img src="assets/phone/icon-favorites.png?v=1" alt="">
+            <span>わたしの本</span>
+          </button>
+          <button class="phone-icon" data-phone-action="plaza">
+            <span class="phone-icon-badge" id="phoneBadgePlaza" hidden></span>
+            <img src="assets/phone/icon-plaza.png?v=1" alt="">
+            <span>偉人の広場</span>
+          </button>
+          <button class="phone-icon" data-phone-action="settings">
+            <img src="assets/phone/icon-settings.png?v=1" alt="">
+            <span>設定</span>
+          </button>
+          <button class="phone-icon phone-icon-oshi-slot" id="phoneOshiSlot" data-phone-action="oshi" hidden></button>
+        </div>
+      </div>
+      <button class="phone-home-btn" data-phone-close="1" aria-label="閉じる"></button>
+    </div>
+  </div>
 
   <!-- タブごとのBGM -->
   <audio id="homeBgm" src="assets/home-bgm.wav" loop preload="none"></audio>
@@ -451,7 +538,7 @@
       <div class="chat-call-who" id="chatCallWho"></div>
     </div>
     <button class="chat-fab" id="chatFab" aria-label="偉人の広場">
-      <img class="chat-fab-icon" src="assets/icons/chat-bubble.png" alt="">
+      <img class="chat-fab-icon" src="assets/chat-btn.png?v=1" alt="">
       <div class="chat-fab-badge hidden" id="chatFabBadge">0</div>
     </button>
   </div>
@@ -479,8 +566,8 @@
     </div>
   </div>
 
-  <script src="app.js?v=20260419o"></script>
-  <script src="auth.js?v=20260419o" type="module"></script>
+  <script src="app.js?v=20260420t"></script>
+  <script src="auth.js?v=20260420t" type="module"></script>
   <script src="ai-consult.js"></script>
 </body>
 </html>

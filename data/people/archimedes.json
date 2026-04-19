@@ -1,0 +1,103 @@
+{
+  "name": "アルキメデス",
+  "nameEn": "Archimedes",
+  "birth": -287,
+  "death": -212,
+  "country": "古代ギリシャ（シラクサ）",
+  "field": "数学者・物理学者・発明家",
+  "summary": "『エウレカ！』浴槽で浮力を発見した天才。ローマ軍の攻囲戦でも驚異の兵器を発明し続けた古代最大の理工学者。",
+  "events": [
+    {
+      "year": -287,
+      "age": 0,
+      "title": "シチリア島シラクサに生まれる",
+      "detail": "天文学者ペイディアスの息子。",
+      "tags": []
+    },
+    {
+      "year": -250,
+      "age": 37,
+      "title": "浮力の原理を発見、『エウレカ！』と叫ぶ",
+      "detail": "ヒエロン王の王冠の純度を判定するため。",
+      "tags": [
+        "breakthrough",
+        "creation"
+      ]
+    },
+    {
+      "year": -214,
+      "age": 73,
+      "title": "ローマ軍の攻囲で防衛兵器を発明",
+      "detail": "クレーン、鏡による船舶焼却など。",
+      "tags": [
+        "creation",
+        "setback"
+      ]
+    },
+    {
+      "year": -212,
+      "age": 75,
+      "title": "シラクサ陥落、ローマ兵に殺される",
+      "detail": "『円を乱すな』と叫んだ直後とされる。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "エウレカ！（見つけたぞ！）",
+      "source": "浴槽での叫び"
+    },
+    {
+      "text": "われに支点を与えよ。さらば地球をも動かさん。",
+      "source": "梃子の原理を説明して"
+    },
+    {
+      "text": "円を乱すな！",
+      "source": "ローマ兵に砂の円を踏まれた時の最期の言葉（伝承）"
+    },
+    {
+      "text": "数学は、心の幾何学である。",
+      "source": "アルキメデスに帰される言葉"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e7/Domenico-Fetti_Archimedes_1620.jpg",
+  "wikiTitle": "アルキメデス",
+  "imageCredit": {
+    "artist": "Domenico Fetti (1620)",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Gemäldegalerie Alte Meister, Dresden",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Domenico-Fetti_Archimedes_1620.jpg"
+  },
+  "birthMonth": 1,
+  "birthDay": 1,
+  "deathMonth": 1,
+  "deathDay": 1,
+  "lifeDigest": "古代ギリシャの数学者・物理学者・技術者・発明家・天文学者。浮力の原理（アルキメデスの原理）、梃子の原理、円周率の近似などを発見。ローマ軍のシラクサ攻囲戦では、投石機・巨大クレーン・反射鏡による放火兵器などを発明し、長期間街を守った。最期は円を描いていた最中にローマ兵に殺されたと伝わる。",
+  "traits": {
+    "foods": [
+      "パン",
+      "オリーブ",
+      "ワイン"
+    ],
+    "hobbies": [
+      "幾何学",
+      "機械の発明",
+      "浴場で思索"
+    ],
+    "personality": "没頭型の天才。食事を忘れるほど問題に打ち込んだ。服を着たまま浴場に飛び出したとも。",
+    "likes": [
+      "幾何学",
+      "機械",
+      "数式の美"
+    ],
+    "dislikes": [
+      "戦争",
+      "無知",
+      "不正確さ"
+    ]
+  },
+  "id": "archimedes"
+}

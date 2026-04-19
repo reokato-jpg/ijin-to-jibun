@@ -1,0 +1,131 @@
+{
+  "name": "ワシリー・カンディンスキー",
+  "nameEn": "Wassily Kandinsky",
+  "birth": 1866,
+  "death": 1944,
+  "country": "ロシア → ドイツ → フランス",
+  "field": "画家・美術理論家",
+  "summary": "抽象絵画の創始者。『色彩と形は音楽のように心を動かす』と信じ、法律家から30歳で画家へ転身した。",
+  "events": [
+    {
+      "year": 1866,
+      "age": 0,
+      "title": "モスクワに生まれる",
+      "detail": "法律学を学ぶ。",
+      "tags": []
+    },
+    {
+      "year": 1896,
+      "age": 30,
+      "title": "モネの『積み藁』を観て画家を志す",
+      "detail": "『主題が見えなくても絵は成立する』と衝撃。法律家のキャリアを捨てミュンヘンへ。",
+      "tags": [
+        "turning_encounter",
+        "restart"
+      ]
+    },
+    {
+      "year": 1910,
+      "age": 44,
+      "title": "初の抽象絵画『最初の抽象的水彩』",
+      "detail": "具象を完全に離れた最初の絵画とされる。",
+      "tags": [
+        "breakthrough",
+        "creation"
+      ]
+    },
+    {
+      "year": 1911,
+      "age": 45,
+      "title": "『青騎士（Der Blaue Reiter）』結成",
+      "detail": "フランツ・マルクらと表現主義グループ。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1921,
+      "age": 55,
+      "title": "バウハウスの教師に",
+      "detail": "グロピウス招聘。以後10年、抽象と構成の教育者として活動。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1933,
+      "age": 67,
+      "title": "ナチスによりバウハウス閉鎖、パリへ亡命",
+      "detail": "以後フランスに定住。",
+      "tags": [
+        "loss",
+        "setback"
+      ]
+    },
+    {
+      "year": 1944,
+      "age": 78,
+      "title": "パリ郊外ヌイイで死去",
+      "detail": "",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "色彩は、魂に直接影響を与える力である。色はキー、目はハンマー、魂は多弦のピアノだ。",
+      "source": "『抽象芸術論』"
+    },
+    {
+      "text": "芸術はすべて、時代の子である。",
+      "source": "『芸術における精神的なもの』"
+    },
+    {
+      "text": "必然性から生まれた作品だけが、美しい。",
+      "source": "カンディンスキー論文"
+    },
+    {
+      "text": "絵画の内的な力は、音楽の内的な力に等しい。",
+      "source": "バウハウス講義"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/a/af/Kandinsky_-_Vassily_Kandinsky_by_Adolf_Elnain_Photo_credits_-_Georges_Meguerditchian.jpg",
+  "wikiTitle": "ワシリー・カンディンスキー",
+  "imageCredit": {
+    "artist": "Unknown photographer c.1913",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Wikimedia Commons",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Vassily_Kandinsky.jpg"
+  },
+  "birthMonth": 12,
+  "birthDay": 16,
+  "deathMonth": 12,
+  "deathDay": 13,
+  "lifeDigest": "ロシア生まれの画家、美術理論家。抽象絵画の先駆者として20世紀美術史を決定づけた。法律学者からの転身、『青騎士』への参加、バウハウスでの教育者としての活動、ナチスからの亡命——激動の人生の中で、色と形が直接に魂を振動させる芸術を追求し続けた。",
+  "traits": {
+    "foods": [
+      "ロシア料理（ピロシキ）",
+      "ドイツ料理",
+      "紅茶"
+    ],
+    "hobbies": [
+      "作曲の研究",
+      "音楽会通い",
+      "色彩実験"
+    ],
+    "personality": "精神性を重視した理論家肌。共感覚（音を色で感じる）の持ち主で、音楽と絵画を同じものと捉えた。",
+    "likes": [
+      "音楽",
+      "シェーンベルクの無調音楽",
+      "精神的なもの"
+    ],
+    "dislikes": [
+      "写実主義",
+      "物質主義",
+      "形式主義"
+    ]
+  },
+  "id": "kandinsky"
+}

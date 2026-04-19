@@ -1,0 +1,124 @@
+{
+  "name": "アントン・チェーホフ",
+  "nameEn": "Anton Chekhov",
+  "birth": 1860,
+  "death": 1904,
+  "country": "ロシア",
+  "field": "作家・劇作家・医師",
+  "summary": "短編と戯曲の両分野で世界文学に革命をもたらした医師作家。『かもめ』『三人姉妹』『桜の園』の作者。",
+  "events": [
+    {
+      "year": 1860,
+      "age": 0,
+      "title": "南ロシア・タガンログに生まれる",
+      "detail": "商人の家。父の暴力から逃れるように文学へ。",
+      "tags": []
+    },
+    {
+      "year": 1884,
+      "age": 24,
+      "title": "モスクワ大学医学部を卒業",
+      "detail": "『医学は妻、文学は情人』と表現。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1890,
+      "age": 30,
+      "title": "サハリン島を調査旅行",
+      "detail": "流刑囚1万人を聴取、『サハリン島』を著す。",
+      "tags": [
+        "turning_encounter",
+        "curiosity"
+      ]
+    },
+    {
+      "year": 1896,
+      "age": 36,
+      "title": "『かもめ』初演、大失敗",
+      "detail": "2年後、スタニスラフスキーのモスクワ芸術座で大成功。",
+      "tags": [
+        "setback",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1901,
+      "age": 41,
+      "title": "女優オリガ・クニッペルと結婚",
+      "detail": "",
+      "tags": [
+        "love",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1904,
+      "age": 44,
+      "title": "ドイツ・バーデンワイラーで結核死",
+      "detail": "『私は死ぬ』と医師に告げ、シャンパンを一杯飲んで息絶えた。",
+      "tags": [
+        "illness",
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "どんな馬鹿でも危機に立ち向かえる。日常を生き抜くことこそが、すり減らすものだ。",
+      "source": "チェーホフ書簡"
+    },
+    {
+      "text": "もし第一幕で壁に銃が掛かっていたら、第三幕までに必ず発射されなければならない。",
+      "source": "劇作家への助言"
+    },
+    {
+      "text": "医学は妻、文学は情人。",
+      "source": "書簡"
+    },
+    {
+      "text": "人間の魂の奥底を描くには、銃声も雷鳴も要らない。一本の花さえあれば足りる。",
+      "source": "スタニスラフスキーへの手紙"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/4/4c/Anton_Chekhov_1889.jpg",
+  "wikiTitle": "アントン・チェーホフ",
+  "imageCredit": {
+    "artist": "Unknown photographer",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Wikimedia Commons",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Anton_Chekhov_1889.jpg"
+  },
+  "birthMonth": 1,
+  "birthDay": 29,
+  "deathMonth": 7,
+  "deathDay": 15,
+  "lifeDigest": "ロシアの作家、劇作家、医師。短編小説と近代戯曲の革新者。『桜の園』『三人姉妹』『かもめ』『ワーニャ伯父さん』の四大戯曲は世界演劇の金字塔とされる。医師として貧民を無料で診ながら、決定的瞬間ではなく日常の倦怠を描く新しい文学を築いた。44歳で結核により夭折。",
+  "traits": {
+    "foods": [
+      "キャベツスープ",
+      "ピロシキ",
+      "ウォッカ",
+      "茶"
+    ],
+    "hobbies": [
+      "園芸（バラ栽培）",
+      "釣り",
+      "医療ボランティア"
+    ],
+    "personality": "穏やかでユーモアに富む観察者。華々しい主義主張を嫌い、『中庸』を美徳とした。",
+    "likes": [
+      "庭いじり",
+      "朝の紅茶",
+      "静かな観察"
+    ],
+    "dislikes": [
+      "説教じみた文学",
+      "偽善",
+      "虚飾"
+    ]
+  },
+  "id": "chekhov"
+}

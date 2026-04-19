@@ -30,6 +30,11 @@ async function loadData() {
       const updRes = await fetch('../data/updates.json' + bust, { cache: 'no-store' });
       DATA.updates = await updRes.json();
     } catch { DATA.updates = []; }
+    try {
+      const erasRes = await fetch('../data/eras.json' + bust, { cache: 'no-store' });
+      const erasData = await erasRes.json();
+      DATA.eraCategories = erasData.categories || [];
+    } catch { DATA.eraCategories = []; }
     DATA.tags = tagsData.categories;
     DATA.tagMap = Object.fromEntries(DATA.tags.map(t => [t.id, t]));
 
@@ -324,7 +329,13 @@ function quoteKey(personId, quote) {
 function isFavQuote(personId, quote) { return favQuotes.has(quoteKey(personId, quote)); }
 function favQuoteBtn(personId, quote) {
   const on = isFavQuote(personId, quote);
-  return `<button class="fav-btn ${on ? 'active' : ''}" data-fav-quote="${quoteKey(personId, quote)}" aria-label="お気に入り">${on ? '★' : '☆'}</button>`;
+  const person = (DATA.people || []).find(p => p.id === personId);
+  const personName = person?.name || '';
+  const pin = (typeof phonePinBtn === 'function') ? phonePinBtn(personId, quote, personName) : '';
+  return `<span class="quote-actions">
+    <button class="fav-btn ${on ? 'active' : ''}" data-fav-quote="${quoteKey(personId, quote)}" aria-label="お気に入り">${on ? '★' : '☆'}</button>
+    ${pin}
+  </span>`;
 }
 
 // イベントを識別するキー = personId + year + title
@@ -381,6 +392,11 @@ function showView(name, pushHistory = true) {
   if (pushHistory && history[history.length - 1] !== name) history.push(name);
   // わたしの本タブは背景画像なし（独自の本デザインを活かす）
   document.documentElement.classList.toggle('view-no-bg', name === 'favorites');
+  // キャラはホームのみ
+  const rabin = document.getElementById('powerHintAnim');
+  if (rabin) rabin.hidden = (name !== 'people');
+  const intro = document.getElementById('welcomeIntro');
+  if (intro && name !== 'people') intro.hidden = true;
   views.forEach(v => {
     const el = document.getElementById(`view-${v}`);
     const isActive = v === name;
@@ -493,6 +509,97 @@ function renderQuoteOfTheDay() {
 
 // ====================== ホーム: 今日の一人 ======================
 const OSHI_KEY = 'ijin_oshi_person';
+
+// スマホ上部に表示する好きな言葉（最大3つ、ランダム表示）
+const PHONE_PINNED_QUOTES_KEY = 'ijin_phone_pinned_quotes';
+const PHONE_PINNED_MAX = 3;
+function loadPhonePinnedQuotes() {
+  try { return JSON.parse(localStorage.getItem(PHONE_PINNED_QUOTES_KEY) || '[]'); }
+  catch { return []; }
+}
+function savePhonePinnedQuotes(arr) {
+  localStorage.setItem(PHONE_PINNED_QUOTES_KEY, JSON.stringify(arr));
+  if (typeof window.pushToCloud === 'function' && typeof currentUser !== 'undefined' && currentUser) {
+    window.pushToCloud(currentUser).catch(() => {});
+  }
+}
+function isPhonePinned(personId, quoteText) {
+  return loadPhonePinnedQuotes().some(q => q.personId === personId && q.text === quoteText);
+}
+function togglePhonePinQuote(personId, quoteText, personName) {
+  let pins = loadPhonePinnedQuotes();
+  const idx = pins.findIndex(q => q.personId === personId && q.text === quoteText);
+  if (idx >= 0) {
+    pins.splice(idx, 1);
+    savePhonePinnedQuotes(pins);
+    return { removed: true };
+  }
+  if (pins.length >= PHONE_PINNED_MAX) {
+    // 3つ超えたらどれを消すかポップアップ
+    openPhonePinRemoveModal(pins, () => {
+      // 再度追加を試みる（ポップアップで消したあと）
+      const remaining = loadPhonePinnedQuotes();
+      if (remaining.length < PHONE_PINNED_MAX) {
+        remaining.push({ personId, text: quoteText, personName, at: Date.now() });
+        savePhonePinnedQuotes(remaining);
+        try { window.renderPhoneQuoteBanner?.(); } catch {}
+      }
+      // 関連するボタンUIを更新
+      document.querySelectorAll(`[data-phone-pin][data-pid="${personId}"]`).forEach(b => {
+        const on = isPhonePinned(personId, b.dataset.qtext || quoteText);
+        b.classList.toggle('active', on);
+        b.textContent = on ? '💎' : '🤍';
+      });
+    });
+    return { deferred: true };
+  }
+  pins.push({ personId, text: quoteText, personName, at: Date.now() });
+  savePhonePinnedQuotes(pins);
+  return { added: true };
+}
+function openPhonePinRemoveModal(pins, onDone) {
+  const existing = document.getElementById('phonePinRemoveModal');
+  if (existing) existing.remove();
+  const m = document.createElement('div');
+  m.id = 'phonePinRemoveModal';
+  m.className = 'settings-modal open';
+  m.innerHTML = `
+    <div class="settings-backdrop" data-close="1"></div>
+    <div class="settings-panel">
+      <button class="settings-close" data-close="1" aria-label="閉じる">×</button>
+      <div class="settings-head">💎 好きな言葉は3つまで</div>
+      <div class="settings-sec-hint">どれを外しますか？（外した枠に新しい言葉が入ります）</div>
+      <div class="phone-pin-remove-list">
+        ${pins.map((q, i) => `
+          <button class="phone-pin-remove-item" data-remove-idx="${i}">
+            <div class="phone-pin-remove-text">「${escapeHtml(q.text)}」</div>
+            <div class="phone-pin-remove-src">— ${escapeHtml(q.personName || '')}</div>
+          </button>
+        `).join('')}
+      </div>
+    </div>
+  `;
+  document.body.appendChild(m);
+  const close = () => m.remove();
+  m.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', close));
+  m.querySelectorAll('[data-remove-idx]').forEach(el => {
+    el.addEventListener('click', () => {
+      const idx = parseInt(el.dataset.removeIdx, 10);
+      const cur = loadPhonePinnedQuotes();
+      cur.splice(idx, 1);
+      savePhonePinnedQuotes(cur);
+      close();
+      onDone?.();
+    });
+  });
+}
+// スマホピンボタン用HTML
+function phonePinBtn(personId, quote, personName) {
+  const on = isPhonePinned(personId, quote.text);
+  return `<button class="phone-pin-btn ${on ? 'active' : ''}" data-phone-pin="1" data-pid="${personId}" data-qtext="${escapeHtml(quote.text).replace(/"/g,'&quot;')}" data-pname="${escapeHtml(personName || '')}" title="スマホに表示する言葉に登録（最大3つ）" aria-label="スマホに表示">${on ? '💎' : '🤍'}</button>`;
+}
+window.phonePinBtn = phonePinBtn;
+window.loadPhonePinnedQuotes = loadPhonePinnedQuotes;
 const MOOD_PICK_KEY = 'ijin_mood_pick'; // {date, tagId, personId, chatStart}
 const CHAT_REPLIES_KEY = 'ijin_chat_replies'; // {personId: [{msgKey, text, date}]}
 
@@ -3072,6 +3179,242 @@ function applyMuteState() {
     btn.textContent = muted ? '🔇' : '🔊';
     btn.classList.toggle('muted', muted);
   }
+}
+
+// 起動時のウェルカムイントロ（アニメ＋ボイス）
+function initWelcomeIntro() {
+  const intro = document.getElementById('welcomeIntro');
+  if (!intro) return;
+  const video = intro.querySelector('.welcome-intro-video');
+  const voice = document.getElementById('welcomeIntroVoice');
+  const skip = intro.querySelector('.welcome-intro-skip');
+  const rabin = document.getElementById('powerHintAnim');
+  intro.hidden = false;
+  // 通常のラビンを一時的に隠す（イントロと入れ替わり）
+  if (rabin) rabin.style.visibility = 'hidden';
+  const close = () => {
+    try { voice?.pause(); } catch {}
+    try { video?.pause(); } catch {}
+    intro.remove();
+    if (rabin) rabin.style.visibility = '';  // 通常のラビンを再表示
+  };
+  // 動画終了でフェードなし即クローズ、イントロは一回だけ
+  video?.addEventListener('ended', () => {
+    if ((video.duration || 0) > 1) close();
+  });
+  skip?.addEventListener('click', close);
+  // 音声自動再生を試みる（失敗したら初回タップで再生）
+  const tryPlayVoice = () => {
+    if (!voice) return;
+    voice.play().catch(() => {
+      const once = () => { voice.play().catch(()=>{}); document.removeEventListener('click', once); document.removeEventListener('touchstart', once); };
+      document.addEventListener('click', once, { once: true });
+      document.addEventListener('touchstart', once, { once: true });
+    });
+  };
+  tryPlayVoice();
+  // セーフティ: 10秒後に強制クローズ
+  setTimeout(close, 10000);
+}
+
+function initPhoneMenu() {
+  const btn = document.getElementById('powerBtn');
+  const menu = document.getElementById('phoneMenu');
+  if (!btn || !menu) return;
+
+  // ラビンキャラクター（常設・タップで表情バリアント切替）
+  (function initRabinChara() {
+    const hint = document.getElementById('powerHintAnim');
+    if (!hint) return;
+    hint.hidden = false;
+    const video = hint.querySelector('.power-hint-video');
+    const VARIANTS = ['rabin.webm','rabin-var1.webm','rabin-var2.webm','rabin-var3.webm'];
+    let idx = 0;
+    hint.addEventListener('click', (e) => {
+      e.stopPropagation();
+      idx = (idx + 1) % VARIANTS.length;
+      if (video) {
+        video.innerHTML = `<source src="assets/guide/${VARIANTS[idx]}?v=1" type="video/webm">`;
+        video.load();
+        video.play().catch(()=>{});
+      }
+    });
+    // 初回だけボイス
+    const VOICE_KEY = 'ijin_rabin_voice_played';
+    if (!localStorage.getItem(VOICE_KEY)) {
+      const voice = document.getElementById('powerHintVoice');
+      const playOnce = () => {
+        try { voice?.play().then(() => localStorage.setItem(VOICE_KEY, '1')).catch(()=>{}); } catch {}
+      };
+      try { voice?.play().then(()=>localStorage.setItem(VOICE_KEY,'1')).catch(() => {
+        document.addEventListener('click', playOnce, { once: true });
+        document.addEventListener('touchstart', playOnce, { once: true });
+      }); } catch {}
+    }
+  })();
+  const clockEl = document.getElementById('phoneClock');
+  const battPct = document.getElementById('phoneBatteryPct');
+  const battFill = document.getElementById('phoneBatteryFill');
+  const battWrap = document.getElementById('phoneBattery');
+  const notif = document.getElementById('phoneNotif');
+  const notifIc = document.getElementById('phoneNotifIc');
+  const notifBadge = document.getElementById('phoneNotifBadge');
+
+  const tick = () => {
+    const d = new Date();
+    if (clockEl) clockEl.textContent = `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+  };
+  const updateBattery = async () => {
+    try {
+      if (navigator.getBattery) {
+        const b = await navigator.getBattery();
+        const pct = Math.round(b.level * 100);
+        if (battPct) battPct.textContent = `${pct}%`;
+        if (battFill) battFill.style.width = `${pct}%`;
+        if (battWrap) battWrap.classList.toggle('low', pct <= 20);
+        return;
+      }
+    } catch {}
+    // Fallback: 100%
+    if (battPct) battPct.textContent = '100%';
+    if (battFill) battFill.style.width = '100%';
+  };
+  const updateNotif = () => {
+    // 偉人の広場の未読 + 偉人からのフォロー + 会員からのフォロー通知
+    let n = 0;
+    try { n += (typeof chatUnreadCount === 'function') ? chatUnreadCount() : 0; } catch {}
+    // 新規フォロワー通知アイコン（チャットバッジから流用）
+    try {
+      const badge = document.getElementById('chatFabBadge');
+      if (badge && !badge.classList.contains('hidden')) {
+        const v = parseInt(badge.textContent || '0', 10);
+        if (v > 0) n = Math.max(n, v);
+      }
+    } catch {}
+    if (notif && notifBadge && notifIc) {
+      if (n > 0) {
+        notif.style.display = 'inline-flex';
+        notif.hidden = false;
+        // 丸囲み数字（①〜⑳、超えたら●N）
+        const circled = (v) => {
+          if (v >= 1 && v <= 20) return String.fromCharCode(0x2460 + v - 1);
+          if (v >= 21 && v <= 35) return String.fromCharCode(0x3251 + v - 21);
+          return '●' + v;
+        };
+        notifBadge.textContent = circled(n);
+        notifIc.textContent = '💬';
+      } else {
+        notif.style.display = 'none';
+        notif.hidden = true;
+      }
+    }
+  };
+
+  const close = () => {
+    menu.classList.remove('open');
+    menu.setAttribute('aria-hidden', 'true');
+  };
+  const open = () => {
+    menu.classList.add('open');
+    menu.setAttribute('aria-hidden', 'false');
+    tick();
+    updateBattery();
+    updateNotif();
+    try { playKeyUnlockSound?.(); } catch {}
+  };
+  // 推し偉人スロット描画（ラベルは『推し偉人』固定）
+  const renderOshiSlot = () => {
+    const slot = document.getElementById('phoneOshiSlot');
+    if (!slot) return;
+    const oshiId = (typeof getOshi === 'function') ? getOshi() : '';
+    if (!oshiId) { slot.hidden = true; slot.innerHTML = ''; return; }
+    const p = DATA.people?.find(x => x.id === oshiId);
+    if (!p) { slot.hidden = true; slot.innerHTML = ''; return; }
+    const bg = p.imageUrl ? `background-image:url('${p.imageUrl}')` : '';
+    slot.hidden = false;
+    slot.dataset.phonePerson = p.id;
+    slot.innerHTML = `
+      <span class="phone-oshi-avatar" style="${bg}">${p.imageUrl ? '' : (p.name.charAt(0) || '★')}</span>
+      <span>推し偉人</span>
+    `;
+  };
+
+  // 好きな言葉バナー（3つまで、毎回ランダム表示）
+  const renderPhoneQuoteBanner = () => {
+    const banner = document.getElementById('phoneQuoteBanner');
+    const txtEl = document.getElementById('phoneQuoteText');
+    const srcEl = document.getElementById('phoneQuoteSrc');
+    if (!banner) return;
+    const pins = loadPhonePinnedQuotes();
+    if (!pins.length) { banner.hidden = true; return; }
+    const pick = pins[Math.floor(Math.random() * pins.length)];
+    banner.hidden = false;
+    txtEl.textContent = `「${pick.text}」`;
+    srcEl.textContent = pick.personName ? `— ${pick.personName}` : '';
+  };
+
+  // アプリ内通知バッジ（各アイコン右上）
+  const circled = (v) => {
+    if (v >= 1 && v <= 20) return String.fromCharCode(0x2460 + v - 1);
+    if (v >= 21 && v <= 35) return String.fromCharCode(0x3251 + v - 21);
+    return '●' + v;
+  };
+  const setBadge = (id, n) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (n > 0) { el.textContent = circled(n); el.hidden = false; }
+    else { el.hidden = true; }
+  };
+  const renderIconBadges = () => {
+    // 偉人の広場 = チャット未読
+    let plaza = 0;
+    try { const badge = document.getElementById('chatFabBadge'); if (badge && !badge.classList.contains('hidden')) plaza = parseInt(badge.textContent||'0',10) || 0; } catch {}
+    setBadge('phoneBadgePlaza', plaza);
+    // わたしの本 = 新しいフォロワー（会員＋偉人からの新規フォロー）
+    let favs = 0;
+    try {
+      const known = JSON.parse(localStorage.getItem('ijin_known_user_followers') || '[]');
+      // 未読会員フォロワー通知は既読管理してるのでここでは0、代わりに新しい偉人フォロワーを出す
+      const ff = (typeof loadForcedFollows === 'function') ? loadForcedFollows() : new Set();
+      favs = ff.size; // フォロー中の偉人バッジ
+    } catch {}
+    // より穏やかに：実際に「新しい」通知だけに絞るため簡易管理
+    setBadge('phoneBadgeFavorites', 0); // 一旦0（必要なら後で拡張）
+  };
+
+  btn.addEventListener('click', () => { open(); renderOshiSlot(); renderPhoneQuoteBanner(); renderIconBadges(); });
+  menu.querySelectorAll('[data-phone-close]').forEach(el => el.addEventListener('click', close));
+  menu.querySelectorAll('[data-phone-view]').forEach(el => {
+    el.addEventListener('click', () => {
+      const v = el.dataset.phoneView;
+      close();
+      setTimeout(() => showView(v), 260);
+    });
+  });
+  menu.querySelectorAll('[data-phone-action]').forEach(el => {
+    el.addEventListener('click', () => {
+      const action = el.dataset.phoneAction;
+      close();
+      setTimeout(() => {
+        if (action === 'settings') {
+          if (typeof openMemberSettings === 'function') openMemberSettings();
+        } else if (action === 'plaza') {
+          // 偉人の広場（チャット）を開く
+          document.getElementById('chatFab')?.click();
+        } else if (action === 'oshi') {
+          const pid = el.dataset.phonePerson;
+          if (pid && typeof showPerson === 'function') showPerson(pid);
+        }
+      }, 260);
+    });
+  });
+  window.renderOshiSlot = renderOshiSlot;
+  window.renderPhoneQuoteBanner = renderPhoneQuoteBanner;
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && menu.classList.contains('open')) close();
+  });
+  // 1分ごとに時計更新
+  setInterval(() => { if (menu.classList.contains('open')) tick(); }, 30000);
 }
 
 function initMuteToggle() {
@@ -6332,13 +6675,91 @@ const TIMELINE_CENTRAL = {
   'g_contemp':   { music: ['stravinsky','shostakovich','bernstein','takemitsu','hisaishi','ryuichi_sakamoto'], philo: ['sartre','camus','heidegger','foucault','wittgenstein','bertrand_russell','nishida'], art: ['picasso','matisse','miyazaki'], literature: ['kafka','hemingway','dazai_osamu','kawabata','mishima_yukio','miyazawa_kenji'], science: ['einstein','tesla','edison','turing','yukawa_hideki','seaborg','freud'], history: ['gandhi','mother_teresa','anne_frank','chaplin','walt_disney','steve_jobs','kurosawa'] },
 };
 function renderHistoryTimeline() {
-  const body = document.getElementById('historyBody');
-  if (!body || !DATA.people) return;
-  const mode = document.querySelector('.hist-mode.active')?.dataset?.hlmode || 'era';
-  if (mode === 'era') renderHistoryEra(body);
-  else if (mode === 'genre') renderHistoryGenre(body);
-  else renderHistoryAll(body);
+  const container = document.getElementById('eraCategories');
+  if (!container || !DATA.eraCategories) return;
+  container.innerHTML = DATA.eraCategories.map(cat => `
+    <details class="era-cat" data-cat="${cat.id}">
+      <summary class="era-cat-head">
+        <span class="era-cat-icon">${cat.icon || '📖'}</span>
+        <span class="era-cat-name">${cat.name}</span>
+        <span class="era-cat-sub">${cat.sub || ''}</span>
+        <span class="era-cat-arrow">▾</span>
+      </summary>
+      <div class="era-cat-body">
+        <div class="era-timeline">
+          ${(cat.eras || []).map(era => `
+            <button class="era-card" data-era="${era.id}" data-cat-id="${cat.id}">
+              <div class="era-card-period">${era.period || ''}</div>
+              <div class="era-card-name">${era.name}</div>
+              <div class="era-card-desc">${era.description || ''}</div>
+              <div class="era-card-people-count">${(era.people || []).length}名の偉人 →</div>
+            </button>
+          `).join('')}
+        </div>
+      </div>
+    </details>
+  `).join('');
+  // クリック → モーダル
+  container.querySelectorAll('[data-era]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openEraModal(btn.dataset.catId, btn.dataset.era);
+    });
+  });
 }
+function openEraModal(catId, eraId) {
+  const cat = DATA.eraCategories.find(c => c.id === catId);
+  const era = cat?.eras?.find(e => e.id === eraId);
+  if (!era) return;
+  const existing = document.getElementById('eraModal');
+  if (existing) existing.remove();
+  const people = (era.people || []).map(id => DATA.people.find(p => p.id === id)).filter(Boolean);
+  const modal = document.createElement('div');
+  modal.id = 'eraModal';
+  modal.className = 'settings-modal';
+  modal.innerHTML = `
+    <div class="settings-backdrop" data-close="1"></div>
+    <div class="settings-panel era-modal-panel">
+      <button class="settings-close" data-close="1" aria-label="閉じる">×</button>
+      <div class="era-modal-cat">${cat.icon} ${cat.name}</div>
+      <div class="era-modal-title">${era.name}</div>
+      <div class="era-modal-period">${era.period || ''}</div>
+      <div class="era-modal-desc">${era.description || ''}</div>
+      ${(era.keywords || []).length ? `
+        <div class="era-modal-keywords">
+          ${era.keywords.map(k => `<span class="era-keyword">${k}</span>`).join('')}
+        </div>
+      ` : ''}
+      <div class="era-modal-section-head">この時代を生きた偉人</div>
+      <div class="era-modal-people">
+        ${people.length === 0 ? '<div class="era-modal-empty">この時代の偉人は準備中です。</div>' :
+          people.map(p => {
+            const bg = p.imageUrl ? `style="background-image:url('${p.imageUrl}')"` : '';
+            return `
+              <button class="era-person-card" data-jump-person="${p.id}">
+                <div class="era-person-av" ${bg}>${p.imageUrl ? '' : (p.name?.charAt(0) || '?')}</div>
+                <div class="era-person-meta">
+                  <div class="era-person-name">${p.name}</div>
+                  <div class="era-person-sub">${p.birth ?? ''}${p.death ? ' – ' + p.death : ''} / ${p.field || ''}</div>
+                </div>
+              </button>
+            `;
+          }).join('')}
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  requestAnimationFrame(() => modal.classList.add('open'));
+  const close = () => { modal.classList.remove('open'); setTimeout(() => modal.remove(), 200); };
+  modal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', close));
+  modal.querySelectorAll('[data-jump-person]').forEach(el => {
+    el.addEventListener('click', () => {
+      close();
+      setTimeout(() => showPerson(el.dataset.jumpPerson), 220);
+    });
+  });
+}
+window.openEraModal = openEraModal;
 function tlPersonCard(p, opts = {}) {
   const bg = p.imageUrl ? `style="background-image:url('${p.imageUrl}')"` : '';
   const central = opts.central ? 'tl-person-central' : '';
@@ -8264,6 +8685,23 @@ function bindFavButtons(container, contextPersonId = null) {
 
 // ====================== イベント登録 ======================
 function bindEvents() {
+  // グローバル: スマホピンボタン（💎）のクリック
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-phone-pin]');
+    if (!btn) return;
+    e.stopPropagation();
+    e.preventDefault();
+    const pid = btn.dataset.pid;
+    const qtext = btn.dataset.qtext;
+    const pname = btn.dataset.pname || '';
+    const res = togglePhonePinQuote(pid, qtext, pname);
+    if (!res.deferred) {
+      const on = isPhonePinned(pid, qtext);
+      btn.classList.toggle('active', on);
+      btn.textContent = on ? '💎' : '🤍';
+    }
+  });
+
   document.querySelectorAll('.tab').forEach(tab => {
     tab.addEventListener('click', () => {
       const v = tab.dataset.view;
@@ -8599,6 +9037,8 @@ window.renderBookshelfGuides = renderBookshelfGuides;
   await loadComments();
   bindEvents();
   initMuteToggle();
+  initPhoneMenu();
+  initWelcomeIntro();
   renderHeroStats();
   renderUpdates();
   renderOshi();

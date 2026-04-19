@@ -45,6 +45,14 @@ const SYNC_KEYS = [
   'ijin_quiz_ever_stamped',
   'ijin_user_avatar',
   'ijin_user_follows',
+  'ijin_phone_pinned_quotes',
+  'ijin_forced_follows',
+  'ijin_bday_greeted',
+  'ijin_known_user_followers',
+  'ijin_unfollowed_at',
+  'ijin_followed_at',
+  'ijin_rabin_voice_played',
+  'ijin_power_hint_seen',
 ];
 
 let fbApp = null, fbAuth = null, fbDb = null;
@@ -137,7 +145,11 @@ async function pullFromCloud(user) {
         SYNC_KEYS.forEach(k => {
           const cloudVal = data[k];
           let localVal = null;
-          try { localVal = JSON.parse(localStorage.getItem(k) || 'null'); } catch {}
+          const rawLocal = localStorage.getItem(k);
+          if (rawLocal !== null) {
+            try { localVal = JSON.parse(rawLocal); }
+            catch { localVal = rawLocal; /* 生文字列（dataURL等）もローカル値として扱う */ }
+          }
           if (cloudVal === undefined && localVal !== null) return; // ローカルのみ
           if (localVal === null) {
             if (cloudVal !== undefined) localStorage.setItem(k, JSON.stringify(cloudVal));

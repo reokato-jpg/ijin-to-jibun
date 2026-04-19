@@ -1,0 +1,139 @@
+{
+  "name": "上杉謙信",
+  "nameEn": "Uesugi Kenshin",
+  "birth": 1530,
+  "death": 1578,
+  "country": "日本（越後）",
+  "field": "戦国大名",
+  "summary": "越後の龍、軍神毘沙門天の化身と畏れられた名将。義を重んじ、生涯不犯を貫いた。",
+  "events": [
+    {
+      "year": 1530,
+      "age": 0,
+      "title": "越後・長尾為景の四男として生まれる",
+      "detail": "幼名は虎千代。",
+      "tags": []
+    },
+    {
+      "year": 1548,
+      "age": 18,
+      "title": "兄晴景の隠居で家督、長尾景虎を名乗る",
+      "detail": "",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1553,
+      "age": 23,
+      "title": "武田信玄と初の川中島合戦",
+      "detail": "以後15年にわたる宿敵関係。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1561,
+      "age": 31,
+      "title": "第四次川中島の戦い、信玄本陣に切り込む",
+      "detail": "『鞭声粛々』の逸話。引き分けに終わる。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1561,
+      "age": 31,
+      "title": "関東管領・上杉憲政より上杉姓と関東管領職を譲られる",
+      "detail": "『上杉謙信』と号す。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1577,
+      "age": 47,
+      "title": "手取川の戦いで織田軍を撃破",
+      "detail": "上洛を目前に信長軍を大破。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1578,
+      "age": 48,
+      "title": "越後・春日山城で急死",
+      "detail": "脳溢血とも。上洛目前にして倒れた。",
+      "tags": [
+        "illness",
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "運は天にあり、鎧は胸にあり、手柄は足にあり。何時も敵を掌にして合戦すべし。",
+      "source": "謙信家訓"
+    },
+    {
+      "text": "我は義のために戦う。私利私欲にあらず。",
+      "source": "謙信に帰される言葉"
+    },
+    {
+      "text": "心に物なき時は、心広く体泰らかなり。",
+      "source": "上杉謙信の訓戒"
+    },
+    {
+      "text": "敵に塩を送る。",
+      "source": "武田信玄への施し（由来）"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/8/88/Uesugi_Kenshin_Portrait_from_Uesugi_Shrine.png",
+  "wikiTitle": "上杉謙信",
+  "imageCredit": {
+    "artist": "Unknown",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Uesugi Shrine, Yonezawa",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Uesugi_Kenshin.jpg"
+  },
+  "birthMonth": 2,
+  "birthDay": 18,
+  "deathMonth": 4,
+  "deathDay": 19,
+  "lifeDigest": "越後国の戦国大名。義を重んじ、戦国の世にあって『軍神』と畏れられた名将。武田信玄との川中島の戦いは戦国史最大のライバル関係として語り継がれる。生涯不犯（しょうがいふぼん）を貫いたとされ、毘沙門天を深く信仰、自らをその化身と称した。上洛途上で急死。",
+  "traits": {
+    "foods": [
+      "越後の酒",
+      "雑穀",
+      "梅干し"
+    ],
+    "hobbies": [
+      "毘沙門天への祈り",
+      "和歌",
+      "禅"
+    ],
+    "personality": "純粋で熱情的、『義』への執念深さは周囲を凌駕した。生涯独身を貫き、女性関係の逸話がない稀有な武将。",
+    "likes": [
+      "義",
+      "毘沙門天",
+      "雪国"
+    ],
+    "dislikes": [
+      "裏切り",
+      "私利私欲",
+      "卑怯"
+    ]
+  },
+  "rivals": [
+    {
+      "id": "takeda_shingen",
+      "name": "武田信玄"
+    },
+    {
+      "id": "oda_nobunaga",
+      "name": "織田信長"
+    }
+  ],
+  "id": "uesugi_kenshin"
+}
