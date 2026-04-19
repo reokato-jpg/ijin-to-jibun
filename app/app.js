@@ -616,8 +616,6 @@ function findSameBirthdayPeople(month, day) {
   return (DATA.people || []).filter(p => p.birthMonth === month && p.birthDay === day);
 }
 
-window.renderTraitsMatch = renderTraitsMatch;
-window.renderFavorites = () => { try { renderFavorites(); } catch {} };
 function renderTraitsMatch() {
   const container = document.getElementById('traitsMatchSection');
   if (!container || !DATA.people) return;
@@ -7617,6 +7615,9 @@ function renderFavorites() {
     });
   });
 }
+// auth.js の onAuthChange から再描画できるよう公開（関数宣言後にエイリアス）
+window.renderTraitsMatch = renderTraitsMatch;
+window.renderFavorites = renderFavorites;
 
 // ====================== お気に入りボタンのバインド ======================
 function bindFavButtons(container, contextPersonId = null) {
