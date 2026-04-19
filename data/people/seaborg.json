@@ -1,0 +1,62 @@
+{
+  "id": "seaborg",
+  "name": "グレン・シーボーグ",
+  "nameEn": "Glenn T. Seaborg",
+  "birth": 1912,
+  "death": 1999,
+  "country": "アメリカ",
+  "field": "化学者・原子物理学者",
+  "summary": "プルトニウムを含む10種の超ウラン元素を発見した化学者。1951年ノーベル化学賞。106番元素は彼にちなみ『シーボーギウム』と命名された、存命中に元素に名を残した唯一の人物。",
+  "events": [
+    {"year": 1912, "age": 0, "title": "ミシガン州イシュペミングに生まれる", "detail": "スウェーデン系移民の家庭。10歳でロサンゼルスに移住。", "tags": []},
+    {"year": 1934, "age": 22, "title": "UCLAを卒業", "detail": "化学専攻。大恐慌期、学費を稼ぐため印刷所で夜働きながら学ぶ。", "tags": ["poverty"]},
+    {"year": 1937, "age": 25, "title": "UCバークレーでPh.D.取得", "detail": "指導教員ギルバート・ルイスと核化学の研究へ。", "tags": ["breakthrough"]},
+    {"year": 1940, "age": 28, "title": "元素94番『プルトニウム』を発見", "detail": "マクミランらと。のちにマンハッタン計画で原子爆弾の燃料となる。", "tags": ["breakthrough", "creation"]},
+    {"year": 1942, "age": 30, "title": "マンハッタン計画に参加", "detail": "シカゴ大学冶金研究所でプルトニウム分離法を開発。広島・長崎の原爆へと繋がる。", "tags": ["turning_encounter", "loss"]},
+    {"year": 1945, "age": 33, "title": "フランク報告書に署名", "detail": "原爆の無人地帯でのデモ使用を提案、日本への直接投下に反対。", "tags": ["setback"]},
+    {"year": 1951, "age": 39, "title": "ノーベル化学賞受賞", "detail": "エドウィン・マクミランと共同受賞。超ウラン元素の化学的性質の発見。", "tags": ["approval", "breakthrough"]},
+    {"year": 1961, "age": 49, "title": "ケネディ大統領に原子力委員会委員長に任命", "detail": "以後10年、10人の大統領の科学顧問を務める。核兵器拡散防止条約の推進。", "tags": ["approval"]},
+    {"year": 1974, "age": 62, "title": "元素106番を発見", "detail": "後に彼の名を冠し『シーボーギウム（Sg）』と命名（1997年承認）。存命中に元素に名を残した唯一の人物。", "tags": ["breakthrough", "approval"]},
+    {"year": 1999, "age": 86, "title": "カリフォルニアで死去", "detail": "最期まで若い化学者の育成に情熱を注いだ。", "tags": ["loss"]}
+  ],
+  "quotes": [
+    {"text": "科学は、真実への敬意と、間違いを認める謙虚さの両方を必要とする。", "source": "シーボーグ講演録"},
+    {"text": "私は運が良かっただけだ。正しい場所、正しい時代にいた。", "source": "ノーベル賞受賞スピーチ"},
+    {"text": "若い研究者に言いたい。失敗を恐れるな。失敗の中にこそ、次の発見がある。", "source": "バークレーでの講義"},
+    {"text": "原子力は、人類にとって諸刃の剣である。我々はその使い方を学ばなければならない。", "source": "自伝『Adventures in the Atomic Age』"},
+    {"text": "元素周期表は、宇宙の詩である。", "source": "シーボーグの言葉"}
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/4/47/Glenn_Seaborg_-_1964.jpg",
+  "wikiTitle": "グレン・シーボーグ",
+  "imageCredit": {
+    "artist": "US Department of Energy",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Lawrence Berkeley National Laboratory",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Glenn_Seaborg_-_1964.jpg"
+  },
+  "birthMonth": 4,
+  "birthDay": 19,
+  "deathMonth": 2,
+  "deathDay": 25,
+  "lifeDigest": "アメリカの化学者、原子物理学者。プルトニウム（元素番号94）をはじめとする10種の超ウラン元素の発見に関わり、現代の元素周期表の『アクチノイド』配置を提案した。1951年、エドウィン・マクミランとともにノーベル化学賞を受賞。第二次世界大戦中はマンハッタン計画にも参加したが、戦後は核兵器拡散防止を訴え、10人のアメリカ大統領の科学顧問を務めた。1997年、彼の名を冠した元素『シーボーギウム（Sg、原子番号106）』が承認され、存命中に元素に名を残した唯一の人物となった。",
+  "traits": {
+    "foods": ["コーヒー", "パン", "シンプルなアメリカ料理", "サンドイッチ"],
+    "hobbies": ["ハイキング", "ゴルフ", "ガーデニング", "科学雑誌を読む"],
+    "personality": "穏やかで几帳面、生涯で記した日記は4000万語にも及ぶ。若い研究者への教育に情熱を注ぎ、『最高の仕事は共同研究』が持論だった。",
+    "likes": ["周期表", "元素", "若い研究者の育成", "ハイキング", "スウェーデンの故郷"],
+    "dislikes": ["独断", "学問の商業化", "核兵器の無制限拡散"]
+  },
+  "routine": [
+    {"start": 0, "end": 6, "activity": "睡眠", "cat": "sleep"},
+    {"start": 6, "end": 7, "activity": "起床・コーヒーと新聞", "cat": "leisure"},
+    {"start": 7, "end": 8, "activity": "朝食・日記を書く", "cat": "meal"},
+    {"start": 8, "end": 12, "activity": "研究室で実験・議論", "cat": "work"},
+    {"start": 12, "end": 13, "activity": "昼食（研究室のメンバーと）", "cat": "meal"},
+    {"start": 13, "end": 17, "activity": "講義・学生指導", "cat": "work"},
+    {"start": 17, "end": 18, "activity": "夕方の散歩・ハイキング", "cat": "leisure"},
+    {"start": 18, "end": 19, "activity": "夕食（家族と）", "cat": "meal"},
+    {"start": 19, "end": 22, "activity": "論文執筆・読書", "cat": "work"},
+    {"start": 22, "end": 24, "activity": "日記を書く・就寝準備", "cat": "leisure"}
+  ]
+}
