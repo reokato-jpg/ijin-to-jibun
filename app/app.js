@@ -1122,7 +1122,7 @@ function getTodaysGroupMembers() {
 }
 
 // 今日の流れ：朝5時スタート、30分に1通。メンバーの名言から順番に引く
-const CHAT_SLOT_MS = 15 * 60 * 1000; // 15分（より頻繁に）
+const CHAT_SLOT_MS = 30 * 60 * 1000; // 30分
 const CHAT_START_HOUR = 5;
 const CHAT_LAST_READ_KEY = 'ijin_chat_last_slot';
 
