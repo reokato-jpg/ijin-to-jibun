@@ -5737,6 +5737,27 @@ async function runUserFollowerNotifications() {
 }
 window.runUserFollowerNotifications = runUserFollowerNotifications;
 
+// わたしの本のフォロー数バッジを非同期で更新
+async function refreshTitlePageUserCounts() {
+  if (typeof window.fetchAllUserProfiles !== 'function') return;
+  const me = (typeof currentUser !== 'undefined' && currentUser) ? currentUser : null;
+  if (!me) return;
+  try {
+    const all = await window.fetchAllUserProfiles();
+    const userFollowerCount = all.filter(u => (u.userFollows || []).includes(me.uid)).length;
+    const followerNumEl = document.getElementById('tpFollowerNum');
+    if (followerNumEl) {
+      const ijinFollowers = DATA.people.filter(p => isFollowedByPerson(p.id)).length;
+      followerNumEl.textContent = String(ijinFollowers + userFollowerCount);
+    }
+    const followingNumEl = document.getElementById('tpFollowingNum');
+    if (followingNumEl) {
+      followingNumEl.textContent = String(favPeople.size + loadUserFollows().size);
+    }
+  } catch {}
+}
+window.refreshTitlePageUserCounts = refreshTitlePageUserCounts;
+
 // 称号選択モーダル（上品なデザイン）
 function openTitlePickerModal() {
   const all = TITLES.filter(t => t.name);
@@ -7226,11 +7247,11 @@ function renderFavorites() {
           </button>
           <div class="title-page-social">
             <button class="title-page-social-item" data-open-social="following">
-              <div class="title-page-social-num">${favPeople.size}</div>
+              <div class="title-page-social-num" id="tpFollowingNum">${favPeople.size + loadUserFollows().size}</div>
               <div class="title-page-social-lbl">フォロー中</div>
             </button>
             <button class="title-page-social-item" data-open-social="followers">
-              <div class="title-page-social-num">${DATA.people.filter(p => isFollowedByPerson(p.id)).length}</div>
+              <div class="title-page-social-num" id="tpFollowerNum">${DATA.people.filter(p => isFollowedByPerson(p.id)).length}</div>
               <div class="title-page-social-lbl">フォロワー</div>
             </button>
             <button class="title-page-social-item" data-open-social="blocked">
@@ -7763,6 +7784,8 @@ function renderFavorites() {
       }
     });
   });
+  // 会員フォロー数の非同期更新
+  try { refreshTitlePageUserCounts?.(); } catch {}
 }
 // auth.js の onAuthChange から再描画できるよう公開（関数宣言後にエイリアス）
 window.renderTraitsMatch = renderTraitsMatch;
