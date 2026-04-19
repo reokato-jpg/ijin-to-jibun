@@ -5545,6 +5545,25 @@ function openSocialListModal(initialTab) {
   const followingPeople = DATA.people.filter(p => favPeople.has(p.id));
   const followerPeople = DATA.people.filter(p => isFollowedByPerson(p.id));
   const blockedItems = collectBlockedFromFollowed();
+  const followingUsers = [...loadUserFollows()];
+  // 会員情報は非同期で後から埋める
+  let userFollowList = [];   // 自分がフォロー中の会員
+  let userFollowerList = []; // 自分をフォローしている会員
+  const loadAndRenderUsers = async () => {
+    if (typeof window.fetchAllUserProfiles !== 'function') return;
+    const all = await window.fetchAllUserProfiles();
+    const myUid = (typeof currentUser !== 'undefined' && currentUser) ? currentUser.uid : null;
+    userFollowList = all.filter(u => followingUsers.includes(u.uid));
+    userFollowerList = myUid ? all.filter(u => (u.userFollows || []).includes(myUid)) : [];
+    // バッジ数の更新
+    const tabFollowing = overlay.querySelector('[data-stab="following"] .social-list-tab-num');
+    if (tabFollowing) tabFollowing.textContent = String(followingPeople.length + userFollowList.length);
+    const tabFollower = overlay.querySelector('[data-stab="followers"] .social-list-tab-num');
+    if (tabFollower) tabFollower.textContent = String(followerPeople.length + userFollowerList.length);
+    // 現在タブを再描画
+    const cur = overlay.querySelector('.social-list-tab.active')?.dataset.stab || 'following';
+    showTab(cur);
+  };
 
   const overlay = document.createElement('div');
   overlay.className = 'routine-edit-overlay social-list-overlay';
@@ -5618,18 +5637,41 @@ function openSocialListModal(initialTab) {
     overlay.querySelectorAll('.social-list-tab').forEach(el => {
       el.classList.toggle('active', el.dataset.stab === t);
     });
+    const renderUserChunk = (users, emptyMsg) => {
+      if (!users.length) return '';
+      return `<div class="social-list-subhead">👥 会員</div><div class="social-list-grid">${users.map(u => {
+        const av = u.avatar
+          ? `<div class="social-list-avatar" style="background-image:url('${u.avatar}')"></div>`
+          : `<div class="social-list-avatar no-img">${(u.name||'?').charAt(0)}</div>`;
+        return `<button class="social-list-item" data-user="${u.uid}">
+          ${av}
+          <div class="social-list-meta">
+            <div class="social-list-name">${u.title ? `【${u.title}】` : ''}${escapeHtml(u.name)}</div>
+            <div class="social-list-sub">偉人フォロー ${u.ijinCount}人</div>
+          </div>
+        </button>`;
+      }).join('')}</div>`;
+    };
     if (t === 'following') {
-      body.innerHTML = renderPersonList(
+      const ijinHtml = renderPersonList(
         followingPeople,
         p => isFollowedByPerson(p.id) ? '相互フォロー' : (p.field || ''),
-        'まだ誰もフォローしていません。気になる偉人のページで「＋ フォロー」を押してください。'
+        ''
       );
+      const usersHtml = renderUserChunk(userFollowList);
+      body.innerHTML = (followingPeople.length + userFollowList.length) === 0
+        ? '<div class="social-list-empty">まだ誰もフォローしていません。</div>'
+        : `${followingPeople.length ? '<div class="social-list-subhead">📚 偉人</div>' : ''}${ijinHtml}${usersHtml}`;
     } else if (t === 'followers') {
-      body.innerHTML = renderPersonList(
+      const ijinHtml = renderPersonList(
         followerPeople,
         p => `スタンプ ${getStampLevel(p.id)} 個`,
-        'まだ偉人からフォローされていません。'
+        ''
       );
+      const usersHtml = renderUserChunk(userFollowerList);
+      body.innerHTML = (followerPeople.length + userFollowerList.length) === 0
+        ? '<div class="social-list-empty">まだフォロワーはいません。</div>'
+        : `${followerPeople.length ? '<div class="social-list-subhead">📚 偉人</div>' : ''}${ijinHtml}${usersHtml}`;
     } else {
       body.innerHTML = renderBlocked(blockedItems);
     }
@@ -5638,6 +5680,15 @@ function openSocialListModal(initialTab) {
         const id = el.dataset.person;
         close();
         showPerson(id);
+      });
+    });
+    body.querySelectorAll('[data-user]').forEach(el => {
+      el.addEventListener('click', () => {
+        const uid = el.dataset.user;
+        const all = [...userFollowList, ...userFollowerList];
+        const u = all.find(x => x.uid === uid);
+        close();
+        if (u) openUserProfileModal(u.uid, all);
       });
     });
   }
@@ -5650,7 +5701,41 @@ function openSocialListModal(initialTab) {
   });
 
   showTab(tab);
+  // 会員フォロー情報を非同期ロード（利用可能なら）
+  loadAndRenderUsers().catch(()=>{});
 }
+
+// ============ 会員からフォローされた通知 ============
+const KNOWN_USER_FOLLOWERS_KEY = 'ijin_known_user_followers';
+async function runUserFollowerNotifications() {
+  if (typeof window.fetchAllUserProfiles !== 'function') return;
+  const me = (typeof currentUser !== 'undefined' && currentUser) ? currentUser : null;
+  if (!me) return;
+  try {
+    const all = await window.fetchAllUserProfiles();
+    const currentFollowers = all.filter(u => (u.userFollows || []).includes(me.uid));
+    let known = [];
+    try { known = JSON.parse(localStorage.getItem(KNOWN_USER_FOLLOWERS_KEY) || '[]'); } catch {}
+    const knownSet = new Set(known);
+    const newOnes = currentFollowers.filter(u => !knownSet.has(u.uid));
+    if (newOnes.length > 0) {
+      newOnes.forEach(u => showFollowToast({ id: 'user_' + u.uid, name: u.name, imageUrl: u.avatar }));
+      if ('Notification' in window && Notification.permission === 'granted') {
+        try {
+          new Notification('👥 新しいフォロワー', {
+            body: newOnes.map(u => `${u.name}さんがあなたをフォローしました`).join('\n'),
+            icon: (newOnes[0] && newOnes[0].avatar) || '/app/assets/icon-192.png',
+            tag: 'user-follower-' + Date.now(),
+          });
+        } catch {}
+      }
+    }
+    localStorage.setItem(KNOWN_USER_FOLLOWERS_KEY, JSON.stringify(currentFollowers.map(u => u.uid)));
+  } catch (e) {
+    console.warn('user follower notify', e);
+  }
+}
+window.runUserFollowerNotifications = runUserFollowerNotifications;
 
 // 称号選択モーダル（上品なデザイン）
 function openTitlePickerModal() {

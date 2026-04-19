@@ -11903,3 +11903,11 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
   align-self: center;
   flex-shrink: 0;
 }
+.social-list-subhead {
+  font-size: 11px;
+  color: var(--ink-3);
+  letter-spacing: 0.1em;
+  margin: 10px 0 6px;
+  padding-left: 4px;
+  font-weight: 600;
+}

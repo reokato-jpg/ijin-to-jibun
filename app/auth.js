@@ -640,6 +640,17 @@ onAuthChange((u) => {
   // ログイン状態に依存するUIを再描画
   try { if (typeof window.renderTraitsMatch === 'function') window.renderTraitsMatch(); } catch {}
   try { if (typeof window.renderFavorites === 'function') window.renderFavorites(); } catch {}
+  // 会員フォロワー通知（ログイン直後 & 以降1分おき）
+  if (u) {
+    setTimeout(() => {
+      try { window.runUserFollowerNotifications?.(); } catch {}
+    }, 1500);
+    if (!window.__userFollowerTimer) {
+      window.__userFollowerTimer = setInterval(() => {
+        if (window.currentUser) { try { window.runUserFollowerNotifications?.(); } catch {} }
+      }, 60000);
+    }
+  }
 });
 
 // 初期化
