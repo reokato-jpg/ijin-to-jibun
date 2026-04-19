@@ -11871,3 +11871,35 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 .share-copy { padding: 8px 14px; border: 1px solid var(--wine); background: #fff; color: var(--wine); border-radius: 6px; font-size: 12px; cursor: pointer; white-space: nowrap; }
 .share-copy:hover { background: var(--wine); color: var(--gold-light); }
 .share-native { display: block; width: 100%; margin-top: 6px; padding: 10px; border: 1.5px solid var(--gold); background: linear-gradient(135deg, var(--wine) 0%, var(--wine-dark) 100%); color: var(--gold-light); border-radius: 999px; font-size: 13px; letter-spacing: 0.1em; cursor: pointer; }
+
+/* 会員同士のフォローボタン */
+.user-prof-follow {
+  display: block;
+  width: 100%;
+  margin: 6px 0 14px;
+  padding: 10px;
+  border: 1.5px solid var(--wine);
+  background: var(--wine);
+  color: var(--gold-light);
+  border-radius: 999px;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: transform .15s ease, background .15s ease;
+}
+.user-prof-follow:hover { transform: translateY(-1px); background: var(--wine-dark); }
+.user-prof-follow.active {
+  background: #fff;
+  color: var(--wine);
+  border-color: var(--gold);
+}
+.user-prof-follow.sm {
+  width: auto;
+  display: inline-block;
+  margin: 0;
+  padding: 5px 12px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  align-self: center;
+  flex-shrink: 0;
+}

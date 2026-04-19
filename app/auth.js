@@ -44,6 +44,7 @@ const SYNC_KEYS = [
   'ijin_quiz_answered',
   'ijin_quiz_ever_stamped',
   'ijin_user_avatar',
+  'ijin_user_follows',
 ];
 
 let fbApp = null, fbAuth = null, fbDb = null;
@@ -221,6 +222,7 @@ async function fetchAllUserProfiles() {
         if (typeof v === 'number') stampTotal += v;
         else if (v && typeof v === 'object') stampTotal += Object.values(v).reduce((a,b)=>a+(b||0),0);
       });
+      const userFollows = Array.isArray(d.ijin_user_follows) ? d.ijin_user_follows : [];
       users.push({
         uid,
         name,
@@ -245,6 +247,7 @@ async function fetchAllUserProfiles() {
         followingIjin,
         ijinCount: followingIjin.length,
         stampTotal,
+        userFollows,
         isMe: currentUser && uid === currentUser.uid,
       });
     });
@@ -294,6 +297,7 @@ async function fetchUserProfileById(uid) {
       followingIjin,
       ijinCount: followingIjin.length,
       stampTotal,
+      userFollows: Array.isArray(d.ijin_user_follows) ? d.ijin_user_follows : [],
       isMe: currentUser && uid === currentUser.uid,
     };
   } catch (e) {

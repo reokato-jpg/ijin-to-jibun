@@ -1117,6 +1117,27 @@ function openMemberSettings() {
   });
 }
 
+// ============ 会員同士のフォロー ============
+const USER_FOLLOWS_KEY = 'ijin_user_follows';
+function loadUserFollows() {
+  try { return new Set(JSON.parse(localStorage.getItem(USER_FOLLOWS_KEY) || '[]')); }
+  catch { return new Set(); }
+}
+function saveUserFollows(set) {
+  localStorage.setItem(USER_FOLLOWS_KEY, JSON.stringify([...set]));
+}
+function isFollowingUser(uid) {
+  return loadUserFollows().has(uid);
+}
+function toggleFollowUser(uid) {
+  const s = loadUserFollows();
+  if (s.has(uid)) s.delete(uid); else s.add(uid);
+  saveUserFollows(s);
+  return s.has(uid);
+}
+window.toggleFollowUser = toggleFollowUser;
+window.isFollowingUser = isFollowingUser;
+
 // ============ 会員プロフィールのシェア（ID / URL / QR） ============
 function getMyShareInfo() {
   const uid = (typeof currentUser !== 'undefined' && currentUser) ? currentUser.uid : '';
@@ -1237,6 +1258,14 @@ async function openUsersDirectory() {
     body.querySelectorAll('[data-user-open]').forEach(el => {
       el.addEventListener('click', () => openUserProfileModal(el.dataset.userOpen, users));
     });
+    body.querySelectorAll('[data-user-follow]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const now = toggleFollowUser(btn.dataset.userFollow);
+        btn.classList.toggle('active', now);
+        btn.textContent = now ? '✓' : '＋ フォロー';
+      });
+    });
   };
   render(users);
   // 検索（名前 or UID部分一致）
@@ -1269,6 +1298,11 @@ function renderUserDirCard(u) {
     u.sns.note && `<a class="users-dir-sns" href="${u.sns.note}" target="_blank" rel="noopener" title="Note">📝</a>`,
     u.sns.facebook && `<a class="users-dir-sns" href="${u.sns.facebook}" target="_blank" rel="noopener" title="Facebook">f</a>`,
   ].filter(Boolean).join('');
+  const isLoggedIn = typeof currentUser !== 'undefined' && currentUser;
+  const following = isLoggedIn && !u.isMe ? isFollowingUser(u.uid) : false;
+  const followBtn = (isLoggedIn && !u.isMe)
+    ? `<button class="user-prof-follow sm ${following ? 'active' : ''}" data-user-follow="${u.uid}" onclick="event.stopPropagation()">${following ? '✓' : '＋ フォロー'}</button>`
+    : '';
   return `
     <div class="users-dir-card" data-user-open="${u.uid}">
       ${av}
@@ -1280,6 +1314,7 @@ function renderUserDirCard(u) {
         <div class="users-dir-meta">偉人フォロー ${u.ijinCount}人 · スタンプ ${u.stampTotal}個</div>
         <div class="users-dir-sns-row" onclick="event.stopPropagation()">${snsIcons}</div>
       </div>
+      ${followBtn}
     </div>
   `;
 }
@@ -1306,17 +1341,27 @@ function openUserProfileModal(uid, usersCache) {
     if (!p) return '';
     return `<button class="user-prof-ijin" data-jump-person="${p.id}">${p.name}</button>`;
   }).join('');
+  // 会員同士のフォロー状態 & フォロワー数（自分をフォロー中の人数）
+  const isLoggedIn = typeof currentUser !== 'undefined' && currentUser;
+  const following = isLoggedIn && !u.isMe ? isFollowingUser(u.uid) : false;
+  const followersOfThisUser = (usersCache || []).filter(x => (x.userFollows || []).includes(u.uid)).length;
+  const myFollowedCount = (u.userFollows || []).length;
+  const followBtn = (isLoggedIn && !u.isMe)
+    ? `<button class="user-prof-follow ${following ? 'active' : ''}" data-user-follow="${u.uid}">${following ? '✓ フォロー中' : '＋ フォローする'}</button>`
+    : '';
   modal.innerHTML = `
     <div class="settings-backdrop" data-close="1"></div>
     <div class="settings-panel">
       <button class="settings-close" data-close="1" aria-label="閉じる">×</button>
       <div class="user-prof-head">
         ${av}
-        <div>
+        <div style="flex:1;min-width:0">
           <div class="user-prof-name">${u.title ? `<span class="users-dir-title">【${u.title}】</span>` : ''}${escapeHtml(u.name)}</div>
+          <div class="user-prof-meta">会員フォロー ${myFollowedCount}人 · フォロワー ${followersOfThisUser}人</div>
           <div class="user-prof-meta">偉人フォロー ${u.ijinCount}人 · スタンプ ${u.stampTotal}個</div>
         </div>
       </div>
+      ${followBtn}
       ${u.birthMonth && u.birthDay ? `<div class="user-prof-row"><b>🎂 誕生日</b> ${u.birthMonth}/${u.birthDay}</div>` : ''}
       ${u.hometown ? `<div class="user-prof-row"><b>📍 出身</b> ${escapeHtml(u.hometown)}</div>` : ''}
       <div class="user-prof-row"><b>🍽 好きな食べ物</b><div class="user-prof-chips">${chip(u.traits.foods)}</div></div>
@@ -1332,6 +1377,12 @@ function openUserProfileModal(uid, usersCache) {
   modal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', close));
   modal.querySelectorAll('[data-jump-person]').forEach(b => {
     b.addEventListener('click', () => { close(); showPerson(b.dataset.jumpPerson); });
+  });
+  modal.querySelector('[data-user-follow]')?.addEventListener('click', (e) => {
+    const btn = e.currentTarget;
+    const now = toggleFollowUser(btn.dataset.userFollow);
+    btn.classList.toggle('active', now);
+    btn.textContent = now ? '✓ フォロー中' : '＋ フォローする';
   });
 }
 window.openUsersDirectory = openUsersDirectory;
