@@ -771,6 +771,50 @@ function renderTodayBirthday() {
   });
 }
 
+// ====================== 名前変更モーダル ======================
+function openNameEditModal() {
+  const existing = document.getElementById('nameEditModal');
+  if (existing) existing.remove();
+  const current = getUserName();
+  const modal = document.createElement('div');
+  modal.id = 'nameEditModal';
+  modal.className = 'settings-modal';
+  modal.innerHTML = `
+    <div class="settings-backdrop" data-close="1"></div>
+    <div class="settings-panel name-edit-panel">
+      <button class="settings-close" data-close="1" aria-label="閉じる">×</button>
+      <div class="settings-head">✎ 本に載せる名前</div>
+      <div class="name-edit-intro">この名前が『わたしの本』の表紙に書かれます。空欄で『わたしの本』に戻します。</div>
+      <input type="text" class="settings-input name-edit-input" id="nameEditInput" maxlength="16" placeholder="あなたの名前" value="${escapeHtml(current || '')}">
+      <div class="settings-actions name-edit-actions">
+        <button class="name-edit-cancel" data-close="1">キャンセル</button>
+        <button class="settings-save" id="nameEditSave">保存</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  requestAnimationFrame(() => modal.classList.add('open'));
+  const input = modal.querySelector('#nameEditInput');
+  setTimeout(() => input?.focus(), 100);
+
+  const close = () => {
+    modal.classList.remove('open');
+    setTimeout(() => modal.remove(), 200);
+  };
+  modal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', close));
+
+  const save = () => {
+    const name = input.value.trim();
+    setUserName(name);
+    close();
+    renderFavorites();
+  };
+  modal.querySelector('#nameEditSave').addEventListener('click', save);
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); save(); }
+  });
+}
+
 // ====================== 会員設定モーダル ======================
 function openMemberSettings() {
   const existing = document.getElementById('memberSettingsModal');
@@ -7004,13 +7048,7 @@ function renderFavorites() {
   // 名前変更
   const editName = list.querySelector('#editNameBtn');
   if (editName) {
-    editName.addEventListener('click', () => {
-      const current = getUserName();
-      const name = prompt('本に載せる名前を入力してください（空欄で「わたしの本」に戻ります）', current);
-      if (name === null) return;
-      setUserName(name);
-      renderFavorites();
-    });
+    editName.addEventListener('click', () => openNameEditModal());
   }
   // 称号選択
   const editTitle = list.querySelector('#editTitleBtn');
