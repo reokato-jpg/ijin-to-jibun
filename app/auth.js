@@ -334,7 +334,7 @@ async function openLoginModal() {
       <button class="auth-modal-close" data-close>×</button>
       <div class="auth-head">
         <div class="auth-title">本棚の鍵を受け取る</div>
-        <div class="auth-sub">夜、どうしても眠れないとき。<br>朝、どうしても立ち上がれないとき。<br>その記録を、夜明けに消えてしまわないよう<br><b>あなただけの本棚</b>にしまっておきませんか。</div>
+        <div class="auth-sub">夜、どうしても眠れないとき。<br>朝、どうしても立ち上がれないとき。<br>夜明けには消えてしまう、その記録を<br><b>あなただけの本棚</b>にしまっておきませんか。</div>
       </div>
       <div class="auth-tabs">
         <button class="auth-tab active" data-mode="login">戻ってきた方</button>
@@ -505,7 +505,7 @@ function updateLoginNotice() {
       <div class="key-popup-sub">
         夜、どうしても眠れないとき。<br>
         朝、どうしても立ち上がれないとき。<br><br>
-        その記録を、夜明けに消えてしまわないよう<br>
+        夜明けには消えてしまう、その記録を<br>
         <b>あなただけの本棚</b>にしまっておきませんか。
       </div>
       <div class="key-popup-actions">

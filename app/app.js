@@ -7014,8 +7014,8 @@ function renderFavorites() {
             <b>あなただけの一冊</b>ができあがります。
           </p>
           <p class="my-book-empty-body my-book-empty-poem">
-            その心細い夜の記録を、<br>
-            夜明けに消えてしまわないように。
+            夜明けには消えてしまう、<br>
+            その心細い夜の記録を。
           </p>
           ${renderGuideChara({ pose: 'welcome', copyKey: 'mybookEmpty', size: 'md', layout: 'below' })}
           ${!isLoggedIn ? `
