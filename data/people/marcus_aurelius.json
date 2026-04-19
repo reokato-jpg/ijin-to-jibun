@@ -1,0 +1,125 @@
+{
+  "name": "マルクス・アウレリウス",
+  "nameEn": "Marcus Aurelius",
+  "birth": 121,
+  "death": 180,
+  "country": "ローマ帝国",
+  "field": "哲学者・皇帝",
+  "summary": "ローマ五賢帝の最後の一人。軍営の中で綴ったギリシャ語の手記『自省録』はストア哲学の最高峰。",
+  "events": [
+    {
+      "year": 121,
+      "age": 0,
+      "title": "ローマの名門貴族に生まれる",
+      "detail": "父を早く亡くし、皇帝ハドリアヌスに才能を見出される。",
+      "tags": []
+    },
+    {
+      "year": 138,
+      "age": 17,
+      "title": "皇帝アントニヌス・ピウスの養子に",
+      "detail": "皇位継承者として哲学・修辞学を学ぶ。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 161,
+      "age": 40,
+      "title": "皇帝に即位",
+      "detail": "義兄弟ルキウスとの共同統治。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 166,
+      "age": 45,
+      "title": "マルコマンニ戦争が始まる",
+      "detail": "以降ほぼ生涯、北方ゲルマン諸部族との戦いに費やされる。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 170,
+      "age": 49,
+      "title": "軍営の中で『自省録』を書き始める",
+      "detail": "誰に読ませるためでもない、自分自身への覚え書き。ギリシャ語で綴られた12巻。",
+      "tags": [
+        "creation",
+        "serenity"
+      ]
+    },
+    {
+      "year": 180,
+      "age": 59,
+      "title": "ウィンドボナ（現ウィーン）の軍営で没す",
+      "detail": "疫病で倒れたとも。『哲人皇帝』の時代は彼で終わる。",
+      "tags": [
+        "illness",
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "朝、目覚めたら自分にこう言い聞かせよ。今日、私は出しゃばりや恩知らずや傲慢な者に出会うだろうと。",
+      "source": "『自省録』第2巻"
+    },
+    {
+      "text": "外にあるものに思い悩むな。君を悩ませているのは、それについての君の判断である。",
+      "source": "『自省録』第8巻"
+    },
+    {
+      "text": "幸福な生活を送るために必要なものは、ほとんど無い。それはすべて君自身の中にある。",
+      "source": "『自省録』第7巻"
+    },
+    {
+      "text": "人生は短い。今この一瞬、善く生きよ。",
+      "source": "『自省録』第4巻"
+    },
+    {
+      "text": "我々の人生は、我々の思考がつくる。",
+      "source": "『自省録』第5巻"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/e/ec/MSR-ra-61-b-1-DM.jpg",
+  "wikiTitle": "マルクス・アウレリウス・アントニヌス",
+  "imageCredit": {
+    "artist": "Unknown (Roman bronze c.175AD)",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Musei Capitolini",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Marco_Aurelio_bronzo.jpg"
+  },
+  "birthMonth": 4,
+  "birthDay": 26,
+  "deathMonth": 3,
+  "deathDay": 17,
+  "lifeDigest": "ローマ帝国の第16代皇帝、ストア派哲学者。五賢帝の最後の一人。在位中は東方のパルティアや北方のゲルマン諸部族との戦争、疫病の流行に苦しんだが、陣中で綴ったギリシア語の手記『自省録』は後世のストア哲学・西洋倫理思想に大きな影響を与えた。『哲人皇帝』と称される。",
+  "traits": {
+    "foods": [
+      "パン",
+      "オリーブ",
+      "質素な軍営食"
+    ],
+    "hobbies": [
+      "読書",
+      "瞑想",
+      "手記を書く"
+    ],
+    "personality": "生まれながらの皇帝の座を重荷に感じ、ひたすら自分を律し続けた。怒り・嫉妬・虚栄を戒める言葉を一生書き続けた。",
+    "likes": [
+      "哲学",
+      "静けさ",
+      "徳"
+    ],
+    "dislikes": [
+      "傲慢",
+      "虚栄",
+      "無駄話"
+    ]
+  },
+  "id": "marcus_aurelius"
+}

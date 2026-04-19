@@ -1,0 +1,143 @@
+{
+  "name": "バートランド・ラッセル",
+  "nameEn": "Bertrand Russell",
+  "birth": 1872,
+  "death": 1970,
+  "country": "イギリス",
+  "field": "哲学者・数学者",
+  "summary": "『プリンキピア・マテマティカ』の共著者。20世紀分析哲学の創始者の一人。反戦運動でもノーベル文学賞を受賞。",
+  "events": [
+    {
+      "year": 1872,
+      "age": 0,
+      "title": "貴族ラッセル家の次男として生まれる",
+      "detail": "伯父は首相を務めた第1代ラッセル伯爵。両親を早くに亡くす。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1890,
+      "age": 18,
+      "title": "ケンブリッジ大学トリニティ・カレッジ入学",
+      "detail": "数学と哲学を学ぶ。ホワイトヘッドに師事。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1903,
+      "age": 31,
+      "title": "『数学の諸原理』を刊行",
+      "detail": "『ラッセルのパラドックス』を示し、論理主義の礎を築く。",
+      "tags": [
+        "breakthrough",
+        "creation"
+      ]
+    },
+    {
+      "year": 1910,
+      "age": 38,
+      "title": "ホワイトヘッドと『プリンキピア・マテマティカ』第1巻",
+      "detail": "10年かけた数学の論理的基礎付け。全3巻。",
+      "tags": [
+        "creation",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1918,
+      "age": 46,
+      "title": "第一次大戦反対で6ヶ月投獄",
+      "detail": "獄中で『数理哲学序説』を執筆。",
+      "tags": [
+        "setback"
+      ]
+    },
+    {
+      "year": 1950,
+      "age": 78,
+      "title": "ノーベル文学賞受賞",
+      "detail": "『西洋哲学史』などの功績。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1955,
+      "age": 83,
+      "title": "アインシュタインと『ラッセル＝アインシュタイン宣言』",
+      "detail": "核兵器廃絶を訴える。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1970,
+      "age": 97,
+      "title": "ウェールズで死去",
+      "detail": "最期まで反戦・反核を説いた。",
+      "tags": []
+    }
+  ],
+  "quotes": [
+    {
+      "text": "愛への憧れ、知識の追求、人類の苦しみへの耐えがたい憐れみ。この3つの情熱が私の人生を支配してきた。",
+      "source": "『ラッセル自伝』序"
+    },
+    {
+      "text": "確信を持っている人たちは愚かで、想像力のある人たちは疑いと躊躇に満ちている。",
+      "source": "『怠惰への讃歌』"
+    },
+    {
+      "text": "人生は、あまりに真面目に生きるには短すぎる。",
+      "source": "エッセイ集"
+    },
+    {
+      "text": "幸福の秘訣はこうだ。関心を広く持ち、興味を惹かれるものや人にできるだけ好意的に反応することだ。",
+      "source": "『幸福論』"
+    },
+    {
+      "text": "愛は賢い、憎しみは愚かである。",
+      "source": "BBC放送『顔と顔』1959年"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/7/71/Bertrand_Russell_smoking_in_1936.jpg",
+  "wikiTitle": "バートランド・ラッセル",
+  "imageCredit": {
+    "artist": "Bassano Ltd",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "National Portrait Gallery",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Honourable_Bertrand_Russell.jpg"
+  },
+  "birthMonth": 5,
+  "birthDay": 18,
+  "deathMonth": 2,
+  "deathDay": 2,
+  "lifeDigest": "イギリスの哲学者・論理学者・数学者・社会評論家。ホワイトヘッドとの共著『プリンキピア・マテマティカ』で記号論理学の基礎を築き、分析哲学の創始者の一人とされる。反戦・反核運動の象徴的存在でもあり、1950年にノーベル文学賞を受賞。",
+  "traits": {
+    "foods": [
+      "紅茶",
+      "トースト",
+      "イギリス料理"
+    ],
+    "hobbies": [
+      "散歩",
+      "手紙を書く",
+      "読書"
+    ],
+    "personality": "怜悧な論理家でありながら、世界の苦しみに心を痛めた情熱家。4回結婚し、97歳まで執筆を続けた。",
+    "likes": [
+      "論理",
+      "明晰な思考",
+      "自由"
+    ],
+    "dislikes": [
+      "戦争",
+      "独断的な信仰",
+      "愚かさ"
+    ]
+  },
+  "id": "bertrand_russell"
+}

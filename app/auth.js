@@ -57,6 +57,18 @@ function onAuthChange(cb) {
   // 現在の状態を即時通知
   cb(currentUser);
 }
+// auth確定まで待つpromise（シェアURL経由でフォローボタン表示などに使う）
+function waitForAuthResolved(timeoutMs = 6000) {
+  if (authResolved) return Promise.resolve(currentUser);
+  return new Promise(resolve => {
+    let done = false;
+    const finish = (u) => { if (done) return; done = true; resolve(u); };
+    const off = (u) => { if (authResolved) finish(u); };
+    authListeners.push(off);
+    setTimeout(() => finish(currentUser), timeoutMs);
+  });
+}
+window.waitForAuthResolved = waitForAuthResolved;
 function emitAuth() {
   authListeners.forEach(cb => { try { cb(currentUser); } catch {} });
 }
@@ -97,55 +109,81 @@ async function initFirebase() {
   }
 }
 
+// 最後に同期したUIDを記録（アカウント切替を検出するため）
+const LAST_UID_KEY = '__ijin_last_uid';
+
 async function pullFromCloud(user) {
   try {
     const { doc, getDoc } = window.__fbLib;
     const snap = await getDoc(doc(fbDb, 'users', user.uid));
+    const prevUid = localStorage.getItem(LAST_UID_KEY) || '';
+    const isAccountSwitch = prevUid && prevUid !== user.uid;
+
     if (snap.exists()) {
       const data = snap.data();
-      // ローカルに未ログイン時の変更があればマージ（優先: 件数の多い方）
-      SYNC_KEYS.forEach(k => {
-        const cloudVal = data[k];
-        let localVal = null;
-        try { localVal = JSON.parse(localStorage.getItem(k) || 'null'); } catch {}
-        if (cloudVal === undefined && localVal !== null) return; // ローカルのみ
-        if (localVal === null) {
-          if (cloudVal !== undefined) localStorage.setItem(k, JSON.stringify(cloudVal));
-          return;
-        }
-        // 両方ある場合、配列や Set（お気に入り）はマージ
-        if (Array.isArray(cloudVal) && Array.isArray(localVal)) {
-          let merged;
-          // オブジェクト配列（id付き）は id でユニーク化、それ以外はSetで
-          const sample = cloudVal[0] ?? localVal[0];
-          if (sample && typeof sample === 'object' && sample.id !== undefined) {
-            const seen = new Set();
-            merged = [...cloudVal, ...localVal].filter(item => {
-              if (!item || seen.has(item.id)) return false;
-              seen.add(item.id);
-              return true;
-            });
+      if (isAccountSwitch) {
+        // アカウント切替: 前のアカウントのデータが残っているので、
+        // クラウドの値で完全に上書き（マージしない）。クラウドに無いキーはローカルからも削除。
+        SYNC_KEYS.forEach(k => {
+          if (data[k] !== undefined) {
+            localStorage.setItem(k, JSON.stringify(data[k]));
           } else {
-            merged = [...new Set([...cloudVal, ...localVal])];
+            localStorage.removeItem(k);
           }
-          localStorage.setItem(k, JSON.stringify(merged));
-        } else {
-          // オブジェクトや他はクラウド優先
-          localStorage.setItem(k, JSON.stringify(cloudVal !== undefined ? cloudVal : localVal));
-        }
-      });
-      console.log('[auth] クラウドから同期完了');
-      // マージした結果をクラウドへ書き戻し
-      await pushToCloud(user);
+        });
+        console.log('[auth] アカウント切替: クラウドデータで上書き');
+      } else {
+        // 同じアカウント or 初回: マージ動作を維持
+        SYNC_KEYS.forEach(k => {
+          const cloudVal = data[k];
+          let localVal = null;
+          try { localVal = JSON.parse(localStorage.getItem(k) || 'null'); } catch {}
+          if (cloudVal === undefined && localVal !== null) return; // ローカルのみ
+          if (localVal === null) {
+            if (cloudVal !== undefined) localStorage.setItem(k, JSON.stringify(cloudVal));
+            return;
+          }
+          if (Array.isArray(cloudVal) && Array.isArray(localVal)) {
+            let merged;
+            const sample = cloudVal[0] ?? localVal[0];
+            if (sample && typeof sample === 'object' && sample.id !== undefined) {
+              const seen = new Set();
+              merged = [...cloudVal, ...localVal].filter(item => {
+                if (!item || seen.has(item.id)) return false;
+                seen.add(item.id);
+                return true;
+              });
+            } else {
+              merged = [...new Set([...cloudVal, ...localVal])];
+            }
+            localStorage.setItem(k, JSON.stringify(merged));
+          } else {
+            localStorage.setItem(k, JSON.stringify(cloudVal !== undefined ? cloudVal : localVal));
+          }
+        });
+        console.log('[auth] クラウドから同期完了');
+        await pushToCloud(user);
+      }
     } else {
-      // 初回ログイン → 端末のlocalStorageをクラウドへ
-      await pushToCloud(user);
+      // クラウドにデータなし
+      if (isAccountSwitch) {
+        // アカウント切替で新規ユーザー → ローカルを全消し
+        SYNC_KEYS.forEach(k => localStorage.removeItem(k));
+        console.log('[auth] アカウント切替（新規）: ローカルクリア');
+      } else {
+        // 初回ログイン → 端末のlocalStorageをクラウドへ
+        await pushToCloud(user);
+      }
     }
+    // 今回のUIDを記録
+    localStorage.setItem(LAST_UID_KEY, user.uid);
+
     // 再描画をトリガー
     if (typeof window.renderHomeBooks === 'function') window.renderHomeBooks();
     if (typeof window.renderFavorites === 'function') window.renderFavorites();
     if (typeof window.renderPeople === 'function') window.renderPeople();
     if (typeof window.renderOshi === 'function') window.renderOshi();
+    if (typeof window.updateAccountUI === 'function') window.updateAccountUI();
   } catch (e) {
     console.error('[auth] pull失敗:', e);
   }
@@ -438,6 +476,8 @@ async function logout(clearLocal = false) {
     const { signOut } = window.__fbLib;
     await signOut(fbAuth);
   } catch (e) { console.error(e); }
+  // 最後のUID記録はクリア（次ログインで別アカウントでも「切替」と判断できる）
+  localStorage.removeItem(LAST_UID_KEY);
   // 端末のデータもクリア
   if (clearLocal) {
     SYNC_KEYS.forEach(k => localStorage.removeItem(k));
@@ -449,23 +489,23 @@ async function logout(clearLocal = false) {
     localStorage.removeItem('ijin_login_notice_dismissed');
     // ページ再読込でUI更新
     setTimeout(() => window.location.reload(), 300);
+  } else {
+    // clearLocal=falseでもアカウント切替を確実にするため、次回ログイン時に
+    // pullFromCloud で「切替検出」が効くよう LAST_UID_KEY を消すだけに留める
+    setTimeout(() => window.location.reload(), 300);
   }
 }
 
 function updateAccountUI() {
   const badge = document.getElementById('accountBadge');
   if (!badge) return;
+  const dot = badge.querySelector('#burgerDot');
   if (currentUser) {
-    const n = currentUser.displayName || currentUser.email?.split('@')[0] || 'ユーザー';
-    const avatar = localStorage.getItem('ijin_user_avatar');
-    const avatarHtml = avatar
-      ? `<span class="acc-avatar" style="background-image:url('${avatar}')"></span>`
-      : `<span class="acc-dot"></span>`;
-    badge.innerHTML = `${avatarHtml}<span class="acc-name">${escapeSmall(n)}</span>`;
     badge.classList.add('logged-in');
+    if (dot) dot.hidden = true;
   } else {
-    badge.innerHTML = `<span class="acc-icon">🔑</span><span class="acc-name">本棚の鍵</span>`;
     badge.classList.remove('logged-in');
+    if (dot) dot.hidden = false; // 未ログイン時は赤い「鍵を受け取って」ドットを出す
   }
   updateLoginNotice();
 }
@@ -570,64 +610,233 @@ function insertAccountButton() {
   if (document.getElementById('accountBadge')) return;
   const btn = document.createElement('button');
   btn.id = 'accountBadge';
-  btn.className = 'account-badge';
-  btn.innerHTML = `<span class="acc-icon">👤</span><span class="acc-name">ログイン</span>`;
+  btn.className = 'account-badge menu-burger';
+  btn.setAttribute('aria-label', 'メニュー');
+  btn.innerHTML = `
+    <span class="burger-lines" aria-hidden="true">
+      <span></span><span></span><span></span>
+    </span>
+    <span class="burger-dot" id="burgerDot" hidden></span>
+  `;
   btn.addEventListener('click', () => {
-    if (currentUser) {
-      openAccountMenu();
-    } else {
-      openLoginModal();
-    }
+    openAccountMenu();
   });
   headerRight.appendChild(btn);
   updateAccountUI();
 }
 
 function openAccountMenu() {
-  if (!currentUser) return;
+  const existing = document.getElementById('authModal');
+  if (existing) existing.remove();
   const modal = document.createElement('div');
   modal.id = 'authModal';
-  modal.className = 'auth-modal';
+  modal.className = 'auth-modal settings-drawer';
+  const loggedIn = !!currentUser;
+  const displayName = loggedIn ? escapeSmall(currentUser.displayName || currentUser.email?.split('@')[0] || 'ユーザー') : '';
+  const avatar = loggedIn ? localStorage.getItem('ijin_user_avatar') : '';
+  const avatarHtml = avatar
+    ? `<div class="settings-user-av" style="background-image:url('${avatar}')"></div>`
+    : `<div class="settings-user-av no-img">${loggedIn ? (displayName[0] || '?') : '🔑'}</div>`;
   modal.innerHTML = `
     <div class="auth-modal-backdrop" data-close></div>
-    <div class="auth-modal-panel auth-modal-menu">
-      <button class="auth-modal-close" data-close>×</button>
-      <div class="auth-head">
-        <div class="auth-title">${escapeSmall(currentUser.displayName || currentUser.email || '')}</div>
-        <div class="auth-sub">全端末でお気に入り・ルーティンが同期されています</div>
+    <aside class="settings-drawer-panel">
+      <button class="settings-drawer-close" data-close aria-label="閉じる">×</button>
+      <div class="settings-user">
+        ${avatarHtml}
+        <div class="settings-user-info">
+          ${loggedIn
+            ? `<div class="settings-user-name">${displayName}</div><div class="settings-user-sub">全端末で同期中</div>`
+            : `<div class="settings-user-name">ゲスト</div><div class="settings-user-sub">本棚の鍵を受け取ると、端末を変えても残せます</div>`}
+        </div>
       </div>
-      <div class="auth-menu">
-        <button class="auth-menu-btn" id="authSync">☁ クラウドに今すぐ同期</button>
-        <button class="auth-menu-btn auth-menu-danger" id="authLogout">ログアウト</button>
+
+      ${!loggedIn ? `
+        <button class="settings-login-btn" id="settingsLogin">🔑 本棚の鍵を受け取る／ログイン</button>
+      ` : ''}
+
+      <div class="settings-sec-title">👤 プロフィール</div>
+      <div class="settings-list">
+        ${loggedIn ? `
+          <button class="settings-item" data-act="share">
+            <span class="settings-item-icon">🔗</span>
+            <span class="settings-item-body"><b>マイID／シェア</b><small>IDとURLで自分の本棚を共有</small></span>
+            <span class="settings-item-arrow">›</span>
+          </button>
+          <button class="settings-item" data-act="edit-profile">
+            <span class="settings-item-icon">✎</span>
+            <span class="settings-item-body"><b>プロフィール編集</b><small>名前・称号・誕生日・出身地・SNS</small></span>
+            <span class="settings-item-arrow">›</span>
+          </button>
+        ` : `
+          <div class="settings-item disabled">
+            <span class="settings-item-icon">🔒</span>
+            <span class="settings-item-body"><b>会員限定</b><small>ログインすると各機能が使えます</small></span>
+          </div>
+        `}
+        <button class="settings-item" data-act="directory">
+          <span class="settings-item-icon">👥</span>
+          <span class="settings-item-body"><b>会員ディレクトリ</b><small>他の読者を見つける</small></span>
+          <span class="settings-item-arrow">›</span>
+        </button>
       </div>
-    </div>
+
+      <div class="settings-sec-title">🔔 通知</div>
+      <div class="settings-list">
+        <label class="settings-item settings-item-toggle">
+          <span class="settings-item-icon">🎂</span>
+          <span class="settings-item-body"><b>誕生日通知</b><small>フォロー偉人の誕生日に知らせる</small></span>
+          <input type="checkbox" class="settings-toggle" id="togNotifyBirthday">
+        </label>
+        <label class="settings-item settings-item-toggle">
+          <span class="settings-item-icon">📪</span>
+          <span class="settings-item-body"><b>偉人からの手紙返信</b><small>手紙を送った偉人から返事が来た時</small></span>
+          <input type="checkbox" class="settings-toggle" id="togNotifyLetter">
+        </label>
+        <label class="settings-item settings-item-toggle">
+          <span class="settings-item-icon">👥</span>
+          <span class="settings-item-body"><b>会員からのフォロー</b><small>他の読者があなたをフォローした時</small></span>
+          <input type="checkbox" class="settings-toggle" id="togNotifyUserFollow">
+        </label>
+        <label class="settings-item settings-item-toggle">
+          <span class="settings-item-icon">🏛</span>
+          <span class="settings-item-body"><b>偉人からのフォロー</b><small>クイズLv.3達成でフォローされた時</small></span>
+          <input type="checkbox" class="settings-toggle" id="togNotifyIjinFollow">
+        </label>
+      </div>
+
+      <div class="settings-sec-title">🔗 SNS連携</div>
+      <div class="settings-list">
+        <button class="settings-item" data-act="sns">
+          <span class="settings-item-icon">🌐</span>
+          <span class="settings-item-body"><b>X / Instagram / Note / Facebook</b><small>プロフィールにリンクを表示</small></span>
+          <span class="settings-item-arrow">›</span>
+        </button>
+      </div>
+
+      <div class="settings-sec-title">⚙️ その他</div>
+      <div class="settings-list">
+        ${loggedIn ? `
+          <button class="settings-item" data-act="sync">
+            <span class="settings-item-icon">☁</span>
+            <span class="settings-item-body"><b>今すぐ同期</b><small>クラウドに手動でアップロード</small></span>
+            <span class="settings-item-arrow">›</span>
+          </button>
+        ` : ''}
+        <button class="settings-item" data-act="mute">
+          <span class="settings-item-icon">🔇</span>
+          <span class="settings-item-body"><b>サイト音を切り替え</b><small>BGM・効果音のON/OFF</small></span>
+          <span class="settings-item-arrow">›</span>
+        </button>
+        <button class="settings-item" data-act="terms">
+          <span class="settings-item-icon">📄</span>
+          <span class="settings-item-body"><b>利用規約・プライバシー</b></span>
+          <span class="settings-item-arrow">›</span>
+        </button>
+        ${loggedIn ? `
+          <button class="settings-item settings-item-danger" data-act="logout">
+            <span class="settings-item-icon">🚪</span>
+            <span class="settings-item-body"><b>ログアウト</b></span>
+            <span class="settings-item-arrow">›</span>
+          </button>
+        ` : ''}
+      </div>
+    </aside>
   `;
   document.body.appendChild(modal);
   requestAnimationFrame(() => modal.classList.add('open'));
-  modal.querySelectorAll('[data-close]').forEach(el => {
+  const close = () => {
+    modal.classList.remove('open');
+    setTimeout(() => modal.remove(), 220);
+  };
+  modal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', close));
+
+  // 通知トグルの現在値
+  const togBd = modal.querySelector('#togNotifyBirthday');
+  const togLt = modal.querySelector('#togNotifyLetter');
+  const togUf = modal.querySelector('#togNotifyUserFollow');
+  const togIf = modal.querySelector('#togNotifyIjinFollow');
+  if (togBd) togBd.checked = localStorage.getItem('ijin_notify_birthday') !== '0';
+  if (togLt) togLt.checked = localStorage.getItem('ijin_notify_letter') !== '0';
+  if (togUf) togUf.checked = localStorage.getItem('ijin_notify_user_follow') !== '0';
+  if (togIf) togIf.checked = localStorage.getItem('ijin_notify_ijin_follow') !== '0';
+  togBd?.addEventListener('change', () => localStorage.setItem('ijin_notify_birthday', togBd.checked ? '1' : '0'));
+  togLt?.addEventListener('change', () => localStorage.setItem('ijin_notify_letter', togLt.checked ? '1' : '0'));
+  togUf?.addEventListener('change', () => localStorage.setItem('ijin_notify_user_follow', togUf.checked ? '1' : '0'));
+  togIf?.addEventListener('change', () => localStorage.setItem('ijin_notify_ijin_follow', togIf.checked ? '1' : '0'));
+
+  // 各アクション
+  modal.querySelector('#settingsLogin')?.addEventListener('click', () => { close(); openLoginModal(); });
+  modal.querySelectorAll('[data-act]').forEach(el => {
     el.addEventListener('click', () => {
-      modal.classList.remove('open');
-      setTimeout(() => modal.remove(), 200);
+      const act = el.dataset.act;
+      if (act === 'share' && typeof window.openShareMyProfileModal === 'function') { close(); window.openShareMyProfileModal(); }
+      else if (act === 'edit-profile' && typeof window.openEditProfileModal === 'function') { close(); window.openEditProfileModal(); }
+      else if (act === 'directory' && typeof window.openUsersDirectory === 'function') { close(); window.openUsersDirectory(); }
+      else if (act === 'sns' && typeof window.openSnsLinksModal === 'function') { close(); window.openSnsLinksModal(); }
+      else if (act === 'sync') { pushToCloud(currentUser).then(() => alert('同期しました。')); }
+      else if (act === 'mute') {
+        const cur = localStorage.getItem('ijin_muted') === '1';
+        localStorage.setItem('ijin_muted', cur ? '0' : '1');
+        alert(cur ? '🔊 音をONにしました' : '🔇 音をOFFにしました');
+      }
+      else if (act === 'terms') { window.open('terms.html', '_blank'); }
+      else if (act === 'logout') {
+        openLogoutConfirmModal(async (clearLocal) => {
+          await logout(clearLocal);
+          close();
+        });
+      }
     });
   });
-  modal.querySelector('#authSync').addEventListener('click', async () => {
-    await pushToCloud(currentUser);
-    alert('同期しました。');
-  });
-  modal.querySelector('#authLogout').addEventListener('click', async () => {
-    const choice = prompt(
-      'ログアウト方法を選んでください：\n' +
-      '  1 … ログアウトのみ（この端末のお気に入り・手紙・日記は残す）\n' +
-      '  2 … ログアウト＋この端末のデータを全て削除\n' +
-      '  キャンセルで中止',
-      '1'
-    );
-    if (!choice || (choice !== '1' && choice !== '2')) return;
-    const clearLocal = (choice === '2');
-    if (clearLocal && !confirm('本当に削除しますか？\nこの端末のお気に入り・手紙・日記・つぶやき等が全て消えます。\n（クラウドには残っているので、再ログインで復元できます）')) return;
-    await logout(clearLocal);
-    modal.classList.remove('open');
-    setTimeout(() => modal.remove(), 200);
+}
+
+// ログアウト確認モーダル（上品なUI）
+window.openLogoutConfirmModal = openLogoutConfirmModal;
+function openLogoutConfirmModal(onConfirm) {
+  const existing = document.getElementById('logoutConfirmModal');
+  if (existing) existing.remove();
+  const m = document.createElement('div');
+  m.id = 'logoutConfirmModal';
+  m.className = 'auth-modal logout-modal';
+  m.innerHTML = `
+    <div class="auth-modal-backdrop" data-close></div>
+    <div class="auth-modal-panel logout-panel">
+      <button class="auth-modal-close" data-close>×</button>
+      <div class="logout-head">
+        <div class="logout-ornament">◆</div>
+        <h3 class="logout-title">ログアウト</h3>
+        <div class="logout-sub">また、いつでも戻ってこれるように。</div>
+      </div>
+      <div class="logout-choices">
+        <button class="logout-choice" data-choice="1">
+          <div class="logout-choice-icon">🔒</div>
+          <div class="logout-choice-body">
+            <div class="logout-choice-title">ログアウトのみ</div>
+            <div class="logout-choice-desc">この端末のお気に入り・手紙・日記はそのまま残します（おすすめ）</div>
+          </div>
+        </button>
+        <button class="logout-choice logout-choice-danger" data-choice="2">
+          <div class="logout-choice-icon">🗑</div>
+          <div class="logout-choice-body">
+            <div class="logout-choice-title">データを削除してログアウト</div>
+            <div class="logout-choice-desc">この端末のデータを全て消します。クラウドには残っているので再ログインで復元できます</div>
+          </div>
+        </button>
+      </div>
+      <button class="logout-cancel" data-close>キャンセル</button>
+    </div>
+  `;
+  document.body.appendChild(m);
+  requestAnimationFrame(() => m.classList.add('open'));
+  const close = () => { m.classList.remove('open'); setTimeout(() => m.remove(), 200); };
+  m.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', close));
+  m.querySelectorAll('[data-choice]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const clearLocal = btn.dataset.choice === '2';
+      if (clearLocal && !confirm('本当に削除しますか？\nこの端末のお気に入り・手紙・日記・つぶやき等が全て消えます。\n（クラウドには残っているので、再ログインで復元できます）')) return;
+      close();
+      if (onConfirm) await onConfirm(clearLocal);
+    });
   });
 }
 

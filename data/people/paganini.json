@@ -1,0 +1,139 @@
+{
+  "name": "ニコロ・パガニーニ",
+  "nameEn": "Niccolò Paganini",
+  "birth": 1782,
+  "death": 1840,
+  "country": "イタリア",
+  "field": "ヴァイオリン奏者・作曲家",
+  "summary": "『悪魔に魂を売った』と噂された史上最高のヴァイオリニスト。その超絶技巧は今もヴァイオリンの頂上に君臨する。",
+  "events": [
+    {
+      "year": 1782,
+      "age": 0,
+      "title": "ジェノヴァの港湾労働者の家に生まれる",
+      "detail": "虚弱な体質。父は厳しく、練習しないと食事を抜いた。",
+      "tags": []
+    },
+    {
+      "year": 1795,
+      "age": 13,
+      "title": "少年天才としてコンサートデビュー",
+      "detail": "以後ヨーロッパ各地を巡回。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1813,
+      "age": 31,
+      "title": "ミラノ・スカラ座で大成功",
+      "detail": "『魔女の踊り』を初演。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1828,
+      "age": 46,
+      "title": "ウィーン・デビューで大熱狂",
+      "detail": "シューベルトは『天使の声を聴いた』と涙した。",
+      "tags": [
+        "approval",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1831,
+      "age": 49,
+      "title": "パリでリスト、ショパンと会う",
+      "detail": "リストはパガニーニに触発されピアノの超絶技巧を目指す。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1840,
+      "age": 57,
+      "title": "喉頭結核でニースにて死去",
+      "detail": "教会は彼を『悪魔の子』として埋葬を拒否、遺体は36年間墓に入れなかった。",
+      "tags": [
+        "illness",
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "他人には私のように弾けない。だから私は、自分のためだけに弾く。",
+      "source": "伝記に引かれる言葉"
+    },
+    {
+      "text": "練習しない日はすぐに分かる。3日練習しなければ聴衆に分かる。",
+      "source": "パガニーニに帰される格言"
+    },
+    {
+      "text": "芸術家にとって、沈黙は最悪の敵である。",
+      "source": "パガニーニの手紙"
+    },
+    {
+      "text": "私は弾くのではない。ヴァイオリンに歌わせるのだ。",
+      "source": "伝承"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/c/cf/Paganini.jpeg",
+  "wikiTitle": "ニコロ・パガニーニ",
+  "imageCredit": {
+    "artist": "Unknown lithograph 19th c.",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Wikimedia Commons",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Niccol%C3%B2_Paganini01.jpg"
+  },
+  "birthMonth": 10,
+  "birthDay": 27,
+  "deathMonth": 5,
+  "deathDay": 27,
+  "lifeDigest": "イタリアのヴァイオリニスト、作曲家。左手のピッツィカート、重音、フラジオレットなど、あらゆる超絶技巧を駆使した演奏で19世紀前半のヨーロッパを熱狂させた。『24のカプリース』作品1は、今もヴァイオリニストの試金石とされる。",
+  "traits": {
+    "foods": [
+      "スープ",
+      "魚",
+      "質素なイタリア料理"
+    ],
+    "hobbies": [
+      "ギター演奏",
+      "賭博",
+      "ヴァイオリンの改造"
+    ],
+    "personality": "病弱でやせ細り、黒ずくめの服装。舞台では『悪魔』を演じたが、私生活は寡黙で孤独だった。",
+    "likes": [
+      "ヴァイオリン",
+      "旅",
+      "静けさ"
+    ],
+    "dislikes": [
+      "詮索",
+      "拘束",
+      "公の場の社交"
+    ]
+  },
+  "works": [
+    {
+      "title": "24のカプリース Op.1 第24番",
+      "year": 1817,
+      "type": "ヴァイオリン独奏",
+      "description": "後世の作曲家が競って主題に用いた名曲",
+      "youtubeId": "PZ307sM0t-E",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=Paganini+Caprice+24"
+    },
+    {
+      "title": "ヴァイオリン協奏曲 第1番 ニ長調 Op.6",
+      "year": 1817,
+      "type": "協奏曲",
+      "description": "重音・跳弓の嵐",
+      "youtubeId": "BNH6_0UqmOk",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=Paganini+Violin+Concerto+1"
+    }
+  ],
+  "id": "paganini"
+}

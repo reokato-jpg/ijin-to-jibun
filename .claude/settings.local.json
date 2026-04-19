@@ -29,7 +29,8 @@
       "Bash(gh auth:*)",
       "Read(//c/Users/USER/**)",
       "Bash(git config:*)",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "Bash(grep -iE \"\\\\.\\(png|jpg|jpeg\\)$\")"
     ]
   }
 }

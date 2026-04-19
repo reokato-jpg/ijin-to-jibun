@@ -1,0 +1,148 @@
+{
+  "name": "アントン・ブルックナー",
+  "nameEn": "Anton Bruckner",
+  "birth": 1824,
+  "death": 1896,
+  "country": "オーストリア",
+  "field": "作曲家・オルガン奏者",
+  "summary": "壮大で敬虔な交響曲群を遺したオーストリアの大器晩成。60歳を超えてから真に評価された、信仰の人。",
+  "events": [
+    {
+      "year": 1824,
+      "age": 0,
+      "title": "北オーストリアの寒村アンスフェルデンに生まれる",
+      "detail": "教師の息子。父が早く亡くなり、少年期は聖フローリアン修道院で育つ。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1855,
+      "age": 31,
+      "title": "リンツ大聖堂オルガニストに就任",
+      "detail": "以後15年、オルガン即興演奏の名手として知られる。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1868,
+      "age": 44,
+      "title": "ウィーン音楽院教授に",
+      "detail": "ついに首都へ。だが批評家ハンスリックに長く敵視される。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1884,
+      "age": 60,
+      "title": "交響曲第7番、ライプツィヒで大成功",
+      "detail": "ワーグナー追悼の第2楽章で涙を誘う。遅咲きの開花。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1895,
+      "age": 71,
+      "title": "皇帝フランツ・ヨーゼフより宮廷の一室を与えられる",
+      "detail": "ウィーン・ベルヴェデーレ宮に住まう。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1896,
+      "age": 72,
+      "title": "交響曲第9番を未完のまま死去",
+      "detail": "遺言通り、聖フローリアン教会の、自分が弾いたオルガンの下に埋葬。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "私は神に愛された小さな農夫に過ぎない。",
+      "source": "ブルックナーの言葉"
+    },
+    {
+      "text": "交響曲第9番を愛する神に捧げる。完成できなければ、神が完成させてくれるだろう。",
+      "source": "最晩年の発言"
+    },
+    {
+      "text": "オルガンの前では、すべての言葉は沈黙する。",
+      "source": "弟子への言葉"
+    },
+    {
+      "text": "恐れるな。神と一緒なら何も怖くはない。",
+      "source": "手紙より"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/b/bf/Anton_Bruckner.jpg",
+  "wikiTitle": "アントン・ブルックナー",
+  "imageCredit": {
+    "artist": "Unknown photographer 1854",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Wikimedia Commons",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Anton_Bruckner_(1854).jpg"
+  },
+  "birthMonth": 9,
+  "birthDay": 4,
+  "deathMonth": 10,
+  "deathDay": 11,
+  "lifeDigest": "オーストリアの作曲家・オルガン奏者・音楽教師。ロマン派後期を代表する交響曲作曲家の一人で、敬虔なカトリック信者として宗教音楽と9つの交響曲を遺した。生前は批評家ハンスリックとの対立もあり、真の評価は60歳を過ぎてから得られた。",
+  "traits": {
+    "foods": [
+      "ビール",
+      "ジャガイモ料理",
+      "シュニッツェル"
+    ],
+    "hobbies": [
+      "オルガン即興演奏",
+      "数を数えること（強迫観念）",
+      "農村での散歩"
+    ],
+    "personality": "田舎者の風貌のまま生涯を過ごし、ウィーンの社交界でも方言丸出し。敬虔で純朴、時に異常なほどの謙遜。",
+    "likes": [
+      "オルガン",
+      "信仰",
+      "故郷リンツ"
+    ],
+    "dislikes": [
+      "ワーグナー派との抗争",
+      "批評",
+      "都会の虚飾"
+    ]
+  },
+  "works": [
+    {
+      "title": "交響曲第7番 ホ長調",
+      "year": 1883,
+      "type": "交響曲",
+      "description": "ワーグナー追悼の第2楽章が白眉",
+      "youtubeId": "YUqcUV0gLlQ",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=Bruckner+Symphony+7"
+    },
+    {
+      "title": "交響曲第8番 ハ短調",
+      "year": 1887,
+      "type": "交響曲",
+      "description": "ブルックナーの最高傑作と名高い80分の壮大な宇宙",
+      "youtubeId": "bRHwzBCf3KE",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=Bruckner+Symphony+8"
+    },
+    {
+      "title": "交響曲第9番 ニ短調（未完）",
+      "year": 1896,
+      "type": "交響曲",
+      "description": "『愛する神に捧ぐ』と記された絶筆",
+      "youtubeId": "J3CKl5zkqSE",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=Bruckner+Symphony+9"
+    }
+  ],
+  "id": "bruckner"
+}

@@ -45,6 +45,51 @@ async function loadData() {
 }
 
 // ====================== カテゴリ分類 ======================
+// ====================== traitsの自動カテゴリ分類 ======================
+// likes/dislikesに含まれる項目を分類。人名は除外（'person'カテゴリに入るが表示側でスキップ）
+function classifyTraitItems(items) {
+  const cats = { person: [], nature: [], art: [], abstract: [], daily: [], activity: [], other: [] };
+  if (!Array.isArray(items)) return cats;
+
+  // 人名パターン（カタカナ連続・日本の姓名・よくある呼び方）
+  const isPerson = (s) => {
+    const str = String(s).trim();
+    if (!str) return false;
+    // 既に登録されている偉人の名前と一致（完全一致or部分一致）
+    if ((DATA.people || []).some(p => str === p.name || str.includes(p.name) || (p.name && p.name.includes(str) && p.name.length <= str.length + 4))) return true;
+    // カタカナだけで構成される短い語（3〜18文字、姓名パターン）— ただし「フランス料理」等は料理として除外
+    if (/^[ァ-ヶー・\s]+$/.test(str) && str.length >= 3 && str.length <= 18) {
+      if (/料理|音楽|文学|絵画|主義|風|旅行|工芸|舞踊|演劇|哲学|科学/.test(str)) return false;
+      return true;
+    }
+    // 「〜公」「〜卿」「〜伯」「〜夫人」「〜王」「〜将軍」等の敬称
+    if (/(公|卿|伯|夫人|王$|女王|皇后|将軍|天皇|殿|家族|奥様|氏$|さん$|様$|先生)/.test(str)) return true;
+    // 明らかな人名語（「信長」「家康」等の2-4字の和名）+ 頻出人物語
+    if (/ショパン|ブラームス|モーツァルト|ゲーテ|シラー|ソクラテス|プラトン|カント|ニーチェ|ドストエフスキー|ヘーゲル|ヴィーク|サンド|クララ|テレーズ|バイロン|ロルカ/.test(str)) return true;
+    return false;
+  };
+
+  // 分類パターン
+  const NATURE = /自然|花|星|月|海|山|森|空|雲|川|湖|鳥|動物|猫|犬|馬|庭|風|水|緑|光|朝|夜|四季|春|夏|秋|冬|雪|雨|霧|桜|虹|潮|波|太陽|土|大地|森林/;
+  const ART = /音楽|芸術|文学|絵|絵画|詩|小説|本|書物|読書|映画|演劇|演奏|ピアノ|バイオリン|オペラ|交響|建築|彫刻|舞台|アート|書|歌|曲|詩/;
+  const ABSTRACT = /自由|真理|美|善|正義|平和|愛|希望|未来|夢|信仰|神|魂|孤独|静寂|誠実|尊厳|勇気|調和|永遠|理性|知識|思索|思考|哲学|宗教|価値観/;
+  const DAILY = /コーヒー|紅茶|茶|酒|ワイン|ビール|パン|散歩|休日|手紙|日記|睡眠|眠り|朝食|昼食|夕食|おやつ|菓子|甘|食事|暮らし|家|部屋|家庭|匂い|香り/;
+  const ACTIVITY = /旅|旅行|登山|釣り|狩り|狩猟|ハイキング|運動|ランニング|ジョギング|水泳|泳|瞑想|ヨガ|スポーツ|ゲーム|チェス|将棋|囲碁|麻雀|カード|談話|会話|集会/;
+
+  items.forEach(raw => {
+    const s = String(raw || '').trim();
+    if (!s) return;
+    if (isPerson(s)) { cats.person.push(s); return; }
+    if (NATURE.test(s)) cats.nature.push(s);
+    else if (ART.test(s)) cats.art.push(s);
+    else if (ABSTRACT.test(s)) cats.abstract.push(s);
+    else if (ACTIVITY.test(s)) cats.activity.push(s);
+    else if (DAILY.test(s)) cats.daily.push(s);
+    else cats.other.push(s);
+  });
+  return cats;
+}
+
 // 紀元前/紀元後の年表記フォーマット
 function fmtYear(y) {
   if (y === null || y === undefined || y === '') return '';
@@ -1205,13 +1250,149 @@ function openShareMyProfileModal() {
 }
 window.openShareMyProfileModal = openShareMyProfileModal;
 
+// SNS連携モーダル（X / Instagram / Note / Facebook のURLを保存）
+function openSnsLinksModal() {
+  const existing = document.getElementById('snsLinksModal');
+  if (existing) existing.remove();
+  const traits = (typeof loadMyTraits === 'function') ? loadMyTraits() : {};
+  const sns = traits.sns || {};
+  const m = document.createElement('div');
+  m.id = 'snsLinksModal';
+  m.className = 'settings-modal';
+  m.innerHTML = `
+    <div class="settings-backdrop" data-close="1"></div>
+    <div class="settings-panel">
+      <button class="settings-close" data-close="1" aria-label="閉じる">×</button>
+      <div class="settings-head">🔗 SNS連携</div>
+      <div class="settings-sec-hint">プロフィールに表示するSNSリンクを登録できます。空欄にすれば非表示になります。</div>
+      <form id="snsLinksForm" class="sns-form">
+        <label class="sns-field">
+          <span class="sns-label">𝕏 X (Twitter)</span>
+          <input name="x" type="url" placeholder="https://x.com/yourname" value="${escapeHtml(sns.x || '')}">
+        </label>
+        <label class="sns-field">
+          <span class="sns-label">📸 Instagram</span>
+          <input name="instagram" type="url" placeholder="https://instagram.com/yourname" value="${escapeHtml(sns.instagram || '')}">
+        </label>
+        <label class="sns-field">
+          <span class="sns-label">📝 Note</span>
+          <input name="note" type="url" placeholder="https://note.com/yourname" value="${escapeHtml(sns.note || '')}">
+        </label>
+        <label class="sns-field">
+          <span class="sns-label">f Facebook</span>
+          <input name="facebook" type="url" placeholder="https://facebook.com/yourname" value="${escapeHtml(sns.facebook || '')}">
+        </label>
+        <div class="sns-actions">
+          <button type="button" class="sns-cancel" data-close="1">キャンセル</button>
+          <button type="submit" class="sns-save">保存</button>
+        </div>
+      </form>
+    </div>
+  `;
+  document.body.appendChild(m);
+  requestAnimationFrame(() => m.classList.add('open'));
+  const close = () => { m.classList.remove('open'); setTimeout(() => m.remove(), 200); };
+  m.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', close));
+  m.querySelector('#snsLinksForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const newSns = {
+      x: (fd.get('x') || '').toString().trim(),
+      instagram: (fd.get('instagram') || '').toString().trim(),
+      note: (fd.get('note') || '').toString().trim(),
+      facebook: (fd.get('facebook') || '').toString().trim(),
+    };
+    const t = (typeof loadMyTraits === 'function') ? loadMyTraits() : {};
+    t.sns = newSns;
+    if (typeof saveMyTraits === 'function') saveMyTraits(t);
+    close();
+    alert('SNSリンクを保存しました。');
+  });
+}
+window.openSnsLinksModal = openSnsLinksModal;
+
+// プロフィール編集モーダル（名前・称号・誕生日・出身地・SNSをまとめて編集）
+function openEditProfileModal() {
+  const existing = document.getElementById('editProfileModal');
+  if (existing) existing.remove();
+  const traits = (typeof loadMyTraits === 'function') ? loadMyTraits() : {};
+  const m = document.createElement('div');
+  m.id = 'editProfileModal';
+  m.className = 'settings-modal';
+  const countries = (typeof collectCountryOptions === 'function') ? collectCountryOptions() : [];
+  m.innerHTML = `
+    <div class="settings-backdrop" data-close="1"></div>
+    <div class="settings-panel">
+      <button class="settings-close" data-close="1" aria-label="閉じる">×</button>
+      <div class="settings-head">✎ プロフィール編集</div>
+      <form id="editProfForm" class="sns-form">
+        <label class="sns-field">
+          <span class="sns-label">名前</span>
+          <input name="name" type="text" placeholder="natsumi" value="${escapeHtml(getUserName())}">
+        </label>
+        <label class="sns-field">
+          <span class="sns-label">🎂 誕生日</span>
+          <span style="display:flex;gap:8px">
+            <select name="birthMonth" style="flex:1">
+              <option value="">月</option>
+              ${Array.from({length:12},(_,i)=>i+1).map(n => `<option value="${n}" ${String(traits.birthMonth||'')===String(n)?'selected':''}>${n}月</option>`).join('')}
+            </select>
+            <select name="birthDay" style="flex:1">
+              <option value="">日</option>
+              ${Array.from({length:31},(_,i)=>i+1).map(n => `<option value="${n}" ${String(traits.birthDay||'')===String(n)?'selected':''}>${n}日</option>`).join('')}
+            </select>
+          </span>
+        </label>
+        <label class="sns-field">
+          <span class="sns-label">📍 出身地</span>
+          <input name="hometown" type="text" list="editProfCountries" placeholder="例：日本" value="${escapeHtml(traits.hometown || traits.country || '')}">
+          <datalist id="editProfCountries">
+            ${countries.map(c => `<option value="${escapeHtml(c)}">`).join('')}
+          </datalist>
+        </label>
+        <div class="sns-actions">
+          <button type="button" class="sns-cancel" data-close="1">キャンセル</button>
+          <button type="submit" class="sns-save">保存</button>
+        </div>
+      </form>
+    </div>
+  `;
+  document.body.appendChild(m);
+  requestAnimationFrame(() => m.classList.add('open'));
+  const close = () => { m.classList.remove('open'); setTimeout(() => m.remove(), 200); };
+  m.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', close));
+  m.querySelector('#editProfForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const name = (fd.get('name') || '').toString().trim();
+    if (typeof setUserName === 'function') setUserName(name);
+    const t = (typeof loadMyTraits === 'function') ? loadMyTraits() : {};
+    t.birthMonth = (fd.get('birthMonth') || '').toString();
+    t.birthDay = (fd.get('birthDay') || '').toString();
+    t.hometown = (fd.get('hometown') || '').toString().trim();
+    t.country = t.hometown; // 後方互換
+    if (typeof saveMyTraits === 'function') saveMyTraits(t);
+    close();
+    if (typeof renderFavorites === 'function') renderFavorites();
+    if (typeof renderTraitsMatch === 'function') renderTraitsMatch();
+    alert('プロフィールを保存しました。');
+  });
+}
+window.openEditProfileModal = openEditProfileModal;
+
 // URL検索（?user=<uid>）→ プロフィール直接表示
 async function openUserProfileById(uid) {
   if (!uid) return;
   if (typeof window.fetchUserProfileById !== 'function') return;
-  const u = await window.fetchUserProfileById(uid);
+  // 全ユーザーも並行取得（相互フォロー数の正確な表示のため）
+  const [u, all] = await Promise.all([
+    window.fetchUserProfileById(uid),
+    typeof window.fetchAllUserProfiles === 'function' ? window.fetchAllUserProfiles().catch(() => []) : Promise.resolve([]),
+  ]);
   if (!u) { alert('このIDの会員は見つかりませんでした。'); return; }
-  openUserProfileModal(u.uid, [u]);
+  // キャッシュに本人情報をマージ（allに既に含まれる可能性があるため重複排除）
+  const cache = [u, ...all.filter(x => x.uid !== u.uid)];
+  openUserProfileModal(u.uid, cache);
 }
 window.openUserProfileById = openUserProfileById;
 
@@ -3201,7 +3382,31 @@ async function showPerson(id) {
       </button>
     ` : ''}
 
-    ${p.traits ? `
+    ${p.traits ? (() => {
+      // likes/dislikesを自動カテゴリ分類
+      const classified = classifyTraitItems(p.traits.likes || []);
+      const dislikesClassified = classifyTraitItems(p.traits.dislikes || []);
+      const categoryLabels = {
+        nature: { label: '🌿 自然・風景', order: 1 },
+        art: { label: '🎨 芸術・文化', order: 2 },
+        abstract: { label: '✨ 思想・価値観', order: 3 },
+        daily: { label: '🕯 日常・暮らし', order: 4 },
+        activity: { label: '🎯 活動', order: 5 },
+        other: { label: '◇ その他', order: 9 },
+      };
+      const renderCats = (cats, negClass = '') => {
+        const entries = Object.entries(cats)
+          .filter(([k, v]) => v.length > 0 && k !== 'person')
+          .sort(([a], [b]) => (categoryLabels[a]?.order || 9) - (categoryLabels[b]?.order || 9));
+        if (entries.length === 0) return '';
+        return entries.map(([k, items]) => `
+          <div class="traits-cat-row">
+            <div class="traits-cat-label">${categoryLabels[k]?.label || k}</div>
+            <div class="traits-sec-chips">${items.map(x => `<span class="traits-chip ${negClass}">${x}</span>`).join('')}</div>
+          </div>
+        `).join('');
+      };
+      return `
       <details class="traits-card">
         <summary class="traits-summary">
           <span class="traits-icon">🫖</span>
@@ -3217,31 +3422,32 @@ async function showPerson(id) {
           ` : ''}
           ${(p.traits.foods || []).length ? `
             <div class="traits-section">
-              <div class="traits-sec-label">好きな食べ物・飲み物</div>
+              <div class="traits-sec-label">🍽 好きな食べ物・飲み物</div>
               <div class="traits-sec-chips">${p.traits.foods.map(x => `<span class="traits-chip">${x}</span>`).join('')}</div>
             </div>
           ` : ''}
           ${(p.traits.hobbies || []).length ? `
             <div class="traits-section">
-              <div class="traits-sec-label">趣味・日課</div>
+              <div class="traits-sec-label">🎨 趣味・日課</div>
               <div class="traits-sec-chips">${p.traits.hobbies.map(x => `<span class="traits-chip">${x}</span>`).join('')}</div>
             </div>
           ` : ''}
-          ${(p.traits.likes || []).length ? `
+          ${renderCats(classified) ? `
             <div class="traits-section">
-              <div class="traits-sec-label">好きなもの</div>
-              <div class="traits-sec-chips">${p.traits.likes.map(x => `<span class="traits-chip">${x}</span>`).join('')}</div>
+              <div class="traits-sec-label">❤ 好きなもの</div>
+              <div class="traits-cat-grid">${renderCats(classified)}</div>
             </div>
           ` : ''}
-          ${(p.traits.dislikes || []).length ? `
+          ${renderCats(dislikesClassified, 'traits-chip-neg') ? `
             <div class="traits-section">
-              <div class="traits-sec-label">苦手なもの</div>
-              <div class="traits-sec-chips">${p.traits.dislikes.map(x => `<span class="traits-chip traits-chip-neg">${x}</span>`).join('')}</div>
+              <div class="traits-sec-label">✖ 苦手なもの</div>
+              <div class="traits-cat-grid">${renderCats(dislikesClassified, 'traits-chip-neg')}</div>
             </div>
           ` : ''}
         </div>
       </details>
-    ` : ''}
+    `;
+    })() : ''}
 
     <button class="quiz-open-btn" data-quiz-open="1">
       <span class="quiz-open-icon">❓</span>
@@ -7375,7 +7581,6 @@ function renderFavorites() {
       const bg = p.imageUrl ? `style="background-image:url('${p.imageUrl}')"` : '';
       return `
         <div class="person-book ${p.imageUrl ? '' : 'no-img'}" data-id="${p.id}" ${bg}>
-          <div class="cover-bookmark"></div>
           <div class="person-book-overlay"></div>
           ${!p.imageUrl ? `<div class="person-book-placeholder">${p.name.charAt(0)}</div>` : ''}
           <div class="person-book-info">
@@ -7874,28 +8079,8 @@ function bindEvents() {
     const favTab = document.querySelector('.tab[data-view="favorites"]');
     if (favTab) favTab.click();
   });
-  // このサイトの使い方ポップアップ
-  document.getElementById('howtoOpenBtn')?.addEventListener('click', () => {
-    const src = document.getElementById('howtoCard');
-    const body = src?.querySelector('.howto-body');
-    if (!body) return;
-    const modal = document.createElement('div');
-    modal.className = 'howto-modal';
-    modal.innerHTML = `
-      <div class="howto-modal-backdrop" data-close="1"></div>
-      <div class="howto-modal-panel">
-        <button class="howto-modal-close" data-close="1" aria-label="閉じる">×</button>
-        <div class="howto-modal-head">このサイトの使い方</div>
-        <div class="howto-modal-body">${body.innerHTML}</div>
-      </div>
-    `;
-    document.body.appendChild(modal);
-    requestAnimationFrame(() => modal.classList.add('open'));
-    modal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', () => {
-      modal.classList.remove('open');
-      setTimeout(() => modal.remove(), 200);
-    }));
-  });
+  // このサイトの使い方ポップアップ（5枚スライド）
+  document.getElementById('howtoOpenBtn')?.addEventListener('click', () => openHowtoSlides());
   const searchBtnEl = document.getElementById('searchBtn');
   if (searchBtnEl) searchBtnEl.addEventListener('click', () => {
     const bar = document.getElementById('searchBar');
@@ -7916,6 +8101,87 @@ function bindEvents() {
     renderPeople(e.target.value);
   });
 }
+
+// ====================== サイトの使い方スライドモーダル ======================
+const HOWTO_SEEN_KEY = 'ijin_howto_seen';
+const HOWTO_PAGES = 5;
+
+function openHowtoSlides(startIndex = 0) {
+  const existing = document.getElementById('howtoSlidesModal');
+  if (existing) existing.remove();
+  const m = document.createElement('div');
+  m.id = 'howtoSlidesModal';
+  m.className = 'howto-slides';
+  const slides = Array.from({ length: HOWTO_PAGES }, (_, i) => `
+    <div class="howto-slide" data-idx="${i}">
+      <img src="assets/howto/page${i + 1}.jpg" alt="サイトの使い方 ${i + 1}/${HOWTO_PAGES}" loading="${i === 0 ? 'eager' : 'lazy'}">
+    </div>
+  `).join('');
+  const dots = Array.from({ length: HOWTO_PAGES }, (_, i) => `<button class="howto-dot" data-goto="${i}" aria-label="${i + 1}ページ目"></button>`).join('');
+  m.innerHTML = `
+    <div class="howto-slides-backdrop" data-close="1"></div>
+    <div class="howto-slides-panel">
+      <button class="howto-slides-close" data-close="1" aria-label="閉じる">×</button>
+      <div class="howto-slides-viewport">
+        <div class="howto-slides-track">${slides}</div>
+      </div>
+      <button class="howto-nav howto-nav-prev" aria-label="前のページ">‹</button>
+      <button class="howto-nav howto-nav-next" aria-label="次のページ">›</button>
+      <div class="howto-dots">${dots}</div>
+      <div class="howto-counter"><span id="howtoCurrent">1</span> / ${HOWTO_PAGES}</div>
+    </div>
+  `;
+  document.body.appendChild(m);
+  localStorage.setItem(HOWTO_SEEN_KEY, '1');
+  requestAnimationFrame(() => m.classList.add('open'));
+
+  const track = m.querySelector('.howto-slides-track');
+  const dotsEls = m.querySelectorAll('.howto-dot');
+  const counterEl = m.querySelector('#howtoCurrent');
+  let current = Math.max(0, Math.min(HOWTO_PAGES - 1, startIndex));
+  const update = () => {
+    track.style.transform = `translateX(${-current * 100}%)`;
+    dotsEls.forEach((d, i) => d.classList.toggle('active', i === current));
+    if (counterEl) counterEl.textContent = String(current + 1);
+    m.querySelector('.howto-nav-prev').style.visibility = current === 0 ? 'hidden' : '';
+    m.querySelector('.howto-nav-next').style.visibility = current === HOWTO_PAGES - 1 ? 'hidden' : '';
+  };
+  update();
+  m.querySelector('.howto-nav-prev').addEventListener('click', () => { if (current > 0) { current--; update(); } });
+  m.querySelector('.howto-nav-next').addEventListener('click', () => { if (current < HOWTO_PAGES - 1) { current++; update(); } });
+  dotsEls.forEach(d => d.addEventListener('click', () => { current = parseInt(d.dataset.goto, 10); update(); }));
+
+  // スワイプ対応
+  let startX = null;
+  const viewport = m.querySelector('.howto-slides-viewport');
+  viewport.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+  viewport.addEventListener('touchend', e => {
+    if (startX === null) return;
+    const dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 40) {
+      if (dx < 0 && current < HOWTO_PAGES - 1) current++;
+      else if (dx > 0 && current > 0) current--;
+      update();
+    }
+    startX = null;
+  });
+
+  // キーボード
+  const onKey = (e) => {
+    if (e.key === 'ArrowRight' && current < HOWTO_PAGES - 1) { current++; update(); }
+    else if (e.key === 'ArrowLeft' && current > 0) { current--; update(); }
+    else if (e.key === 'Escape') close();
+  };
+  document.addEventListener('keydown', onKey);
+
+  const close = () => {
+    m.classList.remove('open');
+    document.removeEventListener('keydown', onKey);
+    setTimeout(() => m.remove(), 240);
+  };
+  m.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', close));
+}
+window.openHowtoSlides = openHowtoSlides;
 
 // ====================== 歴史の案内人 ラビン ======================
 // 文言パターン（1箇所あたり3案。表示ごとにランダム選択）
@@ -8045,14 +8311,22 @@ function renderBookshelfGuides() {
       </div>
     `;
     document.body.appendChild(modal);
-    const close = () => {
+    const close = (opts = {}) => {
       localStorage.setItem(HERO_KEY, '1');
       modal.classList.add('closing');
-      setTimeout(() => modal.remove(), 260);
+      setTimeout(() => {
+        modal.remove();
+        // 閉じた後、初めての方にはサイトの使い方スライドを自動表示
+        if (!localStorage.getItem(HOWTO_SEEN_KEY)) {
+          setTimeout(() => {
+            if (typeof openHowtoSlides === 'function') openHowtoSlides(0);
+          }, 300);
+        }
+      }, 260);
     };
-    modal.querySelector('.guide-hello-close').addEventListener('click', close);
-    modal.querySelector('.guide-hello-ok').addEventListener('click', close);
-    modal.querySelector('.guide-hello-backdrop').addEventListener('click', close);
+    modal.querySelector('.guide-hello-close').addEventListener('click', () => close());
+    modal.querySelector('.guide-hello-ok').addEventListener('click', () => close());
+    modal.querySelector('.guide-hello-backdrop').addEventListener('click', () => close());
     requestAnimationFrame(() => modal.classList.add('show'));
   }
 
@@ -8135,7 +8409,14 @@ window.renderBookshelfGuides = renderBookshelfGuides;
     const qp = new URLSearchParams(location.search);
     const sharedUid = qp.get('user');
     if (sharedUid) {
-      setTimeout(() => openUserProfileById(sharedUid), 800);
+      // Firebase認証が確定するまで待ってから開く（未確定だとフォローボタンが出ない）
+      const openAfterAuth = async () => {
+        if (typeof window.waitForAuthResolved === 'function') {
+          await window.waitForAuthResolved();
+        }
+        openUserProfileById(sharedUid);
+      };
+      openAfterAuth();
     }
   } catch {}
   history.push('people');

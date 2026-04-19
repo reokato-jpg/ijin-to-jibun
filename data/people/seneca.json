@@ -1,0 +1,124 @@
+{
+  "name": "セネカ",
+  "nameEn": "Lucius Annaeus Seneca",
+  "birth": -4,
+  "death": 65,
+  "country": "ローマ帝国",
+  "field": "哲学者・劇作家",
+  "summary": "ストア派の代表的哲学者。ネロ帝の師にして側近。ついには主君から死を命じられ、浴場で静かに自らの血管を切った。",
+  "events": [
+    {
+      "year": -4,
+      "age": 0,
+      "title": "スペイン・コルドバに生まれる",
+      "detail": "父は大セネカ（修辞学者）。",
+      "tags": []
+    },
+    {
+      "year": 41,
+      "age": 45,
+      "title": "クラウディウス帝により追放",
+      "detail": "8年間をコルシカ島で過ごす。",
+      "tags": [
+        "setback"
+      ]
+    },
+    {
+      "year": 49,
+      "age": 53,
+      "title": "ローマへ召還、ネロの家庭教師に",
+      "detail": "若きネロの教育を任される。",
+      "tags": [
+        "restart",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 54,
+      "age": 58,
+      "title": "ネロ即位、事実上の宰相に",
+      "detail": "最初の5年は『黄金の5年』と呼ばれる善政。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 62,
+      "age": 66,
+      "title": "引退を願い出るが拒まれる",
+      "detail": "以後は隠棲し、執筆に専念。『倫理書簡集』はこの頃。",
+      "tags": [
+        "creation"
+      ]
+    },
+    {
+      "year": 65,
+      "age": 69,
+      "title": "ピソの陰謀に連座し、ネロより自害を命じられる",
+      "detail": "妻パウリーナと共に血管を切り、哲学者らしく毒人参を仰いで息絶えた。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "時間を所有する方法を知らない者は、いつも時間が足りないと嘆く。",
+      "source": "『人生の短さについて』"
+    },
+    {
+      "text": "運命は甘んじて受ける者を導き、拒む者を引きずっていく。",
+      "source": "『倫理書簡集』107"
+    },
+    {
+      "text": "我々は人生が短いのではない、多くを浪費しているのだ。",
+      "source": "『人生の短さについて』1"
+    },
+    {
+      "text": "どこへ向かうか分からぬ者に、追い風は吹かない。",
+      "source": "『倫理書簡集』71"
+    },
+    {
+      "text": "生きている限り、生き方を学び続けよ。",
+      "source": "『倫理書簡集』76"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/4/44/Duble_herma_of_Socrates_and_Seneca_Antikensammlung_Berlin_07.jpg",
+  "wikiTitle": "ルキウス・アンナエウス・セネカ",
+  "imageCredit": {
+    "artist": "Roman bust, copy c.3rd c.",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "Antikensammlung Berlin",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Seneca-berlinantikensammlung-1.jpg"
+  },
+  "birthMonth": 1,
+  "birthDay": 1,
+  "deathMonth": 4,
+  "deathDay": 12,
+  "lifeDigest": "古代ローマ帝政初期の政治家、ストア派の哲学者。ネロ帝の幼少期の教育係であり、即位後は事実上の宰相となった。晩年にネロから自害を命じられ、従容として死を選んだ逸話は、ストア哲学の生き様を体現するものとして後世に語り継がれた。",
+  "traits": {
+    "foods": [
+      "質素な食事",
+      "パン",
+      "水"
+    ],
+    "hobbies": [
+      "執筆",
+      "散歩",
+      "書簡のやり取り"
+    ],
+    "personality": "莫大な財を成しながら禁欲を説いたため偽善と非難されることも。自身の死に際しては哲人らしく落ち着いていたと伝わる。",
+    "likes": [
+      "友情",
+      "沈黙",
+      "徳"
+    ],
+    "dislikes": [
+      "贅沢への執着",
+      "無益な怒り",
+      "死の恐怖"
+    ]
+  },
+  "id": "seneca"
+}

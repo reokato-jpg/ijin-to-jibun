@@ -1,0 +1,129 @@
+{
+  "name": "ジョルジュ・ビゼー",
+  "nameEn": "Georges Bizet",
+  "birth": 1838,
+  "death": 1875,
+  "country": "フランス",
+  "field": "作曲家",
+  "summary": "『カルメン』の作曲者。初演で酷評され、わずか3ヶ月後にこの世を去った。その後『カルメン』は世界で最も上演されるオペラとなる。",
+  "events": [
+    {
+      "year": 1838,
+      "age": 0,
+      "title": "パリの音楽家一家に生まれる",
+      "detail": "9歳でパリ音楽院に入学。",
+      "tags": []
+    },
+    {
+      "year": 1857,
+      "age": 19,
+      "title": "ローマ大賞受賞",
+      "detail": "ローマに4年間の留学。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1872,
+      "age": 34,
+      "title": "劇付随音楽『アルルの女』",
+      "detail": "初演は失敗。のちに組曲版が愛される。",
+      "tags": [
+        "setback",
+        "creation"
+      ]
+    },
+    {
+      "year": 1875,
+      "age": 36,
+      "title": "『カルメン』初演、酷評される",
+      "detail": "『不道徳』『リアリズムに過ぎる』と非難される。",
+      "tags": [
+        "setback"
+      ]
+    },
+    {
+      "year": 1875,
+      "age": 36,
+      "title": "33回目の上演の夜に急死",
+      "detail": "心臓発作。『カルメン』の成功を見ずに去った。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "音楽とは、言葉で言えないことを沈黙してもいられないときに発せられる声である。",
+      "source": "ビゼーの手紙"
+    },
+    {
+      "text": "私は真実を描きたい。それが世間に受け入れられなくても。",
+      "source": "『カルメン』初演前の書簡"
+    },
+    {
+      "text": "音楽は、語り得ぬものを語る。",
+      "source": "ビゼーに帰される言葉"
+    },
+    {
+      "text": "作品は、作曲家が死んだ後も生き続ける。",
+      "source": "ビゼーの覚え書き"
+    }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/9/96/Georges_bizet.jpg",
+  "wikiTitle": "ジョルジュ・ビゼー",
+  "imageCredit": {
+    "artist": "Étienne Carjat",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "credit": "BnF",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Georges_Bizet_by_%C3%89tienne_Carjat_1875.jpg"
+  },
+  "birthMonth": 10,
+  "birthDay": 25,
+  "deathMonth": 6,
+  "deathDay": 3,
+  "lifeDigest": "フランスの作曲家。最後のオペラ『カルメン』は初演で不道徳と酷評されたが、その3ヶ月後にビゼーは36歳で急死する。その後『カルメン』はヨーロッパ各地で熱狂を呼び、現在では世界で最も上演回数の多いオペラの一つとなっている。",
+  "traits": {
+    "foods": [
+      "ビストロ料理",
+      "赤ワイン",
+      "カフェ・オ・レ"
+    ],
+    "hobbies": [
+      "水泳",
+      "作曲",
+      "友人との議論"
+    ],
+    "personality": "快活で社交的、強靭な意志を持っていたが、健康には恵まれず、自作への世評に深く傷ついた。",
+    "likes": [
+      "スペイン音楽の色彩",
+      "南仏",
+      "民謡"
+    ],
+    "dislikes": [
+      "偽善",
+      "陳腐な慣習",
+      "冷笑"
+    ]
+  },
+  "works": [
+    {
+      "title": "歌劇『カルメン』",
+      "year": 1875,
+      "type": "歌劇",
+      "description": "赤いドレスのジプシー女を巡る情熱と死",
+      "youtubeId": "1XrJ4Lgbf2Q",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=Bizet+Carmen"
+    },
+    {
+      "title": "『アルルの女』組曲 第2番",
+      "year": 1879,
+      "type": "管弦楽組曲",
+      "description": "ビゼーの死後、友人ギローが編纂した南仏の情景",
+      "youtubeId": "WIjA4HTsoE8",
+      "youtubeSearchUrl": "https://www.youtube.com/results?search_query=Bizet+Arlesienne"
+    }
+  ],
+  "id": "bizet"
+}
