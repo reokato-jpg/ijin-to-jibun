@@ -2271,6 +2271,14 @@ function openUserProfileModal(uid, usersCache) {
         </div>
       ` : ''}
 
+      <!-- 📖 わたしの本（本人のみ表示） -->
+      ${u.isMe ? `
+        <div class="user-prof-row user-prof-mybook">
+          <b>📖 わたしの本 <span class="user-prof-private">（あなた専用）</span></b>
+          <button class="user-prof-mybook-btn" id="userProfMyBook">ノート・スタンプ・お気に入りを見る →</button>
+        </div>
+      ` : ''}
+
       <!-- 👣 訪問者の軌跡 -->
       <div class="profile-visitors-section user-prof-visitors">
         <div class="profile-visitors-head">
@@ -2287,6 +2295,11 @@ function openUserProfileModal(uid, usersCache) {
   modal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', close));
   modal.querySelectorAll('[data-jump-person]').forEach(b => {
     b.addEventListener('click', () => { close(); showPerson(b.dataset.jumpPerson); });
+  });
+  // 自分のプロフィールから『わたしの本』へ
+  modal.querySelector('#userProfMyBook')?.addEventListener('click', () => {
+    close();
+    setTimeout(() => { if (typeof showView === 'function') showView('favorites'); }, 200);
   });
   modal.querySelector('[data-user-follow]')?.addEventListener('click', (e) => {
     const btn = e.currentTarget;
@@ -2331,7 +2344,27 @@ function openUserProfileModal(uid, usersCache) {
 function renderUserVisitors(mount, visitors) {
   if (!mount) return;
   const myUid = (typeof currentUser !== 'undefined' && currentUser) ? currentUser.uid : getOrCreateGuestUid();
-  const others = (visitors || []);
+  // 同一人物の重複を排除：
+  // - (name + avatar) が同じエントリは1つにまとめる（最新の訪問時刻を残す）
+  // - 非ゲスト版がある場合、ゲスト版は除外（過去ログアウト状態の自分等）
+  const seen = new Map();
+  (visitors || []).forEach(v => {
+    const name = (v.name || '').trim();
+    const avatar = (v.avatar || '').trim();
+    // 識別キー：名前+アバター（匿名者でも名前で重複判定）
+    const key = name + '|' + avatar;
+    const existing = seen.get(key);
+    if (!existing) { seen.set(key, v); return; }
+    // 既存 vs 新しい：非ゲストを優先、同じゲスト性なら最新訪問時刻を残す
+    const existingIsGuest = !!existing.isGuest;
+    const newIsGuest = !!v.isGuest;
+    if (existingIsGuest && !newIsGuest) { seen.set(key, v); return; }
+    if (!existingIsGuest && newIsGuest) { return; }
+    // 同じゲスト性なら時刻比較
+    if ((v.visitedAt || '') > (existing.visitedAt || '')) seen.set(key, v);
+  });
+  const others = Array.from(seen.values())
+    .sort((a, b) => (b.visitedAt || '').localeCompare(a.visitedAt || ''));
   if (others.length === 0) {
     mount.innerHTML = `
       <div class="visitors-empty">
