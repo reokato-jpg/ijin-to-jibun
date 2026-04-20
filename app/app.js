@@ -945,14 +945,13 @@ function renderTraitsMatch() {
   `;
 
   container.innerHTML = `
-    <details class="match-card" ${selectedCount > 0 ? 'open' : ''}>
-      <summary class="match-summary">
+    <div class="match-card match-card-open">
+      <div class="match-summary match-summary-static">
         <span class="match-summary-icon">🫖</span>
         <span class="match-summary-text">${selectedCount > 0 ? `あなたの好み ${selectedCount}個登録中` : 'あなたの好み・誕生日を登録して偉人を探す'}</span>
-        <span class="match-summary-arrow">▾</span>
-      </summary>
+      </div>
       <div class="match-body">
-        <div class="match-intro">気になる項目をタップして選択（複数可）。<br>共通点の多い偉人が下に表示されます。</div>
+        <div class="match-intro">気になる項目をタップして選択（複数可）。もう一度タップで解除。<br>共通点の多い偉人が下に表示されます。</div>
         ${profileHtml}
         ${makeChips('foods', '🍽 好きな食べ物・飲み物')}
         ${makeChips('hobbies', '🎨 趣味・日課')}
@@ -960,22 +959,27 @@ function renderTraitsMatch() {
         ${makeChips('dislikes', '✖ 嫌いなもの')}
         ${selectedCount > 0 ? `<button class="match-clear" id="matchClear">選択をクリア</button>` : ''}
       </div>
-    </details>
+    </div>
     ${sameBdHtml}
     ${matchesHtml}
   `;
 
   container.querySelectorAll('[data-match-chip]').forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
       const cat = btn.dataset.cat;
       const opt = btn.dataset.opt;
       const t = loadMyTraits();
-      t[cat] = t[cat] || [];
+      if (!Array.isArray(t[cat])) t[cat] = [];
       const idx = t[cat].indexOf(opt);
       if (idx >= 0) t[cat].splice(idx, 1);
       else t[cat].push(opt);
       saveMyTraits(t);
-      renderTraitsMatch();
+      // 即座にビジュアル反映（rerenderを待たなくても）
+      btn.classList.toggle('active', idx < 0);
+      // 少し遅らせて全体を再描画（マッチ偉人の更新）
+      setTimeout(() => renderTraitsMatch(), 50);
     });
   });
   container.querySelectorAll('[data-profile]').forEach(el => {
