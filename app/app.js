@@ -4450,17 +4450,10 @@ function initPhoneMenu() {
     if (battFill) battFill.style.width = '100%';
   };
   const updateNotif = () => {
-    // 偉人の広場の未読 + 偉人からのフォロー + 会員からのフォロー通知
+    // 実データから算出：グループチャット未読 + レキット未読
     let n = 0;
-    try { n += (typeof chatUnreadCount === 'function') ? chatUnreadCount() : 0; } catch {}
-    // 新規フォロワー通知アイコン（チャットバッジから流用）
-    try {
-      const badge = document.getElementById('chatFabBadge');
-      if (badge && !badge.classList.contains('hidden')) {
-        const v = parseInt(badge.textContent || '0', 10);
-        if (v > 0) n = Math.max(n, v);
-      }
-    } catch {}
+    try { if (typeof computeUnreadCount === 'function') n += computeUnreadCount(); } catch {}
+    try { if (typeof getRekittoUnread === 'function') n += getRekittoUnread(); } catch {}
     if (notif && notifBadge && notifIc) {
       if (n > 0) {
         notif.style.display = 'inline-flex';
@@ -4491,7 +4484,7 @@ function initPhoneMenu() {
       if (el) el.hidden = (activeView !== 'people');
     }
     // スマホを閉じるときに内部状態をリセット（全てのツールアプリを閉じる）
-    ['phonePlazaApp','phoneMusicApp','phoneMeshiruApp'].forEach(id => {
+    ['phonePlazaApp','phoneMusicApp','phoneMeshiruApp','phoneHistoryApp'].forEach(id => {
       const el2 = document.getElementById(id);
       if (el2) el2.hidden = true;
     });
@@ -4518,7 +4511,7 @@ function initPhoneMenu() {
     const hintEl = document.getElementById('powerHintAnim');
     if (hintEl) hintEl.hidden = true;
     // スマホを開いたら全てのツールアプリを閉じてホーム画面（アイコン一覧）から始める
-    ['phonePlazaApp','phoneMusicApp','phoneMeshiruApp'].forEach(id => {
+    ['phonePlazaApp','phoneMusicApp','phoneMeshiruApp','phoneHistoryApp'].forEach(id => {
       const el2 = document.getElementById(id);
       if (el2) el2.hidden = true;
     });
@@ -4599,7 +4592,7 @@ function initPhoneMenu() {
 
   btn.addEventListener('click', () => {
     // 電源ボタンは常にホームグリッドから開く（前回の画面を引きずらない）
-    ['phonePlazaApp','phoneMusicApp','phoneMeshiruApp'].forEach(id => {
+    ['phonePlazaApp','phoneMusicApp','phoneMeshiruApp','phoneHistoryApp'].forEach(id => {
       const el2 = document.getElementById(id);
       if (el2) el2.hidden = true;
     });
@@ -4614,10 +4607,11 @@ function initPhoneMenu() {
   });
   // 外部からも呼べるように公開（チャット既読→バッジ更新などのため）
   window.renderIconBadges = renderIconBadges;
+  window.updatePhoneNotif = updateNotif;
   menu.querySelectorAll('[data-phone-close]').forEach(el => el.addEventListener('click', close));
   // ホーム画面ボタン：スマホを閉じずにアイコン一覧へ戻る（ツールアプリを閉じるだけ）
   menu.querySelectorAll('[data-phone-home]').forEach(el => el.addEventListener('click', () => {
-    ['phonePlazaApp','phoneMusicApp','phoneMeshiruApp'].forEach(id => {
+    ['phonePlazaApp','phoneMusicApp','phoneMeshiruApp','phoneHistoryApp'].forEach(id => {
       const a = document.getElementById(id);
       if (a) a.hidden = true;
     });
@@ -5530,6 +5524,7 @@ function initPhoneMenu() {
     markRekittoRead();
     try { if (typeof window.renderIconBadges === 'function') window.renderIconBadges(); } catch {}
     try { if (typeof window.renderPlazaTalks === 'function') window.renderPlazaTalks(); } catch {}
+    try { if (typeof window.updatePhoneNotif === 'function') window.updatePhoneNotif(); } catch {}
     requestAnimationFrame(() => { if (body) body.scrollTop = body.scrollHeight; });
   }
 
@@ -5662,6 +5657,7 @@ function initPhoneMenu() {
       localStorage.setItem(CHAT_LAST_READ_KEY, String(messages.length));
       if (typeof updateChatBadge === 'function') updateChatBadge();
       if (typeof window.renderIconBadges === 'function') window.renderIconBadges();
+      if (typeof window.updatePhoneNotif === 'function') window.updatePhoneNotif();
     } catch {}
     // 最新メッセージへスクロール（最後にジャンプ）
     requestAnimationFrame(() => {
@@ -5704,18 +5700,27 @@ function initPhoneMenu() {
     close();
   });
   navHome?.addEventListener('click', () => {
-    // スマホ内のホーム（アプリグリッド）に戻す
-    if (plaza) plaza.hidden = true;
+    // スマホ内のホーム（アプリグリッド）に戻す：全ツールアプリを閉じる
+    ['phonePlazaApp','phoneMusicApp','phoneMeshiruApp','phoneHistoryApp'].forEach(id => {
+      const el2 = document.getElementById(id);
+      if (el2) el2.hidden = true;
+    });
     document.querySelectorAll('.plaza-tab-panel').forEach(p => {
       p.hidden = (p.dataset.plazaPanel !== 'friends');
     });
     document.querySelectorAll('.plaza-app-tab').forEach(t => {
       t.classList.toggle('active', t.dataset.plazaTab === 'friends');
     });
+    try { stopMusicApp?.(); } catch {}
   });
-  // ≡ 三本線：会員設定モーダルを開く
+  // ≡ 三本線：今日の軌跡を開く（既に開いていたらホーム画面に戻す）
   navMenu?.addEventListener('click', () => {
-    // 今日見た偉人の履歴を表示
+    const hist = document.getElementById('phoneHistoryApp');
+    if (hist && !hist.hidden) {
+      // 履歴が既に開いている → ホーム画面に戻す
+      navHome?.click();
+      return;
+    }
     openTodayHistoryApp();
   });
 
