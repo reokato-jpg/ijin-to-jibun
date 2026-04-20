@@ -392,6 +392,13 @@ function showView(name, pushHistory = true) {
   if (pushHistory && history[history.length - 1] !== name) history.push(name);
   // わたしの本タブは背景画像なし（独自の本デザインを活かす）
   document.documentElement.classList.toggle('view-no-bg', name === 'favorites');
+  // スマホが閉じている or 閉じる遷移中ならノイズ停止（安全網）
+  try {
+    const menu = document.getElementById('phoneMenu');
+    if (!menu || !menu.classList.contains('open')) {
+      if (typeof stopPhoneAmbience === 'function') stopPhoneAmbience();
+    }
+  } catch {}
   // キャラはホームのみ
   const rabin = document.getElementById('powerHintAnim');
   if (rabin) rabin.hidden = (name !== 'people');
@@ -3450,7 +3457,19 @@ function playPortalTransition(menuEl, onComplete) {
   setTimeout(() => {
     if (menuEl) {
       menuEl.classList.remove('open', 'portal-zooming');
+      menuEl.setAttribute('aria-hidden', 'true');
     }
+    // スマホ関連のノイズ・BGMを確実に停止
+    try { stopPhoneAmbience?.(); } catch {}
+    try {
+      const bgm = document.getElementById('squareBgm');
+      if (bgm) { bgm.pause(); bgm.currentTime = 0; }
+    } catch {}
+    // 広場アプリも閉じる
+    try {
+      const plazaEl = document.getElementById('phonePlazaApp');
+      if (plazaEl) plazaEl.hidden = true;
+    } catch {}
     onComplete?.();
     setTimeout(() => {
       portal.classList.remove('active');
