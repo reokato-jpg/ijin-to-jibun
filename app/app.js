@@ -491,13 +491,16 @@ function showView(name, pushHistory = true) {
   // ヘッダーは常にロゴ画像を保持（テキスト上書きするとimgが消える）
   window.scrollTo(0, 0);
   document.getElementById('main').scrollTo(0, 0);
-  // ビュー別BGMを排他的に切替（goBack/goForward/jump全てで適用）
+  // ビュー別BGMを排他的に切替
+  // person / tag 詳細はbook open演出の静寂を優先（showPersonで stopAllBgm されている）
+  // ミュート中 or スマホメニューが開いているときは何もしない
   try {
+    const phoneOpen = document.getElementById('phoneMenu')?.classList.contains('open');
+    if (phoneOpen) return; // スマホ開いてる間はview BGM触らない（ambienceと干渉）
+    if (name === 'person' || name === 'tag') return; // 書物の静寂を尊重
     const BGM_BY_VIEW = {
       people: 'homeBgm', tags: 'searchBgm', history: 'historyBgm',
       routines: 'routineBgm', articles: 'blogBgm', favorites: 'favoritesBgm',
-      person: 'homeBgm',   // 偉人詳細はホームBGMを維持
-      tag: 'searchBgm',    // タグ詳細も検索BGMを維持
     };
     const targetId = BGM_BY_VIEW[name] || 'homeBgm';
     if (typeof playViewBgmExclusive === 'function') playViewBgmExclusive(targetId);
