@@ -3690,6 +3690,19 @@ function initPhoneMenu() {
     plaza.querySelectorAll('.plaza-tab-panel').forEach(p => {
       p.hidden = (p.dataset.plazaPanel !== 'chat');
     });
+    // チャットを既読マークし、未読バッジを消す
+    try {
+      const { messages } = (typeof getGroupMessages === 'function') ? getGroupMessages() : { messages: [] };
+      localStorage.setItem(CHAT_LAST_READ_KEY, String(messages.length));
+      if (typeof updateChatBadge === 'function') updateChatBadge();
+      if (typeof renderIconBadges === 'function') renderIconBadges();
+    } catch {}
+    // 最新メッセージへスクロール（最後にジャンプ）
+    requestAnimationFrame(() => {
+      if (body) body.scrollTop = body.scrollHeight;
+      // 画像のロード後にもう一度（高さが増える可能性）
+      setTimeout(() => { if (body) body.scrollTop = body.scrollHeight; }, 250);
+    });
   }
   // タブ切替／戻る／送信のハンドラをまとめて登録
   const plaza = document.getElementById('phonePlazaApp');

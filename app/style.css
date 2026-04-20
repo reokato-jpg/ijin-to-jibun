@@ -8574,8 +8574,8 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
   flex-shrink: 0;
 }
 .settings-user-av.guest-av {
-  background-size: cover;
-  background-position: center;
+  background-size: 180%;
+  background-position: center center;
   background-color: #7a9a8a;
 }
 .settings-user-av.no-img {
