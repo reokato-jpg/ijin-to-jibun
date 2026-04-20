@@ -846,14 +846,45 @@ function renderTraitsMatch() {
   const countryOptions = collectCountryOptions();
   const makeChips = (cat, catLabel) => {
     const selected = new Set(my[cat] || []);
+    const renderChipBtn = (opt) => {
+      const on = selected.has(opt);
+      return `<button class="match-chip ${on ? 'active' : ''}" data-match-chip data-cat="${cat}" data-opt="${escapeHtml(opt)}">${opt}</button>`;
+    };
+    // TRAIT_GROUPS でサブカテゴリ分けがあれば使う（プロフィール編集と同じ形式）
+    const groups = (typeof TRAIT_GROUPS !== 'undefined') ? TRAIT_GROUPS[cat] : null;
+    if (groups && groups.length) {
+      const grouped = new Set();
+      groups.forEach(g => g.items.forEach(i => grouped.add(i)));
+      const others = (options[cat] || []).filter(o => !grouped.has(o));
+      return `
+        <details class="match-cat match-cat-grouped" ${selected.size > 0 ? 'open' : ''}>
+          <summary class="match-cat-summary">
+            <span class="match-cat-label">${catLabel}</span>
+            <span class="match-cat-count">${selected.size}</span>
+            <span class="match-cat-arrow">▾</span>
+          </summary>
+          <div class="match-subcats">
+            ${groups.map(g => `
+              <div class="match-subcat">
+                <div class="match-subcat-label">${g.label}</div>
+                <div class="match-chips">${g.items.map(renderChipBtn).join('')}</div>
+              </div>
+            `).join('')}
+            ${others.length ? `
+              <div class="match-subcat">
+                <div class="match-subcat-label">📌 その他（偉人の好み）</div>
+                <div class="match-chips">${others.map(renderChipBtn).join('')}</div>
+              </div>
+            ` : ''}
+          </div>
+        </details>
+      `;
+    }
     return `
       <div class="match-cat">
         <div class="match-cat-label">${catLabel}</div>
         <div class="match-chips">
-          ${options[cat].map(opt => {
-            const on = selected.has(opt);
-            return `<button class="match-chip ${on ? 'active' : ''}" data-match-chip data-cat="${cat}" data-opt="${escapeHtml(opt)}">${opt}</button>`;
-          }).join('')}
+          ${(options[cat] || []).map(renderChipBtn).join('')}
         </div>
       </div>
     `;
@@ -5925,6 +5956,19 @@ async function showPerson(id) {
   `;
   const container = document.getElementById('personDetail');
   container.innerHTML = html;
+
+  // まずローカルの軌跡を即座に描画（Firestoreを待たずに自分の訪問を表示）
+  try {
+    const myUid = (currentUser && currentUser.uid) ? currentUser.uid : getOrCreateGuestUid();
+    const isAnon = !currentUser || currentUser.isAnonymous;
+    const myName = getUserName() || (currentUser && currentUser.displayName) || (isAnon ? 'ゲスト' : '名無しの読者');
+    const myAvatar = localStorage.getItem('ijin_user_avatar') || '';
+    saveLocalVisitor('person', p.id, {
+      personId: p.id, uid: myUid, name: myName, avatar: myAvatar, isGuest: isAnon,
+      visitedAt: new Date().toISOString(),
+    });
+    renderPersonVisitors(loadLocalVisitors('person', p.id));
+  } catch (e) { console.warn('local visitors render', e); }
 
   // グローバル訪問数＆最終訪問日を取得 → 忘却の霧判定
   (async () => {

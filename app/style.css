@@ -15440,3 +15440,68 @@ video::-webkit-media-controls-start-playback-button {
 .mist-notice-ic { font-size: 18px; flex-shrink: 0; opacity: 0.7; }
 .mist-notice-text { flex: 1; }
 .mist-notice-text strong { color: #1a1a2a; font-weight: 700; }
+
+/* あなたに似た偉人：サブカテゴリ折りたたみ */
+.match-cat-grouped {
+  margin-bottom: 10px;
+  border: 1px solid rgba(138,90,29,0.15);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.match-cat-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+  list-style: none;
+  background: rgba(138,90,29,0.06);
+  transition: background 0.12s;
+}
+.match-cat-summary::-webkit-details-marker { display: none; }
+.match-cat-summary:hover { background: rgba(138,90,29,0.1); }
+.match-cat-grouped[open] > .match-cat-summary {
+  border-bottom: 1px dashed rgba(138,90,29,0.2);
+}
+.match-cat-summary .match-cat-label {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 700;
+  color: #5a3a14;
+  letter-spacing: 0.04em;
+}
+.match-cat-count {
+  min-width: 22px;
+  height: 22px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: rgba(138,90,29,0.15);
+  color: #5a3a14;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 22px;
+  text-align: center;
+}
+.match-cat-grouped[open] .match-cat-count {
+  background: #8a5a1d;
+  color: #fff;
+}
+.match-cat-arrow {
+  font-size: 14px;
+  color: #8a7050;
+  transition: transform 0.2s;
+}
+.match-cat-grouped[open] .match-cat-arrow { transform: rotate(180deg); }
+.match-subcats {
+  padding: 10px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.match-subcat-label {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #7a5a30;
+  margin-bottom: 6px;
+  letter-spacing: 0.06em;
+}
