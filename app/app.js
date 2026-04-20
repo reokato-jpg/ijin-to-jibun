@@ -3608,12 +3608,7 @@ function initPhoneMenu() {
     e.target.style.height = 'auto';
     e.target.style.height = Math.min(100, e.target.scrollHeight) + 'px';
   });
-  plazaInput?.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) {
-      e.preventDefault();
-      plaza.querySelector('#plazaChatForm')?.requestSubmit();
-    }
-  });
+  // Enterは常に改行のみ（送信は送信ボタンのみ）
   // スタンプパネル開閉
   const stickerToggle = document.getElementById('plazaStickerToggle');
   const stickerPanel = document.getElementById('plazaStickerPanel');
