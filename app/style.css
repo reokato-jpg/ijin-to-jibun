@@ -13047,7 +13047,7 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
   cursor: pointer;
 }
 .plaza-app-title { font-size: 13px; letter-spacing: 0.05em; }
-.plaza-app-body { flex: 1; overflow-y: auto; background: #fff; }
+.plaza-app-body { flex: 1; overflow-y: auto; background: #fff; position: relative; }
 .plaza-tab-panel { padding: 0; }
 .plaza-tab-panel[hidden] { display: none; }
 .plaza-friends-head {
@@ -13108,10 +13108,18 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 
 /* チャットスレッド埋め込み */
 .plaza-chat-panel {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
-  background: #7a9ec5;  /* LINE chat背景（薄青） */
-  height: 100%;
+  background: #7a9ec5;
+  z-index: 5;
+}
+.plaza-chat-body,
+.plaza-chat-body .line-chat,
+.plaza-chat-body .line-msg-list,
+.plaza-chat-body .line-group-body {
+  background: #7a9ec5 !important;
 }
 .plaza-chat-head {
   display: flex; align-items: center; gap: 4px;
@@ -13128,8 +13136,58 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 .plaza-chat-body {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 8px;
+  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;  /* IE */
 }
+.plaza-chat-body::-webkit-scrollbar {
+  display: none;  /* WebKit */
+}
+/* renderLineGroup の内側ヘッダー・マージンを抑えてLINE風に */
+.plaza-chat-body .line-group-header,
+.plaza-chat-body .line-group-title-wrap,
+.plaza-chat-body .line-typing,
+.plaza-chat-body .chat-waiting-mini,
+.plaza-chat-body .line-call-bubble,
+.plaza-chat-body .chat-typing,
+.plaza-chat-body .chat-call-mini { display: none !important; }
+.plaza-chat-body > div:first-child { margin-top: 0; }
+.plaza-chat-body .line-group-body,
+.plaza-chat-body .line-msg-list,
+.plaza-chat-body * {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+.plaza-chat-body .line-group-body::-webkit-scrollbar,
+.plaza-chat-body *::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+}
+/* グループアバタースタック */
+.plaza-group-av {
+  position: relative;
+  width: 52px; height: 36px;
+  flex-shrink: 0;
+}
+.plaza-group-av-layer {
+  position: absolute;
+  top: 0;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background-size: cover; background-position: center;
+  background-color: #e0d8c4;
+  border: 1.5px solid #fff;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+.plaza-group-count {
+  display: inline-block;
+  margin-left: 4px;
+  color: #888;
+  font-size: 10px;
+  font-weight: 500;
+}
+.plaza-group-item .plaza-friend-av { display: none; }
 .plaza-chat-body .line-msg-bubble,
 .plaza-chat-body .line-msg-bubble-me {
   font-size: 11px !important;
@@ -13151,12 +13209,27 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 }
 .plaza-chat-input {
   flex: 1;
-  padding: 5px 10px;
+  padding: 6px 10px;
   border: 1px solid #d0d0c0;
   border-radius: 14px;
   font-size: 11px;
   background: #fff;
   font-family: inherit;
+  resize: none;
+  line-height: 1.5;
+  min-height: 26px;
+  max-height: 100px;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.plaza-chat-input::-webkit-scrollbar { display: none; }
+.plaza-chat-form {
+  align-items: flex-end;
+}
+.plaza-chat-send {
+  flex-shrink: 0;
+  align-self: flex-end;
+  margin-bottom: 0;
 }
 .plaza-chat-send {
   padding: 4px 10px;

@@ -3382,7 +3382,19 @@ function initPhoneMenu() {
     setBadge('phoneBadgeFavorites', 0); // 一旦0（必要なら後で拡張）
   };
 
-  btn.addEventListener('click', () => { open(); renderOshiSlot(); renderPhoneQuoteBanner(); renderIconBadges(); });
+  btn.addEventListener('click', () => {
+    // 電源ボタンは常にホームグリッドから開く（前回の画面を引きずらない）
+    const plaza = document.getElementById('phonePlazaApp');
+    if (plaza) plaza.hidden = true;
+    // チャットパネルが開いていた場合は友だちタブに戻す
+    document.querySelectorAll('.plaza-tab-panel').forEach(p => {
+      p.hidden = (p.dataset.plazaPanel !== 'friends');
+    });
+    document.querySelectorAll('.plaza-app-tab').forEach(t => {
+      t.classList.toggle('active', t.dataset.plazaTab === 'friends');
+    });
+    open(); renderOshiSlot(); renderPhoneQuoteBanner(); renderIconBadges();
+  });
   menu.querySelectorAll('[data-phone-close]').forEach(el => el.addEventListener('click', close));
   menu.querySelectorAll('[data-phone-view]').forEach(el => {
     el.addEventListener('click', () => {
@@ -3455,46 +3467,31 @@ function initPhoneMenu() {
   function renderPlazaTalks() {
     const list = document.getElementById('plazaTalksList');
     if (!list) return;
-    // 手紙（letters）から会話スレッド一覧を構築
-    const letters = (typeof loadLetters === 'function') ? loadLetters() : [];
-    const byPerson = {};
-    letters.forEach(l => {
-      if (!byPerson[l.personId]) byPerson[l.personId] = [];
-      byPerson[l.personId].push(l);
-    });
-    // 今日の広場メンバーも「未読」として表示
-    const todayMembers = (typeof getTodaysGroupMembers === 'function') ? getTodaysGroupMembers() : [];
-    const threadPersonIds = [...new Set([...Object.keys(byPerson), ...todayMembers.map(p => p.id)])];
-    if (threadPersonIds.length === 0) {
-      list.innerHTML = '<div class="plaza-empty">まだトークはありません。<br>手紙を送ると、ここに履歴が残ります。</div>';
-      return;
-    }
-    const items = threadPersonIds.map(pid => {
-      const p = DATA.people.find(x => x.id === pid);
-      if (!p) return null;
-      const msgs = byPerson[pid] || [];
-      const last = msgs[msgs.length - 1];
-      const preview = last ? (last.body || last.text || '').slice(0, 30) : '今日の広場にいます';
-      const dateStr = last ? new Date(last.ts || Date.now()).toLocaleDateString('ja-JP', {month:'numeric',day:'numeric'}) : '';
-      const bg = p.imageUrl ? `style="background-image:url('${p.imageUrl}')"` : '';
-      return `
-        <button class="plaza-talk-item" data-plaza-talk="${p.id}">
-          <div class="plaza-friend-av" ${bg}>${p.imageUrl ? '' : (p.name?.charAt(0) || '?')}</div>
-          <div class="plaza-talk-info">
-            <div class="plaza-talk-head">
-              <span class="plaza-talk-name">${p.name}</span>
-              <span class="plaza-talk-date">${dateStr}</span>
-            </div>
-            <div class="plaza-talk-preview">${escapeHtml(preview)}</div>
+    const members = (typeof getTodaysGroupMembers === 'function') ? getTodaysGroupMembers() : [];
+    const { messages } = (typeof getGroupMessages === 'function') ? getGroupMessages() : { messages: [] };
+    const last = messages[messages.length - 1];
+    const preview = last ? (last.quote?.text || '').slice(0, 30) : '今日の広場が開いています';
+    const now = new Date();
+    const dateStr = `${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
+    // グループアバター：メンバー5人のアバターを重ねて1つのアイコンに
+    const avatarStack = members.slice(0, 4).map((p, i) => {
+      const bg = p.imageUrl ? `background-image:url('${p.imageUrl}');` : '';
+      return `<div class="plaza-group-av-layer" style="${bg}left:${i*11}px;z-index:${4-i};"></div>`;
+    }).join('');
+    list.innerHTML = `
+      <button class="plaza-talk-item plaza-group-item" data-plaza-group="1">
+        <div class="plaza-group-av">${avatarStack}</div>
+        <div class="plaza-talk-info">
+          <div class="plaza-talk-head">
+            <span class="plaza-talk-name">偉人の広場 <span class="plaza-group-count">${members.length}</span></span>
+            <span class="plaza-talk-date">${dateStr}</span>
           </div>
-        </button>
-      `;
-    }).filter(Boolean).join('');
-    list.innerHTML = items;
-    list.querySelectorAll('[data-plaza-talk]').forEach(b => {
-      b.addEventListener('click', () => {
-        openPlazaChatThread(b.dataset.plazaTalk);
-      });
+          <div class="plaza-talk-preview">${escapeHtml(preview)}</div>
+        </div>
+      </button>
+    `;
+    list.querySelector('[data-plaza-group]')?.addEventListener('click', () => {
+      openPlazaChatThread('group');
     });
   }
   // 偉人の広場のチャット画面をスマホ内に埋め込む
@@ -3513,27 +3510,19 @@ function initPhoneMenu() {
       p.hidden = (p.dataset.plazaPanel !== 'chat');
     });
   }
-  // チャット戻る
-  plaza?.querySelector('.plaza-chat-back')?.addEventListener('click', () => {
-    plaza.querySelectorAll('.plaza-tab-panel').forEach(p => {
-      p.hidden = (p.dataset.plazaPanel !== 'talks');
-    });
-  });
-  // チャット送信
-  plaza?.querySelector('#plazaChatForm')?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const input = document.getElementById('plazaChatInput');
-    const text = (input?.value || '').trim();
-    if (!text) return;
-    if (typeof addSelfPost === 'function') addSelfPost(text);
-    if (typeof scheduleQuickReply === 'function') scheduleQuickReply(text);
-    input.value = '';
-    const body = document.getElementById('plazaChatBody');
-    if (body && typeof renderLineGroup === 'function') renderLineGroup(body);
-  });
-  // タブ切替
+  // タブ切替／戻る／送信のハンドラをまとめて登録
   const plaza = document.getElementById('phonePlazaApp');
-  plaza?.querySelector('.plaza-app-back')?.addEventListener('click', closePhonePlazaApp);
+  plaza?.querySelector('.plaza-app-back')?.addEventListener('click', () => {
+    const chat = plaza.querySelector('[data-plaza-panel="chat"]');
+    if (chat && !chat.hidden) {
+      // チャット表示中 → トーク一覧へ
+      plaza.querySelectorAll('.plaza-tab-panel').forEach(p => {
+        p.hidden = (p.dataset.plazaPanel !== 'talks');
+      });
+      return;
+    }
+    closePhonePlazaApp();
+  });
   plaza?.querySelectorAll('[data-plaza-tab]').forEach(tab => {
     tab.addEventListener('click', () => {
       const which = tab.dataset.plazaTab;
@@ -3542,6 +3531,35 @@ function initPhoneMenu() {
         p.hidden = (p.dataset.plazaPanel !== which);
       });
     });
+  });
+  plaza?.querySelector('.plaza-chat-back')?.addEventListener('click', () => {
+    plaza.querySelectorAll('.plaza-tab-panel').forEach(p => {
+      p.hidden = (p.dataset.plazaPanel !== 'talks');
+    });
+  });
+  plaza?.querySelector('#plazaChatForm')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const input = document.getElementById('plazaChatInput');
+    const text = (input?.value || '').trim();
+    if (!text) return;
+    if (typeof saveSelfPost === 'function') saveSelfPost(text);
+    if (typeof scheduleQuickReply === 'function') scheduleQuickReply(text);
+    input.value = '';
+    input.style.height = 'auto';
+    const body = document.getElementById('plazaChatBody');
+    if (body && typeof renderLineGroup === 'function') renderLineGroup(body);
+  });
+  // 入力欄のLINE風 自動リサイズ＋Enter送信（Shift+Enterで改行）
+  const plazaInput = document.getElementById('plazaChatInput');
+  plazaInput?.addEventListener('input', (e) => {
+    e.target.style.height = 'auto';
+    e.target.style.height = Math.min(100, e.target.scrollHeight) + 'px';
+  });
+  plazaInput?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) {
+      e.preventDefault();
+      plaza.querySelector('#plazaChatForm')?.requestSubmit();
+    }
   });
   window.renderOshiSlot = renderOshiSlot;
   window.renderPhoneQuoteBanner = renderPhoneQuoteBanner;
@@ -7882,7 +7900,22 @@ function initChatWidget() {
   const input = document.getElementById('chatPanelInput');
   const sendBtn = form ? form.querySelector('.chat-panel-send') : null;
   if (!fab) return;
-  fab.addEventListener('click', openChatPanel);
+  // チャット吹き出し → スマホを起動して偉人の広場まで遷移
+  fab.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    document.getElementById('powerBtn')?.click();
+    setTimeout(() => {
+      document.querySelector('[data-phone-action="plaza"]')?.click();
+      setTimeout(() => {
+        // トークタブに切替＋ grouptalk を開く
+        document.querySelector('[data-plaza-tab="talks"]')?.click();
+        setTimeout(() => {
+          document.querySelector('[data-plaza-group]')?.click();
+        }, 150);
+      }, 200);
+    }, 300);
+  });
   closeBtn.addEventListener('click', closeChatPanel);
 
   async function doSend() {
