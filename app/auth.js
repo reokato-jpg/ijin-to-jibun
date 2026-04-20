@@ -61,6 +61,12 @@ const SYNC_KEYS = [
   'ijin_meshiru_plan',
   'ijin_meshiru_check',
   'ijin_meshiru_likes',
+  // 通知の既読状態（リロード＆端末間で同期するため）
+  'ijin_chat_last_slot',
+  'ijin_rekitto_last_read',
+  'ijin_rekitto_seen_updates',
+  'ijin_notified_follows',
+  'ijin_shown_follow_toasts',
 ];
 
 let fbApp = null, fbAuth = null, fbDb = null;
