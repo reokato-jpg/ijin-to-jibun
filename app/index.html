@@ -70,8 +70,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20260424Q">
-<link rel="stylesheet" href="era-theme.css?v=20260424Q">
+<link rel="stylesheet" href="style.css?v=20260424R">
+<link rel="stylesheet" href="era-theme.css?v=20260424R">
 </head>
 <body>
   <header class="app-header">
@@ -545,10 +545,6 @@
             <img src="assets/phone/icon-meshiru.png?v=1" alt="">
             <span>めしる</span>
           </button>
-          <button class="phone-icon phone-icon-otayori" data-phone-action="otayori">
-            <span class="phone-icon-emoji phone-icon-otayori-emoji">✉</span>
-            <span>お便り</span>
-          </button>
           <button class="phone-icon" data-phone-view="articles">
             <img src="assets/phone/icon-blog.png?v=1" alt="">
             <span>ブログ</span>
@@ -676,6 +672,15 @@
             </button>
           </div>
         </div>
+        <!-- ✉ お便りバナー（広告風・横長） -->
+        <button class="phone-otayori-banner" type="button" data-phone-action="otayori">
+          <span class="phone-otayori-ic">✉</span>
+          <span class="phone-otayori-text">
+            <span class="phone-otayori-title">お便りを送る</span>
+            <span class="phone-otayori-sub">バグ・改善・欲しい機能を開発者へ</span>
+          </span>
+          <span class="phone-otayori-arrow">›</span>
+        </button>
         <!-- Androidライクなナビバー -->
         <div class="phone-navbar">
           <button type="button" class="phone-nav-btn phone-nav-menu" id="phoneNavMenu" aria-label="設定">
@@ -755,10 +760,10 @@
     </div>
   </div>
 
-  <script src="era-lore.js?v=20260424Q"></script>
-  <script src="history-patterns.js?v=20260424Q"></script>
-  <script src="app.js?v=20260424Q"></script>
-  <script src="auth.js?v=20260424Q" type="module"></script>
+  <script src="era-lore.js?v=20260424R"></script>
+  <script src="history-patterns.js?v=20260424R"></script>
+  <script src="app.js?v=20260424R"></script>
+  <script src="auth.js?v=20260424R" type="module"></script>
   <script src="ai-consult.js"></script>
 </body>
 </html>
