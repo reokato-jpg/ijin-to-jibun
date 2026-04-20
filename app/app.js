@@ -1,3 +1,16 @@
+// ====================== 遅延CSSローダー ======================
+// 機能別に切り出した style-lazy-*.css を必要になった瞬間に1回だけ読み込む
+const __loadedLazyCss = new Set();
+function ensureLazyCss(name) {
+  if (__loadedLazyCss.has(name)) return;
+  __loadedLazyCss.add(name);
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = `dist/style-lazy-${name}.min.css?v=20260425I`;
+  document.head.appendChild(link);
+}
+window.ensureLazyCss = ensureLazyCss;
+
 // ====================== Amazon アフィリエイト設定 ======================
 // natsumi のAmazonアソシエイトIDをセット。全Amazonリンクに自動付与される。
 const AMAZON_TAG = ''; // 例: 'natsumipiano-22'
@@ -1246,6 +1259,7 @@ const AVATAR_PRESETS = [
 ];
 // ====================== 世界観モーダル（レキット＆ラビン） ======================
 function openWorldviewModal() {
+  ensureLazyCss('worldview');
   const existing = document.getElementById('worldviewModal');
   if (existing) existing.remove();
   const modal = document.createElement('div');
@@ -5055,6 +5069,7 @@ function initPhoneMenu() {
   }
 
   function initMeshiruApp() {
+    ensureLazyCss('meshiru');
     const feed = document.getElementById('meshiruFeed');
     const savedMount = document.getElementById('meshiruSaved');
     if (!feed) return;
@@ -5588,6 +5603,7 @@ function initPhoneMenu() {
     } catch { return false; }
   }
   function initOtayoriApp() {
+    ensureLazyCss('otayori');
     const writeMount = document.getElementById('otayoriWrite');
     const mineMount = document.getElementById('otayoriMine');
     if (!writeMount) return;
@@ -5833,6 +5849,7 @@ function initPhoneMenu() {
 
   // 偉人の広場アプリ（チャット風なタブ切替）
   function openPhonePlazaApp() {
+    ensureLazyCss('plaza');
     const plaza = document.getElementById('phonePlazaApp');
     if (!plaza) return;
     plaza.hidden = false;
