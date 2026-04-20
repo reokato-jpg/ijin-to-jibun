@@ -3413,6 +3413,75 @@ function playPageFlipSound() {
   } catch (e) { /* ignore */ }
 }
 
+// スマホ起動中のデジタルアンビエントノイズ（開いている間ループ）
+let __phoneAmbience = null;
+function startPhoneAmbience() {
+  if (isMuted()) return;
+  try {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    if (!__pageFlipAudioCtx) __pageFlipAudioCtx = new AC();
+    const ctx = __pageFlipAudioCtx;
+    if (ctx.state === 'suspended') ctx.resume();
+
+    // 既に再生中なら何もしない
+    if (__phoneAmbience) return;
+
+    // 2秒分のホワイトノイズバッファ（グリッチ入り）を作成してループ
+    const dur = 2.0;
+    const size = Math.floor(ctx.sampleRate * dur);
+    const buf = ctx.createBuffer(1, size, ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < size; i++) {
+      // 基本：微小なホワイトノイズ
+      let s = (Math.random() * 2 - 1) * 0.3;
+      // 散発的なグリッチ（2%）
+      if (Math.random() < 0.02) s += (Math.random() * 2 - 1) * 0.7;
+      data[i] = s;
+    }
+    const src = ctx.createBufferSource();
+    src.buffer = buf;
+    src.loop = true;
+    // バンドパスで高域シュルシュルを抑えた静かなノイズに
+    const bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.value = 1200;
+    bp.Q.value = 0.8;
+    const hp = ctx.createBiquadFilter();
+    hp.type = 'highpass';
+    hp.frequency.value = 300;
+    // 微弱なトレモロ（ゆらぎ）で「生きてる」感を出す
+    const gain = ctx.createGain();
+    gain.gain.value = 0;  // 開始時0→フェードイン
+    const lfo = ctx.createOscillator();
+    lfo.frequency.value = 0.3;
+    const lfoGain = ctx.createGain();
+    lfoGain.gain.value = 0.01; // 音量を微妙に揺らす
+    lfo.connect(lfoGain).connect(gain.gain);
+    src.connect(hp).connect(bp).connect(gain).connect(ctx.destination);
+    // フェードイン
+    const now = ctx.currentTime;
+    gain.gain.setValueAtTime(0, now);
+    gain.gain.linearRampToValueAtTime(0.035, now + 0.5);
+    src.start(now);
+    lfo.start(now);
+    __phoneAmbience = { src, lfo, gain, ctx };
+  } catch (e) { /* 無音で継続 */ }
+}
+function stopPhoneAmbience() {
+  if (!__phoneAmbience) return;
+  try {
+    const { src, lfo, gain, ctx } = __phoneAmbience;
+    const now = ctx.currentTime;
+    gain.gain.cancelScheduledValues(now);
+    gain.gain.setValueAtTime(gain.gain.value, now);
+    gain.gain.linearRampToValueAtTime(0, now + 0.3);
+    src.stop(now + 0.35);
+    lfo.stop(now + 0.35);
+  } catch {}
+  __phoneAmbience = null;
+}
+
 // スマホ起動のデジタルノイズ（Web Audio APIで合成：グリッチ→ビープ）
 function playPhoneBootSound() {
   if (isMuted()) return;
@@ -3754,6 +3823,8 @@ function initPhoneMenu() {
       const bgm = document.getElementById('squareBgm');
       if (bgm) { bgm.pause(); bgm.currentTime = 0; }
     } catch {}
+    // アンビエントノイズを停止
+    try { stopPhoneAmbience?.(); } catch {}
   };
   const open = () => {
     menu.classList.add('open');
@@ -3762,6 +3833,8 @@ function initPhoneMenu() {
     updateBattery();
     updateNotif();
     try { playPhoneBootSound?.(); } catch {}
+    // 起動音の後、アンビエントノイズをループ再生
+    try { setTimeout(() => startPhoneAmbience?.(), 450); } catch {}
   };
   // 推し偉人スロット描画（ラベルは『推し偉人』固定）
   const renderOshiSlot = () => {
