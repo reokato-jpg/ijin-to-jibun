@@ -3683,6 +3683,11 @@ function initPhoneMenu() {
     document.querySelectorAll('.plaza-app-tab').forEach(t => {
       t.classList.toggle('active', t.dataset.plazaTab === 'friends');
     });
+    // 広場BGMを停止
+    try {
+      const bgm = document.getElementById('squareBgm');
+      if (bgm) { bgm.pause(); bgm.currentTime = 0; }
+    } catch {}
   };
   const open = () => {
     menu.classList.add('open');
@@ -3800,10 +3805,24 @@ function initPhoneMenu() {
     plaza.hidden = false;
     renderPlazaFriends();
     renderPlazaTalks();
+    // 広場BGM開始（他は停止）
+    try {
+      if (typeof stopAllBgm === 'function') stopAllBgm();
+      const bgm = document.getElementById('squareBgm');
+      if (bgm && !isMuted()) {
+        bgm.volume = 0.25;
+        bgm.play().catch(() => {});
+      }
+    } catch {}
   }
   function closePhonePlazaApp() {
     const plaza = document.getElementById('phonePlazaApp');
     if (plaza) plaza.hidden = true;
+    // 広場BGMを停止
+    try {
+      const bgm = document.getElementById('squareBgm');
+      if (bgm) { bgm.pause(); bgm.currentTime = 0; }
+    } catch {}
   }
   function renderPlazaFriends() {
     const list = document.getElementById('plazaFriendsList');
