@@ -3413,6 +3413,49 @@ function playPageFlipSound() {
   } catch (e) { /* ignore */ }
 }
 
+// ポータル遷移：スマホをズームアップしてフルスクリーン動画で偉人の世界へ入り込む
+function playPortalTransition(menuEl, onComplete) {
+  const portal = document.getElementById('portalTransition');
+  const video = portal?.querySelector('.portal-video');
+  if (!portal || !video) {
+    // フォールバック：即遷移
+    if (menuEl) menuEl.classList.remove('open');
+    setTimeout(() => onComplete?.(), 260);
+    return;
+  }
+  // 1. スマホをズームアップ
+  if (menuEl) {
+    menuEl.classList.add('portal-zooming');
+  }
+  // 2. ポータル動画を被せて再生
+  portal.hidden = false;
+  requestAnimationFrame(() => {
+    portal.classList.add('active');
+    try {
+      video.currentTime = 0;
+      video.play().catch(() => {});
+    } catch {}
+  });
+  // 3. 動画の大半再生後、遷移先へ
+  const FADE_IN_MS = 600;   // ポータル被せ時間
+  const HOLD_MS = 1800;     // 動画を見せる時間
+  setTimeout(() => {
+    // 目的のビューへ切替（ポータルはまだ被さったまま）
+    if (menuEl) {
+      menuEl.classList.remove('open', 'portal-zooming');
+    }
+    onComplete?.();
+    // 4. ポータルをフェードアウト
+    setTimeout(() => {
+      portal.classList.remove('active');
+      setTimeout(() => {
+        portal.hidden = true;
+        try { video.pause(); video.currentTime = 0; } catch {}
+      }, 500);
+    }, 300);
+  }, FADE_IN_MS + HOLD_MS);
+}
+
 // スマホ起動中のデジタルアンビエントノイズ（開いている間ループ）
 let __phoneAmbience = null;
 function startPhoneAmbience() {
@@ -3914,6 +3957,11 @@ function initPhoneMenu() {
   menu.querySelectorAll('[data-phone-view]').forEach(el => {
     el.addEventListener('click', () => {
       const v = el.dataset.phoneView;
+      // 偉人検索・年表へはポータル遷移で世界に入り込む
+      if (v === 'tags' || v === 'history') {
+        playPortalTransition(menu, () => showView(v));
+        return;
+      }
       close();
       setTimeout(() => showView(v), 260);
     });

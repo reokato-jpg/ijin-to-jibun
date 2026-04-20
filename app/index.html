@@ -70,8 +70,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20260422C">
-<link rel="stylesheet" href="era-theme.css?v=20260422C">
+<link rel="stylesheet" href="style.css?v=20260422D">
+<link rel="stylesheet" href="era-theme.css?v=20260422D">
 </head>
 <body>
   <header class="app-header">
@@ -622,6 +622,13 @@
   <audio id="favoritesBgm" src="assets/favorites-bgm.wav" loop preload="none"></audio>
   <audio id="squareBgm" src="assets/square-bgm.wav" loop preload="none"></audio>
   <audio id="historyBgm" src="assets/history-bgm.wav" loop preload="none"></audio>
+
+  <!-- ポータル遷移：偉人検索／年表へ入るときの没入アニメーション -->
+  <div id="portalTransition" class="portal-transition" hidden>
+    <video class="portal-video" muted playsinline preload="auto" aria-hidden="true">
+      <source src="assets/guide/portal-enter.mp4?v=1" type="video/mp4">
+    </video>
+  </div>
   <!-- 効果音 -->
   <audio id="sfxPageFlip" src="assets/page-flip.mp3" preload="auto"></audio>
   <audio id="sfxSend" src="assets/send.mp3" preload="auto"></audio>
@@ -662,10 +669,10 @@
     </div>
   </div>
 
-  <script src="era-lore.js?v=20260422C"></script>
-  <script src="history-patterns.js?v=20260422C"></script>
-  <script src="app.js?v=20260422C"></script>
-  <script src="auth.js?v=20260422C" type="module"></script>
+  <script src="era-lore.js?v=20260422D"></script>
+  <script src="history-patterns.js?v=20260422D"></script>
+  <script src="app.js?v=20260422D"></script>
+  <script src="auth.js?v=20260422D" type="module"></script>
   <script src="ai-consult.js"></script>
 </body>
 </html>
