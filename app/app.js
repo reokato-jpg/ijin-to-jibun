@@ -5849,19 +5849,8 @@ function initPhoneMenu() {
   function renderPlazaFriends() {
     const list = document.getElementById('plazaFriendsList');
     if (!list) return;
-    // レキット（歴史管理人）— 全員の友達として常にトップに表示
-    const rekittoHtml = `
-      <button class="plaza-friend-item plaza-friend-rekitto" data-plaza-rekitto-friend="1">
-        <div class="plaza-friend-av plaza-rekitto-av">
-          ${rekittoAvatarHtml()}
-        </div>
-        <div class="plaza-friend-info">
-          <div class="plaza-friend-name">📜 レキット <span class="plaza-talk-role">歴史管理人</span></div>
-          <div class="plaza-friend-status">お知らせや通知をチャット風でお届け</div>
-        </div>
-      </button>
-    `;
     // 偉人の広場の今日のメンバー＋フォロー中の偉人を友だち一覧に
+    // （レキットはトーク側に集約して、友だちタブには出さない）
     const favIds = (typeof favPeople !== 'undefined') ? [...favPeople] : [];
     const friends = favIds.map(id => DATA.people.find(p => p.id === id)).filter(Boolean);
     const friendsHtml = friends.length === 0
@@ -5879,8 +5868,6 @@ function initPhoneMenu() {
           `;
         }).join('');
     list.innerHTML = `
-      <div class="plaza-friend-section-label">公式</div>
-      ${rekittoHtml}
       <div class="plaza-friend-section-label">偉人の友だち</div>
       ${friendsHtml}
     `;
@@ -5890,10 +5877,6 @@ function initPhoneMenu() {
         close();
         setTimeout(() => showPerson(pid), 260);
       });
-    });
-    // レキットをタップしたらチャット画面へ
-    list.querySelector('[data-plaza-rekitto-friend]')?.addEventListener('click', () => {
-      openRekittoChat();
     });
   }
   function renderPlazaTalks() {

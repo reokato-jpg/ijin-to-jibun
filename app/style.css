@@ -16214,6 +16214,11 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
 }
 
 /* 画面下の戻る／進むナビ */
+/* 浮遊ナビに隠されないよう、全ビューの下部に余白を */
+#view-history, #view-tags, #view-routines, #view-articles, #view-favorites, #view-people, #view-person {
+  padding-bottom: 80px;
+}
+.era-page { padding-bottom: 80px; }
 .float-nav {
   position: fixed;
   left: 50%;
