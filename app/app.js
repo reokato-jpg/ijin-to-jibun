@@ -4093,10 +4093,10 @@ function playPortalTransition(menuEl, onComplete) {
       if (el) el.hidden = (activeView !== 'people');
     }
     onComplete?.();  // → showView(v) がここで走る ⇒ 対象ビューのBGMが鳴り始める
-  }, 200);
+  }, 120);
 
-  // 4. 動画終了後にポータルをフェードアウト（合計約1.5s）
-  const TOTAL_MS = 1500;
+  // 4. 動画終了後にポータルをフェードアウト（合計約0.9s）
+  const TOTAL_MS = 900;
   setTimeout(() => {
     if (menuEl) menuEl.classList.remove('portal-zooming');
     portal.classList.remove('active');
@@ -4107,7 +4107,7 @@ function playPortalTransition(menuEl, onComplete) {
         const sfx = document.getElementById('portalSfx');
         if (sfx) { sfx.pause(); sfx.currentTime = 0; }
       } catch {}
-    }, 250);
+    }, 180);
   }, TOTAL_MS);
 }
 
