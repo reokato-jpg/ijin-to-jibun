@@ -4731,6 +4731,11 @@ function initPhoneMenu() {
     document.addEventListener('pointermove', onPointerMove, { passive: false });
     document.addEventListener('pointerup', onPointerUp, { passive: true });
     document.addEventListener('pointercancel', () => { clearTimeout(longPressTimer); endReorder(); });
+    // iOS/Android/PCの長押し画像保存メニュー・右クリックメニュー・ドラッグ開始を抑止
+    grid.addEventListener('contextmenu', (e) => { e.preventDefault(); });
+    grid.addEventListener('dragstart', (e) => { e.preventDefault(); });
+    // 画像にも念のため draggable=false
+    grid.querySelectorAll('.phone-icon img').forEach(img => { img.draggable = false; });
     // クリックと誤爆しないよう：ドラッグ中のアイコンのclickは抑制
     grid.addEventListener('click', (e) => {
       const btn = e.target.closest('.phone-icon');

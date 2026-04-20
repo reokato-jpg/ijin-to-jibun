@@ -13079,6 +13079,18 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
   width: 100%;
   max-width: 72px;
   touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none; /* iOS 長押しメニュー抑止 */
+  -webkit-user-drag: none;
+}
+.phone-grid .phone-icon img,
+.phone-grid .phone-icon span {
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  pointer-events: none; /* タップはボタン自体が受ける */
 }
 /* 4列用：アイコンとラベルを少し小さく */
 .phone-grid .phone-icon img { width: 46px; height: 46px; }
