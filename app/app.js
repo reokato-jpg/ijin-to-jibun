@@ -9468,13 +9468,22 @@ const TIMELINE_CENTRAL = {
 function renderHistoryTimeline() {
   const container = document.getElementById('eraCategories');
   if (!container || !DATA.eraCategories) return;
-  const ERA_CAT_ICON_MAP = {
+  // 手描きPNG（背景透過済み、/app/assets/era/）を優先、無ければ従来のSVG、さらに無ければ絵文字
+  const ERA_CAT_PNG_MAP = {
+    music: 'era-music', philosophy: 'era-philo', art: 'era-art',
+    japan_history: 'era-history', literature: 'era-literature', science: 'era-science',
+    business: 'era-business', horse_racing: 'era-horse', cooking: 'era-cooking',
+  };
+  const ERA_CAT_SVG_MAP = {
     music: 'music', philosophy: 'philosophy', art: 'art',
     japan_history: 'japan', literature: 'literature', science: 'science',
   };
   container.innerHTML = DATA.eraCategories.map(cat => {
-    const svgName = ERA_CAT_ICON_MAP[cat.id];
-    const iconHtml = svgName
+    const pngName = ERA_CAT_PNG_MAP[cat.id];
+    const svgName = ERA_CAT_SVG_MAP[cat.id];
+    const iconHtml = pngName
+      ? `<img class="era-cat-icon era-cat-icon-png" src="assets/era/${pngName}.png?v=1" alt="" onerror="this.onerror=null; ${svgName ? `this.src='assets/era-icons/${svgName}.svg'; this.className='era-cat-icon era-cat-icon-svg';` : `this.outerHTML='<span class=&quot;era-cat-icon&quot;>${cat.icon || '📖'}</span>';`}">`
+      : svgName
       ? `<img class="era-cat-icon era-cat-icon-svg" src="assets/era-icons/${svgName}.svg" alt="">`
       : `<span class="era-cat-icon">${cat.icon || '📖'}</span>`;
     return `
