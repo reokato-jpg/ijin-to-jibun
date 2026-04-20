@@ -13509,13 +13509,13 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 }
 
 .phone-oshi-avatar {
-  width: 58px; height: 58px;
-  border-radius: 14px;
+  width: 46px; height: 46px;
+  border-radius: 12px;
   background-size: cover;
   background-position: center;
   background-color: #e8dcc0;
   display: flex; align-items: center; justify-content: center;
-  font-size: 22px; font-weight: 700;
+  font-size: 18px; font-weight: 700;
   color: var(--wine);
   border: 2px solid #d9c896;
   box-shadow: 0 2px 4px rgba(0,0,0,0.3);
