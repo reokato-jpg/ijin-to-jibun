@@ -13710,6 +13710,23 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
   flex-shrink: 0;
   filter: drop-shadow(0 1px 2px rgba(0,0,0,0.08));
 }
+.era-page-cat-icon {
+  width: 22px; height: 22px;
+  object-fit: contain;
+  vertical-align: middle;
+  margin-right: 6px;
+  flex-shrink: 0;
+}
+.era-page-title-icon {
+  width: 36px; height: 36px;
+  object-fit: contain;
+  vertical-align: middle;
+  margin-right: 8px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1));
+}
+.era-page-cat { display: inline-flex; align-items: center; gap: 4px; }
+.era-page-title { display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .era-cat-name { font-size: 17px; font-weight: 700; letter-spacing: 0.04em; flex: 1; }
 .era-cat-sub { font-size: 11px; color: var(--ink-4); letter-spacing: 0.1em; }
 .era-cat-arrow { transition: transform 0.2s; color: var(--ink-3); }

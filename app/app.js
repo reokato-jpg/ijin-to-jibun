@@ -9465,27 +9465,33 @@ const TIMELINE_CENTRAL = {
   'g_modern':    { music: ['beethoven','schubert','chopin','schumann','brahms','wagner','tchaikovsky'], philo: ['nietzsche','schopenhauer','hegel','kierkegaard','marx'], art: ['monet','van_gogh','rodin','klimt'], literature: ['dostoevsky','tolstoy','soseki','akutagawa','goethe','dickens','oscar_wilde'], science: ['darwin','curie'], history: ['napoleon','sakamoto_ryoma','saigo_takamori','hijikata_toshizo','kondo_isami','okita_soji'] },
   'g_contemp':   { music: ['stravinsky','shostakovich','bernstein','takemitsu','hisaishi','ryuichi_sakamoto'], philo: ['sartre','camus','heidegger','foucault','wittgenstein','bertrand_russell','nishida'], art: ['picasso','matisse','miyazaki'], literature: ['kafka','hemingway','dazai_osamu','kawabata','mishima_yukio','miyazawa_kenji'], science: ['einstein','tesla','edison','turing','yukawa_hideki','seaborg','freud'], history: ['gandhi','mother_teresa','anne_frank','chaplin','walt_disney','steve_jobs','kurosawa'] },
 };
+// 年表カテゴリの手描きPNGマップ（グローバル利用）
+const ERA_CAT_PNG_MAP = {
+  music: 'era-music', philosophy: 'era-philo', art: 'era-art',
+  japan_history: 'era-history', literature: 'era-literature', science: 'era-science',
+  business: 'era-business', horse_racing: 'era-horse', cooking: 'era-cooking',
+};
+const ERA_CAT_SVG_MAP = {
+  music: 'music', philosophy: 'philosophy', art: 'art',
+  japan_history: 'japan', literature: 'literature', science: 'science',
+};
+function eraCatIconHtml(catId, cls = 'era-cat-icon-png', fallbackEmoji = '📖') {
+  const pngName = ERA_CAT_PNG_MAP[catId];
+  const svgName = ERA_CAT_SVG_MAP[catId];
+  if (pngName) {
+    const onerr = svgName
+      ? `this.onerror=null; this.src='assets/era-icons/${svgName}.svg'; this.className='era-cat-icon era-cat-icon-svg';`
+      : `this.onerror=null; this.outerHTML='<span class=&quot;era-cat-icon&quot;>${fallbackEmoji}</span>';`;
+    return `<img class="era-cat-icon ${cls}" src="assets/era/${pngName}.png?v=1" alt="" onerror="${onerr}">`;
+  }
+  if (svgName) return `<img class="era-cat-icon era-cat-icon-svg" src="assets/era-icons/${svgName}.svg" alt="">`;
+  return `<span class="era-cat-icon">${fallbackEmoji}</span>`;
+}
 function renderHistoryTimeline() {
   const container = document.getElementById('eraCategories');
   if (!container || !DATA.eraCategories) return;
-  // 手描きPNG（背景透過済み、/app/assets/era/）を優先、無ければ従来のSVG、さらに無ければ絵文字
-  const ERA_CAT_PNG_MAP = {
-    music: 'era-music', philosophy: 'era-philo', art: 'era-art',
-    japan_history: 'era-history', literature: 'era-literature', science: 'era-science',
-    business: 'era-business', horse_racing: 'era-horse', cooking: 'era-cooking',
-  };
-  const ERA_CAT_SVG_MAP = {
-    music: 'music', philosophy: 'philosophy', art: 'art',
-    japan_history: 'japan', literature: 'literature', science: 'science',
-  };
   container.innerHTML = DATA.eraCategories.map(cat => {
-    const pngName = ERA_CAT_PNG_MAP[cat.id];
-    const svgName = ERA_CAT_SVG_MAP[cat.id];
-    const iconHtml = pngName
-      ? `<img class="era-cat-icon era-cat-icon-png" src="assets/era/${pngName}.png?v=1" alt="" onerror="this.onerror=null; ${svgName ? `this.src='assets/era-icons/${svgName}.svg'; this.className='era-cat-icon era-cat-icon-svg';` : `this.outerHTML='<span class=&quot;era-cat-icon&quot;>${cat.icon || '📖'}</span>';`}">`
-      : svgName
-      ? `<img class="era-cat-icon era-cat-icon-svg" src="assets/era-icons/${svgName}.svg" alt="">`
-      : `<span class="era-cat-icon">${cat.icon || '📖'}</span>`;
+    const iconHtml = eraCatIconHtml(cat.id, 'era-cat-icon-png', cat.icon || '📖');
     return `
     <details class="era-cat" data-cat="${cat.id}">
       <summary class="era-cat-head">
@@ -9536,9 +9542,9 @@ function openEraModal(catId, eraId) {
       <header class="era-page-hero">
         <div class="era-page-hero-bg" aria-hidden="true"></div>
         <div class="era-page-hero-inner">
-          <div class="era-page-cat">${cat.icon || ''} ${cat.name}</div>
+          <div class="era-page-cat">${eraCatIconHtml(cat.id, 'era-page-cat-icon', cat.icon || '')} <span>${cat.name}</span></div>
           <h1 class="era-page-title">
-            ${lore?.emoji ? `<span class="era-page-emoji">${lore.emoji}</span>` : ''}
+            ${eraCatIconHtml(cat.id, 'era-page-title-icon', lore?.emoji || '')}
             <span>${era.name}</span>
           </h1>
           <div class="era-page-period">${era.period || ''}</div>
