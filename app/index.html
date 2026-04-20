@@ -70,8 +70,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20260422N">
-<link rel="stylesheet" href="era-theme.css?v=20260422N">
+<link rel="stylesheet" href="style.css?v=20260422O">
+<link rel="stylesheet" href="era-theme.css?v=20260422O">
 </head>
 <body>
   <header class="app-header">
@@ -84,14 +84,14 @@
     <div class="header-right"></div>
   </header>
 
-  <!-- タブ -->
-  <nav class="tabs" id="tabs">
-    <button class="tab active" data-view="people">ホーム</button>
-    <button class="tab" data-view="tags">偉人検索</button>
-    <button class="tab" data-view="history">年表</button>
-    <button class="tab" data-view="routines">ルーティン</button>
-    <button class="tab" data-view="articles">ブログ</button>
-    <button class="tab" data-view="favorites">わたしの本</button>
+  <!-- タブは削除（スマホのアプリから各画面へ遷移） -->
+  <nav class="tabs" id="tabs" hidden aria-hidden="true" style="display:none">
+    <button class="tab active" data-view="people"></button>
+    <button class="tab" data-view="tags"></button>
+    <button class="tab" data-view="history"></button>
+    <button class="tab" data-view="routines"></button>
+    <button class="tab" data-view="articles"></button>
+    <button class="tab" data-view="favorites"></button>
   </nav>
 
   <!-- 検索バー -->
@@ -533,9 +533,13 @@
             <img src="assets/phone/icon-settings.png?v=1" alt="">
             <span>設定</span>
           </button>
-          <button class="phone-icon phone-icon-tool" data-phone-action="music">
-            <span class="phone-icon-emoji">🎵</span>
+          <button class="phone-icon" data-phone-action="music">
+            <img src="assets/phone/icon-music.png?v=1" alt="">
             <span>ミュージック</span>
+          </button>
+          <button class="phone-icon" data-phone-view="articles">
+            <img src="assets/phone/icon-blog.png?v=1" alt="">
+            <span>ブログ</span>
           </button>
           <button class="phone-icon phone-icon-oshi-slot" id="phoneOshiSlot" data-phone-action="oshi" hidden></button>
         </div>
@@ -694,10 +698,10 @@
     </div>
   </div>
 
-  <script src="era-lore.js?v=20260422N"></script>
-  <script src="history-patterns.js?v=20260422N"></script>
-  <script src="app.js?v=20260422N"></script>
-  <script src="auth.js?v=20260422N" type="module"></script>
+  <script src="era-lore.js?v=20260422O"></script>
+  <script src="history-patterns.js?v=20260422O"></script>
+  <script src="app.js?v=20260422O"></script>
+  <script src="auth.js?v=20260422O" type="module"></script>
   <script src="ai-consult.js"></script>
 </body>
 </html>
