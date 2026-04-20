@@ -4516,6 +4516,11 @@ function initPhoneMenu() {
     document.getElementById('floatNav')?.classList.add('hide-for-phone');
     const hintEl = document.getElementById('powerHintAnim');
     if (hintEl) hintEl.hidden = true;
+    // スマホを開いたら全てのツールアプリを閉じてホーム画面（アイコン一覧）から始める
+    ['phonePlazaApp','phoneMusicApp','phoneMeshiruApp'].forEach(id => {
+      const el2 = document.getElementById(id);
+      if (el2) el2.hidden = true;
+    });
     tick();
     updateBattery();
     updateNotif();
