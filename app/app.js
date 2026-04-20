@@ -9954,9 +9954,27 @@ function eraCatIconHtml(catId, cls = 'era-cat-icon-png', fallbackEmoji = '📖')
   if (svgName) return `<img class="era-cat-icon era-cat-icon-svg" src="assets/era-icons/${svgName}.svg" alt="">`;
   return `<span class="era-cat-icon">${fallbackEmoji}</span>`;
 }
+// era-lore.js を必要になった瞬間に1回だけ読み込む（年表の210KB遅延読み込み）
+let __eraLorePromise = null;
+function ensureEraLoreLoaded() {
+  if (typeof window.ERA_LORE !== 'undefined') return Promise.resolve();
+  if (__eraLorePromise) return __eraLorePromise;
+  __eraLorePromise = new Promise((resolve) => {
+    const s = document.createElement('script');
+    s.src = 'era-lore.js?v=20260425F';
+    s.onload = () => resolve();
+    s.onerror = () => { __eraLorePromise = null; resolve(); };
+    document.head.appendChild(s);
+  });
+  return __eraLorePromise;
+}
 function renderHistoryTimeline() {
   const container = document.getElementById('eraCategories');
   if (!container || !DATA.eraCategories) return;
+  // era-lore.js が未ロードなら、先に読み込んでから描画し直す
+  if (typeof window.ERA_LORE === 'undefined') {
+    ensureEraLoreLoaded().then(() => renderHistoryTimeline());
+  }
   container.innerHTML = DATA.eraCategories.map(cat => {
     const iconHtml = eraCatIconHtml(cat.id, 'era-cat-icon-png', cat.icon || '📖');
     return `
@@ -9991,6 +10009,11 @@ function renderHistoryTimeline() {
   });
 }
 function openEraModal(catId, eraId) {
+  // era-lore が未読込なら先に読み込む
+  if (typeof window.ERA_LORE === 'undefined') {
+    ensureEraLoreLoaded().then(() => openEraModal(catId, eraId));
+    return;
+  }
   const cat = DATA.eraCategories.find(c => c.id === catId);
   const era = cat?.eras?.find(e => e.id === eraId);
   if (!era) return;
