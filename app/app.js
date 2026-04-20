@@ -3425,16 +3425,28 @@ function playPortalTransition(menuEl, onComplete) {
   const portal = document.getElementById('portalTransition');
   const video = portal?.querySelector('.portal-video');
   if (!portal || !video) {
-    // フォールバック：即遷移
     if (menuEl) menuEl.classList.remove('open');
     setTimeout(() => onComplete?.(), 260);
     return;
   }
-  // 1. スマホをズームアップ
+
+  // 0. 先にスマホ関連のノイズ・BGMを停止して、目的ビューのBGM再生を裏で開始させる
+  try { stopPhoneAmbience?.(); } catch {}
+  try {
+    const bgm = document.getElementById('squareBgm');
+    if (bgm) { bgm.pause(); bgm.currentTime = 0; }
+  } catch {}
+  try {
+    const plazaEl = document.getElementById('phonePlazaApp');
+    if (plazaEl) plazaEl.hidden = true;
+  } catch {}
+
+  // 1. スマホをズームアップ（視覚効果のみ、裏ではすでに遷移）
   if (menuEl) {
     menuEl.classList.add('portal-zooming');
   }
-  // 2. ポータル動画を被せて再生＋タイムスリップのSFX
+
+  // 2. ポータル動画＆SFX再生
   portal.hidden = false;
   requestAnimationFrame(() => {
     portal.classList.add('active');
@@ -3451,38 +3463,31 @@ function playPortalTransition(menuEl, onComplete) {
       }
     } catch {}
   });
-  // 3. 動画の大半再生後、遷移先へ（合計約1.5s）
-  const FADE_IN_MS = 250;   // ポータル被せ時間
-  const HOLD_MS = 750;      // 動画を見せる時間
+
+  // 3. ポータル表示と同時に裏でビュー切替＆BGM開始（ユーザーには見えないが音は鳴る）
+  //    スマホはまだズームアニメ中だが classList.remove('open') で裏側の処理を完了させる
   setTimeout(() => {
     if (menuEl) {
-      menuEl.classList.remove('open', 'portal-zooming');
+      menuEl.classList.remove('open');
       menuEl.setAttribute('aria-hidden', 'true');
     }
-    // スマホ関連のノイズ・BGMを確実に停止
-    try { stopPhoneAmbience?.(); } catch {}
-    try {
-      const bgm = document.getElementById('squareBgm');
-      if (bgm) { bgm.pause(); bgm.currentTime = 0; }
-    } catch {}
-    // 広場アプリも閉じる
-    try {
-      const plazaEl = document.getElementById('phonePlazaApp');
-      if (plazaEl) plazaEl.hidden = true;
-    } catch {}
-    onComplete?.();
+    onComplete?.();  // → showView(v) がここで走る ⇒ 対象ビューのBGMが鳴り始める
+  }, 200);
+
+  // 4. 動画終了後にポータルをフェードアウト（合計約1.5s）
+  const TOTAL_MS = 1500;
+  setTimeout(() => {
+    if (menuEl) menuEl.classList.remove('portal-zooming');
+    portal.classList.remove('active');
     setTimeout(() => {
-      portal.classList.remove('active');
-      setTimeout(() => {
-        portal.hidden = true;
-        try { video.pause(); video.currentTime = 0; } catch {}
-        try {
-          const sfx = document.getElementById('portalSfx');
-          if (sfx) { sfx.pause(); sfx.currentTime = 0; }
-        } catch {}
-      }, 250);
-    }, 100);
-  }, FADE_IN_MS + HOLD_MS);
+      portal.hidden = true;
+      try { video.pause(); video.currentTime = 0; } catch {}
+      try {
+        const sfx = document.getElementById('portalSfx');
+        if (sfx) { sfx.pause(); sfx.currentTime = 0; }
+      } catch {}
+    }, 250);
+  }, TOTAL_MS);
 }
 
 // スマホ起動中のデジタルアンビエントノイズ（開いている間ループ）
