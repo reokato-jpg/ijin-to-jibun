@@ -10668,6 +10668,16 @@ function bindEvents() {
   const unlockBgm = () => {
     if (__bgmUnlocked) return;
     __bgmUnlocked = true;
+    // iOS等で自動再生できなかった動画を全て再生開始
+    try {
+      document.querySelectorAll('video').forEach(v => {
+        try {
+          v.muted = true;
+          v.setAttribute('playsinline', '');
+          if (v.paused) v.play().catch(() => {});
+        } catch {}
+      });
+    } catch {}
     try {
       if (isMuted()) return;
       // 現在アクティブなビューを取得してBGMを鳴らす
@@ -10686,6 +10696,28 @@ function bindEvents() {
   document.addEventListener('click', unlockBgm, { once: true, capture: true });
   document.addEventListener('touchstart', unlockBgm, { once: true, capture: true });
   document.addEventListener('keydown', unlockBgm, { once: true, capture: true });
+
+  // iOS向け：ビデオが停止していたら都度再開（ページ表示時・スクロール時など）
+  const resumeAllVideos = () => {
+    document.querySelectorAll('video').forEach(v => {
+      try {
+        if (v.paused && v.autoplay !== false) v.play().catch(() => {});
+      } catch {}
+    });
+  };
+  // visibility変化で再開
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) setTimeout(resumeAllVideos, 100);
+  });
+  // 任意のタップで再開（BGMアンロックとは別、iOSのvideoが停止する対策）
+  let __videoTapResume = 0;
+  document.addEventListener('touchstart', () => {
+    const now = Date.now();
+    if (now - __videoTapResume > 2000) {
+      __videoTapResume = now;
+      resumeAllVideos();
+    }
+  }, { capture: true, passive: true });
 
   document.getElementById('backBtn').addEventListener('click', goBack);
   document.getElementById('floatBackBtn')?.addEventListener('click', goBack);
@@ -10860,7 +10892,7 @@ function renderGuideChara(opts) {
   return `
     <aside class="guide-chara guide-size-${size} guide-layout-${layout}" data-pose="${pose}">
       <div class="guide-chara-video-wrap">
-        <video class="guide-chara-video" autoplay loop muted playsinline preload="metadata" aria-hidden="true">
+        <video class="guide-chara-video" autoplay loop muted playsinline preload="auto" disablePictureInPicture controlslist="nodownload noremoteplayback nofullscreen" aria-hidden="true">
           <source src="assets/guide/${pose}.mp4" type="video/mp4">
         </video>
       </div>

@@ -70,8 +70,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20260423B">
-<link rel="stylesheet" href="era-theme.css?v=20260423B">
+<link rel="stylesheet" href="style.css?v=20260423C">
+<link rel="stylesheet" href="era-theme.css?v=20260423C">
 </head>
 <body>
   <header class="app-header">
@@ -464,7 +464,7 @@
 
   <!-- 左下の常設キャラクター（VP9 alpha付きWebMで真の透過） -->
   <button id="powerHintAnim" class="power-hint-anim" type="button" aria-label="レキット" title="レキット">
-    <video class="power-hint-video" muted playsinline autoplay loop preload="auto" aria-hidden="true">
+    <video class="power-hint-video" muted playsinline autoplay loop preload="auto" disablePictureInPicture controlslist="nodownload noremoteplayback nofullscreen" aria-hidden="true" poster="assets/guide/rabin.webp">
       <source src="assets/guide/rabin.webm?v=2" type="video/webm">
       <source src="assets/guide/rabin.mp4?v=2" type="video/mp4">
     </video>
@@ -708,10 +708,10 @@
     </div>
   </div>
 
-  <script src="era-lore.js?v=20260423B"></script>
-  <script src="history-patterns.js?v=20260423B"></script>
-  <script src="app.js?v=20260423B"></script>
-  <script src="auth.js?v=20260423B" type="module"></script>
+  <script src="era-lore.js?v=20260423C"></script>
+  <script src="history-patterns.js?v=20260423C"></script>
+  <script src="app.js?v=20260423C"></script>
+  <script src="auth.js?v=20260423C" type="module"></script>
   <script src="ai-consult.js"></script>
 </body>
 </html>

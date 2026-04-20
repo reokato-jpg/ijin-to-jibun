@@ -15335,3 +15335,20 @@ input, textarea, .memo-textarea {
   -webkit-user-select: text;
   user-select: text;
 }
+
+/* iOS Safari: video のネイティブ再生ボタンを隠す */
+video::-webkit-media-controls,
+video::-webkit-media-controls-panel,
+video::-webkit-media-controls-play-button,
+video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+  -webkit-appearance: none !important;
+}
+.power-hint-video,
+.guide-chara-video,
+.worldview-chara-video,
+.rekitto-video-av,
+.welcome-intro-video,
+.portal-video {
+  pointer-events: none;
+}
