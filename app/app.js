@@ -3856,6 +3856,14 @@ const IS_IOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 function initWelcomeIntro() {
   const intro = document.getElementById('welcomeIntro');
   if (!intro) return;
+  // 一度見たウェルカムは表示しない（iOS含む全環境で、タブ遷移で再発しないように）
+  const SEEN_KEY = 'ijin_welcome_intro_seen';
+  if (localStorage.getItem(SEEN_KEY)) {
+    intro.remove();
+    return;
+  }
+  // 見終わったらマーク
+  const markSeen = () => { try { localStorage.setItem(SEEN_KEY, '1'); } catch {} };
   let video = intro.querySelector('.welcome-intro-video');
   // iOSはvideo→img(webp)に差し替え（真の透過）
   if (IS_IOS && video) {
@@ -3877,6 +3885,7 @@ function initWelcomeIntro() {
   const close = () => {
     try { voice?.pause(); } catch {}
     try { video?.pause(); } catch {}
+    markSeen();
     intro.remove();
     if (rabin) rabin.style.visibility = '';  // 通常のラビンを再表示
   };
