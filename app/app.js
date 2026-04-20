@@ -3635,7 +3635,7 @@ function setMuted(on) {
 function applyMuteState() {
   const muted = isMuted();
   // 全BGMをミュート／ミュート解除
-  ['homeBgm', 'searchBgm', 'routineBgm', 'blogBgm', 'favoritesBgm', 'squareBgm'].forEach(id => {
+  ['homeBgm', 'searchBgm', 'historyBgm', 'routineBgm', 'blogBgm', 'favoritesBgm', 'squareBgm'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.muted = muted;
   });
@@ -4374,7 +4374,7 @@ function scheduleQuickReply(userText) {
 
 // BGM全停止
 function stopAllBgm() {
-  ['homeBgm', 'searchBgm', 'routineBgm', 'blogBgm', 'favoritesBgm', 'squareBgm'].forEach(id => {
+  ['homeBgm', 'searchBgm', 'historyBgm', 'routineBgm', 'blogBgm', 'favoritesBgm', 'squareBgm'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.pause();
   });
@@ -9939,13 +9939,15 @@ function bindEvents() {
       // タブごとのBGM
       const homeBgm = document.getElementById('homeBgm');
       const searchBgm = document.getElementById('searchBgm');
+      const historyBgm = document.getElementById('historyBgm');
       const routineBgm = document.getElementById('routineBgm');
       const blogBgm = document.getElementById('blogBgm');
       const favoritesBgm = document.getElementById('favoritesBgm');
-      [homeBgm, searchBgm, routineBgm, blogBgm, favoritesBgm].forEach(b => b && b.pause());
+      [homeBgm, searchBgm, historyBgm, routineBgm, blogBgm, favoritesBgm].forEach(b => b && b.pause());
       let target = null;
       if (v === 'people') target = homeBgm;
       else if (v === 'tags') target = searchBgm;
+      else if (v === 'history') target = historyBgm;
       else if (v === 'routines') target = routineBgm;
       else if (v === 'articles') target = blogBgm;
       else if (v === 'favorites') target = favoritesBgm;
