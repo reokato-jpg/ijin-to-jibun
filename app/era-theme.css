@@ -280,7 +280,45 @@
   font-size: 12.5px;
   color: #4a3a24;
   line-height: 1.7;
+  margin-bottom: 8px;
 }
+.era-work-creator-link {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: #2a5a7a;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 2px;
+}
+.era-work-creator-link:hover { color: #1a3a5a; text-decoration-style: solid; }
+.era-work-year { color: inherit; }
+.era-work-actions {
+  display: flex; gap: 6px;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px dashed rgba(0,0,0,0.12);
+}
+.era-work-btn {
+  flex: 1;
+  display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+  padding: 5px 8px;
+  background: rgba(255,255,255,0.8);
+  border: 1px solid rgba(0,0,0,0.12);
+  border-radius: 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  text-decoration: none;
+  color: #2a1e0f;
+  transition: background 0.12s;
+}
+.era-work-btn-ic { font-size: 10px; }
+.era-work-btn-yt { color: #c4302b; }
+.era-work-btn-yt:hover { background: rgba(196,48,43,0.08); border-color: rgba(196,48,43,0.35); }
+.era-work-btn-gg:hover { background: rgba(66,133,244,0.08); border-color: rgba(66,133,244,0.35); }
 
 /* この時代を生きた人々 */
 .era-demographics {

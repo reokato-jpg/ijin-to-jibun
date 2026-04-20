@@ -13995,3 +13995,43 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
   .mirror-figures { grid-template-columns: 1fr; gap: 6px; }
   .mirror-vs { flex-direction: row; gap: 10px; padding: 6px 0; }
 }
+
+/* 偉人ページ → 年表時代へジャンプ */
+.profile-era-jump {
+  display: flex; align-items: center; flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 14px;
+  margin: 8px 0 14px;
+  background: linear-gradient(90deg, rgba(122,90,56,0.08), rgba(122,90,56,0.02));
+  border-left: 3px solid #8a5a1d;
+  border-radius: 0 8px 8px 0;
+}
+.profile-era-jump-label {
+  font-size: 12.5px;
+  color: #5a3a14;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  margin-right: 4px;
+}
+.profile-era-jump-btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 5px 12px;
+  background: rgba(255,255,255,0.85);
+  border: 1px solid rgba(138,90,29,0.3);
+  border-radius: 999px;
+  font-size: 12.5px;
+  color: #5a3a14;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.12s, transform 0.12s;
+}
+.profile-era-jump-btn::before {
+  content: '→';
+  font-size: 11px;
+  opacity: 0.7;
+}
+.profile-era-jump-btn:hover {
+  background: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(138,90,29,0.15);
+}

@@ -4095,6 +4095,26 @@ async function showPerson(id) {
         ${p.country ? `<span class="profile-xmeta-item">📍 ${p.country}</span>` : ''}
         <span class="profile-xmeta-item">👣 ${getVisitCount(p.id)}回訪問</span>
       </div>
+      ${(() => {
+        // この偉人が属する年表時代を全て検索し、ジャンプボタンを生成
+        const eraLinks = [];
+        if (DATA.eraCategories) {
+          DATA.eraCategories.forEach(cat => {
+            (cat.eras || []).forEach(era => {
+              if ((era.people || []).includes(p.id)) {
+                eraLinks.push({ catId: cat.id, eraId: era.id, name: era.name, catName: cat.name });
+              }
+            });
+          });
+        }
+        if (!eraLinks.length) return '';
+        return `
+          <div class="profile-era-jump">
+            <span class="profile-era-jump-label">📜 この偉人が生きた時代：</span>
+            ${eraLinks.map(e => `<button class="profile-era-jump-btn" data-era-jump-cat="${e.catId}" data-era-jump-era="${e.eraId}">${escapeHtml(e.name)}</button>`).join('')}
+          </div>
+        `;
+      })()}
       <div class="profile-social">
         ${isFollowedByPerson(p.id) ? `
           <div class="profile-follow-badge">✓ ${p.name}があなたをフォローしています</div>
@@ -5022,6 +5042,16 @@ async function showPerson(id) {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
       openPersonRelationsModal(p, btn.dataset.personSocial);
+    });
+  });
+
+  // この偉人が生きた時代へジャンプ
+  container.querySelectorAll('[data-era-jump-era]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const catId = btn.dataset.eraJumpCat;
+      const eraId = btn.dataset.eraJumpEra;
+      if (catId && eraId && typeof openEraModal === 'function') openEraModal(catId, eraId);
     });
   });
 
@@ -7221,16 +7251,34 @@ function openEraModal(catId, eraId) {
         <section class="era-page-section era-page-works-sec">
           <h2 class="era-page-h2">代表作・名品</h2>
           <div class="era-works-grid">
-            ${lore.works.map(w => `
+            ${lore.works.map(w => {
+              const q = encodeURIComponent(((w.creator ? w.creator + ' ' : '') + (w.title || '')).trim());
+              const ytUrl = `https://www.youtube.com/results?search_query=${q}`;
+              const ggUrl = `https://www.google.com/search?q=${q}`;
+              // 作者を人物リンクとしてマッチ（名前の一部でDATA.peopleを検索）
+              let creatorPerson = null;
+              if (w.creator && DATA.people) {
+                creatorPerson = DATA.people.find(p => w.creator.includes(p.name) || (p.name && w.creator === p.name));
+              }
+              return `
               <div class="era-work-card">
                 ${w.img ? `<div class="era-work-img"><img src="${w.img}" alt="${escapeHtml(w.title||'')}" loading="lazy" onerror="this.parentElement.style.display='none'"></div>` : ''}
                 <div class="era-work-body">
                   <div class="era-work-title">${escapeHtml(w.title || '')}</div>
-                  <div class="era-work-meta">${w.creator ? escapeHtml(w.creator) : ''}${w.year ? ` · ${escapeHtml(String(w.year))}` : ''}</div>
+                  <div class="era-work-meta">
+                    ${creatorPerson
+                      ? `<button class="era-work-creator-link" data-jump-person="${creatorPerson.id}" title="${escapeHtml(creatorPerson.name)}のページへ">${escapeHtml(w.creator)}</button>`
+                      : (w.creator ? escapeHtml(w.creator) : '')}
+                    ${w.year ? `<span class="era-work-year"> · ${escapeHtml(String(w.year))}</span>` : ''}
+                  </div>
                   ${w.desc ? `<div class="era-work-desc">${escapeHtml(w.desc)}</div>` : ''}
+                  <div class="era-work-actions">
+                    <a class="era-work-btn era-work-btn-yt" href="${ytUrl}" target="_blank" rel="noopener" title="YouTubeで検索"><span class="era-work-btn-ic">▶</span>YouTube</a>
+                    <a class="era-work-btn era-work-btn-gg" href="${ggUrl}" target="_blank" rel="noopener" title="Googleで検索"><span class="era-work-btn-ic">🔍</span>Google</a>
+                  </div>
                 </div>
               </div>
-            `).join('')}
+            `;}).join('')}
           </div>
         </section>
       ` : ''}
