@@ -13265,11 +13265,13 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 .plaza-friend-item, .plaza-talk-item {
   display: flex; align-items: center; gap: 10px;
   padding: 8px 12px;
+  padding-right: 44px; /* 右端の未読バッジ用スペース確保 */
   background: none;
   border: none;
   border-bottom: 1px solid #f0f0e4;
   cursor: pointer;
   text-align: left;
+  position: relative;
 }
 .plaza-friend-item:hover, .plaza-talk-item:hover { background: #f9f9f4; }
 .plaza-friend-av {
