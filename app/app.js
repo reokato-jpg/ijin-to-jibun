@@ -462,6 +462,17 @@ function showView(name, pushHistory = true) {
   // ヘッダーは常にロゴ画像を保持（テキスト上書きするとimgが消える）
   window.scrollTo(0, 0);
   document.getElementById('main').scrollTo(0, 0);
+  // ビュー別BGMを排他的に切替（goBack/goForward/jump全てで適用）
+  try {
+    const BGM_BY_VIEW = {
+      people: 'homeBgm', tags: 'searchBgm', history: 'historyBgm',
+      routines: 'routineBgm', articles: 'blogBgm', favorites: 'favoritesBgm',
+      person: 'homeBgm',   // 偉人詳細はホームBGMを維持
+      tag: 'searchBgm',    // タグ詳細も検索BGMを維持
+    };
+    const targetId = BGM_BY_VIEW[name] || 'homeBgm';
+    if (typeof playViewBgmExclusive === 'function') playViewBgmExclusive(targetId);
+  } catch {}
 }
 
 // Forward stack（戻ったビューを保持して進むボタンで再訪）
