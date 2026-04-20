@@ -4594,8 +4594,8 @@ function initPhoneMenu() {
         const menu = document.getElementById('phoneMenu');
         if (menu) menu.classList.remove('open');
         setTimeout(() => {
-          if (typeof openUserPublicProfile === 'function') openUserPublicProfile(uid);
-          else if (typeof openUsersDir === 'function') openUsersDir();
+          if (typeof openUserProfileById === 'function') openUserProfileById(uid);
+          else if (typeof window.openUserProfileById === 'function') window.openUserProfileById(uid);
         }, 260);
       });
     });
@@ -5924,7 +5924,7 @@ async function showPerson(id) {
       card.addEventListener('click', (e) => {
         if (e.target.closest('.visitor-btn')) return;
         const uid = card.dataset.uid;
-        if (uid && typeof openUserPublicProfile === 'function') openUserPublicProfile(uid);
+        if (uid && typeof openUserProfileById === 'function') openUserProfileById(uid);
       });
     });
   }
@@ -8668,7 +8668,7 @@ function openEraModal(catId, eraId) {
       card.addEventListener('click', (e) => {
         if (e.target.closest('.visitor-btn')) return;
         const uid = card.dataset.uid;
-        if (uid && typeof openUserPublicProfile === 'function') openUserPublicProfile(uid);
+        if (uid && typeof openUserProfileById === 'function') openUserProfileById(uid);
       });
     });
   }
