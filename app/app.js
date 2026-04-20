@@ -4419,6 +4419,15 @@ function initWelcomeIntro() {
     intro.remove();
     return;
   }
+  // 共有URL経由でアクセスされた場合はイントロを出さない（偉人/時代/タグへ直接行く人向け）
+  // ※SEEN_KEY は書き込まない：後でホーム画面に辿り着いたとき本来のイントロが出るように。
+  try {
+    const qp = new URLSearchParams(location.search);
+    if (qp.get('person') || qp.get('era') || qp.get('tag') || qp.get('user')) {
+      intro.remove();
+      return;
+    }
+  } catch {}
   // 見終わったらマーク
   const markSeen = () => { try { localStorage.setItem(SEEN_KEY, '1'); } catch {} };
   let video = intro.querySelector('.welcome-intro-video');
@@ -12668,6 +12677,17 @@ function bindEvents() {
   // ヒーローの「この世界について」ボタン
   document.getElementById('heroToWorldview')?.addEventListener('click', () => {
     if (typeof openWorldviewModal === 'function') openWorldviewModal();
+  });
+  // ヒーロー下のショートカットボタン（偉人検索 / 年表）
+  document.querySelectorAll('[data-hero-shortcut]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const view = btn.dataset.heroShortcut;
+      if (['tags','history'].includes(view)) {
+        showView(view);
+        if (view === 'tags') { try { renderTags(); } catch {} }
+        if (view === 'history') { try { renderHistoryTimeline(); } catch {} }
+      }
+    });
   });
   // このサイトの使い方ポップアップ（5枚スライド）
   document.getElementById('howtoOpenBtn')?.addEventListener('click', () => openHowtoSlides());
