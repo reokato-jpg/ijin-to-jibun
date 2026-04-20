@@ -4613,6 +4613,20 @@ function initPhoneMenu() {
     open(); renderOshiSlot(); renderPhoneQuoteBanner(); renderIconBadges();
   });
   menu.querySelectorAll('[data-phone-close]').forEach(el => el.addEventListener('click', close));
+  // ホーム画面ボタン：スマホを閉じずにアイコン一覧へ戻る（ツールアプリを閉じるだけ）
+  menu.querySelectorAll('[data-phone-home]').forEach(el => el.addEventListener('click', () => {
+    ['phonePlazaApp','phoneMusicApp','phoneMeshiruApp'].forEach(id => {
+      const a = document.getElementById(id);
+      if (a) a.hidden = true;
+    });
+    document.querySelectorAll('.plaza-tab-panel').forEach(p => {
+      p.hidden = (p.dataset.plazaPanel !== 'friends');
+    });
+    document.querySelectorAll('.plaza-app-tab').forEach(t => {
+      t.classList.toggle('active', t.dataset.plazaTab === 'friends');
+    });
+    try { stopMusicApp?.(); } catch {}
+  }));
   menu.querySelectorAll('[data-phone-view]').forEach(el => {
     el.addEventListener('click', () => {
       const v = el.dataset.phoneView;
