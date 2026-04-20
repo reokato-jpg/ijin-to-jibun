@@ -70,8 +70,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20260421Q">
-<link rel="stylesheet" href="era-theme.css?v=20260421Q">
+<link rel="stylesheet" href="style.css?v=20260421R">
+<link rel="stylesheet" href="era-theme.css?v=20260421R">
 </head>
 <body>
   <header class="app-header">
@@ -118,13 +118,15 @@
         </div>
       </div>
 
-      <!-- 🎂 今日が誕生日の偉人（トップ強調） -->
+      <!-- ═══ TODAY ═══ 今日の情報（最優先） ═══════════════ -->
+
+      <!-- 🎂 今日が誕生日の偉人 -->
       <div class="home-block" id="todayBirthdayBlock" style="display:none">
         <div class="home-block-label">🎂 今日が誕生日の偉人</div>
         <div id="todayBirthdayList" class="today-birthday-list"></div>
       </div>
 
-      <!-- 📜 今日という日の歴史（歴史は今日と繋がっている） -->
+      <!-- 📜 今日という日の歴史 -->
       <div class="home-block today-echo-block" id="todayEchoBlock" style="display:none">
         <div class="today-echo-head">
           <span class="today-echo-date" id="todayEchoDate"></span>
@@ -133,6 +135,15 @@
         <div id="todayEchoList" class="today-echo-list"></div>
       </div>
 
+      <!-- 📣 お知らせ（新機能など・上位化） -->
+      <details class="home-block home-details home-details-news" id="homeUpdatesDetails" open>
+        <summary class="home-details-summary">
+          <span class="home-block-label">📣 お知らせ・新機能</span>
+          <span class="home-details-arrow">▾</span>
+        </summary>
+        <div id="updatesFeed" class="updates-feed"></div>
+      </details>
+
       <!-- 🪞 歴史の鏡（時代を超えた偉人ペア） -->
       <div class="home-block mirror-block">
         <div class="home-block-label">🪞 歴史の鏡 — 時代を超えた二人</div>
@@ -140,14 +151,85 @@
         <div id="historyMirrorList" class="history-mirror-list"></div>
       </div>
 
-      <!-- 偉人に想いを届けるとフォローしてもらえるかも -->
+      <!-- 偉人からフォローされるかもバナー -->
       <div class="home-block follow-hint-block">
         <img class="follow-hint-banner" src="assets/follow-hint-banner.jpg" alt="偉人からフォローされるかも？ 本を読み、言葉を心に留め、同じ時代を歩く——その痕跡が偉人の目に留まったとき、静かに手紙が届きます。" loading="lazy">
       </div>
 
-      <!-- 広告主募集 -->
+      <!-- ═══ DISCOVER ═══ 偉人を探す（折りたたみ） ═══════════ -->
+
+      <!-- あなたに似た偉人を探す（折りたたみ） -->
+      <details class="home-block home-details" id="traitsMatchDetails">
+        <summary class="home-details-summary">
+          <span class="home-block-label">✨ あなたに似た偉人を探す</span>
+          <span class="home-details-hint">好み・誕生日から共通点の多い偉人TOP6</span>
+          <span class="home-details-arrow">▾</span>
+        </summary>
+        <div id="traitsMatchSection"></div>
+      </details>
+
+      <!-- 推し偉人 -->
       <div class="home-block">
-        <div class="home-block-label">スポンサー・広告主募集</div>
+        <div class="home-block-label">♡ 推し偉人</div>
+        <div id="oshiSection"></div>
+      </div>
+
+      <!-- 今日のカレンダー -->
+      <div class="home-block" id="calendarBlock">
+        <div class="home-block-label">📅 今日のこの日</div>
+        <div id="calendarToday"></div>
+      </div>
+
+      <div id="personOfTheDay" style="display:none"></div>
+
+      <!-- ═══ WORDS ═══ 言葉・本 ═════════════════════════ -->
+
+      <!-- 今日の言葉 -->
+      <div class="home-block">
+        <div class="home-block-label">💬 今日の言葉</div>
+        <div id="quoteOfTheDay"></div>
+      </div>
+
+      <!-- 言葉のコレクション -->
+      <div class="home-block">
+        <div class="home-block-label">✒ 言葉のコレクション</div>
+        <div id="quoteCarousel" class="quote-carousel"></div>
+      </div>
+
+      <div id="featuredTags" style="display:none"></div>
+
+      <!-- 偉人たちの本棚 -->
+      <div class="home-block">
+        <div class="home-block-label">📚 偉人たちの本棚</div>
+        <div id="homeBooks" class="home-books"></div>
+      </div>
+
+      <!-- 本日のおすすめ -->
+      <div class="home-block">
+        <div class="home-block-label">✨ 本日のおすすめ</div>
+        <div id="peopleList" class="people-list"></div>
+      </div>
+
+      <!-- ═══ ABOUT ═══ 下部（スポンサー・使い方） ═══════════ -->
+
+      <!-- 応援する -->
+      <div class="home-block">
+        <div class="home-block-label">🌿 このサイトを応援する</div>
+        <div class="support-card">
+          <img class="support-hero-img" src="assets/support-book.png" alt="偉人と自分。" loading="lazy">
+          <div class="support-texts">
+            <div class="support-title">『偉人と自分。』は無料でご利用いただけます</div>
+            <div class="support-sub">いただいたサポートは、<b>サイトの開発・新しい偉人の追加・機能拡充</b>にすべて使わせていただきます。<br>サーバー代・AI利用料・調査・取材など、一人運営の制作活動を支えてください。</div>
+            <div class="support-links">
+              <a class="support-btn" href="https://note.com/natsumi_by_piano" target="_blank" rel="noopener">Noteで投げ銭・サポートする</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- スポンサー・広告主募集 -->
+      <div class="home-block">
+        <div class="home-block-label">💳 スポンサー・広告主募集</div>
         <a class="sponsor-card" href="https://note.com/natsumi_by_piano" target="_blank" rel="noopener">
           <div class="sponsor-card-inner">
             <div class="sponsor-card-head">
@@ -263,84 +345,6 @@
         </details>
       </div>
 
-      <!-- あなたに似た偉人 -->
-      <div class="home-block">
-        <div class="home-block-label">あなたに似た偉人を探す</div>
-        <div id="traitsMatchSection"></div>
-      </div>
-
-      <!-- 今日のカレンダー（誕生日・命日・この日の出来事） -->
-      <div class="home-block" id="calendarBlock">
-        <div class="home-block-label">今日のこの日</div>
-        <div id="calendarToday"></div>
-      </div>
-
-      <!-- 今日の気分で案内人を選ぶ（一時非表示）
-      <div class="home-block">
-        <div class="home-block-label">今日の気分は？</div>
-        <div id="personOfTheDay"></div>
-      </div>
-      -->
-      <div id="personOfTheDay" style="display:none"></div>
-
-      <!-- お知らせ（リリースノート・新機能告知） -->
-      <div class="home-block">
-        <div class="home-block-label">お知らせ</div>
-        <div id="updatesFeed" class="updates-feed"></div>
-      </div>
-
-      <!-- 応援する（投げ銭） -->
-      <div class="home-block">
-        <div class="home-block-label">このサイトを応援する</div>
-        <div class="support-card">
-          <img class="support-hero-img" src="assets/support-book.png" alt="偉人と自分。" loading="lazy">
-          <div class="support-texts">
-            <div class="support-title">『偉人と自分。』は無料でご利用いただけます</div>
-            <div class="support-sub">いただいたサポートは、<b>サイトの開発・新しい偉人の追加・機能拡充</b>にすべて使わせていただきます。<br>サーバー代・AI利用料・調査・取材など、一人運営の制作活動を支えてください。</div>
-            <div class="support-links">
-              <a class="support-btn" href="https://note.com/natsumi_by_piano" target="_blank" rel="noopener">Noteで投げ銭・サポートする</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 推し偉人 -->
-      <div class="home-block">
-        <div class="home-block-label">推し偉人</div>
-        <div id="oshiSection"></div>
-      </div>
-
-      <!-- 今日の言葉 -->
-      <div class="home-block">
-        <div class="home-block-label">今日の言葉</div>
-        <div id="quoteOfTheDay"></div>
-      </div>
-
-      <!-- 言葉のコレクション -->
-      <div class="home-block">
-        <div class="home-block-label">言葉のコレクション</div>
-        <div id="quoteCarousel" class="quote-carousel"></div>
-      </div>
-
-      <!-- 注目の感情（一時非表示）
-      <div class="home-block">
-        <div class="home-block-label">この感情をなぞる</div>
-        <div id="featuredTags" class="featured-tags"></div>
-      </div>
-      -->
-      <div id="featuredTags" style="display:none"></div>
-
-      <!-- 偉人たちの本棚 -->
-      <div class="home-block">
-        <div class="home-block-label">偉人たちの本棚</div>
-        <div id="homeBooks" class="home-books"></div>
-      </div>
-
-      <!-- 本日のおすすめ -->
-      <div class="home-block">
-        <div class="home-block-label">本日のおすすめ</div>
-        <div id="peopleList" class="people-list"></div>
-      </div>
 
       <!-- フッター：利用規約・プライバシー -->
       <div class="home-block home-footer">
@@ -647,10 +651,10 @@
     </div>
   </div>
 
-  <script src="era-lore.js?v=20260421Q"></script>
-  <script src="history-patterns.js?v=20260421Q"></script>
-  <script src="app.js?v=20260421Q"></script>
-  <script src="auth.js?v=20260421Q" type="module"></script>
+  <script src="era-lore.js?v=20260421R"></script>
+  <script src="history-patterns.js?v=20260421R"></script>
+  <script src="app.js?v=20260421R"></script>
+  <script src="auth.js?v=20260421R" type="module"></script>
   <script src="ai-consult.js"></script>
 </body>
 </html>
