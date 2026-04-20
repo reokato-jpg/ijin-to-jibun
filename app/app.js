@@ -6685,6 +6685,44 @@ async function showPerson(id) {
       title: null, body: null, extra: bookExtra
     })});
   });
+  // 🎭 内面の葛藤（深掘り偉人のみ）
+  (p.innerConflicts || []).forEach(ic => {
+    const extra = `
+      <div class="x-depth-card x-depth-conflict">
+        <div class="x-depth-title">${escapeHtml(ic.title)}</div>
+        ${ic.period ? `<div class="x-depth-period">${escapeHtml(ic.period)}</div>` : ''}
+        <div class="x-depth-body">${escapeHtml(ic.body)}</div>
+      </div>
+    `;
+    stream.push({ sortYear: 99970, sortPri: 4, html: xPostCard({
+      icon: 'note', typeLabel: '🎭 内面の葛藤', title: null, body: null, extra
+    })});
+  });
+  // 🔀 人生の転換点（深掘り偉人のみ）
+  (p.turningPoints || []).forEach(tp => {
+    const extra = `
+      <div class="x-depth-card x-depth-turning">
+        ${tp.year ? `<div class="x-depth-year">${escapeHtml(String(tp.year))}</div>` : ''}
+        <div class="x-depth-title">${escapeHtml(tp.title)}</div>
+        <div class="x-depth-body">${escapeHtml(tp.body)}</div>
+      </div>
+    `;
+    stream.push({ sortYear: 99975, sortPri: 4, html: xPostCard({
+      icon: 'note', typeLabel: '🔀 人生の転換点', title: null, body: null, extra
+    })});
+  });
+  // 💎 知られざる逸話（深掘り偉人のみ）
+  (p.unknownStories || []).forEach(us => {
+    const extra = `
+      <div class="x-depth-card x-depth-unknown">
+        <div class="x-depth-title">${escapeHtml(us.title)}</div>
+        <div class="x-depth-body">${escapeHtml(us.body)}</div>
+      </div>
+    `;
+    stream.push({ sortYear: 99980, sortPri: 5, html: xPostCard({
+      icon: 'note', typeLabel: '💎 知られざる逸話', title: null, body: null, extra
+    })});
+  });
   // 料理人のレシピ（コピーボタン付き）— 料理人偉人のみ
   (p.recipes || []).forEach((r, idx) => {
     const ingredientsText = (r.ingredients || []).map(i => '・' + i).join('\n');
@@ -9417,8 +9455,7 @@ function openLetterModal(p) {
           ${typeof currentUser !== 'undefined' && currentUser ? `
             <div class="letter-sent-hint">数日後、${p.name}さんからの返信が届くかもしれません。</div>
           ` : `
-            <div class="letter-sent-hint">登録すると、端末を変えても消えずに残ります。<br>将来、${p.name}さんからの返信も届きます。</div>
-            <button class="letter-sent-login-btn" id="letterSentLogin">🔑 本棚の鍵を受け取る</button>
+            <div class="letter-sent-hint">手紙はこの端末に保管されます。</div>
           `}
           <button class="letter-sent-done" data-close="1">閉じる</button>
         </div>
@@ -11931,17 +11968,9 @@ function renderFavorites() {
             その心細い夜の記録を。
           </p>
           ${renderGuideChara({ pose: 'welcome', copyKey: 'mybookEmpty', size: 'md', layout: 'below' })}
-          ${!isLoggedIn ? `
-            <button class="my-book-empty-btn" id="myBookLoginBtn">🔑 本棚の鍵を受け取る</button>
-            <p class="my-book-empty-note">登録すると、端末を変えても消えずに残ります。</p>
-          ` : ''}
         </div>
       </div>
     `;
-    const loginBtn = list.querySelector('#myBookLoginBtn');
-    if (loginBtn) loginBtn.addEventListener('click', () => {
-      if (typeof openLoginModal === 'function') openLoginModal();
-    });
     return;
   }
 

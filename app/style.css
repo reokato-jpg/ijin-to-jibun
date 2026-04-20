@@ -6927,6 +6927,45 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 .x-recipe-copy:hover { filter: brightness(1.05); }
 .x-recipe-copy.copied { background: linear-gradient(135deg, #7ea769, #5a7e4a); }
 
+/* 🎭 深掘り偉人：内面の葛藤 / 転換点 / 知られざる逸話 */
+.x-depth-card {
+  padding: 14px 16px;
+  border-radius: 8px;
+  font-family: var(--font-jp);
+  line-height: 1.9;
+}
+.x-depth-conflict {
+  background: linear-gradient(135deg, #f5f0e5, #ede2cf);
+  border-left: 3px solid var(--wine);
+}
+.x-depth-turning {
+  background: linear-gradient(135deg, #fff7e6, #f9e9c8);
+  border-left: 3px solid #c07d4e;
+}
+.x-depth-unknown {
+  background: linear-gradient(135deg, #f0edf5, #e5dff0);
+  border-left: 3px solid #6a4a8a;
+}
+.x-depth-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #4a2d12;
+  margin-bottom: 4px;
+}
+.x-depth-period, .x-depth-year {
+  font-size: 11px;
+  color: var(--ink-3);
+  font-style: italic;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+.x-depth-body {
+  font-size: 13px;
+  color: var(--ink-2);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
 /* ================ 聖地巡礼 ================ */
 .places-intro {
   font-size: 12px;
