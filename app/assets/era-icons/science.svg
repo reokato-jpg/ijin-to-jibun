@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- 吊り環 -->
+  <circle cx="50" cy="10" r="4"/>
+  <line x1="50" y1="14" x2="50" y2="20"/>
+  <!-- 外周 -->
+  <circle cx="50" cy="55" r="35"/>
+  <circle cx="50" cy="55" r="30"/>
+  <!-- 目盛り -->
+  <line x1="50" y1="20" x2="50" y2="25"/>
+  <line x1="50" y1="85" x2="50" y2="90"/>
+  <line x1="15" y1="55" x2="20" y2="55"/>
+  <line x1="80" y1="55" x2="85" y2="55"/>
+  <line x1="25" y1="30" x2="28" y2="33"/>
+  <line x1="72" y1="30" x2="75" y2="33"/>
+  <line x1="25" y1="80" x2="28" y2="77"/>
+  <line x1="72" y1="80" x2="75" y2="77"/>
+  <!-- 内側の横棒 -->
+  <line x1="20" y1="55" x2="80" y2="55"/>
+  <line x1="50" y1="25" x2="50" y2="85"/>
+  <!-- 指針 -->
+  <line x1="28" y1="72" x2="75" y2="36" stroke-width="2.5"/>
+  <circle cx="50" cy="55" r="3" fill="currentColor"/>
+  <!-- 中央目盛 -->
+  <line x1="38" y1="43" x2="42" y2="47" stroke-width="1"/>
+  <line x1="62" y1="43" x2="58" y2="47" stroke-width="1"/>
+  <line x1="38" y1="67" x2="42" y2="63" stroke-width="1"/>
+  <line x1="62" y1="67" x2="58" y2="63" stroke-width="1"/>
+</svg>

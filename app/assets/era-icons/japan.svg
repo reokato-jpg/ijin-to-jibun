@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- 笠木 -->
+  <path d="M8 28 Q20 18 50 18 Q80 18 92 28 L88 32 Q80 30 70 30 Q30 30 20 30 Q16 30 12 32 Z"/>
+  <!-- 島木 -->
+  <rect x="15" y="35" width="70" height="5"/>
+  <!-- 貫 -->
+  <rect x="22" y="52" width="56" height="4"/>
+  <!-- 柱（左） -->
+  <line x1="25" y1="40" x2="22" y2="88"/>
+  <line x1="33" y1="40" x2="36" y2="88"/>
+  <!-- 柱（右） -->
+  <line x1="67" y1="40" x2="64" y2="88"/>
+  <line x1="75" y1="40" x2="78" y2="88"/>
+  <!-- 礎石 -->
+  <line x1="18" y1="88" x2="40" y2="88"/>
+  <line x1="60" y1="88" x2="82" y2="88"/>
+  <!-- 中央装飾 -->
+  <line x1="48" y1="42" x2="48" y2="52"/>
+  <line x1="52" y1="42" x2="52" y2="52"/>
+</svg>

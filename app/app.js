@@ -3226,10 +3226,24 @@ function applyMuteState() {
 }
 
 // 起動時のウェルカムイントロ（アニメ＋ボイス）
+// iOS Safari 判定（VP9 alpha 非対応 → アニメーションWebPへ切替）
+const IS_IOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
 function initWelcomeIntro() {
   const intro = document.getElementById('welcomeIntro');
   if (!intro) return;
-  const video = intro.querySelector('.welcome-intro-video');
+  let video = intro.querySelector('.welcome-intro-video');
+  // iOSはvideo→img(webp)に差し替え（真の透過）
+  if (IS_IOS && video) {
+    const img = document.createElement('img');
+    img.className = 'welcome-intro-video';
+    img.src = 'assets/guide/welcome-intro.webp?v=1';
+    img.alt = '';
+    img.setAttribute('aria-hidden', 'true');
+    img.style.mixBlendMode = 'normal';
+    video.replaceWith(img);
+    video = null;  // img化後はvideo操作を無効に
+  }
   const voice = document.getElementById('welcomeIntroVoice');
   const skip = intro.querySelector('.welcome-intro-skip');
   const rabin = document.getElementById('powerHintAnim');
@@ -3271,14 +3285,30 @@ function initPhoneMenu() {
     const hint = document.getElementById('powerHintAnim');
     if (!hint) return;
     hint.hidden = false;
-    const video = hint.querySelector('.power-hint-video');
-    const VARIANTS = ['rabin.webm','rabin-var1.webm','rabin-var2.webm','rabin-var3.webm'];
+    let video = hint.querySelector('.power-hint-video');
+    const VARIANTS_WEBM = ['rabin.webm','rabin-var1.webm','rabin-var2.webm','rabin-var3.webm'];
+    const VARIANTS_WEBP = ['rabin.webp','rabin-var1.webp','rabin-var2.webp','rabin-var3.webp'];
+    // iOSはvideo→img(webp)に差し替え（真の透過）
+    let imgEl = null;
+    if (IS_IOS && video) {
+      imgEl = document.createElement('img');
+      imgEl.className = 'power-hint-video';
+      imgEl.src = 'assets/guide/' + VARIANTS_WEBP[0] + '?v=1';
+      imgEl.alt = '';
+      imgEl.setAttribute('aria-hidden', 'true');
+      imgEl.style.mixBlendMode = 'normal';
+      video.replaceWith(imgEl);
+      video = null;
+    }
     let idx = 0;
     hint.addEventListener('click', (e) => {
       e.stopPropagation();
-      idx = (idx + 1) % VARIANTS.length;
-      if (video) {
-        video.innerHTML = `<source src="assets/guide/${VARIANTS[idx]}?v=1" type="video/webm">`;
+      idx = (idx + 1) % 4;
+      if (imgEl) {
+        // リロードしてアニメをリスタート
+        imgEl.src = 'assets/guide/' + VARIANTS_WEBP[idx] + '?v=1&t=' + Date.now();
+      } else if (video) {
+        video.innerHTML = `<source src="assets/guide/${VARIANTS_WEBM[idx]}?v=1" type="video/webm">`;
         video.load();
         video.play().catch(()=>{});
       }
@@ -3576,6 +3606,44 @@ function initPhoneMenu() {
     }
     closePhonePlazaApp();
   });
+  // Androidライクなナビバー：◁ 戻る／□ ホーム／≡ 何もしない
+  const navBack = document.getElementById('phoneNavBack');
+  const navHome = document.getElementById('phoneNavHome');
+  const navMenu = document.getElementById('phoneNavMenu');
+  navBack?.addEventListener('click', () => {
+    if (plaza && !plaza.hidden) {
+      // 広場が開いている場合：チャット→トーク一覧→広場を閉じる
+      const chat = plaza.querySelector('[data-plaza-panel="chat"]');
+      if (chat && !chat.hidden) {
+        plaza.querySelectorAll('.plaza-tab-panel').forEach(p => {
+          p.hidden = (p.dataset.plazaPanel !== 'talks');
+        });
+        return;
+      }
+      closePhonePlazaApp();
+      return;
+    }
+    // ホーム画面なら閉じる
+    close();
+  });
+  navHome?.addEventListener('click', () => {
+    // スマホ内のホーム（アプリグリッド）に戻す
+    if (plaza) plaza.hidden = true;
+    document.querySelectorAll('.plaza-tab-panel').forEach(p => {
+      p.hidden = (p.dataset.plazaPanel !== 'friends');
+    });
+    document.querySelectorAll('.plaza-app-tab').forEach(t => {
+      t.classList.toggle('active', t.dataset.plazaTab === 'friends');
+    });
+  });
+  // ≡ 三本線：会員設定モーダルを開く
+  navMenu?.addEventListener('click', () => {
+    close();
+    setTimeout(() => {
+      if (typeof openMemberSettings === 'function') openMemberSettings();
+    }, 260);
+  });
+
   plaza?.querySelectorAll('[data-plaza-tab]').forEach(tab => {
     tab.addEventListener('click', () => {
       const which = tab.dataset.plazaTab;
@@ -6905,10 +6973,19 @@ const TIMELINE_CENTRAL = {
 function renderHistoryTimeline() {
   const container = document.getElementById('eraCategories');
   if (!container || !DATA.eraCategories) return;
-  container.innerHTML = DATA.eraCategories.map(cat => `
+  const ERA_CAT_ICON_MAP = {
+    music: 'music', philosophy: 'philosophy', art: 'art',
+    japan_history: 'japan', literature: 'literature', science: 'science',
+  };
+  container.innerHTML = DATA.eraCategories.map(cat => {
+    const svgName = ERA_CAT_ICON_MAP[cat.id];
+    const iconHtml = svgName
+      ? `<img class="era-cat-icon era-cat-icon-svg" src="assets/era-icons/${svgName}.svg" alt="">`
+      : `<span class="era-cat-icon">${cat.icon || '📖'}</span>`;
+    return `
     <details class="era-cat" data-cat="${cat.id}">
       <summary class="era-cat-head">
-        <span class="era-cat-icon">${cat.icon || '📖'}</span>
+        ${iconHtml}
         <span class="era-cat-name">${cat.name}</span>
         <span class="era-cat-sub">${cat.sub || ''}</span>
         <span class="era-cat-arrow">▾</span>
@@ -6926,7 +7003,8 @@ function renderHistoryTimeline() {
         </div>
       </div>
     </details>
-  `).join('');
+  `;
+  }).join('');
   // クリック → モーダル
   container.querySelectorAll('[data-era]').forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -6942,48 +7020,141 @@ function openEraModal(catId, eraId) {
   const existing = document.getElementById('eraModal');
   if (existing) existing.remove();
   const people = (era.people || []).map(id => DATA.people.find(p => p.id === id)).filter(Boolean);
+  const lore = (window.ERA_LORE || {})[era.id] || null;
+  const themeClass = lore ? `era-theme-${lore.theme}` : '';
   const modal = document.createElement('div');
   modal.id = 'eraModal';
-  modal.className = 'settings-modal';
+  modal.className = `era-page-modal ${themeClass}`;
   modal.innerHTML = `
-    <div class="settings-backdrop" data-close="1"></div>
-    <div class="settings-panel era-modal-panel">
-      <button class="settings-close" data-close="1" aria-label="閉じる">×</button>
-      <div class="era-modal-cat">${cat.icon} ${cat.name}</div>
-      <div class="era-modal-title">${era.name}</div>
-      <div class="era-modal-period">${era.period || ''}</div>
-      <div class="era-modal-desc">${era.description || ''}</div>
-      ${(era.keywords || []).length ? `
-        <div class="era-modal-keywords">
-          ${era.keywords.map(k => `<span class="era-keyword">${k}</span>`).join('')}
+    <div class="era-page-backdrop" data-close="1"></div>
+    <article class="era-page">
+      <button class="era-page-close" data-close="1" aria-label="閉じる">×</button>
+      <header class="era-page-hero">
+        <div class="era-page-hero-bg" aria-hidden="true"></div>
+        <div class="era-page-hero-inner">
+          <div class="era-page-cat">${cat.icon || ''} ${cat.name}</div>
+          <h1 class="era-page-title">
+            ${lore?.emoji ? `<span class="era-page-emoji">${lore.emoji}</span>` : ''}
+            <span>${era.name}</span>
+          </h1>
+          <div class="era-page-period">${era.period || ''}</div>
+          ${lore?.tagline ? `<div class="era-page-tagline">${lore.tagline}</div>` : ''}
         </div>
+      </header>
+
+      <section class="era-page-section era-page-intro">
+        <p>${lore?.intro || era.description || ''}</p>
+      </section>
+
+      ${(era.keywords || []).length || lore?.highlights?.length ? `
+        <section class="era-page-section era-page-keywords-sec">
+          <h2 class="era-page-h2">キーワード</h2>
+          <div class="era-page-keywords">
+            ${(lore?.highlights || era.keywords || []).map(k => `<span class="era-page-chip">${escapeHtml(String(k))}</span>`).join('')}
+          </div>
+        </section>
       ` : ''}
-      <div class="era-modal-section-head">この時代を生きた偉人</div>
-      <div class="era-modal-people">
-        ${people.length === 0 ? '<div class="era-modal-empty">この時代の偉人は準備中です。</div>' :
-          people.map(p => {
-            const bg = p.imageUrl ? `style="background-image:url('${p.imageUrl}')"` : '';
+
+      ${(lore?.sections || []).length ? `
+        <section class="era-page-section era-page-themes-sec">
+          <h2 class="era-page-h2">テーマで読む</h2>
+          ${lore.sections.map(s => {
+            const sPpl = (s.people || []).map(id => DATA.people.find(x => x.id === id)).filter(Boolean);
             return `
-              <button class="era-person-card" data-jump-person="${p.id}">
-                <div class="era-person-av" ${bg}>${p.imageUrl ? '' : (p.name?.charAt(0) || '?')}</div>
-                <div class="era-person-meta">
-                  <div class="era-person-name">${p.name}</div>
-                  <div class="era-person-sub">${p.birth ?? ''}${p.death ? ' – ' + p.death : ''} / ${p.field || ''}</div>
+            <div class="era-theme-card">
+              <div class="era-theme-card-head">
+                <span class="era-theme-card-title">${escapeHtml(s.title)}</span>
+                ${s.period ? `<span class="era-theme-card-period">${escapeHtml(s.period)}</span>` : ''}
+              </div>
+              <p class="era-theme-card-body">${escapeHtml(s.body)}</p>
+              ${sPpl.length ? `
+                <div class="era-theme-card-people">
+                  <span class="era-timeline-people-label">関わった人物：</span>
+                  ${sPpl.map(p => {
+                    const bg = p.imageUrl ? `style="background-image:url('${p.imageUrl}')"` : '';
+                    return `<button class="era-timeline-person" data-jump-person="${p.id}"><span class="era-tl-av" ${bg}>${p.imageUrl ? '' : (p.name?.charAt(0) || '?')}</span><span>${escapeHtml(p.name)}</span></button>`;
+                  }).join('')}
                 </div>
-              </button>
-            `;
-          }).join('')}
-      </div>
-    </div>
+              ` : ''}
+            </div>
+          `;}).join('')}
+        </section>
+      ` : ''}
+
+
+      ${lore?.timeline?.length ? `
+        <section class="era-page-section era-page-timeline-sec">
+          <h2 class="era-page-h2">時系列でたどる</h2>
+          <ol class="era-timeline-list">
+            ${lore.timeline.map(t => {
+              const relatedPpl = (t.people || []).map(id => DATA.people.find(x => x.id === id)).filter(Boolean);
+              return `
+                <li class="era-timeline-item">
+                  <div class="era-timeline-year">${escapeHtml(t.year || '')}</div>
+                  <div class="era-timeline-body">
+                    ${t.img ? `<div class="era-timeline-img"><img src="${t.img}" alt="${escapeHtml(t.title||'')}" loading="lazy" onerror="this.parentElement.style.display='none'"></div>` : ''}
+                    <div class="era-timeline-text">
+                      <div class="era-timeline-title">${escapeHtml(t.title || '')}</div>
+                      <p class="era-timeline-desc">${escapeHtml(t.body || '')}</p>
+                      ${relatedPpl.length ? `
+                        <div class="era-timeline-people">
+                          <span class="era-timeline-people-label">関わった人物：</span>
+                          ${relatedPpl.map(p => {
+                            const bg = p.imageUrl ? `style="background-image:url('${p.imageUrl}')"` : '';
+                            return `<button class="era-timeline-person" data-jump-person="${p.id}" title="${escapeHtml(p.name)}"><span class="era-tl-av" ${bg}>${p.imageUrl ? '' : (p.name?.charAt(0) || '?')}</span><span>${escapeHtml(p.name)}</span></button>`;
+                          }).join('')}
+                        </div>
+                      ` : ''}
+                    </div>
+                  </div>
+                </li>
+              `;
+            }).join('')}
+          </ol>
+        </section>
+      ` : ''}
+
+      ${lore?.culture?.length ? `
+        <section class="era-page-section era-page-culture-sec">
+          <h2 class="era-page-h2">この時代の文化</h2>
+          <div class="era-page-culture">
+            ${lore.culture.map(c => `<span class="era-page-culture-chip">${escapeHtml(c)}</span>`).join('')}
+          </div>
+        </section>
+      ` : ''}
+
+      <section class="era-page-section era-page-people-sec">
+        <h2 class="era-page-h2">この時代を生きた偉人 <span class="era-page-people-count">${people.length}名</span></h2>
+        <div class="era-page-people">
+          ${people.length === 0 ? '<div class="era-page-empty">この時代の偉人は準備中です。</div>' :
+            people.map(p => {
+              const bg = p.imageUrl ? `style="background-image:url('${p.imageUrl}')"` : '';
+              return `
+                <button class="era-page-person" data-jump-person="${p.id}">
+                  <div class="era-page-person-av" ${bg}>${p.imageUrl ? '' : (p.name?.charAt(0) || '?')}</div>
+                  <div class="era-page-person-meta">
+                    <div class="era-page-person-name">${p.name}</div>
+                    <div class="era-page-person-sub">${fmtYearRange(p.birth, p.death)} · ${p.field || ''}</div>
+                  </div>
+                </button>
+              `;
+            }).join('')}
+        </div>
+      </section>
+
+      <footer class="era-page-foot">
+        <button class="era-page-back-btn" data-close="1">← 年表に戻る</button>
+      </footer>
+    </article>
   `;
   document.body.appendChild(modal);
   requestAnimationFrame(() => modal.classList.add('open'));
-  const close = () => { modal.classList.remove('open'); setTimeout(() => modal.remove(), 200); };
+  const close = () => { modal.classList.remove('open'); setTimeout(() => modal.remove(), 240); };
   modal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', close));
   modal.querySelectorAll('[data-jump-person]').forEach(el => {
     el.addEventListener('click', () => {
       close();
-      setTimeout(() => showPerson(el.dataset.jumpPerson), 220);
+      setTimeout(() => showPerson(el.dataset.jumpPerson), 260);
     });
   });
 }

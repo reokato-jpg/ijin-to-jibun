@@ -655,7 +655,9 @@ function openAccountMenu() {
   const avatar = loggedIn ? localStorage.getItem('ijin_user_avatar') : '';
   const avatarHtml = avatar
     ? `<div class="settings-user-av" style="background-image:url('${avatar}')"></div>`
-    : `<div class="settings-user-av no-img">${loggedIn ? (displayName[0] || '?') : '🔑'}</div>`;
+    : (loggedIn
+        ? `<div class="settings-user-av no-img">${displayName[0] || '?'}</div>`
+        : `<div class="settings-user-av guest-av" style="background-image:url('assets/guest-avatar.png?v=20260420S')"></div>`);
   modal.innerHTML = `
     <div class="auth-modal-backdrop" data-close></div>
     <aside class="settings-drawer-panel">

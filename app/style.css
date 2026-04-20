@@ -8573,6 +8573,11 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
   border: 2px solid var(--gold);
   flex-shrink: 0;
 }
+.settings-user-av.guest-av {
+  background-size: cover;
+  background-position: center;
+  background-color: #7a9a8a;
+}
 .settings-user-av.no-img {
   display: flex;
   align-items: center;
@@ -12901,6 +12906,40 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 }
 .phone-menu.open .phone-screen { opacity: 1; }
 
+/* Androidライクなナビバー（画面最下部、白背景） */
+.phone-navbar {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 40px;
+  background: #ffffff;
+  border-top: 1px solid rgba(0,0,0,0.15);
+  box-shadow: 0 -1px 3px rgba(0,0,0,0.08);
+  flex-shrink: 0;
+}
+.phone-nav-btn {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  width: 52px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #111;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+.phone-nav-btn svg { width: 24px; height: 24px; }
+.phone-nav-home svg { width: 22px; height: 22px; }
+.phone-nav-btn:hover { background: rgba(0,0,0,0.06); }
+.phone-nav-btn:active { background: rgba(0,0,0,0.14); }
+/* SVGの線を太めに */
+.phone-nav-home svg rect { stroke-width: 2.4; }
+
 /* ステータスバー */
 .phone-status {
   display: flex;
@@ -13078,7 +13117,7 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 /* 偉人の広場アプリ（LINE風） */
 .phone-plaza-app {
   position: absolute;
-  inset: 0;
+  top: 0; left: 0; right: 0; bottom: 40px;
   display: flex;
   flex-direction: column;
   background: #f5f5e8;
@@ -13434,9 +13473,14 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
   height: 100%;
   object-fit: contain;
   pointer-events: none;
-  /* iOS Safari は VP9 alpha 非対応で mp4 フォールバック（白背景）になるため、
-     multiply で白を背景となじませて擬似透過 */
+}
+/* iOS以外（video要素）は VP9 alpha 非対応時のフォールバックとして multiply */
+video.power-hint-video {
   mix-blend-mode: multiply;
+}
+/* iOSはアニメーションWebPで真の透過 → multiply不要 */
+img.power-hint-video {
+  mix-blend-mode: normal !important;
 }
 .power-hint-close { display: none; }
 .power-hint-close {
@@ -13473,8 +13517,9 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
   height: 100%;
   object-fit: contain;
   filter: drop-shadow(0 4px 8px rgba(100,70,30,0.2));
-  mix-blend-mode: multiply;
 }
+video.welcome-intro-video { mix-blend-mode: multiply; }
+img.welcome-intro-video { mix-blend-mode: normal !important; }
 .welcome-intro-skip { display: none; }
 .welcome-intro-bubble {
   position: absolute;
@@ -13587,6 +13632,12 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 }
 .era-cat-head::-webkit-details-marker { display: none; }
 .era-cat-icon { font-size: 24px; }
+.era-cat-icon-svg {
+  width: 38px; height: 38px;
+  object-fit: contain;
+  flex-shrink: 0;
+  opacity: 0.85;
+}
 .era-cat-name { font-size: 17px; font-weight: 700; letter-spacing: 0.04em; flex: 1; }
 .era-cat-sub { font-size: 11px; color: var(--ink-4); letter-spacing: 0.1em; }
 .era-cat-arrow { transition: transform 0.2s; color: var(--ink-3); }
