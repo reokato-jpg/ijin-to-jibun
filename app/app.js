@@ -1572,21 +1572,46 @@ function openMemberSettings() {
 // ============ 会員同士のフォロー ============
 // 🌫 忘却の霧：長期訪問なしの偉人に霧をかける
 const MIST_THRESHOLD_DAYS = 14; // 14日以上訪問ゼロで霧発生
+
+// 🧪 デバッグ用：コンソールから testMist(30) / testMist('untouched') / testMist('clear')
+window.testMist = function(modeOrDays) {
+  if (modeOrDays === 'clear' || modeOrDays == null) {
+    try { sessionStorage.removeItem('__mist_test__'); } catch {}
+    window.__mistTest__ = null;
+    console.log('✅ mistテストをクリアしました。偉人ページを開き直してください。');
+    return;
+  }
+  const v = String(modeOrDays);
+  try { sessionStorage.setItem('__mist_test__', v); } catch {}
+  window.__mistTest__ = v;
+  console.log(`✅ mist = ${v} にセット。偉人ページを開くと霧が出ます。`);
+};
 function applyMistOfOblivion(personId, lastVisitMs) {
   const container = document.getElementById('personDetail');
   if (!container) return;
   // 既存の霧オーバーレイを削除
   container.querySelectorAll('.mist-overlay, .mist-notice').forEach(el => el.remove());
-  // ── テストモード ──
-  //   ?mist=untouched → 誰も訪問してない状態
-  //   ?mist=30  → 30日前に最後訪問
-  //   ?mist=100 → 100日前に最後訪問
+  // ── テストモード ──（URL?mist= / sessionStorage / window.__mistTest__）
   try {
-    const qs = new URLSearchParams(location.search);
-    const mistMode = qs.get('mist');
+    let mistMode = null;
+    // 1. URL search param
+    try { mistMode = new URLSearchParams(location.search).get('mist'); } catch {}
+    // 2. URL hash内の ?mist= 部分
+    if (!mistMode) {
+      try {
+        const h = location.hash || '';
+        const m = h.match(/[?&]mist=([^&]+)/);
+        if (m) mistMode = decodeURIComponent(m[1]);
+      } catch {}
+    }
+    // 3. sessionStorage
+    if (!mistMode) { try { mistMode = sessionStorage.getItem('__mist_test__'); } catch {} }
+    // 4. グローバル変数
+    if (!mistMode) { try { mistMode = window.__mistTest__; } catch {} }
+
     if (mistMode === 'untouched') {
       lastVisitMs = 0;
-    } else if (mistMode && /^\d+$/.test(mistMode)) {
+    } else if (mistMode && /^\d+$/.test(String(mistMode))) {
       lastVisitMs = Date.now() - parseInt(mistMode, 10) * 24 * 60 * 60 * 1000;
     }
   } catch {}
