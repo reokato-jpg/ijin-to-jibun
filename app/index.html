@@ -70,8 +70,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20260421D">
-<link rel="stylesheet" href="era-theme.css?v=20260421D">
+<link rel="stylesheet" href="style.css?v=20260421E">
+<link rel="stylesheet" href="era-theme.css?v=20260421E">
 </head>
 <body>
   <header class="app-header">
@@ -122,6 +122,22 @@
       <div class="home-block" id="todayBirthdayBlock" style="display:none">
         <div class="home-block-label">🎂 今日が誕生日の偉人</div>
         <div id="todayBirthdayList" class="today-birthday-list"></div>
+      </div>
+
+      <!-- 📜 今日という日の歴史（歴史は今日と繋がっている） -->
+      <div class="home-block today-echo-block" id="todayEchoBlock" style="display:none">
+        <div class="today-echo-head">
+          <span class="today-echo-date" id="todayEchoDate"></span>
+          <span class="today-echo-label">この日、歴史が動いた</span>
+        </div>
+        <div id="todayEchoList" class="today-echo-list"></div>
+      </div>
+
+      <!-- 🪞 歴史の鏡（時代を超えた偉人ペア） -->
+      <div class="home-block mirror-block">
+        <div class="home-block-label">🪞 歴史の鏡 — 時代を超えた二人</div>
+        <div class="mirror-hint">歴史は繰り返す。同じパターンを生きた、時代を超えた偉人たち。</div>
+        <div id="historyMirrorList" class="history-mirror-list"></div>
       </div>
 
       <!-- 偉人に想いを届けるとフォローしてもらえるかも -->
@@ -637,9 +653,10 @@
     </div>
   </div>
 
-  <script src="era-lore.js?v=20260421D"></script>
-  <script src="app.js?v=20260421D"></script>
-  <script src="auth.js?v=20260421D" type="module"></script>
+  <script src="era-lore.js?v=20260421E"></script>
+  <script src="history-patterns.js?v=20260421E"></script>
+  <script src="app.js?v=20260421E"></script>
+  <script src="auth.js?v=20260421E" type="module"></script>
   <script src="ai-consult.js"></script>
 </body>
 </html>

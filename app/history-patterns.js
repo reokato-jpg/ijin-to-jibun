@@ -1,0 +1,92 @@
+// 歴史の鏡——時代を超えた偉人ペア（HISTORY_MIRRORS）
+// 各ペアは同じ人生パターンを異なる時代で生きた二人
+window.HISTORY_MIRRORS = [
+  {
+    theme: '真理を語って殺された賢者',
+    a: { id: 'socrates', year: -399, note: '「青年を堕落させた」罪で毒杯' },
+    b: { id: 'hypatia',  year:  415, note: 'キリスト教徒の暴徒に教会で惨殺' },
+    body: '814年を隔てて、アテナイとアレクサンドリアで——真理を語った賢者が、民衆に殺された。哲学は時代を選ばず、権力と民意に憎まれる。',
+  },
+  {
+    theme: '世界観を書き換えた理論家',
+    a: { id: 'copernicus', year: 1543, note: '地動説で宇宙の中心を動かした' },
+    b: { id: 'einstein',   year: 1915, note: '時空そのものが歪むと示した' },
+    body: '太陽を中心に据えた男と、時間と空間を書き換えた男。どちらも「人間の常識」を根底から覆したが、両者とも学問の中に深い静けさを求めた。',
+  },
+  {
+    theme: '30代で散った革命児',
+    a: { id: 'sakamoto_ryoma', year: 1867, note: '33歳・近江屋で暗殺' },
+    b: { id: 'jeanne_darc',    year: 1431, note: '19歳・火刑' },
+    body: '幕末の京都と百年戦争のルーアン。若くして国の運命を動かし、若くして殺された二人。彼らが生きなかった40代を、我々は想像することしかできない。',
+  },
+  {
+    theme: '権力に殺された美の求道者',
+    a: { id: 'rikyu', year: 1591, note: '秀吉に切腹を命じられ70歳で自刃' },
+    b: { id: 'socrates', year: -399, note: 'アテナイで毒杯を仰いだ70歳' },
+    body: '茶の湯の侘び寂び、哲学の無知の知——権力者の機嫌を損ねた時、同じ運命が待っていた。死を美学で受け容れた二人。',
+  },
+  {
+    theme: '頂点で裏切られた覇者',
+    a: { id: 'oda_nobunaga',    year: 1582, note: '本能寺で家臣・明智光秀に討たれた' },
+    b: { id: 'julius_caesar',   year: -44, note: '元老院で「ブルータス、お前もか」' },
+    body: '天下統一を目前に、最も信頼した部下に刺された二人。権力の頂点とは、最も近い者が剣を構える場所でもある。',
+  },
+  {
+    theme: '追放の中で傑作を書いた文学者',
+    a: { id: 'dante',       year: 1302, note: 'フィレンツェから永久追放、放浪で『神曲』' },
+    b: { id: 'dostoevsky',  year: 1849, note: 'シベリア流刑4年で『罪と罰』の種' },
+    body: '祖国を追われた絶望の中で、人類史に残る大著が書かれた。平穏は作家を殺し、追放が作家を鍛える。',
+  },
+  {
+    theme: '音楽に殉じた若き巨匠',
+    a: { id: 'mozart',    year: 1791, note: '35歳・未完のレクイエムと共に' },
+    b: { id: 'schubert',  year: 1828, note: '31歳・600以上の歌曲を遺して' },
+    body: 'ウィーンの同じ街で、37年を隔てて——若く天才的に燃え尽きた二人は、貧困のうちに共同墓地近くに葬られた。',
+  },
+  {
+    theme: '宇宙の距離を測った人',
+    a: { id: 'leavitt',  year: 1912, note: 'セファイド変光星の周期光度関係' },
+    b: { id: 'hubble',   year: 1929, note: '銀河の赤方偏移・宇宙膨張' },
+    body: 'ハーバード天文台の女性「計算係」が発見した周期光度関係を、ウィルソン山の男が使って宇宙の大きさを100倍以上に広げた。女性が望遠鏡を覗けなかった時代。',
+  },
+  {
+    theme: '同性愛を裁かれた天才',
+    a: { id: 'oscar_wilde', year: 1895, note: '2年の重労働刑で名声と富を失う' },
+    b: { id: 'turing',      year: 1952, note: 'ホルモン療法を強制され2年後に自殺' },
+    body: 'イギリスは57年を隔てて、国の誇りと言える二人の天才を自らの法律で破壊した。ワイルドは獄中で『獄中記』を、チューリングは沈黙の中で世を去った。',
+  },
+  {
+    theme: '最愛を失って傑作を書く',
+    a: { id: 'dante',   year: 1290, note: 'ベアトリーチェの死→『新生』『神曲』' },
+    b: { id: 'soseki',  year: 1916, note: '病と愛憎の葛藤→『こころ』' },
+    body: '失った人は、書物の中でだけ永遠に生きる。作家の筆は、喪失を埋める最後の手段である。',
+  },
+  {
+    theme: '自分の時代に理解されなかった',
+    a: { id: 'van_gogh',  year: 1890, note: '生前に売れた絵は1枚、37歳自死' },
+    b: { id: 'mendel',    year: 1865, note: '遺伝の法則を誰も理解せず34年埋もれた' },
+    body: '絵画と遺伝学、分野は違えど——時代の早すぎた天才は、自分が正しいことを誰にも見てもらえないまま世を去る。',
+  },
+  {
+    theme: '亡命者として生きた巨人',
+    a: { id: 'einstein', year: 1933, note: 'ナチスから米国へ' },
+    b: { id: 'freud',    year: 1938, note: 'ナチスからロンドンへ、翌年没' },
+    body: '20世紀、ユダヤの知識人たちは次々と故郷を追われた。しかし彼らの思想は、亡命先で世界を変えた。',
+  },
+];
+
+// 今日の日付でマッチする偉人イベント（誕生・没日）を拾う
+// DATA.people[].birthMonth/Day, deathMonth/Day を使う
+window.findTodayEchoes = function(people, month, day) {
+  const results = [];
+  (people || []).forEach(p => {
+    if (p.birthMonth === month && p.birthDay === day) {
+      results.push({ id: p.id, name: p.name, year: p.birth, kind: 'birth' });
+    }
+    if (p.deathMonth === month && p.deathDay === day) {
+      results.push({ id: p.id, name: p.name, year: p.death, kind: 'death' });
+    }
+  });
+  // 年順にソート
+  return results.sort((a, b) => (a.year || 0) - (b.year || 0));
+};

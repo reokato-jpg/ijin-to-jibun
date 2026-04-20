@@ -2507,6 +2507,100 @@ function renderHomeBooks() {
   `).join('');
 }
 
+// ====================== 今日という日の歴史 ======================
+function renderTodayEcho() {
+  const block = document.getElementById('todayEchoBlock');
+  const dateEl = document.getElementById('todayEchoDate');
+  const list = document.getElementById('todayEchoList');
+  if (!block || !dateEl || !list) return;
+  const now = new Date();
+  const m = now.getMonth() + 1, d = now.getDate();
+  if (typeof window.findTodayEchoes !== 'function') return;
+  const events = window.findTodayEchoes(DATA.people || [], m, d);
+  if (events.length === 0) { block.style.display = 'none'; return; }
+  block.style.display = '';
+  dateEl.textContent = `📜 ${m}月${d}日`;
+  const yearNow = now.getFullYear();
+  list.innerHTML = events.map(e => {
+    const p = DATA.people.find(x => x.id === e.id);
+    if (!p) return '';
+    const years = yearNow - (e.year || yearNow);
+    const bg = p.imageUrl ? `style="background-image:url('${p.imageUrl}')"` : '';
+    const label = e.kind === 'birth' ? '生誕' : '没';
+    const kindCls = e.kind === 'birth' ? 'birth' : 'death';
+    return `
+      <button class="today-echo-item ${kindCls}" data-jump-person="${p.id}">
+        <div class="today-echo-av" ${bg}>${p.imageUrl ? '' : (p.name?.charAt(0) || '?')}</div>
+        <div class="today-echo-info">
+          <div class="today-echo-years">${years}年前の今日</div>
+          <div class="today-echo-name">${escapeHtml(p.name)} <span class="today-echo-kind">${label}</span></div>
+          <div class="today-echo-field">${escapeHtml(p.field || '')}</div>
+        </div>
+      </button>
+    `;
+  }).join('');
+  list.querySelectorAll('[data-jump-person]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const pid = btn.dataset.jumpPerson;
+      if (pid && typeof showPerson === 'function') showPerson(pid);
+    });
+  });
+}
+
+// ====================== 歴史の鏡（時代を超えた偉人ペア） ======================
+function renderHistoryMirrors() {
+  const list = document.getElementById('historyMirrorList');
+  if (!list) return;
+  const mirrors = (window.HISTORY_MIRRORS || []).filter(pair => {
+    const a = DATA.people.find(p => p.id === pair.a.id);
+    const b = DATA.people.find(p => p.id === pair.b.id);
+    return a && b;
+  });
+  if (mirrors.length === 0) { list.innerHTML = ''; return; }
+  // 毎日違うペアを3つピック
+  const seed = (typeof daySeed === 'function') ? daySeed() : 0;
+  const shuffled = [...mirrors].sort((x, y) => ((hashStr(x.theme) ^ seed) >>> 0) - ((hashStr(y.theme) ^ seed) >>> 0));
+  const picks = shuffled.slice(0, 3);
+  list.innerHTML = picks.map((pair, i) => {
+    const a = DATA.people.find(p => p.id === pair.a.id);
+    const b = DATA.people.find(p => p.id === pair.b.id);
+    const bgA = a.imageUrl ? `style="background-image:url('${a.imageUrl}')"` : '';
+    const bgB = b.imageUrl ? `style="background-image:url('${b.imageUrl}')"` : '';
+    const yearDiff = Math.abs((pair.b.year || 0) - (pair.a.year || 0));
+    return `
+      <article class="mirror-pair" data-pair-idx="${i}">
+        <div class="mirror-theme">${escapeHtml(pair.theme)}</div>
+        <div class="mirror-figures">
+          <button class="mirror-fig" data-jump-person="${a.id}">
+            <div class="mirror-fig-av" ${bgA}>${a.imageUrl ? '' : (a.name.charAt(0) || '?')}</div>
+            <div class="mirror-fig-name">${escapeHtml(a.name)}</div>
+            <div class="mirror-fig-year">${pair.a.year < 0 ? '紀元前' + Math.abs(pair.a.year) : pair.a.year + '年'}</div>
+            <div class="mirror-fig-note">${escapeHtml(pair.a.note)}</div>
+          </button>
+          <div class="mirror-vs">
+            <div class="mirror-vs-icon">🪞</div>
+            <div class="mirror-vs-years">${yearDiff}年の時を超えて</div>
+          </div>
+          <button class="mirror-fig" data-jump-person="${b.id}">
+            <div class="mirror-fig-av" ${bgB}>${b.imageUrl ? '' : (b.name.charAt(0) || '?')}</div>
+            <div class="mirror-fig-name">${escapeHtml(b.name)}</div>
+            <div class="mirror-fig-year">${pair.b.year < 0 ? '紀元前' + Math.abs(pair.b.year) : pair.b.year + '年'}</div>
+            <div class="mirror-fig-note">${escapeHtml(pair.b.note)}</div>
+          </button>
+        </div>
+        <p class="mirror-body">${escapeHtml(pair.body)}</p>
+      </article>
+    `;
+  }).join('');
+  list.querySelectorAll('[data-jump-person]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const pid = btn.dataset.jumpPerson;
+      if (pid && typeof showPerson === 'function') showPerson(pid);
+    });
+  });
+}
+
 // ====================== お知らせ（リリースノート） ======================
 function renderUpdates() {
   const el = document.getElementById('updatesFeed');
@@ -7160,6 +7254,22 @@ function openEraModal(catId, eraId) {
         </section>
       ` : ''}
 
+      ${lore?.echoes?.length ? `
+        <section class="era-page-section era-page-echoes-sec">
+          <h2 class="era-page-h2">時代を超えた木霊（こだま）</h2>
+          <p class="era-echoes-lead">この時代の出来事は、後にこんな形で繰り返された——</p>
+          <div class="era-echoes-list">
+            ${lore.echoes.map(e => `
+              <div class="era-echo-card">
+                <div class="era-echo-chain">${escapeHtml(e.chain || '')}</div>
+                <div class="era-echo-pattern">${escapeHtml(e.pattern || '')}</div>
+                ${e.body ? `<p class="era-echo-body">${escapeHtml(e.body)}</p>` : ''}
+              </div>
+            `).join('')}
+          </div>
+        </section>
+      ` : ''}
+
       <section class="era-page-section era-page-people-sec">
         <h2 class="era-page-h2">この時代を生きた偉人 <span class="era-page-people-count">${people.length}名</span></h2>
         <div class="era-page-people">
@@ -9495,6 +9605,8 @@ window.renderBookshelfGuides = renderBookshelfGuides;
   renderOshi();
   renderTraitsMatch();
   renderTodayBirthday();
+  try { renderTodayEcho(); } catch (e) { console.warn(e); }
+  try { renderHistoryMirrors(); } catch (e) { console.warn(e); }
   renderCalendarToday();
   renderPersonOfTheDay();
   renderQuoteOfTheDay();

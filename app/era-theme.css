@@ -641,3 +641,58 @@
 .era-theme-japan-sci .era-page-hero-bg { background: linear-gradient(135deg, #c73a3a 0%, #7a1a1a 55%, #3a0a0a 100%); }
 .era-theme-japan-sci .era-page { background: #f5e8e8; }
 .era-theme-japan-sci .era-page-h2 { color: #a02a2a; }
+
+/* 時代を超えた木霊（echoes） */
+.era-page-echoes-sec {
+  background: linear-gradient(135deg, rgba(80,40,80,0.04), rgba(40,20,60,0.08));
+}
+.era-echoes-lead {
+  margin: 0 0 14px;
+  font-size: 13px;
+  color: #5a4a6a;
+  font-style: italic;
+  letter-spacing: 0.04em;
+}
+.era-echoes-list {
+  display: flex; flex-direction: column; gap: 12px;
+}
+.era-echo-card {
+  background: rgba(255,255,255,0.65);
+  border: 1px solid rgba(80,40,80,0.15);
+  border-radius: 10px;
+  padding: 12px 14px;
+  position: relative;
+}
+.era-echo-card::before {
+  content: '🌀';
+  position: absolute;
+  top: 10px; right: 12px;
+  font-size: 16px;
+  opacity: 0.35;
+}
+.era-echo-chain {
+  font-size: 13px;
+  font-weight: 700;
+  color: #4a2a6a;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+  margin-bottom: 6px;
+  padding-right: 24px;
+  font-family: "Georgia", "Yu Mincho", serif;
+}
+.era-echo-pattern {
+  display: inline-block;
+  padding: 3px 10px;
+  background: rgba(80,40,80,0.12);
+  border-radius: 999px;
+  font-size: 11.5px;
+  color: #4a2a6a;
+  margin-bottom: 8px;
+  letter-spacing: 0.05em;
+}
+.era-echo-body {
+  margin: 6px 0 0;
+  font-size: 12.5px;
+  line-height: 1.85;
+  color: #3a2d3a;
+}
