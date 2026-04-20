@@ -404,9 +404,9 @@ function showView(name, pushHistory = true) {
       if (typeof stopPhoneAmbience === 'function') stopPhoneAmbience();
     }
   } catch {}
-  // キャラはホームのみ
+  // レキットは常に表示（スマホ開いているときだけ隠す）
   const rabin = document.getElementById('powerHintAnim');
-  if (rabin) rabin.hidden = (name !== 'people');
+  if (rabin) rabin.hidden = false;
   const intro = document.getElementById('welcomeIntro');
   if (intro && name !== 'people') intro.hidden = true;
   views.forEach(v => {
@@ -3494,8 +3494,9 @@ function playPortalTransition(menuEl, onComplete) {
       menuEl.classList.remove('open');
       menuEl.setAttribute('aria-hidden', 'true');
     }
-    // 戻る/進む浮遊ナビを再表示
+    // 戻る/進む浮遊ナビとレキットを再表示
     document.getElementById('floatNav')?.classList.remove('hide-for-phone');
+    { const el = document.getElementById('powerHintAnim'); if (el) el.hidden = false; }
     onComplete?.();  // → showView(v) がここで走る ⇒ 対象ビューのBGMが鳴り始める
   }, 200);
 
@@ -3911,8 +3912,9 @@ function initPhoneMenu() {
   const close = () => {
     menu.classList.remove('open');
     menu.setAttribute('aria-hidden', 'true');
-    // 戻る/進む浮遊ナビを再表示
+    // 戻る/進む浮遊ナビとレキットを再表示
     document.getElementById('floatNav')?.classList.remove('hide-for-phone');
+    { const el = document.getElementById('powerHintAnim'); if (el) el.hidden = false; }
     // スマホを閉じるときに内部状態をリセット
     const plazaEl = document.getElementById('phonePlazaApp');
     if (plazaEl) plazaEl.hidden = true;
@@ -3952,8 +3954,10 @@ function initPhoneMenu() {
   const open = () => {
     menu.classList.add('open');
     menu.setAttribute('aria-hidden', 'false');
-    // 戻る/進む浮遊ナビを隠す
+    // 戻る/進む浮遊ナビとレキットを隠す
     document.getElementById('floatNav')?.classList.add('hide-for-phone');
+    const hintEl = document.getElementById('powerHintAnim');
+    if (hintEl) hintEl.hidden = true;
     tick();
     updateBattery();
     updateNotif();
