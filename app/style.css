@@ -15483,6 +15483,157 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
   color: var(--ink-3);
   font-style: italic;
 }
+
+/* ============ マイレシピ／エディタ ============ */
+.meshiru-my {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 10px 10px 40px;
+  min-height: 0;
+}
+.meshiru-import-card {
+  display: flex;
+  gap: 8px;
+  padding: 10px 6px 16px;
+}
+.meshiru-import-btn {
+  flex: 1;
+  padding: 12px 10px;
+  background: linear-gradient(135deg, #c07d4e, #8a5a1d);
+  color: #fff7e6;
+  border: none;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: var(--font-jp);
+  box-shadow: 0 2px 6px rgba(138,90,29,0.2);
+}
+.meshiru-manual-btn {
+  background: #fff;
+  color: var(--wine);
+  border: 1px solid rgba(138,90,29,0.3);
+}
+.meshiru-import-btn:hover { filter: brightness(1.05); }
+.meshiru-my-list { display: flex; flex-direction: column; gap: 10px; }
+.meshiru-my-card { border-left: 3px solid #c07d4e; }
+.meshiru-my-actions {
+  display: flex;
+  gap: 4px;
+}
+.meshiru-my-edit, .meshiru-my-del {
+  background: none;
+  border: 1px solid rgba(138,90,29,0.2);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  color: var(--ink-3);
+}
+.meshiru-my-edit:hover, .meshiru-my-del:hover {
+  background: #fff7e6;
+  color: var(--wine);
+}
+.meshiru-source-link {
+  font-size: 10px;
+  color: #8a5a1d;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 2px;
+}
+.meshiru-source-link:hover { text-decoration: underline; }
+
+/* エディタモーダル */
+.meshiru-editor-panel { max-width: 420px; max-height: 85vh; }
+.meshiru-editor-body {
+  padding: 14px 16px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  flex: 1;
+}
+.meshiru-field { margin-bottom: 14px; }
+.meshiru-field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--wine);
+  margin-bottom: 6px;
+  font-family: var(--font-jp);
+}
+.meshiru-field input[type=text],
+.meshiru-field input[type=url],
+.meshiru-field textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid rgba(138,90,29,0.3);
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: var(--font-jp);
+  background: #faf6ed;
+  box-sizing: border-box;
+  resize: vertical;
+}
+.meshiru-field input:focus,
+.meshiru-field textarea:focus {
+  outline: none;
+  border-color: var(--wine);
+  background: #fff;
+  box-shadow: 0 0 0 2px rgba(138,90,29,0.1);
+}
+.meshiru-field-hint {
+  font-size: 10px;
+  color: var(--ink-4);
+  margin-top: 4px;
+}
+.meshiru-field-open {
+  margin-top: 6px;
+  padding: 5px 10px;
+  background: #fff;
+  border: 1px solid rgba(138,90,29,0.3);
+  border-radius: 6px;
+  font-size: 11px;
+  cursor: pointer;
+  color: var(--wine);
+  font-family: var(--font-jp);
+}
+.meshiru-field-info {
+  font-size: 11px;
+  color: var(--ink-3);
+  background: #fff7e6;
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-top: 6px;
+  line-height: 1.6;
+}
+.meshiru-editor-foot {
+  display: flex;
+  gap: 8px;
+  padding: 12px 14px;
+  background: #fff;
+  border-top: 1px solid rgba(138,90,29,0.12);
+}
+.meshiru-editor-cancel {
+  flex: 1;
+  padding: 10px;
+  background: #fff;
+  border: 1px solid rgba(138,90,29,0.3);
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: var(--font-jp);
+  color: var(--ink-2);
+}
+.meshiru-editor-save {
+  flex: 2;
+  padding: 10px;
+  background: linear-gradient(135deg, #c07d4e, #8a5a1d);
+  color: #fff7e6;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: var(--font-jp);
+  font-weight: 700;
+}
 .music-tracklist {
   min-height: 0;
   -webkit-overflow-scrolling: touch;

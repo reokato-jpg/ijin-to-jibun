@@ -4775,6 +4775,23 @@ function initPhoneMenu() {
   const MESHIRU_LIKES_KEY = 'ijin_meshiru_likes';
   const MESHIRU_PLAN_KEY = 'ijin_meshiru_plan';       // { 'YYYY-MM-DD:breakfast': recipeId, ... }
   const MESHIRU_CHECK_KEY = 'ijin_meshiru_check';    // { ingredientText: true }
+  const MESHIRU_MY_KEY = 'ijin_meshiru_my';          // [{ id, name, url, tagline, ingredients[], steps[], note }]
+
+  function loadMyRecipes() { try { return JSON.parse(localStorage.getItem(MESHIRU_MY_KEY) || '[]'); } catch { return []; } }
+  function saveMyRecipes(arr) { try { localStorage.setItem(MESHIRU_MY_KEY, JSON.stringify(arr)); } catch {} }
+  function detectRecipeSite(url) {
+    if (!url) return '';
+    if (/cookpad\.com/i.test(url)) return 'Cookpad';
+    if (/kurashiru/i.test(url)) return 'クラシル';
+    if (/delishkitchen/i.test(url)) return 'DELISH KITCHEN';
+    if (/orangepage/i.test(url)) return 'オレンジページ';
+    if (/macaro-ni\.jp/i.test(url)) return 'macaroni';
+    if (/nhk.*minna.*kyounoryouri|kyounoryouri/i.test(url)) return 'みんなのきょうの料理';
+    if (/instagram\.com/i.test(url)) return 'Instagram';
+    if (/tiktok\.com/i.test(url)) return 'TikTok';
+    if (/youtube\.com|youtu\.be/i.test(url)) return 'YouTube';
+    try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return 'Web'; }
+  }
   function loadMeshiruSet(k) { try { return new Set(JSON.parse(localStorage.getItem(k) || '[]')); } catch { return new Set(); } }
   function saveMeshiruSet(k, s) { try { localStorage.setItem(k, JSON.stringify([...s])); } catch {} }
   function loadMeshiruMap(k) { try { return JSON.parse(localStorage.getItem(k) || '{}'); } catch { return {}; } }
@@ -4787,6 +4804,8 @@ function initPhoneMenu() {
         p.recipes.forEach(r => out.push({ ...r, personId: p.id, personName: p.name, personField: p.field, personImage: p.imageUrl }));
       }
     });
+    // 自作レシピも含める
+    loadMyRecipes().forEach(r => out.push({ ...r, personId: '', personName: r.authorName || 'あなた', personField: 'マイレシピ', personImage: '', isMine: true }));
     return out;
   }
 
@@ -4904,6 +4923,176 @@ function initPhoneMenu() {
         });
       });
     }
+    // ── マイレシピ（URL取り込み＋手入力） ──
+    const myMount = document.getElementById('meshiruMy');
+    function renderMy() {
+      const mine = loadMyRecipes();
+      myMount.innerHTML = `
+        <div class="meshiru-intro">
+          <div class="meshiru-intro-title">📝 マイレシピ</div>
+          <div class="meshiru-intro-sub">Cookpad・クラシル・DELISH KITCHEN・Instagramなどで見つけたレシピのURLを貼り付けて、材料を入力するだけ。<br>買い物リストに自動で反映されます。</div>
+        </div>
+        <div class="meshiru-import-card">
+          <button class="meshiru-import-btn" id="meshiruImportBtn">➕ URLからレシピを追加</button>
+          <button class="meshiru-import-btn meshiru-manual-btn" id="meshiruManualBtn">✍ 手入力でレシピを追加</button>
+        </div>
+        ${mine.length === 0 ? `
+          <div class="meshiru-empty">まだマイレシピはありません。<br>URL貼り付け or 手入力で追加しましょう。</div>
+        ` : `
+          <div class="meshiru-my-list">
+            ${mine.map(r => `
+              <article class="meshiru-card meshiru-my-card">
+                <header class="meshiru-card-head">
+                  <div class="meshiru-av no-img">📝</div>
+                  <div class="meshiru-head-info">
+                    <div class="meshiru-person-field">${escapeHtml(r.sourceSite || 'マイレシピ')}</div>
+                    ${r.url ? `<a class="meshiru-source-link" href="${escapeHtml(r.url)}" target="_blank" rel="noopener">🔗 元レシピを見る →</a>` : ''}
+                  </div>
+                  <div class="meshiru-my-actions">
+                    <button class="meshiru-my-edit" data-my-edit="${r.id}" aria-label="編集">✎</button>
+                    <button class="meshiru-my-del" data-my-del="${r.id}" aria-label="削除">🗑</button>
+                  </div>
+                </header>
+                <div class="meshiru-card-body">
+                  <h3 class="meshiru-recipe-title">${escapeHtml(r.name || '（無題のレシピ）')}</h3>
+                  ${r.tagline ? `<p class="meshiru-tagline-in">${escapeHtml(r.tagline)}</p>` : ''}
+                  <details class="meshiru-details">
+                    <summary>📋 材料（${(r.ingredients || []).length}点）</summary>
+                    <ul class="meshiru-ingredients">${(r.ingredients || []).map(i => `<li>${escapeHtml(i)}</li>`).join('')}</ul>
+                  </details>
+                  ${(r.steps && r.steps.length) ? `
+                    <details class="meshiru-details">
+                      <summary>👨‍🍳 作り方（${r.steps.length}ステップ）</summary>
+                      <ol class="meshiru-steps">${r.steps.map(s => `<li>${escapeHtml(s)}</li>`).join('')}</ol>
+                    </details>
+                  ` : ''}
+                  ${r.note ? `<div class="meshiru-note">💡 ${escapeHtml(r.note)}</div>` : ''}
+                </div>
+              </article>
+            `).join('')}
+          </div>
+        `}
+      `;
+      myMount.querySelector('#meshiruImportBtn')?.addEventListener('click', () => openMyEditor({ mode: 'url' }));
+      myMount.querySelector('#meshiruManualBtn')?.addEventListener('click', () => openMyEditor({ mode: 'manual' }));
+      myMount.querySelectorAll('[data-my-edit]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.dataset.myEdit;
+          const r = loadMyRecipes().find(x => x.id === id);
+          if (r) openMyEditor({ mode: 'manual', existing: r });
+        });
+      });
+      myMount.querySelectorAll('[data-my-del]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (!confirm('このレシピを削除しますか？')) return;
+          const id = btn.dataset.myDel;
+          saveMyRecipes(loadMyRecipes().filter(x => x.id !== id));
+          renderMy();
+          // レシピリスト再生成
+          recipes.length = 0;
+          getAllRecipes().forEach(r => recipes.push(r));
+        });
+      });
+    }
+    function openMyEditor({ mode, existing }) {
+      const modal = document.createElement('div');
+      modal.id = 'meshiruEditorModal';
+      modal.className = 'meshiru-pick-modal meshiru-editor-modal';
+      const isEdit = !!existing;
+      const r = existing || { id: 'my_' + Date.now(), name: '', url: '', tagline: '', ingredients: [], steps: [], note: '' };
+      modal.innerHTML = `
+        <div class="meshiru-pick-backdrop"></div>
+        <div class="meshiru-pick-panel meshiru-editor-panel">
+          <div class="meshiru-pick-head">
+            <div class="meshiru-pick-title">${isEdit ? 'レシピを編集' : (mode === 'url' ? 'URLからレシピ追加' : '手入力でレシピ追加')}</div>
+            <button class="meshiru-pick-close">×</button>
+          </div>
+          <div class="meshiru-editor-body">
+            ${mode === 'url' && !isEdit ? `
+              <div class="meshiru-field">
+                <label>🔗 レシピのURL</label>
+                <input type="url" id="mrUrl" placeholder="https://cookpad.com/recipe/... など" value="${escapeHtml(r.url || '')}">
+                <div class="meshiru-field-hint">Cookpad / クラシル / DELISH KITCHEN / Instagram / TikTok / YouTube など、どこのURLでもOK</div>
+                <button class="meshiru-field-open" id="mrOpenUrl" type="button">↗ URLを新しいタブで開く</button>
+              </div>
+            ` : ''}
+            <div class="meshiru-field">
+              <label>🍽 レシピ名</label>
+              <input type="text" id="mrName" placeholder="例：母の肉じゃが" value="${escapeHtml(r.name || '')}">
+            </div>
+            ${mode === 'manual' ? `
+              <div class="meshiru-field">
+                <label>📝 ひとこと（任意）</label>
+                <input type="text" id="mrTagline" placeholder="例：寒い夜に、染みる味" value="${escapeHtml(r.tagline || '')}">
+              </div>
+            ` : `<input type="hidden" id="mrTagline" value="${escapeHtml(r.tagline || '')}">`}
+            <div class="meshiru-field">
+              <label>📋 材料（1行に1つ、買い物リストに自動反映）</label>
+              <textarea id="mrIngredients" rows="6" placeholder="じゃがいも 3個\n玉ねぎ 1個\n牛肉 200g\n醤油 大さじ3\nみりん 大さじ2">${escapeHtml((r.ingredients || []).join('\n'))}</textarea>
+            </div>
+            ${mode === 'manual' ? `
+              <div class="meshiru-field">
+                <label>👨‍🍳 作り方（任意・1行1ステップ）</label>
+                <textarea id="mrSteps" rows="4" placeholder="じゃがいもを切る\n油で炒める\n調味料と水を加えて煮る">${escapeHtml((r.steps || []).join('\n'))}</textarea>
+              </div>
+              <div class="meshiru-field">
+                <label>💡 メモ（任意）</label>
+                <input type="text" id="mrNote" placeholder="例：圧力鍋で15分" value="${escapeHtml(r.note || '')}">
+              </div>
+            ` : `<input type="hidden" id="mrSteps" value=""><input type="hidden" id="mrNote" value="${escapeHtml(r.note || '')}">`}
+            ${mode === 'url' && !isEdit ? `
+              <div class="meshiru-field-info">📝 URL先で材料をコピーして、上の『材料』欄に貼り付けてください。</div>
+            ` : ''}
+          </div>
+          <div class="meshiru-editor-foot">
+            <button class="meshiru-editor-cancel">キャンセル</button>
+            <button class="meshiru-editor-save">${isEdit ? '保存' : '追加'}</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+      const close = () => modal.remove();
+      modal.querySelector('.meshiru-pick-backdrop').addEventListener('click', close);
+      modal.querySelector('.meshiru-pick-close').addEventListener('click', close);
+      modal.querySelector('.meshiru-editor-cancel').addEventListener('click', close);
+      modal.querySelector('#mrOpenUrl')?.addEventListener('click', () => {
+        const url = modal.querySelector('#mrUrl').value.trim();
+        if (url) window.open(url, '_blank', 'noopener');
+      });
+      modal.querySelector('.meshiru-editor-save').addEventListener('click', () => {
+        const url = modal.querySelector('#mrUrl')?.value.trim() || r.url || '';
+        const name = modal.querySelector('#mrName').value.trim();
+        const tagline = modal.querySelector('#mrTagline').value.trim();
+        const ingredientsRaw = modal.querySelector('#mrIngredients').value;
+        const stepsRaw = modal.querySelector('#mrSteps').value;
+        const note = modal.querySelector('#mrNote').value.trim();
+        if (!name && !url) { alert('レシピ名かURLを入力してください。'); return; }
+        const ingredients = ingredientsRaw.split('\n').map(s => s.trim()).filter(Boolean);
+        const steps = stepsRaw.split('\n').map(s => s.trim()).filter(Boolean);
+        const rec = {
+          id: r.id,
+          name: name || (url ? `（${detectRecipeSite(url)}から）` : '無題のレシピ'),
+          url,
+          sourceSite: url ? detectRecipeSite(url) : '',
+          tagline,
+          ingredients,
+          steps,
+          note,
+          createdAt: r.createdAt || new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        };
+        const list = loadMyRecipes();
+        const idx = list.findIndex(x => x.id === rec.id);
+        if (idx >= 0) list[idx] = rec; else list.unshift(rec);
+        saveMyRecipes(list);
+        // グローバルrecipesにも反映（献立選択で即使えるように）
+        recipes.length = 0;
+        getAllRecipes().forEach(x => recipes.push(x));
+        close();
+        renderMy();
+      });
+    }
+
     // ── 献立プランナー ──
     const planMount = document.getElementById('meshiruPlan');
     function currentWeekDates() {
@@ -5090,8 +5279,9 @@ function initPhoneMenu() {
       tab.addEventListener('click', () => {
         document.querySelectorAll('[data-meshiru-tab]').forEach(t => t.classList.toggle('active', t === tab));
         const which = tab.dataset.meshiruTab;
-        [feed, planMount, shoppingMount, savedMount].forEach(m => { if (m) m.hidden = true; });
+        [feed, myMount, planMount, shoppingMount, savedMount].forEach(m => { if (m) m.hidden = true; });
         if (which === 'feed') { feed.hidden = false; renderFeed(); }
+        else if (which === 'my') { myMount.hidden = false; renderMy(); }
         else if (which === 'plan') { planMount.hidden = false; renderPlan(); }
         else if (which === 'shopping') { shoppingMount.hidden = false; renderShopping(); }
         else { savedMount.hidden = false; renderSaved(); }

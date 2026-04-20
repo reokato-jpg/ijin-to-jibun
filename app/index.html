@@ -70,8 +70,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20260424F">
-<link rel="stylesheet" href="era-theme.css?v=20260424F">
+<link rel="stylesheet" href="style.css?v=20260424G">
+<link rel="stylesheet" href="era-theme.css?v=20260424G">
 </head>
 <body>
   <header class="app-header">
@@ -542,7 +542,7 @@
             <span>ミュージック</span>
           </button>
           <button class="phone-icon phone-icon-meshiru" data-phone-action="meshiru">
-            <span class="phone-icon-emoji">🍳</span>
+            <img src="assets/phone/icon-meshiru.png?v=1" alt="">
             <span>めしる</span>
           </button>
           <button class="phone-icon" data-phone-view="articles">
@@ -585,11 +585,13 @@
           <div class="meshiru-app">
             <div class="meshiru-tabs">
               <button class="meshiru-tab active" data-meshiru-tab="feed">🍽 レシピ</button>
+              <button class="meshiru-tab" data-meshiru-tab="my">📝 マイ</button>
               <button class="meshiru-tab" data-meshiru-tab="plan">📅 献立</button>
               <button class="meshiru-tab" data-meshiru-tab="shopping">🛒 買い物</button>
               <button class="meshiru-tab" data-meshiru-tab="saved">🔖 保存</button>
             </div>
             <div class="meshiru-feed" id="meshiruFeed"></div>
+            <div class="meshiru-my" id="meshiruMy" hidden></div>
             <div class="meshiru-plan" id="meshiruPlan" hidden></div>
             <div class="meshiru-shopping" id="meshiruShopping" hidden></div>
             <div class="meshiru-saved" id="meshiruSaved" hidden></div>
@@ -733,10 +735,10 @@
     </div>
   </div>
 
-  <script src="era-lore.js?v=20260424F"></script>
-  <script src="history-patterns.js?v=20260424F"></script>
-  <script src="app.js?v=20260424F"></script>
-  <script src="auth.js?v=20260424F" type="module"></script>
+  <script src="era-lore.js?v=20260424G"></script>
+  <script src="history-patterns.js?v=20260424G"></script>
+  <script src="app.js?v=20260424G"></script>
+  <script src="auth.js?v=20260424G" type="module"></script>
   <script src="ai-consult.js"></script>
 </body>
 </html>
