@@ -4680,14 +4680,14 @@ function initPhoneMenu() {
     app.innerHTML = `
       <div class="plaza-app-head tool-app-head">
         <button class="plaza-app-back tool-app-back" type="button" data-history-close="1" aria-label="戻る">‹</button>
-        <span class="plaza-app-title">今日の足跡</span>
+        <span class="plaza-app-title">今日の軌跡</span>
       </div>
       <div class="history-app">
         <div class="history-head-note">${new Date().getMonth()+1}月${new Date().getDate()}日、今日出会った偉人たち（${todayPeople.length}人）</div>
         ${todayPeople.length === 0 ? `
           <div class="history-empty">
             <div class="history-empty-ic">👣</div>
-            <div>今日はまだ誰とも出会っていません。<br>偉人のページを開くと、ここに足跡が残ります。</div>
+            <div>今日はまだ誰とも出会っていません。<br>偉人のページを開くと、ここに軌跡が残ります。</div>
           </div>
         ` : `
           <div class="history-list">
@@ -5107,7 +5107,7 @@ async function showPerson(id) {
       <div class="profile-visitors-section">
         <div class="profile-visitors-head">
           <span class="profile-visitors-ic">👣</span>
-          <span class="profile-visitors-title">読者の足跡</span>
+          <span class="profile-visitors-title">読者の軌跡</span>
         </div>
         <div id="personVisitorsMount" class="person-visitors-mount"></div>
       </div>
@@ -5829,7 +5829,7 @@ async function showPerson(id) {
       mount.innerHTML = `
         <div class="visitors-empty">
           <div class="visitors-empty-ic">👣</div>
-          <div>まだ他の読者の足跡はありません。<br>最初の訪問者があなたかもしれません。</div>
+          <div>まだ他の読者の軌跡はありません。<br>最初の訪問者があなたかもしれません。</div>
         </div>`;
       return;
     }
@@ -8526,6 +8526,11 @@ function openEraModal(catId, eraId) {
         </div>
       </section>
 
+      <section class="era-page-section era-page-visitors-sec">
+        <h2 class="era-page-h2">読者の軌跡</h2>
+        <div id="eraVisitorsMount" class="era-visitors-mount"></div>
+      </section>
+
       <footer class="era-page-foot">
         <button class="era-page-back-btn" data-close="1">← 年表に戻る</button>
       </footer>
@@ -8541,6 +8546,92 @@ function openEraModal(catId, eraId) {
       setTimeout(() => showPerson(el.dataset.jumpPerson), 260);
     });
   });
+
+  // 軌跡：訪問を記録して一覧取得
+  const eraKey = catId + '_' + eraId;
+  (async () => {
+    try {
+      if (typeof window.recordVisitorToEra === 'function' && currentUser) {
+        const myName = getUserName() || currentUser.displayName || '名無しの読者';
+        const myAvatar = localStorage.getItem('ijin_user_avatar') || '';
+        window.recordVisitorToEra(eraKey, { name: myName, avatar: myAvatar });
+      }
+      if (typeof window.fetchVisitorsToEra === 'function') {
+        const visitors = await window.fetchVisitorsToEra(eraKey);
+        renderEraVisitors(visitors);
+      }
+    } catch {}
+  })();
+
+  function renderEraVisitors(visitors) {
+    const mount = modal.querySelector('#eraVisitorsMount');
+    if (!mount) return;
+    const myUid = (typeof currentUser !== 'undefined' && currentUser) ? currentUser.uid : '';
+    const others = (visitors || []).filter(v => v.uid !== myUid);
+    if (others.length === 0) {
+      mount.innerHTML = `
+        <div class="visitors-empty">
+          <div class="visitors-empty-ic">👣</div>
+          <div>まだ他の読者の軌跡はありません。<br>この時代を最初に訪れたのは、あなたかもしれません。</div>
+        </div>`;
+      return;
+    }
+    mount.innerHTML = `
+      <div class="visitors-hint">この時代を訪れた読者たち</div>
+      <div class="visitors-list">
+        ${others.map(v => {
+          const following = isFollowingUser(v.uid);
+          const liked = isLikedUser(v.uid);
+          const bg = v.avatar ? `style="background-image:url('${escapeHtml(v.avatar)}')"` : '';
+          const initial = (v.name || '?').charAt(0);
+          const dt = v.visitedAt ? new Date(v.visitedAt) : null;
+          const when = dt ? `${dt.getMonth()+1}/${dt.getDate()}` : '';
+          return `
+            <div class="visitor-card" data-uid="${escapeHtml(v.uid)}">
+              <div class="visitor-av" ${bg}>${v.avatar ? '' : initial}</div>
+              <div class="visitor-info">
+                <div class="visitor-name">${escapeHtml(v.name || '名無しの読者')}</div>
+                <div class="visitor-meta">👣 ${when}</div>
+              </div>
+              <div class="visitor-actions">
+                <button class="visitor-btn visitor-like ${liked ? 'active' : ''}" data-user-like="${escapeHtml(v.uid)}">
+                  ${liked ? '❤' : '♡'}
+                </button>
+                <button class="visitor-btn visitor-follow ${following ? 'active' : ''}" data-visitor-follow="${escapeHtml(v.uid)}">
+                  ${following ? '✓' : '＋'}
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+    mount.querySelectorAll('[data-user-like]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const uid = btn.dataset.userLike;
+        const on = toggleLikeUser(uid);
+        btn.classList.toggle('active', on);
+        btn.textContent = on ? '❤' : '♡';
+      });
+    });
+    mount.querySelectorAll('[data-visitor-follow]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const uid = btn.dataset.visitorFollow;
+        const on = toggleFollowUser(uid);
+        btn.classList.toggle('active', on);
+        btn.textContent = on ? '✓' : '＋';
+      });
+    });
+    mount.querySelectorAll('.visitor-card').forEach(card => {
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('.visitor-btn')) return;
+        const uid = card.dataset.uid;
+        if (uid && typeof openUserPublicProfile === 'function') openUserPublicProfile(uid);
+      });
+    });
+  }
 }
 window.openEraModal = openEraModal;
 function tlPersonCard(p, opts = {}) {

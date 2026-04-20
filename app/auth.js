@@ -120,6 +120,34 @@ async function initFirebase() {
       return 0;
     };
 
+    // 年表の時代ページの訪問者記録＆取得
+    window.recordVisitorToEra = async (eraKey, profile) => {
+      if (!fbDb || !eraKey || !currentUser) return;
+      try {
+        const uid = currentUser.uid;
+        const ref = doc(fbDb, 'eraVisitors', eraKey + '__' + uid);
+        await setDoc(ref, {
+          eraKey, uid,
+          name: profile?.name || '',
+          avatar: profile?.avatar || '',
+          visitedAt: new Date().toISOString(),
+        }, { merge: true });
+      } catch {}
+    };
+    window.fetchVisitorsToEra = async (eraKey) => {
+      if (!fbDb || !eraKey) return [];
+      try {
+        const snap = await getDocs(collection(fbDb, 'eraVisitors'));
+        const visitors = [];
+        snap.forEach(d => {
+          const data = d.data();
+          if (data.eraKey === eraKey) visitors.push(data);
+        });
+        visitors.sort((a, b) => (b.visitedAt || '').localeCompare(a.visitedAt || ''));
+        return visitors.slice(0, 20);
+      } catch { return []; }
+    };
+
     // 偉人ページの訪問者記録（ログイン中のみ自分を記録）
     window.recordVisitorToPerson = async (personId, profile) => {
       if (!fbDb || !personId) return;
