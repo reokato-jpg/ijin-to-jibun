@@ -1,0 +1,57 @@
+{
+  "id": "louis_armstrong",
+  "name": "ルイ・アームストロング",
+  "nameEn": "Louis Armstrong",
+  "birth": 1901,
+  "death": 1971,
+  "country": "アメリカ",
+  "field": "ジャズ・トランペット奏者・歌手",
+  "summary": "ジャズの父、サッチモ。ニューオーリンズの貧困から世界を魅了した温かいダミ声と絶頂のトランペット——20世紀アメリカ音楽の出発点。",
+  "events": [
+    {
+      "year": 1901,
+      "age": 0,
+      "title": "アメリカで生まれる",
+      "detail": ""
+    },
+    {
+      "year": 1971,
+      "age": 70,
+      "title": "逝去",
+      "detail": ""
+    }
+  ],
+  "quotes": [
+    {
+      "text": "音楽とは、世界の共通言語だ。",
+      "source": "名言集"
+    },
+    {
+      "text": "それが何だ？ 私はただトランペットを吹くだけだ。",
+      "source": "名言集"
+    }
+  ],
+  "relations": [],
+  "places": [],
+  "books": [],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Louis_Armstrong_NYWTS.jpg/280px-Louis_Armstrong_NYWTS.jpg",
+  "wikiTitle": "ルイ・アームストロング",
+  "birthMonth": 8,
+  "birthDay": 4,
+  "lifeDigest": "アメリカのジャズ・トランペット奏者、歌手。ニューオーリンズの貧困街で生まれ、感化院のバンドで楽器を学ぶ。1920年代にキング・オリバーのバンド、次いで自身の『ホット・ファイヴ』『ホット・セヴン』で即興演奏の基礎を作った。『What a Wonderful World』(1967) は世界中で愛され続ける。愛称『サッチモ』（Satchel Mouth = 大きな口）。69歳、ニューヨークの自宅で心臓発作。",
+  "traits": {
+    "foods": [
+      "赤豆とライス（故郷の味）",
+      "ジャンバラヤ",
+      "スウェーデン風ラクサ"
+    ],
+    "hobbies": [
+      "トランペット（毎日練習）",
+      "日記",
+      "手紙（数千通）"
+    ],
+    "personality": "明るい、温かい、ユーモア、信念。どんな差別の中でも音楽で応えた。",
+    "likes": [],
+    "dislikes": []
+  }
+}

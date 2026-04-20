@@ -1,0 +1,57 @@
+{
+  "id": "salvador_dali",
+  "name": "サルバドール・ダリ",
+  "nameEn": "Salvador Dalí",
+  "birth": 1904,
+  "death": 1989,
+  "country": "スペイン",
+  "field": "画家（シュルレアリスム）",
+  "summary": "溶ける時計、髭の先まで芸術。自己演出で世界を驚かせた20世紀最大のシュルレアリスト、『記憶の固執』の巨匠。",
+  "events": [
+    {
+      "year": 1904,
+      "age": 0,
+      "title": "スペインで生まれる",
+      "detail": ""
+    },
+    {
+      "year": 1989,
+      "age": 85,
+      "title": "逝去",
+      "detail": ""
+    }
+  ],
+  "quotes": [
+    {
+      "text": "狂っているのと天才の違いは、私が天才であるということだ。",
+      "source": "名言集"
+    },
+    {
+      "text": "完璧を目指す必要はない。決して到達できないのだから。",
+      "source": "名言集"
+    }
+  ],
+  "relations": [],
+  "places": [],
+  "books": [],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Salvador_Dal%C3%AD_1939.jpg/280px-Salvador_Dal%C3%AD_1939.jpg",
+  "wikiTitle": "サルバドール・ダリ",
+  "birthMonth": 5,
+  "birthDay": 11,
+  "lifeDigest": "スペイン・カタルーニャ生まれの画家。シュルレアリスム運動の中心人物。『記憶の固執』(1931) の溶ける時計で世界を驚愕させた。自己演出の天才で、髭・奇行・独特のアクセントを武器にメディアを操る。妻ガラが生涯の創作の源泉。84歳、スペインのフィゲーラスで逝去。ダリ劇場美術館に埋葬。",
+  "traits": {
+    "foods": [
+      "シーフード（特にロブスター）",
+      "シャンパン",
+      "チョコレート"
+    ],
+    "hobbies": [
+      "絵画",
+      "自己演出",
+      "映画（ブニュエルと共作）"
+    ],
+    "personality": "ナルシシズム、完璧主義、天才的、挑発的。自分自身を芸術作品として生きた。",
+    "likes": [],
+    "dislikes": []
+  }
+}

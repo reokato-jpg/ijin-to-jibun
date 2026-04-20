@@ -1,0 +1,57 @@
+{
+  "id": "david_bowie",
+  "name": "デヴィッド・ボウイ",
+  "nameEn": "David Bowie",
+  "birth": 1947,
+  "death": 2016,
+  "country": "イギリス",
+  "field": "ロック歌手・俳優",
+  "summary": "音楽とファッションを変え続けたカメレオン。ジギー・スターダスト、シン・ホワイト・デューク——自分自身を50年間、発明し続けた男。",
+  "events": [
+    {
+      "year": 1947,
+      "age": 0,
+      "title": "イギリスで生まれる",
+      "detail": ""
+    },
+    {
+      "year": 2016,
+      "age": 69,
+      "title": "逝去",
+      "detail": ""
+    }
+  ],
+  "quotes": [
+    {
+      "text": "明日のことを考えるには、自分をいつも裏切らなければいけない。",
+      "source": "名言集"
+    },
+    {
+      "text": "芸術家は常に危険な場所にいるべきだ。",
+      "source": "名言集"
+    }
+  ],
+  "relations": [],
+  "places": [],
+  "books": [],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/David-Bowie_Chicago_2002-08-08_photoby_Adam-Bielawski-cropped.jpg/280px-David-Bowie_Chicago_2002-08-08_photoby_Adam-Bielawski-cropped.jpg",
+  "wikiTitle": "デヴィッド・ボウイ",
+  "birthMonth": 1,
+  "birthDay": 8,
+  "lifeDigest": "英国のロック・ミュージシャン、俳優。『Space Oddity』(1969)、『Ziggy Stardust』(1972)、『Heroes』(1977)、遺作『Blackstar』(2016、死の2日前リリース)。音楽・ビジュアル・性別の境界を壊し、グラム・ロックとアート・ロックの祖。69歳、肝癌で逝去。",
+  "traits": {
+    "foods": [
+      "日本食（特に寿司）",
+      "紅茶",
+      "コーヒー（モカ）"
+    ],
+    "hobbies": [
+      "絵画",
+      "読書（年100冊）",
+      "インターネット黎明期の研究"
+    ],
+    "personality": "知性的、変幻自在、孤独、読書家。芸術に人生を捧げたインテリ・ロッカー。",
+    "likes": [],
+    "dislikes": []
+  }
+}

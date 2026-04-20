@@ -1,0 +1,62 @@
+{
+  "id": "john_lennon",
+  "name": "ジョン・レノン",
+  "nameEn": "John Lennon",
+  "birth": 1940,
+  "death": 1980,
+  "country": "イギリス",
+  "field": "ミュージシャン（ビートルズ）・平和活動家",
+  "summary": "ビートルズの中心メンバー、20世紀最大の詩人ミュージシャン。『イマジン』で世界に平和の夢を歌った、反体制の革命児。",
+  "events": [
+    {
+      "year": 1940,
+      "age": 0,
+      "title": "イギリスで生まれる",
+      "detail": ""
+    },
+    {
+      "year": 1980,
+      "age": 40,
+      "title": "逝去",
+      "detail": ""
+    }
+  ],
+  "quotes": [
+    {
+      "text": "想像してごらん。",
+      "source": "名言集"
+    },
+    {
+      "text": "愛こそはすべて。",
+      "source": "名言集"
+    },
+    {
+      "text": "人生とは、君が計画を立てているときに起こる別のことだ。",
+      "source": "名言集"
+    }
+  ],
+  "relations": [],
+  "places": [],
+  "books": [],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/John_Lennon_1969_%28cropped%29.jpg/280px-John_Lennon_1969_%28cropped%29.jpg",
+  "wikiTitle": "ジョン・レノン",
+  "birthMonth": 10,
+  "birthDay": 9,
+  "lifeDigest": "リヴァプール生まれのミュージシャン。1960年結成のザ・ビートルズの中心人物として『Hey Jude』『Let It Be』『Strawberry Fields Forever』など多数を作曲。1969年オノ・ヨーコと結婚、ベッド・インなど平和運動を展開。1970年ビートルズ解散後、『Imagine』(1971) で世界の歌を作った。40歳、ニューヨークの自宅前で熱狂的ファンに銃撃され死去。",
+  "traits": {
+    "foods": [
+      "マクロビオティック（晩年）",
+      "紅茶",
+      "イギリス朝食"
+    ],
+    "hobbies": [
+      "作詞作曲",
+      "スケッチ",
+      "平和運動",
+      "瞑想"
+    ],
+    "personality": "率直、反骨精神、皮肉屋、深く愛情深い。傷つきやすくも愛を貫いた。",
+    "likes": [],
+    "dislikes": []
+  }
+}

@@ -14529,6 +14529,9 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
   border-radius: 12px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.15);
 }
+.phone-icon-me-emoji {
+  background: linear-gradient(145deg, #efe6ff, #c4b6e8) !important;
+}
 @keyframes otayori-shine {
   0%, 100% { left: -50%; }
   50% { left: 120%; }

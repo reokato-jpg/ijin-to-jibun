@@ -1,0 +1,58 @@
+{
+  "id": "poe",
+  "name": "エドガー・アラン・ポー",
+  "nameEn": "Edgar Allan Poe",
+  "birth": 1809,
+  "death": 1849,
+  "country": "アメリカ",
+  "field": "小説家・詩人",
+  "summary": "推理小説とゴシック・ホラーの祖。『大鴉』『黒猫』『アッシャー家の崩壊』——闇と狂気と美を同居させた、アメリカの悲劇の詩人。",
+  "events": [
+    {
+      "year": 1809,
+      "age": 0,
+      "title": "アメリカで生まれる",
+      "detail": ""
+    },
+    {
+      "year": 1849,
+      "age": 40,
+      "title": "逝去",
+      "detail": ""
+    }
+  ],
+  "quotes": [
+    {
+      "text": "すべての芸術は、美の創造を目的とする。",
+      "source": "名言集"
+    },
+    {
+      "text": "深く考える者は、必ず孤独になる。",
+      "source": "名言集"
+    }
+  ],
+  "relations": [],
+  "places": [],
+  "books": [],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Edgar_Allan_Poe_1848.jpg/280px-Edgar_Allan_Poe_1848.jpg",
+  "wikiTitle": "エドガー・アラン・ポー",
+  "birthMonth": 1,
+  "birthDay": 19,
+  "lifeDigest": "アメリカの小説家、詩人、文芸評論家。推理小説（『モルグ街の殺人』1841 で世界初）、ゴシック・ホラー（『黒猫』『アッシャー家の崩壊』）、象徴詩（『大鴉』1845）の3つのジャンルの父。酒と貧困、若い妻ヴァージニアの結核死、自身の精神の不安定——作品同様の陰鬱な人生を40歳で終える。ボルティモアの路上で意識不明で発見、数日後に死去、死因不明。",
+  "traits": {
+    "foods": [
+      "ウイスキー",
+      "パン",
+      "牡蠣"
+    ],
+    "hobbies": [
+      "詩作",
+      "執筆",
+      "猫（ケイトリン）",
+      "暗号解読"
+    ],
+    "personality": "憂鬱、情熱的、美への執着、破滅的。闇と光が同居した天才。",
+    "likes": [],
+    "dislikes": []
+  }
+}

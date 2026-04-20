@@ -1,0 +1,58 @@
+{
+  "id": "orwell",
+  "name": "ジョージ・オーウェル",
+  "nameEn": "George Orwell",
+  "birth": 1903,
+  "death": 1950,
+  "country": "イギリス",
+  "field": "小説家・ジャーナリスト",
+  "summary": "『1984年』『動物農場』で全体主義を解剖した反骨のジャーナリスト。『ビッグ・ブラザー』『ニュースピーク』——20世紀の警告を遺した男。",
+  "events": [
+    {
+      "year": 1903,
+      "age": 0,
+      "title": "イギリスで生まれる",
+      "detail": ""
+    },
+    {
+      "year": 1950,
+      "age": 47,
+      "title": "逝去",
+      "detail": ""
+    }
+  ],
+  "quotes": [
+    {
+      "text": "戦争は平和だ、自由は隷従だ、無知は力だ。",
+      "source": "名言集"
+    },
+    {
+      "text": "自由とは、2+2=4と言える自由のことだ。",
+      "source": "名言集"
+    }
+  ],
+  "relations": [],
+  "places": [],
+  "books": [],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/George_Orwell_press_photo.jpg/280px-George_Orwell_press_photo.jpg",
+  "wikiTitle": "ジョージ・オーウェル",
+  "birthMonth": 6,
+  "birthDay": 25,
+  "lifeDigest": "本名エリック・アーサー・ブレア、イギリスの小説家・ジャーナリスト。ビルマ警察勤務、スペイン内戦従軍、BBC勤務などの経験をもとに、全体主義の危険を小説で警告した。『動物農場』(1945) はスターリン主義の寓話、『1984年』(1949) は監視社会の予言の書。46歳、結核でロンドンの病院で逝去、『1984年』発表のわずか7ヶ月後。",
+  "traits": {
+    "foods": [
+      "紅茶（11ヶ条あり）",
+      "イギリス家庭料理",
+      "葉巻"
+    ],
+    "hobbies": [
+      "園芸（バラ栽培）",
+      "釣り",
+      "読書",
+      "シンプル生活"
+    ],
+    "personality": "反骨、誠実、観察者、皮肉。権力を常に疑った誠実なジャーナリスト。",
+    "likes": [],
+    "dislikes": []
+  }
+}

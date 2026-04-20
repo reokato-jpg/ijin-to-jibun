@@ -1,0 +1,57 @@
+{
+  "id": "virginia_woolf",
+  "name": "ヴァージニア・ウルフ",
+  "nameEn": "Virginia Woolf",
+  "birth": 1882,
+  "death": 1941,
+  "country": "イギリス",
+  "field": "小説家・評論家",
+  "summary": "意識の流れ手法でモダニズム文学を切り拓いた女性。『ダロウェイ夫人』『自分だけの部屋』——20世紀フェミニズムの母。",
+  "events": [
+    {
+      "year": 1882,
+      "age": 0,
+      "title": "イギリスで生まれる",
+      "detail": ""
+    },
+    {
+      "year": 1941,
+      "age": 59,
+      "title": "逝去",
+      "detail": ""
+    }
+  ],
+  "quotes": [
+    {
+      "text": "女性が小説を書くためには、お金と自分だけの部屋が必要だ。",
+      "source": "名言集"
+    },
+    {
+      "text": "人生には、最も平凡な日に奇跡が起こる。",
+      "source": "名言集"
+    }
+  ],
+  "relations": [],
+  "places": [],
+  "books": [],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/George_Charles_Beresford_-_Virginia_Woolf_in_1902_-_Restoration.jpg/280px-George_Charles_Beresford_-_Virginia_Woolf_in_1902_-_Restoration.jpg",
+  "wikiTitle": "ヴァージニア・ウルフ",
+  "birthMonth": 1,
+  "birthDay": 25,
+  "lifeDigest": "イギリスの小説家・評論家。ブルームズベリー・グループの中心人物。『ダロウェイ夫人』(1925)、『灯台へ』(1927)、『波』(1931) で意識の流れ手法を確立。エッセイ『自分だけの部屋』(1929) は現代フェミニズム文学の原典。幼少期の性的虐待、母・姉・父の相次ぐ死、精神の不安定との生涯の闘い。59歳、第二次大戦の空襲下、ウーズ川に石を詰めたポケットで投身自殺。",
+  "traits": {
+    "foods": [
+      "紅茶（ダージリン）",
+      "スコーン",
+      "魚料理"
+    ],
+    "hobbies": [
+      "読書（古典ギリシャ語含む）",
+      "日記（40年分）",
+      "散歩"
+    ],
+    "personality": "繊細、知性的、鬱病、完璧主義。光と闇を行き来した天才。",
+    "likes": [],
+    "dislikes": []
+  }
+}

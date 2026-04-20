@@ -1,0 +1,57 @@
+{
+  "id": "bob_marley",
+  "name": "ボブ・マーリー",
+  "nameEn": "Bob Marley",
+  "birth": 1945,
+  "death": 1981,
+  "country": "ジャマイカ",
+  "field": "レゲエ歌手・作曲家",
+  "summary": "レゲエを世界音楽にしたジャマイカの預言者。『No Woman, No Cry』『One Love』——愛と自由と抵抗を歌った、第三世界の声。",
+  "events": [
+    {
+      "year": 1945,
+      "age": 0,
+      "title": "ジャマイカで生まれる",
+      "detail": ""
+    },
+    {
+      "year": 1981,
+      "age": 36,
+      "title": "逝去",
+      "detail": ""
+    }
+  ],
+  "quotes": [
+    {
+      "text": "音楽は銃弾で撃たれても死なない。",
+      "source": "名言集"
+    },
+    {
+      "text": "お金持ちが偉いんじゃない、与える人が偉いんだ。",
+      "source": "名言集"
+    }
+  ],
+  "relations": [],
+  "places": [],
+  "books": [],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Bob-Marley.jpg/280px-Bob-Marley.jpg",
+  "wikiTitle": "ボブ・マーリー",
+  "birthMonth": 2,
+  "birthDay": 6,
+  "lifeDigest": "ジャマイカのレゲエ・ミュージシャン。Bob Marley and the Wailers を率いて『No Woman, No Cry』『Redemption Song』『One Love』を発表。ラスタファリ運動の信奉者として、第三世界・反アパルトヘイト・平和のメッセージを音楽に乗せた。1980年凶弾を生き延びるも、黒色腫のため36歳で逝去。死後もレゲエの王として世界中で愛され続ける。",
+  "traits": {
+    "foods": [
+      "ベジタリアン（イタル料理）",
+      "マンゴー",
+      "ココナッツ水"
+    ],
+    "hobbies": [
+      "サッカー",
+      "瞑想（ラスタファリ）",
+      "ギター"
+    ],
+    "personality": "穏やか、信念、母性的な愛、情熱的。音楽が祈りだった。",
+    "likes": [],
+    "dislikes": []
+  }
+}

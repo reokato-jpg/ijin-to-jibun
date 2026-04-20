@@ -1,0 +1,57 @@
+{
+  "id": "jimi_hendrix",
+  "name": "ジミ・ヘンドリックス",
+  "nameEn": "Jimi Hendrix",
+  "birth": 1942,
+  "death": 1970,
+  "country": "アメリカ",
+  "field": "ロックギタリスト",
+  "summary": "ロックギターの神。左利きを逆さに持ち、フィードバックとワウを武器にウッドストックで『星条旗』を歌った、27歳で消えた天才。",
+  "events": [
+    {
+      "year": 1942,
+      "age": 0,
+      "title": "アメリカで生まれる",
+      "detail": ""
+    },
+    {
+      "year": 1970,
+      "age": 28,
+      "title": "逝去",
+      "detail": ""
+    }
+  ],
+  "quotes": [
+    {
+      "text": "私が自由に語れる唯一の言語は、音楽だ。",
+      "source": "名言集"
+    },
+    {
+      "text": "経験は必ず、知識を超える教訓を与える。",
+      "source": "名言集"
+    }
+  ],
+  "relations": [],
+  "places": [],
+  "books": [],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Jimi-Hendrix-1967-Helsinki-d.jpg/280px-Jimi-Hendrix-1967-Helsinki-d.jpg",
+  "wikiTitle": "ジミ・ヘンドリックス",
+  "birthMonth": 11,
+  "birthDay": 27,
+  "lifeDigest": "アメリカのロックギタリスト、ボーカリスト、作曲家。ジミ・ヘンドリックス・エクスペリエンスを結成、『Purple Haze』『Hey Joe』『Voodoo Child』を発表。1969年ウッドストックでの『星条旗』のフィードバック・ソロは20世紀音楽史の瞬間。27歳、ロンドンで薬物と嘔吐物による窒息死。左利きのストラトキャスターを右利き用に逆張りして弾く独自のスタイル、27クラブの一員。",
+  "traits": {
+    "foods": [
+      "アメリカ南部料理",
+      "ステーキ",
+      "ワイン"
+    ],
+    "hobbies": [
+      "ギター（1日12時間）",
+      "ファッション",
+      "SF読書"
+    ],
+    "personality": "シャイ、完璧主義、革新的、破壊的。ギターと共にしか自分を表現できなかった。",
+    "likes": [],
+    "dislikes": []
+  }
+}

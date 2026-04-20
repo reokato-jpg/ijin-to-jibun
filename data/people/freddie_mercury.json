@@ -1,0 +1,57 @@
+{
+  "id": "freddie_mercury",
+  "name": "フレディ・マーキュリー",
+  "nameEn": "Freddie Mercury",
+  "birth": 1946,
+  "death": 1991,
+  "country": "イギリス（ザンジバル出身）",
+  "field": "ロック歌手（Queenのボーカル）",
+  "summary": "ロック史上最高のフロントマンの一人、Queenの不滅の声。『ボヘミアン・ラプソディ』で音楽の枠を破り、ライヴ・エイドで世界を魅了した。",
+  "events": [
+    {
+      "year": 1946,
+      "age": 0,
+      "title": "イギリス（ザンジバル出身）で生まれる",
+      "detail": ""
+    },
+    {
+      "year": 1991,
+      "age": 45,
+      "title": "逝去",
+      "detail": ""
+    }
+  ],
+  "quotes": [
+    {
+      "text": "ショーは続けなきゃ——どんな時でも。",
+      "source": "名言集"
+    },
+    {
+      "text": "月並みになるくらいなら、伝説になりたい。",
+      "source": "名言集"
+    }
+  ],
+  "relations": [],
+  "places": [],
+  "books": [],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Freddie_Mercury_performing_in_New_Haven%2C_CT%2C_November_1977.jpg/280px-Freddie_Mercury_performing_in_New_Haven%2C_CT%2C_November_1977.jpg",
+  "wikiTitle": "フレディ・マーキュリー",
+  "birthMonth": 9,
+  "birthDay": 5,
+  "lifeDigest": "イギリス・ロックバンドQueenのボーカリスト、作曲家。ザンジバル生まれのインド系。『ボヘミアン・ラプソディ』(1975) でシングルを6分に拡張、1985年ライヴ・エイドでの72000人を沸かせた伝説の20分。45歳、AIDSを公表した翌日に逝去。4オクターブの声、ステージの化身。",
+  "traits": {
+    "foods": [
+      "インド料理",
+      "シャンパン（クリュッグ）",
+      "紅茶"
+    ],
+    "hobbies": [
+      "ピアノ",
+      "猫（10匹以上）",
+      "美術収集（葛飾北斎・歌川広重）"
+    ],
+    "personality": "ド派手、内向的、ユーモア、繊細。舞台の化身と、プライベートの静謐の二面性。",
+    "likes": [],
+    "dislikes": []
+  }
+}

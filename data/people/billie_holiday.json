@@ -1,0 +1,57 @@
+{
+  "id": "billie_holiday",
+  "name": "ビリー・ホリデイ",
+  "nameEn": "Billie Holiday",
+  "birth": 1915,
+  "death": 1959,
+  "country": "アメリカ",
+  "field": "ジャズ・ブルース歌手",
+  "summary": "『レディ・デイ』。人種差別・貧困・薬物——すべての痛みを『奇妙な果実』に変えて歌った、ジャズ史上最も偉大な女性ボーカリスト。",
+  "events": [
+    {
+      "year": 1915,
+      "age": 0,
+      "title": "アメリカで生まれる",
+      "detail": ""
+    },
+    {
+      "year": 1959,
+      "age": 44,
+      "title": "逝去",
+      "detail": ""
+    }
+  ],
+  "quotes": [
+    {
+      "text": "歌える人は多い。けど、歌を感じられる人は稀だ。",
+      "source": "名言集"
+    },
+    {
+      "text": "私は歌うのが好きだから歌う。他に何がある？",
+      "source": "名言集"
+    }
+  ],
+  "relations": [],
+  "places": [],
+  "books": [],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Billie_Holiday_0001_original.jpg/280px-Billie_Holiday_0001_original.jpg",
+  "wikiTitle": "ビリー・ホリデイ",
+  "birthMonth": 4,
+  "birthDay": 7,
+  "lifeDigest": "アメリカのジャズ・ブルース歌手。1939年『奇妙な果実』（アメリカ南部のリンチを歌った歌）で反差別の象徴に。『ゴッド・ブレス・ザ・チャイルド』『レフト・オーヴァー・ベイビーズ』など。レスター・ヤングに『レディ・デイ』と名付けられた。虐待・薬物・刑務所——44歳、肝硬変でニューヨークの病院で、麻薬所持で監視下のまま逝去。",
+  "traits": {
+    "foods": [
+      "南部料理（フライドチキン）",
+      "ジン",
+      "アイスクリーム"
+    ],
+    "hobbies": [
+      "犬（ペッパー・飼い犬）",
+      "歌うこと",
+      "服（常に白いガーデニア）"
+    ],
+    "personality": "深い悲しみと誇り、ユーモア、脆さ。歌が人生の唯一の救いだった。",
+    "likes": [],
+    "dislikes": []
+  }
+}

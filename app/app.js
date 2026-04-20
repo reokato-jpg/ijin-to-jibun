@@ -2063,6 +2063,22 @@ async function openUserProfileById(uid) {
 }
 window.openUserProfileById = openUserProfileById;
 
+// 自分のプロフィールを偉人と同じ形式で開く
+async function openMyProfile() {
+  if (typeof currentUser === 'undefined' || !currentUser) {
+    alert('会員登録するとプロフィールが持てます');
+    if (typeof window.openAccountMenu === 'function') window.openAccountMenu();
+    return;
+  }
+  if (currentUser.isAnonymous) {
+    alert('会員登録するとプロフィールが持てます');
+    if (typeof window.openAccountMenu === 'function') window.openAccountMenu();
+    return;
+  }
+  await openUserProfileById(currentUser.uid);
+}
+window.openMyProfile = openMyProfile;
+
 // ============ 会員ディレクトリ（会員同士でつながる） ============
 async function openUsersDirectory() {
   const existing = document.getElementById('usersDirModal');
@@ -4862,6 +4878,8 @@ function initPhoneMenu() {
         } else if (action === 'oshi') {
           const pid = el.dataset.phonePerson;
           if (pid && typeof showPerson === 'function') showPerson(pid);
+        } else if (action === 'me') {
+          if (typeof openMyProfile === 'function') openMyProfile();
         }
       }, 260);
     });

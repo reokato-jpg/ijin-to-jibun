@@ -1,0 +1,58 @@
+{
+  "id": "frida_kahlo",
+  "name": "フリーダ・カーロ",
+  "nameEn": "Frida Kahlo",
+  "birth": 1907,
+  "death": 1954,
+  "country": "メキシコ",
+  "field": "画家",
+  "summary": "痛みを芸術に変えた女性。18歳のバス事故で全身を砕かれ、その後の人生を痛みと共に自画像に描いた、メキシコの不屈の魂。",
+  "events": [
+    {
+      "year": 1907,
+      "age": 0,
+      "title": "メキシコで生まれる",
+      "detail": ""
+    },
+    {
+      "year": 1954,
+      "age": 47,
+      "title": "逝去",
+      "detail": ""
+    }
+  ],
+  "quotes": [
+    {
+      "text": "私は現実を描いたのではない。私自身を描いた。",
+      "source": "名言集"
+    },
+    {
+      "text": "足なんかいらない、私には翼があるから。",
+      "source": "名言集"
+    }
+  ],
+  "relations": [],
+  "places": [],
+  "books": [],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Frida_Kahlo%2C_by_Guillermo_Kahlo.jpg/280px-Frida_Kahlo%2C_by_Guillermo_Kahlo.jpg",
+  "wikiTitle": "フリーダ・カーロ",
+  "birthMonth": 7,
+  "birthDay": 6,
+  "lifeDigest": "メキシコの画家。18歳の時のバス事故で脊椎骨折、生涯の慢性痛とともに55作品の自画像を含む200作を描いた。メキシコ民族衣装を纏い、夫ディエゴ・リベラとの愛憎劇、女性の身体、流産、痛み、メキシコの伝統——全てを直接的に画布に投射。47歳、自宅カサ・アスールで逝去。フェミニズム・アートの先駆者。",
+  "traits": {
+    "foods": [
+      "メキシコ料理（モーレ、タマレス）",
+      "テキーラ",
+      "マンゴー"
+    ],
+    "hobbies": [
+      "絵画",
+      "刺繍（民族衣装）",
+      "動物（猿・鹿・鳥）",
+      "読書"
+    ],
+    "personality": "情熱的、痛みを抱えた楽観主義、皮肉、反骨。痛みを美に変える錬金術師。",
+    "likes": [],
+    "dislikes": []
+  }
+}
