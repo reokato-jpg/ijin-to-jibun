@@ -9979,10 +9979,9 @@ function bindEvents() {
   document.getElementById('backBtn').addEventListener('click', goBack);
   // ヘッダーのタイトルロゴ → マップポップアップ
   document.getElementById('appTitle')?.addEventListener('click', () => showView('people'));
-  // ヒーローの「わたしの本を開く」ボタン
-  document.getElementById('heroToMyBook')?.addEventListener('click', () => {
-    const favTab = document.querySelector('.tab[data-view="favorites"]');
-    if (favTab) favTab.click();
+  // ヒーローの「この世界について」ボタン
+  document.getElementById('heroToWorldview')?.addEventListener('click', () => {
+    if (typeof openWorldviewModal === 'function') openWorldviewModal();
   });
   // このサイトの使い方ポップアップ（5枚スライド）
   document.getElementById('howtoOpenBtn')?.addEventListener('click', () => openHowtoSlides());
