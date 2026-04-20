@@ -14755,3 +14755,280 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
 @keyframes backdropFadeBlack {
   to { background: rgba(0,0,0,1); }
 }
+
+/* ============================================================
+   スマホのツールアプリ（電卓・メモ・タイマー・ミュージック）
+   ============================================================ */
+.phone-tool-app {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 40px;
+  background: #f5f0e5;
+  z-index: 3;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.phone-tool-app[hidden] { display: none; }
+.tool-app-head {
+  background: #3a2d1c !important;
+  color: #f5e8c8 !important;
+}
+.tool-app-back {
+  background: none; border: none;
+  color: #f5e8c8;
+  font-size: 22px; line-height: 1;
+  cursor: pointer;
+  padding: 0 8px;
+}
+.phone-icon-tool .phone-icon-emoji {
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%; height: 44px;
+}
+
+/* ── 電卓 ── */
+.calc-app {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  background: linear-gradient(180deg, #2a2420 0%, #1a1410 100%);
+  color: #fff;
+}
+.calc-display {
+  flex: 0;
+  min-height: 70px;
+  padding: 14px 12px;
+  background: #111;
+  color: #f5f0d0;
+  border-radius: 8px;
+  font-size: 32px;
+  font-weight: 300;
+  text-align: right;
+  font-family: "SF Mono", "Consolas", monospace;
+  letter-spacing: 0.03em;
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);
+  margin-bottom: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.calc-keys {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+.calc-key {
+  background: #5a5148;
+  color: #fff;
+  border: 0;
+  border-radius: 50%;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  aspect-ratio: 1;
+  transition: background 0.1s, transform 0.05s;
+  font-family: inherit;
+}
+.calc-key:active { transform: scale(0.95); background: #6a6058; }
+.calc-key.calc-fn { background: #a8a098; color: #2a2420; }
+.calc-key.calc-fn:active { background: #c8c0b8; }
+.calc-key.calc-op { background: #e69a2a; color: #fff; font-size: 22px; }
+.calc-key.calc-op:active { background: #ffb44a; }
+.calc-key.calc-eq { background: #e69a2a; color: #fff; font-size: 22px; }
+.calc-key.calc-eq:active { background: #ffb44a; }
+.calc-key.calc-zero { grid-column: span 2; aspect-ratio: 2/1; border-radius: 100px; }
+
+/* ── メモ ── */
+.memo-app {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  background:
+    repeating-linear-gradient(180deg, transparent 0, transparent 23px, #e0d4b4 23px, #e0d4b4 24px),
+    #fdf6e3;
+}
+.memo-textarea {
+  flex: 1;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  resize: none;
+  font-family: var(--font-jp);
+  font-size: 14px;
+  line-height: 24px;
+  color: #2a1e0f;
+  outline: none;
+}
+.memo-status {
+  font-size: 11px;
+  color: #8a6a40;
+  padding: 6px 0 0;
+  text-align: right;
+  min-height: 16px;
+}
+.memo-save-btn {
+  margin-left: auto;
+  background: transparent;
+  border: 0;
+  color: #f5e8c8;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px 10px;
+}
+
+/* ── タイマー ── */
+.timer-app {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 20px;
+  background: linear-gradient(180deg, #f5f0e5, #e8ddc4);
+}
+.timer-display {
+  font-size: 56px;
+  font-weight: 300;
+  color: #3a2d1c;
+  font-family: "SF Mono", "Consolas", monospace;
+  letter-spacing: 0.05em;
+  padding: 20px 32px;
+  background: rgba(255,255,255,0.7);
+  border-radius: 16px;
+  border: 2px solid rgba(138,90,29,0.2);
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.06);
+}
+.timer-preset { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
+.timer-preset-btn {
+  padding: 6px 14px;
+  background: rgba(255,255,255,0.6);
+  border: 1px solid rgba(138,90,29,0.25);
+  border-radius: 999px;
+  font-size: 12px;
+  color: #5a3a14;
+  cursor: pointer;
+  font-family: inherit;
+}
+.timer-preset-btn.active {
+  background: #8a5a1d;
+  color: #fff;
+  border-color: #8a5a1d;
+}
+.timer-controls { display: flex; gap: 10px; }
+.timer-btn {
+  padding: 10px 22px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 0;
+  font-family: inherit;
+}
+.timer-start { background: #8a5a1d; color: #fff; }
+.timer-reset { background: rgba(138,90,29,0.12); color: #5a3a14; }
+.timer-hint {
+  font-size: 11.5px;
+  color: #8a6a40;
+  font-style: italic;
+  letter-spacing: 0.04em;
+}
+
+/* ── ミュージック ── */
+.music-app {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, #1e1a2a 0%, #0d0b17 100%);
+  color: #f0e8d4;
+}
+.music-nowplaying {
+  padding: 18px 16px;
+  background: linear-gradient(90deg, rgba(200,170,100,0.12), transparent);
+  border-bottom: 1px solid rgba(200,170,100,0.15);
+}
+.music-nowplaying-label {
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  color: #c9a760;
+  margin-bottom: 4px;
+}
+.music-nowplaying-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #f5e8c8;
+  margin-bottom: 3px;
+}
+.music-nowplaying-desc { font-size: 11.5px; color: #c0b090; }
+
+.music-controls {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(200,170,100,0.1);
+}
+.music-btn {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: #c9a760;
+  color: #1e1a2a;
+  border: 0;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 700;
+}
+.music-btn:disabled { opacity: 0.3; cursor: default; }
+.music-volume {
+  flex: 1;
+  accent-color: #c9a760;
+}
+
+.music-tracklist {
+  flex: 1;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+}
+.music-track {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(200,170,100,0.08);
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.music-track:hover { background: rgba(200,170,100,0.06); }
+.music-track.playing {
+  background: linear-gradient(90deg, rgba(200,170,100,0.15), transparent);
+  border-left: 3px solid #c9a760;
+  padding-left: 13px;
+}
+.music-track-info { flex: 1; min-width: 0; }
+.music-track-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f0e8d4;
+  margin-bottom: 2px;
+}
+.music-track-desc {
+  font-size: 11.5px;
+  color: #a09070;
+}
+.music-track-icon {
+  font-size: 18px;
+  color: #c9a760;
+  flex-shrink: 0;
+  margin-left: 10px;
+}
+.music-track.playing .music-track-icon {
+  animation: musicNote 1.2s ease-in-out infinite;
+}
+@keyframes musicNote {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}

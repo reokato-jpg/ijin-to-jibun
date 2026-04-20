@@ -4044,6 +4044,10 @@ function initPhoneMenu() {
         openPhonePlazaApp();
         return;
       }
+      if (action === 'calc' || action === 'memo' || action === 'timer' || action === 'music') {
+        openPhoneToolApp(action);
+        return;
+      }
       close();
       setTimeout(() => {
         if (action === 'settings') {
@@ -4055,6 +4059,301 @@ function initPhoneMenu() {
       }, 260);
     });
   });
+  // ============ ツールアプリ共通（電卓・メモ・タイマー） ============
+  function openPhoneToolApp(tool) {
+    const map = { calc: 'phoneCalcApp', memo: 'phoneMemoApp', timer: 'phoneTimerApp', music: 'phoneMusicApp' };
+    const el = document.getElementById(map[tool]);
+    if (!el) return;
+    // 他のアプリを閉じる
+    ['phoneCalcApp','phoneMemoApp','phoneTimerApp','phoneMusicApp','phonePlazaApp'].forEach(id => {
+      const a = document.getElementById(id);
+      if (a) a.hidden = true;
+    });
+    el.hidden = false;
+    if (tool === 'calc') initCalcApp();
+    if (tool === 'memo') initMemoApp();
+    if (tool === 'timer') initTimerApp();
+    if (tool === 'music') initMusicApp();
+  }
+  function closePhoneToolApp(tool) {
+    const map = { calc: 'phoneCalcApp', memo: 'phoneMemoApp', timer: 'phoneTimerApp', music: 'phoneMusicApp' };
+    const el = document.getElementById(map[tool]);
+    if (el) el.hidden = true;
+    if (tool === 'memo') saveMemoContent();
+    if (tool === 'timer') stopTimerApp();
+    if (tool === 'music') stopMusicApp();
+  }
+  // 戻るボタン
+  menu.querySelectorAll('[data-tool-close]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closePhoneToolApp(btn.dataset.toolClose);
+    });
+  });
+
+  // ── 電卓 ──
+  let __calcState = { display: '0', prev: null, op: null, justEvaluated: false };
+  function initCalcApp() {
+    __calcState = { display: '0', prev: null, op: null, justEvaluated: false };
+    updateCalcDisplay();
+  }
+  function updateCalcDisplay() {
+    const el = document.getElementById('calcDisplay');
+    if (el) el.textContent = __calcState.display;
+  }
+  function calcInputNum(n) {
+    const s = __calcState;
+    if (s.justEvaluated) { s.display = n; s.justEvaluated = false; }
+    else if (s.display === '0') s.display = n;
+    else if (s.display.length < 12) s.display += n;
+    updateCalcDisplay();
+  }
+  function calcInputDot() {
+    const s = __calcState;
+    if (s.justEvaluated) { s.display = '0.'; s.justEvaluated = false; }
+    else if (!s.display.includes('.')) s.display += '.';
+    updateCalcDisplay();
+  }
+  function calcInputOp(op) {
+    const s = __calcState;
+    if (s.prev !== null && s.op && !s.justEvaluated) calcEvaluate();
+    s.prev = parseFloat(s.display);
+    s.op = op;
+    s.justEvaluated = true;
+  }
+  function calcEvaluate() {
+    const s = __calcState;
+    if (s.op === null || s.prev === null) return;
+    const b = parseFloat(s.display);
+    let r = 0;
+    switch (s.op) {
+      case '+': r = s.prev + b; break;
+      case '-': r = s.prev - b; break;
+      case '*': r = s.prev * b; break;
+      case '/': r = b === 0 ? NaN : s.prev / b; break;
+    }
+    s.display = Number.isFinite(r) ? String(+r.toFixed(8)).replace(/\.?0+$/, '') : 'Error';
+    s.prev = null;
+    s.op = null;
+    s.justEvaluated = true;
+    updateCalcDisplay();
+  }
+  menu.querySelectorAll('#phoneCalcApp .calc-key').forEach(k => {
+    k.addEventListener('click', () => {
+      const type = k.dataset.calc;
+      if (type === 'num') calcInputNum(k.dataset.num);
+      else if (type === 'dot') calcInputDot();
+      else if (type === 'op') calcInputOp(k.dataset.op);
+      else if (type === 'eq') calcEvaluate();
+      else if (type === 'clear') initCalcApp();
+      else if (type === 'sign') {
+        __calcState.display = String(-parseFloat(__calcState.display));
+        updateCalcDisplay();
+      } else if (type === 'percent') {
+        __calcState.display = String(parseFloat(__calcState.display) / 100);
+        updateCalcDisplay();
+      }
+    });
+  });
+
+  // ── メモ ──
+  const MEMO_KEY = 'ijin_phone_memo';
+  function initMemoApp() {
+    const ta = document.getElementById('memoTextarea');
+    if (ta) ta.value = localStorage.getItem(MEMO_KEY) || '';
+    const status = document.getElementById('memoStatus');
+    if (status) status.textContent = '';
+  }
+  function saveMemoContent() {
+    const ta = document.getElementById('memoTextarea');
+    if (ta) {
+      localStorage.setItem(MEMO_KEY, ta.value);
+      const status = document.getElementById('memoStatus');
+      if (status) {
+        status.textContent = '✓ 保存しました';
+        setTimeout(() => { if (status.textContent.startsWith('✓')) status.textContent = ''; }, 1500);
+      }
+    }
+  }
+  menu.querySelector('#memoSaveBtn')?.addEventListener('click', saveMemoContent);
+  // 自動保存（編集停止1秒後）
+  let __memoSaveTimer = null;
+  menu.querySelector('#memoTextarea')?.addEventListener('input', () => {
+    clearTimeout(__memoSaveTimer);
+    __memoSaveTimer = setTimeout(saveMemoContent, 1000);
+  });
+
+  // ── タイマー ──
+  let __timerState = { total: 25 * 60, remaining: 25 * 60, running: false, interval: null };
+  function formatTime(sec) {
+    const m = Math.floor(sec / 60);
+    const s = sec % 60;
+    return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  }
+  function updateTimerDisplay() {
+    const el = document.getElementById('timerDisplay');
+    if (el) el.textContent = formatTime(__timerState.remaining);
+  }
+  function initTimerApp() {
+    if (!__timerState.running) {
+      updateTimerDisplay();
+    }
+    const btn = document.getElementById('timerStartBtn');
+    if (btn) btn.textContent = __timerState.running ? '⏸ 一時停止' : '▶ 開始';
+  }
+  function stopTimerApp() {
+    if (__timerState.interval) { clearInterval(__timerState.interval); __timerState.interval = null; }
+    __timerState.running = false;
+  }
+  menu.querySelectorAll('[data-timer-preset]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      menu.querySelectorAll('[data-timer-preset]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const m = parseInt(btn.dataset.timerPreset, 10);
+      __timerState.total = m * 60;
+      __timerState.remaining = m * 60;
+      stopTimerApp();
+      initTimerApp();
+    });
+  });
+  menu.querySelector('#timerStartBtn')?.addEventListener('click', () => {
+    const btn = document.getElementById('timerStartBtn');
+    if (__timerState.running) {
+      stopTimerApp();
+      if (btn) btn.textContent = '▶ 再開';
+      return;
+    }
+    __timerState.running = true;
+    if (btn) btn.textContent = '⏸ 一時停止';
+    __timerState.interval = setInterval(() => {
+      __timerState.remaining--;
+      if (__timerState.remaining <= 0) {
+        stopTimerApp();
+        __timerState.remaining = 0;
+        updateTimerDisplay();
+        // 完了音：Web Audioで穏やかなチャイム
+        try {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          const ctx = new AC();
+          [880, 1100, 1320].forEach((f, i) => {
+            const o = ctx.createOscillator();
+            const g = ctx.createGain();
+            o.type = 'sine';
+            o.frequency.value = f;
+            o.connect(g).connect(ctx.destination);
+            g.gain.setValueAtTime(0, ctx.currentTime + i * 0.3);
+            g.gain.linearRampToValueAtTime(0.2, ctx.currentTime + i * 0.3 + 0.05);
+            g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.3 + 0.9);
+            o.start(ctx.currentTime + i * 0.3);
+            o.stop(ctx.currentTime + i * 0.3 + 1);
+          });
+        } catch {}
+        alert(`⏰ 時間です。${Math.floor(__timerState.total/60)}分、集中しました。`);
+        __timerState.remaining = __timerState.total;
+        initTimerApp();
+        return;
+      }
+      updateTimerDisplay();
+    }, 1000);
+  });
+  menu.querySelector('#timerResetBtn')?.addEventListener('click', () => {
+    stopTimerApp();
+    __timerState.remaining = __timerState.total;
+    initTimerApp();
+  });
+
+  // ── ミュージック（サイトで使われているBGM一覧） ──
+  const MUSIC_TRACKS = [
+    { id: 'homeBgm',      title: 'ホーム',         desc: '本棚の扉を開く音楽' },
+    { id: 'searchBgm',    title: '偉人検索',       desc: '探求の地図を辿る音楽' },
+    { id: 'historyBgm',   title: '年表',           desc: '時代を旅する音楽' },
+    { id: 'routineBgm',   title: 'ルーティン',     desc: '偉人の1日の音楽' },
+    { id: 'blogBgm',      title: 'ブログ',         desc: '読みものの音楽' },
+    { id: 'favoritesBgm', title: 'わたしの本',     desc: '自分を編む音楽' },
+    { id: 'squareBgm',    title: '偉人の広場',     desc: '交わりの音楽' },
+  ];
+  let __musicCurrent = null;
+  function initMusicApp() {
+    const list = document.getElementById('musicTracklist');
+    if (!list) return;
+    list.innerHTML = MUSIC_TRACKS.map(t => {
+      const el = document.getElementById(t.id);
+      const available = el && el.src;
+      return `
+        <li class="music-track" data-track-id="${t.id}" ${!available ? 'style="opacity:0.4;pointer-events:none"' : ''}>
+          <div class="music-track-info">
+            <div class="music-track-title">${t.title}</div>
+            <div class="music-track-desc">${t.desc}</div>
+          </div>
+          <div class="music-track-icon">▶</div>
+        </li>
+      `;
+    }).join('');
+    list.querySelectorAll('[data-track-id]').forEach(li => {
+      li.addEventListener('click', () => musicPlayTrack(li.dataset.trackId));
+    });
+  }
+  function musicPlayTrack(id) {
+    // 他のBGMを止める
+    ['homeBgm','searchBgm','historyBgm','routineBgm','blogBgm','favoritesBgm','squareBgm'].forEach(x => {
+      const a = document.getElementById(x);
+      if (a && x !== id) { a.pause(); a.currentTime = 0; }
+    });
+    const audio = document.getElementById(id);
+    if (!audio) return;
+    const vol = parseInt(document.getElementById('musicVolume')?.value || '35', 10);
+    audio.volume = vol / 100;
+    audio.currentTime = 0;
+    audio.play().catch(() => {});
+    __musicCurrent = id;
+    const track = MUSIC_TRACKS.find(t => t.id === id);
+    document.getElementById('musicNowTitle').textContent = track?.title || '';
+    document.getElementById('musicNowDesc').textContent = track?.desc || '';
+    document.getElementById('musicPlayBtn').disabled = false;
+    document.getElementById('musicStopBtn').disabled = false;
+    document.getElementById('musicPlayBtn').textContent = '⏸';
+    // リスト上のアクティブ状態
+    menu.querySelectorAll('[data-track-id]').forEach(li => {
+      const active = li.dataset.trackId === id;
+      li.classList.toggle('playing', active);
+      const icon = li.querySelector('.music-track-icon');
+      if (icon) icon.textContent = active ? '♪' : '▶';
+    });
+  }
+  function stopMusicApp() {
+    if (__musicCurrent) {
+      const a = document.getElementById(__musicCurrent);
+      if (a) { a.pause(); a.currentTime = 0; }
+    }
+    __musicCurrent = null;
+  }
+  menu.querySelector('#musicPlayBtn')?.addEventListener('click', () => {
+    if (!__musicCurrent) return;
+    const a = document.getElementById(__musicCurrent);
+    if (!a) return;
+    const btn = document.getElementById('musicPlayBtn');
+    if (a.paused) { a.play().catch(() => {}); btn.textContent = '⏸'; }
+    else { a.pause(); btn.textContent = '▶'; }
+  });
+  menu.querySelector('#musicStopBtn')?.addEventListener('click', () => {
+    stopMusicApp();
+    document.getElementById('musicPlayBtn').textContent = '▶';
+    document.getElementById('musicPlayBtn').disabled = true;
+    document.getElementById('musicStopBtn').disabled = true;
+    document.getElementById('musicNowTitle').textContent = '選曲してください';
+    document.getElementById('musicNowDesc').textContent = 'このサイトで流れているBGM一覧';
+    menu.querySelectorAll('[data-track-id]').forEach(li => {
+      li.classList.remove('playing');
+      const icon = li.querySelector('.music-track-icon');
+      if (icon) icon.textContent = '▶';
+    });
+  });
+  menu.querySelector('#musicVolume')?.addEventListener('input', (e) => {
+    if (!__musicCurrent) return;
+    const a = document.getElementById(__musicCurrent);
+    if (a) a.volume = parseInt(e.target.value, 10) / 100;
+  });
+
   // 偉人の広場アプリ（LINEライクなタブ切替）
   function openPhonePlazaApp() {
     const plaza = document.getElementById('phonePlazaApp');
