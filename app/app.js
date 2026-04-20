@@ -4233,6 +4233,11 @@ function initPhoneMenu() {
     __musicShuffle = !__musicShuffle;
     const btn = document.getElementById('musicShuffleBtn');
     if (btn) btn.classList.toggle('active', __musicShuffle);
+    // シャッフルONなら、今すぐランダムな曲を再生
+    if (__musicShuffle) {
+      const next = pickNextTrack(__musicCurrent || '');
+      if (next) musicPlayTrack(next);
+    }
   });
   menu.querySelector('#musicLoopBtn')?.addEventListener('click', () => {
     __musicLoop = !__musicLoop;
