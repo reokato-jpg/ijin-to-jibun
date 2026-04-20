@@ -14688,3 +14688,22 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
 .home-rabin-greet .guide-chara-bubble {
   background: rgba(255,255,255,0.9);
 }
+
+/* ラビンの白うさぎアバター（世界観モーダル） */
+.worldview-rabin-avatar {
+  background: linear-gradient(180deg, #f5efe2 0%, #e8ddc8 100%);
+  border-color: #d4c8b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.worldview-rabbit-svg {
+  width: 88%;
+  height: 88%;
+  animation: worldviewRabbitBreathe 3s ease-in-out infinite;
+  transform-origin: center 85%;
+}
+@keyframes worldviewRabbitBreathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}

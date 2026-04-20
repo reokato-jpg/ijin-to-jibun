@@ -1174,8 +1174,27 @@ function openWorldviewModal() {
       </section>
 
       <section class="worldview-section worldview-chara worldview-rabin">
-        <div class="worldview-chara-avatar">
-          <video class="worldview-chara-video" src="assets/guide/rabin.mp4?v=1" muted autoplay loop playsinline preload="metadata" aria-hidden="true"></video>
+        <div class="worldview-chara-avatar worldview-rabin-avatar" aria-hidden="true">
+          <svg viewBox="0 0 100 100" class="worldview-rabbit-svg" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="38" cy="22" rx="7" ry="20" fill="#fdfcfa" stroke="#d4c8b8" stroke-width="1.2"/>
+            <ellipse cx="38" cy="24" rx="3" ry="14" fill="#f5d9d4"/>
+            <ellipse cx="62" cy="22" rx="7" ry="20" fill="#fdfcfa" stroke="#d4c8b8" stroke-width="1.2"/>
+            <ellipse cx="62" cy="24" rx="3" ry="14" fill="#f5d9d4"/>
+            <ellipse cx="50" cy="58" rx="28" ry="26" fill="#fdfcfa" stroke="#d4c8b8" stroke-width="1.2"/>
+            <circle cx="32" cy="66" r="4" fill="#f9c8c4" opacity="0.7"/>
+            <circle cx="68" cy="66" r="4" fill="#f9c8c4" opacity="0.7"/>
+            <ellipse cx="40" cy="56" rx="3.5" ry="4.5" fill="#2a1e0f"/>
+            <circle cx="41" cy="54" r="1.3" fill="#fff"/>
+            <ellipse cx="60" cy="56" rx="3.5" ry="4.5" fill="#2a1e0f"/>
+            <circle cx="61" cy="54" r="1.3" fill="#fff"/>
+            <path d="M48 64 Q50 66 52 64 Q50 67 48 64 Z" fill="#e89a98"/>
+            <path d="M50 66 Q50 70 47 71" fill="none" stroke="#c4a68a" stroke-width="1" stroke-linecap="round"/>
+            <path d="M50 66 Q50 70 53 71" fill="none" stroke="#c4a68a" stroke-width="1" stroke-linecap="round"/>
+            <line x1="30" y1="68" x2="18" y2="66" stroke="#c4a68a" stroke-width="0.6"/>
+            <line x1="30" y1="70" x2="18" y2="71" stroke="#c4a68a" stroke-width="0.6"/>
+            <line x1="70" y1="68" x2="82" y2="66" stroke="#c4a68a" stroke-width="0.6"/>
+            <line x1="70" y1="70" x2="82" y2="71" stroke="#c4a68a" stroke-width="0.6"/>
+          </svg>
         </div>
         <div class="worldview-chara-body">
           <div class="worldview-chara-role">歴史の案内人</div>
