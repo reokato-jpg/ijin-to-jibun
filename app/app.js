@@ -409,9 +409,9 @@ function showView(name, pushHistory = true) {
       if (typeof stopPhoneAmbience === 'function') stopPhoneAmbience();
     }
   } catch {}
-  // レキットは常に表示（スマホ開いているときだけ隠す）
+  // レキットはホーム画面のみ表示
   const rabin = document.getElementById('powerHintAnim');
-  if (rabin) rabin.hidden = false;
+  if (rabin) rabin.hidden = (name !== 'people');
   const intro = document.getElementById('welcomeIntro');
   if (intro && name !== 'people') intro.hidden = true;
   views.forEach(v => {
@@ -3569,9 +3569,13 @@ function playPortalTransition(menuEl, onComplete) {
       menuEl.classList.remove('open');
       menuEl.setAttribute('aria-hidden', 'true');
     }
-    // 戻る/進む浮遊ナビとレキットを再表示
+    // 戻る/進む浮遊ナビを再表示、レキットはホーム画面のときだけ
     document.getElementById('floatNav')?.classList.remove('hide-for-phone');
-    { const el = document.getElementById('powerHintAnim'); if (el) el.hidden = false; }
+    {
+      const el = document.getElementById('powerHintAnim');
+      const activeView = document.querySelector('.view.active')?.id?.replace('view-', '');
+      if (el) el.hidden = (activeView !== 'people');
+    }
     onComplete?.();  // → showView(v) がここで走る ⇒ 対象ビューのBGMが鳴り始める
   }, 200);
 
@@ -3987,9 +3991,13 @@ function initPhoneMenu() {
   const close = () => {
     menu.classList.remove('open');
     menu.setAttribute('aria-hidden', 'true');
-    // 戻る/進む浮遊ナビとレキットを再表示
+    // 戻る/進む浮遊ナビを再表示、レキットはホーム画面のときだけ
     document.getElementById('floatNav')?.classList.remove('hide-for-phone');
-    { const el = document.getElementById('powerHintAnim'); if (el) el.hidden = false; }
+    {
+      const el = document.getElementById('powerHintAnim');
+      const activeView = document.querySelector('.view.active')?.id?.replace('view-', '');
+      if (el) el.hidden = (activeView !== 'people');
+    }
     // スマホを閉じるときに内部状態をリセット
     const plazaEl = document.getElementById('phonePlazaApp');
     if (plazaEl) plazaEl.hidden = true;
