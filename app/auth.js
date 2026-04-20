@@ -56,6 +56,11 @@ const SYNC_KEYS = [
   'ijin_my_career',
   'ijin_my_quotes',
   'ijin_my_bio',
+  'ijin_phone_icon_order',
+  'ijin_meshiru_my',
+  'ijin_meshiru_plan',
+  'ijin_meshiru_check',
+  'ijin_meshiru_likes',
 ];
 
 let fbApp = null, fbAuth = null, fbDb = null;

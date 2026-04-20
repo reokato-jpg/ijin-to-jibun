@@ -2700,7 +2700,7 @@ function renderLineGroup(container) {
     <div class="line-group-header">
       <div class="line-group-avatars">${headerAvatars}</div>
       <div class="line-group-info">
-        <div class="line-group-name">偉人の広場</div>
+        <div class="line-group-name">IJiN</div>
         <div class="line-group-sub">今日の参加者 ${members.length}人 · 30分ごとにつぶやきます</div>
       </div>
     </div>
@@ -4869,7 +4869,7 @@ function initPhoneMenu() {
     { id: 'routineBgm',   title: 'ルーティン',     desc: '偉人の1日の音楽' },
     { id: 'blogBgm',      title: 'ブログ',         desc: '読みものの音楽' },
     { id: 'favoritesBgm', title: 'わたしの本',     desc: '自分を編む音楽' },
-    { id: 'squareBgm',    title: '偉人の広場',     desc: '交わりの音楽' },
+    { id: 'squareBgm',    title: 'IJiN',           desc: '交わりの音楽' },
   ];
   let __musicCurrent = null;
   let __musicShuffle = false;
@@ -5035,6 +5035,33 @@ function initPhoneMenu() {
     const feed = document.getElementById('meshiruFeed');
     const savedMount = document.getElementById('meshiruSaved');
     if (!feed) return;
+    // 会員限定：未ログイン or 匿名ユーザーにはゲートを表示
+    const isMember = typeof currentUser !== 'undefined' && currentUser && !currentUser.isAnonymous;
+    if (!isMember) {
+      // 他のタブパネルを空にして、feedにゲートを表示
+      ['meshiruMy','meshiruPlan','meshiruShopping','meshiruSaved'].forEach(id => {
+        const m = document.getElementById(id);
+        if (m) m.innerHTML = '';
+      });
+      feed.hidden = false;
+      feed.innerHTML = `
+        <div class="meshiru-gate">
+          <div class="meshiru-gate-ic">🍳</div>
+          <div class="meshiru-gate-title">めしるは会員限定機能です</div>
+          <div class="meshiru-gate-body">
+            偉人料理人のレシピ、週間献立、自動買い物リスト、マイレシピ保存——<br>
+            全機能をお使いいただくには、無料会員登録が必要です。
+          </div>
+          <button class="meshiru-gate-btn" id="meshiruGateSignup">✨ 無料で会員登録する（0円）</button>
+          <div class="meshiru-gate-note">※ 登録後は全端末で献立・買い物リストが同期されます</div>
+        </div>
+      `;
+      feed.querySelector('#meshiruGateSignup')?.addEventListener('click', () => {
+        if (typeof window.openAccountMenu === 'function') window.openAccountMenu();
+        else if (typeof openMemberSettings === 'function') openMemberSettings();
+      });
+      return;
+    }
     const recipes = getAllRecipes();
     const saved = loadMeshiruSet(MESHIRU_SAVED_KEY);
     const likes = loadMeshiruSet(MESHIRU_LIKES_KEY);
@@ -6050,7 +6077,7 @@ function initPhoneMenu() {
     if (!plaza) return;
     const title = document.getElementById('plazaChatTitle');
     const body = document.getElementById('plazaChatBody');
-    if (title) title.textContent = '偉人の広場';
+    if (title) title.textContent = 'IJiN';
     // 広場のグループチャットをbody内に描画（renderLineGroup 再利用）
     if (body && typeof renderLineGroup === 'function') {
       renderLineGroup(body);
@@ -11081,7 +11108,7 @@ function renderChatPanel() {
   // 偉人の広場モード
   head.innerHTML = `
     <div class="chat-panel-head-info">
-      <div class="chat-panel-head-name">偉人の広場</div>
+      <div class="chat-panel-head-name">IJiN</div>
       <div class="chat-panel-head-status">名言をつぶやき合う場所</div>
     </div>
   `;
@@ -12038,7 +12065,7 @@ function renderFavorites() {
         <div class="my-book-chapter-label">第${nextChap()}章</div>
         <div class="my-book-chapter-title">わたしのつぶやき</div>
         <div class="my-book-chapter-line"></div>
-        <div class="my-book-chapter-intro">偉人の広場に投げかけた、あなた自身の言葉。</div>
+        <div class="my-book-chapter-intro">IJiNに投げかけた、あなた自身の言葉。</div>
       </div>
     `;
     html += selfPostEntries.map(s => {

@@ -13240,7 +13240,7 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
   display: flex;
   flex-direction: column;
   background: #f5f5e8;
-  z-index: 3;
+  z-index: 25;
   overflow: hidden;
   font-family: -apple-system, "Hiragino Sans", sans-serif;
 }
@@ -14916,7 +14916,7 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 40px;
   background: #f5f0e5;
-  z-index: 3;
+  z-index: 25;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -15344,6 +15344,47 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
   font-size: 12px;
   line-height: 1.8;
   font-family: var(--font-jp);
+}
+
+/* 会員限定ゲート */
+.meshiru-gate {
+  text-align: center;
+  padding: 40px 20px;
+  font-family: var(--font-jp);
+}
+.meshiru-gate-ic {
+  font-size: 48px;
+  margin-bottom: 14px;
+}
+.meshiru-gate-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--wine);
+  margin-bottom: 12px;
+}
+.meshiru-gate-body {
+  font-size: 12px;
+  color: var(--ink-3);
+  line-height: 1.8;
+  margin-bottom: 24px;
+}
+.meshiru-gate-btn {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #c07d4e, #8a5a1d);
+  color: #fff7e6;
+  border: none;
+  border-radius: 24px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: var(--font-jp);
+  box-shadow: 0 3px 10px rgba(138,90,29,0.3);
+}
+.meshiru-gate-btn:hover { filter: brightness(1.05); }
+.meshiru-gate-note {
+  font-size: 10px;
+  color: var(--ink-4);
+  margin-top: 14px;
 }
 
 /* ============ 献立プランナー ============ */
