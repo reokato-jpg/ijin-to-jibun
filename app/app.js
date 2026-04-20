@@ -3993,6 +3993,15 @@ function initPhoneMenu() {
       const v = el.dataset.phoneView;
       // 偉人検索・年表へはポータル遷移で世界に入り込む
       if (v === 'tags' || v === 'history') {
+        // ユーザー操作のその瞬間に対象BGMを開始（ブラウザの自動再生制限回避）
+        try {
+          const bgmId = v === 'tags' ? 'searchBgm' : 'historyBgm';
+          const bgm = document.getElementById(bgmId);
+          if (bgm && !isMuted()) {
+            bgm.volume = 0.35;
+            bgm.play().catch(() => {});
+          }
+        } catch {}
         playPortalTransition(menu, () => showView(v));
         return;
       }
@@ -10039,6 +10048,30 @@ function bindEvents() {
       }
     });
   });
+  // 最初のユーザー操作で、現在のビューのBGMをアンロック（ブラウザ自動再生制限対策）
+  let __bgmUnlocked = false;
+  const unlockBgm = () => {
+    if (__bgmUnlocked) return;
+    __bgmUnlocked = true;
+    try {
+      if (isMuted()) return;
+      // 現在アクティブなビューを取得してBGMを鳴らす
+      const activeView = document.querySelector('.view.active')?.id?.replace('view-', '');
+      const BGM_MAP = { people: 'homeBgm', tags: 'searchBgm', history: 'historyBgm', routines: 'routineBgm', articles: 'blogBgm', favorites: 'favoritesBgm' };
+      const bgmId = BGM_MAP[activeView];
+      if (bgmId) {
+        const bgm = document.getElementById(bgmId);
+        if (bgm) {
+          bgm.volume = 0.35;
+          bgm.play().catch(() => {});
+        }
+      }
+    } catch {}
+  };
+  document.addEventListener('click', unlockBgm, { once: true, capture: true });
+  document.addEventListener('touchstart', unlockBgm, { once: true, capture: true });
+  document.addEventListener('keydown', unlockBgm, { once: true, capture: true });
+
   document.getElementById('backBtn').addEventListener('click', goBack);
   // ヘッダーのタイトルロゴ → マップポップアップ
   document.getElementById('appTitle')?.addEventListener('click', () => showView('people'));
