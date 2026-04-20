@@ -4027,31 +4027,13 @@ function initPhoneMenu() {
     document.querySelectorAll('.plaza-app-tab').forEach(t => {
       t.classList.toggle('active', t.dataset.plazaTab === 'friends');
     });
-    // スマホを抜けるときは全BGMを停止（ミュージックアプリの再生も含む、重複防止）
-    try {
-      ['homeBgm','searchBgm','historyBgm','routineBgm','blogBgm','favoritesBgm','squareBgm'].forEach(id => {
-        const a = document.getElementById(id);
-        if (a) { a.pause(); a.currentTime = 0; }
-      });
-    } catch {}
-    // ミュージックアプリの再生状態もリセット
     try { stopMusicApp?.(); } catch {}
-    // アンビエントノイズを停止
     try { stopPhoneAmbience?.(); } catch {}
-    // 現在のビューのBGMを再開（スマホが閉じた後、そのビューに合わせて1つだけ再生）
+    // 現在のビューのBGMだけ再生（他は全停止）
     try {
-      if (!isMuted()) {
-        const activeView = document.querySelector('.view.active')?.id?.replace('view-', '');
-        const BGM_MAP = { people: 'homeBgm', tags: 'searchBgm', history: 'historyBgm', routines: 'routineBgm', articles: 'blogBgm', favorites: 'favoritesBgm' };
-        const bgmId = BGM_MAP[activeView];
-        if (bgmId) {
-          const bgm = document.getElementById(bgmId);
-          if (bgm) {
-            bgm.volume = 0.35;
-            bgm.play().catch(() => {});
-          }
-        }
-      }
+      const activeView = document.querySelector('.view.active')?.id?.replace('view-', '');
+      const BGM_MAP = { people: 'homeBgm', tags: 'searchBgm', history: 'historyBgm', routines: 'routineBgm', articles: 'blogBgm', favorites: 'favoritesBgm' };
+      if (typeof playViewBgmExclusive === 'function') playViewBgmExclusive(BGM_MAP[activeView] || null);
     } catch {}
   };
   const open = () => {
@@ -4155,20 +4137,8 @@ function initPhoneMenu() {
       const v = el.dataset.phoneView;
       // 偉人検索・年表へはポータル遷移で世界に入り込む
       if (v === 'tags' || v === 'history') {
-        // 既存のBGMをすべて停止してから、対象BGMを再生（重なり防止）
-        try {
-          ['homeBgm','searchBgm','historyBgm','routineBgm','blogBgm','favoritesBgm','squareBgm'].forEach(id => {
-            const a = document.getElementById(id);
-            if (a && id !== (v === 'tags' ? 'searchBgm' : 'historyBgm')) { a.pause(); a.currentTime = 0; }
-          });
-          const bgmId = v === 'tags' ? 'searchBgm' : 'historyBgm';
-          const bgm = document.getElementById(bgmId);
-          if (bgm && !isMuted()) {
-            bgm.volume = 0.35;
-            bgm.currentTime = 0;
-            bgm.play().catch(() => {});
-          }
-        } catch {}
+        const bgmId = v === 'tags' ? 'searchBgm' : 'historyBgm';
+        try { if (typeof playViewBgmExclusive === 'function') playViewBgmExclusive(bgmId); } catch {}
         playPortalTransition(menu, () => showView(v));
         return;
       }
@@ -4875,9 +4845,44 @@ function scheduleQuickReply(userText) {
 function stopAllBgm() {
   ['homeBgm', 'searchBgm', 'historyBgm', 'routineBgm', 'blogBgm', 'favoritesBgm', 'squareBgm'].forEach(id => {
     const el = document.getElementById(id);
-    if (el) el.pause();
+    if (el) { el.pause(); try { el.currentTime = 0; } catch {} }
   });
 }
+// 安全な単一BGM再生（重複防止・必ず他を全停止してから）
+function playViewBgmExclusive(targetId) {
+  if (isMuted()) return;
+  const all = ['homeBgm','searchBgm','historyBgm','routineBgm','blogBgm','favoritesBgm','squareBgm'];
+  all.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (id === targetId) return;
+    el.pause();
+    try { el.currentTime = 0; } catch {}
+  });
+  const target = targetId ? document.getElementById(targetId) : null;
+  if (target) {
+    target.volume = 0.35;
+    if (target.paused) target.play().catch(() => {});
+  }
+}
+window.playViewBgmExclusive = playViewBgmExclusive;
+// 重複チェック：3秒おきに2つ以上再生中ならexclusive化（保険）
+setInterval(() => {
+  try {
+    const playing = ['homeBgm','searchBgm','historyBgm','routineBgm','blogBgm','favoritesBgm','squareBgm']
+      .map(id => ({ id, el: document.getElementById(id) }))
+      .filter(x => x.el && !x.el.paused);
+    if (playing.length > 1) {
+      // スマホ内ならsquareBgm優先、なければ最新で鳴ったもの（=最後のもの）を残す
+      const phoneOpen = document.getElementById('phoneMenu')?.classList.contains('open');
+      let keep = phoneOpen ? playing.find(x => x.id === 'squareBgm') : null;
+      if (!keep) keep = playing[playing.length - 1];
+      playing.forEach(x => {
+        if (x.id !== keep.id) { x.el.pause(); try { x.el.currentTime = 0; } catch {} }
+      });
+    }
+  } catch {}
+}, 3000);
 
 // 本を開いたときの演出：ページめくり音 + BGM停止
 function playBookOpenFx() {
@@ -10642,25 +10647,10 @@ function bindEvents() {
       if (v === 'routines') renderRoutines();
       if (v === 'articles') renderArticles();
       if (v === 'favorites') renderFavorites();
-      // タブごとのBGM
-      const homeBgm = document.getElementById('homeBgm');
-      const searchBgm = document.getElementById('searchBgm');
-      const historyBgm = document.getElementById('historyBgm');
-      const routineBgm = document.getElementById('routineBgm');
-      const blogBgm = document.getElementById('blogBgm');
-      const favoritesBgm = document.getElementById('favoritesBgm');
-      [homeBgm, searchBgm, historyBgm, routineBgm, blogBgm, favoritesBgm].forEach(b => b && b.pause());
-      let target = null;
-      if (v === 'people') target = homeBgm;
-      else if (v === 'tags') target = searchBgm;
-      else if (v === 'history') target = historyBgm;
-      else if (v === 'routines') target = routineBgm;
-      else if (v === 'articles') target = blogBgm;
-      else if (v === 'favorites') target = favoritesBgm;
-      if (target && !isMuted()) {
-        target.volume = 0.35;
-        target.play().catch(() => {});
-      }
+      // タブごとのBGM（排他的・重複防止）
+      const BGM_BY_VIEW = { people: 'homeBgm', tags: 'searchBgm', history: 'historyBgm', routines: 'routineBgm', articles: 'blogBgm', favorites: 'favoritesBgm' };
+      const targetId = BGM_BY_VIEW[v];
+      if (typeof playViewBgmExclusive === 'function') playViewBgmExclusive(targetId);
     });
   });
   // 最初のユーザー操作で、現在のビューのBGMをアンロック（ブラウザ自動再生制限対策）
