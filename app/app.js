@@ -3413,6 +3413,72 @@ function playPageFlipSound() {
   } catch (e) { /* ignore */ }
 }
 
+// スマホ起動のデジタルノイズ（Web Audio APIで合成：グリッチ→ビープ）
+function playPhoneBootSound() {
+  if (isMuted()) return;
+  try {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    if (!__pageFlipAudioCtx) __pageFlipAudioCtx = new AC();
+    const ctx = __pageFlipAudioCtx;
+    if (ctx.state === 'suspended') ctx.resume();
+    const now = ctx.currentTime;
+
+    // 1. ホワイトノイズ（ザザッ）
+    const noiseDur = 0.25;
+    const bufferSize = Math.floor(ctx.sampleRate * noiseDur);
+    const noiseBuf = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+    const data = noiseBuf.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      // グリッチ感：確率的にピークを挟む
+      const t = i / bufferSize;
+      const glitch = Math.random() < 0.08 ? (Math.random() * 2 - 1) : 0;
+      data[i] = (Math.random() * 2 - 1) * (1 - t * 0.6) + glitch * 0.5;
+    }
+    const noiseSrc = ctx.createBufferSource();
+    noiseSrc.buffer = noiseBuf;
+    const noiseFilter = ctx.createBiquadFilter();
+    noiseFilter.type = 'bandpass';
+    noiseFilter.frequency.setValueAtTime(2000, now);
+    noiseFilter.frequency.exponentialRampToValueAtTime(600, now + noiseDur);
+    noiseFilter.Q.value = 2;
+    const noiseGain = ctx.createGain();
+    noiseGain.gain.setValueAtTime(0.18, now);
+    noiseGain.gain.exponentialRampToValueAtTime(0.001, now + noiseDur);
+    noiseSrc.connect(noiseFilter).connect(noiseGain).connect(ctx.destination);
+    noiseSrc.start(now);
+    noiseSrc.stop(now + noiseDur + 0.05);
+
+    // 2. 短いデジタルビープ（ピッ、起動音）
+    const beepAt = now + 0.22;
+    const beep = ctx.createOscillator();
+    beep.type = 'square';
+    beep.frequency.setValueAtTime(880, beepAt);
+    beep.frequency.setValueAtTime(1320, beepAt + 0.05);
+    const beepGain = ctx.createGain();
+    beepGain.gain.setValueAtTime(0, beepAt);
+    beepGain.gain.linearRampToValueAtTime(0.1, beepAt + 0.005);
+    beepGain.gain.setValueAtTime(0.1, beepAt + 0.09);
+    beepGain.gain.exponentialRampToValueAtTime(0.001, beepAt + 0.13);
+    beep.connect(beepGain).connect(ctx.destination);
+    beep.start(beepAt);
+    beep.stop(beepAt + 0.14);
+
+    // 3. 低音のパッ（起動の重み）
+    const thumpAt = now + 0.02;
+    const thump = ctx.createOscillator();
+    thump.type = 'sine';
+    thump.frequency.setValueAtTime(120, thumpAt);
+    thump.frequency.exponentialRampToValueAtTime(40, thumpAt + 0.15);
+    const thumpGain = ctx.createGain();
+    thumpGain.gain.setValueAtTime(0.25, thumpAt);
+    thumpGain.gain.exponentialRampToValueAtTime(0.001, thumpAt + 0.15);
+    thump.connect(thumpGain).connect(ctx.destination);
+    thump.start(thumpAt);
+    thump.stop(thumpAt + 0.16);
+  } catch (e) { /* 無音で継続 */ }
+}
+
 // 鍵が開く音（Web Audio APIで合成：金属クリック＋回転＋解錠クリック）
 function playKeyUnlockSound() {
   if (isMuted()) return;
@@ -3695,7 +3761,7 @@ function initPhoneMenu() {
     tick();
     updateBattery();
     updateNotif();
-    try { playKeyUnlockSound?.(); } catch {}
+    try { playPhoneBootSound?.(); } catch {}
   };
   // 推し偉人スロット描画（ラベルは『推し偉人』固定）
   const renderOshiSlot = () => {
