@@ -70,8 +70,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20260422L">
-<link rel="stylesheet" href="era-theme.css?v=20260422L">
+<link rel="stylesheet" href="style.css?v=20260422M">
+<link rel="stylesheet" href="era-theme.css?v=20260422M">
 </head>
 <body>
   <header class="app-header">
@@ -533,68 +533,11 @@
             <img src="assets/phone/icon-settings.png?v=1" alt="">
             <span>設定</span>
           </button>
-          <button class="phone-icon phone-icon-tool" data-phone-action="calc">
-            <span class="phone-icon-emoji">🔢</span>
-            <span>電卓</span>
-          </button>
-          <button class="phone-icon phone-icon-tool" data-phone-action="memo">
-            <span class="phone-icon-emoji">📝</span>
-            <span>メモ</span>
-          </button>
-          <button class="phone-icon phone-icon-tool" data-phone-action="timer">
-            <span class="phone-icon-emoji">⏱</span>
-            <span>タイマー</span>
-          </button>
           <button class="phone-icon phone-icon-tool" data-phone-action="music">
             <span class="phone-icon-emoji">🎵</span>
             <span>ミュージック</span>
           </button>
           <button class="phone-icon phone-icon-oshi-slot" id="phoneOshiSlot" data-phone-action="oshi" hidden></button>
-        </div>
-
-        <!-- 🔢 電卓アプリ -->
-        <div class="phone-tool-app" id="phoneCalcApp" hidden>
-          <div class="plaza-app-head tool-app-head">
-            <button class="plaza-app-back tool-app-back" type="button" data-tool-close="calc" aria-label="戻る">‹</button>
-            <span class="plaza-app-title">電卓</span>
-          </div>
-          <div class="calc-app">
-            <div class="calc-display" id="calcDisplay">0</div>
-            <div class="calc-keys">
-              <button class="calc-key calc-fn" data-calc="clear">C</button>
-              <button class="calc-key calc-fn" data-calc="sign">±</button>
-              <button class="calc-key calc-fn" data-calc="percent">%</button>
-              <button class="calc-key calc-op" data-calc="op" data-op="/">÷</button>
-              <button class="calc-key" data-calc="num" data-num="7">7</button>
-              <button class="calc-key" data-calc="num" data-num="8">8</button>
-              <button class="calc-key" data-calc="num" data-num="9">9</button>
-              <button class="calc-key calc-op" data-calc="op" data-op="*">×</button>
-              <button class="calc-key" data-calc="num" data-num="4">4</button>
-              <button class="calc-key" data-calc="num" data-num="5">5</button>
-              <button class="calc-key" data-calc="num" data-num="6">6</button>
-              <button class="calc-key calc-op" data-calc="op" data-op="-">−</button>
-              <button class="calc-key" data-calc="num" data-num="1">1</button>
-              <button class="calc-key" data-calc="num" data-num="2">2</button>
-              <button class="calc-key" data-calc="num" data-num="3">3</button>
-              <button class="calc-key calc-op" data-calc="op" data-op="+">＋</button>
-              <button class="calc-key calc-zero" data-calc="num" data-num="0">0</button>
-              <button class="calc-key" data-calc="dot">.</button>
-              <button class="calc-key calc-eq" data-calc="eq">＝</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- 📝 メモアプリ -->
-        <div class="phone-tool-app" id="phoneMemoApp" hidden>
-          <div class="plaza-app-head tool-app-head">
-            <button class="plaza-app-back tool-app-back" type="button" data-tool-close="memo" aria-label="戻る">‹</button>
-            <span class="plaza-app-title">メモ</span>
-            <button class="memo-save-btn" id="memoSaveBtn" type="button">💾</button>
-          </div>
-          <div class="memo-app">
-            <textarea class="memo-textarea" id="memoTextarea" placeholder="気になる言葉や思いついたことをメモ…" spellcheck="false"></textarea>
-            <div class="memo-status" id="memoStatus"></div>
-          </div>
         </div>
 
         <!-- 🎵 ミュージックアプリ -->
@@ -618,27 +561,6 @@
           </div>
         </div>
 
-        <!-- ⏱ タイマーアプリ -->
-        <div class="phone-tool-app" id="phoneTimerApp" hidden>
-          <div class="plaza-app-head tool-app-head">
-            <button class="plaza-app-back tool-app-back" type="button" data-tool-close="timer" aria-label="戻る">‹</button>
-            <span class="plaza-app-title">タイマー</span>
-          </div>
-          <div class="timer-app">
-            <div class="timer-display" id="timerDisplay">25:00</div>
-            <div class="timer-preset">
-              <button class="timer-preset-btn" data-timer-preset="5">5分</button>
-              <button class="timer-preset-btn active" data-timer-preset="25">25分</button>
-              <button class="timer-preset-btn" data-timer-preset="45">45分</button>
-              <button class="timer-preset-btn" data-timer-preset="60">60分</button>
-            </div>
-            <div class="timer-controls">
-              <button class="timer-btn timer-start" id="timerStartBtn">▶ 開始</button>
-              <button class="timer-btn timer-reset" id="timerResetBtn">リセット</button>
-            </div>
-            <div class="timer-hint">集中と休息のリズムを、偉人のように。</div>
-          </div>
-        </div>
         <!-- 偉人の広場（アプリ風、LINEライク） -->
         <div class="phone-plaza-app" id="phonePlazaApp" hidden>
           <div class="plaza-app-head">
@@ -770,10 +692,10 @@
     </div>
   </div>
 
-  <script src="era-lore.js?v=20260422L"></script>
-  <script src="history-patterns.js?v=20260422L"></script>
-  <script src="app.js?v=20260422L"></script>
-  <script src="auth.js?v=20260422L" type="module"></script>
+  <script src="era-lore.js?v=20260422M"></script>
+  <script src="history-patterns.js?v=20260422M"></script>
+  <script src="app.js?v=20260422M"></script>
+  <script src="auth.js?v=20260422M" type="module"></script>
   <script src="ai-consult.js"></script>
 </body>
 </html>
