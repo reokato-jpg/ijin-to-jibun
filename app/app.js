@@ -3922,14 +3922,18 @@ function initPhoneMenu() {
     document.querySelectorAll('.plaza-app-tab').forEach(t => {
       t.classList.toggle('active', t.dataset.plazaTab === 'friends');
     });
-    // 広場BGMを停止
+    // スマホを抜けるときは全BGMを停止（ミュージックアプリの再生も含む、重複防止）
     try {
-      const bgm = document.getElementById('squareBgm');
-      if (bgm) { bgm.pause(); bgm.currentTime = 0; }
+      ['homeBgm','searchBgm','historyBgm','routineBgm','blogBgm','favoritesBgm','squareBgm'].forEach(id => {
+        const a = document.getElementById(id);
+        if (a) { a.pause(); a.currentTime = 0; }
+      });
     } catch {}
+    // ミュージックアプリの再生状態もリセット
+    try { stopMusicApp?.(); } catch {}
     // アンビエントノイズを停止
     try { stopPhoneAmbience?.(); } catch {}
-    // 現在のビューのBGMを再開
+    // 現在のビューのBGMを再開（スマホが閉じた後、そのビューに合わせて1つだけ再生）
     try {
       if (!isMuted()) {
         const activeView = document.querySelector('.view.active')?.id?.replace('view-', '');
