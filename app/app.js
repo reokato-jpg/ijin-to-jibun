@@ -1577,6 +1577,19 @@ function applyMistOfOblivion(personId, lastVisitMs) {
   if (!container) return;
   // 既存の霧オーバーレイを削除
   container.querySelectorAll('.mist-overlay, .mist-notice').forEach(el => el.remove());
+  // ── テストモード ──
+  //   ?mist=untouched → 誰も訪問してない状態
+  //   ?mist=30  → 30日前に最後訪問
+  //   ?mist=100 → 100日前に最後訪問
+  try {
+    const qs = new URLSearchParams(location.search);
+    const mistMode = qs.get('mist');
+    if (mistMode === 'untouched') {
+      lastVisitMs = 0;
+    } else if (mistMode && /^\d+$/.test(mistMode)) {
+      lastVisitMs = Date.now() - parseInt(mistMode, 10) * 24 * 60 * 60 * 1000;
+    }
+  } catch {}
   if (!lastVisitMs) {
     // 誰も訪れたことがない
     const notice = document.createElement('div');
