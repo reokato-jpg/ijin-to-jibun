@@ -3902,6 +3902,21 @@ function initPhoneMenu() {
     } catch {}
     // アンビエントノイズを停止
     try { stopPhoneAmbience?.(); } catch {}
+    // 現在のビューのBGMを再開
+    try {
+      if (!isMuted()) {
+        const activeView = document.querySelector('.view.active')?.id?.replace('view-', '');
+        const BGM_MAP = { people: 'homeBgm', tags: 'searchBgm', history: 'historyBgm', routines: 'routineBgm', articles: 'blogBgm', favorites: 'favoritesBgm' };
+        const bgmId = BGM_MAP[activeView];
+        if (bgmId) {
+          const bgm = document.getElementById(bgmId);
+          if (bgm) {
+            bgm.volume = 0.35;
+            bgm.play().catch(() => {});
+          }
+        }
+      }
+    } catch {}
   };
   const open = () => {
     menu.classList.add('open');
@@ -3909,6 +3924,13 @@ function initPhoneMenu() {
     tick();
     updateBattery();
     updateNotif();
+    // スマホを開いたら画面のBGMは停止（ノイズだけ聞こえるように）
+    try {
+      ['homeBgm','searchBgm','historyBgm','routineBgm','blogBgm','favoritesBgm'].forEach(id => {
+        const a = document.getElementById(id);
+        if (a) a.pause();
+      });
+    } catch {}
     try { playPhoneBootSound?.(); } catch {}
     // 起動音の後、アンビエントノイズをループ再生
     try { setTimeout(() => startPhoneAmbience?.(), 450); } catch {}
@@ -3993,12 +4015,17 @@ function initPhoneMenu() {
       const v = el.dataset.phoneView;
       // 偉人検索・年表へはポータル遷移で世界に入り込む
       if (v === 'tags' || v === 'history') {
-        // ユーザー操作のその瞬間に対象BGMを開始（ブラウザの自動再生制限回避）
+        // 既存のBGMをすべて停止してから、対象BGMを再生（重なり防止）
         try {
+          ['homeBgm','searchBgm','historyBgm','routineBgm','blogBgm','favoritesBgm','squareBgm'].forEach(id => {
+            const a = document.getElementById(id);
+            if (a && id !== (v === 'tags' ? 'searchBgm' : 'historyBgm')) { a.pause(); a.currentTime = 0; }
+          });
           const bgmId = v === 'tags' ? 'searchBgm' : 'historyBgm';
           const bgm = document.getElementById(bgmId);
           if (bgm && !isMuted()) {
             bgm.volume = 0.35;
+            bgm.currentTime = 0;
             bgm.play().catch(() => {});
           }
         } catch {}
