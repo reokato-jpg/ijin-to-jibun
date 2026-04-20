@@ -70,8 +70,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20260422U">
-<link rel="stylesheet" href="era-theme.css?v=20260422U">
+<link rel="stylesheet" href="style.css?v=20260422V">
+<link rel="stylesheet" href="era-theme.css?v=20260422V">
 </head>
 <body>
   <header class="app-header">
@@ -462,10 +462,11 @@
   <!-- 音のオンオフ切替ボタン -->
   <button id="muteToggle" class="mute-toggle" aria-label="音のオンオフ" title="音のオンオフ">🔊</button>
 
-  <!-- 左下の常設キャラクター：レキット（歴史の管理人） -->
+  <!-- 左下の常設キャラクター（VP9 alpha付きWebMで真の透過） -->
   <button id="powerHintAnim" class="power-hint-anim" type="button" aria-label="レキット" title="レキット">
     <video class="power-hint-video" muted playsinline autoplay loop preload="auto" aria-hidden="true">
-      <source src="assets/guide/rekitto.mp4?v=1" type="video/mp4">
+      <source src="assets/guide/rabin.webm?v=2" type="video/webm">
+      <source src="assets/guide/rabin.mp4?v=2" type="video/mp4">
     </video>
     <audio id="powerHintVoice" src="assets/guide/voice-go.mp3" preload="auto"></audio>
   </button>
@@ -707,10 +708,10 @@
     </div>
   </div>
 
-  <script src="era-lore.js?v=20260422U"></script>
-  <script src="history-patterns.js?v=20260422U"></script>
-  <script src="app.js?v=20260422U"></script>
-  <script src="auth.js?v=20260422U" type="module"></script>
+  <script src="era-lore.js?v=20260422V"></script>
+  <script src="history-patterns.js?v=20260422V"></script>
+  <script src="app.js?v=20260422V"></script>
+  <script src="auth.js?v=20260422V" type="module"></script>
   <script src="ai-consult.js"></script>
 </body>
 </html>
