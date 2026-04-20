@@ -5529,6 +5529,7 @@ function initPhoneMenu() {
     });
     markRekittoRead();
     try { if (typeof window.renderIconBadges === 'function') window.renderIconBadges(); } catch {}
+    try { if (typeof window.renderPlazaTalks === 'function') window.renderPlazaTalks(); } catch {}
     requestAnimationFrame(() => { if (body) body.scrollTop = body.scrollHeight; });
   }
 
