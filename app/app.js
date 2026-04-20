@@ -4903,10 +4903,6 @@ function initPhoneMenu() {
         openPhoneToolApp(action);
         return;
       }
-      if (action === 'meshiru') {
-        openPhoneToolApp(action);
-        return;
-      }
       if (action === 'otayori') {
         openPhoneToolApp(action);
         return;
@@ -6680,6 +6676,37 @@ async function showPerson(id) {
       title: null, body: null, extra: bookExtra
     })});
   });
+  // 料理人のレシピ（コピーボタン付き）— 料理人偉人のみ
+  (p.recipes || []).forEach((r, idx) => {
+    const ingredientsText = (r.ingredients || []).map(i => '・' + i).join('\n');
+    const stepsText = (r.steps || []).map((s, i) => `${i+1}. ${s}`).join('\n');
+    const fullText = `【${r.name}】${r.tagline ? '\n' + r.tagline : ''}\n\n■ 材料\n${ingredientsText}\n\n■ 作り方\n${stepsText}${r.note ? '\n\n■ メモ\n' + r.note : ''}\n\n— ${p.name}のレシピ（偉人と自分。より）`;
+    const recipeId = `recipe-${p.id}-${idx}`;
+    const recipeExtra = `
+      <div class="x-recipe-card">
+        <div class="x-recipe-header">
+          <div class="x-recipe-title">${escapeHtml(r.name)}</div>
+          ${r.tagline ? `<div class="x-recipe-tagline">${escapeHtml(r.tagline)}</div>` : ''}
+        </div>
+        <details class="x-recipe-section">
+          <summary>📋 材料（${(r.ingredients || []).length}点）</summary>
+          <ul class="x-recipe-list">${(r.ingredients || []).map(i => `<li>${escapeHtml(i)}</li>`).join('')}</ul>
+        </details>
+        ${(r.steps || []).length ? `
+          <details class="x-recipe-section">
+            <summary>👨‍🍳 作り方（${r.steps.length}ステップ）</summary>
+            <ol class="x-recipe-steps">${r.steps.map(s => `<li>${escapeHtml(s)}</li>`).join('')}</ol>
+          </details>
+        ` : ''}
+        ${r.note ? `<div class="x-recipe-note">💡 ${escapeHtml(r.note)}</div>` : ''}
+        <button class="x-recipe-copy" data-recipe-copy="${recipeId}" data-recipe-text="${escapeHtml(fullText).replace(/"/g,'&quot;')}">📋 レシピをコピー</button>
+      </div>
+    `;
+    stream.push({ sortYear: 99999, sortPri: 7, html: xPostCard({
+      icon: 'book', typeLabel: '🍳 レシピ',
+      title: null, body: null, extra: recipeExtra
+    })});
+  });
   // アクセスごとにランダムシャッフル（Fisher-Yates）
   for (let i = stream.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -7961,6 +7988,27 @@ async function showPerson(id) {
       setNote(key, txt);
       // 再描画
       showPerson(p.id);
+    });
+  });
+
+  // 📋 レシピコピー（料理人偉人のみ）
+  container.querySelectorAll('[data-recipe-copy]').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const text = btn.dataset.recipeText || '';
+      try {
+        if (navigator.clipboard) {
+          await navigator.clipboard.writeText(text);
+          const original = btn.textContent;
+          btn.textContent = '✓ コピーしました';
+          btn.classList.add('copied');
+          setTimeout(() => { btn.textContent = original; btn.classList.remove('copied'); }, 2000);
+        } else {
+          prompt('このレシピをコピーしてください:', text);
+        }
+      } catch {
+        prompt('このレシピをコピーしてください:', text);
+      }
     });
   });
 

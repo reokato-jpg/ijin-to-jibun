@@ -72,8 +72,8 @@
 <!-- フォントは非ブロッキングで読み込み（print → all でフォールバック） -->
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet"></noscript>
-<link rel="stylesheet" href="dist/style.min.css?v=20260425Q">
-<link rel="stylesheet" href="dist/era-theme.min.css?v=20260425Q">
+<link rel="stylesheet" href="dist/style.min.css?v=20260425R">
+<link rel="stylesheet" href="dist/era-theme.min.css?v=20260425R">
 </head>
 <body>
   <header class="app-header">
@@ -543,10 +543,6 @@
             <img src="assets/phone/icon-music.png?v=1" alt="">
             <span>ミュージック</span>
           </button>
-          <button class="phone-icon phone-icon-meshiru" data-phone-action="meshiru">
-            <img src="assets/phone/icon-meshiru.png?v=1" alt="">
-            <span>めしる</span>
-          </button>
           <button class="phone-icon" data-phone-view="articles">
             <img src="assets/phone/icon-blog.png?v=1" alt="">
             <span>ブログ</span>
@@ -581,27 +577,6 @@
           </div>
         </div>
 
-        <!-- 🍳 めしるアプリ（偉人のレシピ＋献立＋買い物リスト） -->
-        <div class="phone-tool-app" id="phoneMeshiruApp" hidden>
-          <div class="plaza-app-head tool-app-head meshiru-head">
-            <button class="plaza-app-back tool-app-back" type="button" data-tool-close="meshiru" aria-label="戻る">‹</button>
-            <span class="plaza-app-title">めしる</span>
-            <span class="meshiru-tagline">偉人の台所</span>
-          </div>
-          <div class="meshiru-app">
-            <div class="meshiru-tabs">
-              <button class="meshiru-tab active" data-meshiru-tab="feed">🍽 偉人レシピ</button>
-              <button class="meshiru-tab" data-meshiru-tab="my">📝 マイレシピ</button>
-              <button class="meshiru-tab" data-meshiru-tab="plan">📅 献立</button>
-              <button class="meshiru-tab" data-meshiru-tab="shopping">🛒 買い物</button>
-            </div>
-            <div class="meshiru-feed" id="meshiruFeed"></div>
-            <div class="meshiru-my" id="meshiruMy" hidden></div>
-            <div class="meshiru-plan" id="meshiruPlan" hidden></div>
-            <div class="meshiru-shopping" id="meshiruShopping" hidden></div>
-            <div class="meshiru-saved" id="meshiruSaved" hidden></div>
-          </div>
-        </div>
 
         <!-- ✉ お便りアプリ（バグ・改善・機能要望） -->
         <div class="phone-tool-app" id="phoneOtayoriApp" hidden>
@@ -767,10 +742,10 @@
   </div>
 
   <!-- minified bundles（dist/）と era-lore.min.js は年表画面を開いた時に遅延読み込み -->
-  <script src="dist/history-patterns.min.js?v=20260425Q" defer></script>
-  <script src="dist/app.min.js?v=20260425Q" defer></script>
-  <script src="auth.js?v=20260425Q" type="module"></script>
-  <script src="dist/ai-consult.min.js?v=20260425Q" defer></script>
+  <script src="dist/history-patterns.min.js?v=20260425R" defer></script>
+  <script src="dist/app.min.js?v=20260425R" defer></script>
+  <script src="auth.js?v=20260425R" type="module"></script>
+  <script src="dist/ai-consult.min.js?v=20260425R" defer></script>
   <script>
     // Service Worker 登録（2回目以降のロードを爆速化）
     if ('serviceWorker' in navigator) {
