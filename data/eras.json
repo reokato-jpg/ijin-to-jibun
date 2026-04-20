@@ -7,60 +7,178 @@
       "sub": "Music",
       "eras": [
         {
-          "id": "renaissance_music", "name": "ルネサンス音楽", "period": "1400〜1600年",
-          "periodStart": 1400, "periodEnd": 1600,
+          "id": "renaissance_music",
+          "name": "ルネサンス音楽",
+          "period": "1400〜1600年",
+          "periodStart": 1400,
+          "periodEnd": 1600,
           "description": "宗教音楽のポリフォニーが頂点に。多声部が織りなす透明なハーモニーの時代。",
-          "keywords": ["ポリフォニー", "ミサ曲", "モテット", "ネーデルラント楽派"],
-          "people": ["palestrina"]
+          "keywords": [
+            "ポリフォニー",
+            "ミサ曲",
+            "モテット",
+            "ネーデルラント楽派"
+          ],
+          "people": [
+            "palestrina"
+          ]
         },
         {
-          "id": "baroque", "name": "バロック音楽", "period": "1600〜1750年",
-          "periodStart": 1600, "periodEnd": 1750,
+          "id": "baroque",
+          "name": "バロック音楽",
+          "period": "1600〜1750年",
+          "periodStart": 1600,
+          "periodEnd": 1750,
           "description": "装飾と対位法の時代。通奏低音・フーガ・協奏曲が確立し、バッハで頂点に達する。",
-          "keywords": ["フーガ", "通奏低音", "オラトリオ", "協奏曲"],
-          "people": ["vivaldi", "bach", "handel"]
+          "keywords": [
+            "フーガ",
+            "通奏低音",
+            "オラトリオ",
+            "協奏曲"
+          ],
+          "people": [
+            "vivaldi",
+            "bach",
+            "handel"
+          ]
         },
         {
-          "id": "classical", "name": "古典派", "period": "1750〜1820年",
-          "periodStart": 1750, "periodEnd": 1820,
+          "id": "classical",
+          "name": "古典派",
+          "period": "1750〜1820年",
+          "periodStart": 1750,
+          "periodEnd": 1820,
           "description": "ソナタ形式・交響曲・弦楽四重奏が確立。形式の均整と明晰さを重んじたウィーン楽派の黄金時代。",
-          "keywords": ["ソナタ形式", "交響曲", "ウィーン楽派", "弦楽四重奏"],
-          "people": ["haydn", "mozart", "beethoven"]
+          "keywords": [
+            "ソナタ形式",
+            "交響曲",
+            "ウィーン楽派",
+            "弦楽四重奏"
+          ],
+          "people": [
+            "haydn",
+            "mozart",
+            "beethoven"
+          ]
         },
         {
-          "id": "early_romantic", "name": "ロマン派初期", "period": "1800〜1850年",
-          "periodStart": 1800, "periodEnd": 1850,
+          "id": "early_romantic",
+          "name": "ロマン派初期",
+          "period": "1800〜1850年",
+          "periodStart": 1800,
+          "periodEnd": 1850,
           "description": "感情の解放、個人の内面への眼差し。歌曲・ピアノ小品・標題交響曲が生まれ、ヴィルトゥオーゾの時代へ。",
-          "keywords": ["歌曲", "ピアノ小品", "標題音楽", "ヴィルトゥオーゾ"],
-          "people": ["paganini", "schubert", "berlioz", "mendelssohn", "chopin", "schumann", "liszt"]
+          "keywords": [
+            "歌曲",
+            "ピアノ小品",
+            "標題音楽",
+            "ヴィルトゥオーゾ"
+          ],
+          "people": [
+            "paganini",
+            "schubert",
+            "berlioz",
+            "mendelssohn",
+            "chopin",
+            "schumann",
+            "liszt"
+          ]
         },
         {
-          "id": "late_romantic", "name": "ロマン派後期", "period": "1850〜1900年",
-          "periodStart": 1850, "periodEnd": 1900,
+          "id": "late_romantic",
+          "name": "ロマン派後期",
+          "period": "1850〜1900年",
+          "periodStart": 1850,
+          "periodEnd": 1900,
           "description": "オペラ・交響曲が巨大化、民族主義が各国で芽吹く。音楽は拡張と深化を続ける。",
-          "keywords": ["楽劇", "国民楽派", "プログラム音楽", "後期ロマン派"],
-          "people": ["wagner", "verdi", "smetana", "bruckner", "brahms", "saint_saens", "bizet", "mussorgsky", "tchaikovsky", "dvorak", "grieg", "rimsky_korsakov", "faure", "puccini", "mahler"]
+          "keywords": [
+            "楽劇",
+            "国民楽派",
+            "プログラム音楽",
+            "後期ロマン派"
+          ],
+          "people": [
+            "wagner",
+            "verdi",
+            "smetana",
+            "bruckner",
+            "brahms",
+            "saint_saens",
+            "bizet",
+            "mussorgsky",
+            "tchaikovsky",
+            "dvorak",
+            "grieg",
+            "rimsky_korsakov",
+            "faure",
+            "puccini",
+            "mahler"
+          ]
         },
         {
-          "id": "impressionism_music", "name": "印象主義・世紀末", "period": "1880〜1920年",
-          "periodStart": 1880, "periodEnd": 1920,
+          "id": "impressionism_music",
+          "name": "印象主義・世紀末",
+          "period": "1880〜1920年",
+          "periodStart": 1880,
+          "periodEnd": 1920,
           "description": "和声の曖昧さ・色彩感・空気の揺らぎ。東洋音楽や全音音階への接近。",
-          "keywords": ["印象主義", "全音音階", "神秘主義", "パリの前衛"],
-          "people": ["debussy", "sibelius", "satie", "scriabin", "rachmaninoff", "ravel", "respighi"]
+          "keywords": [
+            "印象主義",
+            "全音音階",
+            "神秘主義",
+            "パリの前衛"
+          ],
+          "people": [
+            "debussy",
+            "sibelius",
+            "satie",
+            "scriabin",
+            "rachmaninoff",
+            "ravel",
+            "respighi"
+          ]
         },
         {
-          "id": "modern_music", "name": "20世紀音楽", "period": "1900〜1970年",
-          "periodStart": 1900, "periodEnd": 1970,
+          "id": "modern_music",
+          "name": "20世紀音楽",
+          "period": "1900〜1970年",
+          "periodStart": 1900,
+          "periodEnd": 1970,
           "description": "調性の解体・民族要素・ジャズ・電子音まで。多様化と実験の世紀。",
-          "keywords": ["新古典主義", "十二音技法", "民族主義", "ジャズ"],
-          "people": ["bartok", "stravinsky", "prokofiev", "gershwin", "copland", "shostakovich", "dutilleux", "bernstein", "takemitsu"]
+          "keywords": [
+            "新古典主義",
+            "十二音技法",
+            "民族主義",
+            "ジャズ"
+          ],
+          "people": [
+            "bartok",
+            "stravinsky",
+            "prokofiev",
+            "gershwin",
+            "copland",
+            "shostakovich",
+            "dutilleux",
+            "bernstein",
+            "takemitsu"
+          ]
         },
         {
-          "id": "contemporary_music", "name": "現代音楽", "period": "1970年〜",
-          "periodStart": 1970, "periodEnd": 2030,
+          "id": "contemporary_music",
+          "name": "現代音楽",
+          "period": "1970年〜",
+          "periodStart": 1970,
+          "periodEnd": 2030,
           "description": "映像音楽・アンビエント・電子と生楽器の融合。ジャンルの境界が溶けていく。",
-          "keywords": ["映画音楽", "アンビエント", "ミニマル", "電子音楽"],
-          "people": ["ryuichi_sakamoto"]
+          "keywords": [
+            "映画音楽",
+            "アンビエント",
+            "ミニマル",
+            "電子音楽"
+          ],
+          "people": [
+            "ryuichi_sakamoto"
+          ]
         }
       ]
     },
@@ -71,53 +189,144 @@
       "sub": "Philosophy",
       "eras": [
         {
-          "id": "ancient_east", "name": "古代東洋哲学", "period": "紀元前600〜紀元前400年",
-          "periodStart": -600, "periodEnd": -400,
+          "id": "ancient_east",
+          "name": "古代東洋哲学",
+          "period": "紀元前600〜紀元前400年",
+          "periodStart": -600,
+          "periodEnd": -400,
           "description": "中国で道と徳の思想が生まれ、インドでは瞑想の伝統が花開く。",
-          "keywords": ["道", "仁", "無為自然", "瞑想"],
-          "people": ["laozi", "confucius", "buddha"]
+          "keywords": [
+            "道",
+            "仁",
+            "無為自然",
+            "瞑想"
+          ],
+          "people": [
+            "laozi",
+            "confucius",
+            "buddha"
+          ]
         },
         {
-          "id": "ancient_greek", "name": "古代ギリシャ哲学", "period": "紀元前500〜紀元前300年",
-          "periodStart": -500, "periodEnd": -300,
+          "id": "ancient_greek",
+          "name": "古代ギリシャ哲学",
+          "period": "紀元前500〜紀元前300年",
+          "periodStart": -500,
+          "periodEnd": -300,
           "description": "対話と論理、魂と徳の探究。西洋哲学のすべてはここから始まった。",
-          "keywords": ["対話法", "イデア", "四元徳", "論理学"],
-          "people": ["socrates", "plato", "aristotle"]
+          "keywords": [
+            "対話法",
+            "イデア",
+            "四元徳",
+            "論理学"
+          ],
+          "people": [
+            "socrates",
+            "plato",
+            "aristotle"
+          ]
         },
         {
-          "id": "roman_stoic", "name": "ローマ・ストア哲学", "period": "紀元前50〜紀元200年",
-          "periodStart": -50, "periodEnd": 200,
+          "id": "roman_stoic",
+          "name": "ローマ・ストア哲学",
+          "period": "紀元前50〜紀元200年",
+          "periodStart": -50,
+          "periodEnd": 200,
           "description": "運命を受け容れ、徳を唯一の善とする。皇帝から奴隷まで実践した人生の哲学。",
-          "keywords": ["ストア派", "自省", "徳", "アパテイア"],
-          "people": ["seneca", "marcus_aurelius"]
+          "keywords": [
+            "ストア派",
+            "自省",
+            "徳",
+            "アパテイア"
+          ],
+          "people": [
+            "seneca",
+            "marcus_aurelius"
+          ]
         },
         {
-          "id": "rationalism", "name": "合理論・経験論", "period": "1600〜1750年",
-          "periodStart": 1600, "periodEnd": 1750,
+          "id": "rationalism",
+          "name": "合理論・経験論",
+          "period": "1600〜1750年",
+          "periodStart": 1600,
+          "periodEnd": 1750,
           "description": "近代哲学の夜明け。『我思う、ゆえに我あり』から、知識は経験から——論争と探究の時代。",
-          "keywords": ["合理論", "経験論", "コギト", "タブラ・ラサ"],
-          "people": ["descartes", "spinoza", "john_locke"]
+          "keywords": [
+            "合理論",
+            "経験論",
+            "コギト",
+            "タブラ・ラサ"
+          ],
+          "people": [
+            "descartes",
+            "spinoza",
+            "john_locke"
+          ]
         },
         {
-          "id": "enlightenment", "name": "啓蒙思想", "period": "1680〜1800年",
-          "periodStart": 1680, "periodEnd": 1800,
+          "id": "enlightenment",
+          "name": "啓蒙思想",
+          "period": "1680〜1800年",
+          "periodStart": 1680,
+          "periodEnd": 1800,
           "description": "理性・自由・寛容。教会と王権の権威に対抗し、フランス革命へと連なる思想。",
-          "keywords": ["理性", "寛容", "社会契約", "批判"],
-          "people": ["voltaire", "rousseau", "kant"]
+          "keywords": [
+            "理性",
+            "寛容",
+            "社会契約",
+            "批判"
+          ],
+          "people": [
+            "voltaire",
+            "rousseau",
+            "kant"
+          ]
         },
         {
-          "id": "german_idealism", "name": "ドイツ観念論・実存", "period": "1770〜1900年",
-          "periodStart": 1770, "periodEnd": 1900,
+          "id": "german_idealism",
+          "name": "ドイツ観念論・実存",
+          "period": "1770〜1900年",
+          "periodStart": 1770,
+          "periodEnd": 1900,
           "description": "精神・歴史・生の哲学。観念論の壮大な体系から、実存の問いが生まれる。",
-          "keywords": ["弁証法", "意志", "実存", "超人"],
-          "people": ["hegel", "schopenhauer", "kierkegaard", "marx", "nietzsche"]
+          "keywords": [
+            "弁証法",
+            "意志",
+            "実存",
+            "超人"
+          ],
+          "people": [
+            "hegel",
+            "schopenhauer",
+            "kierkegaard",
+            "marx",
+            "nietzsche"
+          ]
         },
         {
-          "id": "20c_philosophy", "name": "20世紀哲学", "period": "1900〜1980年",
-          "periodStart": 1900, "periodEnd": 1980,
+          "id": "20c_philosophy",
+          "name": "20世紀哲学",
+          "period": "1900〜1980年",
+          "periodStart": 1900,
+          "periodEnd": 1980,
           "description": "言語・存在・権力への問い。実存主義・分析哲学・現象学が交錯する世紀。",
-          "keywords": ["実存主義", "分析哲学", "言語論的転回", "フェミニズム"],
-          "people": ["nishida", "bertrand_russell", "wittgenstein", "heidegger", "sartre", "kant_hannah", "beauvoir", "camus", "foucault"]
+          "keywords": [
+            "実存主義",
+            "分析哲学",
+            "言語論的転回",
+            "フェミニズム"
+          ],
+          "people": [
+            "nishida",
+            "bertrand_russell",
+            "wittgenstein",
+            "heidegger",
+            "sartre",
+            "kant_hannah",
+            "beauvoir",
+            "camus",
+            "foucault"
+          ]
         }
       ]
     },
@@ -128,39 +337,96 @@
       "sub": "Art",
       "eras": [
         {
-          "id": "renaissance_art", "name": "ルネサンス美術", "period": "1400〜1600年",
-          "periodStart": 1400, "periodEnd": 1600,
+          "id": "renaissance_art",
+          "name": "ルネサンス美術",
+          "period": "1400〜1600年",
+          "periodStart": 1400,
+          "periodEnd": 1600,
           "description": "古代ギリシャ・ローマ芸術の再発見。人間の肉体・遠近法・光と影。三大巨匠の時代。",
-          "keywords": ["遠近法", "人文主義", "三大巨匠", "フィレンツェ"],
-          "people": ["leonardo", "michelangelo", "raphael"]
+          "keywords": [
+            "遠近法",
+            "人文主義",
+            "三大巨匠",
+            "フィレンツェ"
+          ],
+          "people": [
+            "leonardo",
+            "michelangelo",
+            "raphael"
+          ]
         },
         {
-          "id": "baroque_art", "name": "バロック・オランダ絵画", "period": "1600〜1700年",
-          "periodStart": 1600, "periodEnd": 1700,
+          "id": "baroque_art",
+          "name": "バロック・オランダ絵画",
+          "period": "1600〜1700年",
+          "periodStart": 1600,
+          "periodEnd": 1700,
           "description": "劇的な明暗・光の画家たち。北方では市民のための風俗画と肖像が花開く。",
-          "keywords": ["キアロスクーロ", "光", "オランダ黄金時代", "室内画"],
-          "people": ["rembrandt", "vermeer"]
+          "keywords": [
+            "キアロスクーロ",
+            "光",
+            "オランダ黄金時代",
+            "室内画"
+          ],
+          "people": [
+            "rembrandt",
+            "vermeer"
+          ]
         },
         {
-          "id": "edo_japan", "name": "江戸の美術", "period": "1760〜1850年",
-          "periodStart": 1760, "periodEnd": 1850,
+          "id": "edo_japan",
+          "name": "江戸の美術",
+          "period": "1760〜1850年",
+          "periodStart": 1760,
+          "periodEnd": 1850,
           "description": "庶民の娯楽として花開いた浮世絵。のちに印象派を揺り動かすジャポニスムの源流。",
-          "keywords": ["浮世絵", "木版画", "ジャポニスム", "富嶽三十六景"],
-          "people": ["hokusai"]
+          "keywords": [
+            "浮世絵",
+            "木版画",
+            "ジャポニスム",
+            "富嶽三十六景"
+          ],
+          "people": [
+            "hokusai"
+          ]
         },
         {
-          "id": "impressionism", "name": "印象派・後期印象派", "period": "1860〜1905年",
-          "periodStart": 1860, "periodEnd": 1905,
+          "id": "impressionism",
+          "name": "印象派・後期印象派",
+          "period": "1860〜1905年",
+          "periodStart": 1860,
+          "periodEnd": 1905,
           "description": "アトリエを出て光の中へ。写真の登場と浮世絵の衝撃が、絵画を解放した。",
-          "keywords": ["印象派", "外光派", "色彩分割", "後期印象派"],
-          "people": ["monet", "rodin", "van_gogh"]
+          "keywords": [
+            "印象派",
+            "外光派",
+            "色彩分割",
+            "後期印象派"
+          ],
+          "people": [
+            "monet",
+            "rodin",
+            "van_gogh"
+          ]
         },
         {
-          "id": "modern_art", "name": "近代・モダニズム", "period": "1890〜1950年",
-          "periodStart": 1890, "periodEnd": 1950,
+          "id": "modern_art",
+          "name": "近代・モダニズム",
+          "period": "1890〜1950年",
+          "periodStart": 1890,
+          "periodEnd": 1950,
           "description": "ウィーン分離派、フォーヴィスム、キュビスム——形と色の革命が続く。",
-          "keywords": ["象徴主義", "フォーヴィスム", "キュビスム", "装飾美術"],
-          "people": ["klimt", "matisse", "picasso"]
+          "keywords": [
+            "象徴主義",
+            "フォーヴィスム",
+            "キュビスム",
+            "装飾美術"
+          ],
+          "people": [
+            "klimt",
+            "matisse",
+            "picasso"
+          ]
         }
       ]
     },
@@ -171,32 +437,83 @@
       "sub": "Japanese History",
       "eras": [
         {
-          "id": "sengoku", "name": "戦国時代", "period": "1467〜1603年",
-          "periodStart": 1467, "periodEnd": 1603,
+          "id": "sengoku",
+          "name": "戦国時代",
+          "period": "1467〜1603年",
+          "periodStart": 1467,
+          "periodEnd": 1603,
           "description": "応仁の乱から大坂の陣まで。群雄割拠の戦乱の世で、天下統一を目指した武将たちが覇を競った。信長・秀吉・家康の三英傑、武田・上杉・伊達などの名将が綺羅星のごとく現れた激動の時代。",
-          "keywords": ["応仁の乱", "天下統一", "川中島", "関ヶ原", "風林火山"],
-          "people": ["oda_nobunaga","toyotomi_hideyoshi","tokugawa_ieyasu","takeda_shingen","uesugi_kenshin","date_masamune"]
+          "keywords": [
+            "応仁の乱",
+            "天下統一",
+            "川中島",
+            "関ヶ原",
+            "風林火山"
+          ],
+          "people": [
+            "oda_nobunaga",
+            "toyotomi_hideyoshi",
+            "tokugawa_ieyasu",
+            "takeda_shingen",
+            "uesugi_kenshin",
+            "date_masamune"
+          ]
         },
         {
-          "id": "bakumatsu", "name": "幕末", "period": "1853〜1868年",
-          "periodStart": 1853, "periodEnd": 1868,
+          "id": "bakumatsu",
+          "name": "幕末",
+          "period": "1853〜1868年",
+          "periodStart": 1853,
+          "periodEnd": 1868,
           "description": "黒船来航から明治維新まで。志士たちが国の形を変えた激動の15年。",
-          "keywords": ["黒船", "尊王攘夷", "新選組", "倒幕"],
-          "people": ["sakamoto_ryoma","saigo_takamori","kondo_isami","hijikata_toshizo","okita_soji"]
+          "keywords": [
+            "黒船",
+            "尊王攘夷",
+            "新選組",
+            "倒幕"
+          ],
+          "people": [
+            "sakamoto_ryoma",
+            "saigo_takamori",
+            "kondo_isami",
+            "hijikata_toshizo",
+            "okita_soji"
+          ]
         },
         {
-          "id": "heian_japan", "name": "平安時代", "period": "794〜1185年",
-          "periodStart": 794, "periodEnd": 1185,
+          "id": "heian_japan",
+          "name": "平安時代",
+          "period": "794〜1185年",
+          "periodStart": 794,
+          "periodEnd": 1185,
           "description": "貴族文化の華やかな時代。仮名文字が生まれ、物語文学が花開いた。",
-          "keywords": ["源氏物語", "枕草子", "和歌", "貴族文化"],
-          "people": ["murasaki"]
+          "keywords": [
+            "源氏物語",
+            "枕草子",
+            "和歌",
+            "貴族文化"
+          ],
+          "people": [
+            "murasaki"
+          ]
         },
         {
-          "id": "edo_japan_culture", "name": "江戸時代", "period": "1603〜1868年",
-          "periodStart": 1603, "periodEnd": 1868,
+          "id": "edo_japan_culture",
+          "name": "江戸時代",
+          "period": "1603〜1868年",
+          "periodStart": 1603,
+          "periodEnd": 1868,
           "description": "260年の泰平。俳諧・浮世絵・庶民文化が花開いた創造の時代。",
-          "keywords": ["俳諧", "浮世絵", "鎖国", "町人文化"],
-          "people": ["basho","hokusai"]
+          "keywords": [
+            "俳諧",
+            "浮世絵",
+            "鎖国",
+            "町人文化"
+          ],
+          "people": [
+            "basho",
+            "hokusai"
+          ]
         }
       ]
     },
@@ -207,53 +524,132 @@
       "sub": "Literature",
       "eras": [
         {
-          "id": "heian", "name": "平安文学", "period": "10〜11世紀",
-          "periodStart": 900, "periodEnd": 1100,
+          "id": "heian",
+          "name": "平安文学",
+          "period": "10〜11世紀",
+          "periodStart": 900,
+          "periodEnd": 1100,
           "description": "女性の手で書かれた散文の最高峰。『源氏物語』は世界文学の最古の長編小説。",
-          "keywords": ["源氏物語", "物のあはれ", "女流文学", "王朝"],
-          "people": ["murasaki"]
+          "keywords": [
+            "源氏物語",
+            "物のあはれ",
+            "女流文学",
+            "王朝"
+          ],
+          "people": [
+            "murasaki"
+          ]
         },
         {
-          "id": "medieval_italy", "name": "中世イタリア文学", "period": "13〜14世紀",
-          "periodStart": 1200, "periodEnd": 1400,
+          "id": "medieval_italy",
+          "name": "中世イタリア文学",
+          "period": "13〜14世紀",
+          "periodStart": 1200,
+          "periodEnd": 1400,
           "description": "俗語（イタリア語）で書かれた叙事詩が、民族の言語を作った。",
-          "keywords": ["神曲", "トスカーナ方言", "三部作", "愛と信仰"],
-          "people": ["dante"]
+          "keywords": [
+            "神曲",
+            "トスカーナ方言",
+            "三部作",
+            "愛と信仰"
+          ],
+          "people": [
+            "dante"
+          ]
         },
         {
-          "id": "renaissance_lit", "name": "ルネサンス英国演劇", "period": "16〜17世紀",
-          "periodStart": 1550, "periodEnd": 1650,
+          "id": "renaissance_lit",
+          "name": "ルネサンス英国演劇",
+          "period": "16〜17世紀",
+          "periodStart": 1550,
+          "periodEnd": 1650,
           "description": "グローブ座の舞台で、人間のあらゆる感情が言葉になった。",
-          "keywords": ["四大悲劇", "ソネット", "グローブ座", "俗語"],
-          "people": ["shakespeare"]
+          "keywords": [
+            "四大悲劇",
+            "ソネット",
+            "グローブ座",
+            "俗語"
+          ],
+          "people": [
+            "shakespeare"
+          ]
         },
         {
-          "id": "german_lit", "name": "ドイツ古典主義", "period": "1770〜1830年",
-          "periodStart": 1770, "periodEnd": 1830,
+          "id": "german_lit",
+          "name": "ドイツ古典主義",
+          "period": "1770〜1830年",
+          "periodStart": 1770,
+          "periodEnd": 1830,
           "description": "若きウェルテルの悩み、そしてファウスト。ゲーテの生涯がそのままドイツ文学の頂点。",
-          "keywords": ["疾風怒濤", "ウェルテル", "ファウスト", "ワイマール"],
-          "people": ["goethe"]
+          "keywords": [
+            "疾風怒濤",
+            "ウェルテル",
+            "ファウスト",
+            "ワイマール"
+          ],
+          "people": [
+            "goethe"
+          ]
         },
         {
-          "id": "decadence", "name": "世紀末・耽美派", "period": "1880〜1910年",
-          "periodStart": 1880, "periodEnd": 1910,
+          "id": "decadence",
+          "name": "世紀末・耽美派",
+          "period": "1880〜1910年",
+          "periodStart": 1880,
+          "periodEnd": 1910,
           "description": "美こそ善。ダンディズムと頽廃の狭間で、ワイルドの言葉が輝く。",
-          "keywords": ["ダンディズム", "耽美主義", "機知", "退廃"],
-          "people": ["oscar_wilde"]
+          "keywords": [
+            "ダンディズム",
+            "耽美主義",
+            "機知",
+            "退廃"
+          ],
+          "people": [
+            "oscar_wilde"
+          ]
         },
         {
-          "id": "modern_jp_lit", "name": "近現代日本文学", "period": "1890〜1970年",
-          "periodStart": 1890, "periodEnd": 1970,
+          "id": "modern_jp_lit",
+          "name": "近現代日本文学",
+          "period": "1890〜1970年",
+          "periodStart": 1890,
+          "periodEnd": 1970,
           "description": "西洋と日本のはざまで生まれた、繊細で激しい文体。",
-          "keywords": ["自然主義", "新感覚派", "戦後派", "耽美"],
-          "people": ["soseki", "akutagawa", "dazai_osamu", "kawabata", "miyazawa_kenji", "mishima_yukio"]
+          "keywords": [
+            "自然主義",
+            "新感覚派",
+            "戦後派",
+            "耽美"
+          ],
+          "people": [
+            "soseki",
+            "akutagawa",
+            "dazai_osamu",
+            "kawabata",
+            "miyazawa_kenji",
+            "mishima_yukio"
+          ]
         },
         {
-          "id": "20c_literature", "name": "20世紀の文学", "period": "1900〜1990年",
-          "periodStart": 1900, "periodEnd": 1990,
+          "id": "20c_literature",
+          "name": "20世紀の文学",
+          "period": "1900〜1990年",
+          "periodStart": 1900,
+          "periodEnd": 1990,
           "description": "戦争と喪失の中で、言葉は生き延びる術を問い続けた。",
-          "keywords": ["モダニズム", "アンネの日記", "実存", "失われた世代"],
-          "people": ["kafka", "hemingway", "anne_frank", "dostoevsky", "tolstoy"]
+          "keywords": [
+            "モダニズム",
+            "アンネの日記",
+            "実存",
+            "失われた世代"
+          ],
+          "people": [
+            "kafka",
+            "hemingway",
+            "anne_frank",
+            "dostoevsky",
+            "tolstoy"
+          ]
         }
       ]
     },
@@ -264,39 +660,195 @@
       "sub": "Science",
       "eras": [
         {
-          "id": "scientific_revolution", "name": "科学革命", "period": "1550〜1700年",
-          "periodStart": 1550, "periodEnd": 1700,
+          "id": "scientific_revolution",
+          "name": "科学革命",
+          "period": "1550〜1700年",
+          "periodStart": 1550,
+          "periodEnd": 1700,
           "description": "天動説から地動説へ。観測と実験で宇宙を再発見した時代。",
-          "keywords": ["地動説", "望遠鏡", "惑星運動", "万有引力"],
-          "people": ["galileo", "kepler", "newton"]
+          "keywords": [
+            "地動説",
+            "望遠鏡",
+            "惑星運動",
+            "万有引力"
+          ],
+          "people": [
+            "galileo",
+            "kepler",
+            "newton"
+          ]
         },
         {
-          "id": "industrial_science", "name": "産業と発明の時代", "period": "1850〜1920年",
-          "periodStart": 1850, "periodEnd": 1920,
+          "id": "industrial_science",
+          "name": "産業と発明の時代",
+          "period": "1850〜1920年",
+          "periodStart": 1850,
+          "periodEnd": 1920,
           "description": "電気・無線・録音——発明家たちが世界を作り変えた。",
-          "keywords": ["電気", "無線", "発明", "特許戦争"],
-          "people": ["edison", "tesla"]
+          "keywords": [
+            "電気",
+            "無線",
+            "発明",
+            "特許戦争"
+          ],
+          "people": [
+            "edison",
+            "tesla"
+          ]
         },
         {
-          "id": "modern_physics", "name": "近代物理学", "period": "1900〜1950年",
-          "periodStart": 1900, "periodEnd": 1950,
+          "id": "modern_physics",
+          "name": "近代物理学",
+          "period": "1900〜1950年",
+          "periodStart": 1900,
+          "periodEnd": 1950,
           "description": "相対性理論と量子力学が古典物理を超えた。20世紀科学の大転換。",
-          "keywords": ["相対性理論", "量子力学", "放射能", "核物理"],
-          "people": ["curie", "einstein", "yukawa_hideki", "seaborg"]
+          "keywords": [
+            "相対性理論",
+            "量子力学",
+            "放射能",
+            "核物理"
+          ],
+          "people": [
+            "curie",
+            "einstein",
+            "yukawa_hideki",
+            "seaborg"
+          ]
         },
         {
-          "id": "mind_and_machine", "name": "精神と機械の世紀", "period": "1890〜1990年",
-          "periodStart": 1890, "periodEnd": 1990,
+          "id": "mind_and_machine",
+          "name": "精神と機械の世紀",
+          "period": "1890〜1990年",
+          "periodStart": 1890,
+          "periodEnd": 1990,
           "description": "無意識の発見、計算機械の誕生。心と機械は、同じ問いから生まれた。",
-          "keywords": ["無意識", "精神分析", "チューリング機械", "AI前史"],
-          "people": ["freud", "turing"]
+          "keywords": [
+            "無意識",
+            "精神分析",
+            "チューリング機械",
+            "AI前史"
+          ],
+          "people": [
+            "freud",
+            "turing"
+          ]
         },
         {
-          "id": "japan_sci", "name": "日本の近代科学", "period": "1870〜1970年",
-          "periodStart": 1870, "periodEnd": 1970,
+          "id": "japan_sci",
+          "name": "日本の近代科学",
+          "period": "1870〜1970年",
+          "periodStart": 1870,
+          "periodEnd": 1970,
           "description": "西洋科学を独自に血肉化した日本の先駆者たち。",
-          "keywords": ["細菌学", "素粒子", "博物学", "ノーベル賞"],
-          "people": ["noguchi_hideyo", "yukawa_hideki", "minakata"]
+          "keywords": [
+            "細菌学",
+            "素粒子",
+            "博物学",
+            "ノーベル賞"
+          ],
+          "people": [
+            "noguchi_hideyo",
+            "yukawa_hideki",
+            "minakata"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "business",
+      "name": "ビジネスの歴史",
+      "icon": "💳",
+      "sub": "経営の系譜",
+      "eras": [
+        {
+          "id": "meiji_industry",
+          "name": "明治の産業勃興",
+          "period": "1870〜1910年",
+          "description": "欧米の近代経済を吸収し、日本資本主義が立ち上がった時代。渋沢栄一ら先駆者が銀行・鉄道・紡績を次々設立。",
+          "keywords": [
+            "殖産興業",
+            "資本主義",
+            "財閥形成"
+          ],
+          "people": [
+            "shibusawa_eiichi"
+          ]
+        },
+        {
+          "id": "postwar_makers",
+          "name": "戦後のものづくり時代",
+          "period": "1945〜1989年",
+          "description": "焦土から世界的メーカーへ。町工場から始まったホンダ・パナソニック・ソニーが世界市場を制覇した高度経済成長の主役たち。",
+          "keywords": [
+            "高度成長",
+            "Made in Japan",
+            "ものづくり"
+          ],
+          "people": [
+            "matsushita_konosuke",
+            "honda_soichiro"
+          ]
+        },
+        {
+          "id": "tech_era",
+          "name": "テクノロジー時代",
+          "period": "1980年〜現在",
+          "description": "コンピュータ、インターネット、スマートフォン——情報技術が経営の新たな地平を切り拓いた。ジョブズ、ゲイツら。",
+          "keywords": [
+            "IT革命",
+            "スタートアップ",
+            "イノベーション"
+          ],
+          "people": [
+            "steve_jobs"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "horse_racing",
+      "name": "競馬の歴史",
+      "icon": "🏇",
+      "sub": "名馬と名騎手",
+      "eras": [
+        {
+          "id": "showa_meiba",
+          "name": "昭和の名馬",
+          "period": "1970〜1989年",
+          "description": "シンザン、ハイセイコー、テンポイント——国民的アイドルとなった戦後競馬の黎明期の名馬たち。",
+          "keywords": [
+            "ハイセイコー",
+            "テンポイント",
+            "競馬ブーム"
+          ],
+          "people": []
+        },
+        {
+          "id": "heisei_meiba",
+          "name": "平成の三冠馬たち",
+          "period": "1990〜2019年",
+          "description": "シンボリルドルフ以来の三冠を達成したディープインパクト、オルフェーヴル、コントレイル——平成が生んだ歴代最強クラスの名馬。",
+          "keywords": [
+            "三冠馬",
+            "無敗",
+            "G1制覇"
+          ],
+          "people": [
+            "deep_impact"
+          ]
+        },
+        {
+          "id": "reiwa_meiba",
+          "name": "令和の新時代",
+          "period": "2019年〜",
+          "description": "コントレイル、イクイノックス、リバティアイランド——令和の新しい競馬史を紡ぐ馬たち。",
+          "keywords": [
+            "新時代",
+            "世代交代",
+            "国際化"
+          ],
+          "people": []
         }
       ]
     }

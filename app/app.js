@@ -4087,18 +4087,11 @@ function initPhoneMenu() {
       video.replaceWith(imgEl);
       video = null;
     }
-    let idx = 0;
+    // タップでバリアント切替は無効化（一瞬別キャラが出る問題を回避）
+    // 代わりに、単にクリックで何もしない（イベントのみ消費）
     hint.addEventListener('click', (e) => {
       e.stopPropagation();
-      idx = (idx + 1) % 4;
-      if (imgEl) {
-        // リロードしてアニメをリスタート
-        imgEl.src = 'assets/guide/' + VARIANTS_WEBP[idx] + '?v=1&t=' + Date.now();
-      } else if (video) {
-        video.innerHTML = `<source src="assets/guide/${VARIANTS_WEBM[idx]}?v=1" type="video/webm">`;
-        video.load();
-        video.play().catch(()=>{});
-      }
+      // 何もしない。バリアント切替は廃止。
     });
     // 初回だけボイス
     const VOICE_KEY = 'ijin_rabin_voice_played';
