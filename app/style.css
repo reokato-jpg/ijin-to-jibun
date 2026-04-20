@@ -14718,7 +14718,7 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
   background: #000;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.5s ease;
+  transition: opacity 0.3s ease;
 }
 .portal-transition[hidden] { display: none; }
 .portal-transition.active {
@@ -14731,21 +14731,21 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
   object-fit: cover;
   display: block;
   transform: scale(1.05);
-  animation: portalZoom 2.4s cubic-bezier(0.25, 0.5, 0.3, 1) forwards;
+  animation: portalZoom 1.4s cubic-bezier(0.25, 0.5, 0.3, 1) forwards;
 }
 @keyframes portalZoom {
   0%   { transform: scale(1.0); filter: brightness(0.4) blur(2px); }
-  15%  { filter: brightness(1) blur(0); }
+  20%  { filter: brightness(1) blur(0); }
   70%  { transform: scale(1.18); filter: brightness(1); }
   100% { transform: scale(1.35); filter: brightness(1.1) saturate(1.2); }
 }
 
 /* スマホのズームアップ演出（ポータル遷移時） */
 .phone-menu.portal-zooming .phone-frame {
-  animation: phoneZoomIn 0.6s cubic-bezier(0.4, 0, 0.3, 1) forwards;
+  animation: phoneZoomIn 0.35s cubic-bezier(0.4, 0, 0.3, 1) forwards;
 }
 .phone-menu.portal-zooming .phone-menu-backdrop {
-  animation: backdropFadeBlack 0.6s ease forwards;
+  animation: backdropFadeBlack 0.35s ease forwards;
 }
 @keyframes phoneZoomIn {
   0%   { transform: scale(1); opacity: 1; }

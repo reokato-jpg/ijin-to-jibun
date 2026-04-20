@@ -3437,22 +3437,20 @@ function playPortalTransition(menuEl, onComplete) {
     } catch {}
   });
   // 3. 動画の大半再生後、遷移先へ
-  const FADE_IN_MS = 600;   // ポータル被せ時間
-  const HOLD_MS = 1800;     // 動画を見せる時間
+  const FADE_IN_MS = 350;   // ポータル被せ時間
+  const HOLD_MS = 900;      // 動画を見せる時間
   setTimeout(() => {
-    // 目的のビューへ切替（ポータルはまだ被さったまま）
     if (menuEl) {
       menuEl.classList.remove('open', 'portal-zooming');
     }
     onComplete?.();
-    // 4. ポータルをフェードアウト
     setTimeout(() => {
       portal.classList.remove('active');
       setTimeout(() => {
         portal.hidden = true;
         try { video.pause(); video.currentTime = 0; } catch {}
-      }, 500);
-    }, 300);
+      }, 300);
+    }, 150);
   }, FADE_IN_MS + HOLD_MS);
 }
 
