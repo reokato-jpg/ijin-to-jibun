@@ -2601,7 +2601,7 @@ function getGroupMessages() {
 
 function renderSquareInto(container) {
   if (!container || !DATA.people) return;
-  // LINE風グループチャット
+  // グループチャット
   return renderLineGroup(container);
 }
 
@@ -3747,7 +3747,7 @@ function checkFollowBackEligibility(personId) {
     markFollowNotified(personId);
   }
 }
-// ============ 📜 レキット（歴史管理人）— LINE風お知らせ担当 ============
+// ============ 📜 レキット（歴史管理人）— チャット風お知らせ担当 ============
 const REKITTO_MSGS_KEY = 'ijin_rekitto_msgs';
 const REKITTO_LAST_READ_KEY = 'ijin_rekitto_last_read';
 const REKITTO_SEEN_UPDATES_KEY = 'ijin_rekitto_seen_updates';
@@ -3783,7 +3783,7 @@ function pushRekittoMsg(msg) {
   const msgs = getRekittoMsgs();
   msgs.push({ ts: Date.now(), ...msg });
   saveRekittoMsgs(msgs);
-  try { if (typeof renderIconBadges === 'function') renderIconBadges(); } catch {}
+  try { if (typeof window.renderIconBadges === 'function') window.renderIconBadges(); } catch {}
   try { if (typeof renderPlazaTalks === 'function') renderPlazaTalks(); } catch {}
 }
 function getRekittoUnread() {
@@ -4580,9 +4580,9 @@ function initPhoneMenu() {
     else { el.hidden = true; }
   };
   const renderIconBadges = () => {
-    // 偉人の広場 = チャット未読 + レキット未読
+    // 偉人の広場 = グループチャット未読 + レキット未読（実データから直接算出）
     let plaza = 0;
-    try { const badge = document.getElementById('chatFabBadge'); if (badge && !badge.classList.contains('hidden')) plaza = parseInt(badge.textContent||'0',10) || 0; } catch {}
+    try { if (typeof computeUnreadCount === 'function') plaza += computeUnreadCount(); } catch {}
     try { plaza += getRekittoUnread(); } catch {}
     setBadge('phoneBadgePlaza', plaza);
     // わたしの本 = 新しいフォロワー（会員＋偉人からの新規フォロー）
@@ -4612,6 +4612,8 @@ function initPhoneMenu() {
     });
     open(); renderOshiSlot(); renderPhoneQuoteBanner(); renderIconBadges();
   });
+  // 外部からも呼べるように公開（チャット既読→バッジ更新などのため）
+  window.renderIconBadges = renderIconBadges;
   menu.querySelectorAll('[data-phone-close]').forEach(el => el.addEventListener('click', close));
   // ホーム画面ボタン：スマホを閉じずにアイコン一覧へ戻る（ツールアプリを閉じるだけ）
   menu.querySelectorAll('[data-phone-home]').forEach(el => el.addEventListener('click', () => {
@@ -5379,7 +5381,7 @@ function initPhoneMenu() {
     if (a) a.volume = parseInt(e.target.value, 10) / 100;
   });
 
-  // 偉人の広場アプリ（LINEライクなタブ切替）
+  // 偉人の広場アプリ（チャット風なタブ切替）
   function openPhonePlazaApp() {
     const plaza = document.getElementById('phonePlazaApp');
     if (!plaza) return;
@@ -5416,7 +5418,7 @@ function initPhoneMenu() {
         </div>
         <div class="plaza-friend-info">
           <div class="plaza-friend-name">📜 レキット <span class="plaza-talk-role">歴史管理人</span></div>
-          <div class="plaza-friend-status">お知らせや通知をLINE風でお届け</div>
+          <div class="plaza-friend-status">お知らせや通知をチャット風でお届け</div>
         </div>
       </button>
     `;
@@ -5526,7 +5528,7 @@ function initPhoneMenu() {
       p.hidden = (p.dataset.plazaPanel !== 'chat');
     });
     markRekittoRead();
-    try { if (typeof renderIconBadges === 'function') renderIconBadges(); } catch {}
+    try { if (typeof window.renderIconBadges === 'function') window.renderIconBadges(); } catch {}
     requestAnimationFrame(() => { if (body) body.scrollTop = body.scrollHeight; });
   }
 
@@ -5658,7 +5660,7 @@ function initPhoneMenu() {
       const { messages } = (typeof getGroupMessages === 'function') ? getGroupMessages() : { messages: [] };
       localStorage.setItem(CHAT_LAST_READ_KEY, String(messages.length));
       if (typeof updateChatBadge === 'function') updateChatBadge();
-      if (typeof renderIconBadges === 'function') renderIconBadges();
+      if (typeof window.renderIconBadges === 'function') window.renderIconBadges();
     } catch {}
     // 最新メッセージへスクロール（最後にジャンプ）
     requestAnimationFrame(() => {
@@ -5804,7 +5806,7 @@ function initPhoneMenu() {
     const body = document.getElementById('plazaChatBody');
     if (body && typeof renderLineGroup === 'function') renderLineGroup(body);
   });
-  // 入力欄のLINE風 自動リサイズ＋Enter送信（Shift+Enterで改行）
+  // 入力欄のチャット風 自動リサイズ＋Enter送信（Shift+Enterで改行）
   const plazaInput = document.getElementById('plazaChatInput');
   plazaInput?.addEventListener('input', (e) => {
     e.target.style.height = 'auto';
@@ -8124,7 +8126,7 @@ function showStampToast(personId, source) {
   setTimeout(dismiss, 4500);
 }
 
-// LINE風のフォロー通知トースト
+// チャット風のフォロー通知トースト
 function showFollowToast(person) {
   // アプリ外でもタブ非アクティブ時はブラウザ通知
   if (document.hidden && 'Notification' in window && Notification.permission === 'granted') {
@@ -10292,7 +10294,7 @@ function reportItem(kind, key) {
   alert('通報を受け付けました。ありがとうございます。確認のうえ対応します。');
 }
 
-// ====================== つぶやきタイムライン（LINE風） ======================
+// ====================== つぶやきタイムライン（チャット風） ======================
 
 // コメントデータ（サーバーから読み込み）
 let commentsData = {};

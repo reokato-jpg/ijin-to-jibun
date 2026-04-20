@@ -1900,7 +1900,7 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 }
 .profile-tab-content { display: none; padding-top: 12px; }
 .profile-tab-content.active { display: block; }
-/* 投稿フィード（プロフィール内LINE風） */
+/* 投稿フィード（プロフィール内チャット風） */
 .profile-feed {
   background: #8caab5;
   border-radius: 8px;
@@ -2050,7 +2050,7 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
   letter-spacing: 0.05em;
 }
 
-/* ================ つぶやきタイムライン（LINE風） ================ */
+/* ================ つぶやきタイムライン（チャット風） ================ */
 .line-chat {
   display: flex;
   flex-direction: column;
@@ -4921,7 +4921,7 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
   .book-ink { width: 36px; height: 36px; left: 10px; bottom: 18px; }
   .book-pen { width: 80px; right: -8px; top: 32px; }
 }
-/* 旧LINE風スタイルの無効化（プロフィール用のみ） */
+/* 旧チャット風スタイルの無効化（プロフィール用のみ） */
 .profile-feed.line-chat { background: transparent !important; padding: 0 !important; }
 .profile-feed .line-bubble, .profile-feed .line-date, .profile-feed .line-msg-avatar { display: none !important; }
 
@@ -10278,7 +10278,7 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
   border: 1px solid var(--gold) !important;
 }
 
-/* ================ フォロー通知トースト（LINE風） ================ */
+/* ================ フォロー通知トースト（チャット風） ================ */
 .follow-toast {
   position: fixed;
   top: 14px;
@@ -11912,7 +11912,7 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
   .life-digest-body { font-size: 14px; padding: 14px 20px 18px; }
 }
 
-/* ================ 偉人の広場（LINE風） ================ */
+/* ================ 偉人の広場（チャット風） ================ */
 .line-group-header {
   display: flex;
   align-items: center;
@@ -13172,7 +13172,7 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
   color: #263026;
   text-shadow: 0 1px 1px rgba(255,255,255,0.35);
 }
-/* 偉人の広場アプリ（LINE風） */
+/* 偉人の広場アプリ（チャット風） */
 .phone-plaza-app {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 40px;
@@ -13295,7 +13295,7 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 .plaza-chat-body::-webkit-scrollbar {
   display: none;  /* WebKit */
 }
-/* renderLineGroup の内側ヘッダー・マージンを抑えてLINE風に */
+/* renderLineGroup の内側ヘッダー・マージンを抑えてチャット風に */
 .plaza-chat-body .line-group-header,
 .plaza-chat-body .line-group-title-wrap,
 .plaza-chat-body .line-typing,
