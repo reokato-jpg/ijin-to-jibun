@@ -8063,9 +8063,67 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
   font-size: 11px;
   color: var(--ink-3);
   text-align: center;
-  margin-bottom: 18px;
+  margin-bottom: 14px;
   font-family: var(--font-jp);
   font-style: italic;
+}
+.routine-search-wrap {
+  margin: 0 auto 18px;
+  max-width: 680px;
+  padding: 0 8px;
+}
+.routine-search-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--rule);
+  border-radius: 22px;
+  font-size: 14px;
+  background: #fff;
+  font-family: var(--font-jp);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04) inset;
+  outline: none;
+  box-sizing: border-box;
+}
+.routine-search-input:focus {
+  border-color: var(--wine);
+  box-shadow: 0 0 0 3px rgba(138,90,29,0.1);
+}
+.routine-search-chips {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 10px 0 4px;
+  scrollbar-width: none;
+}
+.routine-search-chips::-webkit-scrollbar { display: none; }
+.routine-chip {
+  flex: 0 0 auto;
+  padding: 6px 14px;
+  border: 1px solid var(--rule);
+  border-radius: 16px;
+  background: #fff;
+  font-size: 12px;
+  color: var(--ink-2);
+  cursor: pointer;
+  font-family: var(--font-jp);
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+.routine-chip.active {
+  background: var(--wine);
+  color: #fff;
+  border-color: var(--wine);
+}
+.routine-chip:hover:not(.active) {
+  background: rgba(138,90,29,0.06);
+}
+.routine-empty-filter {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--ink-3);
+  font-size: 13px;
+  font-family: var(--font-jp);
 }
 .routine-source {
   font-size: 10px;

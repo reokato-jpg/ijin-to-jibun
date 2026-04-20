@@ -170,6 +170,16 @@ const ERA_RULES = {
     { id: 'modern_s',     name: '近代',     match: (b) => b >= 1800 && b < 1900 },
     { id: 'contemp_s',    name: '現代',     match: (b) => b >= 1900 },
   ],
+  business: [
+    { id: 'meiji_industry', name: '明治・産業勃興', match: (b) => b && b < 1880 },
+    { id: 'postwar_makers', name: '戦後ものづくり', match: (b) => b >= 1880 && b < 1940 },
+    { id: 'tech_era',       name: 'テック時代',   match: (b) => b >= 1940 },
+  ],
+  horse_racing: [
+    { id: 'showa_jockey',   name: '昭和の名騎手', match: (b) => b && b < 1960 },
+    { id: 'heisei_jockey',  name: '平成の名騎手', match: (b) => b >= 1960 && b < 1990 },
+    { id: 'reiwa_jockey',   name: '令和の新世代', match: (b) => b >= 1990 },
+  ],
 };
 function eraOf(category, birth) {
   const rules = ERA_RULES[category];
@@ -9458,9 +9468,33 @@ function renderRoutines() {
 
     <h3 class="routines-section-heading">偉人のルーティン</h3>
     <p class="routines-section-sub">気に入ったルーティンは「真似する」ボタンで現在の枠に取り込めます。</p>
+    <div class="routine-search-wrap">
+      <input id="routineSearchInput" class="routine-search-input" type="search" placeholder="🔍 名前・分野・国で検索（例：画家 / 日本 / バッハ）" value="${(window.__routineSearch || '').replace(/"/g,'&quot;')}">
+      <div class="routine-search-chips" id="routineSearchChips">
+        ${['all', ...CATEGORY_RULES.map(r => r.id)].map(id => {
+          const name = id === 'all' ? 'すべて' : CAT_NAME[id];
+          const active = (window.__routineCat || 'all') === id ? 'active' : '';
+          return `<button class="routine-chip ${active}" data-routine-cat="${id}">${name}</button>`;
+        }).join('')}
+      </div>
+    </div>
   `;
 
-  html += DATA.people.filter(p => p.routine && p.routine.length).map(p => {
+  const routineQuery = (window.__routineSearch || '').trim().toLowerCase();
+  const routineCat = window.__routineCat || 'all';
+  const filteredRoutinePeople = DATA.people.filter(p => p.routine && p.routine.length)
+    .filter(p => routineCat === 'all' || categoryOf(p.field) === routineCat)
+    .filter(p => {
+      if (!routineQuery) return true;
+      const hay = `${p.name} ${p.nameEn || ''} ${p.field || ''} ${p.country || ''}`.toLowerCase();
+      return hay.includes(routineQuery);
+    });
+
+  if (filteredRoutinePeople.length === 0 && (routineQuery || routineCat !== 'all')) {
+    html += `<div class="routine-empty-filter">🔍 条件に合う偉人のルーティンが見つかりませんでした。</div>`;
+  }
+
+  html += filteredRoutinePeople.map(p => {
     const avatar = p.imageUrl
       ? `<button class="routine-avatar routine-avatar-link" data-goto-person="${p.id}" style="background-image:url('${p.imageUrl}')" aria-label="${p.name}のプロフィール"></button>`
       : `<button class="routine-avatar routine-avatar-link" data-goto-person="${p.id}" aria-label="${p.name}のプロフィール">${p.name.charAt(0)}</button>`;
@@ -9563,6 +9597,32 @@ function renderRoutines() {
       saveSet(FAV_KEY_ROUTINES, favRoutines);
       btn.classList.toggle('active');
       btn.textContent = favRoutines.has(id) ? '★' : '☆';
+    });
+  });
+
+  // ルーティン検索
+  const searchInput = list.querySelector('#routineSearchInput');
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      window.__routineSearch = e.target.value;
+      // フォーカスを保ったまま部分再描画
+      clearTimeout(window.__routineSearchT);
+      window.__routineSearchT = setTimeout(() => {
+        renderRoutines();
+        const again = document.getElementById('routineSearchInput');
+        if (again) {
+          again.focus();
+          const len = again.value.length;
+          again.setSelectionRange(len, len);
+        }
+      }, 180);
+    });
+  }
+  list.querySelectorAll('[data-routine-cat]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      window.__routineCat = btn.dataset.routineCat;
+      renderRoutines();
     });
   });
 }

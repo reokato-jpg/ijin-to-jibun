@@ -822,7 +822,9 @@
             "武邦彦",
             "吉永正人"
           ],
-          "people": []
+          "people": [
+            "take_kunihiko"
+          ]
         },
         {
           "id": "heisei_jockey",
@@ -834,9 +836,7 @@
             "福永祐一",
             "横山典弘"
           ],
-          "people": [
-            "take_yutaka"
-          ]
+          "people": []
         },
         {
           "id": "reiwa_jockey",
@@ -848,9 +848,7 @@
             "川田将雅",
             "新時代"
           ],
-          "people": [
-            "fujita_nanako"
-          ]
+          "people": []
         }
       ]
     }
