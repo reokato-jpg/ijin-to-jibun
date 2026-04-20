@@ -6786,9 +6786,9 @@ async function showPerson(id) {
             const loggedIn = (typeof currentUser !== 'undefined' && currentUser);
             const following = isFavPerson(p.id);
             if (loggedIn) {
-              return `<button class="follow-btn ${following ? 'active' : ''}" data-follow-toggle="${p.id}">${following ? '✓ フォロー中' : '＋ フォロー'}</button>`;
+              return `<button class="follow-btn follow-btn-compact ${following ? 'active' : ''}" data-follow-toggle="${p.id}" title="${following ? 'フォロー中（タップで解除）' : 'フォローする'}" aria-label="${following ? 'フォロー中' : 'フォロー'}">${following ? '✓' : '＋'}</button>`;
             } else {
-              return `<button class="follow-btn disabled" data-follow-login="1" title="無料会員登録（0円）すると偉人をフォローできます">＋ フォロー（無料会員のみ）</button>`;
+              return `<button class="follow-btn follow-btn-compact disabled" data-follow-login="1" title="無料会員登録（0円）すると偉人をフォローできます" aria-label="フォロー（無料会員限定）">＋</button>`;
             }
           })()}
           <button class="oshi-set-btn ${getOshi() === p.id ? 'active' : ''}" data-oshi-set="${p.id}">
@@ -7942,7 +7942,13 @@ async function showPerson(id) {
       toggleFavPerson(pid);
       const on = isFavPerson(pid);
       followBtn.classList.toggle('active', on);
-      followBtn.textContent = on ? '✓ フォロー中' : '＋ フォロー';
+      // コンパクトモード（＋/✓のみ）か従来表記かを判定して切替
+      if (followBtn.classList.contains('follow-btn-compact')) {
+        followBtn.textContent = on ? '✓' : '＋';
+        followBtn.title = on ? 'フォロー中（タップで解除）' : 'フォローする';
+      } else {
+        followBtn.textContent = on ? '✓ フォロー中' : '＋ フォロー';
+      }
       // 初フォロー時にスタンプ
       if (!wasFollowing && on) { try { grantStamp(pid, 'follow'); } catch {} }
     });

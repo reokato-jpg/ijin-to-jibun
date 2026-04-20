@@ -10960,6 +10960,24 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
   color: var(--wine);
   border-color: var(--wine);
 }
+/* コンパクトフォローボタン（偉人プロフ右上。アイコンのみ表示） */
+.follow-btn.follow-btn-compact {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0;
+}
+.follow-btn.follow-btn-compact.disabled {
+  width: 34px;
+  height: 34px;
+}
 .follow-btn.disabled {
   background: #eee;
   color: var(--ink-4);
