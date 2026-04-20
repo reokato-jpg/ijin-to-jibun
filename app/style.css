@@ -1864,60 +1864,17 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
   margin-right: 2px;
 }
 /* プロフィール内ミニタブ */
+/* 偉人プロフィールのタブをスクロール追従（上に戻らずタブ切替可能） */
 .profile-tabs-wrap {
-  position: relative;
-}
-
-/* 📜 追従名言バー（スクロール追従） */
-.profile-sticky-quote {
   position: sticky;
-  top: 8px;
+  top: 0;
   z-index: 30;
-  margin: 14px auto 10px;
-  max-width: 540px;
-  background: linear-gradient(90deg, rgba(58,45,28,0.97) 0%, rgba(80,56,32,0.97) 50%, rgba(58,45,28,0.97) 100%);
-  color: #f5e8c8;
-  border-radius: 12px;
-  padding: 10px 14px 11px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.08);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  border: 1px solid rgba(217,186,123,0.2);
-  font-family: var(--font-jp);
-  letter-spacing: 0.04em;
-  line-height: 1.55;
-  opacity: 1;
-  transition: opacity 0.35s ease;
-}
-.profile-sticky-quote.fading { opacity: 0.15; }
-.profile-sticky-quote-inner {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.profile-sticky-quote-mark {
-  font-family: "Cormorant Garamond", serif;
-  font-size: 28px;
-  line-height: 0.6;
-  color: rgba(217,186,123,0.7);
-  font-weight: 700;
-  flex: 0 0 auto;
-}
-.profile-sticky-quote-text {
-  flex: 1 1 auto;
-  font-size: 13px;
-  min-width: 0;
-}
-.profile-sticky-quote-src {
-  flex: 0 0 auto;
-  font-size: 10.5px;
-  color: rgba(217,186,123,0.75);
-  font-style: italic;
-}
-@media (max-width: 560px) {
-  .profile-sticky-quote { padding: 8px 12px; margin: 12px 0 8px; }
-  .profile-sticky-quote-text { font-size: 12px; }
+  background: rgba(250, 246, 237, 0.97);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding-top: 4px;
+  padding-bottom: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 .profile-tabs-wrap::after {
   content: '›';

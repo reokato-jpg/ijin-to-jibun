@@ -7055,17 +7055,6 @@ async function showPerson(id) {
       <span class="letter-write-arrow">→</span>
     </button>
 
-    <!-- 📜 追従名言バー（スクロールしても上に追従、数秒ごとに切替） -->
-    ${(p.quotes && p.quotes.length > 0) ? `
-      <div class="profile-sticky-quote" id="profileStickyQuote" data-person-id="${p.id}">
-        <div class="profile-sticky-quote-inner">
-          <span class="profile-sticky-quote-mark">&ldquo;</span>
-          <span class="profile-sticky-quote-text" id="profileStickyQuoteText">${escapeHtml(p.quotes[0].text || '')}</span>
-          <span class="profile-sticky-quote-src" id="profileStickyQuoteSrc">${p.quotes[0].source ? '— ' + escapeHtml(p.quotes[0].source) : ''}</span>
-        </div>
-      </div>
-    ` : ''}
-
     <!-- ミニタブ -->
     <div class="profile-tabs-wrap">
       <div class="profile-tabs">
@@ -8048,30 +8037,6 @@ async function showPerson(id) {
       showPerson(p.id);
     });
   });
-
-  // 📜 追従名言バーのローテーション（8秒ごとに切替）
-  try {
-    if (window.__profileQuoteTimer) { clearInterval(window.__profileQuoteTimer); window.__profileQuoteTimer = null; }
-    const sticky = container.querySelector('#profileStickyQuote');
-    const textEl = container.querySelector('#profileStickyQuoteText');
-    const srcEl = container.querySelector('#profileStickyQuoteSrc');
-    const quotes = (p.quotes || []).filter(q => q && q.text);
-    if (sticky && textEl && quotes.length > 1) {
-      let idx = 0;
-      const rotate = () => {
-        idx = (idx + 1) % quotes.length;
-        const q = quotes[idx];
-        // フェードで切り替え
-        sticky.classList.add('fading');
-        setTimeout(() => {
-          textEl.textContent = q.text || '';
-          if (srcEl) srcEl.textContent = q.source ? '— ' + q.source : '';
-          sticky.classList.remove('fading');
-        }, 350);
-      };
-      window.__profileQuoteTimer = setInterval(rotate, 8000);
-    }
-  } catch {}
 
   // 📋 レシピコピー（料理人偉人のみ）
   container.querySelectorAll('[data-recipe-copy]').forEach(btn => {
