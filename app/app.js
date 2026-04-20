@@ -11855,8 +11855,28 @@ function bindEvents() {
     }
   }, { capture: true, passive: true });
 
-  document.getElementById('backBtn').addEventListener('click', goBack);
-  document.getElementById('floatBackBtn')?.addEventListener('click', goBack);
+  // モーダルが開いていたら閉じる → いなければ履歴を戻る、にスマート化
+  function smartBack() {
+    // 開いているモーダルを優先的に閉じる
+    const modalSelectors = [
+      '#userProfileModal', '#meshiruPickModal', '#meshiruEditorModal',
+      '.settings-modal.open', '.settings-modal:not([hidden])',
+      '.era-modal.open', '.worldview-modal.open', '.person-modal.open',
+    ];
+    for (const sel of modalSelectors) {
+      const m = document.querySelector(sel);
+      if (m && (m.offsetParent !== null || m.classList.contains('open'))) {
+        // モーダルに data-close ボタンがあればそれをクリック、なければ remove
+        const closeBtn = m.querySelector('[data-close]') || m.querySelector('.settings-close') || m.querySelector('.meshiru-pick-close');
+        if (closeBtn) { closeBtn.click(); return; }
+        m.remove();
+        return;
+      }
+    }
+    goBack();
+  }
+  document.getElementById('backBtn').addEventListener('click', smartBack);
+  document.getElementById('floatBackBtn')?.addEventListener('click', smartBack);
   document.getElementById('floatForwardBtn')?.addEventListener('click', goForward);
   updateNavButtons();
   // ヘッダーのタイトルロゴ → マップポップアップ

@@ -15754,14 +15754,15 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
   left: 50%;
   transform: translateX(-50%);
   bottom: 16px;
-  z-index: 48;
+  z-index: 10002;
   display: flex;
   gap: 6px;
   padding: 6px;
-  background: rgba(58, 45, 28, 0.88);
+  background: rgba(58, 45, 28, 0.92);
   border-radius: 999px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.1);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.1);
   backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   pointer-events: auto;
 }
 .float-nav-btn {
@@ -15787,9 +15788,11 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
   transform: scale(0.92);
 }
 .float-nav-btn.disabled {
-  opacity: 0.3;
+  opacity: 0.45;
   cursor: default;
 }
+/* 戻るボタンはモーダルが開いていれば常に有効にしたいので、UI上はdisabled時もクリック可能 */
+#floatBackBtn.disabled { opacity: 0.55; pointer-events: auto; }
 @media (max-width: 480px) {
   .float-nav { bottom: 12px; }
   .float-nav-btn { width: 36px; height: 36px; font-size: 12px; }
