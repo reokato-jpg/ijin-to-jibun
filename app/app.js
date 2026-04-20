@@ -11159,10 +11159,23 @@ function setSeenCount(personId, n) {
   } catch {}
 }
 
+// IJiN（偉人の広場）は時間経過で自動生成される名言チャット。
+// ページロード時に一度だけ『現在のスロット数まで既読扱い』にすることで、
+// 『読んだのに通知が戻ってくる』現象を防ぐ（セッション中の新着だけ未読カウント）。
+let __chatReadBootstrapped = false;
+function bootstrapChatRead() {
+  if (__chatReadBootstrapped) return;
+  __chatReadBootstrapped = true;
+  try {
+    if (typeof DATA === 'undefined' || !DATA.people) return;
+    const { messages } = getGroupMessages();
+    localStorage.setItem(CHAT_LAST_READ_KEY, String(messages.length));
+  } catch {}
+}
 function computeUnreadCount() {
-  // 偉人の広場の未読（現在のスロット数 - 最後に読んだスロット数）
   try {
     if (typeof DATA === 'undefined' || !DATA.people) return 0;
+    bootstrapChatRead();
     const { messages } = getGroupMessages();
     const lastRead = parseInt(localStorage.getItem(CHAT_LAST_READ_KEY) || '0', 10);
     return Math.max(0, messages.length - lastRead);
