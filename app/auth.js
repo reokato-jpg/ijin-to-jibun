@@ -225,6 +225,67 @@ async function initFirebase() {
       } catch { return []; }
     };
 
+    // ===== お便り（バグ報告・改善提案・機能要望） =====
+    window.submitFeedback = async (entry) => {
+      if (!fbDb || !entry) return null;
+      try {
+        const id = 'fb_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
+        const uid = (currentUser && currentUser.uid) || 'guest';
+        const isAnon = !currentUser || currentUser.isAnonymous;
+        const ref = doc(fbDb, 'feedback', id);
+        const data = {
+          id,
+          uid,
+          isGuest: isAnon,
+          name: entry.name || '',
+          category: entry.category || 'other',  // bug | improvement | feature | other
+          text: entry.text || '',
+          contact: entry.contact || '',
+          status: 'pending',                    // pending | reviewing | doing | done | declined
+          submittedAt: new Date().toISOString(),
+          userAgent: (typeof navigator !== 'undefined' ? navigator.userAgent : '').slice(0, 200),
+        };
+        await setDoc(ref, data);
+        return data;
+      } catch (e) { console.warn('feedback submit failed', e); return null; }
+    };
+    window.fetchMyFeedback = async () => {
+      if (!fbDb) return [];
+      try {
+        const snap = await getDocs(collection(fbDb, 'feedback'));
+        const out = [];
+        const myUid = (currentUser && currentUser.uid) || 'guest';
+        snap.forEach(d => {
+          const data = d.data();
+          if (data.uid === myUid) out.push(data);
+        });
+        out.sort((a, b) => (b.submittedAt || '').localeCompare(a.submittedAt || ''));
+        return out;
+      } catch { return []; }
+    };
+    window.fetchAllFeedback = async () => {
+      if (!fbDb) return [];
+      try {
+        const snap = await getDocs(collection(fbDb, 'feedback'));
+        const out = [];
+        snap.forEach(d => out.push(d.data()));
+        out.sort((a, b) => (b.submittedAt || '').localeCompare(a.submittedAt || ''));
+        return out;
+      } catch { return []; }
+    };
+    window.updateFeedbackStatus = async (id, status, note) => {
+      if (!fbDb || !id) return false;
+      try {
+        const ref = doc(fbDb, 'feedback', id);
+        await setDoc(ref, {
+          status: status || 'pending',
+          adminNote: note || '',
+          reviewedAt: new Date().toISOString(),
+        }, { merge: true });
+        return true;
+      } catch { return false; }
+    };
+
     onAuthStateChanged(fbAuth, async (user) => {
       currentUser = user;
       authResolved = true;

@@ -70,8 +70,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20260424O">
-<link rel="stylesheet" href="era-theme.css?v=20260424O">
+<link rel="stylesheet" href="style.css?v=20260424P">
+<link rel="stylesheet" href="era-theme.css?v=20260424P">
 </head>
 <body>
   <header class="app-header">
@@ -545,6 +545,10 @@
             <img src="assets/phone/icon-meshiru.png?v=1" alt="">
             <span>めしる</span>
           </button>
+          <button class="phone-icon phone-icon-otayori" data-phone-action="otayori">
+            <span class="phone-icon-emoji phone-icon-otayori-emoji">✉</span>
+            <span>お便り</span>
+          </button>
           <button class="phone-icon" data-phone-view="articles">
             <img src="assets/phone/icon-blog.png?v=1" alt="">
             <span>ブログ</span>
@@ -594,6 +598,23 @@
             <div class="meshiru-plan" id="meshiruPlan" hidden></div>
             <div class="meshiru-shopping" id="meshiruShopping" hidden></div>
             <div class="meshiru-saved" id="meshiruSaved" hidden></div>
+          </div>
+        </div>
+
+        <!-- ✉ お便りアプリ（バグ・改善・機能要望） -->
+        <div class="phone-tool-app" id="phoneOtayoriApp" hidden>
+          <div class="plaza-app-head tool-app-head otayori-head">
+            <button class="plaza-app-back tool-app-back" type="button" data-tool-close="otayori" aria-label="戻る">‹</button>
+            <span class="plaza-app-title">お便り</span>
+            <span class="otayori-tagline">開発への小さな種</span>
+          </div>
+          <div class="otayori-app">
+            <div class="otayori-tabs">
+              <button class="otayori-tab active" data-otayori-tab="write">✉ 書く</button>
+              <button class="otayori-tab" data-otayori-tab="mine">📋 履歴</button>
+            </div>
+            <div class="otayori-write" id="otayoriWrite"></div>
+            <div class="otayori-mine" id="otayoriMine" hidden></div>
           </div>
         </div>
 
@@ -734,10 +755,10 @@
     </div>
   </div>
 
-  <script src="era-lore.js?v=20260424O"></script>
-  <script src="history-patterns.js?v=20260424O"></script>
-  <script src="app.js?v=20260424O"></script>
-  <script src="auth.js?v=20260424O" type="module"></script>
+  <script src="era-lore.js?v=20260424P"></script>
+  <script src="history-patterns.js?v=20260424P"></script>
+  <script src="app.js?v=20260424P"></script>
+  <script src="auth.js?v=20260424P" type="module"></script>
   <script src="ai-consult.js"></script>
 </body>
 </html>

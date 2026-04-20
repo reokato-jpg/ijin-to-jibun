@@ -15523,6 +15523,268 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
   font-style: italic;
 }
 
+/* ============ ✉ お便り ============ */
+.phone-icon-otayori-emoji {
+  background: linear-gradient(145deg, #fff7e6, #e8d4b0) !important;
+  font-size: 24px !important;
+}
+.phone-tool-app#phoneOtayoriApp {
+  overflow: hidden;
+  flex-direction: column;
+  background: #fff8ee;
+}
+.phone-tool-app#phoneOtayoriApp[hidden] { display: none !important; }
+.otayori-head {
+  background: linear-gradient(135deg, #5a3d22, #3a2d1c);
+  color: #f5e8c8;
+}
+.otayori-tagline {
+  font-size: 10px;
+  opacity: 0.7;
+  margin-left: 8px;
+  font-style: italic;
+}
+.otayori-app {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.otayori-tabs {
+  display: flex;
+  background: #fff;
+  border-bottom: 1px solid rgba(138,90,29,0.15);
+}
+.otayori-tab {
+  flex: 1;
+  padding: 10px 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  font-family: var(--font-jp);
+  color: var(--ink-3);
+  border-bottom: 2px solid transparent;
+}
+.otayori-tab.active {
+  color: var(--wine);
+  font-weight: 700;
+  border-bottom-color: var(--wine);
+}
+.otayori-write, .otayori-mine {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 10px 12px 40px;
+  min-height: 0;
+}
+.otayori-intro {
+  text-align: center;
+  padding: 10px 0 16px;
+}
+.otayori-intro-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--wine);
+  margin-bottom: 4px;
+  font-family: var(--font-jp);
+}
+.otayori-intro-sub {
+  font-size: 11px;
+  color: var(--ink-3);
+  line-height: 1.6;
+  font-family: var(--font-jp);
+}
+.otayori-form {
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px 14px 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  font-family: var(--font-jp);
+}
+.otayori-field { margin-bottom: 12px; }
+.otayori-field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--wine);
+  margin-bottom: 6px;
+}
+.otayori-req { color: #c0392b; }
+.otayori-field input[type=text],
+.otayori-field textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid rgba(138,90,29,0.3);
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: var(--font-jp);
+  background: #fffaf0;
+  box-sizing: border-box;
+  resize: vertical;
+}
+.otayori-field input:focus,
+.otayori-field textarea:focus {
+  outline: none;
+  border-color: var(--wine);
+  background: #fff;
+  box-shadow: 0 0 0 2px rgba(138,90,29,0.1);
+}
+.otayori-cats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+.otayori-cat-chip {
+  position: relative;
+  padding: 8px 10px;
+  border: 1px solid rgba(138,90,29,0.2);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  text-align: center;
+  transition: all 0.15s;
+  background: #fffaf0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.otayori-cat-chip input { position: absolute; opacity: 0; }
+.otayori-cat-chip:has(input:checked) {
+  background: linear-gradient(135deg, #c07d4e, #8a5a1d);
+  color: #fff7e6;
+  border-color: #8a5a1d;
+}
+.otayori-submit {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #c07d4e, #8a5a1d);
+  color: #fff7e6;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: var(--font-jp);
+  box-shadow: 0 2px 6px rgba(138,90,29,0.2);
+}
+.otayori-submit:hover:not(:disabled) { filter: brightness(1.05); }
+.otayori-submit:disabled { opacity: 0.6; cursor: wait; }
+
+.otayori-list { display: flex; flex-direction: column; gap: 10px; }
+.otayori-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 12px 14px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  font-family: var(--font-jp);
+  border-left: 3px solid var(--rule);
+}
+.otayori-card.otayori-status-doing { border-left-color: #d9a84c; }
+.otayori-card.otayori-status-done { border-left-color: #7ea769; opacity: 0.85; }
+.otayori-card.otayori-status-declined { border-left-color: #a08b7a; opacity: 0.7; }
+.otayori-card.otayori-status-reviewing { border-left-color: #c07d4e; }
+.otayori-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 11px;
+}
+.otayori-cat-label {
+  font-weight: 700;
+  color: var(--wine);
+}
+.otayori-card-status {
+  font-size: 10px;
+  color: var(--ink-3);
+  background: #faf3e6;
+  padding: 3px 8px;
+  border-radius: 12px;
+}
+.otayori-card-body {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--ink-2);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.otayori-card-note {
+  margin-top: 8px;
+  padding: 6px 10px;
+  background: #fff7e6;
+  border-left: 2px solid #c07d4e;
+  font-size: 11px;
+  color: #6a4a2a;
+  border-radius: 0 6px 6px 0;
+}
+.otayori-card-foot {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 10px;
+  color: var(--ink-4);
+}
+.otayori-card-local {
+  background: #fff0e0;
+  color: #a66a3a;
+  padding: 2px 6px;
+  border-radius: 8px;
+}
+.otayori-loading, .otayori-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--ink-3);
+  font-size: 12px;
+}
+
+/* 管理者ビュー */
+.otayori-admin-actions {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.otayori-admin-copy,
+.otayori-admin-exit {
+  flex: 1;
+  padding: 8px 10px;
+  background: #fff;
+  border: 1px solid rgba(138,90,29,0.3);
+  border-radius: 8px;
+  font-size: 11px;
+  cursor: pointer;
+  font-family: var(--font-jp);
+  color: var(--wine);
+}
+.otayori-admin-copy:hover { background: #fff7e6; }
+.otayori-admin-btn {
+  display: block;
+  width: 100%;
+  margin-top: 14px;
+  padding: 10px;
+  background: #3a2d1c;
+  color: #f5e8c8;
+  border: none;
+  border-radius: 8px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: var(--font-jp);
+}
+.otayori-admin-meta {
+  font-size: 10px;
+  color: var(--ink-4);
+  margin-bottom: 6px;
+}
+.otayori-admin-status {
+  font-size: 10px;
+  padding: 3px 6px;
+  border: 1px solid rgba(138,90,29,0.2);
+  border-radius: 6px;
+  background: #faf3e6;
+  cursor: pointer;
+  font-family: var(--font-jp);
+}
+
 /* ============ マイレシピ／エディタ ============ */
 .meshiru-my {
   flex: 1;

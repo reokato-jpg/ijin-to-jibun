@@ -4484,7 +4484,7 @@ function initPhoneMenu() {
       if (el) el.hidden = (activeView !== 'people');
     }
     // スマホを閉じるときに内部状態をリセット（全てのツールアプリを閉じる）
-    ['phonePlazaApp','phoneMusicApp','phoneMeshiruApp','phoneHistoryApp'].forEach(id => {
+    ['phonePlazaApp','phoneMusicApp','phoneMeshiruApp','phoneOtayoriApp','phoneHistoryApp'].forEach(id => {
       const el2 = document.getElementById(id);
       if (el2) el2.hidden = true;
     });
@@ -4511,7 +4511,7 @@ function initPhoneMenu() {
     const hintEl = document.getElementById('powerHintAnim');
     if (hintEl) hintEl.hidden = true;
     // スマホを開いたら全てのツールアプリを閉じてホーム画面（アイコン一覧）から始める
-    ['phonePlazaApp','phoneMusicApp','phoneMeshiruApp','phoneHistoryApp'].forEach(id => {
+    ['phonePlazaApp','phoneMusicApp','phoneMeshiruApp','phoneOtayoriApp','phoneHistoryApp'].forEach(id => {
       const el2 = document.getElementById(id);
       if (el2) el2.hidden = true;
     });
@@ -4592,7 +4592,7 @@ function initPhoneMenu() {
 
   btn.addEventListener('click', () => {
     // 電源ボタンは常にホームグリッドから開く（前回の画面を引きずらない）
-    ['phonePlazaApp','phoneMusicApp','phoneMeshiruApp','phoneHistoryApp'].forEach(id => {
+    ['phonePlazaApp','phoneMusicApp','phoneMeshiruApp','phoneOtayoriApp','phoneHistoryApp'].forEach(id => {
       const el2 = document.getElementById(id);
       if (el2) el2.hidden = true;
     });
@@ -4611,7 +4611,7 @@ function initPhoneMenu() {
   menu.querySelectorAll('[data-phone-close]').forEach(el => el.addEventListener('click', close));
   // ホーム画面ボタン：スマホを閉じずにアイコン一覧へ戻る（ツールアプリを閉じるだけ）
   menu.querySelectorAll('[data-phone-home]').forEach(el => el.addEventListener('click', () => {
-    ['phonePlazaApp','phoneMusicApp','phoneMeshiruApp','phoneHistoryApp'].forEach(id => {
+    ['phonePlazaApp','phoneMusicApp','phoneMeshiruApp','phoneOtayoriApp','phoneHistoryApp'].forEach(id => {
       const a = document.getElementById(id);
       if (a) a.hidden = true;
     });
@@ -4653,6 +4653,10 @@ function initPhoneMenu() {
         openPhoneToolApp(action);
         return;
       }
+      if (action === 'otayori') {
+        openPhoneToolApp(action);
+        return;
+      }
       close();
       setTimeout(() => {
         if (action === 'settings') {
@@ -4668,19 +4672,20 @@ function initPhoneMenu() {
   });
   // ============ ツールアプリ共通（電卓・メモ・タイマー） ============
   function openPhoneToolApp(tool) {
-    const map = { music: 'phoneMusicApp', meshiru: 'phoneMeshiruApp' };
+    const map = { music: 'phoneMusicApp', meshiru: 'phoneMeshiruApp', otayori: 'phoneOtayoriApp' };
     const el = document.getElementById(map[tool]);
     if (!el) return;
-    ['phoneMusicApp','phoneMeshiruApp','phonePlazaApp'].forEach(id => {
+    ['phoneMusicApp','phoneMeshiruApp','phoneOtayoriApp','phonePlazaApp','phoneHistoryApp'].forEach(id => {
       const a = document.getElementById(id);
       if (a) a.hidden = true;
     });
     el.hidden = false;
     if (tool === 'music') initMusicApp();
     if (tool === 'meshiru') initMeshiruApp();
+    if (tool === 'otayori') initOtayoriApp();
   }
   function closePhoneToolApp(tool) {
-    const map = { music: 'phoneMusicApp', meshiru: 'phoneMeshiruApp' };
+    const map = { music: 'phoneMusicApp', meshiru: 'phoneMeshiruApp', otayori: 'phoneOtayoriApp' };
     const el = document.getElementById(map[tool]);
     if (el) el.hidden = true;
     if (tool === 'music') stopMusicApp();
@@ -5333,6 +5338,243 @@ function initPhoneMenu() {
     });
     renderFeed();
   }
+
+  // ============ ✉ お便り（バグ・改善・機能要望） ============
+  const OTAYORI_LOCAL_KEY = 'ijin_otayori_local';
+  const CATEGORY_LABELS = {
+    bug: '🐛 バグ・不具合',
+    improvement: '✨ 改善提案',
+    feature: '💡 欲しい機能',
+    other: '💬 その他',
+  };
+  function loadOtayoriLocal() {
+    try { return JSON.parse(localStorage.getItem(OTAYORI_LOCAL_KEY) || '[]'); } catch { return []; }
+  }
+  function saveOtayoriLocal(arr) {
+    try { localStorage.setItem(OTAYORI_LOCAL_KEY, JSON.stringify(arr)); } catch {}
+  }
+  function statusLabel(s) {
+    return {
+      pending: '📬 受付中',
+      reviewing: '🔍 検討中',
+      doing: '🛠 対応中',
+      done: '✅ 対応済み',
+      declined: '🙏 見送り',
+    }[s] || '📬 受付中';
+  }
+  // 管理者モード判定（オーナー専用。URL ?admin=ijin-owner で有効化）
+  function isAdminMode() {
+    try {
+      const urlAdmin = new URLSearchParams(location.search).get('admin');
+      if (urlAdmin === 'ijin-owner') {
+        localStorage.setItem('ijin_admin_mode', '1');
+        return true;
+      }
+      return localStorage.getItem('ijin_admin_mode') === '1';
+    } catch { return false; }
+  }
+  function initOtayoriApp() {
+    const writeMount = document.getElementById('otayoriWrite');
+    const mineMount = document.getElementById('otayoriMine');
+    if (!writeMount) return;
+    const admin = isAdminMode();
+
+    function renderWrite() {
+      const prevName = (typeof getUserName === 'function' ? getUserName() : localStorage.getItem('ijin_user_name')) || '';
+      writeMount.innerHTML = `
+        <div class="otayori-intro">
+          <div class="otayori-intro-title">✉ 開発への一言</div>
+          <div class="otayori-intro-sub">バグ報告・改善アイデア・欲しい機能——<br>なんでも教えてください。毎日読みに行きます。</div>
+        </div>
+        <form class="otayori-form" id="otayoriForm">
+          <div class="otayori-field">
+            <label>種類</label>
+            <div class="otayori-cats">
+              ${Object.entries(CATEGORY_LABELS).map(([k, v], i) => `
+                <label class="otayori-cat-chip">
+                  <input type="radio" name="category" value="${k}" ${i === 0 ? 'checked' : ''}>
+                  <span>${v}</span>
+                </label>
+              `).join('')}
+            </div>
+          </div>
+          <div class="otayori-field">
+            <label>お名前（任意）</label>
+            <input type="text" id="otayoriName" placeholder="${escapeHtml(prevName) || '匿名でもOK'}" value="${escapeHtml(prevName)}">
+          </div>
+          <div class="otayori-field">
+            <label>内容 <span class="otayori-req">*</span></label>
+            <textarea id="otayoriText" rows="6" placeholder="例：◯◯ボタンを押すと戻れません／◯◯機能があると嬉しい／など、具体的だと直しやすいです" required></textarea>
+          </div>
+          <div class="otayori-field">
+            <label>連絡先（任意・返信が欲しい方）</label>
+            <input type="text" id="otayoriContact" placeholder="メール／X ID／Note URL など">
+          </div>
+          <button type="submit" class="otayori-submit">📮 送る</button>
+        </form>
+      `;
+      const form = writeMount.querySelector('#otayoriForm');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const text = form.querySelector('#otayoriText').value.trim();
+        if (!text) { alert('内容を入力してください'); return; }
+        const category = form.querySelector('input[name="category"]:checked').value;
+        const name = form.querySelector('#otayoriName').value.trim();
+        const contact = form.querySelector('#otayoriContact').value.trim();
+        const submitBtn = form.querySelector('.otayori-submit');
+        submitBtn.disabled = true;
+        submitBtn.textContent = '送信中…';
+        let saved = null;
+        try {
+          if (typeof window.submitFeedback === 'function') {
+            saved = await window.submitFeedback({ category, text, name, contact });
+          }
+        } catch {}
+        // 失敗時もローカルに保管（後でオーナーが確認可）
+        const local = loadOtayoriLocal();
+        local.unshift({
+          id: saved?.id || ('local_' + Date.now()),
+          category, text, name, contact,
+          status: 'pending',
+          submittedAt: new Date().toISOString(),
+          cloudSaved: !!saved,
+        });
+        saveOtayoriLocal(local);
+        alert('お便り、届きました。\n大切に読ませていただきます。ありがとうございます。');
+        submitBtn.disabled = false;
+        submitBtn.textContent = '📮 送る';
+        form.reset();
+      });
+    }
+
+    async function renderMine() {
+      mineMount.innerHTML = `<div class="otayori-loading">読み込み中…</div>`;
+      let cloud = [];
+      try {
+        if (typeof window.fetchMyFeedback === 'function') cloud = await window.fetchMyFeedback();
+      } catch {}
+      const local = loadOtayoriLocal();
+      // マージ（idベース）
+      const map = {};
+      [...local, ...cloud].forEach(x => { map[x.id] = { ...map[x.id], ...x }; });
+      const list = Object.values(map).sort((a, b) => (b.submittedAt || '').localeCompare(a.submittedAt || ''));
+      if (list.length === 0) {
+        mineMount.innerHTML = `
+          <div class="otayori-intro">
+            <div class="otayori-intro-title">📋 あなたのお便り履歴</div>
+            <div class="otayori-intro-sub">まだ送ったお便りはありません。</div>
+          </div>
+        `;
+        return;
+      }
+      mineMount.innerHTML = `
+        <div class="otayori-intro">
+          <div class="otayori-intro-title">📋 あなたのお便り履歴</div>
+          <div class="otayori-intro-sub">送信した${list.length}件のお便り。開発状況を見守れます。</div>
+        </div>
+        <div class="otayori-list">
+          ${list.map(f => {
+            const d = f.submittedAt ? new Date(f.submittedAt) : null;
+            const when = d ? `${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}` : '';
+            return `
+              <div class="otayori-card otayori-status-${f.status || 'pending'}">
+                <div class="otayori-card-head">
+                  <span class="otayori-cat-label">${CATEGORY_LABELS[f.category] || f.category}</span>
+                  <span class="otayori-card-status">${statusLabel(f.status)}</span>
+                </div>
+                <div class="otayori-card-body">${escapeHtml(f.text || '').replace(/\n/g, '<br>')}</div>
+                ${f.adminNote ? `<div class="otayori-card-note">📝 ${escapeHtml(f.adminNote)}</div>` : ''}
+                <div class="otayori-card-foot">
+                  <span>${when}</span>
+                  ${f.cloudSaved === false ? `<span class="otayori-card-local">ローカル保存</span>` : ''}
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+        ${admin ? `<button class="otayori-admin-btn" id="otayoriAdminBtn">🔧 管理者モードで全件を見る</button>` : ''}
+      `;
+      mineMount.querySelector('#otayoriAdminBtn')?.addEventListener('click', openAdminView);
+    }
+
+    async function openAdminView() {
+      if (!confirm('管理者モードで全ユーザーのお便りを表示します。よろしいですか？')) return;
+      mineMount.innerHTML = `<div class="otayori-loading">全件取得中…</div>`;
+      let all = [];
+      try {
+        if (typeof window.fetchAllFeedback === 'function') all = await window.fetchAllFeedback();
+      } catch {}
+      if (all.length === 0) {
+        mineMount.innerHTML = `<div class="otayori-empty">お便りはまだ届いていません。</div>`;
+        return;
+      }
+      const byCat = {};
+      all.forEach(f => { (byCat[f.category] = byCat[f.category] || []).push(f); });
+      // クリップボードにコピーできる要約テキスト
+      const summary = all.map((f, i) => {
+        const d = f.submittedAt ? new Date(f.submittedAt) : null;
+        const when = d ? `${d.getMonth()+1}/${d.getDate()}` : '';
+        return `[${i+1}] [${f.status||'pending'}] ${CATEGORY_LABELS[f.category]||f.category} (${when} ${f.name||'匿名'}): ${f.text}`;
+      }).join('\n\n');
+      mineMount.innerHTML = `
+        <div class="otayori-intro">
+          <div class="otayori-intro-title">🔧 管理者ビュー</div>
+          <div class="otayori-intro-sub">全${all.length}件。状態をタップで切替可。</div>
+        </div>
+        <div class="otayori-admin-actions">
+          <button class="otayori-admin-copy" id="otayoriCopyAll">📋 全件をClaude相談用にコピー</button>
+          <button class="otayori-admin-exit" id="otayoriAdminExit">← 自分の履歴に戻る</button>
+        </div>
+        <div class="otayori-list">
+          ${all.map(f => {
+            const d = f.submittedAt ? new Date(f.submittedAt) : null;
+            const when = d ? `${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}` : '';
+            return `
+              <div class="otayori-card otayori-admin-card otayori-status-${f.status || 'pending'}" data-fb-id="${escapeHtml(f.id)}">
+                <div class="otayori-card-head">
+                  <span class="otayori-cat-label">${CATEGORY_LABELS[f.category] || f.category}</span>
+                  <select class="otayori-admin-status" data-fb-status="${escapeHtml(f.id)}">
+                    ${['pending','reviewing','doing','done','declined'].map(s => `<option value="${s}" ${f.status===s?'selected':''}>${statusLabel(s).replace(/^[^ ]+ /,'')}</option>`).join('')}
+                  </select>
+                </div>
+                <div class="otayori-admin-meta">${escapeHtml(f.name || '匿名')} · ${when} ${f.contact ? '· ' + escapeHtml(f.contact) : ''}</div>
+                <div class="otayori-card-body">${escapeHtml(f.text || '').replace(/\n/g, '<br>')}</div>
+                ${f.adminNote ? `<div class="otayori-card-note">📝 ${escapeHtml(f.adminNote)}</div>` : ''}
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+      mineMount.querySelector('#otayoriCopyAll')?.addEventListener('click', () => {
+        navigator.clipboard?.writeText(summary).then(() => alert('全件をコピーしました！Claudeに貼り付けて相談できます。'));
+      });
+      mineMount.querySelector('#otayoriAdminExit')?.addEventListener('click', renderMine);
+      mineMount.querySelectorAll('[data-fb-status]').forEach(sel => {
+        sel.addEventListener('change', async (e) => {
+          const id = sel.dataset.fbStatus;
+          const status = sel.value;
+          if (typeof window.updateFeedbackStatus === 'function') {
+            await window.updateFeedbackStatus(id, status, '');
+            sel.closest('.otayori-admin-card').className = `otayori-card otayori-admin-card otayori-status-${status}`;
+          }
+        });
+      });
+    }
+
+    // タブ切替
+    document.querySelectorAll('[data-otayori-tab]').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('[data-otayori-tab]').forEach(t => t.classList.toggle('active', t === tab));
+        const which = tab.dataset.otayoriTab;
+        writeMount.hidden = (which !== 'write');
+        mineMount.hidden = (which !== 'mine');
+        if (which === 'write') renderWrite();
+        else renderMine();
+      });
+    });
+    renderWrite();
+  }
+
   menu.querySelector('#musicPlayBtn')?.addEventListener('click', () => {
     if (!__musicCurrent) return;
     const a = document.getElementById(__musicCurrent);
@@ -5701,7 +5943,7 @@ function initPhoneMenu() {
   });
   navHome?.addEventListener('click', () => {
     // スマホ内のホーム（アプリグリッド）に戻す：全ツールアプリを閉じる
-    ['phonePlazaApp','phoneMusicApp','phoneMeshiruApp','phoneHistoryApp'].forEach(id => {
+    ['phonePlazaApp','phoneMusicApp','phoneMeshiruApp','phoneOtayoriApp','phoneHistoryApp'].forEach(id => {
       const el2 = document.getElementById(id);
       if (el2) el2.hidden = true;
     });
