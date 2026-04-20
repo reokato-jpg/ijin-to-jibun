@@ -3427,7 +3427,7 @@ function playPortalTransition(menuEl, onComplete) {
   if (menuEl) {
     menuEl.classList.add('portal-zooming');
   }
-  // 2. ポータル動画を被せて再生
+  // 2. ポータル動画を被せて再生＋タイムスリップのSFX
   portal.hidden = false;
   requestAnimationFrame(() => {
     portal.classList.add('active');
@@ -3435,10 +3435,18 @@ function playPortalTransition(menuEl, onComplete) {
       video.currentTime = 0;
       video.play().catch(() => {});
     } catch {}
+    try {
+      const sfx = document.getElementById('portalSfx');
+      if (sfx && !isMuted()) {
+        sfx.currentTime = 0;
+        sfx.volume = 0.7;
+        sfx.play().catch(() => {});
+      }
+    } catch {}
   });
-  // 3. 動画の大半再生後、遷移先へ
-  const FADE_IN_MS = 350;   // ポータル被せ時間
-  const HOLD_MS = 900;      // 動画を見せる時間
+  // 3. 動画の大半再生後、遷移先へ（合計約1.5s）
+  const FADE_IN_MS = 250;   // ポータル被せ時間
+  const HOLD_MS = 750;      // 動画を見せる時間
   setTimeout(() => {
     if (menuEl) {
       menuEl.classList.remove('open', 'portal-zooming');
@@ -3449,8 +3457,12 @@ function playPortalTransition(menuEl, onComplete) {
       setTimeout(() => {
         portal.hidden = true;
         try { video.pause(); video.currentTime = 0; } catch {}
-      }, 300);
-    }, 150);
+        try {
+          const sfx = document.getElementById('portalSfx');
+          if (sfx) { sfx.pause(); sfx.currentTime = 0; }
+        } catch {}
+      }, 250);
+    }, 100);
   }, FADE_IN_MS + HOLD_MS);
 }
 
