@@ -3112,10 +3112,13 @@ function checkFollowBackEligibility(personId) {
 const REKITTO_MSGS_KEY = 'ijin_rekitto_msgs';
 const REKITTO_LAST_READ_KEY = 'ijin_rekitto_last_read';
 const REKITTO_SEEN_UPDATES_KEY = 'ijin_rekitto_seen_updates';
-const REKITTO_AVATAR = 'assets/guest-avatar.png'; // フォールバック用
-// レキットのアニメ動画アバター（自動再生ループ）
+const REKITTO_AVATAR = 'assets/guide/rekitto.webp'; // ループ動画のフォールバック静止画
+// レキットのアニメ動画アバター（iOS=animated webp、それ以外=video）
 function rekittoAvatarHtml(cls = '') {
-  return `<video class="rekitto-video-av ${cls}" src="assets/guide/rekitto.mp4?v=1" muted autoplay loop playsinline preload="metadata" aria-hidden="true"></video>`;
+  if (typeof IS_IOS !== 'undefined' && IS_IOS) {
+    return `<img class="rekitto-video-av ${cls}" src="assets/guide/rekitto.webp?v=1" alt="" aria-hidden="true">`;
+  }
+  return `<video class="rekitto-video-av ${cls}" src="assets/guide/rekitto.mp4?v=1" muted autoplay loop playsinline preload="auto" aria-hidden="true" poster="assets/guide/rekitto.webp"></video>`;
 }
 
 function getRekittoMsgs() {
@@ -3817,20 +3820,7 @@ function initPhoneMenu() {
   function renderRekittoChat(body) {
     const msgs = getRekittoMsgs();
     if (msgs.length === 0) {
-      body.innerHTML = `
-        <div class="line-chat rekitto-chat">
-          <div class="line-msg-received">
-            <div class="line-avatar" style="background-image:url('${REKITTO_AVATAR}');background-size:180%;background-position:center"></div>
-            <div class="line-msg-col">
-              <div class="line-msg-name">📜 レキット</div>
-              <div class="line-msg-bubble">
-                はじめまして。私は歴史の管理人、レキット。<br>
-                新しい機能のお知らせや、偉人・会員からフォローされた時などに、ここでお伝えします。
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
+      body.innerHTML = `<div class="line-chat rekitto-chat"><div class="line-msg-received"><div class="line-avatar rekitto-line-avatar">${rekittoAvatarHtml()}</div><div class="line-msg-col"><div class="line-msg-name">📜 レキット</div><div class="line-msg-bubble rekitto-bubble">はじめまして。私は歴史の管理人、レキット。\n新しい機能のお知らせや、偉人・会員からフォローされた時などに、ここでお伝えします。</div></div></div></div>`;
       return;
     }
     body.innerHTML = `
