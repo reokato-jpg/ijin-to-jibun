@@ -138,7 +138,7 @@ async function initFirebase() {
     // 会員プロフィールの訪問者記録＆取得（自分のプロフに誰が来たか）
     window.recordVisitorToUser = async (targetUid, profile) => {
       if (!fbDb || !targetUid || !currentUser) return;
-      if (targetUid === currentUser.uid) return; // 自分を見ても記録しない
+      // 自分を見た時も軌跡として残す（自分のプロフの訪問履歴）
       try {
         const uid = currentUser.uid;
         const ref = doc(fbDb, 'userVisitors', targetUid + '__' + uid);

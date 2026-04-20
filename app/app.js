@@ -1825,6 +1825,10 @@ function isFollowingUser(uid) {
   return loadUserFollows().has(uid);
 }
 function toggleFollowUser(uid) {
+  // 自分で自分をフォローできないように
+  if (typeof currentUser !== 'undefined' && currentUser && currentUser.uid === uid) {
+    return false;
+  }
   const s = loadUserFollows();
   if (s.has(uid)) s.delete(uid); else s.add(uid);
   saveUserFollows(s);
@@ -2203,24 +2207,36 @@ function openUserProfileModal(uid, usersCache) {
     btn.classList.toggle('active', now);
     btn.textContent = now ? '✓ フォロー中' : '＋ フォローする';
   });
-  // 訪問者として自分を記録＆軌跡を取得表示
+  // 訪問者として自分を記録＆軌跡を取得表示（自分を見た時も記録）
+  // まずローカルに保存して即描画
+  try {
+    const mount = modal.querySelector('#userVisitorsMount');
+    const myUid = (currentUser && currentUser.uid) ? currentUser.uid : getOrCreateGuestUid();
+    const isAnon = !currentUser || currentUser.isAnonymous;
+    const myName = getUserName() || (currentUser && currentUser.displayName) || (isAnon ? 'ゲスト' : '名無しの読者');
+    const myAvatar = localStorage.getItem('ijin_user_avatar') || '';
+    saveLocalVisitor('user', u.uid, {
+      targetUid: u.uid, uid: myUid, name: myName, avatar: myAvatar, isGuest: isAnon,
+      visitedAt: new Date().toISOString(),
+    });
+    if (mount) renderUserVisitors(mount, loadLocalVisitors('user', u.uid));
+  } catch {}
   (async () => {
     try {
       const mount = modal.querySelector('#userVisitorsMount');
       if (!mount) return;
-      // 記録（自分以外を見た時のみ）
-      if (!u.isMe && typeof window.recordVisitorToUser === 'function' && currentUser) {
+      // Firestore記録（自分も含めて記録）
+      if (typeof window.recordVisitorToUser === 'function' && currentUser) {
         const isAnon = currentUser.isAnonymous;
         const myName = getUserName() || currentUser.displayName || (isAnon ? 'ゲスト' : '名無しの読者');
         const myAvatar = localStorage.getItem('ijin_user_avatar') || '';
         window.recordVisitorToUser(u.uid, { name: myName, avatar: myAvatar, isGuest: isAnon });
       }
-      // 取得
-      let visitors = [];
+      let cloudVisitors = [];
       if (typeof window.fetchVisitorsToUser === 'function') {
-        visitors = await window.fetchVisitorsToUser(u.uid);
+        cloudVisitors = await window.fetchVisitorsToUser(u.uid);
       }
-      renderUserVisitors(mount, visitors);
+      renderUserVisitors(mount, mergeVisitors(loadLocalVisitors('user', u.uid), cloudVisitors));
     } catch {}
   })();
 }
@@ -4335,11 +4351,40 @@ function initPhoneMenu() {
       video.replaceWith(imgEl);
       video = null;
     }
-    // タップでバリアント切替は無効化（一瞬別キャラが出る問題を回避）
-    // 代わりに、単にクリックで何もしない（イベントのみ消費）
+    // タップでバリアント切替（あくび・頷きなど別の姿を楽しめる）
+    // すべてのバリアントを事前プリロードして一瞬のフラッシュを防ぐ
+    try {
+      VARIANTS_WEBM.forEach(src => {
+        const v = document.createElement('video');
+        v.preload = 'auto';
+        v.muted = true;
+        v.src = 'assets/guide/' + src + '?v=2';
+      });
+      VARIANTS_WEBP.forEach(src => {
+        const i = new Image();
+        i.src = 'assets/guide/' + src + '?v=2';
+      });
+    } catch {}
+    let idx = 0;
     hint.addEventListener('click', (e) => {
       e.stopPropagation();
-      // 何もしない。バリアント切替は廃止。
+      idx = (idx + 1) % 4;
+      if (imgEl) {
+        imgEl.src = 'assets/guide/' + VARIANTS_WEBP[idx] + '?v=2';
+      } else if (video) {
+        // src変更前に現在のフレームをposterとして保持（黒フラッシュ防止）
+        try {
+          const canvas = document.createElement('canvas');
+          canvas.width = video.videoWidth || 480;
+          canvas.height = video.videoHeight || 480;
+          const ctx = canvas.getContext('2d');
+          if (ctx && video.videoWidth) ctx.drawImage(video, 0, 0);
+          video.poster = canvas.toDataURL();
+        } catch {}
+        video.innerHTML = `<source src="assets/guide/${VARIANTS_WEBM[idx]}?v=2" type="video/webm">`;
+        video.load();
+        video.play().catch(()=>{});
+      }
     });
     // 初回だけボイス
     const VOICE_KEY = 'ijin_rabin_voice_played';
