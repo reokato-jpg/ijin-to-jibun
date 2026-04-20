@@ -115,8 +115,9 @@ const CATEGORY_RULES = [
   { id: 'art',      name: '画家',     match: (f) => /画家|彫刻家|美術/.test(f) },
   { id: 'science',  name: '科学者',   match: (f) => /科学|数学者|物理学者|生物学者|医師|医学|天文/.test(f) },
   { id: 'history',  name: '歴史',     match: (f) => /武士|武将|志士|藩士|政治家|軍人|大名|局長|副長|戦国|維新|幕末/.test(f) },
-  { id: 'business', name: '経営者',   match: (f) => /実業家|経営者|起業家|投資家|ビジネス/.test(f) },
+  { id: 'business', name: '経営者',   match: (f) => /実業家|経営者|起業家|投資家|ビジネス|商人|豪商/.test(f) },
   { id: 'horse_racing', name: '競馬', match: (f) => /騎手|競走馬|ジョッキー/.test(f) },
+  { id: 'cooking',  name: '料理人',   match: (f) => /料理人|シェフ|料理家|美食家|料理研究家|chef|Chef/.test(f) },
 ];
 function categoryOf(field) {
   for (const r of CATEGORY_RULES) if (r.match(field || '')) return r.id;
@@ -171,9 +172,15 @@ const ERA_RULES = {
     { id: 'contemp_s',    name: '現代',     match: (b) => b >= 1900 },
   ],
   business: [
-    { id: 'meiji_industry', name: '明治・産業勃興', match: (b) => b && b < 1880 },
-    { id: 'postwar_makers', name: '戦後ものづくり', match: (b) => b >= 1880 && b < 1940 },
-    { id: 'tech_era',       name: 'テック時代',   match: (b) => b >= 1940 },
+    { id: 'edo_merchant',    name: '江戸の豪商',     match: (b) => b && b < 1830 },
+    { id: 'meiji_industry',  name: '明治・産業勃興', match: (b) => b >= 1830 && b < 1880 },
+    { id: 'postwar_makers',  name: '戦後ものづくり', match: (b) => b >= 1880 && b < 1940 },
+    { id: 'tech_era',        name: 'テック時代',     match: (b) => b >= 1940 },
+  ],
+  cooking: [
+    { id: 'pre_modern_cook', name: '近代以前',   match: (b) => b && b < 1850 },
+    { id: 'modern_cook',     name: '近代',       match: (b) => b >= 1850 && b < 1920 },
+    { id: 'contemp_cook',    name: '現代',       match: (b) => b >= 1920 },
   ],
   horse_racing: [
     { id: 'showa_jockey',   name: '昭和の名騎手', match: (b) => b && b < 1960 },
@@ -4344,6 +4351,13 @@ function initPhoneMenu() {
     const hint = document.getElementById('powerHintAnim');
     if (!hint) return;
     hint.hidden = false;
+    // ウェルカムイントロが走る場合は initWelcomeIntro が visibility:hidden を維持するので、
+    // ここでは常に次フレームで表示 → イントロがあれば再度隠す流れで一瞬チラつきを防ぐ
+    const welcomeSeen = (() => { try { return !!localStorage.getItem('ijin_welcome_intro_seen'); } catch { return true; } })();
+    if (welcomeSeen) {
+      requestAnimationFrame(() => { hint.style.visibility = ''; });
+    }
+    // イントロが走る場合は initWelcomeIntro の close() で visibility を戻す
     let video = hint.querySelector('.power-hint-video');
     const VARIANTS_WEBM = ['rabin.webm','rabin-var1.webm','rabin-var2.webm','rabin-var3.webm'];
     const VARIANTS_WEBP = ['rabin.webp','rabin-var1.webp','rabin-var2.webp','rabin-var3.webp'];
@@ -4615,6 +4629,10 @@ function initPhoneMenu() {
         openPhoneToolApp(action);
         return;
       }
+      if (action === 'meshiru') {
+        openPhoneToolApp(action);
+        return;
+      }
       close();
       setTimeout(() => {
         if (action === 'settings') {
@@ -4630,18 +4648,19 @@ function initPhoneMenu() {
   });
   // ============ ツールアプリ共通（電卓・メモ・タイマー） ============
   function openPhoneToolApp(tool) {
-    const map = { music: 'phoneMusicApp' };
+    const map = { music: 'phoneMusicApp', meshiru: 'phoneMeshiruApp' };
     const el = document.getElementById(map[tool]);
     if (!el) return;
-    ['phoneMusicApp','phonePlazaApp'].forEach(id => {
+    ['phoneMusicApp','phoneMeshiruApp','phonePlazaApp'].forEach(id => {
       const a = document.getElementById(id);
       if (a) a.hidden = true;
     });
     el.hidden = false;
     if (tool === 'music') initMusicApp();
+    if (tool === 'meshiru') initMeshiruApp();
   }
   function closePhoneToolApp(tool) {
-    const map = { music: 'phoneMusicApp' };
+    const map = { music: 'phoneMusicApp', meshiru: 'phoneMeshiruApp' };
     const el = document.getElementById(map[tool]);
     if (el) el.hidden = true;
     if (tool === 'music') stopMusicApp();
@@ -4739,6 +4758,151 @@ function initPhoneMenu() {
       if (a) { a.pause(); a.currentTime = 0; }
     }
     __musicCurrent = null;
+  }
+
+  // ============ 🍳 めしる（偉人のレシピ） ============
+  const MESHIRU_SAVED_KEY = 'ijin_meshiru_saved';
+  const MESHIRU_LIKES_KEY = 'ijin_meshiru_likes';
+  function loadMeshiruSet(k) { try { return new Set(JSON.parse(localStorage.getItem(k) || '[]')); } catch { return new Set(); } }
+  function saveMeshiruSet(k, s) { try { localStorage.setItem(k, JSON.stringify([...s])); } catch {} }
+
+  function getAllRecipes() {
+    const out = [];
+    (DATA.people || []).forEach(p => {
+      if (Array.isArray(p.recipes) && p.recipes.length) {
+        p.recipes.forEach(r => out.push({ ...r, personId: p.id, personName: p.name, personField: p.field, personImage: p.imageUrl }));
+      }
+    });
+    return out;
+  }
+
+  function renderRecipeCard(r, saved, likes) {
+    const liked = likes.has(r.id);
+    const isSaved = saved.has(r.id);
+    const av = r.personImage
+      ? `<div class="meshiru-av" style="background-image:url('${r.personImage}')"></div>`
+      : `<div class="meshiru-av no-img">${(r.personName || '?').charAt(0)}</div>`;
+    return `
+      <article class="meshiru-card" data-recipe-id="${r.id}">
+        <header class="meshiru-card-head">
+          <button class="meshiru-av-btn" data-goto-person="${r.personId}">${av}</button>
+          <div class="meshiru-head-info">
+            <button class="meshiru-person-name" data-goto-person="${r.personId}">${escapeHtml(r.personName)}</button>
+            <div class="meshiru-person-field">${escapeHtml(r.personField || '')}</div>
+          </div>
+        </header>
+        <div class="meshiru-card-body">
+          <h3 class="meshiru-recipe-title">${escapeHtml(r.name)}</h3>
+          ${r.tagline ? `<p class="meshiru-tagline-in">${escapeHtml(r.tagline)}</p>` : ''}
+          ${r.imageHint ? `<div class="meshiru-image-hint">🖼 ${escapeHtml(r.imageHint)}</div>` : ''}
+          <details class="meshiru-details">
+            <summary>📋 材料（${(r.ingredients || []).length}点）</summary>
+            <ul class="meshiru-ingredients">
+              ${(r.ingredients || []).map(i => `<li>${escapeHtml(i)}</li>`).join('')}
+            </ul>
+          </details>
+          <details class="meshiru-details">
+            <summary>👨‍🍳 作り方（${(r.steps || []).length}ステップ）</summary>
+            <ol class="meshiru-steps">
+              ${(r.steps || []).map(s => `<li>${escapeHtml(s)}</li>`).join('')}
+            </ol>
+          </details>
+          ${r.note ? `<div class="meshiru-note">💡 ${escapeHtml(r.note)}</div>` : ''}
+        </div>
+        <footer class="meshiru-card-foot">
+          <button class="meshiru-btn meshiru-like ${liked ? 'active' : ''}" data-meshiru-like="${r.id}">${liked ? '❤' : '♡'} いいね</button>
+          <button class="meshiru-btn meshiru-save ${isSaved ? 'active' : ''}" data-meshiru-save="${r.id}">${isSaved ? '🔖 保存中' : '🔖 保存'}</button>
+        </footer>
+      </article>
+    `;
+  }
+
+  function initMeshiruApp() {
+    const feed = document.getElementById('meshiruFeed');
+    const savedMount = document.getElementById('meshiruSaved');
+    if (!feed) return;
+    const recipes = getAllRecipes();
+    const saved = loadMeshiruSet(MESHIRU_SAVED_KEY);
+    const likes = loadMeshiruSet(MESHIRU_LIKES_KEY);
+
+    function renderFeed() {
+      if (recipes.length === 0) {
+        feed.innerHTML = `<div class="meshiru-empty">まだレシピがありません。<br>料理人の偉人が増えると、ここに並びます。</div>`;
+        return;
+      }
+      feed.innerHTML = `
+        <div class="meshiru-intro">
+          <div class="meshiru-intro-title">🍳 偉人たちの台所</div>
+          <div class="meshiru-intro-sub">歴史を動かした料理人が実際に使ったレシピ。<br>気に入ったら「🔖 保存」で、あなたの台所にも。</div>
+        </div>
+        ${recipes.map(r => renderRecipeCard(r, saved, likes)).join('')}
+      `;
+      bindHandlers(feed);
+    }
+    function renderSaved() {
+      const mine = recipes.filter(r => saved.has(r.id));
+      if (mine.length === 0) {
+        savedMount.innerHTML = `<div class="meshiru-empty">🔖 まだ保存したレシピはありません。<br>気になる一皿を保存しましょう。</div>`;
+        return;
+      }
+      savedMount.innerHTML = `
+        <div class="meshiru-intro">
+          <div class="meshiru-intro-title">🔖 保存したレシピ</div>
+          <div class="meshiru-intro-sub">あなたの台所に並んだ、偉人たちの一皿。</div>
+        </div>
+        ${mine.map(r => renderRecipeCard(r, saved, likes)).join('')}
+      `;
+      bindHandlers(savedMount);
+    }
+    function bindHandlers(scope) {
+      scope.querySelectorAll('[data-meshiru-like]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const id = btn.dataset.meshiruLike;
+          if (likes.has(id)) likes.delete(id); else likes.add(id);
+          saveMeshiruSet(MESHIRU_LIKES_KEY, likes);
+          btn.classList.toggle('active');
+          btn.innerHTML = (likes.has(id) ? '❤' : '♡') + ' いいね';
+        });
+      });
+      scope.querySelectorAll('[data-meshiru-save]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const id = btn.dataset.meshiruSave;
+          if (saved.has(id)) saved.delete(id); else saved.add(id);
+          saveMeshiruSet(MESHIRU_SAVED_KEY, saved);
+          btn.classList.toggle('active');
+          btn.innerHTML = (saved.has(id) ? '🔖 保存中' : '🔖 保存');
+        });
+      });
+      scope.querySelectorAll('[data-goto-person]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const pid = btn.dataset.gotoPerson;
+          closePhoneToolApp('meshiru');
+          // スマホを閉じて偉人ページへ
+          const menuEl = document.getElementById('phoneMenu');
+          if (menuEl && menuEl.classList.contains('open')) {
+            menuEl.classList.remove('open');
+            menuEl.setAttribute('aria-hidden', 'true');
+          }
+          setTimeout(() => showPerson(pid), 260);
+        });
+      });
+    }
+    // タブ切り替え
+    document.querySelectorAll('[data-meshiru-tab]').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('[data-meshiru-tab]').forEach(t => t.classList.toggle('active', t === tab));
+        const which = tab.dataset.meshiruTab;
+        if (which === 'feed') {
+          feed.hidden = false; savedMount.hidden = true; renderFeed();
+        } else {
+          feed.hidden = true; savedMount.hidden = false; renderSaved();
+        }
+      });
+    });
+    renderFeed();
   }
   menu.querySelector('#musicPlayBtn')?.addEventListener('click', () => {
     if (!__musicCurrent) return;

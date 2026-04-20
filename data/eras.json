@@ -762,17 +762,32 @@
       "sub": "経営の系譜",
       "eras": [
         {
+          "id": "edo_merchant",
+          "name": "江戸の豪商",
+          "period": "1600〜1830年",
+          "description": "三井高利の『現金掛け値なし』、住友・鴻池の両替商、商人の町・大坂と江戸。商業資本の黎明期。",
+          "keywords": [
+            "越後屋",
+            "両替商",
+            "豪商"
+          ],
+          "people": [
+            "mitsui_takatoshi"
+          ]
+        },
+        {
           "id": "meiji_industry",
           "name": "明治の産業勃興",
-          "period": "1870〜1910年",
-          "description": "欧米の近代経済を吸収し、日本資本主義が立ち上がった時代。渋沢栄一ら先駆者が銀行・鉄道・紡績を次々設立。",
+          "period": "1830〜1910年",
+          "description": "欧米の近代経済を吸収し、日本資本主義が立ち上がった時代。渋沢栄一・岩崎弥太郎ら先駆者が銀行・鉄道・海運・紡績を次々設立。",
           "keywords": [
             "殖産興業",
             "資本主義",
             "財閥形成"
           ],
           "people": [
-            "shibusawa_eiichi"
+            "shibusawa_eiichi",
+            "iwasaki_yataro"
           ]
         },
         {
@@ -849,6 +864,55 @@
             "新時代"
           ],
           "people": []
+        }
+      ]
+    },
+    {
+      "id": "cooking",
+      "name": "料理の歴史",
+      "icon": "🍳",
+      "sub": "料理人の系譜",
+      "eras": [
+        {
+          "id": "pre_modern_cook",
+          "name": "近代以前の料理",
+          "period": "〜1850年",
+          "description": "本膳料理、懐石、宮廷料理——儀式と権威が料理を磨いた時代。フランス宮廷とカレームの古典料理。",
+          "keywords": [
+            "懐石",
+            "宮廷料理",
+            "カレーム"
+          ],
+          "people": []
+        },
+        {
+          "id": "modern_cook",
+          "name": "近代料理の確立",
+          "period": "1850〜1920年",
+          "description": "エスコフィエが近代フランス料理を体系化、リッツと組んでホテル料理の黄金時代を築いた。",
+          "keywords": [
+            "エスコフィエ",
+            "ブリガード",
+            "近代料理"
+          ],
+          "people": [
+            "escoffier"
+          ]
+        },
+        {
+          "id": "contemp_cook",
+          "name": "現代の料理人",
+          "period": "1920年〜",
+          "description": "魯山人の美食哲学、ボキューズのヌーヴェル・キュイジーヌ、分子料理へと続く料理人の革命。",
+          "keywords": [
+            "魯山人",
+            "ボキューズ",
+            "ヌーヴェル"
+          ],
+          "people": [
+            "rosanjin",
+            "bocuse"
+          ]
         }
       ]
     }

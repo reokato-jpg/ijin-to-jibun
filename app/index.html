@@ -70,8 +70,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20260423T">
-<link rel="stylesheet" href="era-theme.css?v=20260423T">
+<link rel="stylesheet" href="style.css?v=20260424A">
+<link rel="stylesheet" href="era-theme.css?v=20260424A">
 </head>
 <body>
   <header class="app-header">
@@ -463,7 +463,7 @@
   <button id="muteToggle" class="mute-toggle" aria-label="音のオンオフ" title="音のオンオフ">🔊</button>
 
   <!-- 左下の常設キャラクター（VP9 alpha付きWebMで真の透過） -->
-  <button id="powerHintAnim" class="power-hint-anim" type="button" aria-label="レキット" title="レキット">
+  <button id="powerHintAnim" class="power-hint-anim" type="button" aria-label="レキット" title="レキット" style="visibility:hidden">
     <video class="power-hint-video" muted playsinline autoplay loop preload="auto" disablePictureInPicture controlslist="nodownload noremoteplayback nofullscreen" aria-hidden="true" poster="assets/guide/rabin.webp">
       <source src="assets/guide/rabin.webm?v=2" type="video/webm">
       <source src="assets/guide/rabin.mp4?v=2" type="video/mp4">
@@ -541,6 +541,10 @@
             <img src="assets/phone/icon-music.png?v=1" alt="">
             <span>ミュージック</span>
           </button>
+          <button class="phone-icon phone-icon-meshiru" data-phone-action="meshiru">
+            <span class="phone-icon-emoji">🍳</span>
+            <span>めしる</span>
+          </button>
           <button class="phone-icon" data-phone-view="articles">
             <img src="assets/phone/icon-blog.png?v=1" alt="">
             <span>ブログ</span>
@@ -568,6 +572,23 @@
               <input class="music-volume" id="musicVolume" type="range" min="0" max="100" value="35" aria-label="音量">
             </div>
             <ul class="music-tracklist" id="musicTracklist"></ul>
+          </div>
+        </div>
+
+        <!-- 🍳 めしるアプリ（偉人のレシピ） -->
+        <div class="phone-tool-app" id="phoneMeshiruApp" hidden>
+          <div class="plaza-app-head tool-app-head meshiru-head">
+            <button class="plaza-app-back tool-app-back" type="button" data-tool-close="meshiru" aria-label="戻る">‹</button>
+            <span class="plaza-app-title">めしる</span>
+            <span class="meshiru-tagline">偉人の台所</span>
+          </div>
+          <div class="meshiru-app">
+            <div class="meshiru-tabs">
+              <button class="meshiru-tab active" data-meshiru-tab="feed">🍽 フィード</button>
+              <button class="meshiru-tab" data-meshiru-tab="saved">🔖 保存</button>
+            </div>
+            <div class="meshiru-feed" id="meshiruFeed"></div>
+            <div class="meshiru-saved" id="meshiruSaved" hidden></div>
           </div>
         </div>
 
@@ -708,10 +729,10 @@
     </div>
   </div>
 
-  <script src="era-lore.js?v=20260423T"></script>
-  <script src="history-patterns.js?v=20260423T"></script>
-  <script src="app.js?v=20260423T"></script>
-  <script src="auth.js?v=20260423T" type="module"></script>
+  <script src="era-lore.js?v=20260424A"></script>
+  <script src="history-patterns.js?v=20260424A"></script>
+  <script src="app.js?v=20260424A"></script>
+  <script src="auth.js?v=20260424A" type="module"></script>
   <script src="ai-consult.js"></script>
 </body>
 </html>
