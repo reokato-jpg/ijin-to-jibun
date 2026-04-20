@@ -14108,3 +14108,80 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
   }
   .profile-info-visit { border-top: 1px dashed rgba(138,90,29,0.15); }
 }
+
+/* スタンプ獲得トースト */
+.stamp-toast {
+  position: fixed;
+  top: 80px;
+  right: 16px;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px 12px 12px;
+  background: linear-gradient(135deg, #fff8e8 0%, #f5e6c8 100%);
+  border: 1px solid #c9a760;
+  border-left: 4px solid #a8842a;
+  border-radius: 10px;
+  box-shadow: 0 6px 24px rgba(80,50,10,0.25);
+  max-width: 340px;
+  min-width: 260px;
+  opacity: 0;
+  transform: translateX(30px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+  font-family: var(--font-jp);
+}
+.stamp-toast.show { opacity: 1; transform: translateX(0); }
+.stamp-toast-av {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background-size: cover; background-position: center top;
+  background-color: #e0d6be;
+  border: 2px solid #c9a760;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; color: #5a4a33;
+}
+.stamp-toast-av.no-img { background-color: #fff8e8; }
+.stamp-toast-body { flex: 1; min-width: 0; }
+.stamp-toast-head {
+  display: flex; align-items: center; gap: 6px;
+  margin-bottom: 3px;
+}
+.stamp-toast-seal {
+  color: #a8842a;
+  font-size: 14px;
+  animation: stampSealPop 0.5s 0.1s both cubic-bezier(0.3, 1.5, 0.5, 1);
+}
+@keyframes stampSealPop {
+  from { transform: scale(0) rotate(-30deg); }
+  to { transform: scale(1) rotate(0); }
+}
+.stamp-toast-kind {
+  font-size: 11.5px;
+  color: #8a6a20;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.stamp-toast-msg {
+  font-size: 12.5px;
+  color: #3a2d1c;
+  line-height: 1.5;
+}
+.stamp-toast-close {
+  background: transparent;
+  border: 0;
+  font-size: 16px;
+  color: #8a6a20;
+  cursor: pointer;
+  padding: 0 4px;
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+@media (max-width: 480px) {
+  .stamp-toast { top: 64px; right: 8px; left: 8px; max-width: none; }
+}
+
+/* プロフィール訪問回数セパレータ */
+.profile-info-visit-sep { color: var(--ink-4); opacity: 0.5; }

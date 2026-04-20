@@ -92,7 +92,7 @@ async function initFirebase() {
     const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js');
     const { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup } =
       await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
-    const { getFirestore, doc, getDoc, setDoc, collection, getDocs } =
+    const { getFirestore, doc, getDoc, setDoc, updateDoc, increment, collection, getDocs } =
       await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
 
     fbApp = initializeApp(FIREBASE_CONFIG);
@@ -100,7 +100,25 @@ async function initFirebase() {
     fbDb = getFirestore(fbApp);
 
     // 外から使えるようwindow経由で公開
-    window.__fbLib = { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup, doc, getDoc, setDoc, collection, getDocs };
+    window.__fbLib = { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup, doc, getDoc, setDoc, updateDoc, increment, collection, getDocs };
+
+    // グローバル訪問回数：誰でも書き込める公開コレクション（Firestoreルールで許可が必要）
+    // Rules 推奨: match /publicVisits/{pid} { allow read: if true; allow write: if true; }
+    window.incrementGlobalVisit = async (personId) => {
+      if (!fbDb || !personId) return;
+      try {
+        const ref = doc(fbDb, 'publicVisits', personId);
+        await setDoc(ref, { count: increment(1), updatedAt: new Date().toISOString() }, { merge: true });
+      } catch (e) { /* 権限エラー等は無視 */ }
+    };
+    window.getGlobalVisit = async (personId) => {
+      if (!fbDb || !personId) return 0;
+      try {
+        const snap = await getDoc(doc(fbDb, 'publicVisits', personId));
+        if (snap.exists()) return snap.data().count || 0;
+      } catch {}
+      return 0;
+    };
 
     onAuthStateChanged(fbAuth, async (user) => {
       currentUser = user;
@@ -691,7 +709,7 @@ function openAccountMenu() {
         ` : `
           <div class="settings-item disabled">
             <span class="settings-item-icon">🔒</span>
-            <span class="settings-item-body"><b>会員限定</b><small>ログインすると各機能が使えます</small></span>
+            <span class="settings-item-body"><b>会員限定（無料）</b><small>ログインすると各機能が使えます（登録は無料）</small></span>
           </div>
         `}
         <button class="settings-item" data-act="directory">

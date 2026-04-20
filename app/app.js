@@ -879,7 +879,7 @@ function renderTraitsMatch() {
   // プロフィール入力欄（会員限定）
   const profileHtml = isLoggedIn ? `
     <div class="match-profile">
-      <div class="match-cat-label">👤 あなたのプロフィール（会員限定）</div>
+      <div class="match-cat-label">👤 あなたのプロフィール（無料会員限定）</div>
       <div class="match-profile-row">
         <label class="match-profile-label">誕生日
           <span class="match-profile-inline">
@@ -903,7 +903,7 @@ function renderTraitsMatch() {
     </div>
   ` : `
     <div class="match-profile match-profile-locked">
-      <div class="match-profile-lock-head">🔒 誕生日・出身地の登録は会員限定です</div>
+      <div class="match-profile-lock-head">🔒 誕生日・出身地の登録は無料会員限定です（登録は完全無料）</div>
       <div class="match-profile-lock-sub">登録すると、同じ誕生日の偉人を探せます。</div>
       <button class="match-profile-login-btn" id="matchProfileLoginBtn">🔑 本棚の鍵を受け取る</button>
     </div>
@@ -1469,7 +1469,7 @@ function openShareMyProfileModal() {
         </div>
         ${navigator.share ? `<button class="share-native" id="shareNativeBtn">📤 共有する</button>` : ''}
       ` : `
-        <div class="users-dir-empty">会員登録後にシェアIDが発行されます。</div>
+        <div class="users-dir-empty">無料会員登録後にシェアIDが発行されます。（0円・メールのみ）</div>
       `}
     </div>
   `;
@@ -3006,6 +3006,10 @@ function recordVisit(personId) {
   const visits = loadVisits();
   visits[personId] = (visits[personId] || 0) + 1;
   localStorage.setItem(VISITS_KEY, JSON.stringify(visits));
+  // グローバル訪問カウンター（誰が見ても増える・無料会員/ゲストも含む）
+  try { if (typeof window.incrementGlobalVisit === 'function') window.incrementGlobalVisit(personId); } catch {}
+  // 10回以上訪問でスタンプ
+  if ((visits[personId] || 0) >= 10) { try { grantStamp(personId, 'visit_loyal'); } catch {} }
   // 訪問数更新のタイミングでフォローバック条件を再評価
   try { if (typeof checkFollowBackEligibility === 'function') checkFollowBackEligibility(personId); } catch {}
 }
@@ -4076,7 +4080,7 @@ async function showPerson(id) {
             if (loggedIn) {
               return `<button class="follow-btn ${following ? 'active' : ''}" data-follow-toggle="${p.id}">${following ? '✓ フォロー中' : '＋ フォロー'}</button>`;
             } else {
-              return `<button class="follow-btn disabled" data-follow-login="1" title="会員登録すると偉人をフォローできます">＋ フォロー（会員のみ）</button>`;
+              return `<button class="follow-btn disabled" data-follow-login="1" title="無料会員登録（0円）すると偉人をフォローできます">＋ フォロー（無料会員のみ）</button>`;
             }
           })()}
           <button class="oshi-set-btn ${getOshi() === p.id ? 'active' : ''}" data-oshi-set="${p.id}">
@@ -4113,9 +4117,13 @@ async function showPerson(id) {
             <span class="profile-info-value">${p.death ? fmtYear(p.death) + '年' : ''}${(p.deathMonth && p.deathDay) ? ` ${p.deathMonth}/${p.deathDay}` : ''}${(p.birth && p.death) ? ` <span class="profile-info-age">（${p.death - p.birth}歳没）</span>` : ''}</span>
           </div>
         ` : ''}
-        <div class="profile-info-item profile-info-visit">
+        <div class="profile-info-item profile-info-visit" id="profileVisitItem">
           <span class="profile-info-ic">👣</span>
-          <span class="profile-info-value">${getVisitCount(p.id)}回訪問</span>
+          <span class="profile-info-value">
+            <span id="profileGlobalVisit">累計 —</span>
+            <span class="profile-info-visit-sep"> · </span>
+            <span>あなた ${getVisitCount(p.id)}回</span>
+          </span>
         </div>
       </div>
       ${(() => {
@@ -4800,6 +4808,17 @@ async function showPerson(id) {
   const container = document.getElementById('personDetail');
   container.innerHTML = html;
 
+  // グローバル訪問数を非同期取得
+  (async () => {
+    try {
+      if (typeof window.getGlobalVisit === 'function') {
+        const n = await window.getGlobalVisit(p.id);
+        const el = document.getElementById('profileGlobalVisit');
+        if (el) el.textContent = `累計 ${n}回`;
+      }
+    } catch {}
+  })();
+
   // Xポストのいいね・コメント・共有
   container.querySelectorAll('[data-like-toggle]').forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -5054,10 +5073,13 @@ async function showPerson(id) {
     followBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       const pid = followBtn.dataset.followToggle;
+      const wasFollowing = isFavPerson(pid);
       toggleFavPerson(pid);
       const on = isFavPerson(pid);
       followBtn.classList.toggle('active', on);
       followBtn.textContent = on ? '✓ フォロー中' : '＋ フォロー';
+      // 初フォロー時にスタンプ
+      if (!wasFollowing && on) { try { grantStamp(pid, 'follow'); } catch {} }
     });
   }
   // 偉人のフォロー中／フォロワー／ブロック中 → ポップアップ
@@ -5075,7 +5097,17 @@ async function showPerson(id) {
       const catId = btn.dataset.eraJumpCat;
       const eraId = btn.dataset.eraJumpEra;
       if (catId && eraId && typeof openEraModal === 'function') openEraModal(catId, eraId);
+      try { grantStamp(p.id, 'era_visit'); } catch {}
     });
+  });
+
+  // Amazonで本を開いたらスタンプ
+  container.querySelectorAll('.x-book-amazon, .x-book-cover').forEach(btn => {
+    btn.addEventListener('click', () => { try { grantStamp(p.id, 'read_book'); } catch {} });
+  });
+  // YouTube等の作品リンクを踏んだらスタンプ
+  container.querySelectorAll('.x-post-embed-link').forEach(btn => {
+    btn.addEventListener('click', () => { try { grantStamp(p.id, 'watch_work'); } catch {} });
   });
 
   // 未ログイン時のフォローボタン → ログイン誘導
@@ -5100,6 +5132,7 @@ async function showPerson(id) {
         setOshi(pid);
         oshiBtn.classList.add('active');
         oshiBtn.textContent = '♡ 推し中';
+        try { grantStamp(pid, 'oshi'); } catch {}
       }
       renderOshi();
     });
@@ -5821,14 +5854,45 @@ function grantStamp(personId, source = 'quiz') {
   if (typeof cur === 'number') bd = { quiz: cur };
   else if (cur && typeof cur === 'object') bd = { ...cur };
   else bd = {};
-  const before = Object.values(bd).reduce((a,b) => a + (b || 0), 0);
-  bd[source] = (bd[source] || 0) + 1;
+  const before = (bd[source] || 0);
+  bd[source] = before + 1;
   stamps[personId] = bd;
   saveStamps(stamps);
-  // スタンプ獲得は内部のフォローバック判定材料の一つに過ぎないため、
-  // ここで直接フォロー関連の表示変更・通知は行わない。
-  // （実際の判定は checkFollowBackEligibility が内部条件を見て行う）
+  // 初回獲得時のみトースト表示
+  if (before === 0) {
+    try { showStampToast(personId, source); } catch (e) { console.warn(e); }
+  }
   try { checkFollowBackEligibility(personId); } catch {}
+}
+
+// スタンプ獲得のトースト（初回のみ）
+function showStampToast(personId, source) {
+  const p = (DATA.people || []).find(x => x.id === personId);
+  if (!p) return;
+  const msg = (STAMP_MILESTONE_MSGS[source] || '新しいスタンプを獲得しました').replace('{name}', p.name);
+  const label = STAMP_SOURCE_LABELS[source] || source;
+  const toast = document.createElement('div');
+  toast.className = 'stamp-toast';
+  const av = p.imageUrl
+    ? `<div class="stamp-toast-av" style="background-image:url('${p.imageUrl}')"></div>`
+    : `<div class="stamp-toast-av no-img">${p.name.charAt(0)}</div>`;
+  toast.innerHTML = `
+    ${av}
+    <div class="stamp-toast-body">
+      <div class="stamp-toast-head">
+        <span class="stamp-toast-seal">★</span>
+        <span class="stamp-toast-kind">${label}</span>
+      </div>
+      <div class="stamp-toast-msg">${escapeHtml(msg)}</div>
+    </div>
+    <button class="stamp-toast-close" aria-label="閉じる">×</button>
+  `;
+  document.body.appendChild(toast);
+  requestAnimationFrame(() => toast.classList.add('show'));
+  const dismiss = () => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 300); };
+  toast.querySelector('.stamp-toast-close')?.addEventListener('click', (e) => { e.stopPropagation(); dismiss(); });
+  toast.addEventListener('click', dismiss);
+  setTimeout(dismiss, 4500);
 }
 
 // LINE風のフォロー通知トースト
@@ -5897,6 +5961,31 @@ const STAMP_SOURCE_LABELS = {
   quiz: '📝 親密度クイズ',
   checkin_gps: '📍 聖地巡礼（GPS確認）',
   checkin_manual: '📍 聖地巡礼（手動）',
+  follow: '✉ 本棚に並べた',
+  oshi: '♡ 推しの座に',
+  pin_quote: '💎 言葉を胸に刻んだ',
+  read_book: '📚 本を手に取った',
+  watch_work: '▶ 作品に触れた',
+  comment: '💬 対話した',
+  like: '♥ 心を動かされた',
+  era_visit: '📜 時代を旅した',
+  visit_loyal: '👣 10回訪れた',
+};
+
+// スタンプ獲得時のメッセージ（{name}で偉人名に置換）
+const STAMP_MILESTONE_MSGS = {
+  quiz: '{name}の人生について、深く知ろうとした証。',
+  checkin_gps: '{name}の足跡を、実際にその地で辿った。',
+  checkin_manual: '{name}ゆかりの地を訪れた記念。',
+  follow: '{name}を、あなたの本棚に迎え入れた。',
+  oshi: '{name}を推しの座に据えた。心に灯る一つ星。',
+  pin_quote: '{name}の言葉を、胸に刻んだ。',
+  read_book: '{name}の遺した本を手に取った。知の扉が開く。',
+  watch_work: '{name}の作品に、今この瞬間触れた。',
+  comment: '{name}の投稿に返事を残した。時を超えた対話。',
+  like: '{name}の言葉や出来事に心が動いた証。',
+  era_visit: '{name}が生きた時代を訪ねた。歴史の地図が一つ広がる。',
+  visit_loyal: '{name}のページを10回以上訪れた。深い縁の証。',
 };
 
 // 称号（総スタンプ数に応じた段階）
