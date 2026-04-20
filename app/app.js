@@ -4806,10 +4806,23 @@ function initPhoneMenu() {
     });
   });
   // ============ ツールアプリ共通（電卓・メモ・タイマー） ============
+  // ツールアプリの遷移履歴（◁ で前のアプリへ戻る用）
+  const __toolStack = [];
+  function currentOpenTool() {
+    const map = { music: 'phoneMusicApp', meshiru: 'phoneMeshiruApp', otayori: 'phoneOtayoriApp' };
+    for (const k of Object.keys(map)) {
+      const el = document.getElementById(map[k]);
+      if (el && !el.hidden) return k;
+    }
+    return null;
+  }
   function openPhoneToolApp(tool) {
     const map = { music: 'phoneMusicApp', meshiru: 'phoneMeshiruApp', otayori: 'phoneOtayoriApp' };
     const el = document.getElementById(map[tool]);
     if (!el) return;
+    // 現在開いているツールがあれば履歴に積む
+    const prev = currentOpenTool();
+    if (prev && prev !== tool) __toolStack.push(prev);
     ['phoneMusicApp','phoneMeshiruApp','phoneOtayoriApp','phonePlazaApp','phoneHistoryApp'].forEach(id => {
       const a = document.getElementById(id);
       if (a) a.hidden = true;
@@ -4824,8 +4837,19 @@ function initPhoneMenu() {
     const el = document.getElementById(map[tool]);
     if (el) el.hidden = true;
     if (tool === 'music') stopMusicApp();
+    // 履歴に前のツールがあれば復帰、無ければホームグリッド
+    const prev = __toolStack.pop();
+    if (prev) {
+      openPhoneToolApp(prev);
+    }
   }
-  // 戻るボタン
+  // 外部から現在のツールアプリを「戻る」方式で閉じる
+  window.phoneToolBack = () => {
+    const now = currentOpenTool();
+    if (now) { closePhoneToolApp(now); return true; }
+    return false;
+  };
+  // 戻るボタン（各アプリ内の ‹）
   menu.querySelectorAll('[data-tool-close]').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -6076,11 +6100,14 @@ function initPhoneMenu() {
       closePhonePlazaApp();
       return;
     }
+    // ツールアプリ（ミュージック・めしる・お便り）が開いていれば、履歴を辿って戻る
+    if (typeof window.phoneToolBack === 'function' && window.phoneToolBack()) return;
     // ホーム画面なら閉じる
     close();
   });
   navHome?.addEventListener('click', () => {
     // スマホ内のホーム（アプリグリッド）に戻す：全ツールアプリを閉じる
+    __toolStack.length = 0;
     ['phonePlazaApp','phoneMusicApp','phoneMeshiruApp','phoneOtayoriApp','phoneHistoryApp'].forEach(id => {
       const el2 = document.getElementById(id);
       if (el2) el2.hidden = true;
