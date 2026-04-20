@@ -38,9 +38,21 @@ async function loadData() {
     DATA.tags = tagsData.categories;
     DATA.tagMap = Object.fromEntries(DATA.tags.map(t => [t.id, t]));
 
-    const people = await Promise.all(
-      manifest.people.map(id => fetch(`../data/people/${id}.json${bust}`, { cache: 'no-store' }).then(r => r.json()))
-    );
+    // バンドルを先に試す（163個別fetch→1個に集約で初回ロードが劇的に軽い）
+    let people = null;
+    try {
+      const bundleRes = await fetch(`../data/people-bundle.json${bust}`, { cache: 'no-store' });
+      if (bundleRes.ok) {
+        const bundle = await bundleRes.json();
+        if (Array.isArray(bundle.people) && bundle.people.length) people = bundle.people;
+      }
+    } catch {}
+    // バンドルが無い/壊れている場合は従来の個別fetchにフォールバック
+    if (!people) {
+      people = await Promise.all(
+        manifest.people.map(id => fetch(`../data/people/${id}.json${bust}`, { cache: 'no-store' }).then(r => r.json()))
+      );
+    }
     DATA.people = people;
   } catch (e) {
     document.getElementById('peopleList').innerHTML =

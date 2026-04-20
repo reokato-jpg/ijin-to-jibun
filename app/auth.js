@@ -100,7 +100,7 @@ async function initFirebase() {
     const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js');
     const { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup, signInAnonymously } =
       await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
-    const { getFirestore, doc, getDoc, setDoc, updateDoc, increment, collection, getDocs } =
+    const { getFirestore, doc, getDoc, setDoc, updateDoc, increment, collection, getDocs, query, where, orderBy, limit } =
       await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
 
     fbApp = initializeApp(FIREBASE_CONFIG);
@@ -159,15 +159,25 @@ async function initFirebase() {
     window.fetchVisitorsToUser = async (targetUid) => {
       if (!fbDb || !targetUid) return [];
       try {
-        const snap = await getDocs(collection(fbDb, 'userVisitors'));
+        const q = query(
+          collection(fbDb, 'userVisitors'),
+          where('targetUid', '==', targetUid),
+          orderBy('visitedAt', 'desc'),
+          limit(20)
+        );
+        const snap = await getDocs(q);
         const visitors = [];
-        snap.forEach(d => {
-          const data = d.data();
-          if (data.targetUid === targetUid) visitors.push(data);
-        });
-        visitors.sort((a, b) => (b.visitedAt || '').localeCompare(a.visitedAt || ''));
-        return visitors.slice(0, 20);
-      } catch { return []; }
+        snap.forEach(d => visitors.push(d.data()));
+        return visitors;
+      } catch {
+        try {
+          const snap = await getDocs(collection(fbDb, 'userVisitors'));
+          const visitors = [];
+          snap.forEach(d => { const data = d.data(); if (data.targetUid === targetUid) visitors.push(data); });
+          visitors.sort((a, b) => (b.visitedAt || '').localeCompare(a.visitedAt || ''));
+          return visitors.slice(0, 20);
+        } catch { return []; }
+      }
     };
 
     window.recordVisitorToEra = async (eraKey, profile) => {
@@ -187,15 +197,25 @@ async function initFirebase() {
     window.fetchVisitorsToEra = async (eraKey) => {
       if (!fbDb || !eraKey) return [];
       try {
-        const snap = await getDocs(collection(fbDb, 'eraVisitors'));
+        const q = query(
+          collection(fbDb, 'eraVisitors'),
+          where('eraKey', '==', eraKey),
+          orderBy('visitedAt', 'desc'),
+          limit(20)
+        );
+        const snap = await getDocs(q);
         const visitors = [];
-        snap.forEach(d => {
-          const data = d.data();
-          if (data.eraKey === eraKey) visitors.push(data);
-        });
-        visitors.sort((a, b) => (b.visitedAt || '').localeCompare(a.visitedAt || ''));
-        return visitors.slice(0, 20);
-      } catch { return []; }
+        snap.forEach(d => visitors.push(d.data()));
+        return visitors;
+      } catch {
+        try {
+          const snap = await getDocs(collection(fbDb, 'eraVisitors'));
+          const visitors = [];
+          snap.forEach(d => { const data = d.data(); if (data.eraKey === eraKey) visitors.push(data); });
+          visitors.sort((a, b) => (b.visitedAt || '').localeCompare(a.visitedAt || ''));
+          return visitors.slice(0, 20);
+        } catch { return []; }
+      }
     };
 
     // 偉人ページの訪問者記録（ログイン中のみ自分を記録）
@@ -215,19 +235,33 @@ async function initFirebase() {
         }, { merge: true });
       } catch {}
     };
-    // 偉人ページの訪問者一覧を取得（最新20件）
+    // 偉人ページの訪問者一覧を取得（最新20件）— where で DB側で絞る
     window.fetchVisitorsToPerson = async (personId) => {
       if (!fbDb || !personId) return [];
       try {
-        const snap = await getDocs(collection(fbDb, 'personVisitors'));
+        const q = query(
+          collection(fbDb, 'personVisitors'),
+          where('personId', '==', personId),
+          orderBy('visitedAt', 'desc'),
+          limit(20)
+        );
+        const snap = await getDocs(q);
         const visitors = [];
-        snap.forEach(d => {
-          const data = d.data();
-          if (data.personId === personId) visitors.push(data);
-        });
-        visitors.sort((a, b) => (b.visitedAt || '').localeCompare(a.visitedAt || ''));
-        return visitors.slice(0, 20);
-      } catch { return []; }
+        snap.forEach(d => visitors.push(d.data()));
+        return visitors;
+      } catch {
+        // 複合インデックス未作成などでクエリが失敗する場合は従来のクライアント側フィルタにフォールバック
+        try {
+          const snap = await getDocs(collection(fbDb, 'personVisitors'));
+          const visitors = [];
+          snap.forEach(d => {
+            const data = d.data();
+            if (data.personId === personId) visitors.push(data);
+          });
+          visitors.sort((a, b) => (b.visitedAt || '').localeCompare(a.visitedAt || ''));
+          return visitors.slice(0, 20);
+        } catch { return []; }
+      }
     };
 
     // ===== お便り（バグ報告・改善提案・機能要望） =====
@@ -256,17 +290,26 @@ async function initFirebase() {
     };
     window.fetchMyFeedback = async () => {
       if (!fbDb) return [];
+      const myUid = (currentUser && currentUser.uid) || 'guest';
       try {
-        const snap = await getDocs(collection(fbDb, 'feedback'));
+        const q = query(
+          collection(fbDb, 'feedback'),
+          where('uid', '==', myUid),
+          orderBy('submittedAt', 'desc')
+        );
+        const snap = await getDocs(q);
         const out = [];
-        const myUid = (currentUser && currentUser.uid) || 'guest';
-        snap.forEach(d => {
-          const data = d.data();
-          if (data.uid === myUid) out.push(data);
-        });
-        out.sort((a, b) => (b.submittedAt || '').localeCompare(a.submittedAt || ''));
+        snap.forEach(d => out.push(d.data()));
         return out;
-      } catch { return []; }
+      } catch {
+        try {
+          const snap = await getDocs(collection(fbDb, 'feedback'));
+          const out = [];
+          snap.forEach(d => { const data = d.data(); if (data.uid === myUid) out.push(data); });
+          out.sort((a, b) => (b.submittedAt || '').localeCompare(a.submittedAt || ''));
+          return out;
+        } catch { return []; }
+      }
     };
     window.fetchAllFeedback = async () => {
       if (!fbDb) return [];
