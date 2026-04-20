@@ -70,8 +70,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20260422M">
-<link rel="stylesheet" href="era-theme.css?v=20260422M">
+<link rel="stylesheet" href="style.css?v=20260422N">
+<link rel="stylesheet" href="era-theme.css?v=20260422N">
 </head>
 <body>
   <header class="app-header">
@@ -553,8 +553,10 @@
               <div class="music-nowplaying-desc" id="musicNowDesc">このサイトで流れているBGM一覧</div>
             </div>
             <div class="music-controls">
+              <button class="music-btn music-toggle" id="musicShuffleBtn" title="シャッフル">🔀</button>
               <button class="music-btn music-play" id="musicPlayBtn" disabled>▶</button>
               <button class="music-btn music-stop" id="musicStopBtn" disabled>■</button>
+              <button class="music-btn music-toggle" id="musicLoopBtn" title="ループ">🔁</button>
               <input class="music-volume" id="musicVolume" type="range" min="0" max="100" value="35" aria-label="音量">
             </div>
             <ul class="music-tracklist" id="musicTracklist"></ul>
@@ -692,10 +694,10 @@
     </div>
   </div>
 
-  <script src="era-lore.js?v=20260422M"></script>
-  <script src="history-patterns.js?v=20260422M"></script>
-  <script src="app.js?v=20260422M"></script>
-  <script src="auth.js?v=20260422M" type="module"></script>
+  <script src="era-lore.js?v=20260422N"></script>
+  <script src="history-patterns.js?v=20260422N"></script>
+  <script src="app.js?v=20260422N"></script>
+  <script src="auth.js?v=20260422N" type="module"></script>
   <script src="ai-consult.js"></script>
 </body>
 </html>

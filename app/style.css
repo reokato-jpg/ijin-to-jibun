@@ -14946,6 +14946,25 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
   flex-direction: column;
   background: linear-gradient(180deg, #1e1a2a 0%, #0d0b17 100%);
   color: #f0e8d4;
+  min-height: 0;
+  overflow: hidden;
+  height: 100%;
+}
+.phone-tool-app#phoneMusicApp { overflow: hidden; }
+.music-tracklist {
+  min-height: 0;
+  -webkit-overflow-scrolling: touch;
+}
+.music-btn.music-toggle {
+  background: transparent;
+  color: #c9a760;
+  border: 1px solid rgba(201,167,96,0.4);
+  width: 36px; height: 36px;
+  font-size: 14px;
+}
+.music-btn.music-toggle.active {
+  background: #c9a760;
+  color: #1e1a2a;
 }
 .music-nowplaying {
   padding: 18px 16px;

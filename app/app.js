@@ -4095,6 +4095,16 @@ function initPhoneMenu() {
     { id: 'squareBgm',    title: '偉人の広場',     desc: '交わりの音楽' },
   ];
   let __musicCurrent = null;
+  let __musicShuffle = false;
+  let __musicLoop = false;
+  function pickNextTrack(currentId) {
+    if (__musicShuffle) {
+      const ids = MUSIC_TRACKS.map(t => t.id).filter(id => id !== currentId);
+      return ids[Math.floor(Math.random() * ids.length)];
+    }
+    const idx = MUSIC_TRACKS.findIndex(t => t.id === currentId);
+    return MUSIC_TRACKS[(idx + 1) % MUSIC_TRACKS.length].id;
+  }
   function initMusicApp() {
     const list = document.getElementById('musicTracklist');
     if (!list) return;
@@ -4126,7 +4136,19 @@ function initPhoneMenu() {
     const vol = parseInt(document.getElementById('musicVolume')?.value || '35', 10);
     audio.volume = vol / 100;
     audio.currentTime = 0;
+    audio.loop = false; // プレイリストで次へ進めるため、個別loopはOFF
     audio.play().catch(() => {});
+    // 曲が終わったら次へ（ループONなら同じ曲、OFFでも順次・シャッフル）
+    audio.onended = () => {
+      if (__musicLoop) {
+        // 同じ曲をもう一度
+        audio.currentTime = 0;
+        audio.play().catch(() => {});
+      } else {
+        const next = pickNextTrack(id);
+        musicPlayTrack(next);
+      }
+    };
     __musicCurrent = id;
     const track = MUSIC_TRACKS.find(t => t.id === id);
     document.getElementById('musicNowTitle').textContent = track?.title || '';
@@ -4169,6 +4191,16 @@ function initPhoneMenu() {
       const icon = li.querySelector('.music-track-icon');
       if (icon) icon.textContent = '▶';
     });
+  });
+  menu.querySelector('#musicShuffleBtn')?.addEventListener('click', () => {
+    __musicShuffle = !__musicShuffle;
+    const btn = document.getElementById('musicShuffleBtn');
+    if (btn) btn.classList.toggle('active', __musicShuffle);
+  });
+  menu.querySelector('#musicLoopBtn')?.addEventListener('click', () => {
+    __musicLoop = !__musicLoop;
+    const btn = document.getElementById('musicLoopBtn');
+    if (btn) btn.classList.toggle('active', __musicLoop);
   });
   menu.querySelector('#musicVolume')?.addEventListener('input', (e) => {
     if (!__musicCurrent) return;
