@@ -3106,7 +3106,79 @@ function checkFollowBackEligibility(personId) {
   } catch {}
   try { if (typeof renderFavorites === 'function') renderFavorites(); } catch {}
   showFollowToast(person);
+  try { rekittoNotifyFollow(person); } catch {}
 }
+// ============ 📜 レキット（歴史管理人）— LINE風お知らせ担当 ============
+const REKITTO_MSGS_KEY = 'ijin_rekitto_msgs';
+const REKITTO_LAST_READ_KEY = 'ijin_rekitto_last_read';
+const REKITTO_SEEN_UPDATES_KEY = 'ijin_rekitto_seen_updates';
+const REKITTO_AVATAR = 'assets/guest-avatar.png'; // 石門アイコンをレキットのアバターに流用
+
+function getRekittoMsgs() {
+  try { return JSON.parse(localStorage.getItem(REKITTO_MSGS_KEY) || '[]'); } catch { return []; }
+}
+function saveRekittoMsgs(msgs) {
+  try { localStorage.setItem(REKITTO_MSGS_KEY, JSON.stringify(msgs)); } catch {}
+}
+function pushRekittoMsg(msg) {
+  const msgs = getRekittoMsgs();
+  msgs.push({ ts: Date.now(), ...msg });
+  saveRekittoMsgs(msgs);
+  try { if (typeof renderIconBadges === 'function') renderIconBadges(); } catch {}
+  try { if (typeof renderPlazaTalks === 'function') renderPlazaTalks(); } catch {}
+}
+function getRekittoUnread() {
+  const last = parseInt(localStorage.getItem(REKITTO_LAST_READ_KEY) || '0', 10);
+  return Math.max(0, getRekittoMsgs().length - last);
+}
+function markRekittoRead() {
+  localStorage.setItem(REKITTO_LAST_READ_KEY, String(getRekittoMsgs().length));
+}
+// 更新履歴を監視して、新しい項目だけ通知
+function syncRekittoUpdates() {
+  if (!DATA.updates || !DATA.updates.length) return;
+  const isFirstRun = localStorage.getItem(REKITTO_SEEN_UPDATES_KEY) === null;
+  const keys = DATA.updates.map(u => u.date + '|' + u.title);
+  if (isFirstRun) {
+    // 初回は既存の更新を全部既読扱いにする（スパム防止）
+    localStorage.setItem(REKITTO_SEEN_UPDATES_KEY, JSON.stringify(keys));
+    return;
+  }
+  let seen = [];
+  try { seen = JSON.parse(localStorage.getItem(REKITTO_SEEN_UPDATES_KEY) || '[]'); } catch {}
+  const seenSet = new Set(seen);
+  const newUpdates = DATA.updates.filter(u => !seenSet.has(u.date + '|' + u.title));
+  if (!newUpdates.length) return;
+  newUpdates.forEach(u => {
+    pushRekittoMsg({
+      text: `【${u.tag || 'お知らせ'}】${u.title}\n\n${u.body}`,
+      kind: 'update',
+      linkLabel: (u.tag === '新機能') ? '✨ 使ってみる' : '詳しく見る',
+    });
+  });
+  localStorage.setItem(REKITTO_SEEN_UPDATES_KEY, JSON.stringify(keys));
+}
+// 偉人からフォローされたときにレキットが知らせる
+function rekittoNotifyFollow(person) {
+  if (!person) return;
+  pushRekittoMsg({
+    text: `✉ ${person.name}があなたをフォローしました。\n\nあなたの本棚に、この偉人も棲みはじめます。`,
+    kind: 'follow',
+    personId: person.id,
+    linkLabel: `${person.name}のページを開く`,
+  });
+}
+// 会員からフォローされたとき
+function rekittoNotifyUserFollow(user) {
+  if (!user) return;
+  pushRekittoMsg({
+    text: `✉ ${user.name || '新しい会員'}さんがあなたをフォローしました。`,
+    kind: 'user_follow',
+    userId: user.uid || user.id,
+    linkLabel: 'プロフィールを見る',
+  });
+}
+
 // 全偉人に対してエリジビリティを再評価
 function runFollowBackScan() {
   (DATA.people || []).forEach(p => checkFollowBackEligibility(p.id));
@@ -3547,9 +3619,10 @@ function initPhoneMenu() {
     else { el.hidden = true; }
   };
   const renderIconBadges = () => {
-    // 偉人の広場 = チャット未読
+    // 偉人の広場 = チャット未読 + レキット未読
     let plaza = 0;
     try { const badge = document.getElementById('chatFabBadge'); if (badge && !badge.classList.contains('hidden')) plaza = parseInt(badge.textContent||'0',10) || 0; } catch {}
+    try { plaza += getRekittoUnread(); } catch {}
     setBadge('phoneBadgePlaza', plaza);
     // わたしの本 = 新しいフォロワー（会員＋偉人からの新規フォロー）
     let favs = 0;
@@ -3659,7 +3732,28 @@ function initPhoneMenu() {
       const bg = p.imageUrl ? `background-image:url('${p.imageUrl}');` : '';
       return `<div class="plaza-group-av-layer" style="${bg}left:${i*11}px;z-index:${4-i};"></div>`;
     }).join('');
+    const rkMsgs = getRekittoMsgs();
+    const rkLast = rkMsgs[rkMsgs.length - 1];
+    const rkPreview = rkLast ? (rkLast.text || '').split('\n')[0].slice(0, 30) : 'ようこそ、偉人と自分へ。';
+    const rkUnread = getRekittoUnread();
+    const rkDate = rkLast ? (() => {
+      const d = new Date(rkLast.ts);
+      return `${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`;
+    })() : '';
     list.innerHTML = `
+      <button class="plaza-talk-item plaza-rekitto-item" data-plaza-rekitto="1">
+        <div class="plaza-group-av plaza-rekitto-av">
+          <div class="plaza-rekitto-badge" style="background-image:url('${REKITTO_AVATAR}');background-size:180%;background-position:center"></div>
+        </div>
+        <div class="plaza-talk-info">
+          <div class="plaza-talk-head">
+            <span class="plaza-talk-name">📜 レキット <span class="plaza-talk-role">歴史管理人</span></span>
+            <span class="plaza-talk-date">${rkDate}</span>
+          </div>
+          <div class="plaza-talk-preview">${escapeHtml(rkPreview)}</div>
+        </div>
+        ${rkUnread > 0 ? `<span class="plaza-unread-badge">${rkUnread > 99 ? '99+' : rkUnread}</span>` : ''}
+      </button>
       <button class="plaza-talk-item plaza-group-item" data-plaza-group="1">
         <div class="plaza-group-av">${avatarStack}</div>
         <div class="plaza-talk-info">
@@ -3673,6 +3767,116 @@ function initPhoneMenu() {
     `;
     list.querySelector('[data-plaza-group]')?.addEventListener('click', () => {
       openPlazaChatThread('group');
+    });
+    list.querySelector('[data-plaza-rekitto]')?.addEventListener('click', () => {
+      openRekittoChat();
+    });
+  }
+
+  // レキットのチャットを開く
+  function openRekittoChat() {
+    const plaza = document.getElementById('phonePlazaApp');
+    if (!plaza) return;
+    const title = document.getElementById('plazaChatTitle');
+    const body = document.getElementById('plazaChatBody');
+    if (title) title.textContent = '📜 レキット（歴史管理人）';
+    if (body) renderRekittoChat(body);
+    plaza.querySelectorAll('.plaza-tab-panel').forEach(p => {
+      p.hidden = (p.dataset.plazaPanel !== 'chat');
+    });
+    markRekittoRead();
+    try { if (typeof renderIconBadges === 'function') renderIconBadges(); } catch {}
+    requestAnimationFrame(() => { if (body) body.scrollTop = body.scrollHeight; });
+  }
+
+  // レキットのチャットを描画
+  function renderRekittoChat(body) {
+    const msgs = getRekittoMsgs();
+    if (msgs.length === 0) {
+      body.innerHTML = `
+        <div class="line-chat rekitto-chat">
+          <div class="line-msg-received">
+            <div class="line-avatar" style="background-image:url('${REKITTO_AVATAR}');background-size:180%;background-position:center"></div>
+            <div class="line-msg-col">
+              <div class="line-msg-name">📜 レキット</div>
+              <div class="line-msg-bubble">
+                はじめまして。私は歴史の管理人、レキット。<br>
+                新しい機能のお知らせや、偉人・会員からフォローされた時などに、ここでお伝えします。
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      return;
+    }
+    body.innerHTML = `
+      <div class="line-chat rekitto-chat">
+        ${msgs.map(m => {
+          const d = new Date(m.ts || Date.now());
+          const tm = `${d.getMonth()+1}/${d.getDate()} ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`;
+          const linkBtn = (() => {
+            if (m.kind === 'follow' && m.personId) {
+              const p = DATA.people.find(x => x.id === m.personId);
+              return p ? `<button class="rekitto-link-btn" data-rekitto-person="${p.id}">${escapeHtml(m.linkLabel || p.name + 'を見る')} →</button>` : '';
+            }
+            if (m.kind === 'user_follow' && m.userId) {
+              return `<button class="rekitto-link-btn" data-rekitto-user="${escapeHtml(m.userId)}">${escapeHtml(m.linkLabel || 'プロフィールを見る')} →</button>`;
+            }
+            if (m.kind === 'update') {
+              return `<button class="rekitto-link-btn" data-rekitto-updates="1">${escapeHtml(m.linkLabel || '詳しく見る')} →</button>`;
+            }
+            return '';
+          })();
+          return `
+            <div class="line-msg-received">
+              <div class="line-avatar" style="background-image:url('${REKITTO_AVATAR}');background-size:180%;background-position:center"></div>
+              <div class="line-msg-col">
+                <div class="line-msg-name">📜 レキット</div>
+                <div class="line-msg-bubble rekitto-bubble">
+                  ${escapeHtml(m.text || '').replace(/\n/g, '<br>')}
+                  ${linkBtn ? `<div class="rekitto-link-row">${linkBtn}</div>` : ''}
+                </div>
+                <div class="line-msg-time">${tm}</div>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+    // リンクボタンのハンドラ
+    body.querySelectorAll('[data-rekitto-person]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const pid = btn.dataset.rekittoPerson;
+        // スマホを閉じて偉人ページへ
+        const menu = document.getElementById('phoneMenu');
+        if (menu) menu.classList.remove('open');
+        setTimeout(() => showPerson(pid), 260);
+      });
+    });
+    body.querySelectorAll('[data-rekitto-updates]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const menu = document.getElementById('phoneMenu');
+        if (menu) menu.classList.remove('open');
+        setTimeout(() => {
+          if (typeof showView === 'function') showView('people');
+          const updEl = document.getElementById('updatesFeed') || document.querySelector('.updates-feed');
+          if (updEl) updEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 260);
+      });
+    });
+    body.querySelectorAll('[data-rekitto-user]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const uid = btn.dataset.rekittoUser;
+        const menu = document.getElementById('phoneMenu');
+        if (menu) menu.classList.remove('open');
+        setTimeout(() => {
+          if (typeof openUserPublicProfile === 'function') openUserPublicProfile(uid);
+          else if (typeof openUsersDir === 'function') openUsersDir();
+        }, 260);
+      });
     });
   }
   // 偉人の広場のチャット画面をスマホ内に埋め込む
@@ -6866,7 +7070,10 @@ async function runUserFollowerNotifications() {
     const knownSet = new Set(known);
     const newOnes = currentFollowers.filter(u => !knownSet.has(u.uid));
     if (newOnes.length > 0) {
-      newOnes.forEach(u => showFollowToast({ id: 'user_' + u.uid, name: u.name, imageUrl: u.avatar }));
+      newOnes.forEach(u => {
+        showFollowToast({ id: 'user_' + u.uid, name: u.name, imageUrl: u.avatar });
+        try { rekittoNotifyUserFollow(u); } catch {}
+      });
       if ('Notification' in window && Notification.permission === 'granted') {
         try {
           new Notification('👥 新しいフォロワー', {
@@ -9804,6 +10011,8 @@ window.renderBookshelfGuides = renderBookshelfGuides;
     runFollowBackRemoval();
     runFollowBackScan();
     runBirthdayNotifications();
+    // レキット：新機能・更新お知らせ
+    syncRekittoUpdates();
   } catch (e) { console.warn('followback/bday', e); }
   // ?user=<uid> でシェアURL経由の会員プロフィールを開く
   try {
