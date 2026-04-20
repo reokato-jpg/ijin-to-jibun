@@ -70,8 +70,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20260422O">
-<link rel="stylesheet" href="era-theme.css?v=20260422O">
+<link rel="stylesheet" href="style.css?v=20260422P">
+<link rel="stylesheet" href="era-theme.css?v=20260422P">
 </head>
 <body>
   <header class="app-header">
@@ -663,6 +663,12 @@
   <audio id="sfxSend" src="assets/send.mp3" preload="auto"></audio>
   <audio id="sfxReceive" src="assets/receive.mp3" preload="auto"></audio>
 
+  <!-- 画面下の戻る／進むナビ -->
+  <div class="float-nav" id="floatNav">
+    <button id="floatBackBtn" class="float-nav-btn float-nav-back disabled" aria-label="戻る" title="戻る">◁</button>
+    <button id="floatForwardBtn" class="float-nav-btn float-nav-forward disabled" aria-label="進む" title="進む">▷</button>
+  </div>
+
   <!-- 浮遊チャットウィジェット -->
   <div class="chat-fab-wrap">
     <div class="chat-call-bubble hidden" id="chatCallBubble">
@@ -698,10 +704,10 @@
     </div>
   </div>
 
-  <script src="era-lore.js?v=20260422O"></script>
-  <script src="history-patterns.js?v=20260422O"></script>
-  <script src="app.js?v=20260422O"></script>
-  <script src="auth.js?v=20260422O" type="module"></script>
+  <script src="era-lore.js?v=20260422P"></script>
+  <script src="history-patterns.js?v=20260422P"></script>
+  <script src="app.js?v=20260422P"></script>
+  <script src="auth.js?v=20260422P" type="module"></script>
   <script src="ai-consult.js"></script>
 </body>
 </html>

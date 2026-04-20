@@ -15051,3 +15051,55 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-3px); }
 }
+
+/* 画面下の戻る／進むナビ */
+.float-nav {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 16px;
+  z-index: 48;
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+  background: rgba(58, 45, 28, 0.88);
+  border-radius: 999px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.1);
+  backdrop-filter: blur(6px);
+  pointer-events: auto;
+}
+.float-nav-btn {
+  width: 40px; height: 40px;
+  background: transparent;
+  color: #f5e8c8;
+  border: 1px solid rgba(245,232,200,0.25);
+  border-radius: 50%;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s, opacity 0.15s;
+  padding: 0;
+  line-height: 1;
+}
+.float-nav-btn:hover:not(.disabled) {
+  background: rgba(245,232,200,0.15);
+  color: #fff;
+}
+.float-nav-btn:active:not(.disabled) {
+  transform: scale(0.92);
+}
+.float-nav-btn.disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+@media (max-width: 480px) {
+  .float-nav { bottom: 12px; }
+  .float-nav-btn { width: 36px; height: 36px; font-size: 12px; }
+}
+/* スマホが開いているときは隠す（スマホのナビバーに任せる） */
+.phone-menu.open ~ .float-nav,
+body:has(.phone-menu.open) .float-nav {
+  display: none;
+}

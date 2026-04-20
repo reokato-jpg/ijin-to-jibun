@@ -389,7 +389,12 @@ const tabViewNames = ['people', 'tags', 'history', 'routines', 'articles', 'favo
 const history = [];
 
 function showView(name, pushHistory = true) {
-  if (pushHistory && history[history.length - 1] !== name) history.push(name);
+  if (pushHistory && history[history.length - 1] !== name) {
+    history.push(name);
+    // 新しい場所へ移動したら forward stack をクリア
+    if (typeof forwardStack !== 'undefined') forwardStack.length = 0;
+  }
+  try { updateNavButtons?.(); } catch {}
   // わたしの本タブは背景画像なし（独自の本デザインを活かす）
   document.documentElement.classList.toggle('view-no-bg', name === 'favorites');
   // スマホが閉じている or 閉じる遷移中ならノイズ停止（安全網）
@@ -423,11 +428,29 @@ function showView(name, pushHistory = true) {
   document.getElementById('main').scrollTo(0, 0);
 }
 
+// Forward stack（戻ったビューを保持して進むボタンで再訪）
+const forwardStack = [];
 function goBack() {
   if (history.length > 1) {
-    history.pop();
+    const cur = history.pop();
+    forwardStack.push(cur);
     showView(history[history.length - 1], false);
+    updateNavButtons();
   }
+}
+function goForward() {
+  if (forwardStack.length > 0) {
+    const next = forwardStack.pop();
+    history.push(next);
+    showView(next, false);
+    updateNavButtons();
+  }
+}
+function updateNavButtons() {
+  const back = document.getElementById('floatBackBtn');
+  const fwd = document.getElementById('floatForwardBtn');
+  if (back) back.classList.toggle('disabled', history.length <= 1);
+  if (fwd) fwd.classList.toggle('disabled', forwardStack.length === 0);
 }
 
 // ====================== HTML パーツ ======================
@@ -10253,6 +10276,9 @@ function bindEvents() {
   document.addEventListener('keydown', unlockBgm, { once: true, capture: true });
 
   document.getElementById('backBtn').addEventListener('click', goBack);
+  document.getElementById('floatBackBtn')?.addEventListener('click', goBack);
+  document.getElementById('floatForwardBtn')?.addEventListener('click', goForward);
+  updateNavButtons();
   // ヘッダーのタイトルロゴ → マップポップアップ
   document.getElementById('appTitle')?.addEventListener('click', () => showView('people'));
   // ヒーローの「この世界について」ボタン
