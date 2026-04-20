@@ -3829,6 +3829,7 @@ function guessUpdateTarget(text) {
   if (/わたしの本|favorites/.test(text)) return { view: 'favorites' };
   if (/世界観|レキット|ラビン/.test(text)) return { action: 'worldview' };
   if (/ミュージック|bgm/.test(text)) return { action: 'music' };
+  if (/めしる|レシピ|料理人|献立|買い物リスト|シェフ/.test(text)) return { action: 'meshiru' };
   if (/今日|誕生日|ホーム/.test(text)) return { view: 'people' };
   return { view: 'people' };
   localStorage.setItem(REKITTO_SEEN_UPDATES_KEY, JSON.stringify(keys));
