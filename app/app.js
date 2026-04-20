@@ -3781,10 +3781,19 @@ function saveRekittoMsgs(msgs) {
 }
 function pushRekittoMsg(msg) {
   const msgs = getRekittoMsgs();
+  // 重複通知防止：同じ(kind, personId/userId/updateKey)の過去メッセージがあればスキップ
+  if (msg && msg.kind) {
+    const dupKey = msg.personId || msg.userId || msg.updateKey || '';
+    if (dupKey) {
+      const already = msgs.some(m => m.kind === msg.kind && (m.personId || m.userId || m.updateKey || '') === dupKey);
+      if (already) return;
+    }
+  }
   msgs.push({ ts: Date.now(), ...msg });
   saveRekittoMsgs(msgs);
   try { if (typeof window.renderIconBadges === 'function') window.renderIconBadges(); } catch {}
-  try { if (typeof renderPlazaTalks === 'function') renderPlazaTalks(); } catch {}
+  try { if (typeof window.updatePhoneNotif === 'function') window.updatePhoneNotif(); } catch {}
+  try { if (typeof window.renderPlazaTalks === 'function') window.renderPlazaTalks(); } catch {}
 }
 function getRekittoUnread() {
   const last = parseInt(localStorage.getItem(REKITTO_LAST_READ_KEY) || '0', 10);
@@ -8378,7 +8387,23 @@ function showStampToast(personId, source) {
 }
 
 // チャット風のフォロー通知トースト
+const SHOWN_TOAST_KEY = 'ijin_shown_follow_toasts';
+function hasShownToast(id) {
+  try { return (JSON.parse(localStorage.getItem(SHOWN_TOAST_KEY) || '[]')).includes(id); }
+  catch { return false; }
+}
+function markShownToast(id) {
+  try {
+    const arr = JSON.parse(localStorage.getItem(SHOWN_TOAST_KEY) || '[]');
+    if (!arr.includes(id)) { arr.push(id); localStorage.setItem(SHOWN_TOAST_KEY, JSON.stringify(arr)); }
+  } catch {}
+}
 function showFollowToast(person) {
+  if (!person || !person.id) return;
+  // 誕生日トースト（id先頭 🎂）は日毎判定済なのでスキップ、それ以外は1回限定
+  const isBirthday = /^🎂/.test(person.name || '');
+  if (!isBirthday && hasShownToast(person.id)) return;
+  if (!isBirthday) markShownToast(person.id);
   // アプリ外でもタブ非アクティブ時はブラウザ通知
   if (document.hidden && 'Notification' in window && Notification.permission === 'granted') {
     try {
