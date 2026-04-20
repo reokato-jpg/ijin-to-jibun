@@ -14035,3 +14035,76 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
   transform: translateY(-1px);
   box-shadow: 0 2px 6px rgba(138,90,29,0.15);
 }
+
+/* ============================================================
+   偉人プロフィール情報カード（整理されたレイアウト）
+   ============================================================ */
+.profile-info-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  margin: 10px 0 12px;
+  padding: 14px 16px;
+  background: linear-gradient(180deg, rgba(255,248,234,0.6), rgba(245,232,208,0.4));
+  border: 1px solid rgba(138,90,29,0.15);
+  border-radius: 12px;
+  font-family: var(--font-jp);
+}
+.profile-info-item {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 6px 8px;
+  min-width: 0;
+}
+.profile-info-ic {
+  font-size: 14px;
+  flex-shrink: 0;
+  opacity: 0.75;
+  width: 18px;
+  text-align: center;
+}
+.profile-info-label {
+  font-size: 11px;
+  color: var(--ink-4);
+  letter-spacing: 0.12em;
+  flex-shrink: 0;
+  min-width: 24px;
+}
+.profile-info-value {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink);
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.profile-info-age {
+  font-size: 11.5px;
+  color: var(--ink-4);
+  font-weight: 400;
+  margin-left: 2px;
+}
+.profile-info-visit {
+  grid-column: 1 / -1;
+  justify-content: center;
+  border-top: 1px dashed rgba(138,90,29,0.15);
+  margin-top: 4px;
+  padding-top: 10px;
+  font-size: 11.5px;
+  color: var(--ink-4);
+}
+.profile-info-visit .profile-info-value {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--ink-4);
+}
+@media (max-width: 480px) {
+  .profile-info-card {
+    grid-template-columns: 1fr;
+    padding: 12px 14px;
+  }
+  .profile-info-visit { border-top: 1px dashed rgba(138,90,29,0.15); }
+}

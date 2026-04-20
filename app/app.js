@@ -4084,16 +4084,39 @@ async function showPerson(id) {
           </button>
         </div>
       </div>
-      <div class="profile-meta">
-        <span>${p.field}</span>
-        <span>${p.country}</span>
-        <span>${fmtYearRange(p.birth, p.death)}</span>
-      </div>
-      <div class="profile-xmeta">
-        ${(p.birthMonth && p.birthDay) ? `<span class="profile-xmeta-item">🎂 ${p.birthMonth}/${p.birthDay}${p.birth ? `（${fmtYear(p.birth)}年生）` : ''}</span>` : ''}
-        ${(p.deathMonth && p.deathDay) ? `<span class="profile-xmeta-item">🕯 ${p.deathMonth}/${p.deathDay}${p.death ? `（${fmtYear(p.death)}年没）` : ''}</span>` : ''}
-        ${p.country ? `<span class="profile-xmeta-item">📍 ${p.country}</span>` : ''}
-        <span class="profile-xmeta-item">👣 ${getVisitCount(p.id)}回訪問</span>
+      <div class="profile-info-card">
+        ${p.field ? `
+          <div class="profile-info-item">
+            <span class="profile-info-ic">🎨</span>
+            <span class="profile-info-label">職業</span>
+            <span class="profile-info-value">${escapeHtml(p.field)}</span>
+          </div>
+        ` : ''}
+        ${p.country ? `
+          <div class="profile-info-item">
+            <span class="profile-info-ic">📍</span>
+            <span class="profile-info-label">国</span>
+            <span class="profile-info-value">${escapeHtml(p.country)}</span>
+          </div>
+        ` : ''}
+        ${(p.birth || (p.birthMonth && p.birthDay)) ? `
+          <div class="profile-info-item">
+            <span class="profile-info-ic">🎂</span>
+            <span class="profile-info-label">生</span>
+            <span class="profile-info-value">${p.birth ? fmtYear(p.birth) + '年' : ''}${(p.birthMonth && p.birthDay) ? ` ${p.birthMonth}/${p.birthDay}` : ''}</span>
+          </div>
+        ` : ''}
+        ${(p.death || (p.deathMonth && p.deathDay)) ? `
+          <div class="profile-info-item">
+            <span class="profile-info-ic">🕯</span>
+            <span class="profile-info-label">没</span>
+            <span class="profile-info-value">${p.death ? fmtYear(p.death) + '年' : ''}${(p.deathMonth && p.deathDay) ? ` ${p.deathMonth}/${p.deathDay}` : ''}${(p.birth && p.death) ? ` <span class="profile-info-age">（${p.death - p.birth}歳没）</span>` : ''}</span>
+          </div>
+        ` : ''}
+        <div class="profile-info-item profile-info-visit">
+          <span class="profile-info-ic">👣</span>
+          <span class="profile-info-value">${getVisitCount(p.id)}回訪問</span>
+        </div>
       </div>
       ${(() => {
         // この偉人が属する年表時代を全て検索し、ジャンプボタンを生成
