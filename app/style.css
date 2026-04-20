@@ -14408,3 +14408,269 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
 .mirror-more-arrow { transition: transform 0.2s; }
 .mirror-more[open] .mirror-more-arrow { transform: rotate(180deg); }
 .mirror-more-body { display: flex; flex-direction: column; gap: 14px; }
+
+/* ============================================================
+   世界観バナー＋モーダル（レキット & ラビン）
+   ============================================================ */
+.worldview-banner {
+  width: 100%;
+  padding: 0;
+  background: linear-gradient(135deg, #2a1f3a 0%, #1a1424 50%, #0d0b15 100%);
+  border: 1px solid rgba(200,170,100,0.25);
+  border-radius: 12px;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+  transition: transform 0.15s, box-shadow 0.15s;
+  font-family: var(--font-jp);
+}
+.worldview-banner:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.4); }
+.worldview-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(200,170,100,0.15), transparent 50%),
+    radial-gradient(ellipse at 80% 90%, rgba(180,120,160,0.1), transparent 55%);
+  pointer-events: none;
+}
+.worldview-banner-inner {
+  position: relative;
+  padding: 24px 22px;
+  color: #f5e8d4;
+  text-align: left;
+}
+.worldview-banner-title {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+.worldview-banner-sub {
+  font-size: 12px;
+  color: rgba(230,210,180,0.85);
+  letter-spacing: 0.1em;
+  line-height: 1.6;
+}
+.worldview-banner-arrow {
+  position: absolute;
+  right: 22px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: rgba(200,170,100,0.7);
+}
+
+/* ==== Worldview Modal ==== */
+.worldview-modal {
+  position: fixed; inset: 0;
+  z-index: 9200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.24s;
+  overflow-y: auto;
+  font-family: var(--font-jp);
+}
+.worldview-modal.open { opacity: 1; pointer-events: auto; }
+.worldview-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(10,8,18,0.75);
+  backdrop-filter: blur(6px);
+}
+.worldview-panel {
+  position: relative;
+  z-index: 2;
+  max-width: 720px;
+  margin: 24px auto;
+  background: linear-gradient(180deg, #f6ecd5 0%, #efe3c8 100%);
+  color: #2a1e0f;
+  border-radius: 18px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.55);
+  overflow: hidden;
+  border: 1px solid rgba(138,90,29,0.3);
+  animation: wvIn 0.36s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+@keyframes wvIn { from { opacity: 0; transform: translateY(20px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+.worldview-close {
+  position: absolute; top: 12px; right: 12px;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.85);
+  border: 1px solid rgba(0,0,0,0.1);
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.worldview-hero {
+  padding: 56px 28px 28px;
+  text-align: center;
+  background: linear-gradient(180deg, #3a2a14 0%, #2a1e0f 100%);
+  color: #f0dab0;
+  position: relative;
+}
+.worldview-hero::before,
+.worldview-hero::after {
+  content: '━━━━';
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.5em;
+  color: rgba(240,218,176,0.5);
+  margin: 4px 0;
+}
+.worldview-hero-ornament { font-size: 18px; opacity: 0.5; }
+.worldview-title {
+  font-family: "Yu Mincho", "Hiragino Mincho Pro", "游明朝", serif;
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin: 10px 0 6px;
+}
+.worldview-subtitle {
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  color: rgba(240,218,176,0.8);
+  font-style: italic;
+}
+
+.worldview-section {
+  padding: 24px 28px;
+  border-bottom: 1px solid rgba(138,90,29,0.15);
+}
+.worldview-section:last-of-type { border-bottom: 0; }
+.worldview-section p { margin: 0 0 10px; line-height: 1.95; font-size: 14px; color: #33291c; }
+.worldview-section p:last-child { margin-bottom: 0; }
+
+.worldview-intro {
+  text-align: center;
+  background: rgba(255,248,234,0.5);
+  font-family: "Yu Mincho", "Hiragino Mincho Pro", serif;
+}
+.worldview-intro p { font-size: 15px; color: #3a2d1c; line-height: 2.2; }
+
+.worldview-chara {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+.worldview-chara-avatar {
+  flex-shrink: 0;
+  width: 96px; height: 96px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #c9a760;
+  box-shadow: 0 4px 12px rgba(138,90,29,0.3);
+  background: #7a9a8a;
+}
+.worldview-chara-avatar .rekitto-video-av,
+.worldview-chara-avatar .worldview-chara-video {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.worldview-chara-body { flex: 1; min-width: 0; }
+.worldview-chara-role {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: #8a6a40;
+  font-weight: 600;
+}
+.worldview-chara-name {
+  font-family: "Yu Mincho", "Hiragino Mincho Pro", serif;
+  font-size: 24px;
+  margin: 4px 0 10px;
+  color: #2a1e0f;
+  letter-spacing: 0.04em;
+}
+.worldview-chara-bio {
+  font-size: 13.5px;
+  line-height: 1.9;
+  margin-bottom: 12px !important;
+}
+.worldview-chara-traits {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  padding: 10px 12px;
+  background: rgba(138,90,29,0.06);
+  border-radius: 6px;
+}
+.worldview-chara-traits > div {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 8px;
+  align-items: baseline;
+}
+.worldview-chara-traits > div > span:first-child {
+  font-weight: 700;
+  color: #8a6a40;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+}
+
+.worldview-rekitto { background: linear-gradient(90deg, rgba(122,154,138,0.08), transparent); }
+.worldview-rabin { background: linear-gradient(90deg, rgba(138,90,29,0.08), transparent); }
+
+.worldview-bond {
+  text-align: center;
+  background: linear-gradient(180deg, rgba(42,30,60,0.06), rgba(42,30,60,0.02));
+}
+.worldview-bond-head {
+  font-family: "Yu Mincho", "Hiragino Mincho Pro", serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #4a2a6a;
+  margin-bottom: 14px;
+  letter-spacing: 0.1em;
+}
+
+.worldview-message {
+  text-align: center;
+  padding: 32px 28px;
+  background: linear-gradient(180deg, rgba(138,90,29,0.05), transparent);
+}
+.worldview-message-lead {
+  font-family: "Yu Mincho", "Hiragino Mincho Pro", serif;
+  font-size: 20px !important;
+  font-weight: 700;
+  color: #5a3a14;
+  letter-spacing: 0.08em;
+  margin-bottom: 14px !important;
+  padding: 10px 20px;
+  display: inline-block;
+  border-top: 1px solid rgba(138,90,29,0.4);
+  border-bottom: 1px solid rgba(138,90,29,0.4);
+}
+.worldview-message-body { font-size: 13.5px !important; color: #4a3a24; }
+.worldview-signature {
+  margin-top: 18px;
+  font-size: 13px;
+  color: #6a4a2a;
+  font-style: italic;
+  letter-spacing: 0.1em;
+}
+
+.worldview-foot { padding: 20px; text-align: center; background: rgba(138,90,29,0.04); }
+.worldview-back-btn {
+  padding: 10px 28px;
+  background: transparent;
+  border: 1px solid rgba(138,90,29,0.4);
+  border-radius: 999px;
+  font-size: 13px;
+  color: #3a2d1c;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: 0.08em;
+}
+.worldview-back-btn:hover { background: rgba(138,90,29,0.08); }
+
+@media (max-width: 520px) {
+  .worldview-panel { margin: 0; border-radius: 0; min-height: 100vh; }
+  .worldview-hero { padding: 48px 20px 24px; }
+  .worldview-title { font-size: 26px; }
+  .worldview-section { padding: 20px; }
+  .worldview-chara { flex-direction: column; align-items: center; text-align: center; }
+  .worldview-chara-avatar { width: 88px; height: 88px; }
+  .worldview-chara-traits { text-align: left; align-self: stretch; }
+}

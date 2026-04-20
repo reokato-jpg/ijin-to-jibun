@@ -1132,6 +1132,100 @@ const AVATAR_PRESETS = [
   { id: 'panda', name: 'パンダ' }, { id: 'otter', name: 'カワウソ' },
   { id: 'hamster', name: 'ハムスター' },
 ];
+// ====================== 世界観モーダル（レキット＆ラビン） ======================
+function openWorldviewModal() {
+  const existing = document.getElementById('worldviewModal');
+  if (existing) existing.remove();
+  const modal = document.createElement('div');
+  modal.id = 'worldviewModal';
+  modal.className = 'worldview-modal';
+  modal.innerHTML = `
+    <div class="worldview-backdrop" data-close="1"></div>
+    <article class="worldview-panel">
+      <button class="worldview-close" data-close="1" aria-label="閉じる">×</button>
+
+      <header class="worldview-hero">
+        <div class="worldview-hero-ornament">◆</div>
+        <h1 class="worldview-title">この世界について</h1>
+        <div class="worldview-subtitle">歴史を守る、二人の物語</div>
+      </header>
+
+      <section class="worldview-section worldview-intro">
+        <p>歴史は、書き換えることができない。</p>
+        <p>過ぎ去った一つひとつの出来事が、今この瞬間の"わたしたち"を形作っている——</p>
+        <p>その真実を識ってもらうために、ここには二人の守り手がいる。</p>
+      </section>
+
+      <section class="worldview-section worldview-chara worldview-rekitto">
+        <div class="worldview-chara-avatar">${(typeof rekittoAvatarHtml === 'function') ? rekittoAvatarHtml() : ''}</div>
+        <div class="worldview-chara-body">
+          <div class="worldview-chara-role">歴史の管理人</div>
+          <h2 class="worldview-chara-name">📜 レキット</h2>
+          <p class="worldview-chara-bio">
+            現代の側に立ち、歴史が改変されぬよう静かに見張る管理人。
+            偉人からの便りや、この世界で起きる出来事を、あなたの手元へ届ける役目を担う。
+          </p>
+          <div class="worldview-chara-traits">
+            <div><span>居場所</span><span>現代——あなたの端末の中</span></div>
+            <div><span>役割</span><span>歴史の見張り／偉人との通信</span></div>
+            <div><span>語り</span><span>落ち着いた敬語、現代の言葉</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="worldview-section worldview-chara worldview-rabin">
+        <div class="worldview-chara-avatar">
+          <video class="worldview-chara-video" src="assets/guide/rabin.mp4?v=1" muted autoplay loop playsinline preload="metadata" aria-hidden="true"></video>
+        </div>
+        <div class="worldview-chara-body">
+          <div class="worldview-chara-role">歴史の案内人</div>
+          <h2 class="worldview-chara-name">🐇 ラビン</h2>
+          <p class="worldview-chara-bio">
+            歴史の中に閉じ込められた、小さな案内人。
+            偉人たちの隣に立ち、彼らの時代を静かに語る。あなたが過去を旅するとき、そっと案内の灯を掲げてくれる。
+          </p>
+          <div class="worldview-chara-traits">
+            <div><span>居場所</span><span>歴史の内側——時代の狭間</span></div>
+            <div><span>役割</span><span>偉人たちの案内／歴史の語り部</span></div>
+            <div><span>語り</span><span>古めかしい詩的な言葉</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="worldview-section worldview-bond">
+        <div class="worldview-bond-head">🔗 二人を結ぶもの</div>
+        <p>
+          レキットとラビンは、決して会うことができない。
+          片方が歴史を出れば、歴史そのものが崩れ、片方が歴史に触れれば、改変の可能性が生まれてしまう。
+        </p>
+        <p>
+          それでも二人は、時の境界の両側から同じ世界を守っている。
+          ときどきレキットは、ラビンから託された偉人の言葉を、あなたの元へそっと届けにくる。
+          —— 会えなくても、想いは確かに繋がっている。
+        </p>
+      </section>
+
+      <section class="worldview-section worldview-message">
+        <p class="worldview-message-lead">「歴史は、書き換えられない。」</p>
+        <p class="worldview-message-body">
+          過去を知ることは、今の自分を識ること。
+          このアプリは、そのための小さな本棚です。
+        </p>
+        <div class="worldview-signature">—— レキット & ラビン</div>
+      </section>
+
+      <footer class="worldview-foot">
+        <button class="worldview-back-btn" data-close="1">閉じる</button>
+      </footer>
+    </article>
+  `;
+  document.body.appendChild(modal);
+  requestAnimationFrame(() => modal.classList.add('open'));
+  const close = () => { modal.classList.remove('open'); setTimeout(() => modal.remove(), 240); };
+  modal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', close));
+}
+window.openWorldviewModal = openWorldviewModal;
+
 function openMemberSettings() {
   const existing = document.getElementById('memberSettingsModal');
   if (existing) existing.remove();
@@ -3174,9 +3268,9 @@ function syncRekittoUpdates() {
   if (!newUpdates.length) return;
   newUpdates.forEach(u => {
     pushRekittoMsg({
-      text: `【${u.tag || 'お知らせ'}】${u.title}\n\n${u.body}`,
+      text: `こちら側で、新しい扉が開きました。\n\n【${u.tag || 'お知らせ'}】${u.title}\n\n${u.body}`,
       kind: 'update',
-      linkLabel: (u.tag === '新機能') ? '✨ 使ってみる' : '詳しく見る',
+      linkLabel: (u.tag === '新機能') ? '✨ 扉を開く' : '詳しく見る',
     });
   });
   localStorage.setItem(REKITTO_SEEN_UPDATES_KEY, JSON.stringify(keys));
@@ -3185,7 +3279,7 @@ function syncRekittoUpdates() {
 function rekittoNotifyFollow(person) {
   if (!person) return;
   pushRekittoMsg({
-    text: `✉ ${person.name}があなたをフォローしました。\n\nあなたの本棚に、この偉人も棲みはじめます。`,
+    text: `✉ 歴史の向こう側から、${person.name}からの便りが届きました。\n\n「あなたのことを、見ていました」——\nラビンがそっと手渡してくれたのを、ここに届けます。\nあなたの本棚に、この方も棲みはじめます。`,
     kind: 'follow',
     personId: person.id,
     linkLabel: `${person.name}のページを開く`,
@@ -3195,7 +3289,7 @@ function rekittoNotifyFollow(person) {
 function rekittoNotifyUserFollow(user) {
   if (!user) return;
   pushRekittoMsg({
-    text: `✉ ${user.name || '新しい会員'}さんがあなたをフォローしました。`,
+    text: `✉ ${user.name || '新しい会員'}さんが、あなたをフォローしました。\n\n同じ時代を生きる人。こちら側での新しい縁を、お伝えしておきます。`,
     kind: 'user_follow',
     userId: user.uid || user.id,
     linkLabel: 'プロフィールを見る',
@@ -3836,7 +3930,7 @@ function initPhoneMenu() {
   function renderRekittoChat(body) {
     const msgs = getRekittoMsgs();
     if (msgs.length === 0) {
-      body.innerHTML = `<div class="line-chat rekitto-chat"><div class="line-msg-received"><div class="line-avatar rekitto-line-avatar">${rekittoAvatarHtml()}</div><div class="line-msg-col"><div class="line-msg-name">📜 レキット</div><div class="line-msg-bubble rekitto-bubble">はじめまして。私は歴史の管理人、レキット。\n新しい機能のお知らせや、偉人・会員からフォローされた時などに、ここでお伝えします。</div></div></div></div>`;
+      body.innerHTML = `<div class="line-chat rekitto-chat"><div class="line-msg-received"><div class="line-avatar rekitto-line-avatar">${rekittoAvatarHtml()}</div><div class="line-msg-col"><div class="line-msg-name">📜 レキット</div><div class="line-msg-bubble rekitto-bubble">はじめまして。私はレキット。\n歴史が書き換えられぬよう、ここから見張っています。\n\n向こう側には、もう一人——ラビン。\n私たちは会うことが叶いません。けれど歴史を知ってもらうため、二人で同じ世界を守っています。\n\n偉人や会員からの便りは、私が必ずここへ届けますね。</div></div></div></div>`;
       return;
     }
     body.innerHTML = `
@@ -9713,6 +9807,7 @@ function bindEvents() {
   });
   // このサイトの使い方ポップアップ（5枚スライド）
   document.getElementById('howtoOpenBtn')?.addEventListener('click', () => openHowtoSlides());
+  document.getElementById('openWorldviewBtn')?.addEventListener('click', () => openWorldviewModal());
   const searchBtnEl = document.getElementById('searchBtn');
   if (searchBtnEl) searchBtnEl.addEventListener('click', () => {
     const bar = document.getElementById('searchBar');
@@ -9820,44 +9915,44 @@ window.openHowtoSlides = openHowtoSlides;
 const GUIDE_NAME = 'ラビン';
 const GUIDE_COPY = {
   hero: [
-    'ようこそ、本棚へ。ぼく、ラビン。120人の偉人が待ってるよ。',
-    'はじめまして。歴史の案内人、ラビンです。',
-    '僕と一緒に、歴史の旅に出よう。',
+    'ようこそ、本棚へ。わたしはラビン。この時代の隅で、そなたを待っておった。',
+    'おお、また一人。歴史の案内人、ラビンと申す。',
+    'さあ、時を越えに参りましょう——偉人たちが、向こうに坐しておる。',
   ],
   howto: [
-    '初めての方は、まずこれを読んでね。',
-    '使い方を3分で案内するよ。タップして開こう。',
-    '本棚の歩き方、ここで手短にお伝えします。',
+    'はじめて訪れた方は、まずこちらに目を通されるとよい。',
+    '本棚の歩き方、手短にお伝えいたしましょう。',
+    'ここを開けば、案内の栞が一枚現れます。',
   ],
   match: [
-    '気になるものをひとつ選べば大丈夫。',
-    '好きなもの・誕生日——共通点を辿ってみて。',
-    'あなたに似た一冊が、きっと見つかる。',
+    '気になる一つを選ばれるだけで、十分でございます。',
+    '好きなもの、生まれた日——そこから縁は辿れます。',
+    'そなたに似た一冊、必ずここに眠っております。',
   ],
   tags: [
-    '時代・国・ルーティンで、偉人を探せるよ。',
-    '朝型？夜型？共通点から偉人を見つけよう。',
-    '似たリズムの偉人を、ここで探してみて。',
+    '時代・国・日々の型で、偉人たちは探せます。',
+    '朝の人、夜の人——同じ刻を生きた者を探しましょう。',
+    '似た呼吸の偉人を、ここで見つけられます。',
   ],
   routines: [
-    '偉人たちの1日を、覗いてみる？',
-    'バッハの朝、漱石の夜——見てみよう。',
-    '時間で見ると、また違う本になるよ。',
+    '偉人たちの一日を、覗いてみませぬか。',
+    'バッハの朝、漱石の夜——時が流れてゆきます。',
+    '時で辿ると、また違うた本となりますぞ。',
   ],
   articles: [
     'この章は、ここから始まります。',
-    '静かに読んでいってね。',
-    '読み終えたら、そっと栞を挟もう。',
+    '静かに読み進めてくだされ。',
+    '読み終えたら、そっと栞を挟まれるとよい。',
   ],
   mybookEmpty: [
-    '最初の一枚は、気になる言葉ひとつでいいよ。',
-    'まだ白紙。ゆっくり編んでいこう。',
-    '☆や♡を押すと、ここに綴じていくよ。',
+    '最初の一枚は、気になる言葉ひとつでようございます。',
+    'まだ白紙。焦らず編んでゆきましょう。',
+    '☆や♡を押せば、ここへ綴じてゆけます。',
   ],
   login: [
-    '本棚の鍵を受け取ると、この一冊を残しておけるよ。',
-    '端末が変わっても、本は消えない。',
-    'いつでも外せるし、戻ってこれる。',
+    '本棚の鍵を受け取れば、この一冊は残したままにできます。',
+    '端末が変わろうと、本は消えませぬ。',
+    'いつでも外せて、またここへ戻ってこられます。',
   ],
 };
 
@@ -9938,7 +10033,7 @@ function renderBookshelfGuides() {
       <div class="guide-hello-backdrop"></div>
       <div class="guide-hello-card" role="dialog" aria-label="歴史の案内人 ラビンからの挨拶">
         <button class="guide-hello-close" aria-label="閉じる">×</button>
-        ${renderGuideChara({ pose: 'welcome', copyText: 'はじめまして、歴史の案内人、ラビンです。', size: 'lg', layout: 'below' })}
+        ${renderGuideChara({ pose: 'welcome', copyText: 'ようこそ。歴史の案内人、ラビンにございます。', size: 'lg', layout: 'below' })}
         <button class="guide-hello-ok">はじめる</button>
       </div>
     `;

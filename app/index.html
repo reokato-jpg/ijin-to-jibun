@@ -70,8 +70,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20260421S">
-<link rel="stylesheet" href="era-theme.css?v=20260421S">
+<link rel="stylesheet" href="style.css?v=20260421T">
+<link rel="stylesheet" href="era-theme.css?v=20260421T">
 </head>
 <body>
   <header class="app-header">
@@ -246,6 +246,17 @@
             </div>
           </div>
         </a>
+      </div>
+
+      <!-- 📖 この世界について（レキット＆ラビンの世界観） -->
+      <div class="home-block worldview-block">
+        <button class="worldview-banner" id="openWorldviewBtn" aria-label="レキットとラビンの世界観を見る">
+          <div class="worldview-banner-inner">
+            <div class="worldview-banner-title">📖 この世界について</div>
+            <div class="worldview-banner-sub">レキットとラビン —— 歴史を守る、二人の物語</div>
+            <div class="worldview-banner-arrow">→</div>
+          </div>
+        </button>
       </div>
 
       <!-- はじめての方へ（使い方ガイド） -->
@@ -440,7 +451,7 @@
 
   <!-- 起動時のウェルカムアニメーション -->
   <div id="welcomeIntro" class="welcome-intro" hidden>
-    <div class="welcome-intro-bubble">さあ、偉人に会いに行こう</div>
+    <div class="welcome-intro-bubble">さあ——偉人たちに、お会いに参りましょう</div>
     <video class="welcome-intro-video" muted playsinline autoplay preload="auto" aria-hidden="true">
       <source src="assets/guide/welcome-intro.webm?v=1" type="video/webm">
       <source src="assets/guide/welcome-intro.mp4" type="video/mp4">
@@ -650,10 +661,10 @@
     </div>
   </div>
 
-  <script src="era-lore.js?v=20260421S"></script>
-  <script src="history-patterns.js?v=20260421S"></script>
-  <script src="app.js?v=20260421S"></script>
-  <script src="auth.js?v=20260421S" type="module"></script>
+  <script src="era-lore.js?v=20260421T"></script>
+  <script src="history-patterns.js?v=20260421T"></script>
+  <script src="app.js?v=20260421T"></script>
+  <script src="auth.js?v=20260421T" type="module"></script>
   <script src="ai-consult.js"></script>
 </body>
 </html>
