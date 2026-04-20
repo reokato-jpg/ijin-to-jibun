@@ -14409,9 +14409,10 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
   font-family: var(--font-jp);
   padding-left: 12px;
   border-left: 4px double var(--wine);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  word-break: normal;
+  overflow-wrap: anywhere;
+  line-break: strict;
+  min-width: 0;
 }
 .home-details-hint {
   font-size: 11px;
