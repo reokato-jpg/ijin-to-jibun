@@ -1539,6 +1539,52 @@ function openMemberSettings() {
 }
 
 // ============ 会員同士のフォロー ============
+// 🌫 忘却の霧：長期訪問なしの偉人に霧をかける
+const MIST_THRESHOLD_DAYS = 14; // 14日以上訪問ゼロで霧発生
+function applyMistOfOblivion(personId, lastVisitMs) {
+  const container = document.getElementById('personDetail');
+  if (!container) return;
+  // 既存の霧オーバーレイを削除
+  container.querySelectorAll('.mist-overlay, .mist-notice').forEach(el => el.remove());
+  if (!lastVisitMs) {
+    // 誰も訪れたことがない
+    const notice = document.createElement('div');
+    notice.className = 'mist-notice mist-untouched';
+    notice.innerHTML = `
+      <span class="mist-notice-ic">🌫</span>
+      <span class="mist-notice-text">最初の訪問者になりました。<br>この本は、あなたの指が触れるまで誰にも読まれていませんでした。</span>
+    `;
+    const cover = container.querySelector('.profile-cover');
+    if (cover) cover.insertAdjacentElement('afterend', notice);
+    return;
+  }
+  const now = Date.now();
+  const days = Math.floor((now - lastVisitMs) / (1000 * 60 * 60 * 24));
+  if (days < MIST_THRESHOLD_DAYS) return;  // 新鮮な本
+  // 霧オーバーレイ
+  const cover = container.querySelector('.profile-cover');
+  if (cover) {
+    const mist = document.createElement('div');
+    mist.className = 'mist-overlay';
+    mist.innerHTML = `<div class="mist-overlay-inner"><span class="mist-overlay-text">🌫 忘却の霧</span></div>`;
+    cover.style.position = cover.style.position || 'relative';
+    cover.appendChild(mist);
+    // 5秒後に霧が晴れるアニメ
+    setTimeout(() => {
+      mist.classList.add('mist-fading');
+      setTimeout(() => mist.remove(), 2000);
+    }, 4000);
+  }
+  // 通知
+  const notice = document.createElement('div');
+  notice.className = 'mist-notice';
+  notice.innerHTML = `
+    <span class="mist-notice-ic">🌫</span>
+    <span class="mist-notice-text">最後に訪れられてから <strong>${days}日</strong> が経過していました。<br>あなたの訪問で、霧が晴れます。</span>
+  `;
+  if (cover) cover.insertAdjacentElement('afterend', notice);
+}
+
 // 👣 軌跡：ローカル保存（Firestore未設定でも自分の訪問は残る）
 const GUEST_UID_KEY = 'ijin_guest_uid';
 function getOrCreateGuestUid() {
@@ -4548,6 +4594,9 @@ function initPhoneMenu() {
               const t = m.target ? JSON.stringify(m.target) : '';
               return `<button class="rekitto-link-btn" data-rekitto-updates="1" data-rekitto-target='${escapeHtml(t)}'>${escapeHtml(m.linkLabel || '詳しく見る')} →</button>`;
             }
+            if (m.kind === 'title_up') {
+              return `<button class="rekitto-link-btn" data-rekitto-title="1">${escapeHtml(m.linkLabel || '称号を選ぶ')} →</button>`;
+            }
             return '';
           })();
           return `
@@ -4575,6 +4624,17 @@ function initPhoneMenu() {
         const menu = document.getElementById('phoneMenu');
         if (menu) menu.classList.remove('open');
         setTimeout(() => showPerson(pid), 260);
+      });
+    });
+    body.querySelectorAll('[data-rekitto-title]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const menu = document.getElementById('phoneMenu');
+        if (menu) menu.classList.remove('open');
+        setTimeout(() => {
+          if (typeof window.openAccountMenu === 'function') window.openAccountMenu();
+          else if (typeof openMemberSettings === 'function') openMemberSettings();
+        }, 260);
       });
     });
     body.querySelectorAll('[data-rekitto-updates]').forEach(btn => {
@@ -5866,14 +5926,33 @@ async function showPerson(id) {
   const container = document.getElementById('personDetail');
   container.innerHTML = html;
 
-  // グローバル訪問数を非同期取得＋訪問者を記録＆表示
+  // グローバル訪問数＆最終訪問日を取得 → 忘却の霧判定
   (async () => {
     try {
-      if (typeof window.getGlobalVisit === 'function') {
-        const n = await window.getGlobalVisit(p.id);
-        const el = document.getElementById('profileGlobalVisit');
-        if (el) el.textContent = `累計 ${n}回`;
+      let lastVisitMs = 0;
+      let totalCount = 0;
+      if (typeof window.getGlobalVisitInfo === 'function') {
+        const info = await window.getGlobalVisitInfo(p.id);
+        totalCount = info.count || 0;
+        lastVisitMs = info.updatedAt ? new Date(info.updatedAt).getTime() : 0;
+      } else if (typeof window.getGlobalVisit === 'function') {
+        totalCount = await window.getGlobalVisit(p.id);
       }
+      // ローカルの訪問記録も参照（オフライン時のfallback）
+      const localVisits = loadLocalVisitors('person', p.id);
+      const localLast = localVisits.reduce((max, v) => Math.max(max, new Date(v.visitedAt || 0).getTime()), 0);
+      lastVisitMs = Math.max(lastVisitMs, localLast);
+      // 自分の今日の訪問も考慮（recordVisitしてるので直近）
+      if (getVisitCount(p.id) > 0) {
+        try {
+          const lastDay = JSON.parse(localStorage.getItem(LAST_VISIT_KEY) || '{}')[p.id];
+          if (lastDay) lastVisitMs = Math.max(lastVisitMs, new Date(lastDay).getTime());
+        } catch {}
+      }
+      // 忘却の霧判定＆表示
+      const el = document.getElementById('profileGlobalVisit');
+      if (el) el.textContent = `累計 ${totalCount}回`;
+      applyMistOfOblivion(p.id, lastVisitMs);
     } catch {}
     // 訪問者として自分を記録（ログインでもゲストでも必ず残す）
     try {
@@ -7038,6 +7117,8 @@ function grantStamp(personId, source = 'quiz') {
     try { showStampToast(personId, source); } catch (e) { console.warn(e); }
   }
   try { checkFollowBackEligibility(personId); } catch {}
+  // 階位アップチェック
+  try { checkTitleLevelUp(); } catch {}
 }
 
 // スタンプ獲得のトースト（初回のみ）
@@ -7164,15 +7245,40 @@ const STAMP_MILESTONE_MSGS = {
 };
 
 // 称号（総スタンプ数に応じた段階）
+// 偉人書庫塔の階位システム（物語連動）
 const TITLES = [
-  { min: 0, name: '', label: '' },
-  { min: 1, name: '読者', label: '読者' },
-  { min: 3, name: '弟子', label: '弟子' },
-  { min: 7, name: '同志', label: '同志' },
-  { min: 15, name: '継承者', label: '継承者' },
-  { min: 30, name: '賢者', label: '賢者' },
-  { min: 60, name: '書斎の主', label: '書斎の主' },
+  { min: 0,   name: '',         label: '' },
+  { min: 1,   name: '巡礼者',   label: '巡礼者', story: '塔の入口をくぐり、最初の一歩を踏み出した者。' },
+  { min: 5,   name: '読み手',   label: '読み手', story: '偉人の本を開き、その言葉に触れ始めた者。' },
+  { min: 15,  name: '灯す者',   label: '灯す者', story: '忘れられかけた魂に、光を差した者。' },
+  { min: 30,  name: '継承者',   label: '継承者', story: '偉人の軌跡を、自らの生に重ねはじめた者。' },
+  { min: 60,  name: '書き手',   label: '書き手', story: '自身の一章を、塔の書棚に綴じ始めた者。' },
+  { min: 120, name: '始まりの書き手', label: '始まりの書き手', story: '塔を創りし者の魂に、再び触れた者。（隠し階位）' },
 ];
+// 階位変化をチェック — 昇進したらレキットが告げる
+const LAST_TITLE_LEVEL_KEY = 'ijin_last_title_level';
+function checkTitleLevelUp() {
+  const total = totalStamps();
+  const reached = TITLES.filter(t => t.min <= total && t.name);
+  const currentIdx = reached.length - 1;
+  let lastIdx = -1;
+  try { lastIdx = parseInt(localStorage.getItem(LAST_TITLE_LEVEL_KEY) || '-1', 10); } catch {}
+  if (currentIdx > lastIdx && currentIdx >= 0) {
+    localStorage.setItem(LAST_TITLE_LEVEL_KEY, String(currentIdx));
+    const title = reached[currentIdx];
+    // レキットから報告
+    try {
+      if (typeof pushRekittoMsg === 'function' && title) {
+        pushRekittoMsg({
+          text: `塔の階が上がりました。\n\nあなたは今、『${title.label}』の階位に到達しました。\n\n— ${title.story}`,
+          kind: 'title_up',
+          linkLabel: '称号を選ぶ',
+        });
+      }
+    } catch {}
+  }
+}
+
 function availableTitles() {
   const total = totalStamps();
   return TITLES.filter(t => t.min <= total);

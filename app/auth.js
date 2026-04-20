@@ -119,6 +119,17 @@ async function initFirebase() {
       } catch {}
       return 0;
     };
+    window.getGlobalVisitInfo = async (personId) => {
+      if (!fbDb || !personId) return { count: 0, updatedAt: null };
+      try {
+        const snap = await getDoc(doc(fbDb, 'publicVisits', personId));
+        if (snap.exists()) {
+          const d = snap.data();
+          return { count: d.count || 0, updatedAt: d.updatedAt || null };
+        }
+      } catch {}
+      return { count: 0, updatedAt: null };
+    };
 
     // 年表の時代ページの訪問者記録＆取得
     window.recordVisitorToEra = async (eraKey, profile) => {
