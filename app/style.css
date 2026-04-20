@@ -14270,3 +14270,29 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
 .plaza-friend-rekitto {
   background: linear-gradient(90deg, rgba(122,154,138,0.06), transparent);
 }
+
+/* レキットの動画アバター（自動再生ループ） */
+.rekitto-video-av {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 50%;
+  pointer-events: none;
+  background: #7a9a8a;
+}
+.plaza-rekitto-av { overflow: hidden; }
+.rekitto-line-avatar {
+  width: 40px; height: 40px;
+  overflow: hidden;
+  border-radius: 50%;
+  background: #7a9a8a;
+}
+.rekitto-line-avatar .rekitto-video-av { border-radius: 50%; }
+
+/* 日本語の見やすい改行（禁則処理）＋pre-wrapを活用 */
+.rekitto-bubble {
+  word-break: normal;
+  overflow-wrap: anywhere;
+  line-break: strict;
+}

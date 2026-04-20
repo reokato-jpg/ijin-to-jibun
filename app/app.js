@@ -3112,7 +3112,11 @@ function checkFollowBackEligibility(personId) {
 const REKITTO_MSGS_KEY = 'ijin_rekitto_msgs';
 const REKITTO_LAST_READ_KEY = 'ijin_rekitto_last_read';
 const REKITTO_SEEN_UPDATES_KEY = 'ijin_rekitto_seen_updates';
-const REKITTO_AVATAR = 'assets/guest-avatar.png'; // 石門アイコンをレキットのアバターに流用
+const REKITTO_AVATAR = 'assets/guest-avatar.png'; // フォールバック用
+// レキットのアニメ動画アバター（自動再生ループ）
+function rekittoAvatarHtml(cls = '') {
+  return `<video class="rekitto-video-av ${cls}" src="assets/guide/rekitto.mp4?v=1" muted autoplay loop playsinline preload="metadata" aria-hidden="true"></video>`;
+}
 
 function getRekittoMsgs() {
   try { return JSON.parse(localStorage.getItem(REKITTO_MSGS_KEY) || '[]'); } catch { return []; }
@@ -3695,7 +3699,7 @@ function initPhoneMenu() {
     const rekittoHtml = `
       <button class="plaza-friend-item plaza-friend-rekitto" data-plaza-rekitto-friend="1">
         <div class="plaza-friend-av plaza-rekitto-av">
-          <div class="plaza-rekitto-badge" style="background-image:url('${REKITTO_AVATAR}');background-size:180%;background-position:center"></div>
+          ${rekittoAvatarHtml()}
         </div>
         <div class="plaza-friend-info">
           <div class="plaza-friend-name">📜 レキット <span class="plaza-talk-role">歴史管理人</span></div>
@@ -3763,7 +3767,7 @@ function initPhoneMenu() {
     list.innerHTML = `
       <button class="plaza-talk-item plaza-rekitto-item" data-plaza-rekitto="1">
         <div class="plaza-group-av plaza-rekitto-av">
-          <div class="plaza-rekitto-badge" style="background-image:url('${REKITTO_AVATAR}');background-size:180%;background-position:center"></div>
+          ${rekittoAvatarHtml()}
         </div>
         <div class="plaza-talk-info">
           <div class="plaza-talk-head">
@@ -3849,11 +3853,11 @@ function initPhoneMenu() {
           })();
           return `
             <div class="line-msg-received">
-              <div class="line-avatar" style="background-image:url('${REKITTO_AVATAR}');background-size:180%;background-position:center"></div>
+              <div class="line-avatar rekitto-line-avatar">${rekittoAvatarHtml()}</div>
               <div class="line-msg-col">
                 <div class="line-msg-name">📜 レキット</div>
                 <div class="line-msg-bubble rekitto-bubble">
-                  ${escapeHtml(m.text || '').replace(/\n/g, '<br>')}
+                  ${escapeHtml(m.text || '')}
                   ${linkBtn ? `<div class="rekitto-link-row">${linkBtn}</div>` : ''}
                 </div>
                 <div class="line-msg-time">${tm}</div>
