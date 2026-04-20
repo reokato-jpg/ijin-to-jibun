@@ -3691,31 +3691,51 @@ function initPhoneMenu() {
   function renderPlazaFriends() {
     const list = document.getElementById('plazaFriendsList');
     if (!list) return;
+    // レキット（歴史管理人）— 全員の友達として常にトップに表示
+    const rekittoHtml = `
+      <button class="plaza-friend-item plaza-friend-rekitto" data-plaza-rekitto-friend="1">
+        <div class="plaza-friend-av plaza-rekitto-av">
+          <div class="plaza-rekitto-badge" style="background-image:url('${REKITTO_AVATAR}');background-size:180%;background-position:center"></div>
+        </div>
+        <div class="plaza-friend-info">
+          <div class="plaza-friend-name">📜 レキット <span class="plaza-talk-role">歴史管理人</span></div>
+          <div class="plaza-friend-status">お知らせや通知をLINE風でお届け</div>
+        </div>
+      </button>
+    `;
     // 偉人の広場の今日のメンバー＋フォロー中の偉人を友だち一覧に
     const favIds = (typeof favPeople !== 'undefined') ? [...favPeople] : [];
     const friends = favIds.map(id => DATA.people.find(p => p.id === id)).filter(Boolean);
-    if (friends.length === 0) {
-      list.innerHTML = '<div class="plaza-empty">まだ友だちはいません。<br>偉人をフォローすると、ここに追加されます。</div>';
-      return;
-    }
-    list.innerHTML = friends.map(p => {
-      const bg = p.imageUrl ? `style="background-image:url('${p.imageUrl}')"` : '';
-      return `
-        <button class="plaza-friend-item" data-plaza-friend="${p.id}">
-          <div class="plaza-friend-av" ${bg}>${p.imageUrl ? '' : (p.name?.charAt(0) || '?')}</div>
-          <div class="plaza-friend-info">
-            <div class="plaza-friend-name">${p.name}</div>
-            <div class="plaza-friend-status">${p.field || ''}</div>
-          </div>
-        </button>
-      `;
-    }).join('');
+    const friendsHtml = friends.length === 0
+      ? '<div class="plaza-empty">まだ偉人の友だちはいません。<br>偉人をフォローすると、ここに追加されます。</div>'
+      : friends.map(p => {
+          const bg = p.imageUrl ? `style="background-image:url('${p.imageUrl}')"` : '';
+          return `
+            <button class="plaza-friend-item" data-plaza-friend="${p.id}">
+              <div class="plaza-friend-av" ${bg}>${p.imageUrl ? '' : (p.name?.charAt(0) || '?')}</div>
+              <div class="plaza-friend-info">
+                <div class="plaza-friend-name">${p.name}</div>
+                <div class="plaza-friend-status">${p.field || ''}</div>
+              </div>
+            </button>
+          `;
+        }).join('');
+    list.innerHTML = `
+      <div class="plaza-friend-section-label">公式</div>
+      ${rekittoHtml}
+      <div class="plaza-friend-section-label">偉人の友だち</div>
+      ${friendsHtml}
+    `;
     list.querySelectorAll('[data-plaza-friend]').forEach(b => {
       b.addEventListener('click', () => {
         const pid = b.dataset.plazaFriend;
         close();
         setTimeout(() => showPerson(pid), 260);
       });
+    });
+    // レキットをタップしたらチャット画面へ
+    list.querySelector('[data-plaza-rekitto-friend]')?.addEventListener('click', () => {
+      openRekittoChat();
     });
   }
   function renderPlazaTalks() {

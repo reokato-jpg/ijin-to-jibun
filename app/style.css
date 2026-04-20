@@ -14258,3 +14258,15 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
   transform: translateY(-1px);
   box-shadow: 0 3px 6px rgba(74,106,90,0.4);
 }
+
+.plaza-friend-section-label {
+  padding: 8px 14px 4px;
+  font-size: 10.5px;
+  color: #7a6a54;
+  letter-spacing: 0.15em;
+  font-weight: 600;
+  background: rgba(0,0,0,0.02);
+}
+.plaza-friend-rekitto {
+  background: linear-gradient(90deg, rgba(122,154,138,0.06), transparent);
+}
