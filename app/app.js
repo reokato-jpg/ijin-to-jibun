@@ -9961,7 +9961,7 @@ function ensureEraLoreLoaded() {
   if (__eraLorePromise) return __eraLorePromise;
   __eraLorePromise = new Promise((resolve) => {
     const s = document.createElement('script');
-    s.src = 'era-lore.js?v=20260425F';
+    s.src = 'dist/era-lore.min.js?v=20260425H';
     s.onload = () => resolve();
     s.onerror = () => { __eraLorePromise = null; resolve(); };
     document.head.appendChild(s);
