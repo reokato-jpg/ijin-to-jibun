@@ -4719,6 +4719,31 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
   margin-top: 8px;
 }
 .x-book-amazon:hover { background: #e88a00; }
+/* Amazon + 楽天 の2ボタンレイアウト */
+.x-book-stores {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+.x-book-store {
+  flex: 0 0 auto;
+  padding: 7px 14px;
+  text-decoration: none;
+  font-family: var(--font-jp);
+  font-weight: 700;
+  font-size: 11px;
+  border-radius: 6px;
+  color: #fff;
+  transition: filter 0.15s;
+}
+.x-book-store.x-book-amazon { background: #ff9900; margin-top: 0; }
+.x-book-store.x-book-amazon:hover { background: #e88a00; filter: none; }
+.x-book-store.x-book-rakuten {
+  background: #bf0000;
+  color: #fff;
+}
+.x-book-store.x-book-rakuten:hover { background: #990000; }
 
 /* 言葉のコレクションカードの星ボタン */
 .qc-card { position: relative; }

@@ -22,6 +22,31 @@ function amazonCover(asin) {
   return `https://images-fe.ssl-images-amazon.com/images/P/${asin}.09.LZZZZZZZ.jpg`;
 }
 
+// ====================== 楽天アフィリエイト設定 ======================
+// https://affiliate.rakuten.co.jp/ で登録 → 管理画面の『アフィリエイトID』をここにセット
+// 例: '1a2b3c4d.abc12345.1a2b3c4d.12345678' のような20文字前後のID
+const RAKUTEN_AFFILIATE_ID = ''; // 未設定でも動く（アフィリエイト無しの検索リンクにフォールバック）
+
+// 楽天ブックス検索のアフィリエイトURLを生成
+// タイトル（＋著者）で検索 → 楽天ブックスのページへ誘導（自動でIDが埋め込まれる）
+function rakutenSearchUrl(title, author) {
+  const query = [title, author].filter(Boolean).join(' ').trim();
+  const encoded = encodeURIComponent(query);
+  const rakutenSearch = `https://books.rakuten.co.jp/search?sitem=${encoded}`;
+  if (!RAKUTEN_AFFILIATE_ID) return rakutenSearch;
+  // 楽天アフィリエイトのリダイレクタ経由で報酬計上
+  const pcUrl = encodeURIComponent(rakutenSearch);
+  return `https://hb.afl.rakuten.co.jp/hsc/${RAKUTEN_AFFILIATE_ID}/?pc=${pcUrl}&link_type=hybrid_url`;
+}
+// 偉人名で楽天全体を検索（本以外のグッズも引っかかる）
+function rakutenItemSearchUrl(keyword) {
+  const encoded = encodeURIComponent(keyword);
+  const rakutenSearch = `https://search.rakuten.co.jp/search/mall/${encoded}/`;
+  if (!RAKUTEN_AFFILIATE_ID) return rakutenSearch;
+  const pcUrl = encodeURIComponent(rakutenSearch);
+  return `https://hb.afl.rakuten.co.jp/hsc/${RAKUTEN_AFFILIATE_ID}/?pc=${pcUrl}&link_type=hybrid_url`;
+}
+
 // ====================== データ読み込み ======================
 const DATA = { people: [], tags: [], tagMap: {}, articles: [], articleAuthor: {} };
 
@@ -6570,15 +6595,19 @@ async function showPerson(id) {
   });
   (p.books || []).forEach(b => {
     const cover = b.asin ? amazonCover(b.asin) : '';
-    const amazon = b.asin ? amazonUrl(b.asin) : '';
+    const amazon = b.asin ? amazonUrl(b.asin) : `https://www.amazon.co.jp/s?k=${encodeURIComponent((b.title || '') + ' ' + (b.author || ''))}${AMAZON_TAG ? `&tag=${AMAZON_TAG}` : ''}`;
+    const rakuten = rakutenSearchUrl(b.title, b.author);
     const bookExtra = `
       <div class="x-book-card">
-        ${cover ? `<a class="x-book-cover" href="${amazon}" target="_blank" rel="noopener" style="background-image:url('${cover}')" onclick="event.stopPropagation()"></a>` : ''}
+        ${cover ? `<a class="x-book-cover" href="${amazon}" target="_blank" rel="noopener sponsored" style="background-image:url('${cover}')" onclick="event.stopPropagation()"></a>` : ''}
         <div class="x-book-info">
           <div class="x-book-title">${b.title}</div>
           <div class="x-book-author">${b.author || ''}</div>
           ${b.description ? `<div class="x-book-desc">${b.description}</div>` : ''}
-          ${amazon ? `<a class="x-book-amazon" href="${amazon}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Amazonで見る</a>` : ''}
+          <div class="x-book-stores">
+            <a class="x-book-store x-book-amazon" href="${amazon}" target="_blank" rel="noopener sponsored" onclick="event.stopPropagation()">📦 Amazon</a>
+            <a class="x-book-store x-book-rakuten" href="${rakuten}" target="_blank" rel="noopener sponsored" onclick="event.stopPropagation()">🛍 楽天ブックス</a>
+          </div>
         </div>
       </div>
     `;
@@ -7246,7 +7275,7 @@ async function showPerson(id) {
               <p class="happenings-empty-text">登録されているグッズはありません。<br>Amazon・楽天で探せます。</p>
               <div class="happenings-empty-links">
                 <a class="happening-btn happening-btn-main" href="https://www.amazon.co.jp/s?k=${encodeURIComponent(p.name + ' グッズ')}${AMAZON_TAG ? `&tag=${AMAZON_TAG}` : ''}" target="_blank" rel="noopener sponsored">📦 Amazonで探す</a>
-                <a class="happening-btn" href="https://search.rakuten.co.jp/search/mall/${encodeURIComponent(p.name)}/" target="_blank" rel="noopener">🛒 楽天で探す</a>
+                <a class="happening-btn" href="${rakutenItemSearchUrl(p.name + ' グッズ')}" target="_blank" rel="noopener sponsored">🛒 楽天で探す</a>
               </div>
             </div>
           `;
@@ -7265,7 +7294,7 @@ async function showPerson(id) {
                   <div class="happening-links">
                     ${h.url ? `<a class="happening-btn happening-btn-main" href="${h.url}" target="_blank" rel="noopener sponsored" onclick="event.stopPropagation()">📦 商品を見る</a>` : ''}
                     <a class="happening-btn" href="https://www.amazon.co.jp/s?k=${searchQ}${AMAZON_TAG ? `&tag=${AMAZON_TAG}` : ''}" target="_blank" rel="noopener sponsored">📦 Amazon</a>
-                    <a class="happening-btn" href="https://search.rakuten.co.jp/search/mall/${encodeURIComponent(p.name + ' ' + h.title)}/" target="_blank" rel="noopener">🛒 楽天</a>
+                    <a class="happening-btn" href="${rakutenItemSearchUrl(p.name + ' ' + h.title)}" target="_blank" rel="noopener sponsored">🛒 楽天</a>
                   </div>
                 </div>
               `;
