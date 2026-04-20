@@ -1418,6 +1418,25 @@ function openMemberSettings() {
       ${renderChips('dislikes', '🚫 苦手なもの', options.dislikes)}
 
       <div class="settings-section">
+        <div class="settings-sec-label">📖 自己紹介（任意・あなたの物語）</div>
+        <textarea class="settings-input settings-textarea" id="settingsBio" placeholder="あなた自身の言葉で。趣味、仕事、今興味があること、生き方、価値観、夢……何でも。">${escapeHtml(localStorage.getItem('ijin_my_bio') || '')}</textarea>
+        <div class="settings-sec-hint">いつか偉人として振り返られる、あなた自身の物語を書いてみてください。</div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-sec-label">📜 わたしの歩み（年表・任意）</div>
+        <div id="settingsCareerList" class="settings-career-list"></div>
+        <button type="button" class="settings-career-add" id="settingsCareerAdd">＋ 節目を追加</button>
+        <div class="settings-sec-hint">生まれた年、転機、達成、別れ——あなたの人生の節目を年表にできます。</div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-sec-label">✒ 大切にしている言葉（任意）</div>
+        <div id="settingsQuotesList" class="settings-quotes-list"></div>
+        <button type="button" class="settings-career-add" id="settingsQuoteAdd">＋ 言葉を追加</button>
+      </div>
+
+      <div class="settings-section">
         <div class="settings-sec-label">🔗 SNS・ブログ（任意・会員同士で公開）</div>
         <div class="settings-sns-row"><span class="settings-sns-ic">𝕏</span><input type="url" class="settings-input" id="settingsSnsX" value="${(my.sns?.x || '').replace(/"/g,'&quot;')}" placeholder="https://x.com/..."></div>
         <div class="settings-sns-row"><span class="settings-sns-ic">📸</span><input type="url" class="settings-input" id="settingsSnsIg" value="${(my.sns?.instagram || '').replace(/"/g,'&quot;')}" placeholder="https://instagram.com/..."></div>
@@ -1538,11 +1557,99 @@ function openMemberSettings() {
     setTimeout(update, 400);
   });
 
+  // 📜 わたしの歩み（career）エディタ
+  const renderCareerList = () => {
+    const list = modal.querySelector('#settingsCareerList');
+    if (!list) return;
+    let career = [];
+    try { career = JSON.parse(localStorage.getItem('ijin_my_career') || '[]'); } catch {}
+    list.innerHTML = career.map((c, i) => `
+      <div class="settings-career-item" data-career-idx="${i}">
+        <input type="text" class="settings-input settings-career-year" placeholder="年（例: 1998）" value="${escapeHtml(c.year || '')}">
+        <input type="text" class="settings-input settings-career-title" placeholder="出来事（例: 〇〇に就職）" value="${escapeHtml(c.title || '')}">
+        <textarea class="settings-input settings-career-detail" placeholder="詳細（任意）">${escapeHtml(c.detail || '')}</textarea>
+        <button type="button" class="settings-career-del" data-career-del="${i}">削除</button>
+      </div>
+    `).join('');
+    list.querySelectorAll('[data-career-del]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = parseInt(btn.dataset.careerDel, 10);
+        let c = [];
+        try { c = JSON.parse(localStorage.getItem('ijin_my_career') || '[]'); } catch {}
+        c.splice(idx, 1);
+        localStorage.setItem('ijin_my_career', JSON.stringify(c));
+        renderCareerList();
+      });
+    });
+  };
+  renderCareerList();
+  modal.querySelector('#settingsCareerAdd')?.addEventListener('click', () => {
+    let c = [];
+    try { c = JSON.parse(localStorage.getItem('ijin_my_career') || '[]'); } catch {}
+    c.push({ year: '', title: '', detail: '' });
+    localStorage.setItem('ijin_my_career', JSON.stringify(c));
+    renderCareerList();
+  });
+
+  // ✒ 大切にしている言葉エディタ
+  const renderQuotesList = () => {
+    const list = modal.querySelector('#settingsQuotesList');
+    if (!list) return;
+    let quotes = [];
+    try { quotes = JSON.parse(localStorage.getItem('ijin_my_quotes') || '[]'); } catch {}
+    list.innerHTML = quotes.map((q, i) => `
+      <div class="settings-career-item" data-quote-idx="${i}">
+        <textarea class="settings-input settings-career-detail" placeholder="言葉">${escapeHtml(q.text || q || '')}</textarea>
+        <input type="text" class="settings-input settings-career-title" placeholder="出典・著者（任意）" value="${escapeHtml(q.source || '')}">
+        <button type="button" class="settings-career-del" data-quote-del="${i}">削除</button>
+      </div>
+    `).join('');
+    list.querySelectorAll('[data-quote-del]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = parseInt(btn.dataset.quoteDel, 10);
+        let q = [];
+        try { q = JSON.parse(localStorage.getItem('ijin_my_quotes') || '[]'); } catch {}
+        q.splice(idx, 1);
+        localStorage.setItem('ijin_my_quotes', JSON.stringify(q));
+        renderQuotesList();
+      });
+    });
+  };
+  renderQuotesList();
+  modal.querySelector('#settingsQuoteAdd')?.addEventListener('click', () => {
+    let q = [];
+    try { q = JSON.parse(localStorage.getItem('ijin_my_quotes') || '[]'); } catch {}
+    q.push({ text: '', source: '' });
+    localStorage.setItem('ijin_my_quotes', JSON.stringify(q));
+    renderQuotesList();
+  });
+
   modal.querySelector('#settingsSave').addEventListener('click', () => {
     const t = loadMyTraits();
     // 名前保存
     const nameInp = modal.querySelector('#settingsUserName');
     if (nameInp) setUserName(nameInp.value || '');
+    // 自己紹介
+    const bio = modal.querySelector('#settingsBio')?.value || '';
+    localStorage.setItem('ijin_my_bio', bio);
+    // キャリア年表
+    const careerItems = Array.from(modal.querySelectorAll('[data-career-idx]')).map(item => ({
+      year: item.querySelector('.settings-career-year')?.value.trim() || '',
+      title: item.querySelector('.settings-career-title')?.value.trim() || '',
+      detail: item.querySelector('.settings-career-detail')?.value.trim() || '',
+    })).filter(c => c.year || c.title);
+    localStorage.setItem('ijin_my_career', JSON.stringify(careerItems));
+    // 言葉
+    const quoteItems = Array.from(modal.querySelectorAll('[data-quote-idx]')).map(item => ({
+      text: item.querySelector('.settings-career-detail')?.value.trim() || '',
+      source: item.querySelector('.settings-career-title')?.value.trim() || '',
+    })).filter(q => q.text);
+    localStorage.setItem('ijin_my_quotes', JSON.stringify(quoteItems));
+    // Firestore同期
+    if (typeof window.pushToCloud === 'function' && typeof currentUser !== 'undefined' && currentUser) {
+      window.pushToCloud(currentUser).catch(() => {});
+    }
+
     t.birthMonth = parseInt(modal.querySelector('#settingsBirthMonth').value, 10) || null;
     t.birthDay = parseInt(modal.querySelector('#settingsBirthDay').value, 10) || null;
     t.hometown = modal.querySelector('#settingsHometown').value.trim();
@@ -2011,26 +2118,76 @@ function openUserProfileModal(uid, usersCache) {
   const followBtn = (isLoggedIn && !u.isMe)
     ? `<button class="user-prof-follow ${following ? 'active' : ''}" data-user-follow="${u.uid}">${following ? '✓ フォロー中' : '＋ フォローする'}</button>`
     : '';
+  const careerHtml = (u.career && u.career.length) ? `
+    <div class="user-prof-career">
+      <div class="user-prof-section-label">📜 わたしの歩み</div>
+      <ol class="user-prof-career-list">
+        ${u.career.map(c => `
+          <li class="user-prof-career-item">
+            <div class="user-prof-career-year">${escapeHtml(c.year || '')}</div>
+            <div class="user-prof-career-body">
+              <div class="user-prof-career-title">${escapeHtml(c.title || '')}</div>
+              ${c.detail ? `<div class="user-prof-career-detail">${escapeHtml(c.detail)}</div>` : ''}
+            </div>
+          </li>
+        `).join('')}
+      </ol>
+    </div>
+  ` : '';
+  const quotesHtml = (u.myQuotes && u.myQuotes.length) ? `
+    <div class="user-prof-section">
+      <div class="user-prof-section-label">✒ 大切にしている言葉</div>
+      <div class="user-prof-quotes">
+        ${u.myQuotes.map(q => `
+          <blockquote class="user-prof-quote">
+            「${escapeHtml(q.text || q)}」
+            ${q.source ? `<cite>— ${escapeHtml(q.source)}</cite>` : ''}
+          </blockquote>
+        `).join('')}
+      </div>
+    </div>
+  ` : '';
+  const bioHtml = u.myBio ? `
+    <div class="user-prof-bio">
+      <div class="user-prof-section-label">📖 自己紹介</div>
+      <p>${escapeHtml(u.myBio).replace(/\n/g, '<br>')}</p>
+    </div>
+  ` : '';
+
   modal.innerHTML = `
     <div class="settings-backdrop" data-close="1"></div>
-    <div class="settings-panel">
+    <div class="settings-panel user-prof-panel">
       <button class="settings-close" data-close="1" aria-label="閉じる">×</button>
+      <div class="user-prof-cover">
+        <div class="user-prof-cover-ornament">◆</div>
+        <div class="user-prof-cover-name">${escapeHtml(u.name)}</div>
+        ${u.title ? `<div class="user-prof-cover-title">【${u.title}】</div>` : ''}
+        <div class="user-prof-cover-dates">${u.birthMonth && u.birthDay ? `🎂 ${u.birthMonth}/${u.birthDay}` : ''}${u.hometown ? `　📍 ${escapeHtml(u.hometown)}` : ''}</div>
+      </div>
       <div class="user-prof-head">
         ${av}
         <div style="flex:1;min-width:0">
-          <div class="user-prof-name">${u.title ? `<span class="users-dir-title">【${u.title}】</span>` : ''}${escapeHtml(u.name)}</div>
           <div class="user-prof-meta">会員フォロー ${myFollowedCount}人 · フォロワー ${followersOfThisUser}人</div>
           <div class="user-prof-meta">偉人フォロー ${u.ijinCount}人 · スタンプ ${u.stampTotal}個</div>
         </div>
       </div>
       ${followBtn}
-      ${u.birthMonth && u.birthDay ? `<div class="user-prof-row"><b>🎂 誕生日</b> ${u.birthMonth}/${u.birthDay}</div>` : ''}
-      ${u.hometown ? `<div class="user-prof-row"><b>📍 出身</b> ${escapeHtml(u.hometown)}</div>` : ''}
+      ${bioHtml}
+      ${careerHtml}
+      ${quotesHtml}
       <div class="user-prof-row"><b>🍽 好きな食べ物</b><div class="user-prof-chips">${chip(u.traits.foods)}</div></div>
       <div class="user-prof-row"><b>🎨 趣味</b><div class="user-prof-chips">${chip(u.traits.hobbies)}</div></div>
       <div class="user-prof-row"><b>❤ 好きなもの</b><div class="user-prof-chips">${chip(u.traits.likes)}</div></div>
       ${sns ? `<div class="user-prof-row"><b>🔗 SNS</b><div class="user-prof-sns-row">${sns}</div></div>` : ''}
       ${ijinSample ? `<div class="user-prof-row"><b>📚 フォロー中の偉人</b><div class="user-prof-ijin-list">${ijinSample}</div></div>` : ''}
+      <!-- 👣 訪問者の軌跡 -->
+      <div class="profile-visitors-section user-prof-visitors">
+        <div class="profile-visitors-head">
+          <span class="profile-visitors-ic">👣</span>
+          <span class="profile-visitors-title">${u.isMe ? 'あなたを訪ねた人' : 'この人を訪ねた人'}</span>
+        </div>
+        <div id="userVisitorsMount" class="person-visitors-mount"></div>
+      </div>
     </div>
   `;
   document.body.appendChild(modal);
@@ -2045,6 +2202,97 @@ function openUserProfileModal(uid, usersCache) {
     const now = toggleFollowUser(btn.dataset.userFollow);
     btn.classList.toggle('active', now);
     btn.textContent = now ? '✓ フォロー中' : '＋ フォローする';
+  });
+  // 訪問者として自分を記録＆軌跡を取得表示
+  (async () => {
+    try {
+      const mount = modal.querySelector('#userVisitorsMount');
+      if (!mount) return;
+      // 記録（自分以外を見た時のみ）
+      if (!u.isMe && typeof window.recordVisitorToUser === 'function' && currentUser) {
+        const isAnon = currentUser.isAnonymous;
+        const myName = getUserName() || currentUser.displayName || (isAnon ? 'ゲスト' : '名無しの読者');
+        const myAvatar = localStorage.getItem('ijin_user_avatar') || '';
+        window.recordVisitorToUser(u.uid, { name: myName, avatar: myAvatar, isGuest: isAnon });
+      }
+      // 取得
+      let visitors = [];
+      if (typeof window.fetchVisitorsToUser === 'function') {
+        visitors = await window.fetchVisitorsToUser(u.uid);
+      }
+      renderUserVisitors(mount, visitors);
+    } catch {}
+  })();
+}
+
+function renderUserVisitors(mount, visitors) {
+  if (!mount) return;
+  const myUid = (typeof currentUser !== 'undefined' && currentUser) ? currentUser.uid : getOrCreateGuestUid();
+  const others = (visitors || []);
+  if (others.length === 0) {
+    mount.innerHTML = `
+      <div class="visitors-empty">
+        <div class="visitors-empty-ic">👣</div>
+        <div>まだ誰も訪ねてきていません。<br>最初の訪問者が、いつか必ず現れます。</div>
+      </div>`;
+    return;
+  }
+  mount.innerHTML = `
+    <div class="visitors-hint">あなたのプロフィールを見にきた読者たち</div>
+    <div class="visitors-list">
+      ${others.map(v => {
+        const isSelf = v.uid === myUid;
+        const isGuest = !!v.isGuest;
+        const following = isFollowingUser(v.uid);
+        const liked = isLikedUser(v.uid);
+        const bg = v.avatar ? `style="background-image:url('${escapeHtml(v.avatar)}')"` : '';
+        const initial = (v.name || '?').charAt(0);
+        const dt = v.visitedAt ? new Date(v.visitedAt) : null;
+        const when = dt ? `${dt.getMonth()+1}/${dt.getDate()}` : '';
+        const dispName = escapeHtml(v.name || (isGuest ? 'ゲスト' : '名無しの読者'));
+        const badges = isGuest ? '<span class="visitor-badge-guest">ゲスト</span>' : '';
+        return `
+          <div class="visitor-card" data-uid="${escapeHtml(v.uid)}">
+            <div class="visitor-av" ${bg}>${v.avatar ? '' : initial}</div>
+            <div class="visitor-info">
+              <div class="visitor-name">${dispName} ${badges}</div>
+              <div class="visitor-meta">👣 ${when}</div>
+            </div>
+            ${isSelf || isGuest ? '' : `
+              <div class="visitor-actions">
+                <button class="visitor-btn visitor-like ${liked ? 'active' : ''}" data-user-like="${escapeHtml(v.uid)}">${liked ? '❤' : '♡'}</button>
+                <button class="visitor-btn visitor-follow ${following ? 'active' : ''}" data-visitor-follow="${escapeHtml(v.uid)}">${following ? '✓' : '＋'}</button>
+              </div>
+            `}
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
+  mount.querySelectorAll('[data-user-like]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const uid = btn.dataset.userLike;
+      const on = toggleLikeUser(uid);
+      btn.classList.toggle('active', on);
+      btn.textContent = on ? '❤' : '♡';
+    });
+  });
+  mount.querySelectorAll('[data-visitor-follow]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const uid = btn.dataset.visitorFollow;
+      const on = toggleFollowUser(uid);
+      btn.classList.toggle('active', on);
+      btn.textContent = on ? '✓' : '＋';
+    });
+  });
+  mount.querySelectorAll('.visitor-card').forEach(card => {
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.visitor-btn')) return;
+      const uid = card.dataset.uid;
+      if (uid && typeof openUserProfileById === 'function') openUserProfileById(uid);
+    });
   });
 }
 window.openUsersDirectory = openUsersDirectory;

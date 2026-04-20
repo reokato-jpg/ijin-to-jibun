@@ -53,6 +53,9 @@ const SYNC_KEYS = [
   'ijin_followed_at',
   'ijin_rabin_voice_played',
   'ijin_power_hint_seen',
+  'ijin_my_career',
+  'ijin_my_quotes',
+  'ijin_my_bio',
 ];
 
 let fbApp = null, fbAuth = null, fbDb = null;
@@ -132,6 +135,36 @@ async function initFirebase() {
     };
 
     // 年表の時代ページの訪問者記録＆取得
+    // 会員プロフィールの訪問者記録＆取得（自分のプロフに誰が来たか）
+    window.recordVisitorToUser = async (targetUid, profile) => {
+      if (!fbDb || !targetUid || !currentUser) return;
+      if (targetUid === currentUser.uid) return; // 自分を見ても記録しない
+      try {
+        const uid = currentUser.uid;
+        const ref = doc(fbDb, 'userVisitors', targetUid + '__' + uid);
+        await setDoc(ref, {
+          targetUid, uid,
+          name: profile?.name || '',
+          avatar: profile?.avatar || '',
+          isGuest: !!profile?.isGuest,
+          visitedAt: new Date().toISOString(),
+        }, { merge: true });
+      } catch {}
+    };
+    window.fetchVisitorsToUser = async (targetUid) => {
+      if (!fbDb || !targetUid) return [];
+      try {
+        const snap = await getDocs(collection(fbDb, 'userVisitors'));
+        const visitors = [];
+        snap.forEach(d => {
+          const data = d.data();
+          if (data.targetUid === targetUid) visitors.push(data);
+        });
+        visitors.sort((a, b) => (b.visitedAt || '').localeCompare(a.visitedAt || ''));
+        return visitors.slice(0, 20);
+      } catch { return []; }
+    };
+
     window.recordVisitorToEra = async (eraKey, profile) => {
       if (!fbDb || !eraKey || !currentUser) return;
       try {
@@ -409,6 +442,9 @@ async function fetchAllUserProfiles() {
         ijinCount: followingIjin.length,
         stampTotal,
         userFollows,
+        career: Array.isArray(d.ijin_my_career) ? d.ijin_my_career : [],
+        myQuotes: Array.isArray(d.ijin_my_quotes) ? d.ijin_my_quotes : [],
+        myBio: typeof d.ijin_my_bio === 'string' ? d.ijin_my_bio : '',
         isMe: currentUser && uid === currentUser.uid,
       });
     });
@@ -459,6 +495,9 @@ async function fetchUserProfileById(uid) {
       ijinCount: followingIjin.length,
       stampTotal,
       userFollows: Array.isArray(d.ijin_user_follows) ? d.ijin_user_follows : [],
+      career: Array.isArray(d.ijin_my_career) ? d.ijin_my_career : [],
+      myQuotes: Array.isArray(d.ijin_my_quotes) ? d.ijin_my_quotes : [],
+      myBio: typeof d.ijin_my_bio === 'string' ? d.ijin_my_bio : '',
       isMe: currentUser && uid === currentUser.uid,
     };
   } catch (e) {
