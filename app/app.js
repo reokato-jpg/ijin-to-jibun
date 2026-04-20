@@ -3493,12 +3493,44 @@ function initPhoneMenu() {
     list.innerHTML = items;
     list.querySelectorAll('[data-plaza-talk]').forEach(b => {
       b.addEventListener('click', () => {
-        const pid = b.dataset.plazaTalk;
-        close();
-        setTimeout(() => showPerson(pid), 260);
+        openPlazaChatThread(b.dataset.plazaTalk);
       });
     });
   }
+  // 偉人の広場のチャット画面をスマホ内に埋め込む
+  function openPlazaChatThread(personId) {
+    const plaza = document.getElementById('phonePlazaApp');
+    if (!plaza) return;
+    const title = document.getElementById('plazaChatTitle');
+    const body = document.getElementById('plazaChatBody');
+    if (title) title.textContent = '偉人の広場';
+    // 広場のグループチャットをbody内に描画（renderLineGroup 再利用）
+    if (body && typeof renderLineGroup === 'function') {
+      renderLineGroup(body);
+    }
+    // パネル切替：talks/friends を隠して chat を表示
+    plaza.querySelectorAll('.plaza-tab-panel').forEach(p => {
+      p.hidden = (p.dataset.plazaPanel !== 'chat');
+    });
+  }
+  // チャット戻る
+  plaza?.querySelector('.plaza-chat-back')?.addEventListener('click', () => {
+    plaza.querySelectorAll('.plaza-tab-panel').forEach(p => {
+      p.hidden = (p.dataset.plazaPanel !== 'talks');
+    });
+  });
+  // チャット送信
+  plaza?.querySelector('#plazaChatForm')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const input = document.getElementById('plazaChatInput');
+    const text = (input?.value || '').trim();
+    if (!text) return;
+    if (typeof addSelfPost === 'function') addSelfPost(text);
+    if (typeof scheduleQuickReply === 'function') scheduleQuickReply(text);
+    input.value = '';
+    const body = document.getElementById('plazaChatBody');
+    if (body && typeof renderLineGroup === 'function') renderLineGroup(body);
+  });
   // タブ切替
   const plaza = document.getElementById('phonePlazaApp');
   plaza?.querySelector('.plaza-app-back')?.addEventListener('click', closePhonePlazaApp);

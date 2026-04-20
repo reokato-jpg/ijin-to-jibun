@@ -70,7 +70,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20260420u">
+<link rel="stylesheet" href="style.css?v=20260420v">
 </head>
 <body>
   <header class="app-header">
@@ -529,6 +529,18 @@
               <div class="plaza-friends-head">トーク</div>
               <div class="plaza-talks-list" id="plazaTalksList"></div>
             </div>
+            <!-- トーク個別スレッド（偉人の広場チャット埋め込み） -->
+            <div class="plaza-tab-panel plaza-chat-panel" data-plaza-panel="chat" hidden>
+              <div class="plaza-chat-head">
+                <button class="plaza-chat-back" type="button" aria-label="戻る">‹</button>
+                <span class="plaza-chat-title" id="plazaChatTitle">偉人の広場</span>
+              </div>
+              <div class="plaza-chat-body" id="plazaChatBody"></div>
+              <form class="plaza-chat-form" id="plazaChatForm">
+                <input class="plaza-chat-input" id="plazaChatInput" type="text" placeholder="メッセージを入力…" autocomplete="off">
+                <button class="plaza-chat-send" type="submit">送信</button>
+              </form>
+            </div>
           </div>
           <div class="plaza-app-tabs">
             <button class="plaza-app-tab active" data-plaza-tab="friends">
@@ -593,8 +605,8 @@
     </div>
   </div>
 
-  <script src="app.js?v=20260420u"></script>
-  <script src="auth.js?v=20260420u" type="module"></script>
+  <script src="app.js?v=20260420v"></script>
+  <script src="auth.js?v=20260420v" type="module"></script>
   <script src="ai-consult.js"></script>
 </body>
 </html>
