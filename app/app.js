@@ -4598,8 +4598,10 @@ function initPhoneMenu() {
 
   btn.addEventListener('click', () => {
     // 電源ボタンは常にホームグリッドから開く（前回の画面を引きずらない）
-    const plaza = document.getElementById('phonePlazaApp');
-    if (plaza) plaza.hidden = true;
+    ['phonePlazaApp','phoneMusicApp','phoneMeshiruApp'].forEach(id => {
+      const el2 = document.getElementById(id);
+      if (el2) el2.hidden = true;
+    });
     // チャットパネルが開いていた場合は友だちタブに戻す
     document.querySelectorAll('.plaza-tab-panel').forEach(p => {
       p.hidden = (p.dataset.plazaPanel !== 'friends');

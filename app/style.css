@@ -14835,7 +14835,7 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
   display: flex;
   flex-direction: column;
 }
-.phone-tool-app[hidden] { display: none; }
+.phone-tool-app[hidden] { display: none !important; }
 .tool-app-head {
   background: #3a2d1c !important;
   color: #f5e8c8 !important;
@@ -15034,10 +15034,10 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
 }
 .phone-tool-app#phoneMeshiruApp {
   overflow: hidden;
-  display: flex;
   flex-direction: column;
   background: #faf6ed;
 }
+.phone-tool-app#phoneMeshiruApp[hidden] { display: none !important; }
 .meshiru-head {
   background: linear-gradient(135deg, #c07d4e, #8a5a1d);
   color: #fff7e6;
