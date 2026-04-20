@@ -15111,8 +15111,5 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
   .float-nav { bottom: 12px; }
   .float-nav-btn { width: 36px; height: 36px; font-size: 12px; }
 }
-/* スマホが開いているときは隠す（スマホのナビバーに任せる） */
-.phone-menu.open ~ .float-nav,
-body:has(.phone-menu.open) .float-nav {
-  display: none;
-}
+/* スマホが開いているときは隠す（JSで制御） */
+.float-nav.hide-for-phone { display: none; }

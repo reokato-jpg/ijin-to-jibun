@@ -3494,6 +3494,8 @@ function playPortalTransition(menuEl, onComplete) {
       menuEl.classList.remove('open');
       menuEl.setAttribute('aria-hidden', 'true');
     }
+    // 戻る/進む浮遊ナビを再表示
+    document.getElementById('floatNav')?.classList.remove('hide-for-phone');
     onComplete?.();  // → showView(v) がここで走る ⇒ 対象ビューのBGMが鳴り始める
   }, 200);
 
@@ -3909,6 +3911,8 @@ function initPhoneMenu() {
   const close = () => {
     menu.classList.remove('open');
     menu.setAttribute('aria-hidden', 'true');
+    // 戻る/進む浮遊ナビを再表示
+    document.getElementById('floatNav')?.classList.remove('hide-for-phone');
     // スマホを閉じるときに内部状態をリセット
     const plazaEl = document.getElementById('phonePlazaApp');
     if (plazaEl) plazaEl.hidden = true;
@@ -3944,6 +3948,8 @@ function initPhoneMenu() {
   const open = () => {
     menu.classList.add('open');
     menu.setAttribute('aria-hidden', 'false');
+    // 戻る/進む浮遊ナビを隠す
+    document.getElementById('floatNav')?.classList.add('hide-for-phone');
     tick();
     updateBattery();
     updateNotif();
@@ -4361,6 +4367,10 @@ function initPhoneMenu() {
       openRekittoChat();
     });
   }
+  // グローバル公開（pushRekittoMsgからの再描画で使う）
+  window.renderPlazaTalks = renderPlazaTalks;
+  window.renderPlazaFriends = renderPlazaFriends;
+  window.openRekittoChat = openRekittoChat;
 
   // レキットのチャットを開く
   function openRekittoChat() {
