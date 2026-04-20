@@ -4489,9 +4489,11 @@ function initPhoneMenu() {
       const activeView = document.querySelector('.view.active')?.id?.replace('view-', '');
       if (el) el.hidden = (activeView !== 'people');
     }
-    // スマホを閉じるときに内部状態をリセット
-    const plazaEl = document.getElementById('phonePlazaApp');
-    if (plazaEl) plazaEl.hidden = true;
+    // スマホを閉じるときに内部状態をリセット（全てのツールアプリを閉じる）
+    ['phonePlazaApp','phoneMusicApp','phoneMeshiruApp'].forEach(id => {
+      const el2 = document.getElementById(id);
+      if (el2) el2.hidden = true;
+    });
     document.querySelectorAll('.plaza-tab-panel').forEach(p => {
       p.hidden = (p.dataset.plazaPanel !== 'friends');
     });
