@@ -186,7 +186,12 @@ const MY_ROUTINE_KEY = 'ijin_my_routine';
 const USER_NAME_KEY = 'ijin_user_name';
 
 function getUserName() {
-  return localStorage.getItem(USER_NAME_KEY) || '';
+  let v = localStorage.getItem(USER_NAME_KEY) || '';
+  // Firestore同期で二重stringifyされてクオート付きになった値を修復
+  while (v.length >= 2 && v.startsWith('"') && v.endsWith('"')) {
+    try { v = JSON.parse(v); } catch { break; }
+  }
+  return v;
 }
 function setUserName(name) {
   if (name && name.trim()) localStorage.setItem(USER_NAME_KEY, name.trim());
@@ -1530,6 +1535,23 @@ function openMemberSettings() {
 }
 
 // ============ 会員同士のフォロー ============
+// ユーザーへの「いいね」（ローカルで保持）
+const USER_LIKES_KEY = 'ijin_user_likes';
+function loadUserLikes() {
+  try { return new Set(JSON.parse(localStorage.getItem(USER_LIKES_KEY) || '[]')); }
+  catch { return new Set(); }
+}
+function saveUserLikes(set) {
+  localStorage.setItem(USER_LIKES_KEY, JSON.stringify([...set]));
+}
+function isLikedUser(uid) { return loadUserLikes().has(uid); }
+function toggleLikeUser(uid) {
+  const s = loadUserLikes();
+  if (s.has(uid)) s.delete(uid); else s.add(uid);
+  saveUserLikes(s);
+  return s.has(uid);
+}
+
 const USER_FOLLOWS_KEY = 'ijin_user_follows';
 function loadUserFollows() {
   try { return new Set(JSON.parse(localStorage.getItem(USER_FOLLOWS_KEY) || '[]')); }
@@ -2761,6 +2783,27 @@ function renderUpdates() {
       ` : ''}
     </div>
   `;
+  // ジャンプボタン
+  el.querySelectorAll('.updates-item').forEach(item => {
+    const btn = item.querySelector('.updates-jump-btn');
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+      let target = null;
+      try { target = JSON.parse(item.dataset.updateTarget || 'null'); } catch {}
+      if (target?.action === 'worldview') {
+        if (typeof openWorldviewModal === 'function') openWorldviewModal();
+      } else if (target?.action === 'music') {
+        const pBtn = document.getElementById('powerBtn');
+        if (pBtn) pBtn.click();
+        setTimeout(() => {
+          const musicIcon = document.querySelector('[data-phone-action="music"]');
+          if (musicIcon) musicIcon.click();
+        }, 300);
+      } else if (target?.view) {
+        if (typeof showView === 'function') showView(target.view);
+      }
+    });
+  });
 }
 function updateItemHtml(u) {
   const tagClass = {
@@ -2769,14 +2812,17 @@ function updateItemHtml(u) {
     '改善': 'updates-tag-improve',
     '修正': 'updates-tag-fix',
   }[u.tag] || '';
+  const target = (typeof guessUpdateTarget === 'function') ? guessUpdateTarget(u.title + ' ' + (u.body||'')) : null;
+  const ds = target ? `data-update-target='${JSON.stringify(target).replace(/'/g,'&#39;')}'` : '';
   return `
-    <div class="updates-item">
+    <div class="updates-item" ${ds}>
       <div class="updates-meta">
         <span class="updates-date">${u.date || ''}</span>
         ${u.tag ? `<span class="updates-tag ${tagClass}">${u.tag}</span>` : ''}
       </div>
       <div class="updates-title">${u.title}</div>
       ${u.body ? `<div class="updates-body">${u.body}</div>` : ''}
+      ${target ? `<div class="updates-action"><button class="updates-jump-btn">✨ 使ってみる →</button></div>` : ''}
     </div>
   `;
 }
@@ -3262,7 +3308,20 @@ function rekittoAvatarHtml(cls = '') {
 }
 
 function getRekittoMsgs() {
-  try { return JSON.parse(localStorage.getItem(REKITTO_MSGS_KEY) || '[]'); } catch { return []; }
+  try {
+    const msgs = JSON.parse(localStorage.getItem(REKITTO_MSGS_KEY) || '[]');
+    // 既存メッセージの余分な空白・インデントをクリーンアップ
+    let cleaned = false;
+    msgs.forEach(m => {
+      if (m.text) {
+        const lines = m.text.split('\n').map(l => l.replace(/^\s+/, ''));
+        const t2 = lines.join('\n').replace(/\n{3,}/g, '\n\n');
+        if (t2 !== m.text) { m.text = t2; cleaned = true; }
+      }
+    });
+    if (cleaned) try { localStorage.setItem(REKITTO_MSGS_KEY, JSON.stringify(msgs)); } catch {}
+    return msgs;
+  } catch { return []; }
 }
 function saveRekittoMsgs(msgs) {
   try { localStorage.setItem(REKITTO_MSGS_KEY, JSON.stringify(msgs)); } catch {}
@@ -3297,12 +3356,28 @@ function syncRekittoUpdates() {
   const newUpdates = DATA.updates.filter(u => !seenSet.has(u.date + '|' + u.title));
   if (!newUpdates.length) return;
   newUpdates.forEach(u => {
+    // タイトルからリンク先を推定
+    const target = guessUpdateTarget(u.title + ' ' + (u.body||''));
     pushRekittoMsg({
-      text: `こちら側で、新しい扉が開きました。\n\n【${u.tag || 'お知らせ'}】${u.title}\n\n${u.body}`,
+      text: `こちら側で、新しい扉が開きました。\n【${u.tag || 'お知らせ'}】${u.title}\n\n${u.body}`,
       kind: 'update',
       linkLabel: (u.tag === '新機能') ? '✨ 扉を開く' : '詳しく見る',
+      target: target,
     });
   });
+}
+// 更新内容からジャンプ先を推測
+function guessUpdateTarget(text) {
+  const s = (text || '').toLowerCase();
+  if (/年表|時代|歴史の鏡|木霊/.test(text)) return { view: 'history' };
+  if (/偉人検索|感情|タグ/.test(text)) return { view: 'tags' };
+  if (/ルーティン/.test(text)) return { view: 'routines' };
+  if (/ブログ|読み物/.test(text)) return { view: 'articles' };
+  if (/わたしの本|favorites/.test(text)) return { view: 'favorites' };
+  if (/世界観|レキット|ラビン/.test(text)) return { action: 'worldview' };
+  if (/ミュージック|bgm/.test(text)) return { action: 'music' };
+  if (/今日|誕生日|ホーム/.test(text)) return { view: 'people' };
+  return { view: 'people' };
   localStorage.setItem(REKITTO_SEEN_UPDATES_KEY, JSON.stringify(keys));
 }
 // 偉人からフォローされたときにレキットが知らせる
@@ -4088,7 +4163,9 @@ function initPhoneMenu() {
       close();
       setTimeout(() => {
         if (action === 'settings') {
-          if (typeof openMemberSettings === 'function') openMemberSettings();
+          // 右上の三本線と同じ画面（アカウントメニュー）を開く
+          if (typeof window.openAccountMenu === 'function') window.openAccountMenu();
+          else if (typeof openMemberSettings === 'function') openMemberSettings();
         } else if (action === 'oshi') {
           const pid = el.dataset.phonePerson;
           if (pid && typeof showPerson === 'function') showPerson(pid);
@@ -4422,7 +4499,8 @@ function initPhoneMenu() {
               return `<button class="rekitto-link-btn" data-rekitto-user="${escapeHtml(m.userId)}">${escapeHtml(m.linkLabel || 'プロフィールを見る')} →</button>`;
             }
             if (m.kind === 'update') {
-              return `<button class="rekitto-link-btn" data-rekitto-updates="1">${escapeHtml(m.linkLabel || '詳しく見る')} →</button>`;
+              const t = m.target ? JSON.stringify(m.target) : '';
+              return `<button class="rekitto-link-btn" data-rekitto-updates="1" data-rekitto-target='${escapeHtml(t)}'>${escapeHtml(m.linkLabel || '詳しく見る')} →</button>`;
             }
             return '';
           })();
@@ -4456,12 +4534,28 @@ function initPhoneMenu() {
     body.querySelectorAll('[data-rekitto-updates]').forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
+        let target = null;
+        try { target = JSON.parse(btn.dataset.rekittoTarget || 'null'); } catch {}
         const menu = document.getElementById('phoneMenu');
         if (menu) menu.classList.remove('open');
         setTimeout(() => {
-          if (typeof showView === 'function') showView('people');
-          const updEl = document.getElementById('updatesFeed') || document.querySelector('.updates-feed');
-          if (updEl) updEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          if (target?.action === 'worldview') {
+            if (typeof openWorldviewModal === 'function') openWorldviewModal();
+          } else if (target?.action === 'music') {
+            // スマホ起動してミュージックを開く
+            const btn2 = document.getElementById('powerBtn');
+            if (btn2) btn2.click();
+            setTimeout(() => {
+              const musicIcon = document.querySelector('[data-phone-action="music"]');
+              if (musicIcon) musicIcon.click();
+            }, 300);
+          } else if (target?.view) {
+            if (typeof showView === 'function') showView(target.view);
+          } else {
+            if (typeof showView === 'function') showView('people');
+            const updEl = document.getElementById('updatesFeed') || document.querySelector('.updates-feed');
+            if (updEl) updEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
         }, 260);
       });
     });
@@ -4552,11 +4646,71 @@ function initPhoneMenu() {
   });
   // ≡ 三本線：会員設定モーダルを開く
   navMenu?.addEventListener('click', () => {
-    close();
-    setTimeout(() => {
-      if (typeof openMemberSettings === 'function') openMemberSettings();
-    }, 260);
+    // 今日見た偉人の履歴を表示
+    openTodayHistoryApp();
   });
+
+  function openTodayHistoryApp() {
+    // 他のアプリを閉じて履歴画面を表示
+    ['phoneMusicApp','phonePlazaApp','phoneHistoryApp'].forEach(id => {
+      const a = document.getElementById(id);
+      if (a) a.hidden = true;
+    });
+    let app = document.getElementById('phoneHistoryApp');
+    if (!app) {
+      app = document.createElement('div');
+      app.id = 'phoneHistoryApp';
+      app.className = 'phone-tool-app';
+      menu.querySelector('.phone-screen')?.appendChild(app);
+    }
+    const todayStr = new Date().toISOString().slice(0, 10);
+    let lastVisit = {};
+    try { lastVisit = JSON.parse(localStorage.getItem(LAST_VISIT_KEY) || '{}'); } catch {}
+    const todayIds = Object.keys(lastVisit).filter(id => lastVisit[id] === todayStr);
+    const todayPeople = todayIds.map(id => DATA.people.find(p => p.id === id)).filter(Boolean);
+    app.hidden = false;
+    app.innerHTML = `
+      <div class="plaza-app-head tool-app-head">
+        <button class="plaza-app-back tool-app-back" type="button" data-history-close="1" aria-label="戻る">‹</button>
+        <span class="plaza-app-title">今日の足跡</span>
+      </div>
+      <div class="history-app">
+        <div class="history-head-note">${new Date().getMonth()+1}月${new Date().getDate()}日、今日出会った偉人たち（${todayPeople.length}人）</div>
+        ${todayPeople.length === 0 ? `
+          <div class="history-empty">
+            <div class="history-empty-ic">👣</div>
+            <div>今日はまだ誰とも出会っていません。<br>偉人のページを開くと、ここに足跡が残ります。</div>
+          </div>
+        ` : `
+          <div class="history-list">
+            ${todayPeople.map(p => {
+              const bg = p.imageUrl ? `style="background-image:url('${p.imageUrl}')"` : '';
+              return `
+                <button class="history-item" data-history-person="${p.id}">
+                  <div class="history-av" ${bg}>${p.imageUrl ? '' : (p.name?.charAt(0) || '?')}</div>
+                  <div class="history-info">
+                    <div class="history-name">${escapeHtml(p.name)}</div>
+                    <div class="history-sub">${fmtYearRange(p.birth, p.death)} · ${escapeHtml(p.field || '')}</div>
+                  </div>
+                  <div class="history-arrow">›</div>
+                </button>
+              `;
+            }).join('')}
+          </div>
+        `}
+      </div>
+    `;
+    app.querySelector('[data-history-close]').addEventListener('click', () => {
+      app.hidden = true;
+    });
+    app.querySelectorAll('[data-history-person]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const pid = btn.dataset.historyPerson;
+        close();
+        setTimeout(() => showPerson(pid), 260);
+      });
+    });
+  }
 
   plaza?.querySelectorAll('[data-plaza-tab]').forEach(tab => {
     tab.addEventListener('click', () => {
@@ -4941,6 +5095,13 @@ async function showPerson(id) {
             <span>あなた ${getVisitCount(p.id)}回</span>
           </span>
         </div>
+      </div>
+      <div class="profile-visitors-section">
+        <div class="profile-visitors-head">
+          <span class="profile-visitors-ic">👣</span>
+          <span class="profile-visitors-title">読者の足跡</span>
+        </div>
+        <div id="personVisitorsMount" class="person-visitors-mount"></div>
       </div>
       ${(() => {
         // この偉人が属する年表時代を全て検索し、ジャンプボタンを生成
@@ -5624,7 +5785,7 @@ async function showPerson(id) {
   const container = document.getElementById('personDetail');
   container.innerHTML = html;
 
-  // グローバル訪問数を非同期取得
+  // グローバル訪問数を非同期取得＋訪問者を記録＆表示
   (async () => {
     try {
       if (typeof window.getGlobalVisit === 'function') {
@@ -5633,7 +5794,96 @@ async function showPerson(id) {
         if (el) el.textContent = `累計 ${n}回`;
       }
     } catch {}
+    // 訪問者として自分を記録（ログイン中のみ）
+    try {
+      if (typeof window.recordVisitorToPerson === 'function' && currentUser) {
+        const myName = getUserName() || currentUser.displayName || '名無しの読者';
+        const myAvatar = localStorage.getItem('ijin_user_avatar') || '';
+        window.recordVisitorToPerson(p.id, { name: myName, avatar: myAvatar });
+      }
+    } catch {}
+    // 足跡（他の訪問者）を取得して表示
+    try {
+      if (typeof window.fetchVisitorsToPerson === 'function') {
+        const visitors = await window.fetchVisitorsToPerson(p.id);
+        renderPersonVisitors(visitors);
+      }
+    } catch {}
   })();
+
+  function renderPersonVisitors(visitors) {
+    const mount = document.getElementById('personVisitorsMount');
+    if (!mount) return;
+    // 自分は除外
+    const myUid = (typeof currentUser !== 'undefined' && currentUser) ? currentUser.uid : '';
+    const others = (visitors || []).filter(v => v.uid !== myUid);
+    if (others.length === 0) {
+      mount.innerHTML = `
+        <div class="visitors-empty">
+          <div class="visitors-empty-ic">👣</div>
+          <div>まだ他の読者の足跡はありません。<br>最初の訪問者があなたかもしれません。</div>
+        </div>`;
+      return;
+    }
+    mount.innerHTML = `
+      <div class="visitors-hint">この偉人のページを訪れた読者たち</div>
+      <div class="visitors-list">
+        ${others.map(v => {
+          const following = isFollowingUser(v.uid);
+          const liked = isLikedUser(v.uid);
+          const bg = v.avatar ? `style="background-image:url('${escapeHtml(v.avatar)}')"` : '';
+          const initial = (v.name || '?').charAt(0);
+          const dt = v.visitedAt ? new Date(v.visitedAt) : null;
+          const when = dt ? `${dt.getMonth()+1}/${dt.getDate()}` : '';
+          return `
+            <div class="visitor-card" data-uid="${escapeHtml(v.uid)}">
+              <div class="visitor-av" ${bg}>${v.avatar ? '' : initial}</div>
+              <div class="visitor-info">
+                <div class="visitor-name">${escapeHtml(v.name || '名無しの読者')}</div>
+                <div class="visitor-meta">👣 ${when}</div>
+              </div>
+              <div class="visitor-actions">
+                <button class="visitor-btn visitor-like ${liked ? 'active' : ''}" data-user-like="${escapeHtml(v.uid)}" aria-label="いいね">
+                  ${liked ? '❤' : '♡'}
+                </button>
+                <button class="visitor-btn visitor-follow ${following ? 'active' : ''}" data-visitor-follow="${escapeHtml(v.uid)}">
+                  ${following ? '✓' : '＋'}
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+    // いいね
+    mount.querySelectorAll('[data-user-like]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const uid = btn.dataset.userLike;
+        const on = toggleLikeUser(uid);
+        btn.classList.toggle('active', on);
+        btn.textContent = on ? '❤' : '♡';
+      });
+    });
+    // フォロー
+    mount.querySelectorAll('[data-visitor-follow]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const uid = btn.dataset.visitorFollow;
+        const on = toggleFollowUser(uid);
+        btn.classList.toggle('active', on);
+        btn.textContent = on ? '✓' : '＋';
+      });
+    });
+    // カードタップでプロフィール
+    mount.querySelectorAll('.visitor-card').forEach(card => {
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('.visitor-btn')) return;
+        const uid = card.dataset.uid;
+        if (uid && typeof openUserPublicProfile === 'function') openUserPublicProfile(uid);
+      });
+    });
+  }
 
   // Xポストのいいね・コメント・共有
   container.querySelectorAll('[data-like-toggle]').forEach(btn => {

@@ -120,6 +120,37 @@ async function initFirebase() {
       return 0;
     };
 
+    // 偉人ページの訪問者記録（ログイン中のみ自分を記録）
+    window.recordVisitorToPerson = async (personId, profile) => {
+      if (!fbDb || !personId) return;
+      if (!currentUser) return;
+      try {
+        const uid = currentUser.uid;
+        const ref = doc(fbDb, 'personVisitors', personId + '__' + uid);
+        await setDoc(ref, {
+          personId,
+          uid,
+          name: profile?.name || '',
+          avatar: profile?.avatar || '',
+          visitedAt: new Date().toISOString(),
+        }, { merge: true });
+      } catch {}
+    };
+    // 偉人ページの訪問者一覧を取得（最新20件）
+    window.fetchVisitorsToPerson = async (personId) => {
+      if (!fbDb || !personId) return [];
+      try {
+        const snap = await getDocs(collection(fbDb, 'personVisitors'));
+        const visitors = [];
+        snap.forEach(d => {
+          const data = d.data();
+          if (data.personId === personId) visitors.push(data);
+        });
+        visitors.sort((a, b) => (b.visitedAt || '').localeCompare(a.visitedAt || ''));
+        return visitors.slice(0, 20);
+      } catch { return []; }
+    };
+
     onAuthStateChanged(fbAuth, async (user) => {
       currentUser = user;
       authResolved = true;
@@ -170,7 +201,11 @@ async function pullFromCloud(user) {
           }
           if (cloudVal === undefined && localVal !== null) return; // ローカルのみ
           if (localVal === null) {
-            if (cloudVal !== undefined) localStorage.setItem(k, JSON.stringify(cloudVal));
+            if (cloudVal !== undefined) {
+              // 文字列はそのまま保存（JSON.stringifyは避けて二重クオート防止）
+              if (typeof cloudVal === 'string') localStorage.setItem(k, cloudVal);
+              else localStorage.setItem(k, JSON.stringify(cloudVal));
+            }
             return;
           }
           if (Array.isArray(cloudVal) && Array.isArray(localVal)) {
@@ -193,7 +228,8 @@ async function pullFromCloud(user) {
             const localEmpty = (localVal === null || localVal === '' ||
               (typeof localVal === 'object' && localVal && Object.keys(localVal).length === 0));
             if (localEmpty && cloudVal !== undefined) {
-              localStorage.setItem(k, JSON.stringify(cloudVal));
+              if (typeof cloudVal === 'string') localStorage.setItem(k, cloudVal);
+              else localStorage.setItem(k, JSON.stringify(cloudVal));
             }
             // ローカルに既に値があるときは上書きしない（ここで何もしない）
           }
@@ -662,6 +698,7 @@ function insertAccountButton() {
   updateAccountUI();
 }
 
+window.openAccountMenu = function openAccountMenuBody() { return openAccountMenu(); };
 function openAccountMenu() {
   const existing = document.getElementById('authModal');
   if (existing) existing.remove();
