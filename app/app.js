@@ -910,7 +910,7 @@ function renderTraitsMatch() {
   `;
 
   container.innerHTML = `
-    <details class="match-card" ${selectedCount === 0 ? 'open' : ''}>
+    <details class="match-card" ${selectedCount > 0 ? 'open' : ''}>
       <summary class="match-summary">
         <span class="match-summary-icon">🫖</span>
         <span class="match-summary-text">${selectedCount > 0 ? `あなたの好み ${selectedCount}個登録中` : 'あなたの好み・誕生日を登録して偉人を探す'}</span>
@@ -2561,7 +2561,7 @@ function renderHistoryMirrors() {
   const seed = (typeof daySeed === 'function') ? daySeed() : 0;
   const shuffled = [...mirrors].sort((x, y) => ((hashStr(x.theme) ^ seed) >>> 0) - ((hashStr(y.theme) ^ seed) >>> 0));
   const picks = shuffled.slice(0, 3);
-  list.innerHTML = picks.map((pair, i) => {
+  const pairHtml = (pair, i) => {
     const a = DATA.people.find(p => p.id === pair.a.id);
     const b = DATA.people.find(p => p.id === pair.b.id);
     const bgA = a.imageUrl ? `style="background-image:url('${a.imageUrl}')"` : '';
@@ -2591,7 +2591,23 @@ function renderHistoryMirrors() {
         <p class="mirror-body">${escapeHtml(pair.body)}</p>
       </article>
     `;
-  }).join('');
+  };
+  const first = picks[0];
+  const rest = picks.slice(1);
+  list.innerHTML = `
+    ${first ? pairHtml(first, 0) : ''}
+    ${rest.length ? `
+      <details class="mirror-more">
+        <summary class="mirror-more-summary">
+          <span>さらに ${rest.length} 組の時代を超えた二人を見る</span>
+          <span class="mirror-more-arrow">▾</span>
+        </summary>
+        <div class="mirror-more-body">
+          ${rest.map((p, i) => pairHtml(p, i + 1)).join('')}
+        </div>
+      </details>
+    ` : ''}
+  `;
   list.querySelectorAll('[data-jump-person]').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();

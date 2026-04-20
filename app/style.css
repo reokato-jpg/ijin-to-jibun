@@ -14341,6 +14341,20 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
   margin: 0;
   flex: 1;
 }
+.home-details-label {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--wine);
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+  font-family: var(--font-jp);
+  padding-left: 12px;
+  border-left: 4px double var(--wine);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .home-details-hint {
   font-size: 11px;
   color: var(--ink-4);
@@ -14367,3 +14381,30 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
   .home-details > *:not(summary) { padding: 12px 14px; }
   .home-details-hint { display: none; }
 }
+
+/* 歴史の鏡の「もっと見る」折りたたみ */
+.mirror-more {
+  margin-top: 10px;
+}
+.mirror-more-summary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 14px;
+  background: rgba(74,58,106,0.08);
+  border: 1px dashed rgba(74,58,106,0.25);
+  border-radius: 10px;
+  cursor: pointer;
+  list-style: none;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #4a3a6a;
+  transition: background 0.15s;
+}
+.mirror-more-summary::-webkit-details-marker { display: none; }
+.mirror-more-summary:hover { background: rgba(74,58,106,0.14); }
+.mirror-more[open] .mirror-more-summary { margin-bottom: 10px; }
+.mirror-more-arrow { transition: transform 0.2s; }
+.mirror-more[open] .mirror-more-arrow { transform: rotate(180deg); }
+.mirror-more-body { display: flex; flex-direction: column; gap: 14px; }
