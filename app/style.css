@@ -12803,6 +12803,60 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 }
 .settings-title-btn:hover { border-color: var(--gold); }
 
+/* プロフィール編集のtraitサブカテゴリ */
+.settings-trait-section { cursor: default; }
+.settings-trait-summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.settings-trait-summary::-webkit-details-marker { display: none; }
+.settings-trait-summary::after {
+  content: '▾';
+  margin-left: auto;
+  transition: transform 0.2s;
+  font-size: 11px;
+  color: var(--ink-3);
+}
+.settings-trait-section[open] .settings-trait-summary::after { transform: rotate(180deg); }
+.settings-trait-count {
+  display: inline-block;
+  min-width: 18px;
+  padding: 1px 6px;
+  background: var(--wine);
+  color: var(--gold-light);
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  text-align: center;
+}
+.settings-trait-groups {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.settings-trait-group {
+  background: #fff8ee;
+  border: 1px solid #e7dcc2;
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+.settings-trait-sub {
+  font-size: 11px;
+  color: var(--wine-dark);
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.settings-trait-group .settings-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
 /* スマホ風メニュー */
 .phone-menu {
   position: fixed; inset: 0;
@@ -13241,6 +13295,70 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
   cursor: pointer;
   font-weight: 600;
 }
+.plaza-chat-sticker-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0 4px;
+  flex-shrink: 0;
+}
+.plaza-sticker-panel {
+  background: #fff;
+  border-top: 1px solid #e0e0d0;
+  max-height: 220px;
+  overflow-y: auto;
+}
+.plaza-sticker-panel[hidden] { display: none; }
+.plaza-sticker-tabs {
+  display: flex;
+  border-bottom: 1px solid #e0e0d0;
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 1;
+}
+.plaza-sticker-tab {
+  flex: 1;
+  padding: 6px 4px;
+  background: none;
+  border: none;
+  font-size: 10px;
+  color: #888;
+  cursor: pointer;
+  font-family: inherit;
+  border-bottom: 2px solid transparent;
+}
+.plaza-sticker-tab.active { color: #06c755; font-weight: 700; border-bottom-color: #06c755; }
+.plaza-sticker-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  padding: 8px;
+}
+.plaza-sticker-grid[hidden] { display: none; }
+.plaza-sticker-item {
+  background: #fff8ee;
+  border: 1px solid #e7dcc2;
+  border-radius: 8px;
+  padding: 4px;
+  cursor: pointer;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.plaza-sticker-item img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+.plaza-sticker-item:hover { background: #ffe8d0; }
+.line-msg-sticker img {
+  width: 100px;
+  height: auto;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
 
 .phone-oshi-avatar {
   width: 58px; height: 58px;
@@ -13316,6 +13434,9 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
   height: 100%;
   object-fit: contain;
   pointer-events: none;
+  /* iOS Safari は VP9 alpha 非対応で mp4 フォールバック（白背景）になるため、
+     multiply で白を背景となじませて擬似透過 */
+  mix-blend-mode: multiply;
 }
 .power-hint-close { display: none; }
 .power-hint-close {
@@ -13352,6 +13473,7 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
   height: 100%;
   object-fit: contain;
   filter: drop-shadow(0 4px 8px rgba(100,70,30,0.2));
+  mix-blend-mode: multiply;
 }
 .welcome-intro-skip { display: none; }
 .welcome-intro-bubble {

@@ -1145,14 +1145,45 @@ function openMemberSettings() {
 
   const renderChips = (cat, catLabel, opts) => {
     const selected = new Set(my[cat] || []);
+    const renderChipBtn = (opt) => {
+      const on = selected.has(opt);
+      return `<button class="match-chip ${on ? 'active' : ''}" data-setting-chip data-cat="${cat}" data-opt="${escapeHtml(opt)}">${opt}</button>`;
+    };
+    // TRAIT_GROUPS にサブカテゴリがあればそれで階層表示
+    const groups = (typeof TRAIT_GROUPS !== 'undefined') ? TRAIT_GROUPS[cat] : null;
+    if (groups && groups.length) {
+      // 既知のすべてのサブグループ項目
+      const grouped = new Set();
+      groups.forEach(g => g.items.forEach(i => grouped.add(i)));
+      // DB由来で分類外のその他
+      const others = opts.filter(o => !grouped.has(o));
+      return `
+        <details class="settings-section settings-trait-section" open>
+          <summary class="settings-sec-label settings-trait-summary">${catLabel} <span class="settings-trait-count">${selected.size}</span></summary>
+          <div class="settings-trait-groups">
+            ${groups.map(g => `
+              <div class="settings-trait-group">
+                <div class="settings-trait-sub">${g.label}</div>
+                <div class="settings-chips">
+                  ${g.items.map(renderChipBtn).join('')}
+                </div>
+              </div>
+            `).join('')}
+            ${others.length ? `
+              <div class="settings-trait-group">
+                <div class="settings-trait-sub">📌 その他（偉人の好み）</div>
+                <div class="settings-chips">${others.map(renderChipBtn).join('')}</div>
+              </div>
+            ` : ''}
+          </div>
+        </details>
+      `;
+    }
     return `
       <div class="settings-section">
         <div class="settings-sec-label">${catLabel}</div>
         <div class="settings-chips">
-          ${opts.map(opt => {
-            const on = selected.has(opt);
-            return `<button class="match-chip ${on ? 'active' : ''}" data-setting-chip data-cat="${cat}" data-opt="${escapeHtml(opt)}">${opt}</button>`;
-          }).join('')}
+          ${opts.map(renderChipBtn).join('')}
         </div>
       </div>
     `;
@@ -1245,10 +1276,18 @@ function openMemberSettings() {
   };
   modal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', close));
 
-  // チップのトグル
+  // チップのトグル＋カテゴリ別カウント更新
+  const updateTraitCounts = () => {
+    ['foods','hobbies','likes','dislikes'].forEach(cat => {
+      const count = modal.querySelectorAll(`[data-setting-chip][data-cat="${cat}"].active`).length;
+      const summary = modal.querySelector(`.settings-trait-section:has([data-cat="${cat}"]) .settings-trait-count`);
+      if (summary) summary.textContent = count;
+    });
+  };
   modal.querySelectorAll('[data-setting-chip]').forEach(btn => {
     btn.addEventListener('click', () => {
       btn.classList.toggle('active');
+      updateTraitCounts();
     });
   });
 
@@ -2037,11 +2076,16 @@ function renderLineGroup(container) {
       prevAuthor = null;
     }
     if (m.type === 'self') {
+      // [sticker:xxx] 形式ならスタンプとして画像表示
+      const stickerMatch = (m.text || '').match(/^\[sticker:([a-zA-Z0-9_]+)\]$/);
+      const body = stickerMatch
+        ? `<div class="line-msg-sticker"><img src="assets/stickers/${stickerMatch[1]}.png" alt=""></div>`
+        : `<div class="line-msg-bubble-me">${escapeHtml(m.text)}</div>`;
       bubbles.push(`
         <div class="line-msg line-msg-me">
           <div class="line-msg-wrap">
             <div class="line-msg-time-me">${fmtTime(m.ts)}</div>
-            <div class="line-msg-bubble-me">${escapeHtml(m.text)}</div>
+            ${body}
           </div>
         </div>
       `);
@@ -3569,6 +3613,33 @@ function initPhoneMenu() {
       e.preventDefault();
       plaza.querySelector('#plazaChatForm')?.requestSubmit();
     }
+  });
+  // スタンプパネル開閉
+  const stickerToggle = document.getElementById('plazaStickerToggle');
+  const stickerPanel = document.getElementById('plazaStickerPanel');
+  stickerToggle?.addEventListener('click', () => {
+    if (!stickerPanel) return;
+    stickerPanel.hidden = !stickerPanel.hidden;
+  });
+  // スタンプ送信
+  stickerPanel?.querySelectorAll('[data-sticker]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const sid = btn.dataset.sticker;
+      if (typeof saveSelfPost === 'function') saveSelfPost(`[sticker:${sid}]`);
+      stickerPanel.hidden = true;
+      const body = document.getElementById('plazaChatBody');
+      if (body && typeof renderLineGroup === 'function') renderLineGroup(body);
+    });
+  });
+  // スタンプカテゴリタブ（ショパン／ベートーヴェン）
+  stickerPanel?.querySelectorAll('[data-sticker-set]').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const which = tab.dataset.stickerSet;
+      stickerPanel.querySelectorAll('.plaza-sticker-tab').forEach(t => t.classList.toggle('active', t === tab));
+      stickerPanel.querySelectorAll('[data-sticker-grid]').forEach(g => {
+        g.hidden = (g.dataset.stickerGrid !== which);
+      });
+    });
   });
   window.renderOshiSlot = renderOshiSlot;
   window.renderPhoneQuoteBanner = renderPhoneQuoteBanner;

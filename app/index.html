@@ -70,7 +70,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20260420G">
+<link rel="stylesheet" href="style.css?v=20260420L">
 </head>
 <body>
   <header class="app-header">
@@ -532,7 +532,30 @@
             <!-- トーク個別スレッド（偉人の広場チャット埋め込み） -->
             <div class="plaza-tab-panel plaza-chat-panel" data-plaza-panel="chat" hidden>
               <div class="plaza-chat-body" id="plazaChatBody"></div>
+              <div class="plaza-sticker-panel" id="plazaStickerPanel" hidden>
+                <div class="plaza-sticker-tabs">
+                  <button class="plaza-sticker-tab active" data-sticker-set="cp" type="button">ショパン</button>
+                  <button class="plaza-sticker-tab" data-sticker-set="bt" type="button">ベートーヴェン</button>
+                </div>
+                <div class="plaza-sticker-grid" data-sticker-grid="cp">
+                  <button class="plaza-sticker-item" data-sticker="cp_yaho" type="button"><img src="assets/stickers/cp_yaho.png"></button>
+                  <button class="plaza-sticker-item" data-sticker="cp_piano" type="button"><img src="assets/stickers/cp_piano.png"></button>
+                  <button class="plaza-sticker-item" data-sticker="cp_kanashii" type="button"><img src="assets/stickers/cp_kanashii.png"></button>
+                  <button class="plaza-sticker-item" data-sticker="cp_daisuki" type="button"><img src="assets/stickers/cp_daisuki.png"></button>
+                  <button class="plaza-sticker-item" data-sticker="cp_oyasumi" type="button"><img src="assets/stickers/cp_oyasumi.png"></button>
+                  <button class="plaza-sticker-item" data-sticker="cp_oke" type="button"><img src="assets/stickers/cp_oke.png"></button>
+                </div>
+                <div class="plaza-sticker-grid" data-sticker-grid="bt" hidden>
+                  <button class="plaza-sticker-item" data-sticker="bt_yatta" type="button"><img src="assets/stickers/bt_yatta.png"></button>
+                  <button class="plaza-sticker-item" data-sticker="bt_ensou" type="button"><img src="assets/stickers/bt_ensou.png"></button>
+                  <button class="plaza-sticker-item" data-sticker="bt_uhe" type="button"><img src="assets/stickers/bt_uhe.png"></button>
+                  <button class="plaza-sticker-item" data-sticker="bt_write" type="button"><img src="assets/stickers/bt_write.png"></button>
+                  <button class="plaza-sticker-item" data-sticker="bt_piano" type="button"><img src="assets/stickers/bt_piano.png"></button>
+                  <button class="plaza-sticker-item" data-sticker="bt_kikoen" type="button"><img src="assets/stickers/bt_kikoen.png"></button>
+                </div>
+              </div>
               <form class="plaza-chat-form" id="plazaChatForm">
+                <button class="plaza-chat-sticker-btn" id="plazaStickerToggle" type="button" aria-label="スタンプ">😊</button>
                 <textarea class="plaza-chat-input" id="plazaChatInput" placeholder="メッセージを入力…" rows="1"></textarea>
                 <button class="plaza-chat-send" type="submit">送信</button>
               </form>
@@ -601,8 +624,8 @@
     </div>
   </div>
 
-  <script src="app.js?v=20260420G"></script>
-  <script src="auth.js?v=20260420G" type="module"></script>
+  <script src="app.js?v=20260420L"></script>
+  <script src="auth.js?v=20260420L" type="module"></script>
   <script src="ai-consult.js"></script>
 </body>
 </html>
