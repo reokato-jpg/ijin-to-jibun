@@ -3313,6 +3313,15 @@ function initPhoneMenu() {
   const close = () => {
     menu.classList.remove('open');
     menu.setAttribute('aria-hidden', 'true');
+    // スマホを閉じるときに内部状態をリセット
+    const plazaEl = document.getElementById('phonePlazaApp');
+    if (plazaEl) plazaEl.hidden = true;
+    document.querySelectorAll('.plaza-tab-panel').forEach(p => {
+      p.hidden = (p.dataset.plazaPanel !== 'friends');
+    });
+    document.querySelectorAll('.plaza-app-tab').forEach(t => {
+      t.classList.toggle('active', t.dataset.plazaTab === 'friends');
+    });
   };
   const open = () => {
     menu.classList.add('open');
