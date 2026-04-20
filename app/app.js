@@ -4612,11 +4612,137 @@ function initPhoneMenu() {
     document.querySelectorAll('.plaza-app-tab').forEach(t => {
       t.classList.toggle('active', t.dataset.plazaTab === 'friends');
     });
-    open(); renderOshiSlot(); renderPhoneQuoteBanner(); renderIconBadges();
+    open(); renderOshiSlot(); renderPhoneQuoteBanner(); renderIconBadges(); applyPhoneIconOrder();
   });
   // 外部からも呼べるように公開（チャット既読→バッジ更新などのため）
   window.renderIconBadges = renderIconBadges;
   window.updatePhoneNotif = updateNotif;
+
+  // =========== スマホアイコンの並び替え（長押し→ドラッグ） ===========
+  const PHONE_ICON_ORDER_KEY = 'ijin_phone_icon_order';
+  function loadPhoneIconOrder() {
+    try { return JSON.parse(localStorage.getItem(PHONE_ICON_ORDER_KEY) || 'null'); } catch { return null; }
+  }
+  function savePhoneIconOrder(keys) {
+    try { localStorage.setItem(PHONE_ICON_ORDER_KEY, JSON.stringify(keys)); } catch {}
+  }
+  function iconKey(btn) {
+    // アクション or ビュー名でユニークに識別
+    return btn.dataset.phoneAction || btn.dataset.phoneView || btn.id || '';
+  }
+  function applyPhoneIconOrder() {
+    const grid = document.querySelector('.phone-grid');
+    if (!grid) return;
+    const order = loadPhoneIconOrder();
+    if (!order || !Array.isArray(order)) return;
+    const btns = Array.from(grid.querySelectorAll('.phone-icon'));
+    const byKey = {};
+    btns.forEach(b => { byKey[iconKey(b)] = b; });
+    // 保存順で再挿入、保存に無いものは末尾に追加
+    order.forEach(k => { if (byKey[k]) grid.appendChild(byKey[k]); });
+    btns.forEach(b => { const k = iconKey(b); if (!order.includes(k)) grid.appendChild(b); });
+  }
+  function initPhoneIconDrag() {
+    const grid = document.querySelector('.phone-grid');
+    if (!grid) return;
+    let longPressTimer = null;
+    let dragging = null;
+    let startX = 0, startY = 0;
+    let ghost = null;
+    const LONG_PRESS_MS = 380;
+    const endReorder = () => {
+      grid.classList.remove('reorder-mode');
+      grid.querySelectorAll('.phone-icon').forEach(b => {
+        b.classList.remove('dragging', 'drag-target');
+        b.style.transform = '';
+      });
+      if (ghost) { ghost.remove(); ghost = null; }
+      dragging = null;
+    };
+    const onPointerDown = (e) => {
+      const btn = e.target.closest('.phone-icon');
+      if (!btn || !grid.contains(btn)) return;
+      startX = e.clientX; startY = e.clientY;
+      clearTimeout(longPressTimer);
+      longPressTimer = setTimeout(() => {
+        // 長押しで並び替えモードに入る
+        grid.classList.add('reorder-mode');
+        dragging = btn;
+        btn.classList.add('dragging');
+        // ゴースト（追従する分身）
+        const rect = btn.getBoundingClientRect();
+        ghost = btn.cloneNode(true);
+        ghost.style.position = 'fixed';
+        ghost.style.left = rect.left + 'px';
+        ghost.style.top = rect.top + 'px';
+        ghost.style.width = rect.width + 'px';
+        ghost.style.height = rect.height + 'px';
+        ghost.style.pointerEvents = 'none';
+        ghost.style.opacity = '0.9';
+        ghost.style.zIndex = '10001';
+        ghost.style.transition = 'none';
+        ghost.classList.add('dragging');
+        document.body.appendChild(ghost);
+        // 軽くバイブレーション
+        try { navigator.vibrate?.(12); } catch {}
+      }, LONG_PRESS_MS);
+    };
+    const onPointerMove = (e) => {
+      // 長押し成立前にある程度動いたらキャンセル
+      if (!dragging) {
+        if (Math.abs(e.clientX - startX) > 6 || Math.abs(e.clientY - startY) > 6) {
+          clearTimeout(longPressTimer);
+        }
+        return;
+      }
+      e.preventDefault();
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+      const startRect = dragging.getBoundingClientRect();
+      if (ghost) {
+        ghost.style.left = (startRect.left + dx) + 'px';
+        ghost.style.top = (startRect.top + dy) + 'px';
+      }
+      // ポインタ位置の下にあるアイコンを探し、入れ替え先に
+      const under = document.elementFromPoint(e.clientX, e.clientY);
+      grid.querySelectorAll('.phone-icon').forEach(b => b.classList.remove('drag-target'));
+      const target = under?.closest('.phone-icon');
+      if (target && target !== dragging && grid.contains(target)) {
+        target.classList.add('drag-target');
+      }
+    };
+    const onPointerUp = (e) => {
+      clearTimeout(longPressTimer);
+      if (!dragging) return;
+      // 入れ替え先があれば挿入
+      const under = document.elementFromPoint(e.clientX, e.clientY);
+      const target = under?.closest('.phone-icon');
+      if (target && target !== dragging && grid.contains(target)) {
+        const rect = target.getBoundingClientRect();
+        const before = e.clientX < rect.left + rect.width / 2;
+        grid.insertBefore(dragging, before ? target : target.nextSibling);
+        const newOrder = Array.from(grid.querySelectorAll('.phone-icon'))
+          .map(iconKey).filter(Boolean);
+        savePhoneIconOrder(newOrder);
+      }
+      endReorder();
+    };
+    grid.addEventListener('pointerdown', onPointerDown, { passive: true });
+    document.addEventListener('pointermove', onPointerMove, { passive: false });
+    document.addEventListener('pointerup', onPointerUp, { passive: true });
+    document.addEventListener('pointercancel', () => { clearTimeout(longPressTimer); endReorder(); });
+    // クリックと誤爆しないよう：ドラッグ中のアイコンのclickは抑制
+    grid.addEventListener('click', (e) => {
+      const btn = e.target.closest('.phone-icon');
+      if (btn && btn.classList.contains('dragging')) {
+        e.stopPropagation();
+        e.preventDefault();
+      }
+    }, true);
+  }
+  initPhoneIconDrag();
+  // 初期描画時にも適用（menu未openでもDOMに順序を書いておく）
+  applyPhoneIconOrder();
   menu.querySelectorAll('[data-phone-close]').forEach(el => el.addEventListener('click', close));
   // ホーム画面ボタン：スマホを閉じずにアイコン一覧へ戻る（ツールアプリを閉じるだけ）
   menu.querySelectorAll('[data-phone-home]').forEach(el => el.addEventListener('click', () => {

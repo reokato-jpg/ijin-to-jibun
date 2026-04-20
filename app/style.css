@@ -13061,21 +13061,62 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 
 .phone-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px 8px;
-  padding: 10px 10px 14px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px 4px;
+  padding: 14px 8px 10px;
   width: 100%;
   box-sizing: border-box;
   flex: 1 1 auto;
   min-height: 0;
-  align-content: center;
+  align-content: start;
   justify-items: center;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
 .phone-grid::-webkit-scrollbar { width: 0; }
 .phone-grid .phone-icon {
-  min-width: 64px;
+  min-width: 0;
+  width: 100%;
+  max-width: 72px;
+  touch-action: none;
+}
+/* 4列用：アイコンとラベルを少し小さく */
+.phone-grid .phone-icon img { width: 46px; height: 46px; }
+.phone-grid .phone-icon-emoji { width: 38px !important; height: 38px !important; font-size: 22px !important; }
+.phone-grid .phone-icon span { font-size: 10px; }
+/* ドラッグ中 */
+.phone-icon.dragging {
+  opacity: 0.55;
+  transform: scale(1.08);
+  z-index: 30;
+}
+.phone-icon.drag-target {
+  transform: scale(0.9);
+  opacity: 0.75;
+}
+/* 長押しで震える（並び替えモード風） */
+@keyframes phone-icon-wiggle {
+  0%, 100% { transform: rotate(-1.2deg); }
+  50% { transform: rotate(1.2deg); }
+}
+.phone-grid.reorder-mode .phone-icon:not(.dragging) {
+  animation: phone-icon-wiggle 0.3s ease-in-out infinite;
+}
+.phone-grid.reorder-mode .phone-icon::after {
+  content: '⋮⋮';
+  position: absolute;
+  top: -4px;
+  right: -2px;
+  font-size: 10px;
+  color: rgba(0,0,0,0.5);
+  background: rgba(255,255,255,0.85);
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
 }
 .phone-icon-oshi-slot { background: none; border: none; padding: 0; }
 .phone-icon-oshi-slot[hidden] { display: none; }
