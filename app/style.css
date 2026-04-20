@@ -14298,3 +14298,17 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
   overflow-wrap: anywhere;
   line-break: strict;
 }
+
+/* 新しい follow-hint バナー（画像） */
+.follow-hint-block {
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+}
+.follow-hint-banner {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(80,50,10,0.2);
+}
