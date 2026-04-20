@@ -5711,6 +5711,7 @@ function initPhoneMenu() {
     const rkLast = rkMsgs[rkMsgs.length - 1];
     const rkPreview = rkLast ? (rkLast.text || '').split('\n')[0].slice(0, 30) : 'ようこそ、偉人と自分へ。';
     const rkUnread = getRekittoUnread();
+    const groupUnread = (typeof computeUnreadCount === 'function') ? computeUnreadCount() : 0;
     const rkDate = rkLast ? (() => {
       const d = new Date(rkLast.ts);
       return `${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`;
@@ -5738,6 +5739,7 @@ function initPhoneMenu() {
           </div>
           <div class="plaza-talk-preview">${escapeHtml(preview)}</div>
         </div>
+        ${groupUnread > 0 ? `<span class="plaza-unread-badge">${groupUnread > 99 ? '99+' : groupUnread}</span>` : ''}
       </button>
     `;
     list.querySelector('[data-plaza-group]')?.addEventListener('click', () => {
@@ -5900,6 +5902,7 @@ function initPhoneMenu() {
       if (typeof updateChatBadge === 'function') updateChatBadge();
       if (typeof window.renderIconBadges === 'function') window.renderIconBadges();
       if (typeof window.updatePhoneNotif === 'function') window.updatePhoneNotif();
+      if (typeof window.renderPlazaTalks === 'function') window.renderPlazaTalks();
     } catch {}
     // 最新メッセージへスクロール（最後にジャンプ）
     requestAnimationFrame(() => {
