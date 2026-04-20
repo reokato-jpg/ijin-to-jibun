@@ -1,0 +1,57 @@
+{
+  "id": "lenin",
+  "name": "ウラジーミル・レーニン",
+  "nameEn": "Vladimir Lenin",
+  "birth": 1870,
+  "death": 1924,
+  "country": "ロシア／ソ連",
+  "field": "革命家・政治家",
+  "summary": "ロシア革命の指導者、ソビエト連邦の創設者。1917年十月革命で帝政ロシアを倒し、世界初の共産主義国家を樹立した20世紀最大の革命家。",
+  "events": [
+    {
+      "year": 1870,
+      "age": 0,
+      "title": "ロシア／ソ連で生まれる",
+      "detail": ""
+    },
+    {
+      "year": 1924,
+      "age": 54,
+      "title": "逝去",
+      "detail": ""
+    }
+  ],
+  "quotes": [
+    {
+      "text": "学べ、学べ、そしてまた学べ。",
+      "source": "名言集"
+    },
+    {
+      "text": "自由はあまりに貴重だから、配給制にしなければならない。",
+      "source": "名言集"
+    }
+  ],
+  "relations": [],
+  "places": [],
+  "books": [],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Bundesarchiv_Bild_183-71043-0003%2C_Wladimir_Iljitsch_Lenin.jpg/280px-Bundesarchiv_Bild_183-71043-0003%2C_Wladimir_Iljitsch_Lenin.jpg",
+  "wikiTitle": "ウラジーミル・レーニン",
+  "birthMonth": 4,
+  "birthDay": 22,
+  "lifeDigest": "ロシアの革命家、マルクス主義者、ソ連の初代国家元首。本名ウラジーミル・イリイチ・ウリヤノフ。兄の処刑を機に革命運動へ。ロシア社会民主労働党ボリシェヴィキ派の指導者として1917年四月テーゼを発表、十月革命で権力を掌握。ブレスト講和でドイツと単独講和、内戦に勝利し、1922年ソ連樹立。複数の脳卒中の末、53歳でモスクワ郊外で逝去。レーニン廟に防腐処理された遺体が今も安置。",
+  "traits": {
+    "foods": [
+      "質素なロシア料理",
+      "紅茶（サモワール）",
+      "黒パン"
+    ],
+    "hobbies": [
+      "読書（マルクス・トルストイ）",
+      "チェス",
+      "狩猟（亡命中）"
+    ],
+    "personality": "冷徹、戦略的、禁欲的、カリスマ。理論と行動を一体化させた革命家。",
+    "likes": [],
+    "dislikes": []
+  }
+}

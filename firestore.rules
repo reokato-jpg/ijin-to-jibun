@@ -1,12 +1,66 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // 会員プロフィール
-    // - 他会員はログイン済みなら読み取り可（名前・称号・アバター・trait・SNS・フォロー偉人を公開）
+
+    // ============ 会員プロフィール ============
+    // - 他会員はログイン済みなら読み取り可
+    //   （名前・称号・アバター・trait・SNS・フォロー偉人を公開）
     // - 書き込みは本人のみ
     match /users/{uid} {
       allow read: if request.auth != null;
       allow write: if request.auth != null && request.auth.uid == uid;
+    }
+
+    // ============ 偉人訪問回数（公開カウンタ） ============
+    // 誰でも加算可（匿名ゲスト含む）、誰でも閲覧可
+    match /publicVisits/{personId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // ============ 偉人ページの訪問者足跡 ============
+    // docId = personId + "__" + uid
+    // - 書き込み：ログイン中のユーザーが、自分のuidを含むdocIdのみに書ける
+    // - 読み取り：ログイン中のみ（匿名ログイン含む）
+    match /personVisitors/{docId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null
+        && docId.matches(".*__" + request.auth.uid);
+    }
+
+    // ============ 時代ページの訪問者足跡 ============
+    match /eraVisitors/{docId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null
+        && docId.matches(".*__" + request.auth.uid);
+    }
+
+    // ============ 会員プロフィールの訪問者足跡 ============
+    // docId = targetUid + "__" + visitorUid
+    match /userVisitors/{docId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null
+        && docId.matches(".*__" + request.auth.uid);
+    }
+
+    // ============ お便り（バグ報告・改善提案・機能要望） ============
+    // - 誰でも作成可（匿名ゲスト含む）— ただし自分のuidを付ける
+    // - 読み取りは本人分のみ、または管理者（admin カスタムクレーム）
+    // - ステータス更新は管理者のみ
+    match /feedback/{id} {
+      allow create: if request.auth != null
+        && request.resource.data.uid == request.auth.uid;
+      allow read: if request.auth != null
+        && (resource.data.uid == request.auth.uid
+            || request.auth.token.admin == true);
+      allow update: if request.auth != null
+        && request.auth.token.admin == true;
+      allow delete: if false;
+    }
+
+    // ============ デフォルト拒否 ============
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }

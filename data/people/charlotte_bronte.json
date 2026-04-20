@@ -1,0 +1,58 @@
+{
+  "id": "charlotte_bronte",
+  "name": "シャーロット・ブロンテ",
+  "nameEn": "Charlotte Brontë",
+  "birth": 1816,
+  "death": 1855,
+  "country": "イギリス",
+  "field": "小説家",
+  "summary": "『ジェイン・エア』で女性の自立と情熱を描いたヴィクトリア朝の作家。5人姉妹兄弟のうち3人の姉妹（シャーロット・エミリー・アン）で文学史を作った。",
+  "events": [
+    {
+      "year": 1816,
+      "age": 0,
+      "title": "イギリスで生まれる",
+      "detail": ""
+    },
+    {
+      "year": 1855,
+      "age": 39,
+      "title": "逝去",
+      "detail": ""
+    }
+  ],
+  "quotes": [
+    {
+      "text": "私は鳥でもなければ、網にかかる身でもない。私は自由な意志を持つ自由な人間だ。",
+      "source": "名言集"
+    },
+    {
+      "text": "人生は短いのに、恨みで時を満たすほど長くはない。",
+      "source": "名言集"
+    }
+  ],
+  "relations": [],
+  "places": [],
+  "books": [],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Charlotte_Bront%C3%AB_coloured_drawing.png/280px-Charlotte_Bront%C3%AB_coloured_drawing.png",
+  "wikiTitle": "シャーロット・ブロンテ",
+  "birthMonth": 4,
+  "birthDay": 21,
+  "lifeDigest": "イギリスの小説家、ブロンテ三姉妹の長姉。仮名『カラー・ベル』で発表した『ジェイン・エア』(1847) が大成功。孤児の家庭教師が盲目の雇い主ロチェスターと結ばれるゴシック・ロマンスは女性の自立と情熱を同居させた画期作。姉妹エミリー（嵐が丘）とアン（ワイルドフェル・ホールの住人）を相次いで失い、自身も38歳で妊娠合併症のため死去。",
+  "traits": {
+    "foods": [
+      "紅茶（濃いめ）",
+      "スコーン",
+      "ポリッジ（オートミール）"
+    ],
+    "hobbies": [
+      "執筆",
+      "スケッチ",
+      "読書（シェイクスピア、バイロン）",
+      "散歩（ヨークシャーの荒野）"
+    ],
+    "personality": "内向的、情熱的、意志の強さ、孤独。家族を相次いで失いながら書き続けた。",
+    "likes": [],
+    "dislikes": []
+  }
+}
