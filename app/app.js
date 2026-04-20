@@ -10057,6 +10057,15 @@ function renderBookshelfGuides() {
     requestAnimationFrame(() => modal.classList.add('show'));
   }
 
+  // 1-b. ホーム上部：ヒーローの直下にラビンを大きめに配置
+  const hero = document.querySelector('#view-people .hero-silhouette');
+  if (hero && !document.querySelector('.home-rabin-greet')) {
+    const wrap = document.createElement('div');
+    wrap.className = 'home-rabin-greet';
+    wrap.innerHTML = renderGuideChara({ pose: 'welcome', copyKey: 'hero', size: 'md', layout: 'inline' });
+    hero.insertAdjacentElement('afterend', wrap);
+  }
+
   // 2. はじめての方へ: 見出しの横
   const howtoLabel = [...document.querySelectorAll('.home-block-label')].find(e => e.textContent.trim() === 'はじめての方へ');
   if (howtoLabel && !howtoLabel.parentNode.querySelector('.guide-chara')) {
@@ -10069,6 +10078,20 @@ function renderBookshelfGuides() {
   if (matchSec && !matchSec.querySelector('.guide-chara')) {
     matchSec.insertAdjacentHTML('afterbegin',
       renderGuideChara({ pose: 'pointing', copyKey: 'match', size: 'sm', layout: 'inline' }));
+  }
+
+  // 3-b. 年表の先頭にラビン（歴史の案内人なので年表との相性◎）
+  const historyView = document.getElementById('view-history');
+  if (historyView && !historyView.querySelector('.home-rabin-greet')) {
+    const wrap = document.createElement('div');
+    wrap.className = 'home-rabin-greet history-rabin-greet';
+    wrap.innerHTML = renderGuideChara({
+      pose: 'reading',
+      copyText: 'ここは歴史の地図。時代を辿り、そなたの今に繋がる物語を見つけられよ。',
+      size: 'md',
+      layout: 'inline'
+    });
+    historyView.insertAdjacentElement('afterbegin', wrap);
   }
 
   // 4. 感情の本棚（検索タブの感情一覧）: #tagsList の上
