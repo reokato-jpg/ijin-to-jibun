@@ -4844,7 +4844,9 @@ function initPhoneMenu() {
         </div>
         <footer class="meshiru-card-foot">
           <button class="meshiru-btn meshiru-like ${liked ? 'active' : ''}" data-meshiru-like="${r.id}">${liked ? '❤' : '♡'} いいね</button>
-          <button class="meshiru-btn meshiru-save ${isSaved ? 'active' : ''}" data-meshiru-save="${r.id}">${isSaved ? '🔖 保存中' : '🔖 保存'}</button>
+          ${r.isMine
+            ? ''
+            : `<button class="meshiru-btn meshiru-addmine ${isSaved ? 'active' : ''}" data-meshiru-addmine="${r.id}">${isSaved ? '✓ マイレシピ済' : '📝 マイレシピに入れる'}</button>`}
         </footer>
       </article>
     `;
@@ -4898,14 +4900,47 @@ function initPhoneMenu() {
           btn.innerHTML = (likes.has(id) ? '❤' : '♡') + ' いいね';
         });
       });
-      scope.querySelectorAll('[data-meshiru-save]').forEach(btn => {
+      // 偉人のレシピをマイレシピに取り込む
+      scope.querySelectorAll('[data-meshiru-addmine]').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
-          const id = btn.dataset.meshiruSave;
-          if (saved.has(id)) saved.delete(id); else saved.add(id);
-          saveMeshiruSet(MESHIRU_SAVED_KEY, saved);
-          btn.classList.toggle('active');
-          btn.innerHTML = (saved.has(id) ? '🔖 保存中' : '🔖 保存');
+          const id = btn.dataset.meshiruAddmine;
+          const src = recipes.find(x => x.id === id);
+          if (!src) return;
+          const list = loadMyRecipes();
+          const already = list.find(x => x.sourceRecipeId === id);
+          if (already) {
+            // トグル：既に入ってる場合は取り除く
+            if (!confirm('このレシピはすでにマイレシピに入っています。削除しますか？')) return;
+            saveMyRecipes(list.filter(x => x.sourceRecipeId !== id));
+            saved.delete(id);
+            saveMeshiruSet(MESHIRU_SAVED_KEY, saved);
+            btn.classList.remove('active');
+            btn.innerHTML = '📝 マイレシピに入れる';
+          } else {
+            // マイレシピとしてコピー（編集可能に）
+            const copy = {
+              id: 'my_' + Date.now() + '_' + Math.random().toString(36).slice(2,6),
+              name: src.name,
+              url: '',
+              sourceSite: `${src.personName}のレシピ`,
+              sourceRecipeId: id,
+              tagline: src.tagline || '',
+              ingredients: [...(src.ingredients || [])],
+              steps: [...(src.steps || [])],
+              note: src.note || '',
+              authorName: src.personName,
+              createdAt: new Date().toISOString(),
+            };
+            list.unshift(copy);
+            saveMyRecipes(list);
+            saved.add(id);
+            saveMeshiruSet(MESHIRU_SAVED_KEY, saved);
+            btn.classList.add('active');
+            btn.innerHTML = '✓ マイレシピ済';
+            // グローバルrecipesに自作として追加して、献立ですぐ使えるように
+            recipes.push({ ...copy, personId: '', personName: copy.authorName, personField: 'マイレシピ', personImage: '', isMine: true });
+          }
         });
       });
       scope.querySelectorAll('[data-goto-person]').forEach(btn => {
@@ -5284,7 +5319,6 @@ function initPhoneMenu() {
         else if (which === 'my') { myMount.hidden = false; renderMy(); }
         else if (which === 'plan') { planMount.hidden = false; renderPlan(); }
         else if (which === 'shopping') { shoppingMount.hidden = false; renderShopping(); }
-        else { savedMount.hidden = false; renderSaved(); }
       });
     });
     renderFeed();

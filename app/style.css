@@ -15240,6 +15240,14 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
   color: #fff7e6;
   border-color: var(--wine);
 }
+.meshiru-btn.meshiru-addmine {
+  flex: 2;
+}
+.meshiru-btn.meshiru-addmine.active {
+  background: linear-gradient(135deg, #c07d4e, #8a5a1d);
+  color: #fff7e6;
+  border-color: #8a5a1d;
+}
 .meshiru-btn:hover:not(.active) {
   background: rgba(138,90,29,0.06);
 }
