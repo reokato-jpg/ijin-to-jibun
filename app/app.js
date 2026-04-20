@@ -1539,6 +1539,41 @@ function openMemberSettings() {
 }
 
 // ============ 会員同士のフォロー ============
+// 👣 軌跡：ローカル保存（Firestore未設定でも自分の訪問は残る）
+const GUEST_UID_KEY = 'ijin_guest_uid';
+function getOrCreateGuestUid() {
+  let uid = localStorage.getItem(GUEST_UID_KEY);
+  if (!uid) {
+    uid = 'guest_' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
+    try { localStorage.setItem(GUEST_UID_KEY, uid); } catch {}
+  }
+  return uid;
+}
+function saveLocalVisitor(scope, id, record) {
+  try {
+    const key = 'ijin_local_visitors_' + scope + '_' + id;
+    const arr = JSON.parse(localStorage.getItem(key) || '[]');
+    // 同じuidは最新に更新
+    const idx = arr.findIndex(r => r.uid === record.uid);
+    if (idx >= 0) arr[idx] = record;
+    else arr.push(record);
+    localStorage.setItem(key, JSON.stringify(arr.slice(-20))); // 最大20件
+  } catch {}
+}
+function loadLocalVisitors(scope, id) {
+  try {
+    const key = 'ijin_local_visitors_' + scope + '_' + id;
+    return JSON.parse(localStorage.getItem(key) || '[]');
+  } catch { return []; }
+}
+function mergeVisitors(local, cloud) {
+  // uidでマージ、cloudを優先（他者の最新情報）、localで自分を確実に
+  const map = new Map();
+  (cloud || []).forEach(v => { if (v.uid) map.set(v.uid, v); });
+  (local || []).forEach(v => { if (v.uid) map.set(v.uid, v); });
+  return Array.from(map.values()).sort((a, b) => (b.visitedAt || '').localeCompare(a.visitedAt || ''));
+}
+
 // ユーザーへの「いいね」（ローカルで保持）
 const USER_LIKES_KEY = 'ijin_user_likes';
 function loadUserLikes() {
@@ -5840,23 +5875,35 @@ async function showPerson(id) {
         if (el) el.textContent = `累計 ${n}回`;
       }
     } catch {}
-    // 訪問者として自分を記録（匿名ゲストも含む）
+    // 訪問者として自分を記録（ログインでもゲストでも必ず残す）
     try {
+      const myUid = (currentUser && currentUser.uid) ? currentUser.uid : getOrCreateGuestUid();
+      const isAnon = !currentUser || currentUser.isAnonymous;
+      const myName = getUserName() || (currentUser && currentUser.displayName) || (isAnon ? 'ゲスト' : '名無しの読者');
+      const myAvatar = localStorage.getItem('ijin_user_avatar') || '';
+      const record = {
+        personId: p.id,
+        uid: myUid,
+        name: myName,
+        avatar: myAvatar,
+        isGuest: isAnon,
+        visitedAt: new Date().toISOString(),
+      };
+      // 1. ローカルストレージに必ず保存（自分の軌跡が常に見える）
+      saveLocalVisitor('person', p.id, record);
+      // 2. Firestoreにも（可能なら）
       if (typeof window.recordVisitorToPerson === 'function' && currentUser) {
-        const isAnon = currentUser.isAnonymous;
-        const myName = isAnon
-          ? (getUserName() || 'ゲスト')
-          : (getUserName() || currentUser.displayName || '名無しの読者');
-        const myAvatar = localStorage.getItem('ijin_user_avatar') || '';
         window.recordVisitorToPerson(p.id, { name: myName, avatar: myAvatar, isGuest: isAnon });
       }
     } catch {}
-    // 足跡（他の訪問者）を取得して表示
+    // 軌跡（ローカル + Firestore）を取得して表示
     try {
+      const localVisitors = loadLocalVisitors('person', p.id);
+      let cloudVisitors = [];
       if (typeof window.fetchVisitorsToPerson === 'function') {
-        const visitors = await window.fetchVisitorsToPerson(p.id);
-        renderPersonVisitors(visitors);
+        cloudVisitors = await window.fetchVisitorsToPerson(p.id);
       }
+      renderPersonVisitors(mergeVisitors(localVisitors, cloudVisitors));
     } catch {}
   })();
 
@@ -5864,7 +5911,7 @@ async function showPerson(id) {
     const mount = document.getElementById('personVisitorsMount');
     if (!mount) return;
     // 自分は除外
-    const myUid = (typeof currentUser !== 'undefined' && currentUser) ? currentUser.uid : '';
+    const myUid = (typeof currentUser !== 'undefined' && currentUser) ? currentUser.uid : getOrCreateGuestUid();
     // 自分も含めて全員表示（自分には「(あなた)」マーク）
     const others = (visitors || []);
     if (others.length === 0) {
@@ -8601,29 +8648,34 @@ function openEraModal(catId, eraId) {
     });
   });
 
-  // 軌跡：訪問を記録して一覧取得
+  // 軌跡：訪問を記録して一覧取得（ローカル＋Firestore）
   const eraKey = catId + '_' + eraId;
   (async () => {
     try {
+      const myUid = (currentUser && currentUser.uid) ? currentUser.uid : getOrCreateGuestUid();
+      const isAnon = !currentUser || currentUser.isAnonymous;
+      const myName = getUserName() || (currentUser && currentUser.displayName) || (isAnon ? 'ゲスト' : '名無しの読者');
+      const myAvatar = localStorage.getItem('ijin_user_avatar') || '';
+      const record = {
+        eraKey, uid: myUid, name: myName, avatar: myAvatar, isGuest: isAnon,
+        visitedAt: new Date().toISOString(),
+      };
+      saveLocalVisitor('era', eraKey, record);
       if (typeof window.recordVisitorToEra === 'function' && currentUser) {
-        const isAnon = currentUser.isAnonymous;
-        const myName = isAnon
-          ? (getUserName() || 'ゲスト')
-          : (getUserName() || currentUser.displayName || '名無しの読者');
-        const myAvatar = localStorage.getItem('ijin_user_avatar') || '';
         window.recordVisitorToEra(eraKey, { name: myName, avatar: myAvatar, isGuest: isAnon });
       }
+      let cloudVisitors = [];
       if (typeof window.fetchVisitorsToEra === 'function') {
-        const visitors = await window.fetchVisitorsToEra(eraKey);
-        renderEraVisitors(visitors);
+        cloudVisitors = await window.fetchVisitorsToEra(eraKey);
       }
+      renderEraVisitors(mergeVisitors(loadLocalVisitors('era', eraKey), cloudVisitors));
     } catch {}
   })();
 
   function renderEraVisitors(visitors) {
     const mount = modal.querySelector('#eraVisitorsMount');
     if (!mount) return;
-    const myUid = (typeof currentUser !== 'undefined' && currentUser) ? currentUser.uid : '';
+    const myUid = (typeof currentUser !== 'undefined' && currentUser) ? currentUser.uid : getOrCreateGuestUid();
     // 自分も含めて全員表示（自分には「(あなた)」マーク）
     const others = (visitors || []);
     if (others.length === 0) {
