@@ -3275,6 +3275,22 @@ function meetsFollowBackCriteria(person) {
   if (!hasCommonTraitWith(person)) return false;
   return true;
 }
+// 既に通知済みのフォロー（重複トースト防止）
+const NOTIFIED_FOLLOWS_KEY = 'ijin_notified_follows';
+function isFollowNotified(personId) {
+  try { return (JSON.parse(localStorage.getItem(NOTIFIED_FOLLOWS_KEY) || '[]')).includes(personId); }
+  catch { return false; }
+}
+function markFollowNotified(personId) {
+  try {
+    const arr = JSON.parse(localStorage.getItem(NOTIFIED_FOLLOWS_KEY) || '[]');
+    if (!arr.includes(personId)) {
+      arr.push(personId);
+      localStorage.setItem(NOTIFIED_FOLLOWS_KEY, JSON.stringify(arr));
+    }
+  } catch {}
+}
+
 function checkFollowBackEligibility(personId) {
   const person = DATA.people.find(p => p.id === personId);
   if (!person) return;
@@ -3291,8 +3307,12 @@ function checkFollowBackEligibility(personId) {
     localStorage.setItem(USER_FOLLOWED_AT_KEY, JSON.stringify(map));
   } catch {}
   try { if (typeof renderFavorites === 'function') renderFavorites(); } catch {}
-  showFollowToast(person);
-  try { rekittoNotifyFollow(person); } catch {}
+  // 通知は初回のみ：トーストとレキットに1回だけ
+  if (!isFollowNotified(personId)) {
+    showFollowToast(person);
+    try { rekittoNotifyFollow(person); } catch {}
+    markFollowNotified(personId);
+  }
 }
 // ============ 📜 レキット（歴史管理人）— LINE風お知らせ担当 ============
 const REKITTO_MSGS_KEY = 'ijin_rekitto_msgs';
@@ -5802,12 +5822,15 @@ async function showPerson(id) {
         if (el) el.textContent = `累計 ${n}回`;
       }
     } catch {}
-    // 訪問者として自分を記録（ログイン中のみ）
+    // 訪問者として自分を記録（匿名ゲストも含む）
     try {
       if (typeof window.recordVisitorToPerson === 'function' && currentUser) {
-        const myName = getUserName() || currentUser.displayName || '名無しの読者';
+        const isAnon = currentUser.isAnonymous;
+        const myName = isAnon
+          ? (getUserName() || 'ゲスト')
+          : (getUserName() || currentUser.displayName || '名無しの読者');
         const myAvatar = localStorage.getItem('ijin_user_avatar') || '';
-        window.recordVisitorToPerson(p.id, { name: myName, avatar: myAvatar });
+        window.recordVisitorToPerson(p.id, { name: myName, avatar: myAvatar, isGuest: isAnon });
       }
     } catch {}
     // 足跡（他の訪問者）を取得して表示
@@ -5824,7 +5847,8 @@ async function showPerson(id) {
     if (!mount) return;
     // 自分は除外
     const myUid = (typeof currentUser !== 'undefined' && currentUser) ? currentUser.uid : '';
-    const others = (visitors || []).filter(v => v.uid !== myUid);
+    // 自分も含めて全員表示（自分には「(あなた)」マーク）
+    const others = (visitors || []);
     if (others.length === 0) {
       mount.innerHTML = `
         <div class="visitors-empty">
@@ -5837,27 +5861,39 @@ async function showPerson(id) {
       <div class="visitors-hint">この偉人のページを訪れた読者たち</div>
       <div class="visitors-list">
         ${others.map(v => {
+          const isSelf = v.uid === myUid;
+          const isGuest = !!v.isGuest;
           const following = isFollowingUser(v.uid);
           const liked = isLikedUser(v.uid);
           const bg = v.avatar ? `style="background-image:url('${escapeHtml(v.avatar)}')"` : '';
           const initial = (v.name || '?').charAt(0);
           const dt = v.visitedAt ? new Date(v.visitedAt) : null;
           const when = dt ? `${dt.getMonth()+1}/${dt.getDate()}` : '';
-          return `
-            <div class="visitor-card" data-uid="${escapeHtml(v.uid)}">
-              <div class="visitor-av" ${bg}>${v.avatar ? '' : initial}</div>
-              <div class="visitor-info">
-                <div class="visitor-name">${escapeHtml(v.name || '名無しの読者')}</div>
-                <div class="visitor-meta">👣 ${when}</div>
-              </div>
-              <div class="visitor-actions">
-                <button class="visitor-btn visitor-like ${liked ? 'active' : ''}" data-user-like="${escapeHtml(v.uid)}" aria-label="いいね">
-                  ${liked ? '❤' : '♡'}
-                </button>
+          const dispName = escapeHtml(v.name || (isGuest ? 'ゲスト' : '名無しの読者'));
+          const badges = [
+            isSelf ? '<span class="visitor-badge-self">あなた</span>' : '',
+            isGuest && !isSelf ? '<span class="visitor-badge-guest">ゲスト</span>' : ''
+          ].filter(Boolean).join('');
+          const actions = isSelf ? '' : `
+            <div class="visitor-actions">
+              <button class="visitor-btn visitor-like ${liked ? 'active' : ''}" data-user-like="${escapeHtml(v.uid)}" aria-label="いいね">
+                ${liked ? '❤' : '♡'}
+              </button>
+              ${isGuest ? '' : `
                 <button class="visitor-btn visitor-follow ${following ? 'active' : ''}" data-visitor-follow="${escapeHtml(v.uid)}">
                   ${following ? '✓' : '＋'}
                 </button>
+              `}
+            </div>
+          `;
+          return `
+            <div class="visitor-card ${isSelf ? 'is-self' : ''}" data-uid="${escapeHtml(v.uid)}">
+              <div class="visitor-av" ${bg}>${v.avatar ? '' : initial}</div>
+              <div class="visitor-info">
+                <div class="visitor-name">${dispName} ${badges}</div>
+                <div class="visitor-meta">👣 ${when}</div>
               </div>
+              ${actions}
             </div>
           `;
         }).join('')}
@@ -8552,9 +8588,12 @@ function openEraModal(catId, eraId) {
   (async () => {
     try {
       if (typeof window.recordVisitorToEra === 'function' && currentUser) {
-        const myName = getUserName() || currentUser.displayName || '名無しの読者';
+        const isAnon = currentUser.isAnonymous;
+        const myName = isAnon
+          ? (getUserName() || 'ゲスト')
+          : (getUserName() || currentUser.displayName || '名無しの読者');
         const myAvatar = localStorage.getItem('ijin_user_avatar') || '';
-        window.recordVisitorToEra(eraKey, { name: myName, avatar: myAvatar });
+        window.recordVisitorToEra(eraKey, { name: myName, avatar: myAvatar, isGuest: isAnon });
       }
       if (typeof window.fetchVisitorsToEra === 'function') {
         const visitors = await window.fetchVisitorsToEra(eraKey);
@@ -8567,7 +8606,8 @@ function openEraModal(catId, eraId) {
     const mount = modal.querySelector('#eraVisitorsMount');
     if (!mount) return;
     const myUid = (typeof currentUser !== 'undefined' && currentUser) ? currentUser.uid : '';
-    const others = (visitors || []).filter(v => v.uid !== myUid);
+    // 自分も含めて全員表示（自分には「(あなた)」マーク）
+    const others = (visitors || []);
     if (others.length === 0) {
       mount.innerHTML = `
         <div class="visitors-empty">

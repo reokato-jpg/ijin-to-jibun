@@ -90,7 +90,7 @@ async function initFirebase() {
   try {
     // Firebase v10 modular SDK (CDN経由で読み込み)
     const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js');
-    const { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup } =
+    const { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup, signInAnonymously } =
       await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
     const { getFirestore, doc, getDoc, setDoc, updateDoc, increment, collection, getDocs } =
       await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
@@ -130,6 +130,7 @@ async function initFirebase() {
           eraKey, uid,
           name: profile?.name || '',
           avatar: profile?.avatar || '',
+          isGuest: !!profile?.isGuest,
           visitedAt: new Date().toISOString(),
         }, { merge: true });
       } catch {}
@@ -160,6 +161,7 @@ async function initFirebase() {
           uid,
           name: profile?.name || '',
           avatar: profile?.avatar || '',
+          isGuest: !!profile?.isGuest,
           visitedAt: new Date().toISOString(),
         }, { merge: true });
       } catch {}
@@ -183,7 +185,16 @@ async function initFirebase() {
       currentUser = user;
       authResolved = true;
       if (user) {
-        await pullFromCloud(user);
+        // 匿名ユーザーにはクラウド同期しない（軌跡記録だけに使う）
+        if (!user.isAnonymous) await pullFromCloud(user);
+      } else {
+        // 未ログイン時は匿名サインインを試みて、軌跡記録を可能にする
+        try {
+          await signInAnonymously(fbAuth);
+          return; // onAuthStateChangedが再度発火する
+        } catch (e) {
+          console.warn('[auth] 匿名サインイン失敗（Firebase Consoleで Anonymous Auth を有効化してください）:', e);
+        }
       }
       emitAuth();
       updateAccountUI();

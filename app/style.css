@@ -64,7 +64,7 @@ body {
   flex-direction: column;
   max-width: 560px;
   margin: 0 auto;
-  min-height: 100vh;
+  min-height: 100vh; height: 100dvh; min-height: 100dvh;
   background: transparent;
   box-shadow: 0 0 30px rgba(0,0,0,0.25);
 }
@@ -6989,7 +6989,7 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
   right: 20px;
   bottom: 20px;
   width: min(370px, calc(100vw - 24px));
-  height: min(560px, calc(100vh - 32px));
+  height: min(560px, calc(100dvh - 32px));
   background: #fffcf3;
   border: 2px solid var(--wine);
   border-radius: 10px;
@@ -8524,7 +8524,7 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
   top: 0;
   right: 0;
   width: min(380px, 100%);
-  height: 100vh;
+  height: 100vh; height: 100dvh;
   height: 100dvh;
   background: linear-gradient(180deg, #fffdf6 0%, #fffaf0 100%);
   border-left: 1px solid var(--gold);
@@ -14666,7 +14666,7 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
 .worldview-back-btn:hover { background: rgba(138,90,29,0.08); }
 
 @media (max-width: 520px) {
-  .worldview-panel { margin: 0; border-radius: 0; min-height: 100vh; }
+  .worldview-panel { margin: 0; border-radius: 0; min-height: 100vh; height: 100dvh; min-height: 100dvh; }
   .worldview-hero { padding: 48px 20px 24px; }
   .worldview-title { font-size: 26px; }
   .worldview-section { padding: 20px; }
@@ -15287,3 +15287,51 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
   letter-spacing: 0.04em;
 }
 .updates-jump-btn:hover { background: var(--wine-dark); }
+
+/* 軌跡：バッジ＆自分のハイライト */
+.visitor-badge-self {
+  display: inline-block;
+  font-size: 9.5px;
+  padding: 1px 7px;
+  background: #8a5a1d;
+  color: #fff;
+  border-radius: 999px;
+  margin-left: 4px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  vertical-align: middle;
+}
+.visitor-badge-guest {
+  display: inline-block;
+  font-size: 9.5px;
+  padding: 1px 7px;
+  background: rgba(138,90,29,0.15);
+  color: #5a3a14;
+  border-radius: 999px;
+  margin-left: 4px;
+  letter-spacing: 0.05em;
+  vertical-align: middle;
+}
+.visitor-card.is-self {
+  background: linear-gradient(90deg, rgba(138,90,29,0.12), rgba(255,255,255,0.75)) !important;
+  border-color: rgba(138,90,29,0.3) !important;
+}
+
+/* iOS Safari 向けの一般対応 */
+body, .view, main, .visitors-list, .history-list,
+.era-page, .era-page-modal, .worldview-modal,
+.music-tracklist, .plaza-chat-body {
+  -webkit-overflow-scrolling: touch;
+}
+/* iOS Safari: タップ時の青ハイライトを弱めに（干渉を避ける） */
+* { -webkit-tap-highlight-color: rgba(0,0,0,0.05); }
+button, a, [role="button"] {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+/* 入力欄は選択可能に */
+input, textarea, .memo-textarea {
+  -webkit-user-select: text;
+  user-select: text;
+}
