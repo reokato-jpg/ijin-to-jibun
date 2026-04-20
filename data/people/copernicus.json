@@ -1,0 +1,45 @@
+{
+  "id": "copernicus",
+  "name": "ニコラウス・コペルニクス",
+  "nameEn": "Nicolaus Copernicus",
+  "birth": 1473,
+  "death": 1543,
+  "country": "ポーランド",
+  "field": "天文学者・聖職者",
+  "summary": "地球ではなく太陽を宇宙の中心に据えた「地動説」を提唱し、1400年間続いた天動説を根底から揺さぶった。死の床で主著『天球の回転について』を受け取ったと伝わる。",
+  "events": [
+    { "year": 1473, "age": 0, "title": "ポーランド王国トルンに生まれる", "detail": "裕福な商人家庭の末子として誕生。", "tags": [] },
+    { "year": 1491, "age": 18, "title": "クラクフ大学入学", "detail": "天文学・数学・哲学を学ぶ。", "tags": ["curiosity"] },
+    { "year": 1496, "age": 23, "title": "イタリア・ボローニャ大学へ留学", "detail": "教会法を学びつつ、天文学者ノヴァラの助手として月の観測を行う。", "tags": ["curiosity"] },
+    { "year": 1503, "age": 30, "title": "フェラーラ大学で教会法博士号取得", "detail": "帰国後フロムボルクの司教座聖堂参事会員となる。", "tags": ["approval"] },
+    { "year": 1514, "age": 41, "title": "『コメンタリオルス』を私的に回覧", "detail": "地動説の要諦を綴った短い手稿を少数の学者にだけ配布。", "tags": ["creation", "isolation"] },
+    { "year": 1530, "age": 57, "title": "地動説の主著をほぼ完成させる", "detail": "フロムボルクの塔の上で観測と計算を続けた。", "tags": ["creation"] },
+    { "year": 1539, "age": 66, "title": "弟子レティクスが訪問", "detail": "若き数学者の熱意に動かされ、ついに出版を決意する。", "tags": ["restart"] },
+    { "year": 1543, "age": 70, "title": "『天球の回転について』出版", "detail": "死の床で初版本を手渡されたと伝わる。同年5月24日逝去。", "tags": ["breakthrough", "creation"] }
+  ],
+  "quotes": [
+    { "text": "私は恥ずかしさよりも真理を選んだ。", "source": "『天球の回転について』序文" },
+    { "text": "太陽こそが宇宙の中心に坐し、その玉座から万物を照らす。", "source": "『天球の回転について』" },
+    { "text": "知ることは人間のもっとも純粋な喜びだ。", "source": "伝" }
+  ],
+  "relations": [
+    { "name": "ガリレオ・ガリレイ", "id": "galileo", "relation": "後継者", "note": "コペルニクス説を望遠鏡で実証した" },
+    { "name": "ヨハネス・ケプラー", "id": "kepler", "relation": "後継者", "note": "楕円軌道で地動説を完成させた" }
+  ],
+  "places": [
+    { "name": "フロムボルク大聖堂", "location": "ポーランド", "note": "塔の上で観測を続けた" }
+  ],
+  "books": [
+    { "title": "天球の回転について", "author": "コペルニクス", "description": "地動説を提唱した歴史的名著" }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Nikolaus_Kopernikus.jpg/500px-Nikolaus_Kopernikus.jpg",
+  "wikiTitle": "ニコラウス・コペルニクス",
+  "lifeDigest": "ポーランドの天文学者・聖職者。1543年死の床で出版された『天球の回転について』で、地球が太陽の周りを回るという地動説を体系的に提唱した。フロムボルク大聖堂の塔で細々と観測を続け、30年かけて完成させた理論は、中世的世界観を根底から揺さぶり近代科学革命の出発点となった。",
+  "traits": {
+    "foods": ["ポーランドの家庭料理"],
+    "hobbies": ["天体観測", "数学", "教会法"],
+    "personality": "慎重で用心深い。出版を30年以上ためらった。",
+    "likes": ["静寂", "夜空", "古典古代の書物"],
+    "dislikes": ["宗教的独断", "性急な結論"]
+  }
+}

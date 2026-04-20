@@ -1032,7 +1032,7 @@ function openMapPopup() {
   modal.className = 'map-popup';
   const maps = [
     { view: 'people',    title: 'ホーム',        sub: '本棚の扉',       path: 'M 10 80 Q 40 40, 80 60 T 170 30' },
-    { view: 'tags',      title: '検索',          sub: '探求の地図',     path: 'M 20 40 Q 60 80, 100 50 Q 140 20, 180 60' },
+    { view: 'tags',      title: '偉人検索',      sub: '探求の地図',     path: 'M 20 40 Q 60 80, 100 50 Q 140 20, 180 60' },
     { view: 'routines',  title: 'ルーティン',    sub: '偉人の1日',      path: 'M 15 50 Q 50 20, 90 60 Q 130 100, 175 50' },
     { view: 'articles',  title: 'ブログ',        sub: '読み物の庭',     path: 'M 20 60 Q 60 30, 100 70 T 180 40' },
     { view: 'favorites', title: 'わたしの本',    sub: '自分だけの一冊', path: 'M 10 60 Q 50 90, 100 50 Q 150 10, 180 70' },
@@ -7123,6 +7123,43 @@ function openEraModal(catId, eraId) {
         </section>
       ` : ''}
 
+      ${lore?.works?.length ? `
+        <section class="era-page-section era-page-works-sec">
+          <h2 class="era-page-h2">代表作・名品</h2>
+          <div class="era-works-grid">
+            ${lore.works.map(w => `
+              <div class="era-work-card">
+                ${w.img ? `<div class="era-work-img"><img src="${w.img}" alt="${escapeHtml(w.title||'')}" loading="lazy" onerror="this.parentElement.style.display='none'"></div>` : ''}
+                <div class="era-work-body">
+                  <div class="era-work-title">${escapeHtml(w.title || '')}</div>
+                  <div class="era-work-meta">${w.creator ? escapeHtml(w.creator) : ''}${w.year ? ` · ${escapeHtml(String(w.year))}` : ''}</div>
+                  ${w.desc ? `<div class="era-work-desc">${escapeHtml(w.desc)}</div>` : ''}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </section>
+      ` : ''}
+
+      ${(lore?.demographics || lore?.hobbies?.length || lore?.delicacies?.length) ? `
+        <section class="era-page-section era-page-daily-sec">
+          <h2 class="era-page-h2">この時代を生きた人々</h2>
+          ${lore.demographics ? `<p class="era-demographics">${escapeHtml(lore.demographics)}</p>` : ''}
+          ${lore.hobbies?.length ? `
+            <div class="era-daily-row">
+              <div class="era-daily-label">🎯 好まれた趣味・嗜み</div>
+              <div class="era-daily-chips">${lore.hobbies.map(h => `<span class="era-daily-chip">${escapeHtml(h)}</span>`).join('')}</div>
+            </div>
+          ` : ''}
+          ${lore.delicacies?.length ? `
+            <div class="era-daily-row">
+              <div class="era-daily-label">🍷 嗜好品・ご馳走</div>
+              <div class="era-daily-chips">${lore.delicacies.map(d => `<span class="era-daily-chip">${escapeHtml(d)}</span>`).join('')}</div>
+            </div>
+          ` : ''}
+        </section>
+      ` : ''}
+
       <section class="era-page-section era-page-people-sec">
         <h2 class="era-page-h2">この時代を生きた偉人 <span class="era-page-people-count">${people.length}名</span></h2>
         <div class="era-page-people">
@@ -7185,7 +7222,7 @@ function renderHistoryEra(body) {
     const centrals = new Set();
     Object.values(TIMELINE_CENTRAL[era.id] || {}).forEach(arr => arr.forEach(id => centrals.add(id)));
     const catOrder = ['philo','music','art','literature','science','history','other'];
-    const catLabel = { philo:'🤔 哲学', music:'🎵 音楽', art:'🎨 美術', literature:'📚 文学', science:'🔬 科学', history:'⚔ 歴史', other:'◇ その他' };
+    const catLabel = { philo:'哲学', music:'音楽', art:'美術', literature:'文学', science:'科学', history:'日本史', other:'その他' };
     return `
       <div class="tl-era" id="tl-era-${era.id}">
         <div class="tl-era-head">
@@ -7219,12 +7256,12 @@ function renderHistoryEra(body) {
 }
 function renderHistoryGenre(body) {
   const cats = [
-    { id: 'music',      name: '🎵 音楽' },
-    { id: 'philo',      name: '🤔 哲学' },
-    { id: 'literature', name: '📚 文学' },
-    { id: 'art',        name: '🎨 美術' },
-    { id: 'science',    name: '🔬 科学' },
-    { id: 'history',    name: '⚔ 歴史' },
+    { id: 'music',      name: '音楽' },
+    { id: 'philo',      name: '哲学' },
+    { id: 'literature', name: '文学' },
+    { id: 'art',        name: '美術' },
+    { id: 'science',    name: '科学' },
+    { id: 'history',    name: '日本史' },
   ];
   const html = cats.map(cat => {
     const people = DATA.people.filter(p => categoryOf(p.field) === cat.id && p.birth != null)

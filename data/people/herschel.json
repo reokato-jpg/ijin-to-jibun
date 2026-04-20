@@ -1,0 +1,44 @@
+{
+  "id": "herschel",
+  "name": "ウィリアム・ハーシェル",
+  "nameEn": "William Herschel",
+  "birth": 1738,
+  "death": 1822,
+  "country": "イギリス（ハノーファー出身）",
+  "field": "天文学者・音楽家",
+  "summary": "音楽家から天文学者へ転身、1781年に天王星を発見し太陽系の地図を塗り替えた。妹キャロラインと共に彗星・星雲・2000以上の天体をカタログ化した観測の巨人。",
+  "events": [
+    { "year": 1738, "age": 0, "title": "ハノーファーで軍楽隊員の子として誕生", "detail": "幼少から音楽と数学に親しむ。", "tags": [] },
+    { "year": 1757, "age": 19, "title": "七年戦争を逃れてイギリスへ", "detail": "オルガニスト・作曲家として生計を立てた。", "tags": ["restart"] },
+    { "year": 1773, "age": 35, "title": "独学で天文学と望遠鏡製作を開始", "detail": "妹キャロラインを呼び寄せ、共同で観測と研磨に没頭。", "tags": ["curiosity", "restart"] },
+    { "year": 1781, "age": 43, "title": "天王星発見", "detail": "1781年3月13日、双子座で未知の天体を観測。以来1800年ぶりに増えた太陽系第7惑星となった。", "tags": ["breakthrough", "creation"] },
+    { "year": 1782, "age": 44, "title": "国王ジョージ3世に任命され宮廷天文学者に", "detail": "バースからスラウへ移り、音楽家の生活を完全に終える。", "tags": ["approval", "restart"] },
+    { "year": 1783, "age": 45, "title": "太陽の運動を発見", "detail": "太陽自体が空間を動いていると気づいた——恒星系の運動論の端緒。", "tags": ["breakthrough"] },
+    { "year": 1785, "age": 47, "title": "銀河系の構造モデル発表", "detail": "恒星の分布から、銀河系を平たい円盤状と推定した最初期の試み。", "tags": ["creation"] },
+    { "year": 1800, "age": 62, "title": "赤外線発見", "detail": "プリズムで分光した太陽光の赤の外側に熱を感知、光の見えない領域を発見。", "tags": ["breakthrough"] },
+    { "year": 1822, "age": 83, "title": "スラウで逝去", "detail": "妻メアリと妹キャロラインに看取られて。", "tags": ["loss"] }
+  ],
+  "quotes": [
+    { "text": "望遠鏡の向こうには、ひとつの宇宙ではなく、無数の宇宙がある。", "source": "伝" },
+    { "text": "音楽と天文学は、ともに数の秩序を奏でる。", "source": "伝" }
+  ],
+  "relations": [
+    { "name": "キャロライン・ハーシェル", "id": "caroline_herschel", "relation": "妹・共同研究者", "note": "独立して8個の彗星を発見した天文学者" }
+  ],
+  "places": [
+    { "name": "ハーシェル天文学博物館", "location": "イギリス・バース", "note": "天王星を発見した家" }
+  ],
+  "books": [
+    { "title": "The Herschels and Modern Astronomy", "author": "Agnes Clerke", "description": "ハーシェル家の天文学史" }
+  ],
+  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/William_Herschel01.jpg/500px-William_Herschel01.jpg",
+  "wikiTitle": "ウィリアム・ハーシェル",
+  "lifeDigest": "ドイツ生まれ、イギリスで活躍した天文学者。元はオルガニスト・作曲家だったが、35歳で独学天文学を始め、自作の反射望遠鏡で夜空を徹底的に走査した。1781年の天王星発見でヨーロッパ中から賞賛を集め、以後、妹キャロラインと共に2400以上の星雲・星団をカタログ化、銀河系の構造モデルを最初に提唱、1800年には赤外線も発見した。晩年は国王専属の王室天文官として尊敬を集めた。",
+  "traits": {
+    "foods": ["イギリス家庭料理"],
+    "hobbies": ["望遠鏡製作", "作曲", "夜通しの観測"],
+    "personality": "粘り強く職人気質。家族と協働することを愛した。",
+    "likes": ["自作の鏡面研磨", "星雲", "妹との共同観測"],
+    "dislikes": ["中断される観測"]
+  }
+}

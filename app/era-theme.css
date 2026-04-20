@@ -237,6 +237,86 @@
 }
 .era-page-back-btn:hover { background: rgba(0,0,0,0.06); }
 
+/* 代表作・名品 */
+.era-works-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+.era-work-card {
+  background: rgba(255,255,255,0.65);
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.era-work-img {
+  width: 100%;
+  height: 120px;
+  overflow: hidden;
+  background: rgba(0,0,0,0.06);
+}
+.era-work-img img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.era-work-body { padding: 10px 12px; }
+.era-work-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #2a1e0f;
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+.era-work-meta {
+  font-size: 11.5px;
+  color: #7a6a54;
+  margin-bottom: 6px;
+  font-family: "Georgia", "Yu Mincho", serif;
+}
+.era-work-desc {
+  font-size: 12.5px;
+  color: #4a3a24;
+  line-height: 1.7;
+}
+
+/* この時代を生きた人々 */
+.era-demographics {
+  font-size: 13.5px;
+  line-height: 1.85;
+  color: #33291c;
+  margin: 0 0 14px;
+  padding: 12px 14px;
+  background: rgba(0,0,0,0.04);
+  border-left: 3px solid rgba(0,0,0,0.15);
+  border-radius: 0 6px 6px 0;
+}
+.era-daily-row {
+  margin-bottom: 12px;
+}
+.era-daily-row:last-child { margin-bottom: 0; }
+.era-daily-label {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #5a4a30;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+.era-daily-chips {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.era-daily-chip {
+  display: inline-block;
+  padding: 5px 11px;
+  background: rgba(255,255,255,0.7);
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 999px;
+  font-size: 12.5px;
+  color: #3a2d1c;
+}
+
 /* テーマで読む（章立て・期間バッジ付き） */
 .era-theme-card {
   padding: 14px 16px;
