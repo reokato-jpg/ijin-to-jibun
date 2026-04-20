@@ -6810,6 +6810,21 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
   font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap;
 }
 .oshi-set-btn.active { background: var(--wine); color: var(--gold-light); }
+.person-share-btn {
+  background: transparent;
+  border: 1px solid var(--rule);
+  color: var(--ink-3);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.person-share-btn:hover { background: rgba(138,90,29,0.08); color: var(--wine); border-color: var(--wine); }
 
 /* ================ 聖地巡礼 ================ */
 .places-intro {

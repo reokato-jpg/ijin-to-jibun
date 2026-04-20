@@ -491,6 +491,15 @@ function showView(name, pushHistory = true) {
   // ヘッダーは常にロゴ画像を保持（テキスト上書きするとimgが消える）
   window.scrollTo(0, 0);
   document.getElementById('main').scrollTo(0, 0);
+  // person/tag 以外に遷移したら URL のparamを整理
+  if (name !== 'person' && name !== 'tag') {
+    try {
+      const url = new URL(location.href);
+      let dirty = false;
+      ['person','era','cat','tag'].forEach(k => { if (url.searchParams.has(k)) { url.searchParams.delete(k); dirty = true; } });
+      if (dirty) history.replaceState(null, '', url.toString());
+    } catch {}
+  }
   // ビュー別BGMを排他的に切替
   // person / tag 詳細はbook open演出の静寂を優先（showPersonで stopAllBgm されている）
   // ミュート中 or スマホメニューが開いているときは何もしない
@@ -6504,6 +6513,16 @@ async function showPerson(id) {
   playBookOpenFx();
   saveBookmark(id);
   recordVisit(id);
+  // URLを ?person=<id> に更新（共有可能に）
+  try {
+    const url = new URL(location.href);
+    url.searchParams.set('person', id);
+    url.searchParams.delete('era');
+    url.searchParams.delete('cat');
+    url.searchParams.delete('tag');
+    url.searchParams.delete('view');
+    history.replaceState(null, '', url.toString());
+  } catch {}
   try { checkFollowBackEligibility(id); } catch {}
   // アニメーション再生中に裏で詳細を描画
   const flipPromise = playBookFlip({
@@ -6701,6 +6720,7 @@ async function showPerson(id) {
           <button class="oshi-set-btn ${getOshi() === p.id ? 'active' : ''}" data-oshi-set="${p.id}">
             ${getOshi() === p.id ? '♡ 推し中' : '♡ 推しにする'}
           </button>
+          <button class="person-share-btn" data-person-share="${p.id}" aria-label="この偉人をシェア" title="この偉人をシェア">🔗</button>
         </div>
       </div>
       <div class="profile-info-card">
@@ -7906,6 +7926,27 @@ async function showPerson(id) {
         try { grantStamp(pid, 'oshi'); } catch {}
       }
       renderOshi();
+    });
+  }
+  // 🔗 偉人ページのシェアボタン
+  const shareBtn = container.querySelector('[data-person-share]');
+  if (shareBtn) {
+    shareBtn.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const pid = shareBtn.dataset.personShare;
+      const person = DATA.people.find(x => x.id === pid);
+      const url = `${location.origin}${location.pathname}?person=${encodeURIComponent(pid)}`;
+      const title = `${person?.name || '偉人'} — 偉人と自分。`;
+      try {
+        if (navigator.share) {
+          await navigator.share({ title, url });
+        } else if (navigator.clipboard) {
+          await navigator.clipboard.writeText(url);
+          alert('リンクをコピーしました！\n' + url);
+        } else {
+          prompt('このURLをコピーしてください:', url);
+        }
+      } catch {}
     });
   }
 
@@ -10120,6 +10161,7 @@ function openEraModal(catId, eraId) {
     <div class="era-page-backdrop" data-close="1"></div>
     <article class="era-page">
       <button class="era-page-close" data-close="1" aria-label="閉じる">×</button>
+      <button class="era-page-share" data-era-share-btn="1" aria-label="このページをシェア" title="この時代をシェア">🔗</button>
       <header class="era-page-hero">
         <div class="era-page-hero-bg" aria-hidden="true"></div>
         <div class="era-page-hero-inner">
@@ -10316,8 +10358,43 @@ function openEraModal(catId, eraId) {
   `;
   document.body.appendChild(modal);
   requestAnimationFrame(() => modal.classList.add('open'));
-  const close = () => { modal.classList.remove('open'); setTimeout(() => modal.remove(), 240); };
+  // URLを ?era=<eraId>&cat=<catId> に更新（共有可能に）
+  try {
+    const url = new URL(location.href);
+    url.searchParams.set('era', eraId);
+    url.searchParams.set('cat', catId);
+    url.searchParams.delete('person');
+    url.searchParams.delete('tag');
+    history.replaceState(null, '', url.toString());
+  } catch {}
+  const close = () => {
+    modal.classList.remove('open');
+    setTimeout(() => modal.remove(), 240);
+    // URLからera/catを除去
+    try {
+      const url = new URL(location.href);
+      url.searchParams.delete('era');
+      url.searchParams.delete('cat');
+      history.replaceState(null, '', url.toString());
+    } catch {}
+  };
   modal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', close));
+  // 🔗 シェアボタン
+  modal.querySelector('[data-era-share-btn]')?.addEventListener('click', async (e) => {
+    e.stopPropagation();
+    const url = `${location.origin}${location.pathname}?era=${encodeURIComponent(eraId)}&cat=${encodeURIComponent(catId)}`;
+    const title = `${era.name} — 偉人と自分。`;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title, url });
+      } else if (navigator.clipboard) {
+        await navigator.clipboard.writeText(url);
+        alert('リンクをコピーしました！\n' + url);
+      } else {
+        prompt('このURLをコピーしてください:', url);
+      }
+    } catch {}
+  });
   modal.querySelectorAll('[data-jump-person]').forEach(el => {
     el.addEventListener('click', () => {
       close();
@@ -12916,5 +12993,44 @@ window.renderBookshelfGuides = renderBookshelfGuides;
       openAfterAuth();
     }
   } catch {}
+
+  // =========== ディープリンク：シェアされたURLから特定画面を直接開く ===========
+  // ?era=<eraId>&cat=<catId> — 年表の時代モーダル
+  // ?person=<personId> — 偉人ページ
+  // ?tag=<tagId> — タグページ
+  // ?view=<viewName> — メインビュー（people/tags/history/routines/articles/favorites）
+  try {
+    const qp = new URLSearchParams(location.search);
+    const viewParam = qp.get('view');
+    const personId = qp.get('person');
+    const eraId = qp.get('era');
+    const catParam = qp.get('cat');
+    const tagId = qp.get('tag');
+    if (viewParam && ['people','tags','history','routines','articles','favorites'].includes(viewParam)) {
+      showView(viewParam);
+    }
+    if (personId && DATA.people && DATA.people.find(p => p.id === personId)) {
+      setTimeout(() => { try { showPerson(personId); } catch {} }, 200);
+    } else if (eraId && DATA.eraCategories) {
+      // cat が指定されていれば直接、されていなければ era からカテゴリを逆引き
+      let catId = catParam;
+      if (!catId) {
+        const found = DATA.eraCategories.find(c => (c.eras || []).some(e => e.id === eraId));
+        if (found) catId = found.id;
+      }
+      if (catId) {
+        // 年表ビューに移動してから era-lore を読み込み、モーダルを開く
+        showView('history');
+        setTimeout(() => {
+          try { if (typeof openEraModal === 'function') openEraModal(catId, eraId); } catch {}
+        }, 300);
+      }
+    } else if (tagId) {
+      setTimeout(() => {
+        try { if (typeof showTag === 'function') showTag(tagId); } catch {}
+      }, 200);
+    }
+  } catch (e) { console.warn('deeplink', e); }
+
   history.push('people');
 })();

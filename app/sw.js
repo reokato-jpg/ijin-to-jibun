@@ -96,13 +96,16 @@ self.addEventListener('fetch', (event) => {
     return;
   }
   // それ以外（HTMLなど）はネットワーク優先、失敗時キャッシュ
+  // ?era=など共有URLのクエリパラメータは同一HTMLと見なしてキャッシュキーを統一
+  const isHtml = sameOrigin && (url.pathname === '/' || url.pathname.endsWith('/') || url.pathname.endsWith('.html'));
+  const cacheKeyReq = isHtml ? new Request(url.origin + url.pathname, { method: 'GET' }) : req;
   event.respondWith(
     fetch(req).then(res => {
       if (sameOrigin && res && res.status === 200) {
         const clone = res.clone();
-        caches.open(STATIC_CACHE).then(c => c.put(req, clone));
+        caches.open(STATIC_CACHE).then(c => c.put(cacheKeyReq, clone));
       }
       return res;
-    }).catch(() => caches.match(req))
+    }).catch(() => caches.match(cacheKeyReq))
   );
 });
