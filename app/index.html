@@ -70,8 +70,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20260424A">
-<link rel="stylesheet" href="era-theme.css?v=20260424A">
+<link rel="stylesheet" href="style.css?v=20260424B">
+<link rel="stylesheet" href="era-theme.css?v=20260424B">
 </head>
 <body>
   <header class="app-header">
@@ -575,7 +575,7 @@
           </div>
         </div>
 
-        <!-- 🍳 めしるアプリ（偉人のレシピ） -->
+        <!-- 🍳 めしるアプリ（偉人のレシピ＋献立＋買い物リスト） -->
         <div class="phone-tool-app" id="phoneMeshiruApp" hidden>
           <div class="plaza-app-head tool-app-head meshiru-head">
             <button class="plaza-app-back tool-app-back" type="button" data-tool-close="meshiru" aria-label="戻る">‹</button>
@@ -584,10 +584,14 @@
           </div>
           <div class="meshiru-app">
             <div class="meshiru-tabs">
-              <button class="meshiru-tab active" data-meshiru-tab="feed">🍽 フィード</button>
+              <button class="meshiru-tab active" data-meshiru-tab="feed">🍽 レシピ</button>
+              <button class="meshiru-tab" data-meshiru-tab="plan">📅 献立</button>
+              <button class="meshiru-tab" data-meshiru-tab="shopping">🛒 買い物</button>
               <button class="meshiru-tab" data-meshiru-tab="saved">🔖 保存</button>
             </div>
             <div class="meshiru-feed" id="meshiruFeed"></div>
+            <div class="meshiru-plan" id="meshiruPlan" hidden></div>
+            <div class="meshiru-shopping" id="meshiruShopping" hidden></div>
             <div class="meshiru-saved" id="meshiruSaved" hidden></div>
           </div>
         </div>
@@ -729,10 +733,10 @@
     </div>
   </div>
 
-  <script src="era-lore.js?v=20260424A"></script>
-  <script src="history-patterns.js?v=20260424A"></script>
-  <script src="app.js?v=20260424A"></script>
-  <script src="auth.js?v=20260424A" type="module"></script>
+  <script src="era-lore.js?v=20260424B"></script>
+  <script src="history-patterns.js?v=20260424B"></script>
+  <script src="app.js?v=20260424B"></script>
+  <script src="auth.js?v=20260424B" type="module"></script>
   <script src="ai-consult.js"></script>
 </body>
 </html>

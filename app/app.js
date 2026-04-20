@@ -4760,11 +4760,15 @@ function initPhoneMenu() {
     __musicCurrent = null;
   }
 
-  // ============ 🍳 めしる（偉人のレシピ） ============
+  // ============ 🍳 めしる（偉人のレシピ＋献立＋買い物リスト） ============
   const MESHIRU_SAVED_KEY = 'ijin_meshiru_saved';
   const MESHIRU_LIKES_KEY = 'ijin_meshiru_likes';
+  const MESHIRU_PLAN_KEY = 'ijin_meshiru_plan';       // { 'YYYY-MM-DD:breakfast': recipeId, ... }
+  const MESHIRU_CHECK_KEY = 'ijin_meshiru_check';    // { ingredientText: true }
   function loadMeshiruSet(k) { try { return new Set(JSON.parse(localStorage.getItem(k) || '[]')); } catch { return new Set(); } }
   function saveMeshiruSet(k, s) { try { localStorage.setItem(k, JSON.stringify([...s])); } catch {} }
+  function loadMeshiruMap(k) { try { return JSON.parse(localStorage.getItem(k) || '{}'); } catch { return {}; } }
+  function saveMeshiruMap(k, m) { try { localStorage.setItem(k, JSON.stringify(m)); } catch {} }
 
   function getAllRecipes() {
     const out = [];
@@ -4890,16 +4894,197 @@ function initPhoneMenu() {
         });
       });
     }
+    // ── 献立プランナー ──
+    const planMount = document.getElementById('meshiruPlan');
+    function currentWeekDates() {
+      const today = new Date();
+      const day = today.getDay(); // 0=Sun
+      const monOffset = day === 0 ? -6 : 1 - day;
+      const monday = new Date(today);
+      monday.setDate(today.getDate() + monOffset);
+      const out = [];
+      for (let i = 0; i < 7; i++) {
+        const d = new Date(monday);
+        d.setDate(monday.getDate() + i);
+        out.push(d);
+      }
+      return out;
+    }
+    function fmtDate(d) {
+      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    }
+    function renderPlan() {
+      const plan = loadMeshiruMap(MESHIRU_PLAN_KEY);
+      const week = currentWeekDates();
+      const mealLabels = [['breakfast','🌅 朝'],['lunch','☀️ 昼'],['dinner','🌙 夜']];
+      planMount.innerHTML = `
+        <div class="meshiru-intro">
+          <div class="meshiru-intro-title">📅 今週の献立</div>
+          <div class="meshiru-intro-sub">偉人のレシピをタップして、この一週間の食卓を組み立てましょう。</div>
+        </div>
+        <div class="meshiru-plan-grid">
+          ${week.map(d => {
+            const key = fmtDate(d);
+            const isToday = key === fmtDate(new Date());
+            const dayNames = ['日','月','火','水','木','金','土'];
+            return `
+              <div class="meshiru-plan-day ${isToday ? 'today' : ''}">
+                <div class="meshiru-plan-day-head">
+                  <span class="meshiru-plan-day-num">${d.getMonth()+1}/${d.getDate()}</span>
+                  <span class="meshiru-plan-day-name">（${dayNames[d.getDay()]}）</span>
+                </div>
+                ${mealLabels.map(([mk, ml]) => {
+                  const rid = plan[`${key}:${mk}`];
+                  const r = rid ? recipes.find(x => x.id === rid) : null;
+                  return `
+                    <div class="meshiru-plan-slot" data-plan-date="${key}" data-plan-meal="${mk}">
+                      <div class="meshiru-plan-meal-label">${ml}</div>
+                      ${r ? `
+                        <div class="meshiru-plan-recipe">
+                          <div class="meshiru-plan-recipe-name">${escapeHtml(r.name)}</div>
+                          <div class="meshiru-plan-recipe-person">— ${escapeHtml(r.personName)}</div>
+                          <button class="meshiru-plan-clear" data-plan-clear="${key}:${mk}">×</button>
+                        </div>
+                      ` : `
+                        <button class="meshiru-plan-add" data-plan-add="${key}:${mk}">＋ レシピを選ぶ</button>
+                      `}
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+      planMount.querySelectorAll('[data-plan-clear]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const plan2 = loadMeshiruMap(MESHIRU_PLAN_KEY);
+          delete plan2[btn.dataset.planClear];
+          saveMeshiruMap(MESHIRU_PLAN_KEY, plan2);
+          renderPlan();
+        });
+      });
+      planMount.querySelectorAll('[data-plan-add]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          openRecipePicker((rid) => {
+            const plan2 = loadMeshiruMap(MESHIRU_PLAN_KEY);
+            plan2[btn.dataset.planAdd] = rid;
+            saveMeshiruMap(MESHIRU_PLAN_KEY, plan2);
+            renderPlan();
+          });
+        });
+      });
+    }
+    function openRecipePicker(onPick) {
+      const existing = document.getElementById('meshiruPickModal');
+      if (existing) existing.remove();
+      const modal = document.createElement('div');
+      modal.id = 'meshiruPickModal';
+      modal.className = 'meshiru-pick-modal';
+      modal.innerHTML = `
+        <div class="meshiru-pick-backdrop"></div>
+        <div class="meshiru-pick-panel">
+          <div class="meshiru-pick-head">
+            <div class="meshiru-pick-title">レシピを選ぶ</div>
+            <button class="meshiru-pick-close">×</button>
+          </div>
+          <div class="meshiru-pick-list">
+            ${recipes.map(r => `
+              <button class="meshiru-pick-item" data-pick-id="${r.id}">
+                <div class="meshiru-pick-item-name">${escapeHtml(r.name)}</div>
+                <div class="meshiru-pick-item-person">${escapeHtml(r.personName)}</div>
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+      const close = () => modal.remove();
+      modal.querySelector('.meshiru-pick-backdrop').addEventListener('click', close);
+      modal.querySelector('.meshiru-pick-close').addEventListener('click', close);
+      modal.querySelectorAll('[data-pick-id]').forEach(b => {
+        b.addEventListener('click', () => {
+          onPick(b.dataset.pickId);
+          close();
+        });
+      });
+    }
+    // ── 買い物リスト（今週の献立から自動生成） ──
+    const shoppingMount = document.getElementById('meshiruShopping');
+    function renderShopping() {
+      const plan = loadMeshiruMap(MESHIRU_PLAN_KEY);
+      const checks = loadMeshiruMap(MESHIRU_CHECK_KEY);
+      // 今週の献立に使う全材料をまとめる
+      const ingredientMap = {}; // { 'text': [recipeName...] }
+      Object.entries(plan).forEach(([slot, rid]) => {
+        const r = recipes.find(x => x.id === rid);
+        if (!r) return;
+        (r.ingredients || []).forEach(ing => {
+          if (!ingredientMap[ing]) ingredientMap[ing] = [];
+          ingredientMap[ing].push(r.name);
+        });
+      });
+      const entries = Object.entries(ingredientMap);
+      if (entries.length === 0) {
+        shoppingMount.innerHTML = `
+          <div class="meshiru-intro">
+            <div class="meshiru-intro-title">🛒 買い物リスト</div>
+            <div class="meshiru-intro-sub">献立タブでレシピを設定すると、<br>必要な材料が自動でここに並びます。</div>
+          </div>
+          <div class="meshiru-empty">まだ献立が空です。</div>
+        `;
+        return;
+      }
+      const checkedCount = entries.filter(([ing]) => checks[ing]).length;
+      shoppingMount.innerHTML = `
+        <div class="meshiru-intro">
+          <div class="meshiru-intro-title">🛒 買い物リスト</div>
+          <div class="meshiru-intro-sub">今週の献立に必要な材料 ${entries.length}点（${checkedCount}点購入済）</div>
+        </div>
+        <ul class="meshiru-shop-list">
+          ${entries.map(([ing, recipeNames]) => {
+            const checked = !!checks[ing];
+            return `
+              <li class="meshiru-shop-item ${checked ? 'checked' : ''}" data-shop-ing="${escapeHtml(ing).replace(/"/g,'&quot;')}">
+                <label class="meshiru-shop-label">
+                  <input type="checkbox" ${checked ? 'checked' : ''} class="meshiru-shop-check">
+                  <span class="meshiru-shop-text">${escapeHtml(ing)}</span>
+                </label>
+                <div class="meshiru-shop-meta">${recipeNames.map(n => escapeHtml(n)).join('・')}</div>
+              </li>
+            `;
+          }).join('')}
+        </ul>
+        <button class="meshiru-shop-clear" id="meshiruShopReset">🗑 買い物済チェックを全リセット</button>
+      `;
+      shoppingMount.querySelectorAll('.meshiru-shop-item').forEach(li => {
+        const cb = li.querySelector('.meshiru-shop-check');
+        cb.addEventListener('change', () => {
+          const checks2 = loadMeshiruMap(MESHIRU_CHECK_KEY);
+          const ing = li.dataset.shopIng;
+          if (cb.checked) checks2[ing] = true; else delete checks2[ing];
+          saveMeshiruMap(MESHIRU_CHECK_KEY, checks2);
+          li.classList.toggle('checked', cb.checked);
+        });
+      });
+      shoppingMount.querySelector('#meshiruShopReset')?.addEventListener('click', () => {
+        if (!confirm('買い物済のチェックを全てリセットしますか？')) return;
+        saveMeshiruMap(MESHIRU_CHECK_KEY, {});
+        renderShopping();
+      });
+    }
+
     // タブ切り替え
     document.querySelectorAll('[data-meshiru-tab]').forEach(tab => {
       tab.addEventListener('click', () => {
         document.querySelectorAll('[data-meshiru-tab]').forEach(t => t.classList.toggle('active', t === tab));
         const which = tab.dataset.meshiruTab;
-        if (which === 'feed') {
-          feed.hidden = false; savedMount.hidden = true; renderFeed();
-        } else {
-          feed.hidden = true; savedMount.hidden = false; renderSaved();
-        }
+        [feed, planMount, shoppingMount, savedMount].forEach(m => { if (m) m.hidden = true; });
+        if (which === 'feed') { feed.hidden = false; renderFeed(); }
+        else if (which === 'plan') { planMount.hidden = false; renderPlan(); }
+        else if (which === 'shopping') { shoppingMount.hidden = false; renderShopping(); }
+        else { savedMount.hidden = false; renderSaved(); }
       });
     });
     renderFeed();

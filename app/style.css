@@ -15251,6 +15251,238 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
   line-height: 1.8;
   font-family: var(--font-jp);
 }
+
+/* ============ 献立プランナー ============ */
+.meshiru-plan, .meshiru-shopping, .meshiru-saved {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 10px 10px 40px;
+  min-height: 0;
+}
+.meshiru-plan-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.meshiru-plan-day {
+  background: #fff;
+  border-radius: 12px;
+  padding: 10px 12px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+  font-family: var(--font-jp);
+}
+.meshiru-plan-day.today {
+  border: 2px solid #c07d4e;
+}
+.meshiru-plan-day-head {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--wine);
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(138,90,29,0.12);
+  display: flex;
+  gap: 4px;
+  align-items: baseline;
+}
+.meshiru-plan-day-num { font-size: 14px; }
+.meshiru-plan-day-name { font-size: 11px; color: var(--ink-3); }
+.meshiru-plan-slot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 4px;
+  min-height: 30px;
+}
+.meshiru-plan-meal-label {
+  flex: 0 0 42px;
+  font-size: 11px;
+  color: var(--ink-3);
+}
+.meshiru-plan-add {
+  flex: 1;
+  padding: 6px 10px;
+  background: #faf6ed;
+  border: 1px dashed rgba(138,90,29,0.3);
+  border-radius: 8px;
+  font-size: 11px;
+  color: var(--ink-3);
+  cursor: pointer;
+  font-family: var(--font-jp);
+  text-align: left;
+}
+.meshiru-plan-add:hover {
+  background: #fff7e6;
+  border-color: var(--wine);
+}
+.meshiru-plan-recipe {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: linear-gradient(90deg, #fff7e6, #faf0d8);
+  border-radius: 8px;
+  border-left: 3px solid #c07d4e;
+}
+.meshiru-plan-recipe-name {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 700;
+  color: #4a2d12;
+}
+.meshiru-plan-recipe-person {
+  font-size: 10px;
+  color: var(--ink-3);
+  font-style: italic;
+}
+.meshiru-plan-clear {
+  background: none;
+  border: none;
+  color: var(--ink-4);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0 4px;
+}
+.meshiru-plan-clear:hover { color: #c07d4e; }
+
+/* ============ 買い物リスト ============ */
+.meshiru-shop-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+}
+.meshiru-shop-item {
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(138,90,29,0.08);
+  font-family: var(--font-jp);
+  transition: background 0.15s;
+}
+.meshiru-shop-item:last-child { border-bottom: none; }
+.meshiru-shop-item.checked {
+  background: #f5f0e5;
+}
+.meshiru-shop-item.checked .meshiru-shop-text {
+  text-decoration: line-through;
+  color: var(--ink-4);
+}
+.meshiru-shop-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.meshiru-shop-check {
+  width: 18px;
+  height: 18px;
+  accent-color: #c07d4e;
+  cursor: pointer;
+}
+.meshiru-shop-text { flex: 1; }
+.meshiru-shop-meta {
+  font-size: 10px;
+  color: var(--ink-4);
+  margin-top: 4px;
+  margin-left: 28px;
+}
+.meshiru-shop-clear {
+  display: block;
+  width: 100%;
+  margin-top: 14px;
+  padding: 10px;
+  background: #fff;
+  border: 1px solid rgba(138,90,29,0.2);
+  border-radius: 8px;
+  color: var(--ink-3);
+  font-size: 12px;
+  cursor: pointer;
+  font-family: var(--font-jp);
+}
+.meshiru-shop-clear:hover {
+  background: #fff7e6;
+  color: var(--wine);
+}
+
+/* ============ レシピ選択モーダル ============ */
+.meshiru-pick-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-jp);
+}
+.meshiru-pick-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+}
+.meshiru-pick-panel {
+  position: relative;
+  background: #fff;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 360px;
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+.meshiru-pick-head {
+  padding: 14px 16px;
+  background: linear-gradient(135deg, #c07d4e, #8a5a1d);
+  color: #fff7e6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.meshiru-pick-title {
+  font-weight: 700;
+  font-size: 14px;
+}
+.meshiru-pick-close {
+  background: none;
+  border: none;
+  color: #fff7e6;
+  font-size: 22px;
+  cursor: pointer;
+}
+.meshiru-pick-list {
+  overflow-y: auto;
+  padding: 6px;
+}
+.meshiru-pick-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 14px;
+  background: #fff;
+  border: none;
+  border-bottom: 1px solid rgba(138,90,29,0.08);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.meshiru-pick-item:hover { background: #fff7e6; }
+.meshiru-pick-item-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #4a2d12;
+  margin-bottom: 2px;
+}
+.meshiru-pick-item-person {
+  font-size: 10px;
+  color: var(--ink-3);
+  font-style: italic;
+}
 .music-tracklist {
   min-height: 0;
   -webkit-overflow-scrolling: touch;
