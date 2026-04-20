@@ -113,8 +113,10 @@ const CATEGORY_RULES = [
   { id: 'philo',    name: '哲学者',   match: (f) => /哲学/.test(f) },
   { id: 'literature', name: '文学者', match: (f) => /小説家|作家|詩人|文学者|歌人|俳人|劇作家/.test(f) },
   { id: 'art',      name: '画家',     match: (f) => /画家|彫刻家|美術/.test(f) },
-  { id: 'science',  name: '科学者',   match: (f) => /科学|数学者|物理学者|生物学者|医師|医学/.test(f) },
+  { id: 'science',  name: '科学者',   match: (f) => /科学|数学者|物理学者|生物学者|医師|医学|天文/.test(f) },
   { id: 'history',  name: '歴史',     match: (f) => /武士|武将|志士|藩士|政治家|軍人|大名|局長|副長|戦国|維新|幕末/.test(f) },
+  { id: 'business', name: '経営者',   match: (f) => /実業家|経営者|起業家|投資家|ビジネス/.test(f) },
+  { id: 'horse_racing', name: '競馬', match: (f) => /騎手|競走馬|ジョッキー/.test(f) },
 ];
 function categoryOf(field) {
   for (const r of CATEGORY_RULES) if (r.match(field || '')) return r.id;
@@ -2122,68 +2124,64 @@ function openUserProfileModal(uid, usersCache) {
   const followBtn = (isLoggedIn && !u.isMe)
     ? `<button class="user-prof-follow ${following ? 'active' : ''}" data-user-follow="${u.uid}">${following ? '✓ フォロー中' : '＋ フォローする'}</button>`
     : '';
-  const careerHtml = (u.career && u.career.length) ? `
-    <div class="user-prof-career">
-      <div class="user-prof-section-label">📜 わたしの歩み</div>
-      <ol class="user-prof-career-list">
-        ${u.career.map(c => `
-          <li class="user-prof-career-item">
-            <div class="user-prof-career-year">${escapeHtml(c.year || '')}</div>
-            <div class="user-prof-career-body">
-              <div class="user-prof-career-title">${escapeHtml(c.title || '')}</div>
-              ${c.detail ? `<div class="user-prof-career-detail">${escapeHtml(c.detail)}</div>` : ''}
-            </div>
-          </li>
-        `).join('')}
-      </ol>
-    </div>
-  ` : '';
-  const quotesHtml = (u.myQuotes && u.myQuotes.length) ? `
-    <div class="user-prof-section">
-      <div class="user-prof-section-label">✒ 大切にしている言葉</div>
-      <div class="user-prof-quotes">
-        ${u.myQuotes.map(q => `
-          <blockquote class="user-prof-quote">
-            「${escapeHtml(q.text || q)}」
-            ${q.source ? `<cite>— ${escapeHtml(q.source)}</cite>` : ''}
-          </blockquote>
-        `).join('')}
-      </div>
-    </div>
-  ` : '';
-  const bioHtml = u.myBio ? `
-    <div class="user-prof-bio">
-      <div class="user-prof-section-label">📖 自己紹介</div>
-      <p>${escapeHtml(u.myBio).replace(/\n/g, '<br>')}</p>
-    </div>
-  ` : '';
+  // 偉人と同じ情報カード形式
+  const infoItems = [
+    u.birthMonth && u.birthDay ? { ic: '🎂', label: '誕生日', val: `${u.birthMonth}/${u.birthDay}` } : null,
+    u.hometown ? { ic: '📍', label: '出身', val: escapeHtml(u.hometown) } : null,
+    { ic: '📚', label: '偉人', val: `${u.ijinCount}人をフォロー` },
+    { ic: '⭐', label: 'スタンプ', val: `${u.stampTotal}個` },
+  ].filter(Boolean);
 
   modal.innerHTML = `
     <div class="settings-backdrop" data-close="1"></div>
     <div class="settings-panel user-prof-panel">
       <button class="settings-close" data-close="1" aria-label="閉じる">×</button>
+      <!-- カバー（偉人ページと同じデザイン） -->
       <div class="user-prof-cover">
         <div class="user-prof-cover-ornament">◆</div>
         <div class="user-prof-cover-name">${escapeHtml(u.name)}</div>
         ${u.title ? `<div class="user-prof-cover-title">【${u.title}】</div>` : ''}
-        <div class="user-prof-cover-dates">${u.birthMonth && u.birthDay ? `🎂 ${u.birthMonth}/${u.birthDay}` : ''}${u.hometown ? `　📍 ${escapeHtml(u.hometown)}` : ''}</div>
       </div>
       <div class="user-prof-head">
         ${av}
         <div style="flex:1;min-width:0">
           <div class="user-prof-meta">会員フォロー ${myFollowedCount}人 · フォロワー ${followersOfThisUser}人</div>
-          <div class="user-prof-meta">偉人フォロー ${u.ijinCount}人 · スタンプ ${u.stampTotal}個</div>
         </div>
       </div>
       ${followBtn}
-      ${bioHtml}
-      ${careerHtml}
-      ${quotesHtml}
-      <div class="user-prof-row"><b>🍽 好きな食べ物</b><div class="user-prof-chips">${chip(u.traits.foods)}</div></div>
-      <div class="user-prof-row"><b>🎨 趣味</b><div class="user-prof-chips">${chip(u.traits.hobbies)}</div></div>
+      <!-- 情報カード（偉人ページと同じスタイル） -->
+      <div class="profile-info-card">
+        ${infoItems.map(i => `
+          <div class="profile-info-item">
+            <span class="profile-info-ic">${i.ic}</span>
+            <span class="profile-info-label">${i.label}</span>
+            <span class="profile-info-value">${i.val}</span>
+          </div>
+        `).join('')}
+      </div>
+
+      <!-- 好きなもの・趣味・性格まで（ここまでが偉人と同じ） -->
+      <div class="user-prof-row"><b>🍽 好きな食べ物・飲み物</b><div class="user-prof-chips">${chip(u.traits.foods)}</div></div>
+      <div class="user-prof-row"><b>🎨 趣味・日課</b><div class="user-prof-chips">${chip(u.traits.hobbies)}</div></div>
       <div class="user-prof-row"><b>❤ 好きなもの</b><div class="user-prof-chips">${chip(u.traits.likes)}</div></div>
-      ${sns ? `<div class="user-prof-row"><b>🔗 SNS</b><div class="user-prof-sns-row">${sns}</div></div>` : ''}
-      ${ijinSample ? `<div class="user-prof-row"><b>📚 フォロー中の偉人</b><div class="user-prof-ijin-list">${ijinSample}</div></div>` : ''}
+      <div class="user-prof-row"><b>🚫 嫌いなもの</b><div class="user-prof-chips">${chip(u.traits.dislikes)}</div></div>
+      ${u.traits.personality ? `<div class="user-prof-row user-prof-personality"><b>🎭 性格</b><p>${escapeHtml(u.traits.personality)}</p></div>` : ''}
+
+      <!-- 会員だけの特別セクション：連携しているアプリ -->
+      ${sns ? `
+        <div class="user-prof-row user-prof-apps">
+          <b>🔗 連携しているアプリ</b>
+          <div class="user-prof-sns-row">${sns}</div>
+        </div>
+      ` : ''}
+
+      ${ijinSample ? `
+        <div class="user-prof-row">
+          <b>📚 フォロー中の偉人</b>
+          <div class="user-prof-ijin-list">${ijinSample}</div>
+        </div>
+      ` : ''}
+
       <!-- 👣 訪問者の軌跡 -->
       <div class="profile-visitors-section user-prof-visitors">
         <div class="profile-visitors-head">
