@@ -11,13 +11,9 @@ npx -y esbuild app/era-lore.js        --minify --charset=utf8 --target=es2020 --
 npx -y esbuild app/history-patterns.js --minify --charset=utf8 --target=es2020 --outfile=app/dist/history-patterns.min.js
 npx -y esbuild app/ai-consult.js       --minify --charset=utf8 --target=es2020 --outfile=app/dist/ai-consult.min.js
 
-# CSS（遅延読込用の分割CSSも含む）
+# CSS
 npx -y esbuild app/style.css          --minify --outfile=app/dist/style.min.css
 npx -y esbuild app/era-theme.css      --minify --outfile=app/dist/era-theme.min.css
-for f in app/style-lazy-*.css; do
-  [ -f "$f" ] || continue
-  npx -y esbuild "$f" --minify --outfile="app/dist/$(basename ${f%.css}).min.css"
-done
 
 # 偉人データのバンドル再生成
 python build-people-bundle.py 2>/dev/null || python3 build-people-bundle.py 2>/dev/null || true

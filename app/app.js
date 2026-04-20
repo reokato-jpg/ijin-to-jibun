@@ -1,14 +1,5 @@
-// ====================== 遅延CSSローダー ======================
-// 機能別に切り出した style-lazy-*.css を必要になった瞬間に1回だけ読み込む
-const __loadedLazyCss = new Set();
-function ensureLazyCss(name) {
-  if (__loadedLazyCss.has(name)) return;
-  __loadedLazyCss.add(name);
-  const link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.href = `dist/style-lazy-${name}.min.css?v=20260425I`;
-  document.head.appendChild(link);
-}
+// 遅延CSSは style.css に統合済みのため、no-op
+function ensureLazyCss(_name) { /* merged back into style.css */ }
 window.ensureLazyCss = ensureLazyCss;
 
 // ====================== Amazon アフィリエイト設定 ======================
