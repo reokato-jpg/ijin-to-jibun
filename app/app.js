@@ -3308,8 +3308,8 @@ function renderHomeBooks() {
         <div class="home-book-title">${escapeHtml(b.title)}</div>
         <div class="home-book-person">${escapeHtml(b.person.name)}</div>
         <div class="home-book-stores">
-          <a class="home-book-store home-book-amazon" href="${amazon}" target="_blank" rel="noopener sponsored">📦</a>
-          <a class="home-book-store home-book-rakuten" href="${rakuten}" target="_blank" rel="noopener sponsored">🛍</a>
+          <a class="home-book-store home-book-amazon" href="${amazon}" target="_blank" rel="noopener sponsored">Amazon</a>
+          <a class="home-book-store home-book-rakuten" href="${rakuten}" target="_blank" rel="noopener sponsored">楽天</a>
         </div>
       </div>
     `;

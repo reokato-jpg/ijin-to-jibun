@@ -3769,6 +3769,11 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
   color: var(--ink-4);
   font-family: var(--font-jp);
 }
+.home-book-stores { display: flex; gap: 5px; margin-top: 6px; justify-content: center; }
+.home-book-store { flex: 1; max-width: 56px; text-align: center; font-size: 10px; padding: 4px 6px; border-radius: 3px; text-decoration: none; font-weight: 600; letter-spacing: 0.02em; border: 1px solid transparent; transition: opacity 0.15s; }
+.home-book-store:hover { opacity: 0.85; }
+.home-book-store.home-book-amazon { background: #fff; color: var(--wine); border-color: var(--wine); }
+.home-book-store.home-book-rakuten { background: #bf0000; color: #fff; }
 .home-book-cover-wrap {
   position: relative;
   width: 100%;
