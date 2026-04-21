@@ -167,6 +167,11 @@
       "author": "坂本龍一",
       "asin": "4104751022",
       "description": "自伝"
+    },
+    {
+      "title": "ぼくはあと何回、満月を見るだろう",
+      "author": "坂本龍一",
+      "description": "晩年に書き残した最後の言葉。"
     }
   ],
   "works": [
@@ -201,7 +206,7 @@
       "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E5%9D%82%E6%9C%AC%E9%BE%8D%E4%B8%80%20%E3%82%A2%E3%82%AF%E3%82%A2%EF%BC%88Aqua%EF%BC%89"
     }
   ],
-  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Ryuichi_Sakamoto_side.jpg/500px-Ryuichi_Sakamoto_side.jpg",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Ryuichi_Sakamoto_side.jpg?width=500",
   "wikiTitle": "坂本龍一",
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Tokyo_geidai_logo.svg/langja-330px-Tokyo_geidai_logo.svg.png",
   "coverImageCaption": "東京芸術大学",

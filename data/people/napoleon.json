@@ -160,9 +160,14 @@
       "author": "オクターヴ・オブリ編",
       "asin": "4003400216",
       "description": "本人の言葉を集めた岩波文庫"
+    },
+    {
+      "title": "ナポレオン",
+      "author": "ジャン・チュラール",
+      "description": "第一級のフランス史家による定評ある伝記。"
     }
   ],
-  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Fran%C3%A7ois_G%C3%A9rard_-_Napoleon_I_001.JPG/500px-Fran%C3%A7ois_G%C3%A9rard_-_Napoleon_I_001.JPG",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Fran%C3%A7ois_G%C3%A9rard_-_Napoleon_I_001.JPG?width=500",
   "wikiTitle": "ナポレオン・ボナパルト",
   "imageCredit": {
     "artist": "Workshop of François Gérard",

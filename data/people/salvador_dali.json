@@ -33,8 +33,14 @@
   ],
   "relations": [],
   "places": [],
-  "books": [],
-  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Salvador_Dal%C3%AD_1939.jpg/280px-Salvador_Dal%C3%AD_1939.jpg",
+  "books": [
+    {
+      "title": "ダリの私生活",
+      "author": "サルバドール・ダリ",
+      "description": "奇想の画家による自伝。"
+    }
+  ],
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Salvador_Dal%C3%AD_1939.jpg?width=280",
   "wikiTitle": "サルバドール・ダリ",
   "birthMonth": 5,
   "birthDay": 11,

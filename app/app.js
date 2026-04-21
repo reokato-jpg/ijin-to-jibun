@@ -3046,7 +3046,7 @@ function renderOshi() {
       : `https://www.amazon.co.jp/s?k=${q}${AMAZON_TAG ? `&tag=${AMAZON_TAG}` : ''}`;
     const rak = rakutenSearchUrl(todayBook.title, todayBook.author);
     const coverInner = hasAsin
-      ? `<img src="${amazonCover(todayBook.asin)}" alt="${escapeHtml(todayBook.title)}" loading="lazy" onerror="this.parentElement.classList.add('no-cover');this.remove();"><div class="oshi-book-fallback"><div class="oshi-book-fallback-orn">✦</div><div class="oshi-book-fallback-title">${escapeHtml(todayBook.title)}</div>${todayBook.author ? `<div class="oshi-book-fallback-author">${escapeHtml(todayBook.author)}</div>` : ''}</div>`
+      ? `<img src="${amazonCover(todayBook.asin)}" alt="${escapeHtml(todayBook.title)}" loading="lazy" onerror="this.parentElement.classList.add('no-cover');this.remove();" onload="if(this.naturalWidth<50){this.parentElement.classList.add('no-cover');this.remove();}"><div class="oshi-book-fallback"><div class="oshi-book-fallback-orn">✦</div><div class="oshi-book-fallback-title">${escapeHtml(todayBook.title)}</div>${todayBook.author ? `<div class="oshi-book-fallback-author">${escapeHtml(todayBook.author)}</div>` : ''}</div>`
       : `<div class="oshi-book-fallback"><div class="oshi-book-fallback-orn">✦</div><div class="oshi-book-fallback-title">${escapeHtml(todayBook.title)}</div>${todayBook.author ? `<div class="oshi-book-fallback-author">${escapeHtml(todayBook.author)}</div>` : ''}</div>`;
     bookHtml = `
       <div class="oshi-today-book">
@@ -3070,6 +3070,24 @@ function renderOshi() {
       <div class="oshi-today-quote-text">「${escapeHtml(todayQuote.text)}」</div>
       ${todayQuote.source ? `<div class="oshi-today-quote-src">— ${escapeHtml(todayQuote.source)}</div>` : ''}
     </div>` : '';
+  // 💌 推しからのきょうの手紙（テンプレート＋日替わり）
+  const LETTER_TEMPLATES = [
+    '今日はどんな一日だった？ 私の時代も、迷うことばかりだったよ。',
+    'うまくいかない日があっても、それは歩いている証拠。',
+    'きみの心の中に、きっと答えはある。ゆっくりでいい。',
+    '焦らなくていい。私も何度も立ち止まったから。',
+    '今日の君のその一歩が、未来の誰かを救うかもしれない。',
+    '小さな積み重ねを信じて。それが私を支えたものだから。',
+    '疲れたら休もう。私もそうしていた。',
+    '好きなものを、ちゃんと好きと言える人でいて。',
+  ];
+  const letterText = LETTER_TEMPLATES[seed % LETTER_TEMPLATES.length];
+  const letterHtml = `
+    <div class="oshi-today-letter">
+      <div class="oshi-today-letter-head">💌 ${escapeHtml(p.name)}からの手紙</div>
+      <div class="oshi-today-letter-body">${escapeHtml(letterText)}</div>
+      <div class="oshi-today-letter-sign">— ${escapeHtml(p.name)}</div>
+    </div>`;
   // 推しの1日ルーティン抜粋（work/exercise/meal 中心に3件）
   const ICON = { sleep:'😴', meal:'☕', work:'✍️', exercise:'🚶', rest:'🛋', social:'🗣', study:'📖', create:'🎨', hobby:'🎼' };
   const routine = Array.isArray(p.routine) ? p.routine : [];
@@ -3112,6 +3130,7 @@ function renderOshi() {
         </div>
         <div class="oshi-goto">→</div>
       </div>
+      ${letterHtml}
       ${quoteHtml}
       ${routineHtml}
       ${bookHtml}
@@ -3276,7 +3295,8 @@ function renderHomeBooks() {
       </div>`;
     const coverHtml = hasValidAsin(b)
       ? `<img src="${amazonCover(b.asin)}" alt="${escapeHtml(b.title)}" loading="lazy"
-             onerror="this.parentElement.classList.add('no-cover'); this.remove();">${fallbackHtml}`
+             onerror="this.parentElement.classList.add('no-cover'); this.remove();"
+             onload="if(this.naturalWidth<50){this.parentElement.classList.add('no-cover');this.remove();}">${fallbackHtml}`
       : fallbackHtml;
     const coverClass = hasValidAsin(b) ? 'home-book-cover' : 'home-book-cover no-cover';
     return `

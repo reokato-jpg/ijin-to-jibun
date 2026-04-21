@@ -163,9 +163,19 @@
       "author": "プラトン",
       "asin": "4003360141",
       "description": "愛について語る対話篇の最高傑作"
+    },
+    {
+      "title": "国家",
+      "author": "プラトン",
+      "description": "正義とは何か。西洋思想の原典。"
+    },
+    {
+      "title": "ソクラテスの弁明・クリトン",
+      "author": "プラトン",
+      "description": "師ソクラテスの裁判を描く対話篇。"
     }
   ],
-  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Plato_Pio-Clemetino_Inv305.jpg/500px-Plato_Pio-Clemetino_Inv305.jpg",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Plato_Pio-Clemetino_Inv305.jpg?width=500",
   "wikiTitle": "プラトン",
   "imageCredit": {
     "artist": "Unknown artist Unknown artist",

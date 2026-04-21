@@ -157,9 +157,14 @@
       "author": "秋山邦晴",
       "asin": "4393936825",
       "description": "奇人の音楽と日常"
+    },
+    {
+      "title": "エリック・サティ覚え書",
+      "author": "オルネラ・ヴォルタ編",
+      "description": "奇才サティの素描。"
     }
   ],
-  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Ericsatie.jpg/500px-Ericsatie.jpg",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Ericsatie.jpg?width=500",
   "wikiTitle": "エリック・サティ",
   "imageCredit": {
     "artist": "Henri Manuel",

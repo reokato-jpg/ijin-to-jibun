@@ -6957,6 +6957,15 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 .oshi-routine-time { font-family: var(--font-en); font-size: 10px; color: var(--ink-3); font-weight: 600; min-width: 72px; }
 .oshi-routine-ic { font-size: 14px; }
 .oshi-routine-act { font-family: var(--font-jp); font-size: 12px; color: var(--ink); line-height: 1.4; flex: 1; }
+/* 💌 推しの手紙 */
+.oshi-today-letter { background: linear-gradient(135deg, #fff9e6 0%, #fff2d4 100%); border: 1px solid #d4b87a; border-radius: 6px; padding: 12px 14px; position: relative; box-shadow: 0 2px 5px rgba(168,122,58,0.15); }
+.oshi-today-letter::before { content: ''; position: absolute; top: -1px; left: -1px; right: -1px; height: 3px; background: repeating-linear-gradient(90deg, #bf0000 0, #bf0000 6px, #fff 6px, #fff 12px, #0050a0 12px, #0050a0 18px, #fff 18px, #fff 24px); border-radius: 6px 6px 0 0; }
+.oshi-today-letter-head { font-size: 11px; font-weight: 700; color: #8a5a1d; margin-bottom: 7px; padding-top: 4px; }
+.oshi-today-letter-body { font-family: var(--font-jp); font-size: 13px; color: #4a3820; line-height: 1.75; }
+.oshi-today-letter-sign { font-family: var(--font-jp); font-size: 11px; color: #8a5a1d; text-align: right; font-style: italic; margin-top: 6px; }
+/* 推しセクション変更時のフェードイン */
+.oshi-rich { animation: oshiFadeIn 0.5s ease; }
+@keyframes oshiFadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 .profile-action-btns { display: flex; flex-direction: column; gap: 6px; align-items: flex-end; margin-top: 4px; }
 .oshi-set-btn {
   padding: 4px 10px; background: transparent; border: 1px solid var(--wine);

@@ -179,7 +179,13 @@
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Ainola.JPG/330px-Ainola.JPG"
     }
   ],
-  "books": [],
+  "books": [
+    {
+      "title": "シベリウス",
+      "author": "エリック・タワストシェルナ",
+      "description": "北欧の大作曲家の決定版評伝。"
+    }
+  ],
   "works": [
     {
       "title": "交響詩『フィンランディア』",
@@ -241,7 +247,7 @@
       "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%B8%E3%83%A3%E3%83%B3%E3%83%BB%E3%82%B7%E3%83%99%E3%83%AA%E3%82%A6%E3%82%B9%20%E4%BA%A4%E9%9F%BF%E8%A9%A9%E3%80%8E%E3%82%BF%E3%83%94%E3%82%AA%E3%83%A9%E3%80%8F%E4%BD%9C%E5%93%81112"
     }
   ],
-  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Sibelius_with_notes.jpg",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Sibelius_with_notes.jpg?width=400",
   "wikiTitle": "ジャン・シベリウス",
   "imageCredit": {
     "artist": "Unknown author Unknown author",

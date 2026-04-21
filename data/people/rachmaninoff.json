@@ -350,7 +350,7 @@
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/View_of_Westward_from_Sky_Deck_MIRAI360%2C_Nishiki_Naka_Ward_Nagoya_2022.jpg/330px-View_of_Westward_from_Sky_Deck_MIRAI360%2C_Nishiki_Naka_Ward_Nagoya_2022.jpg"
     }
   ],
-  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Sergei_Rachmaninoff_cph.3a40575.jpg/500px-Sergei_Rachmaninoff_cph.3a40575.jpg",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Sergei_Rachmaninoff_cph.3a40575.jpg?width=500",
   "wikiTitle": "セルゲイ・ラフマニノフ",
   "books": [
     {
@@ -364,6 +364,11 @@
       "author": "ハロルド・ショーンバーグ",
       "asin": "4560035784",
       "description": "ラフマニノフを含む巨匠ピアニストたちの演奏哲学と練習法"
+    },
+    {
+      "title": "ラフマニノフの想い出",
+      "author": "オスカー・フォン・リーゼマン",
+      "description": "亡命前後の肉声に迫る。"
     }
   ],
   "routineStory": "アメリカ亡命後、スイス・ルツェルン湖畔の別荘『セナール（Senar）』での生活が最も知られる。妻と娘の記録によれば、朝のコーヒーの後、4時間以上のピアノ練習が日課。演奏旅行中でも船上でキーボード板を置いて指の運動を欠かさなかった。作曲は静かな夏の別荘で行われ、冬は演奏家としてアメリカを巡った。食事は質素で、ロシア料理を好んだ。",

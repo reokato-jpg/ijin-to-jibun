@@ -33,8 +33,19 @@
   ],
   "relations": [],
   "places": [],
-  "books": [],
-  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/George_Orwell_press_photo.jpg/280px-George_Orwell_press_photo.jpg",
+  "books": [
+    {
+      "title": "1984",
+      "author": "ジョージ・オーウェル",
+      "description": "全体主義の恐怖を描いた20世紀の預言書。"
+    },
+    {
+      "title": "動物農場",
+      "author": "ジョージ・オーウェル",
+      "description": "革命の裏切りを描く寓話。"
+    }
+  ],
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/George_Orwell_press_photo.jpg?width=280",
   "wikiTitle": "ジョージ・オーウェル",
   "birthMonth": 6,
   "birthDay": 25,

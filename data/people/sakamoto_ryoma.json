@@ -170,7 +170,7 @@
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/2_Chome_Irabayashi%2C_Nagasaki-shi%2C_Nagasaki-ken_850-0802%2C_Japan_-_panoramio.jpg/330px-2_Chome_Irabayashi%2C_Nagasaki-shi%2C_Nagasaki-ken_850-0802%2C_Japan_-_panoramio.jpg"
     }
   ],
-  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Sakamoto_Ryoma.jpg/500px-Sakamoto_Ryoma.jpg",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Sakamoto_Ryoma.jpg?width=500",
   "wikiTitle": "坂本龍馬",
   "imageCredit": {
     "artist": "Unknown author Unknown author",
@@ -191,6 +191,11 @@
       "author": "坂本龍馬（遺稿）",
       "asin": "4062923386",
       "description": "姉乙女への素朴で温かい手紙集"
+    },
+    {
+      "title": "竜馬がゆく",
+      "author": "司馬遼太郎",
+      "description": "国民的小説、龍馬像を決定づけた大河。"
     }
   ],
   "media": [

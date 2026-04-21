@@ -102,7 +102,7 @@
       "source": "弟子への言葉"
     }
   ],
-  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/9/94/Auguste_Rodin_by_George_Charles_Beresford_%28NPG_x6573%29.jpg",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Auguste_Rodin_by_George_Charles_Beresford_%28NPG_x6573%29.jpg?width=400",
   "wikiTitle": "オーギュスト・ロダン",
   "imageCredit": {
     "artist": "George Charles Beresford (1902)",
@@ -166,6 +166,13 @@
       "name": "文芸協会",
       "relation": "拒絶された依頼主",
       "note": "『バルザック像』が酷評され受領拒否。"
+    }
+  ],
+  "books": [
+    {
+      "title": "ロダンの言葉抄",
+      "author": "オーギュスト・ロダン",
+      "description": "彫刻家が語る芸術論。"
     }
   ]
 }

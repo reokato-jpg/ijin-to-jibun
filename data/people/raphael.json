@@ -90,7 +90,7 @@
       "source": "伝承"
     }
   ],
-  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f6/Raffaello_Sanzio.jpg",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Raffaello_Sanzio.jpg?width=400",
   "wikiTitle": "ラファエロ・サンティ",
   "imageCredit": {
     "artist": "Raphael (Self-portrait)",
@@ -155,6 +155,13 @@
     {
       "name": "マルガリータ",
       "relation": "愛した女性・モデル"
+    }
+  ],
+  "books": [
+    {
+      "title": "ラファエロ 静かなる革命の画家",
+      "author": "アントニオ・パオルッチ",
+      "description": "ルネサンス三巨匠の評伝。"
     }
   ]
 }

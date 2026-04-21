@@ -185,9 +185,14 @@
       "author": "クリストファー・H・ギブス",
       "asin": "4393932285",
       "description": "短い生涯と豊穣な音楽"
+    },
+    {
+      "title": "シューベルト 友人たちの回想",
+      "author": "ヴィットール・ドイチュ編",
+      "description": "素顔のシューベルト。"
     }
   ],
-  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Franz_Schubert%2C_watercolor_portrait_by_Wilhelm_August_Rieder%2C_1825.jpg/500px-Franz_Schubert%2C_watercolor_portrait_by_Wilhelm_August_Rieder%2C_1825.jpg",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Franz_Schubert%2C_watercolor_portrait_by_Wilhelm_August_Rieder%2C_1825.jpg?width=500",
   "wikiTitle": "フランツ・シューベルト",
   "imageCredit": {
     "artist": "Connormah , Franz Schubert",

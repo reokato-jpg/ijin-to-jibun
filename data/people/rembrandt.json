@@ -101,7 +101,7 @@
       "source": "伝承"
     }
   ],
-  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/b/bd/Rembrandt_van_Rijn_-_Self-Portrait_-_Google_Art_Project.jpg",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Rembrandt_van_Rijn_-_Self-Portrait_-_Google_Art_Project.jpg?width=400",
   "wikiTitle": "レンブラント・ファン・レイン",
   "imageCredit": {
     "artist": "Rembrandt van Rijn (Self-Portrait)",
@@ -165,6 +165,13 @@
     {
       "name": "聖書",
       "relation": "生涯の主題"
+    }
+  ],
+  "books": [
+    {
+      "title": "レンブラント伝",
+      "author": "ガリー・シュヴァルツ",
+      "description": "自画像と人生を辿る評伝。"
     }
   ]
 }

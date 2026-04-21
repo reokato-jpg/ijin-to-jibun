@@ -80,7 +80,7 @@
       "source": "甲陽軍鑑"
     }
   ],
-  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/3/33/Takeda_Harunobu.jpg",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Takeda_Harunobu.jpg?width=400",
   "wikiTitle": "武田信玄",
   "imageCredit": {
     "artist": "Unknown",
@@ -131,5 +131,12 @@
       "name": "徳川家康"
     }
   ],
-  "id": "takeda_shingen"
+  "id": "takeda_shingen",
+  "books": [
+    {
+      "title": "武田信玄",
+      "author": "新田次郎",
+      "description": "戦国最強の武将を描く代表作。"
+    }
+  ]
 }

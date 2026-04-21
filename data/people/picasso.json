@@ -172,7 +172,7 @@
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Gernika2.jpg/330px-Gernika2.jpg"
     }
   ],
-  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Pablo_picasso_1.jpg/500px-Pablo_picasso_1.jpg",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Pablo_picasso_1.jpg?width=500",
   "wikiTitle": "パブロ・ピカソ",
   "imageCredit": {
     "artist": "Argentina . Revista Vea y Lea",
@@ -193,6 +193,11 @@
       "author": "高階秀爾",
       "asin": "4061489127",
       "description": "作風の変遷を日本語で追う入門書"
+    },
+    {
+      "title": "ピカソ 天才とその世紀",
+      "author": "ジェラルディン・アポストリデス",
+      "description": "20世紀最大の画家を多角的に描く。"
     }
   ],
   "media": [

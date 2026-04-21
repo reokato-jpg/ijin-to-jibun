@@ -144,9 +144,19 @@
       "author": "マザー・テレサ",
       "asin": "4863811314",
       "description": "50年の霊的暗夜の日記"
+    },
+    {
+      "title": "マザー・テレサ 愛と祈りのことば",
+      "author": "ホセ・ルイス・ゴンザレス＝バラド編",
+      "description": "日々を照らす短い言葉集。"
+    },
+    {
+      "title": "マザー・テレサ 来、わが光よ",
+      "author": "ブライアン・コロディエチェック編",
+      "description": "晩年の霊的苦悩を明かす書簡集。"
     }
   ],
-  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/MotherTeresa_090.jpg/500px-MotherTeresa_090.jpg",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/MotherTeresa_090.jpg?width=500",
   "wikiTitle": "マザー・テレサ",
   "imageCredit": {
     "artist": "Túrelio",

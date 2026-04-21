@@ -324,7 +324,7 @@
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Flagge_der_kreisfreien_Stadt_Bonn.svg/langja-330px-Flagge_der_kreisfreien_Stadt_Bonn.svg.png"
     }
   ],
-  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Portrait_of_Robert_Schumann.jpg",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Portrait_of_Robert_Schumann.jpg?width=400",
   "wikiTitle": "ロベルト・シューマン",
   "books": [
     {
@@ -338,6 +338,11 @@
       "author": "ナンシー・B・ライク",
       "asin": "4393931882",
       "description": "妻クララとの愛と葛藤。天才同士の関係から創作の本質を知る"
+    },
+    {
+      "title": "シューマンの自叙伝",
+      "author": "ローベルト・シューマン",
+      "description": "音楽と人生を語る手記。"
     }
   ],
   "routine": [

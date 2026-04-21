@@ -172,7 +172,13 @@
     }
   ],
   "places": [],
-  "books": [],
+  "books": [
+    {
+      "title": "スクリャービン",
+      "author": "ファウビオン・バワーズ",
+      "description": "神秘主義の作曲家の決定版評伝。"
+    }
+  ],
   "works": [
     {
       "title": "ピアノソナタ第5番 作品53",
@@ -225,7 +231,7 @@
       "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%A2%E3%83%AC%E3%82%AF%E3%82%B5%E3%83%B3%E3%83%89%E3%83%AB%E3%83%BB%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%A3%E3%83%BC%E3%83%93%E3%83%B3%20%E3%82%A8%E3%83%81%E3%83%A5%E3%83%BC%E3%83%89%E5%AC%B0%E3%83%8B%E7%9F%AD%E8%AA%BF%20%E4%BD%9C%E5%93%818-12"
     }
   ],
-  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Skrjabin_Alexander.jpg/500px-Skrjabin_Alexander.jpg",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Skrjabin_Alexander.jpg?width=500",
   "wikiTitle": "アレクサンドル・スクリャービン",
   "imageCredit": {
     "artist": "",

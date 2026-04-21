@@ -163,7 +163,7 @@
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Mibu-dera_Kyoto_Japan01s3.jpg/330px-Mibu-dera_Kyoto_Japan01s3.jpg"
     }
   ],
-  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Portrait_of_Okita_S%C5%8Dji.jpg/500px-Portrait_of_Okita_S%C5%8Dji.jpg",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Portrait_of_Okita_S%C5%8Dji.jpg?width=500",
   "wikiTitle": "沖田総司",
   "imageCredit": {
     "artist": "Unknown author Unknown author",
@@ -184,6 +184,11 @@
       "author": "司馬遼太郎",
       "asin": "4041137047",
       "description": "沖田の剣と病の描写が胸を打つ"
+    },
+    {
+      "title": "壬生義士伝",
+      "author": "浅田次郎",
+      "description": "新選組を描いた名作小説。"
     }
   ],
   "media": [

@@ -179,9 +179,19 @@
       "author": "ショーペンハウアー",
       "asin": "4334753248",
       "description": "人生を穏やかに生きるための知恵"
+    },
+    {
+      "title": "意志と表象としての世界",
+      "author": "ショーペンハウアー",
+      "description": "主著。ニーチェもワグナーも影響された。"
+    },
+    {
+      "title": "幸福について―人生論―",
+      "author": "ショーペンハウアー",
+      "description": "辛辣だが不思議と慰めを与える人生指南。"
     }
   ],
-  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Arthur_Schopenhauer_by_J_Sch%C3%A4fer%2C_1859b.jpg/500px-Arthur_Schopenhauer_by_J_Sch%C3%A4fer%2C_1859b.jpg",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Arthur_Schopenhauer_by_J_Sch%C3%A4fer%2C_1859b.jpg?width=500",
   "wikiTitle": "アルトゥル・ショーペンハウアー",
   "imageCredit": {
     "artist": "Johann Schäfer",

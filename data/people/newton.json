@@ -170,9 +170,19 @@
       "author": "アイザック・ニュートン",
       "asin": "4061581090",
       "description": "近代科学の聖典"
+    },
+    {
+      "title": "プリンキピア 自然哲学の数学的諸原理",
+      "author": "アイザック・ニュートン",
+      "description": "近代科学の出発点。"
+    },
+    {
+      "title": "ニュートン 宇宙の法則を解き明かした天才科学者",
+      "author": "ジェイムズ・グリック",
+      "description": "決定版評伝。"
     }
   ],
-  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Portrait_of_Sir_Isaac_Newton%2C_1689_%28brightened%29.jpg/500px-Portrait_of_Sir_Isaac_Newton%2C_1689_%28brightened%29.jpg",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Portrait_of_Sir_Isaac_Newton%2C_1689_%28brightened%29.jpg?width=500",
   "wikiTitle": "アイザック・ニュートン",
   "imageCredit": {
     "artist": "Godfrey Kneller",

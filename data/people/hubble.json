@@ -8,38 +8,145 @@
   "field": "天文学者",
   "summary": "アンドロメダ「星雲」が実は銀河系外の独立した銀河だと証明し、宇宙の大きさを一挙に百倍以上にした。さらに宇宙膨張の発見で、ビッグバン理論の道を拓いた20世紀最大の天文学者。",
   "events": [
-    { "year": 1889, "age": 0, "title": "ミズーリ州マーシュフィールドに生まれる", "detail": "父は保険業。", "tags": [] },
-    { "year": 1910, "age": 21, "title": "シカゴ大学卒業後、ローズ奨学生でオックスフォードへ", "detail": "天文学を志しつつ、法律を学ぶ。", "tags": ["curiosity"] },
-    { "year": 1917, "age": 28, "title": "博士論文完成直後に米陸軍志願", "detail": "第一次大戦に従軍、少佐まで昇進。", "tags": ["restart"] },
-    { "year": 1919, "age": 30, "title": "ウィルソン山天文台に就職", "detail": "当時世界最大の100インチ望遠鏡を使用できる地位。", "tags": ["approval"] },
-    { "year": 1923, "age": 34, "title": "アンドロメダ星雲にセファイド変光星を発見", "detail": "リービットの周期光度関係で距離を算出、銀河系外の独立天体と証明。宇宙の大きさが百倍以上に拡大された瞬間。", "tags": ["breakthrough"] },
-    { "year": 1929, "age": 40, "title": "ハッブルの法則を発表", "detail": "遠い銀河ほど速く遠ざかる——宇宙は膨張しているという衝撃の発見。", "tags": ["breakthrough", "creation"] },
-    { "year": 1936, "age": 47, "title": "銀河の形態分類（ハッブル分類）確立", "detail": "楕円銀河・渦巻銀河・棒渦巻銀河の音叉図は現代まで使われる。", "tags": ["creation"] },
-    { "year": 1948, "age": 59, "title": "パロマー天文台200インチ望遠鏡稼働", "detail": "完成式典で最初の観測者として招かれた。", "tags": ["approval"] },
-    { "year": 1953, "age": 63, "title": "サンマリノで急逝", "detail": "脳卒中で倒れた。ノーベル賞候補だったが天文学部門がないため受賞ならず。", "tags": ["loss"] }
+    {
+      "year": 1889,
+      "age": 0,
+      "title": "ミズーリ州マーシュフィールドに生まれる",
+      "detail": "父は保険業。",
+      "tags": []
+    },
+    {
+      "year": 1910,
+      "age": 21,
+      "title": "シカゴ大学卒業後、ローズ奨学生でオックスフォードへ",
+      "detail": "天文学を志しつつ、法律を学ぶ。",
+      "tags": [
+        "curiosity"
+      ]
+    },
+    {
+      "year": 1917,
+      "age": 28,
+      "title": "博士論文完成直後に米陸軍志願",
+      "detail": "第一次大戦に従軍、少佐まで昇進。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1919,
+      "age": 30,
+      "title": "ウィルソン山天文台に就職",
+      "detail": "当時世界最大の100インチ望遠鏡を使用できる地位。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1923,
+      "age": 34,
+      "title": "アンドロメダ星雲にセファイド変光星を発見",
+      "detail": "リービットの周期光度関係で距離を算出、銀河系外の独立天体と証明。宇宙の大きさが百倍以上に拡大された瞬間。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1929,
+      "age": 40,
+      "title": "ハッブルの法則を発表",
+      "detail": "遠い銀河ほど速く遠ざかる——宇宙は膨張しているという衝撃の発見。",
+      "tags": [
+        "breakthrough",
+        "creation"
+      ]
+    },
+    {
+      "year": 1936,
+      "age": 47,
+      "title": "銀河の形態分類（ハッブル分類）確立",
+      "detail": "楕円銀河・渦巻銀河・棒渦巻銀河の音叉図は現代まで使われる。",
+      "tags": [
+        "creation"
+      ]
+    },
+    {
+      "year": 1948,
+      "age": 59,
+      "title": "パロマー天文台200インチ望遠鏡稼働",
+      "detail": "完成式典で最初の観測者として招かれた。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1953,
+      "age": 63,
+      "title": "サンマリノで急逝",
+      "detail": "脳卒中で倒れた。ノーベル賞候補だったが天文学部門がないため受賞ならず。",
+      "tags": [
+        "loss"
+      ]
+    }
   ],
   "quotes": [
-    { "text": "宇宙の探査のあと、我々は科学の地平線に戻る。そしてそこには新たな謎が待っている。", "source": "『The Realm of the Nebulae』" },
-    { "text": "天文学の歴史は、地平線が遠のく歴史である。", "source": "講演" }
+    {
+      "text": "宇宙の探査のあと、我々は科学の地平線に戻る。そしてそこには新たな謎が待っている。",
+      "source": "『The Realm of the Nebulae』"
+    },
+    {
+      "text": "天文学の歴史は、地平線が遠のく歴史である。",
+      "source": "講演"
+    }
   ],
   "relations": [
-    { "name": "ヘンリエッタ・リービット", "id": "leavitt", "relation": "恩恵者", "note": "彼女の周期光度関係がハッブルの大発見を可能にした" },
-    { "name": "アインシュタイン", "id": "einstein", "relation": "訪問者", "note": "1931年アインシュタインがウィルソン山を訪ね宇宙膨張の観測を直接見て静的宇宙論を放棄した" }
+    {
+      "name": "ヘンリエッタ・リービット",
+      "id": "leavitt",
+      "relation": "恩恵者",
+      "note": "彼女の周期光度関係がハッブルの大発見を可能にした"
+    },
+    {
+      "name": "アインシュタイン",
+      "id": "einstein",
+      "relation": "訪問者",
+      "note": "1931年アインシュタインがウィルソン山を訪ね宇宙膨張の観測を直接見て静的宇宙論を放棄した"
+    }
   ],
   "places": [
-    { "name": "ウィルソン山天文台", "location": "カリフォルニア州", "note": "100インチ望遠鏡で全発見" }
+    {
+      "name": "ウィルソン山天文台",
+      "location": "カリフォルニア州",
+      "note": "100インチ望遠鏡で全発見"
+    }
   ],
   "books": [
-    { "title": "The Realm of the Nebulae", "author": "Edwin Hubble", "description": "銀河宇宙の発見史" }
+    {
+      "title": "The Realm of the Nebulae",
+      "author": "Edwin Hubble",
+      "description": "銀河宇宙の発見史"
+    }
   ],
-  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Studio_portrait_photograph_of_Edwin_Powell_Hubble_%28cropped%29.JPG/500px-Studio_portrait_photograph_of_Edwin_Powell_Hubble_%28cropped%29.JPG",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Studio_portrait_photograph_of_Edwin_Powell_Hubble_%28cropped%29.JPG?width=500",
   "wikiTitle": "エドウィン・ハッブル",
   "lifeDigest": "アメリカの天文学者。1923年アンドロメダ星雲に変光星を発見し、これが銀河系外の独立した銀河であることを初めて証明。1929年には「遠い銀河ほど速く遠ざかる」というハッブルの法則を発表し、宇宙が膨張していることを明らかにした。彼の発見は、宇宙の大きさの概念を一挙に百倍以上に広げ、ビッグバン宇宙論の礎となった。ハッブル宇宙望遠鏡（1990年打ち上げ）は彼の名を冠している。",
   "traits": {
-    "foods": ["ステーキ"],
-    "hobbies": ["釣り", "ボクシング（若い頃）", "パイプ喫煙"],
+    "foods": [
+      "ステーキ"
+    ],
+    "hobbies": [
+      "釣り",
+      "ボクシング（若い頃）",
+      "パイプ喫煙"
+    ],
     "personality": "英国紳士風を装い、オックスフォード訛りの英語を死ぬまで使った。",
-    "likes": ["100インチ望遠鏡", "アンドロメダ銀河", "パロマー山"],
-    "dislikes": ["不正確な観測"]
+    "likes": [
+      "100インチ望遠鏡",
+      "アンドロメダ銀河",
+      "パロマー山"
+    ],
+    "dislikes": [
+      "不正確な観測"
+    ]
   }
 }

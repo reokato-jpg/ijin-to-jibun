@@ -170,9 +170,14 @@
       "author": "山本淳子訳",
       "asin": "4043752016",
       "description": "中宮彰子への出仕の日々"
+    },
+    {
+      "title": "源氏物語",
+      "author": "紫式部",
+      "description": "千年読み継がれる世界最古級の長編小説。"
     }
   ],
-  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Tosa_Mitsuoki_001.jpg/500px-Tosa_Mitsuoki_001.jpg",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Tosa_Mitsuoki_001.jpg?width=500",
   "wikiTitle": "紫式部",
   "imageCredit": {
     "artist": "Tosa Mitsuoki (1617-1691)",

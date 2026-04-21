@@ -147,7 +147,7 @@
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Mus%C3%A9e_Marmottan.JPG/330px-Mus%C3%A9e_Marmottan.JPG"
     }
   ],
-  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Claude_Monet_1899_Nadar.jpg/500px-Claude_Monet_1899_Nadar.jpg",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Claude_Monet_1899_Nadar.jpg?width=500",
   "wikiTitle": "クロード・モネ",
   "imageCredit": {
     "artist": "Nadar",
@@ -168,6 +168,11 @@
       "author": "ダニエル・ヴィルデンシュタイン",
       "asin": "4434265610",
       "description": "晩年の聖地を写真で紹介"
+    },
+    {
+      "title": "モネ 「印象・日の出」新印象派の誕生",
+      "author": "ダニエル・ウィルデンスタイン",
+      "description": "評伝の決定版。"
     }
   ],
   "happenings": [

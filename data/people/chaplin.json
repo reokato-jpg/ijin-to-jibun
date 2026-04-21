@@ -168,6 +168,11 @@
       "author": "チャールズ・チャップリン",
       "asin": "4105053019",
       "description": "ロンドン貧民街からヴェヴェイまで"
+    },
+    {
+      "title": "チャップリン自伝 若き日々",
+      "author": "チャーリー・チャップリン",
+      "description": "貧民窟から世界のスターへ。"
     }
   ],
   "media": [
@@ -217,7 +222,7 @@
       "url": "https://www.amazon.co.jp/dp/B09G2D2TWF?tag="
     }
   ],
-  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Charlie_Chaplin_portrait_Getty_1739411952.jpg/500px-Charlie_Chaplin_portrait_Getty_1739411952.jpg",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Charlie_Chaplin_portrait_Getty_1739411952.jpg?width=500",
   "wikiTitle": "チャールズ・チャップリン",
   "imageCredit": {
     "artist": "Strauss-Peyton Studio",

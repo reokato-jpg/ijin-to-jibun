@@ -84,7 +84,7 @@
       "source": "『お気に召すまま』"
     }
   ],
-  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/2/21/William_Shakespeare_by_John_Taylor%2C_edited.jpg",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/William_Shakespeare_by_John_Taylor%2C_edited.jpg?width=400",
   "wikiTitle": "ウィリアム・シェイクスピア",
   "imageCredit": {
     "artist": "John Taylor (attributed)",
@@ -146,6 +146,23 @@
     {
       "name": "エリザベス1世",
       "relation": "女王パトロン"
+    }
+  ],
+  "books": [
+    {
+      "title": "ハムレット",
+      "author": "シェイクスピア",
+      "description": "「生きるべきか、死ぬべきか」—悲劇の頂点。"
+    },
+    {
+      "title": "マクベス",
+      "author": "シェイクスピア",
+      "description": "野心と破滅を描く四大悲劇。"
+    },
+    {
+      "title": "ロミオとジュリエット",
+      "author": "シェイクスピア",
+      "description": "愛の悲劇の原型。"
     }
   ]
 }

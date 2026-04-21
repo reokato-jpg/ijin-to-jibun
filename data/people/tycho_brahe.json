@@ -8,37 +8,143 @@
   "field": "天文学者",
   "summary": "望遠鏡発明以前の時代に、肉眼観測で桁違いの精度を叩き出した観測天文学の巨人。銀の義鼻、自邸にウラニボリ天文台、助手ケプラー——波乱の生涯。",
   "events": [
-    { "year": 1546, "age": 0, "title": "デンマーク貴族の子として誕生", "detail": "叔父に養育される。", "tags": [] },
-    { "year": 1560, "age": 14, "title": "日食を観測し、天文学への道を決意", "detail": "予測どおり起きた日食に深く感動。", "tags": ["curiosity", "breakthrough"] },
-    { "year": 1566, "age": 20, "title": "決闘で鼻を失い、銀の義鼻を装着", "detail": "数学の優劣を巡る論争が決闘に発展。以後生涯、金属の義鼻で暮らした。", "tags": ["pride_broken"] },
-    { "year": 1572, "age": 26, "title": "カシオペア座に超新星を発見", "detail": "「新星」は不変の天界を覆す大発見となった。", "tags": ["breakthrough", "creation"] },
-    { "year": 1576, "age": 30, "title": "ヴェン島にウラニボリ天文台建設", "detail": "デンマーク王フレゼリク2世の援助で巨大な観測所を築く。", "tags": ["creation", "approval"] },
-    { "year": 1577, "age": 31, "title": "彗星の観測で天球説を否定", "detail": "彗星が月より遠いと示し、完璧な天球の存在を覆した。", "tags": ["breakthrough"] },
-    { "year": 1597, "age": 51, "title": "デンマークを去りプラハへ", "detail": "新王と対立し亡命、神聖ローマ皇帝ルドルフ2世の宮廷天文学者に。", "tags": ["isolation", "restart"] },
-    { "year": 1600, "age": 54, "title": "ケプラーを助手に採用", "detail": "若きケプラーに膨大な観測データを託す。", "tags": ["restart"] },
-    { "year": 1601, "age": 55, "title": "プラハで急逝", "detail": "宴席での無理が原因とされる。『人生を無駄にしなかった』が最後の言葉と伝わる。", "tags": ["loss"] }
+    {
+      "year": 1546,
+      "age": 0,
+      "title": "デンマーク貴族の子として誕生",
+      "detail": "叔父に養育される。",
+      "tags": []
+    },
+    {
+      "year": 1560,
+      "age": 14,
+      "title": "日食を観測し、天文学への道を決意",
+      "detail": "予測どおり起きた日食に深く感動。",
+      "tags": [
+        "curiosity",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1566,
+      "age": 20,
+      "title": "決闘で鼻を失い、銀の義鼻を装着",
+      "detail": "数学の優劣を巡る論争が決闘に発展。以後生涯、金属の義鼻で暮らした。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1572,
+      "age": 26,
+      "title": "カシオペア座に超新星を発見",
+      "detail": "「新星」は不変の天界を覆す大発見となった。",
+      "tags": [
+        "breakthrough",
+        "creation"
+      ]
+    },
+    {
+      "year": 1576,
+      "age": 30,
+      "title": "ヴェン島にウラニボリ天文台建設",
+      "detail": "デンマーク王フレゼリク2世の援助で巨大な観測所を築く。",
+      "tags": [
+        "creation",
+        "approval"
+      ]
+    },
+    {
+      "year": 1577,
+      "age": 31,
+      "title": "彗星の観測で天球説を否定",
+      "detail": "彗星が月より遠いと示し、完璧な天球の存在を覆した。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1597,
+      "age": 51,
+      "title": "デンマークを去りプラハへ",
+      "detail": "新王と対立し亡命、神聖ローマ皇帝ルドルフ2世の宮廷天文学者に。",
+      "tags": [
+        "isolation",
+        "restart"
+      ]
+    },
+    {
+      "year": 1600,
+      "age": 54,
+      "title": "ケプラーを助手に採用",
+      "detail": "若きケプラーに膨大な観測データを託す。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1601,
+      "age": 55,
+      "title": "プラハで急逝",
+      "detail": "宴席での無理が原因とされる。『人生を無駄にしなかった』が最後の言葉と伝わる。",
+      "tags": [
+        "loss"
+      ]
+    }
   ],
   "quotes": [
-    { "text": "人生を無駄にしなかった。", "source": "臨終の言葉" },
-    { "text": "観測なき理論は、無根拠の妄想にすぎない。", "source": "書簡" }
+    {
+      "text": "人生を無駄にしなかった。",
+      "source": "臨終の言葉"
+    },
+    {
+      "text": "観測なき理論は、無根拠の妄想にすぎない。",
+      "source": "書簡"
+    }
   ],
   "relations": [
-    { "name": "ヨハネス・ケプラー", "id": "kepler", "relation": "助手", "note": "死後、観測データを受け継いだ" }
+    {
+      "name": "ヨハネス・ケプラー",
+      "id": "kepler",
+      "relation": "助手",
+      "note": "死後、観測データを受け継いだ"
+    }
   ],
   "places": [
-    { "name": "ウラニボリ天文台", "location": "デンマーク・ヴェン島", "note": "自ら設計した巨大観測所" }
+    {
+      "name": "ウラニボリ天文台",
+      "location": "デンマーク・ヴェン島",
+      "note": "自ら設計した巨大観測所"
+    }
   ],
   "books": [
-    { "title": "新天文学の機械", "author": "ティコ・ブラーエ", "description": "自作観測機器を図解した書" }
+    {
+      "title": "新天文学の機械",
+      "author": "ティコ・ブラーエ",
+      "description": "自作観測機器を図解した書"
+    }
   ],
-  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Tycho_Brahe.JPG/500px-Tycho_Brahe.JPG",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Tycho_Brahe.JPG?width=500",
   "wikiTitle": "ティコ・ブラーエ",
   "lifeDigest": "デンマーク貴族出身の観測天文学者。望遠鏡が発明される前の時代に、肉眼観測で前例のない精度のデータを残した。決闘で鼻を失った銀の義鼻、島に築いたウラニボリ天文台、助手として雇ったケプラー——奇行と業績で語り継がれる人物。彼の観測データがケプラーの惑星運動三法則を生む土壌となった。",
   "traits": {
-    "foods": ["ワイン（愛飲）", "デンマーク料理"],
-    "hobbies": ["天体観測", "錬金術", "宴席"],
+    "foods": [
+      "ワイン（愛飲）",
+      "デンマーク料理"
+    ],
+    "hobbies": [
+      "天体観測",
+      "錬金術",
+      "宴席"
+    ],
     "personality": "情熱的で短気、自尊心が強い。決闘好き。",
-    "likes": ["精密な観測機器", "惑星の位置計算"],
-    "dislikes": ["怠慢な観測", "根拠のない理論"]
+    "likes": [
+      "精密な観測機器",
+      "惑星の位置計算"
+    ],
+    "dislikes": [
+      "怠慢な観測",
+      "根拠のない理論"
+    ]
   }
 }

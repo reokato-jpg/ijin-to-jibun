@@ -177,9 +177,19 @@
       "author": "ウォルター・アイザックソン",
       "asin": "4062171252",
       "description": "公認伝記"
+    },
+    {
+      "title": "スティーブ・ジョブズ I・II",
+      "author": "ウォルター・アイザックソン",
+      "description": "公式伝記。本人が最後に語った姿。"
+    },
+    {
+      "title": "Think Different スティーブ・ジョブズのことば",
+      "author": "スティーブ・ジョブズ",
+      "description": "スタンフォード演説を含む名言集。"
     }
   ],
-  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Steve_Jobs_Headshot_2010-CROP_%28cropped_2%29.jpg/500px-Steve_Jobs_Headshot_2010-CROP_%28cropped_2%29.jpg",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Steve_Jobs_Headshot_2010-CROP_%28cropped_2%29.jpg?width=500",
   "wikiTitle": "スティーブ・ジョブズ",
   "imageCredit": {
     "artist": "Matthew Yohe ( talk )",

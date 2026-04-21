@@ -100,7 +100,7 @@
       "source": "伊達家伝承"
     }
   ],
-  "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/1/18/Masamune_Date.jpg",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Masamune_Date.jpg?width=400",
   "wikiTitle": "伊達政宗",
   "imageCredit": {
     "artist": "Unknown",
@@ -137,5 +137,12 @@
       "時代遅れの戦法"
     ]
   },
-  "id": "date_masamune"
+  "id": "date_masamune",
+  "books": [
+    {
+      "title": "伊達政宗",
+      "author": "山岡荘八",
+      "description": "独眼竜の生涯を描く長編。"
+    }
+  ]
 }
