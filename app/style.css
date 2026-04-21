@@ -3889,6 +3889,16 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 .travel-hero-banner.jalan-banner::before { background: linear-gradient(90deg, #ee7e1a, #ffc088, #ee7e1a); background-size: 200% 100%; }
 .travel-hero-banner.jalan-banner .travel-hero-title { color: #d66000; }
 .travel-hero-banner.jalan-banner .travel-hero-cta { color: #ee7e1a; border-left-color: rgba(238,126,26,0.25); }
+/* 🚗 OTTOCAST バナー */
+.travel-hero-banner.ottocast-banner { background: linear-gradient(135deg, #f0f4fa 0%, #e2ebf8 50%, #d4e2f4 100%); border-color: #2a6bbd; }
+.travel-hero-banner.ottocast-banner::before { background: linear-gradient(90deg, #2a6bbd, #7ba7de, #2a6bbd); background-size: 200% 100%; }
+.travel-hero-banner.ottocast-banner .travel-hero-title { color: #1e4c8a; }
+.travel-hero-banner.ottocast-banner .travel-hero-cta { color: #2a6bbd; border-left-color: rgba(42,107,189,0.25); }
+.ottocast-store-row { display: flex; gap: 8px; margin: 8px 0 14px; }
+.ottocast-store { flex: 1; text-align: center; font-size: 12px; font-weight: 700; padding: 8px 10px; border-radius: 5px; text-decoration: none; font-family: var(--font-jp); letter-spacing: 0.03em; transition: opacity 0.15s; }
+.ottocast-store:hover { opacity: 0.85; }
+.ottocast-store.amz { background: #fff; color: var(--wine); border: 1px solid var(--wine); }
+.ottocast-store.rak { background: #bf0000; color: #fff; }
 
 /* 📻 Audible アフィリエイトバナー */
 .audible-hero-banner {

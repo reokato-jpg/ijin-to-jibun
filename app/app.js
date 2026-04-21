@@ -10788,6 +10788,18 @@ function showBeginnerGuide() {
           </div>
           <span class="travel-hero-cta">→</span>
         </a>
+        <!-- OTTOCAST Amazon/楽天検索 -->
+        <a class="travel-hero-banner ottocast-banner" href="https://www.amazon.co.jp/s?k=OTTOCAST+%E3%82%AA%E3%83%83%E3%83%88%E3%82%AD%E3%83%A3%E3%82%B9%E3%83%88${AMAZON_TAG ? '&tag=' + AMAZON_TAG : ''}" rel="noopener sponsored nofollow" target="_blank">
+          <div class="travel-hero-text">
+            <div class="travel-hero-title">🚗 OTTOCAST（オットキャスト）</div>
+            <div class="travel-hero-sub">車で『燃えよ剣』『薄桜鬼』『銀魂』を観ながら聖地へ。長距離ドライブが映画館に。</div>
+          </div>
+          <span class="travel-hero-cta">→</span>
+        </a>
+        <div class="ottocast-store-row">
+          <a class="ottocast-store amz" href="https://www.amazon.co.jp/s?k=OTTOCAST+%E3%82%AA%E3%83%83%E3%83%88%E3%82%AD%E3%83%A3%E3%82%B9%E3%83%88${AMAZON_TAG ? '&tag=' + AMAZON_TAG : ''}" target="_blank" rel="noopener sponsored nofollow">📦 Amazonで探す</a>
+          <a class="ottocast-store rak" href="${rakutenSearchUrl('OTTOCAST オットキャスト', '')}" target="_blank" rel="noopener sponsored nofollow">🛍 楽天で探す</a>
+        </div>
         <img src="//i.moshimo.com/af/i/impression?a_id=5501667&p_id=55&pc_id=55&pl_id=630" width="1" height="1" style="position:absolute;border:0;opacity:0" loading="lazy" alt="">
         <img border="0" width="1" height="1" src="https://www13.a8.net/0.gif?a8mat=4B1QDV+76ZKXE+5R8A+5Z6WX" alt="" style="position:absolute;opacity:0">
       </section>
