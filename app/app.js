@@ -10701,6 +10701,41 @@ function showBeginnerGuide() {
         </div>
       </section>
       <section class="era-page-section">
+        <h2 class="era-page-h2">📺 映像で観る（DVD・Blu-ray） <span class="pr-tag">PR</span></h2>
+        <p style="font-size:12px;color:var(--ink-3);margin-bottom:8px">大河ドラマや映画なら、キャストの顔で推しが決まる。週末イッキ見のお供に。</p>
+        <div class="beginner-books">
+          ${[
+            {title:'大河ドラマ 新選組! 完全版 Blu-ray BOX', author:'三谷幸喜脚本／香取慎吾主演', desc:'近藤勇を主役に新選組を描いた大河。山本耕史の土方歳三が伝説。'},
+            {title:'大河ドラマ 龍馬伝 完全版 Blu-ray BOX', author:'福山雅治主演', desc:'岩崎弥太郎視点で龍馬を描く異色作。映像美と重厚感。'},
+            {title:'大河ドラマ 八重の桜 完全版 Blu-ray BOX', author:'綾瀬はるか主演', desc:'幕末会津の新島八重。鶴ヶ城籠城の迫力。歴女の涙腺崩壊。'},
+            {title:'大河ドラマ 篤姫 完全版 Blu-ray BOX', author:'宮﨑あおい主演', desc:'薩摩から将軍御台所となった篤姫。歴代大河屈指の人気作。'},
+            {title:'大河ドラマ 真田丸 完全版 Blu-ray BOX', author:'三谷幸喜脚本／堺雅人主演', desc:'真田信繁（幸村）の生涯。大河ドラマ史上屈指の脚本と評される。'},
+            {title:'映画 燃えよ剣 豪華版 Blu-ray', author:'原田眞人監督／岡田准一主演', desc:'司馬遼太郎の原作を実写化。岡田准一の土方歳三は圧倒的。'},
+            {title:'るろうに剣心 伝説の最期編 通常版 Blu-ray', author:'大友啓史監督／佐藤健主演', desc:'アクション映画として世界的に評価された実写化シリーズの集大成。'},
+            {title:'大河ドラマ どうする家康 完全版 Blu-ray BOX', author:'古沢良太脚本／松本潤主演', desc:'徳川家康の生涯。信長・秀吉との関係を新解釈で描く。'}
+          ].map(m => {
+            const q = encodeURIComponent(`${m.title} ${m.author || ''}`);
+            const amz = `https://www.amazon.co.jp/s?k=${q}&i=dvd${AMAZON_TAG ? `&tag=${AMAZON_TAG}` : ''}`;
+            const rak = rakutenSearchUrl(m.title, '');
+            return `
+              <div class="beginner-book">
+                <a class="beginner-book-cover no-cover" href="${amz}" target="_blank" rel="noopener sponsored">
+                  <div class="beginner-book-fallback"><div>📺</div><div class="beginner-book-fb-title">${escapeHtml(m.title.split(' ')[0] + (m.title.includes('大河') ? ' 大河' : ''))}</div></div>
+                </a>
+                <div class="beginner-book-info">
+                  <div class="beginner-book-title">${escapeHtml(m.title)}</div>
+                  <div class="beginner-book-author">${escapeHtml(m.author)}</div>
+                  <div class="beginner-book-desc">${escapeHtml(m.desc)}</div>
+                  <div class="beginner-book-stores">
+                    <a class="beginner-book-store amz" href="${amz}" target="_blank" rel="noopener sponsored">Amazon</a>
+                    <a class="beginner-book-store rak" href="${rak}" target="_blank" rel="noopener sponsored">楽天</a>
+                  </div>
+                </div>
+              </div>`;
+          }).join('')}
+        </div>
+      </section>
+      <section class="era-page-section">
         <h2 class="era-page-h2">✨ 推し偉人の見つけかた</h2>
         <p style="line-height:1.9">プロフィールページの<b>『♡ 推しに設定』</b>ボタンをタップすると、ホームに「推しのきょう」が毎日表示されます。<br>その日の手紙・名言・本・ルーティンが届く、ミニ手帳みたいな機能です。</p>
       </section>
