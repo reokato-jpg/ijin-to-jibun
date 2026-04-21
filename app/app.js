@@ -10656,6 +10656,51 @@ function showBeginnerGuide() {
         </div>
       </section>
       <section class="era-page-section">
+        <h2 class="era-page-h2">🎬 漫画・小説・ドラマから入る <span class="pr-tag">PR</span></h2>
+        <p style="font-size:12px;color:var(--ink-3);margin-bottom:8px">硬い歴史書より、まずは物語から。歴女の多くがここから沼に落ちた名作たち。</p>
+        <div class="beginner-books">
+          ${[
+            {title:'るろうに剣心 完全版 1', author:'和月伸宏', asin:'4088736591', desc:'幕末を生き抜いた抜刀斎・緋村剣心。斎藤一も登場！アニメ・映画・舞台で人気爆発の入門作品。'},
+            {title:'銀魂 1', author:'空知英秋', asin:'4088731611', desc:'新選組モデルの真選組＆攘夷志士モデルのキャラたちが織りなすSF時代劇。キャラで沼る王道。'},
+            {title:'薄桜鬼 真改 風ノ章', author:'オトメイト', asin:'B01N2UQKLK', desc:'新選組×女性主人公の乙女ゲー。アニメ・舞台化もされ、歴女増産の元凶。'},
+            {title:'PEACE MAKER 鐵 1', author:'黒乃奈々絵', asin:'4758072205', desc:'少年の視点から描かれる新選組。登場人物の心情描写が深い名作。'},
+            {title:'風光る 1', author:'渡辺多恵子', asin:'409138210X', desc:'新選組に身を投じた少女の物語。少女漫画の金字塔。'},
+            {title:'おーい!竜馬 1', author:'武田鉄矢・小山ゆう', asin:'4091817114', desc:'坂本龍馬の青春を熱く描く歴史漫画の名作。'},
+            {title:'信長協奏曲 1', author:'石井あゆみ', asin:'4091234798', desc:'現代高校生が信長に入れ替わる戦国タイムスリップ漫画。実写化・アニメ化。'},
+            {title:'花の慶次 —雲のかなたに— 1', author:'原哲夫・隆慶一郎', asin:'4087485226', desc:'前田慶次の生き様。「傾奇者」の美学。男も惚れる歴史漫画。'},
+            {title:'センゴク 1', author:'宮下英樹', asin:'4063721027', desc:'仙石秀久を主人公に戦国を描く硬派漫画。信長・秀吉・家康のリアル。'}
+          ].map(b => {
+            const q = encodeURIComponent(`${b.title} ${b.author || ''}`);
+            const hasAsin = b.asin && /^[A-Z0-9]{10}$/i.test(b.asin);
+            const amz = hasAsin
+              ? `https://www.amazon.co.jp/dp/${b.asin}${AMAZON_TAG ? `?tag=${AMAZON_TAG}` : ''}`
+              : `https://www.amazon.co.jp/s?k=${q}${AMAZON_TAG ? `&tag=${AMAZON_TAG}` : ''}`;
+            const rak = rakutenSearchUrl(b.title, b.author);
+            const coverImg = hasAsin
+              ? `<img src="${amazonCover(b.asin)}" alt="${escapeHtml(b.title)}" loading="lazy"
+                   onerror="this.parentElement.classList.add('no-cover');this.remove();"
+                   onload="if(this.naturalWidth<50){this.parentElement.classList.add('no-cover');this.remove();}">`
+              : '';
+            return `
+              <div class="beginner-book">
+                <a class="beginner-book-cover ${hasAsin ? '' : 'no-cover'}" href="${amz}" target="_blank" rel="noopener sponsored">
+                  ${coverImg}
+                  <div class="beginner-book-fallback"><div>✦</div><div class="beginner-book-fb-title">${escapeHtml(b.title)}</div></div>
+                </a>
+                <div class="beginner-book-info">
+                  <div class="beginner-book-title">${escapeHtml(b.title)}</div>
+                  <div class="beginner-book-author">${escapeHtml(b.author)}</div>
+                  <div class="beginner-book-desc">${escapeHtml(b.desc)}</div>
+                  <div class="beginner-book-stores">
+                    <a class="beginner-book-store amz" href="${amz}" target="_blank" rel="noopener sponsored">Amazon</a>
+                    <a class="beginner-book-store rak" href="${rak}" target="_blank" rel="noopener sponsored">楽天</a>
+                  </div>
+                </div>
+              </div>`;
+          }).join('')}
+        </div>
+      </section>
+      <section class="era-page-section">
         <h2 class="era-page-h2">✨ 推し偉人の見つけかた</h2>
         <p style="line-height:1.9">プロフィールページの<b>『♡ 推しに設定』</b>ボタンをタップすると、ホームに「推しのきょう」が毎日表示されます。<br>その日の手紙・名言・本・ルーティンが届く、ミニ手帳みたいな機能です。</p>
       </section>
