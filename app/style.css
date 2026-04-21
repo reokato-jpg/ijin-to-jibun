@@ -3821,8 +3821,8 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 .beginner-book-list li { margin-bottom: 4px; }
 .beginner-book-list b { color: var(--wine); }
 
-/* 📑 ホーム目次 — 右下フローティングFAB */
-.home-toc-wrap { position: fixed; right: 14px; bottom: 90px; z-index: 45; }
+/* 📑 ホーム目次 — 右下フローティングFAB（ミュートボタンの上に配置） */
+.home-toc-wrap { position: fixed; right: 14px; bottom: 140px; z-index: 45; }
 .home-toc { background: transparent; border: none; }
 .home-toc-summary { width: 48px; height: 48px; border-radius: 50%; padding: 0; background: var(--wine); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; list-style: none; font-size: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.25); transition: transform 0.15s; }
 .home-toc-summary:hover { transform: scale(1.05); }
