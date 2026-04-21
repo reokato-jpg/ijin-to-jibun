@@ -10678,12 +10678,13 @@ function showBeginnerGuide() {
             {title:'銀魂 1', author:'空知英秋', asin:'4088736230', emoji:'🎪', desc:'新選組モデルの真選組＆攘夷志士モデルのキャラたちが織りなすSF時代劇。キャラで沼る王道。'},
             {title:'PEACE MAKER 鐵 1', author:'黒乃奈々絵', asin:'490192611X', emoji:'🌸', desc:'少年の視点から描かれる新選組。登場人物の心情描写が深い名作。'},
             {title:'信長協奏曲 1', author:'石井あゆみ', asin:'4091221009', emoji:'👘', desc:'現代高校生が信長に入れ替わる戦国タイムスリップ漫画。実写化・アニメ化。'},
-            // ASIN未確定 → 検索URLで安全に（シリーズ全巻・作者検索）
-            {title:'薄桜鬼', author:'アイディアファクトリー', emoji:'💕', desc:'新選組×女性主人公の乙女ゲー。アニメ・舞台化もされ、歴女増産の元凶。'},
-            {title:'風光る', author:'渡辺多恵子', emoji:'🎐', desc:'新選組に身を投じた少女の物語。少女漫画の金字塔。'},
-            {title:'おーい!竜馬', author:'武田鉄矢・小山ゆう', emoji:'🌊', desc:'坂本龍馬の青春を熱く描く歴史漫画の名作。'},
-            {title:'花の慶次', author:'原哲夫', emoji:'🍃', desc:'前田慶次の生き様。「傾奇者」の美学。男も惚れる歴史漫画。'},
-            {title:'センゴク', author:'宮下英樹', emoji:'⚔️', desc:'仙石秀久を主人公に戦国を描く硬派漫画。信長・秀吉・家康のリアル。'}
+            // ASIN確定追加分（NDLサーチ+Amazon画像検証済）
+            {title:'風光る 1', author:'渡辺多恵子', asin:'4091373518', emoji:'🎐', desc:'新選組に身を投じた少女の物語。少女漫画の金字塔。'},
+            {title:'おーい!竜馬 1', author:'武田鉄矢・小山ゆう', asin:'4091095208', emoji:'🌊', desc:'坂本龍馬の青春を熱く描く歴史漫画の名作。'},
+            {title:'花の慶次 1', author:'原哲夫・隆慶一郎', asin:'4088714210', emoji:'🍃', desc:'前田慶次の生き様。「傾奇者」の美学。男も惚れる歴史漫画。'},
+            {title:'センゴク 1', author:'宮下英樹', asin:'4063748103', emoji:'⚔️', desc:'仙石秀久を主人公に戦国を描く硬派漫画。信長・秀吉・家康のリアル。'},
+            // ASIN未確定 → 検索URLで安全に
+            {title:'薄桜鬼', author:'アイディアファクトリー', emoji:'💕', desc:'新選組×女性主人公の乙女ゲー。アニメ・舞台化もされ、歴女増産の元凶。'}
           ].map(b => {
             const qAll = encodeURIComponent(`${b.title} ${b.author}`);
             const q1 = encodeURIComponent(`${b.title} 1巻 ${b.author}`);
