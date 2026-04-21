@@ -6950,6 +6950,13 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 .oshi-book-stores { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
 .oshi-book-store { font-size: 10px; padding: 4px 9px; border-radius: 4px; background: var(--wine); color: #fff; text-decoration: none; font-weight: 600; }
 .oshi-book-store:nth-child(2) { background: #bf0000; }
+.oshi-today-routine { background: #fff; border: 1px solid rgba(122,46,58,0.18); border-radius: 6px; padding: 11px 12px; }
+.oshi-today-routine-head { font-size: 10px; font-weight: 700; color: var(--wine); letter-spacing: 0.15em; margin-bottom: 8px; }
+.oshi-today-routine-list { display: flex; flex-direction: column; gap: 6px; }
+.oshi-routine-row { display: flex; align-items: center; gap: 10px; padding: 6px 8px; background: linear-gradient(90deg, rgba(168,122,58,0.06), transparent); border-radius: 4px; }
+.oshi-routine-time { font-family: var(--font-en); font-size: 10px; color: var(--ink-3); font-weight: 600; min-width: 72px; }
+.oshi-routine-ic { font-size: 14px; }
+.oshi-routine-act { font-family: var(--font-jp); font-size: 12px; color: var(--ink); line-height: 1.4; flex: 1; }
 .profile-action-btns { display: flex; flex-direction: column; gap: 6px; align-items: flex-end; margin-top: 4px; }
 .oshi-set-btn {
   padding: 4px 10px; background: transparent; border: 1px solid var(--wine);

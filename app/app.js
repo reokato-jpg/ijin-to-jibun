@@ -3070,6 +3070,35 @@ function renderOshi() {
       <div class="oshi-today-quote-text">「${escapeHtml(todayQuote.text)}」</div>
       ${todayQuote.source ? `<div class="oshi-today-quote-src">— ${escapeHtml(todayQuote.source)}</div>` : ''}
     </div>` : '';
+  // 推しの1日ルーティン抜粋（work/exercise/meal 中心に3件）
+  const ICON = { sleep:'😴', meal:'☕', work:'✍️', exercise:'🚶', rest:'🛋', social:'🗣', study:'📖', create:'🎨', hobby:'🎼' };
+  const routine = Array.isArray(p.routine) ? p.routine : [];
+  const pickRoutine = [];
+  const priorities = ['work','create','exercise','meal','study'];
+  priorities.forEach(cat => {
+    if (pickRoutine.length >= 3) return;
+    const hit = routine.find(r => r && r.cat === cat && r.activity && !pickRoutine.includes(r));
+    if (hit) pickRoutine.push(hit);
+  });
+  // まだ3件未満なら残りから埋める
+  if (pickRoutine.length < 3) {
+    routine.forEach(r => {
+      if (pickRoutine.length >= 3) return;
+      if (!pickRoutine.includes(r) && r && r.activity && r.cat !== 'sleep') pickRoutine.push(r);
+    });
+  }
+  const routineHtml = pickRoutine.length ? `
+    <div class="oshi-today-routine">
+      <div class="oshi-today-routine-head">🕰 推しの1日から</div>
+      <div class="oshi-today-routine-list">
+        ${pickRoutine.map(r => `
+          <div class="oshi-routine-row">
+            <div class="oshi-routine-time">${String(r.start).padStart(2,'0')}:00–${String(r.end).padStart(2,'0')}:00</div>
+            <div class="oshi-routine-ic">${ICON[r.cat] || '•'}</div>
+            <div class="oshi-routine-act">${escapeHtml(r.activity)}</div>
+          </div>`).join('')}
+      </div>
+    </div>` : '';
   container.innerHTML = `
     <div class="oshi-rich">
       <div class="oshi-card" data-id="${p.id}">
@@ -3084,6 +3113,7 @@ function renderOshi() {
         <div class="oshi-goto">→</div>
       </div>
       ${quoteHtml}
+      ${routineHtml}
       ${bookHtml}
     </div>
   `;
