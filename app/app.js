@@ -10539,6 +10539,8 @@ function showThemePage(themeId) {
   `;
   document.body.appendChild(modal);
   document.body.classList.add('modal-open');
+  // .open を付けないと opacity:0 のまま透明で表示されない
+  requestAnimationFrame(() => modal.classList.add('open'));
   modal.querySelectorAll('[data-close="1"]').forEach(el => {
     el.addEventListener('click', () => closeThemePage());
   });
@@ -10637,6 +10639,7 @@ function showBeginnerGuide() {
   `;
   document.body.appendChild(modal);
   document.body.classList.add('modal-open');
+  requestAnimationFrame(() => modal.classList.add('open'));
   modal.querySelectorAll('[data-close="1"]').forEach(el => el.addEventListener('click', () => {
     modal.remove(); document.body.classList.remove('modal-open');
   }));
