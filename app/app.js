@@ -10621,8 +10621,8 @@ function showBeginnerGuide() {
           </button>
         </div>
       </section>
-      <section class="era-page-section">
-        <h2 class="era-page-h2">📚 読みやすい入門書 <span class="pr-tag">PR</span></h2>
+      <details class="era-page-section beginner-collapsible">
+        <summary class="era-page-h2">📚 読みやすい入門書 <span class="pr-tag">PR</span> <span class="beginner-coll-arrow">▾</span></summary>
         <div class="beginner-books">
           ${[
             {title:'燃えよ剣 上', author:'司馬遼太郎', asin:'4167105764', desc:'土方歳三の生涯。新選組入門の鉄板。'},
@@ -10654,9 +10654,9 @@ function showBeginnerGuide() {
               </div>`;
           }).join('')}
         </div>
-      </section>
-      <section class="era-page-section">
-        <h2 class="era-page-h2">📻 耳で聴く入門 — Audible <span class="pr-tag">PR</span></h2>
+      </details>
+      <details class="era-page-section beginner-collapsible">
+        <summary class="era-page-h2">📻 耳で聴く入門 — Audible <span class="pr-tag">PR</span> <span class="beginner-coll-arrow">▾</span></summary>
         <p style="font-size:12px;color:var(--ink-3);margin-bottom:10px">司馬遼太郎の長編も、通勤や家事しながら「耳で読める」。活字が重い日にも最強。</p>
         <a class="audible-hero-banner" href="https://px.a8.net/svt/ejp?a8mat=4B1QDV+6MQUCY+5TB0+5ZU29" rel="noopener sponsored nofollow" target="_blank">
           <img class="audible-hero-img" src="https://www29.a8.net/svt/bgt?aid=260421331401&wid=001&eno=01&mid=s00000027126001007000&mc=1" width="120" height="60" alt="Audible">
@@ -10667,9 +10667,9 @@ function showBeginnerGuide() {
           <span class="audible-hero-cta">▶</span>
         </a>
         <img border="0" width="1" height="1" src="https://www10.a8.net/0.gif?a8mat=4B1QDV+6MQUCY+5TB0+5ZU29" alt="" style="position:absolute;opacity:0">
-      </section>
-      <section class="era-page-section">
-        <h2 class="era-page-h2">🎬 漫画・小説・ドラマから入る <span class="pr-tag">PR</span></h2>
+      </details>
+      <details class="era-page-section beginner-collapsible">
+        <summary class="era-page-h2">🎬 漫画・小説・ドラマから入る <span class="pr-tag">PR</span> <span class="beginner-coll-arrow">▾</span></summary>
         <p style="font-size:12px;color:var(--ink-3);margin-bottom:8px">硬い歴史書より、まずは物語から。歴女の多くがここから沼に落ちた名作たち。</p>
         <div class="beginner-books">
           ${[
@@ -10725,9 +10725,9 @@ function showBeginnerGuide() {
               </div>`;
           }).join('')}
         </div>
-      </section>
-      <section class="era-page-section">
-        <h2 class="era-page-h2">📺 映像で観る（DVD・Blu-ray） <span class="pr-tag">PR</span></h2>
+      </details>
+      <details class="era-page-section beginner-collapsible">
+        <summary class="era-page-h2">📺 映像で観る（DVD・Blu-ray） <span class="pr-tag">PR</span> <span class="beginner-coll-arrow">▾</span></summary>
         <p style="font-size:12px;color:var(--ink-3);margin-bottom:8px">大河ドラマや映画なら、キャストの顔で推しが決まる。週末イッキ見のお供に。</p>
         <div class="beginner-books">
           ${[
@@ -10760,9 +10760,9 @@ function showBeginnerGuide() {
               </div>`;
           }).join('')}
         </div>
-      </section>
-      <section class="era-page-section">
-        <h2 class="era-page-h2">🏨 聖地巡礼に出かける <span class="pr-tag">PR</span></h2>
+      </details>
+      <details class="era-page-section beginner-collapsible">
+        <summary class="era-page-h2">🏨 聖地巡礼に出かける <span class="pr-tag">PR</span> <span class="beginner-coll-arrow">▾</span></summary>
         <p style="font-size:12px;color:var(--ink-3);margin-bottom:10px">推しが歩いた場所へ行く。歴女の究極の楽しみ方。</p>
         <ul class="pilgrimage-list">
           <li><b>⚔️ 新選組</b> → 京都（壬生・池田屋）・日野（土方資料館）・函館（五稜郭）</li>
@@ -10802,9 +10802,9 @@ function showBeginnerGuide() {
         </div>
         <img src="//i.moshimo.com/af/i/impression?a_id=5501667&p_id=55&pc_id=55&pl_id=630" width="1" height="1" style="position:absolute;border:0;opacity:0" loading="lazy" alt="">
         <img border="0" width="1" height="1" src="https://www13.a8.net/0.gif?a8mat=4B1QDV+76ZKXE+5R8A+5Z6WX" alt="" style="position:absolute;opacity:0">
-      </section>
-      <section class="era-page-section">
-        <h2 class="era-page-h2">🎁 歴女におすすめのグッズ・ツール <span class="pr-tag">PR</span></h2>
+      </details>
+      <details class="era-page-section beginner-collapsible">
+        <summary class="era-page-h2">🎁 歴女におすすめのグッズ・ツール <span class="pr-tag">PR</span> <span class="beginner-coll-arrow">▾</span></summary>
         <p style="font-size:12px;color:var(--ink-3);margin-bottom:10px">聖地巡礼・推し活・日常使いまで。歴女の毎日を彩る実用品を厳選。</p>
         <div class="rekijo-goods-list">
           ${[
@@ -10836,7 +10836,7 @@ function showBeginnerGuide() {
               </div>`;
           }).join('')}
         </div>
-      </section>
+      </details>
       <section class="era-page-section">
         <h2 class="era-page-h2">✨ 推し偉人の見つけかた</h2>
         <p style="line-height:1.9">プロフィールページの<b>『♡ 推しに設定』</b>ボタンをタップすると、ホームに「推しのきょう」が毎日表示されます。<br>その日の手紙・名言・本・ルーティンが届く、ミニ手帳みたいな機能です。</p>
@@ -12580,6 +12580,194 @@ async function submitComment(key, text) {
 }
 
 // ====================== 読みもの ======================
+// ============== 📝 サイト内ブログ記事（SEO×アフィリエイト） ==============
+const BLOG_POSTS = [
+  {
+    id: 'shinsengumi-beginner',
+    title: '【完全版】新選組 初心者ガイド — 推しが見つかる5つの入口',
+    emoji: '⚔️',
+    category: '新選組',
+    date: '2026年4月',
+    lead: '大河ドラマで興味持ったけど名前が多すぎてわからない…そんなあなたへ。新選組の核メンバー5人を、キャラ別の「沼の入口」として紹介します。',
+    coverGradient: 'linear-gradient(135deg, #8c1d2f, #2d0a13)',
+    sections: [
+      {h: '1. 近藤勇 — 局長にして家族想い', people:['kondo_isami'], body:'試衛館時代から仲間を「家族」と呼んだ男。百姓の出ながら誰よりも武士らしくあろうとした生き方が刺さる。'},
+      {h: '2. 土方歳三 — 「鬼の副長」の素顔', people:['hijikata_toshizo'], body:'俳人でもあった繊細な内面と、隊規を徹底した非情さ。洋装姿の写真は「日本一セクシーな武士」とも。'},
+      {h: '3. 沖田総司 — 25歳で逝った天才剣士', people:['okita_soji'], body:'朗らかで子ども好き、それでいて無敵の剣。病と戦いながらも最後まで笑った青年の姿。'},
+      {h: '4. 斎藤一 — 謎の三番隊組長', people:['saito_hajime'], body:'無口で私情を語らない剣士。明治まで生き、女学校の守衛として穏やかな晩年を送った。るろ剣モデル。'},
+      {h: '5. 永倉新八 — 真実を伝えた最後の証人', people:['nagakura_shinpachi'], body:'明治維新後、北海道で『新選組顛末記』を書き残した。彼の記録がなければ多くの真実は埋もれていた。'}
+    ],
+    cta: {kind:'beginner'},
+    affiliateBooks: ['燃えよ剣 上|司馬遼太郎|4167105764', '壬生義士伝 上|浅田次郎|4167646064', '新選組顛末記|永倉新八|4101387168'],
+    relatedTheme: 'shinsengumi'
+  },
+  {
+    id: 'bakumatsu-ranking',
+    title: '幕末志士ランキング — 歴女が選ぶ「推したい男」ベスト5',
+    emoji: '🏯',
+    category: '幕末',
+    date: '2026年4月',
+    lead: '短く激しく生きた幕末の男たち。時代に選ばれ、時代に散った5人の生き様を「推しポイント」付きで紹介。',
+    coverGradient: 'linear-gradient(135deg, #6b4e2e, #2a1a0e)',
+    sections: [
+      {h: '1位. 坂本龍馬 — 時代を越えた自由人', people:['sakamoto_ryoma'], body:'脱藩浪人が薩長同盟を結び、大政奉還を導いた。海援隊、新婚旅行、暗殺——物語として完璧すぎる生涯。'},
+      {h: '2位. 高杉晋作 — 29歳の風雲児', people:['takasugi_shinsaku'], body:'「おもしろきこともなき世をおもしろく」。奇兵隊創設、功山寺挙兵、肺結核で早世。短いほど美しい。'},
+      {h: '3位. 吉田松陰 — 松下村塾の魂の教師', people:['yoshida_shoin'], body:'「諸君、狂いたまえ」。1年半で維新の志士を育て、29歳で処刑。教育者としての伝説。'},
+      {h: '4位. 勝海舟 — 江戸を救った皮肉屋', people:['katsu_kaishu'], body:'咸臨丸、江戸無血開城、「コレデオシマイ」。龍馬の師にして100万人の江戸を守った男。'},
+      {h: '5位. 木戸孝允（桂小五郎） — 逃げの小五郎', people:['kido_takayoshi'], body:'池田屋事件で生き延び、薩長同盟を結び、幾松と結ばれる。生存力と愛、両方揃った存在。'}
+    ],
+    cta: {kind:'theme', theme:'bakumatsu'},
+    affiliateBooks: ['竜馬がゆく 1|司馬遼太郎|4167663015', '世に棲む日日 1|司馬遼太郎|4167105780', '氷川清話|勝海舟|4061594931'],
+    relatedTheme: 'bakumatsu'
+  },
+  {
+    id: 'seichi-junrei-guide',
+    title: '新選組・幕末の聖地巡礼スポット8選 — 京都から函館まで',
+    emoji: '🏨',
+    category: '聖地巡礼',
+    date: '2026年4月',
+    lead: '推しの足跡を追う旅。京都の壬生・池田屋から、萩の松下村塾、函館の五稜郭まで。一度は行きたい歴史の聖地を厳選。',
+    coverGradient: 'linear-gradient(135deg, #2a3d4f, #0f1820)',
+    sections: [
+      {h: '🏯 京都・壬生屯所', body:'新選組が本拠地とした八木家・前川家。近藤・土方・沖田が実際に住んだ場所。現在も公開中、ガイドツアー有。'},
+      {h: '⚔️ 京都・池田屋址（三条）', body:'池田屋事件の現場。現在は居酒屋「池田屋はなの舞」として営業。階段の吹き抜けが当時の屋敷構造を残す。'},
+      {h: '🌸 京都・霊山護国神社', body:'龍馬・中岡慎太郎・木戸孝允らの墓所。幕末志士の聖地。京都東山の霊山歴史館も併設。'},
+      {h: '🏔 会津若松・鶴ヶ城', body:'新島八重が籠城戦を戦った天守。会津の覚悟を今に伝える。白虎隊の飯盛山と共に巡礼必須。'},
+      {h: '📚 萩・松下村塾', body:'吉田松陰が高杉・伊藤・山縣を育てた塾。わずか8畳の講義室がそのまま残る。萩の城下町散策もセット。'},
+      {h: '🎐 下関・東行庵', body:'高杉晋作の墓所。愛人おうのが庵主として守り続けた庭。梅雨時が最も美しい。'},
+      {h: '🌊 高知・坂本龍馬生誕地', body:'桂浜の龍馬像と合わせて訪れたい。龍馬記念館は近代的でデートにも最適。'},
+      {h: '⚓ 函館・五稜郭', body:'土方歳三最期の地。星形要塞と函館の街並み。春の桜と夏の夜景が格別。'}
+    ],
+    cta: {kind:'travel'},
+    affiliateBooks: [],
+    relatedTheme: 'bakumatsu'
+  }
+];
+
+function renderBlogPostsBlock() {
+  const list = document.getElementById('articlesList');
+  if (!list) return;
+  const blogHtml = `
+    <div class="blog-posts-block">
+      <div class="blog-posts-head">
+        <h2 class="blog-posts-title">📝 読みもの — 偉人と自分の編集部</h2>
+        <p class="blog-posts-sub">歴女向けの入門・推しの見つけ方・聖地巡礼ガイドを連載中。</p>
+      </div>
+      <div class="blog-posts-grid">
+        ${BLOG_POSTS.map(p => `
+          <button type="button" class="blog-post-card" data-blog-open="${p.id}" onclick="window.showBlogPost && window.showBlogPost('${p.id}')" style="background:${p.coverGradient}">
+            <div class="blog-post-badge">${escapeHtml(p.category)}</div>
+            <div class="blog-post-emoji">${p.emoji}</div>
+            <div class="blog-post-card-title">${escapeHtml(p.title)}</div>
+            <div class="blog-post-lead">${escapeHtml(p.lead)}</div>
+            <div class="blog-post-meta">${escapeHtml(p.date)} ・ 続きを読む →</div>
+          </button>`).join('')}
+      </div>
+    </div>`;
+  // 既存の list の先頭に挿入
+  list.insertAdjacentHTML('afterbegin', blogHtml);
+}
+
+function showBlogPost(postId) {
+  const post = BLOG_POSTS.find(p => p.id === postId);
+  if (!post) return;
+  // URL更新
+  try {
+    const url = new URL(location.href);
+    url.searchParams.set('post', postId);
+    history.pushState({post: postId}, '', url.toString());
+  } catch {}
+  const existing = document.getElementById('blogPostModal');
+  if (existing) existing.remove();
+  const modal = document.createElement('div');
+  modal.id = 'blogPostModal';
+  modal.className = 'era-page-modal blog-post-modal';
+  const relatedPeopleHtml = (ids) => (ids || []).map(pid => {
+    const p = DATA.people.find(x => x.id === pid);
+    if (!p) return '';
+    const bg = p.imageUrl ? `style="background-image:url('${p.imageUrl}')"` : '';
+    return `<button class="blog-person-chip" data-jump-person="${pid}"><span class="blog-person-av" ${bg}>${p.imageUrl ? '' : (p.name?.charAt(0) || '?')}</span><span>${escapeHtml(p.name)}</span></button>`;
+  }).join('');
+  const sectionsHtml = post.sections.map(s => `
+    <section class="blog-section">
+      <h2 class="blog-h2">${escapeHtml(s.h)}</h2>
+      ${s.people ? `<div class="blog-person-chips">${relatedPeopleHtml(s.people)}</div>` : ''}
+      <p class="blog-body">${escapeHtml(s.body)}</p>
+    </section>`).join('');
+  // アフィリ本
+  const affHtml = (post.affiliateBooks || []).length ? `
+    <section class="blog-section">
+      <h2 class="blog-h2">📚 あわせて読みたい本 <span class="pr-tag">PR</span></h2>
+      <div class="beginner-books">
+        ${post.affiliateBooks.map(s => {
+          const [t, a, asin] = s.split('|');
+          const amz = `https://www.amazon.co.jp/dp/${asin}${AMAZON_TAG ? `?tag=${AMAZON_TAG}` : ''}`;
+          const rak = rakutenSearchUrl(t, a);
+          return `
+            <div class="beginner-book">
+              <a class="beginner-book-cover" href="${amz}" target="_blank" rel="noopener sponsored">
+                <img src="${amazonCover(asin)}" alt="${escapeHtml(t)}" loading="lazy"
+                  onerror="this.parentElement.classList.add('no-cover');this.remove();"
+                  onload="if(this.naturalWidth<50){this.parentElement.classList.add('no-cover');this.remove();}">
+                <div class="beginner-book-fallback"><div>✦</div><div class="beginner-book-fb-title">${escapeHtml(t)}</div></div>
+              </a>
+              <div class="beginner-book-info">
+                <div class="beginner-book-title">${escapeHtml(t)}</div>
+                <div class="beginner-book-author">${escapeHtml(a)}</div>
+                <div class="beginner-book-stores">
+                  <a class="beginner-book-store amz" href="${amz}" target="_blank" rel="noopener sponsored">Amazon</a>
+                  <a class="beginner-book-store rak" href="${rak}" target="_blank" rel="noopener sponsored">楽天</a>
+                </div>
+              </div>
+            </div>`;
+        }).join('')}
+      </div>
+    </section>` : '';
+  // CTA
+  const ctaHtml = post.cta?.kind === 'beginner' ? `
+    <section class="blog-section blog-cta">
+      <h2 class="blog-h2">🌸 もっと深く知るには</h2>
+      <button type="button" class="blog-cta-btn" onclick="document.getElementById('blogPostModal')?.remove();document.body.classList.remove('modal-open');setTimeout(()=>window.showBeginnerGuide && window.showBeginnerGuide(),50)">🌸 歴女入門ガイドを開く →</button>
+    </section>` : post.cta?.kind === 'theme' ? `
+    <section class="blog-section blog-cta">
+      <h2 class="blog-h2">👥 関連テーマ</h2>
+      <button type="button" class="blog-cta-btn" onclick="document.getElementById('blogPostModal')?.remove();document.body.classList.remove('modal-open');setTimeout(()=>window.showThemePage && window.showThemePage('${post.cta.theme}'),50)">このテーマを開く →</button>
+    </section>` : '';
+
+  modal.innerHTML = `
+    <div class="era-page-backdrop" data-close="1"></div>
+    <article class="era-page">
+      <button class="era-page-close" data-close="1" aria-label="閉じる">×</button>
+      <header class="era-page-hero" style="background:${post.coverGradient}">
+        <div class="era-page-hero-inner">
+          <div class="blog-category-badge">${post.emoji} ${escapeHtml(post.category)}</div>
+          <h1 class="era-page-title" style="font-size:22px;line-height:1.4">${escapeHtml(post.title)}</h1>
+          <div class="blog-post-date">${escapeHtml(post.date)}</div>
+        </div>
+      </header>
+      <section class="era-page-section">
+        <p class="blog-lead">${escapeHtml(post.lead)}</p>
+      </section>
+      ${sectionsHtml}
+      ${affHtml}
+      ${ctaHtml}
+    </article>
+  `;
+  document.body.appendChild(modal);
+  document.body.classList.add('modal-open');
+  requestAnimationFrame(() => modal.classList.add('open'));
+  modal.querySelectorAll('[data-close="1"]').forEach(el => el.addEventListener('click', () => {
+    modal.remove(); document.body.classList.remove('modal-open');
+    try { const url = new URL(location.href); url.searchParams.delete('post'); history.pushState({}, '', url.toString()); } catch {}
+  }));
+  modal.querySelectorAll('[data-jump-person]').forEach(el => el.addEventListener('click', () => {
+    const pid = el.dataset.jumpPerson;
+    modal.remove(); document.body.classList.remove('modal-open');
+    setTimeout(() => showPerson(pid), 50);
+  }));
+}
+window.showBlogPost = showBlogPost;
+
 function renderArticles() {
   const header = document.getElementById('articlesHeader');
   const list = document.getElementById('articlesList');
@@ -12599,9 +12787,11 @@ function renderArticles() {
       <div class="articles-coming-soon-sub">近日実装予定。あなたの書いた記事を、偉人たちの物語と並べて本棚に並べられるようになります。</div>
     </div>
   `;
+  // 内部ブログ記事をまず表示
+  list.innerHTML = '';
+  renderBlogPostsBlock();
   if (DATA.articles.length === 0) {
-    list.innerHTML = '<div class="empty">まだ記事がありません</div>';
-    return;
+    return; // ブログだけ表示して終了
   }
   const articlesHtml = DATA.articles.map(art => {
     const tagChips = (art.relatedTags || []).map(tid => {
@@ -13888,6 +14078,12 @@ window.renderBookshelfGuides = renderBookshelfGuides;
     if (themeId) {
       setTimeout(() => {
         try { if (typeof showThemePage === 'function') showThemePage(themeId); } catch {}
+      }, 200);
+    }
+    const postId = qp.get('post');
+    if (postId) {
+      setTimeout(() => {
+        try { if (typeof showBlogPost === 'function') showBlogPost(postId); } catch {}
       }, 200);
     }
   } catch (e) { console.warn('deeplink', e); }

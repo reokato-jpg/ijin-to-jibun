@@ -3912,6 +3912,48 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 .rekijo-good-store:hover { opacity: 0.85; }
 .rekijo-good-store.amz { background: #fff; color: var(--wine); border: 1px solid var(--wine); }
 .rekijo-good-store.rak { background: #bf0000; color: #fff; }
+/* 歴女入門ガイドの折りたたみPRセクション */
+.beginner-collapsible { cursor: pointer; border: 1px solid rgba(193,82,122,0.2); border-radius: 8px; padding: 0; margin: 10px 0; background: #fff5f8; overflow: hidden; }
+.beginner-collapsible > summary { list-style: none; padding: 12px 14px; font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; color: #c1527a; }
+.beginner-collapsible > summary::-webkit-details-marker { display: none; }
+.beginner-coll-arrow { margin-left: auto; font-size: 14px; transition: transform 0.2s; color: #c1527a; }
+.beginner-collapsible[open] .beginner-coll-arrow { transform: rotate(180deg); }
+.beginner-collapsible[open] { background: #fff; }
+.beginner-collapsible > *:not(summary) { padding: 0 14px 14px; }
+
+/* 📝 ブログ記事カード */
+.blog-posts-block { margin-bottom: 20px; }
+.blog-posts-head { margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid var(--wine); }
+.blog-posts-title { font-family: var(--font-jp); font-size: 18px; font-weight: 800; color: var(--wine); margin: 0 0 4px; letter-spacing: 0.03em; }
+.blog-posts-sub { font-family: var(--font-jp); font-size: 12px; color: var(--ink-3); margin: 0; }
+.blog-posts-grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
+@media (min-width: 720px) { .blog-posts-grid { grid-template-columns: 1fr 1fr; } }
+.blog-post-card { display: flex; flex-direction: column; gap: 6px; padding: 22px 18px 18px; border: none; border-radius: 12px; color: #fff; cursor: pointer; text-align: left; font-family: inherit; box-shadow: 0 4px 14px rgba(0,0,0,0.15); transition: transform 0.15s, box-shadow 0.15s; position: relative; overflow: hidden; }
+.blog-post-card:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(0,0,0,0.25); }
+.blog-post-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #d4af37, #fff, #d4af37); background-size: 200% 100%; animation: heroShine 4s linear infinite; }
+.blog-post-badge { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.15em; padding: 3px 10px; background: rgba(255,255,255,0.2); border-radius: 3px; align-self: flex-start; color: #fff; }
+.blog-post-emoji { font-size: 32px; margin-top: 2px; }
+.blog-post-card-title { font-family: var(--font-jp); font-weight: 800; font-size: 15px; line-height: 1.45; color: #fff; }
+.blog-post-lead { font-family: var(--font-jp); font-size: 11.5px; line-height: 1.6; color: rgba(255,255,255,0.88); margin-top: 2px; }
+.blog-post-meta { font-family: var(--font-en); font-size: 10px; color: rgba(255,255,255,0.7); margin-top: 6px; letter-spacing: 0.05em; }
+
+/* ブログ記事詳細モーダル */
+.blog-post-modal .era-page-hero { color: #fff; padding: 32px 20px; border-radius: 0; }
+.blog-post-modal .era-page-hero-inner { color: #fff; }
+.blog-post-modal .era-page-title { color: #fff !important; }
+.blog-category-badge { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; padding: 4px 12px; background: rgba(255,255,255,0.2); border-radius: 4px; margin-bottom: 10px; color: #fff; }
+.blog-post-date { font-family: var(--font-en); font-size: 11px; color: rgba(255,255,255,0.8); margin-top: 10px; letter-spacing: 0.06em; }
+.blog-lead { font-family: var(--font-jp); font-size: 14px; line-height: 1.85; color: var(--ink); font-style: italic; padding: 8px 12px; border-left: 3px solid var(--wine); background: #fff9f1; border-radius: 0 4px 4px 0; }
+.blog-section { margin: 20px 0; }
+.blog-h2 { font-family: var(--font-jp); font-size: 16px; font-weight: 800; color: var(--wine); margin: 0 0 10px; padding-bottom: 6px; border-bottom: 1px dashed rgba(122,46,58,0.3); }
+.blog-body { font-family: var(--font-jp); font-size: 13px; line-height: 1.85; color: var(--ink); margin: 0; }
+.blog-person-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.blog-person-chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px 4px 4px; background: #fff; border: 1px solid rgba(122,46,58,0.3); border-radius: 20px; font-size: 12px; font-family: var(--font-jp); cursor: pointer; color: var(--ink); transition: all 0.15s; }
+.blog-person-chip:hover { background: var(--wine); color: #fff; }
+.blog-person-av { width: 26px; height: 26px; border-radius: 50%; background-size: cover; background-position: center top; background-color: #d9cdb4; display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--wine); font-weight: 700; }
+.blog-cta { background: #fff5f0; padding: 14px; border-radius: 8px; border: 1px dashed var(--wine); }
+.blog-cta-btn { width: 100%; padding: 12px; background: var(--wine); color: #fff; border: none; border-radius: 6px; font-family: var(--font-jp); font-weight: 700; font-size: 13px; cursor: pointer; transition: opacity 0.15s; }
+.blog-cta-btn:hover { opacity: 0.88; }
 
 /* 📻 Audible アフィリエイトバナー */
 .audible-hero-banner {
