@@ -10653,7 +10653,7 @@ function renderThemeTiles() {
   const container = document.getElementById('themeTiles');
   if (!container) return;
   const beginnerTile = `
-    <button type="button" class="theme-tile theme-tile-beginner" data-beginner="1">
+    <button type="button" class="theme-tile theme-tile-beginner" data-beginner="1" onclick="window.showBeginnerGuide && window.showBeginnerGuide()">
       <div class="theme-tile-emoji">🌸</div>
       <div class="theme-tile-info">
         <div class="theme-tile-name">はじめての歴女</div>
@@ -10665,7 +10665,7 @@ function renderThemeTiles() {
     const count = (DATA.people || []).filter(p => (p.themes || []).includes(id)).length;
     if (!count) return '';
     return `
-      <button type="button" class="theme-tile" data-theme-open="${id}">
+      <button type="button" class="theme-tile" data-theme-open="${id}" onclick="window.showThemePage && window.showThemePage('${id}')">
         <div class="theme-tile-emoji">${def.emoji}</div>
         <div class="theme-tile-info">
           <div class="theme-tile-name">#${escapeHtml(def.name)}</div>

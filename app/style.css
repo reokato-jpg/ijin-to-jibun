@@ -3785,8 +3785,10 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 
 /* 🎎 テーマタイル（歴女入口） */
 .theme-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
-.theme-tile { display: flex; gap: 10px; padding: 12px; background: linear-gradient(135deg, #fff 0%, #fff5eb 100%); border: 1.5px solid var(--wine); border-radius: 8px; cursor: pointer; text-align: left; transition: transform 0.15s, box-shadow 0.15s; box-shadow: 0 2px 5px rgba(122,46,58,0.1); position: relative; z-index: 1; }
+.theme-tile { display: flex; gap: 10px; padding: 12px; background: linear-gradient(135deg, #fff 0%, #fff5eb 100%); border: 1.5px solid var(--wine); border-radius: 8px; cursor: pointer; text-align: left; transition: transform 0.15s, box-shadow 0.15s; box-shadow: 0 2px 5px rgba(122,46,58,0.1); position: relative; z-index: 2; -webkit-appearance: none; appearance: none; font: inherit; color: inherit; touch-action: manipulation; -webkit-tap-highlight-color: rgba(122,46,58,0.2); }
+.theme-tile:active { transform: scale(0.98); }
 .theme-tile > * { pointer-events: none; }
+.theme-tiles { position: relative; z-index: 2; }
 .theme-tile:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(122,46,58,0.2); }
 .theme-tile-emoji { font-size: 28px; flex-shrink: 0; align-self: center; }
 .theme-tile-info { flex: 1; min-width: 0; }
