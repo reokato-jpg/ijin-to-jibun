@@ -10653,7 +10653,7 @@ function renderThemeTiles() {
   const container = document.getElementById('themeTiles');
   if (!container) return;
   const beginnerTile = `
-    <button class="theme-tile theme-tile-beginner" data-beginner="1">
+    <button type="button" class="theme-tile theme-tile-beginner" data-beginner="1">
       <div class="theme-tile-emoji">🌸</div>
       <div class="theme-tile-info">
         <div class="theme-tile-name">はじめての歴女</div>
@@ -10665,7 +10665,7 @@ function renderThemeTiles() {
     const count = (DATA.people || []).filter(p => (p.themes || []).includes(id)).length;
     if (!count) return '';
     return `
-      <button class="theme-tile" data-theme-open="${id}">
+      <button type="button" class="theme-tile" data-theme-open="${id}">
         <div class="theme-tile-emoji">${def.emoji}</div>
         <div class="theme-tile-info">
           <div class="theme-tile-name">#${escapeHtml(def.name)}</div>
@@ -10674,10 +10674,16 @@ function renderThemeTiles() {
         </div>
       </button>`;
   }).join('');
-  container.querySelectorAll('[data-theme-open]').forEach(b => {
-    b.addEventListener('click', () => showThemePage(b.dataset.themeOpen));
-  });
-  container.querySelector('[data-beginner]')?.addEventListener('click', () => showBeginnerGuide());
+  // 子要素タップでも必ず拾えるよう container に委任
+  if (!container.dataset.bound) {
+    container.dataset.bound = '1';
+    container.addEventListener('click', (e) => {
+      const themeBtn = e.target.closest('[data-theme-open]');
+      if (themeBtn) { e.preventDefault(); showThemePage(themeBtn.dataset.themeOpen); return; }
+      const beginnerBtn = e.target.closest('[data-beginner]');
+      if (beginnerBtn) { e.preventDefault(); showBeginnerGuide(); return; }
+    });
+  }
 }
 window.renderThemeTiles = renderThemeTiles;
 
