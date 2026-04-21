@@ -10499,6 +10499,53 @@ function openEraModal(catId, eraId) {
         </div>
       </section>
 
+      ${(() => {
+        // 📖 この時代を読み解く本（この時代の偉人たちのbookを集約、重複排除）
+        const books = [];
+        const seen = new Set();
+        people.forEach(pp => {
+          (pp.books || []).forEach(b => {
+            if (!b || !b.title) return;
+            const key = b.asin || (b.title + '|' + (b.author || ''));
+            if (seen.has(key)) return;
+            seen.add(key);
+            books.push({ ...b, personName: pp.name, personId: pp.id });
+          });
+        });
+        if (books.length === 0) return '';
+        return `
+        <section class="era-page-section era-page-books-sec">
+          <h2 class="era-page-h2">📖 この時代を読み解く本</h2>
+          <p class="era-page-books-sub">この時代を生きた偉人たちと出会うための本。</p>
+          <div class="era-page-books">
+            ${books.slice(0, 12).map(b => {
+              const amazonQ = encodeURIComponent(`${b.title} ${b.author || ''}`);
+              const amazon = b.asin
+                ? `https://www.amazon.co.jp/dp/${b.asin}${AMAZON_TAG ? `?tag=${AMAZON_TAG}` : ''}`
+                : `https://www.amazon.co.jp/s?k=${amazonQ}${AMAZON_TAG ? `&tag=${AMAZON_TAG}` : ''}`;
+              const rakuten = rakutenSearchUrl(b.title, b.author);
+              const cover = b.asin ? `https://images-fe.ssl-images-amazon.com/images/P/${b.asin}.09.LZZZZZZZ.jpg` : '';
+              return `
+                <div class="era-page-book">
+                  ${cover
+                    ? `<a class="era-page-book-cover" href="${amazon}" target="_blank" rel="noopener sponsored" style="background-image:url('${cover}')"></a>`
+                    : `<a class="era-page-book-cover no-img" href="${amazon}" target="_blank" rel="noopener sponsored">📖</a>`}
+                  <div class="era-page-book-info">
+                    <div class="era-page-book-title">${escapeHtml(b.title)}</div>
+                    ${b.author ? `<div class="era-page-book-author">${escapeHtml(b.author)}</div>` : ''}
+                    <div class="era-page-book-person">— ${escapeHtml(b.personName)}</div>
+                    <div class="era-page-book-stores">
+                      <a class="era-page-book-store era-page-book-amazon" href="${amazon}" target="_blank" rel="noopener sponsored">📦 Amazon</a>
+                      <a class="era-page-book-store era-page-book-rakuten" href="${rakuten}" target="_blank" rel="noopener sponsored">🛍 楽天</a>
+                    </div>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </section>`;
+      })()}
+
       <section class="era-page-section era-page-visitors-sec">
         <h2 class="era-page-h2">読者の軌跡</h2>
         <div id="eraVisitorsMount" class="era-visitors-mount"></div>

@@ -56,6 +56,67 @@
 }
 .era-page-share:hover { background: #fff; }
 
+/* 📖 この時代を読み解く本 */
+.era-page-books-sec {
+  background: rgba(255,255,255,0.5);
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px 0;
+}
+.era-page-books-sub {
+  font-size: 12px;
+  color: #6a5a3a;
+  margin-bottom: 14px;
+  font-style: italic;
+}
+.era-page-books {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+.era-page-book {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.era-page-book-cover {
+  width: 72px;
+  aspect-ratio: 2/3;
+  background-size: cover;
+  background-position: center;
+  background-color: #e8dcc0;
+  border-radius: 3px;
+  flex-shrink: 0;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+.era-page-book-cover.no-img { background: linear-gradient(135deg, #e8dcc0, #d9c896); }
+.era-page-book-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.era-page-book-title { font-size: 13px; font-weight: 700; color: #3a2d1c; line-height: 1.4; }
+.era-page-book-author { font-size: 10px; color: #7a6a4a; }
+.era-page-book-person { font-size: 10px; color: #8a5a1d; font-style: italic; margin-top: 2px; }
+.era-page-book-stores { display: flex; gap: 4px; margin-top: auto; padding-top: 6px; }
+.era-page-book-store {
+  flex: 0 0 auto;
+  padding: 4px 8px;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 4px;
+  color: #fff;
+  text-decoration: none;
+}
+.era-page-book-amazon { background: #ff9900; }
+.era-page-book-rakuten { background: #bf0000; }
+.era-page-book-store:hover { filter: brightness(1.08); }
+
 .era-page-hero {
   position: relative;
   min-height: 260px;
