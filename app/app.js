@@ -10660,32 +10660,24 @@ function showBeginnerGuide() {
         <p style="font-size:12px;color:var(--ink-3);margin-bottom:8px">硬い歴史書より、まずは物語から。歴女の多くがここから沼に落ちた名作たち。</p>
         <div class="beginner-books">
           ${[
-            {title:'るろうに剣心 完全版 1', author:'和月伸宏', asin:'4088736591', desc:'幕末を生き抜いた抜刀斎・緋村剣心。斎藤一も登場！アニメ・映画・舞台で人気爆発の入門作品。'},
-            {title:'銀魂 1', author:'空知英秋', asin:'4088731611', desc:'新選組モデルの真選組＆攘夷志士モデルのキャラたちが織りなすSF時代劇。キャラで沼る王道。'},
-            {title:'薄桜鬼 真改 風ノ章', author:'オトメイト', asin:'B01N2UQKLK', desc:'新選組×女性主人公の乙女ゲー。アニメ・舞台化もされ、歴女増産の元凶。'},
-            {title:'PEACE MAKER 鐵 1', author:'黒乃奈々絵', asin:'4758072205', desc:'少年の視点から描かれる新選組。登場人物の心情描写が深い名作。'},
-            {title:'風光る 1', author:'渡辺多恵子', asin:'409138210X', desc:'新選組に身を投じた少女の物語。少女漫画の金字塔。'},
-            {title:'おーい!竜馬 1', author:'武田鉄矢・小山ゆう', asin:'4091817114', desc:'坂本龍馬の青春を熱く描く歴史漫画の名作。'},
-            {title:'信長協奏曲 1', author:'石井あゆみ', asin:'4091234798', desc:'現代高校生が信長に入れ替わる戦国タイムスリップ漫画。実写化・アニメ化。'},
-            {title:'花の慶次 —雲のかなたに— 1', author:'原哲夫・隆慶一郎', asin:'4087485226', desc:'前田慶次の生き様。「傾奇者」の美学。男も惚れる歴史漫画。'},
-            {title:'センゴク 1', author:'宮下英樹', asin:'4063721027', desc:'仙石秀久を主人公に戦国を描く硬派漫画。信長・秀吉・家康のリアル。'}
+            {title:'るろうに剣心', author:'和月伸宏', emoji:'🗡', desc:'幕末を生き抜いた抜刀斎・緋村剣心。斎藤一も登場！アニメ・映画・舞台で人気爆発の入門作品。'},
+            {title:'銀魂', author:'空知英秋', emoji:'🎪', desc:'新選組モデルの真選組＆攘夷志士モデルのキャラたちが織りなすSF時代劇。キャラで沼る王道。'},
+            {title:'薄桜鬼', author:'アイディアファクトリー', emoji:'💕', desc:'新選組×女性主人公の乙女ゲー。アニメ・舞台化もされ、歴女増産の元凶。'},
+            {title:'PEACE MAKER 鐵', author:'黒乃奈々絵', emoji:'🌸', desc:'少年の視点から描かれる新選組。登場人物の心情描写が深い名作。'},
+            {title:'風光る', author:'渡辺多恵子', emoji:'🎐', desc:'新選組に身を投じた少女の物語。少女漫画の金字塔。'},
+            {title:'おーい!竜馬', author:'武田鉄矢・小山ゆう', emoji:'🌊', desc:'坂本龍馬の青春を熱く描く歴史漫画の名作。'},
+            {title:'信長協奏曲', author:'石井あゆみ', emoji:'👘', desc:'現代高校生が信長に入れ替わる戦国タイムスリップ漫画。実写化・アニメ化。'},
+            {title:'花の慶次', author:'原哲夫', emoji:'🍃', desc:'前田慶次の生き様。「傾奇者」の美学。男も惚れる歴史漫画。'},
+            {title:'センゴク', author:'宮下英樹', emoji:'⚔️', desc:'仙石秀久を主人公に戦国を描く硬派漫画。信長・秀吉・家康のリアル。'}
           ].map(b => {
-            const q = encodeURIComponent(`${b.title} ${b.author || ''}`);
-            const hasAsin = b.asin && /^[A-Z0-9]{10}$/i.test(b.asin);
-            const amz = hasAsin
-              ? `https://www.amazon.co.jp/dp/${b.asin}${AMAZON_TAG ? `?tag=${AMAZON_TAG}` : ''}`
-              : `https://www.amazon.co.jp/s?k=${q}${AMAZON_TAG ? `&tag=${AMAZON_TAG}` : ''}`;
+            // 漫画はシリーズで買う人が多いので検索URLにして常に最新/正しい商品に飛ばす
+            const q = encodeURIComponent(`${b.title} ${b.author}`);
+            const amz = `https://www.amazon.co.jp/s?k=${q}&i=stripbooks${AMAZON_TAG ? `&tag=${AMAZON_TAG}` : ''}`;
             const rak = rakutenSearchUrl(b.title, b.author);
-            const coverImg = hasAsin
-              ? `<img src="${amazonCover(b.asin)}" alt="${escapeHtml(b.title)}" loading="lazy"
-                   onerror="this.parentElement.classList.add('no-cover');this.remove();"
-                   onload="if(this.naturalWidth<50){this.parentElement.classList.add('no-cover');this.remove();}">`
-              : '';
             return `
               <div class="beginner-book">
-                <a class="beginner-book-cover ${hasAsin ? '' : 'no-cover'}" href="${amz}" target="_blank" rel="noopener sponsored">
-                  ${coverImg}
-                  <div class="beginner-book-fallback"><div>✦</div><div class="beginner-book-fb-title">${escapeHtml(b.title)}</div></div>
+                <a class="beginner-book-cover no-cover" href="${amz}" target="_blank" rel="noopener sponsored">
+                  <div class="beginner-book-fallback"><div style="font-size:24px">${b.emoji}</div><div class="beginner-book-fb-title">${escapeHtml(b.title)}</div></div>
                 </a>
                 <div class="beginner-book-info">
                   <div class="beginner-book-title">${escapeHtml(b.title)}</div>
