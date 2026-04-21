@@ -10622,14 +10622,38 @@ function showBeginnerGuide() {
         </div>
       </section>
       <section class="era-page-section">
-        <h2 class="era-page-h2">📚 読みやすい入門書</h2>
-        <ul class="beginner-book-list">
-          <li><b>『燃えよ剣』</b>（司馬遼太郎） — 土方歳三の生涯。新選組入門の鉄板。</li>
-          <li><b>『竜馬がゆく』</b>（司馬遼太郎） — 坂本龍馬の物語。幕末全体が見える大河小説。</li>
-          <li><b>『世に棲む日日』</b>（司馬遼太郎） — 吉田松陰と高杉晋作、長州の青春。</li>
-          <li><b>『壬生義士伝』</b>（浅田次郎） — 新選組の知られざる一面。泣けます。</li>
-          <li><b>『真田太平記』</b>（池波正太郎） — 真田一族の12巻大河。</li>
-        </ul>
+        <h2 class="era-page-h2">📚 読みやすい入門書 <span class="pr-tag">PR</span></h2>
+        <div class="beginner-books">
+          ${[
+            {title:'燃えよ剣 上', author:'司馬遼太郎', asin:'4167105764', desc:'土方歳三の生涯。新選組入門の鉄板。'},
+            {title:'竜馬がゆく 1 (新装版)', author:'司馬遼太郎', asin:'4167663015', desc:'坂本龍馬の物語。幕末全体が見える大河小説。'},
+            {title:'世に棲む日日 1', author:'司馬遼太郎', asin:'4167105780', desc:'吉田松陰と高杉晋作、長州の青春。'},
+            {title:'壬生義士伝 上', author:'浅田次郎', asin:'4167646064', desc:'新選組の知られざる一面。泣けます。'},
+            {title:'真田太平記 1', author:'池波正太郎', asin:'4101156794', desc:'真田一族の12巻大河。'}
+          ].map(b => {
+            const amz = `https://www.amazon.co.jp/dp/${b.asin}${AMAZON_TAG ? `?tag=${AMAZON_TAG}` : ''}`;
+            const rak = rakutenSearchUrl(b.title, b.author);
+            const cover = amazonCover(b.asin);
+            return `
+              <div class="beginner-book">
+                <a class="beginner-book-cover" href="${amz}" target="_blank" rel="noopener sponsored">
+                  <img src="${cover}" alt="${escapeHtml(b.title)}" loading="lazy"
+                    onerror="this.parentElement.classList.add('no-cover');this.remove();"
+                    onload="if(this.naturalWidth<50){this.parentElement.classList.add('no-cover');this.remove();}">
+                  <div class="beginner-book-fallback"><div>✦</div><div class="beginner-book-fb-title">${escapeHtml(b.title)}</div></div>
+                </a>
+                <div class="beginner-book-info">
+                  <div class="beginner-book-title">${escapeHtml(b.title)}</div>
+                  <div class="beginner-book-author">${escapeHtml(b.author)}</div>
+                  <div class="beginner-book-desc">${escapeHtml(b.desc)}</div>
+                  <div class="beginner-book-stores">
+                    <a class="beginner-book-store amz" href="${amz}" target="_blank" rel="noopener sponsored">Amazon</a>
+                    <a class="beginner-book-store rak" href="${rak}" target="_blank" rel="noopener sponsored">楽天</a>
+                  </div>
+                </div>
+              </div>`;
+          }).join('')}
+        </div>
       </section>
       <section class="era-page-section">
         <h2 class="era-page-h2">✨ 推し偉人の見つけかた</h2>
