@@ -217,7 +217,13 @@
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Nelahozeves%2C_Dvo%C5%99%C3%A1k%C5%AFv_d%C5%AFm_-_celek.jpg/330px-Nelahozeves%2C_Dvo%C5%99%C3%A1k%C5%AFv_d%C5%AFm_-_celek.jpg"
     }
   ],
-  "books": [],
+  "books": [
+    {
+      "title": "ドヴォルジャーク",
+      "author": "クルト・ホノルカ",
+      "description": "ボヘミアの心を歌った作曲家の評伝。"
+    }
+  ],
   "works": [
     {
       "title": "交響曲第9番『新世界より』ホ短調 作品95",

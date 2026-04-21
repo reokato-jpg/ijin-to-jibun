@@ -33,7 +33,13 @@
   ],
   "relations": [],
   "places": [],
-  "books": [],
+  "books": [
+    {
+      "title": "奇妙な果実 ビリー・ホリデイ自伝",
+      "author": "ビリー・ホリデイ",
+      "description": "ジャズの魂を燃やした歌手の告白。"
+    }
+  ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Billie_Holiday_0001_original.jpg/280px-Billie_Holiday_0001_original.jpg",
   "wikiTitle": "ビリー・ホリデイ",
   "birthMonth": 4,

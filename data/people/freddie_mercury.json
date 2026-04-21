@@ -33,7 +33,13 @@
   ],
   "relations": [],
   "places": [],
-  "books": [],
+  "books": [
+    {
+      "title": "フレディ・マーキュリー 孤独な道化",
+      "author": "レスリー＝アン・ジョーンズ",
+      "description": "華やかさと孤独の両面を描く評伝。"
+    }
+  ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Freddie_Mercury_performing_in_New_Haven%2C_CT%2C_November_1977.jpg/280px-Freddie_Mercury_performing_in_New_Haven%2C_CT%2C_November_1977.jpg",
   "wikiTitle": "フレディ・マーキュリー",
   "birthMonth": 9,

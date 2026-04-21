@@ -33,7 +33,13 @@
   ],
   "relations": [],
   "places": [],
-  "books": [],
+  "books": [
+    {
+      "title": "エラ・フィッツジェラルド",
+      "author": "スチュアート・ニコルソン",
+      "description": "ジャズの女王の生涯。"
+    }
+  ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Ella_Fitzgerald_1968.jpg/280px-Ella_Fitzgerald_1968.jpg",
   "wikiTitle": "エラ・フィッツジェラルド",
   "birthMonth": 4,

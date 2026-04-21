@@ -33,7 +33,13 @@
   ],
   "relations": [],
   "places": [],
-  "books": [],
+  "books": [
+    {
+      "title": "ボブ・マーリィ 魂の詩",
+      "author": "クリストファー・ジョン・ファーリー",
+      "description": "レゲエの伝道師を描く評伝。"
+    }
+  ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Bob-Marley.jpg/280px-Bob-Marley.jpg",
   "wikiTitle": "ボブ・マーリー",
   "birthMonth": 2,

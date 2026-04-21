@@ -149,7 +149,13 @@
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Alexandria_%282007-05-018%29.jpg/330px-Alexandria_%282007-05-018%29.jpg"
     }
   ],
-  "books": [],
+  "books": [
+    {
+      "title": "クレオパトラ",
+      "author": "スタシー・シフ",
+      "description": "伝説を解体し、実像に迫る伝記。"
+    }
+  ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Kleopatra-VII.-Altes-Museum-Berlin1.jpg/500px-Kleopatra-VII.-Altes-Museum-Berlin1.jpg",
   "wikiTitle": "クレオパトラ",
   "imageCredit": {

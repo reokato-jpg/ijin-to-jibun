@@ -3030,16 +3030,61 @@ function renderOshi() {
   }
   const p = DATA.people.find(x => x.id === oshiId);
   if (!p) { container.innerHTML = ''; return; }
+  const seed = daySeed();
+  // 日替わり名言
+  const quotes = (p.quotes || []).filter(q => q && q.text);
+  const todayQuote = quotes.length ? quotes[seed % quotes.length] : null;
+  // 日替わりの本
+  const books = (p.books || []).filter(b => b && b.title);
+  const todayBook = books.length ? books[seed % books.length] : null;
+  let bookHtml = '';
+  if (todayBook) {
+    const q = encodeURIComponent(`${todayBook.title} ${todayBook.author || ''}`);
+    const hasAsin = todayBook.asin && /^[A-Z0-9]{10}$/i.test(todayBook.asin);
+    const amz = hasAsin
+      ? `https://www.amazon.co.jp/dp/${todayBook.asin}${AMAZON_TAG ? `?tag=${AMAZON_TAG}` : ''}`
+      : `https://www.amazon.co.jp/s?k=${q}${AMAZON_TAG ? `&tag=${AMAZON_TAG}` : ''}`;
+    const rak = rakutenSearchUrl(todayBook.title, todayBook.author);
+    const coverInner = hasAsin
+      ? `<img src="${amazonCover(todayBook.asin)}" alt="${escapeHtml(todayBook.title)}" loading="lazy" onerror="this.parentElement.classList.add('no-cover');this.remove();"><div class="oshi-book-fallback"><div class="oshi-book-fallback-orn">✦</div><div class="oshi-book-fallback-title">${escapeHtml(todayBook.title)}</div>${todayBook.author ? `<div class="oshi-book-fallback-author">${escapeHtml(todayBook.author)}</div>` : ''}</div>`
+      : `<div class="oshi-book-fallback"><div class="oshi-book-fallback-orn">✦</div><div class="oshi-book-fallback-title">${escapeHtml(todayBook.title)}</div>${todayBook.author ? `<div class="oshi-book-fallback-author">${escapeHtml(todayBook.author)}</div>` : ''}</div>`;
+    bookHtml = `
+      <div class="oshi-today-book">
+        <div class="oshi-today-book-head">📖 きょうの1冊</div>
+        <div class="oshi-today-book-card">
+          <a class="oshi-book-cover ${hasAsin ? '' : 'no-cover'}" href="${amz}" target="_blank" rel="noopener sponsored" onclick="event.stopPropagation()">${coverInner}</a>
+          <div class="oshi-book-info">
+            <div class="oshi-book-title">${escapeHtml(todayBook.title)}</div>
+            ${todayBook.author ? `<div class="oshi-book-author">${escapeHtml(todayBook.author)}</div>` : ''}
+            <div class="oshi-book-stores">
+              <a class="oshi-book-store" href="${amz}" target="_blank" rel="noopener sponsored" onclick="event.stopPropagation()">📦 Amazon</a>
+              <a class="oshi-book-store" href="${rak}" target="_blank" rel="noopener sponsored" onclick="event.stopPropagation()">🛍 楽天</a>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }
+  const quoteHtml = todayQuote ? `
+    <div class="oshi-today-quote">
+      <div class="oshi-today-quote-head">💬 きょうの一言</div>
+      <div class="oshi-today-quote-text">「${escapeHtml(todayQuote.text)}」</div>
+      ${todayQuote.source ? `<div class="oshi-today-quote-src">— ${escapeHtml(todayQuote.source)}</div>` : ''}
+    </div>` : '';
   container.innerHTML = `
-    <div class="oshi-card" data-id="${p.id}">
-      ${p.imageUrl
-        ? `<div class="oshi-image" style="background-image:url('${p.imageUrl}')"></div>`
-        : `<div class="oshi-image no-image">${p.name.charAt(0)}</div>`}
-      <div class="oshi-info">
-        <div class="oshi-label">♡ わたしの推し</div>
-        <div class="oshi-name">${p.name}</div>
-        <div class="oshi-meta">${fmtYearRange(p.birth, p.death)} ／ ${p.field}</div>
+    <div class="oshi-rich">
+      <div class="oshi-card" data-id="${p.id}">
+        ${p.imageUrl
+          ? `<div class="oshi-image" style="background-image:url('${p.imageUrl}')"></div>`
+          : `<div class="oshi-image no-image">${p.name.charAt(0)}</div>`}
+        <div class="oshi-info">
+          <div class="oshi-label">♡ わたしの推し</div>
+          <div class="oshi-name">${p.name}</div>
+          <div class="oshi-meta">${fmtYearRange(p.birth, p.death)} ／ ${p.field}</div>
+        </div>
+        <div class="oshi-goto">→</div>
       </div>
+      ${quoteHtml}
+      ${bookHtml}
     </div>
   `;
   container.querySelector('.oshi-card').addEventListener('click', () => showPerson(p.id));

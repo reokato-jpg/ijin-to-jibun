@@ -120,5 +120,17 @@
       "虚飾"
     ]
   },
-  "id": "chekhov"
+  "id": "chekhov",
+  "books": [
+    {
+      "title": "桜の園",
+      "author": "チェーホフ",
+      "description": "変わりゆく時代を生きる人々の戯曲。"
+    },
+    {
+      "title": "かもめ",
+      "author": "チェーホフ",
+      "description": "愛と芸術を巡る名作戯曲。"
+    }
+  ]
 }

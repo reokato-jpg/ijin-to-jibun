@@ -33,7 +33,13 @@
   ],
   "relations": [],
   "places": [],
-  "books": [],
+  "books": [
+    {
+      "title": "デヴィッド・ボウイ 変幻するカルト・スター",
+      "author": "マーク・スピッツ",
+      "description": "ロック史の異端児を辿る決定版。"
+    }
+  ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/David-Bowie_Chicago_2002-08-08_photoby_Adam-Bielawski-cropped.jpg/280px-David-Bowie_Chicago_2002-08-08_photoby_Adam-Bielawski-cropped.jpg",
   "wikiTitle": "デヴィッド・ボウイ",
   "birthMonth": 1,

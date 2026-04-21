@@ -33,7 +33,18 @@
   ],
   "relations": [],
   "places": [],
-  "books": [],
+  "books": [
+    {
+      "title": "ユング自伝",
+      "author": "C.G. ユング",
+      "description": "『思い出・夢・思想』。心理学者の内面世界。"
+    },
+    {
+      "title": "元型論",
+      "author": "C.G. ユング",
+      "description": "集合的無意識とアーキタイプの理論。"
+    }
+  ],
   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/CGJung.jpg/280px-CGJung.jpg",
   "wikiTitle": "カール・グスタフ・ユング",
   "birthMonth": 7,
