@@ -4291,6 +4291,8 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 }
 .book-day-person-info { flex: 1; min-width: 0; }
 .book-day-person-name { font-size: 13px; font-weight: 700; color: var(--wine); }
+.book-day-oshi-tag { display: inline-block; font-size: 10px; font-weight: 700; color: #c1527a; background: #ffe6ef; border-radius: 10px; padding: 2px 8px; margin-bottom: 3px; }
+.pr-tag { display: inline-block; font-size: 9px; font-weight: 700; color: #a87a3a; background: rgba(168,122,58,0.12); border: 1px solid rgba(168,122,58,0.3); border-radius: 3px; padding: 1px 5px; margin-left: 6px; letter-spacing: 0.04em; vertical-align: middle; }
 .book-day-person-field { font-size: 11px; color: var(--ink-3); margin-top: 2px; }
 .book-day-card {
   display: flex;

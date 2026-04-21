@@ -3193,14 +3193,21 @@ function renderHomeBooks() {
       ? `https://www.amazon.co.jp/dp/${b.asin}${AMAZON_TAG ? `?tag=${AMAZON_TAG}` : ''}`
       : `https://www.amazon.co.jp/s?k=${q}${AMAZON_TAG ? `&tag=${AMAZON_TAG}` : ''}`;
     const rakuten = rakutenSearchUrl(b.title, b.author);
+    const fallbackHtml = `
+      <div class="home-book-fallback">
+        <div class="home-book-fallback-ornament">✦</div>
+        <div class="home-book-fallback-title">${escapeHtml(b.title)}</div>
+        ${b.author ? `<div class="home-book-fallback-author">${escapeHtml(b.author)}</div>` : ''}
+      </div>`;
     const coverHtml = hasValidAsin(b)
       ? `<img src="${amazonCover(b.asin)}" alt="${escapeHtml(b.title)}" loading="lazy"
-             onerror="this.style.display='none'; this.parentElement.classList.add('no-cover');">`
-      : '';
+             onerror="this.parentElement.classList.add('no-cover'); this.remove();">${fallbackHtml}`
+      : fallbackHtml;
+    const coverClass = hasValidAsin(b) ? 'home-book-cover' : 'home-book-cover no-cover';
     return `
       <div class="home-book-card">
         <a class="home-book-cover-wrap" href="${amazon}" target="_blank" rel="noopener sponsored">
-          <div class="home-book-cover">${coverHtml || '<span class="home-book-icon">📖</span>'}</div>
+          <div class="${coverClass}">${coverHtml}</div>
           ${b.label ? `<div class="home-book-ribbon">${b.label}</div>` : ''}
         </a>
         <div class="home-book-title">${escapeHtml(b.title)}</div>
@@ -3266,7 +3273,17 @@ function renderBookOfTheDay() {
   // 日付seedで決定論的に選択（同じ日は同じ本）
   const now = new Date();
   const seed = now.getFullYear() * 10000 + (now.getMonth()+1) * 100 + now.getDate();
-  const p = withBooks[seed % withBooks.length];
+  // 推し偉人が設定されていれば、推しの本から選ぶ（♡ ラベル表示）
+  let p = null;
+  let isOshiPick = false;
+  try {
+    const oshiId = (typeof getOshi === 'function') ? getOshi() : null;
+    if (oshiId) {
+      const oshi = withBooks.find(x => x.id === oshiId);
+      if (oshi) { p = oshi; isOshiPick = true; }
+    }
+  } catch (e) {}
+  if (!p) p = withBooks[seed % withBooks.length];
   const candidates = (p.books || []).filter(b => b && b.title);
   const b = candidates[seed % candidates.length];
   if (!b) return;
@@ -3286,6 +3303,7 @@ function renderBookOfTheDay() {
     <button class="book-day-person" data-book-day-person="${p.id}">
       ${avatar}
       <div class="book-day-person-info">
+        ${isOshiPick ? '<div class="book-day-oshi-tag">♡ あなたの推しから</div>' : ''}
         <div class="book-day-person-name">${escapeHtml(p.name)}</div>
         <div class="book-day-person-field">${escapeHtml(p.field || '')}</div>
       </div>
