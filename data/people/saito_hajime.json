@@ -14,39 +14,168 @@
   "deathMonth": 9,
   "deathDay": 28,
   "events": [
-    {"year": 1844, "age": 0, "title": "江戸・御家人の子として生まれる", "detail": "幼名は山口一。明石藩の出身説もあり、出自は謎が多い。", "tags": ["origin"]},
-    {"year": 1863, "age": 19, "title": "壬生浪士組（のち新選組）に参加", "detail": "京都で近藤勇・土方歳三らと合流。三番隊組長となる。", "tags": ["turning_encounter", "friendship"]},
-    {"year": 1867, "age": 23, "title": "油小路事件・伊東甲子太郎の暗殺に関与", "detail": "御陵衛士となった伊東甲子太郎を斬る。沈黙を貫いた任務。", "tags": ["conflict", "darkness"]},
-    {"year": 1868, "age": 24, "title": "鳥羽伏見の戦い・会津戦争", "detail": "新選組が次々と倒れるなか、会津藩と共に最後まで戦った。", "tags": ["setback", "loyalty"]},
-    {"year": 1871, "age": 27, "title": "藤田五郎と改名", "detail": "会津藩士の娘・時尾と結婚。新生活を始める。", "tags": ["love", "restart"]},
-    {"year": 1874, "age": 30, "title": "警視庁に入る", "detail": "元幕臣が明治の法を守る側へ。剣の技は生き続けた。", "tags": ["restart", "identity"]},
-    {"year": 1877, "age": 33, "title": "西南戦争に従軍", "detail": "抜刀隊として薩摩軍を相手に戦う。剣士としての最後の戦い。", "tags": ["conflict"]},
-    {"year": 1891, "age": 47, "title": "警視庁退職・女学校の守衛に", "detail": "東京高等師範の守衛、のち女学校で剣道を教える穏やかな晩年。", "tags": ["retirement"]},
-    {"year": 1915, "age": 71, "title": "胃潰瘍で死去", "detail": "床の間で正座したまま息を引き取ったと伝わる。新選組の真実を語らず。", "tags": ["death"]}
+    {
+      "year": 1844,
+      "age": 0,
+      "title": "江戸・御家人の子として生まれる",
+      "detail": "幼名は山口一。明石藩の出身説もあり、出自は謎が多い。",
+      "tags": [
+        "origin"
+      ]
+    },
+    {
+      "year": 1863,
+      "age": 19,
+      "title": "壬生浪士組（のち新選組）に参加",
+      "detail": "京都で近藤勇・土方歳三らと合流。三番隊組長となる。",
+      "tags": [
+        "turning_encounter",
+        "friendship"
+      ]
+    },
+    {
+      "year": 1867,
+      "age": 23,
+      "title": "油小路事件・伊東甲子太郎の暗殺に関与",
+      "detail": "御陵衛士となった伊東甲子太郎を斬る。沈黙を貫いた任務。",
+      "tags": [
+        "conflict",
+        "darkness"
+      ]
+    },
+    {
+      "year": 1868,
+      "age": 24,
+      "title": "鳥羽伏見の戦い・会津戦争",
+      "detail": "新選組が次々と倒れるなか、会津藩と共に最後まで戦った。",
+      "tags": [
+        "setback",
+        "loyalty"
+      ]
+    },
+    {
+      "year": 1871,
+      "age": 27,
+      "title": "藤田五郎と改名",
+      "detail": "会津藩士の娘・時尾と結婚。新生活を始める。",
+      "tags": [
+        "love",
+        "restart"
+      ]
+    },
+    {
+      "year": 1874,
+      "age": 30,
+      "title": "警視庁に入る",
+      "detail": "元幕臣が明治の法を守る側へ。剣の技は生き続けた。",
+      "tags": [
+        "restart",
+        "identity"
+      ]
+    },
+    {
+      "year": 1877,
+      "age": 33,
+      "title": "西南戦争に従軍",
+      "detail": "抜刀隊として薩摩軍を相手に戦う。剣士としての最後の戦い。",
+      "tags": [
+        "conflict"
+      ]
+    },
+    {
+      "year": 1891,
+      "age": 47,
+      "title": "警視庁退職・女学校の守衛に",
+      "detail": "東京高等師範の守衛、のち女学校で剣道を教える穏やかな晩年。",
+      "tags": [
+        "retirement"
+      ]
+    },
+    {
+      "year": 1915,
+      "age": 71,
+      "title": "胃潰瘍で死去",
+      "detail": "床の間で正座したまま息を引き取ったと伝わる。新選組の真実を語らず。",
+      "tags": [
+        "death"
+      ]
+    }
   ],
   "quotes": [
-    {"text": "私は昔のことは話さない。", "source": "晩年、新選組時代を問われて"},
-    {"text": "誠の旗の下に死ぬのみ。", "source": "伝"},
-    {"text": "生きるも死ぬも、己の意志で決める。", "source": "伝"},
-    {"text": "剣は心なり。", "source": "伝"},
-    {"text": "敵を斬るのは、己を律するためである。", "source": "伝"}
+    {
+      "text": "私は昔のことは話さない。",
+      "source": "晩年、新選組時代を問われて"
+    },
+    {
+      "text": "誠の旗の下に死ぬのみ。",
+      "source": "伝"
+    },
+    {
+      "text": "生きるも死ぬも、己の意志で決める。",
+      "source": "伝"
+    },
+    {
+      "text": "剣は心なり。",
+      "source": "伝"
+    },
+    {
+      "text": "敵を斬るのは、己を律するためである。",
+      "source": "伝"
+    }
   ],
   "books": [
-    {"title": "新選組斎藤一", "author": "赤間倭子", "description": "謎多き剣士の生涯を丹念に追った評伝。"},
-    {"title": "斎藤一 新選組最強の剣客", "author": "菊地明", "description": "史料から斎藤一の実像に迫る。"},
-    {"title": "るろうに剣心 公式ガイド", "author": "和月伸宏", "description": "斎藤一をモデルにした名キャラ。ファンのための入門。"}
+    {
+      "title": "新選組斎藤一",
+      "author": "赤間倭子",
+      "description": "謎多き剣士の生涯を丹念に追った評伝。"
+    },
+    {
+      "title": "斎藤一 新選組最強の剣客",
+      "author": "菊地明",
+      "description": "史料から斎藤一の実像に迫る。"
+    },
+    {
+      "title": "るろうに剣心 公式ガイド",
+      "author": "和月伸宏",
+      "description": "斎藤一をモデルにした名キャラ。ファンのための入門。"
+    }
   ],
   "places": [],
-  "tags": ["silence", "loyalty", "identity", "conflict"],
+  "tags": [
+    "silence",
+    "loyalty",
+    "identity",
+    "conflict"
+  ],
   "traits": {
     "personality": "寡黙・冷静・任務に忠実",
     "strength": "左片手平突き「牙突」",
     "weakness": "感情を表に出さない",
-    "quirks": ["酒が強い", "過去を語らない", "身長170cm超の長身"]
+    "quirks": [
+      "酒が強い",
+      "過去を語らない",
+      "身長170cm超の長身"
+    ]
   },
   "relations": [
-    {"id": "kondo_isami", "label": "局長", "relation": "上官"},
-    {"id": "hijikata_toshizo", "label": "副長", "relation": "同志"},
-    {"id": "okita_soji", "label": "一番隊組長", "relation": "同僚"}
+    {
+      "id": "kondo_isami",
+      "label": "局長",
+      "relation": "上官"
+    },
+    {
+      "id": "hijikata_toshizo",
+      "label": "副長",
+      "relation": "同志"
+    },
+    {
+      "id": "okita_soji",
+      "label": "一番隊組長",
+      "relation": "同僚"
+    }
+  ],
+  "themes": [
+    "shinsengumi",
+    "bakumatsu"
   ]
 }

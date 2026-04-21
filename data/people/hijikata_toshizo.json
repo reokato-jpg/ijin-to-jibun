@@ -288,5 +288,9 @@
       "name": "坂本龍馬",
       "relation": "敵対した志士"
     }
+  ],
+  "themes": [
+    "shinsengumi",
+    "bakumatsu"
   ]
 }

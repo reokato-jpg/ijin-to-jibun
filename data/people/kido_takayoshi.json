@@ -14,39 +14,167 @@
   "deathMonth": 5,
   "deathDay": 26,
   "events": [
-    {"year": 1833, "age": 0, "title": "長州萩に生まれる", "detail": "藩医の家に生まれ、桂家へ養子。", "tags": ["origin"]},
-    {"year": 1852, "age": 19, "title": "江戸の斎藤弥九郎道場で塾頭に", "detail": "神道無念流を極め、天才剣士と呼ばれる。", "tags": ["training"]},
-    {"year": 1858, "age": 25, "title": "吉田松陰の刑死を見送る", "detail": "松陰の言葉が生涯の道しるべとなる。", "tags": ["loss", "awakening"]},
-    {"year": 1864, "age": 31, "title": "池田屋事件・新選組の襲撃を逃れる", "detail": "会合に遅刻したため難を逃れる。但馬に潜伏。", "tags": ["survival"]},
-    {"year": 1865, "age": 32, "title": "幾松と出会い支え合う", "detail": "京都三条の芸者・幾松に命を救われ、後に妻となる。", "tags": ["love", "survival"]},
-    {"year": 1866, "age": 33, "title": "薩長同盟を締結", "detail": "坂本龍馬の仲介で西郷と会い、幕末最大の政治的結実を生む。", "tags": ["turning_encounter", "create"]},
-    {"year": 1868, "age": 35, "title": "五箇条の御誓文を起草", "detail": "明治国家の理念文書。由利公正の草案を木戸が推敲。", "tags": ["create"]},
-    {"year": 1871, "age": 38, "title": "岩倉使節団で欧米を視察", "detail": "1年10ヶ月の欧米見聞は日本近代化の指針となった。", "tags": ["adventure"]},
-    {"year": 1877, "age": 43, "title": "西南戦争のさなか京都で病死", "detail": "『西郷、もう大抵にせんか』が最後の言葉と伝わる。", "tags": ["death"]}
+    {
+      "year": 1833,
+      "age": 0,
+      "title": "長州萩に生まれる",
+      "detail": "藩医の家に生まれ、桂家へ養子。",
+      "tags": [
+        "origin"
+      ]
+    },
+    {
+      "year": 1852,
+      "age": 19,
+      "title": "江戸の斎藤弥九郎道場で塾頭に",
+      "detail": "神道無念流を極め、天才剣士と呼ばれる。",
+      "tags": [
+        "training"
+      ]
+    },
+    {
+      "year": 1858,
+      "age": 25,
+      "title": "吉田松陰の刑死を見送る",
+      "detail": "松陰の言葉が生涯の道しるべとなる。",
+      "tags": [
+        "loss",
+        "awakening"
+      ]
+    },
+    {
+      "year": 1864,
+      "age": 31,
+      "title": "池田屋事件・新選組の襲撃を逃れる",
+      "detail": "会合に遅刻したため難を逃れる。但馬に潜伏。",
+      "tags": [
+        "survival"
+      ]
+    },
+    {
+      "year": 1865,
+      "age": 32,
+      "title": "幾松と出会い支え合う",
+      "detail": "京都三条の芸者・幾松に命を救われ、後に妻となる。",
+      "tags": [
+        "love",
+        "survival"
+      ]
+    },
+    {
+      "year": 1866,
+      "age": 33,
+      "title": "薩長同盟を締結",
+      "detail": "坂本龍馬の仲介で西郷と会い、幕末最大の政治的結実を生む。",
+      "tags": [
+        "turning_encounter",
+        "create"
+      ]
+    },
+    {
+      "year": 1868,
+      "age": 35,
+      "title": "五箇条の御誓文を起草",
+      "detail": "明治国家の理念文書。由利公正の草案を木戸が推敲。",
+      "tags": [
+        "create"
+      ]
+    },
+    {
+      "year": 1871,
+      "age": 38,
+      "title": "岩倉使節団で欧米を視察",
+      "detail": "1年10ヶ月の欧米見聞は日本近代化の指針となった。",
+      "tags": [
+        "adventure"
+      ]
+    },
+    {
+      "year": 1877,
+      "age": 43,
+      "title": "西南戦争のさなか京都で病死",
+      "detail": "『西郷、もう大抵にせんか』が最後の言葉と伝わる。",
+      "tags": [
+        "death"
+      ]
+    }
   ],
   "quotes": [
-    {"text": "西郷、もう大抵にせんか。", "source": "臨終の言葉（西南戦争を憂いて）"},
-    {"text": "負けて勝つ、退いて勝つ。", "source": "『逃げの小五郎』の真髄"},
-    {"text": "大義親を滅す。", "source": "伝"},
-    {"text": "命を惜しむは武士の恥ならず、大義のために惜しむなり。", "source": "伝"},
-    {"text": "国の強さは民の幸せに宿る。", "source": "伝"}
+    {
+      "text": "西郷、もう大抵にせんか。",
+      "source": "臨終の言葉（西南戦争を憂いて）"
+    },
+    {
+      "text": "負けて勝つ、退いて勝つ。",
+      "source": "『逃げの小五郎』の真髄"
+    },
+    {
+      "text": "大義親を滅す。",
+      "source": "伝"
+    },
+    {
+      "text": "命を惜しむは武士の恥ならず、大義のために惜しむなり。",
+      "source": "伝"
+    },
+    {
+      "text": "国の強さは民の幸せに宿る。",
+      "source": "伝"
+    }
   ],
   "books": [
-    {"title": "世に棲む日日", "author": "司馬遼太郎", "asin": "4167105780", "description": "吉田松陰と高杉晋作、そして桂小五郎の青春（文春文庫）。"},
-    {"title": "花神", "author": "司馬遼太郎", "description": "大村益次郎を通して幕末長州藩を描く。"},
-    {"title": "木戸孝允", "author": "松尾正人", "description": "学術的な評伝の決定版。"}
+    {
+      "title": "世に棲む日日",
+      "author": "司馬遼太郎",
+      "asin": "4167105780",
+      "description": "吉田松陰と高杉晋作、そして桂小五郎の青春（文春文庫）。"
+    },
+    {
+      "title": "花神",
+      "author": "司馬遼太郎",
+      "description": "大村益次郎を通して幕末長州藩を描く。"
+    },
+    {
+      "title": "木戸孝允",
+      "author": "松尾正人",
+      "description": "学術的な評伝の決定版。"
+    }
   ],
   "places": [],
-  "tags": ["survival", "strategy", "love", "turning_encounter"],
+  "tags": [
+    "survival",
+    "strategy",
+    "love",
+    "turning_encounter"
+  ],
   "traits": {
     "personality": "慎重・知略家・ロマンチスト",
     "strength": "剣術、交渉力、文章力",
     "weakness": "神経質で胃が弱かった",
-    "quirks": ["芸者の幾松に命を救われた", "『逃げの小五郎』の異名", "若い頃から日記魔"]
+    "quirks": [
+      "芸者の幾松に命を救われた",
+      "『逃げの小五郎』の異名",
+      "若い頃から日記魔"
+    ]
   },
   "relations": [
-    {"id": "takasugi_shinsaku", "label": "同志", "relation": "長州藩"},
-    {"id": "sakamoto_ryoma", "label": "薩長同盟の仲介者", "relation": "恩人"},
-    {"id": "saigo_takamori", "label": "同盟の相手、のち敵", "relation": "維新三傑"}
+    {
+      "id": "takasugi_shinsaku",
+      "label": "同志",
+      "relation": "長州藩"
+    },
+    {
+      "id": "sakamoto_ryoma",
+      "label": "薩長同盟の仲介者",
+      "relation": "恩人"
+    },
+    {
+      "id": "saigo_takamori",
+      "label": "同盟の相手、のち敵",
+      "relation": "維新三傑"
+    }
+  ],
+  "themes": [
+    "bakumatsu",
+    "ishin_sanketsu"
   ]
 }

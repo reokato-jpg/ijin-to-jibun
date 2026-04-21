@@ -14,40 +14,175 @@
   "deathMonth": 6,
   "deathDay": 3,
   "events": [
-    {"year": 1567, "age": 0, "title": "信濃・真田家に生まれる", "detail": "父は智将・真田昌幸。兄は真田信之。", "tags": ["origin"]},
-    {"year": 1585, "age": 18, "title": "第一次上田合戦に参加", "detail": "父と共に徳川軍を翻弄。真田の名が轟く。", "tags": ["battle"]},
-    {"year": 1600, "age": 33, "title": "関ヶ原で西軍につく", "detail": "父と共に上田城で徳川秀忠軍を足止め。", "tags": ["conflict", "loyalty"]},
-    {"year": 1600, "age": 33, "title": "九度山へ配流", "detail": "西軍敗北後、高野山麓の九度山に蟄居。14年の雌伏の時代。", "tags": ["blank_period", "setback"]},
-    {"year": 1611, "age": 44, "title": "父・昌幸の死", "detail": "貧困と失意の中で父を見送る。", "tags": ["loss"]},
-    {"year": 1614, "age": 47, "title": "大坂の陣・豊臣方として入城", "detail": "徳川の誘いを蹴り、豊臣家のために立つ。信義を選ぶ。", "tags": ["restart", "courage", "loyalty"]},
-    {"year": 1614, "age": 47, "title": "真田丸を築き徳川軍を撃退", "detail": "大坂城の弱点に出城を築造。冬の陣最大の戦術的成功。", "tags": ["create", "victory"]},
-    {"year": 1615, "age": 48, "title": "大坂夏の陣・家康本陣に突撃", "detail": "3千の兵で家康本陣を目前まで追い詰め、戦国武将最後の華。", "tags": ["courage", "legend"]},
-    {"year": 1615, "age": 48, "title": "茶臼山で討死", "detail": "島津家久に『真田日本一の兵、古よりの物語にもこれなき』と讃えられた。", "tags": ["death", "honor"]}
+    {
+      "year": 1567,
+      "age": 0,
+      "title": "信濃・真田家に生まれる",
+      "detail": "父は智将・真田昌幸。兄は真田信之。",
+      "tags": [
+        "origin"
+      ]
+    },
+    {
+      "year": 1585,
+      "age": 18,
+      "title": "第一次上田合戦に参加",
+      "detail": "父と共に徳川軍を翻弄。真田の名が轟く。",
+      "tags": [
+        "battle"
+      ]
+    },
+    {
+      "year": 1600,
+      "age": 33,
+      "title": "関ヶ原で西軍につく",
+      "detail": "父と共に上田城で徳川秀忠軍を足止め。",
+      "tags": [
+        "conflict",
+        "loyalty"
+      ]
+    },
+    {
+      "year": 1600,
+      "age": 33,
+      "title": "九度山へ配流",
+      "detail": "西軍敗北後、高野山麓の九度山に蟄居。14年の雌伏の時代。",
+      "tags": [
+        "blank_period",
+        "setback"
+      ]
+    },
+    {
+      "year": 1611,
+      "age": 44,
+      "title": "父・昌幸の死",
+      "detail": "貧困と失意の中で父を見送る。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1614,
+      "age": 47,
+      "title": "大坂の陣・豊臣方として入城",
+      "detail": "徳川の誘いを蹴り、豊臣家のために立つ。信義を選ぶ。",
+      "tags": [
+        "restart",
+        "courage",
+        "loyalty"
+      ]
+    },
+    {
+      "year": 1614,
+      "age": 47,
+      "title": "真田丸を築き徳川軍を撃退",
+      "detail": "大坂城の弱点に出城を築造。冬の陣最大の戦術的成功。",
+      "tags": [
+        "create",
+        "victory"
+      ]
+    },
+    {
+      "year": 1615,
+      "age": 48,
+      "title": "大坂夏の陣・家康本陣に突撃",
+      "detail": "3千の兵で家康本陣を目前まで追い詰め、戦国武将最後の華。",
+      "tags": [
+        "courage",
+        "legend"
+      ]
+    },
+    {
+      "year": 1615,
+      "age": 48,
+      "title": "茶臼山で討死",
+      "detail": "島津家久に『真田日本一の兵、古よりの物語にもこれなき』と讃えられた。",
+      "tags": [
+        "death",
+        "honor"
+      ]
+    }
   ],
   "quotes": [
-    {"text": "関東勢百万と候え、男は一人もなく候。", "source": "大坂夏の陣、徳川勢を評して"},
-    {"text": "我が志は、家康の首一つにあり。", "source": "伝"},
-    {"text": "武士の本懐、家の名誉、今こそ立つ時。", "source": "大坂城入城時"},
-    {"text": "敵に後ろを見せるは武士にあらず。", "source": "伝"},
-    {"text": "十四年の雌伏、今ここに華と咲く。", "source": "大坂入城にあたって（伝）"},
-    {"text": "もう戦は飽きた、しかし義は捨てぬ。", "source": "伝"}
+    {
+      "text": "関東勢百万と候え、男は一人もなく候。",
+      "source": "大坂夏の陣、徳川勢を評して"
+    },
+    {
+      "text": "我が志は、家康の首一つにあり。",
+      "source": "伝"
+    },
+    {
+      "text": "武士の本懐、家の名誉、今こそ立つ時。",
+      "source": "大坂城入城時"
+    },
+    {
+      "text": "敵に後ろを見せるは武士にあらず。",
+      "source": "伝"
+    },
+    {
+      "text": "十四年の雌伏、今ここに華と咲く。",
+      "source": "大坂入城にあたって（伝）"
+    },
+    {
+      "text": "もう戦は飽きた、しかし義は捨てぬ。",
+      "source": "伝"
+    }
   ],
   "books": [
-    {"title": "真田太平記", "author": "池波正太郎", "asin": "4101156794", "description": "真田一族を描く歴史小説の最高峰（新潮文庫・全12巻）。"},
-    {"title": "真田丸", "author": "三谷幸喜", "description": "NHK大河ドラマの原作。幸村像を再構築した名作。"},
-    {"title": "真田幸村 英雄の実像", "author": "平山優", "description": "史料に基づく幸村の実像に迫る。"}
+    {
+      "title": "真田太平記",
+      "author": "池波正太郎",
+      "asin": "4101156794",
+      "description": "真田一族を描く歴史小説の最高峰（新潮文庫・全12巻）。"
+    },
+    {
+      "title": "真田丸",
+      "author": "三谷幸喜",
+      "description": "NHK大河ドラマの原作。幸村像を再構築した名作。"
+    },
+    {
+      "title": "真田幸村 英雄の実像",
+      "author": "平山優",
+      "description": "史料に基づく幸村の実像に迫る。"
+    }
   ],
   "places": [],
-  "tags": ["loyalty", "courage", "blank_period", "restart", "legend"],
+  "tags": [
+    "loyalty",
+    "courage",
+    "blank_period",
+    "restart",
+    "legend"
+  ],
   "traits": {
     "personality": "寡黙・忠義・戦略的",
     "strength": "戦術眼、忍耐、決断力",
     "weakness": "14年の蟄居による経済的困窮",
-    "quirks": ["赤備え（真紅の甲冑）", "六文銭の家紋", "兄と袂を分かちながらも憎まず"]
+    "quirks": [
+      "赤備え（真紅の甲冑）",
+      "六文銭の家紋",
+      "兄と袂を分かちながらも憎まず"
+    ]
   },
   "relations": [
-    {"id": "tokugawa_ieyasu", "label": "最大の敵", "relation": "宿敵"},
-    {"id": "oda_nobunaga", "label": "前時代の覇者", "relation": "歴史上"},
-    {"id": "date_masamune", "label": "同時代武将", "relation": "戦国"}
+    {
+      "id": "tokugawa_ieyasu",
+      "label": "最大の敵",
+      "relation": "宿敵"
+    },
+    {
+      "id": "oda_nobunaga",
+      "label": "前時代の覇者",
+      "relation": "歴史上"
+    },
+    {
+      "id": "date_masamune",
+      "label": "同時代武将",
+      "relation": "戦国"
+    }
+  ],
+  "themes": [
+    "sengoku"
   ]
 }

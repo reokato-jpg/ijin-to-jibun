@@ -3774,6 +3774,28 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 .home-book-store:hover { opacity: 0.85; }
 .home-book-store.home-book-amazon { background: #fff; color: var(--wine); border-color: var(--wine); }
 .home-book-store.home-book-rakuten { background: #bf0000; color: #fff; }
+
+/* 🎎 テーマタイル（歴女入口） */
+.theme-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.theme-tile { display: flex; gap: 10px; padding: 12px; background: linear-gradient(135deg, #fff 0%, #fff5eb 100%); border: 1.5px solid var(--wine); border-radius: 8px; cursor: pointer; text-align: left; transition: transform 0.15s, box-shadow 0.15s; box-shadow: 0 2px 5px rgba(122,46,58,0.1); }
+.theme-tile:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(122,46,58,0.2); }
+.theme-tile-emoji { font-size: 28px; flex-shrink: 0; align-self: center; }
+.theme-tile-info { flex: 1; min-width: 0; }
+.theme-tile-name { font-family: var(--font-jp); font-weight: 800; font-size: 14px; color: var(--wine); letter-spacing: 0.05em; }
+.theme-tile-tag { font-size: 10px; color: var(--ink-3); margin-top: 2px; line-height: 1.4; font-family: var(--font-jp); }
+.theme-tile-count { font-size: 10px; color: var(--gold); margin-top: 4px; font-weight: 700; font-family: var(--font-en); letter-spacing: 0.05em; }
+
+/* テーマまとめページ本体 */
+.theme-page-modal .era-page-hero-bg { background: linear-gradient(135deg, #8c1d2f 0%, #c17a5a 100%); opacity: 0.85; }
+.theme-people-grid { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+.theme-person-card { display: flex; gap: 12px; align-items: center; padding: 12px; background: #fff; border: 1px solid rgba(122,46,58,0.2); border-radius: 6px; cursor: pointer; text-align: left; transition: all 0.15s; width: 100%; }
+.theme-person-card:hover { background: #fff5f0; border-color: var(--wine); transform: translateX(3px); }
+.theme-person-av { width: 56px; height: 56px; border-radius: 50%; background-size: cover; background-position: center top; background-color: #d9cdb4; border: 2px solid var(--gold); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-family: var(--font-jp); font-size: 22px; color: var(--wine); font-weight: 700; }
+.theme-person-info { flex: 1; min-width: 0; }
+.theme-person-name { font-family: var(--font-jp); font-weight: 700; font-size: 14px; color: var(--ink); }
+.theme-person-meta { font-size: 10px; color: var(--ink-3); margin-top: 2px; font-family: var(--font-en); font-style: italic; }
+.theme-person-quote { font-size: 11px; color: var(--ink-2); margin-top: 5px; font-family: var(--font-jp); line-height: 1.4; font-style: italic; }
+.theme-person-go { font-size: 18px; color: var(--wine); font-weight: 700; flex-shrink: 0; }
 .home-book-cover-wrap {
   position: relative;
   width: 100%;

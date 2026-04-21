@@ -10421,6 +10421,163 @@ function renderHistoryTimeline() {
     });
   });
 }
+
+// ====================== 🎎 歴女向けテーマまとめページ ======================
+const THEME_DEFS = {
+  shinsengumi: {
+    emoji: '⚔️',
+    name: '新選組',
+    tagline: '誠の一字に、すべてを懸けた。',
+    intro: '幕末の京を駆けた剣客集団。局長・近藤勇、副長・土方歳三、一番隊・沖田総司、三番隊・斎藤一——彼らは時代に逆らい、それぞれの最期まで誠を貫いた。',
+    order: ['kondo_isami','hijikata_toshizo','okita_soji','saito_hajime']
+  },
+  bakumatsu: {
+    emoji: '🏯',
+    name: '幕末',
+    tagline: '時代が裂け、志士たちが駆けた14年。',
+    intro: '黒船来航から明治維新まで、日本が震えた動乱の時代。新選組、志士たち、海を渡った男たち——それぞれの正義が交差した。',
+    order: ['sakamoto_ryoma','saigo_takamori','katsu_kaishu','takasugi_shinsaku','kido_takayoshi','kondo_isami','hijikata_toshizo','okita_soji','saito_hajime']
+  },
+  sengoku: {
+    emoji: '🏹',
+    name: '戦国武将',
+    tagline: '乱世を生き抜いた、男たちの生き様。',
+    intro: '戦国時代——武力と知略、忠義と裏切りが渦巻いた時代。天下人、智将、赤備えの英雄——それぞれの生き様が、いまも胸を打つ。',
+    order: ['oda_nobunaga','takeda_shingen','date_masamune','sanada_yukimura']
+  },
+  ishin_sanketsu: {
+    emoji: '🌸',
+    name: '維新三傑',
+    tagline: '明治を創り、時代に引き裂かれた三人。',
+    intro: '西郷隆盛・大久保利通・木戸孝允。倒幕の同志として手を取り合い、新政府を築き、そして袂を分かった。',
+    order: ['saigo_takamori','kido_takayoshi']
+  }
+};
+
+function showThemePage(themeId) {
+  const def = THEME_DEFS[themeId];
+  if (!def) return;
+  const people = (DATA.people || []).filter(p => (p.themes || []).includes(themeId));
+  if (!people.length) return;
+  // 順序指定があれば優先
+  const orderIdx = (p) => {
+    const idx = (def.order || []).indexOf(p.id);
+    return idx === -1 ? 999 : idx;
+  };
+  people.sort((a,b) => {
+    const ai = orderIdx(a), bi = orderIdx(b);
+    if (ai !== bi) return ai - bi;
+    return (a.birth || 9999) - (b.birth || 9999);
+  });
+  // URL更新
+  try {
+    const url = new URL(location.href);
+    url.searchParams.set('theme', themeId);
+    ['person','era','cat','tag','view'].forEach(k => url.searchParams.delete(k));
+    history.pushState({ theme: themeId }, '', url.toString());
+  } catch {}
+
+  const existing = document.getElementById('themePageModal');
+  if (existing) existing.remove();
+  const modal = document.createElement('div');
+  modal.id = 'themePageModal';
+  modal.className = 'era-page-modal theme-page-modal';
+  modal.innerHTML = `
+    <div class="era-page-backdrop" data-close="1"></div>
+    <article class="era-page">
+      <button class="era-page-close" data-close="1" aria-label="閉じる">×</button>
+      <button class="era-page-share" data-theme-share="${themeId}" aria-label="このページをシェア" title="シェア">🔗</button>
+      <header class="era-page-hero">
+        <div class="era-page-hero-bg" aria-hidden="true"></div>
+        <div class="era-page-hero-inner">
+          <div class="era-page-cat"><span style="font-size:18px">${def.emoji}</span> <span>歴女まとめ</span></div>
+          <h1 class="era-page-title">
+            <span style="font-size:24px">${def.emoji}</span>
+            <span>#${escapeHtml(def.name)}</span>
+          </h1>
+          <div class="era-page-tagline">${escapeHtml(def.tagline)}</div>
+        </div>
+      </header>
+      <section class="era-page-section era-page-intro">
+        <p>${escapeHtml(def.intro)}</p>
+      </section>
+      <section class="era-page-section">
+        <h2 class="era-page-h2">${escapeHtml(def.name)}の偉人たち（${people.length}名）</h2>
+        <div class="theme-people-grid">
+          ${people.map(p => {
+            const bg = p.imageUrl ? `style="background-image:url('${p.imageUrl}')"` : '';
+            const mainQuote = (p.quotes && p.quotes[0]?.text) || '';
+            return `
+              <button class="theme-person-card" data-jump-person="${p.id}">
+                <div class="theme-person-av" ${bg}>${p.imageUrl ? '' : (p.name?.charAt(0) || '?')}</div>
+                <div class="theme-person-info">
+                  <div class="theme-person-name">${escapeHtml(p.name)}</div>
+                  <div class="theme-person-meta">${fmtYearRange(p.birth, p.death)} / ${escapeHtml(p.field || '')}</div>
+                  ${mainQuote ? `<div class="theme-person-quote">「${escapeHtml(mainQuote.slice(0, 40))}${mainQuote.length > 40 ? '…' : ''}」</div>` : ''}
+                </div>
+                <div class="theme-person-go">→</div>
+              </button>`;
+          }).join('')}
+        </div>
+      </section>
+    </article>
+  `;
+  document.body.appendChild(modal);
+  document.body.classList.add('modal-open');
+  modal.querySelectorAll('[data-close="1"]').forEach(el => {
+    el.addEventListener('click', () => closeThemePage());
+  });
+  modal.querySelectorAll('[data-jump-person]').forEach(el => {
+    el.addEventListener('click', () => {
+      const pid = el.dataset.jumpPerson;
+      closeThemePage();
+      if (pid) setTimeout(() => showPerson(pid), 100);
+    });
+  });
+  modal.querySelector('[data-theme-share]')?.addEventListener('click', async () => {
+    const shareUrl = `${location.origin}${location.pathname}?theme=${themeId}`;
+    const shareText = `${def.emoji} #${def.name} まとめ — 偉人と自分。`;
+    try {
+      if (navigator.share) await navigator.share({ title: shareText, url: shareUrl });
+      else { await navigator.clipboard.writeText(shareUrl); alert('URLをコピーしました'); }
+    } catch {}
+  });
+}
+function closeThemePage() {
+  const m = document.getElementById('themePageModal');
+  if (m) m.remove();
+  document.body.classList.remove('modal-open');
+  // URL戻す
+  try {
+    const url = new URL(location.href);
+    url.searchParams.delete('theme');
+    history.pushState({}, '', url.toString());
+  } catch {}
+}
+window.showThemePage = showThemePage;
+
+// ホームに「歴女の入り口」セクション描画
+function renderThemeTiles() {
+  const container = document.getElementById('themeTiles');
+  if (!container) return;
+  container.innerHTML = Object.entries(THEME_DEFS).map(([id, def]) => {
+    const count = (DATA.people || []).filter(p => (p.themes || []).includes(id)).length;
+    if (!count) return '';
+    return `
+      <button class="theme-tile" data-theme-open="${id}">
+        <div class="theme-tile-emoji">${def.emoji}</div>
+        <div class="theme-tile-info">
+          <div class="theme-tile-name">#${escapeHtml(def.name)}</div>
+          <div class="theme-tile-tag">${escapeHtml(def.tagline)}</div>
+          <div class="theme-tile-count">${count}名の偉人</div>
+        </div>
+      </button>`;
+  }).join('');
+  container.querySelectorAll('[data-theme-open]').forEach(b => {
+    b.addEventListener('click', () => showThemePage(b.dataset.themeOpen));
+  });
+}
+window.renderThemeTiles = renderThemeTiles;
 function openEraModal(catId, eraId) {
   // era-lore が未読込なら先に読み込む
   if (typeof window.ERA_LORE === 'undefined') {
@@ -13288,6 +13445,7 @@ window.renderBookshelfGuides = renderBookshelfGuides;
   renderQuoteOfTheDay();
   renderQuoteCarousel();
   renderFeaturedTags();
+  renderThemeTiles();
   renderHomeBooks();
   renderArticles();
   renderCategoryFilter();
@@ -13360,6 +13518,12 @@ window.renderBookshelfGuides = renderBookshelfGuides;
     } else if (tagId) {
       setTimeout(() => {
         try { if (typeof showTag === 'function') showTag(tagId); } catch {}
+      }, 200);
+    }
+    const themeId = qp.get('theme');
+    if (themeId) {
+      setTimeout(() => {
+        try { if (typeof showThemePage === 'function') showThemePage(themeId); } catch {}
       }, 200);
     }
   } catch (e) { console.warn('deeplink', e); }

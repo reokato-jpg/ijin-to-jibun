@@ -14,38 +14,157 @@
   "deathMonth": 5,
   "deathDay": 17,
   "events": [
-    {"year": 1839, "age": 0, "title": "長州萩に生まれる", "detail": "萩藩の上士の家に生まれる。幼少から聡明。", "tags": ["origin"]},
-    {"year": 1857, "age": 18, "title": "松下村塾に入門", "detail": "吉田松陰と出会う。生涯の師となる。", "tags": ["turning_encounter", "mentor"]},
-    {"year": 1862, "age": 23, "title": "上海渡航", "detail": "アヘン戦争後の中国を見て衝撃。『日本もこうなる』と危機感を抱く。", "tags": ["awakening"]},
-    {"year": 1863, "age": 24, "title": "奇兵隊を創設", "detail": "身分を問わず志ある者を集めた革命軍。日本初の近代的軍隊。", "tags": ["create", "innovation"]},
-    {"year": 1864, "age": 25, "title": "功山寺挙兵", "detail": "わずか80人で長州俗論派に反旗を翻し、藩論を転換させる。", "tags": ["rebellion", "courage"]},
-    {"year": 1866, "age": 27, "title": "第二次長州征伐で幕府軍を撃破", "detail": "四境戦争。近代化された長州軍が幕府の権威を決定的に揺るがす。", "tags": ["victory"]},
-    {"year": 1867, "age": 28, "title": "肺結核で病床に", "detail": "愛人のおうのに看取られながら闘病。", "tags": ["illness"]},
-    {"year": 1867, "age": 29, "title": "死去。明治維新を見ずに逝く", "detail": "辞世『おもしろきこともなき世をおもしろく すみなすものは心なりけり』", "tags": ["death"]}
+    {
+      "year": 1839,
+      "age": 0,
+      "title": "長州萩に生まれる",
+      "detail": "萩藩の上士の家に生まれる。幼少から聡明。",
+      "tags": [
+        "origin"
+      ]
+    },
+    {
+      "year": 1857,
+      "age": 18,
+      "title": "松下村塾に入門",
+      "detail": "吉田松陰と出会う。生涯の師となる。",
+      "tags": [
+        "turning_encounter",
+        "mentor"
+      ]
+    },
+    {
+      "year": 1862,
+      "age": 23,
+      "title": "上海渡航",
+      "detail": "アヘン戦争後の中国を見て衝撃。『日本もこうなる』と危機感を抱く。",
+      "tags": [
+        "awakening"
+      ]
+    },
+    {
+      "year": 1863,
+      "age": 24,
+      "title": "奇兵隊を創設",
+      "detail": "身分を問わず志ある者を集めた革命軍。日本初の近代的軍隊。",
+      "tags": [
+        "create",
+        "innovation"
+      ]
+    },
+    {
+      "year": 1864,
+      "age": 25,
+      "title": "功山寺挙兵",
+      "detail": "わずか80人で長州俗論派に反旗を翻し、藩論を転換させる。",
+      "tags": [
+        "rebellion",
+        "courage"
+      ]
+    },
+    {
+      "year": 1866,
+      "age": 27,
+      "title": "第二次長州征伐で幕府軍を撃破",
+      "detail": "四境戦争。近代化された長州軍が幕府の権威を決定的に揺るがす。",
+      "tags": [
+        "victory"
+      ]
+    },
+    {
+      "year": 1867,
+      "age": 28,
+      "title": "肺結核で病床に",
+      "detail": "愛人のおうのに看取られながら闘病。",
+      "tags": [
+        "illness"
+      ]
+    },
+    {
+      "year": 1867,
+      "age": 29,
+      "title": "死去。明治維新を見ずに逝く",
+      "detail": "辞世『おもしろきこともなき世をおもしろく すみなすものは心なりけり』",
+      "tags": [
+        "death"
+      ]
+    }
   ],
   "quotes": [
-    {"text": "おもしろきこともなき世をおもしろく", "source": "辞世の上の句"},
-    {"text": "すみなすものは心なりけり", "source": "辞世の下の句（野村望東尼の補作）"},
-    {"text": "三千世界の鴉を殺し、主と朝寝がしてみたい", "source": "都々逸"},
-    {"text": "動けば雷電の如く、発すれば風雨の如し。", "source": "自己評"},
-    {"text": "死して不朽の見込みあらばいつでも死ぬべし、生きて大業の見込みあらばいつでも生くべし。", "source": "吉田松陰からの言葉を座右の銘に"}
+    {
+      "text": "おもしろきこともなき世をおもしろく",
+      "source": "辞世の上の句"
+    },
+    {
+      "text": "すみなすものは心なりけり",
+      "source": "辞世の下の句（野村望東尼の補作）"
+    },
+    {
+      "text": "三千世界の鴉を殺し、主と朝寝がしてみたい",
+      "source": "都々逸"
+    },
+    {
+      "text": "動けば雷電の如く、発すれば風雨の如し。",
+      "source": "自己評"
+    },
+    {
+      "text": "死して不朽の見込みあらばいつでも死ぬべし、生きて大業の見込みあらばいつでも生くべし。",
+      "source": "吉田松陰からの言葉を座右の銘に"
+    }
   ],
   "books": [
-    {"title": "世に棲む日日", "author": "司馬遼太郎", "asin": "4167105780", "description": "吉田松陰と高杉晋作を描く司馬遼太郎の代表作。"},
-    {"title": "高杉晋作 情熱と挑戦の生涯", "author": "一坂太郎", "description": "史料に基づいた決定版の評伝。"},
-    {"title": "高杉晋作の手紙", "author": "一坂太郎編", "description": "本人の肉声が残る手紙集。"}
+    {
+      "title": "世に棲む日日",
+      "author": "司馬遼太郎",
+      "asin": "4167105780",
+      "description": "吉田松陰と高杉晋作を描く司馬遼太郎の代表作。"
+    },
+    {
+      "title": "高杉晋作 情熱と挑戦の生涯",
+      "author": "一坂太郎",
+      "description": "史料に基づいた決定版の評伝。"
+    },
+    {
+      "title": "高杉晋作の手紙",
+      "author": "一坂太郎編",
+      "description": "本人の肉声が残る手紙集。"
+    }
   ],
   "places": [],
-  "tags": ["passion", "courage", "short_life", "rebellion"],
+  "tags": [
+    "passion",
+    "courage",
+    "short_life",
+    "rebellion"
+  ],
   "traits": {
     "personality": "奔放・行動派・詩人肌",
     "strength": "時代を読む感覚、人を動かす情熱",
     "weakness": "体が弱い、衝動的",
-    "quirks": ["三味線を弾く", "酒と女を愛した", "都々逸の名手"]
+    "quirks": [
+      "三味線を弾く",
+      "酒と女を愛した",
+      "都々逸の名手"
+    ]
   },
   "relations": [
-    {"id": "yoshida_shoin", "label": "師", "relation": "松下村塾"},
-    {"id": "kido_takayoshi", "label": "同志", "relation": "長州藩"},
-    {"id": "sakamoto_ryoma", "label": "同時代の志士", "relation": "薩長同盟"}
+    {
+      "id": "yoshida_shoin",
+      "label": "師",
+      "relation": "松下村塾"
+    },
+    {
+      "id": "kido_takayoshi",
+      "label": "同志",
+      "relation": "長州藩"
+    },
+    {
+      "id": "sakamoto_ryoma",
+      "label": "同時代の志士",
+      "relation": "薩長同盟"
+    }
+  ],
+  "themes": [
+    "bakumatsu"
   ]
 }
