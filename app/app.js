@@ -3240,6 +3240,60 @@ function renderTodayEcho() {
 }
 
 // ====================== 歴史の鏡（時代を超えた偉人ペア） ======================
+// 📚 今日の一冊 — 日替わりで1冊を紹介（日付seedで決定論的）
+function renderBookOfTheDay() {
+  const block = document.getElementById('bookOfDayBlock');
+  const mount = document.getElementById('bookOfDayContent');
+  if (!block || !mount || !DATA.people) return;
+  // 本を持っている偉人一覧
+  const withBooks = DATA.people.filter(p => Array.isArray(p.books) && p.books.some(b => b && b.title));
+  if (withBooks.length === 0) return;
+  // 日付seedで決定論的に選択（同じ日は同じ本）
+  const now = new Date();
+  const seed = now.getFullYear() * 10000 + (now.getMonth()+1) * 100 + now.getDate();
+  const p = withBooks[seed % withBooks.length];
+  const candidates = (p.books || []).filter(b => b && b.title);
+  const b = candidates[seed % candidates.length];
+  if (!b) return;
+  const amazonQuery = encodeURIComponent(`${b.title} ${b.author || ''}`);
+  const amazonUrl = b.asin
+    ? `https://www.amazon.co.jp/dp/${b.asin}${AMAZON_TAG ? `?tag=${AMAZON_TAG}` : ''}`
+    : `https://www.amazon.co.jp/s?k=${amazonQuery}${AMAZON_TAG ? `&tag=${AMAZON_TAG}` : ''}`;
+  const rakutenUrl = rakutenSearchUrl(b.title, b.author);
+  const cover = b.asin
+    ? `https://images-fe.ssl-images-amazon.com/images/P/${b.asin}.09.LZZZZZZZ.jpg`
+    : '';
+  const avatar = p.imageUrl
+    ? `<div class="book-day-person-av" style="background-image:url('${p.imageUrl}')"></div>`
+    : `<div class="book-day-person-av no-img">${(p.name || '?').charAt(0)}</div>`;
+  block.style.display = '';
+  mount.innerHTML = `
+    <button class="book-day-person" data-book-day-person="${p.id}">
+      ${avatar}
+      <div class="book-day-person-info">
+        <div class="book-day-person-name">${escapeHtml(p.name)}</div>
+        <div class="book-day-person-field">${escapeHtml(p.field || '')}</div>
+      </div>
+    </button>
+    <div class="book-day-card">
+      ${cover ? `<div class="book-day-cover" style="background-image:url('${cover}')"></div>` : '<div class="book-day-cover no-img">📖</div>'}
+      <div class="book-day-info">
+        <div class="book-day-title">${escapeHtml(b.title)}</div>
+        ${b.author ? `<div class="book-day-author">${escapeHtml(b.author)}</div>` : ''}
+        ${b.description ? `<div class="book-day-desc">${escapeHtml(b.description)}</div>` : ''}
+        <div class="book-day-stores">
+          <a class="book-day-store book-day-amazon" href="${amazonUrl}" target="_blank" rel="noopener sponsored">📦 Amazon</a>
+          <a class="book-day-store book-day-rakuten" href="${rakutenUrl}" target="_blank" rel="noopener sponsored">🛍 楽天</a>
+        </div>
+      </div>
+    </div>
+  `;
+  mount.querySelector('[data-book-day-person]')?.addEventListener('click', (e) => {
+    const pid = e.currentTarget.dataset.bookDayPerson;
+    if (pid) showPerson(pid);
+  });
+}
+
 function renderHistoryMirrors() {
   const list = document.getElementById('historyMirrorList');
   if (!list) return;
@@ -13052,6 +13106,7 @@ window.renderBookshelfGuides = renderBookshelfGuides;
   renderTraitsMatch();
   renderTodayBirthday();
   try { renderTodayEcho(); } catch (e) { console.warn(e); }
+  try { renderBookOfTheDay(); } catch (e) { console.warn(e); }
   try { renderHistoryMirrors(); } catch (e) { console.warn(e); }
   renderCalendarToday();
   renderPersonOfTheDay();

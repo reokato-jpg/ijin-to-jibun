@@ -72,8 +72,8 @@
 <!-- フォントは非ブロッキングで読み込み（print → all でフォールバック） -->
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet"></noscript>
-<link rel="stylesheet" href="dist/style.min.css?v=20260425Z">
-<link rel="stylesheet" href="dist/era-theme.min.css?v=20260425Z">
+<link rel="stylesheet" href="dist/style.min.css?v=20260426A">
+<link rel="stylesheet" href="dist/era-theme.min.css?v=20260426A">
 </head>
 <body>
   <header class="app-header">
@@ -156,6 +156,12 @@
         </summary>
         <div id="updatesFeed" class="updates-feed"></div>
       </details>
+
+      <!-- 📚 今日の一冊 — 偉人と共に読む -->
+      <div class="home-block book-of-day-block" id="bookOfDayBlock" style="display:none">
+        <div class="home-block-label">📚 今日の一冊 — 偉人と共に読む</div>
+        <div id="bookOfDayContent" class="book-of-day-content"></div>
+      </div>
 
       <!-- 🪞 歴史の鏡（時代を超えた偉人ペア） -->
       <div class="home-block mirror-block">
@@ -381,6 +387,10 @@
           <a href="https://note.com/natsumi_by_piano" target="_blank" rel="noopener">natsumi</a>
         </div>
         <div class="home-footer-copyright">© HaneruTo Inc.</div>
+        <div class="home-footer-pr">
+          ※ 本サイトには Amazon・楽天のアフィリエイトリンクが含まれます。<br>
+          リンク経由でご購入いただくと、サイト運営費の一部となります。
+        </div>
       </div>
     </section>
 
@@ -753,10 +763,10 @@
   </div>
 
   <!-- minified bundles（dist/）と era-lore.min.js は年表画面を開いた時に遅延読み込み -->
-  <script src="dist/history-patterns.min.js?v=20260425Z" defer></script>
-  <script src="dist/app.min.js?v=20260425Z" defer></script>
-  <script src="auth.js?v=20260425Z" type="module"></script>
-  <script src="dist/ai-consult.min.js?v=20260425Z" defer></script>
+  <script src="dist/history-patterns.min.js?v=20260426A" defer></script>
+  <script src="dist/app.min.js?v=20260426A" defer></script>
+  <script src="auth.js?v=20260426A" type="module"></script>
+  <script src="dist/ai-consult.min.js?v=20260426A" defer></script>
   <script>
     // Service Worker 登録（2回目以降のロードを爆速化）
     if ('serviceWorker' in navigator) {
