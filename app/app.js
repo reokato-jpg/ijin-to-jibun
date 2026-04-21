@@ -14,9 +14,8 @@ function amazonCover(asin) {
 }
 
 // ====================== 楽天アフィリエイト設定 ======================
-// https://affiliate.rakuten.co.jp/ で登録 → 管理画面の『アフィリエイトID』をここにセット
-// 例: '1a2b3c4d.abc12345.1a2b3c4d.12345678' のような20文字前後のID
-const RAKUTEN_AFFILIATE_ID = ''; // 未設定でも動く（アフィリエイト無しの検索リンクにフォールバック）
+// https://affiliate.rakuten.co.jp/ で登録 → 管理画面の『アフィリエイトID』
+const RAKUTEN_AFFILIATE_ID = '530ae619.30b25b17.530ae61a.3c05642f';
 
 // 楽天ブックス検索のアフィリエイトURLを生成
 // タイトル（＋著者）で検索 → 楽天ブックスのページへ誘導（自動でIDが埋め込まれる）
