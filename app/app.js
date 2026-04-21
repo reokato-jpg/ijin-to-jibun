@@ -10715,16 +10715,6 @@ function showBeginnerGuide() {
       <section class="era-page-section">
         <h2 class="era-page-h2">📺 映像で観る（DVD・Blu-ray） <span class="pr-tag">PR</span></h2>
         <p style="font-size:12px;color:var(--ink-3);margin-bottom:8px">大河ドラマや映画なら、キャストの顔で推しが決まる。週末イッキ見のお供に。</p>
-        <!-- U-NEXT もしもアフィリエイト: 大河ドラマ・歴史映画の月額見放題 -->
-        <a class="unext-hero-banner" href="//af.moshimo.com/af/c/click?a_id=5501667&p_id=55&pc_id=55&pl_id=630" rel="noopener sponsored nofollow" target="_blank" referrerpolicy="no-referrer-when-downgrade">
-          <div class="unext-hero-text">
-            <div class="unext-hero-title">📺 いますぐ大河を観る</div>
-            <div class="unext-hero-sub">U-NEXT 無料トライアル ─ 新選組!／龍馬伝／篤姫／真田丸 ほか見放題</div>
-          </div>
-          <img src="//image.moshimo.com/af-img/0032/000000000630.jpg" width="468" height="60" class="unext-hero-img" alt="U-NEXT">
-          <span class="unext-hero-cta">▶</span>
-        </a>
-        <img src="//i.moshimo.com/af/i/impression?a_id=5501667&p_id=55&pc_id=55&pl_id=630" width="1" height="1" style="position:absolute;border:0;opacity:0" loading="lazy" alt="">
         <div class="beginner-books">
           ${[
             {title:'大河ドラマ 新選組! 完全版 Blu-ray BOX', author:'三谷幸喜脚本／香取慎吾主演', desc:'近藤勇を主役に新選組を描いた大河。山本耕史の土方歳三が伝説。'},
@@ -10756,6 +10746,25 @@ function showBeginnerGuide() {
               </div>`;
           }).join('')}
         </div>
+      </section>
+      <section class="era-page-section">
+        <h2 class="era-page-h2">🏨 聖地巡礼に出かける <span class="pr-tag">PR</span></h2>
+        <p style="font-size:12px;color:var(--ink-3);margin-bottom:10px">推しが歩いた場所へ行く。歴女の究極の楽しみ方。</p>
+        <ul class="pilgrimage-list">
+          <li><b>⚔️ 新選組</b> → 京都（壬生・池田屋）・日野（土方資料館）・函館（五稜郭）</li>
+          <li><b>🏯 幕末志士</b> → 萩（松下村塾）・下関（功山寺）・高知（龍馬生誕地）</li>
+          <li><b>🏹 戦国武将</b> → 安土・大坂・米沢・上田・仙台</li>
+          <li><b>🎀 歴女女性</b> → 会津（八重の鶴ヶ城）・京都（ガラシャ）・大坂（淀殿）</li>
+        </ul>
+        <!-- 楽天トラベル もしもアフィリエイト -->
+        <a class="travel-hero-banner" href="//af.moshimo.com/af/c/click?a_id=5501667&p_id=55&pc_id=55&pl_id=630" rel="noopener sponsored nofollow" target="_blank" referrerpolicy="no-referrer-when-downgrade">
+          <div class="travel-hero-text">
+            <div class="travel-hero-title">🏨 楽天トラベルで宿を探す</div>
+            <div class="travel-hero-sub">ポイントが貯まる・使える。お得なプランで歴史の地へ。</div>
+          </div>
+          <span class="travel-hero-cta">→</span>
+        </a>
+        <img src="//i.moshimo.com/af/i/impression?a_id=5501667&p_id=55&pc_id=55&pl_id=630" width="1" height="1" style="position:absolute;border:0;opacity:0" loading="lazy" alt="">
       </section>
       <section class="era-page-section">
         <h2 class="era-page-h2">✨ 推し偉人の見つけかた</h2>
