@@ -3796,6 +3796,21 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 .theme-person-meta { font-size: 10px; color: var(--ink-3); margin-top: 2px; font-family: var(--font-en); font-style: italic; }
 .theme-person-quote { font-size: 11px; color: var(--ink-2); margin-top: 5px; font-family: var(--font-jp); line-height: 1.4; font-style: italic; }
 .theme-person-go { font-size: 18px; color: var(--wine); font-weight: 700; flex-shrink: 0; }
+.theme-tile-beginner { background: linear-gradient(135deg, #fff5f8 0%, #ffe6ef 100%); border-color: #c1527a; }
+.theme-tile-beginner .theme-tile-name { color: #c1527a; }
+.theme-tile-beginner .theme-tile-count { color: #c1527a; }
+/* 歴女入門モーダル */
+.beginner-guide-modal .era-page-hero-bg { background: linear-gradient(135deg, #c1527a 0%, #f0a1b8 100%); opacity: 0.9; }
+.beginner-route-list { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+.beginner-route { display: flex; gap: 14px; align-items: flex-start; padding: 14px; background: #fff; border: 1.5px solid rgba(193,82,122,0.3); border-radius: 8px; cursor: pointer; text-align: left; transition: all 0.15s; width: 100%; }
+.beginner-route:hover { border-color: #c1527a; background: #fff5f8; transform: translateX(3px); }
+.beginner-route-emoji { font-size: 32px; flex-shrink: 0; }
+.beginner-route-body { flex: 1; min-width: 0; }
+.beginner-route-title { font-family: var(--font-jp); font-weight: 700; font-size: 15px; color: #c1527a; margin-bottom: 4px; }
+.beginner-route-desc { font-family: var(--font-jp); font-size: 12px; color: var(--ink-2); line-height: 1.6; }
+.beginner-book-list { font-family: var(--font-jp); font-size: 13px; color: var(--ink); line-height: 1.9; padding-left: 20px; }
+.beginner-book-list li { margin-bottom: 4px; }
+.beginner-book-list b { color: var(--wine); }
 .home-book-cover-wrap {
   position: relative;
   width: 100%;

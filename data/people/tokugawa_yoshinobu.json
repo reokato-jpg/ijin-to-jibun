@@ -1,0 +1,191 @@
+{
+  "id": "tokugawa_yoshinobu",
+  "name": "徳川慶喜",
+  "nameEn": "Tokugawa Yoshinobu",
+  "birth": 1837,
+  "death": 1913,
+  "country": "日本",
+  "field": "武士・政治家",
+  "summary": "徳川幕府最後の将軍（第15代）。水戸徳川家に生まれた聡明な若者は、時代の要請で将軍となり、大政奉還で自ら政権を朝廷に返上する決断を下す。戊辰戦争では抗戦を避け恭順、76歳まで生きた幕府の終幕者。",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Tokugawa_Yoshinobu.jpg?width=280",
+  "wikiTitle": "徳川慶喜",
+  "birthMonth": 10,
+  "birthDay": 28,
+  "deathMonth": 11,
+  "deathDay": 22,
+  "events": [
+    {
+      "year": 1837,
+      "age": 0,
+      "title": "水戸徳川家に生まれる",
+      "detail": "父は水戸藩主・徳川斉昭。聡明さで幼少から注目。",
+      "tags": [
+        "origin"
+      ]
+    },
+    {
+      "year": 1847,
+      "age": 10,
+      "title": "一橋家を継ぐ",
+      "detail": "御三卿の一つ、一橋家当主に。将軍候補となる。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1858,
+      "age": 21,
+      "title": "将軍継嗣問題で敗れる",
+      "detail": "南紀派（井伊直弼）に敗北、謹慎。",
+      "tags": [
+        "setback"
+      ]
+    },
+    {
+      "year": 1864,
+      "age": 27,
+      "title": "禁門の変で長州を撃退",
+      "detail": "京都守護職・会津藩と共に長州軍を追い払う。",
+      "tags": [
+        "victory"
+      ]
+    },
+    {
+      "year": 1866,
+      "age": 29,
+      "title": "第15代将軍に就任",
+      "detail": "もう誰もなりたがらない将軍職を引き受ける。",
+      "tags": [
+        "courage"
+      ]
+    },
+    {
+      "year": 1867,
+      "age": 30,
+      "title": "大政奉還",
+      "detail": "政権を朝廷に返上。270年続いた幕府の終焉を自ら宣言。",
+      "tags": [
+        "turning_encounter",
+        "peace"
+      ]
+    },
+    {
+      "year": 1868,
+      "age": 31,
+      "title": "鳥羽伏見で敗れ、江戸へ退却",
+      "detail": "部下を置き去りに海路江戸へ。批判を浴びつつ恭順を選ぶ。",
+      "tags": [
+        "setback"
+      ]
+    },
+    {
+      "year": 1868,
+      "age": 31,
+      "title": "江戸城を開城",
+      "detail": "勝海舟・西郷会談の後、江戸を戦火から救う。",
+      "tags": [
+        "peace",
+        "courage"
+      ]
+    },
+    {
+      "year": 1869,
+      "age": 32,
+      "title": "静岡で謹慎生活",
+      "detail": "写真・釣り・油絵に没頭。政治から完全に退く。",
+      "tags": [
+        "blank_period"
+      ]
+    },
+    {
+      "year": 1902,
+      "age": 65,
+      "title": "公爵に叙される",
+      "detail": "明治政府から公爵位を与えられ名誉回復。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1913,
+      "age": 76,
+      "title": "死去",
+      "detail": "徳川歴代将軍の中で最長寿。",
+      "tags": [
+        "death"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "政権を奉還し、広く天下の公議を尽くす。",
+      "source": "大政奉還上表文"
+    },
+    {
+      "text": "もはや個人の名誉にこだわる時ではない。",
+      "source": "恭順の決断時"
+    },
+    {
+      "text": "私は日本の将来を信じたい。",
+      "source": "伝"
+    },
+    {
+      "text": "幕府の終焉は、私の手で行わねばならぬ。",
+      "source": "大政奉還前夜"
+    },
+    {
+      "text": "悔いはない、ただ時代に選ばれた役回りを演じたまでだ。",
+      "source": "晩年の述懐"
+    }
+  ],
+  "books": [
+    {
+      "title": "徳川慶喜",
+      "author": "家近良樹",
+      "description": "最後の将軍の実像を描く決定版評伝。"
+    },
+    {
+      "title": "最後の将軍 徳川慶喜",
+      "author": "司馬遼太郎",
+      "asin": "4167105802",
+      "description": "慶喜を主人公にした司馬文学（文春文庫）。"
+    },
+    {
+      "title": "徳川慶喜公伝",
+      "author": "渋沢栄一",
+      "description": "渋沢栄一が書いた公式伝記。"
+    }
+  ],
+  "places": [],
+  "tags": [
+    "peace",
+    "setback",
+    "blank_period",
+    "identity"
+  ],
+  "themes": [
+    "bakumatsu"
+  ],
+  "traits": {
+    "personality": "聡明・冷静・韜晦",
+    "strength": "知性、決断力、大局観",
+    "weakness": "部下への情が薄いと評された",
+    "quirks": [
+      "写真術を愛好",
+      "晩年は油絵・自転車・狩猟に没頭",
+      "『豚一様（豚肉好き）』と呼ばれた"
+    ]
+  },
+  "relations": [
+    {
+      "id": "katsu_kaishu",
+      "label": "重臣",
+      "relation": "家臣"
+    },
+    {
+      "id": "saigo_takamori",
+      "label": "大政奉還後の交渉相手",
+      "relation": "敵"
+    }
+  ]
+}

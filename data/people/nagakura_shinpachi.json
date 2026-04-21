@@ -1,0 +1,193 @@
+{
+  "id": "nagakura_shinpachi",
+  "name": "永倉新八",
+  "nameEn": "Nagakura Shinpachi",
+  "birth": 1839,
+  "death": 1915,
+  "country": "日本",
+  "field": "武士・剣客",
+  "summary": "新選組二番隊組長。神道無念流の達人。近藤・土方と並ぶ幹部三人衆の一人で、剣の腕は沖田総司と互角と評された。明治維新後は松前藩士・杉村義衛として生き延び、『浪士文久報国記事』『新選組顛末記』を残す。新選組の真実を後世に伝えた最後の証人。",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Nagakura_Shinpachi.jpg?width=280",
+  "wikiTitle": "永倉新八",
+  "birthMonth": 5,
+  "birthDay": 23,
+  "deathMonth": 1,
+  "deathDay": 5,
+  "events": [
+    {
+      "year": 1839,
+      "age": 0,
+      "title": "松前藩士の家に生まれる",
+      "detail": "江戸で生まれ、幼少から剣に打ち込む。",
+      "tags": [
+        "origin"
+      ]
+    },
+    {
+      "year": 1857,
+      "age": 18,
+      "title": "脱藩して武者修行の旅",
+      "detail": "神道無念流を極める。",
+      "tags": [
+        "adventure"
+      ]
+    },
+    {
+      "year": 1863,
+      "age": 24,
+      "title": "浪士組に参加、新選組の幹部に",
+      "detail": "二番隊組長。近藤・土方・沖田・山南と並ぶ幹部に。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1864,
+      "age": 25,
+      "title": "池田屋事件",
+      "detail": "近藤勇・沖田総司らと突入。最前線で戦った。",
+      "tags": [
+        "battle",
+        "courage"
+      ]
+    },
+    {
+      "year": 1867,
+      "age": 28,
+      "title": "近藤勇と対立、新選組を離脱",
+      "detail": "隊の方針に異を唱え、原田左之助と靖共隊を結成。",
+      "tags": [
+        "conflict"
+      ]
+    },
+    {
+      "year": 1868,
+      "age": 29,
+      "title": "戊辰戦争を戦い抜く",
+      "detail": "幕府軍として各地を転戦。",
+      "tags": [
+        "battle"
+      ]
+    },
+    {
+      "year": 1875,
+      "age": 36,
+      "title": "杉村義衛と改名",
+      "detail": "松前藩医の娘と結婚。新選組時代の自分を封印。",
+      "tags": [
+        "restart",
+        "identity"
+      ]
+    },
+    {
+      "year": 1882,
+      "age": 43,
+      "title": "小樽に移住",
+      "detail": "北海道で剣道場を開き後進を育てる。",
+      "tags": [
+        "mentor"
+      ]
+    },
+    {
+      "year": 1913,
+      "age": 74,
+      "title": "『新選組顛末記』を小樽新聞に連載",
+      "detail": "自分の記憶のまま、新選組の内側を語る。",
+      "tags": [
+        "legacy"
+      ]
+    },
+    {
+      "year": 1915,
+      "age": 76,
+      "title": "虫歯からの敗血症で死去",
+      "detail": "新選組幹部のほぼ最後の生き残りとして、数多の記録を残した。",
+      "tags": [
+        "death"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "新選組は、武士の集まりであった。",
+      "source": "新選組顛末記"
+    },
+    {
+      "text": "近藤も土方も、悪人ではなかった。",
+      "source": "晩年の語り"
+    },
+    {
+      "text": "剣は人を斬るためのものではない、己を磨くためのものだ。",
+      "source": "伝"
+    },
+    {
+      "text": "生き残った者には、語る責任がある。",
+      "source": "伝"
+    },
+    {
+      "text": "沖田の剣は、天から授かった才であった。",
+      "source": "沖田総司を評して"
+    }
+  ],
+  "books": [
+    {
+      "title": "新選組顛末記",
+      "author": "永倉新八",
+      "asin": "4101387168",
+      "description": "永倉自身が語った新選組の内側（新潮文庫）。"
+    },
+    {
+      "title": "新選組永倉新八",
+      "author": "木村幸比古",
+      "description": "永倉の生涯を辿る評伝。"
+    },
+    {
+      "title": "剣客新選組 永倉新八",
+      "author": "滝口康彦",
+      "description": "永倉を主人公とした歴史小説。"
+    }
+  ],
+  "places": [],
+  "tags": [
+    "loyalty",
+    "survival",
+    "legacy",
+    "courage"
+  ],
+  "themes": [
+    "shinsengumi",
+    "bakumatsu"
+  ],
+  "traits": {
+    "personality": "率直・剛毅・義理堅い",
+    "strength": "神道無念流の剣技、記憶力",
+    "weakness": "短気で衝突しやすい",
+    "quirks": [
+      "酒豪",
+      "晩年も小樽で孫に剣を教えた",
+      "新選組の内情を最も正確に伝えた"
+    ]
+  },
+  "relations": [
+    {
+      "id": "kondo_isami",
+      "label": "局長",
+      "relation": "上官"
+    },
+    {
+      "id": "hijikata_toshizo",
+      "label": "副長",
+      "relation": "同志"
+    },
+    {
+      "id": "okita_soji",
+      "label": "一番隊組長",
+      "relation": "同僚"
+    },
+    {
+      "id": "saito_hajime",
+      "label": "三番隊組長",
+      "relation": "同僚"
+    }
+  ]
+}

@@ -10,7 +10,13 @@ function amazonUrl(asin) {
   return `https://www.amazon.co.jp/dp/${asin}${AMAZON_TAG ? `?tag=${AMAZON_TAG}` : ''}`;
 }
 function amazonCover(asin) {
-  return `https://images-fe.ssl-images-amazon.com/images/P/${asin}.09.LZZZZZZZ.jpg`;
+  // 新しい m.media-amazon.com パターンの方が最近のタイトルで表示率が高い
+  return `https://m.media-amazon.com/images/P/${asin}.09._SCLZZZZZZZ_.jpg`;
+}
+// ISBN-10のASINからopenBD（国内本表紙API）URLを生成。Amazonが1x1の時のfallback用。
+function openbdCover(asin) {
+  if (!asin || !/^[0-9]{9}[0-9X]$/i.test(asin)) return null;
+  return `https://cover.openbd.jp/${asin}.jpg`;
 }
 
 // ====================== 楽天アフィリエイト設定 ======================
@@ -3293,10 +3299,12 @@ function renderHomeBooks() {
         <div class="home-book-fallback-title">${escapeHtml(b.title)}</div>
         ${b.author ? `<div class="home-book-fallback-author">${escapeHtml(b.author)}</div>` : ''}
       </div>`;
+    const openbd = hasValidAsin(b) ? openbdCover(b.asin) : null;
     const coverHtml = hasValidAsin(b)
       ? `<img src="${amazonCover(b.asin)}" alt="${escapeHtml(b.title)}" loading="lazy"
-             onerror="this.parentElement.classList.add('no-cover'); this.remove();"
-             onload="if(this.naturalWidth<50){this.parentElement.classList.add('no-cover');this.remove();}">${fallbackHtml}`
+             data-openbd="${openbd || ''}"
+             onerror="const bd=this.dataset.openbd;if(bd&&this.src!==bd){this.src=bd;}else{this.parentElement.classList.add('no-cover');this.remove();}"
+             onload="if(this.naturalWidth<50){const bd=this.dataset.openbd;if(bd&&this.src!==bd){this.src=bd;}else{this.parentElement.classList.add('no-cover');this.remove();}}">${fallbackHtml}`
       : fallbackHtml;
     const coverClass = hasValidAsin(b) ? 'home-book-cover' : 'home-book-cover no-cover';
     return `
@@ -10428,15 +10436,15 @@ const THEME_DEFS = {
     emoji: '⚔️',
     name: '新選組',
     tagline: '誠の一字に、すべてを懸けた。',
-    intro: '幕末の京を駆けた剣客集団。局長・近藤勇、副長・土方歳三、一番隊・沖田総司、三番隊・斎藤一——彼らは時代に逆らい、それぞれの最期まで誠を貫いた。',
-    order: ['kondo_isami','hijikata_toshizo','okita_soji','saito_hajime']
+    intro: '幕末の京を駆けた剣客集団。局長・近藤勇、副長・土方歳三、一番隊・沖田総司、二番隊・永倉新八、三番隊・斎藤一——彼らは時代に逆らい、それぞれの最期まで誠を貫いた。',
+    order: ['kondo_isami','hijikata_toshizo','okita_soji','nagakura_shinpachi','saito_hajime']
   },
   bakumatsu: {
     emoji: '🏯',
     name: '幕末',
     tagline: '時代が裂け、志士たちが駆けた14年。',
-    intro: '黒船来航から明治維新まで、日本が震えた動乱の時代。新選組、志士たち、海を渡った男たち——それぞれの正義が交差した。',
-    order: ['sakamoto_ryoma','saigo_takamori','katsu_kaishu','takasugi_shinsaku','kido_takayoshi','kondo_isami','hijikata_toshizo','okita_soji','saito_hajime']
+    intro: '黒船来航から明治維新まで、日本が震えた動乱の時代。吉田松陰の松下村塾から始まり、新選組、志士たち、海を渡った男たち——それぞれの正義が交差した。最後の将軍・徳川慶喜は自ら幕府を終わらせ、維新三傑が明治を創った。',
+    order: ['yoshida_shoin','sakamoto_ryoma','takasugi_shinsaku','saigo_takamori','okubo_toshimichi','kido_takayoshi','katsu_kaishu','tokugawa_yoshinobu','kondo_isami','hijikata_toshizo','okita_soji','nagakura_shinpachi','saito_hajime']
   },
   sengoku: {
     emoji: '🏹',
@@ -10450,7 +10458,7 @@ const THEME_DEFS = {
     name: '維新三傑',
     tagline: '明治を創り、時代に引き裂かれた三人。',
     intro: '西郷隆盛・大久保利通・木戸孝允。倒幕の同志として手を取り合い、新政府を築き、そして袂を分かった。',
-    order: ['saigo_takamori','kido_takayoshi']
+    order: ['saigo_takamori','okubo_toshimichi','kido_takayoshi']
   }
 };
 
@@ -10556,11 +10564,97 @@ function closeThemePage() {
 }
 window.showThemePage = showThemePage;
 
+// 🌸 歴女初心者ガイド
+function showBeginnerGuide() {
+  const existing = document.getElementById('beginnerGuideModal');
+  if (existing) existing.remove();
+  const modal = document.createElement('div');
+  modal.id = 'beginnerGuideModal';
+  modal.className = 'era-page-modal beginner-guide-modal';
+  modal.innerHTML = `
+    <div class="era-page-backdrop" data-close="1"></div>
+    <article class="era-page">
+      <button class="era-page-close" data-close="1" aria-label="閉じる">×</button>
+      <header class="era-page-hero">
+        <div class="era-page-hero-bg" aria-hidden="true"></div>
+        <div class="era-page-hero-inner">
+          <div class="era-page-cat"><span style="font-size:18px">🌸</span> <span>歴女入門</span></div>
+          <h1 class="era-page-title"><span style="font-size:24px">🌸</span> <span>はじめての歴女</span></h1>
+          <div class="era-page-tagline">推しが見つかる、3つの入口。</div>
+        </div>
+      </header>
+      <section class="era-page-section era-page-intro">
+        <p>歴史って難しそう？ ぜんぜん大丈夫。<br>ここは<b>『推し偉人に出会う』</b>ための入口です。最初の3つから、興味のある方向に飛んでみて。</p>
+      </section>
+      <section class="era-page-section">
+        <h2 class="era-page-h2">🎯 まずはここから</h2>
+        <div class="beginner-route-list">
+          <button class="beginner-route" data-goto-theme="shinsengumi">
+            <div class="beginner-route-emoji">⚔️</div>
+            <div class="beginner-route-body">
+              <div class="beginner-route-title">新選組から入る</div>
+              <div class="beginner-route-desc">短い青春・熱い友情・悲しい最期。『燃えよ剣』のような世界が好きならここ。まずは副長・土方歳三から。</div>
+            </div>
+          </button>
+          <button class="beginner-route" data-goto-theme="bakumatsu">
+            <div class="beginner-route-emoji">🏯</div>
+            <div class="beginner-route-body">
+              <div class="beginner-route-title">幕末の志士たちから入る</div>
+              <div class="beginner-route-desc">時代を変えた若者たち。坂本龍馬・高杉晋作・吉田松陰——彼らの手紙や名言を辿ると、10代後半〜20代の熱量に心が震える。</div>
+            </div>
+          </button>
+          <button class="beginner-route" data-goto-theme="sengoku">
+            <div class="beginner-route-emoji">🏹</div>
+            <div class="beginner-route-body">
+              <div class="beginner-route-title">戦国武将から入る</div>
+              <div class="beginner-route-desc">信長・政宗・真田幸村——乱世を生き抜いた男たちの物語。大河ドラマが好きならこちら。</div>
+            </div>
+          </button>
+        </div>
+      </section>
+      <section class="era-page-section">
+        <h2 class="era-page-h2">📚 読みやすい入門書</h2>
+        <ul class="beginner-book-list">
+          <li><b>『燃えよ剣』</b>（司馬遼太郎） — 土方歳三の生涯。新選組入門の鉄板。</li>
+          <li><b>『竜馬がゆく』</b>（司馬遼太郎） — 坂本龍馬の物語。幕末全体が見える大河小説。</li>
+          <li><b>『世に棲む日日』</b>（司馬遼太郎） — 吉田松陰と高杉晋作、長州の青春。</li>
+          <li><b>『壬生義士伝』</b>（浅田次郎） — 新選組の知られざる一面。泣けます。</li>
+          <li><b>『真田太平記』</b>（池波正太郎） — 真田一族の12巻大河。</li>
+        </ul>
+      </section>
+      <section class="era-page-section">
+        <h2 class="era-page-h2">✨ 推し偉人の見つけかた</h2>
+        <p style="line-height:1.9">プロフィールページの<b>『♡ 推しに設定』</b>ボタンをタップすると、ホームに「推しのきょう」が毎日表示されます。<br>その日の手紙・名言・本・ルーティンが届く、ミニ手帳みたいな機能です。</p>
+      </section>
+    </article>
+  `;
+  document.body.appendChild(modal);
+  document.body.classList.add('modal-open');
+  modal.querySelectorAll('[data-close="1"]').forEach(el => el.addEventListener('click', () => {
+    modal.remove(); document.body.classList.remove('modal-open');
+  }));
+  modal.querySelectorAll('[data-goto-theme]').forEach(el => el.addEventListener('click', () => {
+    const t = el.dataset.gotoTheme;
+    modal.remove(); document.body.classList.remove('modal-open');
+    setTimeout(() => showThemePage(t), 50);
+  }));
+}
+window.showBeginnerGuide = showBeginnerGuide;
+
 // ホームに「歴女の入り口」セクション描画
 function renderThemeTiles() {
   const container = document.getElementById('themeTiles');
   if (!container) return;
-  container.innerHTML = Object.entries(THEME_DEFS).map(([id, def]) => {
+  const beginnerTile = `
+    <button class="theme-tile theme-tile-beginner" data-beginner="1">
+      <div class="theme-tile-emoji">🌸</div>
+      <div class="theme-tile-info">
+        <div class="theme-tile-name">はじめての歴女</div>
+        <div class="theme-tile-tag">何から読めばいい？ 3つの入口から選ぼう。</div>
+        <div class="theme-tile-count">入門ガイド</div>
+      </div>
+    </button>`;
+  container.innerHTML = beginnerTile + Object.entries(THEME_DEFS).map(([id, def]) => {
     const count = (DATA.people || []).filter(p => (p.themes || []).includes(id)).length;
     if (!count) return '';
     return `
@@ -10576,6 +10670,7 @@ function renderThemeTiles() {
   container.querySelectorAll('[data-theme-open]').forEach(b => {
     b.addEventListener('click', () => showThemePage(b.dataset.themeOpen));
   });
+  container.querySelector('[data-beginner]')?.addEventListener('click', () => showBeginnerGuide());
 }
 window.renderThemeTiles = renderThemeTiles;
 function openEraModal(catId, eraId) {
