@@ -10670,22 +10670,31 @@ function showBeginnerGuide() {
             {title:'花の慶次', author:'原哲夫', emoji:'🍃', desc:'前田慶次の生き様。「傾奇者」の美学。男も惚れる歴史漫画。'},
             {title:'センゴク', author:'宮下英樹', emoji:'⚔️', desc:'仙石秀久を主人公に戦国を描く硬派漫画。信長・秀吉・家康のリアル。'}
           ].map(b => {
-            // 漫画はシリーズで買う人が多いので検索URLにして常に最新/正しい商品に飛ばす
-            const q = encodeURIComponent(`${b.title} ${b.author}`);
-            const amz = `https://www.amazon.co.jp/s?k=${q}&i=stripbooks${AMAZON_TAG ? `&tag=${AMAZON_TAG}` : ''}`;
-            const rak = rakutenSearchUrl(b.title, b.author);
+            // 漫画は検索URLで安全に（推測ASINで別商品に飛ぶ事故を防ぐ）
+            const qAll = encodeURIComponent(`${b.title} ${b.author}`);
+            const q1 = encodeURIComponent(`${b.title} 1巻 ${b.author}`);
+            const qComplete = encodeURIComponent(`${b.title} 全巻 ${b.author}`);
+            const amzAll = `https://www.amazon.co.jp/s?k=${qAll}&i=stripbooks${AMAZON_TAG ? `&tag=${AMAZON_TAG}` : ''}`;
+            const amz1 = `https://www.amazon.co.jp/s?k=${q1}&i=stripbooks${AMAZON_TAG ? `&tag=${AMAZON_TAG}` : ''}`;
+            const amzFull = `https://www.amazon.co.jp/s?k=${qComplete}&i=stripbooks${AMAZON_TAG ? `&tag=${AMAZON_TAG}` : ''}`;
+            const rak1 = rakutenSearchUrl(`${b.title} 1`, b.author);
+            const rakFull = rakutenSearchUrl(`${b.title} 全巻`, b.author);
             return `
               <div class="beginner-book">
-                <a class="beginner-book-cover no-cover" href="${amz}" target="_blank" rel="noopener sponsored">
-                  <div class="beginner-book-fallback"><div style="font-size:24px">${b.emoji}</div><div class="beginner-book-fb-title">${escapeHtml(b.title)}</div></div>
+                <a class="beginner-book-cover no-cover" href="${amzAll}" target="_blank" rel="noopener sponsored">
+                  <div class="beginner-book-fallback"><div style="font-size:26px">${b.emoji}</div><div class="beginner-book-fb-title">${escapeHtml(b.title)}</div></div>
                 </a>
                 <div class="beginner-book-info">
                   <div class="beginner-book-title">${escapeHtml(b.title)}</div>
                   <div class="beginner-book-author">${escapeHtml(b.author)}</div>
                   <div class="beginner-book-desc">${escapeHtml(b.desc)}</div>
-                  <div class="beginner-book-stores">
-                    <a class="beginner-book-store amz" href="${amz}" target="_blank" rel="noopener sponsored">Amazon</a>
-                    <a class="beginner-book-store rak" href="${rak}" target="_blank" rel="noopener sponsored">楽天</a>
+                  <div class="beginner-book-stores beginner-manga-stores">
+                    <span class="beginner-manga-label">📦 Amazon</span>
+                    <a class="beginner-book-store amz" href="${amz1}" target="_blank" rel="noopener sponsored">1巻</a>
+                    <a class="beginner-book-store amz" href="${amzFull}" target="_blank" rel="noopener sponsored">全巻</a>
+                    <span class="beginner-manga-label">🛍 楽天</span>
+                    <a class="beginner-book-store rak" href="${rak1}" target="_blank" rel="noopener sponsored">1巻</a>
+                    <a class="beginner-book-store rak" href="${rakFull}" target="_blank" rel="noopener sponsored">全巻</a>
                   </div>
                 </div>
               </div>`;
@@ -10749,8 +10758,9 @@ window.showBeginnerGuide = showBeginnerGuide;
 
 // ホームに「歴女の入り口」セクション描画
 function renderThemeTiles() {
-  const container = document.getElementById('themeTiles');
-  if (!container) return;
+  // ホームと年表の両方にレンダリング
+  const containers = [document.getElementById('themeTiles'), document.getElementById('themeTilesHist')].filter(Boolean);
+  if (!containers.length) return;
   const beginnerTile = `
     <button type="button" class="theme-tile theme-tile-beginner" data-beginner="1" onclick="window.showBeginnerGuide && window.showBeginnerGuide()">
       <div class="theme-tile-emoji">🌸</div>
@@ -10760,7 +10770,7 @@ function renderThemeTiles() {
         <div class="theme-tile-count">入門ガイド</div>
       </div>
     </button>`;
-  container.innerHTML = beginnerTile + Object.entries(THEME_DEFS).map(([id, def]) => {
+  const html = beginnerTile + Object.entries(THEME_DEFS).map(([id, def]) => {
     const count = (DATA.people || []).filter(p => (p.themes || []).includes(id)).length;
     if (!count) return '';
     return `
@@ -10773,16 +10783,18 @@ function renderThemeTiles() {
         </div>
       </button>`;
   }).join('');
-  // 子要素タップでも必ず拾えるよう container に委任
-  if (!container.dataset.bound) {
-    container.dataset.bound = '1';
-    container.addEventListener('click', (e) => {
-      const themeBtn = e.target.closest('[data-theme-open]');
-      if (themeBtn) { e.preventDefault(); showThemePage(themeBtn.dataset.themeOpen); return; }
-      const beginnerBtn = e.target.closest('[data-beginner]');
-      if (beginnerBtn) { e.preventDefault(); showBeginnerGuide(); return; }
-    });
-  }
+  containers.forEach(container => {
+    container.innerHTML = html;
+    if (!container.dataset.bound) {
+      container.dataset.bound = '1';
+      container.addEventListener('click', (e) => {
+        const themeBtn = e.target.closest('[data-theme-open]');
+        if (themeBtn) { e.preventDefault(); showThemePage(themeBtn.dataset.themeOpen); return; }
+        const beginnerBtn = e.target.closest('[data-beginner]');
+        if (beginnerBtn) { e.preventDefault(); showBeginnerGuide(); return; }
+      });
+    }
+  });
 }
 window.renderThemeTiles = renderThemeTiles;
 

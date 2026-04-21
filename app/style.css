@@ -3840,6 +3840,11 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 .beginner-book-store.amz { background: #fff; color: var(--wine); border: 1px solid var(--wine); }
 .beginner-book-store.rak { background: #bf0000; color: #fff; }
 .beginner-book-store:hover { opacity: 0.85; }
+/* 漫画の1巻/全巻ボタン */
+.beginner-manga-stores { align-items: center; row-gap: 6px; }
+.beginner-manga-label { font-size: 10px; color: var(--ink-3); font-weight: 700; margin-right: 2px; }
+.beginner-manga-stores .beginner-book-store { padding: 4px 10px; font-size: 10.5px; }
+.beginner-manga-stores .beginner-book-store + .beginner-manga-label { margin-left: 8px; }
 
 /* 📑 ホーム目次 — 右下フローティングFAB（ミュートボタンの上に配置） */
 .home-toc-wrap { position: fixed; right: 14px; bottom: 140px; z-index: 45; }

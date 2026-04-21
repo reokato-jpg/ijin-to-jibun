@@ -72,8 +72,8 @@
 <!-- フォントは非ブロッキングで読み込み（print → all でフォールバック） -->
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet"></noscript>
-<link rel="stylesheet" href="dist/style.min.css?v=20260426X">
-<link rel="stylesheet" href="dist/era-theme.min.css?v=20260426X">
+<link rel="stylesheet" href="dist/style.min.css?v=20260426Y">
+<link rel="stylesheet" href="dist/era-theme.min.css?v=20260426Y">
 </head>
 <body>
   <header class="app-header">
@@ -456,6 +456,13 @@
         <h2 class="hist-title">🕰 歴史年表</h2>
         <p class="hist-sub">分野を選び、時代を辿る。<br>気になる時代をタップすると、その時代を生きた偉人が現れる。</p>
       </div>
+
+      <!-- 🎎 テーマで辿る（年表ページにも配置） -->
+      <div class="home-block" style="margin-top:12px">
+        <div class="home-block-label">🎎 テーマで辿る</div>
+        <div id="themeTilesHist" class="theme-tiles"></div>
+      </div>
+
       <div id="eraCategories" class="era-categories"></div>
     </section>
 
@@ -779,10 +786,10 @@
   </div>
 
   <!-- minified bundles（dist/）と era-lore.min.js は年表画面を開いた時に遅延読み込み -->
-  <script src="dist/history-patterns.min.js?v=20260426X" defer></script>
-  <script src="dist/app.min.js?v=20260426X" defer></script>
-  <script src="auth.js?v=20260426X" type="module"></script>
-  <script src="dist/ai-consult.min.js?v=20260426X" defer></script>
+  <script src="dist/history-patterns.min.js?v=20260426Y" defer></script>
+  <script src="dist/app.min.js?v=20260426Y" defer></script>
+  <script src="auth.js?v=20260426Y" type="module"></script>
+  <script src="dist/ai-consult.min.js?v=20260426Y" defer></script>
   <script>
     // Service Worker 登録（2回目以降のロードを爆速化）
     if ('serviceWorker' in navigator) {
