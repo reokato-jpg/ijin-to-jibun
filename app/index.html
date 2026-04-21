@@ -72,8 +72,8 @@
 <!-- フォントは非ブロッキングで読み込み（print → all でフォールバック） -->
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet"></noscript>
-<link rel="stylesheet" href="dist/style.min.css?v=20260426N">
-<link rel="stylesheet" href="dist/era-theme.min.css?v=20260426N">
+<link rel="stylesheet" href="dist/style.min.css?v=20260426O">
+<link rel="stylesheet" href="dist/era-theme.min.css?v=20260426O">
 </head>
 <body>
   <header class="app-header">
@@ -180,10 +180,14 @@
 
       <!-- ═══ DISCOVER ═══ 偉人を探す（折りたたみ） ═══════════ -->
 
-      <!-- あなたに似た偉人を探す（折りたたみ） -->
-      <details class="home-block home-details" id="traitsMatchDetails">
+      <!-- あなたに似た偉人を探す（強調・折りたたみ） -->
+      <details class="home-block home-details home-details-hero" id="traitsMatchDetails">
         <summary class="home-details-summary">
-          <span class="home-details-label">✨ あなたに似た偉人を探す</span>
+          <span class="home-details-hero-icon">✨</span>
+          <span class="home-details-hero-label">
+            <span class="home-details-hero-title">あなたに似た偉人を探す</span>
+            <span class="home-details-hero-sub">趣味・性格・生き方が重なる偉人がわかる</span>
+          </span>
           <span class="home-details-arrow">▾</span>
         </summary>
         <div id="traitsMatchSection"></div>
@@ -775,10 +779,10 @@
   </div>
 
   <!-- minified bundles（dist/）と era-lore.min.js は年表画面を開いた時に遅延読み込み -->
-  <script src="dist/history-patterns.min.js?v=20260426N" defer></script>
-  <script src="dist/app.min.js?v=20260426N" defer></script>
-  <script src="auth.js?v=20260426N" type="module"></script>
-  <script src="dist/ai-consult.min.js?v=20260426N" defer></script>
+  <script src="dist/history-patterns.min.js?v=20260426O" defer></script>
+  <script src="dist/app.min.js?v=20260426O" defer></script>
+  <script src="auth.js?v=20260426O" type="module"></script>
+  <script src="dist/ai-consult.min.js?v=20260426O" defer></script>
   <script>
     // Service Worker 登録（2回目以降のロードを爆速化）
     if ('serviceWorker' in navigator) {

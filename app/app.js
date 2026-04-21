@@ -10685,6 +10685,9 @@ window.renderThemeTiles = renderThemeTiles;
 function renderHomeTOC() {
   const mount = document.getElementById('homeTOC');
   if (!mount) return;
+  // 他viewでは非表示
+  const homeActive = document.getElementById('view-people')?.classList.contains('active');
+  if (!homeActive) { mount.innerHTML = ''; return; }
   const view = document.getElementById('view-people');
   if (!view) return;
   const blocks = Array.from(view.querySelectorAll('.home-block'));
@@ -10702,7 +10705,7 @@ function renderHomeTOC() {
   if (!entries.length) { mount.innerHTML = ''; return; }
   mount.innerHTML = `
     <details class="home-toc" id="homeTOCDetails">
-      <summary class="home-toc-summary">📑 目次（${entries.length}セクション）</summary>
+      <summary class="home-toc-summary" aria-label="目次を開く" title="目次">📑</summary>
       <div class="home-toc-list">
         ${entries.map(e => `<button class="home-toc-item" data-toc="${e.id}">${escapeHtml(e.label)}</button>`).join('')}
       </div>
