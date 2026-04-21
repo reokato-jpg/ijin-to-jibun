@@ -72,8 +72,8 @@
 <!-- フォントは非ブロッキングで読み込み（print → all でフォールバック） -->
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet"></noscript>
-<link rel="stylesheet" href="dist/style.min.css?v=20260427F">
-<link rel="stylesheet" href="dist/era-theme.min.css?v=20260427F">
+<link rel="stylesheet" href="dist/style.min.css?v=20260427G">
+<link rel="stylesheet" href="dist/era-theme.min.css?v=20260427G">
 </head>
 <body>
   <header class="app-header">
@@ -142,8 +142,8 @@
         <div id="todayBirthdayList" class="today-birthday-list"></div>
       </div>
 
-      <!-- 📜 今日という日の歴史 -->
-      <div class="home-block today-echo-block" id="todayEchoBlock" style="display:none">
+      <!-- 📜 この日歴史が動いた — 非表示（JS参照のため DOM は残す） -->
+      <div class="home-block today-echo-block" id="todayEchoBlock" style="display:none !important" hidden aria-hidden="true">
         <div class="today-echo-head">
           <span class="today-echo-date" id="todayEchoDate"></span>
           <span class="today-echo-label">この日、歴史が動いた</span>
@@ -824,10 +824,10 @@
   </div>
 
   <!-- minified bundles（dist/）と era-lore.min.js は年表画面を開いた時に遅延読み込み -->
-  <script src="dist/history-patterns.min.js?v=20260427F" defer></script>
-  <script src="dist/app.min.js?v=20260427F" defer></script>
-  <script src="auth.js?v=20260427F" type="module"></script>
-  <script src="dist/ai-consult.min.js?v=20260427F" defer></script>
+  <script src="dist/history-patterns.min.js?v=20260427G" defer></script>
+  <script src="dist/app.min.js?v=20260427G" defer></script>
+  <script src="auth.js?v=20260427G" type="module"></script>
+  <script src="dist/ai-consult.min.js?v=20260427G" defer></script>
   <script>
     // Service Worker 登録（2回目以降のロードを爆速化）
     if ('serviceWorker' in navigator) {
