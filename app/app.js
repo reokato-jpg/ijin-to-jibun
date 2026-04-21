@@ -3144,23 +3144,24 @@ function renderFeaturedTags() {
 
 // ====================== TOPページ書籍 ======================
 function renderHomeBooks() {
-  // 推しと本日の案内人の本を優先、残り1枠をランダム
+  // 偉人たちの本棚 — 毎日ランダム（日付seed）、ASIN無しでも検索URLでカバー
   const seed = daySeed();
   const picked = [];
-  const usedAsins = new Set();
+  const usedKeys = new Set();
 
-  // ASINがある本だけピックする
+  const bookKey = (b) => b.asin || (b.title + '|' + (b.author || ''));
   const hasValidAsin = (b) => b && b.asin && /^[A-Z0-9]{10}$/i.test(b.asin);
 
   const pushBookOf = (pid, label) => {
     if (!pid) return;
     const p = DATA.people.find(x => x.id === pid);
     if (!p) return;
-    const validBooks = (p.books || []).filter(hasValidAsin);
-    if (!validBooks.length) return;
-    const b = validBooks[seed % validBooks.length];
-    if (usedAsins.has(b.asin)) return;
-    usedAsins.add(b.asin);
+    const books = (p.books || []).filter(b => b && b.title);
+    if (!books.length) return;
+    const b = books[seed % books.length];
+    const key = bookKey(b);
+    if (usedKeys.has(key)) return;
+    usedKeys.add(key);
     picked.push({ ...b, person: p, label });
   };
   pushBookOf(getOshi(), '♡ 推しの一冊');
@@ -3169,34 +3170,48 @@ function renderHomeBooks() {
     if (t && t.personId) pushBookOf(t.personId, '本日の案内人');
   } catch (e) {}
 
-  // 残りをランダム（日替わり）で埋める — ASIN必須
+  // 残りを日替わりランダムで埋める
   const all = [];
   DATA.people.forEach(p => {
-    (p.books || []).forEach(b => { if (hasValidAsin(b) && !usedAsins.has(b.asin)) all.push({ ...b, person: p }); });
+    (p.books || []).forEach(b => {
+      if (!b || !b.title) return;
+      const key = bookKey(b);
+      if (!usedKeys.has(key)) all.push({ ...b, person: p });
+    });
   });
-  all.sort((a, b) => ((hashStr(a.asin) ^ seed) >>> 0) - ((hashStr(b.asin) ^ seed) >>> 0));
-  // HP版は6冊、スマホは3冊
-  const bookCount = (typeof window !== 'undefined' && window.innerWidth >= 900) ? 6 : 3;
+  all.sort((a, b) => ((hashStr(bookKey(a)) ^ seed) >>> 0) - ((hashStr(bookKey(b)) ^ seed) >>> 0));
+  const bookCount = (typeof window !== 'undefined' && window.innerWidth >= 900) ? 6 : 4;
   while (picked.length < bookCount && all.length) {
     picked.push(all.shift());
   }
 
   const container = document.getElementById('homeBooks');
   if (!container || picked.length === 0) return;
-  container.innerHTML = picked.map(b => `
-    <a class="home-book-card" href="${amazonUrl(b.asin)}" target="_blank" rel="noopener" data-asin="${b.asin}">
-      <div class="home-book-cover-wrap">
-        <div class="home-book-cover">
-          <img src="${amazonCover(b.asin)}" alt="${b.title}" loading="lazy"
-               onload="if(this.naturalWidth<50){this.closest('.home-book-card').style.display='none';}"
-               onerror="this.closest('.home-book-card').style.display='none';">
+  container.innerHTML = picked.map(b => {
+    const q = encodeURIComponent(`${b.title} ${b.author || ''}`);
+    const amazon = hasValidAsin(b)
+      ? `https://www.amazon.co.jp/dp/${b.asin}${AMAZON_TAG ? `?tag=${AMAZON_TAG}` : ''}`
+      : `https://www.amazon.co.jp/s?k=${q}${AMAZON_TAG ? `&tag=${AMAZON_TAG}` : ''}`;
+    const rakuten = rakutenSearchUrl(b.title, b.author);
+    const coverHtml = hasValidAsin(b)
+      ? `<img src="${amazonCover(b.asin)}" alt="${escapeHtml(b.title)}" loading="lazy"
+             onerror="this.style.display='none'; this.parentElement.classList.add('no-cover');">`
+      : '';
+    return `
+      <div class="home-book-card">
+        <a class="home-book-cover-wrap" href="${amazon}" target="_blank" rel="noopener sponsored">
+          <div class="home-book-cover">${coverHtml || '<span class="home-book-icon">📖</span>'}</div>
+          ${b.label ? `<div class="home-book-ribbon">${b.label}</div>` : ''}
+        </a>
+        <div class="home-book-title">${escapeHtml(b.title)}</div>
+        <div class="home-book-person">${escapeHtml(b.person.name)}</div>
+        <div class="home-book-stores">
+          <a class="home-book-store home-book-amazon" href="${amazon}" target="_blank" rel="noopener sponsored">📦</a>
+          <a class="home-book-store home-book-rakuten" href="${rakuten}" target="_blank" rel="noopener sponsored">🛍</a>
         </div>
-        ${b.label ? `<div class="home-book-ribbon">${b.label}</div>` : ''}
       </div>
-      <div class="home-book-title">${b.title}</div>
-      <div class="home-book-person">${b.person.name}</div>
-    </a>
-  `).join('');
+    `;
+  }).join('');
 }
 
 // ====================== 今日という日の歴史 ======================
