@@ -3884,6 +3884,11 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 .pilgrimage-list { font-family: var(--font-jp); font-size: 12px; color: var(--ink); line-height: 1.9; padding-left: 18px; margin: 6px 0 12px; }
 .pilgrimage-list li { margin-bottom: 4px; }
 .pilgrimage-list b { color: var(--wine); margin-right: 4px; }
+.travel-intro { font-family: var(--font-jp); font-size: 12px; color: var(--ink-3); margin: 0 0 8px; line-height: 1.6; }
+.travel-hero-banner.jalan-banner { background: linear-gradient(135deg, #fff 0%, #fff3ec 50%, #ffe5d0 100%); border-color: #ee7e1a; }
+.travel-hero-banner.jalan-banner::before { background: linear-gradient(90deg, #ee7e1a, #ffc088, #ee7e1a); background-size: 200% 100%; }
+.travel-hero-banner.jalan-banner .travel-hero-title { color: #d66000; }
+.travel-hero-banner.jalan-banner .travel-hero-cta { color: #ee7e1a; border-left-color: rgba(238,126,26,0.25); }
 
 /* 📻 Audible アフィリエイトバナー */
 .audible-hero-banner {
