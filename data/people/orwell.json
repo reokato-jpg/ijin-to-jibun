@@ -42,7 +42,14 @@
     {
       "title": "動物農場",
       "author": "ジョージ・オーウェル",
-      "description": "革命の裏切りを描く寓話。"
+      "description": "革命の裏切りを描く寓話。",
+      "asin": "4003226240"
+    },
+    {
+      "title": "一九八四年",
+      "author": "ジョージ・オーウェル",
+      "asin": "4151200533",
+      "description": "全体主義ディストピア小説の金字塔（ハヤカワepi文庫）。"
     }
   ],
   "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/George_Orwell_press_photo.jpg?width=280",
