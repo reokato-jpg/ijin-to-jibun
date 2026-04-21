@@ -3873,7 +3873,7 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 .travel-hero-text { flex: 1; min-width: 0; }
 .travel-hero-title { font-family: var(--font-jp); font-weight: 800; font-size: 15px; color: #bf0000; letter-spacing: 0.04em; margin-bottom: 4px; }
 .travel-hero-sub { font-family: var(--font-jp); font-size: 11px; color: var(--ink-2); line-height: 1.5; }
-.travel-hero-img { display: none; }
+.travel-hero-img { display: block; flex-shrink: 0; width: 120px; height: 60px; border-radius: 4px; }
 .travel-hero-cta { font-size: 22px; color: #bf0000; flex-shrink: 0; padding: 4px 0 4px 8px; border-left: 1px solid rgba(191,0,0,0.25); font-weight: 700; }
 @media (max-width: 420px) {
   .travel-hero-banner { padding: 12px 14px; gap: 10px; }
@@ -3917,7 +3917,7 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 .audible-hero-text { flex: 1; min-width: 0; }
 .audible-hero-title { font-family: var(--font-jp); font-weight: 800; font-size: 15px; color: #fff; letter-spacing: 0.04em; margin-bottom: 4px; }
 .audible-hero-sub { font-family: var(--font-jp); font-size: 11px; color: #ffd9a8; line-height: 1.5; }
-.audible-hero-img { display: none; }
+.audible-hero-img { display: block; flex-shrink: 0; width: 120px; height: 60px; border-radius: 4px; }
 .audible-hero-cta { font-size: 22px; color: #f7a11c; flex-shrink: 0; padding: 4px 0 4px 8px; border-left: 1px solid rgba(247,161,28,0.3); font-weight: 700; }
 @media (max-width: 420px) {
   .audible-hero-banner { padding: 12px 14px; gap: 10px; }
