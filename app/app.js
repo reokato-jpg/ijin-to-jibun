@@ -10715,6 +10715,16 @@ function showBeginnerGuide() {
       <section class="era-page-section">
         <h2 class="era-page-h2">📺 映像で観る（DVD・Blu-ray） <span class="pr-tag">PR</span></h2>
         <p style="font-size:12px;color:var(--ink-3);margin-bottom:8px">大河ドラマや映画なら、キャストの顔で推しが決まる。週末イッキ見のお供に。</p>
+        <!-- U-NEXT もしもアフィリエイト: 大河ドラマ・歴史映画の月額見放題 -->
+        <a class="unext-hero-banner" href="//af.moshimo.com/af/c/click?a_id=5501667&p_id=55&pc_id=55&pl_id=630" rel="noopener sponsored nofollow" target="_blank" referrerpolicy="no-referrer-when-downgrade">
+          <div class="unext-hero-text">
+            <div class="unext-hero-title">📺 いますぐ大河を観る</div>
+            <div class="unext-hero-sub">U-NEXT 無料トライアル ─ 新選組!／龍馬伝／篤姫／真田丸 ほか見放題</div>
+          </div>
+          <img src="//image.moshimo.com/af-img/0032/000000000630.jpg" width="468" height="60" class="unext-hero-img" alt="U-NEXT">
+          <span class="unext-hero-cta">▶</span>
+        </a>
+        <img src="//i.moshimo.com/af/i/impression?a_id=5501667&p_id=55&pc_id=55&pl_id=630" width="1" height="1" style="position:absolute;border:0;opacity:0" loading="lazy" alt="">
         <div class="beginner-books">
           ${[
             {title:'大河ドラマ 新選組! 完全版 Blu-ray BOX', author:'三谷幸喜脚本／香取慎吾主演', desc:'近藤勇を主役に新選組を描いた大河。山本耕史の土方歳三が伝説。'},

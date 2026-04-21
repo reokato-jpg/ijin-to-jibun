@@ -72,8 +72,8 @@
 <!-- フォントは非ブロッキングで読み込み（print → all でフォールバック） -->
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet"></noscript>
-<link rel="stylesheet" href="dist/style.min.css?v=20260426Z">
-<link rel="stylesheet" href="dist/era-theme.min.css?v=20260426Z">
+<link rel="stylesheet" href="dist/style.min.css?v=20260427A">
+<link rel="stylesheet" href="dist/era-theme.min.css?v=20260427A">
 </head>
 <body>
   <header class="app-header">
@@ -227,6 +227,20 @@
       <div class="home-block">
         <div class="home-block-label">🎎 テーマで辿る</div>
         <div id="themeTiles" class="theme-tiles"></div>
+      </div>
+
+      <!-- 📺 U-NEXT（もしもアフィリエイト） -->
+      <div class="home-block">
+        <div class="home-block-label">📺 大河・歴史映画を観る <span class="pr-tag">PR</span></div>
+        <a class="unext-hero-banner home-unext" href="//af.moshimo.com/af/c/click?a_id=5501667&p_id=55&pc_id=55&pl_id=630" rel="noopener sponsored nofollow" target="_blank" referrerpolicy="no-referrer-when-downgrade">
+          <div class="unext-hero-text">
+            <div class="unext-hero-title">📺 U-NEXTで大河ドラマを観よう</div>
+            <div class="unext-hero-sub">新選組!／龍馬伝／篤姫／真田丸／八重の桜 ほか見放題。無料トライアルあり。</div>
+          </div>
+          <img src="//image.moshimo.com/af-img/0032/000000000630.jpg" width="468" height="60" class="unext-hero-img" alt="U-NEXT">
+          <span class="unext-hero-cta">▶</span>
+        </a>
+        <img src="//i.moshimo.com/af/i/impression?a_id=5501667&p_id=55&pc_id=55&pl_id=630" width="1" height="1" style="position:absolute;border:0;opacity:0" loading="lazy" alt="">
       </div>
 
       <!-- 偉人たちの本棚 -->
@@ -786,10 +800,10 @@
   </div>
 
   <!-- minified bundles（dist/）と era-lore.min.js は年表画面を開いた時に遅延読み込み -->
-  <script src="dist/history-patterns.min.js?v=20260426Z" defer></script>
-  <script src="dist/app.min.js?v=20260426Z" defer></script>
-  <script src="auth.js?v=20260426Z" type="module"></script>
-  <script src="dist/ai-consult.min.js?v=20260426Z" defer></script>
+  <script src="dist/history-patterns.min.js?v=20260427A" defer></script>
+  <script src="dist/app.min.js?v=20260427A" defer></script>
+  <script src="auth.js?v=20260427A" type="module"></script>
+  <script src="dist/ai-consult.min.js?v=20260427A" defer></script>
   <script>
     // Service Worker 登録（2回目以降のロードを爆速化）
     if ('serviceWorker' in navigator) {
