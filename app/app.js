@@ -4,7 +4,7 @@ window.ensureLazyCss = ensureLazyCss;
 
 // ====================== Amazon アフィリエイト設定 ======================
 // natsumi のAmazonアソシエイトIDをセット。全Amazonリンクに自動付与される。
-const AMAZON_TAG = ''; // 例: 'natsumipiano-22'
+const AMAZON_TAG = 'natsumipiano-22';
 
 function amazonUrl(asin) {
   return `https://www.amazon.co.jp/dp/${asin}${AMAZON_TAG ? `?tag=${AMAZON_TAG}` : ''}`;
@@ -7408,7 +7408,7 @@ async function showPerson(id) {
             `;
           }
           // asin（本）
-          const url = w.asin ? `https://www.amazon.co.jp/dp/${w.asin}` : '#';
+          const url = w.asin ? `https://www.amazon.co.jp/dp/${w.asin}${AMAZON_TAG ? `?tag=${AMAZON_TAG}` : ''}` : '#';
           const cover = w.asin ? `https://images-na.ssl-images-amazon.com/images/P/${w.asin}.09.LZZZZZZZ.jpg` : '';
           return `
             <a class="work-card work-book" href="${url}" target="_blank" rel="noopener">
@@ -7563,7 +7563,7 @@ async function showPerson(id) {
     <div class="profile-tab-content" data-ptab="books">
       <p class="books-intro">${p.name}を深く知るための本。タイトル・表紙タップでAmazonへ。</p>
       ${p.books.map(b => {
-        const amz = b.asin ? amazonUrl(b.asin) : `https://www.amazon.co.jp/s?k=${encodeURIComponent(b.title + ' ' + (b.author||''))}`;
+        const amz = b.asin ? amazonUrl(b.asin) : `https://www.amazon.co.jp/s?k=${encodeURIComponent(b.title + ' ' + (b.author||''))}${AMAZON_TAG ? `&tag=${AMAZON_TAG}` : ''}`;
         const cover = b.asin ? amazonCover(b.asin) : '';
         return `
         <div class="book-card">
