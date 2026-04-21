@@ -1,0 +1,52 @@
+{
+  "id": "katsu_kaishu",
+  "name": "勝海舟",
+  "nameEn": "Katsu Kaishu",
+  "birth": 1823,
+  "death": 1899,
+  "country": "日本",
+  "field": "幕臣・海軍創設者",
+  "summary": "貧しい旗本の家に生まれながら蘭学と剣を修め、咸臨丸で太平洋を渡った幕末の先駆者。江戸無血開城を西郷隆盛と実現し、100万の江戸市民を救った。明治後も『瘠我慢の説』で福沢と論争しつつ、幕府の後始末を続けた。",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Katsu_Kaishu.jpg?width=280",
+  "wikiTitle": "勝海舟",
+  "birthMonth": 3,
+  "birthDay": 12,
+  "deathMonth": 1,
+  "deathDay": 19,
+  "events": [
+    {"year": 1823, "age": 0, "title": "江戸・貧しい旗本の家に生まれる", "detail": "父は破天荒な勝小吉。貧困の中で蘭学を独学。", "tags": ["origin", "poverty"]},
+    {"year": 1850, "age": 27, "title": "赤坂に私塾を開く", "detail": "蘭学と兵学を教える。坂本龍馬もここを訪れることに。", "tags": ["create"]},
+    {"year": 1860, "age": 37, "title": "咸臨丸で太平洋横断", "detail": "日本人初の太平洋横断。船酔いでほぼ寝たきりだったという逸話も。", "tags": ["adventure", "first"]},
+    {"year": 1862, "age": 39, "title": "坂本龍馬と出会う", "detail": "斬りに来た龍馬を説得して弟子にする伝説的な対面。", "tags": ["turning_encounter", "mentor"]},
+    {"year": 1863, "age": 40, "title": "神戸海軍操練所を設立", "detail": "身分を超えた海軍学校。龍馬や陸奥宗光が学ぶ。", "tags": ["create", "innovation"]},
+    {"year": 1868, "age": 45, "title": "江戸無血開城", "detail": "西郷隆盛と会談、戦わずして江戸を開城。100万人の命を救う。", "tags": ["peace", "courage", "turning_encounter"]},
+    {"year": 1872, "age": 49, "title": "明治政府の海軍卿に就任", "detail": "幕臣ながら新政府に仕える。", "tags": ["restart"]},
+    {"year": 1899, "age": 76, "title": "風邪をこじらせて死去", "detail": "最後の言葉は「コレデオシマイ」。", "tags": ["death"]}
+  ],
+  "quotes": [
+    {"text": "行蔵は我に存す、毀誉は他人の主張。我に与らず我に関せずと存候。", "source": "福沢諭吉への返信"},
+    {"text": "コレデオシマイ", "source": "臨終の言葉"},
+    {"text": "人の一生は棺をおおうて事定まる。", "source": "氷川清話"},
+    {"text": "世の中に無神経ほど強いものはない。", "source": "氷川清話"},
+    {"text": "もう、江戸の町は焼かせぬ。", "source": "西郷との会談の覚悟"},
+    {"text": "学問は、困窮から始まる。", "source": "伝"}
+  ],
+  "books": [
+    {"title": "氷川清話", "author": "勝海舟", "asin": "4061594931", "description": "晩年の海舟が時事・人物・歴史を語った名著。"},
+    {"title": "勝海舟", "author": "子母澤寛", "asin": "4101387133", "description": "全6巻の大河小説。海舟の生涯を描く決定版。"},
+    {"title": "海舟語録", "author": "勝海舟", "description": "本人の肉声が残る語録集。"}
+  ],
+  "places": [],
+  "tags": ["peace", "courage", "innovation", "mentor"],
+  "traits": {
+    "personality": "飄々・豪胆・皮肉屋",
+    "strength": "冷静な判断力、交渉力、先見性",
+    "weakness": "船酔い、気難しい一面",
+    "quirks": ["貧乏時代は蚊帳を質に入れた", "晩年は饒舌で皮肉屋", "字が達筆"]
+  },
+  "relations": [
+    {"id": "sakamoto_ryoma", "label": "弟子", "relation": "師弟"},
+    {"id": "saigo_takamori", "label": "江戸開城の交渉相手", "relation": "好敵手"},
+    {"id": "yukichi_fukuzawa", "label": "論争相手", "relation": "瘠我慢の説"}
+  ]
+}
