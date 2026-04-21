@@ -3899,6 +3899,19 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 .ottocast-store:hover { opacity: 0.85; }
 .ottocast-store.amz { background: #fff; color: var(--wine); border: 1px solid var(--wine); }
 .ottocast-store.rak { background: #bf0000; color: #fff; }
+/* 🎁 歴女おすすめグッズ */
+.rekijo-goods-list { display: flex; flex-direction: column; gap: 10px; }
+.rekijo-good { display: flex; gap: 12px; padding: 12px; background: #fff; border: 1px solid rgba(193,82,122,0.22); border-radius: 8px; transition: border-color 0.15s; }
+.rekijo-good:hover { border-color: #c1527a; }
+.rekijo-good-emoji { font-size: 32px; flex-shrink: 0; width: 40px; text-align: center; line-height: 1; padding-top: 4px; }
+.rekijo-good-body { flex: 1; min-width: 0; }
+.rekijo-good-title { font-family: var(--font-jp); font-weight: 800; font-size: 14px; color: #c1527a; margin-bottom: 4px; }
+.rekijo-good-desc { font-family: var(--font-jp); font-size: 11.5px; color: var(--ink-2); line-height: 1.6; margin-bottom: 6px; }
+.rekijo-good-stores { display: flex; gap: 6px; flex-wrap: wrap; }
+.rekijo-good-store { font-size: 10.5px; padding: 5px 10px; border-radius: 4px; text-decoration: none; font-weight: 700; font-family: var(--font-jp); transition: opacity 0.15s; }
+.rekijo-good-store:hover { opacity: 0.85; }
+.rekijo-good-store.amz { background: #fff; color: var(--wine); border: 1px solid var(--wine); }
+.rekijo-good-store.rak { background: #bf0000; color: #fff; }
 
 /* 📻 Audible アフィリエイトバナー */
 .audible-hero-banner {

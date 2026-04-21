@@ -10804,6 +10804,40 @@ function showBeginnerGuide() {
         <img border="0" width="1" height="1" src="https://www13.a8.net/0.gif?a8mat=4B1QDV+76ZKXE+5R8A+5Z6WX" alt="" style="position:absolute;opacity:0">
       </section>
       <section class="era-page-section">
+        <h2 class="era-page-h2">🎁 歴女におすすめのグッズ・ツール <span class="pr-tag">PR</span></h2>
+        <p style="font-size:12px;color:var(--ink-3);margin-bottom:10px">聖地巡礼・推し活・日常使いまで。歴女の毎日を彩る実用品を厳選。</p>
+        <div class="rekijo-goods-list">
+          ${[
+            {emoji:'📓', title:'御朱印帳', q:'御朱印帳 蛇腹', desc:'聖地巡礼の必需品。神社仏閣で集めた御朱印を一冊に。推しの関連寺社（京都霊山護国神社／松陰神社など）で集めよう。'},
+            {emoji:'🗡', title:'刀剣乱舞 グッズ', q:'刀剣乱舞 グッズ フィギュア', desc:'歴女の推し活定番。三日月宗近・和泉守兼定（土方の刀）などキャラモチーフ多数。'},
+            {emoji:'👘', title:'着物・浴衣レンタル（京都用）', q:'着物 浴衣 レディース 和柄', desc:'京都で着物レンタルして新選組の屯所を歩くのが王道ムーブ。自前の浴衣があれば宿泊先でも楽しめる。'},
+            {emoji:'🎨', title:'和柄マスキングテープ', q:'和柄 マスキングテープ セット', desc:'御朱印帳の装飾・手帳デコに。歴史系SNS映え必須アイテム。'},
+            {emoji:'📷', title:'ミニ三脚・スマホジンバル', q:'スマホ 三脚 ジンバル 軽量', desc:'聖地で推しと一緒に自撮り。城・神社の広角撮影にも。長距離の聖地巡礼ブロガー必携。'},
+            {emoji:'🔋', title:'モバイルバッテリー', q:'モバイルバッテリー 大容量 軽量', desc:'聖地で一日中歩き回るなら必須。地図・撮影・SNS投稿で電池は一瞬で溶ける。'},
+            {emoji:'🧳', title:'ミニトランク・機内持込', q:'キャリーケース 機内持込 軽量 40L', desc:'会津・萩・高知など遠征用。2泊3日の聖地巡礼にちょうど良いサイズ。'},
+            {emoji:'🎟', title:'新選組・戦国武将グッズ', q:'新選組 誠 手ぬぐい', desc:'屯所や資料館で入手できる公式グッズ、家用のインテリアにも。「誠」の手ぬぐい／戦国武将の家紋マグカップなど。'},
+            {emoji:'📚', title:'歴史雑誌「歴史街道」「歴史人」', q:'歴史街道 雑誌', desc:'月刊の歴史雑誌。特集で新選組・幕末・戦国がローテーション。毎月買うと推しの情報が蓄積。'},
+            {emoji:'🎧', title:'ワイヤレスイヤホン', q:'ワイヤレスイヤホン bluetooth', desc:'Audibleで偉人伝を聴きながら通勤／聖地での自撮りムービーの音楽再生に。'}
+          ].map(g => {
+            const q = encodeURIComponent(g.q);
+            const amz = `https://www.amazon.co.jp/s?k=${q}${AMAZON_TAG ? `&tag=${AMAZON_TAG}` : ''}`;
+            const rak = rakutenSearchUrl(g.q, '');
+            return `
+              <div class="rekijo-good">
+                <div class="rekijo-good-emoji">${g.emoji}</div>
+                <div class="rekijo-good-body">
+                  <div class="rekijo-good-title">${escapeHtml(g.title)}</div>
+                  <div class="rekijo-good-desc">${escapeHtml(g.desc)}</div>
+                  <div class="rekijo-good-stores">
+                    <a class="rekijo-good-store amz" href="${amz}" target="_blank" rel="noopener sponsored nofollow">📦 Amazonで探す</a>
+                    <a class="rekijo-good-store rak" href="${rak}" target="_blank" rel="noopener sponsored nofollow">🛍 楽天で探す</a>
+                  </div>
+                </div>
+              </div>`;
+          }).join('')}
+        </div>
+      </section>
+      <section class="era-page-section">
         <h2 class="era-page-h2">✨ 推し偉人の見つけかた</h2>
         <p style="line-height:1.9">プロフィールページの<b>『♡ 推しに設定』</b>ボタンをタップすると、ホームに「推しのきょう」が毎日表示されます。<br>その日の手紙・名言・本・ルーティンが届く、ミニ手帳みたいな機能です。</p>
       </section>
