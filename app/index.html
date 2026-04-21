@@ -72,8 +72,8 @@
 <!-- フォントは非ブロッキングで読み込み（print → all でフォールバック） -->
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet"></noscript>
-<link rel="stylesheet" href="dist/style.min.css?v=20260427B">
-<link rel="stylesheet" href="dist/era-theme.min.css?v=20260427B">
+<link rel="stylesheet" href="dist/style.min.css?v=20260427C">
+<link rel="stylesheet" href="dist/era-theme.min.css?v=20260427C">
 </head>
 <body>
   <header class="app-header">
@@ -227,6 +227,20 @@
       <div class="home-block">
         <div class="home-block-label">🎎 テーマで辿る</div>
         <div id="themeTiles" class="theme-tiles"></div>
+      </div>
+
+      <!-- 📻 Audible（A8アフィリエイト） -->
+      <div class="home-block">
+        <div class="home-block-label">📻 耳で聴く偉人伝 <span class="pr-tag">PR</span></div>
+        <a class="audible-hero-banner" href="https://px.a8.net/svt/ejp?a8mat=4B1QDV+6MQUCY+5TB0+5ZU29" rel="noopener sponsored nofollow" target="_blank">
+          <div class="audible-hero-text">
+            <div class="audible-hero-title">📻 Audibleで偉人の物語を聴く</div>
+            <div class="audible-hero-sub">12万冊以上のオーディオブック聴き放題。通勤・家事・寝る前に、司馬遼太郎の大河を「耳で読む」。30日間無料体験。</div>
+          </div>
+          <img width="120" height="60" class="audible-hero-img" src="https://www29.a8.net/svt/bgt?aid=260421331401&wid=001&eno=01&mid=s00000027126001007000&mc=1" alt="Audible">
+          <span class="audible-hero-cta">▶</span>
+        </a>
+        <img border="0" width="1" height="1" src="https://www10.a8.net/0.gif?a8mat=4B1QDV+6MQUCY+5TB0+5ZU29" alt="" style="position:absolute;opacity:0">
       </div>
 
       <!-- 🏨 楽天トラベル（もしもアフィリエイト） -->
@@ -800,10 +814,10 @@
   </div>
 
   <!-- minified bundles（dist/）と era-lore.min.js は年表画面を開いた時に遅延読み込み -->
-  <script src="dist/history-patterns.min.js?v=20260427B" defer></script>
-  <script src="dist/app.min.js?v=20260427B" defer></script>
-  <script src="auth.js?v=20260427B" type="module"></script>
-  <script src="dist/ai-consult.min.js?v=20260427B" defer></script>
+  <script src="dist/history-patterns.min.js?v=20260427C" defer></script>
+  <script src="dist/app.min.js?v=20260427C" defer></script>
+  <script src="auth.js?v=20260427C" type="module"></script>
+  <script src="dist/ai-consult.min.js?v=20260427C" defer></script>
   <script>
     // Service Worker 登録（2回目以降のロードを爆速化）
     if ('serviceWorker' in navigator) {

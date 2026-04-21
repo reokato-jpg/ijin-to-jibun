@@ -3885,6 +3885,41 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 .pilgrimage-list li { margin-bottom: 4px; }
 .pilgrimage-list b { color: var(--wine); margin-right: 4px; }
 
+/* 📻 Audible アフィリエイトバナー */
+.audible-hero-banner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, #0f1b3d 0%, #1a2a5a 50%, #0a1230 100%);
+  border: 2px solid #f7a11c;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(15,27,61,0.3), inset 0 0 0 1px rgba(247,161,28,0.15);
+  text-decoration: none;
+  margin: 10px 0 14px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.audible-hero-banner::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, #f7a11c, #ffd27a, #f7a11c);
+  background-size: 200% 100%;
+  animation: heroShine 3.5s linear infinite;
+}
+.audible-hero-banner:hover { transform: translateY(-1px); box-shadow: 0 6px 22px rgba(15,27,61,0.45); }
+.audible-hero-text { flex: 1; min-width: 0; }
+.audible-hero-title { font-family: var(--font-jp); font-weight: 800; font-size: 15px; color: #fff; letter-spacing: 0.04em; margin-bottom: 4px; }
+.audible-hero-sub { font-family: var(--font-jp); font-size: 11px; color: #ffd9a8; line-height: 1.5; }
+.audible-hero-img { display: none; }
+.audible-hero-cta { font-size: 22px; color: #f7a11c; flex-shrink: 0; padding: 4px 0 4px 8px; border-left: 1px solid rgba(247,161,28,0.3); font-weight: 700; }
+@media (max-width: 420px) {
+  .audible-hero-banner { padding: 12px 14px; gap: 10px; }
+  .audible-hero-title { font-size: 14px; }
+  .audible-hero-sub { font-size: 10px; }
+}
+
 /* 📑 ホーム目次 — 右下フローティングFAB（ミュートボタンの上に配置） */
 .home-toc-wrap { position: fixed; right: 14px; bottom: 140px; z-index: 45; }
 .home-toc { background: transparent; border: none; }
