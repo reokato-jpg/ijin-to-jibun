@@ -1,0 +1,142 @@
+{
+  "id": "yodo_dono",
+  "name": "淀殿",
+  "nameEn": "Yodo-dono",
+  "birth": 1569,
+  "death": 1615,
+  "country": "日本",
+  "field": "武家女性",
+  "summary": "浅井長政とお市の方の長女・茶々。父と祖父、母を相次いで戦で失い、豊臣秀吉の側室となり秀頼を産む。秀吉死後は豊臣家の実質的な当主として大坂城に立ち、大坂の陣で秀頼と共に自害。戦国最大の悲劇を生きた女性。",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Yodo-dono.jpg?width=280",
+  "wikiTitle": "淀殿",
+  "birthMonth": 0,
+  "birthDay": 0,
+  "deathMonth": 6,
+  "deathDay": 4,
+  "events": [
+    {
+      "year": 1569,
+      "age": 0,
+      "title": "浅井長政の長女として生まれる",
+      "detail": "幼名は茶々。",
+      "tags": [
+        "origin"
+      ]
+    },
+    {
+      "year": 1573,
+      "age": 4,
+      "title": "小谷城落城・父の死",
+      "detail": "母と妹たちと脱出。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1583,
+      "age": 14,
+      "title": "北ノ庄城で母を失う",
+      "detail": "母お市と義父・柴田勝家が自害。妹たちと共に秀吉に保護される。",
+      "tags": [
+        "loss",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1588,
+      "age": 19,
+      "title": "豊臣秀吉の側室に",
+      "detail": "父の仇、母の仇とも言える男の妻となる。",
+      "tags": [
+        "love",
+        "identity"
+      ]
+    },
+    {
+      "year": 1593,
+      "age": 24,
+      "title": "秀頼を出産",
+      "detail": "豊臣家待望の後継者。",
+      "tags": [
+        "create"
+      ]
+    },
+    {
+      "year": 1598,
+      "age": 29,
+      "title": "秀吉の死",
+      "detail": "実質的な豊臣家の当主となる。",
+      "tags": [
+        "loss",
+        "identity"
+      ]
+    },
+    {
+      "year": 1615,
+      "age": 46,
+      "title": "大坂夏の陣、秀頼と共に自害",
+      "detail": "大坂城炎上。戦国の女の運命を全うした。",
+      "tags": [
+        "death"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "豊臣の家は、我が子秀頼と共にあります。",
+      "source": "伝"
+    },
+    {
+      "text": "私の人生は、愛する人を失い続ける旅であった。",
+      "source": "伝"
+    },
+    {
+      "text": "太閤の妻として、母として、私は生きた。",
+      "source": "伝"
+    }
+  ],
+  "books": [
+    {
+      "title": "淀君",
+      "author": "堀和久",
+      "description": "淀殿の内面に迫る歴史小説。"
+    },
+    {
+      "title": "茶々〜戦国三姉妹物語〜",
+      "author": "ねねみつる",
+      "description": "茶々を描く連作。"
+    }
+  ],
+  "places": [],
+  "tags": [
+    "loss",
+    "love",
+    "identity",
+    "courage"
+  ],
+  "themes": [
+    "sengoku",
+    "rekijo_women"
+  ],
+  "traits": {
+    "personality": "誇り高き・情熱的・孤独",
+    "strength": "美貌と血筋",
+    "weakness": "過剰な誇り",
+    "quirks": [
+      "父母を失い続けた人生",
+      "大坂城で自害"
+    ]
+  },
+  "relations": [
+    {
+      "id": "oichi",
+      "label": "母",
+      "relation": "母子"
+    },
+    {
+      "id": "oda_nobunaga",
+      "label": "伯父",
+      "relation": "親戚"
+    }
+  ]
+}

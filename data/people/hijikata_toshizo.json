@@ -192,6 +192,21 @@
       "location": "北海道函館市若松町",
       "note": "銃弾に倒れた一本木関門の地",
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Hijikata_Toshizo.jpg/330px-Hijikata_Toshizo.jpg"
+    },
+    {
+      "name": "土方歳三資料館 (東京日野)",
+      "description": "土方の生家跡。遺品と書が並ぶ",
+      "note": "東京都日野市"
+    },
+    {
+      "name": "五稜郭 (函館)",
+      "description": "土方最期の地。戊辰戦争最終局面の舞台",
+      "note": "北海道函館市"
+    },
+    {
+      "name": "石田寺 (東京日野)",
+      "description": "土方歳三の墓所",
+      "note": "東京都日野市"
     }
   ],
   "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Hijikata_Toshizo.jpg?width=500",

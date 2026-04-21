@@ -196,6 +196,21 @@
       "location": "東京都板橋区",
       "note": "刑死の地。土方歳三の慰霊碑と並ぶ",
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Kondo_Isami02.jpg/330px-Kondo_Isami02.jpg"
+    },
+    {
+      "name": "壬生屯所 (京都)",
+      "description": "新選組屯所。現在は八木家・前川家として公開",
+      "note": "京都市中京区壬生"
+    },
+    {
+      "name": "池田屋址 (京都三条)",
+      "description": "池田屋事件の現場。現在は居酒屋『池田屋 はなの舞』",
+      "note": "京都市中京区"
+    },
+    {
+      "name": "板橋刑場 (東京)",
+      "description": "近藤勇が斬首された場所。現在は近藤勇墓所が建つ",
+      "note": "東京都板橋区"
     }
   ],
   "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Kondo_Isami02.jpg?width=500",

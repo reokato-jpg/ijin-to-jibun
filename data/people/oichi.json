@@ -1,0 +1,128 @@
+{
+  "id": "oichi",
+  "name": "お市の方",
+  "nameEn": "Oichi",
+  "birth": 1547,
+  "death": 1583,
+  "country": "日本",
+  "field": "武家女性",
+  "summary": "織田信長の妹。戦国一の美女と謳われた。浅井長政に嫁ぎ3人の娘（茶々・初・江）を産むが、兄・信長と夫・長政の対立で小谷城落城、娘と共に脱出。のち柴田勝家と再婚するも賤ヶ岳の戦いで勝家と共に自害した。",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Oichi-no-kata.jpg?width=280",
+  "wikiTitle": "お市の方",
+  "birthMonth": 0,
+  "birthDay": 0,
+  "deathMonth": 4,
+  "deathDay": 24,
+  "events": [
+    {
+      "year": 1547,
+      "age": 0,
+      "title": "織田信秀の娘として生まれる",
+      "detail": "信長の妹、戦国一の美女と謳われた。",
+      "tags": [
+        "origin"
+      ]
+    },
+    {
+      "year": 1567,
+      "age": 20,
+      "title": "浅井長政と結婚",
+      "detail": "織田と浅井の同盟の象徴。娘3人（茶々・初・江）を授かる。",
+      "tags": [
+        "love",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1570,
+      "age": 23,
+      "title": "兄と夫の対立勃発",
+      "detail": "信長に小豆袋を送って夫の挟撃の危機を知らせた伝説。",
+      "tags": [
+        "conflict"
+      ]
+    },
+    {
+      "year": 1573,
+      "age": 26,
+      "title": "小谷城落城・長政自害",
+      "detail": "三姉妹と共に脱出。",
+      "tags": [
+        "setback",
+        "loss"
+      ]
+    },
+    {
+      "year": 1582,
+      "age": 35,
+      "title": "柴田勝家と再婚",
+      "detail": "信長の死後、秀吉と対立する勝家に嫁ぐ。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1583,
+      "age": 36,
+      "title": "賤ヶ岳の戦い、勝家と共に自害",
+      "detail": "娘たちを脱出させ、夫と運命を共にした。",
+      "tags": [
+        "death"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "さらぬだに 打ちぬる程も 夏の夜の 夢路をさそふ 時鳥かな",
+      "source": "辞世の歌"
+    },
+    {
+      "text": "娘たちよ、生きよ。",
+      "source": "北ノ庄城最期の夜"
+    },
+    {
+      "text": "女の道は、愛する者と共にあること。",
+      "source": "伝"
+    }
+  ],
+  "books": [
+    {
+      "title": "お市御寮人",
+      "author": "山本兼一",
+      "description": "お市を主人公にした歴史小説。"
+    },
+    {
+      "title": "江〜姫たちの戦国〜",
+      "author": "田渕久美子",
+      "description": "お市とその娘たちを描く大河ドラマ原作。"
+    }
+  ],
+  "places": [],
+  "tags": [
+    "love",
+    "loss",
+    "beauty",
+    "courage"
+  ],
+  "themes": [
+    "sengoku",
+    "rekijo_women"
+  ],
+  "traits": {
+    "personality": "気品・強さ・愛に生きる",
+    "strength": "美貌と気概",
+    "weakness": "二度とも夫を戦で失った",
+    "quirks": [
+      "戦国一の美女と謳われた",
+      "小豆袋の逸話",
+      "三人の娘全員が歴史を動かす"
+    ]
+  },
+  "relations": [
+    {
+      "id": "oda_nobunaga",
+      "label": "兄",
+      "relation": "兄妹"
+    }
+  ]
+}

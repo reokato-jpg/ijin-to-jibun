@@ -1,0 +1,121 @@
+{
+  "id": "hosokawa_gracia",
+  "name": "細川ガラシャ",
+  "nameEn": "Hosokawa Gracia",
+  "birth": 1563,
+  "death": 1600,
+  "country": "日本",
+  "field": "武家女性・キリシタン",
+  "summary": "明智光秀の娘・玉。細川忠興の妻。父が本能寺の変で主君を討ったため、幽閉された後キリスト教に入信し洗礼名ガラシャとなる。関ヶ原の直前、石田三成に人質を取られるのを拒み、家臣に胸を突かせて自死。「散りぬべき時知りてこそ」と辞世を詠んだ。",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Hosokawa_Gracia.jpg?width=280",
+  "wikiTitle": "細川ガラシャ",
+  "birthMonth": 0,
+  "birthDay": 0,
+  "deathMonth": 7,
+  "deathDay": 17,
+  "events": [
+    {
+      "year": 1563,
+      "age": 0,
+      "title": "明智光秀の娘として生まれる",
+      "detail": "幼名は玉。才色兼備と謳われた。",
+      "tags": [
+        "origin"
+      ]
+    },
+    {
+      "year": 1578,
+      "age": 15,
+      "title": "細川忠興と結婚",
+      "detail": "信長の意向で政略結婚。当初は夫婦仲睦まじかった。",
+      "tags": [
+        "love"
+      ]
+    },
+    {
+      "year": 1582,
+      "age": 19,
+      "title": "本能寺の変・父が謀反",
+      "detail": "父光秀が信長を討ち、数日後敗死。玉は味土野に幽閉される。",
+      "tags": [
+        "setback",
+        "loss"
+      ]
+    },
+    {
+      "year": 1585,
+      "age": 22,
+      "title": "大坂で侍女から洗礼を受ける",
+      "detail": "夫の目を盗みキリスト教徒に。洗礼名ガラシャ。",
+      "tags": [
+        "awakening",
+        "identity"
+      ]
+    },
+    {
+      "year": 1600,
+      "age": 37,
+      "title": "関ヶ原直前・石田三成の人質要求を拒否",
+      "detail": "家臣・小笠原少斎に胸を突かせ自害。屋敷に火を放たせた。",
+      "tags": [
+        "courage",
+        "death"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "散りぬべき 時知りてこそ 世の中の 花も花なれ 人も人なれ",
+      "source": "辞世の歌"
+    },
+    {
+      "text": "わたしの信仰は、わたしの命よりも重い。",
+      "source": "伝"
+    },
+    {
+      "text": "人質にはなりませぬ。神の御許へ参ります。",
+      "source": "自害直前"
+    }
+  ],
+  "books": [
+    {
+      "title": "細川ガラシャ",
+      "author": "三浦綾子",
+      "asin": "4062748320",
+      "description": "キリスト教作家・三浦綾子の遺作（講談社文庫）。"
+    },
+    {
+      "title": "ガラシャ夫人",
+      "author": "田渕久美子",
+      "description": "新たな視点から描くガラシャ像。"
+    }
+  ],
+  "places": [],
+  "tags": [
+    "love",
+    "identity",
+    "courage",
+    "awakening",
+    "death"
+  ],
+  "themes": [
+    "sengoku",
+    "rekijo_women"
+  ],
+  "traits": {
+    "personality": "聡明・誇り高き・敬虔",
+    "strength": "知性と信仰",
+    "weakness": "夫の愛が歪んでいた",
+    "quirks": [
+      "当代随一の美女",
+      "夫の忠興は彼女の死後も後妻を娶らなかった時期がある"
+    ]
+  },
+  "relations": [
+    {
+      "id": "oda_nobunaga",
+      "label": "父の主君",
+      "relation": "歴史上"
+    }
+  ]
+}

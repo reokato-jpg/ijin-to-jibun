@@ -10437,14 +10437,14 @@ const THEME_DEFS = {
     name: '新選組',
     tagline: '誠の一字に、すべてを懸けた。',
     intro: '幕末の京を駆けた剣客集団。局長・近藤勇、副長・土方歳三、一番隊・沖田総司、二番隊・永倉新八、三番隊・斎藤一——彼らは時代に逆らい、それぞれの最期まで誠を貫いた。',
-    order: ['kondo_isami','hijikata_toshizo','okita_soji','nagakura_shinpachi','saito_hajime']
+    order: ['kondo_isami','hijikata_toshizo','okita_soji','nagakura_shinpachi','saito_hajime','yamanami_keisuke','harada_sanosuke','ito_kashitaro']
   },
   bakumatsu: {
     emoji: '🏯',
     name: '幕末',
     tagline: '時代が裂け、志士たちが駆けた14年。',
     intro: '黒船来航から明治維新まで、日本が震えた動乱の時代。吉田松陰の松下村塾から始まり、新選組、志士たち、海を渡った男たち——それぞれの正義が交差した。最後の将軍・徳川慶喜は自ら幕府を終わらせ、維新三傑が明治を創った。',
-    order: ['yoshida_shoin','sakamoto_ryoma','takasugi_shinsaku','saigo_takamori','okubo_toshimichi','kido_takayoshi','katsu_kaishu','tokugawa_yoshinobu','kondo_isami','hijikata_toshizo','okita_soji','nagakura_shinpachi','saito_hajime']
+    order: ['yoshida_shoin','sakamoto_ryoma','takasugi_shinsaku','saigo_takamori','okubo_toshimichi','kido_takayoshi','katsu_kaishu','tokugawa_yoshinobu','kondo_isami','hijikata_toshizo','okita_soji','nagakura_shinpachi','saito_hajime','yamanami_keisuke','harada_sanosuke','ito_kashitaro','niijima_yae','atsuhime','kazunomiya']
   },
   sengoku: {
     emoji: '🏹',
@@ -10459,6 +10459,13 @@ const THEME_DEFS = {
     tagline: '明治を創り、時代に引き裂かれた三人。',
     intro: '西郷隆盛・大久保利通・木戸孝允。倒幕の同志として手を取り合い、新政府を築き、そして袂を分かった。',
     order: ['saigo_takamori','okubo_toshimichi','kido_takayoshi']
+  },
+  rekijo_women: {
+    emoji: '🎀',
+    name: '歴史の女たち',
+    tagline: '時代に抗い、愛に生き、誇りを貫いた。',
+    intro: '幕末の八重・篤姫・和宮、戦国のお市・淀殿・ガラシャ——政略の駒として歴史に巻き込まれながらも、それぞれの信念と愛を貫いた女性たち。',
+    order: ['oichi','yodo_dono','hosokawa_gracia','atsuhime','kazunomiya','niijima_yae']
   }
 };
 
@@ -10673,6 +10680,45 @@ function renderThemeTiles() {
   container.querySelector('[data-beginner]')?.addEventListener('click', () => showBeginnerGuide());
 }
 window.renderThemeTiles = renderThemeTiles;
+
+// ====================== 📑 ホーム目次（フローティング） ======================
+function renderHomeTOC() {
+  const mount = document.getElementById('homeTOC');
+  if (!mount) return;
+  const view = document.getElementById('view-people');
+  if (!view) return;
+  const blocks = Array.from(view.querySelectorAll('.home-block'));
+  const entries = [];
+  blocks.forEach((blk, idx) => {
+    if (blk.offsetParent === null) return; // display:none のブロック除外
+    const labelEl = blk.querySelector('.home-block-label');
+    if (!labelEl) return;
+    const txt = (labelEl.textContent || '').trim();
+    if (!txt) return;
+    let anchorId = blk.id;
+    if (!anchorId) { anchorId = `home-blk-${idx}`; blk.id = anchorId; }
+    entries.push({ id: anchorId, label: txt.replace(/\s*PR\s*$/, '').trim() });
+  });
+  if (!entries.length) { mount.innerHTML = ''; return; }
+  mount.innerHTML = `
+    <details class="home-toc" id="homeTOCDetails">
+      <summary class="home-toc-summary">📑 目次（${entries.length}セクション）</summary>
+      <div class="home-toc-list">
+        ${entries.map(e => `<button class="home-toc-item" data-toc="${e.id}">${escapeHtml(e.label)}</button>`).join('')}
+      </div>
+    </details>`;
+  mount.querySelectorAll('[data-toc]').forEach(b => {
+    b.addEventListener('click', () => {
+      const tgt = document.getElementById(b.dataset.toc);
+      if (tgt) {
+        tgt.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const det = document.getElementById('homeTOCDetails');
+        if (det) det.open = false;
+      }
+    });
+  });
+}
+window.renderHomeTOC = renderHomeTOC;
 function openEraModal(catId, eraId) {
   // era-lore が未読込なら先に読み込む
   if (typeof window.ERA_LORE === 'undefined') {
@@ -13542,6 +13588,8 @@ window.renderBookshelfGuides = renderBookshelfGuides;
   renderFeaturedTags();
   renderThemeTiles();
   renderHomeBooks();
+  // TOCは他ブロックが描画された後に
+  setTimeout(() => { try { renderHomeTOC(); } catch (e) { console.warn('toc', e); } }, 400);
   renderArticles();
   renderCategoryFilter();
   renderPeople();

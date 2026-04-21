@@ -1,0 +1,139 @@
+{
+  "id": "niijima_yae",
+  "name": "新島八重",
+  "nameEn": "Niijima Yae",
+  "birth": 1845,
+  "death": 1932,
+  "country": "日本",
+  "field": "志士・教育者",
+  "summary": "会津藩砲術師範の娘。戊辰戦争で鶴ヶ城に籠城し、男装しスペンサー銃で戦った「幕末のジャンヌ・ダルク」。維新後は新島襄と結婚し同志社の礎を築き、晩年は日本赤十字の篤志看護婦として86歳まで活動。「ハンサム・ウーマン」と呼ばれた。",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Niijima_Yae.jpg?width=280",
+  "wikiTitle": "新島八重",
+  "birthMonth": 12,
+  "birthDay": 1,
+  "deathMonth": 6,
+  "deathDay": 14,
+  "events": [
+    {
+      "year": 1845,
+      "age": 0,
+      "title": "会津藩・山本家に生まれる",
+      "detail": "父は砲術師範・山本権八。兄は後の京都府顧問・山本覚馬。",
+      "tags": [
+        "origin"
+      ]
+    },
+    {
+      "year": 1868,
+      "age": 23,
+      "title": "会津戦争・鶴ヶ城籠城",
+      "detail": "男装しスペンサー銃を手に一ヶ月間籠城戦を戦った。",
+      "tags": [
+        "courage",
+        "conflict"
+      ]
+    },
+    {
+      "year": 1876,
+      "age": 31,
+      "title": "新島襄と結婚",
+      "detail": "同志社英学校の創立者と京都で出会い結婚。キリスト教に入信。",
+      "tags": [
+        "love",
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1890,
+      "age": 45,
+      "title": "新島襄の死",
+      "detail": "夫を見送り、その遺志を継ぐ。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1894,
+      "age": 49,
+      "title": "日清戦争で篤志看護婦",
+      "detail": "日本赤十字社の看護婦として従軍。",
+      "tags": [
+        "restart",
+        "service"
+      ]
+    },
+    {
+      "year": 1932,
+      "age": 86,
+      "title": "死去",
+      "detail": "京都で死去。会津の誇り高き女として生涯を貫いた。",
+      "tags": [
+        "death"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "明日の夜はいづくの誰かながむらん なれし御城にのこす月かげ",
+      "source": "会津落城時に詠んだ歌"
+    },
+    {
+      "text": "ならぬことはならぬのです。",
+      "source": "会津の什の掟（八重の信条）"
+    },
+    {
+      "text": "私は自分を生涯、武士の娘だと思っている。",
+      "source": "伝"
+    },
+    {
+      "text": "女に学問は要らぬと言う人は、女を知らぬ人。",
+      "source": "伝"
+    }
+  ],
+  "books": [
+    {
+      "title": "八重の桜 1",
+      "author": "山本むつみ",
+      "asin": "4140057599",
+      "description": "NHK大河ドラマの原作小説。"
+    },
+    {
+      "title": "新島八重",
+      "author": "福本武久",
+      "description": "詳細な伝記。"
+    }
+  ],
+  "places": [
+    {
+      "name": "鶴ヶ城 (会津若松)",
+      "description": "八重がスペンサー銃で戦った籠城地",
+      "note": "福島県会津若松市"
+    },
+    {
+      "name": "同志社大学 (京都)",
+      "description": "夫・新島襄と共に築いた学び舎",
+      "note": "京都市上京区"
+    }
+  ],
+  "tags": [
+    "courage",
+    "love",
+    "restart",
+    "service"
+  ],
+  "themes": [
+    "bakumatsu",
+    "rekijo_women"
+  ],
+  "traits": {
+    "personality": "芯が強い・活発・信念の人",
+    "strength": "射撃・看護・学問",
+    "weakness": "頑固",
+    "quirks": [
+      "男装して戦った",
+      "キリスト教徒",
+      "晩年は茶道師範"
+    ]
+  },
+  "relations": []
+}

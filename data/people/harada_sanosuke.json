@@ -1,0 +1,123 @@
+{
+  "id": "harada_sanosuke",
+  "name": "原田左之助",
+  "nameEn": "Harada Sanosuke",
+  "birth": 1840,
+  "death": 1868,
+  "country": "日本",
+  "field": "武士・槍術",
+  "summary": "新選組十番隊組長。伊予松山藩の中間出身。種田流槍術の名手で、豪快な性格と怪力で隊の兵士たちをまとめた。池田屋事件で最前列に立ち、鳥羽伏見後は彰義隊に参加、上野戦争で負傷し28歳で死去。",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Harada_Sanosuke.jpg?width=280",
+  "wikiTitle": "原田左之助",
+  "birthMonth": 0,
+  "birthDay": 0,
+  "deathMonth": 7,
+  "deathDay": 6,
+  "events": [
+    {
+      "year": 1840,
+      "age": 0,
+      "title": "伊予松山藩の中間の家に生まれる",
+      "detail": "身分は低かったが豪胆な性格で知られた。",
+      "tags": [
+        "origin"
+      ]
+    },
+    {
+      "year": 1863,
+      "age": 23,
+      "title": "新選組結成に参加",
+      "detail": "十番隊組長、槍術師範に。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1864,
+      "age": 24,
+      "title": "池田屋事件の最前列で突入",
+      "detail": "槍を手に暴れまわる。",
+      "tags": [
+        "courage",
+        "battle"
+      ]
+    },
+    {
+      "year": 1867,
+      "age": 27,
+      "title": "新選組を離脱、靖共隊を結成",
+      "detail": "永倉新八らと新選組を出る。",
+      "tags": [
+        "conflict"
+      ]
+    },
+    {
+      "year": 1868,
+      "age": 28,
+      "title": "上野戦争（彰義隊）で負傷",
+      "detail": "数日後、息を引き取る。",
+      "tags": [
+        "setback",
+        "death"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "俺の腹の傷は、嘘じゃねえ。",
+      "source": "自分の切腹未遂の傷を自慢して"
+    },
+    {
+      "text": "槍があれば、何とかなる。",
+      "source": "伝"
+    },
+    {
+      "text": "生き死にに、格好なんか要るか。",
+      "source": "伝"
+    }
+  ],
+  "books": [
+    {
+      "title": "新選組血風録",
+      "author": "司馬遼太郎",
+      "asin": "4041263328",
+      "description": "原田左之助も登場する連作短編集。"
+    }
+  ],
+  "places": [],
+  "tags": [
+    "courage",
+    "short_life",
+    "loyalty"
+  ],
+  "themes": [
+    "shinsengumi",
+    "bakumatsu"
+  ],
+  "traits": {
+    "personality": "豪快・短気・義理堅い",
+    "strength": "種田流槍術・怪力",
+    "weakness": "無鉄砲",
+    "quirks": [
+      "自分で腹を切ったが死ねず、その傷を自慢",
+      "馬賊になって大陸に渡った伝説"
+    ]
+  },
+  "relations": [
+    {
+      "id": "kondo_isami",
+      "label": "局長",
+      "relation": "上官"
+    },
+    {
+      "id": "hijikata_toshizo",
+      "label": "副長",
+      "relation": "同志"
+    },
+    {
+      "id": "nagakura_shinpachi",
+      "label": "二番隊組長・盟友",
+      "relation": "友人"
+    }
+  ]
+}

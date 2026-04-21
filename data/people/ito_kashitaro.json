@@ -1,0 +1,114 @@
+{
+  "id": "ito_kashitaro",
+  "name": "伊東甲子太郎",
+  "nameEn": "Ito Kashitaro",
+  "birth": 1835,
+  "death": 1867,
+  "country": "日本",
+  "field": "武士・思想家",
+  "summary": "新選組参謀。学識豊かな尊王思想家で、北辰一刀流の剣豪。新選組に参謀として招かれるが、思想の違いから御陵衛士を結成して袂を分かつ。油小路事件で土方歳三の策により暗殺された。新選組内部の最大の悲劇。",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Ito_Kashitaro.jpg?width=280",
+  "wikiTitle": "伊東甲子太郎",
+  "birthMonth": 0,
+  "birthDay": 0,
+  "deathMonth": 11,
+  "deathDay": 18,
+  "events": [
+    {
+      "year": 1835,
+      "age": 0,
+      "title": "常陸国の藩士の家に生まれる",
+      "detail": "鈴木大蔵が本名。",
+      "tags": [
+        "origin"
+      ]
+    },
+    {
+      "year": 1864,
+      "age": 29,
+      "title": "新選組に参謀として加盟",
+      "detail": "近藤勇が学識と剣技を見込んで招く。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1867,
+      "age": 32,
+      "title": "御陵衛士を結成して分派",
+      "detail": "尊王思想を表明、新選組と決別。",
+      "tags": [
+        "rebellion",
+        "conflict"
+      ]
+    },
+    {
+      "year": 1867,
+      "age": 32,
+      "title": "油小路事件で暗殺",
+      "detail": "酒席を装って呼び出され、帰路を襲われ死去。享年32。",
+      "tags": [
+        "death"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "吾が身は国のためにあり、一己のためにあらず。",
+      "source": "御陵衛士結成時"
+    },
+    {
+      "text": "尊王の志、変わることなし。",
+      "source": "伝"
+    },
+    {
+      "text": "私の死は、私の思想を証明する。",
+      "source": "伝"
+    }
+  ],
+  "books": [
+    {
+      "title": "燃えよ剣",
+      "author": "司馬遼太郎",
+      "asin": "4167105764",
+      "description": "伊東の思想と新選組の対立が鮮烈に描かれる。"
+    }
+  ],
+  "places": [],
+  "tags": [
+    "identity",
+    "conflict",
+    "rebellion",
+    "loss"
+  ],
+  "themes": [
+    "shinsengumi",
+    "bakumatsu"
+  ],
+  "traits": {
+    "personality": "知的・雄弁・理想主義",
+    "strength": "学問・剣術",
+    "weakness": "新選組の現場主義と合わなかった",
+    "quirks": [
+      "女性に人気があった",
+      "和歌の名手"
+    ]
+  },
+  "relations": [
+    {
+      "id": "kondo_isami",
+      "label": "局長、最後の敵",
+      "relation": "対立"
+    },
+    {
+      "id": "hijikata_toshizo",
+      "label": "副長、暗殺の首謀者",
+      "relation": "対立"
+    },
+    {
+      "id": "saito_hajime",
+      "label": "暗殺実行者",
+      "relation": "対立"
+    }
+  ]
+}

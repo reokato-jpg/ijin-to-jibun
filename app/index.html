@@ -72,8 +72,8 @@
 <!-- フォントは非ブロッキングで読み込み（print → all でフォールバック） -->
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet"></noscript>
-<link rel="stylesheet" href="dist/style.min.css?v=20260426M">
-<link rel="stylesheet" href="dist/era-theme.min.css?v=20260426M">
+<link rel="stylesheet" href="dist/style.min.css?v=20260426N">
+<link rel="stylesheet" href="dist/era-theme.min.css?v=20260426N">
 </head>
 <body>
   <header class="app-header">
@@ -130,6 +130,9 @@
           </button>
         </div>
       </div>
+
+      <!-- 📑 ホーム目次（フローティング） -->
+      <div id="homeTOC" class="home-toc-wrap"></div>
 
       <!-- ═══ TODAY ═══ 今日の情報（最優先） ═══════════════ -->
 
@@ -412,6 +415,9 @@
           <button class="search-filter" data-filter="art">画家</button>
           <button class="search-filter" data-filter="history">歴史</button>
           <button class="search-filter" data-filter="science">科学者</button>
+          <button class="search-filter" data-filter="business">経営者</button>
+          <button class="search-filter" data-filter="horse_racing">競馬</button>
+          <button class="search-filter" data-filter="cooking">料理人</button>
         </div>
         <button id="advSearchToggle" class="adv-search-toggle" aria-expanded="false">
           <span class="adv-search-label">🔎 詳細検索（時代・国・並び替え）</span>
@@ -769,10 +775,10 @@
   </div>
 
   <!-- minified bundles（dist/）と era-lore.min.js は年表画面を開いた時に遅延読み込み -->
-  <script src="dist/history-patterns.min.js?v=20260426M" defer></script>
-  <script src="dist/app.min.js?v=20260426M" defer></script>
-  <script src="auth.js?v=20260426M" type="module"></script>
-  <script src="dist/ai-consult.min.js?v=20260426M" defer></script>
+  <script src="dist/history-patterns.min.js?v=20260426N" defer></script>
+  <script src="dist/app.min.js?v=20260426N" defer></script>
+  <script src="auth.js?v=20260426N" type="module"></script>
+  <script src="dist/ai-consult.min.js?v=20260426N" defer></script>
   <script>
     // Service Worker 登録（2回目以降のロードを爆速化）
     if ('serviceWorker' in navigator) {

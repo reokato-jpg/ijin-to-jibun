@@ -168,6 +168,21 @@
       "location": "長崎市伊良林",
       "note": "日本初の商社があった場所",
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/2_Chome_Irabayashi%2C_Nagasaki-shi%2C_Nagasaki-ken_850-0802%2C_Japan_-_panoramio.jpg/330px-2_Chome_Irabayashi%2C_Nagasaki-shi%2C_Nagasaki-ken_850-0802%2C_Japan_-_panoramio.jpg"
+    },
+    {
+      "name": "高知城・龍馬生誕地 (高知)",
+      "description": "龍馬が育った土佐藩の中心地",
+      "note": "高知県高知市"
+    },
+    {
+      "name": "近江屋址 (京都)",
+      "description": "龍馬暗殺の現場",
+      "note": "京都市中京区"
+    },
+    {
+      "name": "寺田屋 (京都伏見)",
+      "description": "龍馬が襲撃され逃れた旅館。現存",
+      "note": "京都市伏見区"
     }
   ],
   "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Sakamoto_Ryoma.jpg?width=500",

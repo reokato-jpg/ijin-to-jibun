@@ -1,0 +1,122 @@
+{
+  "id": "yamanami_keisuke",
+  "name": "山南敬助",
+  "nameEn": "Yamanami Keisuke",
+  "birth": 1833,
+  "death": 1865,
+  "country": "日本",
+  "field": "武士・剣客",
+  "summary": "新選組総長。江戸で北辰一刀流を修めた仙台浪人。温厚な人柄と学識で隊士から慕われたが、近藤・土方との確執から脱走を試み、沖田総司に連れ戻されて切腹。わずか31歳。",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Yamanami_Keisuke.jpg?width=280",
+  "wikiTitle": "山南敬助",
+  "birthMonth": 0,
+  "birthDay": 0,
+  "deathMonth": 3,
+  "deathDay": 20,
+  "events": [
+    {
+      "year": 1833,
+      "age": 0,
+      "title": "仙台藩士の子として生まれる",
+      "detail": "北辰一刀流を学ぶ。",
+      "tags": [
+        "origin"
+      ]
+    },
+    {
+      "year": 1859,
+      "age": 26,
+      "title": "試衛館に現れ、近藤勇と試合",
+      "detail": "負けた後、近藤に魅せられ試衛館に居着く。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1863,
+      "age": 30,
+      "title": "新選組副長→総長",
+      "detail": "温厚な人格で隊士の信望を集める。",
+      "tags": [
+        "identity"
+      ]
+    },
+    {
+      "year": 1865,
+      "age": 32,
+      "title": "新選組を脱走",
+      "detail": "隊規違反として追われ、大津で自ら引き返す。",
+      "tags": [
+        "conflict",
+        "setback"
+      ]
+    },
+    {
+      "year": 1865,
+      "age": 32,
+      "title": "切腹、介錯は沖田総司",
+      "detail": "親しかった沖田の手で人生を終える。",
+      "tags": [
+        "death"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "わたしは、隊を愛していた。",
+      "source": "伝"
+    },
+    {
+      "text": "沖田君、介錯を頼む。",
+      "source": "最期の言葉"
+    },
+    {
+      "text": "誠とは、人を殺すことではない。",
+      "source": "伝"
+    }
+  ],
+  "books": [
+    {
+      "title": "新選組異聞録",
+      "author": "子母澤寛",
+      "description": "山南の切腹を含む新選組秘話。"
+    }
+  ],
+  "places": [],
+  "tags": [
+    "loyalty",
+    "conflict",
+    "loss",
+    "short_life"
+  ],
+  "themes": [
+    "shinsengumi",
+    "bakumatsu"
+  ],
+  "traits": {
+    "personality": "温厚・学識・繊細",
+    "strength": "剣術・人格",
+    "weakness": "理想と現実の板挟み",
+    "quirks": [
+      "島原の明里という遊女を愛した",
+      "遊女明里との別れは新選組屈指の悲話"
+    ]
+  },
+  "relations": [
+    {
+      "id": "kondo_isami",
+      "label": "局長",
+      "relation": "上官"
+    },
+    {
+      "id": "hijikata_toshizo",
+      "label": "副長、確執の相手",
+      "relation": "対立"
+    },
+    {
+      "id": "okita_soji",
+      "label": "介錯人",
+      "relation": "友人"
+    }
+  ]
+}

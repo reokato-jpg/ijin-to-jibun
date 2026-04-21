@@ -138,7 +138,18 @@
       "description": "本人の肉声が残る語録集。"
     }
   ],
-  "places": [],
+  "places": [
+    {
+      "name": "江戸城 (東京皇居)",
+      "description": "江戸無血開城の地",
+      "note": "東京都千代田区"
+    },
+    {
+      "name": "洗足池公園 (東京)",
+      "description": "勝海舟の墓所",
+      "note": "東京都大田区"
+    }
+  ],
   "tags": [
     "peace",
     "courage",

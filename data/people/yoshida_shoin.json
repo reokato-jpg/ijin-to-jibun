@@ -155,7 +155,23 @@
       "description": "教育者としての松陰像。"
     }
   ],
-  "places": [],
+  "places": [
+    {
+      "name": "松下村塾 (萩)",
+      "description": "吉田松陰が主宰した塾。現存",
+      "note": "山口県萩市"
+    },
+    {
+      "name": "野山獄跡 (萩)",
+      "description": "松陰が投獄された藩の獄",
+      "note": "山口県萩市"
+    },
+    {
+      "name": "松陰神社 (東京世田谷)",
+      "description": "松陰の墓所と神社",
+      "note": "東京都世田谷区"
+    }
+  ],
   "tags": [
     "mentor",
     "passion",

@@ -1,0 +1,142 @@
+{
+  "id": "atsuhime",
+  "name": "篤姫",
+  "nameEn": "Atsuhime",
+  "birth": 1836,
+  "death": 1883,
+  "country": "日本",
+  "field": "武家女性・御台所",
+  "summary": "薩摩藩島津家分家の娘として生まれ、島津斉彬の養女を経て第13代将軍・徳川家定の正室（御台所）となる。家定の死後、天璋院と号して大奥を統率。戊辰戦争では徳川家を守るため西郷に嘆願、江戸無血開城に貢献した。",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Atsuhime.jpg?width=280",
+  "wikiTitle": "天璋院",
+  "birthMonth": 2,
+  "birthDay": 5,
+  "deathMonth": 11,
+  "deathDay": 20,
+  "events": [
+    {
+      "year": 1836,
+      "age": 0,
+      "title": "薩摩の分家島津家に生まれる",
+      "detail": "幼名は一子。",
+      "tags": [
+        "origin"
+      ]
+    },
+    {
+      "year": 1853,
+      "age": 17,
+      "title": "島津斉彬の養女となり江戸へ",
+      "detail": "将軍家輿入れのため。人生の大転換。",
+      "tags": [
+        "turning_encounter"
+      ]
+    },
+    {
+      "year": 1856,
+      "age": 20,
+      "title": "第13代将軍・徳川家定と結婚",
+      "detail": "御台所として大奥の頂点に立つ。",
+      "tags": [
+        "love"
+      ]
+    },
+    {
+      "year": 1858,
+      "age": 22,
+      "title": "家定の急逝",
+      "detail": "結婚からわずか1年9ヶ月で夫を失う。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1858,
+      "age": 22,
+      "title": "天璋院と号す",
+      "detail": "出家せず、御台所として大奥を統率し続ける。",
+      "tags": [
+        "identity"
+      ]
+    },
+    {
+      "year": 1868,
+      "age": 32,
+      "title": "江戸無血開城に尽力",
+      "detail": "西郷隆盛に嘆願書を送り、徳川家の存続を訴える。",
+      "tags": [
+        "peace",
+        "courage"
+      ]
+    },
+    {
+      "year": 1883,
+      "age": 47,
+      "title": "脳溢血で急死",
+      "detail": "手元にあったのはわずかな所持金のみ。家臣への情をすべて尽くした生涯。",
+      "tags": [
+        "death"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "徳川の家を滅ぼすなかれ。",
+      "source": "西郷への嘆願書"
+    },
+    {
+      "text": "私は島津の娘ではない、徳川の妻である。",
+      "source": "伝"
+    },
+    {
+      "text": "人は、名ではなく生き方で語られる。",
+      "source": "伝"
+    }
+  ],
+  "books": [
+    {
+      "title": "篤姫",
+      "author": "宮尾登美子",
+      "asin": "410136020X",
+      "description": "NHK大河の原作（新潮文庫・全2巻）。"
+    },
+    {
+      "title": "天璋院篤姫",
+      "author": "橋本博文",
+      "description": "史実に基づく評伝。"
+    }
+  ],
+  "places": [],
+  "tags": [
+    "love",
+    "loss",
+    "peace",
+    "identity"
+  ],
+  "themes": [
+    "bakumatsu",
+    "rekijo_women"
+  ],
+  "traits": {
+    "personality": "気品・芯の強さ・情の厚さ",
+    "strength": "教養・政治感覚",
+    "weakness": "愛する者を早く失い続けた",
+    "quirks": [
+      "猫好き",
+      "お茶とお菓子を好んだ",
+      "徳川家を最後まで守った"
+    ]
+  },
+  "relations": [
+    {
+      "id": "saigo_takamori",
+      "label": "嘆願の相手",
+      "relation": "交渉"
+    },
+    {
+      "id": "tokugawa_yoshinobu",
+      "label": "将軍家の縁者",
+      "relation": "徳川家"
+    }
+  ]
+}

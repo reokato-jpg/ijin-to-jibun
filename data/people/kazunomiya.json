@@ -1,0 +1,146 @@
+{
+  "id": "kazunomiya",
+  "name": "和宮",
+  "nameEn": "Kazunomiya",
+  "birth": 1846,
+  "death": 1877,
+  "country": "日本",
+  "field": "皇女・御台所",
+  "summary": "仁孝天皇の第8皇女にして孝明天皇の妹。政略結婚で江戸に下向し、第14代将軍・徳川家茂の御台所となる。夫家茂との愛情は深く、家茂の死後も徳川の家を守り抜き、篤姫と共に江戸城明け渡しを成し遂げた悲しき皇女。",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Kazunomiya.jpg?width=280",
+  "wikiTitle": "和宮親子内親王",
+  "birthMonth": 7,
+  "birthDay": 3,
+  "deathMonth": 9,
+  "deathDay": 2,
+  "events": [
+    {
+      "year": 1846,
+      "age": 0,
+      "title": "京都で生まれる",
+      "detail": "父は仁孝天皇、母は典侍・橋本経子。",
+      "tags": [
+        "origin"
+      ]
+    },
+    {
+      "year": 1851,
+      "age": 5,
+      "title": "有栖川宮熾仁親王と婚約",
+      "detail": "幼い頃から婚約者がいた。",
+      "tags": [
+        "love"
+      ]
+    },
+    {
+      "year": 1861,
+      "age": 15,
+      "title": "政略結婚を受け入れ江戸へ下向",
+      "detail": "有栖川宮との婚約を破棄し、徳川家茂と結婚するため江戸へ。",
+      "tags": [
+        "setback",
+        "setback"
+      ]
+    },
+    {
+      "year": 1862,
+      "age": 16,
+      "title": "徳川家茂と結婚",
+      "detail": "公武合体の象徴。当初は冷ややかだったが次第に深い愛情が芽生える。",
+      "tags": [
+        "love"
+      ]
+    },
+    {
+      "year": 1866,
+      "age": 20,
+      "title": "夫・家茂の死",
+      "detail": "大坂城で急死。最愛の夫を失う。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1867,
+      "age": 21,
+      "title": "静寛院宮と号す",
+      "detail": "若くして落飾。徳川の嫁として生きる決意。",
+      "tags": [
+        "identity"
+      ]
+    },
+    {
+      "year": 1868,
+      "age": 22,
+      "title": "江戸無血開城",
+      "detail": "篤姫と共に朝廷に嘆願。徳川家の存続に貢献。",
+      "tags": [
+        "peace",
+        "courage"
+      ]
+    },
+    {
+      "year": 1877,
+      "age": 31,
+      "title": "脚気を患い箱根で療養中に死去",
+      "detail": "遺体は家茂の眠る増上寺に葬られた。",
+      "tags": [
+        "death"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "惜しまじな 君と民とのためならば 身は武蔵野の露と消ゆとも",
+      "source": "政略結婚を受け入れるときの歌"
+    },
+    {
+      "text": "徳川の家に嫁いだ以上、私は徳川の妻です。",
+      "source": "伝"
+    },
+    {
+      "text": "私の心は、あの方と共に逝きました。",
+      "source": "家茂の死後"
+    }
+  ],
+  "books": [
+    {
+      "title": "和宮様御留",
+      "author": "有吉佐和子",
+      "asin": "4062755963",
+      "description": "和宮を題材にした名小説（講談社文庫）。"
+    },
+    {
+      "title": "皇女和宮",
+      "author": "武部敏夫",
+      "description": "史実に基づく評伝。"
+    }
+  ],
+  "places": [],
+  "tags": [
+    "love",
+    "loss",
+    "setback",
+    "peace"
+  ],
+  "themes": [
+    "bakumatsu",
+    "rekijo_women"
+  ],
+  "traits": {
+    "personality": "気品・純情・芯の強さ",
+    "strength": "歌道・書・信念",
+    "weakness": "体が弱い",
+    "quirks": [
+      "家茂の肖像を大切にした",
+      "最期は家茂の隣に埋葬"
+    ]
+  },
+  "relations": [
+    {
+      "id": "atsuhime",
+      "label": "大奥の義母",
+      "relation": "家族"
+    }
+  ]
+}

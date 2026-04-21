@@ -139,7 +139,23 @@
       "description": "学術的な評伝の決定版。"
     }
   ],
-  "places": [],
+  "places": [
+    {
+      "name": "松下村塾 (萩)",
+      "description": "幼少時代学んだ場所",
+      "note": "山口県萩市"
+    },
+    {
+      "name": "池田屋址 (京都三条)",
+      "description": "襲撃から逃れた現場",
+      "note": "京都市中京区"
+    },
+    {
+      "name": "京都霊山護国神社",
+      "description": "木戸の墓所、幕末志士の聖地",
+      "note": "京都市東山区"
+    }
+  ],
   "tags": [
     "survival",
     "strategy",

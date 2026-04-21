@@ -130,7 +130,23 @@
       "description": "本人の肉声が残る手紙集。"
     }
   ],
-  "places": [],
+  "places": [
+    {
+      "name": "松下村塾 (萩)",
+      "description": "吉田松陰に学んだ塾",
+      "note": "山口県萩市"
+    },
+    {
+      "name": "功山寺 (下関)",
+      "description": "高杉が挙兵した寺",
+      "note": "山口県下関市"
+    },
+    {
+      "name": "東行庵 (下関)",
+      "description": "高杉晋作の墓所と愛人おうのが庵主",
+      "note": "山口県下関市"
+    }
+  ],
   "tags": [
     "passion",
     "courage",
