@@ -3478,6 +3478,155 @@
     try { setupInfluenceRipple(); } catch (e) { console.warn('[magic] ripple', e); }
     try { setupLetterExchange(); } catch (e) { console.warn('[magic] letter', e); }
     try { setupRoutineLive(); } catch (e) { console.warn('[magic] routineLive', e); }
+    try { setupMusicSkin(); } catch (e) { console.warn('[magic] musicSkin', e); }
+  }
+
+  // ============================================================
+  // ミュージック：近未来スキンの JS 拡張
+  //  - 絵文字ボタンを機械的な記号に差し替え
+  //  - Now Playing 下にウェーブフォーム Canvas を注入、再生中はアニメート
+  // ============================================================
+  function setupMusicSkin() {
+    const TRACK_IDS = ['homeBgm','searchBgm','historyBgm','routineBgm','blogBgm','favoritesBgm','squareBgm'];
+    const SYMBOLS = {
+      musicShuffleBtn: '⇌',
+      musicPlayBtn:    '▷',
+      musicStopBtn:    '□',
+      musicLoopBtn:    '↻',
+    };
+
+    let waveCanvas = null, waveCtx = null, waveRaf = 0;
+    let audioCtx = null, analyser = null, sourceMap = new Map();
+
+    function apply() {
+      const app = document.querySelector('#phoneMusicApp .music-app');
+      if (!app) return false;
+      // ボタン絵文字を置換
+      Object.entries(SYMBOLS).forEach(([id, sym]) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.textContent = sym;
+        el.style.fontFamily = '"Cormorant Garamond", "Shippori Mincho", serif';
+      });
+      // waveform canvas を Now Playing に注入（既に注入済みならスキップ）
+      const np = app.querySelector('.music-nowplaying');
+      if (np && !np.querySelector('.magic-music-wave')) {
+        waveCanvas = document.createElement('canvas');
+        waveCanvas.className = 'magic-music-wave';
+        waveCanvas.width = 600;
+        waveCanvas.height = 64;
+        np.appendChild(waveCanvas);
+        waveCtx = waveCanvas.getContext('2d');
+      }
+      return true;
+    }
+
+    function ensureAudioCtx() {
+      if (audioCtx) return audioCtx;
+      try {
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) return null;
+        audioCtx = new AC();
+        analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 128;
+        analyser.smoothingTimeConstant = 0.82;
+        analyser.connect(audioCtx.destination);
+      } catch (e) {
+        return null;
+      }
+      return audioCtx;
+    }
+
+    function hookAudioToAnalyser(audioEl) {
+      if (!audioEl) return;
+      if (!ensureAudioCtx()) return;
+      if (sourceMap.has(audioEl)) return;
+      try {
+        const src = audioCtx.createMediaElementSource(audioEl);
+        src.connect(analyser);
+        sourceMap.set(audioEl, src);
+      } catch (e) {
+        // 既に他のコンテキストに接続されているケースは無視
+      }
+    }
+
+    function isAnyPlaying() {
+      for (const id of TRACK_IDS) {
+        const a = document.getElementById(id);
+        if (a && !a.paused && !a.ended) return a;
+      }
+      return null;
+    }
+
+    function drawWave() {
+      if (!waveCtx || !waveCanvas) return;
+      const W = waveCanvas.width, H = waveCanvas.height;
+      waveCtx.clearRect(0, 0, W, H);
+      const playing = isAnyPlaying();
+      if (!playing) {
+        // 静止状態：中央に細い金の1本線
+        waveCtx.strokeStyle = 'rgba(212, 176, 85, 0.35)';
+        waveCtx.lineWidth = 1;
+        waveCtx.beginPath();
+        waveCtx.moveTo(0, H / 2);
+        waveCtx.lineTo(W, H / 2);
+        waveCtx.stroke();
+        waveRaf = requestAnimationFrame(drawWave);
+        return;
+      }
+      // 再生中：アナライザーが使える場合は FFT、使えなければ擬似波形
+      let bins = null;
+      if (analyser) {
+        try { hookAudioToAnalyser(playing); } catch {}
+        const arr = new Uint8Array(analyser.frequencyBinCount);
+        analyser.getByteFrequencyData(arr);
+        bins = arr;
+      }
+      const count = 40;
+      const barW = W / count;
+      for (let i = 0; i < count; i++) {
+        let v;
+        if (bins && bins.length) {
+          v = bins[Math.floor(i * bins.length / count)] / 255;
+        } else {
+          // 擬似波形：時間で変動
+          const t = performance.now() * 0.002;
+          v = 0.25 + Math.abs(Math.sin(t + i * 0.45)) * 0.55;
+        }
+        const h = v * H * 0.9 + 2;
+        const x = i * barW + barW * 0.22;
+        const w = barW * 0.56;
+        const y = (H - h) / 2;
+        const grad = waveCtx.createLinearGradient(0, y, 0, y + h);
+        grad.addColorStop(0, 'rgba(255, 232, 168, 0.9)');
+        grad.addColorStop(0.5, 'rgba(212, 176, 85, 0.85)');
+        grad.addColorStop(1, 'rgba(140, 90, 40, 0.7)');
+        waveCtx.fillStyle = grad;
+        waveCtx.fillRect(x, y, w, h);
+      }
+      waveRaf = requestAnimationFrame(drawWave);
+    }
+
+    // 初回適用 & 監視（phoneMusicApp が hidden→表示されたとき）
+    const start = () => {
+      if (apply()) {
+        if (waveRaf) cancelAnimationFrame(waveRaf);
+        waveRaf = requestAnimationFrame(drawWave);
+      } else {
+        const mo = new MutationObserver(() => {
+          if (apply()) {
+            mo.disconnect();
+            if (waveRaf) cancelAnimationFrame(waveRaf);
+            waveRaf = requestAnimationFrame(drawWave);
+          }
+        });
+        mo.observe(document.body, { childList: true, subtree: true });
+      }
+    };
+    start();
+    // ミュージックアプリが閉じたり再表示されるとボタンが再生成されないため
+    // 一定間隔で記号を再適用（音声要素の再生状態変化で DOM が変わるケースに備える）
+    setInterval(() => apply(), 2000);
   }
 
   if (document.readyState === 'complete' || document.readyState === 'interactive') {
