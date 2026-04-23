@@ -588,9 +588,8 @@
       return true;
     }
 
-    // ---- タイムスリップ風 Canvas 背景（過去に吸い込まれる感） ----
-    // 粒子は外周→中心へゆっくり吸い寄せられ、全体がわずかに時計回りに渦を巻く。
-    // セピア寄りの暖色で、大きな和暦・古語が重層的に浮かんで消える。
+    // ---- タイムスリップ × 宇宙 × テック の複合背景 ----
+    // 星景 + 星雲 + 内向き渦 + デジタルグリッド + 走査線 + 英字主体のタイムスタンプ
     function initTimeWarp(canvas) {
       if (!canvas || !canvas.getContext) return;
       const ctx = canvas.getContext('2d');
@@ -607,91 +606,130 @@
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         cx = W / 2;
         cy = H / 2;
+        // サイズ変更時は星を作り直し
+        buildStars();
       };
+
+      // --- 星景（宇宙感：静的＋ゆるく明滅）---
+      let stars = [];
+      function buildStars() {
+        const count = Math.max(60, Math.floor(W * H / 4000));
+        stars = Array.from({ length: count }, () => ({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          r: Math.random() < 0.85 ? 0.4 + Math.random() * 0.9 : 0.9 + Math.random() * 1.6,
+          phase: Math.random() * Math.PI * 2,
+          speed: 0.0008 + Math.random() * 0.0022,
+          hue: Math.random() < 0.6 ? 200 + Math.random() * 40      // 青白い星
+                : Math.random() < 0.7 ? 40 + Math.random() * 20    // 金の星
+                :                       280 + Math.random() * 40,  // 紫の星
+        }));
+      }
       resize();
       const ro = new ResizeObserver(resize);
       ro.observe(canvas.parentElement || canvas);
 
-      // --- 粒子（内側へ吸い寄せられる）---
-      const COUNT = 100;
+      // --- 星雲（ゆっくりドリフト）---
+      const nebulae = [
+        { x: 0.18, y: 0.22, r: 240, hue: 270, alpha: 0.18, vx:  0.03, vy:  0.02 },
+        { x: 0.82, y: 0.72, r: 280, hue: 200, alpha: 0.14, vx: -0.03, vy: -0.02 },
+        { x: 0.55, y: 0.15, r: 200, hue:  36, alpha: 0.13, vx:  0.02, vy:  0.015 },
+      ];
+
+      // --- 渦粒子（テック寄り：シアン／白／琥珀ミックス、内向き）---
+      const COUNT = 110;
       const particles = Array.from({ length: COUNT }, () => spawn(true));
       function spawn(initial) {
         const a = Math.random() * Math.PI * 2;
         const maxR = Math.hypot(W, H) * 0.55;
-        // initial=trueなら画面全体に分散、falseなら外周から生成
         const r = initial ? Math.random() * maxR : maxR + Math.random() * 80;
+        const kind = Math.random();
         return {
-          a,
-          r,
-          drift: 0.25 + Math.random() * 0.7,     // 中心へ向かう速度
-          swirl: 0.0015 + Math.random() * 0.0035, // 渦（時計回り）
-          size: 0.4 + Math.random() * 1.0,
-          hue: 28 + Math.random() * 18,          // セピア〜琥珀
-          alpha: 0.25 + Math.random() * 0.55,
+          a, r,
+          drift: 0.3 + Math.random() * 0.9,
+          swirl: 0.0015 + Math.random() * 0.004,
+          size: 0.5 + Math.random() * 1.2,
+          hue: kind < 0.35 ? 185 + Math.random() * 25    // シアン（テック）
+             : kind < 0.65 ? 36 + Math.random() * 16     // 琥珀（歴史）
+             :               0 + Math.random() * 360 * 0 + 210, // 白寄り（宇宙）
+          sat: kind < 0.65 ? 65 : 25,
+          lig: kind < 0.65 ? 68 : 82,
+          alpha: 0.28 + Math.random() * 0.55,
         };
       }
 
-      // --- 紙片（ゆっくり漂う）---
-      const papers = Array.from({ length: 5 }, () => spawnPaper(true));
+      // --- 紙片 ---
+      const papers = Array.from({ length: 4 }, () => spawnPaper(true));
       function spawnPaper(initial) {
         return {
           x: initial ? Math.random() * W : W + 40 + Math.random() * 60,
           y: Math.random() * H,
           w: 60 + Math.random() * 120,
-          h: 0.5 + Math.random() * 1.2,    // 細い筋（書の横線のよう）
-          vx: -0.08 - Math.random() * 0.14, // 右→左にゆっくり
+          h: 0.5 + Math.random() * 1.2,
+          vx: -0.08 - Math.random() * 0.14,
           vy: (Math.random() - 0.5) * 0.04,
           rot: (Math.random() - 0.5) * 0.28,
-          alpha: 0.08 + Math.random() * 0.14,
+          alpha: 0.06 + Math.random() * 0.1,
           lines: 3 + Math.floor(Math.random() * 4),
         };
       }
 
-      // --- 和暦／古語／西暦を混ぜて、サイズに差をつけて層を作る ---
+      // --- 英字メインの時代スタンプ ---
       // [text, vertical?, sizeClass(0=小,1=中,2=大)]
       const WORDS = [
-        // 和暦（大きく縦書き）
-        ['慶長', true, 2], ['元禄', true, 2], ['享保', true, 2], ['寛政', true, 2],
-        ['天保', true, 2], ['明治', true, 2], ['大正', true, 2], ['昭和', true, 2],
-        ['文久', true, 1], ['正徳', true, 1], ['延宝', true, 1], ['貞観', true, 1],
-        // 時代区分（中サイズ）
-        ['古代', true, 1], ['中世', true, 1], ['近世', true, 1], ['近代', true, 1],
-        // 西洋（横書き、セリフ）
-        ['Renaissance', false, 1], ['Belle Époque', false, 1], ['Victorian', false, 0],
-        ['Enlightenment', false, 0], ['Medieval', false, 0], ['Classical', false, 0],
-        // 数字（小〜中）
-        ['1603', false, 1], ['1789', false, 1], ['1868', false, 1], ['1912', false, 0],
-        ['BC 500', false, 0], ['AD 476', false, 0], ['1492', false, 0], ['1453', false, 0],
-        // 古語・和語フレーズ（中）
-        ['此の世', true, 1], ['時の流れ', true, 1], ['世の理', true, 1], ['往古', true, 1],
+        // 英字の時代（大）
+        ['RENAISSANCE', false, 2], ['ENLIGHTENMENT', false, 2], ['BELLE ÉPOQUE', false, 2],
+        ['INDUSTRIAL', false, 2], ['VICTORIAN', false, 2], ['MODERN', false, 2],
+        ['ROMANTIC', false, 1], ['BAROQUE', false, 1], ['ROCOCO', false, 1],
+        ['GOTHIC', false, 1], ['CLASSICAL', false, 1], ['MEDIEVAL', false, 1],
+        ['BYZANTINE', false, 1], ['NAPOLEONIC', false, 1], ['EDWARDIAN', false, 1],
+        ['ANTIQUITY', false, 1], ['POSTMODERN', false, 1],
+        // 英字の短い時代
+        ['EDO', false, 2], ['MEIJI', false, 2], ['HEIAN', false, 1], ['NARA', false, 1],
+        ['SHOWA', false, 1], ['TAISHO', false, 1],
+        // 年号（多めに）
+        ['1066', false, 1], ['1215', false, 0], ['1347', false, 0], ['1453', false, 1],
+        ['1492', false, 1], ['1517', false, 0], ['1543', false, 0], ['1588', false, 0],
+        ['1603', false, 1], ['1642', false, 0], ['1688', false, 0], ['1776', false, 1],
+        ['1789', false, 1], ['1804', false, 0], ['1815', false, 0], ['1848', false, 0],
+        ['1861', false, 0], ['1867', false, 0], ['1871', false, 0], ['1905', false, 0],
+        ['1912', false, 0], ['1917', false, 0], ['1945', false, 1],
+        ['BC 500', false, 0], ['BC 200', false, 0], ['AD 117', false, 0], ['AD 476', false, 0],
+        ['AD 800', false, 0], ['AD 1066', false, 0],
+        // ラテン／格言（中）
+        ['TEMPUS FUGIT', false, 1], ['MEMENTO MORI', false, 1], ['AB ORIGINE', false, 1],
+        ['IN AETERNUM', false, 1], ['POST BELLUM', false, 0], ['ANTE BELLUM', false, 0],
+        // テック／データ風（中）
+        ['TIMESTAMP', false, 1], ['EPOCH', false, 1], ['HISTORY.LOG', false, 0],
+        ['ARCHIVE', false, 0], ['INDEX.DAT', false, 0],
+        // 和（アクセントに少量だけ）
+        ['明治', true, 1], ['昭和', true, 1], ['江戸', true, 1], ['此の世', true, 0],
       ];
       const floats = [];
       function spawnWord() {
-        if (floats.length > 6) return;
+        if (floats.length > 7) return;
         const [txt, vertical, cls] = WORDS[Math.floor(Math.random() * WORDS.length)];
-        // サイズクラス毎に画面内の配置も変える
-        const size = cls === 2 ? (42 + Math.random() * 42)
-                   : cls === 1 ? (20 + Math.random() * 18)
-                              :   (12 + Math.random() * 8);
-        // 大サイズは画面の端寄り、小さいほど自由配置
+        const size = cls === 2 ? (34 + Math.random() * 32)
+                   : cls === 1 ? (18 + Math.random() * 14)
+                              :   (11 + Math.random() * 7);
         let x, y;
         if (cls === 2) {
-          x = Math.random() < 0.5 ? W * (0.05 + Math.random() * 0.12) : W * (0.83 + Math.random() * 0.12);
-          y = H * (0.15 + Math.random() * 0.7);
+          x = Math.random() < 0.5 ? W * (0.04 + Math.random() * 0.14) : W * (0.82 + Math.random() * 0.14);
+          y = H * (0.12 + Math.random() * 0.76);
         } else {
-          x = W * (0.08 + Math.random() * 0.84);
-          y = H * (0.12 + Math.random() * 0.78);
+          x = W * (0.06 + Math.random() * 0.88);
+          y = H * (0.1 + Math.random() * 0.8);
         }
         floats.push({
-          txt, vertical, size,
-          x, y,
+          txt, vertical, size, x, y,
           life: 0,
-          max: cls === 2 ? 5200 + Math.random() * 2400
-                         : 3000 + Math.random() * 2000,
-          rot: vertical ? 0 : (Math.random() - 0.5) * 0.16,
-          // 色：やや温かいセピア〜アイボリー。大サイズは不透明度高め、小は薄く
-          peak: cls === 2 ? 0.58 : cls === 1 ? 0.42 : 0.28,
-          drift: { x: (Math.random() - 0.5) * 0.08, y: 0.06 + Math.random() * 0.08 },
+          max: cls === 2 ? 4800 + Math.random() * 2200
+                         : 2800 + Math.random() * 1800,
+          rot: vertical ? 0 : (Math.random() - 0.5) * 0.14,
+          peak: cls === 2 ? 0.55 : cls === 1 ? 0.4 : 0.26,
+          drift: { x: (Math.random() - 0.5) * 0.08, y: 0.04 + Math.random() * 0.06 },
+          // 色モード：大サイズはシアン寄り（テック）、中は琥珀（歴史）、小はアイボリー
+          mode: cls === 2 && Math.random() < 0.55 ? 'tech' : (cls === 0 ? 'pale' : 'gold'),
         });
       }
 
@@ -700,6 +738,8 @@
       let lastWord = performance.now();
       let lastT = performance.now();
       let globalSwirl = 0;
+      let scanLineY = -40;
+      let scanLineTimer = 0;
 
       function tick() {
         const now = performance.now();
@@ -707,11 +747,52 @@
         lastT = now;
         globalSwirl += 0.0006 * dt;
 
-        // 暖色の残像フェード（真っ黒ではなく、ごく薄くワインを残す）
-        ctx.fillStyle = 'rgba(10, 4, 6, 0.14)';
+        // 濃い残像（ベースは宇宙寄りの深青紫）
+        ctx.fillStyle = 'rgba(6, 4, 12, 0.18)';
         ctx.fillRect(0, 0, W, H);
 
-        // --- 紙片（背景レイヤー）---
+        // --- 星雲（radial gradient drift）---
+        for (const n of nebulae) {
+          n.x += n.vx * (dt / 1000);
+          n.y += n.vy * (dt / 1000);
+          if (n.x < -0.2) n.x = 1.2; if (n.x > 1.2) n.x = -0.2;
+          if (n.y < -0.2) n.y = 1.2; if (n.y > 1.2) n.y = -0.2;
+          const nx = n.x * W, ny = n.y * H;
+          const g = ctx.createRadialGradient(nx, ny, 0, nx, ny, n.r);
+          g.addColorStop(0, `hsla(${n.hue}, 70%, 55%, ${n.alpha})`);
+          g.addColorStop(0.5, `hsla(${n.hue}, 65%, 45%, ${n.alpha * 0.35})`);
+          g.addColorStop(1, `hsla(${n.hue}, 60%, 30%, 0)`);
+          ctx.fillStyle = g;
+          ctx.fillRect(nx - n.r, ny - n.r, n.r * 2, n.r * 2);
+        }
+
+        // --- 星景（静的点＋明滅）---
+        for (let i = 0; i < stars.length; i++) {
+          const s = stars[i];
+          s.phase += s.speed * dt;
+          const twinkle = 0.55 + Math.sin(s.phase) * 0.35;
+          ctx.fillStyle = `hsla(${s.hue}, 50%, 80%, ${twinkle * 0.85})`;
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // --- デジタルグリッド（画面端にだけ薄く）---
+        ctx.strokeStyle = 'rgba(120, 200, 230, 0.05)';
+        ctx.lineWidth = 1;
+        const GRID = 48;
+        for (let x = 0; x <= W; x += GRID) {
+          ctx.beginPath();
+          ctx.moveTo(x, 0); ctx.lineTo(x, H);
+          ctx.stroke();
+        }
+        for (let y = 0; y <= H; y += GRID) {
+          ctx.beginPath();
+          ctx.moveTo(0, y); ctx.lineTo(W, y);
+          ctx.stroke();
+        }
+
+        // --- 紙片 ---
         for (let i = 0; i < papers.length; i++) {
           const p = papers[i];
           p.x += p.vx * (dt / 16);
@@ -733,34 +814,52 @@
           ctx.restore();
         }
 
-        // --- 粒子：中心に向かって吸い寄せ＋時計回り渦 ---
+        // --- 渦粒子：中心へ吸い寄せ＋時計回り（テック・宇宙混色）---
+        ctx.lineCap = 'round';
         for (let i = 0; i < particles.length; i++) {
           const p = particles[i];
           p.a += p.swirl * dt;
           p.r -= p.drift * (dt / 16);
-          // 中心に到達したら外周から再生
           if (p.r <= 2) { particles[i] = spawn(false); continue; }
           const x = cx + Math.cos(p.a + globalSwirl) * p.r;
           const y = cy + Math.sin(p.a + globalSwirl) * p.r;
           if (x < -20 || x > W + 20 || y < -20 || y > H + 20) continue;
-          // 尾（内向きのベクトル）
           const prevR = p.r + p.drift * 14;
           const prevX = cx + Math.cos(p.a + globalSwirl - p.swirl * 14) * prevR;
           const prevY = cy + Math.sin(p.a + globalSwirl - p.swirl * 14) * prevR;
           const grad = ctx.createLinearGradient(prevX, prevY, x, y);
-          grad.addColorStop(0, `hsla(${p.hue}, 55%, 55%, 0)`);
-          grad.addColorStop(1, `hsla(${p.hue}, 65%, 72%, ${p.alpha})`);
+          grad.addColorStop(0, `hsla(${p.hue}, ${p.sat}%, ${p.lig}%, 0)`);
+          grad.addColorStop(1, `hsla(${p.hue}, ${p.sat}%, ${p.lig}%, ${p.alpha})`);
           ctx.strokeStyle = grad;
           ctx.lineWidth = p.size;
-          ctx.lineCap = 'round';
           ctx.beginPath();
           ctx.moveTo(prevX, prevY);
           ctx.lineTo(x, y);
           ctx.stroke();
         }
 
-        // --- 和暦・古語（3層の深さを出す）---
-        if (now - lastWord > 700) { spawnWord(); lastWord = now; }
+        // --- 走査線（12秒に1回、上から下へ流れる）---
+        scanLineTimer += dt;
+        if (scanLineTimer > 12000) { scanLineY = -40; scanLineTimer = 0; }
+        if (scanLineY < H + 40) {
+          scanLineY += dt * 0.18;
+          const sg = ctx.createLinearGradient(0, scanLineY - 30, 0, scanLineY + 30);
+          sg.addColorStop(0,   'rgba(140, 220, 240, 0)');
+          sg.addColorStop(0.5, 'rgba(140, 220, 240, 0.22)');
+          sg.addColorStop(1,   'rgba(140, 220, 240, 0)');
+          ctx.fillStyle = sg;
+          ctx.fillRect(0, scanLineY - 30, W, 60);
+          // スキャンの細い光の線
+          ctx.strokeStyle = 'rgba(180, 235, 255, 0.5)';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(0, scanLineY);
+          ctx.lineTo(W, scanLineY);
+          ctx.stroke();
+        }
+
+        // --- 時代スタンプ文字（英字主体・層のある質感）---
+        if (now - lastWord > 560) { spawnWord(); lastWord = now; }
         for (let i = floats.length - 1; i >= 0; i--) {
           const e = floats[i];
           e.life += dt;
@@ -768,20 +867,44 @@
           if (t >= 1) { floats.splice(i, 1); continue; }
           e.x += e.drift.x * (dt / 16);
           e.y += e.drift.y * (dt / 16);
-          // イーズイン→イーズアウトのアルファ
           const curve = Math.sin(t * Math.PI);
           const alpha = curve * e.peak;
+
+          // カラーパレット
+          let col1, col2, col3, haloColor, shadowColor;
+          if (e.mode === 'tech') {
+            col1 = `rgba(190, 240, 255, ${alpha})`;
+            col2 = `rgba(120, 200, 230, ${alpha})`;
+            col3 = `rgba(80, 160, 200, ${alpha * 0.85})`;
+            haloColor = `rgba(140, 220, 240, ${alpha * 0.6})`;
+            shadowColor = `rgba(4, 10, 20, ${alpha * 0.6})`;
+          } else if (e.mode === 'pale') {
+            col1 = `rgba(240, 230, 210, ${alpha})`;
+            col2 = `rgba(210, 200, 180, ${alpha})`;
+            col3 = `rgba(170, 160, 140, ${alpha * 0.85})`;
+            haloColor = `rgba(220, 210, 190, ${alpha * 0.4})`;
+            shadowColor = `rgba(4, 4, 8, ${alpha * 0.5})`;
+          } else {
+            col1 = `rgba(248, 220, 160, ${alpha})`;
+            col2 = `rgba(220, 180, 110, ${alpha})`;
+            col3 = `rgba(170, 130, 80, ${alpha * 0.85})`;
+            haloColor = `rgba(255, 210, 130, ${alpha * 0.55})`;
+            shadowColor = `rgba(8, 3, 5, ${alpha * 0.6})`;
+          }
+
           ctx.save();
           ctx.translate(e.x, e.y);
           ctx.rotate(e.rot);
+          // 英字はモノスペース寄りセリフ＋和は明朝
           const font = e.vertical
             ? `600 ${e.size}px "Shippori Mincho", serif`
-            : `500 italic ${e.size}px "Cormorant Garamond", "Shippori Mincho", serif`;
+            : `700 ${e.size}px "Cormorant Garamond", "Shippori Mincho", serif`;
           ctx.font = font;
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
+
           // 影（深さ）
-          ctx.fillStyle = `rgba(8, 3, 5, ${alpha * 0.6})`;
+          ctx.fillStyle = shadowColor;
           if (e.vertical) {
             const chars = Array.from(e.txt);
             const step = e.size * 1.02;
@@ -790,14 +913,14 @@
           } else {
             ctx.fillText(e.txt, 2, 2);
           }
-          // 外側ぼかし（金色のハロー）
-          ctx.shadowColor = `rgba(255, 210, 130, ${alpha * 0.5})`;
-          ctx.shadowBlur = e.size * 0.35;
-          // 本体（セピア→アイボリーのグラデ）
+          // ハロー
+          ctx.shadowColor = haloColor;
+          ctx.shadowBlur = e.size * 0.45;
+          // 本体（3色縦グラデ）
           const grad = ctx.createLinearGradient(0, -e.size, 0, e.size);
-          grad.addColorStop(0, `rgba(248, 220, 160, ${alpha})`);
-          grad.addColorStop(0.5, `rgba(220, 180, 110, ${alpha})`);
-          grad.addColorStop(1, `rgba(170, 130, 80, ${alpha * 0.85})`);
+          grad.addColorStop(0, col1);
+          grad.addColorStop(0.5, col2);
+          grad.addColorStop(1, col3);
           ctx.fillStyle = grad;
           if (e.vertical) {
             const chars = Array.from(e.txt);
@@ -806,6 +929,17 @@
             chars.forEach((ch, k) => ctx.fillText(ch, 0, -total / 2 + k * step));
           } else {
             ctx.fillText(e.txt, 0, 0);
+          }
+          // テック色は下線を足して「データ感」
+          if (e.mode === 'tech') {
+            ctx.shadowBlur = 0;
+            const textWidth = ctx.measureText(e.txt).width;
+            ctx.strokeStyle = `rgba(140, 220, 240, ${alpha * 0.4})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(-textWidth / 2 - 4, e.size * 0.7);
+            ctx.lineTo( textWidth / 2 + 4, e.size * 0.7);
+            ctx.stroke();
           }
           ctx.restore();
         }
@@ -883,8 +1017,9 @@
 
       const scene = new THREE.Scene();
       scene.background = null;
-      const cam = new THREE.PerspectiveCamera(36, w / h, 0.1, 50);
-      cam.position.set(0, 0, 8.2);
+      // 本を大きく見せるためカメラを近めに（FOV は維持して歪みを抑える）
+      const cam = new THREE.PerspectiveCamera(38, w / h, 0.1, 50);
+      cam.position.set(0, 0, 6.4);
 
       scene.add(new THREE.AmbientLight(0xffe4b0, 0.55));
       const key = new THREE.PointLight(0xffcf8c, 1.35, 20);
