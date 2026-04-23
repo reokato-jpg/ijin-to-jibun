@@ -1318,7 +1318,9 @@
 
     const ov = openDeepOverlay('🌍 地球儀', 'ドラッグで回す。歴史が生まれた土地に光る点。',
       `<div class="magic-globe-wrap" id="magicGlobeWrap">
-         <div class="magic-globe-hint">ドラッグで回転・タップで都市へ</div>
+         <div class="magic-globe-scan"></div>
+         <div class="magic-globe-coord" id="magicGlobeCoord">LAT 00.0° / LON 000.0°</div>
+         <div class="magic-globe-hint">DRAG · ROTATE · TAP</div>
          <div class="magic-globe-tooltip" id="magicGlobeTip"></div>
          <div class="magic-globe-info" id="magicGlobeInfo"></div>
        </div>`);
@@ -1350,16 +1352,78 @@
     rim.position.set(-5, 0, -3);
     scene.add(rim);
 
-    // 地球儀テクスチャ（手描き風セピア世界地図）
-    const earthTex = makeEarthTexture();
+    // 地球儀テクスチャ：NASA Blue Marble の実写テクスチャを CDN から
     const earthGeo = new THREE.SphereGeometry(2.2, 64, 48);
+    // まずは手描きテクスチャで即座に表示（ロード中は見える）
+    const procTex = makeEarthTexture();
     const earthMat = new THREE.MeshStandardMaterial({
-      map: earthTex,
-      roughness: 0.85,
-      metalness: 0.05,
+      map: procTex,
+      roughness: 0.75,
+      metalness: 0.08,
     });
     const earth = new THREE.Mesh(earthGeo, earthMat);
     scene.add(earth);
+    // 実写テクスチャを差し替え
+    const loader = new THREE.TextureLoader();
+    loader.crossOrigin = 'anonymous';
+    loader.load(
+      'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r159/examples/textures/planets/earth_atmos_2048.jpg',
+      (tex) => {
+        tex.anisotropy = 8;
+        // 前のテクスチャを破棄してから差し替え
+        if (earthMat.map && earthMat.map !== tex) earthMat.map.dispose();
+        earthMat.map = tex;
+        earthMat.roughness = 0.82;
+        earthMat.needsUpdate = true;
+      },
+      undefined,
+      (err) => {
+        console.warn('[magic/globe] NASA texture failed, using procedural', err);
+      }
+    );
+    // ノーマルマップ（地形陰影）も
+    loader.load(
+      'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r159/examples/textures/planets/earth_normal_2048.jpg',
+      (tex) => {
+        tex.anisotropy = 8;
+        earthMat.normalMap = tex;
+        earthMat.normalScale = new THREE.Vector2(0.55, 0.55);
+        earthMat.needsUpdate = true;
+      },
+      undefined,
+      () => {}
+    );
+    // Specularマップ（海の反射）
+    loader.load(
+      'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r159/examples/textures/planets/earth_specular_2048.jpg',
+      (tex) => {
+        tex.anisotropy = 8;
+        earthMat.roughnessMap = tex;
+        earthMat.needsUpdate = true;
+      },
+      undefined,
+      () => {}
+    );
+    // 雲のレイヤー（薄く）
+    loader.load(
+      'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r159/examples/textures/planets/earth_clouds_1024.png',
+      (tex) => {
+        tex.anisotropy = 8;
+        const cloudGeo = new THREE.SphereGeometry(2.22, 48, 36);
+        const cloudMat = new THREE.MeshStandardMaterial({
+          map: tex,
+          transparent: true,
+          opacity: 0.28,
+          depthWrite: false,
+          side: THREE.FrontSide,
+        });
+        const clouds = new THREE.Mesh(cloudGeo, cloudMat);
+        earth.add(clouds);
+        MAGIC._clouds = clouds;
+      },
+      undefined,
+      () => {}
+    );
 
     // 大気グロー（外側の半透明球 / 青い）
     const atmGeo = new THREE.SphereGeometry(2.35, 32, 24);
@@ -1538,6 +1602,17 @@
       }
       // Points の全体のopacityを緩やかに明滅（個別ドットの集合感を抑える）
       pinsMat.opacity = 0.72 + Math.sin(pulseTime * 0.5) * 0.08;
+      // 雲のゆっくり自転（地球より少し速く）
+      if (MAGIC._clouds) MAGIC._clouds.rotation.y += 0.0004;
+      // HUD 座標更新（地球の中心法線をスクリーン正面から逆算）
+      if (pulseTime % 1 < 0.05) {
+        const coord = ov.querySelector('#magicGlobeCoord');
+        if (coord) {
+          const lon = (-((earth.rotation.y * 180 / Math.PI) % 360) + 360) % 360 - 180;
+          const lat = Math.max(-90, Math.min(90, -earth.rotation.x * 180 / Math.PI));
+          coord.textContent = `LAT ${lat.toFixed(1).padStart(5, ' ')}° / LON ${lon.toFixed(1).padStart(6, ' ')}°`;
+        }
+      }
       renderer.render(scene, camera);
       raf = requestAnimationFrame(animate);
     }
