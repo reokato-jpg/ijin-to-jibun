@@ -1762,8 +1762,15 @@
       const rect = canvas.getBoundingClientRect();
       const sx = e.clientX - rect.left, sy = e.clientY - rect.top;
       const n = nodeAt(sx, sy);
-      if (n) { draggingNode = n; n.vx = 0; n.vy = 0; }
-      else { panning = true; lastX = sx; lastY = sy; }
+      if (n) {
+        draggingNode = n; n.vx = 0; n.vy = 0;
+        // モバイル対応: タップ時も名前を即表示（ホバー不要）
+        tip.style.opacity = '1';
+        tip.style.left = (sx + 14) + 'px';
+        tip.style.top = (sy + 14) + 'px';
+        tip.innerHTML = `<div><b>${n.name}</b></div><div style="font-size:10px;opacity:0.75">${n.field || ''} · つながり${n.degree}</div>`;
+      }
+      else { panning = true; lastX = sx; lastY = sy; tip.style.opacity = '0'; }
     });
     canvas.addEventListener('pointermove', (e) => {
       const rect = canvas.getBoundingClientRect();
@@ -1787,14 +1794,26 @@
         }
       }
     });
+    // モバイル向け: 1回目タップで名前表示、同じノードに2回目タップで偉人ページへ
+    let lastTappedId = null;
+    let lastTappedAt = 0;
     canvas.addEventListener('pointerup', (e) => {
       if (draggingNode) {
-        // クリック扱い（ほぼ動いてない）
         const moved = Math.abs(draggingNode.vx) + Math.abs(draggingNode.vy);
         if (moved < 0.5) {
           const id = draggingNode.id;
-          closeDeep();
-          setTimeout(() => { if (typeof window.showPerson === 'function') window.showPerson(id); }, 300);
+          const now = Date.now();
+          const sameNodeRecent = (id === lastTappedId) && (now - lastTappedAt < 2500);
+          if (sameNodeRecent) {
+            // 2回目タップ → 偉人ページへ
+            closeDeep();
+            setTimeout(() => { if (typeof window.showPerson === 'function') window.showPerson(id); }, 300);
+            lastTappedId = null;
+          } else {
+            // 1回目タップ → 名前表示のみ（tipは pointerdown で既に表示済み）
+            lastTappedId = id;
+            lastTappedAt = now;
+          }
         }
       }
       draggingNode = null; panning = false;

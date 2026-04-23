@@ -465,6 +465,14 @@ function showView(name, pushHistory = true) {
     if (typeof forwardStack !== 'undefined') forwardStack.length = 0;
   }
   try { updateNavButtons?.(); } catch {}
+  // 画面切替時に残留モーダル・モーダル開きクラスをクリーンアップ（背景崩れ対策）
+  try {
+    document.body.classList.remove('modal-open');
+    ['eraModal','themePageModal','blogPostModal','beginnerGuideModal'].forEach(id => {
+      const m = document.getElementById(id);
+      if (m) m.remove();
+    });
+  } catch {}
   // わたしの本タブは背景画像なし（独自の本デザインを活かす）
   document.documentElement.classList.toggle('view-no-bg', name === 'favorites');
   // スマホが閉じている or 閉じる遷移中ならノイズ停止（安全網）

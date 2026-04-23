@@ -15133,7 +15133,10 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
   50% { transform: rotate(180deg) translateY(-30px); }
   100% { transform: rotate(360deg) translateY(0); }
 }
-.phone-tool-app#phoneMusicApp { overflow: hidden; }
+.phone-tool-app#phoneMusicApp { overflow: hidden; background: #000008 !important; }
+.phone-tool-app#phoneMusicApp .tool-app-head { background: linear-gradient(90deg, #0a0520 0%, #060214 100%) !important; color: #e8f4ff !important; border-bottom: 1px solid rgba(0,220,255,0.15); }
+.phone-tool-app#phoneMusicApp .tool-app-back { color: #00dcff; text-shadow: 0 0 8px rgba(0,220,255,0.5); }
+.phone-tool-app#phoneMusicApp .plaza-app-title { color: #fff; text-shadow: 0 0 10px rgba(0,220,255,0.4); }
 
 /* ============ 🍳 めしる（偉人のレシピ）============ */
 .phone-icon-emoji {
@@ -15459,9 +15462,9 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
   font-weight: 700;
   color: #fff;
   margin-bottom: 2px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  line-height: 1.35;
+  word-break: break-word;
+  overflow-wrap: anywhere;
   text-shadow: 0 0 8px rgba(255,255,255,0.2);
 }
 .music-track.playing .music-track-title {
@@ -15474,9 +15477,9 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
 .music-track-desc {
   font-size: 10px;
   color: rgba(232,244,255,0.5);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  line-height: 1.4;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 .music-track-icon {
   font-size: 14px;
