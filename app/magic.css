@@ -378,15 +378,16 @@ body:has(.quote-zoom.open) .magic-parade {
   position: relative;
   margin: 0 0 4px;
   padding: 32px 16px 38px;
-  /* 上下を透明に近くし、背景と境目をグラデで溶かす */
+  /* セピアを帯びた深色。真っ黒ではなく、ワインと焦茶の間で過去っぽく */
   background:
+    radial-gradient(ellipse at 50% 40%, rgba(38, 18, 16, 0.6) 0%, transparent 70%),
     linear-gradient(180deg,
-      rgba(10, 4, 8, 0) 0%,
-      rgba(10, 4, 8, 0.55) 6%,
-      rgba(8, 3, 7, 0.96) 14%,
-      rgba(8, 3, 7, 0.96) 84%,
-      rgba(10, 4, 8, 0.55) 94%,
-      rgba(10, 4, 8, 0) 100%);
+      rgba(16, 8, 10, 0) 0%,
+      rgba(16, 8, 10, 0.55) 5%,
+      rgba(14, 6, 8, 0.97) 12%,
+      rgba(14, 6, 8, 0.97) 86%,
+      rgba(16, 8, 10, 0.55) 95%,
+      rgba(16, 8, 10, 0) 100%);
   overflow: hidden;
   isolation: isolate;
 }

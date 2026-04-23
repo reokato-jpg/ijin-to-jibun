@@ -588,8 +588,9 @@
       return true;
     }
 
-    // ---- タイムスリップ風 Canvas 背景 ----
-    // 小さな光点が中心から外側に向かって加速しながら流れる（ワープ表現）＋年代が浮かび上がって消える
+    // ---- タイムスリップ風 Canvas 背景（過去に吸い込まれる感） ----
+    // 粒子は外周→中心へゆっくり吸い寄せられ、全体がわずかに時計回りに渦を巻く。
+    // セピア寄りの暖色で、大きな和暦・古語が重層的に浮かんで消える。
     function initTimeWarp(canvas) {
       if (!canvas || !canvas.getContext) return;
       const ctx = canvas.getContext('2d');
@@ -611,100 +612,201 @@
       const ro = new ResizeObserver(resize);
       ro.observe(canvas.parentElement || canvas);
 
-      // パーティクル（光点）
-      const COUNT = 120;
-      const particles = Array.from({ length: COUNT }, () => spawn());
-      function spawn() {
-        const angle = Math.random() * Math.PI * 2;
-        const r = 10 + Math.random() * 40;
-        const speed = 0.2 + Math.random() * 1.1;
+      // --- 粒子（内側へ吸い寄せられる）---
+      const COUNT = 100;
+      const particles = Array.from({ length: COUNT }, () => spawn(true));
+      function spawn(initial) {
+        const a = Math.random() * Math.PI * 2;
+        const maxR = Math.hypot(W, H) * 0.55;
+        // initial=trueなら画面全体に分散、falseなら外周から生成
+        const r = initial ? Math.random() * maxR : maxR + Math.random() * 80;
         return {
-          a: angle,
+          a,
           r,
-          speed,
-          life: Math.random() * 1,
-          size: 0.6 + Math.random() * 1.3,
-          hue: 42 + Math.random() * 14,   // 金〜薄琥珀
+          drift: 0.25 + Math.random() * 0.7,     // 中心へ向かう速度
+          swirl: 0.0015 + Math.random() * 0.0035, // 渦（時計回り）
+          size: 0.4 + Math.random() * 1.0,
+          hue: 28 + Math.random() * 18,          // セピア〜琥珀
+          alpha: 0.25 + Math.random() * 0.55,
         };
       }
 
-      // 年代（タイムスリップ中に一瞬浮かぶ）
-      const YEARS = [
-        '1603', '1789', '1912', '1543', '800', '紀元前500', '2024', '1066', '1789', '1453',
-        '1492', '1776', '1867', '1517', '1945', '1066', '古代', '中世', '近代', '現代', '明治',
-        '江戸', 'Renaissance', 'Modern', 'BC 500', 'AD 476', '1600', '1868', '1603', '1871',
-      ];
-      const eras = [];
-      function spawnEra() {
-        if (eras.length > 4) return;
-        const txt = YEARS[Math.floor(Math.random() * YEARS.length)];
-        eras.push({
-          txt,
-          x: Math.random() * W,
+      // --- 紙片（ゆっくり漂う）---
+      const papers = Array.from({ length: 5 }, () => spawnPaper(true));
+      function spawnPaper(initial) {
+        return {
+          x: initial ? Math.random() * W : W + 40 + Math.random() * 60,
           y: Math.random() * H,
+          w: 60 + Math.random() * 120,
+          h: 0.5 + Math.random() * 1.2,    // 細い筋（書の横線のよう）
+          vx: -0.08 - Math.random() * 0.14, // 右→左にゆっくり
+          vy: (Math.random() - 0.5) * 0.04,
+          rot: (Math.random() - 0.5) * 0.28,
+          alpha: 0.08 + Math.random() * 0.14,
+          lines: 3 + Math.floor(Math.random() * 4),
+        };
+      }
+
+      // --- 和暦／古語／西暦を混ぜて、サイズに差をつけて層を作る ---
+      // [text, vertical?, sizeClass(0=小,1=中,2=大)]
+      const WORDS = [
+        // 和暦（大きく縦書き）
+        ['慶長', true, 2], ['元禄', true, 2], ['享保', true, 2], ['寛政', true, 2],
+        ['天保', true, 2], ['明治', true, 2], ['大正', true, 2], ['昭和', true, 2],
+        ['文久', true, 1], ['正徳', true, 1], ['延宝', true, 1], ['貞観', true, 1],
+        // 時代区分（中サイズ）
+        ['古代', true, 1], ['中世', true, 1], ['近世', true, 1], ['近代', true, 1],
+        // 西洋（横書き、セリフ）
+        ['Renaissance', false, 1], ['Belle Époque', false, 1], ['Victorian', false, 0],
+        ['Enlightenment', false, 0], ['Medieval', false, 0], ['Classical', false, 0],
+        // 数字（小〜中）
+        ['1603', false, 1], ['1789', false, 1], ['1868', false, 1], ['1912', false, 0],
+        ['BC 500', false, 0], ['AD 476', false, 0], ['1492', false, 0], ['1453', false, 0],
+        // 古語・和語フレーズ（中）
+        ['此の世', true, 1], ['時の流れ', true, 1], ['世の理', true, 1], ['往古', true, 1],
+      ];
+      const floats = [];
+      function spawnWord() {
+        if (floats.length > 6) return;
+        const [txt, vertical, cls] = WORDS[Math.floor(Math.random() * WORDS.length)];
+        // サイズクラス毎に画面内の配置も変える
+        const size = cls === 2 ? (42 + Math.random() * 42)
+                   : cls === 1 ? (20 + Math.random() * 18)
+                              :   (12 + Math.random() * 8);
+        // 大サイズは画面の端寄り、小さいほど自由配置
+        let x, y;
+        if (cls === 2) {
+          x = Math.random() < 0.5 ? W * (0.05 + Math.random() * 0.12) : W * (0.83 + Math.random() * 0.12);
+          y = H * (0.15 + Math.random() * 0.7);
+        } else {
+          x = W * (0.08 + Math.random() * 0.84);
+          y = H * (0.12 + Math.random() * 0.78);
+        }
+        floats.push({
+          txt, vertical, size,
+          x, y,
           life: 0,
-          max: 2400 + Math.random() * 1600,
-          size: 12 + Math.random() * 16,
-          rot: (Math.random() - 0.5) * 0.3,
+          max: cls === 2 ? 5200 + Math.random() * 2400
+                         : 3000 + Math.random() * 2000,
+          rot: vertical ? 0 : (Math.random() - 0.5) * 0.16,
+          // 色：やや温かいセピア〜アイボリー。大サイズは不透明度高め、小は薄く
+          peak: cls === 2 ? 0.58 : cls === 1 ? 0.42 : 0.28,
+          drift: { x: (Math.random() - 0.5) * 0.08, y: 0.06 + Math.random() * 0.08 },
         });
       }
 
+      // ---- ループ ----
       let raf = 0;
-      let lastEra = performance.now();
+      let lastWord = performance.now();
       let lastT = performance.now();
+      let globalSwirl = 0;
+
       function tick() {
         const now = performance.now();
         const dt = Math.min(64, now - lastT);
         lastT = now;
+        globalSwirl += 0.0006 * dt;
 
-        // フェード残像（ワープ感を出す）
-        ctx.fillStyle = 'rgba(6, 3, 7, 0.22)';
+        // 暖色の残像フェード（真っ黒ではなく、ごく薄くワインを残す）
+        ctx.fillStyle = 'rgba(10, 4, 6, 0.14)';
         ctx.fillRect(0, 0, W, H);
 
-        // パーティクル更新：中心から外側に向かって加速
+        // --- 紙片（背景レイヤー）---
+        for (let i = 0; i < papers.length; i++) {
+          const p = papers[i];
+          p.x += p.vx * (dt / 16);
+          p.y += p.vy * (dt / 16);
+          if (p.x < -180) { papers[i] = spawnPaper(false); continue; }
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rot);
+          ctx.strokeStyle = `rgba(220, 190, 140, ${p.alpha})`;
+          ctx.lineWidth = p.h;
+          for (let k = 0; k < p.lines; k++) {
+            const ly = k * 7 - (p.lines - 1) * 3.5;
+            const lw = p.w * (0.6 + Math.random() * 0.4);
+            ctx.beginPath();
+            ctx.moveTo(-p.w / 2, ly);
+            ctx.lineTo(-p.w / 2 + lw, ly);
+            ctx.stroke();
+          }
+          ctx.restore();
+        }
+
+        // --- 粒子：中心に向かって吸い寄せ＋時計回り渦 ---
         for (let i = 0; i < particles.length; i++) {
           const p = particles[i];
-          p.r += p.speed * (dt / 16) * (1 + p.r * 0.01);
-          const x = cx + Math.cos(p.a) * p.r;
-          const y = cy + Math.sin(p.a) * p.r;
-          // 画面外に出たらリスポーン
-          if (x < -20 || x > W + 20 || y < -20 || y > H + 20) {
-            particles[i] = spawn();
-            continue;
-          }
-          // 尾（移動方向に短いライン）
-          const prevX = cx + Math.cos(p.a) * (p.r - p.speed * 10);
-          const prevY = cy + Math.sin(p.a) * (p.r - p.speed * 10);
+          p.a += p.swirl * dt;
+          p.r -= p.drift * (dt / 16);
+          // 中心に到達したら外周から再生
+          if (p.r <= 2) { particles[i] = spawn(false); continue; }
+          const x = cx + Math.cos(p.a + globalSwirl) * p.r;
+          const y = cy + Math.sin(p.a + globalSwirl) * p.r;
+          if (x < -20 || x > W + 20 || y < -20 || y > H + 20) continue;
+          // 尾（内向きのベクトル）
+          const prevR = p.r + p.drift * 14;
+          const prevX = cx + Math.cos(p.a + globalSwirl - p.swirl * 14) * prevR;
+          const prevY = cy + Math.sin(p.a + globalSwirl - p.swirl * 14) * prevR;
           const grad = ctx.createLinearGradient(prevX, prevY, x, y);
-          grad.addColorStop(0, `hsla(${p.hue}, 70%, 70%, 0)`);
-          grad.addColorStop(1, `hsla(${p.hue}, 72%, 78%, 0.85)`);
+          grad.addColorStop(0, `hsla(${p.hue}, 55%, 55%, 0)`);
+          grad.addColorStop(1, `hsla(${p.hue}, 65%, 72%, ${p.alpha})`);
           ctx.strokeStyle = grad;
           ctx.lineWidth = p.size;
+          ctx.lineCap = 'round';
           ctx.beginPath();
           ctx.moveTo(prevX, prevY);
           ctx.lineTo(x, y);
           ctx.stroke();
         }
 
-        // 年代テキスト（タイムスリップ中のちらつき）
-        if (now - lastEra > 550) {
-          spawnEra();
-          lastEra = now;
-        }
-        for (let i = eras.length - 1; i >= 0; i--) {
-          const e = eras[i];
+        // --- 和暦・古語（3層の深さを出す）---
+        if (now - lastWord > 700) { spawnWord(); lastWord = now; }
+        for (let i = floats.length - 1; i >= 0; i--) {
+          const e = floats[i];
           e.life += dt;
           const t = e.life / e.max;
-          if (t >= 1) { eras.splice(i, 1); continue; }
-          const alpha = Math.sin(t * Math.PI) * 0.55; // 0→peak→0
+          if (t >= 1) { floats.splice(i, 1); continue; }
+          e.x += e.drift.x * (dt / 16);
+          e.y += e.drift.y * (dt / 16);
+          // イーズイン→イーズアウトのアルファ
+          const curve = Math.sin(t * Math.PI);
+          const alpha = curve * e.peak;
           ctx.save();
           ctx.translate(e.x, e.y);
           ctx.rotate(e.rot);
-          ctx.fillStyle = `rgba(220, 190, 120, ${alpha})`;
-          ctx.font = `italic ${e.size}px "Cormorant Garamond", "Shippori Mincho", serif`;
+          const font = e.vertical
+            ? `600 ${e.size}px "Shippori Mincho", serif`
+            : `500 italic ${e.size}px "Cormorant Garamond", "Shippori Mincho", serif`;
+          ctx.font = font;
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
-          ctx.fillText(e.txt, 0, 0);
+          // 影（深さ）
+          ctx.fillStyle = `rgba(8, 3, 5, ${alpha * 0.6})`;
+          if (e.vertical) {
+            const chars = Array.from(e.txt);
+            const step = e.size * 1.02;
+            const total = (chars.length - 1) * step;
+            chars.forEach((ch, k) => ctx.fillText(ch, 2, -total / 2 + k * step + 2));
+          } else {
+            ctx.fillText(e.txt, 2, 2);
+          }
+          // 外側ぼかし（金色のハロー）
+          ctx.shadowColor = `rgba(255, 210, 130, ${alpha * 0.5})`;
+          ctx.shadowBlur = e.size * 0.35;
+          // 本体（セピア→アイボリーのグラデ）
+          const grad = ctx.createLinearGradient(0, -e.size, 0, e.size);
+          grad.addColorStop(0, `rgba(248, 220, 160, ${alpha})`);
+          grad.addColorStop(0.5, `rgba(220, 180, 110, ${alpha})`);
+          grad.addColorStop(1, `rgba(170, 130, 80, ${alpha * 0.85})`);
+          ctx.fillStyle = grad;
+          if (e.vertical) {
+            const chars = Array.from(e.txt);
+            const step = e.size * 1.02;
+            const total = (chars.length - 1) * step;
+            chars.forEach((ch, k) => ctx.fillText(ch, 0, -total / 2 + k * step));
+          } else {
+            ctx.fillText(e.txt, 0, 0);
+          }
           ctx.restore();
         }
 
