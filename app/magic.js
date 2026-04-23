@@ -1318,6 +1318,7 @@
 
     const ov = openDeepOverlay('🌍 地球儀', 'ドラッグで回す。歴史が生まれた土地に光る点。',
       `<div class="magic-globe-wrap" id="magicGlobeWrap">
+         <canvas class="magic-globe-net" id="magicGlobeNet"></canvas>
          <div class="magic-globe-scan"></div>
          <div class="magic-globe-coord" id="magicGlobeCoord">LAT 00.0° / LON 000.0°</div>
          <div class="magic-globe-hint">DRAG · ROTATE · TAP</div>
@@ -1360,6 +1361,10 @@
       map: procTex,
       roughness: 0.75,
       metalness: 0.08,
+      // 青系にトーンを寄せる（テクスチャ全体を青く染める）
+      color: new THREE.Color(0x9ac8f0),
+      emissive: new THREE.Color(0x0d2340),
+      emissiveIntensity: 0.25,
     });
     const earth = new THREE.Mesh(earthGeo, earthMat);
     scene.add(earth);
@@ -1425,15 +1430,24 @@
       () => {}
     );
 
-    // 大気グロー（外側の半透明球 / 青い）
+    // 大気グロー（外側の半透明球 / 青いハロー）
     const atmGeo = new THREE.SphereGeometry(2.35, 32, 24);
     const atmMat = new THREE.MeshBasicMaterial({
-      color: 0x7aafd0,
+      color: 0x5a9ccc,
       transparent: true,
-      opacity: 0.14,
+      opacity: 0.22,
       side: THREE.BackSide,
     });
     scene.add(new THREE.Mesh(atmGeo, atmMat));
+    // 外側のもう一層（もっと広いグロー）
+    const atmGeo2 = new THREE.SphereGeometry(2.5, 32, 24);
+    const atmMat2 = new THREE.MeshBasicMaterial({
+      color: 0x3a7ab8,
+      transparent: true,
+      opacity: 0.1,
+      side: THREE.BackSide,
+    });
+    scene.add(new THREE.Mesh(atmGeo2, atmMat2));
 
     // 星（背景）— 数を絞ってドット感を減らす
     const starsGeo = new THREE.BufferGeometry();
@@ -1583,14 +1597,84 @@
       renderer.setSize(ww, hh);
       camera.aspect = ww / hh;
       camera.updateProjectionMatrix();
+      setupNet();
     };
     window.addEventListener('resize', onResize);
+
+    // ============ ネットワーク背景（ノード＋線）=============
+    const netCanvas = ov.querySelector('#magicGlobeNet');
+    let netCtx = null, netNodes = [], netW = 0, netH = 0;
+    function setupNet() {
+      if (!netCanvas) return;
+      const dpr2 = Math.min(window.devicePixelRatio || 1, 2);
+      netW = wrap.clientWidth || window.innerWidth;
+      netH = wrap.clientHeight || (window.innerHeight - 80);
+      netCanvas.width = netW * dpr2;
+      netCanvas.height = netH * dpr2;
+      netCanvas.style.width = netW + 'px';
+      netCanvas.style.height = netH + 'px';
+      netCtx = netCanvas.getContext('2d');
+      netCtx.scale(dpr2, dpr2);
+      // ノードを再生成（サイズに比例）
+      const NODE_DENSITY = 14000; // ピクセル/ノード
+      const count = Math.max(30, Math.min(120, Math.floor((netW * netH) / NODE_DENSITY)));
+      netNodes = Array.from({ length: count }, () => ({
+        x: Math.random() * netW,
+        y: Math.random() * netH,
+        vx: (Math.random() - 0.5) * 0.25,
+        vy: (Math.random() - 0.5) * 0.25,
+        r: 1 + Math.random() * 1.6,
+      }));
+    }
+    setupNet();
+    const LINK_DIST = 130;  // ピクセル以内で線を引く
+    function drawNet() {
+      if (!netCtx) return;
+      netCtx.clearRect(0, 0, netW, netH);
+      // ノード更新
+      netNodes.forEach(n => {
+        n.x += n.vx; n.y += n.vy;
+        if (n.x < 0 || n.x > netW) n.vx *= -1;
+        if (n.y < 0 || n.y > netH) n.vy *= -1;
+      });
+      // 線（近い同士を結ぶ）
+      for (let i = 0; i < netNodes.length; i++) {
+        for (let j = i + 1; j < netNodes.length; j++) {
+          const a = netNodes[i], b = netNodes[j];
+          const dx = a.x - b.x, dy = a.y - b.y;
+          const d = Math.hypot(dx, dy);
+          if (d < LINK_DIST) {
+            const alpha = (1 - d / LINK_DIST) * 0.38;
+            netCtx.strokeStyle = `rgba(120, 190, 240, ${alpha})`;
+            netCtx.lineWidth = 0.6;
+            netCtx.beginPath();
+            netCtx.moveTo(a.x, a.y);
+            netCtx.lineTo(b.x, b.y);
+            netCtx.stroke();
+          }
+        }
+      }
+      // ノード
+      netNodes.forEach(n => {
+        netCtx.fillStyle = 'rgba(140, 210, 255, 0.85)';
+        netCtx.beginPath();
+        netCtx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+        netCtx.fill();
+        // ほのかなグロー
+        netCtx.fillStyle = 'rgba(140, 210, 255, 0.18)';
+        netCtx.beginPath();
+        netCtx.arc(n.x, n.y, n.r * 3, 0, Math.PI * 2);
+        netCtx.fill();
+      });
+    }
 
     // アニメーションループ
     let raf = 0;
     let pulseTime = 0;
     function animate() {
       pulseTime += 0.05;
+      // ネットワーク背景描画
+      drawNet();
       // 慣性
       if (!isDown) {
         earth.rotation.y += velX * 0.9;

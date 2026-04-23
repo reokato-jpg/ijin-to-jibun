@@ -870,52 +870,42 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
   background:
     radial-gradient(ellipse at center, #1a1217 0%, #0a0608 80%);
 }
-/* 地球儀ビュー — テック感のある宇宙ステーション風背景 */
+/* 地球儀ビュー — ネットワーク風背景 */
 .magic-globe-wrap {
   position: relative;
   width: 100%; height: 100%;
   overflow: hidden;
   background:
-    /* 左上のネビュラ */
-    radial-gradient(ellipse at 18% 15%, rgba(80, 160, 220, 0.08) 0%, transparent 45%),
-    /* 右下のネビュラ */
-    radial-gradient(ellipse at 85% 85%, rgba(160, 100, 220, 0.06) 0%, transparent 50%),
-    /* 中央の濃い宇宙 */
-    radial-gradient(ellipse at center, #030812 0%, #01020a 90%);
+    radial-gradient(ellipse at 18% 15%, rgba(70, 130, 200, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 85%, rgba(80, 160, 220, 0.05) 0%, transparent 55%),
+    radial-gradient(ellipse at center, #020814 0%, #01040a 90%);
 }
-/* グリッドレイヤー（Tron風、スキャンライン付き） */
-.magic-globe-wrap::before {
-  content: '';
+/* ネットワーク背景キャンバス（JSで描画） */
+.magic-globe-net {
   position: absolute;
   inset: 0;
-  background-image:
-    linear-gradient(rgba(120, 200, 255, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(120, 200, 255, 0.08) 1px, transparent 1px),
-    linear-gradient(rgba(212, 176, 85, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(212, 176, 85, 0.025) 1px, transparent 1px);
-  background-size:
-    60px 60px,
-    60px 60px,
-    12px 12px,
-    12px 12px;
-  background-position: center center;
   pointer-events: none;
-  mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.9) 0%, transparent 75%);
-  -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.9) 0%, transparent 75%);
+  z-index: 0;
 }
+/* 地球のThree.jsキャンバスと他要素はネットの上 */
+.magic-globe-wrap > canvas:not(.magic-globe-net),
+.magic-globe-wrap > .magic-globe-coord,
+.magic-globe-wrap > .magic-globe-hint,
+.magic-globe-wrap > .magic-globe-tooltip,
+.magic-globe-wrap > .magic-globe-info,
+.magic-globe-wrap > .magic-globe-scan {
+  position: relative;
+  z-index: 1;
+}
+.magic-globe-wrap > canvas:not(.magic-globe-net) { z-index: 2; }
 /* 四隅のHUD風マーカー */
 .magic-globe-wrap::after {
   content: '';
   position: absolute;
   inset: 16px;
-  border: 1px solid rgba(120, 200, 255, 0.12);
+  border: 1px solid rgba(120, 200, 255, 0.1);
   pointer-events: none;
-  /* L字のコーナー強調 */
-  background:
-    linear-gradient(to right, rgba(120, 200, 255, 0.5) 0%, rgba(120, 200, 255, 0.5) 20px, transparent 20px) 0 0 / 100% 1px no-repeat,
-    linear-gradient(to left,  rgba(120, 200, 255, 0.5) 0%, rgba(120, 200, 255, 0.5) 20px, transparent 20px) 0 0 / 100% 1px no-repeat,
-    linear-gradient(to bottom, rgba(120, 200, 255, 0.5) 0%, rgba(120, 200, 255, 0.5) 20px, transparent 20px) 0 0 / 1px 100% no-repeat,
-    linear-gradient(to top,    rgba(120, 200, 255, 0.5) 0%, rgba(120, 200, 255, 0.5) 20px, transparent 20px) 0 0 / 1px 100% no-repeat;
+  z-index: 3;
 }
 /* スキャンライン（薄く走る） */
 .magic-globe-wrap .magic-globe-scan {
