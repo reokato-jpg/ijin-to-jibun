@@ -499,38 +499,109 @@
     const mo = new MutationObserver(() => injectButton());
     mo.observe(document.body, { childList: true, subtree: true });
 
-    // TOP（ホーム）に 3D 本のプレビューを置く — クリックで全画面で開く
+    // TOP（ホーム）のヒーロー枠として 3D 本を大きく配置
+    // + 下にスタッツ（偉人数/軌跡/言葉）と入口ボタン（偉人を探す / 年表から探す）を置く
     function injectTopBook() {
       const home = document.querySelector('#view-people');
       if (!home) return false;
       if (document.getElementById('magicTopBook')) return true;
-      const hero = home.querySelector('.hero-silhouette');
       const wrap = document.createElement('div');
       wrap.id = 'magicTopBook';
       wrap.className = 'magic-topbook';
       wrap.innerHTML = `
+        <div class="magic-topbook-bg" aria-hidden="true"></div>
         <div class="magic-topbook-inner">
-          <div class="magic-topbook-label">📖 わたしの本</div>
+          <div class="magic-topbook-eyebrow">THE BOOK OF YOU</div>
           <div class="magic-topbook-stage" id="magicTopBookStage"></div>
-          <div class="magic-topbook-cta">
-            <span class="magic-topbook-hint">タップして中を読む</span>
-            <span class="magic-topbook-arrow">→</span>
+          <div class="magic-topbook-hint">ドラッグで回す・裏表紙にメッセージ</div>
+          <div class="magic-topbook-stats" id="magicTopStats"></div>
+          <div class="magic-topbook-actions">
+            <button class="magic-topbook-action" data-top-action="tags">
+              <span class="magic-topbook-action-ic">🔍</span>
+              <span class="magic-topbook-action-label">偉人を探す</span>
+            </button>
+            <button class="magic-topbook-action" data-top-action="history">
+              <span class="magic-topbook-action-ic">🕰</span>
+              <span class="magic-topbook-action-label">年表から探す</span>
+            </button>
           </div>
         </div>
       `;
-      // hero のすぐ下に差し込む
-      if (hero && hero.nextSibling) hero.parentNode.insertBefore(wrap, hero.nextSibling);
-      else home.insertBefore(wrap, home.firstChild);
-      // クリックで既存の全画面 3D ブックを開く
-      const openFromTop = () => { try { openBook3D(); } catch (e) { console.warn('[magic/topbook]', e); } };
-      wrap.addEventListener('click', openFromTop);
-      wrap.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openFromTop(); } });
-      wrap.setAttribute('tabindex', '0');
-      wrap.setAttribute('role', 'button');
-      wrap.setAttribute('aria-label', 'わたしの本を3Dで開く');
-      // 中身の Three.js ミニシーン（ホバー・自動で回転）
+      // view-people の最上段（ヒーロー枠より前）に差し込む
+      home.insertBefore(wrap, home.firstChild);
+
+      // スタッツを更新（DATA が window に出てなくても people-bundle から計算）
+      renderTopStats(wrap.querySelector('#magicTopStats'));
+
+      // ショートカットボタン
+      wrap.querySelectorAll('[data-top-action]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const act = btn.dataset.topAction;
+          // タブ切り替え：data-view で既存のタブボタンをクリック
+          const tabBtn = document.querySelector(`[data-view="${act}"]`);
+          if (tabBtn) { tabBtn.click(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+        });
+      });
+
+      // Three.js ミニシーン起動
       initTopBookScene(wrap.querySelector('#magicTopBookStage'));
+
+      // ラビン（.home-rabin-greet）は本の下に配置し直す
+      const moveRabin = () => {
+        const rabin = document.querySelector('.home-rabin-greet');
+        if (rabin && rabin.previousElementSibling !== wrap) {
+          wrap.parentNode.insertBefore(rabin, wrap.nextSibling);
+        }
+      };
+      moveRabin();
+      // ラビンが遅れて挿入されても追従する
+      const moRabin = new MutationObserver(moveRabin);
+      moRabin.observe(home, { childList: true, subtree: true });
+      MAGIC._topBookRabinMO = moRabin;
       return true;
+    }
+    // 統計を3秒おきに再集計（人数は不変だが、スタンプ等の数値は本人のアクションで変わる）
+    async function renderTopStats(container) {
+      if (!container) return;
+      const paint = (ppl, quotes, events) => {
+        container.innerHTML = `
+          <div class="mt-stat">
+            <div class="mt-stat-num">${ppl.toLocaleString()}</div>
+            <div class="mt-stat-label">偉人</div>
+          </div>
+          <div class="mt-stat-sep" aria-hidden="true"></div>
+          <div class="mt-stat">
+            <div class="mt-stat-num">${quotes.toLocaleString()}</div>
+            <div class="mt-stat-label">名言</div>
+          </div>
+          <div class="mt-stat-sep" aria-hidden="true"></div>
+          <div class="mt-stat">
+            <div class="mt-stat-num">${events.toLocaleString()}</div>
+            <div class="mt-stat-label">軌跡</div>
+          </div>`;
+      };
+      // 既存の window.DATA を優先、なければ bundle を fetch
+      try {
+        const DATA = window.DATA;
+        if (DATA && Array.isArray(DATA.people)) {
+          const ppl = DATA.people.length;
+          const quotes = DATA.people.reduce((s, p) => s + (p.quotes || []).length, 0);
+          const events = DATA.people.reduce((s, p) => s + (p.events || []).length, 0);
+          paint(ppl, quotes, events);
+          return;
+        }
+      } catch {}
+      // フォールバック：bundle
+      try {
+        const people = await (MAGIC._peopleBundle ? Promise.resolve(MAGIC._peopleBundle) : loadPeopleBundle());
+        if (!Array.isArray(people)) return;
+        const ppl = people.length;
+        const quotes = people.reduce((s, p) => s + (p.quotes || []).length, 0);
+        const events = people.reduce((s, p) => s + (p.events || []).length, 0);
+        paint(ppl, quotes, events);
+      } catch (e) {
+        container.textContent = '';
+      }
     }
     // view-people が後から生成されるケースに備えて MO で監視
     if (!injectTopBook()) {
@@ -542,56 +613,108 @@
       if (!stage || !window.THREE) return;
       const THREE = window.THREE;
       const getSize = () => ({
-        w: Math.max(180, stage.clientWidth || 280),
-        h: Math.max(180, stage.clientHeight || 230),
+        w: Math.max(240, stage.clientWidth || 320),
+        h: Math.max(260, stage.clientHeight || 340),
       });
       const { w, h } = getSize();
       const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
       renderer.setSize(w, h);
       renderer.domElement.style.display = 'block';
-      renderer.domElement.style.pointerEvents = 'none'; // クリックは外枠(.magic-topbook)で処理
+      renderer.domElement.style.touchAction = 'none';
+      renderer.domElement.style.cursor = 'grab';
       stage.appendChild(renderer.domElement);
 
       const scene = new THREE.Scene();
       scene.background = null;
-      const cam = new THREE.PerspectiveCamera(38, w / h, 0.1, 50);
-      cam.position.set(0, 0, 7.8);
+      const cam = new THREE.PerspectiveCamera(36, w / h, 0.1, 50);
+      cam.position.set(0, 0, 8.2);
 
       scene.add(new THREE.AmbientLight(0xffe4b0, 0.55));
-      const key = new THREE.PointLight(0xffcf8c, 1.2, 20);
+      const key = new THREE.PointLight(0xffcf8c, 1.35, 20);
       key.position.set(3, 4, 5);
       scene.add(key);
-      const rim = new THREE.DirectionalLight(0xfff3d0, 0.32);
+      const rim = new THREE.DirectionalLight(0xfff3d0, 0.38);
       rim.position.set(-3, 2, -3);
       scene.add(rim);
+      // 金の煌めき：キーライトの反対側から淡く
+      const backLight = new THREE.DirectionalLight(0xd4b055, 0.25);
+      backLight.position.set(0, 0, -5);
+      scene.add(backLight);
 
       const box = new THREE.BoxGeometry(2.6, 3.6, 0.7);
       const coverTex = makeCoverTexture();
+      const backTex  = makeBackTexture();
       const spineTex = makeSpineTexture();
       const pagesTex = makePagesTexture();
+      // Face order: +x, -x, +y, -y, +z, -z  ( +z = front, -z = back )
       const materials = [
         new THREE.MeshStandardMaterial({ map: pagesTex, roughness: 0.9, metalness: 0.0 }),
         new THREE.MeshStandardMaterial({ map: spineTex, roughness: 0.75, metalness: 0.05 }),
         new THREE.MeshStandardMaterial({ map: pagesTex, roughness: 0.9, metalness: 0.0 }),
         new THREE.MeshStandardMaterial({ map: pagesTex, roughness: 0.9, metalness: 0.0 }),
         new THREE.MeshStandardMaterial({ map: coverTex, roughness: 0.55, metalness: 0.05 }),
-        new THREE.MeshStandardMaterial({ map: spineTex, roughness: 0.65, metalness: 0.05 }),
+        new THREE.MeshStandardMaterial({ map: backTex,  roughness: 0.58, metalness: 0.05 }),
       ];
       const book = new THREE.Mesh(box, materials);
-      book.rotation.set(-0.08, 0.55, 0);
+      // 初期：正面（+z=前表紙）がカメラを向くように。わずかに右下へ傾けて立体感
+      book.rotation.set(-0.08, 0.15, 0);
       scene.add(book);
+
+      // ---- インタラクション：ドラッグで回転＋慣性 ----
+      let isDown = false, lastX = 0, lastY = 0, velX = 0, velY = 0;
+      // ページ読み込み直後は「対話直後」扱いにして、すぐに auto-rotate が暴走しないようにする
+      let lastInteraction = performance.now();
+      const el = renderer.domElement;
+      const onDown = (x, y, ev) => {
+        isDown = true;
+        lastX = x; lastY = y;
+        velX = 0; velY = 0;
+        lastInteraction = performance.now();
+        el.style.cursor = 'grabbing';
+        if (ev && ev.preventDefault) ev.preventDefault();
+      };
+      const onMove = (x, y) => {
+        if (!isDown) return;
+        const dx = (x - lastX) * 0.009;
+        const dy = (y - lastY) * 0.009;
+        book.rotation.y += dx;
+        book.rotation.x += dy;
+        velX = dx; velY = dy;
+        lastX = x; lastY = y;
+        lastInteraction = performance.now();
+      };
+      const onUp = () => {
+        if (!isDown) return;
+        isDown = false;
+        el.style.cursor = 'grab';
+        lastInteraction = performance.now();
+      };
+      el.addEventListener('pointerdown', e => { el.setPointerCapture && el.setPointerCapture(e.pointerId); onDown(e.clientX, e.clientY, e); });
+      el.addEventListener('pointermove', e => onMove(e.clientX, e.clientY));
+      el.addEventListener('pointerup',   e => onUp());
+      el.addEventListener('pointercancel', e => onUp());
+      el.addEventListener('pointerleave',  e => onUp());
 
       const clock = new THREE.Clock();
       let raf = 0;
       function loop() {
         const dt = clock.getDelta();
-        // ゆっくり自動回転
-        book.rotation.y += dt * 0.32;
-        // 呼吸
+        const idleMs = performance.now() - lastInteraction;
+        // 慣性
+        if (!isDown) {
+          book.rotation.y += velX * 0.92;
+          book.rotation.x += velY * 0.92;
+          velX *= 0.9; velY *= 0.9;
+          if (Math.abs(velX) < 0.0006) velX = 0;
+          if (Math.abs(velY) < 0.0006) velY = 0;
+          // 4秒以上操作がない & 慣性もない時はゆるやかに自動回転（ユーザーが一度触るまでは遅め）
+          if (velX === 0 && velY === 0 && idleMs > 4000) {
+            book.rotation.y += dt * 0.15;
+          }
+        }
+        // 呼吸（上下）
         book.position.y = Math.sin(clock.elapsedTime * 0.7) * 0.08;
-        // 軽い揺らぎ
-        book.rotation.x = -0.08 + Math.sin(clock.elapsedTime * 0.5) * 0.03;
         renderer.render(scene, cam);
         raf = requestAnimationFrame(loop);
       }
@@ -606,7 +729,7 @@
       });
       ro.observe(stage);
 
-      // ユーザー名変更時に表紙テクスチャを再生成（30秒ごとに軽くチェック）
+      // ユーザー名／称号／スタンプ数の変更をポーリングして表紙を再生成
       let lastName = getUserName();
       let lastTitle = getCurrentTitle();
       let lastStamps = getStampTotal();
@@ -615,14 +738,12 @@
         const n = getUserName(), t = getCurrentTitle(), s = getStampTotal();
         if (n !== lastName || t !== lastTitle || s !== lastStamps) {
           lastName = n; lastTitle = t; lastStamps = s;
-          const newCover = makeCoverTexture();
-          const newSpine = makeSpineTexture();
+          const nc = makeCoverTexture();
+          const ns = makeSpineTexture();
           if (materials[4].map) materials[4].map.dispose();
           if (materials[1].map) materials[1].map.dispose();
-          if (materials[5].map) materials[5].map.dispose();
-          materials[4].map = newCover; materials[4].needsUpdate = true;
-          materials[1].map = newSpine; materials[1].needsUpdate = true;
-          materials[5].map = newSpine; materials[5].needsUpdate = true;
+          materials[4].map = nc; materials[4].needsUpdate = true;
+          materials[1].map = ns; materials[1].needsUpdate = true;
         }
       }, 3000);
 
@@ -684,39 +805,115 @@
       } catch { return 0; }
     }
 
-    // 表紙のキャンバステクスチャを生成
+    // 共通：革と金枠の下地を描く
+    function paintLeatherBase(ctx, w, h) {
+      const g = ctx.createLinearGradient(0, 0, w, h);
+      g.addColorStop(0, '#5c1f2a');
+      g.addColorStop(1, '#3a0f18');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, w, h);
+      // 革の細かいテクスチャ
+      for (let i = 0; i < 6000; i++) {
+        ctx.fillStyle = `rgba(${Math.random() < 0.5 ? '0,0,0' : '255,255,255'},${Math.random() * 0.04})`;
+        ctx.fillRect(Math.random() * w, Math.random() * h, 1, 1);
+      }
+      // 金の外枠（二重）
+      ctx.strokeStyle = '#b8952e';
+      ctx.lineWidth = 4;
+      ctx.strokeRect(50, 50, w - 100, h - 100);
+      ctx.lineWidth = 2;
+      ctx.strokeRect(72, 72, w - 144, h - 144);
+    }
+
+    // 表紙（前面）：「偉人と自分。」ロゴ + 「わたしの本」
     function makeCoverTexture() {
       const c = document.createElement('canvas');
       c.width = 1024;
       c.height = 1536;
       const ctx = c.getContext('2d');
-      const g = ctx.createLinearGradient(0, 0, c.width, c.height);
-      g.addColorStop(0, '#5c1f2a');
-      g.addColorStop(1, '#3a0f18');
-      ctx.fillStyle = g;
-      ctx.fillRect(0, 0, c.width, c.height);
-      // 革の細かいテクスチャ
-      for (let i = 0; i < 6000; i++) {
-        ctx.fillStyle = `rgba(${Math.random() < 0.5 ? '0,0,0' : '255,255,255'},${Math.random() * 0.04})`;
-        ctx.fillRect(Math.random() * c.width, Math.random() * c.height, 1, 1);
-      }
-      // 金の外枠
-      ctx.strokeStyle = '#b8952e';
-      ctx.lineWidth = 4;
-      ctx.strokeRect(50, 50, c.width - 100, c.height - 100);
-      ctx.lineWidth = 2;
-      ctx.strokeRect(72, 72, c.width - 144, c.height - 144);
-      // 装飾◆
+      paintLeatherBase(ctx, c.width, c.height);
+
+      // 上部の装飾◆
       ctx.fillStyle = '#d4b055';
       ctx.font = 'bold 40px "Shippori Mincho", serif';
       ctx.textAlign = 'center';
-      ctx.fillText('◆', c.width / 2, 200);
-      ctx.fillText('◆', c.width / 2, c.height - 150);
+      ctx.fillText('◆', c.width / 2, 220);
 
-      // メインのタグライン（3行）
+      // ロゴ「偉人と自分。」— 大きく主役に
       ctx.fillStyle = '#ead296';
-      ctx.font = 'bold 54px "Shippori Mincho", serif';
+      ctx.font = 'bold 118px "Shippori Mincho", serif';
       ctx.textAlign = 'center';
+      // 2行に分けて格調高く
+      ctx.fillText('偉人と', c.width / 2, c.height / 2 - 130);
+      ctx.fillText('自分。', c.width / 2, c.height / 2 + 10);
+
+      // 区切り
+      ctx.strokeStyle = 'rgba(212,176,85,0.55)';
+      ctx.lineWidth = 1.4;
+      const divY = c.height / 2 + 110;
+      ctx.beginPath();
+      ctx.moveTo(c.width * 0.3, divY);
+      ctx.lineTo(c.width * 0.7, divY);
+      ctx.stroke();
+      ctx.fillStyle = '#d4b055';
+      ctx.font = '28px "Shippori Mincho", serif';
+      ctx.fillText('◇', c.width / 2, divY + 8);
+
+      // サブタイトル「わたしの本」
+      ctx.fillStyle = '#ead296';
+      ctx.font = 'bold 72px "Shippori Mincho", serif';
+      ctx.fillText('わたしの本', c.width / 2, c.height / 2 + 220);
+
+      // ユーザー名（あれば控えめに下に）
+      const name = getUserName();
+      const title = getCurrentTitle();
+      if (name) {
+        ctx.fillStyle = 'rgba(234,210,150,0.88)';
+        ctx.font = 'italic 40px "Shippori Mincho", serif';
+        const nameLine = title ? `【${title}】${name}` : `${name}`;
+        ctx.fillText(nameLine, c.width / 2, c.height / 2 + 300);
+      }
+
+      // 下部ラテン
+      ctx.fillStyle = 'rgba(212,176,85,0.55)';
+      ctx.font = 'italic 30px "Cormorant Garamond", serif';
+      ctx.fillText('— My Own Book of Virtue —', c.width / 2, c.height - 280);
+
+      // 獲得スタンプと日付（底部）
+      ctx.fillStyle = 'rgba(212,176,85,0.72)';
+      ctx.font = '26px "Shippori Mincho", serif';
+      ctx.fillText(`獲得スタンプ ${getStampTotal()} 個`, c.width / 2, c.height - 220);
+      const d = new Date();
+      ctx.font = 'italic 24px "Cormorant Garamond", serif';
+      ctx.fillText(`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`, c.width / 2, c.height - 185);
+
+      // 下部の装飾◆
+      ctx.fillStyle = '#d4b055';
+      ctx.font = 'bold 40px "Shippori Mincho", serif';
+      ctx.fillText('◆', c.width / 2, c.height - 140);
+
+      const tex = new window.THREE.CanvasTexture(c);
+      tex.anisotropy = 8;
+      return tex;
+    }
+
+    // 裏表紙：コンセプトのタグライン
+    function makeBackTexture() {
+      const c = document.createElement('canvas');
+      c.width = 1024;
+      c.height = 1536;
+      const ctx = c.getContext('2d');
+      paintLeatherBase(ctx, c.width, c.height);
+
+      // 上部装飾
+      ctx.fillStyle = '#d4b055';
+      ctx.font = 'bold 36px "Shippori Mincho", serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('❋', c.width / 2, 220);
+
+      // タグラインを3段で配置
+      ctx.fillStyle = '#ead296';
+      ctx.font = '500 54px "Shippori Mincho", serif';
       const tagline = [
         '人は、同じ感情の流れの',
         '中で生きている。',
@@ -727,46 +924,16 @@
         '偉人たちも、',
         '同じ場所を歩いた。',
       ];
-      const tagStartY = 440;
-      const tagLineH = 82;
+      const startY = 430;
+      const lineH = 90;
       tagline.forEach((line, i) => {
-        // 空行はスキップ（間隔だけ）
-        if (line) ctx.fillText(line, c.width / 2, tagStartY + i * tagLineH);
+        if (line) ctx.fillText(line, c.width / 2, startY + i * lineH);
       });
 
-      // 区切り装飾
-      ctx.strokeStyle = 'rgba(212,176,85,0.6)';
-      ctx.lineWidth = 1.5;
-      const dividerY = c.height - 440;
-      ctx.beginPath();
-      ctx.moveTo(c.width * 0.25, dividerY);
-      ctx.lineTo(c.width * 0.75, dividerY);
-      ctx.stroke();
+      // 下部装飾
       ctx.fillStyle = '#d4b055';
-      ctx.font = '28px "Shippori Mincho", serif';
-      ctx.fillText('◇', c.width / 2, dividerY + 8);
-
-      // サブ: My Own Book of Virtue
-      ctx.fillStyle = 'rgba(212,176,85,0.55)';
-      ctx.font = 'italic 32px "Cormorant Garamond", serif';
-      ctx.fillText('— My Own Book of Virtue —', c.width / 2, c.height - 350);
-
-      // ユーザー名（控えめに）
-      const name = getUserName();
-      const title = getCurrentTitle();
-      if (name) {
-        ctx.fillStyle = 'rgba(234,210,150,0.92)';
-        ctx.font = 'bold 44px "Shippori Mincho", serif';
-        const nameLine = title ? `【${title}】${name}` : `${name}`;
-        ctx.fillText(nameLine, c.width / 2, c.height - 280);
-      }
-      // 底部の情報
-      ctx.fillStyle = 'rgba(212,176,85,0.75)';
-      ctx.font = '26px "Shippori Mincho", serif';
-      ctx.fillText(`獲得スタンプ ${getStampTotal()} 個`, c.width / 2, c.height - 220);
-      const d = new Date();
-      ctx.font = 'italic 24px "Cormorant Garamond", serif';
-      ctx.fillText(`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`, c.width / 2, c.height - 185);
+      ctx.font = 'bold 36px "Shippori Mincho", serif';
+      ctx.fillText('❋', c.width / 2, c.height - 160);
 
       const tex = new window.THREE.CanvasTexture(c);
       tex.anisotropy = 8;

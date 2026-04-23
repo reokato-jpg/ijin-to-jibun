@@ -351,102 +351,198 @@ body:has(.quote-zoom.open) .magic-parade {
 }
 .magic-book3d-icon { font-size: 14px; }
 
-/* ---------- TOPの3D本プレビュー ---------- */
-#view-people .hero-silhouette { display: none !important; }
+/* ---------- TOPの3D本：ヒーロー枠として大きく配置 ---------- */
+/* 既存ヒーローは背景画像＆タグラインだけ隠す（stats/shortcut は magicTopBook 側に統合） */
+#view-people .hero-silhouette {
+  min-height: 0 !important;
+  background: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+#view-people .hero-silhouette-img,
+#view-people .hero-silhouette-tagline,
+#view-people .hero-silhouette-sub,
+#view-people .hero-silhouette-btn,
+#view-people .hero-shortcut-row,
+#view-people #heroStats { display: none !important; }
+#view-people .hero-silhouette-overlay {
+  position: static !important;
+  background: transparent !important;
+  padding: 0 !important;
+  min-height: 0 !important;
+}
+
+/* ラビンは本の下に配置（DOM でも JS で移動しているが、念のため見た目補正） */
+#view-people .home-rabin-greet { margin-top: 8px; }
 
 .magic-topbook {
   position: relative;
-  margin: 18px 16px 22px;
-  padding: 22px 16px 18px;
+  margin: 0 0 18px;
+  padding: 28px 16px 22px;
   background:
-    radial-gradient(ellipse at top, rgba(212, 176, 85, 0.08) 0%, transparent 60%),
-    linear-gradient(180deg, #1a0a10 0%, #0e0608 100%);
-  border-radius: 18px;
-  border: 1px solid rgba(212, 176, 85, 0.18);
-  box-shadow:
-    0 12px 34px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 220, 150, 0.05);
+    radial-gradient(ellipse at 50% 10%, rgba(212, 176, 85, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 90%, rgba(122, 46, 58, 0.25) 0%, transparent 60%),
+    linear-gradient(180deg, #1a0a10 0%, #080307 100%);
   overflow: hidden;
-  cursor: pointer;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  outline: none;
+  isolation: isolate;
+  box-shadow: inset 0 -1px 0 rgba(212, 176, 85, 0.15);
 }
-.magic-topbook::before {
-  /* 光源の雰囲気 */
+.magic-topbook-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 22% 28%, rgba(255, 220, 140, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 78% 60%, rgba(212, 176, 85, 0.06) 0%, transparent 45%);
+  filter: blur(14px);
+  pointer-events: none;
+  z-index: 0;
+}
+/* 金の装飾ライン（上下） */
+.magic-topbook::before,
+.magic-topbook::after {
   content: '';
   position: absolute;
-  top: -40%;
-  left: -10%;
-  width: 80%;
-  height: 80%;
-  background: radial-gradient(ellipse, rgba(255, 220, 140, 0.12) 0%, transparent 60%);
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(60%, 280px);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212, 176, 85, 0.45), transparent);
   pointer-events: none;
-  filter: blur(20px);
+  z-index: 1;
 }
-.magic-topbook:hover,
-.magic-topbook:focus-visible {
-  transform: translateY(-2px);
-  box-shadow:
-    0 18px 48px rgba(0, 0, 0, 0.6),
-    0 0 0 1px rgba(212, 176, 85, 0.35),
-    inset 0 1px 0 rgba(255, 220, 150, 0.08);
-}
+.magic-topbook::before { top: 0; }
+.magic-topbook::after  { bottom: 0; }
+
 .magic-topbook-inner {
   position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  z-index: 1;
+  gap: 12px;
 }
-.magic-topbook-label {
-  font-family: "Shippori Mincho", serif;
-  font-size: 13px;
-  letter-spacing: 0.25em;
-  color: rgba(212, 176, 85, 0.85);
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+
+.magic-topbook-eyebrow {
+  font-family: "Cormorant Garamond", "Shippori Mincho", serif;
+  font-size: 11px;
+  letter-spacing: 0.42em;
+  color: rgba(212, 176, 85, 0.72);
+  text-transform: uppercase;
+  padding: 3px 14px;
+  border: 1px solid rgba(212, 176, 85, 0.3);
+  border-radius: 20px;
+  background: rgba(10, 4, 8, 0.3);
+  margin-bottom: 4px;
 }
+
 .magic-topbook-stage {
   width: 100%;
-  height: 260px;
+  max-width: 460px;
+  height: clamp(300px, 52vw, 380px);
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
+  touch-action: none;
 }
 .magic-topbook-stage canvas {
-  filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.7));
+  filter: drop-shadow(0 16px 36px rgba(0, 0, 0, 0.75));
+  user-select: none;
+  -webkit-user-drag: none;
 }
-.magic-topbook-cta {
+
+.magic-topbook-hint {
+  font-family: "Shippori Mincho", serif;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: rgba(212, 176, 85, 0.55);
+  padding: 2px 10px;
+  border-radius: 12px;
+  opacity: 0.75;
+}
+
+/* スタッツ：偉人 / 名言 / 軌跡 */
+.magic-topbook-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 6px;
+  padding: 10px 18px;
+  background: rgba(10, 4, 8, 0.35);
+  border: 1px solid rgba(212, 176, 85, 0.18);
+  border-radius: 10px;
+  min-height: 44px;
+}
+.magic-topbook-stats .mt-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+.magic-topbook-stats .mt-stat-num {
+  font-family: "Cormorant Garamond", "Shippori Mincho", serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: #ead296;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+}
+.magic-topbook-stats .mt-stat-label {
+  font-family: "Shippori Mincho", serif;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: rgba(212, 176, 85, 0.7);
+  margin-top: 3px;
+}
+.magic-topbook-stats .mt-stat-sep {
+  width: 1px;
+  height: 24px;
+  background: linear-gradient(180deg, transparent, rgba(212, 176, 85, 0.35), transparent);
+}
+
+/* 入口ボタン：偉人を探す / 年表から探す */
+.magic-topbook-actions {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  max-width: 460px;
+  margin-top: 4px;
+}
+.magic-topbook-action {
+  flex: 1;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  padding: 6px 14px;
-  margin-top: 2px;
-  background: rgba(212, 176, 85, 0.08);
-  border: 1px solid rgba(212, 176, 85, 0.25);
-  border-radius: 20px;
+  padding: 12px 10px;
+  background: linear-gradient(135deg, rgba(122, 46, 58, 0.5) 0%, rgba(92, 31, 42, 0.6) 100%);
+  border: 1px solid rgba(212, 176, 85, 0.3);
+  border-radius: 10px;
   font-family: "Shippori Mincho", serif;
-  font-size: 12px;
-  color: rgba(234, 210, 150, 0.92);
-  letter-spacing: 0.12em;
-  transition: background 0.18s ease, border-color 0.18s ease;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  color: #ead296;
+  cursor: pointer;
+  transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
-.magic-topbook:hover .magic-topbook-cta,
-.magic-topbook:focus-visible .magic-topbook-cta {
-  background: rgba(212, 176, 85, 0.16);
-  border-color: rgba(212, 176, 85, 0.5);
+.magic-topbook-action:hover,
+.magic-topbook-action:focus-visible {
+  background: linear-gradient(135deg, rgba(140, 62, 76, 0.7) 0%, rgba(112, 46, 58, 0.8) 100%);
+  border-color: rgba(212, 176, 85, 0.6);
+  transform: translateY(-1px);
 }
-.magic-topbook-arrow {
-  transition: transform 0.2s ease;
-  color: rgba(234, 210, 150, 0.8);
-}
-.magic-topbook:hover .magic-topbook-arrow {
-  transform: translateX(3px);
-}
+.magic-topbook-action:active { transform: translateY(0); }
+.magic-topbook-action-ic { font-size: 16px; }
+
 @media (max-width: 420px) {
-  .magic-topbook-stage { height: 230px; }
-  .magic-topbook { margin: 14px 12px 18px; }
+  .magic-topbook { padding: 22px 12px 18px; }
+  .magic-topbook-stage { height: clamp(260px, 68vw, 340px); }
+  .magic-topbook-stats { gap: 14px; padding: 8px 12px; }
+  .magic-topbook-stats .mt-stat-num { font-size: 20px; }
+  .magic-topbook-action { font-size: 12px; padding: 11px 8px; }
 }
 
 /* ---------- I) 今日のあなたの一冊（決定的RNG） ---------- */
