@@ -351,6 +351,104 @@ body:has(.quote-zoom.open) .magic-parade {
 }
 .magic-book3d-icon { font-size: 14px; }
 
+/* ---------- TOPの3D本プレビュー ---------- */
+#view-people .hero-silhouette { display: none !important; }
+
+.magic-topbook {
+  position: relative;
+  margin: 18px 16px 22px;
+  padding: 22px 16px 18px;
+  background:
+    radial-gradient(ellipse at top, rgba(212, 176, 85, 0.08) 0%, transparent 60%),
+    linear-gradient(180deg, #1a0a10 0%, #0e0608 100%);
+  border-radius: 18px;
+  border: 1px solid rgba(212, 176, 85, 0.18);
+  box-shadow:
+    0 12px 34px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 220, 150, 0.05);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  outline: none;
+}
+.magic-topbook::before {
+  /* 光源の雰囲気 */
+  content: '';
+  position: absolute;
+  top: -40%;
+  left: -10%;
+  width: 80%;
+  height: 80%;
+  background: radial-gradient(ellipse, rgba(255, 220, 140, 0.12) 0%, transparent 60%);
+  pointer-events: none;
+  filter: blur(20px);
+}
+.magic-topbook:hover,
+.magic-topbook:focus-visible {
+  transform: translateY(-2px);
+  box-shadow:
+    0 18px 48px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(212, 176, 85, 0.35),
+    inset 0 1px 0 rgba(255, 220, 150, 0.08);
+}
+.magic-topbook-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  z-index: 1;
+}
+.magic-topbook-label {
+  font-family: "Shippori Mincho", serif;
+  font-size: 13px;
+  letter-spacing: 0.25em;
+  color: rgba(212, 176, 85, 0.85);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+}
+.magic-topbook-stage {
+  width: 100%;
+  height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.magic-topbook-stage canvas {
+  filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.7));
+}
+.magic-topbook-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  margin-top: 2px;
+  background: rgba(212, 176, 85, 0.08);
+  border: 1px solid rgba(212, 176, 85, 0.25);
+  border-radius: 20px;
+  font-family: "Shippori Mincho", serif;
+  font-size: 12px;
+  color: rgba(234, 210, 150, 0.92);
+  letter-spacing: 0.12em;
+  transition: background 0.18s ease, border-color 0.18s ease;
+}
+.magic-topbook:hover .magic-topbook-cta,
+.magic-topbook:focus-visible .magic-topbook-cta {
+  background: rgba(212, 176, 85, 0.16);
+  border-color: rgba(212, 176, 85, 0.5);
+}
+.magic-topbook-arrow {
+  transition: transform 0.2s ease;
+  color: rgba(234, 210, 150, 0.8);
+}
+.magic-topbook:hover .magic-topbook-arrow {
+  transform: translateX(3px);
+}
+@media (max-width: 420px) {
+  .magic-topbook-stage { height: 230px; }
+  .magic-topbook { margin: 14px 12px 18px; }
+}
+
 /* ---------- I) 今日のあなたの一冊（決定的RNG） ---------- */
 .magic-daily-pick {
   margin: 12px 14px 20px;
