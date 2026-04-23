@@ -610,34 +610,35 @@
         buildStars();
       };
 
-      // --- 星景（宇宙感：静的＋ゆるく明滅）---
+      // --- 星景（宇宙感：金＋セピアの暖色で統一、静的＋ゆるく明滅）---
       let stars = [];
       function buildStars() {
-        const count = Math.max(60, Math.floor(W * H / 4000));
+        const count = Math.max(50, Math.floor(W * H / 5200));
         stars = Array.from({ length: count }, () => ({
           x: Math.random() * W,
           y: Math.random() * H,
-          r: Math.random() < 0.85 ? 0.4 + Math.random() * 0.9 : 0.9 + Math.random() * 1.6,
+          r: Math.random() < 0.85 ? 0.4 + Math.random() * 0.9 : 0.9 + Math.random() * 1.4,
           phase: Math.random() * Math.PI * 2,
           speed: 0.0008 + Math.random() * 0.0022,
-          hue: Math.random() < 0.6 ? 200 + Math.random() * 40      // 青白い星
-                : Math.random() < 0.7 ? 40 + Math.random() * 20    // 金の星
-                :                       280 + Math.random() * 40,  // 紫の星
+          // 金（38-48）が主、一部アイボリー（30）と薄いベージュ（18）
+          hue: Math.random() < 0.65 ? 38 + Math.random() * 14
+                : Math.random() < 0.85 ? 28 + Math.random() * 10
+                :                         14 + Math.random() * 10,
         }));
       }
       resize();
       const ro = new ResizeObserver(resize);
       ro.observe(canvas.parentElement || canvas);
 
-      // --- 星雲（ゆっくりドリフト）---
+      // --- 星雲（暖色のみ：深紅・焦茶・琥珀）---
       const nebulae = [
-        { x: 0.18, y: 0.22, r: 240, hue: 270, alpha: 0.18, vx:  0.03, vy:  0.02 },
-        { x: 0.82, y: 0.72, r: 280, hue: 200, alpha: 0.14, vx: -0.03, vy: -0.02 },
-        { x: 0.55, y: 0.15, r: 200, hue:  36, alpha: 0.13, vx:  0.02, vy:  0.015 },
+        { x: 0.18, y: 0.22, r: 260, hue:   8, alpha: 0.14, vx:  0.03, vy:  0.02 }, // 深いワイン
+        { x: 0.82, y: 0.72, r: 300, hue:  24, alpha: 0.11, vx: -0.03, vy: -0.02 }, // 焦茶
+        { x: 0.55, y: 0.15, r: 220, hue:  38, alpha: 0.12, vx:  0.02, vy:  0.015 }, // 琥珀
       ];
 
-      // --- 渦粒子（テック寄り：シアン／白／琥珀ミックス、内向き）---
-      const COUNT = 110;
+      // --- 渦粒子（金＋セピア＋アイボリーの暖色のみ、内向き）---
+      const COUNT = 100;
       const particles = Array.from({ length: COUNT }, () => spawn(true));
       function spawn(initial) {
         const a = Math.random() * Math.PI * 2;
@@ -646,15 +647,16 @@
         const kind = Math.random();
         return {
           a, r,
-          drift: 0.3 + Math.random() * 0.9,
+          drift: 0.3 + Math.random() * 0.8,
           swirl: 0.0015 + Math.random() * 0.004,
-          size: 0.5 + Math.random() * 1.2,
-          hue: kind < 0.35 ? 185 + Math.random() * 25    // シアン（テック）
-             : kind < 0.65 ? 36 + Math.random() * 16     // 琥珀（歴史）
-             :               0 + Math.random() * 360 * 0 + 210, // 白寄り（宇宙）
-          sat: kind < 0.65 ? 65 : 25,
-          lig: kind < 0.65 ? 68 : 82,
-          alpha: 0.28 + Math.random() * 0.55,
+          size: 0.45 + Math.random() * 1.0,
+          // 全部暖色：金／琥珀／淡いアイボリー
+          hue: kind < 0.55 ? 38 + Math.random() * 12     // 金
+             : kind < 0.85 ? 24 + Math.random() * 14     // 琥珀
+             :               30 + Math.random() *  6,    // アイボリー寄り
+          sat: kind < 0.85 ? 60 + Math.random() * 15 : 30,
+          lig: kind < 0.85 ? 65 + Math.random() * 10 : 85,
+          alpha: 0.25 + Math.random() * 0.5,
         };
       }
 
@@ -728,8 +730,8 @@
           rot: vertical ? 0 : (Math.random() - 0.5) * 0.14,
           peak: cls === 2 ? 0.55 : cls === 1 ? 0.4 : 0.26,
           drift: { x: (Math.random() - 0.5) * 0.08, y: 0.04 + Math.random() * 0.06 },
-          // 色モード：大サイズはシアン寄り（テック）、中は琥珀（歴史）、小はアイボリー
-          mode: cls === 2 && Math.random() < 0.55 ? 'tech' : (cls === 0 ? 'pale' : 'gold'),
+          // 色モード：大／中は金、小はアイボリー（暖色のみで統一）
+          mode: cls === 0 ? 'pale' : 'gold',
         });
       }
 
@@ -738,8 +740,6 @@
       let lastWord = performance.now();
       let lastT = performance.now();
       let globalSwirl = 0;
-      let scanLineY = -40;
-      let scanLineTimer = 0;
 
       function tick() {
         const now = performance.now();
@@ -747,8 +747,8 @@
         lastT = now;
         globalSwirl += 0.0006 * dt;
 
-        // 濃い残像（ベースは宇宙寄りの深青紫）
-        ctx.fillStyle = 'rgba(6, 4, 12, 0.18)';
+        // 濃い残像（ベースはワイン寄りの暗部 / 宇宙の深みを金寄りに）
+        ctx.fillStyle = 'rgba(10, 4, 8, 0.16)';
         ctx.fillRect(0, 0, W, H);
 
         // --- 星雲（radial gradient drift）---
@@ -775,21 +775,6 @@
           ctx.beginPath();
           ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
           ctx.fill();
-        }
-
-        // --- デジタルグリッド（画面端にだけ薄く）---
-        ctx.strokeStyle = 'rgba(120, 200, 230, 0.05)';
-        ctx.lineWidth = 1;
-        const GRID = 48;
-        for (let x = 0; x <= W; x += GRID) {
-          ctx.beginPath();
-          ctx.moveTo(x, 0); ctx.lineTo(x, H);
-          ctx.stroke();
-        }
-        for (let y = 0; y <= H; y += GRID) {
-          ctx.beginPath();
-          ctx.moveTo(0, y); ctx.lineTo(W, y);
-          ctx.stroke();
         }
 
         // --- 紙片 ---
@@ -838,26 +823,6 @@
           ctx.stroke();
         }
 
-        // --- 走査線（12秒に1回、上から下へ流れる）---
-        scanLineTimer += dt;
-        if (scanLineTimer > 12000) { scanLineY = -40; scanLineTimer = 0; }
-        if (scanLineY < H + 40) {
-          scanLineY += dt * 0.18;
-          const sg = ctx.createLinearGradient(0, scanLineY - 30, 0, scanLineY + 30);
-          sg.addColorStop(0,   'rgba(140, 220, 240, 0)');
-          sg.addColorStop(0.5, 'rgba(140, 220, 240, 0.22)');
-          sg.addColorStop(1,   'rgba(140, 220, 240, 0)');
-          ctx.fillStyle = sg;
-          ctx.fillRect(0, scanLineY - 30, W, 60);
-          // スキャンの細い光の線
-          ctx.strokeStyle = 'rgba(180, 235, 255, 0.5)';
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.moveTo(0, scanLineY);
-          ctx.lineTo(W, scanLineY);
-          ctx.stroke();
-        }
-
         // --- 時代スタンプ文字（英字主体・層のある質感）---
         if (now - lastWord > 560) { spawnWord(); lastWord = now; }
         for (let i = floats.length - 1; i >= 0; i--) {
@@ -870,20 +835,14 @@
           const curve = Math.sin(t * Math.PI);
           const alpha = curve * e.peak;
 
-          // カラーパレット
+          // カラーパレット（暖色のみで世界観を統一）
           let col1, col2, col3, haloColor, shadowColor;
-          if (e.mode === 'tech') {
-            col1 = `rgba(190, 240, 255, ${alpha})`;
-            col2 = `rgba(120, 200, 230, ${alpha})`;
-            col3 = `rgba(80, 160, 200, ${alpha * 0.85})`;
-            haloColor = `rgba(140, 220, 240, ${alpha * 0.6})`;
-            shadowColor = `rgba(4, 10, 20, ${alpha * 0.6})`;
-          } else if (e.mode === 'pale') {
+          if (e.mode === 'pale') {
             col1 = `rgba(240, 230, 210, ${alpha})`;
             col2 = `rgba(210, 200, 180, ${alpha})`;
             col3 = `rgba(170, 160, 140, ${alpha * 0.85})`;
             haloColor = `rgba(220, 210, 190, ${alpha * 0.4})`;
-            shadowColor = `rgba(4, 4, 8, ${alpha * 0.5})`;
+            shadowColor = `rgba(8, 4, 6, ${alpha * 0.5})`;
           } else {
             col1 = `rgba(248, 220, 160, ${alpha})`;
             col2 = `rgba(220, 180, 110, ${alpha})`;
@@ -929,17 +888,6 @@
             chars.forEach((ch, k) => ctx.fillText(ch, 0, -total / 2 + k * step));
           } else {
             ctx.fillText(e.txt, 0, 0);
-          }
-          // テック色は下線を足して「データ感」
-          if (e.mode === 'tech') {
-            ctx.shadowBlur = 0;
-            const textWidth = ctx.measureText(e.txt).width;
-            ctx.strokeStyle = `rgba(140, 220, 240, ${alpha * 0.4})`;
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(-textWidth / 2 - 4, e.size * 0.7);
-            ctx.lineTo( textWidth / 2 + 4, e.size * 0.7);
-            ctx.stroke();
           }
           ctx.restore();
         }
