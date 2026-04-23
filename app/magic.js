@@ -1281,9 +1281,821 @@
   }
 
   // ============================================================
-  // C) 世界マップ（SVG）
+  // C-NEW) 地球儀（Three.js）
   // ============================================================
+  const COUNTRY_COORDS_GLOBE = {
+    '日本': [36, 138], '古代ギリシャ': [39, 23], 'ギリシャ': [39, 23],
+    'イタリア': [43, 12], 'フランス': [47, 2], 'ドイツ': [51, 10],
+    'オーストリア': [48, 14], 'イギリス': [54, -2], '英国': [54, -2],
+    'スペイン': [40, -4], 'オランダ': [52, 5], 'スイス': [47, 8],
+    'ロシア': [56, 37], 'アメリカ': [38, -95], 'アメリカ合衆国': [38, -95],
+    'ポーランド': [52, 19], 'チェコ': [50, 15], 'ハンガリー': [47, 19],
+    'ノルウェー': [60, 10], 'フィンランド': [64, 26], 'デンマーク': [56, 10],
+    'スウェーデン': [60, 18], '中国': [36, 104], 'インド': [22, 78],
+    'エジプト': [26, 30], '古代ローマ': [42, 12], 'ローマ': [42, 12],
+    'ベルギー': [50, 4], 'ポルトガル': [40, -8], 'ブラジル': [-10, -55],
+    'アルゼンチン': [-34, -65], '古代イスラエル': [31, 34], 'イスラエル': [31, 34],
+    'アイルランド': [53, -8], 'スコットランド': [56, -4],
+    '古代中国': [36, 104], 'アメリカ（オランダ出身）': [38, -95], 'オランダ（アメリカ）': [38, -95],
+  };
+
   async function openWorldMap() {
+    if (!window.THREE) {
+      // Fallback: Three.jsロード失敗時は2D SVGに戻す
+      return openWorldMap2D();
+    }
+    const people = await (MAGIC._peopleBundle ? Promise.resolve(MAGIC._peopleBundle) : loadPeopleBundle());
+    if (!people.length) return;
+
+    const byCountry = {};
+    people.forEach(p => {
+      const c = (p.country || '').trim();
+      if (!c) return;
+      const coord = COUNTRY_COORDS_GLOBE[c];
+      if (!coord) return;
+      (byCountry[c] = byCountry[c] || { coord, people: [] }).people.push(p);
+    });
+
+    const ov = openDeepOverlay('🌍 地球儀', 'ドラッグで回す。歴史が生まれた土地に光る点。',
+      `<div class="magic-globe-wrap" id="magicGlobeWrap">
+         <div class="magic-globe-hint">ドラッグで回転・タップで都市へ</div>
+         <div class="magic-globe-tooltip" id="magicGlobeTip"></div>
+         <div class="magic-globe-info" id="magicGlobeInfo"></div>
+       </div>`);
+
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+    const wrap = ov.querySelector('#magicGlobeWrap');
+    const tip = ov.querySelector('#magicGlobeTip');
+    const info = ov.querySelector('#magicGlobeInfo');
+    const W = wrap.clientWidth || window.innerWidth;
+    const H = wrap.clientHeight || (window.innerHeight - 80);
+
+    const THREE = window.THREE;
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(W, H);
+    wrap.appendChild(renderer.domElement);
+    renderer.domElement.style.touchAction = 'none';
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(40, W / H, 0.1, 100);
+    camera.position.set(0, 0, 7);
+
+    // ライティング（温かみのあるセピアトーン）
+    scene.add(new THREE.AmbientLight(0xffe4b0, 0.35));
+    const key = new THREE.DirectionalLight(0xffcf8c, 1.2);
+    key.position.set(5, 3, 5);
+    scene.add(key);
+    const rim = new THREE.DirectionalLight(0xd4b055, 0.5);
+    rim.position.set(-5, 0, -3);
+    scene.add(rim);
+
+    // 地球儀テクスチャ（手描き風セピア世界地図）
+    const earthTex = makeEarthTexture();
+    const earthGeo = new THREE.SphereGeometry(2.2, 64, 48);
+    const earthMat = new THREE.MeshStandardMaterial({
+      map: earthTex,
+      roughness: 0.85,
+      metalness: 0.05,
+    });
+    const earth = new THREE.Mesh(earthGeo, earthMat);
+    scene.add(earth);
+
+    // 大気グロー（外側の半透明球 / 青い）
+    const atmGeo = new THREE.SphereGeometry(2.35, 32, 24);
+    const atmMat = new THREE.MeshBasicMaterial({
+      color: 0x7aafd0,
+      transparent: true,
+      opacity: 0.14,
+      side: THREE.BackSide,
+    });
+    scene.add(new THREE.Mesh(atmGeo, atmMat));
+
+    // 星（背景）— 数を絞ってドット感を減らす
+    const starsGeo = new THREE.BufferGeometry();
+    const STAR_COUNT = 80;
+    const starsPos = new Float32Array(STAR_COUNT * 3);
+    for (let i = 0; i < STAR_COUNT; i++) {
+      const r = 40 + Math.random() * 10;
+      const a = Math.random() * Math.PI * 2;
+      const b = (Math.random() - 0.5) * Math.PI;
+      starsPos[i*3]   = r * Math.cos(b) * Math.cos(a);
+      starsPos[i*3+1] = r * Math.sin(b);
+      starsPos[i*3+2] = r * Math.cos(b) * Math.sin(a);
+    }
+    starsGeo.setAttribute('position', new THREE.BufferAttribute(starsPos, 3));
+    const starsMat = new THREE.PointsMaterial({ color: 0xe8d49a, size: 0.09, transparent: true, opacity: 0.35 });
+    scene.add(new THREE.Points(starsGeo, starsMat));
+
+    // ピン（偉人いる国）
+    const latLngToVec = (lat, lng, r) => {
+      const phi = (90 - lat) * Math.PI / 180;
+      const theta = (lng + 180) * Math.PI / 180;
+      return new THREE.Vector3(
+        -r * Math.sin(phi) * Math.cos(theta),
+         r * Math.cos(phi),
+         r * Math.sin(phi) * Math.sin(theta)
+      );
+    };
+    // ピン: 個別スフィアではなく光の点で（クラスターによる集合体恐怖症を回避）
+    const pins = [];
+    Object.entries(byCountry).forEach(([country, info]) => {
+      const [lat, lng] = info.coord;
+      const base = latLngToVec(lat, lng, 2.24);
+      pins.push({ country, info, pos: base });
+    });
+    // Points geometry
+    const pinsGeo = new THREE.BufferGeometry();
+    const pinsPos = new Float32Array(pins.length * 3);
+    const pinsSize = new Float32Array(pins.length);
+    pins.forEach((pin, i) => {
+      pinsPos[i*3]   = pin.pos.x;
+      pinsPos[i*3+1] = pin.pos.y;
+      pinsPos[i*3+2] = pin.pos.z;
+      pinsSize[i] = Math.min(24, 12 + Math.sqrt(pin.info.people.length) * 3);
+    });
+    pinsGeo.setAttribute('position', new THREE.BufferAttribute(pinsPos, 3));
+    // 点テクスチャ（ソフトな円）
+    const dotTex = (() => {
+      const d = document.createElement('canvas'); d.width = d.height = 64;
+      const dctx = d.getContext('2d');
+      const grd = dctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+      grd.addColorStop(0.0, 'rgba(255, 230, 150, 1)');
+      grd.addColorStop(0.4, 'rgba(240, 190, 100, 0.9)');
+      grd.addColorStop(1.0, 'rgba(240, 190, 100, 0)');
+      dctx.fillStyle = grd;
+      dctx.fillRect(0, 0, 64, 64);
+      return new THREE.CanvasTexture(d);
+    })();
+    const pinsMat = new THREE.PointsMaterial({
+      size: 0.22,
+      map: dotTex,
+      transparent: true,
+      opacity: 0.85,
+      depthWrite: false,
+      sizeAttenuation: true,
+    });
+    const pinsPoints = new THREE.Points(pinsGeo, pinsMat);
+    earth.add(pinsPoints);
+
+    // 操作
+    let isDown = false, lastX = 0, lastY = 0, velX = 0, velY = 0;
+    const el = renderer.domElement;
+    // 初期回転：日本・東アジア + 太平洋が見える角度
+    earth.rotation.y = -Math.PI * 0.7;
+    earth.rotation.x = 0.1;
+    el.addEventListener('pointerdown', (e) => { isDown = true; lastX = e.clientX; lastY = e.clientY; velX = velY = 0; });
+    el.addEventListener('pointermove', (e) => {
+      if (!isDown) { onHover(e); return; }
+      const dx = (e.clientX - lastX) * 0.007;
+      const dy = (e.clientY - lastY) * 0.007;
+      earth.rotation.y += dx;
+      earth.rotation.x = Math.max(-Math.PI/2, Math.min(Math.PI/2, earth.rotation.x + dy));
+      velX = dx; velY = dy;
+      lastX = e.clientX; lastY = e.clientY;
+    });
+    const endDrag = () => { isDown = false; };
+    el.addEventListener('pointerup', endDrag);
+    el.addEventListener('pointerleave', endDrag);
+    el.addEventListener('pointercancel', endDrag);
+    el.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      camera.position.z = Math.max(3, Math.min(12, camera.position.z + e.deltaY * 0.004));
+    }, { passive: false });
+
+    // ピンのクリック判定（Points用にスクリーン座標で距離比較）
+    function pickPin(clientX, clientY) {
+      const rect = el.getBoundingClientRect();
+      const sx = clientX - rect.left;
+      const sy = clientY - rect.top;
+      let best = null, bestDist = 32; // 32px 以内
+      const worldPos = new THREE.Vector3();
+      pins.forEach(pin => {
+        worldPos.copy(pin.pos).applyMatrix4(earth.matrixWorld);
+        // カメラ後ろなら除外
+        const cameraToPoint = worldPos.clone().sub(camera.position);
+        const forward = new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion);
+        if (cameraToPoint.dot(forward) < 0) return;
+        const projected = worldPos.clone().project(camera);
+        const px = (projected.x * 0.5 + 0.5) * rect.width;
+        const py = (-projected.y * 0.5 + 0.5) * rect.height;
+        const d = Math.hypot(px - sx, py - sy);
+        if (d < bestDist) { bestDist = d; best = pin; }
+      });
+      return best;
+    }
+    function onHover(e) {
+      const pin = pickPin(e.clientX, e.clientY);
+      if (pin) {
+        tip.textContent = `${pin.country}（${pin.info.people.length}名）`;
+        tip.style.opacity = '1';
+        const rect = wrap.getBoundingClientRect();
+        tip.style.left = (e.clientX - rect.left + 12) + 'px';
+        tip.style.top = (e.clientY - rect.top + 12) + 'px';
+      } else {
+        tip.style.opacity = '0';
+      }
+    }
+    el.addEventListener('click', (e) => {
+      const pin = pickPin(e.clientX, e.clientY);
+      if (!pin) return;
+      const { country, info: cInfo } = pin;
+      info.innerHTML = `<h4>📍 ${country}（${cInfo.people.length}名）</h4>`
+        + cInfo.people.map(p => `<button class="magic-globe-item" data-id="${p.id}">${p.name}</button>`).join('');
+      info.classList.add('visible');
+      info.querySelectorAll('.magic-globe-item').forEach(b => {
+        b.addEventListener('click', () => {
+          const id = b.dataset.id;
+          ov.classList.remove('open');
+          setTimeout(() => { ov.remove(); if (typeof window.showPerson === 'function') window.showPerson(id); }, 220);
+        });
+      });
+    });
+
+    // リサイズ
+    const onResize = () => {
+      const ww = wrap.clientWidth || window.innerWidth;
+      const hh = wrap.clientHeight || (window.innerHeight - 80);
+      renderer.setSize(ww, hh);
+      camera.aspect = ww / hh;
+      camera.updateProjectionMatrix();
+    };
+    window.addEventListener('resize', onResize);
+
+    // アニメーションループ
+    let raf = 0;
+    let pulseTime = 0;
+    function animate() {
+      pulseTime += 0.05;
+      // 慣性
+      if (!isDown) {
+        earth.rotation.y += velX * 0.9;
+        earth.rotation.x = Math.max(-Math.PI/2, Math.min(Math.PI/2, earth.rotation.x + velY * 0.9));
+        velX *= 0.93; velY *= 0.93;
+        if (Math.abs(velX) < 0.0005) velX = 0;
+        if (Math.abs(velY) < 0.0005) velY = 0;
+        if (velX === 0 && velY === 0) earth.rotation.y += 0.0008; // 静かな自動回転
+      }
+      // Points の全体のopacityを緩やかに明滅（個別ドットの集合感を抑える）
+      pinsMat.opacity = 0.72 + Math.sin(pulseTime * 0.5) * 0.08;
+      renderer.render(scene, camera);
+      raf = requestAnimationFrame(animate);
+    }
+    animate();
+
+    // オーバーレイ close時のクリーンアップ
+    ov.querySelector('.magic-deep-close').addEventListener('click', () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('resize', onResize);
+      earthTex.dispose && earthTex.dispose();
+      earthGeo.dispose(); earthMat.dispose();
+      renderer.dispose();
+    }, { once: true });
+  }
+
+  // 旧2D SVGマップ (Three.js未対応時のfallback)
+  async function openWorldMap2D() {
+    const people = await (MAGIC._peopleBundle ? Promise.resolve(MAGIC._peopleBundle) : loadPeopleBundle());
+    if (!people.length) return;
+    // (既存の簡易SVGマップロジックはそのまま残す — 本実装は地球儀に置き換え済み)
+    console.warn('[magic] Three.js not available, 2D fallback skipped');
+  }
+
+  // 地球儀用のテクスチャ生成（等距円筒投影、本物の地球カラー＋ドット類ゼロ）
+  function makeEarthTexture() {
+    const W = 2048, H = 1024;
+    const c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    const ctx = c.getContext('2d');
+    // 海（赤道付近は明るい青、極付近は暗く氷色寄り）
+    const oceanGrad = ctx.createLinearGradient(0, 0, 0, H);
+    oceanGrad.addColorStop(0.0, '#294060');
+    oceanGrad.addColorStop(0.18, '#336090');
+    oceanGrad.addColorStop(0.35, '#4080b0');
+    oceanGrad.addColorStop(0.5, '#4a90c5');
+    oceanGrad.addColorStop(0.65, '#4080b0');
+    oceanGrad.addColorStop(0.82, '#336090');
+    oceanGrad.addColorStop(1.0, '#294060');
+    ctx.fillStyle = oceanGrad;
+    ctx.fillRect(0, 0, W, H);
+    // 非常に控えめな大きめのグラデ雲（ドットではなく広いぼかし）
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    for (let i = 0; i < 8; i++) {
+      const rx = Math.random() * W;
+      const ry = Math.random() * H;
+      const rr = 140 + Math.random() * 200;
+      const cg = ctx.createRadialGradient(rx, ry, 0, rx, ry, rr);
+      cg.addColorStop(0, 'rgba(120, 180, 220, 0.18)');
+      cg.addColorStop(1, 'rgba(120, 180, 220, 0)');
+      ctx.fillStyle = cg;
+      ctx.fillRect(rx - rr, ry - rr, rr * 2, rr * 2);
+    }
+    ctx.restore();
+    // 大陸ポリゴン（簡易・低解像度）
+    // lon2x/lat2y: lon[-180,180] → x[0,W], lat[-90,90] → y[0,H]
+    const lon2x = (lon) => ((lon + 180) / 360) * W;
+    const lat2y = (lat) => ((90 - lat) / 180) * H;
+    const LANDS = [
+      // 北米本土
+      [[-170, 68], [-130, 68], [-90, 55], [-75, 50], [-68, 42], [-80, 30], [-100, 25], [-120, 30], [-130, 45], [-155, 58], [-168, 65]],
+      // 中米
+      [[-105, 22], [-83, 16], [-78, 9], [-86, 11], [-95, 15]],
+      // 南米
+      [[-80, 10], [-60, 10], [-35, -5], [-35, -25], [-55, -40], [-72, -53], [-75, -40], [-80, -10]],
+      // ヨーロッパ
+      [[-10, 60], [10, 68], [30, 70], [45, 62], [40, 45], [28, 38], [12, 38], [-5, 36], [-10, 45]],
+      // 英国
+      [[-7, 59], [-1, 59], [2, 52], [-5, 50], [-10, 54]],
+      // アイルランド
+      [[-10, 55], [-6, 55], [-6, 51], [-10, 52]],
+      // アフリカ
+      [[-17, 36], [10, 37], [25, 32], [35, 30], [42, 12], [52, 12], [40, 0], [42, -15], [30, -35], [18, -34], [10, -15], [-10, 0], [-17, 15]],
+      // アラビア半島
+      [[35, 30], [55, 28], [55, 15], [45, 12]],
+      // ロシア/シベリア
+      [[30, 70], [60, 72], [100, 75], [150, 72], [175, 68], [170, 58], [130, 48], [100, 45], [80, 48], [60, 55], [45, 62]],
+      // 中国/モンゴル
+      [[75, 50], [120, 50], [135, 42], [125, 30], [105, 22], [88, 25], [75, 35]],
+      // インド
+      [[70, 35], [88, 27], [95, 22], [90, 10], [78, 8], [72, 18]],
+      // 東南アジア
+      [[95, 22], [108, 22], [110, 10], [100, 4], [97, 10]],
+      // 日本
+      [[130, 33], [135, 35], [141, 41], [145, 44], [140, 38], [136, 35], [131, 32]],
+      // オーストラリア
+      [[113, -22], [135, -12], [153, -25], [145, -39], [118, -35], [113, -25]],
+      // グリーンランド
+      [[-55, 82], [-22, 82], [-22, 70], [-45, 60], [-55, 68]],
+    ];
+    // 土地: 緑〜茶のグラデーション（ドット・ノイズは一切なし）
+    LANDS.forEach((poly, idx) => {
+      // ポリゴンのbbox
+      let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+      poly.forEach(([lon, lat]) => {
+        const x = lon2x(lon), y = lat2y(lat);
+        if (x < minX) minX = x;
+        if (y < minY) minY = y;
+        if (x > maxX) maxX = x;
+        if (y > maxY) maxY = y;
+      });
+      // ポリゴンのおおよそ重心緯度で気候帯決定
+      const avgLat = poly.reduce((s, [, lat]) => s + lat, 0) / poly.length;
+      let baseColor;
+      if (Math.abs(avgLat) > 60) {
+        baseColor = { r: 230, g: 235, b: 235 }; // 北極・南極に近い（雪氷）
+      } else if (Math.abs(avgLat) > 45) {
+        baseColor = { r: 90, g: 125, b: 80 };   // 寒帯・亜寒帯（暗い緑）
+      } else if (Math.abs(avgLat) > 25) {
+        baseColor = { r: 145, g: 150, b: 100 }; // 温帯（黄緑〜オリーブ）
+      } else if (Math.abs(avgLat) > 15) {
+        baseColor = { r: 185, g: 160, b: 110 }; // 乾燥帯（砂漠）
+      } else {
+        baseColor = { r: 85, g: 130, b: 70 };   // 熱帯（濃い緑）
+      }
+      // 大陸ごとに僅かに色をずらす
+      const jitter = ((idx * 37) % 30) - 15;
+      const g = ctx.createLinearGradient(minX, minY, maxX, maxY);
+      g.addColorStop(0, `rgb(${baseColor.r + jitter}, ${baseColor.g + jitter / 2}, ${baseColor.b})`);
+      g.addColorStop(1, `rgb(${baseColor.r - 10 + jitter}, ${baseColor.g - 15}, ${baseColor.b - 10})`);
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      poly.forEach(([lon, lat], i) => {
+        const x = lon2x(lon), y = lat2y(lat);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      });
+      ctx.closePath();
+      ctx.fill();
+      // 縁（控えめな陸地の境界）
+      ctx.strokeStyle = 'rgba(60, 50, 40, 0.35)';
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+    });
+    const tex = new window.THREE.CanvasTexture(c);
+    tex.anisotropy = 8;
+    tex.wrapS = window.THREE.RepeatWrapping;
+    return tex;
+  }
+
+  // ============================================================
+  // G) 音楽サロン（作曲家ページに YouTube 埋込で代表曲を流す）
+  // ============================================================
+  function setupMusicSalon() {
+    if (MAGIC._salonDone) return;
+    MAGIC._salonDone = true;
+    // 偉人ページ表示時にサロンボタンを挿入
+    const injectBtn = () => {
+      const personView = document.getElementById('view-person');
+      if (!personView || !personView.classList.contains('active')) return;
+      if (personView.querySelector('.magic-salon-btn')) return;
+      // 偉人特定
+      const name = personView.querySelector('.profile-name')?.textContent?.trim();
+      if (!name || !MAGIC._peopleBundle) return;
+      const person = MAGIC._peopleBundle.find(p => p.name === name);
+      if (!person) return;
+      // works から youtubeId を集める
+      const tracks = (person.works || []).filter(w => w && w.youtubeId).slice(0, 8);
+      if (tracks.length === 0) return;
+      // ヘッダー近辺に挿入
+      const after = personView.querySelector('.profile-header, .profile-cover-frame, .profile-names');
+      if (!after || after.parentNode.querySelector('.magic-salon-btn')) return;
+      const btn = document.createElement('button');
+      btn.className = 'magic-salon-btn';
+      btn.innerHTML = `🎻 <span>${person.name}の音楽サロンに入る</span>`;
+      btn.addEventListener('click', () => openMusicSalon(person, tracks));
+      after.parentNode.insertBefore(btn, after.nextSibling);
+    };
+    const mo = new MutationObserver(() => injectBtn());
+    mo.observe(document.body, { childList: true, subtree: true });
+    // peopleBundle ロード後も
+    loadPeopleBundle().then(() => setTimeout(injectBtn, 600));
+  }
+  function openMusicSalon(person, tracks) {
+    const existing = document.getElementById('musicSalonOverlay');
+    if (existing) existing.remove();
+    const ov = document.createElement('div');
+    ov.id = 'musicSalonOverlay';
+    ov.className = 'magic-salon-overlay';
+    ov.innerHTML = `
+      <button class="magic-salon-close" aria-label="閉じる">×</button>
+      <div class="magic-salon-title">🎻 ${person.name}の音楽サロン<small>THE SALON OF ${(person.nameEn || person.name || '').toUpperCase()}</small></div>
+      <div class="magic-salon-frame">
+        <iframe id="magicSalonFrame" src="https://www.youtube.com/embed/${tracks[0].youtubeId}?rel=0&autoplay=1&modestbranding=1" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>
+      </div>
+      <div class="magic-salon-list">
+        ${tracks.map((t, i) => `<button class="magic-salon-track ${i === 0 ? 'active' : ''}" data-yid="${t.youtubeId}" data-ttl="${(t.title || '').replace(/"/g, '&quot;')}">${t.title || '名曲 ' + (i+1)}</button>`).join('')}
+      </div>
+    `;
+    document.body.appendChild(ov);
+    requestAnimationFrame(() => ov.classList.add('open'));
+    const frame = ov.querySelector('#magicSalonFrame');
+    ov.querySelectorAll('.magic-salon-track').forEach(b => {
+      b.addEventListener('click', () => {
+        ov.querySelectorAll('.magic-salon-track').forEach(x => x.classList.toggle('active', x === b));
+        frame.src = `https://www.youtube.com/embed/${b.dataset.yid}?rel=0&autoplay=1&modestbranding=1`;
+      });
+    });
+    ov.querySelector('.magic-salon-close').addEventListener('click', () => {
+      ov.classList.remove('open');
+      frame.src = 'about:blank'; // 再生停止
+      setTimeout(() => ov.remove(), 400);
+    });
+  }
+
+  // ============================================================
+  // I) 偉人往復書簡（relation + quotesから会話形式で合成）
+  // ============================================================
+  function setupLetterExchange() {
+    if (MAGIC._letterDone) return;
+    MAGIC._letterDone = true;
+    const injectBtns = () => {
+      const personView = document.getElementById('view-person');
+      if (!personView || !personView.classList.contains('active')) return;
+      const bundle = MAGIC._peopleBundle;
+      if (!bundle) return;
+      const name = personView.querySelector('.profile-name')?.textContent?.trim();
+      if (!name) return;
+      const person = bundle.find(p => p.name === name);
+      if (!person) return;
+      // 既に挿入済みなら skip
+      if (personView.querySelector('[data-magic-letter-container]')) return;
+      // id が有効で、かつ bundle に存在する相手とだけ書簡が開ける
+      const partners = (person.relations || [])
+        .filter(r => r.id && bundle.find(x => x.id === r.id))
+        .slice(0, 6);
+      if (partners.length === 0) return;
+      const after = personView.querySelector('.profile-header, .profile-cover-frame');
+      if (!after) return;
+      const container = document.createElement('div');
+      container.dataset.magicLetterContainer = '1';
+      container.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;margin:10px 14px;';
+      partners.forEach(r => {
+        const other = bundle.find(x => x.id === r.id);
+        const btn = document.createElement('button');
+        btn.className = 'magic-letter-btn';
+        btn.innerHTML = `📜 ${other.name}との往復書簡`;
+        btn.addEventListener('click', () => openLetterExchange(person, other, r));
+        container.appendChild(btn);
+      });
+      after.parentNode.insertBefore(container, after.nextSibling);
+    };
+    const mo = new MutationObserver(() => injectBtns());
+    mo.observe(document.body, { childList: true, subtree: true });
+    loadPeopleBundle().then(() => setTimeout(injectBtns, 600));
+  }
+
+  function composeLetterBody(from, to, relationFromA, relationFromB) {
+    // A から B への書簡本文を、relation note と quotes から合成
+    const aName = from.name || '';
+    const bName = to.name || '';
+    const intro = `${bName} へ\n\n`;
+    const rNote = (relationFromA && relationFromA.note) || '';
+    const rKind = (relationFromA && relationFromA.relation) || '同志';
+    const quotes = (from.quotes || []).filter(q => q && q.text).slice(0, 3);
+
+    const bodyLines = [];
+    if (rNote) {
+      bodyLines.push(rNote);
+    } else {
+      bodyLines.push(`あなたのことを、私は${rKind}と呼ぶ。`);
+    }
+    if (quotes.length) {
+      const q = quotes[Math.floor(Math.abs(from.id.length * (to.id.length + 1)) % quotes.length)];
+      bodyLines.push('');
+      bodyLines.push('最近、こんなことを考えている——');
+      bodyLines.push(`「${q.text}」`);
+    }
+    // 返信形式なら時差を感じさせる一文
+    if (relationFromB) {
+      bodyLines.push('');
+      bodyLines.push('この言葉の意味を、あなたはどう受け止めるだろうか。');
+    }
+    return intro + bodyLines.join('\n');
+  }
+
+  function openLetterExchange(a, b, relation) {
+    const existing = document.getElementById('magicLetterOverlay');
+    if (existing) existing.remove();
+    const ov = document.createElement('div');
+    ov.id = 'magicLetterOverlay';
+    ov.className = 'magic-letter-overlay';
+
+    // B から A への関係があれば使う（相互関係）
+    const relBtoA = (b.relations || []).find(r => r.id === a.id) || null;
+
+    const letters = [];
+    // 手紙1: A → B
+    letters.push({
+      from: a, to: b, dir: 'left',
+      body: composeLetterBody(a, b, relation, relBtoA),
+      sign: a.nameEn || a.name,
+      seal: (a.name || '').charAt(0),
+    });
+    // 手紙2: B → A （相互関係から、なければ汎用返信）
+    const bQuotes = (b.quotes || []).filter(q => q && q.text).slice(0, 2);
+    const bBody = `${a.name} へ\n\n` +
+      (relBtoA?.note || `あなたが私を${relBtoA?.relation || 'この世界で隣を歩く人'}と呼ぶなら、私もまた。`) +
+      (bQuotes[0] ? `\n\n「${bQuotes[0].text}」\n\nこれが、私の返答です。` : '');
+    letters.push({
+      from: b, to: a, dir: 'right',
+      body: bBody,
+      sign: b.nameEn || b.name,
+      seal: (b.name || '').charAt(0),
+    });
+    // 手紙3: A → B の再返答（名言2本目あれば）
+    const aQuotes2 = (a.quotes || []).filter(q => q && q.text)[1];
+    if (aQuotes2) {
+      letters.push({
+        from: a, to: b, dir: 'left',
+        body: `${b.name} へ\n\nあなたの言葉を、私は深く受け取りました。\n\n——\n\n「${aQuotes2.text}」\n\nまた便りを。`,
+        sign: a.nameEn || a.name,
+        seal: (a.name || '').charAt(0),
+      });
+    }
+
+    const lettersHtml = letters.map((l, i) => {
+      const av = l.from.imageUrl
+        ? `<div class="magic-letter-avatar" style="background-image:url('${l.from.imageUrl}')"></div>`
+        : `<div class="magic-letter-avatar no-img">${(l.from.name || '?').charAt(0)}</div>`;
+      return `
+        ${i > 0 ? '<div style="position:relative;height:18px"><div class="magic-letter-bullet"></div></div>' : ''}
+        <article class="magic-letter-paper from-${l.dir === 'left' ? 'left' : 'right'}" data-idx="${i}">
+          <div class="magic-letter-head">
+            ${av}
+            <div class="magic-letter-from">
+              <div class="magic-letter-from-name">${l.from.name || ''}</div>
+              <div class="magic-letter-from-to">${l.to.name || ''} へ</div>
+            </div>
+            <div class="magic-letter-seal">${l.seal}</div>
+          </div>
+          <div class="magic-letter-body">${l.body}</div>
+          <div class="magic-letter-sign">— ${l.sign}</div>
+        </article>
+      `;
+    }).join('');
+
+    ov.innerHTML = `
+      <button class="magic-letter-close" aria-label="閉じる">×</button>
+      <div class="magic-letter-title">📜 ${a.name} ⇄ ${b.name}</div>
+      <div class="magic-letter-sub">往復書簡（歴史的関係から再構成）</div>
+      <div class="magic-letter-list">${lettersHtml}</div>
+    `;
+    document.body.appendChild(ov);
+    requestAnimationFrame(() => ov.classList.add('open'));
+
+    // 順に fade in
+    const papers = ov.querySelectorAll('.magic-letter-paper');
+    papers.forEach((p, i) => {
+      setTimeout(() => {
+        p.classList.add('visible');
+        if (MAGIC.playPaperSwoosh) MAGIC.playPaperSwoosh();
+      }, 400 + i * 850);
+    });
+
+    ov.querySelector('.magic-letter-close').addEventListener('click', () => {
+      ov.classList.remove('open');
+      setTimeout(() => ov.remove(), 400);
+    });
+  }
+
+  // ============================================================
+  // J) ルーティン・ライブ（今の時刻の活動をヘッダーに表示）
+  // ============================================================
+  function setupRoutineLive() {
+    if (MAGIC._routineLiveDone) return;
+    MAGIC._routineLiveDone = true;
+
+    const CAT_ICON = {
+      sleep: '🌙',
+      meal: '🍴',
+      work: '📖',
+      exercise: '🚶',
+      leisure: '🕯',
+      social: '💬',
+      prayer: '🕊',
+      art: '🎨',
+      study: '📚',
+      relax: '☕',
+    };
+
+    const inject = () => {
+      const personView = document.getElementById('view-person');
+      if (!personView || !personView.classList.contains('active')) return;
+      if (personView.querySelector('.magic-routine-live')) return;
+      const bundle = MAGIC._peopleBundle;
+      if (!bundle) return;
+      const name = personView.querySelector('.profile-name')?.textContent?.trim();
+      if (!name) return;
+      const person = bundle.find(p => p.name === name);
+      if (!person || !person.routine || !person.routine.length) return;
+
+      // 現在時刻
+      const now = new Date();
+      const hour = now.getHours();
+      const minute = now.getMinutes();
+
+      // 時間帯から活動を検索（start<=hour<end、24跨ぎ対応）
+      const current = person.routine.find(r => {
+        if (r.start <= r.end) return hour >= r.start && hour < r.end;
+        return hour >= r.start || hour < r.end; // 深夜跨ぎ
+      }) || person.routine[0];
+      const icon = CAT_ICON[current.cat] || '◆';
+
+      // 挿入位置: profile-stampsの前、profile-headerの後
+      const anchor = personView.querySelector('.profile-stamps, .life-digest, .traits-card');
+      if (!anchor) return;
+
+      const div = document.createElement('div');
+      div.className = 'magic-routine-live';
+      div.innerHTML = `
+        <div class="magic-routine-live-icon">${icon}</div>
+        <div class="magic-routine-live-body">
+          <div class="magic-routine-live-label">今、${person.name}は</div>
+          <div class="magic-routine-live-activity">${current.activity || '過ごしている'}</div>
+        </div>
+        <div class="magic-routine-live-clock">${String(hour).padStart(2,'0')}:${String(minute).padStart(2,'0')}</div>
+      `;
+      anchor.parentNode.insertBefore(div, anchor);
+    };
+
+    const mo = new MutationObserver(() => inject());
+    mo.observe(document.body, { childList: true, subtree: true });
+    loadPeopleBundle().then(() => setTimeout(inject, 600));
+    // 1分ごとに更新
+    setInterval(() => {
+      const el = document.querySelector('.magic-routine-live');
+      if (el) el.remove();
+      inject();
+    }, 60 * 1000);
+  }
+
+  // ============================================================
+  // H) 影響の波紋（同心円可視化）
+  // ============================================================
+  function setupInfluenceRipple() {
+    if (MAGIC._rippleDone) return;
+    MAGIC._rippleDone = true;
+    const injectBtn = () => {
+      const personView = document.getElementById('view-person');
+      if (!personView || !personView.classList.contains('active')) return;
+      if (personView.querySelector('.magic-ripple-btn')) return;
+      const name = personView.querySelector('.profile-name')?.textContent?.trim();
+      if (!name || !MAGIC._peopleBundle) return;
+      const person = MAGIC._peopleBundle.find(p => p.name === name);
+      if (!person) return;
+      const rels = (person.relations || []).filter(r => r.id);
+      if (rels.length === 0) return;
+      const after = personView.querySelector('.profile-header, .profile-cover-frame');
+      if (!after || after.parentNode.querySelector('.magic-ripple-btn')) return;
+      const btn = document.createElement('button');
+      btn.className = 'magic-ripple-btn';
+      btn.innerHTML = `🪞 ${person.name}の影響の波紋`;
+      btn.addEventListener('click', () => openRipple(person));
+      after.parentNode.insertBefore(btn, after.nextSibling);
+    };
+    const mo = new MutationObserver(() => injectBtn());
+    mo.observe(document.body, { childList: true, subtree: true });
+    loadPeopleBundle().then(() => setTimeout(injectBtn, 600));
+  }
+  async function openRipple(person) {
+    const people = await (MAGIC._peopleBundle ? Promise.resolve(MAGIC._peopleBundle) : loadPeopleBundle());
+    const BLOCK_KW = ['宿敵','敵','ライバル','対立','裏切','論敵','抗争','競争','暗殺','刺客','暗殺者','抗命','反発','確執','不仲','宗教的対立','批判者','批判'];
+    const MENTOR_KW = ['師','弟子','継承','後継','先達','憧れ','崇拝','敬愛','発掘','育て'];
+    const kindOf = (r) => {
+      const t = (r.relation||'') + (r.note||'');
+      if (BLOCK_KW.some(k => t.includes(k))) return 'rival';
+      if (MENTOR_KW.some(k => t.includes(k))) return 'mentor';
+      return 'peer';
+    };
+    const getById = (id) => people.find(p => p.id === id);
+    // Ring 1: 直接の関係
+    const ring1 = (person.relations || []).filter(r => r.id).map(r => ({ person: getById(r.id), kind: kindOf(r) })).filter(x => x.person);
+    // Ring 2: Ring1の人たちの関係（selfとring1に含まれない）
+    const ring1Ids = new Set([person.id, ...ring1.map(x => x.person.id)]);
+    const ring2Map = new Map();
+    ring1.forEach(x => {
+      (x.person.relations || []).filter(r => r.id && !ring1Ids.has(r.id)).forEach(r => {
+        const pp = getById(r.id);
+        if (pp && !ring2Map.has(pp.id)) ring2Map.set(pp.id, { person: pp, kind: kindOf(r), via: x.person.name });
+      });
+    });
+    const ring2 = [...ring2Map.values()].slice(0, 16);
+
+    const existing = document.getElementById('magicRippleOverlay');
+    if (existing) existing.remove();
+    const ov = document.createElement('div');
+    ov.id = 'magicRippleOverlay';
+    ov.className = 'magic-ripple-overlay';
+
+    const VW = Math.min(window.innerWidth, 900);
+    const VH = Math.min(window.innerHeight, 900);
+    const CX = VW / 2, CY = VH / 2;
+    const R1 = Math.min(VW, VH) * 0.22;
+    const R2 = Math.min(VW, VH) * 0.38;
+
+    const angle = (i, n) => -Math.PI / 2 + (i / n) * Math.PI * 2;
+
+    const linesSvg = ring1.map((x, i) => {
+      const a = angle(i, ring1.length);
+      const px = CX + Math.cos(a) * R1;
+      const py = CY + Math.sin(a) * R1;
+      return `<line class="magic-ripple-line-${x.kind}" x1="${CX}" y1="${CY}" x2="${px.toFixed(1)}" y2="${py.toFixed(1)}"></line>`;
+    }).join('');
+
+    const ring2Svg = ring2.map((x, i) => {
+      const a = angle(i, ring2.length);
+      const px = CX + Math.cos(a) * R2;
+      const py = CY + Math.sin(a) * R2;
+      return `<g class="magic-ripple-node" data-id="${x.person.id}" transform="translate(${px.toFixed(1)}, ${py.toFixed(1)})">
+        <circle r="20"></circle>
+        <text y="4">${x.person.name.split(/[・\s]/)[0]}</text>
+      </g>`;
+    }).join('');
+
+    const ring1Svg = ring1.map((x, i) => {
+      const a = angle(i, ring1.length);
+      const px = CX + Math.cos(a) * R1;
+      const py = CY + Math.sin(a) * R1;
+      return `<g class="magic-ripple-node" data-id="${x.person.id}" transform="translate(${px.toFixed(1)}, ${py.toFixed(1)})">
+        <circle r="28"></circle>
+        <text y="4">${x.person.name.split(/[・\s]/)[0]}</text>
+      </g>`;
+    }).join('');
+
+    ov.innerHTML = `
+      <button class="magic-ripple-close" aria-label="閉じる">×</button>
+      <div class="magic-ripple-title">🪞 ${person.name}の影響の波紋</div>
+      <svg class="magic-ripple-svg" viewBox="0 0 ${VW} ${VH}" preserveAspectRatio="xMidYMid meet">
+        <circle class="magic-ripple-ring" cx="${CX}" cy="${CY}" r="${R1}"></circle>
+        <circle class="magic-ripple-ring" cx="${CX}" cy="${CY}" r="${R2}"></circle>
+        ${linesSvg}
+        ${ring2Svg}
+        ${ring1Svg}
+        <g transform="translate(${CX}, ${CY})">
+          <circle class="magic-ripple-center" r="36"></circle>
+          <text y="5" style="fill:#5c1f2a; font-family:'Shippori Mincho',serif; font-size:12px; font-weight:800; text-anchor:middle">${person.name.split(/[・\s]/)[0]}</text>
+        </g>
+      </svg>
+    `;
+    document.body.appendChild(ov);
+    requestAnimationFrame(() => ov.classList.add('open'));
+    ov.querySelector('.magic-ripple-close').addEventListener('click', () => {
+      ov.classList.remove('open');
+      setTimeout(() => ov.remove(), 350);
+    });
+    ov.querySelectorAll('.magic-ripple-node').forEach(g => {
+      g.addEventListener('click', () => {
+        const id = g.dataset.id;
+        ov.classList.remove('open');
+        setTimeout(() => { ov.remove(); if (typeof window.showPerson === 'function') window.showPerson(id); }, 300);
+      });
+    });
+  }
+
+  // ============================================================
+  // 旧 openWorldMap は openWorldMap2D として保持済み（上で地球儀に差し替え）
+  // ============================================================
+  async function openWorldMap_unused() {
     const people = await (MAGIC._peopleBundle ? Promise.resolve(MAGIC._peopleBundle) : loadPeopleBundle());
     if (!people.length) return;
 
@@ -1680,6 +2492,10 @@
     try { setupBook3D(); } catch (e) { console.warn('[magic] book3d', e); }
     try { setupDeepExplore(); } catch (e) { console.warn('[magic] deep', e); }
     try { setupQuoteContext(); } catch (e) { console.warn('[magic] quotectx', e); }
+    // try { setupMusicSalon(); } catch (e) { console.warn('[magic] salon', e); }
+    try { setupInfluenceRipple(); } catch (e) { console.warn('[magic] ripple', e); }
+    try { setupLetterExchange(); } catch (e) { console.warn('[magic] letter', e); }
+    try { setupRoutineLive(); } catch (e) { console.warn('[magic] routineLive', e); }
   }
 
   if (document.readyState === 'complete' || document.readyState === 'interactive') {
