@@ -675,6 +675,9 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
   position: relative;
 }
 .home-block-label > .pr-tag { margin-left: auto; background: rgba(255,255,255,0.2); color: #f5e6c8; border-color: rgba(255,255,255,0.3); }
+/* カスタムSVGアイコン（絵文字の代替、currentColor継承） */
+.ij-icon { display: inline-block; width: 1.1em; height: 1.1em; vertical-align: -0.18em; fill: currentColor; flex-shrink: 0; }
+.home-block-label .ij-icon { width: 20px; height: 20px; color: var(--gold); filter: drop-shadow(0 0 4px rgba(255,215,100,0.3)); margin-right: 4px; vertical-align: -0.2em; }
 
 /* ================ 今日の言葉 ================ */
 .qod-attrib {
