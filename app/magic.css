@@ -1,0 +1,537 @@
+/* =============================================================
+   偉人と自分。 — Magic Layer (upgrade CSS)
+   dist/style.min.css の上に重ねる。既存ルールは一切上書きしない。
+   採用: clamp() タイポ / content-visibility / :has() FAB / View Transitions /
+         3D本モーダル / 時代プログレス / 章見出し万年筆 /
+         今日のあなたの一冊 / 歴史パレード / 名言拡大
+   ============================================================= */
+
+/* ---------- A) clamp() タイポグラフィ（全体の滑らかさ） ---------- */
+:root {
+  --magic-fs-body:   clamp(13px, 0.8vw + 11px, 16px);
+  --magic-fs-small:  clamp(11px, 0.5vw + 10px, 13px);
+  --magic-fs-h1:     clamp(20px, 2.5vw + 14px, 32px);
+  --magic-fs-h2:     clamp(17px, 1.5vw + 13px, 24px);
+  --magic-fs-h3:     clamp(15px, 1vw + 12px, 20px);
+}
+/* 既存要素の見出し/本文に適用（既存のフォントサイズを置き換えない親クラスのみ） */
+.hero-silhouette-tagline { font-size: var(--magic-fs-h2) !important; }
+.hero-silhouette-sub { font-size: var(--magic-fs-body) !important; }
+.home-block-label { font-size: var(--magic-fs-h3); }
+.profile-cover-name { font-size: var(--magic-fs-h1) !important; letter-spacing: 0.18em; }
+body { text-size-adjust: 100%; -webkit-text-size-adjust: 100%; }
+
+/* ---------- B) content-visibility（画面外描画スキップ） ---------- */
+.home-block,
+.my-book-chapter,
+.tl-era,
+.tl-genre,
+.tl-century,
+.hist-era,
+.article-card,
+.person-book {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 420px;
+}
+
+/* ---------- C) :has() FAB 自動非表示（モーダル時） ---------- */
+body:has(.auth-modal.open),
+body:has(.settings-modal.open),
+body:has(#logoutConfirmModal.open),
+body:has(.guide-hello-modal.show),
+body:has(.howto-slides.open),
+body:has(.title-picker-overlay),
+body:has(.social-list-overlay),
+body:has(.routine-edit-overlay),
+body:has(#bookViewerOverlay.open),
+body:has(.quote-zoom.open) {
+  overflow: hidden;
+}
+body:has(.auth-modal.open) .chat-fab,
+body:has(.settings-modal.open) .chat-fab,
+body:has(#logoutConfirmModal.open) .chat-fab,
+body:has(.guide-hello-modal.show) .chat-fab,
+body:has(.howto-slides.open) .chat-fab,
+body:has(.title-picker-overlay) .chat-fab,
+body:has(.social-list-overlay) .chat-fab,
+body:has(#bookViewerOverlay.open) .chat-fab,
+body:has(.quote-zoom.open) .chat-fab {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+/* ---------- D) View Transitions API（偉人ページ遷移） ---------- */
+@view-transition { navigation: auto; }
+::view-transition-old(root),
+::view-transition-new(root) { animation-duration: 0.35s; animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+::view-transition-old(person-cover) {
+  animation: magic-fade-out 0.35s ease;
+}
+::view-transition-new(person-cover) {
+  animation: magic-fade-in 0.45s ease;
+}
+@keyframes magic-fade-out { to { opacity: 0; transform: scale(0.96); } }
+@keyframes magic-fade-in  { from { opacity: 0; transform: scale(1.04); } to { opacity: 1; transform: scale(1); } }
+
+/* ---------- E) Scroll-driven 時代プログレスバー（画面右端） ---------- */
+.magic-era-progress {
+  position: fixed;
+  right: 6px;
+  top: 70px;
+  bottom: 70px;
+  width: 3px;
+  pointer-events: none;
+  z-index: 40;
+  opacity: 0.75;
+}
+.magic-era-progress::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+    rgba(184,149,46,0.18) 0%,
+    rgba(184,149,46,0.10) 50%,
+    rgba(122,27,47,0.12) 100%);
+  border-radius: 2px;
+}
+.magic-era-progress-ink {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0%;
+  background: linear-gradient(180deg, rgba(92, 31, 42, 0.9) 0%, rgba(184, 149, 46, 0.7) 100%);
+  border-radius: 2px;
+  box-shadow: 0 0 4px rgba(92, 31, 42, 0.4);
+  transition: height 0.12s linear;
+}
+.magic-era-progress-mark {
+  position: absolute;
+  left: -3px;
+  width: 9px;
+  height: 1px;
+  background: var(--gold, #b8952e);
+  opacity: 0.6;
+}
+.magic-era-progress-label {
+  position: absolute;
+  right: 10px;
+  font-family: var(--font-jp, sans-serif);
+  font-size: 9px;
+  color: var(--wine-dark, #5c1f2a);
+  white-space: nowrap;
+  text-shadow: 0 0 3px rgba(255,253,247,0.9);
+  letter-spacing: 0.1em;
+  opacity: 0.7;
+}
+@media (max-width: 520px) {
+  .magic-era-progress { right: 3px; width: 2px; }
+  .magic-era-progress-label { font-size: 8px; right: 8px; }
+}
+
+/* ---------- F) 歴史パレード（画面下の誕生日偉人帯） ---------- */
+.magic-parade {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 45;
+  background: linear-gradient(180deg, rgba(255, 253, 247, 0.0) 0%, rgba(255, 253, 247, 0.92) 40%, rgba(255, 250, 240, 0.95) 100%);
+  border-top: 1px solid rgba(184, 149, 46, 0.25);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: 6px 0 4px;
+  overflow: hidden;
+  font-family: var(--font-jp, sans-serif);
+  max-height: 48px;
+  transition: transform 0.3s;
+  transform: translateY(100%);
+}
+.magic-parade.visible { transform: translateY(0); }
+.magic-parade-inner {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  white-space: nowrap;
+  animation: magic-parade-scroll 60s linear infinite;
+  padding-left: 100%;
+}
+.magic-parade:hover .magic-parade-inner { animation-play-state: paused; }
+.magic-parade-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--wine-dark, #5c1f2a);
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 12px;
+  transition: background 0.15s;
+}
+.magic-parade-item:hover { background: rgba(184,149,46,0.15); }
+.magic-parade-ic { font-size: 12px; }
+.magic-parade-name { font-weight: 700; letter-spacing: 0.03em; }
+.magic-parade-years { color: var(--ink-3, #888); font-size: 10px; }
+.magic-parade-empty {
+  font-size: 11px;
+  color: var(--ink-3, #888);
+  text-align: center;
+  padding: 6px 0;
+  letter-spacing: 0.08em;
+}
+.magic-parade-close {
+  position: absolute;
+  top: 3px;
+  right: 6px;
+  background: transparent;
+  border: none;
+  font-size: 14px;
+  color: var(--ink-3);
+  cursor: pointer;
+  padding: 2px 5px;
+  line-height: 1;
+}
+@keyframes magic-parade-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-100%); }
+}
+/* モーダル中は隠す（body:has() と連動） */
+body:has(.auth-modal.open) .magic-parade,
+body:has(.settings-modal.open) .magic-parade,
+body:has(.howto-slides.open) .magic-parade,
+body:has(#bookViewerOverlay.open) .magic-parade,
+body:has(.quote-zoom.open) .magic-parade {
+  transform: translateY(100%);
+  pointer-events: none;
+}
+
+/* ---------- G) 章タイトル 万年筆アニメーション ---------- */
+.magic-pen-title {
+  position: relative;
+  overflow: visible;
+}
+.magic-pen-title.pen-drawing::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  transform: translateX(-50%);
+  width: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(92, 31, 42, 0.7) 50%, transparent 100%);
+  animation: magic-pen-line 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+}
+@keyframes magic-pen-line {
+  0%   { width: 0; }
+  100% { width: 70%; }
+}
+
+/* ---------- H) 3D わたしの本ビューア ---------- */
+#bookViewerOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at center, #2a1515 0%, #120909 85%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+#bookViewerOverlay.open { opacity: 1; pointer-events: auto; }
+#bookViewerCanvasWrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#bookViewerCanvasWrap canvas {
+  display: block;
+  cursor: grab;
+  max-width: 100vw;
+  max-height: 100vh;
+}
+#bookViewerCanvasWrap canvas:active { cursor: grabbing; }
+.book-viewer-title {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: var(--font-jp, sans-serif);
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  color: rgba(212, 176, 85, 0.9);
+  pointer-events: none;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+.book-viewer-hint {
+  position: absolute;
+  bottom: 24px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: var(--font-jp, sans-serif);
+  font-size: 11px;
+  color: rgba(212, 176, 85, 0.6);
+  letter-spacing: 0.1em;
+  pointer-events: none;
+  animation: magic-hint-pulse 2.4s ease-in-out infinite;
+}
+@keyframes magic-hint-pulse {
+  0%, 100% { opacity: 0.4; }
+  50%      { opacity: 0.8; }
+}
+.book-viewer-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 253, 247, 0.12);
+  border: 1px solid rgba(212, 176, 85, 0.4);
+  border-radius: 50%;
+  color: rgba(212, 176, 85, 0.95);
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: all 0.15s;
+  z-index: 2;
+}
+.book-viewer-close:hover {
+  background: rgba(212, 176, 85, 0.25);
+  transform: scale(1.05);
+}
+.book-viewer-open-btn {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 9px 20px;
+  background: linear-gradient(135deg, rgba(122, 46, 58, 0.8) 0%, rgba(92, 31, 42, 0.9) 100%);
+  color: var(--gold-light, #d4b055);
+  border: 1px solid rgba(212, 176, 85, 0.6);
+  border-radius: 22px;
+  font-family: var(--font-jp, sans-serif);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  z-index: 2;
+  transition: all 0.15s;
+}
+.book-viewer-open-btn:hover {
+  background: linear-gradient(135deg, rgba(122, 46, 58, 1) 0%, rgba(92, 31, 42, 1) 100%);
+  transform: translateX(-50%) translateY(-2px);
+}
+/* わたしの本タイトルページに3Dボタンを差し込むためのスタイル */
+.magic-book3d-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 14px auto 0;
+  padding: 8px 18px;
+  background: linear-gradient(135deg, rgba(122, 46, 58, 0.06) 0%, rgba(92, 31, 42, 0.1) 100%);
+  border: 1px dashed var(--gold, #b8952e);
+  border-radius: 18px;
+  font-family: var(--font-jp, sans-serif);
+  font-size: 12px;
+  color: var(--wine-dark, #5c1f2a);
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.06em;
+}
+.magic-book3d-btn:hover {
+  background: linear-gradient(135deg, rgba(122, 46, 58, 0.12) 0%, rgba(92, 31, 42, 0.18) 100%);
+  border-style: solid;
+  transform: translateY(-1px);
+}
+.magic-book3d-icon { font-size: 14px; }
+
+/* ---------- I) 今日のあなたの一冊（決定的RNG） ---------- */
+.magic-daily-pick {
+  margin: 12px 14px 20px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, #fffaf0 0%, #fff6e0 100%);
+  border: 1px solid var(--gold, #b8952e);
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(175, 135, 60, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+.magic-daily-pick::before {
+  content: '◆';
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 10px;
+  color: var(--gold, #b8952e);
+  opacity: 0.5;
+}
+.magic-daily-label {
+  font-family: var(--font-jp, sans-serif);
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--wine, #7a2e3a);
+  letter-spacing: 0.2em;
+  margin-bottom: 8px;
+}
+.magic-daily-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  transition: background 0.15s;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+}
+.magic-daily-card:hover { background: rgba(255, 253, 247, 0.6); }
+.magic-daily-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  background-color: #f1ead9;
+  border: 2px solid var(--gold, #b8952e);
+  flex-shrink: 0;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+.magic-daily-av.no-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-jp, sans-serif);
+  font-size: 24px;
+  color: var(--wine, #7a2e3a);
+}
+.magic-daily-body { flex: 1; min-width: 0; }
+.magic-daily-name {
+  font-family: var(--font-jp, sans-serif);
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--wine-dark, #5c1f2a);
+  letter-spacing: 0.03em;
+}
+.magic-daily-meta {
+  font-size: 11px;
+  color: var(--ink-3, #888);
+  margin-top: 3px;
+}
+.magic-daily-quote {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(184, 149, 46, 0.4);
+  font-family: var(--font-jp, sans-serif);
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--ink-2, #333);
+  font-style: italic;
+  letter-spacing: 0.02em;
+}
+.magic-daily-quote::before { content: '『'; color: var(--gold, #b8952e); }
+.magic-daily-quote::after  { content: '』'; color: var(--gold, #b8952e); }
+
+/* ---------- J) 名言クロスフェード拡大 ---------- */
+.quote-zoom {
+  position: fixed;
+  inset: 0;
+  z-index: 10040;
+  background: rgba(30, 15, 22, 0.82);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.quote-zoom.open { opacity: 1; pointer-events: auto; }
+.quote-zoom-card {
+  max-width: 640px;
+  background: linear-gradient(135deg, #fffdf6 0%, #faf5e8 100%);
+  border: 1px solid var(--gold, #b8952e);
+  border-radius: 6px;
+  padding: 32px 36px 28px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  position: relative;
+  transform: scale(0.92);
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  text-align: center;
+}
+.quote-zoom.open .quote-zoom-card { transform: scale(1); }
+.quote-zoom-text {
+  font-family: var(--font-jp, serif);
+  font-size: clamp(16px, 2.2vw + 10px, 24px);
+  line-height: 1.95;
+  color: var(--ink-1, #1a1a1a);
+  letter-spacing: 0.04em;
+  margin: 0 0 14px;
+}
+.quote-zoom-source {
+  font-family: var(--font-jp, sans-serif);
+  font-size: 12px;
+  color: var(--wine, #7a2e3a);
+  letter-spacing: 0.1em;
+  margin-top: 10px;
+}
+.quote-zoom-source::before { content: '— '; }
+.quote-zoom-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  color: var(--ink-3, #888);
+  cursor: pointer;
+  line-height: 1;
+}
+.quote-zoom-close:hover { color: var(--wine, #7a2e3a); }
+.quote-zoom-ornament {
+  font-size: 10px;
+  color: var(--gold, #b8952e);
+  letter-spacing: 0.3em;
+  margin-bottom: 16px;
+  opacity: 0.6;
+}
+.quote-zoom-read {
+  margin-top: 14px;
+  padding: 6px 14px;
+  background: transparent;
+  border: 1px dashed var(--rule, #ccc);
+  border-radius: 14px;
+  font-family: var(--font-jp, sans-serif);
+  font-size: 11px;
+  color: var(--ink-2, #333);
+  cursor: pointer;
+  letter-spacing: 0.08em;
+}
+.quote-zoom-read:hover { background: rgba(184,149,46,0.1); border-color: var(--gold, #b8952e); }
+
+/* ---------- K) レイアウトの細部整え ---------- */
+/* Lenis がアクティブな時のネイティブスクロール無効化 */
+html.lenis, html.lenis body { height: auto; }
+html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない */
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; overflow: auto; }
+
+/* prefers-reduced-motion 対応 */
+@media (prefers-reduced-motion: reduce) {
+  .magic-parade-inner { animation: none; transform: translateX(0); }
+  #bookViewerOverlay { transition: opacity 0.1s; }
+  .magic-pen-title.pen-drawing::after { animation: none; width: 70%; }
+  .quote-zoom, .quote-zoom-card { transition: opacity 0.15s, transform 0.15s; }
+}
