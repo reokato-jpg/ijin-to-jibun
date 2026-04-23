@@ -559,6 +559,9 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
   grid-template-columns: repeat(2, 1fr);
   gap: 8px;
 }
+@media (min-width: 500px) {
+  .magic-deep-grid { grid-template-columns: repeat(3, 1fr); }
+}
 .magic-deep-btn {
   padding: 12px 10px;
   background: #fffdf7;
@@ -958,6 +961,209 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
   color: var(--gold-light);
 }
 
+/* ---------- R) 都市群像（City Gathering） ---------- */
+.magic-city-wrap {
+  position: relative;
+  width: 100%; height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.magic-city-head {
+  padding: 16px 18px 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  border-bottom: 1px solid rgba(212, 176, 85, 0.2);
+}
+.magic-city-select {
+  flex: 1 1 auto;
+  min-width: 120px;
+  background: rgba(20, 12, 16, 0.7);
+  color: var(--gold-light, #d4b055);
+  border: 1px solid rgba(212, 176, 85, 0.4);
+  border-radius: 16px;
+  padding: 6px 14px;
+  font-family: var(--font-jp, serif);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  outline: none;
+}
+.magic-city-select option { background: #1a0f15; color: var(--gold-light, #d4b055); }
+.magic-city-era-label {
+  color: rgba(212, 176, 85, 0.6);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  padding: 0 4px;
+}
+.magic-city-era-range {
+  flex: 2 1 180px;
+}
+.magic-city-era-range input[type="range"] {
+  width: 100%;
+  accent-color: var(--gold-light, #d4b055);
+}
+.magic-city-headline {
+  text-align: center;
+  padding: 14px 16px 6px;
+  color: var(--gold-light, #d4b055);
+  font-family: var(--font-jp, serif);
+  letter-spacing: 0.15em;
+}
+.magic-city-headline strong { font-size: 20px; font-weight: 800; }
+.magic-city-headline small {
+  display: block;
+  font-size: 11px;
+  color: rgba(212, 176, 85, 0.6);
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  margin-top: 4px;
+}
+.magic-city-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 6px 14px 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 8px;
+  align-content: start;
+}
+.magic-city-card {
+  padding: 10px 12px;
+  background: rgba(255, 253, 247, 0.08);
+  border: 1px solid rgba(212, 176, 85, 0.25);
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  transition: all 0.15s;
+}
+.magic-city-card:hover {
+  background: rgba(212, 176, 85, 0.15);
+  border-color: var(--gold-light, #d4b055);
+}
+.magic-city-av {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  background-color: #3a2a30;
+  border: 1.5px solid rgba(212, 176, 85, 0.6);
+  flex-shrink: 0;
+}
+.magic-city-av.no-img {
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-jp, serif);
+  color: var(--gold-light, #d4b055);
+  font-weight: 700;
+}
+.magic-city-info { min-width: 0; flex: 1; }
+.magic-city-name {
+  font-family: var(--font-jp, serif);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--gold-light, #d4b055);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.magic-city-meta {
+  font-size: 10.5px;
+  color: rgba(212, 176, 85, 0.6);
+  margin-top: 2px;
+}
+.magic-city-empty {
+  grid-column: 1 / -1;
+  padding: 30px 20px;
+  text-align: center;
+  color: rgba(212, 176, 85, 0.5);
+  font-family: var(--font-jp, serif);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+}
+
+/* ---------- S) 365日ドリフトカレンダー ---------- */
+.magic-drift-wrap {
+  position: relative;
+  width: 100%; height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.magic-drift-svg {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+}
+.magic-drift-ring {
+  fill: none;
+  stroke: rgba(212, 176, 85, 0.15);
+  stroke-width: 1;
+}
+.magic-drift-month-line {
+  stroke: rgba(212, 176, 85, 0.25);
+  stroke-width: 0.5;
+}
+.magic-drift-month-label {
+  fill: rgba(212, 176, 85, 0.7);
+  font-family: var(--font-jp, serif);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-anchor: middle;
+}
+.magic-drift-dot {
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.magic-drift-dot-birth { fill: var(--gold-light, #d4b055); opacity: 0.7; }
+.magic-drift-dot-death { fill: #c76a6f; opacity: 0.5; }
+.magic-drift-dot:hover { opacity: 1; transform: scale(1.5); transform-origin: center; transform-box: fill-box; }
+.magic-drift-center {
+  text-anchor: middle;
+  fill: var(--gold-light, #d4b055);
+  font-family: var(--font-jp, serif);
+  letter-spacing: 0.1em;
+}
+.magic-drift-tip {
+  position: absolute;
+  pointer-events: none;
+  padding: 6px 10px;
+  background: rgba(20, 12, 16, 0.95);
+  color: var(--gold-light, #d4b055);
+  border: 1px solid rgba(212, 176, 85, 0.5);
+  border-radius: 5px;
+  font-family: var(--font-jp, serif);
+  font-size: 11px;
+  max-width: 200px;
+  z-index: 5;
+  opacity: 0;
+  transition: opacity 0.1s;
+}
+.magic-drift-legend {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  padding: 8px 12px;
+  background: rgba(20, 12, 16, 0.8);
+  border: 1px solid rgba(212, 176, 85, 0.3);
+  border-radius: 6px;
+  font-family: var(--font-jp, serif);
+  font-size: 11px;
+  color: rgba(255, 250, 240, 0.85);
+  line-height: 1.7;
+  letter-spacing: 0.05em;
+  pointer-events: none;
+}
+.magic-drift-legend .dot {
+  display: inline-block;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
 /* ---------- Q) 名言の時代背景（偉人プロフィールの名言に付く） ---------- */
 .magic-quote-context {
   margin-top: 6px;
@@ -974,6 +1180,23 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
   font-weight: 700;
   color: var(--wine-dark, #5c1f2a);
   margin-right: 4px;
+}
+
+/* ---------- T) 楽天トラベル等のアフィリバナー画像比率修正 ---------- */
+/* dist/style.min.css が width:120px;height:60px で固定 → 楽天の468×60バナーが横に潰れる */
+.travel-hero-img {
+  width: auto !important;
+  height: 42px !important;
+  max-width: 180px;
+  max-height: 48px;
+  object-fit: contain;
+  object-position: left center;
+}
+/* じゃらん（native 120×60、2:1） */
+.jalan-banner .travel-hero-img {
+  width: auto !important;
+  max-width: 90px;
+  height: 42px !important;
 }
 
 /* prefers-reduced-motion 対応 */

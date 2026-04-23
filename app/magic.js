@@ -849,6 +849,16 @@
               <span class="magic-deep-btn-ttl">世紀ごと</span>
               <span class="magic-deep-btn-desc">100年ごとの群像</span>
             </button>
+            <button class="magic-deep-btn" data-deep="city">
+              <span class="magic-deep-btn-ic">🗺</span>
+              <span class="magic-deep-btn-ttl">都市群像</span>
+              <span class="magic-deep-btn-desc">ウィーン・パリ・京都…</span>
+            </button>
+            <button class="magic-deep-btn" data-deep="drift">
+              <span class="magic-deep-btn-ic">🎂</span>
+              <span class="magic-deep-btn-ttl">365日カレンダー</span>
+              <span class="magic-deep-btn-desc">生没日の極座標</span>
+            </button>
           </div>
         `;
         after.insertAdjacentElement('afterend', block);
@@ -856,6 +866,8 @@
         block.querySelector('[data-deep="simul"]').addEventListener('click', () => openSimultaneity());
         block.querySelector('[data-deep="map"]').addEventListener('click', openWorldMap);
         block.querySelector('[data-deep="century"]').addEventListener('click', () => openSimultaneity({ centuryMode: true }));
+        block.querySelector('[data-deep="city"]').addEventListener('click', openCityGathering);
+        block.querySelector('[data-deep="drift"]').addEventListener('click', openDriftCalendar);
       };
       insert();
     });
@@ -1363,6 +1375,249 @@
   }
 
   // ============================================================
+  // E) 都市群像マップ（同じ街で同時期に暮らした人々）
+  // ============================================================
+  // 主要都市: 名前, 関連キーワード（人物のsummary/events/country/routine に含まれていれば該当）
+  const CITIES = [
+    { name: 'ウィーン',       kw: ['ウィーン', 'オーストリア', 'ハプスブルク'] },
+    { name: 'パリ',           kw: ['パリ', 'ベルサイユ', 'モンマルトル', 'ノートルダム'] },
+    { name: 'ロンドン',       kw: ['ロンドン', 'テムズ', 'イングランド', 'イギリス'] },
+    { name: 'ベルリン',       kw: ['ベルリン', 'プロイセン', 'ポツダム'] },
+    { name: 'ローマ',         kw: ['ローマ', 'ヴァチカン', 'バチカン'] },
+    { name: 'フィレンツェ',   kw: ['フィレンツェ', 'メディチ'] },
+    { name: 'ヴェネツィア',   kw: ['ヴェネツィア', 'ベネチア'] },
+    { name: 'アムステルダム', kw: ['アムステルダム', 'ライデン', 'オランダ'] },
+    { name: 'サンクトペテルブルク', kw: ['サンクトペテルブルク', 'ペテルブルク', 'レニングラード'] },
+    { name: 'モスクワ',       kw: ['モスクワ', 'クレムリン'] },
+    { name: 'ニューヨーク',   kw: ['ニューヨーク', 'マンハッタン', 'ブルックリン'] },
+    { name: 'ワイマル',       kw: ['ヴァイマル', 'ワイマール', 'ワイマル'] },
+    { name: 'プラハ',         kw: ['プラハ', 'ボヘミア'] },
+    { name: 'ライプツィヒ',   kw: ['ライプツィヒ'] },
+    { name: 'ザルツブルク',   kw: ['ザルツブルク'] },
+    { name: 'ボン',           kw: ['ボン', 'ライン川'] },
+    { name: 'ジュネーブ',     kw: ['ジュネーブ', 'ジュネーヴ'] },
+    { name: 'アテネ',         kw: ['アテネ', '古代ギリシャ', 'アカデメイア', 'リュケイオン'] },
+    { name: '京都',           kw: ['京都', '平安京'] },
+    { name: '江戸/東京',      kw: ['江戸', '東京', '上野', '浅草'] },
+    { name: '盛岡・岩手',     kw: ['盛岡', '岩手', '花巻'] },
+    { name: '松山・伊予',     kw: ['松山', '伊予', '道後'] },
+    { name: '薩摩・鹿児島',   kw: ['薩摩', '鹿児島'] },
+    { name: '長崎',           kw: ['長崎', '出島'] },
+  ];
+
+  function peopleInCity(all, city) {
+    const matched = all.map(p => {
+      const blob = [p.name, p.nameEn, p.country, p.summary, p.lifeDigest || '',
+        ...(p.events || []).map(e => (e.title || '') + (e.detail || '')),
+        ...(p.places || []).map(pl => (pl.name || '') + (pl.location || '')),
+      ].join(' ');
+      const hits = city.kw.filter(k => blob.includes(k)).length;
+      return hits > 0 ? { person: p, hits } : null;
+    }).filter(Boolean);
+    // sort by birth year
+    matched.sort((a, b) => (a.person.birth || 0) - (b.person.birth || 0));
+    return matched.map(x => x.person);
+  }
+
+  async function openCityGathering() {
+    const people = await (MAGIC._peopleBundle ? Promise.resolve(MAGIC._peopleBundle) : loadPeopleBundle());
+    if (!people.length) return;
+
+    // 各都市の人数を事前計算
+    const cityCounts = CITIES.map(c => ({ city: c, count: peopleInCity(people, c).length }))
+      .filter(x => x.count >= 2)
+      .sort((a, b) => b.count - a.count);
+
+    const optHtml = cityCounts.map(({ city, count }, i) =>
+      `<option value="${city.name}" ${i === 0 ? 'selected' : ''}>${city.name}（${count}名）</option>`
+    ).join('');
+
+    const ov = openDeepOverlay('🗺 都市群像', '同じ街で同じ時代を生きた人々。',
+      `<div class="magic-city-wrap">
+         <div class="magic-city-head">
+           <select class="magic-city-select" id="magicCitySelect">${optHtml}</select>
+           <span class="magic-city-era-label" id="magicCityEraLabel">全時代</span>
+           <div class="magic-city-era-range">
+             <input type="range" id="magicCityEraRange" min="0" max="100" value="100">
+           </div>
+         </div>
+         <div class="magic-city-headline" id="magicCityHeadline"></div>
+         <div class="magic-city-list" id="magicCityList"></div>
+       </div>`);
+    const select = ov.querySelector('#magicCitySelect');
+    const range = ov.querySelector('#magicCityEraRange');
+    const eraLabel = ov.querySelector('#magicCityEraLabel');
+    const headline = ov.querySelector('#magicCityHeadline');
+    const list = ov.querySelector('#magicCityList');
+
+    function render() {
+      const cityName = select.value;
+      const cityDef = CITIES.find(c => c.name === cityName);
+      if (!cityDef) return;
+      let peopleHere = peopleInCity(people, cityDef);
+      // era filter: range 0-100 → minYear..maxYear
+      const years = peopleHere.filter(p => p.birth != null).map(p => p.birth);
+      const minY = years.length ? Math.min(...years) : -500;
+      const maxY = years.length ? Math.max(...years) : 2020;
+      const pct = parseInt(range.value, 10) / 100;
+      const eraValue = pct === 1 ? null : Math.round(minY + (maxY - minY) * pct);
+      if (eraValue != null) {
+        // 指定年±40年に生きていた人（生年-没年の間 or 生年±40）
+        peopleHere = peopleHere.filter(p => {
+          if (p.birth == null) return false;
+          if (p.death != null) return p.birth - 20 <= eraValue && eraValue <= p.death + 5;
+          return Math.abs(p.birth - eraValue) <= 40;
+        });
+        eraLabel.textContent = `${eraValue < 0 ? '紀元前' + Math.abs(eraValue) : eraValue}年±`;
+        headline.innerHTML = `<strong>${cityName}</strong> ／ ${eraValue < 0 ? '紀元前' + Math.abs(eraValue) : eraValue}年ごろ<small>この街で、この時代を生きた人</small>`;
+      } else {
+        eraLabel.textContent = '全時代';
+        headline.innerHTML = `<strong>${cityName}</strong><small>この街にゆかりのあった偉人たち</small>`;
+      }
+
+      if (peopleHere.length === 0) {
+        list.innerHTML = '<div class="magic-city-empty">この街・この時代には、登録された偉人はいません。</div>';
+        return;
+      }
+      list.innerHTML = peopleHere.map(p => {
+        const av = p.imageUrl
+          ? `<div class="magic-city-av" style="background-image:url('${p.imageUrl}')"></div>`
+          : `<div class="magic-city-av no-img">${(p.name||'?').charAt(0)}</div>`;
+        const years = typeof fmtYearRange === 'function'
+          ? fmtYearRange(p.birth, p.death)
+          : `${p.birth || ''}–${p.death || ''}`;
+        return `
+          <button class="magic-city-card" data-id="${p.id}">
+            ${av}
+            <div class="magic-city-info">
+              <div class="magic-city-name">${p.name || ''}</div>
+              <div class="magic-city-meta">${years} ／ ${p.field || ''}</div>
+            </div>
+          </button>
+        `;
+      }).join('');
+      list.querySelectorAll('.magic-city-card').forEach(b => {
+        b.addEventListener('click', () => {
+          const id = b.dataset.id;
+          ov.classList.remove('open');
+          setTimeout(() => { ov.remove(); if (typeof window.showPerson === 'function') window.showPerson(id); }, 220);
+        });
+      });
+    }
+    select.addEventListener('change', render);
+    range.addEventListener('input', render);
+    render();
+  }
+
+  // ============================================================
+  // F) 365日ドリフトカレンダー
+  // ============================================================
+  async function openDriftCalendar() {
+    const people = await (MAGIC._peopleBundle ? Promise.resolve(MAGIC._peopleBundle) : loadPeopleBundle());
+    if (!people.length) return;
+
+    const ov = openDeepOverlay('🎂 365日ドリフトカレンダー', '365日の輪に、生没日を星座のように散らして。',
+      `<div class="magic-drift-wrap">
+         <svg class="magic-drift-svg" id="magicDriftSvg" viewBox="-300 -300 600 600" preserveAspectRatio="xMidYMid meet"></svg>
+         <div class="magic-drift-tip" id="magicDriftTip"></div>
+         <div class="magic-drift-legend">
+           <div><span class="dot" style="background:var(--gold-light,#d4b055);opacity:0.9"></span>誕生日</div>
+           <div><span class="dot" style="background:#c76a6f;opacity:0.7"></span>命日</div>
+           <div style="margin-top:4px;opacity:0.6;font-size:10px">ホバーで名前</div>
+         </div>
+       </div>`);
+
+    const svg = ov.querySelector('#magicDriftSvg');
+    const tip = ov.querySelector('#magicDriftTip');
+    const wrap = ov.querySelector('.magic-drift-wrap');
+
+    // 日→角度（1月1日=上、時計回り）
+    const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    const dayOfYear = (m, d) => {
+      let total = 0;
+      for (let i = 0; i < m - 1; i++) total += daysInMonth[i];
+      return total + (d - 1);
+    };
+    const angle = (doy) => -Math.PI / 2 + (doy / 365) * Math.PI * 2;
+
+    // リング
+    const R_BIRTH = 230;
+    const R_DEATH = 195;
+    let html = '';
+    html += `<circle class="magic-drift-ring" r="${R_BIRTH}" cx="0" cy="0"></circle>`;
+    html += `<circle class="magic-drift-ring" r="${R_DEATH}" cx="0" cy="0"></circle>`;
+    // 月線・月ラベル
+    const monthLabels = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+    let cumDay = 0;
+    for (let m = 0; m < 12; m++) {
+      const a = angle(cumDay);
+      const x1 = Math.cos(a) * (R_DEATH - 10), y1 = Math.sin(a) * (R_DEATH - 10);
+      const x2 = Math.cos(a) * (R_BIRTH + 18), y2 = Math.sin(a) * (R_BIRTH + 18);
+      html += `<line class="magic-drift-month-line" x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}"></line>`;
+      // ラベル位置
+      const aLabel = angle(cumDay + daysInMonth[m] / 2);
+      const lx = Math.cos(aLabel) * (R_BIRTH + 35), ly = Math.sin(aLabel) * (R_BIRTH + 35);
+      html += `<text class="magic-drift-month-label" x="${lx.toFixed(1)}" y="${(ly + 4).toFixed(1)}">${monthLabels[m]}</text>`;
+      cumDay += daysInMonth[m];
+    }
+    // 中央タイトル
+    html += `<text class="magic-drift-center" x="0" y="-8" style="font-size:14px;opacity:0.8">365日</text>`;
+    html += `<text class="magic-drift-center" x="0" y="12" style="font-size:10px;opacity:0.5">生没日リング</text>`;
+
+    // 偉人の誕生日・命日ドット
+    const dots = [];
+    people.forEach(p => {
+      if (p.birthMonth && p.birthDay) {
+        const a = angle(dayOfYear(p.birthMonth, p.birthDay));
+        // ランダムで微妙に半径をずらす（重なり回避）
+        const jitter = (parseInt(p.id.split('').reduce((s, c) => s + c.charCodeAt(0), 0), 10) % 15);
+        const r = R_BIRTH + jitter - 5;
+        dots.push({ p, a, r, type: 'birth' });
+      }
+      if (p.deathMonth && p.deathDay) {
+        const a = angle(dayOfYear(p.deathMonth, p.deathDay));
+        const jitter = (parseInt(p.id.split('').reduce((s, c) => s + c.charCodeAt(0), 0), 10) % 12);
+        const r = R_DEATH - jitter + 3;
+        dots.push({ p, a, r, type: 'death' });
+      }
+    });
+    dots.forEach((d, i) => {
+      const x = Math.cos(d.a) * d.r;
+      const y = Math.sin(d.a) * d.r;
+      const cls = d.type === 'birth' ? 'magic-drift-dot magic-drift-dot-birth' : 'magic-drift-dot magic-drift-dot-death';
+      html += `<circle class="${cls}" data-idx="${i}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3.2"></circle>`;
+    });
+
+    svg.innerHTML = html;
+
+    svg.querySelectorAll('.magic-drift-dot').forEach(el => {
+      el.addEventListener('mouseenter', (e) => {
+        const d = dots[parseInt(el.dataset.idx, 10)];
+        if (!d) return;
+        const md = d.type === 'birth' ? `🎂 ${d.p.birthMonth}/${d.p.birthDay}` : `🕯 ${d.p.deathMonth}/${d.p.deathDay}`;
+        tip.innerHTML = `<b>${d.p.name}</b><br><small style="opacity:0.7">${md}</small>`;
+        tip.style.opacity = '1';
+        const rect = wrap.getBoundingClientRect();
+        const evt = e;
+        tip.style.left = (evt.clientX - rect.left + 12) + 'px';
+        tip.style.top = (evt.clientY - rect.top + 12) + 'px';
+      });
+      el.addEventListener('mouseleave', () => { tip.style.opacity = '0'; });
+      el.addEventListener('mousemove', (e) => {
+        const rect = wrap.getBoundingClientRect();
+        tip.style.left = (e.clientX - rect.left + 12) + 'px';
+        tip.style.top = (e.clientY - rect.top + 12) + 'px';
+      });
+      el.addEventListener('click', () => {
+        const d = dots[parseInt(el.dataset.idx, 10)];
+        if (!d) return;
+        ov.classList.remove('open');
+        setTimeout(() => { ov.remove(); if (typeof window.showPerson === 'function') window.showPerson(d.p.id); }, 220);
+      });
+    });
+  }
+
+  // ============================================================
   // D) 名言の時代背景（偉人ページ内の名言に注釈を挿入）
   // ============================================================
   function setupQuoteContext() {
@@ -1420,7 +1675,8 @@
     try { setupPenChapters(); } catch (e) { console.warn('[magic] pen', e); }
     try { setupQuoteZoom(); } catch (e) { console.warn('[magic] qz', e); }
     try { setupDailyPick(); } catch (e) { console.warn('[magic] daily', e); }
-    try { setupParade(); } catch (e) { console.warn('[magic] parade', e); }
+    // パレード機能は撤去（ユーザー要望で削除）
+    // try { setupParade(); } catch (e) { console.warn('[magic] parade', e); }
     try { setupBook3D(); } catch (e) { console.warn('[magic] book3d', e); }
     try { setupDeepExplore(); } catch (e) { console.warn('[magic] deep', e); }
     try { setupQuoteContext(); } catch (e) { console.warn('[magic] quotectx', e); }
