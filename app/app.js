@@ -5243,6 +5243,8 @@ function initPhoneMenu() {
     document.getElementById('musicPlayBtn').disabled = false;
     document.getElementById('musicStopBtn').disabled = false;
     document.getElementById('musicPlayBtn').textContent = '⏸';
+    // .playing クラスを music-app に付与（ビジュアライザー＆ディスク回転高速化）
+    document.querySelector('.music-app')?.classList.add('playing');
     // リスト上のアクティブ状態
     menu.querySelectorAll('[data-track-id]').forEach(li => {
       const active = li.dataset.trackId === id;
@@ -6083,11 +6085,13 @@ function initPhoneMenu() {
     const a = document.getElementById(__musicCurrent);
     if (!a) return;
     const btn = document.getElementById('musicPlayBtn');
-    if (a.paused) { a.play().catch(() => {}); btn.textContent = '⏸'; }
-    else { a.pause(); btn.textContent = '▶'; }
+    const app = document.querySelector('.music-app');
+    if (a.paused) { a.play().catch(() => {}); btn.textContent = '⏸'; app?.classList.add('playing'); }
+    else { a.pause(); btn.textContent = '▶'; app?.classList.remove('playing'); }
   });
   menu.querySelector('#musicStopBtn')?.addEventListener('click', () => {
     stopMusicApp();
+    document.querySelector('.music-app')?.classList.remove('playing');
     document.getElementById('musicPlayBtn').textContent = '▶';
     document.getElementById('musicPlayBtn').disabled = true;
     document.getElementById('musicStopBtn').disabled = true;
