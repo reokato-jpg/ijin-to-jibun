@@ -1344,14 +1344,40 @@
     const camera = new THREE.PerspectiveCamera(40, W / H, 0.1, 100);
     camera.position.set(0, 0, 7);
 
-    // ライティング（温かみのあるセピアトーン）
-    scene.add(new THREE.AmbientLight(0xffe4b0, 0.35));
-    const key = new THREE.DirectionalLight(0xffcf8c, 1.2);
-    key.position.set(5, 3, 5);
-    scene.add(key);
-    const rim = new THREE.DirectionalLight(0xd4b055, 0.5);
+    // 🌅 昼夜境界：太陽位置を UTC 時刻から計算して、夜側は「深い青の夕暮れ」
+    // （真っ暗にすると地球が見えなくなるので、昼夜差は残しつつ視認性を確保）
+    const ambient = new THREE.AmbientLight(0x8ab0d8, 0.38); // 青みの強めアンビエント
+    scene.add(ambient);
+    const sun = new THREE.DirectionalLight(0xfff0c8, 1.1); // 太陽光（強すぎない）
+    sun.position.set(8, 2, 0);
+    scene.add(sun);
+    // 太陽方向を UTC から算出する関数（地軸固定の赤道面上で時刻に応じた経度を太陽直下点に）
+    function updateSunPosition() {
+      const now = new Date();
+      const utcH = now.getUTCHours() + now.getUTCMinutes() / 60;
+      // UTC 12時 = 東経0度が正午 ≒ (0,0) が sub-solar
+      // 0時 = 反対側。太陽は地球から見て (sunLon 方向) にある
+      const sunLon = ((12 - utcH) / 24) * Math.PI * 2; // ラジアン
+      // 季節：4月 = 春。簡易化して季節傾き ±23.4°
+      const doy = Math.floor((now - new Date(now.getUTCFullYear(), 0, 0)) / 86400000);
+      const declination = 23.4 * Math.sin(2 * Math.PI * (doy - 80) / 365.25) * Math.PI / 180;
+      const R = 10;
+      // latLngToVec の座標系に合わせる：lng L の地点は (cos L, 0, -sin L) 方向
+      sun.position.set(
+        R * Math.cos(declination) * Math.cos(sunLon),
+        R * Math.sin(declination),
+        -R * Math.cos(declination) * Math.sin(sunLon)
+      );
+    }
+    updateSunPosition();
+    // 補助リム（夜側のシルエットを浮かび上がらせる青い反射光）
+    const rim = new THREE.DirectionalLight(0x6aa0d8, 0.45);
     rim.position.set(-5, 0, -3);
     scene.add(rim);
+    // もう一つの対向リム（全方位から薄く）
+    const rim2 = new THREE.DirectionalLight(0x88c0f0, 0.22);
+    rim2.position.set(0, -5, 3);
+    scene.add(rim2);
 
     // 地球儀テクスチャ：NASA Blue Marble の実写テクスチャを CDN から
     const earthGeo = new THREE.SphereGeometry(2.2, 64, 48);
@@ -1363,8 +1389,8 @@
       metalness: 0.08,
       // 青系にトーンを寄せる（テクスチャ全体を青く染める）
       color: new THREE.Color(0x9ac8f0),
-      emissive: new THREE.Color(0x0d2340),
-      emissiveIntensity: 0.25,
+      emissive: new THREE.Color(0x1a3a64),
+      emissiveIntensity: 0.42,
     });
     const earth = new THREE.Mesh(earthGeo, earthMat);
     scene.add(earth);
@@ -1429,6 +1455,76 @@
       undefined,
       () => {}
     );
+
+    // 🛰 軌道衛星（ISS 模擬 / 高度 ~400km を極端にデフォルメ）
+    const satGroup = new THREE.Group();
+    scene.add(satGroup);
+    // 本体
+    const satBody = new THREE.Mesh(
+      new THREE.BoxGeometry(0.09, 0.05, 0.09),
+      new THREE.MeshBasicMaterial({ color: 0xf0f0f0 })
+    );
+    satGroup.add(satBody);
+    // 両翼のソーラーパネル
+    const panelMat = new THREE.MeshBasicMaterial({ color: 0x1a3a6a, transparent: true, opacity: 0.85 });
+    const panelL = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.005, 0.06), panelMat);
+    panelL.position.x = -0.14;
+    satGroup.add(panelL);
+    const panelR = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.005, 0.06), panelMat);
+    panelR.position.x = 0.14;
+    satGroup.add(panelR);
+    // 明滅する光点（衛星マーカー）
+    const satGlow = new THREE.Mesh(
+      new THREE.SphereGeometry(0.035, 12, 12),
+      new THREE.MeshBasicMaterial({ color: 0xff7a4a, transparent: true, opacity: 1 })
+    );
+    satGroup.add(satGlow);
+    // 軌道パラメータ（ISS 傾斜角 51.6° 模擬）
+    const SAT_RADIUS = 2.85;
+    const SAT_INCLINATION = 51.6 * Math.PI / 180;
+    let satAngle = Math.random() * Math.PI * 2;
+    // 軌跡の線（BufferGeometry を使って常に更新）
+    const SAT_TRAIL_LEN = 60;
+    const satTrailPositions = new Float32Array(SAT_TRAIL_LEN * 3);
+    const satTrailGeo = new THREE.BufferGeometry();
+    satTrailGeo.setAttribute('position', new THREE.BufferAttribute(satTrailPositions, 3));
+    const satTrailMat = new THREE.LineBasicMaterial({ color: 0xff9060, transparent: true, opacity: 0.5 });
+    const satTrail = new THREE.Line(satTrailGeo, satTrailMat);
+    scene.add(satTrail);
+
+    // 💫 パルス衝撃波：ピンをクリックすると地表を走る光の輪
+    const shockwaves = []; // { mesh, start, life, surfaceNormal }
+    function spawnShockwave(surfacePos) {
+      // surfacePos: earth ローカル座標の表面位置（長さ ≈ 2.2）
+      const ringGeo = new THREE.RingGeometry(0.05, 0.09, 48);
+      const ringMat = new THREE.MeshBasicMaterial({
+        color: 0xbbe4ff,
+        transparent: true,
+        opacity: 1,
+        side: THREE.DoubleSide,
+        depthWrite: false,
+      });
+      const ring = new THREE.Mesh(ringGeo, ringMat);
+      // 地表に沿って配置（法線方向を上にして地面に貼る）
+      ring.position.copy(surfacePos).multiplyScalar(1.005); // 僅かに浮かせる
+      ring.lookAt(surfacePos.clone().multiplyScalar(2)); // 法線方向に向ける
+      earth.add(ring);
+      shockwaves.push({ mesh: ring, start: performance.now(), life: 2200, geo: ringGeo, mat: ringMat });
+      // 2段目（時間差で内側からもう一つ）
+      setTimeout(() => {
+        if (!ov.isConnected) return;
+        const ringGeo2 = new THREE.RingGeometry(0.03, 0.06, 48);
+        const ringMat2 = new THREE.MeshBasicMaterial({
+          color: 0xffd890, transparent: true, opacity: 0.9,
+          side: THREE.DoubleSide, depthWrite: false,
+        });
+        const ring2 = new THREE.Mesh(ringGeo2, ringMat2);
+        ring2.position.copy(surfacePos).multiplyScalar(1.005);
+        ring2.lookAt(surfacePos.clone().multiplyScalar(2));
+        earth.add(ring2);
+        shockwaves.push({ mesh: ring2, start: performance.now(), life: 1800, geo: ringGeo2, mat: ringMat2 });
+      }, 280);
+    }
 
     // 大気グロー（外側の半透明球 / 青いハロー）
     const atmGeo = new THREE.SphereGeometry(2.35, 32, 24);
@@ -1578,6 +1674,8 @@
       const pin = pickPin(e.clientX, e.clientY);
       if (!pin) return;
       const { country, info: cInfo } = pin;
+      // 💫 パルス衝撃波を発射
+      spawnShockwave(pin.pos);
       info.innerHTML = `<h4>📍 ${country}（${cInfo.people.length}名）</h4>`
         + cInfo.people.map(p => `<button class="magic-globe-item" data-id="${p.id}">${p.name}</button>`).join('');
       info.classList.add('visible');
@@ -1666,14 +1764,62 @@
         netCtx.arc(n.x, n.y, n.r * 3, 0, Math.PI * 2);
         netCtx.fill();
       });
+
+      // 🌊 ネット↔ピン融合：可視ピンから最寄りノードへ破線
+      const rect = el.getBoundingClientRect();
+      const nRect = netCanvas.getBoundingClientRect();
+      const offX = rect.left - nRect.left;
+      const offY = rect.top - nRect.top;
+      const worldPos = new THREE.Vector3();
+      const forward = new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion);
+      const PIN_LINK_MAX = 220; // px
+      netCtx.setLineDash([3, 5]);
+      netCtx.lineWidth = 0.8;
+      pins.forEach(pin => {
+        worldPos.copy(pin.pos).applyMatrix4(earth.matrixWorld);
+        const cp = worldPos.clone().sub(camera.position);
+        if (cp.dot(forward) < 0) return; // 裏側は線を引かない
+        // カメラに対する角度で「真正面に近いピン」ほど接続を選ぶ
+        const projected = worldPos.clone().project(camera);
+        const px = (projected.x * 0.5 + 0.5) * rect.width + offX;
+        const py = (-projected.y * 0.5 + 0.5) * rect.height + offY;
+        // 最寄り 2 ノードを探す
+        let near = [];
+        for (let k = 0; k < netNodes.length; k++) {
+          const n = netNodes[k];
+          const dd = Math.hypot(n.x - px, n.y - py);
+          if (dd < PIN_LINK_MAX) near.push({ n, d: dd });
+        }
+        near.sort((a, b) => a.d - b.d);
+        near.slice(0, 2).forEach(({ n, d }) => {
+          const alpha = (1 - d / PIN_LINK_MAX) * 0.45;
+          netCtx.strokeStyle = `rgba(180, 230, 255, ${alpha})`;
+          netCtx.beginPath();
+          netCtx.moveTo(px, py);
+          netCtx.lineTo(n.x, n.y);
+          netCtx.stroke();
+        });
+        // ピン位置にほのかな光点
+        netCtx.setLineDash([]);
+        const g = netCtx.createRadialGradient(px, py, 0, px, py, 8);
+        g.addColorStop(0, 'rgba(255, 240, 180, 0.9)');
+        g.addColorStop(1, 'rgba(255, 240, 180, 0)');
+        netCtx.fillStyle = g;
+        netCtx.beginPath();
+        netCtx.arc(px, py, 8, 0, Math.PI * 2);
+        netCtx.fill();
+        netCtx.setLineDash([3, 5]);
+      });
+      netCtx.setLineDash([]);
     }
 
     // アニメーションループ
     let raf = 0;
     let pulseTime = 0;
+    let lastSunUpdate = 0;
     function animate() {
       pulseTime += 0.05;
-      // ネットワーク背景描画
+      // ネットワーク背景描画（ピン接続線もここで）
       drawNet();
       // 慣性
       if (!isDown) {
@@ -1688,6 +1834,57 @@
       pinsMat.opacity = 0.72 + Math.sin(pulseTime * 0.5) * 0.08;
       // 雲のゆっくり自転（地球より少し速く）
       if (MAGIC._clouds) MAGIC._clouds.rotation.y += 0.0004;
+
+      // 🌅 昼夜境界：太陽位置を 30 秒ごとに再計算
+      const nowMs = performance.now();
+      if (nowMs - lastSunUpdate > 30000) {
+        updateSunPosition();
+        lastSunUpdate = nowMs;
+      }
+
+      // 🛰 軌道衛星の更新（ISS は 90 分で 1 周 ≒ デフォルメして速め）
+      satAngle += 0.012;
+      const sx = SAT_RADIUS * Math.cos(satAngle);
+      const sy = SAT_RADIUS * Math.sin(satAngle) * Math.sin(SAT_INCLINATION);
+      const sz = SAT_RADIUS * Math.sin(satAngle) * Math.cos(SAT_INCLINATION);
+      satGroup.position.set(sx, sy, sz);
+      // 進行方向に機体を向ける
+      const nextSx = SAT_RADIUS * Math.cos(satAngle + 0.01);
+      const nextSy = SAT_RADIUS * Math.sin(satAngle + 0.01) * Math.sin(SAT_INCLINATION);
+      const nextSz = SAT_RADIUS * Math.sin(satAngle + 0.01) * Math.cos(SAT_INCLINATION);
+      satGroup.lookAt(nextSx, nextSy, nextSz);
+      // 点滅
+      satGlow.material.opacity = 0.5 + Math.abs(Math.sin(pulseTime * 2)) * 0.5;
+      // 軌跡更新（末尾から古いものを捨てる FIFO）
+      for (let i = SAT_TRAIL_LEN - 1; i > 0; i--) {
+        satTrailPositions[i*3]   = satTrailPositions[(i-1)*3];
+        satTrailPositions[i*3+1] = satTrailPositions[(i-1)*3+1];
+        satTrailPositions[i*3+2] = satTrailPositions[(i-1)*3+2];
+      }
+      satTrailPositions[0] = sx;
+      satTrailPositions[1] = sy;
+      satTrailPositions[2] = sz;
+      satTrailGeo.attributes.position.needsUpdate = true;
+      satTrailGeo.setDrawRange(0, SAT_TRAIL_LEN);
+
+      // 💫 衝撃波更新
+      for (let i = shockwaves.length - 1; i >= 0; i--) {
+        const sw = shockwaves[i];
+        const t = (nowMs - sw.start) / sw.life;
+        if (t >= 1) {
+          earth.remove(sw.mesh);
+          sw.geo.dispose();
+          sw.mat.dispose();
+          shockwaves.splice(i, 1);
+          continue;
+        }
+        const scale = 1 + t * 8; // 広がる（広げ過ぎると球面から剥がれて見えるので抑制）
+        sw.mesh.scale.setScalar(scale);
+        // イーズアウト＋ピーク（最初はハッキリ、徐々に薄く）
+        const alpha = (1 - t * t) * 0.85;
+        sw.mat.opacity = alpha;
+      }
+
       // HUD 座標更新（地球の中心法線をスクリーン正面から逆算）
       if (pulseTime % 1 < 0.05) {
         const coord = ov.querySelector('#magicGlobeCoord');
@@ -1706,7 +1903,11 @@
     ov.querySelector('.magic-deep-close').addEventListener('click', () => {
       cancelAnimationFrame(raf);
       window.removeEventListener('resize', onResize);
-      earthTex.dispose && earthTex.dispose();
+      // 衝撃波・衛星の片付け
+      shockwaves.forEach(sw => { sw.geo.dispose(); sw.mat.dispose(); });
+      shockwaves.length = 0;
+      satTrailGeo.dispose(); satTrailMat.dispose();
+      procTex && procTex.dispose && procTex.dispose();
       earthGeo.dispose(); earthMat.dispose();
       renderer.dispose();
     }, { once: true });
