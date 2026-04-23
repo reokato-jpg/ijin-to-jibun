@@ -3458,6 +3458,655 @@
     setTimeout(annotate, 600);
   }
 
+  // ============================================================
+  // 14) 地球儀タイムライン — 既存 openWorldMap に年スライダーを後付け
+  //    Three.js が利用可能な時だけ、地球儀オーバーレイが開いたのを検知して注入する
+  // ============================================================
+  function setupGlobeTimeline() {
+    // 地球儀オーバーレイ（openDeepOverlay）が開いたら注入する
+    const mo = new MutationObserver(() => {
+      const ov = document.getElementById('magicDeepOverlay');
+      if (!ov) return;
+      const wrap = ov.querySelector('#magicGlobeWrap');
+      if (!wrap || wrap.querySelector('.magic-globe-timeline')) return;
+
+      // 年の範囲を算出（bundle から）
+      const people = MAGIC._peopleBundle || [];
+      if (!people.length) return;
+      let minY = 9999, maxY = -9999;
+      people.forEach(p => {
+        if (typeof p.birth === 'number' && p.birth < minY) minY = p.birth;
+        const d = typeof p.death === 'number' ? p.death : (new Date().getFullYear());
+        if (d > maxY) maxY = d;
+      });
+      if (minY > maxY) return;
+
+      const bar = document.createElement('div');
+      bar.className = 'magic-globe-timeline';
+      bar.innerHTML = `
+        <div class="mgt-label" id="mgtYearLabel">${maxY}年</div>
+        <input type="range" class="mgt-range" id="mgtRange"
+               min="${minY}" max="${maxY}" step="1" value="${maxY}" />
+        <div class="mgt-meta">
+          <span class="mgt-lo">${minY}</span>
+          <span class="mgt-count" id="mgtCount">— 名</span>
+          <span class="mgt-hi">${maxY}</span>
+        </div>
+        <div class="mgt-ctrls">
+          <button class="mgt-btn" id="mgtPlay" type="button">▷</button>
+          <button class="mgt-btn" id="mgtReset" type="button">↺</button>
+        </div>
+      `;
+      wrap.appendChild(bar);
+
+      const label = bar.querySelector('#mgtYearLabel');
+      const count = bar.querySelector('#mgtCount');
+      const range = bar.querySelector('#mgtRange');
+      const playBtn = bar.querySelector('#mgtPlay');
+      const resetBtn = bar.querySelector('#mgtReset');
+      let playing = false;
+      let raf = 0;
+
+      // その年に生存している人数を算出
+      function aliveCount(y) {
+        return people.reduce((n, p) => {
+          const b = p.birth, d = typeof p.death === 'number' ? p.death : new Date().getFullYear();
+          return (typeof b === 'number' && b <= y && d >= y) ? n + 1 : n;
+        }, 0);
+      }
+
+      function apply(y) {
+        label.textContent = `${y}年`;
+        count.textContent = `${aliveCount(y)} 名`;
+        // 既存のピンに custom event を送るか、DOM を直接叩く
+        // openWorldMap 内で pins 配列は閉じているので、ここでは DOM の .magic-globe-item 系ではなく
+        // シーン内のピンを参照できない → 代わりに「ピン点のマテリアル不透明度」を擬似フィルタ
+        // しかし openWorldMap は pins を Points（一括）で描画しているので個別フェードは難しい
+        // 代替：タイムライン年に合わせて、byCountry 情報を info パネルにダイジェスト表示する
+      }
+      apply(maxY);
+
+      range.addEventListener('input', e => {
+        const y = parseInt(e.target.value, 10);
+        apply(y);
+      });
+
+      function step() {
+        if (!playing) return;
+        let y = parseInt(range.value, 10) + 5;
+        if (y > maxY) y = minY;
+        range.value = y;
+        apply(y);
+        raf = setTimeout(() => requestAnimationFrame(step), 120);
+      }
+      playBtn.addEventListener('click', () => {
+        playing = !playing;
+        playBtn.textContent = playing ? '❙❙' : '▷';
+        if (playing) step();
+        else { clearTimeout(raf); }
+      });
+      resetBtn.addEventListener('click', () => {
+        playing = false; playBtn.textContent = '▷'; clearTimeout(raf);
+        range.value = maxY; apply(maxY);
+      });
+    });
+    mo.observe(document.body, { childList: true, subtree: true });
+  }
+
+  // ============================================================
+  // 11) 偉人ラジオ — Web Speech API で名言を朗読、ラジオ風パネル
+  // ============================================================
+  function setupIjinRadio() {
+    // チャット FAB の隣にラジオ FAB を追加
+    const inject = () => {
+      if (document.getElementById('magicRadioFab')) return true;
+      const chatFab = document.getElementById('chatFab') || document.querySelector('.chat-fab');
+      if (!chatFab) return false;
+      const fab = document.createElement('button');
+      fab.id = 'magicRadioFab';
+      fab.className = 'magic-radio-fab';
+      fab.setAttribute('aria-label', '偉人ラジオを開く');
+      fab.innerHTML = `<span class="mrf-wave"></span><span class="mrf-wave"></span><span class="mrf-wave"></span>`;
+      document.body.appendChild(fab);
+      fab.addEventListener('click', openRadio);
+      return true;
+    };
+    inject();
+    const mo = new MutationObserver(() => inject());
+    mo.observe(document.body, { childList: true, subtree: true });
+
+    async function openRadio() {
+      // 名言プール
+      const people = await (MAGIC._peopleBundle ? Promise.resolve(MAGIC._peopleBundle) : loadPeopleBundle());
+      const pool = [];
+      people.forEach(p => (p.quotes || []).forEach(q => {
+        if (q && q.text) pool.push({ text: q.text, source: q.source || '', personName: p.name, personId: p.id });
+      }));
+      if (!pool.length) return;
+
+      let ov = document.getElementById('magicRadioOverlay');
+      if (ov) ov.remove();
+      ov = document.createElement('div');
+      ov.id = 'magicRadioOverlay';
+      ov.className = 'magic-radio-overlay';
+      ov.innerHTML = `
+        <div class="magic-radio-panel">
+          <button class="magic-radio-close" aria-label="閉じる">×</button>
+          <div class="magic-radio-eye">IJIN RADIO</div>
+          <div class="magic-radio-dial">
+            <div class="magic-radio-arc"></div>
+            <div class="magic-radio-needle" id="mrNeedle"></div>
+            <div class="magic-radio-freq" id="mrFreq">88.1</div>
+          </div>
+          <div class="magic-radio-now">
+            <div class="magic-radio-by" id="mrBy">—</div>
+            <div class="magic-radio-text" id="mrText">チューニング中…</div>
+          </div>
+          <div class="magic-radio-ctrls">
+            <button class="mr-btn" id="mrPrev" type="button" aria-label="前">◁</button>
+            <button class="mr-btn mr-play" id="mrPlay" type="button" aria-label="再生/停止">▷</button>
+            <button class="mr-btn" id="mrNext" type="button" aria-label="次">▷|</button>
+            <label class="mr-rate">速度
+              <input type="range" id="mrRate" min="0.6" max="1.4" step="0.05" value="0.95">
+            </label>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(ov);
+      requestAnimationFrame(() => ov.classList.add('open'));
+
+      let idx = Math.floor(Math.random() * pool.length);
+      let playing = false;
+      let utterance = null;
+      const synth = window.speechSynthesis;
+
+      const textEl = ov.querySelector('#mrText');
+      const byEl = ov.querySelector('#mrBy');
+      const freqEl = ov.querySelector('#mrFreq');
+      const needleEl = ov.querySelector('#mrNeedle');
+      const playBtn = ov.querySelector('#mrPlay');
+      const rateInp = ov.querySelector('#mrRate');
+
+      function jaVoice() {
+        const vs = synth.getVoices();
+        return vs.find(v => /ja|jpn|Japan/i.test(v.lang || '')) || vs[0];
+      }
+
+      function showCurrent() {
+        const q = pool[idx];
+        textEl.textContent = `「${q.text}」`;
+        byEl.textContent = `— ${q.personName}${q.source ? `（${q.source}）` : ''}`;
+        // 周波数風：88.0 - 108.0 の間をインデックスで
+        const freq = (88.0 + (idx / pool.length) * 20).toFixed(1);
+        freqEl.textContent = freq;
+        // 針を回す
+        const deg = -80 + (idx / pool.length) * 160;
+        needleEl.style.transform = `translateX(-50%) rotate(${deg}deg)`;
+      }
+
+      function speak() {
+        if (!synth) return;
+        try { synth.cancel(); } catch {}
+        const q = pool[idx];
+        utterance = new SpeechSynthesisUtterance(`${q.text}。${q.personName}。`);
+        const v = jaVoice();
+        if (v) utterance.voice = v;
+        utterance.lang = 'ja-JP';
+        utterance.rate = parseFloat(rateInp.value) || 1;
+        utterance.pitch = 1;
+        utterance.onend = () => {
+          if (!playing) return;
+          // 次へ
+          idx = (idx + 1) % pool.length;
+          showCurrent();
+          setTimeout(speak, 800);
+        };
+        synth.speak(utterance);
+      }
+
+      function stop() {
+        try { synth && synth.cancel(); } catch {}
+      }
+
+      playBtn.addEventListener('click', () => {
+        playing = !playing;
+        playBtn.textContent = playing ? '❙❙' : '▷';
+        if (playing) speak();
+        else stop();
+      });
+      ov.querySelector('#mrPrev').addEventListener('click', () => {
+        idx = (idx - 1 + pool.length) % pool.length;
+        showCurrent();
+        if (playing) speak();
+      });
+      ov.querySelector('#mrNext').addEventListener('click', () => {
+        idx = (idx + 1) % pool.length;
+        showCurrent();
+        if (playing) speak();
+      });
+      rateInp.addEventListener('input', () => {
+        if (playing) { stop(); speak(); }
+      });
+      ov.querySelector('.magic-radio-close').addEventListener('click', () => {
+        playing = false; stop();
+        ov.classList.remove('open');
+        setTimeout(() => ov.remove(), 220);
+      });
+
+      // Voices がまだ読めない環境では onvoiceschanged を待つ
+      if (synth && !synth.getVoices().length) {
+        synth.onvoiceschanged = () => {};
+      }
+      showCurrent();
+    }
+  }
+
+  // ============================================================
+  // 15) 名言の年輪 — 見た名言を記録し、同心円で可視化
+  // ============================================================
+  function setupQuoteRings() {
+    const KEY = 'ijin_seen_quotes_v1';
+    // 見た名言を記録（text のハッシュ + timestamp）
+    function hash(s) {
+      let h = 0;
+      for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
+      return String(h);
+    }
+    function load() {
+      try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; }
+    }
+    function save(obj) {
+      try { localStorage.setItem(KEY, JSON.stringify(obj)); } catch {}
+    }
+    // DOM 上に見えている「.quote-text」「.quote-card」「[data-quote-text]」等を IntersectionObserver で追跡
+    const seen = load();
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const t = (e.target.getAttribute('data-quote-text') || e.target.textContent || '').trim();
+        if (!t || t.length < 6 || t.length > 200) return;
+        const k = hash(t);
+        if (!seen[k]) {
+          seen[k] = { t: t.slice(0, 120), ts: Date.now(), p: e.target.getAttribute('data-person-id') || '' };
+          save(seen);
+        }
+      });
+    }, { threshold: 0.5 });
+    // ページ上の名言系要素を監視
+    const watch = () => {
+      document.querySelectorAll('.quote-text, .magic-quote-zoom-text, [data-quote-text]').forEach(el => {
+        if (!el.__magicRingWatched) { el.__magicRingWatched = true; io.observe(el); }
+      });
+    };
+    watch();
+    const mo = new MutationObserver(watch);
+    mo.observe(document.body, { childList: true, subtree: true });
+
+    // わたしの本ブロックに「わたしの年輪」ボタンを注入（章立てとまとめて）
+    MAGIC.openQuoteRings = () => openRingsOverlay(seen);
+  }
+
+  function openRingsOverlay(seen) {
+    const entries = Object.entries(seen || {}).map(([k, v]) => ({ k, ...v }));
+    entries.sort((a, b) => a.ts - b.ts);
+    let ov = document.getElementById('magicRingsOverlay');
+    if (ov) ov.remove();
+    ov = document.createElement('div');
+    ov.id = 'magicRingsOverlay';
+    ov.className = 'magic-rings-overlay';
+    ov.innerHTML = `
+      <div class="magic-rings-panel">
+        <button class="magic-rings-close" aria-label="閉じる">×</button>
+        <h3 class="magic-rings-title">わたしの年輪</h3>
+        <div class="magic-rings-sub">${entries.length} の名言が、あなたの中に残っている</div>
+        <canvas id="magicRingsCanvas" class="magic-rings-canvas"></canvas>
+        <div class="magic-rings-hint">点をタップすると、そのときの名言が現れます</div>
+        <div class="magic-rings-tooltip" id="magicRingsTip"></div>
+      </div>
+    `;
+    document.body.appendChild(ov);
+    requestAnimationFrame(() => ov.classList.add('open'));
+    ov.querySelector('.magic-rings-close').addEventListener('click', () => {
+      ov.classList.remove('open');
+      setTimeout(() => ov.remove(), 220);
+    });
+
+    const canvas = ov.querySelector('#magicRingsCanvas');
+    const tip = ov.querySelector('#magicRingsTip');
+    const ctx = canvas.getContext('2d');
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const paint = () => {
+      const rect = canvas.getBoundingClientRect();
+      const W = Math.max(280, rect.width);
+      const H = Math.max(280, rect.height);
+      canvas.width = W * dpr; canvas.height = H * dpr;
+      canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      // 中心
+      const cx = W / 2, cy = H / 2;
+      const rMin = 28, rMax = Math.min(W, H) / 2 - 20;
+      // 同心の年輪（光の層）
+      const RINGS = Math.min(8, Math.max(3, Math.ceil(entries.length / 12)));
+      for (let i = 0; i < RINGS; i++) {
+        const r = rMin + (rMax - rMin) * (i + 1) / RINGS;
+        ctx.strokeStyle = `rgba(212, 176, 85, ${0.06 + i * 0.02})`;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+      // 各名言を点で配置：古いほど内側、新しいほど外側、角度はハッシュで決定的
+      entries.forEach((e, i) => {
+        const t = entries.length > 1 ? i / (entries.length - 1) : 0.5;
+        const r = rMin + (rMax - rMin) * t;
+        const a = (parseInt(e.k, 10) % 360) * Math.PI / 180;
+        const x = cx + Math.cos(a) * r;
+        const y = cy + Math.sin(a) * r;
+        const size = 2.4 + (t * 2.6);
+        const g = ctx.createRadialGradient(x, y, 0, x, y, size * 3);
+        g.addColorStop(0, 'rgba(255, 230, 150, 0.95)');
+        g.addColorStop(1, 'rgba(255, 230, 150, 0)');
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(x, y, size * 3, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#ffe7a8';
+        ctx.beginPath();
+        ctx.arc(x, y, size, 0, Math.PI * 2);
+        ctx.fill();
+        // hit 判定用の記憶
+        e._x = x; e._y = y; e._r = size * 4;
+      });
+      // 中心に数字
+      ctx.fillStyle = 'rgba(212, 176, 85, 0.85)';
+      ctx.font = '600 18px "Cormorant Garamond", serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(String(entries.length), cx, cy - 4);
+      ctx.font = '10px "Shippori Mincho", serif';
+      ctx.fillStyle = 'rgba(212, 176, 85, 0.6)';
+      ctx.fillText('QUOTES', cx, cy + 14);
+    };
+    // 描画
+    requestAnimationFrame(() => paint());
+    // クリックで詳細
+    canvas.addEventListener('click', (ev) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = ev.clientX - rect.left, y = ev.clientY - rect.top;
+      let hit = null, bestD = 14;
+      for (const e of entries) {
+        if (e._x == null) continue;
+        const d = Math.hypot(e._x - x, e._y - y);
+        if (d < bestD) { bestD = d; hit = e; }
+      }
+      if (hit) {
+        tip.textContent = `「${hit.t}」\n${new Date(hit.ts).toLocaleDateString('ja-JP')}`;
+        tip.style.left = (x + 14) + 'px';
+        tip.style.top  = (y + 14) + 'px';
+        tip.classList.add('visible');
+      } else {
+        tip.classList.remove('visible');
+      }
+    });
+    window.addEventListener('resize', paint);
+  }
+
+  // ============================================================
+  // 9) 偉人の1日シミュレーター — routine データがある偉人に限り、時計で再現
+  // ============================================================
+  function setupDaySimulator() {
+    // 偉人詳細ビューが開いたら、routine がある場合にボタンを注入
+    const inject = () => {
+      const view = document.getElementById('view-person');
+      if (!view || !view.classList.contains('active')) return;
+      if (view.querySelector('.magic-daysim-entry')) return;
+      // 現在の人物 id を app.js が持っている場合
+      const pid = view.getAttribute('data-person-id') || window.currentPersonId || '';
+      const p = (MAGIC._peopleBundle || []).find(x => x.id === pid);
+      if (!p || !Array.isArray(p.routine) || !p.routine.length) return;
+      const host = view.querySelector('.person-content, .person-detail, .person-top') || view;
+      const btn = document.createElement('button');
+      btn.className = 'magic-daysim-entry';
+      btn.type = 'button';
+      btn.textContent = `${p.name} の1日を歩く`;
+      btn.addEventListener('click', () => openDaySimulator(p));
+      host.insertBefore(btn, host.firstChild);
+    };
+    const mo = new MutationObserver(inject);
+    mo.observe(document.body, { childList: true, subtree: true });
+    inject();
+
+    // 外部からも呼べるように
+    MAGIC.openDaySimulator = openDaySimulator;
+  }
+
+  function openDaySimulator(p) {
+    const routine = p.routine || [];
+    let ov = document.getElementById('magicDaySimOverlay');
+    if (ov) ov.remove();
+    ov = document.createElement('div');
+    ov.id = 'magicDaySimOverlay';
+    ov.className = 'magic-daysim-overlay';
+    ov.innerHTML = `
+      <div class="magic-daysim-panel">
+        <button class="magic-daysim-close" aria-label="閉じる">×</button>
+        <div class="magic-daysim-head">
+          <div class="magic-daysim-eye">A DAY IN THE LIFE</div>
+          <h3 class="magic-daysim-title">${p.name}</h3>
+        </div>
+        <div class="magic-daysim-clock">
+          <svg viewBox="0 0 240 240" id="magicDaysimClock">
+            <circle cx="120" cy="120" r="110" fill="none" stroke="rgba(212,176,85,0.25)" stroke-width="1"/>
+            <circle cx="120" cy="120" r="92" fill="none" stroke="rgba(212,176,85,0.12)" stroke-width="1"/>
+            <g id="magicDaysimSegs"></g>
+            <g id="magicDaysimTicks"></g>
+            <line id="magicDaysimHand" x1="120" y1="120" x2="120" y2="42"
+                  stroke="#ead296" stroke-width="2" stroke-linecap="round"
+                  transform="rotate(0 120 120)" />
+            <circle cx="120" cy="120" r="4" fill="#ead296"/>
+            <text x="120" y="200" text-anchor="middle"
+                  font-family="Cormorant Garamond, serif" font-size="14"
+                  fill="rgba(212,176,85,0.7)" id="magicDaysimTimeText">00:00</text>
+          </svg>
+        </div>
+        <div class="magic-daysim-activity" id="magicDaysimAct">—</div>
+        <div class="magic-daysim-ctrls">
+          <button class="mdsim-btn" id="mdsimPrev" aria-label="前">◁</button>
+          <button class="mdsim-btn mdsim-play" id="mdsimPlay" aria-label="再生">▷</button>
+          <button class="mdsim-btn" id="mdsimNext" aria-label="次">▷|</button>
+          <label class="mdsim-speed">速度
+            <input id="mdsimSpeed" type="range" min="1" max="30" step="1" value="6">
+          </label>
+        </div>
+        <ul class="magic-daysim-list" id="magicDaysimList"></ul>
+      </div>
+    `;
+    document.body.appendChild(ov);
+    requestAnimationFrame(() => ov.classList.add('open'));
+    ov.querySelector('.magic-daysim-close').addEventListener('click', () => {
+      ov.classList.remove('open'); setTimeout(() => ov.remove(), 200);
+      cancelAnimationFrame(raf);
+    });
+
+    const CAT_COLOR = {
+      sleep: '#5a6a8a', meal: '#c4a07a', work: '#a55a6a', exercise: '#6aa084',
+      reading: '#8a7a9a', leisure: '#b08a5a', other: '#888',
+    };
+    const segsG = ov.querySelector('#magicDaysimSegs');
+    const ticksG = ov.querySelector('#magicDaysimTicks');
+    const hand = ov.querySelector('#magicDaysimHand');
+    const timeText = ov.querySelector('#magicDaysimTimeText');
+    const actEl = ov.querySelector('#magicDaysimAct');
+    const listEl = ov.querySelector('#magicDaysimList');
+
+    // 24時間を外周の arc に変換（12時＝上方向）
+    function hrToAngle(hr) { return (hr / 24) * 360 - 90; } // 0時を左側に置くならここで調整
+    function polar(r, deg) { const rad = deg * Math.PI / 180; return [120 + Math.cos(rad) * r, 120 + Math.sin(rad) * r]; }
+
+    // セクター弧を描画
+    const innerR = 92, outerR = 110;
+    routine.forEach(seg => {
+      const a0 = hrToAngle(seg.start);
+      const a1 = hrToAngle(seg.end);
+      const large = (seg.end - seg.start) > 12 ? 1 : 0;
+      const [sx, sy] = polar(outerR, a0);
+      const [ex, ey] = polar(outerR, a1);
+      const [sxi, syi] = polar(innerR, a1);
+      const [exi, eyi] = polar(innerR, a0);
+      const d = `M ${sx} ${sy} A ${outerR} ${outerR} 0 ${large} 1 ${ex} ${ey} L ${sxi} ${syi} A ${innerR} ${innerR} 0 ${large} 0 ${exi} ${eyi} Z`;
+      const color = CAT_COLOR[seg.cat] || CAT_COLOR.other;
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', d);
+      path.setAttribute('fill', color);
+      path.setAttribute('fill-opacity', '0.6');
+      path.setAttribute('stroke', 'rgba(0,0,0,0.3)');
+      path.setAttribute('stroke-width', '0.5');
+      segsG.appendChild(path);
+    });
+    // 時刻目盛
+    for (let h = 0; h < 24; h++) {
+      const a = hrToAngle(h);
+      const [x1, y1] = polar(innerR - 4, a);
+      const [x2, y2] = polar(innerR - (h % 6 === 0 ? 12 : 8), a);
+      const ln = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      ln.setAttribute('x1', x1); ln.setAttribute('y1', y1);
+      ln.setAttribute('x2', x2); ln.setAttribute('y2', y2);
+      ln.setAttribute('stroke', 'rgba(212,176,85,0.5)');
+      ln.setAttribute('stroke-width', h % 6 === 0 ? '1.2' : '0.6');
+      ticksG.appendChild(ln);
+      if (h % 6 === 0) {
+        const [tx, ty] = polar(innerR - 22, a);
+        const t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        t.setAttribute('x', tx); t.setAttribute('y', ty + 4);
+        t.setAttribute('text-anchor', 'middle');
+        t.setAttribute('fill', 'rgba(212,176,85,0.7)');
+        t.setAttribute('font-size', '12');
+        t.setAttribute('font-family', 'Cormorant Garamond, serif');
+        t.textContent = String(h);
+        ticksG.appendChild(t);
+      }
+    }
+    // リスト
+    listEl.innerHTML = routine.map(seg => `
+      <li data-start="${seg.start}">
+        <span class="mdsim-time">${String(seg.start).padStart(2,'0')}:00</span>
+        <span class="mdsim-cat" style="background:${CAT_COLOR[seg.cat]||CAT_COLOR.other}"></span>
+        <span class="mdsim-act">${seg.activity}</span>
+      </li>
+    `).join('');
+    listEl.querySelectorAll('li').forEach(li => {
+      li.addEventListener('click', () => {
+        hour = parseFloat(li.dataset.start);
+        update();
+      });
+    });
+
+    // 時計
+    let hour = 6; // 朝から開始
+    let playing = false;
+    let raf = 0;
+    const speedInp = ov.querySelector('#mdsimSpeed');
+    const playBtn = ov.querySelector('#mdsimPlay');
+    function update() {
+      const deg = hrToAngle(hour);
+      hand.setAttribute('transform', `rotate(${deg + 90} 120 120)`);
+      const hh = Math.floor(hour);
+      const mm = Math.floor((hour - hh) * 60);
+      timeText.textContent = `${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}`;
+      const seg = routine.find(s => hour >= s.start && hour < s.end) || routine[0];
+      actEl.textContent = seg ? seg.activity : '';
+      listEl.querySelectorAll('li').forEach(li => {
+        li.classList.toggle('active', parseInt(li.dataset.start, 10) === Math.floor(seg?.start ?? -1));
+      });
+    }
+    function tick() {
+      if (!playing) return;
+      const speed = parseFloat(speedInp.value);
+      hour += speed / 60; // speed 1で1分/秒, 30で30分/秒
+      if (hour >= 24) hour = 0;
+      update();
+      raf = requestAnimationFrame(tick);
+    }
+    playBtn.addEventListener('click', () => {
+      playing = !playing;
+      playBtn.textContent = playing ? '❙❙' : '▷';
+      if (playing) tick();
+    });
+    ov.querySelector('#mdsimPrev').addEventListener('click', () => { hour = (hour - 1 + 24) % 24; update(); });
+    ov.querySelector('#mdsimNext').addEventListener('click', () => { hour = (hour + 1) % 24; update(); });
+    update();
+  }
+
+  // ============================================================
+  // 17) 章立てのわたしの本 — favorites タブに章ナビを注入
+  // ============================================================
+  function setupBookChapters() {
+    const CHAPTERS = [
+      { key: 'intro',    title: '序章',      desc: 'プロフィール' },
+      { key: 'thoughts', title: '第一章',    desc: '思想と言葉' },
+      { key: 'meetings', title: '第二章',    desc: '出会い' },
+      { key: 'journeys', title: '第三章',    desc: '旅と軌跡' },
+      { key: 'rings',    title: '終章',      desc: '年輪' },
+    ];
+    const inject = () => {
+      const view = document.getElementById('view-favorites');
+      if (!view || !view.classList.contains('active')) return;
+      if (view.querySelector('.magic-book-chapters')) return;
+      const nav = document.createElement('nav');
+      nav.className = 'magic-book-chapters';
+      nav.innerHTML = `
+        <div class="mbc-label">目次</div>
+        <ul class="mbc-list">
+          ${CHAPTERS.map((c, i) => `
+            <li class="mbc-item" data-chap="${c.key}">
+              <span class="mbc-num">${String(i + 1).padStart(2, '0')}</span>
+              <span class="mbc-title">${c.title}</span>
+              <span class="mbc-desc">${c.desc}</span>
+            </li>
+          `).join('')}
+        </ul>
+      `;
+      view.insertBefore(nav, view.firstChild);
+      // スクロールジャンプ（既存要素にラベル付与）
+      const anchor = (key) => {
+        const sel = {
+          intro:    '.my-book-header, .profile-header, .my-book-profile',
+          thoughts: '.magic-book3d-btn, .title-page-meta, .title-page, [data-quotes-section], .quote-section',
+          meetings: '[data-friends], .friends-section, .follow-section',
+          journeys: '.career-section, .career-timeline, [data-career]',
+          rings:    '.magic-book-ring-entry',
+        }[key] || 'body';
+        return document.querySelector(sel);
+      };
+      // 終章の "年輪" エントリを生成
+      if (!view.querySelector('.magic-book-ring-entry')) {
+        const ring = document.createElement('div');
+        ring.className = 'magic-book-ring-entry';
+        ring.innerHTML = `
+          <h3>年輪</h3>
+          <p>あなたが見てきた名言が、静かに積み重なっていきます。</p>
+          <button type="button" class="mbre-open">わたしの年輪を見る</button>
+        `;
+        view.appendChild(ring);
+        ring.querySelector('.mbre-open').addEventListener('click', () => {
+          if (typeof MAGIC.openQuoteRings === 'function') MAGIC.openQuoteRings();
+        });
+      }
+      nav.querySelectorAll('.mbc-item').forEach(li => {
+        li.addEventListener('click', () => {
+          const key = li.dataset.chap;
+          const el = anchor(key);
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          nav.querySelectorAll('.mbc-item').forEach(x => x.classList.toggle('current', x === li));
+        });
+      });
+    };
+    const mo = new MutationObserver(inject);
+    mo.observe(document.body, { childList: true, subtree: true });
+    inject();
+  }
+
   // ------------------------------------------------------------
   // 起動
   // ------------------------------------------------------------
@@ -3479,6 +4128,41 @@
     try { setupLetterExchange(); } catch (e) { console.warn('[magic] letter', e); }
     try { setupRoutineLive(); } catch (e) { console.warn('[magic] routineLive', e); }
     try { setupMusicSkin(); } catch (e) { console.warn('[magic] musicSkin', e); }
+    try { setupGlobeTimeline(); } catch (e) { console.warn('[magic] globeTimeline', e); }
+    try { setupIjinRadio(); } catch (e) { console.warn('[magic] radio', e); }
+    try { setupQuoteRings(); } catch (e) { console.warn('[magic] rings', e); }
+    try { setupDaySimulator(); } catch (e) { console.warn('[magic] daysim', e); }
+    try { setupBookChapters(); } catch (e) { console.warn('[magic] chapters', e); }
+    try { setupOfflinePrime(); } catch (e) { console.warn('[magic] offlinePrime', e); }
+  }
+
+  // ============================================================
+  // Service Worker 連携：バックグラウンドで偉人データを個別 JSON
+  // もキャッシュさせ、完全オフラインで全機能動くようにする。
+  // ============================================================
+  async function setupOfflinePrime() {
+    if (!('serviceWorker' in navigator)) return;
+    const reg = await navigator.serviceWorker.ready.catch(() => null);
+    if (!reg || !reg.active) return;
+    // 既に一度送っていればスキップ（localStorage フラグ）
+    const FLAG = 'magic_offline_primed_v1';
+    if (localStorage.getItem(FLAG)) return;
+
+    // manifest.json から個別 JSON の URL を組み立て
+    try {
+      const m = await fetch('/data/manifest.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null);
+      if (!m || !Array.isArray(m.people)) return;
+      const urls = m.people.map(p => {
+        const id = (typeof p === 'string') ? p : (p.id || '');
+        return id ? `/data/people/${id}.json` : null;
+      }).filter(Boolean);
+      // 30件ずつバッチで SW に送る（一斉リクエスト負荷を分散）
+      for (let i = 0; i < urls.length; i += 30) {
+        reg.active.postMessage({ type: 'MAGIC_PRECACHE', urls: urls.slice(i, i + 30) });
+        await new Promise(r => setTimeout(r, 120));
+      }
+      localStorage.setItem(FLAG, String(Date.now()));
+    } catch {}
   }
 
   // ============================================================

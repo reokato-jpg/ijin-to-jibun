@@ -2373,6 +2373,602 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
   100% { background-size: 3px 55%, 3px 70%, 3px 50%; }
 }
 
+/* =========================================================
+   14) 地球儀タイムライン（年スライダー）
+   ========================================================= */
+.magic-globe-timeline {
+  position: absolute;
+  left: 50%; transform: translateX(-50%);
+  bottom: 14px;
+  width: min(90%, 440px);
+  padding: 10px 14px 8px;
+  background: rgba(10, 4, 8, 0.78);
+  border: 1px solid rgba(212, 176, 85, 0.35);
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 5;
+  color: #ead296;
+  font-family: "Shippori Mincho", serif;
+}
+.magic-globe-timeline .mgt-label {
+  text-align: center;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 20px;
+  letter-spacing: 0.1em;
+  color: #ead296;
+  margin-bottom: 4px;
+  text-shadow: 0 0 8px rgba(212, 176, 85, 0.4);
+}
+.magic-globe-timeline .mgt-range {
+  width: 100%;
+  height: 3px;
+  background: rgba(212, 176, 85, 0.25);
+  border-radius: 2px;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.magic-globe-timeline .mgt-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: #ead296;
+  box-shadow: 0 0 10px rgba(212, 176, 85, 0.8);
+  cursor: pointer;
+}
+.magic-globe-timeline .mgt-range::-moz-range-thumb {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: #ead296;
+  border: none;
+  box-shadow: 0 0 10px rgba(212, 176, 85, 0.8);
+  cursor: pointer;
+}
+.magic-globe-timeline .mgt-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  color: rgba(212, 176, 85, 0.75);
+  margin-top: 5px;
+}
+.magic-globe-timeline .mgt-count {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 12.5px;
+  color: #ead296;
+}
+.magic-globe-timeline .mgt-ctrls {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+.magic-globe-timeline .mgt-btn {
+  width: 30px; height: 30px;
+  display: inline-flex;
+  align-items: center; justify-content: center;
+  background: rgba(212, 176, 85, 0.08);
+  border: 1px solid rgba(212, 176, 85, 0.3);
+  border-radius: 50%;
+  color: #ead296;
+  font-family: "Cormorant Garamond", serif;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.magic-globe-timeline .mgt-btn:hover {
+  background: rgba(212, 176, 85, 0.2);
+  border-color: rgba(212, 176, 85, 0.6);
+}
+
+/* =========================================================
+   11) 偉人ラジオ
+   ========================================================= */
+.magic-radio-fab {
+  position: fixed;
+  right: 16px;
+  bottom: 154px;       /* chat-fab の上 */
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(234,210,150,0.18), rgba(20,10,14,0.9)),
+    linear-gradient(135deg, #4a1a24, #2a0e16);
+  border: 1px solid rgba(212, 176, 85, 0.6);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+  z-index: 1000;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.magic-radio-fab:hover { border-color: rgba(234, 210, 150, 0.9); }
+.magic-radio-fab .mrf-wave {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: 14px; height: 14px;
+  border: 1.5px solid rgba(234, 210, 150, 0.8);
+  border-radius: 50%;
+  animation: magic-radio-pulse 2.2s ease-out infinite;
+}
+.magic-radio-fab .mrf-wave:nth-child(2) { animation-delay: 0.7s; }
+.magic-radio-fab .mrf-wave:nth-child(3) { animation-delay: 1.4s; }
+@keyframes magic-radio-pulse {
+  0%   { width: 8px; height: 8px; opacity: 0.9; }
+  100% { width: 44px; height: 44px; opacity: 0; }
+}
+
+.magic-radio-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(6, 3, 7, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 10000;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity 0.25s ease;
+  padding: 20px;
+}
+.magic-radio-overlay.open { opacity: 1; }
+.magic-radio-panel {
+  position: relative;
+  width: min(420px, 100%);
+  padding: 26px 22px;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(212, 176, 85, 0.12), transparent 50%),
+    linear-gradient(180deg, #1a0a10, #060305);
+  border: 1px solid rgba(212, 176, 85, 0.35);
+  border-radius: 18px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  color: #ead296;
+  font-family: "Shippori Mincho", serif;
+}
+.magic-radio-close {
+  position: absolute;
+  top: 10px; right: 10px;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: rgba(10, 5, 8, 0.5);
+  border: 1px solid rgba(212, 176, 85, 0.3);
+  color: #ead296;
+  font-size: 18px;
+  cursor: pointer;
+}
+.magic-radio-eye {
+  text-align: center;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 11px;
+  letter-spacing: 0.4em;
+  color: rgba(212, 176, 85, 0.7);
+  margin-bottom: 14px;
+}
+.magic-radio-dial {
+  position: relative;
+  height: 120px;
+  margin: 0 auto 16px;
+  background:
+    radial-gradient(ellipse at 50% 120%, rgba(212,176,85,0.2), transparent 60%),
+    linear-gradient(180deg, rgba(10,5,8,0.65), rgba(10,5,8,0.85));
+  border: 1px solid rgba(212, 176, 85, 0.22);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.magic-radio-arc {
+  position: absolute;
+  left: 50%; top: 120%;
+  transform: translateX(-50%);
+  width: 240px; height: 240px;
+  border: 1px solid rgba(212, 176, 85, 0.35);
+  border-radius: 50%;
+  box-shadow: inset 0 0 20px rgba(212, 176, 85, 0.08);
+}
+.magic-radio-needle {
+  position: absolute;
+  left: 50%; bottom: 0;
+  width: 2px; height: 110px;
+  background: linear-gradient(to top, #ead296, transparent);
+  transform-origin: 50% 100%;
+  transform: translateX(-50%) rotate(0deg);
+  box-shadow: 0 0 8px rgba(234, 210, 150, 0.7);
+  transition: transform 0.5s ease;
+}
+.magic-radio-freq {
+  position: absolute;
+  left: 50%; top: 12px;
+  transform: translateX(-50%);
+  font-family: "Cormorant Garamond", serif;
+  font-size: 28px;
+  letter-spacing: 0.1em;
+  color: #ead296;
+  text-shadow: 0 0 10px rgba(212, 176, 85, 0.6);
+}
+.magic-radio-now {
+  min-height: 80px;
+  padding: 12px 8px;
+  text-align: center;
+  border-top: 1px solid rgba(212, 176, 85, 0.15);
+  border-bottom: 1px solid rgba(212, 176, 85, 0.15);
+  margin-bottom: 14px;
+}
+.magic-radio-text {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #ead296;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+.magic-radio-by {
+  font-size: 11px;
+  color: rgba(212, 176, 85, 0.72);
+  letter-spacing: 0.1em;
+}
+.magic-radio-ctrls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.magic-radio-ctrls .mr-btn {
+  width: 38px; height: 38px;
+  display: inline-flex;
+  align-items: center; justify-content: center;
+  background: rgba(212, 176, 85, 0.06);
+  border: 1px solid rgba(212, 176, 85, 0.3);
+  border-radius: 50%;
+  color: #ead296;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.magic-radio-ctrls .mr-btn:hover {
+  background: rgba(212, 176, 85, 0.18);
+  border-color: rgba(234, 210, 150, 0.7);
+}
+.magic-radio-ctrls .mr-play {
+  width: 50px; height: 50px;
+  font-size: 17px;
+  background: linear-gradient(135deg, rgba(140,62,76,0.7), rgba(92,31,42,0.8));
+  border-color: rgba(234, 210, 150, 0.5);
+  box-shadow: 0 0 18px rgba(212, 176, 85, 0.25);
+}
+.magic-radio-ctrls .mr-rate {
+  font-size: 10px; letter-spacing: 0.18em;
+  color: rgba(212, 176, 85, 0.7);
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.magic-radio-ctrls .mr-rate input[type=range] {
+  width: 80px; -webkit-appearance: none; appearance: none;
+  background: rgba(212, 176, 85, 0.2);
+  height: 3px; border-radius: 2px; outline: none;
+}
+.magic-radio-ctrls .mr-rate input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: #ead296;
+}
+
+/* =========================================================
+   15) 名言の年輪
+   ========================================================= */
+.magic-rings-overlay {
+  position: fixed; inset: 0;
+  background: rgba(6, 3, 7, 0.82);
+  backdrop-filter: blur(8px);
+  z-index: 10000;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity 0.25s ease;
+  padding: 18px;
+}
+.magic-rings-overlay.open { opacity: 1; }
+.magic-rings-panel {
+  position: relative;
+  width: min(460px, 100%);
+  padding: 22px 20px;
+  background: linear-gradient(180deg, #140810, #080406);
+  border: 1px solid rgba(212, 176, 85, 0.3);
+  border-radius: 14px;
+  color: #ead296;
+  font-family: "Shippori Mincho", serif;
+  text-align: center;
+}
+.magic-rings-close {
+  position: absolute; top: 10px; right: 10px;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: rgba(10,5,8,0.5);
+  border: 1px solid rgba(212,176,85,0.3);
+  color: #ead296; font-size: 18px;
+  cursor: pointer;
+}
+.magic-rings-title {
+  font-size: 18px; letter-spacing: 0.2em;
+  color: #ead296; margin: 0 0 4px;
+}
+.magic-rings-sub {
+  font-size: 11px; color: rgba(212,176,85,0.7);
+  letter-spacing: 0.1em; margin-bottom: 14px;
+}
+.magic-rings-canvas {
+  width: 100%;
+  height: 360px;
+  background: radial-gradient(ellipse at 50% 50%, rgba(54,22,20,0.3), transparent 70%);
+  border-radius: 10px;
+}
+.magic-rings-hint {
+  font-size: 10px; letter-spacing: 0.18em;
+  color: rgba(212,176,85,0.5); margin-top: 10px;
+}
+.magic-rings-tooltip {
+  position: absolute;
+  padding: 8px 12px;
+  background: rgba(10,5,8,0.9);
+  border: 1px solid rgba(212,176,85,0.4);
+  border-radius: 6px;
+  color: #ead296;
+  font-size: 12px;
+  line-height: 1.5;
+  white-space: pre-line;
+  opacity: 0;
+  pointer-events: none;
+  max-width: 70%;
+  transition: opacity 0.18s;
+  z-index: 2;
+}
+.magic-rings-tooltip.visible { opacity: 1; }
+
+/* =========================================================
+   9) 偉人の1日シミュレーター
+   ========================================================= */
+.magic-daysim-entry {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  margin: 10px 0;
+  font-family: "Shippori Mincho", serif;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: #ead296;
+  background: linear-gradient(135deg, rgba(122,46,58,0.5), rgba(92,31,42,0.7));
+  border: 1px solid rgba(212,176,85,0.35);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.magic-daysim-entry:hover {
+  background: linear-gradient(135deg, rgba(140,62,76,0.7), rgba(112,46,58,0.85));
+  border-color: rgba(234,210,150,0.7);
+  transform: translateY(-1px);
+}
+.magic-daysim-overlay {
+  position: fixed; inset: 0;
+  background: rgba(6,3,7,0.82);
+  backdrop-filter: blur(8px);
+  z-index: 10000;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity 0.25s ease;
+  padding: 18px;
+}
+.magic-daysim-overlay.open { opacity: 1; }
+.magic-daysim-panel {
+  position: relative;
+  width: min(480px, 100%);
+  max-height: 92vh;
+  overflow-y: auto;
+  padding: 24px 20px 20px;
+  background: linear-gradient(180deg, #140810, #080406);
+  border: 1px solid rgba(212,176,85,0.35);
+  border-radius: 14px;
+  color: #ead296;
+  font-family: "Shippori Mincho", serif;
+}
+.magic-daysim-close {
+  position: absolute; top: 10px; right: 10px;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: rgba(10,5,8,0.5);
+  border: 1px solid rgba(212,176,85,0.3);
+  color: #ead296; font-size: 18px; cursor: pointer;
+}
+.magic-daysim-head { text-align: center; margin-bottom: 14px; }
+.magic-daysim-eye {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 10px;
+  letter-spacing: 0.4em;
+  color: rgba(212,176,85,0.7);
+}
+.magic-daysim-title {
+  font-size: 18px; letter-spacing: 0.14em;
+  color: #ead296; margin: 4px 0 0;
+}
+.magic-daysim-clock { width: 100%; max-width: 280px; margin: 0 auto; }
+.magic-daysim-clock svg { width: 100%; height: auto; display: block; }
+.magic-daysim-activity {
+  text-align: center;
+  margin: 14px 0 12px;
+  font-size: 16px;
+  color: #ead296;
+  letter-spacing: 0.06em;
+  min-height: 24px;
+  text-shadow: 0 0 8px rgba(212,176,85,0.3);
+}
+.magic-daysim-ctrls {
+  display: flex; align-items: center; gap: 8px; justify-content: center;
+  flex-wrap: wrap; margin-bottom: 14px;
+}
+.magic-daysim-ctrls .mdsim-btn {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: rgba(212,176,85,0.08);
+  border: 1px solid rgba(212,176,85,0.3);
+  color: #ead296;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 13px;
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.magic-daysim-ctrls .mdsim-play {
+  width: 48px; height: 48px;
+  background: linear-gradient(135deg, rgba(140,62,76,0.7), rgba(92,31,42,0.8));
+  border-color: rgba(234,210,150,0.5);
+}
+.magic-daysim-ctrls .mdsim-btn:hover { background: rgba(212,176,85,0.18); }
+.magic-daysim-speed {
+  font-size: 10px; letter-spacing: 0.16em;
+  color: rgba(212,176,85,0.7);
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.magic-daysim-speed input[type=range] {
+  width: 80px; height: 3px;
+  background: rgba(212,176,85,0.2);
+  -webkit-appearance: none; appearance: none;
+  border-radius: 2px;
+}
+.magic-daysim-speed input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: #ead296;
+}
+.magic-daysim-list {
+  list-style: none;
+  padding: 0; margin: 0;
+  display: flex; flex-direction: column; gap: 4px;
+  max-height: 220px; overflow-y: auto;
+  font-size: 12px;
+}
+.magic-daysim-list li {
+  display: grid;
+  grid-template-columns: 48px 16px 1fr;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 10px;
+  background: rgba(10,5,8,0.5);
+  border: 1px solid rgba(212,176,85,0.12);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.magic-daysim-list li:hover { background: rgba(212,176,85,0.08); }
+.magic-daysim-list li.active {
+  background: linear-gradient(90deg, rgba(122,46,58,0.4), rgba(10,5,8,0.5));
+  border-color: rgba(234,210,150,0.5);
+  box-shadow: 0 0 10px rgba(212,176,85,0.2);
+}
+.magic-daysim-list .mdsim-time {
+  font-family: "Cormorant Garamond", serif;
+  color: rgba(212,176,85,0.8);
+  letter-spacing: 0.06em;
+}
+.magic-daysim-list .mdsim-cat {
+  width: 10px; height: 10px; border-radius: 50%;
+  display: inline-block;
+}
+.magic-daysim-list .mdsim-act { color: #ead296; }
+
+/* =========================================================
+   17) 章立てのわたしの本
+   ========================================================= */
+.magic-book-chapters {
+  margin: 14px 16px 18px;
+  padding: 16px 18px 14px;
+  background: linear-gradient(180deg, rgba(26,12,16,0.7), rgba(16,8,10,0.8));
+  border: 1px solid rgba(212,176,85,0.25);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+.magic-book-chapters .mbc-label {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 10px;
+  letter-spacing: 0.38em;
+  color: rgba(212,176,85,0.7);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(212,176,85,0.2);
+}
+.magic-book-chapters .mbc-list {
+  list-style: none;
+  margin: 0; padding: 0;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.magic-book-chapters .mbc-item {
+  display: grid;
+  grid-template-columns: 32px auto 1fr;
+  gap: 10px;
+  align-items: baseline;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-family: "Shippori Mincho", serif;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.magic-book-chapters .mbc-item:hover {
+  background: rgba(212,176,85,0.05);
+}
+.magic-book-chapters .mbc-item.current {
+  background: rgba(122,46,58,0.25);
+  box-shadow: inset 3px 0 0 #ead296;
+}
+.magic-book-chapters .mbc-num {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 13px;
+  color: rgba(212,176,85,0.7);
+}
+.magic-book-chapters .mbc-title {
+  font-size: 14px;
+  color: #ead296;
+  letter-spacing: 0.1em;
+}
+.magic-book-chapters .mbc-desc {
+  font-size: 11px;
+  color: rgba(212,176,85,0.65);
+  letter-spacing: 0.06em;
+}
+
+.magic-book-ring-entry {
+  margin: 24px 16px 20px;
+  padding: 18px 20px;
+  background:
+    radial-gradient(ellipse at top, rgba(212,176,85,0.08), transparent 70%),
+    linear-gradient(180deg, rgba(26,12,16,0.75), rgba(16,8,10,0.88));
+  border: 1px solid rgba(212,176,85,0.28);
+  border-radius: 10px;
+  color: #ead296;
+  font-family: "Shippori Mincho", serif;
+  text-align: center;
+}
+.magic-book-ring-entry h3 {
+  margin: 0 0 6px;
+  letter-spacing: 0.2em;
+  font-size: 15px;
+}
+.magic-book-ring-entry p {
+  margin: 0 0 12px;
+  font-size: 12px;
+  color: rgba(212,176,85,0.78);
+  letter-spacing: 0.06em;
+  line-height: 1.7;
+}
+.magic-book-ring-entry .mbre-open {
+  padding: 9px 20px;
+  font-family: "Shippori Mincho", serif;
+  font-size: 12.5px;
+  letter-spacing: 0.16em;
+  color: #ead296;
+  background: linear-gradient(135deg, rgba(122,46,58,0.55), rgba(92,31,42,0.7));
+  border: 1px solid rgba(212,176,85,0.4);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.magic-book-ring-entry .mbre-open:hover {
+  background: linear-gradient(135deg, rgba(140,62,76,0.75), rgba(112,46,58,0.85));
+  border-color: rgba(234,210,150,0.7);
+}
+
 /* prefers-reduced-motion 対応 */
 @media (prefers-reduced-motion: reduce) {
   .magic-parade-inner { animation: none; transform: translateX(0); }
