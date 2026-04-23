@@ -500,7 +500,7 @@
     mo.observe(document.body, { childList: true, subtree: true });
 
     // TOP（ホーム）のヒーロー枠として 3D 本を大きく配置
-    // + 下にスタッツ（偉人数/軌跡/言葉）と入口ボタン（偉人を探す / 年表から探す）を置く
+    // 背景はタイムスリップ演出、ラビン／スタッツ／ショートカット／歴史の奥行きを一枚に統合
     function injectTopBook() {
       const home = document.querySelector('#view-people');
       if (!home) return false;
@@ -509,56 +509,210 @@
       wrap.id = 'magicTopBook';
       wrap.className = 'magic-topbook';
       wrap.innerHTML = `
+        <canvas class="magic-topbook-warp" id="magicTopWarp" aria-hidden="true"></canvas>
         <div class="magic-topbook-bg" aria-hidden="true"></div>
         <div class="magic-topbook-inner">
           <div class="magic-topbook-eyebrow">THE BOOK OF YOU</div>
           <div class="magic-topbook-stage" id="magicTopBookStage"></div>
-          <div class="magic-topbook-hint">ドラッグで回す・裏表紙にメッセージ</div>
+          <div class="magic-topbook-hint">ドラッグで、あなたの本を回してください</div>
+          <div class="magic-topbook-rabin" id="magicTopRabin"></div>
           <div class="magic-topbook-stats" id="magicTopStats"></div>
           <div class="magic-topbook-actions">
             <button class="magic-topbook-action" data-top-action="tags">
-              <span class="magic-topbook-action-ic">🔍</span>
               <span class="magic-topbook-action-label">偉人を探す</span>
             </button>
             <button class="magic-topbook-action" data-top-action="history">
-              <span class="magic-topbook-action-ic">🕰</span>
               <span class="magic-topbook-action-label">年表から探す</span>
             </button>
+          </div>
+          <div class="magic-topbook-deep">
+            <div class="magic-topbook-deep-title">歴史の奥行き</div>
+            <div class="magic-topbook-deep-pills">
+              <button class="magic-topbook-pill" data-deep="graph">関係グラフ</button>
+              <button class="magic-topbook-pill" data-deep="simul">同時代</button>
+              <button class="magic-topbook-pill" data-deep="map">世界マップ</button>
+              <button class="magic-topbook-pill" data-deep="century">世紀ごと</button>
+              <button class="magic-topbook-pill" data-deep="city">都市群像</button>
+              <button class="magic-topbook-pill" data-deep="drift">365日カレンダー</button>
+            </div>
           </div>
         </div>
       `;
       // view-people の最上段（ヒーロー枠より前）に差し込む
       home.insertBefore(wrap, home.firstChild);
 
-      // スタッツを更新（DATA が window に出てなくても people-bundle から計算）
+      // スタッツを更新
       renderTopStats(wrap.querySelector('#magicTopStats'));
 
       // ショートカットボタン
       wrap.querySelectorAll('[data-top-action]').forEach(btn => {
         btn.addEventListener('click', () => {
           const act = btn.dataset.topAction;
-          // タブ切り替え：data-view で既存のタブボタンをクリック
           const tabBtn = document.querySelector(`[data-view="${act}"]`);
           if (tabBtn) { tabBtn.click(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
         });
       });
 
+      // 歴史の奥行きピル（既存の openXxx にそのまま繋ぐ）
+      const deepMap = {
+        graph:   () => { try { if (typeof openRelationGraph === 'function') openRelationGraph(); } catch {} },
+        simul:   () => { try { if (typeof openSimultaneity === 'function') openSimultaneity(); } catch {} },
+        map:     () => { try { if (typeof openWorldMap === 'function') openWorldMap(); } catch {} },
+        century: () => { try { if (typeof openSimultaneity === 'function') openSimultaneity({ centuryMode: true }); } catch {} },
+        city:    () => { try { if (typeof openCityGathering === 'function') openCityGathering(); } catch {} },
+        drift:   () => { try { if (typeof openDriftCalendar === 'function') openDriftCalendar(); } catch {} },
+      };
+      wrap.querySelectorAll('[data-deep]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const fn = deepMap[btn.dataset.deep];
+          if (fn) fn();
+        });
+      });
+
       // Three.js ミニシーン起動
       initTopBookScene(wrap.querySelector('#magicTopBookStage'));
+      // タイムスリップ背景アニメーション起動
+      initTimeWarp(wrap.querySelector('#magicTopWarp'));
 
-      // ラビン（.home-rabin-greet）は本の下に配置し直す
+      // ラビン（.home-rabin-greet）を本のヒーロー内に取り込む
+      const rabinHost = wrap.querySelector('#magicTopRabin');
       const moveRabin = () => {
         const rabin = document.querySelector('.home-rabin-greet');
-        if (rabin && rabin.previousElementSibling !== wrap) {
-          wrap.parentNode.insertBefore(rabin, wrap.nextSibling);
-        }
+        if (!rabin || !rabinHost) return;
+        if (rabin.parentNode !== rabinHost) rabinHost.appendChild(rabin);
       };
       moveRabin();
-      // ラビンが遅れて挿入されても追従する
       const moRabin = new MutationObserver(moveRabin);
       moRabin.observe(home, { childList: true, subtree: true });
       MAGIC._topBookRabinMO = moRabin;
       return true;
+    }
+
+    // ---- タイムスリップ風 Canvas 背景 ----
+    // 小さな光点が中心から外側に向かって加速しながら流れる（ワープ表現）＋年代が浮かび上がって消える
+    function initTimeWarp(canvas) {
+      if (!canvas || !canvas.getContext) return;
+      const ctx = canvas.getContext('2d');
+      let W = 0, H = 0, cx = 0, cy = 0;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const resize = () => {
+        const r = canvas.getBoundingClientRect();
+        W = Math.max(200, Math.floor(r.width));
+        H = Math.max(200, Math.floor(r.height));
+        canvas.width = W * dpr;
+        canvas.height = H * dpr;
+        canvas.style.width = W + 'px';
+        canvas.style.height = H + 'px';
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        cx = W / 2;
+        cy = H / 2;
+      };
+      resize();
+      const ro = new ResizeObserver(resize);
+      ro.observe(canvas.parentElement || canvas);
+
+      // パーティクル（光点）
+      const COUNT = 120;
+      const particles = Array.from({ length: COUNT }, () => spawn());
+      function spawn() {
+        const angle = Math.random() * Math.PI * 2;
+        const r = 10 + Math.random() * 40;
+        const speed = 0.2 + Math.random() * 1.1;
+        return {
+          a: angle,
+          r,
+          speed,
+          life: Math.random() * 1,
+          size: 0.6 + Math.random() * 1.3,
+          hue: 42 + Math.random() * 14,   // 金〜薄琥珀
+        };
+      }
+
+      // 年代（タイムスリップ中に一瞬浮かぶ）
+      const YEARS = [
+        '1603', '1789', '1912', '1543', '800', '紀元前500', '2024', '1066', '1789', '1453',
+        '1492', '1776', '1867', '1517', '1945', '1066', '古代', '中世', '近代', '現代', '明治',
+        '江戸', 'Renaissance', 'Modern', 'BC 500', 'AD 476', '1600', '1868', '1603', '1871',
+      ];
+      const eras = [];
+      function spawnEra() {
+        if (eras.length > 4) return;
+        const txt = YEARS[Math.floor(Math.random() * YEARS.length)];
+        eras.push({
+          txt,
+          x: Math.random() * W,
+          y: Math.random() * H,
+          life: 0,
+          max: 2400 + Math.random() * 1600,
+          size: 12 + Math.random() * 16,
+          rot: (Math.random() - 0.5) * 0.3,
+        });
+      }
+
+      let raf = 0;
+      let lastEra = performance.now();
+      let lastT = performance.now();
+      function tick() {
+        const now = performance.now();
+        const dt = Math.min(64, now - lastT);
+        lastT = now;
+
+        // フェード残像（ワープ感を出す）
+        ctx.fillStyle = 'rgba(6, 3, 7, 0.22)';
+        ctx.fillRect(0, 0, W, H);
+
+        // パーティクル更新：中心から外側に向かって加速
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
+          p.r += p.speed * (dt / 16) * (1 + p.r * 0.01);
+          const x = cx + Math.cos(p.a) * p.r;
+          const y = cy + Math.sin(p.a) * p.r;
+          // 画面外に出たらリスポーン
+          if (x < -20 || x > W + 20 || y < -20 || y > H + 20) {
+            particles[i] = spawn();
+            continue;
+          }
+          // 尾（移動方向に短いライン）
+          const prevX = cx + Math.cos(p.a) * (p.r - p.speed * 10);
+          const prevY = cy + Math.sin(p.a) * (p.r - p.speed * 10);
+          const grad = ctx.createLinearGradient(prevX, prevY, x, y);
+          grad.addColorStop(0, `hsla(${p.hue}, 70%, 70%, 0)`);
+          grad.addColorStop(1, `hsla(${p.hue}, 72%, 78%, 0.85)`);
+          ctx.strokeStyle = grad;
+          ctx.lineWidth = p.size;
+          ctx.beginPath();
+          ctx.moveTo(prevX, prevY);
+          ctx.lineTo(x, y);
+          ctx.stroke();
+        }
+
+        // 年代テキスト（タイムスリップ中のちらつき）
+        if (now - lastEra > 550) {
+          spawnEra();
+          lastEra = now;
+        }
+        for (let i = eras.length - 1; i >= 0; i--) {
+          const e = eras[i];
+          e.life += dt;
+          const t = e.life / e.max;
+          if (t >= 1) { eras.splice(i, 1); continue; }
+          const alpha = Math.sin(t * Math.PI) * 0.55; // 0→peak→0
+          ctx.save();
+          ctx.translate(e.x, e.y);
+          ctx.rotate(e.rot);
+          ctx.fillStyle = `rgba(220, 190, 120, ${alpha})`;
+          ctx.font = `italic ${e.size}px "Cormorant Garamond", "Shippori Mincho", serif`;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(e.txt, 0, 0);
+          ctx.restore();
+        }
+
+        raf = requestAnimationFrame(tick);
+      }
+      tick();
+
+      MAGIC._topWarp = { dispose() { cancelAnimationFrame(raf); ro.disconnect(); } };
     }
     // 統計を3秒おきに再集計（人数は不変だが、スタンプ等の数値は本人のアクションで変わる）
     async function renderTopStats(container) {
@@ -1142,63 +1296,18 @@
   }
 
   // ============================================================
-  // 10) 歴史の奥行き — ホームブロック＋4機能への導線
+  // 10) 歴史の奥行き — ホームブロック版は廃止、ヒーロー（magic-topbook）内のピルに統合済み
   // ============================================================
   function setupDeepExplore() {
-    readyWhenDataOK(() => {
-      const insert = () => {
-        if (document.getElementById('magicDeepBlock')) return;
-        const after = document.getElementById('magicDailyPick') || document.getElementById('todayBirthdayBlock') || document.querySelector('#view-people .home-block');
-        if (!after) { setTimeout(insert, 400); return; }
-        const block = document.createElement('div');
-        block.className = 'home-block magic-deep-block';
-        block.id = 'magicDeepBlock';
-        block.innerHTML = `
-          <div class="magic-deep-title">🕯 歴史の奥行き</div>
-          <div class="magic-deep-sub">偉人たちの繋がり・同時代・地理を、ひと繋ぎの物語で。</div>
-          <div class="magic-deep-grid">
-            <button class="magic-deep-btn" data-deep="graph">
-              <span class="magic-deep-btn-ic">🕸</span>
-              <span class="magic-deep-btn-ttl">関係グラフ</span>
-              <span class="magic-deep-btn-desc">師弟・盟友・論敵の網</span>
-            </button>
-            <button class="magic-deep-btn" data-deep="simul">
-              <span class="magic-deep-btn-ic">📅</span>
-              <span class="magic-deep-btn-ttl">同時代</span>
-              <span class="magic-deep-btn-desc">ある年、誰が生きていたか</span>
-            </button>
-            <button class="magic-deep-btn" data-deep="map">
-              <span class="magic-deep-btn-ic">🌍</span>
-              <span class="magic-deep-btn-ttl">世界マップ</span>
-              <span class="magic-deep-btn-desc">歴史が生まれた土地</span>
-            </button>
-            <button class="magic-deep-btn" data-deep="century">
-              <span class="magic-deep-btn-ic">🕰</span>
-              <span class="magic-deep-btn-ttl">世紀ごと</span>
-              <span class="magic-deep-btn-desc">100年ごとの群像</span>
-            </button>
-            <button class="magic-deep-btn" data-deep="city">
-              <span class="magic-deep-btn-ic">🗺</span>
-              <span class="magic-deep-btn-ttl">都市群像</span>
-              <span class="magic-deep-btn-desc">ウィーン・パリ・京都…</span>
-            </button>
-            <button class="magic-deep-btn" data-deep="drift">
-              <span class="magic-deep-btn-ic">🎂</span>
-              <span class="magic-deep-btn-ttl">365日カレンダー</span>
-              <span class="magic-deep-btn-desc">生没日の極座標</span>
-            </button>
-          </div>
-        `;
-        after.insertAdjacentElement('afterend', block);
-        block.querySelector('[data-deep="graph"]').addEventListener('click', openRelationGraph);
-        block.querySelector('[data-deep="simul"]').addEventListener('click', () => openSimultaneity());
-        block.querySelector('[data-deep="map"]').addEventListener('click', openWorldMap);
-        block.querySelector('[data-deep="century"]').addEventListener('click', () => openSimultaneity({ centuryMode: true }));
-        block.querySelector('[data-deep="city"]').addEventListener('click', openCityGathering);
-        block.querySelector('[data-deep="drift"]').addEventListener('click', openDriftCalendar);
-      };
-      insert();
-    });
+    // 既存の magic-deep-block が過去バージョンで挿入されていたら削除（DOM を綺麗に）
+    const cleanup = () => {
+      const old = document.getElementById('magicDeepBlock');
+      if (old) old.remove();
+    };
+    cleanup();
+    // DOM が後から生成されるケースにも備える
+    const mo = new MutationObserver(cleanup);
+    mo.observe(document.body, { childList: true, subtree: true });
   }
 
   function openDeepOverlay(title, subtitle, contentHtml) {
