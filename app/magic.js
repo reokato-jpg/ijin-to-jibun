@@ -1627,7 +1627,7 @@
         other.degree++;
       });
     });
-    nodes.forEach(n => { n.r = Math.min(14, 5 + Math.sqrt(n.degree) * 1.5); });
+    nodes.forEach(n => { n.r = Math.min(22, 12 + Math.sqrt(n.degree) * 2); });
 
     let activeFilter = 'all';
     let view = { x: 0, y: 0, k: 1 };
@@ -1699,16 +1699,49 @@
         ctx.lineTo(l.target.x, l.target.y);
         ctx.stroke();
       });
-      // ノード
+      // ノード — 顔写真を丸くクリップして描画
       nodes.forEach(n => {
         const match = matchesFilter(n);
         ctx.globalAlpha = match ? 1 : 0.12;
-        ctx.fillStyle = CAT_COLOR[n.cat] || '#999';
-        ctx.strokeStyle = 'rgba(20,12,16,0.8)';
-        ctx.lineWidth = 1.5;
+        // 画像ロード（初回のみ）
+        if (n.imageUrl && !n._img) {
+          n._img = new Image();
+          n._img.crossOrigin = 'anonymous';
+          n._img.referrerPolicy = 'no-referrer';
+          n._img.onerror = () => { n._imgFailed = true; };
+          n._img.src = n.imageUrl;
+        }
+        const r = Math.max(n.r, 12);
+        ctx.save();
+        // 円形マスク
         ctx.beginPath();
-        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
+        ctx.clip();
+        if (n._img && n._img.complete && n._img.naturalWidth > 2 && !n._imgFailed) {
+          // 写真を描画（中央top基準でフィット）
+          const imgW = n._img.naturalWidth;
+          const imgH = n._img.naturalHeight;
+          const scale = Math.max((r*2) / imgW, (r*2) / imgH);
+          const dw = imgW * scale;
+          const dh = imgH * scale;
+          ctx.drawImage(n._img, n.x - dw/2, n.y - r, dw, dh);
+        } else {
+          // 画像未読/失敗時はカテゴリカラー
+          ctx.fillStyle = CAT_COLOR[n.cat] || '#999';
+          ctx.fillRect(n.x - r, n.y - r, r*2, r*2);
+          // 名前の頭文字
+          ctx.fillStyle = 'rgba(255,245,220,0.9)';
+          ctx.font = `bold ${r}px "Shippori Mincho", serif`;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText((n.name || '?').charAt(0), n.x, n.y);
+        }
+        ctx.restore();
+        // 金の縁
+        ctx.strokeStyle = n._img && n._img.complete && !n._imgFailed ? 'rgba(212,175,55,0.8)' : 'rgba(20,12,16,0.8)';
+        ctx.lineWidth = 1.8;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
         ctx.stroke();
       });
       // 大きなノードは名前も
@@ -2771,12 +2804,12 @@
         .filter(r => r.id && bundle.find(x => x.id === r.id))
         .slice(0, 6);
       if (partners.length === 0) return;
-      const after = personView.querySelector('.profile-header, .profile-cover-frame');
-      if (!after) return;
+      // 関係タブの中に配置（ヘッダー横の空きスペース問題を解消）
+      const relationsTab = personView.querySelector('[data-ptab="relations"]');
       const container = document.createElement('div');
       container.dataset.magicLetterContainer = '1';
       container.className = 'magic-letter-container';
-      container.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;margin:10px 14px;width:calc(100% - 28px);box-sizing:border-box;clear:both;';
+      container.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 16px;';
       partners.forEach(r => {
         const other = bundle.find(x => x.id === r.id);
         const btn = document.createElement('button');
@@ -2785,7 +2818,14 @@
         btn.addEventListener('click', () => openLetterExchange(person, other, r));
         container.appendChild(btn);
       });
-      after.parentNode.insertBefore(container, after.nextSibling);
+      if (relationsTab) {
+        // 関係タブの先頭に挿入
+        relationsTab.insertBefore(container, relationsTab.firstChild);
+      } else {
+        // 関係タブがなければヘッダー下にフォールバック
+        const after = personView.querySelector('.profile-header, .profile-cover-frame');
+        if (after) after.parentNode.insertBefore(container, after.nextSibling);
+      }
     };
     const mo = new MutationObserver(() => injectBtns());
     mo.observe(document.body, { childList: true, subtree: true });
