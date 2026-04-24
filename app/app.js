@@ -10854,6 +10854,16 @@ function showBeginnerGuide() {
         </div>
         <img src="//i.moshimo.com/af/i/impression?a_id=5501667&p_id=55&pc_id=55&pl_id=630" width="1" height="1" style="position:absolute;border:0;opacity:0" loading="lazy" alt="">
         <img border="0" width="1" height="1" src="https://www13.a8.net/0.gif?a8mat=4B1QDV+76ZKXE+5R8A+5Z6WX" alt="" style="position:absolute;opacity:0">
+        <!-- 占い A8アフィリエイト -->
+        <a class="travel-hero-banner uranai-banner" href="https://px.a8.net/svt/ejp?a8mat=4B1SPX+DJ0LMA+2PEO+1BTBLD" rel="noopener sponsored nofollow" target="_blank">
+          <img class="travel-hero-img" src="https://www25.a8.net/svt/bgt?aid=260424357818&wid=001&eno=01&mid=s00000012624008031000&mc=1" width="120" height="60" alt="占い">
+          <div class="travel-hero-text">
+            <div class="travel-hero-title">🔮 今日の運勢 — 偉人と同じ星のもとに</div>
+            <div class="travel-hero-sub">あなたの誕生日と同じ偉人は？星・タロット・四柱推命で今日の指針を。</div>
+          </div>
+          <span class="travel-hero-cta">→</span>
+        </a>
+        <img border="0" width="1" height="1" src="https://www10.a8.net/0.gif?a8mat=4B1SPX+DJ0LMA+2PEO+1BTBLD" alt="" style="position:absolute;opacity:0">
         <!-- TikTok Shop A8アフィリエイト -->
         <a class="travel-hero-banner tiktok-banner" href="https://px.a8.net/svt/ejp?a8mat=4B1SPX+DAOJ5E+5V86+61Z81" rel="noopener sponsored nofollow" target="_blank">
           <img class="travel-hero-img" src="https://www22.a8.net/svt/bgt?aid=260424357804&wid=001&eno=01&mid=s00000027375001017000&mc=1" width="120" height="60" alt="TikTok Shop">

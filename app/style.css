@@ -3911,6 +3911,11 @@ h2 .ij-icon, h3 .ij-icon { vertical-align: -0.15em; margin-right: 4px; }
 .travel-hero-banner.tiktok-banner .travel-hero-title { color: #fff; }
 .travel-hero-banner.tiktok-banner .travel-hero-sub { color: rgba(255,255,255,0.75); }
 .travel-hero-banner.tiktok-banner .travel-hero-cta { color: #00f2ea; border-left-color: rgba(0,242,234,0.35); text-shadow: 0 0 8px rgba(0,242,234,0.6); }
+.travel-hero-banner.uranai-banner { background: linear-gradient(135deg, #1e1030 0%, #2a1550 50%, #1e1030 100%); border-color: #c080ff; color: #fff; }
+.travel-hero-banner.uranai-banner::before { background: linear-gradient(90deg, #c080ff, #ffd880, #c080ff); background-size: 200% 100%; }
+.travel-hero-banner.uranai-banner .travel-hero-title { color: #fff; }
+.travel-hero-banner.uranai-banner .travel-hero-sub { color: rgba(230,210,255,0.85); }
+.travel-hero-banner.uranai-banner .travel-hero-cta { color: #ffd880; border-left-color: rgba(255,216,128,0.35); text-shadow: 0 0 8px rgba(255,216,128,0.6); }
 /* 🚗 OTTOCAST バナー */
 .travel-hero-banner.ottocast-banner { background: linear-gradient(135deg, #f0f4fa 0%, #e2ebf8 50%, #d4e2f4 100%); border-color: #2a6bbd; }
 .travel-hero-banner.ottocast-banner::before { background: linear-gradient(90deg, #2a6bbd, #7ba7de, #2a6bbd); background-size: 200% 100%; }

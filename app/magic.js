@@ -536,6 +536,8 @@
               <button class="magic-topbook-pill" data-deep="drift">365日カレンダー</button>
               <button class="magic-topbook-pill magic-topbook-pill-cosmos" data-deep="cosmos">🌌 宇宙の誕生</button>
               <button class="magic-topbook-pill magic-topbook-pill-quiz" data-deep="quiz">🎓 偉人クイズ</button>
+              <button class="magic-topbook-pill magic-topbook-pill-timeline" data-deep="timeline">📅 年表モード</button>
+              <button class="magic-topbook-pill magic-topbook-pill-glossary" data-deep="glossary">📖 用語集</button>
             </div>
           </div>
         </div>
@@ -564,7 +566,9 @@
         century: () => { try { if (typeof openSimultaneity === 'function') openSimultaneity({ centuryMode: true }); } catch {} },
         city:    () => { try { if (typeof openCityGathering === 'function') openCityGathering(); } catch {} },
         drift:   () => { try { if (typeof openDriftCalendar === 'function') openDriftCalendar(); } catch {} },
-        quiz:    () => { try { openIjinQuiz(); } catch (e) { console.warn('quiz', e); } },
+        quiz:     () => { try { openIjinQuiz(); } catch (e) { console.warn('quiz', e); } },
+        timeline: () => { try { openTimelineMode(); } catch (e) { console.warn('timeline', e); } },
+        glossary: () => { try { openGlossary(); } catch (e) { console.warn('glossary', e); } },
       };
       wrap.querySelectorAll('[data-deep]').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -4387,6 +4391,255 @@
     render();
   }
   window.openIjinQuiz = openIjinQuiz;
+
+  // ============================================================
+  // 📅 年表モード（教材モード）
+  // ============================================================
+  async function openTimelineMode() {
+    const people = await (MAGIC._peopleBundle ? Promise.resolve(MAGIC._peopleBundle) : loadPeopleBundle());
+    if (!people.length) return;
+    // 重要事件（世界史の骨組み）
+    const EVENTS = [
+      { year: -3500, title: '楔形文字の発明（シュメール）', tag: '古代' },
+      { year: -2500, title: 'エジプト古王国・ピラミッド建設', tag: '古代' },
+      { year: -1200, title: 'モーセの出エジプト（伝）', tag: '古代' },
+      { year: -776, title: '第1回古代オリンピック開催', tag: '古代' },
+      { year: -551, title: '孔子、儒教を説く', tag: '古代' },
+      { year: -500, title: 'ペルシャ戦争、ギリシャ民主政', tag: '古代' },
+      { year: -221, title: '始皇帝、中国統一', tag: '古代' },
+      { year: -44, title: 'カエサル暗殺', tag: '古代' },
+      { year: 0, title: 'イエス・キリスト誕生', tag: '古代' },
+      { year: 313, title: 'キリスト教ローマ帝国公認', tag: '古代' },
+      { year: 610, title: 'ムハンマド、イスラーム創始', tag: '中世' },
+      { year: 794, title: '平安京遷都', tag: '中世' },
+      { year: 1206, title: 'チンギス・ハン、モンゴル統一', tag: '中世' },
+      { year: 1215, title: 'マグナ・カルタ（英）', tag: '中世' },
+      { year: 1453, title: '東ローマ滅亡、活版印刷術', tag: '近世' },
+      { year: 1492, title: 'コロンブス、アメリカ到達', tag: '近世' },
+      { year: 1517, title: 'ルター、宗教改革の口火', tag: '近世' },
+      { year: 1543, title: 'コペルニクス『天球の回転』', tag: '近世' },
+      { year: 1600, title: '関ヶ原の戦い', tag: '近世' },
+      { year: 1687, title: 'ニュートン『プリンキピア』', tag: '近世' },
+      { year: 1776, title: 'アメリカ独立宣言', tag: '近世' },
+      { year: 1789, title: 'フランス革命', tag: '近世' },
+      { year: 1859, title: 'ダーウィン『種の起源』', tag: '近代' },
+      { year: 1868, title: '明治維新', tag: '近代' },
+      { year: 1879, title: 'エジソン、電球実用化', tag: '近代' },
+      { year: 1903, title: 'ライト兄弟、初飛行', tag: '近代' },
+      { year: 1905, title: 'アインシュタイン特殊相対論', tag: '近代' },
+      { year: 1914, title: '第一次世界大戦 勃発', tag: '近代' },
+      { year: 1939, title: '第二次世界大戦 勃発', tag: '近代' },
+      { year: 1945, title: '広島・長崎原爆、戦争終結', tag: '現代' },
+      { year: 1969, title: 'アポロ11号、月面着陸', tag: '現代' },
+      { year: 1989, title: 'ベルリンの壁崩壊', tag: '現代' },
+      { year: 2001, title: '9.11同時多発テロ', tag: '現代' },
+      { year: 2020, title: 'COVID-19 パンデミック', tag: '現代' },
+    ];
+    // 世紀で区切る
+    const centuryKey = (y) => y < 0 ? '紀元前' : (Math.floor((y - 1) / 100) + 1) + '世紀';
+    const eraOf = (y) => y < 500 ? '古代' : y < 1500 ? '中世' : y < 1800 ? '近世' : y < 1945 ? '近代' : '現代';
+    // 世紀別にイベント＋偉人を集約
+    const groups = new Map();
+    const addToGroup = (key, bucket, item) => {
+      if (!groups.has(key)) groups.set(key, { events: [], people: [] });
+      groups.get(key)[bucket].push(item);
+    };
+    EVENTS.forEach(e => addToGroup(centuryKey(e.year), 'events', e));
+    people.forEach(p => {
+      if (p.birth == null) return;
+      addToGroup(centuryKey(p.birth), 'people', p);
+    });
+    // 並び替え
+    const sortedKeys = [...groups.keys()].sort((a, b) => {
+      const getNum = k => k === '紀元前' ? -999 : parseInt(k);
+      return getNum(a) - getNum(b);
+    });
+
+    const ov = document.createElement('div');
+    ov.className = 'timeline-mode-overlay';
+    const sections = sortedKeys.map(k => {
+      const g = groups.get(k);
+      const evs = g.events.sort((a, b) => a.year - b.year).map(e =>
+        `<div class="tlm-event"><span class="tlm-year">${e.year < 0 ? '前' + Math.abs(e.year) : e.year}</span><span class="tlm-etag">${e.tag}</span><span class="tlm-etext">${e.title}</span></div>`
+      ).join('');
+      const peeps = g.people.slice().sort((a, b) => a.birth - b.birth).map(p =>
+        `<button class="tlm-person" data-id="${p.id}">${p.imageUrl ? `<img src="${p.imageUrl}" alt="" loading="lazy">` : `<span class="tlm-ini">${p.name.charAt(0)}</span>`}<span class="tlm-pn">${p.name.split(/[・\s]/)[0]}</span><span class="tlm-py">${p.birth < 0 ? '前' + Math.abs(p.birth) : p.birth}</span></button>`
+      ).join('');
+      return `
+        <section class="tlm-section">
+          <h2 class="tlm-head"><span class="tlm-cent">${k}</span><span class="tlm-era">${eraOf(g.events[0]?.year ?? g.people[0]?.birth ?? 0)}</span></h2>
+          ${evs ? `<div class="tlm-events">${evs}</div>` : ''}
+          ${peeps ? `<div class="tlm-people">${peeps}</div>` : ''}
+        </section>
+      `;
+    }).join('');
+
+    ov.innerHTML = `
+      <button class="tlm-close" aria-label="閉じる">×</button>
+      <div class="tlm-frame">
+        <div class="tlm-title">📅 年表モード <span class="tlm-sub">人類史の骨組み × 偉人297人</span></div>
+        <div class="tlm-scroll">${sections}</div>
+        <a class="tlm-aff" href="https://px.a8.net/svt/ejp?a8mat=4B1SPX+D3JBW2+36T2+TU14H" rel="noopener sponsored nofollow" target="_blank">
+          <img src="https://www25.a8.net/svt/bgt?aid=260424357792&wid=001&eno=01&mid=s00000014879005011000&mc=1" width="234" height="60" alt="スタディサプリ" loading="lazy">
+          <span class="tlm-aff-tag">📚 体系的に学びたいなら</span>
+        </a>
+        <img border="0" width="1" height="1" src="https://www18.a8.net/0.gif?a8mat=4B1SPX+D3JBW2+36T2+TU14H" alt="" style="position:absolute;opacity:0">
+      </div>
+    `;
+    document.body.appendChild(ov);
+    requestAnimationFrame(() => ov.classList.add('open'));
+    ov.querySelector('.tlm-close').addEventListener('click', () => {
+      ov.classList.remove('open');
+      setTimeout(() => ov.remove(), 300);
+    });
+    ov.querySelectorAll('.tlm-person').forEach(b => {
+      b.addEventListener('click', () => {
+        const id = b.dataset.id;
+        ov.classList.remove('open');
+        setTimeout(() => { ov.remove(); if (typeof window.showPerson === 'function') window.showPerson(id); }, 250);
+      });
+    });
+  }
+  window.openTimelineMode = openTimelineMode;
+
+  // ============================================================
+  // 📖 用語集（グロッサリー）
+  // ============================================================
+  async function openGlossary() {
+    // JSON を取得
+    let terms = MAGIC._glossary;
+    if (!terms) {
+      try {
+        const res = await fetch('/data/glossary.json');
+        const d = await res.json();
+        terms = MAGIC._glossary = d.terms || [];
+      } catch (e) { terms = []; }
+    }
+    if (!terms.length) return;
+    const people = await (MAGIC._peopleBundle ? Promise.resolve(MAGIC._peopleBundle) : loadPeopleBundle());
+    const nameById = Object.fromEntries((people || []).map(p => [p.id, p.name]));
+
+    const ov = document.createElement('div');
+    ov.className = 'glossary-overlay';
+    ov.innerHTML = `
+      <button class="gls-close" aria-label="閉じる">×</button>
+      <div class="gls-frame">
+        <div class="gls-title">📖 用語集 <span class="gls-sub">${terms.length}項目</span></div>
+        <input type="search" class="gls-search" id="glsSearch" placeholder="用語を検索（啓蒙・実存・相対性理論…）" />
+        <div class="gls-list" id="glsList"></div>
+      </div>
+    `;
+    document.body.appendChild(ov);
+    requestAnimationFrame(() => ov.classList.add('open'));
+    ov.querySelector('.gls-close').addEventListener('click', () => {
+      ov.classList.remove('open');
+      setTimeout(() => ov.remove(), 300);
+    });
+    function render(filter) {
+      const q = (filter || '').trim().toLowerCase();
+      const filtered = q
+        ? terms.filter(t => t.term.includes(q) || (t.reading && t.reading.includes(q)) || t.def.toLowerCase().includes(q))
+        : terms;
+      const list = ov.querySelector('#glsList');
+      list.innerHTML = filtered.map(t => `
+        <article class="gls-item">
+          <div class="gls-term-row">
+            <h3 class="gls-term">${t.term}</h3>
+            <span class="gls-reading">${t.reading || ''}</span>
+            <span class="gls-era">${t.era || ''}</span>
+          </div>
+          <p class="gls-def">${t.def}</p>
+          ${t.related && t.related.length ? `<div class="gls-rel">関連: ${t.related.filter(r => nameById[r]).slice(0, 6).map(r => `<button class="gls-rel-p" data-id="${r}">${nameById[r]}</button>`).join('')}</div>` : ''}
+        </article>
+      `).join('') || `<div class="gls-empty">該当なし</div>`;
+      list.querySelectorAll('.gls-rel-p').forEach(b => {
+        b.addEventListener('click', () => {
+          const id = b.dataset.id;
+          ov.classList.remove('open');
+          setTimeout(() => { ov.remove(); if (typeof window.showPerson === 'function') window.showPerson(id); }, 250);
+        });
+      });
+    }
+    ov.querySelector('#glsSearch').addEventListener('input', e => render(e.target.value));
+    render('');
+  }
+  window.openGlossary = openGlossary;
+
+  // ============================================================
+  // 🖨 チートシート印刷（偉人ページに「一枚にまとめる」ボタンを挿入）
+  // ============================================================
+  function setupCheatSheetButton() {
+    if (MAGIC._cheatSheetDone) return;
+    MAGIC._cheatSheetDone = true;
+    const inject = () => {
+      const personView = document.getElementById('view-person');
+      if (!personView || !personView.classList.contains('active')) return;
+      if (personView.querySelector('.magic-cheat-btn')) return;
+      const anchor = personView.querySelector('.profile-tabs-wrap')
+                  || personView.querySelector('.profile-header, .profile-cover-frame');
+      if (!anchor || anchor.parentNode.querySelector('.magic-cheat-btn')) return;
+      const name = personView.querySelector('.profile-name')?.textContent?.trim();
+      if (!name || !MAGIC._peopleBundle) return;
+      const person = MAGIC._peopleBundle.find(p => p.name === name);
+      if (!person) return;
+      const btn = document.createElement('button');
+      btn.className = 'magic-cheat-btn';
+      btn.innerHTML = `🖨 一枚にまとめる（印刷/PDF）`;
+      btn.addEventListener('click', () => openCheatSheet(person));
+      anchor.parentNode.insertBefore(btn, anchor);
+    };
+    const mo = new MutationObserver(inject);
+    mo.observe(document.body, { childList: true, subtree: true });
+    loadPeopleBundle().then(() => setTimeout(inject, 600));
+  }
+  function openCheatSheet(p) {
+    const ov = document.createElement('div');
+    ov.className = 'cheat-sheet-overlay';
+    const fmtYear = y => y == null ? '?' : (y < 0 ? `前${Math.abs(y)}` : `${y}`);
+    const events = (p.events || []).slice(0, 8).map(e => {
+      const year = e.year != null ? fmtYear(e.year) : '';
+      return `<li><b>${year}</b> ${e.title || e.text || e}</li>`;
+    }).join('');
+    const quotes = (p.quotes || []).slice(0, 3).map(q => {
+      const text = typeof q === 'string' ? q : (q.text || '');
+      return `<blockquote>「${text}」</blockquote>`;
+    }).join('');
+    const works = (p.works || []).slice(0, 6).map(w => {
+      const title = typeof w === 'string' ? w : (w.title || '');
+      return `<span class="cs-work">${title}</span>`;
+    }).join('');
+    ov.innerHTML = `
+      <button class="cs-close" aria-label="閉じる">×</button>
+      <button class="cs-print">🖨 印刷 / PDF保存</button>
+      <div class="cs-page" id="csPage">
+        <header class="cs-head">
+          <div class="cs-avatar">${p.imageUrl ? `<img src="${p.imageUrl}" alt="${p.name}" crossorigin="anonymous">` : `<div class="cs-ini">${p.name.charAt(0)}</div>`}</div>
+          <div class="cs-title">
+            <h1>${p.name}</h1>
+            <div class="cs-en">${p.nameEn || ''}</div>
+            <div class="cs-meta">${fmtYear(p.birth)} 〜 ${fmtYear(p.death)}　／　${p.country || ''}　／　${p.field || ''}</div>
+          </div>
+        </header>
+        ${p.summary ? `<section class="cs-sec"><h2>要旨</h2><p>${p.summary}</p></section>` : ''}
+        ${events ? `<section class="cs-sec"><h2>年表</h2><ul class="cs-events">${events}</ul></section>` : ''}
+        ${quotes ? `<section class="cs-sec"><h2>名言</h2>${quotes}</section>` : ''}
+        ${works ? `<section class="cs-sec"><h2>代表作</h2><div class="cs-works">${works}</div></section>` : ''}
+        <footer class="cs-foot">
+          偉人と自分。 ijin-to-jibun.com
+        </footer>
+      </div>
+    `;
+    document.body.appendChild(ov);
+    requestAnimationFrame(() => ov.classList.add('open'));
+    ov.querySelector('.cs-close').addEventListener('click', () => {
+      ov.classList.remove('open');
+      setTimeout(() => ov.remove(), 300);
+    });
+    ov.querySelector('.cs-print').addEventListener('click', () => {
+      window.print();
+    });
+  }
+  setupCheatSheetButton();
 
   async function openCosmos() {
     if (!window.THREE) return;
