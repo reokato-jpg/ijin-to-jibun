@@ -5565,6 +5565,24 @@
       if (nearest) {
         rcTarget.textContent = nearest.planet.jname;
         rcDist.textContent = nearestD.toFixed(1);
+        // 🌍 地球への超接近で世界地図へ自動遷移
+        if (nearest.planet.isEarth && nearestD < nearest.planet.size * 2.0 && !rocketGroup.userData.earthDiving) {
+          rocketGroup.userData.earthDiving = true;
+          const ap = ov.querySelector('#cosmosArrivePopup');
+          ap.innerHTML = `<div class="ap-label">🌍 大気圏突入</div><div class="ap-name">地球儀へ</div><div class="ap-bonus">偉人たちが待っている</div>`;
+          ap.classList.remove('show'); void ap.offsetWidth; ap.classList.add('show');
+          playArrive();
+          // ワープフラッシュ→ワールドマップ
+          setTimeout(() => {
+            const flash = ov.querySelector('#cosmosWarpFlash');
+            if (flash) { flash.classList.remove('fire'); void flash.offsetWidth; flash.classList.add('fire'); }
+          }, 900);
+          setTimeout(() => {
+            ov.classList.remove('open');
+            setTimeout(() => { ov.remove(); running = false; if (typeof openWorldMap === 'function') openWorldMap(); }, 300);
+          }, 1600);
+          return;
+        }
         const arrivalR = nearest.planet.size * 3.5 + 2;
         if (nearestD < arrivalR && visitedPlanet !== nearest) {
           visitedPlanet = nearest;
