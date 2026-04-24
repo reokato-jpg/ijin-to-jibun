@@ -7843,7 +7843,7 @@
     } else {
       scene.background = skyTex;
     }
-    scene.fog = new THREE.Fog(0xd4c8a8, 80, 420); // 淡い黄土の大気
+    scene.fog = new THREE.FogExp2(0xd4c8a8, 0.0045); // 指数フォグ＝より自然な大気遠近
 
     // 環境光・主光源
     scene.add(new THREE.AmbientLight(0xd8d0b8, 0.7));
@@ -7976,6 +7976,17 @@
       t.wrapS = THREE.RepeatWrapping;
       return t;
     })();
+    // 🎥 CubeCamera: 動的環境反射マップ（金の装飾用）
+    let cubeCam = null, cubeRT = null;
+    try {
+      cubeRT = new THREE.WebGLCubeRenderTarget(128, {
+        generateMipmaps: true,
+        minFilter: THREE.LinearMipmapLinearFilter,
+      });
+      cubeCam = new THREE.CubeCamera(1, 300, cubeRT);
+      cubeCam.position.set(0, 20, 0);
+      scene.add(cubeCam);
+    } catch (e) { console.warn('CubeCamera failed', e); }
     for (let i = 0; i < STAGES; i++) {
       const rOuter = baseRadius - i * stepInset; // 段ごとに明確に縮む
       const yBase = i * stageHeight;
@@ -8010,7 +8021,10 @@
       // 段差の装飾リング（上下の帯）
       const trimTop = new THREE.Mesh(
         new THREE.TorusGeometry(rOuter + 0.04, 0.15, 6, 24),
-        new THREE.MeshStandardMaterial({ color: 0x8a6a3a, roughness: 0.6, metalness: 0.15 })
+        new THREE.MeshStandardMaterial({
+          color: 0xc8a050, roughness: 0.35, metalness: 0.85,
+          envMap: cubeRT ? cubeRT.texture : null, // 動的反射
+        })
       );
       trimTop.rotation.x = Math.PI / 2;
       trimTop.position.y = yBase + stageHeight * 0.85;
@@ -8982,6 +8996,10 @@
           if (pa.array[i*3+1] < 0) { pa.array[i*3+1] = 50; pa.array[i*3] = (Math.random()-0.5)*120; }
         }
         pa.needsUpdate = true;
+      }
+      // 🎥 CubeCamera 更新（60フレーム毎＝1秒 / 軽量化）
+      if (cubeCam && (Math.floor(t * 60) % 60 === 0)) {
+        try { cubeCam.update(renderer, scene); } catch {}
       }
       // 🚢 船が波で揺れる
       if (scene.userData.ships) {

@@ -72,9 +72,9 @@
 <!-- フォントは非ブロッキングで読み込み（print → all でフォールバック） -->
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet"></noscript>
-<link rel="stylesheet" href="dist/style.min.css?v=20260502AU">
-<link rel="stylesheet" href="dist/era-theme.min.css?v=20260502AU">
-<link rel="stylesheet" href="magic.css?v=20260502AU">
+<link rel="stylesheet" href="dist/style.min.css?v=20260502AV">
+<link rel="stylesheet" href="dist/era-theme.min.css?v=20260502AV">
+<link rel="stylesheet" href="magic.css?v=20260502AV">
 </head>
 <body>
   <header class="app-header">
@@ -881,10 +881,10 @@
   </div>
 
   <!-- minified bundles（dist/）と era-lore.min.js は年表画面を開いた時に遅延読み込み -->
-  <script src="dist/history-patterns.min.js?v=20260502AU" defer></script>
-  <script src="dist/app.min.js?v=20260502AU" defer></script>
-  <script src="auth.js?v=20260502AU" type="module"></script>
-  <script src="dist/ai-consult.min.js?v=20260502AU" defer></script>
+  <script src="dist/history-patterns.min.js?v=20260502AV" defer></script>
+  <script src="dist/app.min.js?v=20260502AV" defer></script>
+  <script src="auth.js?v=20260502AV" type="module"></script>
+  <script src="dist/ai-consult.min.js?v=20260502AV" defer></script>
 
   <!-- ============ Magic Layer（ピクチャ：3D本・Lenis・ViewTransitions等） ============ -->
   <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js" defer></script>
@@ -915,6 +915,7 @@
       SMAAPass:          'three/addons/postprocessing/SMAAPass.js',
       RGBELoader:        'three/addons/loaders/RGBELoader.js',
       Reflector:         'three/addons/objects/Reflector.js',
+      OutlinePass:       'three/addons/postprocessing/OutlinePass.js',
     };
     const loadPromises = Object.entries(addonPaths).map(async ([key, path]) => {
       try {
@@ -928,7 +929,7 @@
       window.dispatchEvent(new CustomEvent('three-ready'));
     });
   </script>
-  <script src="magic.js?v=20260502AU" defer></script>
+  <script src="magic.js?v=20260502AV" defer></script>
   <script>
     // Service Worker 登録（2回目以降のロードを爆速化）
     if ('serviceWorker' in navigator) {
