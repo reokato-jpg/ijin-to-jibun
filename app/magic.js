@@ -3540,6 +3540,8 @@
       <button class="cosmos-close" aria-label="閉じる">×</button>
       <div class="cosmos-stage" id="cosmosStage"></div>
       <div class="cosmos-noise" id="cosmosNoise"></div>
+      <canvas class="cosmos-conscious-canvas" id="cosmosConsciousCanvas"></canvas>
+      <div class="cosmos-conscious-label" id="cosmosConsciousLabel">CONSCIOUSNESS&nbsp;&nbsp;FIELD</div>
       <button class="cosmos-tap" id="cosmosTap">TAP</button>
       <div class="cosmos-hud" id="cosmosHud"></div>
     `;
@@ -3550,6 +3552,93 @@
     const noise = ov.querySelector('#cosmosNoise');
     const tapBtn = ov.querySelector('#cosmosTap');
     const hud = ov.querySelector('#cosmosHud');
+    const consciousLabel = ov.querySelector('#cosmosConsciousLabel');
+    // 意識フィールドcanvas: 粒子が衝突せず浮遊
+    const ccan = ov.querySelector('#cosmosConsciousCanvas');
+    ccan.width = window.innerWidth;
+    ccan.height = window.innerHeight;
+    Object.assign(ccan.style, { position:'absolute', inset:0, zIndex:7, pointerEvents:'none', transition:'opacity 0.8s ease' });
+    const cctx = ccan.getContext('2d');
+    const cwX = ccan.width, cwY = ccan.height;
+    const consciousParticles = [];
+    const PN = 22;
+    for (let i = 0; i < PN; i++) {
+      consciousParticles.push({
+        x: Math.random() * cwX,
+        y: Math.random() * cwY,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        r: 3 + Math.random() * 4,
+        hue: 250 + Math.random() * 40,
+      });
+    }
+    let consciousRAF = 0;
+    let consciousConnecting = false; // タップ後、中心に集まるフラグ
+    function drawConscious() {
+      cctx.clearRect(0, 0, cwX, cwY);
+      const cx = cwX / 2, cy = cwY / 2;
+      // 衝突回避：粒子同士で反発力
+      for (let i = 0; i < consciousParticles.length; i++) {
+        const a = consciousParticles[i];
+        for (let j = i + 1; j < consciousParticles.length; j++) {
+          const b = consciousParticles[j];
+          const dx = b.x - a.x, dy = b.y - a.y;
+          const dist = Math.sqrt(dx*dx + dy*dy);
+          const minDist = 90;
+          if (dist < minDist && dist > 0.01) {
+            const push = (minDist - dist) / minDist * 0.08;
+            const nx = dx / dist, ny = dy / dist;
+            a.vx -= nx * push; a.vy -= ny * push;
+            b.vx += nx * push; b.vy += ny * push;
+          }
+        }
+      }
+      // 更新＆描画
+      consciousParticles.forEach(p => {
+        if (consciousConnecting) {
+          // 中心にスムーズに吸い込まれる
+          const dx = cx - p.x, dy = cy - p.y;
+          p.vx += dx * 0.003; p.vy += dy * 0.003;
+          p.vx *= 0.94; p.vy *= 0.94;
+        } else {
+          // 境界ソフトバウンス
+          if (p.x < 40) p.vx += 0.005;
+          if (p.x > cwX - 40) p.vx -= 0.005;
+          if (p.y < 40) p.vy += 0.005;
+          if (p.y > cwY - 40) p.vy -= 0.005;
+          p.vx *= 0.995; p.vy *= 0.995;
+        }
+        p.x += p.vx; p.y += p.vy;
+      });
+      // 粒子間の細い線（距離に応じて）
+      cctx.lineWidth = 0.5;
+      for (let i = 0; i < consciousParticles.length; i++) {
+        for (let j = i + 1; j < consciousParticles.length; j++) {
+          const a = consciousParticles[i], b = consciousParticles[j];
+          const d = Math.hypot(a.x - b.x, a.y - b.y);
+          const thresh = consciousConnecting ? 320 : 150;
+          if (d < thresh) {
+            const alpha = (1 - d / thresh) * (consciousConnecting ? 0.6 : 0.18);
+            cctx.strokeStyle = `rgba(200,180,255,${alpha.toFixed(3)})`;
+            cctx.beginPath();
+            cctx.moveTo(a.x, a.y); cctx.lineTo(b.x, b.y);
+            cctx.stroke();
+          }
+        }
+      }
+      // 粒子描画
+      consciousParticles.forEach(p => {
+        const grd = cctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 3);
+        grd.addColorStop(0, `hsla(${p.hue},70%,85%,0.85)`);
+        grd.addColorStop(1, `hsla(${p.hue},70%,75%,0)`);
+        cctx.fillStyle = grd;
+        cctx.beginPath();
+        cctx.arc(p.x, p.y, p.r * 3, 0, Math.PI * 2);
+        cctx.fill();
+      });
+      consciousRAF = requestAnimationFrame(drawConscious);
+    }
+    drawConscious();
     ov.querySelector('.cosmos-close').addEventListener('click', () => {
       ov.classList.remove('open');
       setTimeout(() => ov.remove(), 400);
@@ -3629,10 +3718,118 @@
       { name: '天王星', jname: '天王星', dist: 36, size: 1.3, color: 0x9fd0d8, speed: 0.003 },
       { name: '海王星', jname: '海王星', dist: 42, size: 1.3, color: 0x5080c8, speed: 0.002 }
     ];
+    // 惑星の手描きテクスチャ生成（惑星ごとに特徴ある柄）
+    function makePlanetTexture(p) {
+      const c = document.createElement('canvas');
+      c.width = 512; c.height = 256;
+      const cx = c.getContext('2d');
+      // ベースカラー
+      const toHex = n => '#' + n.toString(16).padStart(6,'0');
+      cx.fillStyle = toHex(p.color);
+      cx.fillRect(0, 0, c.width, c.height);
+      // 惑星ごとの柄
+      if (p.name === '地球') {
+        // 海→緑の大陸のパッチ
+        cx.fillStyle = '#2a5d8f';
+        cx.fillRect(0, 0, c.width, c.height);
+        cx.fillStyle = '#3a8550';
+        for (let i = 0; i < 14; i++) {
+          const x = Math.random() * c.width;
+          const y = 40 + Math.random() * (c.height - 80);
+          const w = 30 + Math.random() * 90;
+          const h = 20 + Math.random() * 60;
+          cx.beginPath();
+          cx.ellipse(x, y, w, h, Math.random() * Math.PI, 0, Math.PI * 2);
+          cx.fill();
+        }
+        // 雲
+        cx.globalAlpha = 0.25;
+        cx.fillStyle = '#fff';
+        for (let i = 0; i < 25; i++) {
+          cx.beginPath();
+          cx.ellipse(Math.random() * c.width, Math.random() * c.height, 30 + Math.random() * 60, 8 + Math.random() * 15, 0, 0, Math.PI * 2);
+          cx.fill();
+        }
+        cx.globalAlpha = 1;
+      } else if (p.name === '木星' || p.name === '土星') {
+        // ガス惑星の横縞
+        const stripes = p.name === '木星' ? 14 : 10;
+        for (let i = 0; i < stripes; i++) {
+          const y = (i / stripes) * c.height;
+          const h = c.height / stripes;
+          const shade = (Math.sin(i * 1.3) * 0.15 + 1) * (p.name === '木星' ? 0.9 : 1);
+          cx.fillStyle = p.name === '木星'
+            ? `rgba(${220 * shade | 0},${180 * shade | 0},${130 * shade | 0},1)`
+            : `rgba(${220 * shade | 0},${200 * shade | 0},${140 * shade | 0},1)`;
+          cx.fillRect(0, y, c.width, h);
+        }
+        // 大赤斑（木星のみ）
+        if (p.name === '木星') {
+          cx.fillStyle = 'rgba(180,80,60,0.8)';
+          cx.beginPath();
+          cx.ellipse(c.width * 0.35, c.height * 0.55, 40, 18, 0, 0, Math.PI * 2);
+          cx.fill();
+        }
+      } else if (p.name === '火星') {
+        // 赤っぽい砂漠＋クレーター
+        cx.fillStyle = '#b54a28';
+        cx.fillRect(0, 0, c.width, c.height);
+        cx.fillStyle = 'rgba(80,30,10,0.4)';
+        for (let i = 0; i < 30; i++) {
+          cx.beginPath();
+          cx.arc(Math.random() * c.width, Math.random() * c.height, 8 + Math.random() * 30, 0, Math.PI * 2);
+          cx.fill();
+        }
+        // 極冠（氷）
+        cx.fillStyle = 'rgba(250,245,230,0.9)';
+        cx.fillRect(0, 0, c.width, 18);
+        cx.fillRect(0, c.height - 18, c.width, 18);
+      } else if (p.name === '金星') {
+        // 黄色の厚い雲
+        cx.fillStyle = '#d8a048';
+        cx.fillRect(0, 0, c.width, c.height);
+        for (let i = 0; i < 30; i++) {
+          cx.fillStyle = `rgba(255,220,140,${0.1 + Math.random()*0.3})`;
+          cx.beginPath();
+          cx.ellipse(Math.random() * c.width, Math.random() * c.height, 40 + Math.random() * 80, 10 + Math.random() * 20, 0, 0, Math.PI * 2);
+          cx.fill();
+        }
+      } else if (p.name === '水星') {
+        // クレーター
+        cx.fillStyle = '#98867a';
+        cx.fillRect(0, 0, c.width, c.height);
+        cx.fillStyle = 'rgba(60,50,40,0.5)';
+        for (let i = 0; i < 60; i++) {
+          cx.beginPath();
+          cx.arc(Math.random() * c.width, Math.random() * c.height, 3 + Math.random() * 15, 0, Math.PI * 2);
+          cx.fill();
+        }
+      } else if (p.name === '天王星' || p.name === '海王星') {
+        // 滑らかな青
+        const grd = cx.createLinearGradient(0, 0, 0, c.height);
+        const baseColor = toHex(p.color);
+        grd.addColorStop(0, baseColor);
+        grd.addColorStop(0.5, '#' + ((p.color & 0xfefefe) >> 1).toString(16).padStart(6,'0'));
+        grd.addColorStop(1, baseColor);
+        cx.fillStyle = grd;
+        cx.fillRect(0, 0, c.width, c.height);
+        // 薄い雲
+        cx.fillStyle = 'rgba(255,255,255,0.08)';
+        for (let i = 0; i < 10; i++) {
+          cx.beginPath();
+          cx.ellipse(Math.random() * c.width, Math.random() * c.height, 60 + Math.random() * 80, 5 + Math.random() * 12, 0, 0, Math.PI * 2);
+          cx.fill();
+        }
+      }
+      const tex = new THREE.CanvasTexture(c);
+      tex.anisotropy = 4;
+      return tex;
+    }
+
     const planetMeshes = [];
     PLANETS.forEach(p => {
-      const pGeo = new THREE.SphereGeometry(p.size, 24, 24);
-      const pMat = new THREE.MeshBasicMaterial({ color: p.color });
+      const pGeo = new THREE.SphereGeometry(p.size, 48, 32); // 高解像度
+      const pMat = new THREE.MeshBasicMaterial({ map: makePlanetTexture(p) });
       const pMesh = new THREE.Mesh(pGeo, pMat);
       pMesh.visible = false;
       pMesh.userData = { ...p, angle: Math.random() * Math.PI * 2 };
@@ -3837,13 +4034,29 @@
       cameraZoomTarget = pm;
     });
 
-    // 初回タップでビッグバン
+    // タップ: 意識の接続 → 集約 → ビッグバン
     tapBtn.addEventListener('click', () => {
-      tapBtn.classList.add('bang');
-      noise.classList.add('vanish');
-      setTimeout(() => { tapBtn.style.display = 'none'; noise.style.display = 'none'; }, 800);
-      phase = 'bang';
-      bbPoints.visible = true;
+      // ① 意識を接続フェーズ（粒子が中心に集まる、線が濃くなる）
+      consciousConnecting = true;
+      consciousLabel.textContent = 'CONSCIOUSNESS · CONNECTING';
+      tapBtn.style.pointerEvents = 'none';
+      tapBtn.style.opacity = '0.3';
+      // ② 1.2秒後にビッグバン発火
+      setTimeout(() => {
+        tapBtn.classList.add('bang');
+        tapBtn.style.opacity = '1';
+        consciousLabel.classList.add('vanish');
+        ccan.style.opacity = '0';
+        noise.classList.add('vanish');
+        setTimeout(() => {
+          tapBtn.style.display = 'none';
+          noise.style.display = 'none';
+          ccan.style.display = 'none';
+          cancelAnimationFrame(consciousRAF);
+        }, 800);
+        phase = 'bang';
+        bbPoints.visible = true;
+      }, 1200);
     }, { once: true });
 
     // リサイズ
