@@ -534,6 +534,7 @@
               <button class="magic-topbook-pill" data-deep="century">世紀ごと</button>
               <button class="magic-topbook-pill" data-deep="city">都市群像</button>
               <button class="magic-topbook-pill" data-deep="drift">365日カレンダー</button>
+              <button class="magic-topbook-pill magic-topbook-pill-cosmos" data-deep="cosmos">🌌 宇宙の誕生</button>
             </div>
           </div>
         </div>
@@ -555,6 +556,7 @@
 
       // 歴史の奥行きピル（既存の openXxx にそのまま繋ぐ）
       const deepMap = {
+        cosmos:  () => { try { openCosmos(); } catch (e) { console.warn('cosmos', e); } },
         graph:   () => { try { if (typeof openRelationGraph === 'function') openRelationGraph(); } catch {} },
         simul:   () => { try { if (typeof openSimultaneity === 'function') openSimultaneity(); } catch {} },
         map:     () => { try { if (typeof openWorldMap === 'function') openWorldMap(); } catch {} },
@@ -3527,6 +3529,247 @@
   // ============================================================
   // F) 365日ドリフトカレンダー
   // ============================================================
+  // ============================================================
+  // 🌌 COSMOS — ノイズ → ビッグバン → 太陽系
+  // ============================================================
+  async function openCosmos() {
+    if (!window.THREE) return;
+    const ov = document.createElement('div');
+    ov.className = 'cosmos-overlay';
+    ov.innerHTML = `
+      <button class="cosmos-close" aria-label="閉じる">×</button>
+      <div class="cosmos-stage" id="cosmosStage"></div>
+      <div class="cosmos-noise" id="cosmosNoise"></div>
+      <button class="cosmos-tap" id="cosmosTap">TAP</button>
+      <div class="cosmos-hud" id="cosmosHud"></div>
+    `;
+    document.body.appendChild(ov);
+    requestAnimationFrame(() => ov.classList.add('open'));
+
+    const stage = ov.querySelector('#cosmosStage');
+    const noise = ov.querySelector('#cosmosNoise');
+    const tapBtn = ov.querySelector('#cosmosTap');
+    const hud = ov.querySelector('#cosmosHud');
+    ov.querySelector('.cosmos-close').addEventListener('click', () => {
+      ov.classList.remove('open');
+      setTimeout(() => ov.remove(), 400);
+    });
+
+    const THREE = window.THREE;
+    const W = window.innerWidth, H = window.innerHeight;
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(W, H);
+    stage.appendChild(renderer.domElement);
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(50, W/H, 0.1, 1000);
+    camera.position.set(0, 20, 60);
+    camera.lookAt(0, 0, 0);
+
+    // 星（背景）
+    const stars = new THREE.BufferGeometry();
+    const starCount = 2500;
+    const spos = new Float32Array(starCount * 3);
+    for (let i = 0; i < starCount; i++) {
+      const r = 200 + Math.random() * 200;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2 * Math.random() - 1);
+      spos[i*3] = r * Math.sin(phi) * Math.cos(theta);
+      spos[i*3+1] = r * Math.sin(phi) * Math.sin(theta);
+      spos[i*3+2] = r * Math.cos(phi);
+    }
+    stars.setAttribute('position', new THREE.BufferAttribute(spos, 3));
+    const starsMat = new THREE.PointsMaterial({ size: 0.6, color: 0xffffff, sizeAttenuation: false, opacity: 0, transparent: true });
+    const starsPoints = new THREE.Points(stars, starsMat);
+    scene.add(starsPoints);
+
+    // ビッグバン用パーティクル
+    const bbCount = 1500;
+    const bbGeo = new THREE.BufferGeometry();
+    const bbPos = new Float32Array(bbCount * 3);
+    const bbVel = [];
+    for (let i = 0; i < bbCount; i++) {
+      bbPos[i*3] = 0; bbPos[i*3+1] = 0; bbPos[i*3+2] = 0;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2 * Math.random() - 1);
+      const speed = 0.3 + Math.random() * 1.2;
+      bbVel.push({
+        x: Math.sin(phi) * Math.cos(theta) * speed,
+        y: Math.sin(phi) * Math.sin(theta) * speed,
+        z: Math.cos(phi) * speed
+      });
+    }
+    bbGeo.setAttribute('position', new THREE.BufferAttribute(bbPos, 3));
+    const bbMat = new THREE.PointsMaterial({ size: 0.4, color: 0xffd28a, transparent: true, opacity: 0.9 });
+    const bbPoints = new THREE.Points(bbGeo, bbMat);
+    bbPoints.visible = false;
+    scene.add(bbPoints);
+
+    // 太陽
+    const sunGeo = new THREE.SphereGeometry(3.5, 32, 32);
+    const sunMat = new THREE.MeshBasicMaterial({ color: 0xffd466 });
+    const sun = new THREE.Mesh(sunGeo, sunMat);
+    sun.visible = false;
+    scene.add(sun);
+    // 太陽のコロナ
+    const coronaGeo = new THREE.SphereGeometry(4.3, 32, 32);
+    const coronaMat = new THREE.MeshBasicMaterial({ color: 0xffb848, transparent: true, opacity: 0.18, side: THREE.BackSide });
+    const corona = new THREE.Mesh(coronaGeo, coronaMat);
+    corona.visible = false;
+    scene.add(corona);
+
+    // 惑星データ（距離, サイズ, 色, 名前）
+    const PLANETS = [
+      { name: '水星', jname: '水星', dist: 7,  size: 0.5, color: 0xa89080, speed: 0.015 },
+      { name: '金星', jname: '金星', dist: 10, size: 0.9, color: 0xe8c078, speed: 0.012 },
+      { name: '地球', jname: '地球', dist: 14, size: 1.0, color: 0x4a7fb8, speed: 0.010, isEarth: true },
+      { name: '火星', jname: '火星', dist: 18, size: 0.7, color: 0xc87040, speed: 0.008 },
+      { name: '木星', jname: '木星', dist: 24, size: 2.2, color: 0xd8b088, speed: 0.005 },
+      { name: '土星', jname: '土星', dist: 30, size: 1.9, color: 0xe0c890, speed: 0.004, hasRing: true },
+      { name: '天王星', jname: '天王星', dist: 36, size: 1.3, color: 0x9fd0d8, speed: 0.003 },
+      { name: '海王星', jname: '海王星', dist: 42, size: 1.3, color: 0x5080c8, speed: 0.002 }
+    ];
+    const planetMeshes = [];
+    PLANETS.forEach(p => {
+      const pGeo = new THREE.SphereGeometry(p.size, 24, 24);
+      const pMat = new THREE.MeshBasicMaterial({ color: p.color });
+      const pMesh = new THREE.Mesh(pGeo, pMat);
+      pMesh.visible = false;
+      pMesh.userData = { ...p, angle: Math.random() * Math.PI * 2 };
+      scene.add(pMesh);
+      // 軌道リング
+      const orbitGeo = new THREE.RingGeometry(p.dist - 0.02, p.dist + 0.02, 128);
+      const orbitMat = new THREE.MeshBasicMaterial({ color: 0x3a4a6a, side: THREE.DoubleSide, transparent: true, opacity: 0 });
+      const orbit = new THREE.Mesh(orbitGeo, orbitMat);
+      orbit.rotation.x = Math.PI / 2;
+      scene.add(orbit);
+      // 月（地球のみ）
+      if (p.isEarth) {
+        const mGeo = new THREE.SphereGeometry(0.28, 16, 16);
+        const mMat = new THREE.MeshBasicMaterial({ color: 0xbbbbbb });
+        const moon = new THREE.Mesh(mGeo, mMat);
+        moon.visible = false;
+        scene.add(moon);
+        pMesh.userData.moon = moon;
+      }
+      // 土星のリング
+      if (p.hasRing) {
+        const rGeo = new THREE.RingGeometry(p.size * 1.3, p.size * 2.1, 64);
+        const rMat = new THREE.MeshBasicMaterial({ color: 0xd8b888, side: THREE.DoubleSide, transparent: true, opacity: 0.7 });
+        const ring = new THREE.Mesh(rGeo, rMat);
+        ring.rotation.x = Math.PI / 2.2;
+        ring.visible = false;
+        scene.add(ring);
+        pMesh.userData.ring = ring;
+      }
+      planetMeshes.push({ mesh: pMesh, orbit, planet: p });
+    });
+
+    let phase = 'noise'; // noise → bang → universe
+    let bbAge = 0;
+    let universeTime = 0;
+    let running = true;
+    function animate() {
+      if (!running) return;
+      if (phase === 'bang') {
+        bbAge += 0.016;
+        for (let i = 0; i < bbCount; i++) {
+          const v = bbVel[i];
+          bbPos[i*3] += v.x;
+          bbPos[i*3+1] += v.y;
+          bbPos[i*3+2] += v.z;
+        }
+        bbGeo.attributes.position.needsUpdate = true;
+        bbMat.opacity = Math.max(0, 0.9 - bbAge * 0.3);
+        starsMat.opacity = Math.min(1, bbAge * 0.4);
+        sunMat.opacity = Math.min(1, (bbAge - 1) * 0.8);
+        if (bbAge > 1.5) {
+          sun.visible = true;
+          corona.visible = true;
+          planetMeshes.forEach(pm => { pm.mesh.visible = true; if (pm.mesh.userData.moon) pm.mesh.userData.moon.visible = true; if (pm.mesh.userData.ring) pm.mesh.userData.ring.visible = true; pm.orbit.material.opacity = 0.25; });
+        }
+        if (bbAge > 3) {
+          phase = 'universe';
+          bbPoints.visible = false;
+          hud.classList.add('show');
+          hud.textContent = '🪐 惑星をタップ';
+          setTimeout(() => hud.classList.remove('show'), 3500);
+        }
+      } else if (phase === 'universe') {
+        universeTime += 0.016;
+        planetMeshes.forEach(pm => {
+          pm.mesh.userData.angle += pm.planet.speed;
+          const a = pm.mesh.userData.angle;
+          pm.mesh.position.set(Math.cos(a) * pm.planet.dist, 0, Math.sin(a) * pm.planet.dist);
+          if (pm.mesh.userData.moon) {
+            const ma = a * 12;
+            pm.mesh.userData.moon.position.set(
+              pm.mesh.position.x + Math.cos(ma) * 1.8,
+              Math.sin(ma) * 0.4,
+              pm.mesh.position.z + Math.sin(ma) * 1.8
+            );
+          }
+          if (pm.mesh.userData.ring) {
+            pm.mesh.userData.ring.position.copy(pm.mesh.position);
+          }
+          pm.mesh.rotation.y += 0.01;
+        });
+        sun.rotation.y += 0.002;
+        // カメラはゆっくり回る
+        const cAng = universeTime * 0.03;
+        camera.position.x = Math.cos(cAng) * 55;
+        camera.position.z = Math.sin(cAng) * 55;
+        camera.position.y = 20 + Math.sin(universeTime * 0.1) * 8;
+        camera.lookAt(0, 0, 0);
+      }
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    // クリック判定：惑星ピック
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+    renderer.domElement.addEventListener('click', (e) => {
+      if (phase !== 'universe') return;
+      const rect = renderer.domElement.getBoundingClientRect();
+      mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      raycaster.setFromCamera(mouse, camera);
+      const hit = raycaster.intersectObjects(planetMeshes.map(p => p.mesh), false)[0];
+      if (!hit) return;
+      const p = hit.object.userData;
+      hud.textContent = `🪐 ${p.jname}`;
+      hud.classList.add('show');
+      setTimeout(() => hud.classList.remove('show'), 2000);
+      if (p.isEarth) {
+        // 地球タップ → 世界マップ(偉人)へ
+        setTimeout(() => {
+          ov.classList.remove('open');
+          setTimeout(() => { ov.remove(); running = false; if (typeof openWorldMap === 'function') openWorldMap(); }, 300);
+        }, 600);
+      }
+    });
+
+    // 初回タップでビッグバン
+    tapBtn.addEventListener('click', () => {
+      tapBtn.classList.add('bang');
+      noise.classList.add('vanish');
+      setTimeout(() => { tapBtn.style.display = 'none'; noise.style.display = 'none'; }, 800);
+      phase = 'bang';
+      bbPoints.visible = true;
+    }, { once: true });
+
+    // リサイズ
+    window.addEventListener('resize', () => {
+      const w = window.innerWidth, h = window.innerHeight;
+      renderer.setSize(w, h);
+      camera.aspect = w/h;
+      camera.updateProjectionMatrix();
+    });
+  }
+  window.openCosmos = openCosmos;
+
   async function openDriftCalendar() {
     const people = await (MAGIC._peopleBundle ? Promise.resolve(MAGIC._peopleBundle) : loadPeopleBundle());
     if (!people.length) return;
