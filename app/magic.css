@@ -1068,8 +1068,8 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
 /* 🌍 世界マップ ズームボタン */
 .magic-globe-controls {
   position: absolute;
-  right: 16px;
-  top: 16px;
+  left: 14px;
+  top: 56px; /* 座標HUDの下 - 偉人リストの×ボタンやヘッダー×と被らない */
   display: flex;
   flex-direction: column;
   gap: 6px;

@@ -2115,9 +2115,9 @@
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(40, W / H, 0.1, 100);
-    // カメラを少し下にずらして、地球が画面中央やや上に来るように（下部の時代バーと被らない）
-    camera.position.set(0, -0.9, 11);
-    camera.lookAt(0, 0.2, 0);
+    // カメラを大きく下にずらして、地球が画面上部に来るように（下部ポップアップと被らない）
+    camera.position.set(0, -2.2, 11);
+    camera.lookAt(0, 1.2, 0);
 
     // 🌅 昼夜境界：太陽位置を UTC 時刻から計算して、夜側は「深い青の夕暮れ」
     // （真っ暗にすると地球が見えなくなるので、昼夜差は残しつつ視認性を確保）
