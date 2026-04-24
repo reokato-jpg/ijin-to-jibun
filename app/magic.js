@@ -6497,15 +6497,18 @@
     const mechaGroup = new THREE.Group();
     mechaGroup.visible = false;
     {
-      // 🎨 フリーダム系マテリアル
-      const whiteMat  = new THREE.MeshStandardMaterial({ color: 0xfafafa, roughness: 0.3, metalness: 0.55, emissive: 0x181820 });
-      const blueMat   = new THREE.MeshStandardMaterial({ color: 0x1d4ca8, roughness: 0.32, metalness: 0.7,  emissive: 0x061230 });
-      const deepBlue  = new THREE.MeshStandardMaterial({ color: 0x0f2f70, roughness: 0.35, metalness: 0.75, emissive: 0x040820 });
-      const redMat    = new THREE.MeshStandardMaterial({ color: 0xd62a2a, roughness: 0.3, metalness: 0.55, emissive: 0x300408 });
-      const yellowMat = new THREE.MeshStandardMaterial({ color: 0xffc830, roughness: 0.3, metalness: 0.6,  emissive: 0x4a2e00 });
-      const goldMat   = new THREE.MeshStandardMaterial({ color: 0xffe07a, roughness: 0.2, metalness: 0.85, emissive: 0x5a3d00 });
-      const darkMat   = new THREE.MeshStandardMaterial({ color: 0x14141c, roughness: 0.5, metalness: 0.9,  emissive: 0x03030a });
-      const glassBlue = new THREE.MeshStandardMaterial({ color: 0x60a8ff, roughness: 0.1, metalness: 0.3,  emissive: 0x2060b0, emissiveIntensity: 0.8, transparent: true, opacity: 0.9 });
+      // 🎨 フリーダム系マテリアル（メタリック強化版）
+      const whiteMat  = new THREE.MeshStandardMaterial({ color: 0xfafafa, roughness: 0.18, metalness: 0.8,  emissive: 0x1c1c26 });
+      const blueMat   = new THREE.MeshStandardMaterial({ color: 0x1d4ca8, roughness: 0.2,  metalness: 0.88, emissive: 0x081540 });
+      const deepBlue  = new THREE.MeshStandardMaterial({ color: 0x0f2f70, roughness: 0.22, metalness: 0.9,  emissive: 0x050a2c });
+      const redMat    = new THREE.MeshStandardMaterial({ color: 0xe63030, roughness: 0.18, metalness: 0.75, emissive: 0x480810 });
+      const yellowMat = new THREE.MeshStandardMaterial({ color: 0xffc830, roughness: 0.2,  metalness: 0.85, emissive: 0x5a3800 });
+      const goldMat   = new THREE.MeshStandardMaterial({ color: 0xffe07a, roughness: 0.12, metalness: 0.95, emissive: 0x6a4500 });
+      const darkMat   = new THREE.MeshStandardMaterial({ color: 0x14141c, roughness: 0.4,  metalness: 0.95, emissive: 0x05050c });
+      const glassBlue = new THREE.MeshStandardMaterial({ color: 0x60a8ff, roughness: 0.08, metalness: 0.4,  emissive: 0x2890ff, emissiveIntensity: 1.2, transparent: true, opacity: 0.92 });
+      // ⚡ 発光ライン用（エナジーアクセント）
+      const energyMat = new THREE.MeshBasicMaterial({ color: 0x60d8ff });
+      const energyHot = new THREE.MeshBasicMaterial({ color: 0x80ffc8 });
 
       // ===== 🧠 頭部（pivot group で首から回転） =====
       const headPivot = new THREE.Group();
@@ -6770,6 +6773,84 @@
         wingPivots[side > 0 ? 'wingR' : 'wingL'] = wing;
       });
 
+      // ===== ✨ ビームウィング（BOOST時に展開する光の翼） =====
+      const beamWingTex = (() => {
+        const sc = document.createElement('canvas'); sc.width = 256; sc.height = 256;
+        const g = sc.getContext('2d');
+        // 光条の束
+        g.translate(0, 128);
+        const grd = g.createLinearGradient(0, -128, 0, 128);
+        grd.addColorStop(0, 'rgba(180,230,255,0)');
+        grd.addColorStop(0.5, 'rgba(120,200,255,0.85)');
+        grd.addColorStop(1, 'rgba(180,230,255,0)');
+        g.fillStyle = grd; g.fillRect(0, -128, 256, 256);
+        // 縦ストライプの光束
+        g.globalCompositeOperation = 'lighter';
+        for (let i = 0; i < 40; i++) {
+          const x = Math.random() * 256;
+          const alpha = 0.3 + Math.random() * 0.4;
+          const w = 0.5 + Math.random() * 2;
+          g.fillStyle = `rgba(240,250,255,${alpha})`;
+          g.fillRect(x, -110, w, 220);
+        }
+        return new THREE.CanvasTexture(sc);
+      })();
+      const beamWings = [];
+      [-1, 1].forEach(side => {
+        // 大きな光の翼：ウィングピボットに追加
+        const wing = wingPivots[side > 0 ? 'wingR' : 'wingL'];
+        const beamShape = new THREE.Shape();
+        beamShape.moveTo(0, 0);
+        beamShape.lineTo(1.4, 0.35);
+        beamShape.lineTo(1.6, 0.1);
+        beamShape.lineTo(1.5, -0.35);
+        beamShape.lineTo(1.2, -0.55);
+        beamShape.lineTo(0.1, -0.25);
+        beamShape.lineTo(0, 0);
+        const beamGeo = new THREE.ShapeGeometry(beamShape);
+        const beamMat = new THREE.MeshBasicMaterial({
+          map: beamWingTex,
+          color: 0xa0e4ff,
+          transparent: true,
+          opacity: 0.0,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false,
+          side: THREE.DoubleSide,
+        });
+        const beam = new THREE.Mesh(beamGeo, beamMat);
+        beam.scale.set(side, 1, 1);
+        beam.position.set(side * 0.05, 0, -0.03);
+        beam.rotation.y = side * 0.3;
+        wing.add(beam);
+        beamWings.push(beam);
+        // 内側のもっと明るいコア翼（細い）
+        const coreBeamGeo = new THREE.ShapeGeometry(beamShape);
+        const coreBeamMat = new THREE.MeshBasicMaterial({
+          color: 0xf0ffff,
+          transparent: true,
+          opacity: 0.0,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false,
+          side: THREE.DoubleSide,
+        });
+        const coreBeam = new THREE.Mesh(coreBeamGeo, coreBeamMat);
+        coreBeam.scale.set(side * 0.7, 0.6, 1);
+        coreBeam.position.set(side * 0.05, 0, -0.025);
+        coreBeam.rotation.y = side * 0.3;
+        wing.add(coreBeam);
+        beamWings.push(coreBeam);
+      });
+
+      // ===== ⚡ エナジーライン（胴・脚・腕のアクセント発光） =====
+      // 胸のトリニティ発光ライン
+      const chestEnergy = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.006, 0.005), energyMat);
+      chestEnergy.position.set(0, 0.24, 0.116);
+      mechaGroup.add(chestEnergy);
+      // 腰コアを金から熱いシアンに
+      const coreGlow = new THREE.Mesh(new THREE.SphereGeometry(0.018, 12, 12), energyHot);
+      coreGlow.position.set(0, 0.14, 0.125);
+      mechaGroup.add(coreGlow);
+
       // ===== 🎒 バックパック（スリム・中央） =====
       const backpack = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.22, 0.08), deepBlue);
       backpack.position.set(0, 0.28, -0.16);
@@ -6860,6 +6941,7 @@
         armR: armPivots.armR,
         legL: legPivots.legL.hip, kneeL: legPivots.legL.knee,
         legR: legPivots.legR.hip, kneeR: legPivots.legR.knee,
+        beamWings: beamWings,
       };
       mechaGroup.userData.restPose = {
         wingL_y: wingPivots.wingL.rotation.y,
@@ -7213,6 +7295,14 @@
         }
         if (parts.kneeR) {
           parts.kneeR.rotation.x = kneeBendBase + Math.max(0, Math.sin(t * 1.4)) * 0.35;
+        }
+        // ✨ ビームウィング: BOOST時にフェードイン + 揺らぎ
+        if (parts.beamWings) {
+          const target = boostActive ? 0.85 : (thrustHold ? 0.35 : 0);
+          parts.beamWings.forEach((b, i) => {
+            const wobble = Math.sin(t * 8 + i * 1.3) * 0.1;
+            b.material.opacity += (Math.max(0, target + wobble) - b.material.opacity) * 0.2;
+          });
         }
         // 🫁 全身ブリージング（スケール微脈動）
         const breath = 1 + Math.sin(t * 0.9) * 0.008;
