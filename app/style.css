@@ -4010,8 +4010,8 @@ h2 .ij-icon, h3 .ij-icon { vertical-align: -0.15em; margin-right: 4px; }
   .audible-hero-sub { font-size: 10px; }
 }
 
-/* 📑 ホーム目次 — 三角形の頂点（画面下中央、ラジオ＆ボイスの上） */
-.home-toc-wrap { position: fixed; left: 50%; transform: translateX(-50%); right: auto; bottom: 80px; z-index: 45; }
+/* 📑 ホーム目次 — N64 Cボタン風タイトクラスタの上頂点（右下ギュッと） */
+.home-toc-wrap { position: fixed; right: 36px; left: auto; transform: none; bottom: 68px; z-index: 45; }
 /* 💬 チャットFAB（おーい）を非表示 — ユーザー指示により削除 */
 .chat-fab-wrap, .chat-fab { display: none !important; }
 /* ▲ トップへ戻るFAB — 削除（ユーザー指示） */
@@ -12811,7 +12811,7 @@ h2 .ij-icon, h3 .ij-icon { vertical-align: -0.15em; margin-right: 4px; }
 .mute-toggle {
   position: fixed;
   right: 14px;
-  bottom: 22px;
+  bottom: 14px;
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -13889,11 +13889,12 @@ h2 .ij-icon, h3 .ij-icon { vertical-align: -0.15em; margin-right: 4px; }
 }
 .phone-close-btn:hover { transform: scale(1.1); }
 
-/* 電源ボタンを指さすキャラアニメ（ラジオ）— 三角形の左下 */
+/* 電源ボタンを指さすキャラアニメ（ラジオ）— タイト三角の左下 */
 .power-hint-anim {
   position: fixed;
-  left: 14px;
-  bottom: 22px;
+  right: 68px;
+  left: auto;
+  bottom: 14px;
   width: 56px;
   height: 56px;
   z-index: 49;
