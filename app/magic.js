@@ -1618,6 +1618,7 @@
       field: p.field,
       cat: categoryOf(p.field),
       img: p.imageUrl,
+      imageUrl: p.imageUrl,
       x: safeW/2 + (Math.random() - 0.5) * safeW * 0.7,
       y: safeH/2 + (Math.random() - 0.5) * safeH * 0.7,
       vx: 0, vy: 0,
@@ -1764,13 +1765,23 @@
       const n = nodeAt(sx, sy);
       if (n) {
         draggingNode = n; n.vx = 0; n.vy = 0;
-        // モバイル対応: タップ時も名前を即表示（ホバー不要）
+        // ノードタップ: 顔写真+名前を表示したまま維持
         tip.style.opacity = '1';
         tip.style.left = (sx + 14) + 'px';
         tip.style.top = (sy + 14) + 'px';
-        tip.innerHTML = `<div><b>${n.name}</b></div><div style="font-size:10px;opacity:0.75">${n.field || ''} · つながり${n.degree}</div>`;
+        const imgUrl = n.imageUrl || '';
+        const avatar = imgUrl
+          ? `<div style="width:44px;height:44px;border-radius:50%;background-image:url('${imgUrl}');background-size:cover;background-position:center top;border:2px solid #d4af37;flex-shrink:0"></div>`
+          : `<div style="width:44px;height:44px;border-radius:50%;background:#3a2d1c;color:#d4af37;display:flex;align-items:center;justify-content:center;font-weight:700;border:2px solid #d4af37;flex-shrink:0">${(n.name||'?').charAt(0)}</div>`;
+        tip.innerHTML = `<div style="display:flex;gap:8px;align-items:center">${avatar}<div><div style="font-weight:700;font-size:13px">${n.name}</div><div style="font-size:10px;opacity:0.75">${n.field || ''} · つながり${n.degree}</div></div></div>`;
+        tip.dataset.sticky = '1';
       }
-      else { panning = true; lastX = sx; lastY = sy; tip.style.opacity = '0'; }
+      else {
+        // 何もないところをタップ: tipを消す
+        panning = true; lastX = sx; lastY = sy;
+        tip.style.opacity = '0';
+        tip.dataset.sticky = '';
+      }
     });
     canvas.addEventListener('pointermove', (e) => {
       const rect = canvas.getBoundingClientRect();
@@ -1788,8 +1799,12 @@
           tip.style.opacity = '1';
           tip.style.left = (sx + 14) + 'px';
           tip.style.top = (sy + 14) + 'px';
-          tip.innerHTML = `<div><b>${n.name}</b></div><div style="font-size:10px;opacity:0.75">${n.field || ''} · つながり${n.degree}</div>`;
-        } else {
+          const imgUrl = n.imageUrl || '';
+          const avatar = imgUrl
+            ? `<div style="width:44px;height:44px;border-radius:50%;background-image:url('${imgUrl}');background-size:cover;background-position:center top;border:2px solid #d4af37;flex-shrink:0"></div>`
+            : `<div style="width:44px;height:44px;border-radius:50%;background:#3a2d1c;color:#d4af37;display:flex;align-items:center;justify-content:center;font-weight:700;border:2px solid #d4af37;flex-shrink:0">${(n.name||'?').charAt(0)}</div>`;
+          tip.innerHTML = `<div style="display:flex;gap:8px;align-items:center">${avatar}<div><div style="font-weight:700;font-size:13px">${n.name}</div><div style="font-size:10px;opacity:0.75">${n.field || ''} · つながり${n.degree}</div></div></div>`;
+        } else if (tip.dataset.sticky !== '1') {
           tip.style.opacity = '0';
         }
       }
@@ -2769,7 +2784,8 @@
       if (!after) return;
       const container = document.createElement('div');
       container.dataset.magicLetterContainer = '1';
-      container.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;margin:10px 14px;';
+      container.className = 'magic-letter-container';
+      container.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;margin:10px 14px;width:calc(100% - 28px);box-sizing:border-box;clear:both;';
       partners.forEach(r => {
         const other = bundle.find(x => x.id === r.id);
         const btn = document.createElement('button');
