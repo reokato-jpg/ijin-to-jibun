@@ -4111,6 +4111,10 @@
         <button class="cosmos-zoom-btn" data-cosmos-zoom="out" aria-label="ズームアウト">−</button>
       </div>
       <button class="cosmos-rocket-toggle" id="cosmosRocketToggle" aria-label="ロケット操縦">🚀 ROCKET</button>
+      <div class="cosmos-vehicle-pick" id="cosmosVehiclePick">
+        <button class="cvp-opt active" data-vehicle="rocket" aria-label="ロケット">🚀</button>
+        <button class="cvp-opt" data-vehicle="mecha" aria-label="モビルスーツ">🤖</button>
+      </div>
       <div class="cosmos-planet-list" id="cosmosPlanetList">
         <button class="cpl-toggle" id="cplToggle" aria-label="惑星一覧">🪐</button>
         <div class="cpl-body" id="cplBody">
@@ -6437,6 +6441,193 @@
     scene.add(rocketGroup);
 
     // ============================================================
+    // 🤖 モビルスーツ（ガンダム風メカ）
+    // ============================================================
+    const mechaGroup = new THREE.Group();
+    mechaGroup.visible = false;
+    {
+      const whiteMat = new THREE.MeshStandardMaterial({ color: 0xf0f0f0, roughness: 0.45, metalness: 0.5, emissive: 0x202020 });
+      const blueMat  = new THREE.MeshStandardMaterial({ color: 0x2850a8, roughness: 0.4, metalness: 0.55, emissive: 0x0a1030 });
+      const redMat   = new THREE.MeshStandardMaterial({ color: 0xd03030, roughness: 0.4, metalness: 0.4, emissive: 0x300808 });
+      const yellowMat= new THREE.MeshStandardMaterial({ color: 0xf0c830, roughness: 0.4, metalness: 0.5, emissive: 0x302000 });
+      const darkMat  = new THREE.MeshStandardMaterial({ color: 0x1a1a24, roughness: 0.5, metalness: 0.8, emissive: 0x050508 });
+
+      // 🧠 頭部
+      const head = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.14, 0.14), whiteMat);
+      head.position.set(0, 0.45, 0.02);
+      mechaGroup.add(head);
+      // V字アンテナ（黄色）
+      const vShape = new THREE.Shape();
+      vShape.moveTo(-0.09, 0); vShape.lineTo(-0.04, 0.14); vShape.lineTo(-0.015, 0.14);
+      vShape.lineTo(0, 0.035); vShape.lineTo(0.015, 0.14); vShape.lineTo(0.04, 0.14);
+      vShape.lineTo(0.09, 0); vShape.lineTo(0.05, 0); vShape.lineTo(0, 0.09); vShape.lineTo(-0.05, 0);
+      const vGeo = new THREE.ExtrudeGeometry(vShape, { depth: 0.02, bevelEnabled: false });
+      const vfin = new THREE.Mesh(vGeo, yellowMat);
+      vfin.position.set(0, 0.52, 0.03);
+      mechaGroup.add(vfin);
+      // ツインアイ（赤発光）
+      const eyeStrip = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.015, 0.005), new THREE.MeshBasicMaterial({ color: 0xff3030 }));
+      eyeStrip.position.set(0, 0.46, 0.09);
+      mechaGroup.add(eyeStrip);
+
+      // 🫀 胴体
+      const torso = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.38, 0.22), whiteMat);
+      torso.position.set(0, 0.12, 0);
+      mechaGroup.add(torso);
+      // 胸ダクト（青）
+      const chest = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.22, 0.02), blueMat);
+      chest.position.set(0, 0.17, 0.115);
+      mechaGroup.add(chest);
+      // 腰コア（黄色アクセント）
+      const core = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.04, 12), yellowMat);
+      core.rotation.x = Math.PI / 2;
+      core.position.set(0, 0.15, 0.124);
+      mechaGroup.add(core);
+
+      // 🦾 肩ブロック（左右）
+      [-1, 1].forEach(side => {
+        const sh = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.14, 0.18), whiteMat);
+        sh.position.set(side * 0.26, 0.24, 0);
+        mechaGroup.add(sh);
+        // 肩のエッジ赤
+        const red = new THREE.Mesh(new THREE.BoxGeometry(0.148, 0.04, 0.19), redMat);
+        red.position.set(side * 0.26, 0.3, 0);
+        mechaGroup.add(red);
+      });
+
+      // 💪 腕
+      [-1, 1].forEach(side => {
+        const arm = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.045, 0.32, 10), whiteMat);
+        arm.position.set(side * 0.26, 0.02, 0);
+        mechaGroup.add(arm);
+        // 肘ブロック
+        const elbow = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.08, 0.09), redMat);
+        elbow.position.set(side * 0.26, -0.14, 0);
+        mechaGroup.add(elbow);
+        // 手
+        const hand = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.1, 0.08), whiteMat);
+        hand.position.set(side * 0.26, -0.24, 0);
+        mechaGroup.add(hand);
+      });
+
+      // 🔫 ビームライフル（右手）
+      const rifleBody = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.05, 0.38), darkMat);
+      rifleBody.position.set(0.28, -0.24, 0.15);
+      mechaGroup.add(rifleBody);
+      const rifleBarrel = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.12, 8), darkMat);
+      rifleBarrel.rotation.x = Math.PI / 2;
+      rifleBarrel.position.set(0.28, -0.24, 0.40);
+      mechaGroup.add(rifleBarrel);
+      // 銃口の青いグロー
+      const muzzle = new THREE.Mesh(new THREE.SphereGeometry(0.02, 8, 8), new THREE.MeshBasicMaterial({ color: 0x6ac8ff }));
+      muzzle.position.set(0.28, -0.24, 0.46);
+      mechaGroup.add(muzzle);
+
+      // 🛡 シールド（左腕）
+      const shield = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.36, 0.04), blueMat);
+      shield.position.set(-0.34, -0.12, 0.08);
+      shield.rotation.y = -0.15;
+      mechaGroup.add(shield);
+      // シールド中央のマーク（黄）
+      const mark = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.1, 0.045), yellowMat);
+      mark.position.set(-0.34, -0.12, 0.09);
+      mark.rotation.y = -0.15;
+      mechaGroup.add(mark);
+
+      // 🦵 脚
+      [-1, 1].forEach(side => {
+        const thigh = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.22, 0.14), whiteMat);
+        thigh.position.set(side * 0.08, -0.20, 0);
+        mechaGroup.add(thigh);
+        const shin = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.24, 0.12), whiteMat);
+        shin.position.set(side * 0.08, -0.44, 0);
+        mechaGroup.add(shin);
+        // 脛の赤アクセント
+        const shinRed = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.04, 0.13), redMat);
+        shinRed.position.set(side * 0.08, -0.34, 0);
+        mechaGroup.add(shinRed);
+        // 足
+        const foot = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.06, 0.18), whiteMat);
+        foot.position.set(side * 0.08, -0.58, 0.02);
+        mechaGroup.add(foot);
+      });
+
+      // 🎒 バックパック + ツインバーニア
+      const backpack = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.25, 0.1), whiteMat);
+      backpack.position.set(0, 0.15, -0.17);
+      mechaGroup.add(backpack);
+      // バーニア（2つ）
+      const vernieres = [];
+      [-1, 1].forEach(side => {
+        const vern = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.065, 0.14, 12), darkMat);
+        vern.rotation.x = Math.PI / 2;
+        vern.position.set(side * 0.1, 0.08, -0.27);
+        mechaGroup.add(vern);
+        vernieres.push(vern);
+        // 内側の発光リング
+        const ring = new THREE.Mesh(new THREE.TorusGeometry(0.045, 0.008, 8, 16), new THREE.MeshBasicMaterial({ color: 0xffa840 }));
+        ring.position.set(side * 0.1, 0.08, -0.34);
+        mechaGroup.add(ring);
+      });
+
+      // 噴射炎スプライト（青白プラズマ / オレンジ切り替え可だが青で）
+      const flameTex2 = (() => {
+        const sc = document.createElement('canvas'); sc.width = 128; sc.height = 256;
+        const g = sc.getContext('2d');
+        const grd = g.createRadialGradient(64, 40, 0, 64, 180, 130);
+        grd.addColorStop(0, 'rgba(255,250,220,1)');
+        grd.addColorStop(0.15, 'rgba(255,220,140,0.9)');
+        grd.addColorStop(0.4, 'rgba(255,140,70,0.65)');
+        grd.addColorStop(0.75, 'rgba(220,90,40,0.28)');
+        grd.addColorStop(1, 'rgba(140,30,20,0)');
+        g.fillStyle = grd; g.fillRect(0, 0, 128, 256);
+        return new THREE.CanvasTexture(sc);
+      })();
+      const flames2 = [];
+      [-1, 1].forEach(side => {
+        const fm = new THREE.SpriteMaterial({ map: flameTex2, transparent: true, opacity: 0.0, depthWrite: false, blending: THREE.AdditiveBlending });
+        const fl = new THREE.Sprite(fm);
+        fl.scale.set(0.28, 0.7, 1);
+        fl.position.set(side * 0.1, 0.08, -0.55);
+        mechaGroup.add(fl);
+        flames2.push(fl);
+      });
+      mechaGroup.userData.flames = flames2;
+
+      // 大きな後方グロー
+      const bigGlowMat2 = new THREE.SpriteMaterial({ map: flameTex2, transparent: true, opacity: 0.0, depthWrite: false, blending: THREE.AdditiveBlending });
+      const bigGlow2 = new THREE.Sprite(bigGlowMat2);
+      bigGlow2.scale.set(0.8, 1.2, 1);
+      bigGlow2.position.set(0, 0.08, -0.48);
+      mechaGroup.add(bigGlow2);
+      mechaGroup.userData.bigGlow = bigGlow2;
+
+      // エンジン光
+      const engineLight2 = new THREE.PointLight(0xff9040, 0.0, 8, 2);
+      engineLight2.position.set(0, 0.08, -0.4);
+      mechaGroup.add(engineLight2);
+      mechaGroup.userData.engineLight = engineLight2;
+
+      // ヘッドライト補助光
+      const head2 = new THREE.PointLight(0x8ab0ff, 1.0, 4, 1.5);
+      head2.position.set(0, 0.45, 0.15);
+      mechaGroup.add(head2);
+
+      // ナビライト（胴体下の点滅）
+      const blinkWhite2 = new THREE.Mesh(new THREE.SphereGeometry(0.018, 8, 8), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+      blinkWhite2.position.set(0, -0.05, 0.12);
+      mechaGroup.add(blinkWhite2);
+      mechaGroup.userData.blinkWhite = blinkWhite2;
+
+      // メカ全体のスケール（ロケットと同等の画面サイズ感に）
+      mechaGroup.scale.setScalar(0.85);
+    }
+    scene.add(mechaGroup);
+
+    // 🎮 乗り物セレクタ（rocketGroup / mechaGroup を切り替え）
+    let activeVehicle = rocketGroup;
+
+    // ============================================================
     // ⭐ 収集アイテム（スターコイン）
     // ============================================================
     // エネルギーオーブ（★ではなく、発光する球＋プラズマリング）
@@ -6595,6 +6786,27 @@
     const rcTarget = ov.querySelector('#rcTarget');
     const rcDist = ov.querySelector('#rcDist');
     const rcSpd = ov.querySelector('#rcSpd');
+    // 乗り物セレクタ
+    ov.querySelectorAll('#cosmosVehiclePick .cvp-opt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const v = btn.dataset.vehicle;
+        const target = v === 'mecha' ? mechaGroup : rocketGroup;
+        if (target === activeVehicle) return;
+        // アクティブUI更新
+        ov.querySelectorAll('#cosmosVehiclePick .cvp-opt').forEach(x => x.classList.remove('active'));
+        btn.classList.add('active');
+        // 切り替え
+        const wasVisible = activeVehicle.visible;
+        activeVehicle.visible = false;
+        activeVehicle = target;
+        activeVehicle.visible = wasVisible;
+        // ROCKETトグルラベル更新
+        rocketToggle.textContent = v === 'mecha' ? '🤖 MECHA' : '🚀 ROCKET';
+        haptic(10);
+        beep(v === 'mecha' ? 440 : 520, 0.08, 'sine', 0.06);
+      });
+    });
+
     rocketToggle.addEventListener('click', () => {
       if (phase !== 'universe') return;
       rocketMode = !rocketMode;
@@ -6610,13 +6822,13 @@
         rocketYaw = Math.atan2(dir.x, dir.z);
         rocketPitch = Math.asin(dir.y);
         rocketRoll = 0;
-        rocketGroup.visible = true;
-        hud.textContent = '🚀 十字キーで操縦 / BOOSTで加速';
+        activeVehicle.visible = true;
+        hud.textContent = (activeVehicle === mechaGroup ? '🤖' : '🚀') + ' 十字キーで操縦 / BOOSTで加速';
         hud.classList.add('show');
         setTimeout(() => hud.classList.remove('show'), 3000);
       } else {
         visitedPlanet = null;
-        rocketGroup.visible = false;
+        activeVehicle.visible = false;
       }
     });
     // 十字キー（押下中ずっと入力）
@@ -6694,16 +6906,16 @@
         rocketVel.multiplyScalar(0.3);
       }
       // ロケットの位置・姿勢を更新
-      rocketGroup.position.copy(rocketPos);
+      activeVehicle.position.copy(rocketPos);
       // Euler: yaw(Y) -> pitch(X) -> roll(Z)
-      rocketGroup.rotation.set(0, 0, 0);
-      rocketGroup.rotateY(rocketYaw);
-      rocketGroup.rotateX(-rocketPitch);
-      rocketGroup.rotateZ(rocketRoll);
+      activeVehicle.rotation.set(0, 0, 0);
+      activeVehicle.rotateY(rocketYaw);
+      activeVehicle.rotateX(-rocketPitch);
+      activeVehicle.rotateZ(rocketRoll);
       // 噴射炎とエンジン光
-      const flames = rocketGroup.userData.flames;
-      const bigGlow = rocketGroup.userData.bigGlow;
-      const eLight = rocketGroup.userData.engineLight;
+      const flames = activeVehicle.userData.flames;
+      const bigGlow = activeVehicle.userData.bigGlow;
+      const eLight = activeVehicle.userData.engineLight;
       const flameTarget = boostActive ? 0.95 : (thrustHold ? 0.7 : sp > 0.05 ? 0.3 : 0);
       flames.forEach(fl => {
         fl.material.opacity += (flameTarget - fl.material.opacity) * 0.3;
@@ -6714,7 +6926,7 @@
       eLight.intensity += ((boostActive ? 3.2 : thrustHold ? 2.0 : sp * 0.5) - eLight.intensity) * 0.3;
       eLight.color.setHex(boostActive ? 0x80c8ff : 0x60a0ff);
       // ナビライト点滅
-      const bw = rocketGroup.userData.blinkWhite;
+      const bw = activeVehicle.userData.blinkWhite;
       if (bw) bw.visible = Math.floor(universeTime * 2) % 2 === 0;
       // カメラ：三人称ビュー（ロケット後方やや上）+ シェイク
       const back = fwd.clone().multiplyScalar(-4.5);
@@ -6815,8 +7027,8 @@
         rcTarget.textContent = nearest.planet.jname;
         rcDist.textContent = nearestD.toFixed(1);
         // 🌍 地球への超接近で世界地図へ自動遷移
-        if (nearest.planet.isEarth && nearestD < nearest.planet.size * 2.0 && !rocketGroup.userData.earthDiving) {
-          rocketGroup.userData.earthDiving = true;
+        if (nearest.planet.isEarth && nearestD < nearest.planet.size * 2.0 && !activeVehicle.userData.earthDiving) {
+          activeVehicle.userData.earthDiving = true;
           const ap = ov.querySelector('#cosmosArrivePopup');
           ap.innerHTML = `<div class="ap-label">🌍 大気圏突入</div><div class="ap-name">地球儀へ</div><div class="ap-bonus">偉人たちが待っている</div>`;
           ap.classList.remove('show'); void ap.offsetWidth; ap.classList.add('show');

@@ -4168,6 +4168,47 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
   box-shadow: 0 0 18px rgba(255,120,100,0.6), 0 0 32px rgba(255,120,100,0.3);
 }
 
+/* 🚀/🤖 乗り物セレクタ */
+.cosmos-vehicle-pick {
+  position: absolute;
+  top: 54px;
+  right: 60px;
+  z-index: 16;
+  display: flex;
+  gap: 3px;
+  padding: 3px;
+  background: rgba(15,10,30,0.8);
+  border: 1px solid rgba(180,160,220,0.35);
+  border-radius: 999px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.5);
+}
+.cvp-opt {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, transform 0.1s;
+}
+.cvp-opt:active { transform: scale(0.92); }
+.cvp-opt.active {
+  background: linear-gradient(135deg, #8a60e0, #5a40b0);
+  box-shadow: 0 0 10px rgba(140,100,230,0.6);
+}
+@media (max-width: 480px) {
+  .cosmos-vehicle-pick { top: 46px; right: 54px; }
+  .cvp-opt { width: 28px; height: 28px; font-size: 14px; }
+}
+
 .cosmos-rocket-ui {
   position: absolute;
   inset: 0;
