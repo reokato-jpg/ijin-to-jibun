@@ -4792,6 +4792,77 @@
         { t: '7. ホルスの復讐', body: '息子ホルスは成長し、叔父セトと八十年間戦った。最後に神々の裁きで、ホルスは地上の王となり、セトは砂漠に追放された。\n\nオシリスは死後の裁き手となり、人が死ぬと心臓が真実の羽と秤にかけられ、罪があれば魂を喰らう獣に食われる。' },
       ]
     },
+    keepers: {
+      name: '担い手たち', emoji: '✒️', theme: 'scholars', symbol: '∞',
+      subtitle: '神話を生き延びさせた、研究者と想像の天才たち',
+      palette: { bg1: '#1a1430', bg2: '#05040f', accent: '#e0d0ff' },
+      isGallery: true,
+      chapters: [
+        // ── 🔬 研究者・思想家 ──
+        { group:'研究者', name:'ジョセフ・キャンベル', year:'1904–1987', country:'アメリカ', theme:'モノミス（英雄の旅）',
+          t:'ジョセフ・キャンベル',
+          body:'世界中の神話を比較し、すべての英雄物語に共通する型を発見した — 出立・試練・帰還。『千の顔を持つ英雄』で人類は同じ物語を語り続けていると説いた。\n\n「従え、汝の至福に（Follow your bliss）」— スター・ウォーズのジョージ・ルーカスも彼の弟子。ハリウッド脚本術の母。' },
+        { group:'研究者', name:'カール・ユング', year:'1875–1961', country:'スイス', theme:'集合的無意識・元型',
+          t:'カール・ユング',
+          body:'神話は人類共通の「集合的無意識」から湧き出す元型(archetype)の言語だと見抜いた。影、アニマ/アニムス、賢者、大母 — どの文化の物語にも現れる形。\n\nフロイトと決別した後、10年間自分の無意識と対話し『赤の書』を残した。神話を個人の心理として読み直した最初の人。' },
+        { group:'研究者', name:'ミルチャ・エリアーデ', year:'1907–1986', country:'ルーマニア／アメリカ', theme:'聖と俗',
+          t:'ミルチャ・エリアーデ',
+          body:'宗教は「聖なるもの」の現れ方の研究だと提唱。神話は時間の外にある「イン・イッロ・テンポレ（かの時において）」を語るもの。\n\n祭りとは「創世の時」を繰り返し再現する行為。世界中の新年儀礼が「混沌からの再創造」を上演しているのはなぜか、を解き明かした。' },
+        { group:'研究者', name:'ジェームズ・フレイザー', year:'1854–1941', country:'イギリス', theme:'比較神話学',
+          t:'ジェームズ・フレイザー',
+          body:'『金枝篇』12巻で世界の神話・儀礼・呪術を網羅的に比較した。「死して再生する神」の型を発見 — オシリス、アドニス、ディオニュソス、そしてイエス・キリスト。\n\nT.S.エリオット『荒地』に最大の影響。T.S.も『金枝篇』なしにはあの詩は書けなかったと認めた。' },
+        { group:'研究者', name:'クロード・レヴィ＝ストロース', year:'1908–2009', country:'フランス', theme:'構造人類学',
+          t:'クロード・レヴィ＝ストロース',
+          body:'神話は「二項対立の調停」だと見抜いた — 生と死、自然と文化、天と地。神話は矛盾を「物語」で和解させようとする人間の思考。\n\n『悲しき熱帯』『神話論理』四部作で、人類の思考そのものが神話的構造を持つと示した。' },
+        { group:'研究者', name:'柳田國男', year:'1875–1962', country:'日本', theme:'日本民俗学',
+          t:'柳田國男',
+          body:'『遠野物語』で村々に眠る伝承を救い上げた。妖怪、神隠し、河童、座敷童 — 消えゆく民の物語を学問にした。\n\n「無名の庶民こそが日本文化の担い手」という思想。宮沢賢治・水木しげる・井上ひさし、すべて柳田の土壌から生まれた。' },
+        { group:'研究者', name:'折口信夫', year:'1887–1953', country:'日本', theme:'古代研究・まれびと論',
+          t:'折口信夫',
+          body:'古代日本の神は「まれびと」— 遠方から来訪する客人として降りると唱えた。『死者の書』で藤原郎女と中将姫の物語を蘇らせた歌人・学者。\n\n神道と民俗と文学を一つに溶かした独特の神秘主義。名は釈迢空として歌を詠んだ。' },
+        { group:'研究者', name:'ロバート・グレイヴス', year:'1895–1985', country:'イギリス', theme:'詩的神話学',
+          t:'ロバート・グレイヴス',
+          body:'『白い女神』で、すべての詩は月の女神への祈りから生まれたと唱えた。ギリシャ神話を網羅した『ギリシャ神話』は現代の標準教科書。\n\n神話を「論理ではなく詩で読む」最初の人。小説『我、クラウディウス』もベストセラーに。' },
+        { group:'研究者', name:'エディス・ハミルトン', year:'1867–1963', country:'アメリカ', theme:'古典神話の語り部',
+          t:'エディス・ハミルトン',
+          body:'『ギリシャ・ローマ神話』(1942)は世界中の子どもがギリシャ神話に出会う最初の本になった。\n\n60代で学校長を退いてから執筆を始め、90代まで書き続けた「遅咲きの神話の祖母」。彼女の訳した神々は今も読まれている。' },
+
+        // ── 🎨 創造者・詩人・作家 ──
+        { group:'創造者', name:'ホメロス', year:'前8世紀頃', country:'古代ギリシャ', theme:'叙事詩の起源',
+          t:'ホメロス',
+          body:'『イリアス』『オデュッセイア』— ギリシャ神話を今の形で伝えた盲目の吟遊詩人。存在したかも分からない伝説の人物。\n\n西洋文学はホメロスから始まった。ダンテもジョイスもカフカも、彼の12音節の詩行の末裔。' },
+        { group:'創造者', name:'ダンテ・アリギエーリ', year:'1265–1321', country:'イタリア', theme:'神曲',
+          t:'ダンテ',
+          body:'『神曲』で地獄・煉獄・天国を旅する叙事詩を書いた。キリスト教神話とギリシャ神話を重ね合わせ、中世の世界観を永遠に固定した。\n\n詩の9行目から始まる踏破：「人生の半ばにして、気づくと暗い森にいた」。中年の危機を神話にした最初の人。' },
+        { group:'創造者', name:'ウィリアム・ブレイク', year:'1757–1827', country:'イギリス', theme:'預言の詩人',
+          t:'ウィリアム・ブレイク',
+          body:'自ら神々を発明した — ユリゼン、ロス、オルク。既存の神話では足りない現代の魂のために、新しい神話体系を彫刻した。\n\n『無垢の歌』『経験の歌』。子どもの目で世界を見ながら、宇宙の設計図を描いた。' },
+        { group:'創造者', name:'リヒャルト・ワーグナー', year:'1813–1883', country:'ドイツ', theme:'指環四部作',
+          t:'ワーグナー',
+          body:'26年かけて『ニーベルングの指環』4部作16時間を書いた。北欧神話とゲルマン英雄伝説を融合。\n\n一つの指輪が世界を腐敗させ、最終的にラグナロクで焼き落ちる。トールキンの『指輪物語』の直系の祖。' },
+        { group:'創造者', name:'J.R.R.トールキン', year:'1892–1973', country:'イギリス', theme:'中つ国の創造',
+          t:'J.R.R.トールキン',
+          body:'言語学者だった。古英語・古ノルド語・ゲール語を愛し、「英語にふさわしい神話がない」と嘆いて自分で作った。\n\n『シルマリリオン』に至る膨大な創世記、エルフ語の体系、何千年の歴史。『指輪物語』『ホビット』は氷山の一角。世界そのものを造った男。' },
+        { group:'創造者', name:'ホルヘ・ルイス・ボルヘス', year:'1899–1986', country:'アルゼンチン', theme:'迷宮と図書館',
+          t:'ボルヘス',
+          body:'「バベルの図書館」「アレフ」「分岐する小径の庭」— 形而上学を短篇小説に凝縮した。\n\n盲目になってから想像の中で書き続けた。ミノタウロス、虎、鏡 — すべてが象徴。「宇宙はすでに書かれた本で、我々はそれを読み解いているだけ」。' },
+        { group:'創造者', name:'T.S.エリオット', year:'1888–1965', country:'イギリス', theme:'荒地',
+          t:'T.S.エリオット',
+          body:'『荒地』(1922) — フレイザー『金枝篇』に基づく現代の神話喪失の詩。聖杯伝説、漁夫王、死と再生の神。\n\n「四月は最も残酷な月」で始まる434行。第一次大戦後の「神話なき時代」の嘆き。1948年ノーベル文学賞。' },
+        { group:'創造者', name:'ジェイムズ・ジョイス', year:'1882–1941', country:'アイルランド', theme:'ユリシーズ',
+          t:'ジェイムズ・ジョイス',
+          body:'『ユリシーズ』(1922) — ダブリンのたった一日を、ホメロス『オデュッセイア』の構造に重ねて描いた730ページの長編。\n\n現代の平凡な一日が、英雄の帰還の旅と同じ形を持つ。神話を「今、ここ」に呼び戻した20世紀の金字塔。' },
+        { group:'創造者', name:'ガブリエル・ガルシア＝マルケス', year:'1927–2014', country:'コロンビア', theme:'魔術的リアリズム',
+          t:'ガルシア＝マルケス',
+          body:'『百年の孤独』(1967) — マコンドの街で100年間繰り返される愛と悲劇。生者と死者、現実と夢が混ざり合う。\n\n「これはラテンアメリカの神話だ」と彼自身が語った。南米の記憶を近代小説に昇華、ノーベル文学賞。' },
+        { group:'創造者', name:'ニール・ゲイマン', year:'1960–', country:'イギリス／アメリカ', theme:'アメリカン・ゴッズ',
+          t:'ニール・ゲイマン',
+          body:'『サンドマン』コミックで夢の王モーフィアスを。『アメリカン・ゴッズ』で、忘れられつつある古い神々と、テレビ・インターネットという新しい神々の戦いを描いた。\n\n「神は、信じる者がいる限り生きる」。現代のキャンベル。' },
+        { group:'創造者', name:'宮崎駿', year:'1941–', country:'日本', theme:'アニメーションの神話',
+          t:'宮崎駿',
+          body:'『千と千尋の神隠し』『もののけ姫』『風の谷のナウシカ』— 日本古来のアニミズム、自然の神々、まれびと思想を現代アニメで蘇らせた。\n\n柳田國男の「無名の民」と、ジブリの森。子どもと大人が同じ画面で違うものを見られる、世界唯一の神話的演出家。' },
+      ]
+    },
     hindu: {
       name: 'ヒンドゥー神話', emoji: '🪷', theme: 'trimurti', symbol: 'ॐ',
       subtitle: '宇宙の創造・維持・破壊',
@@ -4997,10 +5068,72 @@
       home.classList.remove('show');
       reader.classList.add('show');
       setupAtmos(MYTH_STORIES[k].palette);
-      renderChapter();
+      if (MYTH_STORIES[k].isGallery) renderGallery();
+      else renderChapter();
+    }
+    function renderGallery() {
+      const s = MYTH_STORIES[curKey];
+      const groups = {};
+      s.chapters.forEach(c => { (groups[c.group] = groups[c.group] || []).push(c); });
+      const progressEl = ov.querySelector('#taleProgress');
+      if (progressEl) progressEl.innerHTML = '';
+      const numEl = ov.querySelector('#taleChapterNum');
+      if (numEl) numEl.textContent = `${s.emoji} ${s.name}`;
+      const titleEl = ov.querySelector('#taleChapterTitle');
+      if (titleEl) titleEl.textContent = s.subtitle;
+      titleEl.classList.remove('fade-in'); void titleEl.offsetWidth; titleEl.classList.add('fade-in');
+      const body = ov.querySelector('#taleChapterBody');
+      body.classList.remove('fade-in'); void body.offsetWidth; body.classList.add('fade-in');
+      body.innerHTML = Object.keys(groups).map(gn => `
+        <div class="keepers-group">
+          <h3 class="keepers-group-title">${gn === '研究者' ? '🔬 研究者 — 神話を学問にした者' : '🎨 創造者 — 神話を新しく作った者'}</h3>
+          <div class="keepers-grid">
+            ${groups[gn].map((c, i) => `
+              <button class="keeper-card" data-keeper="${c.name}">
+                <div class="keeper-name">${c.name}</div>
+                <div class="keeper-year">${c.year || ''}</div>
+                <div class="keeper-country">${c.country || ''}</div>
+                <div class="keeper-theme">${c.theme || ''}</div>
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+      // ナビは隠す
+      ov.querySelector('.tale-nav').style.display = 'none';
+      // カードクリックでモーダル
+      body.querySelectorAll('.keeper-card').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const name = btn.dataset.keeper;
+          const c = s.chapters.find(x => x.name === name);
+          if (!c) return;
+          openKeeperModal(c);
+        });
+      });
+    }
+    function openKeeperModal(c) {
+      const m = document.createElement('div');
+      m.className = 'keeper-modal-overlay';
+      m.innerHTML = `
+        <div class="keeper-modal">
+          <button class="keeper-modal-close" aria-label="閉じる">×</button>
+          <div class="keeper-modal-group">${c.group === '研究者' ? '🔬 研究者' : '🎨 創造者'}</div>
+          <div class="keeper-modal-name">${c.name}</div>
+          <div class="keeper-modal-meta">${c.year || ''}　／　${c.country || ''}</div>
+          <div class="keeper-modal-theme">${c.theme || ''}</div>
+          <div class="keeper-modal-body">${c.body.replace(/\n/g, '<br>')}</div>
+        </div>
+      `;
+      ov.appendChild(m);
+      requestAnimationFrame(() => m.classList.add('show'));
+      const close = () => { m.classList.remove('show'); setTimeout(() => m.remove(), 280); };
+      m.querySelector('.keeper-modal-close').addEventListener('click', close);
+      m.addEventListener('click', e => { if (e.target === m) close(); });
     }
     function renderChapter() {
       const s = MYTH_STORIES[curKey];
+      if (s.isGallery) { renderGallery(); return; }
+      ov.querySelector('.tale-nav').style.display = '';
       const c = s.chapters[curIdx];
       ov.querySelector('#taleProgress').innerHTML = s.chapters.map((_, i) =>
         `<span class="tp-dot ${i === curIdx ? 'active' : i < curIdx ? 'done' : ''}"></span>`

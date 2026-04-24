@@ -4789,6 +4789,144 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
 .tale-prev:not(:disabled):hover { background: rgba(80,60,100,0.7); }
 .tale-next:hover { background: linear-gradient(135deg, #d09050, #904525); }
 
+/* 🎓 担い手たち（研究者・創造者のギャラリー） */
+.keepers-group { margin-bottom: 28px; }
+.keepers-group-title {
+  font-size: 13px;
+  color: #ffd880;
+  letter-spacing: 0.2em;
+  margin: 0 0 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255,216,128,0.25);
+  font-weight: 700;
+}
+.keepers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+}
+.keeper-card {
+  text-align: left;
+  padding: 14px 16px;
+  background: rgba(40,25,70,0.45);
+  border: 1px solid rgba(200,180,255,0.22);
+  border-left: 3px solid #ffd880;
+  border-radius: 8px;
+  color: #e8d8ff;
+  cursor: pointer;
+  font-family: 'Shippori Mincho', serif;
+  transition: all 0.2s;
+}
+.keeper-card:hover {
+  background: rgba(100,80,180,0.35);
+  transform: translateX(4px);
+  border-left-color: #ffe8a8;
+}
+.keeper-name {
+  font-size: 15px; font-weight: 800;
+  letter-spacing: 0.05em;
+  color: #fff;
+  margin-bottom: 4px;
+}
+.keeper-year {
+  font-size: 10px;
+  color: rgba(255,216,128,0.7);
+  letter-spacing: 0.08em;
+  font-family: 'Cormorant Garamond', serif;
+  margin-bottom: 2px;
+}
+.keeper-country {
+  font-size: 10px;
+  color: rgba(200,180,255,0.7);
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+.keeper-theme {
+  font-size: 11px;
+  color: #e0c8ff;
+  font-style: italic;
+}
+
+.keeper-modal-overlay {
+  position: fixed; inset: 0; z-index: 20;
+  background: rgba(5,3,15,0.82);
+  display: flex;
+  align-items: center; justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+.keeper-modal-overlay.show { opacity: 1; }
+.keeper-modal {
+  width: min(94vw, 520px);
+  max-height: 86vh;
+  overflow-y: auto;
+  padding: 30px 28px 24px;
+  background: linear-gradient(180deg, #1a1030 0%, #0a0818 100%);
+  border: 1px solid rgba(220,200,255,0.5);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 50px rgba(180,140,255,0.25);
+  color: #f0e8d8;
+  font-family: 'Shippori Mincho', serif;
+  position: relative;
+}
+.keeper-modal-close {
+  position: absolute; top: 12px; right: 12px;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(60,40,110,0.8);
+  border: 1px solid rgba(220,200,255,0.4);
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0; line-height: 1;
+}
+.keeper-modal-group {
+  font-size: 11px;
+  color: #ffd880;
+  letter-spacing: 0.28em;
+  margin-bottom: 8px;
+  font-family: 'Cormorant Garamond', serif;
+}
+.keeper-modal-name {
+  font-size: 28px; font-weight: 800;
+  letter-spacing: 0.06em;
+  background: linear-gradient(135deg, #fff, #ffd8a0);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 6px;
+}
+.keeper-modal-meta {
+  font-size: 11px;
+  color: rgba(220,200,255,0.75);
+  letter-spacing: 0.12em;
+  margin-bottom: 8px;
+}
+.keeper-modal-theme {
+  display: inline-block;
+  font-size: 11px;
+  color: #e0c8ff;
+  background: rgba(120,80,200,0.25);
+  border: 1px solid rgba(200,180,255,0.3);
+  border-radius: 999px;
+  padding: 4px 12px;
+  margin-bottom: 18px;
+  letter-spacing: 0.08em;
+}
+.keeper-modal-body {
+  font-size: 14px;
+  line-height: 2.0;
+  color: #f0e8d8;
+  letter-spacing: 0.03em;
+}
+
+@media (max-width: 480px) {
+  .keepers-grid { grid-template-columns: 1fr; }
+  .keeper-modal { padding: 24px 22px 20px; }
+  .keeper-modal-name { font-size: 22px; }
+  .keeper-modal-body { font-size: 13px; line-height: 1.9; }
+}
+
 @media (max-width: 480px) {
   .tale-home-title { font-size: 24px; letter-spacing: 0.15em; }
   .tale-home-sub { font-size: 11px; }
