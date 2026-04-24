@@ -13896,10 +13896,10 @@ h2 .ij-icon, h3 .ij-icon { vertical-align: -0.15em; margin-right: 4px; }
 
 /* 電源ボタンを指さすキャラアニメ（ラジオ）— ◁配置の右上 */
 .power-hint-anim {
-  position: fixed;
-  right: 10px;
-  left: auto;
-  bottom: 52px;
+  position: fixed !important;
+  right: 10px !important;
+  left: auto !important;
+  bottom: 52px !important;
   width: 38px !important;
   height: 38px !important;
   width: 56px;
