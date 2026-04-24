@@ -15106,41 +15106,7 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
     radial-gradient(ellipse at 50% 50%, rgba(255,80,180,0.12) 0%, transparent 70%),
     linear-gradient(180deg, #0a0520 0%, #060214 50%, #000008 100%);
 }
-/* 背景のサイバーグリッド */
-.music-app::before {
-  content: '';
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(120,200,255,0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(120,200,255,0.06) 1px, transparent 1px);
-  background-size: 32px 32px;
-  transform: perspective(600px) rotateX(58deg) translateY(20%) scale(2);
-  transform-origin: center bottom;
-  opacity: 0.6;
-  pointer-events: none;
-  mask-image: linear-gradient(180deg, transparent 0%, black 50%, transparent 100%);
-  -webkit-mask-image: linear-gradient(180deg, transparent 0%, black 50%, transparent 100%);
-  animation: musicGridFlow 14s linear infinite;
-}
-@keyframes musicGridFlow {
-  0% { background-position: 0 0, 0 0; }
-  100% { background-position: 0 32px, 32px 0; }
-}
-/* オーロラの光の帯 */
-.music-app::after {
-  content: '';
-  position: absolute; top: -10%; left: -20%; right: -20%; height: 300px;
-  background: conic-gradient(from 0deg, transparent 0deg, rgba(0,220,255,0.3) 60deg, transparent 120deg, rgba(255,80,180,0.28) 200deg, transparent 260deg, rgba(120,80,255,0.3) 340deg, transparent 360deg);
-  filter: blur(60px);
-  opacity: 0.55;
-  pointer-events: none;
-  animation: musicAurora 22s linear infinite;
-}
-@keyframes musicAurora {
-  0% { transform: rotate(0deg) translateY(0); }
-  50% { transform: rotate(180deg) translateY(-30px); }
-  100% { transform: rotate(360deg) translateY(0); }
-}
+/* （グリッド/オーロラ背景は削除 — 重さ＆他画面に影響する可能性を排除） */
 .phone-tool-app#phoneMusicApp { overflow: hidden; background: #000008 !important; }
 .phone-tool-app#phoneMusicApp .tool-app-head { background: linear-gradient(90deg, #0a0520 0%, #060214 100%) !important; color: #e8f4ff !important; border-bottom: 1px solid rgba(0,220,255,0.15); }
 .phone-tool-app#phoneMusicApp .tool-app-back { color: #00dcff; text-shadow: 0 0 8px rgba(0,220,255,0.5); }
@@ -15233,11 +15199,11 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
   backdrop-filter: blur(2px);
   flex-shrink: 0;
 }
-/* 3D回転ディスク */
+/* 回転ディスク（シンプル） */
 .music-nowplaying::before {
   content: '♪';
   display: block;
-  width: 56px; height: 56px;
+  width: 52px; height: 52px;
   border-radius: 50%;
   background:
     radial-gradient(circle at 50% 50%, #000 0%, #000 22%, transparent 22.5%),
