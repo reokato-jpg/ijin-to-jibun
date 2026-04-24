@@ -7824,8 +7824,31 @@
       }
       return new THREE.CanvasTexture(sc);
     })();
-    scene.background = skyTex;
-    scene.fog = new THREE.Fog(0x3a2838, 40, 250);
+    // 🌩 空：THREE.Sky（嵐向けパラメータ）
+    if (ADDONS.Sky) {
+      const bsky = new ADDONS.Sky();
+      bsky.scale.setScalar(600);
+      const bs = bsky.material.uniforms;
+      bs['turbidity'].value = 14;         // 濃い霞
+      bs['rayleigh'].value = 3.5;         // 少し赤め
+      bs['mieCoefficient'].value = 0.025; // ブロッチーな雲感
+      bs['mieDirectionalG'].value = 0.6;
+      const phi = THREE.MathUtils.degToRad(90 - 6); // 高度6°（地平線付近 = 黄昏の荒野）
+      const theta = THREE.MathUtils.degToRad(-55);
+      const sunDir = new THREE.Vector3().setFromSphericalCoords(1, phi, theta);
+      bs['sunPosition'].value.copy(sunDir);
+      scene.add(bsky);
+      // PMREM で環境光マップ（レンガ・金色ブーム反射用）
+      try {
+        const pmrem = new THREE.PMREMGenerator(renderer);
+        pmrem.compileEquirectangularShader();
+        const envRT = pmrem.fromScene(bsky);
+        scene.environment = envRT.texture;
+      } catch (e) { console.warn('babel PMREM', e); }
+    } else {
+      scene.background = skyTex;
+    }
+    scene.fog = new THREE.Fog(0x3a2838, 50, 300);
 
     // 環境光・主光源
     scene.add(new THREE.AmbientLight(0x403040, 0.4));
@@ -7881,10 +7904,10 @@
     // 🏛 塔本体：ブリューゲル風の階段状ジッグラト
     //   各段は「円柱（壁）＋アーチ窓＋はっきりしたテラス」。
     //   次の段は明確に縮む（＝段差が見える）
-    const STAGES = 9;
-    const baseRadius = 20;
-    const stageHeight = 4.0;
-    const stepInset = 1.6; // 各段で半径がこれだけ縮む
+    const STAGES = 12;
+    const baseRadius = 28;
+    const stageHeight = 4.5;
+    const stepInset = 1.8; // 各段で半径がこれだけ縮む
     const tower = new THREE.Group();
     const stageMeshes = [];
     // アーチ窓のテクスチャ（壁の前面に貼る）
@@ -8391,8 +8414,8 @@
     }
 
     // カメラ
-    const camera = new THREE.PerspectiveCamera(50, W()/H(), 0.1, 500);
-    camera.position.set(0, 20, 55);
+    const camera = new THREE.PerspectiveCamera(50, W()/H(), 0.1, 800);
+    camera.position.set(0, 28, 80);
     camera.lookAt(0, topY / 2, 0);
 
     // ✨ EffectComposer + UnrealBloomPass + グレード
@@ -8448,7 +8471,7 @@
 
     // 操作
     let dragging = false, lastX = 0, lastY = 0;
-    let camAngle = 0, camTilt = 0.3, camDist = 55;
+    let camAngle = 0, camTilt = 0.3, camDist = 85;
     let lookY = topY / 2;
     renderer.domElement.addEventListener('pointerdown', e => { dragging = true; lastX = e.clientX; lastY = e.clientY; });
     renderer.domElement.addEventListener('pointermove', e => {
@@ -8461,7 +8484,7 @@
     renderer.domElement.addEventListener('pointerleave', () => dragging = false);
     renderer.domElement.addEventListener('wheel', e => {
       e.preventDefault();
-      camDist = Math.max(15, Math.min(120, camDist + e.deltaY * 0.06));
+      camDist = Math.max(20, Math.min(200, camDist + e.deltaY * 0.06));
     }, { passive: false });
     // ピンチ
     let pinchBase = 0, pinchBaseDist = 55;
@@ -8478,7 +8501,7 @@
         const dx = e.touches[0].clientX - e.touches[1].clientX;
         const dy = e.touches[0].clientY - e.touches[1].clientY;
         const d = Math.hypot(dx, dy);
-        camDist = Math.max(15, Math.min(120, pinchBaseDist * pinchBase / d));
+        camDist = Math.max(20, Math.min(200, pinchBaseDist * pinchBase / d));
       }
     });
 
