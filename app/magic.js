@@ -3569,6 +3569,20 @@
         <button data-mode="constellations" aria-label="星座">⭐</button>
         <button data-mode="tour" aria-label="ツアー">🎬</button>
         <button data-mode="real" aria-label="実寸">🪄</button>
+        <button data-mode="ijin" aria-label="偉人星座">👤</button>
+        <button data-mode="meditate" aria-label="瞑想">🧘</button>
+        <button data-mode="wish" aria-label="願い星">🌠</button>
+      </div>
+      <div class="cosmos-wish-dialog" id="cosmosWishDialog">
+        <div class="cwd-inner">
+          <div class="cwd-title">🌠 願いを込める</div>
+          <div class="cwd-sub">宇宙はあなたの意識で形づくられる</div>
+          <textarea id="cwdInput" maxlength="60" placeholder="この星に込める願い…"></textarea>
+          <div class="cwd-buttons">
+            <button id="cwdCancel" class="cwd-btn cwd-cancel">やめる</button>
+            <button id="cwdSave" class="cwd-btn cwd-save">星にする ✨</button>
+          </div>
+        </div>
       </div>
       <div class="cosmos-event-banner" id="cosmosEventBanner"></div>
       <div class="cosmos-rocket-ui" id="cosmosRocketUI">
@@ -5253,7 +5267,151 @@
           sun.scale.setScalar(modes.real ? 1.5 : 1);
           flashBanner(modes.real ? '🪄 実寸比率（ガス惑星大きく）' : '🪄 ゲーム比率');
         }
+        if (mode === 'ijin') {
+          ijinConstGroup.visible = modes.ijin;
+          ijinLabels.forEach(l => l.div.style.display = modes.ijin ? '' : 'none');
+          flashBanner(modes.ijin ? '👤 偉人の星座 ON — 科学者5人が空に' : '👤 偉人星座 OFF');
+        }
+        if (mode === 'meditate') {
+          if (modes.meditate) {
+            timeSpeed = 0.1;
+            ov.querySelectorAll('#cosmosTimeCtrl button').forEach(b => b.classList.remove('active'));
+            meditateOverlay.classList.add('on');
+            startMeditateSound();
+            flashBanner('🧘 瞑想モード — 意識だけが宇宙を満たす');
+          } else {
+            timeSpeed = 1;
+            ov.querySelector('#cosmosTimeCtrl button[data-speed="1"]').classList.add('active');
+            meditateOverlay.classList.remove('on');
+            stopMeditateSound();
+          }
+        }
+        if (mode === 'wish') {
+          if (modes.wish) {
+            flashBanner('🌠 空をタップして願いを込めて', 2600);
+          } else {
+            flashBanner('🌠 願い星モード OFF');
+          }
+        }
       });
+    });
+
+    // ============================================================
+    // 👤 偉人の星座（科学者5人を星にして結ぶ）
+    // ============================================================
+    const IJIN_STARS = [
+      { name: 'ガリレオ', quote: 'それでも地球は動いている', pos: [0.55, 0.18, -0.82] },
+      { name: 'コペルニクス', quote: '天球の回転について', pos: [0.32, 0.40, -0.86] },
+      { name: 'ケプラー', quote: '惑星運動の法則', pos: [0.05, 0.50, -0.86] },
+      { name: 'ニュートン', quote: '我巨人の肩に立つ', pos: [-0.30, 0.45, -0.84] },
+      { name: 'アインシュタイン', quote: '想像力は知識よりも重要', pos: [-0.58, 0.25, -0.78] },
+    ];
+    const IJIN_R = 235;
+    const ijinConstGroup = new THREE.Group();
+    ijinConstGroup.visible = false;
+    const ijinLabels = [];
+    const ijinPositions = IJIN_STARS.map(s => {
+      const v = new THREE.Vector3(...s.pos).normalize().multiplyScalar(IJIN_R);
+      // 発光する金色の星
+      const m = new THREE.SpriteMaterial({ map: softDotTex, color: 0xffe08a, transparent: true, opacity: 0.95, depthWrite: false, blending: THREE.AdditiveBlending });
+      const sp = new THREE.Sprite(m);
+      sp.scale.set(7, 7, 1);
+      sp.position.copy(v);
+      ijinConstGroup.add(sp);
+      // HTMLラベル
+      const div = document.createElement('div');
+      div.className = 'cosmos-const-label cosmos-ijin-label';
+      div.innerHTML = `<b>${s.name}</b><br><small>${s.quote}</small>`;
+      div.style.display = 'none';
+      ov.appendChild(div);
+      ijinLabels.push({ div, pos: v.clone() });
+      return v;
+    });
+    // 5人を連結（時系列順の思想の連鎖）
+    const ijinLineGeo = new THREE.BufferGeometry().setFromPoints([
+      ijinPositions[0], ijinPositions[1],
+      ijinPositions[1], ijinPositions[2],
+      ijinPositions[2], ijinPositions[3],
+      ijinPositions[3], ijinPositions[4],
+    ]);
+    const ijinLineMat = new THREE.LineBasicMaterial({ color: 0xffd460, transparent: true, opacity: 0.55 });
+    ijinConstGroup.add(new THREE.LineSegments(ijinLineGeo, ijinLineMat));
+    scene.add(ijinConstGroup);
+
+    // ============================================================
+    // 🧘 瞑想モード（時間スロー + BGM + 呼吸するオーバーレイ）
+    // ============================================================
+    const meditateOverlay = document.createElement('div');
+    meditateOverlay.className = 'cosmos-meditate-overlay';
+    ov.appendChild(meditateOverlay);
+    let meditateAudio = null;
+    function startMeditateSound() {
+      try {
+        const c = getCtx();
+        meditateAudio = { nodes: [] };
+        // 3つの倍音を重ねてドローン
+        [110, 165, 220].forEach((f, i) => {
+          const o = c.createOscillator(); o.type = i === 0 ? 'sine' : 'triangle';
+          o.frequency.value = f;
+          const g = c.createGain(); g.gain.value = 0; g.gain.linearRampToValueAtTime(0.02 + i * 0.006, c.currentTime + 2);
+          o.connect(g); g.connect(c.destination); o.start();
+          meditateAudio.nodes.push({ o, g });
+        });
+      } catch (e) {}
+    }
+    function stopMeditateSound() {
+      if (!meditateAudio) return;
+      const c = getCtx();
+      meditateAudio.nodes.forEach(({ o, g }) => {
+        try { g.gain.cancelScheduledValues(c.currentTime); g.gain.linearRampToValueAtTime(0, c.currentTime + 1); setTimeout(() => o.stop(), 1100); } catch (e) {}
+      });
+      meditateAudio = null;
+    }
+
+    // ============================================================
+    // 🌠 願い星（空をタップ → 願いを書く → 永久に輝く星）
+    // ============================================================
+    const wishDialog = ov.querySelector('#cosmosWishDialog');
+    const wishInput = ov.querySelector('#cwdInput');
+    const wishStars = [];
+    let pendingWishPos = null;
+    function loadWishes() {
+      try {
+        const raw = localStorage.getItem('cosmosWishes');
+        return raw ? JSON.parse(raw) : [];
+      } catch (e) { return []; }
+    }
+    function saveWishes(arr) {
+      try { localStorage.setItem('cosmosWishes', JSON.stringify(arr)); } catch (e) {}
+    }
+    function makeWishStar(pos, text) {
+      const m = new THREE.SpriteMaterial({ map: softDotTex, color: 0xfff0b0, transparent: true, opacity: 1, depthWrite: false, blending: THREE.AdditiveBlending });
+      const sp = new THREE.Sprite(m);
+      sp.scale.set(4, 4, 1);
+      sp.position.set(pos.x, pos.y, pos.z);
+      sp.userData = { text, phase: Math.random() * Math.PI * 2, baseScale: 4 + Math.random() * 1.5 };
+      scene.add(sp);
+      wishStars.push(sp);
+    }
+    // 保存済みの願い星を復元
+    loadWishes().forEach(w => makeWishStar(w.pos, w.text));
+    ov.querySelector('#cwdSave').addEventListener('click', () => {
+      const text = wishInput.value.trim();
+      if (text && pendingWishPos) {
+        const arr = loadWishes();
+        arr.push({ pos: { x: pendingWishPos.x, y: pendingWishPos.y, z: pendingWishPos.z }, text, at: Date.now() });
+        saveWishes(arr);
+        makeWishStar(pendingWishPos, text);
+        flashBanner('🌠 願いが星になった', 2200);
+      }
+      wishDialog.classList.remove('show');
+      wishInput.value = '';
+      pendingWishPos = null;
+    });
+    ov.querySelector('#cwdCancel').addEventListener('click', () => {
+      wishDialog.classList.remove('show');
+      wishInput.value = '';
+      pendingWishPos = null;
     });
     // ユーザー操作: ドラッグ回転 + ホイール/ピンチでズーム
     let userControlling = false;
@@ -6175,6 +6333,20 @@
           spawnShootingStar();
           meteorBurst--;
         }
+        // 🌠 願い星の呼吸（ゆっくり輝度がゆらぐ）
+        wishStars.forEach(s => {
+          s.userData.phase += 0.018;
+          const sc = s.userData.baseScale * (1 + 0.25 * Math.sin(s.userData.phase));
+          s.scale.set(sc, sc, 1);
+          s.material.opacity = 0.6 + 0.4 * (0.5 + 0.5 * Math.sin(s.userData.phase * 0.7));
+        });
+        // 🧘 瞑想中の呼吸効果（宇宙全体がゆらぐ）
+        if (modes.meditate) {
+          const breath = 0.95 + 0.05 * Math.sin(universeTime * 0.6);
+          scene.scale.setScalar(breath);
+        } else if (scene.scale.x !== 1) {
+          scene.scale.setScalar(1);
+        }
         // ☀️ 太陽シェーダの時間更新
         sunMat.uniforms.uTime.value = universeTime;
         chromoMat.uniforms.uTime.value = universeTime;
@@ -6304,6 +6476,17 @@
           l.div.style.opacity = behind ? 0 : 0.75;
         });
       }
+      // 👤 偉人ラベル投影
+      if (modes.ijin && ijinLabels.length) {
+        const W = window.innerWidth, H = window.innerHeight;
+        ijinLabels.forEach(l => {
+          const s = l.pos.clone().project(camera);
+          const behind = s.z > 1;
+          l.div.style.left = ((s.x + 1) / 2 * W) + 'px';
+          l.div.style.top = ((1 - (s.y + 1) / 2) * H) + 'px';
+          l.div.style.opacity = behind ? 0 : 0.85;
+        });
+      }
       requestAnimationFrame(animate);
     }
     animate();
@@ -6321,6 +6504,17 @@
       const targets = planetMeshes.map(p => p.mesh).concat(sun.visible ? [sun] : []);
       const hit = raycaster.intersectObjects(targets, false)[0];
       if (!hit) {
+        // 願い星モードなら、空タップ位置を願いポジションに
+        if (modes.wish) {
+          // カメラから前方向に一定距離の位置に配置
+          const ndc = mouse.clone();
+          const v = new THREE.Vector3(ndc.x, ndc.y, 0.9).unproject(camera);
+          pendingWishPos = v;
+          wishInput.value = '';
+          wishDialog.classList.add('show');
+          setTimeout(() => wishInput.focus(), 100);
+          return;
+        }
         // 何もないところをタップ → ズーム解除
         cameraZoomTarget = null;
         hud.classList.remove('show');
