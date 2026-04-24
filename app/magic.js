@@ -1594,9 +1594,9 @@
       art: '#d68f8f', science: '#8fc7a5', history: '#c79d6a', other: '#999'
     };
     const LINK_COLOR = {
-      mentor: 'rgba(212,176,85,0.35)',
-      peer:   'rgba(176,210,180,0.25)',
-      rival:  'rgba(220,90,100,0.35)',
+      mentor: 'rgba(212,176,85,0.85)',
+      peer:   'rgba(210,230,220,0.7)',
+      rival:  'rgba(230,110,120,0.85)',
     };
 
     // relations持ってる人だけ対象（W/H確定後に初期位置を決める）
@@ -1693,7 +1693,7 @@
       links.forEach(l => {
         if (!matchesFilter(l.source) && !matchesFilter(l.target)) return;
         ctx.strokeStyle = LINK_COLOR[l.kind];
-        ctx.lineWidth = l.kind === 'rival' ? 1.0 : 0.6;
+        ctx.lineWidth = l.kind === 'rival' ? 1.8 : 1.4;
         ctx.beginPath();
         ctx.moveTo(l.source.x, l.source.y);
         ctx.lineTo(l.target.x, l.target.y);
@@ -1706,7 +1706,7 @@
         // 画像ロード（初回のみ）
         if (n.imageUrl && !n._img) {
           n._img = new Image();
-          n._img.crossOrigin = 'anonymous';
+          // crossOriginは付けない（付けるとWikimediaがCORSヘッダを付与してくれずに失敗する）
           n._img.referrerPolicy = 'no-referrer';
           n._img.onerror = () => { n._imgFailed = true; };
           n._img.src = n.imageUrl;
