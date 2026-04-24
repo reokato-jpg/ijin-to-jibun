@@ -189,6 +189,16 @@ def main():
         print(f'  ADD:  {id_:25s} {name}')
         added += 1
     print(f'\n===\nAdded: {added}人  / Skipped: {skipped}人')
+    # manifest.json を自動更新
+    mfp = BASE.parent / 'manifest.json'
+    if mfp.exists():
+        m = json.loads(mfp.read_text(encoding='utf-8'))
+        alive = set(fp.stem for fp in BASE.glob('*.json'))
+        existing = [i for i in m.get('people', []) if i in alive]
+        new_ids = [i for i in alive if i not in existing]
+        m['people'] = existing + sorted(new_ids)
+        mfp.write_text(json.dumps(m, ensure_ascii=False, indent=2), encoding='utf-8')
+        print(f'manifest.json -> {len(m["people"])}人')
 
 if __name__ == '__main__':
     main()
