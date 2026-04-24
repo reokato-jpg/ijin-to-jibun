@@ -3373,8 +3373,14 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
   transition: opacity 0.3s;
 }
 .cosmos-rocket-ui.show { opacity: 1; }
-.cosmos-rocket-ui.show > * { pointer-events: auto; }
-.cosmos-rocket-ui.show .cosmos-crosshair { pointer-events: none; }
+/* タップできるのは操作系ボタンだけ（他は pointer-events:none のまま） */
+.cosmos-rocket-ui.show .cosmos-dpad,
+.cosmos-rocket-ui.show .cosmos-dpad .dp,
+.cosmos-rocket-ui.show .cosmos-rocket-actions,
+.cosmos-rocket-ui.show .cosmos-boost-btn,
+.cosmos-rocket-ui.show .cosmos-brake-btn {
+  pointer-events: auto;
+}
 
 /* クロスヘア */
 .cosmos-crosshair {
@@ -3467,7 +3473,9 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
   display: flex;
   flex-direction: column;
   gap: 10px;
+  z-index: 18;
 }
+.cosmos-dpad { z-index: 18; }
 .cosmos-boost-btn,
 .cosmos-brake-btn {
   width: 88px; height: 88px;
@@ -3707,7 +3715,7 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.15s;
-  z-index: 12;
+  z-index: 5;
   background:
     radial-gradient(ellipse at center, transparent 30%, rgba(255,255,255,0.04) 50%, transparent 60%),
     repeating-conic-gradient(from 0deg at 50% 50%,
