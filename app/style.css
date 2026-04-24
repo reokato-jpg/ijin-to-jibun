@@ -12812,9 +12812,11 @@ h2 .ij-icon, h3 .ij-icon { vertical-align: -0.15em; margin-right: 4px; }
 
 /* ================ ミュート切替ボタン ================ */
 .mute-toggle {
-  position: fixed;
-  right: 8px;
-  bottom: 8px;
+  position: fixed !important;
+  right: 8px !important;
+  left: auto !important;
+  top: auto !important;
+  bottom: 8px !important;
   width: 40px;
   height: 40px;
   width: 40px;
