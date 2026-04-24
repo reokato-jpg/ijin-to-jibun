@@ -3943,105 +3943,6 @@
       distantGalaxies.push(sp);
     }
 
-    // ============================================================
-    // 🌠 神秘的な宇宙ムード（god-rays / 霞 / 大型背景星雲）
-    // ============================================================
-    // 太陽から放射する光芒（sprites 3枚を異なるスケールで重ねる）
-    const godRayTex = (() => {
-      const sc = document.createElement('canvas'); sc.width = 512; sc.height = 512;
-      const g = sc.getContext('2d');
-      g.translate(256, 256);
-      // 放射光条（細長い筋）
-      g.globalCompositeOperation = 'lighter';
-      for (let i = 0; i < 36; i++) {
-        const a = (i / 36) * Math.PI * 2;
-        g.save(); g.rotate(a);
-        const grd = g.createLinearGradient(0, 0, 0, 220);
-        const alpha = 0.05 + Math.random() * 0.08;
-        grd.addColorStop(0, `rgba(255,230,160,${alpha * 1.4})`);
-        grd.addColorStop(0.5, `rgba(255,200,120,${alpha * 0.7})`);
-        grd.addColorStop(1, 'rgba(255,180,100,0)');
-        g.fillStyle = grd;
-        const w = 3 + Math.random() * 6;
-        g.fillRect(-w/2, 0, w, 220);
-        g.restore();
-      }
-      // 中央は拡散ハロ
-      const h = g.createRadialGradient(0, 0, 0, 0, 0, 180);
-      h.addColorStop(0, 'rgba(255,240,180,0.4)');
-      h.addColorStop(0.4, 'rgba(255,200,120,0.15)');
-      h.addColorStop(1, 'rgba(255,160,80,0)');
-      g.fillStyle = h; g.beginPath(); g.arc(0,0,180,0,Math.PI*2); g.fill();
-      return new THREE.CanvasTexture(sc);
-    })();
-    const godRayMat1 = new THREE.SpriteMaterial({ map: godRayTex, transparent: true, opacity: 0.0, depthWrite: false, blending: THREE.AdditiveBlending });
-    const godRay1 = new THREE.Sprite(godRayMat1);
-    godRay1.scale.set(26, 26, 1);
-    godRay1.position.set(0, 0, 0);
-    scene.add(godRay1);
-    const godRayMat2 = new THREE.SpriteMaterial({ map: godRayTex, transparent: true, opacity: 0.0, depthWrite: false, blending: THREE.AdditiveBlending });
-    const godRay2 = new THREE.Sprite(godRayMat2);
-    godRay2.scale.set(38, 38, 1);
-    godRay2.position.set(0, 0, 0);
-    godRay2.material.rotation = 0.3;
-    scene.add(godRay2);
-
-    // 大きなエーテル霞（太陽系全体を包む色彩ヴェール）
-    const etherTex = (() => {
-      const sc = document.createElement('canvas'); sc.width = 1024; sc.height = 1024;
-      const g = sc.getContext('2d');
-      g.globalCompositeOperation = 'lighter';
-      // 大きな紫/シアン/ローズの雲
-      const makeCloud = (cx, cy, r, hue, alpha) => {
-        const grd = g.createRadialGradient(cx, cy, 0, cx, cy, r);
-        grd.addColorStop(0, `hsla(${hue},70%,60%,${alpha})`);
-        grd.addColorStop(0.5, `hsla(${hue},60%,50%,${alpha*0.4})`);
-        grd.addColorStop(1, `hsla(${hue},60%,40%,0)`);
-        g.fillStyle = grd; g.beginPath(); g.arc(cx, cy, r, 0, Math.PI*2); g.fill();
-      };
-      makeCloud(320, 380, 340, 280, 0.18); // 紫
-      makeCloud(700, 480, 380, 200, 0.14); // シアン
-      makeCloud(540, 720, 300, 330, 0.16); // ローズ
-      makeCloud(820, 260, 260, 250, 0.12); // 群青
-      makeCloud(250, 780, 280, 310, 0.10); // マゼンタ
-      return new THREE.CanvasTexture(sc);
-    })();
-    const etherMat = new THREE.SpriteMaterial({ map: etherTex, transparent: true, opacity: 0.0, depthWrite: false, blending: THREE.AdditiveBlending });
-    const etherVeil = new THREE.Sprite(etherMat);
-    etherVeil.scale.set(200, 200, 1);
-    etherVeil.position.set(0, 0, -30);
-    scene.add(etherVeil);
-    const etherMat2 = new THREE.SpriteMaterial({ map: etherTex, transparent: true, opacity: 0.0, depthWrite: false, blending: THREE.AdditiveBlending });
-    const etherVeil2 = new THREE.Sprite(etherMat2);
-    etherVeil2.scale.set(260, 260, 1);
-    etherVeil2.position.set(20, -10, 40);
-    etherVeil2.material.rotation = 1.2;
-    scene.add(etherVeil2);
-
-    // 宇宙のホタル（浮遊する微光粒）
-    const mothCount = 120;
-    const mothGeo = new THREE.BufferGeometry();
-    const mothPos = new Float32Array(mothCount * 3);
-    const mothCol = new Float32Array(mothCount * 3);
-    const mothPhase = [];
-    for (let i = 0; i < mothCount; i++) {
-      const r = 15 + Math.random() * 45;
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(2 * Math.random() - 1);
-      mothPos[i*3] = r * Math.sin(phi) * Math.cos(theta);
-      mothPos[i*3+1] = r * Math.sin(phi) * Math.sin(theta);
-      mothPos[i*3+2] = r * Math.cos(phi);
-      const hue = [0.7, 0.55, 0.85, 0.45][Math.floor(Math.random() * 4)];
-      const col = new THREE.Color().setHSL(hue, 0.7, 0.75);
-      mothCol[i*3] = col.r; mothCol[i*3+1] = col.g; mothCol[i*3+2] = col.b;
-      mothPhase.push(Math.random() * Math.PI * 2);
-    }
-    mothGeo.setAttribute('position', new THREE.BufferAttribute(mothPos, 3));
-    mothGeo.setAttribute('color', new THREE.BufferAttribute(mothCol, 3));
-    const mothMat = new THREE.PointsMaterial({ size: 0.5, vertexColors: true, transparent: true, opacity: 0.0, depthWrite: false, blending: THREE.AdditiveBlending, map: softDotTex });
-    const cosmicMoths = new THREE.Points(mothGeo, mothMat);
-    scene.add(cosmicMoths);
-
     // 宇宙塵（近距離パララックス粒子）
     const dustCount = 400;
     const dustGeo = new THREE.BufferGeometry();
@@ -4280,39 +4181,6 @@
         }
       }
     ];
-    // 継ぎ目を目立たなくする（左右エッジをブレンド）+ 極をマイルドに
-    function smoothPlanetEdges(c, cx) {
-      const W = c.width, H = c.height;
-      const seamW = Math.floor(W * 0.05);
-      // 左端と右端を平均化して継ぎ目を消す
-      const imgL = cx.getImageData(0, 0, seamW, H);
-      const imgR = cx.getImageData(W - seamW, 0, seamW, H);
-      for (let y = 0; y < H; y++) {
-        for (let x = 0; x < seamW; x++) {
-          const t = x / seamW; // 0=左端, 1=内側
-          const i = (y * seamW + x) * 4;
-          // 左右を混ぜる（継ぎ目中心で均等）
-          const rL = imgL.data[i], gL = imgL.data[i+1], bL = imgL.data[i+2];
-          const rR = imgR.data[i], gR = imgR.data[i+1], bR = imgR.data[i+2];
-          const mixL = (1 - (1 - t) * 0.5);
-          imgL.data[i]   = rL * mixL + rR * (1 - mixL);
-          imgL.data[i+1] = gL * mixL + gR * (1 - mixL);
-          imgL.data[i+2] = bL * mixL + bR * (1 - mixL);
-          imgR.data[i]   = rR * mixL + rL * (1 - mixL);
-          imgR.data[i+1] = gR * mixL + gL * (1 - mixL);
-          imgR.data[i+2] = bR * mixL + bL * (1 - mixL);
-        }
-      }
-      cx.putImageData(imgL, 0, 0);
-      cx.putImageData(imgR, W - seamW, 0);
-      // 極（上下端）を少しぼかす
-      const poleH = Math.floor(H * 0.06);
-      const tg = cx.createLinearGradient(0, 0, 0, poleH);
-      tg.addColorStop(0, 'rgba(10,10,20,0.0)');
-      tg.addColorStop(1, 'rgba(10,10,20,0)');
-      // 単純にぼかしだけ適用：極付近をブラーする代替策は割愛
-    }
-
     // 惑星の手描きテクスチャ生成（惑星ごとに特徴ある柄）
     function makePlanetTexture(p) {
       const c = document.createElement('canvas');
@@ -4364,17 +4232,12 @@
         // オーストラリア
         cx.fillStyle = '#7a6838';
         drawLand([[790,340],[860,345],[900,360],[890,395],[850,405],[810,400],[790,380]]);
-        // 南極大陸（グラデでソフトに）
-        const sg = cx.createLinearGradient(0, 440, 0, 512);
-        sg.addColorStop(0, 'rgba(230,238,244,0)');
-        sg.addColorStop(0.4, 'rgba(230,238,244,0.7)');
-        sg.addColorStop(1, 'rgba(240,244,250,1)');
-        cx.fillStyle = sg; cx.fillRect(0, 440, c.width, 72);
-        // 北極（ソフト氷）
-        const ng = cx.createLinearGradient(0, 0, 0, 60);
-        ng.addColorStop(0, 'rgba(220,230,240,1)');
-        ng.addColorStop(1, 'rgba(216,228,236,0)');
-        cx.fillStyle = ng; cx.fillRect(0, 0, c.width, 60);
+        // 南極大陸（下部一帯）
+        cx.fillStyle = '#e6eef4';
+        cx.fillRect(0, 470, c.width, 42);
+        // 北極（上部氷）
+        cx.fillStyle = '#d8e4ec';
+        cx.fillRect(0, 0, c.width, 28);
         // 山岳（暗めの斑点）
         cx.fillStyle = 'rgba(60,40,30,0.35)';
         for (let i = 0; i < 40; i++) {
@@ -4489,15 +4352,10 @@
           cx.arc(Math.random() * c.width, Math.random() * c.height, 3 + Math.random() * 20, 0, Math.PI * 2);
           cx.fill();
         }
-        // 極冠（グラデでソフトに）
-        const mng = cx.createLinearGradient(0, 0, 0, 70);
-        mng.addColorStop(0, 'rgba(250,245,225,0.95)');
-        mng.addColorStop(1, 'rgba(250,245,225,0)');
-        cx.fillStyle = mng; cx.fillRect(0, 0, c.width, 70);
-        const msg = cx.createLinearGradient(0, c.height - 70, 0, c.height);
-        msg.addColorStop(0, 'rgba(250,245,225,0)');
-        msg.addColorStop(1, 'rgba(250,245,225,0.95)');
-        cx.fillStyle = msg; cx.fillRect(0, c.height - 70, c.width, 70);
+        // 極冠
+        cx.fillStyle = 'rgba(248,240,220,0.92)';
+        cx.fillRect(0, 0, c.width, 32);
+        cx.fillRect(0, c.height - 32, c.width, 32);
       } else if (p.name === '金星') {
         c.width = 1024; c.height = 512;
         cx.fillStyle = '#c8944c';
@@ -4592,12 +4450,8 @@
         }
         cx.globalCompositeOperation = 'source-over';
       }
-      // 継ぎ目ブレンド（ブラックホール以外）
-      if (p.name !== 'ブラックホール') {
-        try { smoothPlanetEdges(c, cx); } catch (e) {}
-      }
       const tex = new THREE.CanvasTexture(c);
-      tex.anisotropy = 16;
+      tex.anisotropy = 4;
       return tex;
     }
 
@@ -4608,14 +4462,9 @@
       'ブラックホール': 0
     };
     const planetMeshes = [];
-    const maxAnis = renderer.capabilities.getMaxAnisotropy ? renderer.capabilities.getMaxAnisotropy() : 1;
     PLANETS.forEach(p => {
-      const pGeo = new THREE.SphereGeometry(p.size, 96, 64); // さらに高解像度（継ぎ目対策）
-      const tex = makePlanetTexture(p);
-      tex.anisotropy = maxAnis;
-      tex.wrapS = THREE.RepeatWrapping;
-      tex.wrapT = THREE.ClampToEdgeWrapping;
-      const pMat = new THREE.MeshBasicMaterial({ map: tex });
+      const pGeo = new THREE.SphereGeometry(p.size, 48, 32); // 高解像度
+      const pMat = new THREE.MeshBasicMaterial({ map: makePlanetTexture(p) });
       const pMesh = new THREE.Mesh(pGeo, pMat);
       pMesh.visible = false;
       pMesh.userData = { ...p, angle: Math.random() * Math.PI * 2 };
@@ -5865,11 +5714,6 @@
         nebulaMeshes.forEach(m => m.material.opacity = reveal * 0.85);
         distantGalaxies.forEach(g => g.material.opacity = reveal * 0.7);
         dustMat.opacity = reveal * 0.55;
-        godRayMat1.opacity = reveal * 0.55;
-        godRayMat2.opacity = reveal * 0.35;
-        etherMat.opacity = reveal * 0.7;
-        etherMat2.opacity = reveal * 0.55;
-        mothMat.opacity = reveal * 0.8;
         if (bbAge > 1.5) {
           sun.visible = true;
           corona.visible = true;
@@ -6034,26 +5878,6 @@
         });
         dustPoints.rotation.y += 0.0002;
         dustPoints.rotation.x += 0.0001;
-        // ☀️ 光芒スプライトをゆっくり反転回転で神秘感
-        godRay1.material.rotation += 0.0015;
-        godRay2.material.rotation -= 0.001;
-        // 🌫️ エーテル霞のドリフト
-        etherVeil.material.rotation += 0.0005;
-        etherVeil2.material.rotation -= 0.0003;
-        etherVeil.position.x = Math.sin(universeTime * 0.03) * 15;
-        etherVeil2.position.y = Math.cos(universeTime * 0.02) * 10;
-        // ✨ コスミックホタルの浮遊と明滅
-        for (let i = 0; i < mothCount; i++) {
-          mothPhase[i] += 0.02 + (i % 5) * 0.003;
-          const phaseI = mothPhase[i];
-          // 小さな8の字軌道
-          mothPos[i*3]   += Math.sin(phaseI) * 0.008;
-          mothPos[i*3+1] += Math.cos(phaseI * 0.7) * 0.006;
-          mothPos[i*3+2] += Math.sin(phaseI * 0.5) * 0.005;
-        }
-        mothGeo.attributes.position.needsUpdate = true;
-        const mothTw = 0.4 + Math.sin(universeTime * 2) * 0.2;
-        mothMat.opacity = Math.max(0.3, reveal * 0.8 + mothTw * 0.2);
         // ランダムに流れ星（低確率）
         if (Math.random() < 0.008 && shootingStars.length < 5) spawnShootingStar();
         // 流れ星を動かす
