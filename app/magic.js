@@ -5991,8 +5991,17 @@
     // 影（本格的な奥行き）
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.xr.enabled = true; // WebXR（VRヘッドセット対応）
     stage.appendChild(renderer.domElement);
     renderer.domElement.style.touchAction = 'none';
+    if (ADDONS.VRButton) {
+      try {
+        const vrBtn = ADDONS.VRButton.createButton(renderer);
+        vrBtn.style.position = 'absolute'; vrBtn.style.bottom = '20px';
+        vrBtn.style.right = '20px'; vrBtn.style.zIndex = '20';
+        ov.appendChild(vrBtn);
+      } catch (e) { console.warn('VRButton', e); }
+    }
     const scene = new THREE.Scene();
 
     // 🌟 ポストプロセス：公式 EffectComposer + UnrealBloomPass（利用可能なら）
@@ -6471,6 +6480,33 @@
     ground.rotation.x = -Math.PI / 2;
     ground.receiveShadow = true;
     scene.add(ground);
+
+    // 🌼 MeshSurfaceSampler: 地面表面に花を均一散布（InstancedMesh で一括）
+    if (ADDONS.MeshSurfaceSampler) {
+      try {
+        const sampler = new ADDONS.MeshSurfaceSampler(ground).build();
+        const FLOWERS = 400;
+        const flowerGeo = new THREE.SphereGeometry(0.08, 6, 4);
+        const flowerMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.7 });
+        const flowers = new THREE.InstancedMesh(flowerGeo, flowerMat, FLOWERS);
+        const fd = new THREE.Object3D();
+        const tempPos = new THREE.Vector3();
+        const flowerColors = [0xff6080, 0xffd070, 0xffffff, 0xd080ff, 0xffb040];
+        for (let i = 0; i < FLOWERS; i++) {
+          sampler.sample(tempPos);
+          // ground は rotation.x = -PI/2 なので、sampled の Z が高さに相当
+          fd.position.set(tempPos.x, Math.abs(tempPos.z) + 0.05, tempPos.y);
+          const s = 0.6 + Math.random() * 0.6;
+          fd.scale.set(s, s, s);
+          fd.updateMatrix();
+          flowers.setMatrixAt(i, fd.matrix);
+          flowers.setColorAt(i, new THREE.Color(flowerColors[i % flowerColors.length]));
+        }
+        flowers.instanceMatrix.needsUpdate = true;
+        if (flowers.instanceColor) flowers.instanceColor.needsUpdate = true;
+        scene.add(flowers);
+      } catch (e) { console.warn('sampler', e); }
+    }
 
     // 🪨 島の縁下部（岩肌の逆円錐 — 浮島の根元を見せる）
     const cliffGeo = new THREE.CylinderGeometry(28, 8, 14, 36, 6, true);
@@ -7555,17 +7591,23 @@
     if (ADDONS.GLTFLoader) {
       const gltfLoader = new ADDONS.GLTFLoader();
       const base = 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r159/examples/models/gltf/';
-      // フラミンゴ（飛行アニメ）
+      // フラミンゴ（飛行アニメ）— SkeletonUtils.clone で5羽の群れ
       gltfLoader.load(base + 'Flamingo.glb', (gltf) => {
-        const flamingo = gltf.scene.children[0];
-        flamingo.scale.set(0.015, 0.015, 0.015);
-        flamingo.position.set(6, 7, 0);
-        flamingo.rotation.y = Math.PI / 2;
-        flamingo.traverse(o => { if (o.isMesh) o.castShadow = true; });
-        scene.add(flamingo);
-        const mixer = new THREE.AnimationMixer(flamingo);
-        mixer.clipAction(gltf.animations[0]).setDuration(1.2).play();
-        gltfMixers.push({ mixer, obj: flamingo, orbit: 7, angle: 0, speed: 0.006, baseY: 7 });
+        const cloneFn = ADDONS.SkeletonUtils ? ADDONS.SkeletonUtils.clone : (o) => o.clone(true);
+        const FLOCK = 5;
+        for (let k = 0; k < FLOCK; k++) {
+          const bird = cloneFn(gltf.scene.children[0]);
+          bird.scale.set(0.015, 0.015, 0.015);
+          const orbit = 7 + k * 0.8;
+          const angle = (k / FLOCK) * Math.PI * 2;
+          bird.position.set(Math.cos(angle) * orbit, 7 + k * 0.3, Math.sin(angle) * orbit);
+          bird.rotation.y = angle + Math.PI / 2;
+          bird.traverse(o => { if (o.isMesh) o.castShadow = true; });
+          scene.add(bird);
+          const mixer = new THREE.AnimationMixer(bird);
+          mixer.clipAction(gltf.animations[0]).setDuration(1.2 + k * 0.05).play();
+          gltfMixers.push({ mixer, obj: bird, orbit, angle, speed: 0.006, baseY: 7 + k * 0.3 });
+        }
       }, undefined, (e) => console.warn('flamingo', e));
       // パロット（枝に止まる）
       gltfLoader.load(base + 'Parrot.glb', (gltf) => {
@@ -8035,8 +8077,17 @@
     if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.xr.enabled = true; // WebXR（VRヘッドセット対応）
     stage.appendChild(renderer.domElement);
     renderer.domElement.style.touchAction = 'none';
+    if (ADDONS.VRButton) {
+      try {
+        const vrBtn = ADDONS.VRButton.createButton(renderer);
+        vrBtn.style.position = 'absolute'; vrBtn.style.bottom = '20px';
+        vrBtn.style.right = '20px'; vrBtn.style.zIndex = '20';
+        ov.appendChild(vrBtn);
+      } catch (e) { console.warn('VRButton', e); }
+    }
     const scene = new THREE.Scene();
     let composer = null;
     let bloom = null;
