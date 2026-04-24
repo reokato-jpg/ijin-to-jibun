@@ -4498,6 +4498,15 @@
         <img src="//i.moshimo.com/af/i/impression?a_id=5508512&p_id=5538&pc_id=15178&pl_id=89521" width="1" height="1" style="position:absolute;border:0;opacity:0" alt="">`
     },
     {
+      id: 'wine', ctx: ['wine','drink','person-wine-lover','lifestyle','food'],
+      mood: '酒を愛した偉人に共鳴した瞬間 → 一杯やりたくなる',
+      html: `<a class="aff-inline" href="https://px.a8.net/svt/ejp?a8mat=4B1SPY+9JJ4TU+5DIO+5Z6WX" rel="noopener sponsored nofollow" target="_blank">
+        <span class="aff-icon">🍷</span>
+        <span class="aff-text"><b>偉人と同じワインを</b> — 本場ワインをお取り寄せ</span>
+        <span class="aff-tag">PR</span></a>
+        <img border="0" width="1" height="1" src="https://www19.a8.net/0.gif?a8mat=4B1SPY+9JJ4TU+5DIO+5Z6WX" alt="" style="position:absolute;opacity:0">`
+    },
+    {
       id: 'tiramisu', ctx: ['food','person-italian','lifestyle','sweet'],
       mood: 'イタリア・甘味に心が動いた → 食卓を彩りたい',
       html: `<a class="aff-inline" href="https://px.a8.net/svt/ejp?a8mat=4B1SPY+9TNI42+32PK+HVV0H" rel="noopener sponsored nofollow" target="_blank">
@@ -4785,7 +4794,16 @@
   function setupPersonContextAds() {
     if (MAGIC._personCtxAdDone) return;
     MAGIC._personCtxAdDone = true;
-    const ITALIAN_KEYWORDS = ['イタリア', 'ローマ', 'フィレンツェ', 'ヴェネツィア', 'ナポリ', 'ミラノ'];
+    const ITALIAN_KW = ['イタリア', 'ローマ', 'フィレンツェ', 'ヴェネツィア', 'ナポリ', 'ミラノ'];
+    const WINE_KW = ['ワイン', '酒', '飲酒', 'アブサン', 'コニャック', 'ウィスキー', '大酒', '酒豪', 'ボヘミアン'];
+    // 酒を愛した偉人の明示リスト（キーワード検知で取りこぼすやつ）
+    const WINE_LOVERS = new Set([
+      'beethoven', 'hemingway', 'fitzgerald', 'churchill', 'van_gogh', 'picasso',
+      'dazai_osamu', 'nakahara_chuya', 'dazai', 'rimbaud', 'baudelaire', 'bukowski',
+      'truman_capote', 'faulkner', 'fitzgerald_scott', 'poe', 'schiller',
+      'pavarotti', 'verdi', 'puccini', 'ella_fitzgerald', 'sinatra',
+      'hiraga_gennai', 'yosano_akiko',
+    ]);
     const tryInject = () => {
       const personView = document.getElementById('view-person');
       if (!personView || !personView.classList.contains('active')) return;
@@ -4794,17 +4812,22 @@
       if (!name || !MAGIC._peopleBundle) return;
       const person = MAGIC._peopleBundle.find(p => p.name === name);
       if (!person) return;
-      // 国・出身に「イタリア」系キーワードがあるか
-      const country = (person.country || '') + (person.summary || '');
-      const isItalian = ITALIAN_KEYWORDS.some(k => country.includes(k));
-      if (!isItalian) return;
+      const text = (person.country || '') + (person.summary || '') + (person.lifeDigest || '');
+      const isItalian = ITALIAN_KW.some(k => text.includes(k));
+      const isWineLover = WINE_LOVERS.has(person.id) || WINE_KW.some(k => text.includes(k));
+      // 文脈が合うものを選ぶ（両方合致ならランダムにどちらか、片方ならそちら）
+      const ctxs = [];
+      if (isItalian) ctxs.push('person-italian');
+      if (isWineLover) ctxs.push('person-wine-lover');
+      if (!ctxs.length) return;
+      const chosenCtx = ctxs[Math.floor(Math.random() * ctxs.length)];
       // プロフィール下部に挿入するアンカー
       const anchor = personView.querySelector('.profile-info-card');
       if (!anchor) return;
       const slot = document.createElement('div');
       slot.className = 'aff-inline-ctx';
       anchor.parentNode.insertBefore(slot, anchor.nextSibling);
-      MAGIC.renderAffiliate('person-italian', slot, 1);
+      MAGIC.renderAffiliate(chosenCtx, slot, 1);
     };
     const mo = new MutationObserver(tryInject);
     mo.observe(document.body, { childList: true, subtree: true });
