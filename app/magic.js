@@ -5985,7 +5985,7 @@
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     renderer.setSize(W, H);
     if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.15;
+    renderer.toneMappingExposure = 0.85;
     if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
     else if ('outputEncoding' in renderer) renderer.outputEncoding = THREE.sRGBEncoding;
     // 影（本格的な奥行き）
@@ -6031,9 +6031,9 @@
       composer.addPass(new ADDONS.RenderPass(scene, camera));
       const bloomPass = new ADDONS.UnrealBloomPass(
         new THREE.Vector2(W, H),
-        0.45, // strength (下げて画面が白飛びしないように)
-        0.6,  // radius
-        0.55  // threshold (上げてbloomする範囲を絞る)
+        0.25, // strength (さらに抑制)
+        0.55, // radius
+        0.78  // threshold
       );
       composer.addPass(bloomPass);
       // カラーグレード（Vignette/Chromatic/Grain）を ShaderPass で追加
@@ -6154,6 +6154,7 @@
         pmrem.compileEquirectangularShader();
         const envRT = pmrem.fromScene(sky);
         scene.environment = envRT.texture;
+        if ('environmentIntensity' in scene) scene.environmentIntensity = 0.6;
       } catch (e) { console.warn('PMREM failed', e); }
       // 太陽方向の方向光も Sky に揃える
       sunLight.position.copy(sunDir).multiplyScalar(60);
@@ -7776,7 +7777,7 @@
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     renderer.setSize(W(), H());
     if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 0.75;
+    renderer.toneMappingExposure = 0.55;
     if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -7843,6 +7844,7 @@
         pmrem.compileEquirectangularShader();
         const envRT = pmrem.fromScene(bsky);
         scene.environment = envRT.texture;
+        if ('environmentIntensity' in scene) scene.environmentIntensity = 0.35;
       } catch (e) { console.warn('babel PMREM', e); }
     } else {
       scene.background = skyTex;
@@ -7916,7 +7918,9 @@
       t.wrapS = t.wrapT = THREE.RepeatWrapping;
       return t;
     })();
-    const brickMat = new THREE.MeshStandardMaterial({ map: brickTex, roughness: 0.88, color: 0xffffff });
+    const brickMat = new THREE.MeshStandardMaterial({ map: brickTex, roughness: 0.92, color: 0xb8a080 });
+    // 暗いコア用（内部が見えても気持ち悪くない色）
+    const darkCoreMat = new THREE.MeshStandardMaterial({ color: 0x3a2a1a, roughness: 0.95 });
 
     // 🏛 塔本体：ブリューゲル風の階段状ジッグラト
     //   各段は「円柱（壁）＋アーチ窓＋はっきりしたテラス」。
@@ -7959,12 +7963,21 @@
     for (let i = 0; i < STAGES; i++) {
       const rOuter = baseRadius - i * stepInset; // 段ごとに明確に縮む
       const yBase = i * stageHeight;
-      // 壁（ストレート円柱、rTop===rBottom なので台形にならない）
-      const wallGeo = new THREE.CylinderGeometry(rOuter, rOuter, stageHeight * 0.85, 48, 1, true);
-      const wall = new THREE.Mesh(wallGeo, brickMat);
+      // 壁（ストレート円柱、両面に見せるため DoubleSide + 閉じたジオメトリ）
+      const wallGeo = new THREE.CylinderGeometry(rOuter, rOuter, stageHeight * 0.85, 48, 1, false);
+      const wallMatDS = brickMat.clone();
+      wallMatDS.side = THREE.DoubleSide;
+      const wall = new THREE.Mesh(wallGeo, wallMatDS);
       wall.position.y = yBase + stageHeight * 0.425;
       wall.castShadow = true; wall.receiveShadow = true;
       tower.add(wall);
+      // 🏛 内部コア（アーチ越しに見えても"気持ち悪くない"暗い内壁）
+      const coreR = Math.max(1, rOuter - 1.2);
+      const coreGeo = new THREE.CylinderGeometry(coreR, coreR, stageHeight * 0.85, 24, 1, false);
+      const core = new THREE.Mesh(coreGeo, darkCoreMat);
+      core.position.y = yBase + stageHeight * 0.425;
+      core.receiveShadow = true;
+      tower.add(core);
       // アーチ窓層（わずかに外側にずらす）
       const archGeo = new THREE.CylinderGeometry(rOuter + 0.02, rOuter + 0.02, stageHeight * 0.6, 48, 1, true);
       const archMat = new THREE.MeshStandardMaterial({
@@ -8475,7 +8488,7 @@
       composer.addPass(new ADDONS.RenderPass(scene, camera));
       const bloomPass = new ADDONS.UnrealBloomPass(
         new THREE.Vector2(W(), H()),
-        0.14, 0.4, 0.92  // ほぼbloom無し（白飛び完全回避）
+        0.0, 0.4, 0.99  // バベルはbloom無し
       );
       composer.addPass(bloomPass);
       if (ADDONS.ShaderPass) {
