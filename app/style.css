@@ -678,6 +678,15 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 /* カスタムSVGアイコン（絵文字の代替、currentColor継承） */
 .ij-icon { display: inline-block; width: 1.1em; height: 1.1em; vertical-align: -0.18em; fill: currentColor; flex-shrink: 0; }
 .home-block-label .ij-icon { width: 20px; height: 20px; color: var(--gold); filter: drop-shadow(0 0 4px rgba(255,215,100,0.3)); margin-right: 4px; vertical-align: -0.2em; }
+/* 推しのきょう系の見出し内SVGを統一（ワインレッド） */
+.oshi-today-quote-head .ij-icon,
+.oshi-today-book-head .ij-icon,
+.oshi-today-routine-head .ij-icon,
+.oshi-today-letter-head .ij-icon { width: 14px; height: 14px; color: var(--wine); vertical-align: -0.15em; margin-right: 4px; }
+/* 汎用サイズ統一 */
+h2 .ij-icon, h3 .ij-icon { vertical-align: -0.15em; margin-right: 4px; }
+.beginner-collapsible summary .ij-icon { width: 18px; height: 18px; color: #c1527a; margin-right: 4px; vertical-align: -0.18em; }
+.era-page-h2 .ij-icon { width: 18px; height: 18px; color: var(--wine); margin-right: 4px; vertical-align: -0.18em; }
 
 /* ================ 今日の言葉 ================ */
 .qod-attrib {
