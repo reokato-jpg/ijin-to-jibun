@@ -13894,14 +13894,17 @@ h2 .ij-icon, h3 .ij-icon { vertical-align: -0.15em; margin-right: 4px; }
 }
 .phone-close-btn:hover { transform: scale(1.1); }
 
-/* 電源ボタンを指さすキャラアニメ（ラジオ）— 通常の場所（左下）に戻す */
+/* 電源ボタンを指さすキャラアニメ（ラジオ）— 左下角に確実に配置 */
 .power-hint-anim {
   position: fixed !important;
-  left: 82px !important;
+  left: 14px !important;
   right: auto !important;
-  bottom: 22px !important;
+  top: auto !important;
+  bottom: 14px !important;
   width: 56px !important;
   height: 56px !important;
+  margin: 0 !important;
+  transform: none !important;
   width: 56px;
   height: 56px;
   z-index: 49;
