@@ -4011,14 +4011,14 @@ h2 .ij-icon, h3 .ij-icon { vertical-align: -0.15em; margin-right: 4px; }
 }
 
 /* 📑 ホーム目次 — 右下フローティングFAB */
-.home-toc-wrap { position: fixed; right: 14px; bottom: 148px; z-index: 45; }
+.home-toc-wrap { position: fixed; right: 14px; bottom: 110px; z-index: 45; }
 /* 💬 チャットFAB（おーい）を非表示 — ユーザー指示により削除 */
 .chat-fab-wrap, .chat-fab { display: none !important; }
 /* ▲ トップへ戻るFAB — ◁配置の左頂点（TOCとミュートの間の高さに、左にオフセット） */
 .back-to-top-fab {
   position: fixed;
-  right: 70px;
-  bottom: 107px;
+  right: 66px;
+  bottom: 66px;
   z-index: 44;
   width: 40px; height: 40px;
   border-radius: 50%;
@@ -12831,7 +12831,7 @@ body:has(#phoneMusicApp:not([hidden])) .back-to-top-fab { opacity: 0 !important;
 .mute-toggle {
   position: fixed;
   right: 14px;
-  bottom: 86px;
+  bottom: 22px;
   width: 40px;
   height: 40px;
   border-radius: 50%;
