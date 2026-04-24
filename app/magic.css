@@ -383,9 +383,9 @@ body:has(.quote-zoom.open) .magic-parade {
   right: 50%;
   margin-left: -50vw;
   margin-right: -50vw;
-  margin-top: 0;
+  margin-top: -8px;
   margin-bottom: -1px;
-  padding: 24px 16px 24px;
+  padding: 18px 16px 22px;
   box-sizing: border-box;
   /* 上は濃色のまま始まる（ヘッダーと溶け合う）、下だけ背景パーチメントへフェード */
   background:

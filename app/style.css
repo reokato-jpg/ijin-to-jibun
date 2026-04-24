@@ -4010,8 +4010,32 @@ h2 .ij-icon, h3 .ij-icon { vertical-align: -0.15em; margin-right: 4px; }
   .audible-hero-sub { font-size: 10px; }
 }
 
-/* 📑 ホーム目次 — 右下フローティングFAB（ラジオ/ミュート/チャットから十分離して配置） */
-.home-toc-wrap { position: fixed; right: 14px; bottom: 200px; z-index: 45; }
+/* 📑 ホーム目次 — 右下フローティングFAB */
+.home-toc-wrap { position: fixed; right: 14px; bottom: 148px; z-index: 45; }
+/* 💬 チャットFAB（おーい）を非表示 — ユーザー指示により削除 */
+.chat-fab-wrap, .chat-fab { display: none !important; }
+/* ▲ トップへ戻るFAB — ◁配置の左頂点（TOCとミュートの間の高さに、左にオフセット） */
+.back-to-top-fab {
+  position: fixed;
+  right: 70px;
+  bottom: 107px;
+  z-index: 44;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: rgba(74,24,34,0.9);
+  color: var(--gold-light);
+  border: 1.5px solid var(--gold);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+body:has(.view.active#view-people) .back-to-top-fab { opacity: 1; pointer-events: auto; }
+body.modal-open .back-to-top-fab { opacity: 0 !important; pointer-events: none !important; }
+body:has(#phoneMusicApp:not([hidden])) .back-to-top-fab { opacity: 0 !important; pointer-events: none !important; }
 .home-toc { background: transparent; border: none; }
 .home-toc-summary { width: 48px; height: 48px; border-radius: 50%; padding: 0; background: var(--wine); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; list-style: none; font-size: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.25); transition: transform 0.15s; }
 .home-toc-summary:hover { transform: scale(1.05); }
