@@ -5991,17 +5991,9 @@
     // 影（本格的な奥行き）
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    renderer.xr.enabled = true; // WebXR（VRヘッドセット対応）
+    // WebXR は composer と競合するので一時無効
     stage.appendChild(renderer.domElement);
     renderer.domElement.style.touchAction = 'none';
-    if (ADDONS.VRButton) {
-      try {
-        const vrBtn = ADDONS.VRButton.createButton(renderer);
-        vrBtn.style.position = 'absolute'; vrBtn.style.bottom = '20px';
-        vrBtn.style.right = '20px'; vrBtn.style.zIndex = '20';
-        ov.appendChild(vrBtn);
-      } catch (e) { console.warn('VRButton', e); }
-    }
     const scene = new THREE.Scene();
 
     // 先行定義：composer内でも使うため
@@ -7256,10 +7248,32 @@
       iridescenceIOR: 1.3,
       envMap: edenCubeRT ? edenCubeRT.texture : null, // 動的反射
     });
+    // リンゴ型ジオメトリ：上下に凹み（stem well / calyx）、縦に少しつぶす
+    function makeAppleGeometry(radius) {
+      const geo = new THREE.SphereGeometry(radius, 24, 20);
+      const pos = geo.attributes.position;
+      for (let v = 0; v < pos.count; v++) {
+        const x = pos.getX(v), y = pos.getY(v), z = pos.getZ(v);
+        const r = Math.hypot(x, y, z);
+        const yNorm = y / radius; // -1(下) ~ 1(上)
+        // 上下のくぼみ：|yNorm|が1に近い場所を中央にすぼめる
+        const dimple = Math.pow(Math.abs(yNorm), 4) * 0.45;
+        const scaleXZ = 1 - dimple;
+        // 縦方向に 10% つぶす（リンゴは横に広い）
+        const yOut = y * 0.92;
+        pos.setX(v, x * scaleXZ);
+        pos.setZ(v, z * scaleXZ);
+        pos.setY(v, yOut);
+      }
+      pos.needsUpdate = true;
+      geo.computeVertexNormals();
+      return geo;
+    }
+    const appleGeoShared = makeAppleGeometry(0.28);
     for (let i = 0; i < 18; i++) {
       const theta = (i / 18) * Math.PI * 2 + Math.random() * 0.6;
       const r = 3.8 + Math.random() * 3.0;
-      const apple = new THREE.Mesh(new THREE.SphereGeometry(0.24, 16, 12), appleMat);
+      const apple = new THREE.Mesh(appleGeoShared, appleMat);
       apple.position.set(Math.cos(theta) * r, 9.5 + Math.random() * 2.0, Math.sin(theta) * r);
       // ハイライト
       const hl = new THREE.Mesh(
@@ -7846,7 +7860,13 @@
         if (!horse) horse = gltf.scene.children[0] || gltf.scene;
         if (!horse) return;
         horse.scale.set(0.015, 0.015, 0.015);
-        horse.position.set(-6, 0, 5);
+        // 島は中央が高い丘。馬の足元を島の表面に合わせる
+        const hx = -6, hz = 5;
+        const hillY = Math.exp(-(hx*hx + hz*hz) / 120) * 2.4;
+        horse.geometry?.computeBoundingBox?.();
+        const bb = horse.geometry?.boundingBox;
+        const footOffset = bb ? -bb.min.y * 0.015 : 2.0;
+        horse.position.set(hx, hillY + footOffset, hz);
         horse.rotation.y = 0.5;
         horse.traverse(o => { if (o.isMesh) o.castShadow = true; });
         scene.add(horse);
@@ -8127,8 +8147,11 @@
           c.rotation.x += 0.12; c.rotation.z += 0.08;
           if (c.userData.halo) c.userData.halo.position.copy(c.position);
           if (c.userData.hl) c.userData.hl.position.set(c.position.x - 0.05, c.position.y + 0.08, c.position.z);
-          if (c.position.y <= 0.18) {
-            c.position.y = 0.18;
+          // 島の丘の高さに合わせる（中央が高い地面）
+          const r = Math.hypot(c.position.x, c.position.z);
+          const gy = Math.exp(-r * r / 120) * 2.4 + 0.15; // 地面 + リンゴ半径
+          if (c.position.y <= gy) {
+            c.position.y = gy;
             c.userData.vel.set(0, 0, 0);
             c.userData.state = 'fallen';
           }
@@ -8323,17 +8346,9 @@
     if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    renderer.xr.enabled = true; // WebXR（VRヘッドセット対応）
+    // WebXR は composer と競合するので一時無効
     stage.appendChild(renderer.domElement);
     renderer.domElement.style.touchAction = 'none';
-    if (ADDONS.VRButton) {
-      try {
-        const vrBtn = ADDONS.VRButton.createButton(renderer);
-        vrBtn.style.position = 'absolute'; vrBtn.style.bottom = '20px';
-        vrBtn.style.right = '20px'; vrBtn.style.zIndex = '20';
-        ov.appendChild(vrBtn);
-      } catch (e) { console.warn('VRButton', e); }
-    }
     const scene = new THREE.Scene();
     let composer = null;
     let bloom = null;
