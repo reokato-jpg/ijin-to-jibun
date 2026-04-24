@@ -7789,44 +7789,33 @@
     const useProB = ADDONS.EffectComposer && ADDONS.RenderPass && ADDONS.UnrealBloomPass;
     // camera 作成後に初期化
     // 嵐の空（暗い青紫→遠くに黄土）
+    // 晴天フォールバック空（Sky addon 失敗時用、Bruegel明るい午後）
     const skyTex = (() => {
       const sc = document.createElement('canvas'); sc.width = 2048; sc.height = 1024;
       const g = sc.getContext('2d');
       const grd = g.createLinearGradient(0, 0, 0, 1024);
-      grd.addColorStop(0, '#181a30');
-      grd.addColorStop(0.4, '#3a2840');
-      grd.addColorStop(0.72, '#8a6a4a');
-      grd.addColorStop(1, '#d8a868');
+      grd.addColorStop(0, '#6a88b8');   // 高空の青
+      grd.addColorStop(0.35, '#9abacc');
+      grd.addColorStop(0.6, '#d4c8a8'); // 地平線に近い暖色
+      grd.addColorStop(1, '#e8dcb8');
       g.fillStyle = grd; g.fillRect(0, 0, 2048, 1024);
-      // 暗い嵐雲
-      for (let i = 0; i < 28; i++) {
-        const x = Math.random() * 2048, y = 80 + Math.random() * 500;
-        const w = 150 + Math.random() * 300;
+      // 柔らかい雲
+      for (let i = 0; i < 24; i++) {
+        const x = Math.random() * 2048, y = 100 + Math.random() * 420;
+        const w = 120 + Math.random() * 260;
         const grd2 = g.createRadialGradient(x, y, 0, x, y, w);
-        grd2.addColorStop(0, 'rgba(20,15,30,0.85)');
-        grd2.addColorStop(0.6, 'rgba(50,35,55,0.4)');
-        grd2.addColorStop(1, 'rgba(50,35,55,0)');
+        grd2.addColorStop(0, 'rgba(255,255,255,0.75)');
+        grd2.addColorStop(0.5, 'rgba(255,250,240,0.35)');
+        grd2.addColorStop(1, 'rgba(255,250,240,0)');
         g.fillStyle = grd2;
-        g.beginPath(); g.ellipse(x, y, w, w * 0.4, 0, 0, Math.PI*2); g.fill();
-      }
-      // 雷の閃光跡（縦筋）
-      for (let i = 0; i < 5; i++) {
-        g.strokeStyle = `rgba(240,230,200,${0.15 + Math.random() * 0.2})`;
-        g.lineWidth = 1 + Math.random() * 2;
-        g.beginPath();
-        const x = Math.random() * 2048;
-        g.moveTo(x, 0);
-        let cy = 0;
-        while (cy < 500) {
-          cy += 20 + Math.random() * 30;
-          g.lineTo(x + (Math.random() - 0.5) * 40, cy);
-        }
-        g.stroke();
+        g.beginPath(); g.ellipse(x, y, w, w * 0.32, 0, 0, Math.PI*2); g.fill();
       }
       return new THREE.CanvasTexture(sc);
     })();
     // 🌤 空：ブリューゲル忠実 — 明るい午後、澄んだ青空
-    scene.background = new THREE.Color(0xb0c4d8); // 青空フォールバック（Sky失敗時）
+    // まず必ず見えるフォールバックを設定（3重保険）
+    renderer.setClearColor(0xb0c4d8, 1);
+    scene.background = skyTex; // キャンバス生成の昼空
     if (ADDONS.Sky) {
       const bsky = new ADDONS.Sky();
       bsky.scale.setScalar(600);
