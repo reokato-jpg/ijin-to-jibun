@@ -540,6 +540,7 @@
               <button class="magic-topbook-pill magic-topbook-pill-glossary" data-deep="glossary">📖 用語集</button>
               <button class="magic-topbook-pill magic-topbook-pill-myth" data-deep="mythology">✦ Genesis — はじまりの書</button>
               <button class="magic-topbook-pill magic-topbook-pill-museum" data-deep="museum">🏛 美 術 館</button>
+              <button class="magic-topbook-pill magic-topbook-pill-multiverse" data-deep="multiverse">🌀 マ ル チ バ ー ス</button>
             </div>
           </div>
         </div>
@@ -573,6 +574,7 @@
         glossary: () => { try { openGlossary(); } catch (e) { console.warn('glossary', e); } },
         mythology: () => { try { openMythology(); } catch (e) { console.warn('mythology', e); } },
         museum:   () => { try { openMuseumHub(); } catch (e) { console.warn('museum', e); } },
+        multiverse: () => { try { openMultiverse(); } catch (e) { console.warn('multiverse', e); } },
       };
       wrap.querySelectorAll('[data-deep]').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -8731,6 +8733,284 @@
     setTimeout(() => ov.querySelector('#babel3dHint')?.classList.add('fade'), 5000);
   }
   window.openBabel3D = openBabel3D;
+
+  // ============================================================
+  // 🌀 マルチバース・ハブ — すべての世界を繋ぐ宇宙の中継点
+  // ============================================================
+  const MULTIVERSE_WORLDS = [
+    { key: 'cosmos', emoji: '🌌', name: '宇宙の誕生', sub: '星々と銀河、万物の始まり',
+      color: 0x6080ff, action: () => window.openCosmos && window.openCosmos() },
+    { key: 'eden', emoji: '🌳', name: 'エデンの園', sub: '浮島に立つ生命の樹',
+      color: 0x60c080, action: () => window.openEden3D && window.openEden3D() },
+    { key: 'babel', emoji: '🏛', name: 'バベルの塔', sub: '天に届こうとした石の螺旋',
+      color: 0xc0a060, action: () => window.openBabel3D && window.openBabel3D() },
+    { key: 'myth', emoji: '✦', name: '神話美術館', sub: '世界の創世と神々の絵画',
+      color: 0xc08050, action: () => window.openMythMuseum && window.openMythMuseum('myth') },
+    { key: 'sengoku', emoji: '⚔', name: '戦国美術館', sub: '武将と合戦の大和ホール',
+      color: 0xa04030, action: () => window.openMythMuseum && window.openMythMuseum('sengoku') },
+  ];
+
+  async function openMultiverse() {
+    if (!window.THREE) return;
+    const THREE = window.THREE;
+    if (window.THREE_READY) { try { await window.THREE_READY; } catch {} }
+    const ADDONS = window.THREE_ADDONS || {};
+
+    const ov = document.createElement('div');
+    ov.className = 'multiverse-overlay';
+    ov.innerHTML = `
+      <button class="mv-close" aria-label="閉じる">×</button>
+      <div class="mv-stage" id="mvStage"></div>
+      <div class="mv-title">M U L T I V E R S E</div>
+      <div class="mv-sub">── 世界を繋ぐ、宇宙の中継点 ──</div>
+      <div class="mv-info" id="mvInfo"></div>
+      <button class="mv-enter-btn" id="mvEnterBtn">入る ›</button>
+      <div class="mv-hint">ドラッグで回転　・　ポータルをタップで選択</div>
+    `;
+    document.body.appendChild(ov);
+    requestAnimationFrame(() => ov.classList.add('open'));
+    let running = true;
+    const close = () => {
+      running = false;
+      ov.classList.remove('open');
+      setTimeout(() => ov.remove(), 500);
+    };
+    ov.querySelector('.mv-close').addEventListener('click', close);
+
+    const stage = ov.querySelector('#mvStage');
+    const infoEl = ov.querySelector('#mvInfo');
+    const enterBtn = ov.querySelector('#mvEnterBtn');
+    const W = () => stage.clientWidth || window.innerWidth;
+    const H = () => stage.clientHeight || window.innerHeight;
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+    renderer.setSize(W(), H());
+    if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.1;
+    if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
+    stage.appendChild(renderer.domElement);
+    renderer.domElement.style.touchAction = 'none';
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x020015);
+    scene.fog = new THREE.Fog(0x020015, 20, 80);
+
+    // 星場
+    const starGeo = new THREE.BufferGeometry();
+    const STARS = 2500;
+    const sp = new Float32Array(STARS * 3);
+    for (let i = 0; i < STARS; i++) {
+      const r = 40 + Math.random() * 60;
+      const th = Math.random() * Math.PI * 2;
+      const ph = Math.acos(2 * Math.random() - 1);
+      sp[i*3] = Math.sin(ph) * Math.cos(th) * r;
+      sp[i*3+1] = Math.cos(ph) * r;
+      sp[i*3+2] = Math.sin(ph) * Math.sin(th) * r;
+    }
+    starGeo.setAttribute('position', new THREE.BufferAttribute(sp, 3));
+    const starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.25, sizeAttenuation: true, transparent: true, opacity: 0.85, depthWrite: false });
+    scene.add(new THREE.Points(starGeo, starMat));
+
+    // 星雲の塵（additive、柔らかい色）
+    for (let k = 0; k < 3; k++) {
+      const nebulaTex = (() => {
+        const c = document.createElement('canvas'); c.width = 256; c.height = 256;
+        const g = c.getContext('2d');
+        const hues = [[80, 60, 200], [120, 40, 160], [200, 80, 180]];
+        const h = hues[k];
+        const grd = g.createRadialGradient(128, 128, 0, 128, 128, 128);
+        grd.addColorStop(0, `rgba(${h[0]},${h[1]},${h[2]},0.35)`);
+        grd.addColorStop(0.5, `rgba(${h[0]},${h[1]},${h[2]},0.1)`);
+        grd.addColorStop(1, `rgba(${h[0]},${h[1]},${h[2]},0)`);
+        g.fillStyle = grd; g.fillRect(0, 0, 256, 256);
+        return new THREE.CanvasTexture(c);
+      })();
+      const nebula = new THREE.Mesh(
+        new THREE.PlaneGeometry(45, 45),
+        new THREE.MeshBasicMaterial({ map: nebulaTex, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending, depthWrite: false, fog: false })
+      );
+      const a = Math.random() * Math.PI * 2;
+      nebula.position.set(Math.cos(a) * 25, (Math.random() - 0.5) * 10, Math.sin(a) * 25);
+      nebula.lookAt(0, 0, 0);
+      scene.add(nebula);
+    }
+
+    // 🌀 中央の光核（目を引くアンカー）
+    const coreTex = (() => {
+      const c = document.createElement('canvas'); c.width = 256; c.height = 256;
+      const g = c.getContext('2d');
+      const grd = g.createRadialGradient(128, 128, 0, 128, 128, 128);
+      grd.addColorStop(0, 'rgba(255,255,255,1)');
+      grd.addColorStop(0.2, 'rgba(200,180,255,0.8)');
+      grd.addColorStop(0.6, 'rgba(120,100,220,0.3)');
+      grd.addColorStop(1, 'rgba(80,60,180,0)');
+      g.fillStyle = grd; g.fillRect(0, 0, 256, 256);
+      return new THREE.CanvasTexture(c);
+    })();
+    const coreSpr = new THREE.Sprite(new THREE.SpriteMaterial({
+      map: coreTex, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, fog: false,
+    }));
+    coreSpr.scale.set(4, 4, 4);
+    scene.add(coreSpr);
+
+    // 🌀 ポータル（各世界の入り口）
+    const PORTALS = [];
+    const R = 10; // 中央からの距離
+    MULTIVERSE_WORLDS.forEach((w, i) => {
+      const a = (i / MULTIVERSE_WORLDS.length) * Math.PI * 2;
+      const g = new THREE.Group();
+      g.position.set(Math.cos(a) * R, Math.sin((i % 2 ? 1 : -1) * 0.35) * 2, Math.sin(a) * R);
+
+      // 外リング（太いTorus、emissive、脈動）
+      const ringMat = new THREE.MeshBasicMaterial({
+        color: w.color, transparent: true, opacity: 0.95,
+        blending: THREE.AdditiveBlending, depthWrite: false, fog: false,
+      });
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(1.6, 0.16, 16, 64), ringMat);
+      g.add(ring);
+      // 内側のディスク（世界色のグラデ）
+      const discTex = (() => {
+        const c = document.createElement('canvas'); c.width = 256; c.height = 256;
+        const ctx = c.getContext('2d');
+        const col = new THREE.Color(w.color);
+        const grd = ctx.createRadialGradient(128, 128, 0, 128, 128, 128);
+        grd.addColorStop(0, `rgba(${(col.r*255)|0},${(col.g*255)|0},${(col.b*255)|0},0.95)`);
+        grd.addColorStop(0.5, `rgba(${(col.r*200)|0},${(col.g*200)|0},${(col.b*200)|0},0.5)`);
+        grd.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = grd; ctx.fillRect(0, 0, 256, 256);
+        // 模様（世界の絵文字を中央に描画）
+        ctx.font = 'bold 100px serif';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillStyle = '#ffffff';
+        ctx.shadowColor = '#fff'; ctx.shadowBlur = 20;
+        ctx.fillText(w.emoji, 128, 138);
+        return new THREE.CanvasTexture(c);
+      })();
+      const disc = new THREE.Mesh(
+        new THREE.CircleGeometry(1.5, 48),
+        new THREE.MeshBasicMaterial({ map: discTex, transparent: true, depthWrite: false, side: THREE.DoubleSide, fog: false })
+      );
+      g.add(disc);
+      // 輝きのハロ
+      const halo = new THREE.Sprite(new THREE.SpriteMaterial({
+        map: coreTex, color: w.color, transparent: true, opacity: 0.6,
+        blending: THREE.AdditiveBlending, depthWrite: false, fog: false,
+      }));
+      halo.scale.set(4.5, 4.5, 4.5);
+      g.add(halo);
+      // クリック判定用の透明ヒットエリア
+      const hit = new THREE.Mesh(
+        new THREE.CircleGeometry(1.7, 24),
+        new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, side: THREE.DoubleSide })
+      );
+      g.add(hit);
+      g.userData.world = w;
+      g.userData.ring = ring;
+      g.userData.halo = halo;
+      g.userData.hit = hit;
+      g.userData.phase = Math.random() * Math.PI * 2;
+      g.userData.baseY = g.position.y;
+      scene.add(g);
+      PORTALS.push(g);
+    });
+
+    // カメラ
+    const camera = new THREE.PerspectiveCamera(50, W()/H(), 0.1, 300);
+    let camAngle = 0, camTilt = 0.2, camDist = 22;
+    camera.position.set(0, camDist * 0.25, camDist);
+    camera.lookAt(0, 0, 0);
+
+    // 入力
+    let dragging = false, lastX = 0, lastY = 0;
+    renderer.domElement.addEventListener('pointerdown', e => {
+      dragging = true; lastX = e.clientX; lastY = e.clientY;
+    });
+    renderer.domElement.addEventListener('pointermove', e => {
+      if (!dragging) return;
+      camAngle -= (e.clientX - lastX) * 0.007;
+      camTilt = Math.max(-0.4, Math.min(0.9, camTilt + (e.clientY - lastY) * 0.005));
+      lastX = e.clientX; lastY = e.clientY;
+    });
+    renderer.domElement.addEventListener('pointerup', e => {
+      dragging = false;
+      // ポータルタップ判定
+      const rect = renderer.domElement.getBoundingClientRect();
+      const ray = new THREE.Raycaster();
+      const pt = new THREE.Vector2(
+        ((e.clientX - rect.left) / rect.width) * 2 - 1,
+        -((e.clientY - rect.top) / rect.height) * 2 + 1
+      );
+      ray.setFromCamera(pt, camera);
+      const hits = ray.intersectObjects(PORTALS.map(p => p.userData.hit), false);
+      if (hits.length) {
+        const portal = hits[0].object.parent;
+        selected = portal;
+      }
+    });
+    renderer.domElement.addEventListener('pointerleave', () => dragging = false);
+    renderer.domElement.addEventListener('wheel', e => {
+      e.preventDefault();
+      camDist = Math.max(10, Math.min(40, camDist + e.deltaY * 0.02));
+    }, { passive: false });
+
+    let selected = null;
+    function updateSelection() {
+      PORTALS.forEach(p => {
+        const isSelected = (p === selected);
+        p.userData.ring.material.opacity = isSelected ? 1.0 : 0.6;
+        p.scale.setScalar(isSelected ? 1.2 : 1.0);
+      });
+      if (selected) {
+        const w = selected.userData.world;
+        infoEl.innerHTML = `<div class="mv-info-emoji">${w.emoji}</div><div class="mv-info-name">${w.name}</div><div class="mv-info-sub">${w.sub}</div>`;
+        infoEl.classList.add('show');
+        enterBtn.classList.add('show');
+        enterBtn.onclick = () => {
+          close();
+          setTimeout(() => w.action && w.action(), 500);
+        };
+      } else {
+        infoEl.classList.remove('show');
+        enterBtn.classList.remove('show');
+      }
+    }
+
+    // アニメ
+    let t = 0;
+    let lastSelected = null;
+    function animate() {
+      if (!running) return;
+      t += 0.016;
+      if (!dragging) camAngle += 0.0008;
+      camera.position.x = Math.cos(camAngle) * camDist;
+      camera.position.z = Math.sin(camAngle) * camDist;
+      camera.position.y = camDist * 0.25 + camTilt * 6;
+      camera.lookAt(0, 0, 0);
+      // 中央核の脈動
+      coreSpr.material.opacity = 0.75 + Math.sin(t * 1.2) * 0.15;
+      coreSpr.scale.setScalar(4 + Math.sin(t) * 0.3);
+      // ポータルの浮遊＆回転
+      PORTALS.forEach(p => {
+        p.userData.phase += 0.02;
+        p.position.y = p.userData.baseY + Math.sin(p.userData.phase) * 0.3;
+        p.userData.ring.rotation.z += 0.008;
+        // カメラの方を常に向く
+        p.lookAt(camera.position.x, p.position.y, camera.position.z);
+      });
+      if (selected !== lastSelected) { updateSelection(); lastSelected = selected; }
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      renderer.setSize(W(), H());
+      camera.aspect = W()/H();
+      camera.updateProjectionMatrix();
+    });
+  }
+  window.openMultiverse = openMultiverse;
 
   // ============================================================
   // 🖼 美術館モード（タップした絵画を3D展示室で大画面で見る）
