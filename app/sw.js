@@ -6,7 +6,7 @@
 // - Firebase/Firestore: 素通し（認証や書き込みは素のネット通信）
 // - クロスオリジン画像（Wikipedia 等）: cache-first（一度見た肖像画はオフラインでも表示）
 
-const VERSION = 'v20260501N';
+const VERSION = 'v20260501O';
 const STATIC_CACHE = `ijin-static-${VERSION}`;
 const DATA_CACHE   = `ijin-data-${VERSION}`;
 const AUDIO_CACHE  = `ijin-audio-${VERSION}`;
@@ -31,7 +31,8 @@ const PRECACHE_SHELL = [
 // プリキャッシュしたいデータ（起動時にバックグラウンドで取得を試みる）
 const PRECACHE_DATA = [
   '/data/manifest.json',
-  '/data/people-bundle.json',
+  '/data/people-lite.json',   // 軽量版（初回ロード用）
+  '/data/people-bundle.json', // 詳細版（バックグラウンド）
   '/data/eras.json',
   '/data/updates.json',
   '/data/tags.json',
@@ -86,7 +87,7 @@ self.addEventListener('activate', (event) => {
 
 // ---- ユーティリティ ----
 function isDataRequest(url) {
-  return /\/data\/(people|eras|updates|tags|articles|manifest|people-bundle)/.test(url.pathname);
+  return /\/data\/(people|eras|updates|tags|articles|manifest|people-bundle|people-lite)/.test(url.pathname);
 }
 function isStaticAsset(url) {
   return /\.(?:js|css|png|jpg|jpeg|webp|svg|gif|woff2?|ttf|ico|json)$/i.test(url.pathname);

@@ -8473,7 +8473,9 @@
           centerImg.setAttribute('width', '120');
           centerImg.setAttribute('height', '120');
           centerImg.setAttribute('preserveAspectRatio', 'xMidYMid slice');
-          centerImg.setAttribute('clip-path', 'circle(60px at 0 0)');
+          // clip-path は element 座標系（image の origin=TOP-LEFT 基準）なので
+          // 120x120 の画像の中心 (60px, 60px) に配置すべし
+          centerImg.setAttribute('clip-path', 'circle(60px at 60px 60px)');
         }
         if (centerName) centerName.textContent = d.p.name;
         if (centerDate) {

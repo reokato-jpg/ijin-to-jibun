@@ -72,15 +72,38 @@ async function loadData() {
     DATA.tags = tagsData.categories;
     DATA.tagMap = Object.fromEntries(DATA.tags.map(t => [t.id, t]));
 
-    // バンドルを先に試す（163個別fetch→1個に集約で初回ロードが劇的に軽い）
+    // 🪶 2段階ロード: 軽量版を先に出して表示を高速化、詳細はバックグラウンドで差し替え
     let people = null;
     try {
-      const bundleRes = await fetch(`../data/people-bundle.json${bust}`, { cache: 'no-store' });
-      if (bundleRes.ok) {
-        const bundle = await bundleRes.json();
-        if (Array.isArray(bundle.people) && bundle.people.length) people = bundle.people;
+      // まず Lite（数10KB）を取得 → ホーム/一覧を即レンダリング
+      const liteRes = await fetch(`../data/people-lite.json${bust}`, { cache: 'no-store' });
+      if (liteRes.ok) {
+        const lite = await liteRes.json();
+        if (Array.isArray(lite.people) && lite.people.length) {
+          people = lite.people;
+          // 詳細バンドルをバックグラウンド取得して置き換え（events/works/relations等）
+          fetch(`../data/people-bundle.json${bust}`, { cache: 'no-store' })
+            .then(r => r.ok ? r.json() : null)
+            .then(full => {
+              if (full && Array.isArray(full.people)) {
+                DATA.people = full.people;
+                // DATA.people が変わったので、詳細ページや波紋グラフがあれば更新
+                try { window.dispatchEvent(new CustomEvent('ijin:data-hydrated')); } catch {}
+              }
+            }).catch(() => {});
+        }
       }
     } catch {}
+    // Lite が失敗した場合は従来どおり full bundle を取る
+    if (!people) {
+      try {
+        const bundleRes = await fetch(`../data/people-bundle.json${bust}`, { cache: 'no-store' });
+        if (bundleRes.ok) {
+          const bundle = await bundleRes.json();
+          if (Array.isArray(bundle.people) && bundle.people.length) people = bundle.people;
+        }
+      } catch {}
+    }
     // バンドルが無い/壊れている場合は従来の個別fetchにフォールバック
     if (!people) {
       people = await Promise.all(
