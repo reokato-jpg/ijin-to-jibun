@@ -3085,13 +3085,15 @@
       if (!person) return;
       const rels = (person.relations || []).filter(r => r.id);
       if (rels.length === 0) return;
-      const after = personView.querySelector('.profile-header, .profile-cover-frame');
-      if (!after || after.parentNode.querySelector('.magic-ripple-btn')) return;
+      // ヘッダー直下（アバター・名前の下、タブの上）に配置
+      const anchor = personView.querySelector('.profile-tabs-wrap')
+                   || personView.querySelector('.profile-header, .profile-cover-frame');
+      if (!anchor || anchor.parentNode.querySelector('.magic-ripple-btn')) return;
       const btn = document.createElement('button');
       btn.className = 'magic-ripple-btn';
       btn.innerHTML = `🪞 ${person.name}の影響の波紋`;
       btn.addEventListener('click', () => openRipple(person));
-      after.parentNode.insertBefore(btn, after.nextSibling);
+      anchor.parentNode.insertBefore(btn, anchor);
     };
     const mo = new MutationObserver(() => injectBtn());
     mo.observe(document.body, { childList: true, subtree: true });
@@ -3142,13 +3144,29 @@
       return `<line class="magic-ripple-line-${x.kind}" x1="${CX}" y1="${CY}" x2="${px.toFixed(1)}" y2="${py.toFixed(1)}"></line>`;
     }).join('');
 
+    const nodeWithFace = (x, r) => {
+      const img = x.person.imageUrl;
+      const shortName = x.person.name.split(/[・\s]/)[0];
+      if (img) {
+        return `
+          <circle r="${r}" class="magic-ripple-node-ring"></circle>
+          <clipPath id="ripclip-${x.person.id}"><circle r="${r - 2}"/></clipPath>
+          <image href="${img}" x="-${r-2}" y="-${r-2}" width="${(r-2)*2}" height="${(r-2)*2}" preserveAspectRatio="xMidYMid slice" clip-path="url(#ripclip-${x.person.id})"/>
+          <text y="${r + 14}" class="magic-ripple-name">${shortName}</text>
+        `;
+      }
+      return `
+        <circle r="${r}"></circle>
+        <text y="4">${shortName}</text>
+        <text y="${r + 14}" class="magic-ripple-name">${shortName}</text>
+      `;
+    };
     const ring2Svg = ring2.map((x, i) => {
       const a = angle(i, ring2.length);
       const px = CX + Math.cos(a) * R2;
       const py = CY + Math.sin(a) * R2;
       return `<g class="magic-ripple-node" data-id="${x.person.id}" transform="translate(${px.toFixed(1)}, ${py.toFixed(1)})">
-        <circle r="20"></circle>
-        <text y="4">${x.person.name.split(/[・\s]/)[0]}</text>
+        ${nodeWithFace(x, 22)}
       </g>`;
     }).join('');
 
@@ -3157,8 +3175,7 @@
       const px = CX + Math.cos(a) * R1;
       const py = CY + Math.sin(a) * R1;
       return `<g class="magic-ripple-node" data-id="${x.person.id}" transform="translate(${px.toFixed(1)}, ${py.toFixed(1)})">
-        <circle r="28"></circle>
-        <text y="4">${x.person.name.split(/[・\s]/)[0]}</text>
+        ${nodeWithFace(x, 30)}
       </g>`;
     }).join('');
 
@@ -3173,7 +3190,13 @@
         ${ring1Svg}
         <g transform="translate(${CX}, ${CY})">
           <circle class="magic-ripple-center" r="36"></circle>
-          <text y="5" style="fill:#5c1f2a; font-family:'Shippori Mincho',serif; font-size:12px; font-weight:800; text-anchor:middle">${person.name.split(/[・\s]/)[0]}</text>
+          ${person.imageUrl ? `
+            <clipPath id="ripclip-center"><circle r="34"/></clipPath>
+            <image href="${person.imageUrl}" x="-34" y="-34" width="68" height="68" preserveAspectRatio="xMidYMid slice" clip-path="url(#ripclip-center)"/>
+          ` : `
+            <text y="5" style="fill:#5c1f2a; font-family:'Shippori Mincho',serif; font-size:12px; font-weight:800; text-anchor:middle">${person.name.split(/[・\s]/)[0]}</text>
+          `}
+          <text y="54" style="fill:#ead296; font-family:'Shippori Mincho',serif; font-size:11px; font-weight:700; text-anchor:middle">${person.name.split(/[・\s]/)[0]}</text>
         </g>
       </svg>
     `;
