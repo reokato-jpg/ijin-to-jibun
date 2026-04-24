@@ -3729,28 +3729,67 @@
       cx.fillRect(0, 0, c.width, c.height);
       // 惑星ごとの柄
       if (p.name === '地球') {
-        // 海→緑の大陸のパッチ
-        cx.fillStyle = '#2a5d8f';
+        // 高解像度地球マップ（簡易大陸シルエット + 海深度グラデ）
+        c.width = 1024; c.height = 512;
+        // 海: 緯度で深さグラデ（赤道は明るい青、極付近は暗い）
+        const seaGrad = cx.createLinearGradient(0, 0, 0, c.height);
+        seaGrad.addColorStop(0, '#0d2b4e');
+        seaGrad.addColorStop(0.2, '#1a4a7a');
+        seaGrad.addColorStop(0.5, '#2a6ca8');
+        seaGrad.addColorStop(0.8, '#1a4a7a');
+        seaGrad.addColorStop(1, '#0d2b4e');
+        cx.fillStyle = seaGrad;
         cx.fillRect(0, 0, c.width, c.height);
-        cx.fillStyle = '#3a8550';
-        for (let i = 0; i < 14; i++) {
-          const x = Math.random() * c.width;
-          const y = 40 + Math.random() * (c.height - 80);
-          const w = 30 + Math.random() * 90;
-          const h = 20 + Math.random() * 60;
+        // 大陸シルエット（経度0-360°を x=0-1024 にマッピング。簡略化した主要大陸）
+        const drawLand = (points) => {
           cx.beginPath();
-          cx.ellipse(x, y, w, h, Math.random() * Math.PI, 0, Math.PI * 2);
+          cx.moveTo(points[0][0], points[0][1]);
+          for (let i = 1; i < points.length; i++) cx.lineTo(points[i][0], points[i][1]);
+          cx.closePath();
+          cx.fill();
+        };
+        // 陸地の基本色（緑）
+        const landGrad = cx.createRadialGradient(c.width/2, c.height/2, 0, c.width/2, c.height/2, c.width/2);
+        landGrad.addColorStop(0, '#3f7a44');
+        landGrad.addColorStop(1, '#2d5a3c');
+        // ユーラシア大陸（大きく横に）
+        cx.fillStyle = '#3a6b3e';
+        drawLand([[510,140],[560,120],[640,120],[720,130],[800,140],[860,160],[900,180],[920,210],[900,230],[860,240],[820,250],[760,245],[700,240],[640,230],[580,220],[540,210],[510,180]]);
+        // ヨーロッパ
+        drawLand([[470,140],[510,135],[520,160],[510,190],[490,200],[470,195],[455,180],[450,160]]);
+        // アフリカ（縦に長い）
+        cx.fillStyle = '#4a7a3f';
+        drawLand([[470,210],[510,205],[530,240],[540,290],[535,340],[510,380],[490,390],[470,380],[460,340],[460,280],[465,230]]);
+        // 北アメリカ
+        cx.fillStyle = '#3a6b4e';
+        drawLand([[140,100],[200,90],[260,100],[310,120],[340,150],[340,180],[320,210],[290,230],[260,240],[230,240],[200,230],[170,210],[150,180],[140,150]]);
+        // 南アメリカ
+        cx.fillStyle = '#4a7a3f';
+        drawLand([[280,260],[310,265],[330,300],[335,360],[320,420],[300,460],[280,455],[270,420],[275,370],[275,310]]);
+        // オーストラリア
+        cx.fillStyle = '#7a6838';
+        drawLand([[790,340],[860,345],[900,360],[890,395],[850,405],[810,400],[790,380]]);
+        // 南極大陸（下部一帯）
+        cx.fillStyle = '#e6eef4';
+        cx.fillRect(0, 470, c.width, 42);
+        // 北極（上部氷）
+        cx.fillStyle = '#d8e4ec';
+        cx.fillRect(0, 0, c.width, 28);
+        // 山岳（暗めの斑点）
+        cx.fillStyle = 'rgba(60,40,30,0.35)';
+        for (let i = 0; i < 40; i++) {
+          cx.beginPath();
+          cx.arc(100 + Math.random() * 800, 100 + Math.random() * 300, 2 + Math.random() * 4, 0, Math.PI * 2);
           cx.fill();
         }
-        // 雲
-        cx.globalAlpha = 0.25;
-        cx.fillStyle = '#fff';
-        for (let i = 0; i < 25; i++) {
-          cx.beginPath();
-          cx.ellipse(Math.random() * c.width, Math.random() * c.height, 30 + Math.random() * 60, 8 + Math.random() * 15, 0, 0, Math.PI * 2);
-          cx.fill();
-        }
+        // 雲層（薄く、自然な分布）
         cx.globalAlpha = 1;
+        cx.fillStyle = 'rgba(255,255,255,0.3)';
+        for (let i = 0; i < 50; i++) {
+          cx.beginPath();
+          cx.ellipse(Math.random() * c.width, 40 + Math.random() * (c.height - 80), 30 + Math.random() * 80, 6 + Math.random() * 14, Math.random() * Math.PI * 0.2, 0, Math.PI * 2);
+          cx.fill();
+        }
       } else if (p.name === '木星' || p.name === '土星') {
         // ガス惑星の横縞
         const stripes = p.name === '木星' ? 14 : 10;
@@ -3843,6 +3882,13 @@
       // 衛星
       const moons = [];
       if (p.isEarth) {
+        // 青い大気グロー
+        const atmGeo = new THREE.SphereGeometry(p.size * 1.18, 32, 32);
+        const atmMat = new THREE.MeshBasicMaterial({ color: 0x6bb0ff, transparent: true, opacity: 0.18, side: THREE.BackSide });
+        const atm = new THREE.Mesh(atmGeo, atmMat);
+        atm.visible = false;
+        scene.add(atm);
+        pMesh.userData.atmosphere = atm;
         // 月
         const mGeo = new THREE.SphereGeometry(0.28, 16, 16);
         const mMat = new THREE.MeshBasicMaterial({ color: 0xbbbbbb });
@@ -3929,7 +3975,7 @@
         if (bbAge > 1.5) {
           sun.visible = true;
           corona.visible = true;
-          planetMeshes.forEach(pm => { pm.mesh.visible = true; if (pm.mesh.userData.moons) pm.mesh.userData.moons.forEach(m => m.mesh.visible = true); if (pm.mesh.userData.ring) pm.mesh.userData.ring.visible = true; pm.orbit.material.opacity = 0.25; });
+          planetMeshes.forEach(pm => { pm.mesh.visible = true; if (pm.mesh.userData.moons) pm.mesh.userData.moons.forEach(m => m.mesh.visible = true); if (pm.mesh.userData.ring) pm.mesh.userData.ring.visible = true; if (pm.mesh.userData.atmosphere) pm.mesh.userData.atmosphere.visible = true; pm.orbit.material.opacity = 0.25; });
         }
         if (bbAge > 3) {
           phase = 'universe';
@@ -3957,6 +4003,9 @@
           }
           if (pm.mesh.userData.ring) {
             pm.mesh.userData.ring.position.copy(pm.mesh.position);
+          }
+          if (pm.mesh.userData.atmosphere) {
+            pm.mesh.userData.atmosphere.position.copy(pm.mesh.position);
           }
           pm.mesh.rotation.y += 0.01;
         });
