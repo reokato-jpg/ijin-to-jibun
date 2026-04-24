@@ -3550,6 +3550,20 @@
         <button class="cosmos-zoom-btn" data-cosmos-zoom="out" aria-label="ズームアウト">−</button>
       </div>
       <button class="cosmos-rocket-toggle" id="cosmosRocketToggle" aria-label="ロケット操縦">🚀 ROCKET</button>
+      <div class="cosmos-planet-list" id="cosmosPlanetList">
+        <button class="cpl-toggle" id="cplToggle" aria-label="惑星一覧">🪐</button>
+        <div class="cpl-body" id="cplBody">
+          <div class="cpl-title">惑星を追跡</div>
+          <div class="cpl-items" id="cplItems"></div>
+          <button class="cpl-unlock" id="cplUnlock">🔓 追跡解除</button>
+        </div>
+      </div>
+      <div class="cosmos-time-ctrl" id="cosmosTimeCtrl">
+        <button data-speed="0" aria-label="停止">⏸</button>
+        <button data-speed="1" class="active" aria-label="1倍">1×</button>
+        <button data-speed="5" aria-label="5倍">5×</button>
+        <button data-speed="30" aria-label="30倍">30×</button>
+      </div>
       <div class="cosmos-rocket-ui" id="cosmosRocketUI">
         <div class="cosmos-crosshair"></div>
         <div class="cosmos-speedlines" id="cosmosSpeedLines"></div>
@@ -5042,6 +5056,55 @@
     let warpStartTime = 0;
     let running = true;
     let cameraZoomTarget = null;  // 惑星にズーム用
+    let timeSpeed = 1;             // 宇宙の時間倍率
+    // ============================================================
+    // 🪐 惑星一覧パネル（タップで追跡）
+    // ============================================================
+    (() => {
+      const items = ov.querySelector('#cplItems');
+      const body = ov.querySelector('#cplBody');
+      const toggle = ov.querySelector('#cplToggle');
+      toggle.addEventListener('click', () => {
+        body.classList.toggle('open');
+      });
+      // 太陽 + 惑星全部
+      const entries = [
+        { key: 'sun', label: '☀️ 太陽', color: '#ffcf60' },
+        ...PLANETS.map(p => ({ key: p.name, label: p.jname, color: '#' + p.color.toString(16).padStart(6, '0') })),
+      ];
+      items.innerHTML = entries.map(e => `
+        <button class="cpl-item" data-key="${e.key}">
+          <span class="cpl-dot" style="background:${e.color}"></span>
+          <span>${e.label}</span>
+        </button>
+      `).join('');
+      items.querySelectorAll('.cpl-item').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const key = btn.dataset.key;
+          if (key === 'sun') {
+            // 太陽追跡: 原点に寄せる
+            cameraZoomTarget = { mesh: sun, planet: { size: 3.5, jname: '太陽', isSun: true } };
+          } else {
+            const pm = planetMeshes.find(p => p.planet.name === key);
+            if (pm) cameraZoomTarget = pm;
+          }
+          body.classList.remove('open');
+          hud.classList.remove('show');
+        });
+      });
+      ov.querySelector('#cplUnlock').addEventListener('click', () => {
+        cameraZoomTarget = null;
+        body.classList.remove('open');
+      });
+    })();
+    // 時間倍率ボタン
+    ov.querySelectorAll('#cosmosTimeCtrl button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        ov.querySelectorAll('#cosmosTimeCtrl button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        timeSpeed = parseFloat(btn.dataset.speed);
+      });
+    });
     // ユーザー操作: ドラッグ回転 + ホイール/ピンチでズーム
     let userControlling = false;
     let userRotation = 0;
@@ -5840,12 +5903,12 @@
       } else if (phase === 'universe') {
         universeTime += 0.016;
         planetMeshes.forEach(pm => {
-          pm.mesh.userData.angle += pm.planet.speed;
+          pm.mesh.userData.angle += pm.planet.speed * timeSpeed;
           const a = pm.mesh.userData.angle;
           pm.mesh.position.set(Math.cos(a) * pm.planet.dist, 0, Math.sin(a) * pm.planet.dist);
           if (pm.mesh.userData.moons) {
             pm.mesh.userData.moons.forEach(m => {
-              m.angle += 0.005 * m.speed / 6;
+              m.angle += 0.005 * m.speed / 6 * timeSpeed;
               const o = m.orbit;
               m.mesh.position.set(
                 pm.mesh.position.x + Math.cos(m.angle) * o,
@@ -5859,7 +5922,7 @@
             const distToRocket = rocketMode ? rocketPos.distanceTo(pm.mesh.position) : 999;
             const show = distToRocket < 8 || !rocketMode; // 非ロケット時は常時（遠いので小さく見える）
             pm.mesh.userData.satellites.forEach(s => {
-              s.angle += 0.005 * s.speed / 10;
+              s.angle += 0.005 * s.speed / 10 * timeSpeed;
               s.axis += 0.02;
               // 軌道平面：inclin 傾斜
               const o = s.orbit;
@@ -5911,7 +5974,7 @@
           pr.mesh.rotation.z = pr.baseRot + universeTime * 0.05;
         });
         // ☄️ 彗星の公転と尾
-        cometState.angle += cometState.speed;
+        cometState.angle += cometState.speed * timeSpeed;
         const ca = cometState.angle;
         const cx2 = Math.cos(ca) * cometState.a;
         const cz2 = Math.sin(ca) * cometState.b;
