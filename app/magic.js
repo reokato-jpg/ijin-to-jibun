@@ -7824,21 +7824,20 @@
       }
       return new THREE.CanvasTexture(sc);
     })();
-    // 🌩 空：THREE.Sky（嵐向けパラメータ）
+    // 🌤 空：ブリューゲル忠実 — 明るい午後、澄んだ青空
     if (ADDONS.Sky) {
       const bsky = new ADDONS.Sky();
       bsky.scale.setScalar(600);
       const bs = bsky.material.uniforms;
-      bs['turbidity'].value = 14;         // 濃い霞
-      bs['rayleigh'].value = 3.5;         // 少し赤め
-      bs['mieCoefficient'].value = 0.025; // ブロッチーな雲感
-      bs['mieDirectionalG'].value = 0.6;
-      const phi = THREE.MathUtils.degToRad(90 - 6); // 高度6°（地平線付近 = 黄昏の荒野）
-      const theta = THREE.MathUtils.degToRad(-55);
+      bs['turbidity'].value = 6.5;
+      bs['rayleigh'].value = 1.8;
+      bs['mieCoefficient'].value = 0.006;
+      bs['mieDirectionalG'].value = 0.75;
+      const phi = THREE.MathUtils.degToRad(90 - 55); // 高度55°（午後の明るい太陽）
+      const theta = THREE.MathUtils.degToRad(-60);
       const sunDir = new THREE.Vector3().setFromSphericalCoords(1, phi, theta);
       bs['sunPosition'].value.copy(sunDir);
       scene.add(bsky);
-      // PMREM で環境光マップ（レンガ・金色ブーム反射用）
       try {
         const pmrem = new THREE.PMREMGenerator(renderer);
         pmrem.compileEquirectangularShader();
@@ -7848,11 +7847,11 @@
     } else {
       scene.background = skyTex;
     }
-    scene.fog = new THREE.Fog(0x3a2838, 50, 300);
+    scene.fog = new THREE.Fog(0xd4c8a8, 80, 420); // 淡い黄土の大気
 
     // 環境光・主光源
-    scene.add(new THREE.AmbientLight(0x403040, 0.4));
-    const hemi = new THREE.HemisphereLight(0xe0c888, 0x4a3828, 0.6);
+    scene.add(new THREE.AmbientLight(0xc8c0a0, 0.55));
+    const hemi = new THREE.HemisphereLight(0xe8dcc0, 0x6a5a3a, 0.85);
     scene.add(hemi);
     const sunLight = new THREE.DirectionalLight(0xffdca0, 1.4);
     sunLight.position.set(-30, 50, 20);
@@ -7871,35 +7870,53 @@
     scene.add(flashLight);
 
     // === レンガテクスチャ（ziggurat の石肌） ===
+    // ブリューゲル忠実：クリーム＋サーモンピンクの2トーン石
     const brickTex = (() => {
       const c = document.createElement('canvas'); c.width = 512; c.height = 256;
       const g = c.getContext('2d');
-      const grd = g.createLinearGradient(0, 0, 0, 256);
-      grd.addColorStop(0, '#b89068'); grd.addColorStop(0.5, '#8a6a48'); grd.addColorStop(1, '#5a4228');
-      g.fillStyle = grd; g.fillRect(0, 0, 512, 256);
-      // レンガパターン
-      const bw = 56, bh = 22;
+      // ベース: クリーム色
+      g.fillStyle = '#e8d4b0'; g.fillRect(0, 0, 512, 256);
+      const bw = 48, bh = 20;
       for (let y = 0; y < 256; y += bh) {
         const off = (Math.floor(y / bh) % 2) * (bw / 2);
         for (let x = -bw; x < 512; x += bw) {
-          g.fillStyle = `rgba(${90+Math.random()*60},${70+Math.random()*40},${40+Math.random()*30},1)`;
+          // 2トーン: 大部分はクリーム系、時々サーモンピンク、まれに暗茶（風化）
+          const roll = Math.random();
+          let r, gn, bl;
+          if (roll < 0.18) {
+            // サーモンピンク（露出した内部石）
+            r = 200 + Math.random() * 40;
+            gn = 140 + Math.random() * 30;
+            bl = 110 + Math.random() * 25;
+          } else if (roll < 0.28) {
+            // 暗茶（風化・日陰）
+            r = 140 + Math.random() * 30;
+            gn = 110 + Math.random() * 25;
+            bl = 75 + Math.random() * 20;
+          } else {
+            // クリーム系（メイン）
+            r = 210 + Math.random() * 30;
+            gn = 185 + Math.random() * 25;
+            bl = 145 + Math.random() * 25;
+          }
+          g.fillStyle = `rgb(${r|0},${gn|0},${bl|0})`;
           g.fillRect(x + off + 1, y + 1, bw - 2, bh - 2);
-          // 影
-          g.fillStyle = 'rgba(0,0,0,0.2)';
+          // 目地影
+          g.fillStyle = 'rgba(60,40,25,0.28)';
           g.fillRect(x + off, y + bh - 2, bw, 2);
           g.fillRect(x + off + bw - 2, y, 2, bh);
         }
       }
-      // 風化の汚れ
-      for (let i = 0; i < 200; i++) {
-        g.fillStyle = `rgba(40,28,15,${0.2 + Math.random() * 0.3})`;
-        g.fillRect(Math.random() * 512, Math.random() * 256, 2 + Math.random() * 8, 1 + Math.random() * 3);
+      // 風化・苔斑点
+      for (let i = 0; i < 150; i++) {
+        g.fillStyle = `rgba(${60+Math.random()*30},${45+Math.random()*20},${25+Math.random()*15},${0.15 + Math.random() * 0.2})`;
+        g.fillRect(Math.random() * 512, Math.random() * 256, 2 + Math.random() * 6, 1 + Math.random() * 2);
       }
       const t = new THREE.CanvasTexture(c);
       t.wrapS = t.wrapT = THREE.RepeatWrapping;
       return t;
     })();
-    const brickMat = new THREE.MeshStandardMaterial({ map: brickTex, roughness: 0.9, color: 0xe8d8b8 });
+    const brickMat = new THREE.MeshStandardMaterial({ map: brickTex, roughness: 0.88, color: 0xffffff });
 
     // 🏛 塔本体：ブリューゲル風の階段状ジッグラト
     //   各段は「円柱（壁）＋アーチ窓＋はっきりしたテラス」。
@@ -8246,6 +8263,7 @@
       depthWrite: false, fog: true,
     });
     const rain = new THREE.Points(rainGeo, rainMat);
+    rain.visible = false; // 最初は晴天。混乱時のみ雨
     scene.add(rain);
 
     // ⛰ 遠景の霧の層（塔の腰部に霞をまとわせる）
@@ -8329,29 +8347,35 @@
       stormClouds.push(c);
     }
 
-    // 地面（砂漠・荒野）
+    // 地面：ブリューゲル忠実 — 緑の野、畑、小道
     const groundTex = (() => {
       const sc = document.createElement('canvas'); sc.width = 512; sc.height = 512;
       const g = sc.getContext('2d');
+      // ベースの緑
       const grd = g.createLinearGradient(0, 0, 0, 512);
-      grd.addColorStop(0, '#c8a070'); grd.addColorStop(1, '#8a6a48');
+      grd.addColorStop(0, '#7a8a48'); grd.addColorStop(1, '#5a7038');
       g.fillStyle = grd; g.fillRect(0, 0, 512, 512);
-      for (let i = 0; i < 2000; i++) {
-        g.fillStyle = `rgba(${140+Math.random()*50},${100+Math.random()*40},${60+Math.random()*30},${0.2+Math.random()*0.3})`;
-        g.fillRect(Math.random() * 512, Math.random() * 512, 1 + Math.random() * 2, 1 + Math.random() * 2);
+      // 草のざらつき
+      for (let i = 0; i < 3000; i++) {
+        const gr = 80 + Math.random() * 60;
+        g.fillStyle = `rgba(${gr},${120+Math.random()*40},${40+Math.random()*30},${0.2+Math.random()*0.35})`;
+        g.fillRect(Math.random() * 512, Math.random() * 512, 1, 1 + Math.random() * 2);
       }
-      // 乾いた亀裂
-      for (let i = 0; i < 30; i++) {
-        g.strokeStyle = 'rgba(60,40,20,0.5)'; g.lineWidth = 0.8;
+      // 畑の筋（細い土色のライン）
+      for (let i = 0; i < 6; i++) {
+        g.strokeStyle = `rgba(${140+Math.random()*40},${110+Math.random()*25},${70+Math.random()*20},0.35)`;
+        g.lineWidth = 1.5 + Math.random();
         g.beginPath();
-        let x = Math.random() * 512, y = Math.random() * 512;
-        g.moveTo(x, y);
-        for (let k = 0; k < 10; k++) {
-          x += (Math.random() - 0.5) * 40;
-          y += (Math.random() - 0.5) * 40;
-          g.lineTo(x, y);
-        }
+        const y = Math.random() * 512;
+        g.moveTo(0, y);
+        g.lineTo(512, y + (Math.random() - 0.5) * 30);
         g.stroke();
+      }
+      // 小さな花（野原）
+      for (let i = 0; i < 60; i++) {
+        const colors = ['#fff8c0', '#ffeec0', '#ffb0c0', '#e0f0ff'];
+        g.fillStyle = colors[i % 4];
+        g.fillRect(Math.random() * 512, Math.random() * 512, 1.5, 1.5);
       }
       const t = new THREE.CanvasTexture(sc);
       t.wrapS = t.wrapT = THREE.RepeatWrapping;
@@ -8366,18 +8390,45 @@
     ground.receiveShadow = true;
     scene.add(ground);
 
-    // 周囲の遠い丘（砂漠の地平）
-    for (let i = 0; i < 8; i++) {
-      const a = (i / 8) * Math.PI * 2 + Math.random() * 0.2;
-      const r = 120 + Math.random() * 40;
-      const h = 4 + Math.random() * 6;
+    // 🌊 港湾（塔の片側に水） — ブリューゲルの構図
+    const bayMat = new THREE.MeshStandardMaterial({
+      color: 0x5a85a0, roughness: 0.25, metalness: 0.35,
+      transparent: true, opacity: 0.88,
+    });
+    const bay = new THREE.Mesh(new THREE.PlaneGeometry(320, 180), bayMat);
+    bay.rotation.x = -Math.PI / 2;
+    bay.position.set(160, -0.15, 0); // 東側に港
+    scene.add(bay);
+
+    // 周囲の遠い丘（緑の丘陵、ブリューゲル風）
+    for (let i = 0; i < 10; i++) {
+      const a = (i / 10) * Math.PI * 2 + Math.random() * 0.2;
+      // 東側（港）にはかぶせない
+      if (Math.cos(a) > 0.3 && Math.abs(Math.sin(a)) < 0.6) continue;
+      const r = 130 + Math.random() * 50;
+      const h = 5 + Math.random() * 8;
       const hill = new THREE.Mesh(
-        new THREE.SphereGeometry(16, 18, 10),
-        new THREE.MeshStandardMaterial({ color: 0x8a6040, roughness: 1.0 })
+        new THREE.SphereGeometry(18, 18, 10),
+        new THREE.MeshStandardMaterial({ color: 0x6a7a48, roughness: 1.0 })
       );
       hill.position.set(Math.cos(a) * r, -4, Math.sin(a) * r);
-      hill.scale.set(1, h / 16, 1);
+      hill.scale.set(1, h / 18, 1);
       scene.add(hill);
+    }
+
+    // 塔の岩盤（Bruegelの塔は岩山と一体化している）
+    const rockMat = new THREE.MeshStandardMaterial({ color: 0x8a7058, roughness: 1.0 });
+    for (let i = 0; i < 6; i++) {
+      const a = (i / 6) * Math.PI * 2 + Math.random() * 0.3;
+      const r = baseRadius + 1 + Math.random() * 3;
+      const rock = new THREE.Mesh(
+        new THREE.DodecahedronGeometry(2 + Math.random() * 2, 0),
+        rockMat
+      );
+      rock.position.set(Math.cos(a) * r, 0.8 + Math.random() * 1.5, Math.sin(a) * r);
+      rock.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+      rock.castShadow = true; rock.receiveShadow = true;
+      scene.add(rock);
     }
 
     // 📜 塔の周りを飛ぶ「言葉の断片」— 混乱を起こすとバラバラに
@@ -8424,15 +8475,15 @@
       composer.addPass(new ADDONS.RenderPass(scene, camera));
       const bloomPass = new ADDONS.UnrealBloomPass(
         new THREE.Vector2(W(), H()),
-        1.3, 0.85, 0.3
+        0.28, 0.55, 0.82  // Bruegel忠実: ほぼ写実、ハイライトだけ軽く光る
       );
       composer.addPass(bloomPass);
       if (ADDONS.ShaderPass) {
         const g = {
           uniforms: {
             tDiffuse: { value: null }, uTime: { value: 0 },
-            uVignette: { value: 0.58 }, uChromatic: { value: 0.005 },
-            uGrain: { value: 0.05 }, uSaturation: { value: 1.15 },
+            uVignette: { value: 0.28 }, uChromatic: { value: 0.0015 },
+            uGrain: { value: 0.02 }, uSaturation: { value: 0.95 },
           },
           vertexShader: `varying vec2 vUv; void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
           fragmentShader: `
@@ -8526,12 +8577,27 @@
     }
     ov.querySelector('#babel3dChaos').addEventListener('click', () => {
       chaosTrigger = 1;
-      // 雷閃光
-      flashLight.intensity = 4;
+      // 空を暗転（嵐モードに切替）+ 雨を発生
+      if (scene.fog) scene.fog.color.setHex(0x2a2028);
+      hemi.intensity = 0.3; hemi.color.setHex(0x3a3040);
+      sunLight.intensity = 0.3; sunLight.color.setHex(0xa090a0);
+      rain.visible = true;
+      // 雷閃光（強めに4連）
+      flashLight.intensity = 5;
       strikeBolt();
-      setTimeout(() => { flashLight.intensity = 0; }, 150);
-      setTimeout(() => { flashLight.intensity = 3; strikeBolt(); }, 300);
-      setTimeout(() => { flashLight.intensity = 0; }, 450);
+      setTimeout(() => { flashLight.intensity = 0.1; }, 130);
+      setTimeout(() => { flashLight.intensity = 4; strikeBolt(); }, 260);
+      setTimeout(() => { flashLight.intensity = 0; }, 400);
+      setTimeout(() => { flashLight.intensity = 3.5; strikeBolt(); }, 700);
+      setTimeout(() => { flashLight.intensity = 0; }, 820);
+      // 以降、混乱中は定期的に雷
+      let bolts_remaining = 10;
+      const ongoing = setInterval(() => {
+        if (!running || bolts_remaining-- <= 0) { clearInterval(ongoing); return; }
+        strikeBolt();
+        flashLight.intensity = 3;
+        setTimeout(() => { flashLight.intensity = 0; }, 120);
+      }, 1500);
       // 言葉にランダム速度
       wordSprites.forEach(s => {
         s.userData.vx = (Math.random() - 0.5) * 0.3;
