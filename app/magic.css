@@ -7060,3 +7060,87 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   font-style: italic;
   text-align: center;
 }
+
+/* ===== Eden: Apple eat dialog / flash / message ===== */
+.eden-eat-dialog {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 100;
+  background: rgba(10,6,15,0.6);
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  transition: opacity .3s;
+  pointer-events: none;
+}
+.eden-eat-dialog.show { opacity: 1; pointer-events: auto; }
+.eed-box {
+  padding: 32px 40px;
+  background: linear-gradient(160deg, #3a2216, #180c08);
+  border: 1px solid rgba(220,160,130,0.5);
+  border-radius: 14px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 80px rgba(255,60,60,0.2);
+  text-align: center;
+  max-width: 380px;
+  font-family: 'Shippori Mincho', serif;
+  color: #f4e6d0;
+  transform: scale(0.9);
+  transition: transform .3s cubic-bezier(.2,.9,.3,1.3);
+}
+.eden-eat-dialog.show .eed-box { transform: scale(1); }
+.eed-apple { font-size: 56px; margin-bottom: 12px; filter: drop-shadow(0 0 20px rgba(255,60,60,0.5)); }
+.eed-q { font-size: 19px; letter-spacing: 0.1em; margin-bottom: 10px; color: #ffdcc0; }
+.eed-hint {
+  font-size: 11px; letter-spacing: 0.1em;
+  color: rgba(220,180,150,0.65); font-style: italic;
+  margin-bottom: 26px; line-height: 1.7;
+}
+.eed-actions { display: flex; gap: 14px; justify-content: center; }
+.eed-btn {
+  padding: 11px 26px;
+  border-radius: 999px;
+  font-family: 'Shippori Mincho', serif;
+  font-size: 14px; letter-spacing: 0.15em;
+  cursor: pointer;
+  border: 1px solid rgba(220,180,130,0.5);
+  transition: transform .18s, filter .18s;
+}
+.eed-yes {
+  background: linear-gradient(135deg, #c02030, #6a0810);
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(180,30,40,0.35);
+}
+.eed-no {
+  background: linear-gradient(135deg, #4a3e2a, #2a2015);
+  color: #e8d4b0;
+}
+.eed-btn:hover { transform: translateY(-2px); filter: brightness(1.15); }
+
+.eden-flash {
+  position: absolute; inset: 0; z-index: 80;
+  background: radial-gradient(ellipse at center, rgba(255,255,240,1) 0%, rgba(255,220,180,0.8) 40%, rgba(80,20,10,0) 100%);
+  opacity: 0; pointer-events: none;
+  transition: opacity .4s ease-out;
+}
+.eden-flash.on { opacity: 1; }
+
+.eden-message {
+  position: absolute; left: 50%; top: 30%;
+  transform: translate(-50%, -50%) scale(0.8);
+  z-index: 90;
+  padding: 24px 40px;
+  background: rgba(10,5,15,0.8);
+  border: 1px solid rgba(220,180,130,0.5);
+  border-radius: 8px;
+  backdrop-filter: blur(12px);
+  font-family: 'Shippori Mincho', serif;
+  color: #f4e6d0;
+  text-align: center;
+  opacity: 0;
+  transition: opacity .6s, transform .6s cubic-bezier(.2,.9,.3,1.2);
+  pointer-events: none;
+  max-width: 80vw;
+}
+.eden-message.show { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+.eed-msg-super { font-size: 11px; letter-spacing: 0.4em; color: #c8a050; margin-bottom: 10px; }
+.eed-msg-title { font-size: 22px; letter-spacing: 0.3em; color: #ffdcc0; margin-bottom: 14px; text-shadow: 0 0 20px rgba(255,180,120,0.5); }
+.eed-msg-body { font-size: 13px; line-height: 2; color: #e8d4b0; letter-spacing: 0.05em; }
