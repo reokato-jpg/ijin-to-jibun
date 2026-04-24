@@ -7037,17 +7037,106 @@
     });
     reflectGroup.add(reflectTree);
     scene.add(reflectGroup);
-    // 水面プレーン（透明）を最上面に置いて反射を色かぶりさせる
-    const waterSurface = new THREE.Mesh(
-      new THREE.CircleGeometry(30, 48),
-      new THREE.MeshStandardMaterial({
-        color: 0x88b0cc, transparent: true, opacity: 0.35,
-        roughness: 0.15, metalness: 0.5, depthWrite: false,
-      })
-    );
+    // 🌊 水面：シェーダで波・フレネル・ripple
+    const waterUniforms = {
+      uTime: { value: 0 },
+      uShallow: { value: new THREE.Color(0xa8d4e8) }, // 浅瀬の色
+      uDeep: { value: new THREE.Color(0x3a6a90) },    // 深場の色
+      uSkyColor: { value: new THREE.Color(0xe8d8c8) },
+    };
+    const waterMatShader = new THREE.ShaderMaterial({
+      uniforms: waterUniforms,
+      vertexShader: `
+        uniform float uTime;
+        varying vec2 vUv;
+        varying vec3 vWorldPos;
+        varying vec3 vNormal;
+        varying vec3 vViewDir;
+        // 2波重ね合わせで波面を作る
+        void main() {
+          vUv = uv;
+          vec3 pos = position;
+          // 放射波 + 流れ波
+          float r = length(pos.xy);
+          float w1 = sin(r * 0.4 - uTime * 1.2) * 0.08;
+          float w2 = sin(pos.x * 0.9 + uTime * 0.8) * 0.04;
+          float w3 = cos(pos.y * 1.1 - uTime * 0.6) * 0.03;
+          pos.z += w1 + w2 + w3;
+          // 法線も近似的に
+          float n1x = cos(r * 0.4 - uTime * 1.2) * 0.4 * (pos.x / max(r, 0.01));
+          float n1y = cos(r * 0.4 - uTime * 1.2) * 0.4 * (pos.y / max(r, 0.01));
+          float n2x = cos(pos.x * 0.9 + uTime * 0.8) * 0.9;
+          float n3y = -sin(pos.y * 1.1 - uTime * 0.6) * 1.1;
+          vec3 n = normalize(vec3(-(n1x + n2x) * 0.15, -(n1y + n3y) * 0.15, 1.0));
+          vNormal = normalMatrix * n;
+          vec4 worldPos = modelMatrix * vec4(pos, 1.0);
+          vWorldPos = worldPos.xyz;
+          vec4 mv = viewMatrix * worldPos;
+          vViewDir = normalize(-mv.xyz);
+          gl_Position = projectionMatrix * mv;
+        }
+      `,
+      fragmentShader: `
+        uniform float uTime;
+        uniform vec3 uShallow;
+        uniform vec3 uDeep;
+        uniform vec3 uSkyColor;
+        varying vec2 vUv;
+        varying vec3 vWorldPos;
+        varying vec3 vNormal;
+        varying vec3 vViewDir;
+
+        // 2Dノイズ（ripple用）
+        float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+        float noise(vec2 p) {
+          vec2 i = floor(p), f = fract(p);
+          float a = hash(i), b = hash(i + vec2(1,0)), c = hash(i + vec2(0,1)), d = hash(i + vec2(1,1));
+          vec2 u = f*f*(3.0 - 2.0*f);
+          return mix(mix(a,b,u.x), mix(c,d,u.x), u.y);
+        }
+
+        void main() {
+          vec3 N = normalize(vNormal);
+          vec3 V = normalize(vViewDir);
+
+          // フレネル（斜めから見ると反射が強い）
+          float fres = pow(1.0 - max(0.0, dot(N, V)), 3.0);
+          fres = mix(0.1, 1.0, fres);
+
+          // 中心からの距離で色を混ぜる（浅→深）
+          float r = length(vWorldPos.xz);
+          float depth = smoothstep(2.0, 20.0, r);
+          vec3 waterCol = mix(uShallow, uDeep, depth);
+
+          // ripple: 細かい輝きノイズ
+          float ripple = noise(vUv * 40.0 + uTime * 0.3) * 0.5
+                       + noise(vUv * 80.0 - uTime * 0.15) * 0.25;
+          ripple = smoothstep(0.55, 0.75, ripple);
+
+          // 反射（簡易：空色を反射として加える）
+          vec3 reflectCol = uSkyColor + ripple * 0.4;
+
+          vec3 col = mix(waterCol, reflectCol, fres);
+          // キラキラスペキュラ（太陽方向仮定：上＋右）
+          vec3 L = normalize(vec3(0.3, 1.0, -0.2));
+          float spec = pow(max(0.0, dot(reflect(-L, N), V)), 80.0);
+          col += vec3(1.0, 0.95, 0.8) * spec * 0.9;
+
+          gl_FragColor = vec4(col, 0.72 + fres * 0.2);
+        }
+      `,
+      transparent: true,
+      depthWrite: false,
+      side: THREE.DoubleSide,
+    });
+    // サブディビジョンが多いプレーンで、波の vertex 変位を活かす
+    const waterGeo = new THREE.CircleGeometry(30, 96);
+    const waterSurface = new THREE.Mesh(waterGeo, waterMatShader);
     waterSurface.rotation.x = -Math.PI / 2;
     waterSurface.position.y = -0.12;
     scene.add(waterSurface);
+    // 空の色を水面にも渡す（sky色と一致させる）
+    treeGroup.userData.waterUniforms = waterUniforms;
 
     // 葉の揺れアニメ用参照
     treeGroup.userData.leaves = leaves;
@@ -7323,6 +7412,8 @@
       camera.lookAt(0, 5.0, 0);
       // 太陽シェーダのアニメ
       sunUniforms.uTime.value = t;
+      // 水面シェーダのアニメ
+      if (treeGroup.userData.waterUniforms) treeGroup.userData.waterUniforms.uTime.value = t;
       // レンズフレア: 太陽→カメラ中心を結ぶ線上に配置
       {
         const sv = SUN_POS.clone().project(camera); // NDC座標
