@@ -7777,7 +7777,7 @@
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     renderer.setSize(W(), H());
     if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 0.95;
+    renderer.toneMappingExposure = 1.1;
     if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -7812,10 +7812,23 @@
       }
       return new THREE.CanvasTexture(sc);
     })();
-    // 🌤 空：ブリューゲル忠実 — 明るい午後、澄んだ青空
-    // まず必ず見えるフォールバックを設定（3重保険）
+    // 🌤 空：Poly Haven の HDRI を最優先で使う（本物の大気）
     renderer.setClearColor(0xb0c4d8, 1);
-    scene.background = skyTex; // キャンバス生成の昼空
+    scene.background = skyTex; // フォールバック昼空
+
+    // HDRI 非同期ロード（読み込めたら上書き）
+    if (ADDONS.RGBELoader) {
+      const hdrUrl = 'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/kloofendal_48d_partly_cloudy_puresky_1k.hdr';
+      const rgbeLoader = new ADDONS.RGBELoader();
+      rgbeLoader.setDataType(THREE.HalfFloatType);
+      rgbeLoader.load(hdrUrl, (hdrTex) => {
+        hdrTex.mapping = THREE.EquirectangularReflectionMapping;
+        scene.background = hdrTex;
+        scene.environment = hdrTex;
+        if ('environmentIntensity' in scene) scene.environmentIntensity = 1.0;
+      }, undefined, (err) => { console.warn('HDRI fail', err); });
+    }
+
     if (ADDONS.Sky) {
       const bsky = new ADDONS.Sky();
       bsky.scale.setScalar(600);
@@ -7842,10 +7855,10 @@
     scene.fog = new THREE.Fog(0xd4c8a8, 80, 420); // 淡い黄土の大気
 
     // 環境光・主光源
-    scene.add(new THREE.AmbientLight(0xc8c0a0, 0.55));
-    const hemi = new THREE.HemisphereLight(0xe0d0a8, 0x6a5a3a, 0.9);
+    scene.add(new THREE.AmbientLight(0xd8d0b8, 0.7));
+    const hemi = new THREE.HemisphereLight(0xe8d8b8, 0x6a5a3a, 1.2);
     scene.add(hemi);
-    const sunLight = new THREE.DirectionalLight(0xffeac0, 1.4);
+    const sunLight = new THREE.DirectionalLight(0xffefd0, 2.2);
     sunLight.position.set(-30, 50, 20);
     sunLight.castShadow = true;
     sunLight.shadow.mapSize.set(1024, 1024);
@@ -7910,6 +7923,29 @@
     })();
     const brickMat = new THREE.MeshStandardMaterial({ map: brickTex, roughness: 0.92, color: 0xd8c8a8 });
     const darkCoreMat = new THREE.MeshStandardMaterial({ color: 0x4a3a28, roughness: 0.95 });
+
+    // 🎨 Poly Haven の本物レンガPBRテクスチャ（非同期、ロードできたら置き換え）
+    (function loadRealPBR() {
+      const base = 'https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/castle_brick_broken_06';
+      const loader = new THREE.TextureLoader();
+      loader.setCrossOrigin('anonymous');
+      const applyTo = (prop, url, cfg) => {
+        loader.load(url, (tex) => {
+          tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+          tex.repeat.set(8, 3);
+          if (cfg) cfg(tex);
+          brickMat[prop] = tex;
+          brickMat.needsUpdate = true;
+        }, undefined, () => {});
+      };
+      applyTo('map', `${base}/castle_brick_broken_06_diff_1k.jpg`, (t) => {
+        if ('colorSpace' in t) t.colorSpace = THREE.SRGBColorSpace;
+      });
+      applyTo('normalMap', `${base}/castle_brick_broken_06_nor_gl_1k.jpg`);
+      applyTo('roughnessMap', `${base}/castle_brick_broken_06_rough_1k.jpg`);
+      // 元のprocedural色を無効化
+      brickMat.color.set(0xffffff);
+    })();
 
     // 🏛 塔本体：ブリューゲル風の階段状ジッグラト
     //   各段は「円柱（壁）＋アーチ窓＋はっきりしたテラス」。
