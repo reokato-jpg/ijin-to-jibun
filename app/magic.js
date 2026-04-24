@@ -5769,6 +5769,147 @@
   // ============================================================
   // 🌳 3Dエデンの園（Three.jsで没入型シーン）
   // ============================================================
+  // 🌟 共通：手書きBloom（明るい部分を抽出→ガウシアンぼかし→加算合成）
+  function createBloom(THREE, renderer, W, H, opts = {}) {
+    const threshold = opts.threshold ?? 0.7;
+    const strength = opts.strength ?? 0.9;
+    const makeRT = (w, h) => new THREE.WebGLRenderTarget(w, h, {
+      minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter,
+      format: THREE.RGBAFormat, type: THREE.HalfFloatType,
+    });
+    const rtScene = makeRT(W, H);
+    const rtBright = makeRT(W / 2, H / 2);
+    const rtBlurA = makeRT(W / 2, H / 2);
+    const rtBlurB = makeRT(W / 2, H / 2);
+    const rtBlurC = makeRT(W / 4, H / 4);
+    const rtBlurD = makeRT(W / 4, H / 4);
+    const ortho = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    const qScene = new THREE.Scene();
+    const qMesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2));
+    qScene.add(qMesh);
+    const brightMat = new THREE.ShaderMaterial({
+      uniforms: { tDiffuse: { value: null }, threshold: { value: threshold } },
+      vertexShader: `varying vec2 vUv; void main(){vUv=uv;gl_Position=vec4(position,1.0);}`,
+      fragmentShader: `
+        varying vec2 vUv;
+        uniform sampler2D tDiffuse;
+        uniform float threshold;
+        void main(){
+          vec3 c = texture2D(tDiffuse, vUv).rgb;
+          float lum = dot(c, vec3(0.299, 0.587, 0.114));
+          float br = smoothstep(threshold, threshold + 0.25, lum);
+          gl_FragColor = vec4(c * br, 1.0);
+        }
+      `,
+    });
+    function makeBlurMat(w, h) {
+      return new THREE.ShaderMaterial({
+        uniforms: {
+          tDiffuse: { value: null },
+          direction: { value: new THREE.Vector2(1, 0) },
+          resolution: { value: new THREE.Vector2(w, h) },
+        },
+        vertexShader: `varying vec2 vUv; void main(){vUv=uv;gl_Position=vec4(position,1.0);}`,
+        fragmentShader: `
+          varying vec2 vUv;
+          uniform sampler2D tDiffuse;
+          uniform vec2 direction;
+          uniform vec2 resolution;
+          void main(){
+            vec2 px = direction / resolution;
+            vec3 c = vec3(0.0);
+            c += texture2D(tDiffuse, vUv - px*4.0).rgb * 0.051;
+            c += texture2D(tDiffuse, vUv - px*3.0).rgb * 0.0918;
+            c += texture2D(tDiffuse, vUv - px*2.0).rgb * 0.1227;
+            c += texture2D(tDiffuse, vUv - px).rgb * 0.1545;
+            c += texture2D(tDiffuse, vUv).rgb * 0.1826;
+            c += texture2D(tDiffuse, vUv + px).rgb * 0.1545;
+            c += texture2D(tDiffuse, vUv + px*2.0).rgb * 0.1227;
+            c += texture2D(tDiffuse, vUv + px*3.0).rgb * 0.0918;
+            c += texture2D(tDiffuse, vUv + px*4.0).rgb * 0.051;
+            gl_FragColor = vec4(c, 1.0);
+          }
+        `,
+      });
+    }
+    const blurMatHalf = makeBlurMat(W / 2, H / 2);
+    const blurMatQuarter = makeBlurMat(W / 4, H / 4);
+    const compositeMat = new THREE.ShaderMaterial({
+      uniforms: {
+        tScene: { value: null },
+        tBloom1: { value: null },
+        tBloom2: { value: null },
+        strength: { value: strength },
+      },
+      vertexShader: `varying vec2 vUv; void main(){vUv=uv;gl_Position=vec4(position,1.0);}`,
+      fragmentShader: `
+        varying vec2 vUv;
+        uniform sampler2D tScene;
+        uniform sampler2D tBloom1;
+        uniform sampler2D tBloom2;
+        uniform float strength;
+        void main(){
+          vec3 s = texture2D(tScene, vUv).rgb;
+          vec3 b1 = texture2D(tBloom1, vUv).rgb;
+          vec3 b2 = texture2D(tBloom2, vUv).rgb;
+          vec3 bloom = b1 * 0.6 + b2 * 0.8;
+          gl_FragColor = vec4(s + bloom * strength, 1.0);
+        }
+      `,
+    });
+    return {
+      setSize(w, h) {
+        rtScene.setSize(w, h);
+        rtBright.setSize(w / 2, h / 2);
+        rtBlurA.setSize(w / 2, h / 2);
+        rtBlurB.setSize(w / 2, h / 2);
+        rtBlurC.setSize(w / 4, h / 4);
+        rtBlurD.setSize(w / 4, h / 4);
+        blurMatHalf.uniforms.resolution.value.set(w / 2, h / 2);
+        blurMatQuarter.uniforms.resolution.value.set(w / 4, h / 4);
+      },
+      render(scene, camera) {
+        // 1. Scene → rtScene
+        renderer.setRenderTarget(rtScene);
+        renderer.render(scene, camera);
+        // 2. Bright → rtBright
+        qMesh.material = brightMat;
+        brightMat.uniforms.tDiffuse.value = rtScene.texture;
+        renderer.setRenderTarget(rtBright);
+        renderer.render(qScene, ortho);
+        // 3. Blur H→A
+        qMesh.material = blurMatHalf;
+        blurMatHalf.uniforms.tDiffuse.value = rtBright.texture;
+        blurMatHalf.uniforms.direction.value.set(1, 0);
+        renderer.setRenderTarget(rtBlurA);
+        renderer.render(qScene, ortho);
+        // 4. Blur V→B
+        blurMatHalf.uniforms.tDiffuse.value = rtBlurA.texture;
+        blurMatHalf.uniforms.direction.value.set(0, 1);
+        renderer.setRenderTarget(rtBlurB);
+        renderer.render(qScene, ortho);
+        // 5. Downsample B→C (H blur)
+        qMesh.material = blurMatQuarter;
+        blurMatQuarter.uniforms.tDiffuse.value = rtBlurB.texture;
+        blurMatQuarter.uniforms.direction.value.set(1, 0);
+        renderer.setRenderTarget(rtBlurC);
+        renderer.render(qScene, ortho);
+        // 6. C→D (V blur)
+        blurMatQuarter.uniforms.tDiffuse.value = rtBlurC.texture;
+        blurMatQuarter.uniforms.direction.value.set(0, 1);
+        renderer.setRenderTarget(rtBlurD);
+        renderer.render(qScene, ortho);
+        // 7. Composite
+        qMesh.material = compositeMat;
+        compositeMat.uniforms.tScene.value = rtScene.texture;
+        compositeMat.uniforms.tBloom1.value = rtBlurB.texture;
+        compositeMat.uniforms.tBloom2.value = rtBlurD.texture;
+        renderer.setRenderTarget(null);
+        renderer.render(qScene, ortho);
+      },
+    };
+  }
+
   async function openEden3D() {
     if (!window.THREE) return;
     const THREE = window.THREE;
@@ -5804,6 +5945,8 @@
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     stage.appendChild(renderer.domElement);
     renderer.domElement.style.touchAction = 'none';
+    // 🌟 Bloom ポストプロセス
+    const bloom = createBloom(THREE, renderer, W, H, { threshold: 0.65, strength: 0.9 });
 
     const scene = new THREE.Scene();
     // 空のグラデ（半球光）
@@ -7285,7 +7428,7 @@
         bf.position.y += Math.sin(bf.userData.phase) * 0.01;
         bf.position.x += Math.cos(bf.userData.phase * 0.6) * 0.02;
       });
-      renderer.render(scene, camera);
+      bloom.render(scene, camera);
       requestAnimationFrame(animate);
     }
     animate();
@@ -7296,6 +7439,7 @@
       renderer.setSize(w, h);
       camera.aspect = w/h;
       camera.updateProjectionMatrix();
+      bloom.setSize(w, h);
     });
   }
   window.openEden3D = openEden3D;
@@ -7341,6 +7485,7 @@
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     stage.appendChild(renderer.domElement);
     renderer.domElement.style.touchAction = 'none';
+    const bloom = createBloom(THREE, renderer, W(), H(), { threshold: 0.75, strength: 1.3 });
 
     const scene = new THREE.Scene();
     // 嵐の空（暗い青紫→遠くに黄土）
@@ -7894,7 +8039,7 @@
           s.position.z = Math.sin(a) * s.userData.baseR + Math.cos(s.userData.phase) * 0.5;
         }
       });
-      renderer.render(scene, camera);
+      bloom.render(scene, camera);
       requestAnimationFrame(animate);
     }
     animate();
@@ -7903,6 +8048,7 @@
       renderer.setSize(W(), H());
       camera.aspect = W()/H();
       camera.updateProjectionMatrix();
+      bloom.setSize(W(), H());
     });
     setTimeout(() => ov.querySelector('#babel3dHint')?.classList.add('fade'), 5000);
   }
