@@ -6006,6 +6006,16 @@
 
     // 先行定義：composer内でも使うため
     const SUN_POS = new THREE.Vector3(22, 28, -42);
+    // 動的環境反射マップ（リンゴ・蛇の envMap として共有）
+    let edenCubeCam = null, edenCubeRT = null;
+    try {
+      edenCubeRT = new THREE.WebGLCubeRenderTarget(128, {
+        generateMipmaps: true,
+        minFilter: THREE.LinearMipmapLinearFilter,
+      });
+      edenCubeCam = new THREE.CubeCamera(0.1, 100, edenCubeRT);
+      edenCubeCam.position.set(0, 4, 0);
+    } catch (e) { console.warn('Eden cubeCam', e); }
 
     // 🌟 ポストプロセス：公式 EffectComposer + UnrealBloomPass（利用可能なら）
     let composer = null;
@@ -6249,6 +6259,17 @@
         scene.environment = envRT.texture;
         if ('environmentIntensity' in scene) scene.environmentIntensity = 0.6;
       } catch (e) { console.warn('PMREM failed', e); }
+      // HDRI ロード（あれば環境光を本物のHDRで上書き）
+      if (ADDONS.RGBELoader) {
+        const hdrUrl = 'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/kloofendal_48d_partly_cloudy_puresky_1k.hdr';
+        const rgbe = new ADDONS.RGBELoader();
+        rgbe.setDataType(THREE.HalfFloatType);
+        rgbe.load(hdrUrl, (hdr) => {
+          hdr.mapping = THREE.EquirectangularReflectionMapping;
+          scene.environment = hdr;
+          if ('environmentIntensity' in scene) scene.environmentIntensity = 0.85;
+        }, undefined, () => {});
+      }
       // 太陽方向の方向光も Sky に揃える
       sunLight.position.copy(sunDir).multiplyScalar(60);
     } else {
@@ -7185,12 +7206,17 @@
     // 🍃 葉（InstancedMesh — 葉テクスチャ付き平面、クラウン全体に散布）
     const LEAF_COUNT = 900;
     const leafGeo = new THREE.PlaneGeometry(0.42, 0.55);
-    const leafMat = new THREE.MeshStandardMaterial({
+    // 本物の葉：太陽光が透ける (transmission) + 薄い厚み感 (thickness)
+    const leafMat = new THREE.MeshPhysicalMaterial({
       map: leafTex,
       alphaTest: 0.5,
-      transparent: true,
       side: THREE.DoubleSide,
-      roughness: 0.75,
+      roughness: 0.65,
+      transmission: 0.25,          // 25% 光を透過（葉脈が光る）
+      thickness: 0.3,              // SSS的な厚み
+      sheen: 0.4, sheenColor: new THREE.Color(0x90c060), // 緑のベルベット質感
+      clearcoat: 0.15,
+      clearcoatRoughness: 0.4,
     });
     const leaves = new THREE.InstancedMesh(leafGeo, leafMat, LEAF_COUNT);
     const leafDummy = new THREE.Object3D();
@@ -7240,14 +7266,15 @@
 
     // 🍎 禁断のリンゴ
     const apples = [];
-    // MeshPhysicalMaterial: clearcoat（透明ニス層）でリンゴの艶
+    // MeshPhysicalMaterial: clearcoat + iridescence + 環境反射
     const appleMat = new THREE.MeshPhysicalMaterial({
-      color: 0xd01828, roughness: 0.45, metalness: 0.0,
+      color: 0xd01828, roughness: 0.4, metalness: 0.0,
       emissive: 0x400614, emissiveIntensity: 0.2,
-      clearcoat: 1.0,           // 完全ニス層
-      clearcoatRoughness: 0.08, // ニスはほぼ鏡面
-      sheen: 0.3,               // 産毛のふわっと
-      sheenColor: new THREE.Color(0xff8060),
+      clearcoat: 1.0, clearcoatRoughness: 0.08,
+      sheen: 0.3, sheenColor: new THREE.Color(0xff8060),
+      iridescence: 0.2,         // 虹色のかすかな彩光
+      iridescenceIOR: 1.3,
+      envMap: edenCubeRT ? edenCubeRT.texture : null, // 動的反射
     });
     for (let i = 0; i < 18; i++) {
       const theta = (i / 18) * Math.PI * 2 + Math.random() * 0.6;
@@ -7338,21 +7365,15 @@
       t.repeat.set(6, 1);
       return t;
     })();
-    // 🎥 CubeCamera: 蛇の鱗に空と樹を動的反射
-    let edenCubeCam = null, edenCubeRT = null;
-    try {
-      edenCubeRT = new THREE.WebGLCubeRenderTarget(128, {
-        generateMipmaps: true,
-        minFilter: THREE.LinearMipmapLinearFilter,
-      });
-      edenCubeCam = new THREE.CubeCamera(0.1, 100, edenCubeRT);
-      edenCubeCam.position.set(0, 4, 0);
-      scene.add(edenCubeCam);
-    } catch (e) { console.warn('Eden cubeCam', e); }
-    const serpentMat = new THREE.MeshStandardMaterial({
-      map: scaleTex, roughness: 0.3, metalness: 0.55, // 鱗を光らせる
-      emissive: 0x2a4a08, emissiveIntensity: 0.45,
+    // CubeCamera は先頭で宣言済み、シーンに追加だけ
+    if (edenCubeCam) scene.add(edenCubeCam);
+    const serpentMat = new THREE.MeshPhysicalMaterial({
+      map: scaleTex, roughness: 0.35, metalness: 0.4,
+      emissive: 0x2a4a08, emissiveIntensity: 0.4,
       envMap: edenCubeRT ? edenCubeRT.texture : null,
+      clearcoat: 0.6,                  // 鱗の光沢
+      clearcoatRoughness: 0.2,
+      sheen: 0.2, sheenColor: new THREE.Color(0x60a020),
     });
     const serpent = makeTaperedTube(serpentCurve, serpentRadii, 14, serpentMat);
     treeGroup.add(serpent);
