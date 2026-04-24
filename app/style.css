@@ -306,6 +306,8 @@ body {
 main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,255,0.78); scrollbar-gutter: stable both-edges; }
 .view { display: none; padding: 16px 18px 80px; }
 .view.active { display: block; }
+/* ホーム画面はヒーロー(magic-topbook)がフルブリードで始まるので上paddingを削除 */
+#view-people.active { padding-top: 0; }
 
 /* わたしの本だけノート罫線の背景 */
 #view-favorites {
