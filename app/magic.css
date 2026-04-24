@@ -6835,3 +6835,100 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
 @media (hover: none), (max-width: 900px) {
   .museum3d-view-btn { bottom: 30px; }
 }
+
+/* ===== Museum Zoom View (big image + plaque below) ===== */
+.museum-overlay {
+  /* 旧スタイル上書き：大画面ズームビュー */
+  display: flex !important;
+  flex-direction: column;
+  padding: 0 !important;
+}
+.museum-overlay .museum-hall,
+.museum-overlay .museum-wall,
+.museum-overlay .museum-spotlight,
+.museum-overlay .museum-frame,
+.museum-overlay .museum-plaque,
+.museum-overlay .museum-floor,
+.museum-overlay .museum-hint { display: none !important; }
+
+.museum-imgwrap {
+  position: absolute; top: 0; left: 0; right: 0; bottom: 140px;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+  touch-action: none;
+  background: radial-gradient(ellipse at center top, rgba(80,60,40,0.3), transparent 60%);
+}
+.museum-bigimg {
+  max-width: 96vw;
+  max-height: calc(100vh - 180px);
+  box-shadow:
+    0 0 0 6px #8a6a3a,
+    0 0 0 8px #3a2a12,
+    0 30px 80px rgba(0,0,0,0.8),
+    0 0 120px rgba(255,220,140,0.15);
+  cursor: grab;
+  user-select: none;
+  -webkit-user-drag: none;
+  transition: transform .12s ease-out;
+  transform-origin: center center;
+}
+.museum-bigimg:active { cursor: grabbing; }
+.museum-zoom-hint {
+  position: absolute; top: 18px; left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 16px;
+  background: rgba(20,12,6,0.7);
+  border: 1px solid rgba(220,190,130,0.3);
+  border-radius: 999px;
+  color: rgba(230,210,170,0.85);
+  font-size: 11px; letter-spacing: 0.1em;
+  font-family: 'Shippori Mincho', serif;
+  backdrop-filter: blur(6px);
+  z-index: 11;
+  transition: opacity .8s;
+}
+.museum-zoom-hint.fade { opacity: 0.2; }
+.museum-bottom {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 140px;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(180deg, rgba(15,10,6,0) 0%, rgba(15,10,6,0.95) 50%);
+  z-index: 5;
+  pointer-events: none;
+}
+.museum-plaque-new {
+  padding: 14px 32px;
+  background: linear-gradient(135deg, #3a2a18 0%, #1a1208 80%);
+  border: 1px solid rgba(220,190,130,0.4);
+  border-radius: 4px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+  max-width: 88vw;
+  text-align: center;
+  color: #e8d8a8;
+  font-family: 'Shippori Mincho', serif;
+}
+.mpn-sub {
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  color: #c8a050;
+  margin-bottom: 8px;
+}
+.mpn-title {
+  font-size: 16px;
+  letter-spacing: 0.08em;
+  line-height: 1.5;
+  color: #f4e6c0;
+  margin-bottom: 6px;
+}
+.mpn-pd {
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  color: rgba(220,190,130,0.45);
+  font-style: italic;
+}
+@media (max-width: 600px) {
+  .museum-imgwrap { bottom: 120px; }
+  .museum-bigimg { max-height: calc(100vh - 160px); }
+  .museum-bottom { height: 120px; }
+  .mpn-title { font-size: 14px; }
+}

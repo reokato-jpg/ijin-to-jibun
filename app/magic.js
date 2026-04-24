@@ -5935,6 +5935,133 @@
     grass.receiveShadow = true;
     scene.add(grass);
 
+    // 🌟 ソフト円形スプライトテクスチャ（蛍・塵共用）
+    const glowTex = (() => {
+      const c = document.createElement('canvas'); c.width = 64; c.height = 64;
+      const g = c.getContext('2d');
+      const grd = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+      grd.addColorStop(0, 'rgba(255,255,240,1)');
+      grd.addColorStop(0.3, 'rgba(255,230,160,0.8)');
+      grd.addColorStop(0.6, 'rgba(255,200,120,0.25)');
+      grd.addColorStop(1, 'rgba(255,180,80,0)');
+      g.fillStyle = grd; g.fillRect(0,0,64,64);
+      return new THREE.CanvasTexture(c);
+    })();
+
+    // 🪷 幹の根元の神秘の光輪
+    const auraRing = new THREE.Mesh(
+      new THREE.RingGeometry(0.7, 2.4, 48),
+      new THREE.MeshBasicMaterial({
+        color: 0xffd890, transparent: true, opacity: 0.22,
+        blending: THREE.AdditiveBlending, side: THREE.DoubleSide, depthWrite: false,
+      })
+    );
+    auraRing.rotation.x = -Math.PI / 2;
+    auraRing.position.y = 0.02;
+    scene.add(auraRing);
+    // 光の柱（樹冠から地面へ降り注ぐ聖光）
+    const pillarMat = new THREE.MeshBasicMaterial({
+      color: 0xfff0b0, transparent: true, opacity: 0.08,
+      blending: THREE.AdditiveBlending, side: THREE.DoubleSide, depthWrite: false,
+    });
+    const pillar = new THREE.Mesh(
+      new THREE.CylinderGeometry(1.8, 3.2, 7.5, 20, 1, true),
+      pillarMat
+    );
+    pillar.position.y = 3.8;
+    scene.add(pillar);
+
+    // ✨ 神の光条（ゴッドレイ） — 太陽からの放射状コーン
+    const raysGroup = new THREE.Group();
+    const rayMat = new THREE.MeshBasicMaterial({
+      color: 0xfff0c0, transparent: true, opacity: 0.07,
+      blending: THREE.AdditiveBlending, side: THREE.DoubleSide, depthWrite: false,
+    });
+    for (let i = 0; i < 7; i++) {
+      const ang = (i - 3) * 0.08;
+      const cone = new THREE.Mesh(
+        new THREE.ConeGeometry(2.2 + Math.random() * 0.6, 55, 24, 1, true),
+        rayMat
+      );
+      cone.position.set(25 + Math.cos(ang) * 8, 18, -28 + Math.sin(ang) * 8);
+      cone.lookAt(0, 0, 0);
+      cone.rotateX(Math.PI / 2);
+      raysGroup.add(cone);
+    }
+    scene.add(raysGroup);
+
+    // 🌸 舞う花びら（ピンクの小さな平面、ゆっくり降りて循環）
+    const petalTex = (() => {
+      const c = document.createElement('canvas'); c.width = 48; c.height = 48;
+      const g = c.getContext('2d');
+      g.clearRect(0,0,48,48);
+      g.translate(24, 24);
+      const grd = g.createRadialGradient(0, -6, 2, 0, 0, 20);
+      grd.addColorStop(0, '#fff0f4');
+      grd.addColorStop(0.5, '#ff9cb8');
+      grd.addColorStop(1, '#d04070');
+      g.fillStyle = grd;
+      g.beginPath();
+      g.ellipse(0, 0, 9, 18, 0, 0, Math.PI * 2);
+      g.fill();
+      g.strokeStyle = 'rgba(150,30,60,0.4)';
+      g.lineWidth = 0.6; g.beginPath(); g.moveTo(0, -15); g.lineTo(0, 15); g.stroke();
+      return new THREE.CanvasTexture(c);
+    })();
+    const PETAL = 60;
+    const petalGeo = new THREE.PlaneGeometry(0.18, 0.26);
+    const petalMat = new THREE.MeshBasicMaterial({
+      map: petalTex, transparent: true, alphaTest: 0.1,
+      side: THREE.DoubleSide, depthWrite: false,
+    });
+    const petals = new THREE.InstancedMesh(petalGeo, petalMat, PETAL);
+    const pd = new THREE.Object3D();
+    const petalBases = [];
+    for (let i = 0; i < PETAL; i++) {
+      const r = 1.5 + Math.random() * 6;
+      const a = Math.random() * Math.PI * 2;
+      const x = Math.cos(a) * r;
+      const z = Math.sin(a) * r;
+      const y = 1 + Math.random() * 6;
+      pd.position.set(x, y, z);
+      pd.rotation.set(Math.random(), Math.random() * Math.PI * 2, Math.random());
+      pd.updateMatrix();
+      petals.setMatrixAt(i, pd.matrix);
+      petalBases.push({ x, y, z, phase: Math.random() * Math.PI * 2, speed: 0.4 + Math.random() * 0.6, rx: Math.random(), ry: Math.random() * Math.PI * 2, rz: Math.random() });
+    }
+    petals.instanceMatrix.needsUpdate = true;
+    scene.add(petals);
+
+    // 🧚 蛍（黄色く光る粒がふわふわ） — 夜の森感
+    const FIRE = 90;
+    const fireGeo = new THREE.BufferGeometry();
+    const firePos = new Float32Array(FIRE * 3);
+    const firePhase = new Float32Array(FIRE);
+    for (let i = 0; i < FIRE; i++) {
+      const r = 1.2 + Math.random() * 10;
+      const a = Math.random() * Math.PI * 2;
+      firePos[i*3] = Math.cos(a) * r;
+      firePos[i*3+1] = 0.3 + Math.random() * 5;
+      firePos[i*3+2] = Math.sin(a) * r;
+      firePhase[i] = Math.random() * Math.PI * 2;
+    }
+    fireGeo.setAttribute('position', new THREE.BufferAttribute(firePos, 3));
+    const fireMat = new THREE.PointsMaterial({
+      color: 0xffe890, size: 0.22,
+      transparent: true, opacity: 0.92,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      sizeAttenuation: true,
+      map: glowTex,
+      alphaTest: 0.01,
+    });
+    const fireflies = new THREE.Points(fireGeo, fireMat);
+    scene.add(fireflies);
+
+    // 🍎 リンゴの光輪（発光の後光） — bloomの代わり
+    const appleHalos = [];
+    // （apples 配列は後で作られるので、その後で halo を追加する pending フラグ）
+
     // ✨ ダストモート（空気中の微粒子、太陽光に舞う）
     const dustGeo = new THREE.BufferGeometry();
     const DUST = 200;
@@ -6232,6 +6359,17 @@
       apple.userData.phase = Math.random() * Math.PI * 2;
       apples.push(apple);
       treeGroup.add(apple); treeGroup.add(hl); treeGroup.add(stem);
+      // 発光の後光（リンゴごとにスプライト）
+      const halo = new THREE.Sprite(new THREE.SpriteMaterial({
+        map: glowTex, color: 0xff6060, transparent: true, opacity: 0.65,
+        blending: THREE.AdditiveBlending, depthWrite: false,
+      }));
+      halo.position.copy(apple.position);
+      halo.scale.set(0.7, 0.7, 0.7);
+      halo.userData.basePos = apple.userData.basePos;
+      halo.userData.phase = apple.userData.phase;
+      appleHalos.push(halo);
+      treeGroup.add(halo);
     }
 
     // 🐍 蛇（幹に巻き付く・テーパ付き）
@@ -6332,6 +6470,14 @@
     treeGroup.userData.grassBases = grassBases;
     treeGroup.userData.dust = dust;
     treeGroup.userData.dustPhase = dustPhase;
+    treeGroup.userData.fireflies = fireflies;
+    treeGroup.userData.firePhase = firePhase;
+    treeGroup.userData.petals = petals;
+    treeGroup.userData.petalBases = petalBases;
+    treeGroup.userData.petalDummy = pd;
+    treeGroup.userData.auraRing = auraRing;
+    treeGroup.userData.raysGroup = raysGroup;
+    treeGroup.userData.pillar = pillar;
 
     // 周辺の小さな木々
     for (let i = 0; i < 8; i++) {
@@ -6486,6 +6632,54 @@
         }
         gr.instanceMatrix.needsUpdate = true;
       }
+      // 蛍（黄の光粒）が漂う
+      if (treeGroup.userData.fireflies) {
+        const ff = treeGroup.userData.fireflies;
+        const fp = ff.geometry.attributes.position;
+        const phs = treeGroup.userData.firePhase;
+        for (let i = 0; i < phs.length; i++) {
+          phs[i] += 0.025 + (i % 5) * 0.005;
+          fp.array[i*3] += Math.sin(phs[i]) * 0.008;
+          fp.array[i*3+1] += Math.cos(phs[i] * 0.6) * 0.005;
+          fp.array[i*3+2] += Math.cos(phs[i] * 0.9) * 0.008;
+        }
+        fp.needsUpdate = true;
+        ff.material.opacity = 0.75 + Math.sin(t * 3) * 0.2;
+      }
+      // 花びらの舞い（降下 + 回転）
+      if (treeGroup.userData.petals) {
+        const ps = treeGroup.userData.petals;
+        const pb = treeGroup.userData.petalBases;
+        const pdm = treeGroup.userData.petalDummy;
+        for (let i = 0; i < pb.length; i++) {
+          const b = pb[i];
+          b.phase += 0.02;
+          b.y -= b.speed * 0.02;
+          if (b.y < 0.1) b.y = 6 + Math.random() * 2;
+          pdm.position.set(
+            b.x + Math.sin(b.phase) * 0.3,
+            b.y,
+            b.z + Math.cos(b.phase * 0.8) * 0.3
+          );
+          pdm.rotation.set(b.rx + b.phase * 0.3, b.ry + b.phase * 0.5, b.rz + b.phase * 0.4);
+          pdm.updateMatrix();
+          ps.setMatrixAt(i, pdm.matrix);
+        }
+        ps.instanceMatrix.needsUpdate = true;
+      }
+      // 光輪の脈動
+      if (treeGroup.userData.auraRing) {
+        treeGroup.userData.auraRing.material.opacity = 0.18 + Math.sin(t * 1.2) * 0.08;
+        treeGroup.userData.auraRing.rotation.z = t * 0.15;
+      }
+      // 光の柱ゆらぎ
+      if (treeGroup.userData.pillar) {
+        treeGroup.userData.pillar.material.opacity = 0.07 + Math.sin(t * 0.7) * 0.04;
+      }
+      // ゴッドレイのゆっくり旋回
+      if (treeGroup.userData.raysGroup) {
+        treeGroup.userData.raysGroup.rotation.y = Math.sin(t * 0.2) * 0.05;
+      }
       // ダストモート漂流
       if (treeGroup.userData.dust) {
         const dp = treeGroup.userData.dust.geometry.attributes.position;
@@ -6528,29 +6722,123 @@
     if (!imgUrl) return;
     const ov = document.createElement('div');
     ov.className = 'museum-overlay';
+    // caption は「神話名　章名　／　画題」形式で来ることがある
+    let mainTitle = caption || '', sub = '';
+    if (caption && caption.includes('／')) {
+      const [a, b] = caption.split('／').map(s => s.trim());
+      mainTitle = b || a; sub = a;
+    }
     ov.innerHTML = `
       <button class="museum-close" aria-label="閉じる">×</button>
-      <div class="museum-hall">
-        <div class="museum-wall">
-          <div class="museum-spotlight"></div>
-          <div class="museum-frame">
-            <img src="${imgUrl}" alt="${caption || ''}" />
-          </div>
-          <div class="museum-plaque">${caption || ''}</div>
-        </div>
-        <div class="museum-floor"></div>
+      <div class="museum-zoom-hint" id="museumZoomHint">ピンチ / ダブルタップでズーム　・　ドラッグで移動</div>
+      <div class="museum-imgwrap" id="museumImgWrap">
+        <img class="museum-bigimg" id="museumBigImg" src="${imgUrl}" alt="${mainTitle}" draggable="false"/>
       </div>
-      <div class="museum-hint">— 作品をじっくり鑑賞する —</div>
+      <div class="museum-bottom">
+        <div class="museum-plaque-new">
+          ${sub ? `<div class="mpn-sub">${sub}</div>` : ''}
+          <div class="mpn-title">${mainTitle}</div>
+          <div class="mpn-pd">— Public Domain —</div>
+        </div>
+      </div>
     `;
     document.body.appendChild(ov);
     requestAnimationFrame(() => ov.classList.add('open'));
-    ov.querySelector('.museum-close').addEventListener('click', () => {
-      ov.classList.remove('open');
-      setTimeout(() => ov.remove(), 400);
+    const close = () => { ov.classList.remove('open'); setTimeout(() => ov.remove(), 400); };
+    ov.querySelector('.museum-close').addEventListener('click', close);
+    // ESCキー
+    const onKey = e => { if (e.key === 'Escape') close(); };
+    window.addEventListener('keydown', onKey);
+    const obs = new MutationObserver(() => {
+      if (!document.body.contains(ov)) { window.removeEventListener('keydown', onKey); obs.disconnect(); }
     });
-    ov.addEventListener('click', e => {
-      if (e.target === ov) { ov.classList.remove('open'); setTimeout(() => ov.remove(), 400); }
+    obs.observe(document.body, { childList: true });
+
+    // ===== Pan / Zoom =====
+    const wrap = ov.querySelector('#museumImgWrap');
+    const img = ov.querySelector('#museumBigImg');
+    let scale = 1, tx = 0, ty = 0;
+    const apply = () => { img.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`; };
+    // Wheel zoom
+    wrap.addEventListener('wheel', e => {
+      e.preventDefault();
+      const rect = wrap.getBoundingClientRect();
+      const cx = e.clientX - rect.left - rect.width / 2;
+      const cy = e.clientY - rect.top - rect.height / 2;
+      const oldScale = scale;
+      const factor = e.deltaY < 0 ? 1.15 : 1 / 1.15;
+      scale = Math.max(1, Math.min(6, scale * factor));
+      // ズームのピボットを考慮して tx/ty 更新
+      tx = cx - (cx - tx) * (scale / oldScale);
+      ty = cy - (cy - ty) * (scale / oldScale);
+      clampPan();
+      apply();
+    }, { passive: false });
+    // Drag pan（マウス）
+    let dragging = false, lastX = 0, lastY = 0;
+    img.addEventListener('pointerdown', e => {
+      dragging = true; lastX = e.clientX; lastY = e.clientY;
+      img.setPointerCapture(e.pointerId);
     });
+    img.addEventListener('pointermove', e => {
+      if (!dragging) return;
+      tx += e.clientX - lastX;
+      ty += e.clientY - lastY;
+      lastX = e.clientX; lastY = e.clientY;
+      clampPan(); apply();
+    });
+    img.addEventListener('pointerup', () => dragging = false);
+    img.addEventListener('pointercancel', () => dragging = false);
+    // ダブルタップ / ダブルクリックでズームイン/リセット
+    let lastTap = 0;
+    img.addEventListener('pointerdown', e => {
+      const now = Date.now();
+      if (now - lastTap < 300) {
+        if (scale > 1.2) { scale = 1; tx = 0; ty = 0; }
+        else { scale = 2.5; }
+        clampPan(); apply();
+      }
+      lastTap = now;
+    });
+    // ピンチ
+    let pinchBase = 0, pinchBaseScale = 1, pinchBaseTx = 0, pinchBaseTy = 0, pinchCX = 0, pinchCY = 0;
+    wrap.addEventListener('touchstart', e => {
+      if (e.touches.length === 2) {
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        pinchBase = Math.hypot(dx, dy);
+        pinchBaseScale = scale;
+        pinchBaseTx = tx; pinchBaseTy = ty;
+        const rect = wrap.getBoundingClientRect();
+        pinchCX = (e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left - rect.width / 2;
+        pinchCY = (e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top - rect.height / 2;
+      }
+    }, { passive: true });
+    wrap.addEventListener('touchmove', e => {
+      if (e.touches.length === 2 && pinchBase > 0) {
+        e.preventDefault();
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        const d = Math.hypot(dx, dy);
+        const newScale = Math.max(1, Math.min(6, pinchBaseScale * d / pinchBase));
+        tx = pinchCX - (pinchCX - pinchBaseTx) * (newScale / pinchBaseScale);
+        ty = pinchCY - (pinchCY - pinchBaseTy) * (newScale / pinchBaseScale);
+        scale = newScale;
+        clampPan(); apply();
+      }
+    }, { passive: false });
+    function clampPan() {
+      if (scale <= 1) { tx = 0; ty = 0; return; }
+      const rect = wrap.getBoundingClientRect();
+      const imgW = img.clientWidth * scale;
+      const imgH = img.clientHeight * scale;
+      const maxX = Math.max(0, (imgW - rect.width) / 2);
+      const maxY = Math.max(0, (imgH - rect.height) / 2);
+      tx = Math.max(-maxX, Math.min(maxX, tx));
+      ty = Math.max(-maxY, Math.min(maxY, ty));
+    }
+    // ヒントを数秒後にフェード
+    setTimeout(() => { ov.querySelector('#museumZoomHint')?.classList.add('fade'); }, 3500);
   }
   window.openMuseum = openMuseum;
 
