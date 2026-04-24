@@ -6051,27 +6051,8 @@
     let edenOutlinePass = null;
     if (usePro) try {
       composer = new ADDONS.EffectComposer(renderer);
-      // TAARenderPass（利用可能なら）: 時間方向に積算して超滑らかに
-      if (ADDONS.TAARenderPass) {
-        const taa = new ADDONS.TAARenderPass(scene, camera);
-        taa.sampleLevel = 2; // 4サンプル積算
-        taa.unbiased = false;
-        composer.addPass(taa);
-      } else {
-        composer.addPass(new ADDONS.RenderPass(scene, camera));
-      }
-      // 🕳 GTAOPass（r152+、旧SSAOより高品質）。失敗したらSSAOPassにフォールバック
-      if (ADDONS.GTAOPass) {
-        try {
-          const gtao = new ADDONS.GTAOPass(scene, camera, W, H);
-          gtao.output = ADDONS.GTAOPass.OUTPUT.Default;
-          composer.addPass(gtao);
-        } catch (e) { console.warn('GTAO', e); }
-      } else if (ADDONS.SSAOPass) {
-        const ssao = new ADDONS.SSAOPass(scene, camera, W, H);
-        ssao.kernelRadius = 0.6; ssao.minDistance = 0.001; ssao.maxDistance = 0.1;
-        composer.addPass(ssao);
-      }
+      composer.addPass(new ADDONS.RenderPass(scene, camera));
+      // TAA/SSAO は重すぎるので一時除外（体感FPS優先）
       const bloomPass = new ADDONS.UnrealBloomPass(
         new THREE.Vector2(W, H),
         0.25, 0.55, 0.78
@@ -6577,7 +6558,7 @@
     if (ADDONS.MeshSurfaceSampler) {
       try {
         const sampler = new ADDONS.MeshSurfaceSampler(ground).build();
-        const FLOWERS = 400;
+        const FLOWERS = 200;
         const flowerGeo = new THREE.SphereGeometry(0.08, 6, 4);
         const flowerMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.7 });
         const flowers = new THREE.InstancedMesh(flowerGeo, flowerMat, FLOWERS);
@@ -6671,7 +6652,7 @@
       map: grassTex, alphaTest: 0.5, transparent: true,
       side: THREE.DoubleSide, roughness: 0.9
     });
-    const GRASS = 1000;
+    const GRASS = 500;
     const grassGeo = new THREE.PlaneGeometry(0.35, 0.5);
     grassGeo.translate(0, 0.25, 0);
     const grass = new THREE.InstancedMesh(grassGeo, grassMat, GRASS);
@@ -6769,7 +6750,7 @@
       g.lineWidth = 0.6; g.beginPath(); g.moveTo(0, -15); g.lineTo(0, 15); g.stroke();
       return new THREE.CanvasTexture(c);
     })();
-    const PETAL = 30;
+    const PETAL = 15;
     const petalGeo = new THREE.PlaneGeometry(0.18, 0.26);
     const petalMat = new THREE.MeshBasicMaterial({
       map: petalTex, transparent: true, alphaTest: 0.1,
@@ -6821,7 +6802,7 @@
 
     // ✨ 自作 ShaderMaterial の光の粒子（GPU 側でサイン波動かし）
     //   CPU で position を毎フレーム書き換えず、シェーダで時間から計算
-    const SOUL = 400;
+    const SOUL = 200;
     const soulGeo = new THREE.BufferGeometry();
     const soulPos = new Float32Array(SOUL * 3);
     const soulOff = new Float32Array(SOUL);  // 各粒子の位相オフセット
@@ -7204,19 +7185,18 @@
     });
 
     // 🍃 葉（InstancedMesh — 葉テクスチャ付き平面、クラウン全体に散布）
-    const LEAF_COUNT = 900;
+    const LEAF_COUNT = 600;
     const leafGeo = new THREE.PlaneGeometry(0.42, 0.55);
-    // 本物の葉：太陽光が透ける (transmission) + 薄い厚み感 (thickness)
-    const leafMat = new THREE.MeshPhysicalMaterial({
+    // 葉（perf重視：MeshStandardMaterial で軽量）
+    // 900個 InstancedMesh に Physical は重すぎるので Standard に戻す
+    const leafMat = new THREE.MeshStandardMaterial({
       map: leafTex,
       alphaTest: 0.5,
+      transparent: false, // alphaTestのみで軽量
       side: THREE.DoubleSide,
-      roughness: 0.65,
-      transmission: 0.25,          // 25% 光を透過（葉脈が光る）
-      thickness: 0.3,              // SSS的な厚み
-      sheen: 0.4, sheenColor: new THREE.Color(0x90c060), // 緑のベルベット質感
-      clearcoat: 0.15,
-      clearcoatRoughness: 0.4,
+      roughness: 0.75,
+      emissiveIntensity: 0.08,
+      emissive: 0x306018, // 逆光時の葉脈っぽい光を擬似的に
     });
     const leaves = new THREE.InstancedMesh(leafGeo, leafMat, LEAF_COUNT);
     const leafDummy = new THREE.Object3D();
@@ -7630,8 +7610,8 @@
       side: THREE.DoubleSide, roughness: 0.8,
     });
     const bgLeafGeo = new THREE.PlaneGeometry(0.35, 0.48);
-    for (let i = 0; i < 12; i++) {
-      const a = (i / 12) * Math.PI * 2 + Math.random() * 0.3;
+    for (let i = 0; i < 7; i++) {
+      const a = (i / 7) * Math.PI * 2 + Math.random() * 0.3;
       const r = 10 + Math.random() * 10;
       const px = Math.cos(a) * r, pz = Math.sin(a) * r;
       const tg = new THREE.Group();
@@ -7830,7 +7810,7 @@
         gltf.scene.traverse(o => { if (o.isSkinnedMesh && !source) source = o; });
         if (!source) source = gltf.scene.children[0] || gltf.scene;
         if (!source) return;
-        const FLOCK = 5;
+        const FLOCK = 2;
         for (let k = 0; k < FLOCK; k++) {
           const bird = cloneFn(source);
           bird.scale.set(0.015, 0.015, 0.015);
@@ -7910,7 +7890,7 @@
 
     // 蝶（ドット群で飛ぶ）
     const butterflies = [];
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 3; i++) {
       const bf = new THREE.Mesh(
         new THREE.SphereGeometry(0.08, 6, 6),
         new THREE.MeshBasicMaterial({ color: i % 2 === 0 ? 0xffd070 : 0xff80c0 })
