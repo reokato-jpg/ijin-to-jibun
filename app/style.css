@@ -4019,7 +4019,9 @@ h2 .ij-icon, h3 .ij-icon { vertical-align: -0.15em; margin-right: 4px; }
 .home-toc-summary::after { display: none; }
 .home-toc[open] .home-toc-summary { background: var(--gold); color: var(--wine); }
 .home-toc-list { position: absolute; right: 0; bottom: 58px; display: flex; flex-direction: column; gap: 4px; padding: 10px; background: #fff; border: 1px solid var(--wine); border-radius: 10px; box-shadow: 0 6px 18px rgba(0,0,0,0.2); min-width: 180px; max-height: 70vh; overflow-y: auto; }
-.home-toc-item { font-family: var(--font-jp); font-size: 12px; font-weight: 600; color: var(--wine); background: #fff; border: 1px solid rgba(122,46,58,0.2); border-radius: 6px; padding: 7px 10px; cursor: pointer; text-align: left; transition: all 0.15s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.home-toc-item { font-family: var(--font-jp); font-size: 12px; font-weight: 600; color: var(--wine); background: #fff; border: 1px solid rgba(122,46,58,0.2); border-radius: 6px; padding: 7px 10px; cursor: pointer; text-align: left; transition: all 0.15s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 6px; }
+.home-toc-item .ij-icon { width: 14px; height: 14px; color: var(--wine); flex-shrink: 0; }
+.home-toc-summary .ij-icon { width: 22px; height: 22px; color: #fff; }
 .home-toc-item:hover { background: var(--wine); color: #fff; border-color: var(--wine); }
 .home-book-cover-wrap {
   position: relative;

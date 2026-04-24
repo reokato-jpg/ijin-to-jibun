@@ -10926,18 +10926,21 @@ function renderHomeTOC() {
     if (blk.offsetParent === null) return; // display:none のブロック除外
     const labelEl = blk.querySelector('.home-block-label');
     if (!labelEl) return;
-    const txt = (labelEl.textContent || '').trim();
-    if (!txt) return;
+    // SVG＋テキストをそのままコピー、PRタグは削除
+    const clone = labelEl.cloneNode(true);
+    clone.querySelectorAll('.pr-tag').forEach(el => el.remove());
+    const html = clone.innerHTML.trim();
+    if (!html) return;
     let anchorId = blk.id;
     if (!anchorId) { anchorId = `home-blk-${idx}`; blk.id = anchorId; }
-    entries.push({ id: anchorId, label: txt.replace(/\s*PR\s*$/, '').trim() });
+    entries.push({ id: anchorId, html });
   });
   if (!entries.length) { mount.innerHTML = ''; return; }
   mount.innerHTML = `
     <details class="home-toc" id="homeTOCDetails">
-      <summary class="home-toc-summary" aria-label="目次を開く" title="目次">📑</summary>
+      <summary class="home-toc-summary" aria-label="目次を開く" title="目次"><svg class="ij-icon"><use href="#ij-notebook"/></svg></summary>
       <div class="home-toc-list">
-        ${entries.map(e => `<button class="home-toc-item" data-toc="${e.id}">${escapeHtml(e.label)}</button>`).join('')}
+        ${entries.map(e => `<button class="home-toc-item" data-toc="${e.id}">${e.html}</button>`).join('')}
       </div>
     </details>`;
   mount.querySelectorAll('[data-toc]').forEach(b => {
