@@ -5784,22 +5784,40 @@
     const stage = ov.querySelector('#eden3dStage');
     const W = stage.clientWidth || window.innerWidth;
     const H = stage.clientHeight || window.innerHeight;
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     renderer.setSize(W, H);
     if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.15;
+    if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
+    else if ('outputEncoding' in renderer) renderer.outputEncoding = THREE.sRGBEncoding;
+    // 影（本格的な奥行き）
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     stage.appendChild(renderer.domElement);
     renderer.domElement.style.touchAction = 'none';
 
     const scene = new THREE.Scene();
     // 空のグラデ（半球光）
     scene.background = new THREE.Color(0x6a4030);
-    const hemi = new THREE.HemisphereLight(0xfff0c0, 0x3a5a28, 1.0);
+    const hemi = new THREE.HemisphereLight(0xffd8a8, 0x3a5a28, 0.75);
     scene.add(hemi);
-    const sunLight = new THREE.DirectionalLight(0xffe8a8, 1.3);
-    sunLight.position.set(8, 12, 6);
+    const sunLight = new THREE.DirectionalLight(0xffe8a8, 1.6);
+    sunLight.position.set(8, 14, 6);
+    sunLight.castShadow = true;
+    sunLight.shadow.mapSize.set(1024, 1024);
+    sunLight.shadow.camera.near = 0.5;
+    sunLight.shadow.camera.far = 40;
+    sunLight.shadow.camera.left = -12; sunLight.shadow.camera.right = 12;
+    sunLight.shadow.camera.top = 12; sunLight.shadow.camera.bottom = -4;
+    sunLight.shadow.bias = -0.0005;
+    sunLight.shadow.radius = 3;
     scene.add(sunLight);
-    scene.add(new THREE.AmbientLight(0x402020, 0.3));
+    // リムライト（背面から紫がかった冷色で輪郭を強調）
+    const rimLight = new THREE.DirectionalLight(0x8080ff, 0.35);
+    rimLight.position.set(-6, 8, -10);
+    scene.add(rimLight);
+    scene.add(new THREE.AmbientLight(0x402020, 0.25));
 
     const camera = new THREE.PerspectiveCamera(55, W/H, 0.1, 500);
     camera.position.set(0, 4, 13);
@@ -5868,7 +5886,73 @@
       new THREE.MeshStandardMaterial({ map: groundTex, roughness: 0.95 })
     );
     ground.rotation.x = -Math.PI / 2;
+    ground.receiveShadow = true;
     scene.add(ground);
+
+    // 🌿 草（InstancedMeshのビルボード） — 手前を埋める
+    const grassTex = (() => {
+      const c = document.createElement('canvas'); c.width = 64; c.height = 128;
+      const g = c.getContext('2d');
+      g.clearRect(0,0,64,128);
+      const grd = g.createLinearGradient(0, 0, 0, 128);
+      grd.addColorStop(0, '#6fa038'); grd.addColorStop(0.7, '#4a7020'); grd.addColorStop(1, '#2a4810');
+      // 草の形（先細りの三角形×3本）
+      g.fillStyle = grd;
+      g.beginPath();
+      g.moveTo(20, 128); g.lineTo(32, 0); g.lineTo(44, 128); g.closePath(); g.fill();
+      g.beginPath();
+      g.moveTo(10, 128); g.lineTo(18, 20); g.lineTo(26, 128); g.closePath(); g.fill();
+      g.beginPath();
+      g.moveTo(40, 128); g.lineTo(50, 24); g.lineTo(58, 128); g.closePath(); g.fill();
+      return new THREE.CanvasTexture(c);
+    })();
+    const grassMat = new THREE.MeshStandardMaterial({
+      map: grassTex, alphaTest: 0.5, transparent: true,
+      side: THREE.DoubleSide, roughness: 0.9
+    });
+    const GRASS = 2400;
+    const grassGeo = new THREE.PlaneGeometry(0.35, 0.5);
+    grassGeo.translate(0, 0.25, 0);
+    const grass = new THREE.InstancedMesh(grassGeo, grassMat, GRASS);
+    const gd = new THREE.Object3D();
+    const grassBases = [];
+    for (let i = 0; i < GRASS; i++) {
+      // ドーナツ状に散布（木の下は避ける）
+      const r = 2.5 + Math.sqrt(Math.random()) * 16;
+      const a = Math.random() * Math.PI * 2;
+      gd.position.set(Math.cos(a) * r, 0, Math.sin(a) * r);
+      gd.rotation.set(0, Math.random() * Math.PI * 2, 0);
+      const s = 0.6 + Math.random() * 0.7;
+      gd.scale.set(s, s + Math.random() * 0.4, s);
+      gd.updateMatrix();
+      grass.setMatrixAt(i, gd.matrix);
+      const col = new THREE.Color().setHSL(0.27 + Math.random() * 0.08, 0.4 + Math.random() * 0.2, 0.3 + Math.random() * 0.15);
+      grass.setColorAt(i, col);
+      grassBases.push({ rotY: gd.rotation.y, phase: Math.random() * Math.PI * 2 });
+    }
+    grass.instanceMatrix.needsUpdate = true;
+    if (grass.instanceColor) grass.instanceColor.needsUpdate = true;
+    grass.receiveShadow = true;
+    scene.add(grass);
+
+    // ✨ ダストモート（空気中の微粒子、太陽光に舞う）
+    const dustGeo = new THREE.BufferGeometry();
+    const DUST = 200;
+    const dustPos = new Float32Array(DUST * 3);
+    const dustPhase = new Float32Array(DUST);
+    for (let i = 0; i < DUST; i++) {
+      dustPos[i*3] = (Math.random() - 0.5) * 20;
+      dustPos[i*3+1] = 1 + Math.random() * 6;
+      dustPos[i*3+2] = (Math.random() - 0.5) * 20;
+      dustPhase[i] = Math.random() * Math.PI * 2;
+    }
+    dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPos, 3));
+    const dustMat = new THREE.PointsMaterial({
+      color: 0xfff0b0, size: 0.05, transparent: true, opacity: 0.55,
+      blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true,
+    });
+    const dust = new THREE.Points(dustGeo, dustMat);
+    scene.add(dust);
     // 小径（石）
     for (let i = 0; i < 25; i++) {
       const r = 3 + i * 0.8;
@@ -6234,12 +6318,20 @@
     const tongue = new THREE.Line(tongueGeo, new THREE.LineBasicMaterial({ color: 0xff3050 }));
     treeGroup.add(tongue);
 
+    // 全メッシュを影キャスターに
+    treeGroup.traverse(obj => {
+      if (obj.isMesh) { obj.castShadow = true; obj.receiveShadow = true; }
+    });
     scene.add(treeGroup);
 
     // 葉の揺れアニメ用参照
     treeGroup.userData.leaves = leaves;
     treeGroup.userData.leafBases = leafBases;
     treeGroup.userData.leafDummy = leafDummy;
+    treeGroup.userData.grass = grass;
+    treeGroup.userData.grassBases = grassBases;
+    treeGroup.userData.dust = dust;
+    treeGroup.userData.dustPhase = dustPhase;
 
     // 周辺の小さな木々
     for (let i = 0; i < 8; i++) {
@@ -6371,6 +6463,42 @@
           lv.setMatrixAt(i, dm.matrix);
         }
         lv.instanceMatrix.needsUpdate = true;
+      }
+      // 草そよぎ（yaw揺動だけで済ませる — 軽量）
+      if (treeGroup.userData.grass && (Math.floor(t * 30) % 2 === 0)) {
+        const gr = treeGroup.userData.grass;
+        const gb = treeGroup.userData.grassBases;
+        const tmp = new THREE.Matrix4();
+        const q = new THREE.Quaternion();
+        const eul = new THREE.Euler();
+        const tp = new THREE.Vector3();
+        const sc = new THREE.Vector3();
+        const wind2 = Math.sin(t * 1.1) * 0.12;
+        for (let i = 0; i < gb.length; i++) {
+          gr.getMatrixAt(i, tmp);
+          tmp.decompose(tp, q, sc);
+          eul.setFromQuaternion(q);
+          eul.x = Math.sin(gb[i].phase + t * 2) * 0.08 + wind2;
+          eul.y = gb[i].rotY;
+          q.setFromEuler(eul);
+          tmp.compose(tp, q, sc);
+          gr.setMatrixAt(i, tmp);
+        }
+        gr.instanceMatrix.needsUpdate = true;
+      }
+      // ダストモート漂流
+      if (treeGroup.userData.dust) {
+        const dp = treeGroup.userData.dust.geometry.attributes.position;
+        const ph = treeGroup.userData.dustPhase;
+        for (let i = 0; i < ph.length; i++) {
+          ph[i] += 0.008;
+          dp.array[i*3] += Math.sin(ph[i]) * 0.004;
+          dp.array[i*3+1] += Math.cos(ph[i] * 0.7) * 0.003 + 0.002;
+          dp.array[i*3+2] += Math.cos(ph[i]) * 0.003;
+          // 上に抜けたらリセット
+          if (dp.array[i*3+1] > 8) dp.array[i*3+1] = 1;
+        }
+        dp.needsUpdate = true;
       }
       // 蝶の浮遊
       butterflies.forEach(bf => {
