@@ -609,7 +609,7 @@ function renderQuoteOfTheDay() {
       </div>
       ${collectedCount > 0 ? `
         <button class="qod-collection-link" data-open-quotes="1">
-          ☆ 集めた言葉 ${collectedCount} →
+          <svg class="ij-icon"><use href="#ij-sparkle"/></svg> 集めた言葉 ${collectedCount} →
         </button>
       ` : ''}
     </div>
@@ -814,7 +814,7 @@ const TRAIT_GROUPS = {
     { label: '🐾 動植物', items: ['犬','猫','鳥','花','植物','観葉植物'] },
     { label: '👥 人・関係', items: ['家族','友人','恋人','仲間'] },
     { label: '🧘 時間・場所', items: ['静けさ','一人の時間','旅','見知らぬ街','古い建物','図書館','本屋'] },
-    { label: '✨ 価値観', items: ['挑戦','創作','学び','自由','美しいもの','シンプルなもの'] },
+    { label: '<svg class="ij-icon"><use href="#ij-sparkle"/></svg> 価値観', items: ['挑戦','創作','学び','自由','美しいもの','シンプルなもの'] },
   ],
   dislikes: [
     { label: '🔊 環境', items: ['騒音','人混み','満員電車','急かされること','ルーティン','暗い場所'] },
@@ -992,7 +992,7 @@ function renderTraitsMatch() {
     : [];
   const sameBdHtml = (my.birthMonth && my.birthDay) ? `
     <div class="match-results match-birthday">
-      <div class="match-results-label">🎂 あなたと同じ誕生日（${my.birthMonth}月${my.birthDay}日）の偉人 ${sameBd.length > 0 ? `(${sameBd.length}人)` : ''}</div>
+      <div class="match-results-label"><svg class="ij-icon"><use href="#ij-cake"/></svg> あなたと同じ誕生日（${my.birthMonth}月${my.birthDay}日）の偉人 ${sameBd.length > 0 ? `(${sameBd.length}人)` : ''}</div>
       ${sameBd.length > 0 ? `
         <div class="book-grid">
           ${sameBd.map(p => {
@@ -1158,12 +1158,12 @@ function renderTodayBirthday() {
   block.style.display = '';
   // ラベルも更新
   const labelEl = block.querySelector('.home-block-label');
-  if (labelEl) labelEl.textContent = isUpcoming ? '🎂 近日の誕生日' : '🎂 今日が誕生日の偉人';
+  if (labelEl) labelEl.textContent = isUpcoming ? '<svg class="ij-icon"><use href="#ij-cake"/></svg> 近日の誕生日' : '<svg class="ij-icon"><use href="#ij-cake"/></svg> 今日が誕生日の偉人';
   const my = (typeof loadMyTraits === 'function') ? loadMyTraits() : {};
   const sameAsMe = (my.birthMonth && my.birthDay &&
     parseInt(my.birthMonth,10) === m && parseInt(my.birthDay,10) === d);
   list.innerHTML = `
-    <div class="today-birthday-date">${isUpcoming ? '今日は該当なし。次の誕生日：' : `${m}月${d}日 生まれ`}${sameAsMe ? '<span class="today-birthday-same">🎉 あなたと同じ誕生日！</span>' : ''}</div>
+    <div class="today-birthday-date">${isUpcoming ? '今日は該当なし。次の誕生日：' : `${m}月${d}日 生まれ`}${sameAsMe ? '<span class="today-birthday-same"><svg class="ij-icon"><use href="#ij-sparkle"/></svg> あなたと同じ誕生日！</span>' : ''}</div>
     <div class="today-birthday-grid">
       ${births.map(p => {
         const avatar = p.imageUrl
@@ -1177,7 +1177,7 @@ function renderTodayBirthday() {
             <div class="today-birthday-info">
               <div class="today-birthday-name">${p.name}${upcomingLabel ? ` <span class="today-birthday-date-label">${upcomingLabel}</span>` : ''}</div>
               <div class="today-birthday-meta">${fmtYearRange(p.birth, p.death)} ／ ${p.field || ''}</div>
-              ${years ? `<div class="today-birthday-years">🎂 生誕 ${years}</div>` : ''}
+              ${years ? `<div class="today-birthday-years"><svg class="ij-icon"><use href="#ij-cake"/></svg> 生誕 ${years}</div>` : ''}
             </div>
           </button>
         `;
@@ -2026,7 +2026,7 @@ function openSnsLinksModal() {
           <input name="instagram" type="url" placeholder="https://instagram.com/yourname" value="${escapeHtml(sns.instagram || '')}">
         </label>
         <label class="sns-field">
-          <span class="sns-label">📝 Note</span>
+          <span class="sns-label"><svg class="ij-icon"><use href="#ij-pen"/></svg> Note</span>
           <input name="note" type="url" placeholder="https://note.com/yourname" value="${escapeHtml(sns.note || '')}">
         </label>
         <label class="sns-field">
@@ -2219,7 +2219,7 @@ function openUserProfileModal(uid, usersCache) {
   const sns = [
     u.sns.x && `<a class="user-prof-sns" href="${u.sns.x}" target="_blank" rel="noopener">𝕏 X</a>`,
     u.sns.instagram && `<a class="user-prof-sns" href="${u.sns.instagram}" target="_blank" rel="noopener">📸 Instagram</a>`,
-    u.sns.note && `<a class="user-prof-sns" href="${u.sns.note}" target="_blank" rel="noopener">📝 Note</a>`,
+    u.sns.note && `<a class="user-prof-sns" href="${u.sns.note}" target="_blank" rel="noopener"><svg class="ij-icon"><use href="#ij-pen"/></svg> Note</a>`,
     u.sns.facebook && `<a class="user-prof-sns" href="${u.sns.facebook}" target="_blank" rel="noopener">f Facebook</a>`,
   ].filter(Boolean).join('');
   const ijinSample = (u.followingIjin || []).slice(0, 12).map(id => {
@@ -2487,7 +2487,7 @@ function renderCalendarToday() {
     const years = type === 'birth'
       ? `生誕 ${now.getFullYear() - (p.birth || now.getFullYear())} 年目`
       : `没後 ${now.getFullYear() - (p.death || now.getFullYear())} 年`;
-    const label = type === 'birth' ? '🎂 誕生日' : '🕯 命日';
+    const label = type === 'birth' ? '<svg class="ij-icon"><use href="#ij-cake"/></svg> 誕生日' : '<svg class="ij-icon"><use href="#ij-moon"/></svg> 命日';
     return `
       <article class="cal-card" data-person-id="${p.id}">
         ${avatar}
@@ -3138,7 +3138,7 @@ function renderOshi() {
           ? `<div class="oshi-image" style="background-image:url('${p.imageUrl}')"></div>`
           : `<div class="oshi-image no-image">${p.name.charAt(0)}</div>`}
         <div class="oshi-info">
-          <div class="oshi-label">♡ わたしの推し</div>
+          <div class="oshi-label"><svg class="ij-icon"><use href="#ij-heart"/></svg> わたしの推し</div>
           <div class="oshi-name">${p.name}</div>
           <div class="oshi-meta">${fmtYearRange(p.birth, p.death)} ／ ${p.field}</div>
         </div>
@@ -3272,7 +3272,7 @@ function renderHomeBooks() {
     usedKeys.add(key);
     picked.push({ ...b, person: p, label });
   };
-  pushBookOf(getOshi(), '♡ 推しの一冊');
+  pushBookOf(getOshi(), '<svg class="ij-icon"><use href="#ij-heart"/></svg> 推しの一冊');
   try {
     const t = getTodaysCompanion && getTodaysCompanion();
     if (t && t.personId) pushBookOf(t.personId, '本日の案内人');
@@ -3384,7 +3384,7 @@ function renderBookOfTheDay() {
   // 日付seedで決定論的に選択（同じ日は同じ本）
   const now = new Date();
   const seed = now.getFullYear() * 10000 + (now.getMonth()+1) * 100 + now.getDate();
-  // 推し偉人が設定されていれば、推しの本から選ぶ（♡ ラベル表示）
+  // 推し偉人が設定されていれば、推しの本から選ぶ（<svg class="ij-icon"><use href="#ij-heart"/></svg> ラベル表示）
   let p = null;
   let isOshiPick = false;
   try {
@@ -3414,7 +3414,7 @@ function renderBookOfTheDay() {
     <button class="book-day-person" data-book-day-person="${p.id}">
       ${avatar}
       <div class="book-day-person-info">
-        ${isOshiPick ? '<div class="book-day-oshi-tag">♡ あなたの推しから</div>' : ''}
+        ${isOshiPick ? '<div class="book-day-oshi-tag"><svg class="ij-icon"><use href="#ij-heart"/></svg> あなたの推しから</div>' : ''}
         <div class="book-day-person-name">${escapeHtml(p.name)}</div>
         <div class="book-day-person-field">${escapeHtml(p.field || '')}</div>
       </div>
@@ -3566,7 +3566,7 @@ function updateItemHtml(u) {
       </div>
       <div class="updates-title">${u.title}</div>
       ${u.body ? `<div class="updates-body">${u.body}</div>` : ''}
-      ${target ? `<div class="updates-action"><button class="updates-jump-btn">✨ 使ってみる →</button></div>` : ''}
+      ${target ? `<div class="updates-action"><button class="updates-jump-btn"><svg class="ij-icon"><use href="#ij-sparkle"/></svg> 使ってみる →</button></div>` : ''}
     </div>
   `;
 }
@@ -4134,7 +4134,7 @@ function syncRekittoUpdates() {
     pushRekittoMsg({
       text: `こちら側で、新しい扉が開きました。\n【${u.tag || 'お知らせ'}】${u.title}\n\n${u.body}`,
       kind: 'update',
-      linkLabel: (u.tag === '新機能') ? '✨ 扉を開く' : '詳しく見る',
+      linkLabel: (u.tag === '新機能') ? '<svg class="ij-icon"><use href="#ij-sparkle"/></svg> 扉を開く' : '詳しく見る',
       target: target,
     });
   });
@@ -4193,10 +4193,10 @@ function runBirthdayNotifications() {
     const msg = `今日は${p.name}の誕生日です。お祝いしましょう。`;
     // アプリ外通知
     if ('Notification' in window && Notification.permission === 'granted') {
-      try { new Notification('🎂 誕生日のお知らせ', { body: msg, icon: p.imageUrl || '/app/assets/icon-192.png', tag: `bday-${p.id}-${todayKey}` }); } catch {}
+      try { new Notification('<svg class="ij-icon"><use href="#ij-cake"/></svg> 誕生日のお知らせ', { body: msg, icon: p.imageUrl || '/app/assets/icon-192.png', tag: `bday-${p.id}-${todayKey}` }); } catch {}
     }
     // アプリ内トースト
-    showFollowToast({ id: p.id, name: '🎂 ' + p.name, imageUrl: p.imageUrl });
+    showFollowToast({ id: p.id, name: '<svg class="ij-icon"><use href="#ij-cake"/></svg> ' + p.name, imageUrl: p.imageUrl });
   });
   localStorage.setItem(BDAY_GREETED_KEY, JSON.stringify(greeted));
 }
@@ -5328,7 +5328,7 @@ function initPhoneMenu() {
           ${r.tagline ? `<p class="meshiru-tagline-in">${escapeHtml(r.tagline)}</p>` : ''}
           ${r.imageHint ? `<div class="meshiru-image-hint">🖼 ${escapeHtml(r.imageHint)}</div>` : ''}
           <details class="meshiru-details">
-            <summary>📋 材料（${(r.ingredients || []).length}点）</summary>
+            <summary><svg class="ij-icon"><use href="#ij-notebook"/></svg> 材料（${(r.ingredients || []).length}点）</summary>
             <ul class="meshiru-ingredients">
               ${(r.ingredients || []).map(i => `<li>${escapeHtml(i)}</li>`).join('')}
             </ul>
@@ -5339,13 +5339,13 @@ function initPhoneMenu() {
               ${(r.steps || []).map(s => `<li>${escapeHtml(s)}</li>`).join('')}
             </ol>
           </details>
-          ${r.note ? `<div class="meshiru-note">💡 ${escapeHtml(r.note)}</div>` : ''}
+          ${r.note ? `<div class="meshiru-note"><svg class="ij-icon"><use href="#ij-sparkle"/></svg> ${escapeHtml(r.note)}</div>` : ''}
         </div>
         <footer class="meshiru-card-foot">
           <button class="meshiru-btn meshiru-like ${liked ? 'active' : ''}" data-meshiru-like="${r.id}">${liked ? '❤' : '♡'} いいね</button>
           ${r.isMine
             ? ''
-            : `<button class="meshiru-btn meshiru-addmine ${isSaved ? 'active' : ''}" data-meshiru-addmine="${r.id}">${isSaved ? '✓ マイレシピ済' : '📝 マイレシピに入れる'}</button>`}
+            : `<button class="meshiru-btn meshiru-addmine ${isSaved ? 'active' : ''}" data-meshiru-addmine="${r.id}">${isSaved ? '✓ マイレシピ済' : '<svg class="ij-icon"><use href="#ij-pen"/></svg> マイレシピに入れる'}</button>`}
         </footer>
       </article>
     `;
@@ -5373,7 +5373,7 @@ function initPhoneMenu() {
             偉人料理人のレシピ、週間献立、自動買い物リスト、マイレシピ保存——<br>
             全機能をお使いいただくには、無料会員登録が必要です。
           </div>
-          <button class="meshiru-gate-btn" id="meshiruGateSignup">✨ 無料で会員登録する（0円）</button>
+          <button class="meshiru-gate-btn" id="meshiruGateSignup"><svg class="ij-icon"><use href="#ij-sparkle"/></svg> 無料で会員登録する（0円）</button>
           <div class="meshiru-gate-note">※ 登録後は全端末で献立・買い物リストが同期されます</div>
         </div>
       `;
@@ -5395,7 +5395,7 @@ function initPhoneMenu() {
       feed.innerHTML = `
         <div class="meshiru-intro">
           <div class="meshiru-intro-title">🍳 偉人たちの台所</div>
-          <div class="meshiru-intro-sub">歴史を動かした料理人が実際に使ったレシピ。<br>気に入ったら「🔖 保存」で、あなたの台所にも。</div>
+          <div class="meshiru-intro-sub">歴史を動かした料理人が実際に使ったレシピ。<br>気に入ったら「<svg class="ij-icon"><use href="#ij-book"/></svg> 保存」で、あなたの台所にも。</div>
         </div>
         ${recipes.map(r => renderRecipeCard(r, saved, likes)).join('')}
       `;
@@ -5404,12 +5404,12 @@ function initPhoneMenu() {
     function renderSaved() {
       const mine = recipes.filter(r => saved.has(r.id));
       if (mine.length === 0) {
-        savedMount.innerHTML = `<div class="meshiru-empty">🔖 まだ保存したレシピはありません。<br>気になる一皿を保存しましょう。</div>`;
+        savedMount.innerHTML = `<div class="meshiru-empty"><svg class="ij-icon"><use href="#ij-book"/></svg> まだ保存したレシピはありません。<br>気になる一皿を保存しましょう。</div>`;
         return;
       }
       savedMount.innerHTML = `
         <div class="meshiru-intro">
-          <div class="meshiru-intro-title">🔖 保存したレシピ</div>
+          <div class="meshiru-intro-title"><svg class="ij-icon"><use href="#ij-book"/></svg> 保存したレシピ</div>
           <div class="meshiru-intro-sub">あなたの台所に並んだ、偉人たちの一皿。</div>
         </div>
         ${mine.map(r => renderRecipeCard(r, saved, likes)).join('')}
@@ -5443,7 +5443,7 @@ function initPhoneMenu() {
             saved.delete(id);
             saveMeshiruSet(MESHIRU_SAVED_KEY, saved);
             btn.classList.remove('active');
-            btn.innerHTML = '📝 マイレシピに入れる';
+            btn.innerHTML = '<svg class="ij-icon"><use href="#ij-pen"/></svg> マイレシピに入れる';
           } else {
             // マイレシピとしてコピー（編集可能に）
             const copy = {
@@ -5491,7 +5491,7 @@ function initPhoneMenu() {
       const mine = loadMyRecipes();
       myMount.innerHTML = `
         <div class="meshiru-intro">
-          <div class="meshiru-intro-title">📝 マイレシピ</div>
+          <div class="meshiru-intro-title"><svg class="ij-icon"><use href="#ij-pen"/></svg> マイレシピ</div>
           <div class="meshiru-intro-sub">Cookpad・クラシル・DELISH KITCHEN・Instagramなどで見つけたレシピのURLを貼り付けて、材料を入力するだけ。<br>買い物リストに自動で反映されます。</div>
         </div>
         <div class="meshiru-import-card">
@@ -5519,7 +5519,7 @@ function initPhoneMenu() {
                   <h3 class="meshiru-recipe-title">${escapeHtml(r.name || '（無題のレシピ）')}</h3>
                   ${r.tagline ? `<p class="meshiru-tagline-in">${escapeHtml(r.tagline)}</p>` : ''}
                   <details class="meshiru-details">
-                    <summary>📋 材料（${(r.ingredients || []).length}点）</summary>
+                    <summary><svg class="ij-icon"><use href="#ij-notebook"/></svg> 材料（${(r.ingredients || []).length}点）</summary>
                     <ul class="meshiru-ingredients">${(r.ingredients || []).map(i => `<li>${escapeHtml(i)}</li>`).join('')}</ul>
                   </details>
                   ${(r.steps && r.steps.length) ? `
@@ -5528,7 +5528,7 @@ function initPhoneMenu() {
                       <ol class="meshiru-steps">${r.steps.map(s => `<li>${escapeHtml(s)}</li>`).join('')}</ol>
                     </details>
                   ` : ''}
-                  ${r.note ? `<div class="meshiru-note">💡 ${escapeHtml(r.note)}</div>` : ''}
+                  ${r.note ? `<div class="meshiru-note"><svg class="ij-icon"><use href="#ij-sparkle"/></svg> ${escapeHtml(r.note)}</div>` : ''}
                 </div>
               </article>
             `).join('')}
@@ -5584,12 +5584,12 @@ function initPhoneMenu() {
             </div>
             ${mode === 'manual' ? `
               <div class="meshiru-field">
-                <label>📝 ひとこと（任意）</label>
+                <label><svg class="ij-icon"><use href="#ij-pen"/></svg> ひとこと（任意）</label>
                 <input type="text" id="mrTagline" placeholder="例：寒い夜に、染みる味" value="${escapeHtml(r.tagline || '')}">
               </div>
             ` : `<input type="hidden" id="mrTagline" value="${escapeHtml(r.tagline || '')}">`}
             <div class="meshiru-field">
-              <label>📋 材料（1行に1つ、買い物リストに自動反映）</label>
+              <label><svg class="ij-icon"><use href="#ij-notebook"/></svg> 材料（1行に1つ、買い物リストに自動反映）</label>
               <textarea id="mrIngredients" rows="6" placeholder="じゃがいも 3個\n玉ねぎ 1個\n牛肉 200g\n醤油 大さじ3\nみりん 大さじ2">${escapeHtml((r.ingredients || []).join('\n'))}</textarea>
             </div>
             ${mode === 'manual' ? `
@@ -5598,12 +5598,12 @@ function initPhoneMenu() {
                 <textarea id="mrSteps" rows="4" placeholder="じゃがいもを切る\n油で炒める\n調味料と水を加えて煮る">${escapeHtml((r.steps || []).join('\n'))}</textarea>
               </div>
               <div class="meshiru-field">
-                <label>💡 メモ（任意）</label>
+                <label><svg class="ij-icon"><use href="#ij-sparkle"/></svg> メモ（任意）</label>
                 <input type="text" id="mrNote" placeholder="例：圧力鍋で15分" value="${escapeHtml(r.note || '')}">
               </div>
             ` : `<input type="hidden" id="mrSteps" value=""><input type="hidden" id="mrNote" value="${escapeHtml(r.note || '')}">`}
             ${mode === 'url' && !isEdit ? `
-              <div class="meshiru-field-info">📝 URL先で材料をコピーして、上の『材料』欄に貼り付けてください。</div>
+              <div class="meshiru-field-info"><svg class="ij-icon"><use href="#ij-pen"/></svg> URL先で材料をコピーして、上の『材料』欄に貼り付けてください。</div>
             ` : ''}
           </div>
           <div class="meshiru-editor-foot">
@@ -5855,9 +5855,9 @@ function initPhoneMenu() {
   const OTAYORI_LOCAL_KEY = 'ijin_otayori_local';
   const CATEGORY_LABELS = {
     bug: '🐛 バグ・不具合',
-    improvement: '✨ 改善提案',
-    feature: '💡 欲しい機能',
-    other: '💬 その他',
+    improvement: '<svg class="ij-icon"><use href="#ij-sparkle"/></svg> 改善提案',
+    feature: '<svg class="ij-icon"><use href="#ij-sparkle"/></svg> 欲しい機能',
+    other: '<svg class="ij-icon"><use href="#ij-chat"/></svg> その他',
   };
   function loadOtayoriLocal() {
     try { return JSON.parse(localStorage.getItem(OTAYORI_LOCAL_KEY) || '[]'); } catch { return []; }
@@ -5974,7 +5974,7 @@ function initPhoneMenu() {
       if (list.length === 0) {
         mineMount.innerHTML = `
           <div class="otayori-intro">
-            <div class="otayori-intro-title">📋 あなたのお便り履歴</div>
+            <div class="otayori-intro-title"><svg class="ij-icon"><use href="#ij-notebook"/></svg> あなたのお便り履歴</div>
             <div class="otayori-intro-sub">まだ送ったお便りはありません。</div>
           </div>
         `;
@@ -5982,7 +5982,7 @@ function initPhoneMenu() {
       }
       mineMount.innerHTML = `
         <div class="otayori-intro">
-          <div class="otayori-intro-title">📋 あなたのお便り履歴</div>
+          <div class="otayori-intro-title"><svg class="ij-icon"><use href="#ij-notebook"/></svg> あなたのお便り履歴</div>
           <div class="otayori-intro-sub">送信した${list.length}件のお便り。開発状況を見守れます。</div>
         </div>
         <div class="otayori-list">
@@ -5996,7 +5996,7 @@ function initPhoneMenu() {
                   <span class="otayori-card-status">${statusLabel(f.status)}</span>
                 </div>
                 <div class="otayori-card-body">${escapeHtml(f.text || '').replace(/\n/g, '<br>')}</div>
-                ${f.adminNote ? `<div class="otayori-card-note">📝 ${escapeHtml(f.adminNote)}</div>` : ''}
+                ${f.adminNote ? `<div class="otayori-card-note"><svg class="ij-icon"><use href="#ij-pen"/></svg> ${escapeHtml(f.adminNote)}</div>` : ''}
                 <div class="otayori-card-foot">
                   <span>${when}</span>
                   ${f.cloudSaved === false ? `<span class="otayori-card-local">ローカル保存</span>` : ''}
@@ -6035,7 +6035,7 @@ function initPhoneMenu() {
           <div class="otayori-intro-sub">全${all.length}件。状態をタップで切替可。</div>
         </div>
         <div class="otayori-admin-actions">
-          <button class="otayori-admin-copy" id="otayoriCopyAll">📋 全件をClaude相談用にコピー</button>
+          <button class="otayori-admin-copy" id="otayoriCopyAll"><svg class="ij-icon"><use href="#ij-notebook"/></svg> 全件をClaude相談用にコピー</button>
           <button class="otayori-admin-exit" id="otayoriAdminExit">← 自分の履歴に戻る</button>
         </div>
         <div class="otayori-list">
@@ -6052,7 +6052,7 @@ function initPhoneMenu() {
                 </div>
                 <div class="otayori-admin-meta">${escapeHtml(f.name || '匿名')} · ${when} ${f.contact ? '· ' + escapeHtml(f.contact) : ''}</div>
                 <div class="otayori-card-body">${escapeHtml(f.text || '').replace(/\n/g, '<br>')}</div>
-                ${f.adminNote ? `<div class="otayori-card-note">📝 ${escapeHtml(f.adminNote)}</div>` : ''}
+                ${f.adminNote ? `<div class="otayori-card-note"><svg class="ij-icon"><use href="#ij-pen"/></svg> ${escapeHtml(f.adminNote)}</div>` : ''}
               </div>
             `;
           }).join('')}
@@ -6782,7 +6782,7 @@ async function showPerson(id) {
           ${tagChips ? `<div class="x-post-tags">${tagChips}</div>` : ''}
           <div class="x-post-actions">
             <button class="x-action x-action-comment" data-comment-toggle="${key}" aria-label="コメント">
-              💬 <span class="x-action-count">${comments.length || ''}</span>
+              <svg class="ij-icon"><use href="#ij-chat"/></svg> <span class="x-action-count">${comments.length || ''}</span>
             </button>
             <a class="x-action x-action-share" href="${shareHref}" target="_blank" rel="noopener" aria-label="Xで共有" onclick="event.stopPropagation()">
               ↗ 共有
@@ -6937,7 +6937,7 @@ async function showPerson(id) {
           ${r.tagline ? `<div class="x-recipe-tagline">${escapeHtml(r.tagline)}</div>` : ''}
         </div>
         <details class="x-recipe-section">
-          <summary>📋 材料（${(r.ingredients || []).length}点）</summary>
+          <summary><svg class="ij-icon"><use href="#ij-notebook"/></svg> 材料（${(r.ingredients || []).length}点）</summary>
           <ul class="x-recipe-list">${(r.ingredients || []).map(i => `<li>${escapeHtml(i)}</li>`).join('')}</ul>
         </details>
         ${(r.steps || []).length ? `
@@ -6946,8 +6946,8 @@ async function showPerson(id) {
             <ol class="x-recipe-steps">${r.steps.map(s => `<li>${escapeHtml(s)}</li>`).join('')}</ol>
           </details>
         ` : ''}
-        ${r.note ? `<div class="x-recipe-note">💡 ${escapeHtml(r.note)}</div>` : ''}
-        <button class="x-recipe-copy" data-recipe-copy="${recipeId}" data-recipe-text="${escapeHtml(fullText).replace(/"/g,'&quot;')}">📋 レシピをコピー</button>
+        ${r.note ? `<div class="x-recipe-note"><svg class="ij-icon"><use href="#ij-sparkle"/></svg> ${escapeHtml(r.note)}</div>` : ''}
+        <button class="x-recipe-copy" data-recipe-copy="${recipeId}" data-recipe-text="${escapeHtml(fullText).replace(/"/g,'&quot;')}"><svg class="ij-icon"><use href="#ij-notebook"/></svg> レシピをコピー</button>
       </div>
     `;
     stream.push({ sortYear: 99999, sortPri: 7, html: xPostCard({
@@ -6993,7 +6993,7 @@ async function showPerson(id) {
             }
           })()}
           <button class="oshi-set-btn ${getOshi() === p.id ? 'active' : ''}" data-oshi-set="${p.id}">
-            ${getOshi() === p.id ? '♡ 推し中' : '♡ 推しにする'}
+            ${getOshi() === p.id ? '<svg class="ij-icon"><use href="#ij-heart"/></svg> 推し中' : '<svg class="ij-icon"><use href="#ij-heart"/></svg> 推しにする'}
           </button>
           <button class="person-share-btn" data-person-share="${p.id}" aria-label="この偉人をシェア" title="この偉人をシェア">🔗</button>
         </div>
@@ -7146,8 +7146,8 @@ async function showPerson(id) {
       const categoryLabels = {
         nature: { label: '🌿 自然・風景', order: 1 },
         art: { label: '<svg class="ij-icon"><use href="#ij-palette"/></svg> 芸術・文化', order: 2 },
-        abstract: { label: '✨ 思想・価値観', order: 3 },
-        daily: { label: '🕯 日常・暮らし', order: 4 },
+        abstract: { label: '<svg class="ij-icon"><use href="#ij-sparkle"/></svg> 思想・価値観', order: 3 },
+        daily: { label: '<svg class="ij-icon"><use href="#ij-moon"/></svg> 日常・暮らし', order: 4 },
         activity: { label: '🎯 活動', order: 5 },
         other: { label: '◇ その他', order: 9 },
       };
@@ -7243,7 +7243,7 @@ async function showPerson(id) {
             <div class="stamp-criteria-head">🏷 スタンプの貯め方</div>
             <div class="stamp-criteria-item">・クイズ全問正解で +1</div>
             <div class="stamp-criteria-item">・聖地巡礼チェックインで +1（GPS確認推奨）</div>
-            ${nextGoal ? `<div class="stamp-criteria-goal">あと <b>${nextGoal - lv}</b> 個で次の段階</div>` : '<div class="stamp-criteria-goal">✨ マスターレベル達成</div>'}
+            ${nextGoal ? `<div class="stamp-criteria-goal">あと <b>${nextGoal - lv}</b> 個で次の段階</div>` : '<div class="stamp-criteria-goal"><svg class="ij-icon"><use href="#ij-sparkle"/></svg> マスターレベル達成</div>'}
           </div>
         </div>
       `;
@@ -7582,7 +7582,7 @@ async function showPerson(id) {
           <p class="happenings-intro">${p.name}の展覧会・公演・記念祭など。期間限定のものは公式サイトで要確認。</p>
           <div class="happenings-list">
             ${events.map(h => {
-              const typeLabel = { exhibition: '<svg class="ij-icon"><use href="#ij-palette"/></svg> 展覧会', concert: '🎵 公演・演奏会', festival: '🎭 フェス・記念祭', book_fair: '📚 ブックフェア', other: '✨ その他' }[h.type] || '✨ イベント';
+              const typeLabel = { exhibition: '<svg class="ij-icon"><use href="#ij-palette"/></svg> 展覧会', concert: '🎵 公演・演奏会', festival: '🎭 フェス・記念祭', book_fair: '📚 ブックフェア', other: '<svg class="ij-icon"><use href="#ij-sparkle"/></svg> その他' }[h.type] || '<svg class="ij-icon"><use href="#ij-sparkle"/></svg> イベント';
               const searchQ = encodeURIComponent(`${p.name} ${h.title}`);
               return `
                 <div class="happening-card">
@@ -7894,7 +7894,7 @@ async function showPerson(id) {
       const liked = isLiked(key);
       btn.classList.toggle('liked', liked);
       btn.querySelector('.x-action-count').textContent = getLikeCount(key) || '';
-      btn.firstChild.nodeValue = liked ? '❤️ ' : '♡ ';
+      btn.firstChild.nodeValue = liked ? '❤️ ' : '<svg class="ij-icon"><use href="#ij-heart"/></svg> ';
     });
   });
   container.querySelectorAll('[data-comment-toggle]').forEach(btn => {
@@ -8199,11 +8199,11 @@ async function showPerson(id) {
       if (getOshi() === pid) {
         setOshi('');
         oshiBtn.classList.remove('active');
-        oshiBtn.textContent = '♡ 推しにする';
+        oshiBtn.textContent = '<svg class="ij-icon"><use href="#ij-heart"/></svg> 推しにする';
       } else {
         setOshi(pid);
         oshiBtn.classList.add('active');
-        oshiBtn.textContent = '♡ 推し中';
+        oshiBtn.textContent = '<svg class="ij-icon"><use href="#ij-heart"/></svg> 推し中';
         try { grantStamp(pid, 'oshi'); } catch {}
       }
       renderOshi();
@@ -8245,7 +8245,7 @@ async function showPerson(id) {
     });
   });
 
-  // 📋 レシピコピー（料理人偉人のみ）
+  // <svg class="ij-icon"><use href="#ij-notebook"/></svg> レシピコピー（料理人偉人のみ）
   container.querySelectorAll('[data-recipe-copy]').forEach(btn => {
     btn.addEventListener('click', async (e) => {
       e.stopPropagation();
@@ -8721,7 +8721,7 @@ async function showTag(tagId) {
         <div class="tag-book-chapter-line"></div>
         <p class="tag-book-chapter-desc">${tag.description}</p>
         <button class="fav-tag-btn ${favTags.has(tagId) ? 'active' : ''}" data-fav-tag="${tagId}">
-          ${favTags.has(tagId) ? '★ 棚に飾り中' : '☆ この感情を棚に飾る'}
+          ${favTags.has(tagId) ? '<svg class="ij-icon"><use href="#ij-sparkle"/></svg> 棚に飾り中' : '<svg class="ij-icon"><use href="#ij-sparkle"/></svg> この感情を棚に飾る'}
         </button>
       </div>
 
@@ -8882,7 +8882,7 @@ async function showTag(tagId) {
       if (favTags.has(tagId)) favTags.delete(tagId); else favTags.add(tagId);
       saveSet(FAV_TAGS_KEY, favTags);
       favTagBtn.classList.toggle('active');
-      favTagBtn.textContent = favTags.has(tagId) ? '★ 棚に飾り中' : '☆ この感情を棚に飾る';
+      favTagBtn.textContent = favTags.has(tagId) ? '<svg class="ij-icon"><use href="#ij-sparkle"/></svg> 棚に飾り中' : '<svg class="ij-icon"><use href="#ij-sparkle"/></svg> この感情を棚に飾る';
     });
   }
   await flipPromise;
@@ -9090,16 +9090,16 @@ function totalStamps() {
   return total;
 }
 const STAMP_SOURCE_LABELS = {
-  quiz: '📝 親密度クイズ',
+  quiz: '<svg class="ij-icon"><use href="#ij-pen"/></svg> 親密度クイズ',
   checkin_gps: '📍 聖地巡礼（GPS確認）',
   checkin_manual: '📍 聖地巡礼（手動）',
   follow: '✉ 本棚に並べた',
-  oshi: '♡ 推しの座に',
+  oshi: '<svg class="ij-icon"><use href="#ij-heart"/></svg> 推しの座に',
   pin_quote: '💎 言葉を胸に刻んだ',
   read_book: '📚 本を手に取った',
   watch_work: '▶ 作品に触れた',
-  comment: '💬 対話した',
-  like: '♥ 心を動かされた',
+  comment: '<svg class="ij-icon"><use href="#ij-chat"/></svg> 対話した',
+  like: '<svg class="ij-icon"><use href="#ij-heart"/></svg> 心を動かされた',
   era_visit: '<svg class="ij-icon"><use href="#ij-book"/></svg> 時代を旅した',
   visit_loyal: '👣 10回訪れた',
 };
@@ -9460,7 +9460,7 @@ function openQuizModal(person) {
         <div class="quiz-result">
           <div class="quiz-result-score">${correct} / ${total}</div>
           <div class="quiz-result-msg">
-            ${allCorrect ? '✨ 全問正解！' : correct >= total * 0.7 ? 'あと少し…！' : 'もう一度読み返してから、再挑戦してみよう。'}
+            ${allCorrect ? '<svg class="ij-icon"><use href="#ij-sparkle"/></svg> 全問正解！' : correct >= total * 0.7 ? 'あと少し…！' : 'もう一度読み返してから、再挑戦してみよう。'}
           </div>
           ${gainedThisSession > 0 ? `
             <div class="quiz-stamp">
@@ -10851,7 +10851,7 @@ function showBeginnerGuide() {
       </details>
       <section class="era-page-section">
         <h2 class="era-page-h2"><svg class="ij-icon"><use href="#ij-sparkle"/></svg> 推し偉人の見つけかた</h2>
-        <p style="line-height:1.9">プロフィールページの<b>『♡ 推しに設定』</b>ボタンをタップすると、ホームに「推しのきょう」が毎日表示されます。<br>その日の手紙・名言・本・ルーティンが届く、ミニ手帳みたいな機能です。</p>
+        <p style="line-height:1.9">プロフィールページの<b>『<svg class="ij-icon"><use href="#ij-heart"/></svg> 推しに設定』</b>ボタンをタップすると、ホームに「推しのきょう」が毎日表示されます。<br>その日の手紙・名言・本・ルーティンが届く、ミニ手帳みたいな機能です。</p>
       </section>
     </article>
   `;
@@ -11410,7 +11410,7 @@ function renderHistoryEra(body) {
     <div class="tl-era-jump" id="tlEraJump">
       ${ERA_GLOBAL.map(e => `<button class="tl-jump-btn" data-jump="tl-era-${e.id}">${e.name}</button>`).join('')}
     </div>
-    <div class="tl-intro">★ は各時代・ジャンルの<strong>中心となった偉人</strong>（編集部選定）</div>
+    <div class="tl-intro"><svg class="ij-icon"><use href="#ij-sparkle"/></svg> は各時代・ジャンルの<strong>中心となった偉人</strong>（編集部選定）</div>
     ${html}
   `;
   bindTimelineEvents(body);
@@ -11508,7 +11508,7 @@ function renderHistoryAll(body) {
     `;
   }).join('');
   body.innerHTML = `
-    <div class="tl-intro">全 ${people.length} 名を生年順に。★ は時代・ジャンルの代表格。</div>
+    <div class="tl-intro">全 ${people.length} 名を生年順に。<svg class="ij-icon"><use href="#ij-sparkle"/></svg> は時代・ジャンルの代表格。</div>
     ${html}
   `;
   bindTimelineEvents(body);
@@ -12592,7 +12592,7 @@ async function submitComment(key, text) {
 }
 
 // ====================== 読みもの ======================
-// ============== 📝 サイト内ブログ記事（SEO×アフィリエイト） ==============
+// ============== <svg class="ij-icon"><use href="#ij-pen"/></svg> サイト内ブログ記事（SEO×アフィリエイト） ==============
 const BLOG_POSTS = [
   {
     id: 'shinsengumi-beginner',
@@ -12662,7 +12662,7 @@ function renderBlogPostsBlock() {
   const blogHtml = `
     <div class="blog-posts-block">
       <div class="blog-posts-head">
-        <h2 class="blog-posts-title">📝 読みもの — 偉人と自分の編集部</h2>
+        <h2 class="blog-posts-title"><svg class="ij-icon"><use href="#ij-pen"/></svg> 読みもの — 偉人と自分の編集部</h2>
         <p class="blog-posts-sub">歴女向けの入門・推しの見つけ方・聖地巡礼ガイドを連載中。</p>
       </div>
       <div class="blog-posts-grid">
