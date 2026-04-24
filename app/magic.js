@@ -2097,7 +2097,7 @@
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(40, W / H, 0.1, 100);
-    camera.position.set(0, 0, 7);
+    camera.position.set(0, 0, 11); // 地球全体が見えるよう引き気味に
 
     // 🌅 昼夜境界：太陽位置を UTC 時刻から計算して、夜側は「深い青の夕暮れ」
     // （真っ暗にすると地球が見えなくなるので、昼夜差は残しつつ視認性を確保）
@@ -2342,8 +2342,25 @@
       pinsPos[i*3+1] = pin.pos.y;
       pinsPos[i*3+2] = pin.pos.z;
       pinsSize[i] = Math.min(24, 12 + Math.sqrt(pin.info.people.length) * 3);
+      pin._idx = i; pin._visible = true; pin._basePos = [pin.pos.x, pin.pos.y, pin.pos.z];
     });
     pinsGeo.setAttribute('position', new THREE.BufferAttribute(pinsPos, 3));
+    // フィルタ適用：非表示は地球中心に折りたたんで見えなくする
+    const applyPinVisibility = () => {
+      const posAttr = pinsGeo.getAttribute('position');
+      pins.forEach(pin => {
+        const i = pin._idx;
+        if (pin._visible === false) {
+          posAttr.array[i*3] = 0; posAttr.array[i*3+1] = 0; posAttr.array[i*3+2] = 0;
+        } else {
+          posAttr.array[i*3] = pin._basePos[0];
+          posAttr.array[i*3+1] = pin._basePos[1];
+          posAttr.array[i*3+2] = pin._basePos[2];
+        }
+      });
+      posAttr.needsUpdate = true;
+    };
+    window.__globeApplyPinVis = applyPinVisibility;
     // 点テクスチャ（ソフトな円）
     const dotTex = (() => {
       const d = document.createElement('canvas'); d.width = d.height = 64;
@@ -2412,26 +2429,15 @@
       btn.addEventListener('click', () => {
         ov.querySelectorAll('.magic-globe-era').forEach(b => b.classList.toggle('active', b === btn));
         globeActiveEra = btn.dataset.era;
-        // ピンの可視性を更新
+        // 可視性フラグを更新（pickPinで参照）
         pins.forEach(pin => {
-          if (globeActiveEra === 'all') { pin.visible = true; return; }
-          const hasMatching = (pin.people || []).some(p => eraBirth(p.birth) === globeActiveEra);
-          pin.visible = hasMatching;
+          if (globeActiveEra === 'all') { pin._visible = true; return; }
+          const ppl = pin.info?.people || [];
+          pin._visible = ppl.some(p => eraBirth(p.birth) === globeActiveEra);
         });
-        // Three.jsに反映（Pointsなら attributes更新、Meshならvisible）
-        try {
-          if (typeof updatePinsVisibility === 'function') updatePinsVisibility();
-        } catch {}
+        if (window.__globeApplyPinVis) window.__globeApplyPinVis();
       });
     });
-    // ピン可視性を更新する関数（後方で利用）
-    window.__globeUpdateVis = () => {
-      pins.forEach(pin => {
-        if (globeActiveEra === 'all') { pin.visible = true; return; }
-        const hasMatching = (pin.people || []).some(p => eraBirth(p.birth) === globeActiveEra);
-        pin.visible = hasMatching;
-      });
-    };
 
     // ピンのクリック判定（Points用にスクリーン座標で距離比較）
     function pickPin(clientX, clientY) {
@@ -2441,6 +2447,7 @@
       let best = null, bestDist = 32; // 32px 以内
       const worldPos = new THREE.Vector3();
       pins.forEach(pin => {
+        if (pin._visible === false) return; // 時代フィルタで非表示
         worldPos.copy(pin.pos).applyMatrix4(earth.matrixWorld);
         // カメラ後ろなら除外
         const cameraToPoint = worldPos.clone().sub(camera.position);
