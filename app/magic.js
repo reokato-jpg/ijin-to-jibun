@@ -7786,7 +7786,8 @@
     const scene = new THREE.Scene();
     let composer = null;
     let bloom = null;
-    const useProB = ADDONS.EffectComposer && ADDONS.RenderPass && ADDONS.UnrealBloomPass;
+    // 一時的に composer を完全無効化（真っ黒問題の切り分け）
+    const useProB = false;
     // camera 作成後に初期化
     // 嵐の空（暗い青紫→遠くに黄土）
     // 晴天フォールバック空（Sky addon 失敗時用、Bruegel明るい午後）
@@ -7816,18 +7817,7 @@
     renderer.setClearColor(0xb0c4d8, 1);
     scene.background = skyTex; // フォールバック昼空
 
-    // HDRI 非同期ロード（読み込めたら上書き）
-    if (ADDONS.RGBELoader) {
-      const hdrUrl = 'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/kloofendal_48d_partly_cloudy_puresky_1k.hdr';
-      const rgbeLoader = new ADDONS.RGBELoader();
-      rgbeLoader.setDataType(THREE.HalfFloatType);
-      rgbeLoader.load(hdrUrl, (hdrTex) => {
-        hdrTex.mapping = THREE.EquirectangularReflectionMapping;
-        scene.background = hdrTex;
-        scene.environment = hdrTex;
-        if ('environmentIntensity' in scene) scene.environmentIntensity = 1.0;
-      }, undefined, (err) => { console.warn('HDRI fail', err); });
-    }
+    // HDRI は一時的に無効化（切り分けのため）
 
     if (ADDONS.Sky) {
       const bsky = new ADDONS.Sky();
@@ -8693,13 +8683,8 @@
       console.error('[babel composer init fail]', err);
       composer = null;
     }
-    if (!composer && !useProB) {
-      bloom = createBloom(THREE, renderer, W(), H(), {
-        threshold: 0.75, strength: 1.3,
-        vignette: 0.58, chromatic: 0.005, grain: 0.05,
-        saturation: 1.15, lift: -0.01,
-      });
-    }
+    // 一時的に手書きbloomも無効化 — 素のレンダリングで切り分け
+    bloom = null;
 
     // 操作
     let dragging = false, lastX = 0, lastY = 0;
