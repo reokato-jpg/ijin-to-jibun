@@ -4682,11 +4682,13 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
   pointer-events: none;
   overflow: hidden;
 }
+.tale-atmos * { pointer-events: none !important; }
 .tale-atmos canvas {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
   mix-blend-mode: screen;
   opacity: 0.6;
+  pointer-events: none;
 }
 .tale-back {
   position: absolute; top: 16px; left: 16px;
@@ -4741,18 +4743,23 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
   position: relative;
 }
 .tale-chapter-body {
-  flex: 1;
+  flex: 1 1 auto;
+  min-height: 0; /* ← flex 内で overflow を効かせる鍵 */
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
   font-size: 17px;
   line-height: 2.2;
   letter-spacing: 0.05em;
   color: #f0e8d8;
   max-width: 680px;
+  width: 100%;
   margin: 0 auto;
   text-shadow: 0 2px 6px rgba(0,0,0,0.5);
   z-index: 10;
   position: relative;
-  padding: 0 8px 12px;
+  padding: 0 8px 24px;
 }
 .tale-chapter-text {
   white-space: pre-wrap;
