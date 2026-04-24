@@ -1547,6 +1547,10 @@
          <div><span class="dot" style="background:rgba(220,90,100,0.9)"></span>論敵・対立</div>
        </div>
        <div class="magic-graph-tooltip" id="magicGraphTip" style="opacity:0"></div>
+       <div class="magic-graph-zoom-wrap">
+         <button class="magic-graph-zoom-btn" data-graph-zoom="in" aria-label="ズームイン">＋</button>
+         <button class="magic-graph-zoom-btn" data-graph-zoom="out" aria-label="ズームアウト">−</button>
+       </div>
        <div class="magic-graph-controls">
          <button class="magic-graph-ctrl active" data-filter="all">すべて</button>
          <button class="magic-graph-ctrl" data-filter="music">音楽</button>
@@ -1909,6 +1913,13 @@
       view.k = Math.max(0.3, Math.min(3, view.k * zoom));
     }, { passive: false });
 
+    // ズームボタン（+/-）
+    ov.querySelectorAll('[data-graph-zoom]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const dir = btn.dataset.graphZoom === 'in' ? 1.25 : 0.8;
+        view.k = Math.max(0.3, Math.min(3, view.k * dir));
+      });
+    });
     // カテゴリフィルタ
     ov.querySelectorAll('.magic-graph-ctrl').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -3554,9 +3565,12 @@
       html += `<text class="magic-drift-month-label" x="${lx.toFixed(1)}" y="${(ly + 4).toFixed(1)}">${monthLabels[m]}</text>`;
       cumDay += daysInMonth[m];
     }
-    // 中央タイトル
-    html += `<text class="magic-drift-center" x="0" y="-8" style="font-size:14px;opacity:0.8">365日</text>`;
-    html += `<text class="magic-drift-center" x="0" y="12" style="font-size:10px;opacity:0.5">生没日リング</text>`;
+    // 中央エリア（初期はロゴ表示、ドット選択で偉人の顔に切替）
+    html += `<g id="driftCenter">
+      <image id="driftCenterImg" href="assets/title-logo.png?v=2" x="-90" y="-45" width="180" height="90" preserveAspectRatio="xMidYMid meet"/>
+      <text id="driftCenterName" x="0" y="68" class="magic-drift-center-name"></text>
+      <text id="driftCenterDate" x="0" y="86" class="magic-drift-center-date"></text>
+    </g>`;
 
     // 偉人の誕生日・命日ドット
     const dots = [];
@@ -3579,7 +3593,7 @@
       const x = Math.cos(d.a) * d.r;
       const y = Math.sin(d.a) * d.r;
       const cls = d.type === 'birth' ? 'magic-drift-dot magic-drift-dot-birth' : 'magic-drift-dot magic-drift-dot-death';
-      html += `<circle class="${cls}" data-idx="${i}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3.2"></circle>`;
+      html += `<circle class="${cls}" data-idx="${i}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5"></circle>`;
     });
 
     svg.innerHTML = html;
@@ -3602,11 +3616,39 @@
         tip.style.left = (e.clientX - rect.left + 12) + 'px';
         tip.style.top = (e.clientY - rect.top + 12) + 'px';
       });
+      let lastTappedIdx = null;
+      let lastTappedAt = 0;
       el.addEventListener('click', () => {
         const d = dots[parseInt(el.dataset.idx, 10)];
         if (!d) return;
-        ov.classList.remove('open');
-        setTimeout(() => { ov.remove(); if (typeof window.showPerson === 'function') window.showPerson(d.p.id); }, 220);
+        const now = Date.now();
+        const idx = parseInt(el.dataset.idx, 10);
+        // 同じドットの2回目タップ → 偉人ページへ
+        if (idx === lastTappedIdx && (now - lastTappedAt) < 2500) {
+          ov.classList.remove('open');
+          setTimeout(() => { ov.remove(); if (typeof window.showPerson === 'function') window.showPerson(d.p.id); }, 220);
+          return;
+        }
+        lastTappedIdx = idx;
+        lastTappedAt = now;
+        // 1回目タップ → 中央に顔写真と名前を表示
+        const centerImg = svg.querySelector('#driftCenterImg');
+        const centerName = svg.querySelector('#driftCenterName');
+        const centerDate = svg.querySelector('#driftCenterDate');
+        if (centerImg && d.p.imageUrl) {
+          centerImg.setAttribute('href', d.p.imageUrl);
+          centerImg.setAttribute('x', '-60');
+          centerImg.setAttribute('y', '-60');
+          centerImg.setAttribute('width', '120');
+          centerImg.setAttribute('height', '120');
+          centerImg.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+          centerImg.setAttribute('clip-path', 'circle(60px at 0 0)');
+        }
+        if (centerName) centerName.textContent = d.p.name;
+        if (centerDate) {
+          const md = d.type === 'birth' ? `🎂 ${d.p.birthMonth}/${d.p.birthDay} 誕生` : `🕯 ${d.p.deathMonth}/${d.p.deathDay} 没`;
+          centerDate.textContent = md;
+        }
       });
     });
   }

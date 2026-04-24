@@ -1140,6 +1140,47 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
   justify-content: center;
 }
 .magic-globe-info-close:hover { background: rgba(122,46,58,0.8); }
+/* 🎂 365日ドリフト 中央表示 */
+.magic-drift-center-name {
+  fill: #fff3c8;
+  font-family: "Shippori Mincho", serif;
+  font-size: 14px;
+  font-weight: 800;
+  text-anchor: middle;
+  letter-spacing: 0.04em;
+}
+.magic-drift-center-date {
+  fill: rgba(234,210,150,0.8);
+  font-family: "Shippori Mincho", serif;
+  font-size: 11px;
+  text-anchor: middle;
+}
+.magic-drift-dot { cursor: pointer; transition: r 0.15s; }
+.magic-drift-dot:hover { r: 7; }
+
+/* 🔗 関係グラフ ズームボタン */
+.magic-graph-zoom-wrap {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 5;
+}
+.magic-graph-zoom-btn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: rgba(20,10,16,0.85);
+  border: 1.5px solid rgba(212,176,85,0.5);
+  color: var(--gold-light);
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 700;
+  backdrop-filter: blur(6px);
+  line-height: 1;
+}
+.magic-graph-zoom-btn:hover { background: rgba(122,46,58,0.7); border-color: var(--gold); }
 
 /* ---------- O) 同時代ライン ---------- */
 .magic-simul-wrap {
