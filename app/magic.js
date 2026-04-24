@@ -5958,6 +5958,9 @@
   async function openEden3D() {
     if (!window.THREE) return;
     const THREE = window.THREE;
+    // addonsの到着を待つ（ベストエフォート）
+    if (window.THREE_READY) { try { await window.THREE_READY; } catch {} }
+    const ADDONS = window.THREE_ADDONS || {};
     const ov = document.createElement('div');
     ov.className = 'eden3d-overlay';
     ov.innerHTML = `
@@ -5990,14 +5993,12 @@
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     stage.appendChild(renderer.domElement);
     renderer.domElement.style.touchAction = 'none';
-    // 🌟 Bloom ポストプロセス
-    const bloom = createBloom(THREE, renderer, W, H, {
-      threshold: 0.65, strength: 0.9,
-      vignette: 0.38, chromatic: 0.0025, grain: 0.03,
-      saturation: 1.12, lift: 0.01,
-    });
-
     const scene = new THREE.Scene();
+
+    // 🌟 ポストプロセス：公式 EffectComposer + UnrealBloomPass（利用可能なら）
+    let composer = null;
+    const usePro = ADDONS.EffectComposer && ADDONS.RenderPass && ADDONS.UnrealBloomPass;
+    // 宣言のみ、scene / camera 設定後に composer を組む
     // 空のグラデ（半球光）
     scene.background = new THREE.Color(0x6a4030);
     const hemi = new THREE.HemisphereLight(0xffd8a8, 0x3a5a28, 0.75);
@@ -6022,6 +6023,67 @@
     const camera = new THREE.PerspectiveCamera(48, W/H, 0.1, 500);
     camera.position.set(0, 6, 18);
     camera.lookAt(0, 4.5, 0);
+
+    // ✨ EffectComposer パイプライン（公式Bloom + 手書きGrade）
+    let bloom = null; // fallback用
+    if (usePro) {
+      composer = new ADDONS.EffectComposer(renderer);
+      composer.addPass(new ADDONS.RenderPass(scene, camera));
+      const bloomPass = new ADDONS.UnrealBloomPass(
+        new THREE.Vector2(W, H),
+        0.85, // strength
+        0.8,  // radius
+        0.25  // threshold
+      );
+      composer.addPass(bloomPass);
+      // カラーグレード（Vignette/Chromatic/Grain）を ShaderPass で追加
+      if (ADDONS.ShaderPass) {
+        const gradeShader = {
+          uniforms: {
+            tDiffuse: { value: null },
+            uTime: { value: 0 },
+            uVignette: { value: 0.38 },
+            uChromatic: { value: 0.0025 },
+            uGrain: { value: 0.03 },
+            uSaturation: { value: 1.12 },
+          },
+          vertexShader: `varying vec2 vUv; void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
+          fragmentShader: `
+            varying vec2 vUv;
+            uniform sampler2D tDiffuse;
+            uniform float uTime, uVignette, uChromatic, uGrain, uSaturation;
+            float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+            void main(){
+              vec2 c = vec2(0.5);
+              vec2 d = vUv - c;
+              float dist = length(d);
+              vec2 ca = d * uChromatic * (0.5 + dist * 1.5);
+              float r = texture2D(tDiffuse, vUv - ca).r;
+              float g = texture2D(tDiffuse, vUv).g;
+              float b = texture2D(tDiffuse, vUv + ca).b;
+              vec3 col = vec3(r,g,b);
+              float lum = dot(col, vec3(0.2126,0.7152,0.0722));
+              col = mix(vec3(lum), col, uSaturation);
+              float vig = smoothstep(0.8, 0.3, dist);
+              col *= mix(1.0 - uVignette, 1.0, vig);
+              col += (hash(vUv * 1000.0 + uTime * 0.1) - 0.5) * uGrain;
+              gl_FragColor = vec4(col, 1.0);
+            }
+          `,
+        };
+        const gradePass = new ADDONS.ShaderPass(gradeShader);
+        composer.addPass(gradePass);
+        camera.userData.gradePass = gradePass;
+      }
+      if (ADDONS.OutputPass) composer.addPass(new ADDONS.OutputPass());
+    } else {
+      // フォールバック：手書きbloom
+      bloom = createBloom(THREE, renderer, W, H, {
+        threshold: 0.65, strength: 0.9,
+        vignette: 0.38, chromatic: 0.0025, grain: 0.03,
+        saturation: 1.12, lift: 0.01,
+      });
+    }
 
     // ☁️ ジブリ的な空（柔らかい青→薄紫→白金、ふわふわの雲）
     const skyTex = (() => {
@@ -7037,8 +7099,65 @@
     });
     reflectGroup.add(reflectTree);
     scene.add(reflectGroup);
-    // 🌊 水面：シェーダで波・フレネル・ripple
-    const waterUniforms = {
+    // 🌊 水面：three.js公式 Water（利用可能なら）、なければフォールバック
+    let waterSurface = null;
+    let waterUniforms = null;
+    if (ADDONS.Water) {
+      // 法線テクスチャ（procedural ripple texture）
+      const normalCanvas = (() => {
+        const c = document.createElement('canvas'); c.width = 512; c.height = 512;
+        const g = c.getContext('2d');
+        // ベース: (0.5, 0.5, 1)に相当するフラット法線色
+        g.fillStyle = 'rgb(128,128,255)'; g.fillRect(0, 0, 512, 512);
+        // 適当な波紋ノイズ
+        for (let i = 0; i < 200; i++) {
+          const x = Math.random() * 512, y = Math.random() * 512;
+          const r = 20 + Math.random() * 60;
+          const grd = g.createRadialGradient(x, y, 0, x, y, r);
+          const nx = 128 + Math.floor((Math.random() - 0.5) * 60);
+          const ny = 128 + Math.floor((Math.random() - 0.5) * 60);
+          grd.addColorStop(0, `rgba(${nx},${ny},255,0.6)`);
+          grd.addColorStop(1, 'rgba(128,128,255,0)');
+          g.fillStyle = grd;
+          g.beginPath(); g.arc(x, y, r, 0, Math.PI*2); g.fill();
+        }
+        return c;
+      })();
+      const normalTex = new THREE.CanvasTexture(normalCanvas);
+      normalTex.wrapS = normalTex.wrapT = THREE.RepeatWrapping;
+      const waterGeo = new THREE.CircleGeometry(32, 96);
+      waterSurface = new ADDONS.Water(waterGeo, {
+        textureWidth: 512,
+        textureHeight: 512,
+        waterNormals: normalTex,
+        sunDirection: new THREE.Vector3(0.3, 1.0, -0.2).normalize(),
+        sunColor: 0xffeacc,
+        waterColor: 0x5090b0,
+        distortionScale: 3.2,
+        fog: scene.fog !== undefined,
+      });
+      waterSurface.rotation.x = -Math.PI / 2;
+      waterSurface.position.y = -0.12;
+      scene.add(waterSurface);
+    } else {
+      // フォールバック：旧シェーダ
+      const waterUniformsFallback = { uTime: { value: 0 } };
+      const mat = new THREE.MeshStandardMaterial({
+        color: 0x88b0cc, transparent: true, opacity: 0.5,
+        roughness: 0.15, metalness: 0.6, depthWrite: false,
+      });
+      const waterGeo = new THREE.CircleGeometry(32, 48);
+      waterSurface = new THREE.Mesh(waterGeo, mat);
+      waterSurface.rotation.x = -Math.PI / 2;
+      waterSurface.position.y = -0.12;
+      scene.add(waterSurface);
+      waterUniforms = waterUniformsFallback;
+    }
+    treeGroup.userData.water = waterSurface;
+
+    // ---- 以下、旧版（変数未使用、if(false)で無害化） ----
+    if (false) {
+    const _legacyWaterUniforms_UNUSED = {
       uTime: { value: 0 },
       uShallow: { value: new THREE.Color(0xa8d4e8) }, // 浅瀬の色
       uDeep: { value: new THREE.Color(0x3a6a90) },    // 深場の色
@@ -7129,14 +7248,10 @@
       depthWrite: false,
       side: THREE.DoubleSide,
     });
-    // サブディビジョンが多いプレーンで、波の vertex 変位を活かす
-    const waterGeo = new THREE.CircleGeometry(30, 96);
-    const waterSurface = new THREE.Mesh(waterGeo, waterMatShader);
-    waterSurface.rotation.x = -Math.PI / 2;
-    waterSurface.position.y = -0.12;
-    scene.add(waterSurface);
-    // 空の色を水面にも渡す（sky色と一致させる）
-    treeGroup.userData.waterUniforms = waterUniforms;
+    const _legacyWaterGeo = new THREE.CircleGeometry(30, 16);
+    const _legacyWater = new THREE.Mesh(_legacyWaterGeo, waterMatShader);
+    _legacyWater.visible = false;
+    } // end if(false)
 
     // 葉の揺れアニメ用参照
     treeGroup.userData.leaves = leaves;
@@ -7412,8 +7527,10 @@
       camera.lookAt(0, 5.0, 0);
       // 太陽シェーダのアニメ
       sunUniforms.uTime.value = t;
-      // 水面シェーダのアニメ
-      if (treeGroup.userData.waterUniforms) treeGroup.userData.waterUniforms.uTime.value = t;
+      // 水面のアニメ（THREE.Water は material.uniforms.time を回す）
+      if (treeGroup.userData.water && treeGroup.userData.water.material?.uniforms?.time) {
+        treeGroup.userData.water.material.uniforms.time.value += 1 / 60;
+      }
       // レンズフレア: 太陽→カメラ中心を結ぶ線上に配置
       {
         const sv = SUN_POS.clone().project(camera); // NDC座標
@@ -7568,7 +7685,16 @@
         bf.position.y += Math.sin(bf.userData.phase) * 0.01;
         bf.position.x += Math.cos(bf.userData.phase * 0.6) * 0.02;
       });
-      bloom.render(scene, camera);
+      if (composer) {
+        if (camera.userData.gradePass) {
+          camera.userData.gradePass.uniforms.uTime.value = t;
+        }
+        composer.render();
+      } else if (bloom) {
+        bloom.render(scene, camera);
+      } else {
+        renderer.render(scene, camera);
+      }
       requestAnimationFrame(animate);
     }
     animate();
@@ -7579,7 +7705,8 @@
       renderer.setSize(w, h);
       camera.aspect = w/h;
       camera.updateProjectionMatrix();
-      bloom.setSize(w, h);
+      if (composer) composer.setSize(w, h);
+      else if (bloom) bloom.setSize(w, h);
     });
   }
   window.openEden3D = openEden3D;
@@ -7590,6 +7717,8 @@
   async function openBabel3D() {
     if (!window.THREE) return;
     const THREE = window.THREE;
+    if (window.THREE_READY) { try { await window.THREE_READY; } catch {} }
+    const ADDONS = window.THREE_ADDONS || {};
     const ov = document.createElement('div');
     ov.className = 'babel3d-overlay';
     ov.innerHTML = `
@@ -7625,13 +7754,11 @@
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     stage.appendChild(renderer.domElement);
     renderer.domElement.style.touchAction = 'none';
-    const bloom = createBloom(THREE, renderer, W(), H(), {
-      threshold: 0.75, strength: 1.3,
-      vignette: 0.58, chromatic: 0.005, grain: 0.05,
-      saturation: 1.15, lift: -0.01,
-    });
-
     const scene = new THREE.Scene();
+    let composer = null;
+    let bloom = null;
+    const useProB = ADDONS.EffectComposer && ADDONS.RenderPass && ADDONS.UnrealBloomPass;
+    // camera 作成後に初期化
     // 嵐の空（暗い青紫→遠くに黄土）
     const skyTex = (() => {
       const sc = document.createElement('canvas'); sc.width = 2048; sc.height = 1024;
@@ -8048,6 +8175,57 @@
     camera.position.set(0, 20, 55);
     camera.lookAt(0, topY / 2, 0);
 
+    // ✨ EffectComposer + UnrealBloomPass + グレード
+    if (useProB) {
+      composer = new ADDONS.EffectComposer(renderer);
+      composer.addPass(new ADDONS.RenderPass(scene, camera));
+      const bloomPass = new ADDONS.UnrealBloomPass(
+        new THREE.Vector2(W(), H()),
+        1.3, 0.85, 0.3
+      );
+      composer.addPass(bloomPass);
+      if (ADDONS.ShaderPass) {
+        const g = {
+          uniforms: {
+            tDiffuse: { value: null }, uTime: { value: 0 },
+            uVignette: { value: 0.58 }, uChromatic: { value: 0.005 },
+            uGrain: { value: 0.05 }, uSaturation: { value: 1.15 },
+          },
+          vertexShader: `varying vec2 vUv; void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
+          fragmentShader: `
+            varying vec2 vUv;
+            uniform sampler2D tDiffuse;
+            uniform float uTime, uVignette, uChromatic, uGrain, uSaturation;
+            float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+            void main(){
+              vec2 c = vec2(0.5); vec2 d = vUv - c; float dist = length(d);
+              vec2 ca = d * uChromatic * (0.5 + dist * 1.5);
+              float r = texture2D(tDiffuse, vUv - ca).r;
+              float gr = texture2D(tDiffuse, vUv).g;
+              float b = texture2D(tDiffuse, vUv + ca).b;
+              vec3 col = vec3(r, gr, b);
+              float lum = dot(col, vec3(0.2126,0.7152,0.0722));
+              col = mix(vec3(lum), col, uSaturation);
+              float vig = smoothstep(0.8, 0.3, dist);
+              col *= mix(1.0 - uVignette, 1.0, vig);
+              col += (hash(vUv * 1000.0 + uTime * 0.1) - 0.5) * uGrain;
+              gl_FragColor = vec4(col, 1.0);
+            }
+          `,
+        };
+        const gp = new ADDONS.ShaderPass(g);
+        composer.addPass(gp);
+        camera.userData.gradePass = gp;
+      }
+      if (ADDONS.OutputPass) composer.addPass(new ADDONS.OutputPass());
+    } else {
+      bloom = createBloom(THREE, renderer, W(), H(), {
+        threshold: 0.75, strength: 1.3,
+        vignette: 0.58, chromatic: 0.005, grain: 0.05,
+        saturation: 1.15, lift: -0.01,
+      });
+    }
+
     // 操作
     let dragging = false, lastX = 0, lastY = 0;
     let camAngle = 0, camTilt = 0.3, camDist = 55;
@@ -8183,7 +8361,14 @@
           s.position.z = Math.sin(a) * s.userData.baseR + Math.cos(s.userData.phase) * 0.5;
         }
       });
-      bloom.render(scene, camera);
+      if (composer) {
+        if (camera.userData.gradePass) camera.userData.gradePass.uniforms.uTime.value = t;
+        composer.render();
+      } else if (bloom) {
+        bloom.render(scene, camera);
+      } else {
+        renderer.render(scene, camera);
+      }
       requestAnimationFrame(animate);
     }
     animate();
@@ -8192,7 +8377,8 @@
       renderer.setSize(W(), H());
       camera.aspect = W()/H();
       camera.updateProjectionMatrix();
-      bloom.setSize(W(), H());
+      if (composer) composer.setSize(W(), H());
+      else if (bloom) bloom.setSize(W(), H());
     });
     setTimeout(() => ov.querySelector('#babel3dHint')?.classList.add('fade'), 5000);
   }

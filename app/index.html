@@ -72,9 +72,9 @@
 <!-- フォントは非ブロッキングで読み込み（print → all でフォールバック） -->
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet"></noscript>
-<link rel="stylesheet" href="dist/style.min.css?v=20260502AA">
-<link rel="stylesheet" href="dist/era-theme.min.css?v=20260502AA">
-<link rel="stylesheet" href="magic.css?v=20260502AA">
+<link rel="stylesheet" href="dist/style.min.css?v=20260502AB">
+<link rel="stylesheet" href="dist/era-theme.min.css?v=20260502AB">
+<link rel="stylesheet" href="magic.css?v=20260502AB">
 </head>
 <body>
   <header class="app-header">
@@ -881,15 +881,50 @@
   </div>
 
   <!-- minified bundles（dist/）と era-lore.min.js は年表画面を開いた時に遅延読み込み -->
-  <script src="dist/history-patterns.min.js?v=20260502AA" defer></script>
-  <script src="dist/app.min.js?v=20260502AA" defer></script>
-  <script src="auth.js?v=20260502AA" type="module"></script>
-  <script src="dist/ai-consult.min.js?v=20260502AA" defer></script>
+  <script src="dist/history-patterns.min.js?v=20260502AB" defer></script>
+  <script src="dist/app.min.js?v=20260502AB" defer></script>
+  <script src="auth.js?v=20260502AB" type="module"></script>
+  <script src="dist/ai-consult.min.js?v=20260502AB" defer></script>
 
   <!-- ============ Magic Layer（ピクチャ：3D本・Lenis・ViewTransitions等） ============ -->
   <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.159.0/build/three.min.js" defer></script>
-  <script src="magic.js?v=20260502AA" defer></script>
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.159.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.159.0/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module">
+    // ESM 版のthree.jsをロードし、既存の window.THREE インタフェースに公開。
+    // addons (Water, EffectComposer, UnrealBloomPass等) を使うため。
+    import * as THREE from 'three';
+    window.THREE = THREE;
+    // 非同期でaddonsも並行ロードして window.THREE_ADDONS にキャッシュ
+    window.THREE_ADDONS = {};
+    const addonPaths = {
+      Water:             'three/addons/objects/Water.js',
+      Sky:               'three/addons/objects/Sky.js',
+      EffectComposer:    'three/addons/postprocessing/EffectComposer.js',
+      RenderPass:        'three/addons/postprocessing/RenderPass.js',
+      UnrealBloomPass:   'three/addons/postprocessing/UnrealBloomPass.js',
+      OutputPass:        'three/addons/postprocessing/OutputPass.js',
+      ShaderPass:        'three/addons/postprocessing/ShaderPass.js',
+    };
+    const loadPromises = Object.entries(addonPaths).map(async ([key, path]) => {
+      try {
+        const mod = await import(path);
+        window.THREE_ADDONS[key] = mod[key] || mod.default || mod;
+      } catch (e) {
+        console.warn('addon load fail', key, e);
+      }
+    });
+    window.THREE_READY = Promise.all(loadPromises).then(() => {
+      window.dispatchEvent(new CustomEvent('three-ready'));
+    });
+  </script>
+  <script src="magic.js?v=20260502AB" defer></script>
   <script>
     // Service Worker 登録（2回目以降のロードを爆速化）
     if ('serviceWorker' in navigator) {
