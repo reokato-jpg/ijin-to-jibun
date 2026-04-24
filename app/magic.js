@@ -4015,22 +4015,165 @@
       }
       return new THREE.CanvasTexture(sc);
     })();
-    const sunGeo = new THREE.SphereGeometry(3.5, 48, 32);
-    const sunMat = new THREE.MeshBasicMaterial({ map: sunTex });
+    const sunGeo = new THREE.SphereGeometry(3.5, 64, 48);
+    // ☀️ アニメーションするプラズマ表面シェーダ
+    const sunMat = new THREE.ShaderMaterial({
+      uniforms: {
+        uTime: { value: 0 },
+        uMap: { value: sunTex },
+      },
+      vertexShader: `
+        varying vec2 vUv;
+        varying vec3 vPos;
+        void main() {
+          vUv = uv;
+          vPos = position;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform float uTime;
+        uniform sampler2D uMap;
+        varying vec2 vUv;
+        varying vec3 vPos;
+        // 疑似ノイズ
+        float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+        float noise(vec2 p) {
+          vec2 i = floor(p); vec2 f = fract(p);
+          float a = hash(i); float b = hash(i + vec2(1,0));
+          float c = hash(i + vec2(0,1)); float d = hash(i + vec2(1,1));
+          vec2 u = f * f * (3.0 - 2.0 * f);
+          return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
+        }
+        void main() {
+          // ベーステクスチャ
+          vec3 base = texture2D(uMap, vUv).rgb;
+          // 流動するプラズマ（時間で UV をずらしてノイズを重ねる）
+          vec2 flow = vUv * 8.0 + vec2(uTime * 0.03, uTime * 0.02);
+          float n1 = noise(flow);
+          float n2 = noise(flow * 2.3 + vec2(uTime * 0.05, 0.0));
+          float plasma = smoothstep(0.3, 0.95, n1 * 0.6 + n2 * 0.5);
+          // 熱い核部分（白に近づく）
+          vec3 hot = vec3(1.0, 0.95, 0.78);
+          vec3 mid = vec3(1.0, 0.65, 0.25);
+          vec3 col = mix(base, mid, plasma * 0.6);
+          col = mix(col, hot, plasma * plasma * 0.55);
+          // 脈動（全体の明るさが呼吸）
+          float pulse = 1.0 + 0.08 * sin(uTime * 0.8);
+          gl_FragColor = vec4(col * pulse, 1.0);
+        }
+      `,
+    });
     const sun = new THREE.Mesh(sunGeo, sunMat);
     sun.visible = false;
     scene.add(sun);
-    // 多層コロナ
-    const coronaGeo1 = new THREE.SphereGeometry(4.0, 32, 32);
-    const coronaMat1 = new THREE.MeshBasicMaterial({ color: 0xffb848, transparent: true, opacity: 0.3, side: THREE.BackSide });
+
+    // 🔥 彩層（薄い赤いリング、太陽表面のすぐ外）
+    const chromoGeo = new THREE.SphereGeometry(3.58, 48, 32);
+    const chromoMat = new THREE.ShaderMaterial({
+      uniforms: { uTime: { value: 0 } },
+      vertexShader: `
+        varying vec3 vN;
+        varying vec3 vView;
+        void main() {
+          vN = normalize(normalMatrix * normal);
+          vec4 mv = modelViewMatrix * vec4(position, 1.0);
+          vView = normalize(-mv.xyz);
+          gl_Position = projectionMatrix * mv;
+        }
+      `,
+      fragmentShader: `
+        uniform float uTime;
+        varying vec3 vN;
+        varying vec3 vView;
+        void main() {
+          float rim = 1.0 - max(0.0, dot(vN, vView));
+          rim = pow(rim, 3.0);
+          // 赤〜橙
+          vec3 col = mix(vec3(1.0, 0.45, 0.15), vec3(1.0, 0.8, 0.3), rim);
+          float flicker = 0.9 + 0.1 * sin(uTime * 1.5);
+          gl_FragColor = vec4(col, rim * 0.85 * flicker);
+          if (gl_FragColor.a < 0.01) discard;
+        }
+      `,
+      transparent: true, depthWrite: false, side: THREE.FrontSide, blending: THREE.AdditiveBlending,
+    });
+    const chromosphere = new THREE.Mesh(chromoGeo, chromoMat);
+    chromosphere.visible = false;
+    scene.add(chromosphere);
+
+    // 多層コロナ（内/外）
+    const coronaGeo1 = new THREE.SphereGeometry(4.2, 48, 32);
+    const coronaMat1 = new THREE.ShaderMaterial({
+      uniforms: { uTime: { value: 0 } },
+      vertexShader: `
+        varying vec3 vN; varying vec3 vView;
+        void main() {
+          vN = normalize(normalMatrix * normal);
+          vec4 mv = modelViewMatrix * vec4(position, 1.0);
+          vView = normalize(-mv.xyz);
+          gl_Position = projectionMatrix * mv;
+        }
+      `,
+      fragmentShader: `
+        uniform float uTime;
+        varying vec3 vN; varying vec3 vView;
+        void main() {
+          float rim = 1.0 - max(0.0, dot(vN, vView));
+          rim = pow(rim, 2.2);
+          vec3 col = mix(vec3(1.0, 0.55, 0.18), vec3(1.0, 0.85, 0.4), rim);
+          float breathe = 0.85 + 0.15 * sin(uTime * 0.7);
+          gl_FragColor = vec4(col, rim * 0.55 * breathe);
+          if (gl_FragColor.a < 0.01) discard;
+        }
+      `,
+      transparent: true, depthWrite: false, side: THREE.BackSide, blending: THREE.AdditiveBlending,
+    });
     const corona1 = new THREE.Mesh(coronaGeo1, coronaMat1);
     corona1.visible = false;
     scene.add(corona1);
-    const coronaGeo = new THREE.SphereGeometry(5.2, 32, 32);
-    const coronaMat = new THREE.MeshBasicMaterial({ color: 0xffa038, transparent: true, opacity: 0.15, side: THREE.BackSide });
+    const coronaGeo = new THREE.SphereGeometry(6.0, 48, 32);
+    const coronaMat = new THREE.ShaderMaterial({
+      uniforms: { uTime: { value: 0 } },
+      vertexShader: `
+        varying vec3 vN; varying vec3 vView;
+        void main() {
+          vN = normalize(normalMatrix * normal);
+          vec4 mv = modelViewMatrix * vec4(position, 1.0);
+          vView = normalize(-mv.xyz);
+          gl_Position = projectionMatrix * mv;
+        }
+      `,
+      fragmentShader: `
+        uniform float uTime;
+        varying vec3 vN; varying vec3 vView;
+        void main() {
+          float rim = 1.0 - max(0.0, dot(vN, vView));
+          rim = pow(rim, 3.5);
+          vec3 col = vec3(1.0, 0.6, 0.25);
+          float breathe = 0.75 + 0.25 * sin(uTime * 0.5);
+          gl_FragColor = vec4(col, rim * 0.4 * breathe);
+          if (gl_FragColor.a < 0.01) discard;
+        }
+      `,
+      transparent: true, depthWrite: false, side: THREE.BackSide, blending: THREE.AdditiveBlending,
+    });
     const corona = new THREE.Mesh(coronaGeo, coronaMat);
     corona.visible = false;
     scene.add(corona);
+    // タップ用に sun に facts を付与
+    sun.userData = {
+      name: '太陽', jname: '太陽',
+      facts: {
+        diameter: '1,392,700 km (地球の約109倍)',
+        distance: '中心まで1AU（地球から光で8分19秒）',
+        period: '自転25-35日（赤道と極で異なる差動回転）',
+        temp: '表面5,500℃ / 中心1,500万℃',
+        moons: '衛星なし（惑星8個と小惑星を従える恒星）',
+        nasa: 'Parker Solar Probeが2018年から観測中（コロナに最接近）、JAXA/ESAのSolarOrbiterも観測。',
+        trivia: '太陽系全質量の99.86%を占めるG型主系列星。あと約50億年は水素核融合を続ける。'
+      }
+    };
 
     // ☀️ 太陽光（PointLight）＋ 非常に弱いアンビエントで陰影コントラスト
     const sunLight = new THREE.PointLight(0xfff2d8, 2.2, 200, 1.2);
@@ -5717,6 +5860,8 @@
         if (bbAge > 1.5) {
           sun.visible = true;
           corona.visible = true;
+          corona1.visible = true;
+          chromosphere.visible = true;
           planetMeshes.forEach(pm => {
             pm.mesh.visible = true;
             if (pm.mesh.userData.moons) pm.mesh.userData.moons.forEach(m => m.mesh.visible = true);
@@ -5809,6 +5954,11 @@
           pm.mesh.rotation.y += 0.01;
         });
         sun.rotation.y += 0.002;
+        // ☀️ 太陽シェーダの時間更新
+        sunMat.uniforms.uTime.value = universeTime;
+        chromoMat.uniforms.uTime.value = universeTime;
+        coronaMat1.uniforms.uTime.value = universeTime;
+        coronaMat.uniforms.uTime.value = universeTime;
         // ☀️ プロミネンス：脈動＋ゆっくり回転
         prominences.forEach(pr => {
           pr.phase += 0.02;
@@ -5936,7 +6086,8 @@
       mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
       raycaster.setFromCamera(mouse, camera);
-      const hit = raycaster.intersectObjects(planetMeshes.map(p => p.mesh), false)[0];
+      const targets = planetMeshes.map(p => p.mesh).concat(sun.visible ? [sun] : []);
+      const hit = raycaster.intersectObjects(targets, false)[0];
       if (!hit) {
         // 何もないところをタップ → ズーム解除
         cameraZoomTarget = null;
@@ -5944,6 +6095,26 @@
         return;
       }
       const p = hit.object.userData;
+      // 太陽をタップ → 情報パネル（惑星と同じフォーマット）
+      if (hit.object === sun) {
+        const infoEl = ov.querySelector('#cosmosInfoContent');
+        const panel = ov.querySelector('#cosmosInfoPanel');
+        infoEl.innerHTML = `
+          <div class="cosmos-info-name">☀️ ${p.jname}</div>
+          <div class="cosmos-info-sub">SUN · G型主系列星</div>
+          <dl class="cosmos-info-facts">
+            <dt>直径</dt><dd>${p.facts.diameter}</dd>
+            <dt>距離</dt><dd>${p.facts.distance}</dd>
+            <dt>周期</dt><dd>${p.facts.period}</dd>
+            <dt>温度</dt><dd>${p.facts.temp}</dd>
+            <dt>衛星</dt><dd>${p.facts.moons}</dd>
+            <dt>NASA</dt><dd>${p.facts.nasa}</dd>
+          </dl>
+          <div class="cosmos-info-trivia">${p.facts.trivia}</div>
+        `;
+        panel.classList.add('show');
+        return;
+      }
       const pm = planetMeshes.find(x => x.mesh === hit.object);
       hud.classList.remove('show');
       // 既にズーム済みの同じ惑星を再タップ
