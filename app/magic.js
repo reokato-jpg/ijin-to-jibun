@@ -7664,10 +7664,161 @@
       const infoEl = ov.querySelector('#cosmosInfoContent');
       const panel = ov.querySelector('#cosmosInfoPanel');
       if (!infoEl || !panel) return;
+      // 🖼 線画イラスト（サン=テグジュペリ風の手描き調）
+      const ILLUST = {
+        b612: `<svg class="prince-svg" viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
+          <defs><filter id="prns"><feTurbulence baseFrequency="0.9" numOctaves="2" seed="2"/><feDisplacementMap in="SourceGraphic" scale="0.5"/></filter></defs>
+          <!-- 小惑星B-612 -->
+          <ellipse cx="100" cy="145" rx="60" ry="22" fill="#8db860" opacity="0.4"/>
+          <circle cx="100" cy="135" r="50" fill="none" stroke="#2a3a20" stroke-width="1.8"/>
+          <!-- 地面の草 -->
+          <path d="M 65 135 Q 70 128 72 135 M 80 128 Q 84 120 88 128 M 115 128 Q 120 122 124 128 M 130 132 Q 135 125 140 132" stroke="#2a6a3a" stroke-width="1" fill="none"/>
+          <!-- バオバブの芽（2本） -->
+          <path d="M 62 128 Q 60 118 64 118 Q 66 122 68 128" stroke="#4a4a28" stroke-width="1.3" fill="#8a8a4a" opacity="0.65"/>
+          <path d="M 138 130 Q 136 120 140 120 Q 143 124 144 130" stroke="#4a4a28" stroke-width="1.3" fill="#8a8a4a" opacity="0.65"/>
+          <!-- バラ（左側） -->
+          <line x1="75" y1="115" x2="75" y2="92" stroke="#3a6a4a" stroke-width="1.3"/>
+          <path d="M 70 95 Q 67 92 72 90 M 78 93 Q 82 91 80 96" stroke="#3a6a4a" stroke-width="1" fill="none"/>
+          <circle cx="75" cy="86" r="7" fill="#e04060" stroke="#8a1a30" stroke-width="1"/>
+          <circle cx="75" cy="86" r="3" fill="#8a1a30"/>
+          <!-- ガラスドーム -->
+          <path d="M 63 100 Q 75 65 87 100" stroke="#88aabb" stroke-width="1" fill="rgba(200,220,240,0.15)"/>
+          <!-- 王子様 -->
+          <!-- 金色の髪 -->
+          <path d="M 112 50 Q 112 38 122 38 Q 132 38 132 50 L 133 48 L 131 52 L 130 48 L 128 52 L 127 48 L 125 52 L 124 48 L 122 52 L 120 48 L 119 52 L 117 48 L 116 52 L 114 48 L 113 52 Z" fill="#f0c840" stroke="#8a6020" stroke-width="0.8"/>
+          <!-- 顔 -->
+          <circle cx="122" cy="56" r="9" fill="#fde0c0" stroke="#8a5030" stroke-width="0.8"/>
+          <!-- 目 -->
+          <circle cx="119" cy="56" r="0.9" fill="#2a2a2a"/>
+          <circle cx="125" cy="56" r="0.9" fill="#2a2a2a"/>
+          <!-- 微笑み -->
+          <path d="M 119 60 Q 122 62 125 60" stroke="#2a2a2a" stroke-width="0.7" fill="none"/>
+          <!-- マフラー -->
+          <path d="M 112 65 Q 122 68 132 65 L 136 72 L 130 69 L 122 66 L 114 69 L 108 72 Z" fill="#ffd060" stroke="#8a6020" stroke-width="0.8"/>
+          <!-- 体・緑のコート -->
+          <path d="M 113 72 Q 108 95 110 120 L 134 120 Q 136 95 131 72 Z" fill="#5a9a6a" stroke="#2a4a30" stroke-width="1"/>
+          <!-- ボタン -->
+          <circle cx="122" cy="85" r="0.9" fill="#2a4a30"/>
+          <circle cx="122" cy="95" r="0.9" fill="#2a4a30"/>
+          <circle cx="122" cy="105" r="0.9" fill="#2a4a30"/>
+          <!-- 脚 -->
+          <line x1="118" y1="120" x2="116" y2="135" stroke="#6a4020" stroke-width="3"/>
+          <line x1="126" y1="120" x2="128" y2="135" stroke="#6a4020" stroke-width="3"/>
+          <!-- 見上げる星 -->
+          <text x="30" y="30" font-size="9" fill="#ffd880" opacity="0.7">✦</text>
+          <text x="170" y="22" font-size="7" fill="#ffd880" opacity="0.5">✧</text>
+          <text x="180" y="50" font-size="8" fill="#ffd880" opacity="0.6">✦</text>
+          <text x="20" y="70" font-size="6" fill="#ffd880" opacity="0.4">✧</text>
+        </svg>`,
+        fox: `<svg class="prince-svg" viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
+          <!-- 砂漠の地面 -->
+          <path d="M 0 140 Q 100 125 200 140 L 200 180 L 0 180 Z" fill="#e8c488" opacity="0.3"/>
+          <path d="M 0 140 Q 100 125 200 140" stroke="#c89050" stroke-width="1" fill="none"/>
+          <!-- 王子様（小さく左に） -->
+          <circle cx="50" cy="85" r="6" fill="#f0c840" stroke="#8a6020" stroke-width="0.6"/>
+          <circle cx="50" cy="95" r="6" fill="#fde0c0" stroke="#8a5030" stroke-width="0.6"/>
+          <path d="M 44 105 Q 40 120 42 135 L 58 135 Q 60 120 56 105 Z" fill="#5a9a6a" stroke="#2a4a30" stroke-width="0.8"/>
+          <line x1="46" y1="135" x2="45" y2="142" stroke="#6a4020" stroke-width="2"/>
+          <line x1="54" y1="135" x2="55" y2="142" stroke="#6a4020" stroke-width="2"/>
+          <!-- キツネ（右側に大きく） -->
+          <!-- 尻尾 -->
+          <path d="M 155 110 Q 172 95 180 100 Q 178 115 168 115" fill="#e87030" stroke="#8a3a10" stroke-width="1"/>
+          <ellipse cx="180" cy="100" rx="4" ry="6" fill="#ffffff" stroke="#8a3a10" stroke-width="0.8"/>
+          <!-- 胴体 -->
+          <ellipse cx="140" cy="115" rx="20" ry="15" fill="#e87030" stroke="#8a3a10" stroke-width="1"/>
+          <!-- 脚 -->
+          <line x1="130" y1="128" x2="128" y2="138" stroke="#8a3a10" stroke-width="2.5"/>
+          <line x1="148" y1="128" x2="150" y2="138" stroke="#8a3a10" stroke-width="2.5"/>
+          <!-- 頭 -->
+          <ellipse cx="120" cy="105" rx="10" ry="9" fill="#e87030" stroke="#8a3a10" stroke-width="1"/>
+          <!-- 鼻先 -->
+          <path d="M 110 105 L 105 107 L 110 110 Z" fill="#e87030" stroke="#8a3a10" stroke-width="0.8"/>
+          <circle cx="106" cy="108" r="1.2" fill="#1a1a1a"/>
+          <!-- 耳 -->
+          <path d="M 114 100 L 112 92 L 118 96 Z" fill="#e87030" stroke="#8a3a10" stroke-width="0.8"/>
+          <path d="M 124 99 L 122 91 L 128 95 Z" fill="#e87030" stroke="#8a3a10" stroke-width="0.8"/>
+          <!-- 目 -->
+          <circle cx="118" cy="103" r="1.2" fill="#2a2a2a"/>
+          <!-- 麦畑の暗示 -->
+          <path d="M 70 135 L 68 128 M 75 135 L 74 125 M 80 135 L 79 127 M 85 135 L 84 124" stroke="#d4a040" stroke-width="0.8"/>
+        </svg>`,
+        rose: `<svg class="prince-svg" viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
+          <!-- 地面 -->
+          <ellipse cx="100" cy="155" rx="40" ry="6" fill="#2a6a3a" opacity="0.3"/>
+          <!-- 茎 -->
+          <line x1="100" y1="155" x2="100" y2="80" stroke="#3a6a4a" stroke-width="2"/>
+          <!-- 葉 -->
+          <path d="M 88 115 Q 80 110 82 120 Q 88 118 100 118" fill="#5aa070" stroke="#2a6a3a" stroke-width="0.8"/>
+          <path d="M 112 100 Q 120 95 118 105 Q 110 105 100 105" fill="#5aa070" stroke="#2a6a3a" stroke-width="0.8"/>
+          <!-- トゲ -->
+          <line x1="100" y1="130" x2="97" y2="128" stroke="#3a6a4a" stroke-width="1.5"/>
+          <line x1="100" y1="110" x2="103" y2="108" stroke="#3a6a4a" stroke-width="1.5"/>
+          <!-- 花びら（5枚重なる） -->
+          <path d="M 100 55 Q 80 55 85 75 Q 100 85 115 75 Q 120 55 100 55" fill="#ff3a5a" stroke="#7a1030" stroke-width="1"/>
+          <path d="M 100 60 Q 88 62 90 75 Q 100 80 110 75 Q 112 62 100 60" fill="#d02040" stroke="#7a1030" stroke-width="0.8"/>
+          <circle cx="100" cy="72" r="5" fill="#6a0820" stroke="#3a0410" stroke-width="0.6"/>
+          <!-- ガラスドーム -->
+          <path d="M 70 150 Q 100 30 130 150" stroke="#88aabb" stroke-width="1.5" fill="rgba(200,220,240,0.12)"/>
+          <line x1="70" y1="150" x2="130" y2="150" stroke="#6a7880" stroke-width="1.5"/>
+          <!-- つぶやき -->
+          <text x="100" y="25" text-anchor="middle" font-size="8" fill="#ffa0b0" opacity="0.7" font-style="italic">...</text>
+        </svg>`,
+        snake: `<svg class="prince-svg" viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
+          <!-- 砂漠 -->
+          <path d="M 0 150 Q 100 130 200 150 L 200 180 L 0 180 Z" fill="#e8c488" opacity="0.4"/>
+          <!-- 太陽 -->
+          <circle cx="160" cy="45" r="18" fill="#ffd480" opacity="0.6"/>
+          <circle cx="160" cy="45" r="26" fill="#ffd480" opacity="0.15"/>
+          <!-- ヘビ（黄色く光る、S字） -->
+          <path d="M 50 145 Q 60 130 75 135 Q 95 145 110 125 Q 130 110 145 130 Q 155 145 165 140"
+                stroke="#e0c050" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.9"/>
+          <path d="M 50 145 Q 60 130 75 135 Q 95 145 110 125 Q 130 110 145 130 Q 155 145 165 140"
+                stroke="#8a6810" stroke-width="1" fill="none" stroke-linecap="round"/>
+          <!-- ヘビの頭 -->
+          <ellipse cx="50" cy="146" rx="4" ry="3" fill="#e0c050" stroke="#8a6810" stroke-width="0.8"/>
+          <circle cx="48" cy="144" r="0.8" fill="#2a2a2a"/>
+          <!-- 舌 -->
+          <path d="M 46 146 L 42 145 M 46 146 L 42 148" stroke="#c03030" stroke-width="0.6"/>
+          <!-- 影 -->
+          <ellipse cx="100" cy="167" rx="60" ry="2" fill="#000" opacity="0.2"/>
+        </svg>`,
+        prince: `<svg class="prince-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <!-- 王子様（大きく） -->
+          <!-- 星 -->
+          <text x="30" y="30" font-size="10" fill="#ffd880">✦</text>
+          <text x="170" y="40" font-size="8" fill="#ffd880" opacity="0.7">✧</text>
+          <text x="180" y="90" font-size="9" fill="#ffd880" opacity="0.6">✦</text>
+          <!-- 髪 -->
+          <path d="M 80 40 Q 80 22 100 22 Q 120 22 120 40 L 122 37 L 120 42 L 118 37 L 116 42 L 114 37 L 112 42 L 110 37 L 108 42 L 106 37 L 104 42 L 102 37 L 100 42 L 98 37 L 96 42 L 94 37 L 92 42 L 90 37 L 88 42 L 86 37 L 84 42 L 82 37 L 80 42 Z" fill="#f0c840" stroke="#8a6020" stroke-width="1"/>
+          <!-- 顔 -->
+          <circle cx="100" cy="55" r="16" fill="#fde0c0" stroke="#8a5030" stroke-width="1"/>
+          <circle cx="94" cy="53" r="1.5" fill="#2a2a2a"/>
+          <circle cx="106" cy="53" r="1.5" fill="#2a2a2a"/>
+          <path d="M 94 62 Q 100 65 106 62" stroke="#2a2a2a" stroke-width="1" fill="none"/>
+          <!-- マフラー -->
+          <path d="M 82 72 Q 100 77 118 72 L 125 85 L 115 78 L 100 74 L 85 78 L 75 85 Z" fill="#ffd060" stroke="#8a6020" stroke-width="1"/>
+          <!-- マフラーの尻尾（なびく） -->
+          <path d="M 120 78 Q 135 82 140 95 L 128 88 Z" fill="#ffd060" stroke="#8a6020" stroke-width="1"/>
+          <!-- コート -->
+          <path d="M 82 85 Q 75 115 78 150 L 122 150 Q 125 115 118 85 Z" fill="#5a9a6a" stroke="#2a4a30" stroke-width="1.2"/>
+          <circle cx="100" cy="100" r="1.2" fill="#2a4a30"/>
+          <circle cx="100" cy="115" r="1.2" fill="#2a4a30"/>
+          <circle cx="100" cy="130" r="1.2" fill="#2a4a30"/>
+          <!-- 腕 -->
+          <path d="M 82 90 Q 70 100 68 130" stroke="#5a9a6a" stroke-width="5" fill="none" stroke-linecap="round"/>
+          <path d="M 118 90 Q 130 100 132 130" stroke="#5a9a6a" stroke-width="5" fill="none" stroke-linecap="round"/>
+          <!-- 脚 -->
+          <rect x="85" y="150" width="10" height="30" fill="#6a4020" stroke="#3a2010" stroke-width="1"/>
+          <rect x="105" y="150" width="10" height="30" fill="#6a4020" stroke="#3a2010" stroke-width="1"/>
+        </svg>`,
+      };
+      const illust = ILLUST[d.id] ? `<div class="prince-illust-wrap">${ILLUST[d.id]}</div>` : '';
+
       // 特別な場面はセリフを足す
       let extra = '';
       if (d.id === 'b612') {
         extra = `
+          ${illust}
           <div class="prince-dialog">
             <div class="pd-line"><b>王子</b>：「ぼくは、きみのバラを世界一特別にしたんだ」</div>
             <div class="pd-line"><b>バラ</b>：「行ってらっしゃい…　ずっと待ってるわ」</div>
@@ -7676,6 +7827,7 @@
         `;
       } else if (d.id === 'fox') {
         extra = `
+          ${illust}
           <div class="prince-dialog">
             <div class="pd-line"><b>王子</b>：「きみはぼくに何なの？」</div>
             <div class="pd-line"><b>キツネ</b>：「まだ僕にとって、きみはあまたの少年の一人に過ぎない。でも — 飼いならしてくれたら、僕たちは互いになくてはならない存在になる」</div>
@@ -7685,6 +7837,7 @@
         `;
       } else if (d.id === 'snake') {
         extra = `
+          ${illust}
           <div class="prince-dialog">
             <div class="pd-line"><b>ヘビ</b>：「ぼくが触れたものは、ぼくが触れる前にいた場所に戻る」</div>
             <div class="pd-line">「きみの星は、遠すぎる。歩いては帰れない」</div>
@@ -7693,6 +7846,7 @@
         `;
       } else if (d.id === 'rose') {
         extra = `
+          ${illust}
           <div class="prince-dialog">
             <div class="pd-line"><b>バラ</b>：「私があなたにとって特別なのは、あなたが私に費やした時間のせいよ」</div>
           </div>

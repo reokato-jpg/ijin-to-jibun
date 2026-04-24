@@ -4789,6 +4789,34 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
 .tale-prev:not(:disabled):hover { background: rgba(80,60,100,0.7); }
 .tale-next:hover { background: linear-gradient(135deg, #d09050, #904525); }
 
+/* 🖼 王子様イラスト（手描き線画） */
+.prince-illust-wrap {
+  margin: 14px auto;
+  padding: 16px;
+  background:
+    radial-gradient(ellipse at center, rgba(255,240,200,0.08), rgba(20,15,35,0) 70%),
+    linear-gradient(135deg, rgba(40,30,60,0.35), rgba(20,15,35,0.35));
+  border: 1px solid rgba(220,200,255,0.25);
+  border-radius: 12px;
+  text-align: center;
+  position: relative;
+}
+.prince-illust-wrap::before {
+  content: '';
+  position: absolute; inset: 4px;
+  border: 1px dashed rgba(255,216,128,0.2);
+  border-radius: 8px;
+  pointer-events: none;
+}
+.prince-svg {
+  width: 100%;
+  max-width: 260px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  filter: drop-shadow(0 2px 8px rgba(255,230,180,0.2));
+}
+
 /* 🌹 王子様ダイアログ */
 .prince-dialog {
   margin: 14px 0;
