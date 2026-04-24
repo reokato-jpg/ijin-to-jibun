@@ -4479,6 +4479,33 @@
         <span class="aff-tag">PR</span></a>
         <img border="0" width="1" height="1" src="https://www10.a8.net/0.gif?a8mat=4B1SPX+DJ0LMA+2PEO+1BTBLD" alt="" style="position:absolute;opacity:0">`
     },
+    {
+      id: 'softbank-hikari', ctx: ['home','lifestyle','beginner'],
+      mood: '家で長時間動画や3Dを見る人 → 回線速度への潜在欲',
+      html: `<a class="aff-inline" href="//af.moshimo.com/af/c/click?a_id=5508511&p_id=6173&pc_id=17361&pl_id=79683" rel="noopener sponsored nofollow" target="_blank" referrerpolicy="no-referrer-when-downgrade">
+        <span class="aff-icon">📡</span>
+        <span class="aff-text"><b>おうちの回線を見直す</b> — ソフトバンク光</span>
+        <span class="aff-tag">PR</span></a>
+        <img src="//i.moshimo.com/af/i/impression?a_id=5508511&p_id=6173&pc_id=17361&pl_id=79683" width="1" height="1" style="position:absolute;border:0;opacity:0" alt="">`
+    },
+    {
+      id: 'dinomo', ctx: ['goods','lifestyle','beginner'],
+      mood: 'ちょっといい日用品を探したい気分',
+      html: `<a class="aff-inline" href="//af.moshimo.com/af/c/click?a_id=5508512&p_id=5538&pc_id=15178&pl_id=89521" rel="noopener sponsored nofollow" target="_blank" referrerpolicy="no-referrer-when-downgrade">
+        <span class="aff-icon">🎁</span>
+        <span class="aff-text"><b>ちょっといい日用品</b> — dinomo</span>
+        <span class="aff-tag">PR</span></a>
+        <img src="//i.moshimo.com/af/i/impression?a_id=5508512&p_id=5538&pc_id=15178&pl_id=89521" width="1" height="1" style="position:absolute;border:0;opacity:0" alt="">`
+    },
+    {
+      id: 'tiramisu', ctx: ['food','person-italian','lifestyle','sweet'],
+      mood: 'イタリア・甘味に心が動いた → 食卓を彩りたい',
+      html: `<a class="aff-inline" href="https://px.a8.net/svt/ejp?a8mat=4B1SPY+9TNI42+32PK+HVV0H" rel="noopener sponsored nofollow" target="_blank">
+        <span class="aff-icon">🍰</span>
+        <span class="aff-text"><b>本格ティラミス</b> — お取り寄せで味わう</span>
+        <span class="aff-tag">PR</span></a>
+        <img border="0" width="1" height="1" src="https://www14.a8.net/0.gif?a8mat=4B1SPY+9TNI42+32PK+HVV0H" alt="" style="position:absolute;opacity:0">`
+    },
   ];
   // 指定文脈に合う広告をランダム選択（日替わりシード）
   MAGIC.pickAffiliates = function(ctx, count = 1, salt = 0) {
@@ -4750,6 +4777,40 @@
     });
   }
   setupCheatSheetButton();
+
+  // ============================================================
+  // 🍰 文脈マッチング広告: イタリア系偉人のページに ティラミス を
+  // （ちゃんと関連がある人のページにだけ、自然に差し込む）
+  // ============================================================
+  function setupPersonContextAds() {
+    if (MAGIC._personCtxAdDone) return;
+    MAGIC._personCtxAdDone = true;
+    const ITALIAN_KEYWORDS = ['イタリア', 'ローマ', 'フィレンツェ', 'ヴェネツィア', 'ナポリ', 'ミラノ'];
+    const tryInject = () => {
+      const personView = document.getElementById('view-person');
+      if (!personView || !personView.classList.contains('active')) return;
+      if (personView.querySelector('.aff-inline-ctx')) return;
+      const name = personView.querySelector('.profile-name')?.textContent?.trim();
+      if (!name || !MAGIC._peopleBundle) return;
+      const person = MAGIC._peopleBundle.find(p => p.name === name);
+      if (!person) return;
+      // 国・出身に「イタリア」系キーワードがあるか
+      const country = (person.country || '') + (person.summary || '');
+      const isItalian = ITALIAN_KEYWORDS.some(k => country.includes(k));
+      if (!isItalian) return;
+      // プロフィール下部に挿入するアンカー
+      const anchor = personView.querySelector('.profile-info-card');
+      if (!anchor) return;
+      const slot = document.createElement('div');
+      slot.className = 'aff-inline-ctx';
+      anchor.parentNode.insertBefore(slot, anchor.nextSibling);
+      MAGIC.renderAffiliate('person-italian', slot, 1);
+    };
+    const mo = new MutationObserver(tryInject);
+    mo.observe(document.body, { childList: true, subtree: true });
+    loadPeopleBundle().then(() => setTimeout(tryInject, 600));
+  }
+  setupPersonContextAds();
 
   async function openCosmos() {
     if (!window.THREE) return;
