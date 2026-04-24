@@ -2066,6 +2066,11 @@
          <canvas class="magic-globe-net" id="magicGlobeNet"></canvas>
          <div class="magic-globe-scan"></div>
          <div class="magic-globe-coord" id="magicGlobeCoord">LAT 00.0° / LON 000.0°</div>
+         <div class="magic-globe-clock" id="magicGlobeClock">
+           <div class="mgc-phase" id="mgcPhase">☀️ 昼</div>
+           <div class="mgc-time" id="mgcTime">--:--</div>
+           <div class="mgc-label">JST · Local</div>
+         </div>
          <div class="magic-globe-hint">DRAG · ROTATE · TAP</div>
          <div class="magic-globe-tooltip" id="magicGlobeTip"></div>
          <div class="magic-globe-info" id="magicGlobeInfo"></div>
@@ -2127,6 +2132,28 @@
       );
     }
     updateSunPosition();
+    function updateClockHUD() {
+      const now = new Date();
+      const h = now.getHours();
+      const m = now.getMinutes();
+      const tEl = ov.querySelector('#mgcTime');
+      const pEl = ov.querySelector('#mgcPhase');
+      if (tEl) tEl.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+      if (pEl) {
+        let phase = '☀️ 昼';
+        if (h < 4) phase = '🌌 深夜';
+        else if (h < 6) phase = '🌒 未明';
+        else if (h < 8) phase = '🌅 朝焼け';
+        else if (h < 11) phase = '🌤 午前';
+        else if (h < 14) phase = '☀️ 正午';
+        else if (h < 17) phase = '🌞 午後';
+        else if (h < 19) phase = '🌆 夕暮れ';
+        else if (h < 22) phase = '🌙 夜';
+        else phase = '🌃 深夜';
+        pEl.textContent = phase;
+      }
+    }
+    updateClockHUD();
     // 補助リム（夜側のシルエットを浮かび上がらせる青い反射光）
     const rim = new THREE.DirectionalLight(0x6aa0d8, 0.45);
     rim.position.set(-5, 0, -3);
@@ -2281,6 +2308,94 @@
         earth.add(ring2);
         shockwaves.push({ mesh: ring2, start: performance.now(), life: 1800, geo: ringGeo2, mat: ringMat2 });
       }, 280);
+    }
+
+    // ✈️ 国際線フライト（大円弧）
+    const _llToVecF = (lat, lng, r) => {
+      const phi = (90 - lat) * Math.PI / 180;
+      const theta = (lng + 180) * Math.PI / 180;
+      return new THREE.Vector3(
+        -r * Math.sin(phi) * Math.cos(theta),
+        r * Math.cos(phi),
+        r * Math.sin(phi) * Math.sin(theta)
+      );
+    };
+    const FLIGHT_ROUTES = [
+      { from: [35.68, 139.69], to: [40.71, -74.01],  name: 'TYO-NYC' }, // 東京→NY
+      { from: [51.51, -0.13],  to: [25.20, 55.27],   name: 'LON-DXB' }, // ロンドン→ドバイ
+      { from: [48.86, 2.35],   to: [-33.87, 151.21], name: 'PAR-SYD' }, // パリ→シドニー
+      { from: [37.77, -122.42],to: [22.32, 114.17],  name: 'SFO-HKG' }, // SF→香港
+      { from: [-23.55, -46.63],to: [28.61, 77.21],   name: 'SAO-DEL' }, // サンパウロ→デリー
+      { from: [55.76, 37.62],  to: [1.35, 103.82],   name: 'MOS-SIN' }, // モスクワ→シンガポール
+      { from: [35.68, 139.69], to: [48.86, 2.35],    name: 'TYO-PAR' }, // 東京→パリ
+      { from: [19.43, -99.13], to: [-33.87, 151.21], name: 'MEX-SYD' }, // メキシコシティ→シドニー
+    ];
+    const EARTH_R = 2.2;
+    const flightGroup = new THREE.Group();
+    earth.add(flightGroup); // 地球回転に追随
+    const planeGeo = new THREE.ConeGeometry(0.025, 0.09, 6);
+    planeGeo.rotateX(Math.PI / 2);
+    const planeMat = new THREE.MeshBasicMaterial({ color: 0xfff4d6 });
+    const flights = FLIGHT_ROUTES.map((r, i) => {
+      const a = _llToVecF(r.from[0], r.from[1], 1);
+      const b = _llToVecF(r.to[0], r.to[1], 1);
+      const plane = new THREE.Mesh(planeGeo, new THREE.MeshBasicMaterial({ color: 0xfff4d6 }));
+      flightGroup.add(plane);
+      // 航跡ライン（過去に通った軌跡）
+      const TRAIL_N = 40;
+      const trailPos = new Float32Array(TRAIL_N * 3);
+      for (let k = 0; k < TRAIL_N * 3; k++) trailPos[k] = 0;
+      const trailGeo = new THREE.BufferGeometry();
+      trailGeo.setAttribute('position', new THREE.BufferAttribute(trailPos, 3));
+      const trailMat = new THREE.LineBasicMaterial({ color: 0xffcf80, transparent: true, opacity: 0.6 });
+      const trail = new THREE.Line(trailGeo, trailMat);
+      flightGroup.add(trail);
+      // ヘッドの光点
+      const glowMat = new THREE.SpriteMaterial({ color: 0xfff0b0, transparent: true, opacity: 0.9, depthWrite: false });
+      const glow = new THREE.Sprite(glowMat);
+      glow.scale.set(0.08, 0.08, 1);
+      flightGroup.add(glow);
+      return {
+        plane, trail, trailPos, trailGeo, trailLen: TRAIL_N, trailWrite: 0, trailCount: 0,
+        glow,
+        from: a, to: b, t: Math.random(), // 出発オフセット
+        speed: 0.0012 + Math.random() * 0.0012,
+        arcHeight: 0.12 + Math.random() * 0.08,
+      };
+    });
+    function updateFlights() {
+      flights.forEach(f => {
+        f.t += f.speed;
+        if (f.t > 1) f.t = 0;
+        // 大円slerp
+        const dot = Math.max(-1, Math.min(1, f.from.dot(f.to)));
+        const omega = Math.acos(dot);
+        const sinO = Math.sin(omega) || 1;
+        const k1 = Math.sin((1 - f.t) * omega) / sinO;
+        const k2 = Math.sin(f.t * omega) / sinO;
+        const unit = f.from.clone().multiplyScalar(k1).add(f.to.clone().multiplyScalar(k2));
+        // 高度：sin(πt) で弧状に上がる
+        const alt = EARTH_R + f.arcHeight * Math.sin(Math.PI * f.t) + 0.02;
+        const pos = unit.clone().multiplyScalar(alt);
+        f.plane.position.copy(pos);
+        f.glow.position.copy(pos);
+        // 進行方向
+        const tNext = Math.min(1, f.t + 0.01);
+        const kn1 = Math.sin((1 - tNext) * omega) / sinO;
+        const kn2 = Math.sin(tNext * omega) / sinO;
+        const posNext = f.from.clone().multiplyScalar(kn1).add(f.to.clone().multiplyScalar(kn2))
+          .multiplyScalar(EARTH_R + f.arcHeight * Math.sin(Math.PI * tNext) + 0.02);
+        f.plane.lookAt(posNext);
+        // 航跡書き込み
+        const idx = (f.trailWrite % f.trailLen) * 3;
+        f.trailPos[idx] = pos.x; f.trailPos[idx+1] = pos.y; f.trailPos[idx+2] = pos.z;
+        f.trailWrite++;
+        f.trailCount = Math.min(f.trailCount + 1, f.trailLen);
+        f.trailGeo.setDrawRange(0, f.trailCount);
+        f.trailGeo.attributes.position.needsUpdate = true;
+        // 光点の明滅
+        f.glow.material.opacity = 0.7 + Math.sin(performance.now() * 0.01 + f.t * 10) * 0.3;
+      });
     }
 
     // 大気グロー（外側の半透明球 / 青いハロー）
@@ -2649,12 +2764,15 @@
       // 雲のゆっくり自転（地球より少し速く）
       if (MAGIC._clouds) MAGIC._clouds.rotation.y += 0.0004;
 
-      // 🌅 昼夜境界：太陽位置を 30 秒ごとに再計算
+      // 🌅 昼夜境界：太陽位置を 10 秒ごとに再計算 + 時刻HUD更新
       const nowMs = performance.now();
-      if (nowMs - lastSunUpdate > 30000) {
+      if (nowMs - lastSunUpdate > 10000) {
         updateSunPosition();
+        updateClockHUD();
         lastSunUpdate = nowMs;
       }
+      // ✈️ フライト更新
+      updateFlights();
 
       // 🛰 軌道衛星の更新（ISS は 90 分で 1 周 ≒ デフォルメして速め）
       satAngle += 0.012;
