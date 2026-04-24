@@ -13712,6 +13712,37 @@ function bindEvents() {
       }
     });
   });
+  // 🎲 運命の偉人ガチャ — ランダムに偉人1人を選んで開く
+  document.getElementById('heroGachaBtn')?.addEventListener('click', () => {
+    if (!DATA.people || DATA.people.length === 0) return;
+    const candidates = DATA.people.filter(p => p && p.id && p.name);
+    if (!candidates.length) return;
+    // 既にこのセッションで出した偉人は避ける
+    window.__gachaSeen = window.__gachaSeen || new Set();
+    let pool = candidates.filter(p => !window.__gachaSeen.has(p.id));
+    if (pool.length === 0) { window.__gachaSeen.clear(); pool = candidates; }
+    const pick = pool[Math.floor(Math.random() * pool.length)];
+    window.__gachaSeen.add(pick.id);
+    // ミニ演出: ドラムロール風に3人チラ見せ → 本命
+    const btn = document.getElementById('heroGachaBtn');
+    if (!btn) return;
+    const labelEl = btn.querySelector('span:last-child');
+    const origText = labelEl?.textContent || '運命の偉人';
+    let i = 0;
+    const drumInterval = setInterval(() => {
+      const r = candidates[Math.floor(Math.random() * candidates.length)];
+      if (labelEl) labelEl.textContent = r.name.slice(0, 6);
+      i++;
+      if (i >= 8) {
+        clearInterval(drumInterval);
+        if (labelEl) labelEl.textContent = '✨ ' + pick.name;
+        setTimeout(() => {
+          if (labelEl) labelEl.textContent = origText;
+          showPerson(pick.id);
+        }, 600);
+      }
+    }, 90);
+  });
   // このサイトの使い方ポップアップ（5枚スライド）
   document.getElementById('howtoOpenBtn')?.addEventListener('click', () => openHowtoSlides());
   document.getElementById('openWorldviewBtn')?.addEventListener('click', () => openWorldviewModal());
@@ -14037,19 +14068,28 @@ window.renderBookshelfGuides = renderBookshelfGuides;
   initWelcomeIntro();
   renderHeroStats();
   renderUpdates();
-  renderOshi();
-  renderTraitsMatch();
+  // 即時描画（ファーストビュー）
   renderTodayBirthday();
-  try { renderTodayEcho(); } catch (e) { console.warn(e); }
-  try { renderBookOfTheDay(); } catch (e) { console.warn(e); }
-  try { renderHistoryMirrors(); } catch (e) { console.warn(e); }
-  renderCalendarToday();
   renderPersonOfTheDay();
   renderQuoteOfTheDay();
-  renderQuoteCarousel();
-  renderFeaturedTags();
   renderThemeTiles();
-  renderHomeBooks();
+  // 遅延描画（スクロール下・後回しでOK）— 初回ペイントを軽く
+  const defer = (fn) => {
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(() => { try { fn(); } catch (e) { console.warn(e); } }, { timeout: 1200 });
+    } else {
+      setTimeout(() => { try { fn(); } catch (e) { console.warn(e); } }, 150);
+    }
+  };
+  defer(() => renderOshi());
+  defer(() => renderTraitsMatch());
+  defer(() => renderTodayEcho());
+  defer(() => renderBookOfTheDay());
+  defer(() => renderHistoryMirrors());
+  defer(() => renderCalendarToday());
+  defer(() => renderQuoteCarousel());
+  defer(() => renderFeaturedTags());
+  defer(() => renderHomeBooks());
   // TOCは他ブロックが描画された後に
   setTimeout(() => { try { renderHomeTOC(); } catch (e) { console.warn('toc', e); } }, 400);
   renderArticles();

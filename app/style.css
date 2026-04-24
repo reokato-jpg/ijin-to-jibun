@@ -17732,3 +17732,27 @@ body, .view, main, .visitors-list, .history-list,
 .blog-category-badge .ij-icon { width: 14px; height: 14px; vertical-align: -0.15em; }
 
 .oshi-routine-ic .ij-icon, .oshi-routine-ic svg { width: 14px; height: 14px; color: var(--wine); }
+/* 🎲 運命の偉人ガチャボタン */
+.hero-shortcut-gacha {
+  background: linear-gradient(135deg, rgba(212,175,55,0.25), rgba(122,46,58,0.25)) !important;
+  border-color: var(--gold) !important;
+  animation: gachaShimmer 2.5s ease-in-out infinite;
+  position: relative;
+  overflow: hidden;
+}
+.hero-shortcut-gacha::after {
+  content: '';
+  position: absolute;
+  top: -50%; left: -20%; width: 30%; height: 200%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transform: skewX(-20deg);
+  animation: gachaSwipe 3s ease-in-out infinite;
+}
+@keyframes gachaShimmer {
+  0%, 100% { box-shadow: 0 0 8px rgba(212,175,55,0.3); }
+  50% { box-shadow: 0 0 18px rgba(212,175,55,0.6); }
+}
+@keyframes gachaSwipe {
+  0% { left: -20%; }
+  100% { left: 120%; }
+}
