@@ -7413,20 +7413,162 @@
         story:'王子が星に帰るための、やさしい毒。' },
     ];
     let princeGroup = null;
+    // 👑 王子様の3Dフィギュア（小さな可愛らしいシルエット）
+    function buildLittlePrince() {
+      const p = new THREE.Group();
+      // 髪（金色のツンツン）
+      const hair = new THREE.Mesh(
+        new THREE.ConeGeometry(0.1, 0.14, 10),
+        new THREE.MeshStandardMaterial({ color: 0xffd860, roughness: 0.4, emissive: 0x6a4000, emissiveIntensity: 0.25 })
+      );
+      hair.position.y = 0.35;
+      p.add(hair);
+      // 顔
+      const face = new THREE.Mesh(
+        new THREE.SphereGeometry(0.08, 16, 12),
+        new THREE.MeshStandardMaterial({ color: 0xf8d8b0, roughness: 0.6, emissive: 0x302018, emissiveIntensity: 0.2 })
+      );
+      face.position.y = 0.25;
+      p.add(face);
+      // マフラー（黄色）
+      const scarf = new THREE.Mesh(
+        new THREE.TorusGeometry(0.09, 0.03, 8, 14),
+        new THREE.MeshStandardMaterial({ color: 0xffe040, roughness: 0.4, emissive: 0x5a3a00, emissiveIntensity: 0.2 })
+      );
+      scarf.position.y = 0.17;
+      scarf.rotation.x = Math.PI / 2;
+      p.add(scarf);
+      // マフラーの尻尾（風になびく）
+      const scarfTail = new THREE.Mesh(
+        new THREE.BoxGeometry(0.04, 0.14, 0.02),
+        new THREE.MeshStandardMaterial({ color: 0xffe040, roughness: 0.4, emissive: 0x5a3a00, emissiveIntensity: 0.2 })
+      );
+      scarfTail.position.set(0.06, 0.11, -0.06);
+      scarfTail.rotation.z = 0.4;
+      p.add(scarfTail);
+      // 胴体（緑のロングコート）
+      const body = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.09, 0.13, 0.26, 14),
+        new THREE.MeshStandardMaterial({ color: 0x3a7a4a, roughness: 0.5, emissive: 0x0a1a12, emissiveIntensity: 0.15 })
+      );
+      body.position.y = 0.02;
+      p.add(body);
+      // 腕
+      [-1, 1].forEach(side => {
+        const arm = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.022, 0.022, 0.18, 8),
+          new THREE.MeshStandardMaterial({ color: 0x3a7a4a, roughness: 0.5 })
+        );
+        arm.position.set(side * 0.10, 0.04, 0);
+        arm.rotation.z = side * 0.25;
+        p.add(arm);
+      });
+      // 足
+      [-1, 1].forEach(side => {
+        const leg = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.03, 0.035, 0.14, 8),
+          new THREE.MeshStandardMaterial({ color: 0x5a3a20, roughness: 0.6 })
+        );
+        leg.position.set(side * 0.04, -0.17, 0);
+        p.add(leg);
+      });
+      p.scale.setScalar(1.3);
+      return p;
+    }
+    // 🌹 バラの3Dフィギュア
+    function buildRose() {
+      const r = new THREE.Group();
+      // 茎
+      const stem = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.015, 0.02, 0.3, 8),
+        new THREE.MeshStandardMaterial({ color: 0x2a6a3a, roughness: 0.5 })
+      );
+      r.add(stem);
+      // 花
+      const rose = new THREE.Mesh(
+        new THREE.SphereGeometry(0.08, 14, 10),
+        new THREE.MeshStandardMaterial({ color: 0xff3060, roughness: 0.45, emissive: 0x4a0818, emissiveIntensity: 0.3 })
+      );
+      rose.position.y = 0.17;
+      rose.scale.set(1, 0.95, 1);
+      r.add(rose);
+      // 葉（3枚）
+      [0, 120, 240].forEach(deg => {
+        const leaf = new THREE.Mesh(
+          new THREE.SphereGeometry(0.05, 8, 6),
+          new THREE.MeshStandardMaterial({ color: 0x3a8a4a, roughness: 0.55 })
+        );
+        leaf.position.set(Math.cos(deg * Math.PI / 180) * 0.06, 0.05, Math.sin(deg * Math.PI / 180) * 0.06);
+        leaf.scale.set(1.2, 0.3, 0.6);
+        r.add(leaf);
+      });
+      return r;
+    }
+    // 🦊 キツネの3Dフィギュア
+    function buildFoxFigure() {
+      const f = new THREE.Group();
+      const body = new THREE.Mesh(
+        new THREE.SphereGeometry(0.14, 16, 12),
+        new THREE.MeshStandardMaterial({ color: 0xe87030, roughness: 0.5, emissive: 0x3a1004, emissiveIntensity: 0.2 })
+      );
+      body.scale.set(1.5, 0.9, 1);
+      f.add(body);
+      // 頭
+      const head = new THREE.Mesh(
+        new THREE.SphereGeometry(0.1, 14, 10),
+        new THREE.MeshStandardMaterial({ color: 0xe87030, roughness: 0.5 })
+      );
+      head.position.set(0.18, 0.05, 0);
+      head.scale.set(1.1, 0.9, 0.9);
+      f.add(head);
+      // 鼻（黒い尖り）
+      const snout = new THREE.Mesh(
+        new THREE.ConeGeometry(0.04, 0.08, 8),
+        new THREE.MeshStandardMaterial({ color: 0x202020, roughness: 0.8 })
+      );
+      snout.position.set(0.28, 0.03, 0);
+      snout.rotation.z = -Math.PI / 2;
+      f.add(snout);
+      // 耳（三角、白い内側）
+      [-1, 1].forEach(side => {
+        const ear = new THREE.Mesh(
+          new THREE.ConeGeometry(0.04, 0.08, 8),
+          new THREE.MeshStandardMaterial({ color: 0xe87030, roughness: 0.5 })
+        );
+        ear.position.set(0.16, 0.14, side * 0.06);
+        f.add(ear);
+      });
+      // 尻尾（長い、白い先端）
+      const tail = new THREE.Mesh(
+        new THREE.ConeGeometry(0.06, 0.24, 10),
+        new THREE.MeshStandardMaterial({ color: 0xe87030, roughness: 0.5 })
+      );
+      tail.position.set(-0.2, 0.08, 0);
+      tail.rotation.z = -1.2;
+      f.add(tail);
+      const tailTip = new THREE.Mesh(
+        new THREE.SphereGeometry(0.05, 10, 8),
+        new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.4 })
+      );
+      tailTip.position.set(-0.28, 0.18, 0);
+      f.add(tailTip);
+      return f;
+    }
+
     function buildPrinceGroup() {
       if (princeGroup) return princeGroup;
       const g = new THREE.Group();
       g.visible = false;
+      const princeTargets = {}; // id → { planet, prince?, rose?, fox? }
       PRINCE_DATA.forEach((d, i) => {
         const n = PRINCE_DATA.length;
         const angle = (i / n) * Math.PI * 2;
         const r = 14 + Math.sin(i * 1.7) * 4;
         const y = Math.cos(i * 0.9) * 3;
-        // procedural texture with color + emoji
+        // procedural texture
         const sc = document.createElement('canvas'); sc.width = 256; sc.height = 256;
         const ctx2 = sc.getContext('2d');
         ctx2.fillStyle = d.color; ctx2.fillRect(0, 0, 256, 256);
-        // soft cloud details
         for (let j = 0; j < 30; j++) {
           const x = Math.random()*256, yy = Math.random()*256, rr = 15+Math.random()*40;
           const grd = ctx2.createRadialGradient(x, yy, 0, x, yy, rr);
@@ -7435,7 +7577,6 @@
           ctx2.fillStyle = grd;
           ctx2.beginPath(); ctx2.arc(x, yy, rr, 0, Math.PI*2); ctx2.fill();
         }
-        // emoji centered
         ctx2.font = '120px serif';
         ctx2.textAlign = 'center'; ctx2.textBaseline = 'middle';
         ctx2.fillStyle = 'rgba(0,0,0,0.22)';
@@ -7451,15 +7592,43 @@
         sphere.position.set(Math.cos(angle) * r, y, Math.sin(angle) * r);
         sphere.userData = d;
         g.add(sphere);
+        princeTargets[d.id] = { planet: sphere };
         // subtle glow
         const glowMat = new THREE.SpriteMaterial({ map: softDotTex, color: d.color, transparent: true, opacity: 0.5, depthWrite: false, blending: THREE.AdditiveBlending });
         const glow = new THREE.Sprite(glowMat);
         glow.scale.set(d.size * 4, d.size * 4, 1);
         glow.position.copy(sphere.position);
         g.add(glow);
+
+        // ✨ 特別キャラ配置
+        if (d.id === 'b612') {
+          // 王子様を B-612 の上に立たせる
+          const prince = buildLittlePrince();
+          prince.position.copy(sphere.position);
+          prince.position.y += d.size + 0.02; // 地面に立つ
+          sphere.userData.prince = prince;
+          g.add(prince);
+          princeTargets.b612.prince = prince;
+          // バラを隣に
+          const rose = buildRose();
+          rose.position.copy(sphere.position);
+          rose.position.y += d.size - 0.02;
+          rose.position.x += 0.35;
+          rose.rotation.z = -0.15;
+          g.add(rose);
+          princeTargets.b612.rose = rose;
+        }
+        if (d.id === 'fox') {
+          const fox = buildFoxFigure();
+          fox.position.copy(sphere.position);
+          fox.position.y += d.size + 0.02;
+          g.add(fox);
+          princeTargets.fox.fox = fox;
+        }
       });
       scene.add(g);
       princeGroup = g;
+      princeGroup.userData.targets = princeTargets;
       return g;
     }
     function togglePrinceMode(on) {
@@ -7483,19 +7652,67 @@
       const hits = raycaster.intersectObjects(princeGroup.children.filter(c => c.isMesh), false);
       return hits[0] || null;
     }
+    // 🌹 王子様ワールド: タップすると星の近くに降り立ち、キャラと対話
+    let princeDiveTarget = null;
     renderer.domElement.addEventListener('click', (e) => {
       const h = pickPrinceHit(e);
       if (!h) return;
       const d = h.object.userData;
+      // 星へ「ダイブ」— カメラが近づく
+      princeDiveTarget = h.object;
+      // 情報パネルにキャラ固有のダイアログ
       const infoEl = ov.querySelector('#cosmosInfoContent');
       const panel = ov.querySelector('#cosmosInfoPanel');
       if (!infoEl || !panel) return;
+      // 特別な場面はセリフを足す
+      let extra = '';
+      if (d.id === 'b612') {
+        extra = `
+          <div class="prince-dialog">
+            <div class="pd-line"><b>王子</b>：「ぼくは、きみのバラを世界一特別にしたんだ」</div>
+            <div class="pd-line"><b>バラ</b>：「行ってらっしゃい…　ずっと待ってるわ」</div>
+          </div>
+          <button class="prince-return" id="princeReturn">↩ 宇宙に戻る</button>
+        `;
+      } else if (d.id === 'fox') {
+        extra = `
+          <div class="prince-dialog">
+            <div class="pd-line"><b>王子</b>：「きみはぼくに何なの？」</div>
+            <div class="pd-line"><b>キツネ</b>：「まだ僕にとって、きみはあまたの少年の一人に過ぎない。でも — 飼いならしてくれたら、僕たちは互いになくてはならない存在になる」</div>
+            <div class="pd-line pd-key">「心で見なくちゃ、ものごとはよく見えない。肝心なことは、目に見えないんだよ」</div>
+          </div>
+          <button class="prince-return" id="princeReturn">↩ 宇宙に戻る</button>
+        `;
+      } else if (d.id === 'snake') {
+        extra = `
+          <div class="prince-dialog">
+            <div class="pd-line"><b>ヘビ</b>：「ぼくが触れたものは、ぼくが触れる前にいた場所に戻る」</div>
+            <div class="pd-line">「きみの星は、遠すぎる。歩いては帰れない」</div>
+          </div>
+          <button class="prince-return" id="princeReturn">↩ 宇宙に戻る</button>
+        `;
+      } else if (d.id === 'rose') {
+        extra = `
+          <div class="prince-dialog">
+            <div class="pd-line"><b>バラ</b>：「私があなたにとって特別なのは、あなたが私に費やした時間のせいよ」</div>
+          </div>
+          <button class="prince-return" id="princeReturn">↩ 宇宙に戻る</button>
+        `;
+      } else {
+        extra = `<button class="prince-return" id="princeReturn">↩ 宇宙に戻る</button>`;
+      }
       infoEl.innerHTML = `
         <div class="cosmos-info-name">${d.emoji} ${d.name}</div>
         <div class="cosmos-info-sub">${d.role}</div>
         <div class="cosmos-info-trivia">${d.story}</div>
+        ${extra}
       `;
       panel.classList.add('show');
+      const ret = infoEl.querySelector('#princeReturn');
+      if (ret) ret.addEventListener('click', () => {
+        princeDiveTarget = null;
+        panel.classList.remove('show');
+      });
     });
 
     // ============================================================
@@ -9175,9 +9392,44 @@
           princeGroup.children.forEach((c, i) => {
             if (c.isMesh) {
               c.rotation.y += 0.008 + (i % 5) * 0.001;
-              c.position.y += Math.sin(universeTime * 0.8 + i) * 0.003;
             }
           });
+          // 王子・バラ・キツネのアニメ
+          const t = princeGroup.userData.targets;
+          if (t) {
+            if (t.b612 && t.b612.prince) {
+              // 王子様を B-612 の上で揺らす
+              const p = t.b612.planet;
+              const d = PRINCE_DATA.find(x => x.id === 'b612');
+              t.b612.prince.position.set(p.position.x, p.position.y + d.size + 0.02 + Math.sin(universeTime * 0.8) * 0.01, p.position.z);
+              t.b612.prince.rotation.y += 0.003;
+            }
+            if (t.b612 && t.b612.rose) {
+              const p = t.b612.planet;
+              const d = PRINCE_DATA.find(x => x.id === 'b612');
+              t.b612.rose.position.set(p.position.x + 0.35, p.position.y + d.size - 0.02, p.position.z);
+              t.b612.rose.rotation.z = -0.15 + Math.sin(universeTime * 0.6) * 0.04;
+            }
+            if (t.fox && t.fox.fox) {
+              const p = t.fox.planet;
+              const d = PRINCE_DATA.find(x => x.id === 'fox');
+              t.fox.fox.position.set(p.position.x, p.position.y + d.size + 0.02, p.position.z);
+              t.fox.fox.rotation.y += 0.005;
+              // 尻尾振り風に上下
+              t.fox.fox.position.y += Math.sin(universeTime * 2) * 0.008;
+            }
+          }
+          // 🌌 ダイブ: princeDiveTarget に向かってカメラを寄せる
+          if (princeDiveTarget) {
+            const tp = princeDiveTarget.position;
+            const lerp = 0.05;
+            const offset = new THREE.Vector3(0, 0.8, 2.5);
+            camera.position.x += (tp.x + offset.x - camera.position.x) * lerp;
+            camera.position.y += (tp.y + offset.y - camera.position.y) * lerp;
+            camera.position.z += (tp.z + offset.z - camera.position.z) * lerp;
+            camera.lookAt(tp);
+            cameraZoomTarget = null; // 既存のズーム停止
+          }
         }
         // 🌌 軌道トレイル更新
         if (modes.trails) {

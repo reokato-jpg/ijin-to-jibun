@@ -4789,6 +4789,56 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
 .tale-prev:not(:disabled):hover { background: rgba(80,60,100,0.7); }
 .tale-next:hover { background: linear-gradient(135deg, #d09050, #904525); }
 
+/* 🌹 王子様ダイアログ */
+.prince-dialog {
+  margin: 14px 0;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, rgba(80,50,130,0.25), rgba(40,25,70,0.25));
+  border-left: 3px solid #ffd880;
+  border-radius: 0 10px 10px 0;
+  font-family: 'Shippori Mincho', serif;
+}
+.pd-line {
+  font-size: 13px;
+  line-height: 1.9;
+  color: #f0e8d8;
+  margin-bottom: 8px;
+}
+.pd-line b {
+  color: #ffd880;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin-right: 6px;
+}
+.pd-line.pd-key {
+  margin-top: 10px;
+  padding: 10px;
+  background: rgba(255,216,128,0.1);
+  border: 1px dashed rgba(255,216,128,0.5);
+  border-radius: 6px;
+  color: #ffe8a8;
+  font-style: italic;
+  text-align: center;
+  font-size: 13px;
+}
+.prince-return {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px;
+  background: rgba(40,25,80,0.7);
+  border: 1px solid rgba(220,200,255,0.4);
+  border-radius: 999px;
+  color: #ffd880;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  font-family: 'Shippori Mincho', serif;
+  transition: background 0.15s;
+}
+.prince-return:hover { background: rgba(100,80,180,0.5); }
+
 /* 🎓 担い手たち（研究者・創造者のギャラリー） */
 .keepers-group { margin-bottom: 28px; }
 .keepers-group-title {
