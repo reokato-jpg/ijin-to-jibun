@@ -3689,8 +3689,9 @@
 
     const THREE = window.THREE;
     const W = window.innerWidth, H = window.innerHeight;
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+    // モバイル優先：pixelRatioを1.3でキャップ（描画負荷を約40%削減）
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.3));
     renderer.setSize(W, H);
     // Cygamesリスペクト：HDR風トーンマッピング + sRGB出力
     if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -3841,7 +3842,7 @@
       }
       return new THREE.CanvasTexture(sc);
     })();
-    const mwGeo = new THREE.CylinderGeometry(420, 420, 120, 96, 1, true);
+    const mwGeo = new THREE.CylinderGeometry(420, 420, 120, 40, 1, true);
     const mwMat = new THREE.MeshBasicMaterial({
       map: mwGlowTex, transparent: true, opacity: 0.0,
       side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending,
@@ -4015,7 +4016,7 @@
       }
       return new THREE.CanvasTexture(sc);
     })();
-    const sunGeo = new THREE.SphereGeometry(3.5, 64, 48);
+    const sunGeo = new THREE.SphereGeometry(3.5, 32, 24);
     // ☀️ アニメーションするプラズマ表面シェーダ
     const sunMat = new THREE.ShaderMaterial({
       uniforms: {
@@ -4052,7 +4053,7 @@
     scene.add(sun);
 
     // 🔥 彩層（薄い赤いリング、太陽表面のすぐ外）
-    const chromoGeo = new THREE.SphereGeometry(3.58, 48, 32);
+    const chromoGeo = new THREE.SphereGeometry(3.58, 24, 16);
     const chromoMat = new THREE.ShaderMaterial({
       uniforms: { uTime: { value: 0 } },
       vertexShader: `
@@ -4086,7 +4087,7 @@
     scene.add(chromosphere);
 
     // 多層コロナ（内/外）
-    const coronaGeo1 = new THREE.SphereGeometry(4.2, 48, 32);
+    const coronaGeo1 = new THREE.SphereGeometry(4.2, 24, 16);
     const coronaMat1 = new THREE.ShaderMaterial({
       uniforms: { uTime: { value: 0 } },
       vertexShader: `
@@ -4115,7 +4116,7 @@
     const corona1 = new THREE.Mesh(coronaGeo1, coronaMat1);
     corona1.visible = false;
     scene.add(corona1);
-    const coronaGeo = new THREE.SphereGeometry(6.0, 48, 32);
+    const coronaGeo = new THREE.SphereGeometry(6.0, 24, 16);
     const coronaMat = new THREE.ShaderMaterial({
       uniforms: { uTime: { value: 0 } },
       vertexShader: `
@@ -4833,7 +4834,7 @@
       if (pm.planet.isBlackHole) return;
       const atmC = ATM_COLOR[pm.planet.name] || new THREE.Color(0xaaaaaa);
       // 大気フレネル発光シェル（やや大きい球、リムだけ光る）
-      const atmGeo = new THREE.SphereGeometry(pm.planet.size * 1.035, 32, 24);
+      const atmGeo = new THREE.SphereGeometry(pm.planet.size * 1.035, 20, 14);
       const atmMat = new THREE.ShaderMaterial({
         uniforms: { uColor: { value: atmC }, uPower: { value: pm.planet.name === '地球' ? 2.2 : 3.0 }, uIntensity: { value: pm.planet.name === '地球' ? 1.0 : 0.7 } },
         vertexShader: `
@@ -5812,7 +5813,7 @@
           sun.visible = true;
           corona.visible = true;
           corona1.visible = true;
-          chromosphere.visible = true;
+          // chromosphere 非表示（パフォーマンス対策で corona1 に統合）
           planetMeshes.forEach(pm => {
             pm.mesh.visible = true;
             if (pm.mesh.userData.moons) pm.mesh.userData.moons.forEach(m => m.mesh.visible = true);
