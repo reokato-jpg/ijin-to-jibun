@@ -13897,11 +13897,11 @@ h2 .ij-icon, h3 .ij-icon { vertical-align: -0.15em; margin-right: 4px; }
 /* 電源ボタンを指さすキャラアニメ（ラジオ）— N64 Cボタン並みタイト */
 .power-hint-anim {
   position: fixed;
-  right: 58px;
+  right: 54px;
   left: auto;
   bottom: 10px;
-  width: 44px !important;
-  height: 44px !important;
+  width: 38px !important;
+  height: 38px !important;
   width: 56px;
   height: 56px;
   z-index: 49;
