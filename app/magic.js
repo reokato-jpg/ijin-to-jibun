@@ -4917,6 +4917,10 @@
           img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Peter_Paul_Rubens_-_Cain_slaying_Abel,_1608-1609.jpg?width=700',
           caption: 'Peter Paul Rubens《アベルを殺すカイン》（1610）',
           body: 'アダムとイヴの子、兄カインは弟アベルを野で殺した。主は問われた — 「お前の弟アベルはどこにいるのか」\n\nカインは答えた — 「知りません。私は弟の番人なのですか」\n\n人類最初の殺人。' },
+        { t: '9. バベルの塔', scene3D: 'babel',
+          img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Pieter_Bruegel_the_Elder_-_The_Tower_of_Babel_(Vienna)_-_Google_Art_Project.jpg?width=700',
+          caption: 'Pieter Bruegel《バベルの塔》（1563）',
+          body: '人類は一つの言葉を話し、天に届く塔を建てようとした。「さあ、町を建てよう。頂を天に届かせ、名を高めよう」\n\n主は降りて来られた。そして言われた — 「彼らは一つの民で、同じ言葉を話している。これからは、望むことは何でもできるだろう。彼らの言葉を混乱させよう」\n\n塔は崩れ、人々は散った。以来、互いを理解できぬまま。' },
       ]
     },
     greek: {
@@ -5712,6 +5716,7 @@
       // 🎨 アクションボタン群
       const actions = [];
       if (c.scene3D === 'eden') actions.push(`<button class="tale-action tale-action-3d" data-act="eden3d">🌳 3Dで庭園に入る</button>`);
+      if (c.scene3D === 'babel') actions.push(`<button class="tale-action tale-action-babel" data-act="babel3d">🏛 バベルの塔を登る</button>`);
       if (c.img) actions.push(`<button class="tale-action tale-action-gallery" data-act="museum" data-src="${c.img}" data-caption="${c.caption || ''}">🖼 美術館で見る</button>`);
       const actionHTML = actions.length ? `<div class="tale-actions">${actions.join('')}</div>` : '';
       const bodyHTML = artHTML + actionHTML + '<div class="tale-chapter-text">' + c.body.replace(/\n/g, '<br>') + '</div>';
@@ -5727,6 +5732,7 @@
       ov.querySelectorAll('.tale-action').forEach(b => {
         b.addEventListener('click', () => {
           if (b.dataset.act === 'eden3d') openEden3D();
+          else if (b.dataset.act === 'babel3d') openBabel3D();
           else if (b.dataset.act === 'museum') openMuseum(b.dataset.src, b.dataset.caption);
         });
       });
@@ -7050,6 +7056,432 @@
     });
   }
   window.openEden3D = openEden3D;
+
+  // ============================================================
+  // 🏛 バベルの塔（3D・螺旋に登る）
+  // ============================================================
+  async function openBabel3D() {
+    if (!window.THREE) return;
+    const THREE = window.THREE;
+    const ov = document.createElement('div');
+    ov.className = 'babel3d-overlay';
+    ov.innerHTML = `
+      <button class="babel3d-close" aria-label="閉じる">×</button>
+      <div class="babel3d-stage" id="babel3dStage"></div>
+      <div class="babel3d-title">バベルの塔</div>
+      <div class="babel3d-sub">— 天に届こうとした、一つの言葉のうた —</div>
+      <div class="babel3d-hint" id="babel3dHint">
+        <div>ドラッグで視点を回す　／　ホイール・ピンチでズーム</div>
+        <div>タップで「言葉の混乱」を起こす</div>
+      </div>
+      <button class="babel3d-chaos" id="babel3dChaos">🌀 混乱を起こす</button>
+    `;
+    document.body.appendChild(ov);
+    requestAnimationFrame(() => ov.classList.add('open'));
+    let running = true;
+    ov.querySelector('.babel3d-close').addEventListener('click', () => {
+      running = false;
+      ov.classList.remove('open');
+      setTimeout(() => ov.remove(), 400);
+    });
+
+    const stage = ov.querySelector('#babel3dStage');
+    const W = () => stage.clientWidth || window.innerWidth;
+    const H = () => stage.clientHeight || window.innerHeight;
+    const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+    renderer.setSize(W(), H());
+    if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.1;
+    if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    stage.appendChild(renderer.domElement);
+    renderer.domElement.style.touchAction = 'none';
+
+    const scene = new THREE.Scene();
+    // 嵐の空（暗い青紫→遠くに黄土）
+    const skyTex = (() => {
+      const sc = document.createElement('canvas'); sc.width = 2048; sc.height = 1024;
+      const g = sc.getContext('2d');
+      const grd = g.createLinearGradient(0, 0, 0, 1024);
+      grd.addColorStop(0, '#181a30');
+      grd.addColorStop(0.4, '#3a2840');
+      grd.addColorStop(0.72, '#8a6a4a');
+      grd.addColorStop(1, '#d8a868');
+      g.fillStyle = grd; g.fillRect(0, 0, 2048, 1024);
+      // 暗い嵐雲
+      for (let i = 0; i < 28; i++) {
+        const x = Math.random() * 2048, y = 80 + Math.random() * 500;
+        const w = 150 + Math.random() * 300;
+        const grd2 = g.createRadialGradient(x, y, 0, x, y, w);
+        grd2.addColorStop(0, 'rgba(20,15,30,0.85)');
+        grd2.addColorStop(0.6, 'rgba(50,35,55,0.4)');
+        grd2.addColorStop(1, 'rgba(50,35,55,0)');
+        g.fillStyle = grd2;
+        g.beginPath(); g.ellipse(x, y, w, w * 0.4, 0, 0, Math.PI*2); g.fill();
+      }
+      // 雷の閃光跡（縦筋）
+      for (let i = 0; i < 5; i++) {
+        g.strokeStyle = `rgba(240,230,200,${0.15 + Math.random() * 0.2})`;
+        g.lineWidth = 1 + Math.random() * 2;
+        g.beginPath();
+        const x = Math.random() * 2048;
+        g.moveTo(x, 0);
+        let cy = 0;
+        while (cy < 500) {
+          cy += 20 + Math.random() * 30;
+          g.lineTo(x + (Math.random() - 0.5) * 40, cy);
+        }
+        g.stroke();
+      }
+      return new THREE.CanvasTexture(sc);
+    })();
+    scene.background = skyTex;
+    scene.fog = new THREE.Fog(0x3a2838, 40, 250);
+
+    // 環境光・主光源
+    scene.add(new THREE.AmbientLight(0x403040, 0.4));
+    const hemi = new THREE.HemisphereLight(0xe0c888, 0x4a3828, 0.6);
+    scene.add(hemi);
+    const sunLight = new THREE.DirectionalLight(0xffdca0, 1.4);
+    sunLight.position.set(-30, 50, 20);
+    sunLight.castShadow = true;
+    sunLight.shadow.mapSize.set(1024, 1024);
+    sunLight.shadow.camera.near = 1;
+    sunLight.shadow.camera.far = 200;
+    sunLight.shadow.camera.left = -40; sunLight.shadow.camera.right = 40;
+    sunLight.shadow.camera.top = 60; sunLight.shadow.camera.bottom = -20;
+    sunLight.shadow.bias = -0.0005;
+    sunLight.shadow.radius = 2;
+    scene.add(sunLight);
+    // 雷用のフラッシュ光（通常はオフ）
+    const flashLight = new THREE.DirectionalLight(0xfffff0, 0);
+    flashLight.position.set(10, 100, -10);
+    scene.add(flashLight);
+
+    // === レンガテクスチャ（ziggurat の石肌） ===
+    const brickTex = (() => {
+      const c = document.createElement('canvas'); c.width = 512; c.height = 256;
+      const g = c.getContext('2d');
+      const grd = g.createLinearGradient(0, 0, 0, 256);
+      grd.addColorStop(0, '#b89068'); grd.addColorStop(0.5, '#8a6a48'); grd.addColorStop(1, '#5a4228');
+      g.fillStyle = grd; g.fillRect(0, 0, 512, 256);
+      // レンガパターン
+      const bw = 56, bh = 22;
+      for (let y = 0; y < 256; y += bh) {
+        const off = (Math.floor(y / bh) % 2) * (bw / 2);
+        for (let x = -bw; x < 512; x += bw) {
+          g.fillStyle = `rgba(${90+Math.random()*60},${70+Math.random()*40},${40+Math.random()*30},1)`;
+          g.fillRect(x + off + 1, y + 1, bw - 2, bh - 2);
+          // 影
+          g.fillStyle = 'rgba(0,0,0,0.2)';
+          g.fillRect(x + off, y + bh - 2, bw, 2);
+          g.fillRect(x + off + bw - 2, y, 2, bh);
+        }
+      }
+      // 風化の汚れ
+      for (let i = 0; i < 200; i++) {
+        g.fillStyle = `rgba(40,28,15,${0.2 + Math.random() * 0.3})`;
+        g.fillRect(Math.random() * 512, Math.random() * 256, 2 + Math.random() * 8, 1 + Math.random() * 3);
+      }
+      const t = new THREE.CanvasTexture(c);
+      t.wrapS = t.wrapT = THREE.RepeatWrapping;
+      return t;
+    })();
+    const brickMat = new THREE.MeshStandardMaterial({ map: brickTex, roughness: 0.9, color: 0xe8d8b8 });
+
+    // 🏛 塔本体：多段 ziggurat （下から上へ細く、10段）
+    const STAGES = 10;
+    const baseRadius = 18;
+    const topRadius = 3.5;
+    const stageHeight = 3.2;
+    const tower = new THREE.Group();
+    const stageMeshes = [];
+    for (let i = 0; i < STAGES; i++) {
+      const t = i / (STAGES - 1);
+      const rBottom = baseRadius - (baseRadius - topRadius) * (i / STAGES);
+      const rTop = baseRadius - (baseRadius - topRadius) * ((i + 1) / STAGES);
+      // メインシリンダー
+      const stage = new THREE.Mesh(
+        new THREE.CylinderGeometry(rTop, rBottom, stageHeight, 36, 1, false),
+        brickMat
+      );
+      stage.position.y = i * stageHeight + stageHeight / 2;
+      stage.castShadow = true;
+      stage.receiveShadow = true;
+      tower.add(stage);
+      // テラス（各段の頂上にリング状の歩道 — 見栄え向上）
+      const terrace = new THREE.Mesh(
+        new THREE.TorusGeometry(rTop + 0.1, 0.25, 8, 36),
+        new THREE.MeshStandardMaterial({ color: 0x6a4a28, roughness: 0.8 })
+      );
+      terrace.rotation.x = Math.PI / 2;
+      terrace.position.y = (i + 1) * stageHeight - 0.1;
+      tower.add(terrace);
+      stageMeshes.push({ stage, y: i * stageHeight, r: (rBottom + rTop) / 2 });
+    }
+
+    // 🌀 螺旋スロープ（塔に巻きつく）
+    const spiralCurve = new THREE.CatmullRomCurve3(
+      Array.from({length: 120}).map((_, i) => {
+        const t = i / 119;
+        const y = 0.2 + t * (STAGES * stageHeight - 1);
+        const r = baseRadius - (baseRadius - topRadius) * t - 0.3; // 壁から少し離す
+        const a = t * Math.PI * 8; // 4周回
+        return new THREE.Vector3(Math.cos(a) * r, y, Math.sin(a) * r);
+      })
+    );
+    const ramp = new THREE.Mesh(
+      new THREE.TubeGeometry(spiralCurve, 200, 0.6, 8, false),
+      new THREE.MeshStandardMaterial({ color: 0x7a5a38, roughness: 0.9 })
+    );
+    ramp.castShadow = true;
+    tower.add(ramp);
+
+    // 塔頂上（未完成の足場）
+    const topY = STAGES * stageHeight;
+    const topPlatform = new THREE.Mesh(
+      new THREE.CylinderGeometry(topRadius, topRadius, 0.8, 36),
+      brickMat
+    );
+    topPlatform.position.y = topY + 0.4;
+    topPlatform.castShadow = true;
+    topPlatform.receiveShadow = true;
+    tower.add(topPlatform);
+    // 足場の木材（建設途中）
+    for (let i = 0; i < 8; i++) {
+      const a = (i / 8) * Math.PI * 2;
+      const scaffold = new THREE.Mesh(
+        new THREE.BoxGeometry(0.15, 4, 0.15),
+        new THREE.MeshStandardMaterial({ color: 0x5a3a18, roughness: 0.9 })
+      );
+      scaffold.position.set(Math.cos(a) * (topRadius + 0.2), topY + 2.8, Math.sin(a) * (topRadius + 0.2));
+      scaffold.castShadow = true;
+      tower.add(scaffold);
+    }
+    // 水平の足場
+    for (let k = 0; k < 3; k++) {
+      const hRing = new THREE.Mesh(
+        new THREE.TorusGeometry(topRadius + 0.25, 0.06, 6, 24),
+        new THREE.MeshStandardMaterial({ color: 0x5a3a18, roughness: 0.9 })
+      );
+      hRing.rotation.x = Math.PI / 2;
+      hRing.position.y = topY + 1.5 + k * 1.2;
+      tower.add(hRing);
+    }
+    // 建設中ブロック（散乱）
+    for (let i = 0; i < 6; i++) {
+      const a = (i / 6) * Math.PI * 2;
+      const block = new THREE.Mesh(
+        new THREE.BoxGeometry(0.5, 0.3, 0.35),
+        brickMat
+      );
+      block.position.set(Math.cos(a) * topRadius * 0.6, topY + 0.9, Math.sin(a) * topRadius * 0.6);
+      block.rotation.y = Math.random() * Math.PI;
+      block.castShadow = true;
+      tower.add(block);
+    }
+    scene.add(tower);
+
+    // 地面（砂漠・荒野）
+    const groundTex = (() => {
+      const sc = document.createElement('canvas'); sc.width = 512; sc.height = 512;
+      const g = sc.getContext('2d');
+      const grd = g.createLinearGradient(0, 0, 0, 512);
+      grd.addColorStop(0, '#c8a070'); grd.addColorStop(1, '#8a6a48');
+      g.fillStyle = grd; g.fillRect(0, 0, 512, 512);
+      for (let i = 0; i < 2000; i++) {
+        g.fillStyle = `rgba(${140+Math.random()*50},${100+Math.random()*40},${60+Math.random()*30},${0.2+Math.random()*0.3})`;
+        g.fillRect(Math.random() * 512, Math.random() * 512, 1 + Math.random() * 2, 1 + Math.random() * 2);
+      }
+      // 乾いた亀裂
+      for (let i = 0; i < 30; i++) {
+        g.strokeStyle = 'rgba(60,40,20,0.5)'; g.lineWidth = 0.8;
+        g.beginPath();
+        let x = Math.random() * 512, y = Math.random() * 512;
+        g.moveTo(x, y);
+        for (let k = 0; k < 10; k++) {
+          x += (Math.random() - 0.5) * 40;
+          y += (Math.random() - 0.5) * 40;
+          g.lineTo(x, y);
+        }
+        g.stroke();
+      }
+      const t = new THREE.CanvasTexture(sc);
+      t.wrapS = t.wrapT = THREE.RepeatWrapping;
+      t.repeat.set(20, 20);
+      return t;
+    })();
+    const ground = new THREE.Mesh(
+      new THREE.CircleGeometry(200, 48),
+      new THREE.MeshStandardMaterial({ map: groundTex, roughness: 1.0 })
+    );
+    ground.rotation.x = -Math.PI / 2;
+    ground.receiveShadow = true;
+    scene.add(ground);
+
+    // 周囲の遠い丘（砂漠の地平）
+    for (let i = 0; i < 8; i++) {
+      const a = (i / 8) * Math.PI * 2 + Math.random() * 0.2;
+      const r = 120 + Math.random() * 40;
+      const h = 4 + Math.random() * 6;
+      const hill = new THREE.Mesh(
+        new THREE.SphereGeometry(16, 18, 10),
+        new THREE.MeshStandardMaterial({ color: 0x8a6040, roughness: 1.0 })
+      );
+      hill.position.set(Math.cos(a) * r, -4, Math.sin(a) * r);
+      hill.scale.set(1, h / 16, 1);
+      scene.add(hill);
+    }
+
+    // 📜 塔の周りを飛ぶ「言葉の断片」— 混乱を起こすとバラバラに
+    const WORDS = ['א', 'ב', 'ג', '言', '愛', 'A', 'Я', '𒀀', '𓀀', 'Ω', '王', '神', '天', 'तौ', 'ⴰ'];
+    const wordSprites = [];
+    for (let i = 0; i < 36; i++) {
+      const cvs = document.createElement('canvas'); cvs.width = 64; cvs.height = 64;
+      const g = cvs.getContext('2d');
+      g.fillStyle = 'rgba(0,0,0,0)'; g.fillRect(0, 0, 64, 64);
+      g.fillStyle = '#ffe890';
+      g.font = 'bold 36px serif';
+      g.textAlign = 'center'; g.textBaseline = 'middle';
+      g.shadowColor = 'rgba(255,220,120,0.9)';
+      g.shadowBlur = 10;
+      g.fillText(WORDS[i % WORDS.length], 32, 34);
+      const tex = new THREE.CanvasTexture(cvs);
+      const spr = new THREE.Sprite(new THREE.SpriteMaterial({
+        map: tex, transparent: true, opacity: 0.85,
+        blending: THREE.AdditiveBlending, depthWrite: false,
+      }));
+      const a = Math.random() * Math.PI * 2;
+      const r = 8 + Math.random() * 14;
+      const y = 2 + Math.random() * (STAGES * stageHeight - 3);
+      spr.position.set(Math.cos(a) * r, y, Math.sin(a) * r);
+      spr.scale.set(1.2, 1.2, 1);
+      spr.userData = {
+        baseR: r, baseA: a, baseY: y,
+        phase: Math.random() * Math.PI * 2,
+        chaos: 0, // 0:秩序、1:混乱
+        vx: 0, vy: 0, vz: 0,
+      };
+      wordSprites.push(spr);
+      scene.add(spr);
+    }
+
+    // カメラ
+    const camera = new THREE.PerspectiveCamera(50, W()/H(), 0.1, 500);
+    camera.position.set(0, 20, 55);
+    camera.lookAt(0, topY / 2, 0);
+
+    // 操作
+    let dragging = false, lastX = 0, lastY = 0;
+    let camAngle = 0, camTilt = 0.3, camDist = 55;
+    let lookY = topY / 2;
+    renderer.domElement.addEventListener('pointerdown', e => { dragging = true; lastX = e.clientX; lastY = e.clientY; });
+    renderer.domElement.addEventListener('pointermove', e => {
+      if (!dragging) return;
+      camAngle -= (e.clientX - lastX) * 0.006;
+      camTilt = Math.max(-0.1, Math.min(1.0, camTilt + (e.clientY - lastY) * 0.005));
+      lastX = e.clientX; lastY = e.clientY;
+    });
+    renderer.domElement.addEventListener('pointerup', () => dragging = false);
+    renderer.domElement.addEventListener('pointerleave', () => dragging = false);
+    renderer.domElement.addEventListener('wheel', e => {
+      e.preventDefault();
+      camDist = Math.max(15, Math.min(120, camDist + e.deltaY * 0.06));
+    }, { passive: false });
+    // ピンチ
+    let pinchBase = 0, pinchBaseDist = 55;
+    renderer.domElement.addEventListener('touchstart', e => {
+      if (e.touches.length === 2) {
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        pinchBase = Math.hypot(dx, dy);
+        pinchBaseDist = camDist;
+      }
+    });
+    renderer.domElement.addEventListener('touchmove', e => {
+      if (e.touches.length === 2 && pinchBase > 0) {
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        const d = Math.hypot(dx, dy);
+        camDist = Math.max(15, Math.min(120, pinchBaseDist * pinchBase / d));
+      }
+    });
+
+    // 🌀 混乱を起こす！
+    let chaosTrigger = 0; // 0〜1
+    ov.querySelector('#babel3dChaos').addEventListener('click', () => {
+      chaosTrigger = 1;
+      // 雷閃光
+      flashLight.intensity = 4;
+      setTimeout(() => { flashLight.intensity = 0; }, 150);
+      setTimeout(() => { flashLight.intensity = 3; }, 300);
+      setTimeout(() => { flashLight.intensity = 0; }, 450);
+      // 言葉にランダム速度
+      wordSprites.forEach(s => {
+        s.userData.vx = (Math.random() - 0.5) * 0.3;
+        s.userData.vy = (Math.random() - 0.5) * 0.3;
+        s.userData.vz = (Math.random() - 0.5) * 0.3;
+        s.userData.chaos = 1;
+      });
+      // メッセージ
+      const msg = document.createElement('div');
+      msg.className = 'babel-confusion-msg';
+      msg.innerHTML = `<div class="bcm-inner">
+        <div class="bcm-super">— 言葉が混ざり合った —</div>
+        <div class="bcm-title">ただ一つの言葉は、散った</div>
+        <div class="bcm-body">天に届こうとした塔。<br>
+          人々は互いを理解できなくなり、世界中へ散っていった。</div>
+      </div>`;
+      ov.appendChild(msg);
+      requestAnimationFrame(() => msg.classList.add('show'));
+      setTimeout(() => { msg.classList.remove('show'); setTimeout(() => msg.remove(), 500); }, 5000);
+    });
+
+    // アニメ
+    let t = 0;
+    function animate() {
+      if (!running) return;
+      t += 0.016;
+      // ドラッグ無い時は自動旋回
+      if (!dragging) camAngle += 0.0015;
+      camera.position.x = Math.cos(camAngle) * camDist;
+      camera.position.z = Math.sin(camAngle) * camDist;
+      camera.position.y = 10 + camTilt * 25;
+      lookY += ((topY / 2) - lookY) * 0.02;
+      camera.lookAt(0, lookY, 0);
+      // 言葉の更新
+      wordSprites.forEach(s => {
+        s.userData.phase += 0.015;
+        if (s.userData.chaos > 0) {
+          // 混乱モード：飛散
+          s.position.x += s.userData.vx;
+          s.position.y += s.userData.vy;
+          s.position.z += s.userData.vz;
+          s.userData.vy -= 0.003; // 少し落下
+          s.material.opacity = Math.max(0, s.material.opacity - 0.002);
+        } else {
+          // 秩序モード：塔を周回
+          const a = s.userData.baseA + t * 0.1;
+          s.position.x = Math.cos(a) * s.userData.baseR + Math.sin(s.userData.phase) * 0.5;
+          s.position.y = s.userData.baseY + Math.cos(s.userData.phase * 0.7) * 0.4;
+          s.position.z = Math.sin(a) * s.userData.baseR + Math.cos(s.userData.phase) * 0.5;
+        }
+      });
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      renderer.setSize(W(), H());
+      camera.aspect = W()/H();
+      camera.updateProjectionMatrix();
+    });
+    setTimeout(() => ov.querySelector('#babel3dHint')?.classList.add('fade'), 5000);
+  }
+  window.openBabel3D = openBabel3D;
 
   // ============================================================
   // 🖼 美術館モード（タップした絵画を3D展示室で大画面で見る）
