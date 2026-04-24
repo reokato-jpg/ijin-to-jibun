@@ -6031,9 +6031,9 @@
       composer.addPass(new ADDONS.RenderPass(scene, camera));
       const bloomPass = new ADDONS.UnrealBloomPass(
         new THREE.Vector2(W, H),
-        0.85, // strength
-        0.8,  // radius
-        0.25  // threshold
+        0.45, // strength (下げて画面が白飛びしないように)
+        0.6,  // radius
+        0.55  // threshold (上げてbloomする範囲を絞る)
       );
       composer.addPass(bloomPass);
       // カラーグレード（Vignette/Chromatic/Grain）を ShaderPass で追加
@@ -7133,8 +7133,9 @@
         sunDirection: new THREE.Vector3(0.3, 1.0, -0.2).normalize(),
         sunColor: 0xffeacc,
         waterColor: 0x5090b0,
-        distortionScale: 3.2,
-        fog: scene.fog !== undefined,
+        distortionScale: 2.0,
+        alpha: 0.85,
+        fog: false,
       });
       waterSurface.rotation.x = -Math.PI / 2;
       waterSurface.position.y = -0.12;
@@ -8029,6 +8030,198 @@
     tower.rotation.z = 0.035;
     scene.add(tower);
 
+    // ===== リアリズム増強パック =====
+
+    // 🔥 松明（各テラスに複数、PointLight付き／Bloomで発光）
+    const torchLights = [];
+    stageMeshes.forEach((sm, si) => {
+      const count = Math.max(3, Math.floor(sm.r / 2));
+      for (let k = 0; k < count; k++) {
+        const a = (k / count) * Math.PI * 2 + si * 0.3;
+        const px = Math.cos(a) * (sm.r - 0.3);
+        const pz = Math.sin(a) * (sm.r - 0.3);
+        // 棒
+        const pole = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.04, 0.05, 0.8, 6),
+          new THREE.MeshStandardMaterial({ color: 0x3a2210, roughness: 0.9 })
+        );
+        pole.position.set(px, sm.yTop + 0.4, pz);
+        pole.castShadow = true;
+        tower.add(pole);
+        // 炎（emissive球 + sprite halo）
+        const flame = new THREE.Mesh(
+          new THREE.SphereGeometry(0.12, 10, 8),
+          new THREE.MeshBasicMaterial({ color: 0xffc060 })
+        );
+        flame.position.set(px, sm.yTop + 0.85, pz);
+        tower.add(flame);
+        const halo = new THREE.Sprite(new THREE.SpriteMaterial({
+          map: (() => {
+            const c = document.createElement('canvas'); c.width = 64; c.height = 64;
+            const g = c.getContext('2d');
+            const grd = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+            grd.addColorStop(0, 'rgba(255,220,120,1)');
+            grd.addColorStop(0.4, 'rgba(255,140,50,0.7)');
+            grd.addColorStop(1, 'rgba(255,80,20,0)');
+            g.fillStyle = grd; g.fillRect(0, 0, 64, 64);
+            return new THREE.CanvasTexture(c);
+          })(),
+          transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, fog: false,
+        }));
+        halo.position.copy(flame.position);
+        halo.scale.set(0.9, 0.9, 0.9);
+        tower.add(halo);
+        // 光源（Bloomがこれで光る）
+        const light = new THREE.PointLight(0xffa030, 0.7, 6, 1.8);
+        light.position.copy(flame.position);
+        tower.add(light);
+        torchLights.push({ flame, halo, light, basePos: flame.position.clone(), phase: Math.random() * Math.PI * 2 });
+      }
+    });
+
+    // 🏗 クレーン（頂上の木造ブーム） — 建設中の象徴
+    const craneGroup = new THREE.Group();
+    craneGroup.position.set(0, topY + 0.5, 0);
+    // 垂直マスト
+    const mast = new THREE.Mesh(
+      new THREE.BoxGeometry(0.25, 6, 0.25),
+      new THREE.MeshStandardMaterial({ color: 0x4a2e14, roughness: 0.9 })
+    );
+    mast.position.y = 3;
+    mast.castShadow = true;
+    craneGroup.add(mast);
+    // ブーム（斜めの腕）
+    const boom = new THREE.Mesh(
+      new THREE.BoxGeometry(0.18, 5, 0.18),
+      new THREE.MeshStandardMaterial({ color: 0x3a2210, roughness: 0.9 })
+    );
+    boom.position.set(1.5, 5.5, 0);
+    boom.rotation.z = -1.1;
+    boom.castShadow = true;
+    craneGroup.add(boom);
+    // ロープ（ワイヤー）
+    const ropePts = [
+      new THREE.Vector3(2.8, 6.8, 0),
+      new THREE.Vector3(2.8, 2.5, 0),
+    ];
+    const ropeGeo = new THREE.BufferGeometry().setFromPoints(ropePts);
+    const rope = new THREE.Line(ropeGeo, new THREE.LineBasicMaterial({ color: 0x2a1808 }));
+    craneGroup.add(rope);
+    // 吊り下げブロック
+    const hangBlock = new THREE.Mesh(
+      new THREE.BoxGeometry(0.4, 0.3, 0.4),
+      brickMat
+    );
+    hangBlock.position.set(2.8, 2.2, 0);
+    hangBlock.castShadow = true;
+    craneGroup.add(hangBlock);
+    // カウンターウェイト
+    const cw = new THREE.Mesh(
+      new THREE.BoxGeometry(0.4, 0.4, 0.4),
+      new THREE.MeshStandardMaterial({ color: 0x3a2818, roughness: 0.95 })
+    );
+    cw.position.set(-1.0, 5.2, 0);
+    craneGroup.add(cw);
+    tower.add(craneGroup);
+
+    // 🚩 旗（各段の上に色違いの小旗）
+    const flagColors = [0xc0303a, 0x2a4a8a, 0xc88a20, 0x3a6a28, 0x8a1a5a];
+    stageMeshes.forEach((sm, si) => {
+      const a = si * 0.9 + 0.5;
+      const px = Math.cos(a) * sm.r;
+      const pz = Math.sin(a) * sm.r;
+      const pole = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.03, 0.03, 1.8, 6),
+        new THREE.MeshStandardMaterial({ color: 0x2a1808 })
+      );
+      pole.position.set(px, sm.yTop + 0.9, pz);
+      tower.add(pole);
+      const flag = new THREE.Mesh(
+        new THREE.PlaneGeometry(0.7, 0.45),
+        new THREE.MeshStandardMaterial({
+          color: flagColors[si % flagColors.length],
+          side: THREE.DoubleSide,
+          roughness: 0.9,
+        })
+      );
+      flag.position.set(px + 0.35, sm.yTop + 1.6, pz);
+      tower.add(flag);
+      flag.userData.phase = Math.random() * Math.PI * 2;
+      flag.userData.originX = flag.position.x;
+    });
+
+    // 🧱 建設中の瓦礫（塔の根元の周り）
+    for (let i = 0; i < 30; i++) {
+      const a = Math.random() * Math.PI * 2;
+      const r = baseRadius + 2 + Math.random() * 10;
+      const block = new THREE.Mesh(
+        new THREE.BoxGeometry(0.4 + Math.random() * 0.4, 0.25 + Math.random() * 0.2, 0.4 + Math.random() * 0.3),
+        brickMat
+      );
+      block.position.set(Math.cos(a) * r, 0.12 + Math.random() * 0.2, Math.sin(a) * r);
+      block.rotation.set(Math.random() * 0.4, Math.random() * Math.PI, Math.random() * 0.4);
+      block.castShadow = true;
+      block.receiveShadow = true;
+      scene.add(block);
+    }
+    // 積み上げ石山
+    for (let i = 0; i < 4; i++) {
+      const a = (i / 4) * Math.PI * 2;
+      const r = baseRadius + 4;
+      const pileX = Math.cos(a) * r, pileZ = Math.sin(a) * r;
+      for (let k = 0; k < 8; k++) {
+        const blk = new THREE.Mesh(
+          new THREE.BoxGeometry(0.5, 0.3, 0.35),
+          brickMat
+        );
+        blk.position.set(pileX + (Math.random() - 0.5) * 1.5, 0.15 + k * 0.28, pileZ + (Math.random() - 0.5) * 1.5);
+        blk.rotation.y = Math.random() * Math.PI;
+        blk.castShadow = true;
+        scene.add(blk);
+      }
+    }
+
+    // 🌧 雨（軽量Pointsで線を模す）
+    const RAIN = 1500;
+    const rainGeo = new THREE.BufferGeometry();
+    const rainPos = new Float32Array(RAIN * 3);
+    for (let i = 0; i < RAIN; i++) {
+      rainPos[i*3] = (Math.random() - 0.5) * 120;
+      rainPos[i*3+1] = 5 + Math.random() * 50;
+      rainPos[i*3+2] = (Math.random() - 0.5) * 120;
+    }
+    rainGeo.setAttribute('position', new THREE.BufferAttribute(rainPos, 3));
+    const rainMat = new THREE.PointsMaterial({
+      color: 0xa0b0c8, size: 0.08, transparent: true, opacity: 0.4,
+      depthWrite: false, fog: true,
+    });
+    const rain = new THREE.Points(rainGeo, rainMat);
+    scene.add(rain);
+
+    // ⛰ 遠景の霧の層（塔の腰部に霞をまとわせる）
+    const mistTex = (() => {
+      const c = document.createElement('canvas'); c.width = 512; c.height = 128;
+      const g = c.getContext('2d');
+      for (let i = 0; i < 20; i++) {
+        const x = Math.random() * 512, y = Math.random() * 128;
+        const r = 30 + Math.random() * 60;
+        const grd = g.createRadialGradient(x, y, 0, x, y, r);
+        grd.addColorStop(0, 'rgba(220,200,180,0.5)');
+        grd.addColorStop(1, 'rgba(220,200,180,0)');
+        g.fillStyle = grd;
+        g.beginPath(); g.ellipse(x, y, r, r * 0.4, 0, 0, Math.PI*2); g.fill();
+      }
+      return new THREE.CanvasTexture(c);
+    })();
+    for (let i = 0; i < 3; i++) {
+      const m = new THREE.Mesh(
+        new THREE.CylinderGeometry(baseRadius + 6, baseRadius + 4, 2, 24, 1, true),
+        new THREE.MeshBasicMaterial({ map: mistTex, transparent: true, opacity: 0.4, depthWrite: false, side: THREE.DoubleSide, fog: false })
+      );
+      m.position.y = 2 + i * 8;
+      scene.add(m);
+    }
+
     // ⚡ 雷ボルト（LineSegments、混乱時にフラッシュ）
     const lightningMat = new THREE.LineBasicMaterial({
       color: 0xffffe0, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, fog: false,
@@ -8322,6 +8515,32 @@
       camera.position.y = 10 + camTilt * 25;
       lookY += ((topY / 2) - lookY) * 0.02;
       camera.lookAt(0, lookY, 0);
+      // 雨を降らす
+      {
+        const pa = rain.geometry.attributes.position;
+        for (let i = 0; i < pa.count; i++) {
+          pa.array[i*3+1] -= 0.8;
+          pa.array[i*3] += 0.08;
+          if (pa.array[i*3+1] < 0) { pa.array[i*3+1] = 50; pa.array[i*3] = (Math.random()-0.5)*120; }
+        }
+        pa.needsUpdate = true;
+      }
+      // 松明のちらつき
+      torchLights.forEach(tl => {
+        tl.phase += 0.1;
+        const f = 0.85 + Math.sin(tl.phase) * 0.12 + (Math.random() - 0.5) * 0.05;
+        tl.light.intensity = 0.6 * f;
+        tl.flame.scale.setScalar(f);
+        tl.halo.material.opacity = 0.65 * f;
+      });
+      // 旗が揺れる
+      tower.traverse(obj => {
+        if (obj.isMesh && obj.userData.originX !== undefined) {
+          obj.userData.phase += 0.05;
+          obj.rotation.y = Math.sin(obj.userData.phase) * 0.2;
+          obj.position.x = obj.userData.originX + Math.sin(obj.userData.phase) * 0.05;
+        }
+      });
       // 動く嵐雲
       stormClouds.forEach(c => {
         c.userData.angle += c.userData.speed * 0.008;
