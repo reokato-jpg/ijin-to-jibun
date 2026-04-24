@@ -6684,26 +6684,35 @@
         mechaGroup.add(cannonTip);
       });
 
-      // ===== 🦵 脚 =====
+      // ===== 🦵 脚（pivot groupで股関節から回転、膝もbend可能） =====
+      const legPivots = {};
       [-1, 1].forEach(side => {
-        // 太もも（白+青）
+        // 股関節ピボット
+        const leg = new THREE.Group();
+        leg.position.set(side * 0.08, -0.1, 0);
+        mechaGroup.add(leg);
+        // 太もも
         const thigh = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.22, 0.14), whiteMat);
-        thigh.position.set(side * 0.08, -0.22, 0);
-        mechaGroup.add(thigh);
+        thigh.position.set(0, -0.11, 0);
+        leg.add(thigh);
         const thighBlue = new THREE.Mesh(new THREE.BoxGeometry(0.125, 0.08, 0.145), blueMat);
-        thighBlue.position.set(side * 0.08, -0.33, 0);
-        mechaGroup.add(thighBlue);
-        // 膝（黄色）
-        const knee = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.04, 0.14), yellowMat);
-        knee.position.set(side * 0.08, -0.37, 0);
-        mechaGroup.add(knee);
-        // 脛（白+青ストライプ）
+        thighBlue.position.set(0, -0.23, 0);
+        leg.add(thighBlue);
+        // 膝ピボット（下腿をここから回転）
+        const knee = new THREE.Group();
+        knee.position.set(0, -0.27, 0);
+        leg.add(knee);
+        // 膝アーマー（黄）
+        const kneeArmor = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.04, 0.14), yellowMat);
+        kneeArmor.position.set(0, 0, 0);
+        knee.add(kneeArmor);
+        // 脛
         const shin = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.22, 0.13), whiteMat);
-        shin.position.set(side * 0.08, -0.5, 0);
-        mechaGroup.add(shin);
+        shin.position.set(0, -0.13, 0);
+        knee.add(shin);
         const shinStripe = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.2, 0.135), blueMat);
-        shinStripe.position.set(side * 0.08, -0.5, 0);
-        mechaGroup.add(shinStripe);
+        shinStripe.position.set(0, -0.13, 0);
+        knee.add(shinStripe);
         // 足（尖ったブーツ）
         const footShape = new THREE.Shape();
         footShape.moveTo(-0.06, -0.04); footShape.lineTo(-0.06, 0.04);
@@ -6711,8 +6720,9 @@
         footShape.lineTo(0.1, -0.04); footShape.lineTo(-0.06, -0.04);
         const footGeo = new THREE.ExtrudeGeometry(footShape, { depth: 0.1, bevelEnabled: true, bevelSize: 0.005, bevelThickness: 0.005, bevelSegments: 1 });
         const foot = new THREE.Mesh(footGeo, whiteMat);
-        foot.position.set(side * 0.08 - 0.05, -0.63, -0.05);
-        mechaGroup.add(foot);
+        foot.position.set(-0.05, -0.26, -0.05);
+        knee.add(foot);
+        legPivots[side > 0 ? 'legR' : 'legL'] = { hip: leg, knee };
       });
 
       // ===== 🦅 ウィングバインダー（pivot groupで背中から展開可能） =====
@@ -6848,7 +6858,8 @@
         wingR: wingPivots.wingR,
         armL: armPivots.armL,
         armR: armPivots.armR,
-        rifle: rifleBody, // 右手のライフル（腕と連動させたければ armR.add で）
+        legL: legPivots.legL.hip, kneeL: legPivots.legL.knee,
+        legR: legPivots.legR.hip, kneeR: legPivots.legR.knee,
       };
       mechaGroup.userData.restPose = {
         wingL_y: wingPivots.wingL.rotation.y,
@@ -7164,21 +7175,44 @@
           parts.wingR.rotation.z = rest.wingR_z - flap + boostSpread + turnTilt;
           parts.wingR.rotation.y = rest.wingR_y + boostSpread * 0.6;
         }
-        // 💪 腕: ターンで逆方向に振れる、BOOSTで後ろに引く
-        const armSwing = rocketRoll * -0.8;
-        const armBack = boostActive ? 0.35 : 0;
+        // 💪 腕: 走る動作（脚と逆位相）+ ターンで傾く + BOOSTで後方へ
+        const armStride = Math.sin(t * 1.4) * 0.3; // 脚と同じ周期
+        const armTurn = rocketRoll * -0.8;
+        const armBack = boostActive ? 0.6 : (thrustHold ? 0.3 : 0);
         if (parts.armL) {
-          parts.armL.rotation.z = armSwing + Math.sin(t * 1.2) * 0.03;
-          parts.armL.rotation.x = armBack;
+          // 左腕は脚と逆（右脚前→左腕前の自然な走り）
+          parts.armL.rotation.x = -armStride - armBack;
+          parts.armL.rotation.z = armTurn + 0.08;
         }
         if (parts.armR) {
-          parts.armR.rotation.z = armSwing - Math.sin(t * 1.2) * 0.03;
-          parts.armR.rotation.x = armBack;
+          parts.armR.rotation.x = armStride - armBack;
+          parts.armR.rotation.z = armTurn - 0.08;
         }
         // 🧠 頭: 進行方向を少し向く + アイドルの小揺れ
         if (parts.head) {
           parts.head.rotation.y = -rocketRoll * 0.3 + Math.sin(t * 0.6) * 0.05;
           parts.head.rotation.x = rocketPitch * 0.2 + Math.sin(t * 0.9) * 0.03;
+        }
+        // 🦵 脚: 浮遊時にゆっくり走るようなキック + BOOSTで後方へ蹴る
+        // 股関節（X軸で前後、Z軸で開き）
+        const stride = Math.sin(t * 1.4) * 0.22;
+        const idleOpen = 0.04 + Math.sin(t * 0.7) * 0.02;
+        const boostKick = boostActive ? 0.5 : (thrustHold ? 0.3 : 0); // BOOSTで脚が後方に
+        if (parts.legL) {
+          parts.legL.rotation.x = stride - boostKick + 0.05;
+          parts.legL.rotation.z = -idleOpen;
+        }
+        if (parts.legR) {
+          parts.legR.rotation.x = -stride - boostKick + 0.05;
+          parts.legR.rotation.z = idleOpen;
+        }
+        // 膝: 交互に曲げる（走る動作）+ BOOSTで軽く曲げる
+        const kneeBendBase = boostActive ? 0.4 : 0.12;
+        if (parts.kneeL) {
+          parts.kneeL.rotation.x = kneeBendBase + Math.max(0, -Math.sin(t * 1.4)) * 0.35;
+        }
+        if (parts.kneeR) {
+          parts.kneeR.rotation.x = kneeBendBase + Math.max(0, Math.sin(t * 1.4)) * 0.35;
         }
         // 🫁 全身ブリージング（スケール微脈動）
         const breath = 1 + Math.sin(t * 0.9) * 0.008;
