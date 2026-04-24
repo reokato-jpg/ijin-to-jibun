@@ -3554,7 +3554,7 @@
         <div class="cosmos-crosshair"></div>
         <div class="cosmos-speedlines" id="cosmosSpeedLines"></div>
         <div class="cosmos-scoreboard" id="cosmosScore">
-          <div class="sb-item"><span class="sb-ico">⭐</span><b id="sbStars">0</b><span class="sb-max">/60</span></div>
+          <div class="sb-item"><span class="sb-ico">💎</span><b id="sbStars">0</b><span class="sb-max">/60</span></div>
           <div class="sb-item"><span class="sb-ico">🪐</span><b id="sbPlanets">0</b><span class="sb-max">/9</span></div>
           <div class="sb-item sb-combo" id="sbCombo" style="display:none"><span class="sb-ico">🔥</span><b id="sbComboN">0</b>×</div>
         </div>
@@ -5190,31 +5190,36 @@
     // ============================================================
     // ⭐ 収集アイテム（スターコイン）
     // ============================================================
+    // エネルギーオーブ（★ではなく、発光する球＋プラズマリング）
     const starCoinTex = (() => {
-      const sc = document.createElement('canvas'); sc.width = 128; sc.height = 128;
+      const sc = document.createElement('canvas'); sc.width = 256; sc.height = 256;
       const g = sc.getContext('2d');
-      g.translate(64, 64);
-      // 星型
-      const drawStar = (outerR, innerR, color, glow) => {
-        g.beginPath();
-        for (let i = 0; i < 10; i++) {
-          const r = i % 2 === 0 ? outerR : innerR;
-          const a = -Math.PI/2 + (i / 10) * Math.PI * 2;
-          g.lineTo(Math.cos(a) * r, Math.sin(a) * r);
-        }
-        g.closePath();
-        if (glow) { g.shadowColor = glow; g.shadowBlur = 30; }
-        g.fillStyle = color; g.fill();
-        g.shadowBlur = 0;
-      };
-      // 外側のグロー
-      const glow = g.createRadialGradient(0, 0, 0, 0, 0, 60);
-      glow.addColorStop(0, 'rgba(255,240,120,0.8)');
-      glow.addColorStop(0.5, 'rgba(255,200,80,0.25)');
-      glow.addColorStop(1, 'rgba(255,200,80,0)');
-      g.fillStyle = glow; g.beginPath(); g.arc(0,0,60,0,Math.PI*2); g.fill();
-      drawStar(36, 16, '#ffd24a', '#ff9020');
-      drawStar(20, 8, '#fff4b0', null);
+      g.translate(128, 128);
+      // 外周のソフトグロー
+      const outer = g.createRadialGradient(0, 0, 0, 0, 0, 128);
+      outer.addColorStop(0, 'rgba(180,240,255,0.55)');
+      outer.addColorStop(0.25, 'rgba(140,200,255,0.28)');
+      outer.addColorStop(0.55, 'rgba(180,140,255,0.15)');
+      outer.addColorStop(1, 'rgba(100,80,180,0)');
+      g.fillStyle = outer; g.beginPath(); g.arc(0,0,128,0,Math.PI*2); g.fill();
+      // 薄いリング（土星っぽい光輪）
+      g.globalCompositeOperation = 'lighter';
+      g.strokeStyle = 'rgba(200,230,255,0.4)';
+      g.lineWidth = 3;
+      g.beginPath(); g.ellipse(0, 0, 62, 14, 0, 0, Math.PI*2); g.stroke();
+      g.strokeStyle = 'rgba(255,220,180,0.3)';
+      g.lineWidth = 2;
+      g.beginPath(); g.ellipse(0, 0, 70, 12, 0.18, 0, Math.PI*2); g.stroke();
+      // 中心コア（明るい球）
+      const core = g.createRadialGradient(0, 0, 0, 0, 0, 38);
+      core.addColorStop(0, 'rgba(255,255,255,1)');
+      core.addColorStop(0.3, 'rgba(220,245,255,0.9)');
+      core.addColorStop(0.7, 'rgba(140,200,255,0.4)');
+      core.addColorStop(1, 'rgba(120,160,240,0)');
+      g.fillStyle = core; g.beginPath(); g.arc(0,0,38,0,Math.PI*2); g.fill();
+      // 極小ハイライト
+      g.fillStyle = 'rgba(255,255,255,0.9)';
+      g.beginPath(); g.arc(-6, -8, 5, 0, Math.PI*2); g.fill();
       return new THREE.CanvasTexture(sc);
     })();
     const collectibles = [];
