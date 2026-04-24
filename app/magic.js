@@ -4727,7 +4727,7 @@
       palette: { bg1: '#2a1f0f', bg2: '#0f0804', accent: '#ffe090' },
       chapters: [
         { t: '1. はじまりの闇',
-          img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Gustave_Dor%C3%A9_-_Dante%27s_Inferno_-_Plate_71_-_Canto_XXXIV_-_Lucifer_King_of_Hell.jpg?width=700',
+          img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Gustave_Dore_Inferno34.jpg?width=700',
           caption: 'Gustave Doré（1861）',
           body: 'はじめに、神は天と地とを創造された。地は形なく、闇が深淵の面にあり、神の霊が水の面を動いていた。\n\n何もなかった。だが「なかった」という言葉すら、まだなかった。' },
         { t: '2. 光あれ',
@@ -4904,15 +4904,15 @@
           caption: 'Michelangelo《イヴの創造》（1510）',
           body: '人が独りでいるのはよくない。主は人を深く眠らせ、その肋骨から女を造られた。アダムは言った — 「これこそ、私の骨の骨、肉の肉」\n\nふたりは裸でも恥じなかった。' },
         { t: '6. 禁断の果実',
-          img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Lucas_Cranach_d._%C3%84._-_Adam_und_Eva_im_Paradies_(S%C3%BCndenfall)_-_Germanisches_Nationalmuseum_-_Gm_221.jpg?width=700',
+          img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Lucas_Cranach_the_Elder,_Adam_and_Eve_in_Paradise,_1509,_NGA_6060.jpg?width=700',
           caption: 'Lucas Cranach《堕罪》（1530）',
           body: '蛇は女に言った — 「決して死なない。神はそれを食べる日に、目が開け、神のようになることを知っておられる」\n\nイヴは実を取って食べ、アダムにも渡した。目が開け、ふたりは初めて裸を恥じた。' },
         { t: '7. 楽園追放',
-          img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Masaccio_-_Expulsion_from_the_Garden_of_Eden_-_WGA14184.jpg?width=700',
+          img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Masaccio-Expulsion_of_Adam_and_Eve-_Brancacci_Chapel2.jpg?width=700',
           caption: 'Masaccio《楽園追放》（1427）',
           body: '主は言われた — 「人はわれわれの一人のようになった。善悪を知る者として。今や彼が手を伸ばし、命の木からも取って食べ、永遠に生きるといけない」\n\nふたりはエデンから追放された。園の東には、炎の剣を持つケルビムが置かれた。' },
         { t: '8. カインとアベル',
-          img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Cain_killing_Abel_by_Peter_Paul_Rubens.jpg?width=700',
+          img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Peter_Paul_Rubens_-_Cain_slaying_Abel,_1608-1609.jpg?width=700',
           caption: 'Peter Paul Rubens《アベルを殺すカイン》（1610）',
           body: 'アダムとイヴの子、兄カインは弟アベルを野で殺した。主は問われた — 「お前の弟アベルはどこにいるのか」\n\nカインは答えた — 「知りません。私は弟の番人なのですか」\n\n人類最初の殺人。' },
       ]
@@ -4923,7 +4923,7 @@
       palette: { bg1: '#0f1830', bg2: '#050814', accent: '#ffd650' },
       chapters: [
         { t: '1. カオス',
-          img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Chaos_and_Creation_-_Wenceslas_Hollar.jpg?width=700',
+          img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Wenceslas_Hollar_-_Chaos_(State_2).jpg?width=700',
           caption: 'Wenceslas Hollar《カオスと創造》（1665）',
           body: 'はじめにカオスがあった。形なきもの、境界なきもの、すべてが混ざり合う深淵。\n\nそこからガイア（大地）、タルタロス（奈落）、エロス（愛の欲望）、エレボス（闇）、ニュクス（夜）が生まれた。' },
         { t: '2. ウラノスとガイア',
@@ -4935,7 +4935,7 @@
           caption: 'Goya《我が子を食らうサトゥルヌス》（1823）',
           body: 'クロノスは父ウラノスを切り、神々の時代を始めた。しかし自らも子に倒されるという予言を恐れ、生まれる子を次々に呑み込んだ。\n\n妻レアはゼウスを隠し、クロノスには石を食わせた。' },
         { t: '4. ティタノマキア',
-          img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Cornelis_Cornelisz._van_Haarlem_-_The_Fall_of_the_Titans_(Titanomachia).jpg?width=700',
+          img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Cornelis_Cornelisz._van_Haarlem_-_The_Fall_of_the_Titans_-_Google_Art_Project.jpg?width=700',
           caption: 'Cornelis van Haarlem《ティタンの没落》（1590）',
           body: '成長したゼウスは兄姉を呑まれた神々を解放し、ティタン神たちと十年の大戦争を繰り広げた。\n\nキュクロプスが鍛えた雷霆、三叉の矛、隠れ兜を武器に、オリンポス神族が勝利した。' },
         { t: '5. オリンポスの十二神',
@@ -5014,7 +5014,7 @@
         { t: '1. 天地開闢',
           body: '天地がまだ分かれず、渾沌として卵のようだった頃。清く明るきもの薄くたなびいて天となり、重く濁れるものが凝り積もって地となった。\n\n高天原に最初に現れたのは、天之御中主神（あめのみなかぬしのかみ）。続いて神々が次々と生まれた。' },
         { t: '2. 国生み',
-          img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Kobayashi_Eitaku_-_Izanagi_and_Izanami.jpg?width=700',
+          img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Kobayashi_Izanami_and_Izanagi.jpg?width=700',
           caption: '小林永濯《伊邪那岐命・伊邪那美命》（19世紀）',
           body: '神々はイザナギとイザナミに命じた — 「この漂う国を修めよ」\n\n二神は天の浮橋に立ち、天沼矛を下ろして海水をかき回した。引き上げた矛の先から滴り落ちた塩が固まり、淤能碁呂島（おのごろじま）となった。そこに降り立ち、夫婦となった。' },
         { t: '3. 八百万の神々',
@@ -5082,7 +5082,7 @@
           caption: '天岩戸 — 世界に光が戻った夜',
           body: 'スサノオは乱暴を働き、高天原を追われた。嘆いた天照は天岩戸に閉じこもり、世界は闇に沈んだ。\n\n八百万の神は岩戸の前で祭りを開いた。アメノウズメが裸で舞い、神々は大笑いした。不思議に思って岩戸を少し開けた天照を、タヂカラオが引き出した。世界に光が戻った。' },
         { t: '7. ヤマタノオロチ',
-          img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Susanoo_no_Mikoto-Yoshitoshi.jpg?width=700',
+          img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Susanoo-no-Mikoto-slays-Yamata-no-Orochi-in-Izumo-By-Tsukioka-Yoshitoshi.png?width=700',
           caption: '月岡芳年《素戔嗚尊》（1887）',
           body: '出雲に降りたスサノオは、八つの頭を持つ大蛇ヤマタノオロチに娘を食われる夫婦に出会った。\n\n八塩折の酒を八つの桶に満たし、酔った大蛇を斬った。尾から現れたのが草薙剣 — 三種の神器の一つ。' },
         { t: '8. 国譲り',
@@ -5188,7 +5188,7 @@
         { t: '5. ロキの悪戯',
           body: '火の巨人の血を引くロキ。美しき神バルドルを愛したフリッグ母は、あらゆるものに息子を傷つけない誓いを立てさせた。だがヤドリギだけは忘れた。\n\nロキは盲目の神ヘズにヤドリギの枝を渡した。バルドルは倒れた。光が消え、神々は泣いた。' },
         { t: '6. ラグナロク',
-          img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Ragnar%C3%B6k_by_Emil_Doepler.jpg?width=700',
+          img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Ragnar%C3%B6k_by_Doepler.jpg?width=700',
           caption: 'Emil Doepler《ラグナロク》（1905）',
           body: 'いつか来る「神々の黄昏」。ロキは鎖を解かれ、巨人フレーズの船ナグルファルで進軍する。ミッドガルドの蛇ヨルムンガンドが陸に這い上がり、炎の巨人スルトが炎の剣を振るう。\n\nオーディンは狼フェンリルに呑まれる。トールはヨルムンガンドと相打つ。そして世界が燃え、海に沈む。\n\nしかし — 新しい大地が海から昇り、生き残った二人の人間が新たな世界を始める。' },
       ]
@@ -6430,6 +6430,8 @@
   // 🏛 神話美術館（全作品のギャラリーウォーク）
   // ============================================================
   function openMythMuseum() {
+    if (!window.THREE) return;
+    const THREE = window.THREE;
     // 全章から絵画を収集
     const works = [];
     Object.keys(MYTH_STORIES).forEach(k => {
@@ -6446,47 +6448,410 @@
       });
     });
     const ov = document.createElement('div');
-    ov.className = 'myth-hall-overlay';
+    ov.className = 'museum3d-overlay';
     ov.innerHTML = `
-      <div class="myth-hall-sky"></div>
-      <button class="myth-hall-close" aria-label="閉じる">×</button>
-      <div class="myth-hall-header">
-        <div class="myth-hall-super">T H E　M U S E U M</div>
-        <div class="myth-hall-title">神 話 美 術 館</div>
-        <div class="myth-hall-sub">── 人類が神々を見た、その筆致に触れる ──</div>
-        <div class="myth-hall-stats">全 ${works.length} 作品 / ${new Set(works.map(w => w.origin)).size} 神話</div>
+      <div class="museum3d-stage" id="m3dStage"></div>
+      <button class="museum3d-close" aria-label="閉じる">×</button>
+      <div class="museum3d-title">神 話 美 術 館</div>
+      <div class="museum3d-info" id="m3dInfo"></div>
+      <div class="museum3d-reticle">·</div>
+      <div class="museum3d-hint" id="m3dHint">
+        <div>W A S D で歩く　／　ドラッグで見回す</div>
+        <div class="m3d-hint-mobile">タップした方向へ歩く　／　絵に近づくとタップで鑑賞</div>
       </div>
-      <div class="myth-hall-gallery" id="mythHallGallery">
-        ${works.map((w, i) => `
-          <figure class="myth-hall-art" data-idx="${i}" style="animation-delay: ${i * 60}ms">
-            <div class="myth-hall-spot"></div>
-            <div class="myth-hall-frame">
-              <img src="${w.img}" alt="${w.caption}" loading="lazy"
-                onerror="this.closest('.myth-hall-art').classList.add('art-fail')"/>
-            </div>
-            <figcaption class="myth-hall-plaque">
-              <div class="mhp-origin">${w.emoji} ${w.origin} — ${w.chapterTitle}</div>
-              <div class="mhp-caption">${w.caption}</div>
-              <div class="mhp-pd">Public Domain</div>
-            </figcaption>
-          </figure>
-        `).join('')}
+      <div class="museum3d-stick" id="m3dStick">
+        <div class="m3d-stick-knob" id="m3dKnob"></div>
       </div>
-      <div class="myth-hall-foot">タップで拡大 ──  足を止めて、見る</div>
+      <button class="museum3d-view-btn" id="m3dViewBtn">🖼 この絵を見る</button>
     `;
     document.body.appendChild(ov);
     requestAnimationFrame(() => ov.classList.add('open'));
-    ov.querySelector('.myth-hall-close').addEventListener('click', () => {
+
+    const stage = ov.querySelector('#m3dStage');
+    const info = ov.querySelector('#m3dInfo');
+    const viewBtn = ov.querySelector('#m3dViewBtn');
+    const W = () => stage.clientWidth || window.innerWidth;
+    const H = () => stage.clientHeight || window.innerHeight;
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+    renderer.setSize(W(), H());
+    if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    stage.appendChild(renderer.domElement);
+    renderer.domElement.style.touchAction = 'none';
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x1a1208);
+    scene.fog = new THREE.Fog(0x1a1208, 15, 50);
+
+    // === 大理石床テクスチャ ===
+    const floorTex = (() => {
+      const c = document.createElement('canvas'); c.width = 512; c.height = 512;
+      const g = c.getContext('2d');
+      const grd = g.createLinearGradient(0,0,512,512);
+      grd.addColorStop(0, '#d8d0c0'); grd.addColorStop(0.5, '#b0a895'); grd.addColorStop(1, '#e0d8c8');
+      g.fillStyle = grd; g.fillRect(0,0,512,512);
+      for (let i = 0; i < 40; i++) {
+        g.strokeStyle = `rgba(${80+Math.random()*60},${70+Math.random()*40},${50+Math.random()*30},${0.1+Math.random()*0.3})`;
+        g.lineWidth = 0.5 + Math.random() * 1.5;
+        g.beginPath();
+        let x = Math.random()*512, y = Math.random()*512;
+        g.moveTo(x, y);
+        for (let k = 0; k < 20; k++) {
+          x += (Math.random()-0.5)*40; y += (Math.random()-0.5)*40;
+          g.lineTo(x, y);
+        }
+        g.stroke();
+      }
+      // タイル目地
+      g.strokeStyle = 'rgba(40,30,20,0.3)';
+      g.lineWidth = 1;
+      for (let i = 0; i < 8; i++) { g.beginPath(); g.moveTo(i*64, 0); g.lineTo(i*64, 512); g.stroke(); g.beginPath(); g.moveTo(0, i*64); g.lineTo(512, i*64); g.stroke(); }
+      const t = new THREE.CanvasTexture(c);
+      t.wrapS = t.wrapT = THREE.RepeatWrapping;
+      t.repeat.set(10, 10);
+      return t;
+    })();
+    // === 壁テクスチャ ===
+    const wallTex = (() => {
+      const c = document.createElement('canvas'); c.width = 512; c.height = 512;
+      const g = c.getContext('2d');
+      g.fillStyle = '#6a5a48'; g.fillRect(0,0,512,512);
+      for (let i = 0; i < 500; i++) {
+        g.fillStyle = `rgba(${60+Math.random()*50},${45+Math.random()*35},${30+Math.random()*25},${0.2+Math.random()*0.3})`;
+        g.fillRect(Math.random()*512, Math.random()*512, 1+Math.random()*3, 1+Math.random()*3);
+      }
+      // 縦の装飾線
+      g.strokeStyle = 'rgba(200,170,110,0.15)'; g.lineWidth = 1;
+      for (let i = 0; i < 8; i++) { g.beginPath(); g.moveTo(i*64, 0); g.lineTo(i*64, 512); g.stroke(); }
+      const t = new THREE.CanvasTexture(c);
+      t.wrapS = t.wrapT = THREE.RepeatWrapping;
+      return t;
+    })();
+
+    // === ホール構造：正多角形 ===
+    const N = Math.max(8, works.length); // 壁の数＝作品数
+    const radius = Math.max(12, N * 1.4);
+    const wallHeight = 6;
+    const wallAngle = (Math.PI * 2) / N;
+
+    // 床
+    const floorGeo = new THREE.CircleGeometry(radius + 2, N);
+    floorTex.repeat.set(radius / 2, radius / 2);
+    const floor = new THREE.Mesh(floorGeo, new THREE.MeshStandardMaterial({ map: floorTex, roughness: 0.4, metalness: 0.1 }));
+    floor.rotation.x = -Math.PI / 2;
+    scene.add(floor);
+
+    // 天井
+    const ceilGeo = new THREE.CircleGeometry(radius + 2, N);
+    const ceilTex = (() => {
+      const c = document.createElement('canvas'); c.width = 256; c.height = 256;
+      const g = c.getContext('2d');
+      const grd = g.createRadialGradient(128, 128, 20, 128, 128, 128);
+      grd.addColorStop(0, '#fff0c0'); grd.addColorStop(0.5, '#8a6030'); grd.addColorStop(1, '#2a1808');
+      g.fillStyle = grd; g.fillRect(0,0,256,256);
+      // 装飾模様
+      g.strokeStyle = 'rgba(255,220,160,0.4)'; g.lineWidth = 2;
+      for (let i = 0; i < 8; i++) {
+        const a = (i/8) * Math.PI * 2;
+        g.beginPath(); g.moveTo(128, 128); g.lineTo(128+Math.cos(a)*120, 128+Math.sin(a)*120); g.stroke();
+      }
+      g.beginPath(); g.arc(128,128,60,0,Math.PI*2); g.stroke();
+      g.beginPath(); g.arc(128,128,100,0,Math.PI*2); g.stroke();
+      return new THREE.CanvasTexture(c);
+    })();
+    const ceiling = new THREE.Mesh(ceilGeo, new THREE.MeshStandardMaterial({ map: ceilTex, roughness: 0.7, side: THREE.DoubleSide }));
+    ceiling.rotation.x = Math.PI / 2;
+    ceiling.position.y = wallHeight;
+    scene.add(ceiling);
+
+    // シャンデリア（中央の光源＋ジオメトリ）
+    const chandelier = new THREE.Group();
+    const chandLight = new THREE.PointLight(0xffd890, 2.0, 30, 1.5);
+    chandLight.position.set(0, wallHeight - 0.5, 0);
+    scene.add(chandLight);
+    const chandCore = new THREE.Mesh(
+      new THREE.SphereGeometry(0.3, 16, 12),
+      new THREE.MeshBasicMaterial({ color: 0xfff0c0 })
+    );
+    chandCore.position.set(0, wallHeight - 0.8, 0);
+    chandelier.add(chandCore);
+    for (let i = 0; i < 8; i++) {
+      const a = (i/8) * Math.PI * 2;
+      const arm = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.015, 0.03, 0.9, 6),
+        new THREE.MeshStandardMaterial({ color: 0xc8a040, metalness: 0.8, roughness: 0.3 })
+      );
+      arm.position.set(Math.cos(a)*0.6, wallHeight-1.0, Math.sin(a)*0.6);
+      arm.rotation.z = -Math.cos(a)*0.8;
+      arm.rotation.x = Math.sin(a)*0.8;
+      chandelier.add(arm);
+      const bulb = new THREE.Mesh(
+        new THREE.SphereGeometry(0.08, 10, 8),
+        new THREE.MeshBasicMaterial({ color: 0xfff0a0 })
+      );
+      bulb.position.set(Math.cos(a)*1.2, wallHeight-1.2, Math.sin(a)*1.2);
+      chandelier.add(bulb);
+    }
+    scene.add(chandelier);
+
+    // 環境光
+    scene.add(new THREE.AmbientLight(0x6a5a3a, 0.5));
+    const hemi = new THREE.HemisphereLight(0xd0b080, 0x2a2010, 0.4);
+    scene.add(hemi);
+
+    // === 壁 + 絵画 ===
+    const paintings = []; // {mesh, painting: work}
+    const loader = new THREE.TextureLoader();
+    loader.setCrossOrigin('anonymous');
+    for (let i = 0; i < N; i++) {
+      const a = i * wallAngle;
+      const nextA = (i + 1) * wallAngle;
+      // 壁の2点
+      const x1 = Math.cos(a) * radius, z1 = Math.sin(a) * radius;
+      const x2 = Math.cos(nextA) * radius, z2 = Math.sin(nextA) * radius;
+      const mx = (x1 + x2) / 2, mz = (z1 + z2) / 2;
+      const segLen = Math.hypot(x2 - x1, z2 - z1);
+      // 壁面
+      const wallGeo = new THREE.PlaneGeometry(segLen, wallHeight);
+      const wall = new THREE.Mesh(wallGeo, new THREE.MeshStandardMaterial({ map: wallTex, roughness: 0.85 }));
+      wall.position.set(mx, wallHeight / 2, mz);
+      wall.lookAt(0, wallHeight / 2, 0);
+      scene.add(wall);
+      // 巾木
+      const baseMat = new THREE.MeshStandardMaterial({ color: 0x3a2a18, roughness: 0.6 });
+      const base = new THREE.Mesh(new THREE.BoxGeometry(segLen, 0.4, 0.08), baseMat);
+      base.position.set(mx, 0.2, mz); base.lookAt(0, 0.2, 0);
+      scene.add(base);
+      // コーニス
+      const cornice = new THREE.Mesh(new THREE.BoxGeometry(segLen, 0.3, 0.1), new THREE.MeshStandardMaterial({ color: 0x8a6a3a, roughness: 0.5, metalness: 0.2 }));
+      cornice.position.set(mx, wallHeight - 0.15, mz); cornice.lookAt(0, wallHeight - 0.15, 0);
+      scene.add(cornice);
+
+      // 絵（この壁にある作品）
+      const work = works[i % works.length];
+      if (!work) continue;
+      // 中心から内側に少し出す（壁から浮かせる）
+      const nx = -Math.cos((a + nextA) / 2), nz = -Math.sin((a + nextA) / 2);
+      const offset = 0.06;
+      // 額縁（金色）
+      const frameW = Math.min(segLen * 0.75, 2.4);
+      const frameH = frameW * 1.3;
+      const frameThick = 0.14;
+      const frameGeo = new THREE.BoxGeometry(frameW + frameThick*2, frameH + frameThick*2, 0.08);
+      const frameMat = new THREE.MeshStandardMaterial({ color: 0xc8a050, metalness: 0.8, roughness: 0.35 });
+      const frame = new THREE.Mesh(frameGeo, frameMat);
+      frame.position.set(mx + nx * offset, wallHeight / 2 + 0.3, mz + nz * offset);
+      frame.lookAt(0, wallHeight / 2 + 0.3, 0);
+      scene.add(frame);
+      // キャンバス（プレースホルダー → ロードで差し替え）
+      const phTex = (() => {
+        const c = document.createElement('canvas'); c.width = 64; c.height = 80;
+        const g = c.getContext('2d');
+        g.fillStyle = '#3a2a18'; g.fillRect(0,0,64,80);
+        g.fillStyle = '#c8a050'; g.font = '28px serif'; g.textAlign = 'center';
+        g.fillText(work.emoji || '?', 32, 44);
+        return new THREE.CanvasTexture(c);
+      })();
+      const canvasMat = new THREE.MeshStandardMaterial({ map: phTex, roughness: 0.6 });
+      const canvasMesh = new THREE.Mesh(new THREE.PlaneGeometry(frameW, frameH), canvasMat);
+      canvasMesh.position.set(mx + nx * (offset + 0.05), wallHeight / 2 + 0.3, mz + nz * (offset + 0.05));
+      canvasMesh.lookAt(0, wallHeight / 2 + 0.3, 0);
+      scene.add(canvasMesh);
+      canvasMesh.userData.work = work;
+      canvasMesh.userData.wallMid = { x: mx, z: mz };
+      paintings.push(canvasMesh);
+      // 画像ロード（非同期）
+      loader.load(work.img,
+        tex => {
+          tex.colorSpace = THREE.SRGBColorSpace || THREE.sRGBEncoding;
+          const img = tex.image;
+          const ar = img.width / img.height;
+          // 比率に合わせて表示スケール
+          let sx = 1, sy = 1;
+          if (ar > frameW / frameH) sy = (frameW / ar) / frameH; else sx = (frameH * ar) / frameW;
+          canvasMesh.scale.set(sx, sy, 1);
+          canvasMat.map = tex; canvasMat.needsUpdate = true;
+        },
+        undefined,
+        () => { /* ロード失敗はプレースホルダー維持 */ }
+      );
+      // スポットライト
+      const spot = new THREE.SpotLight(0xfff0c0, 1.2, 8, Math.PI / 5, 0.4, 1.5);
+      spot.position.set(mx + nx * 2.0, wallHeight - 0.5, mz + nz * 2.0);
+      spot.target.position.set(mx + nx * 0.2, wallHeight / 2 + 0.3, mz + nz * 0.2);
+      scene.add(spot); scene.add(spot.target);
+      // プラーク（小さな金の板）— テキストをcanvasに
+      const plaqueCanvas = document.createElement('canvas'); plaqueCanvas.width = 256; plaqueCanvas.height = 64;
+      const pg = plaqueCanvas.getContext('2d');
+      pg.fillStyle = '#2a1e14'; pg.fillRect(0,0,256,64);
+      pg.fillStyle = '#c8a050'; pg.font = 'bold 14px serif'; pg.textAlign = 'center';
+      pg.fillText(`${work.origin} — ${work.chapterTitle}`.slice(0, 28), 128, 22);
+      pg.font = '11px serif'; pg.fillStyle = '#e8d8a8';
+      pg.fillText((work.caption || '').slice(0, 32), 128, 42);
+      pg.strokeStyle = '#c8a050'; pg.lineWidth = 2; pg.strokeRect(1,1,254,62);
+      const plaqueTex = new THREE.CanvasTexture(plaqueCanvas);
+      const plaqueMat = new THREE.MeshBasicMaterial({ map: plaqueTex });
+      const plaque = new THREE.Mesh(new THREE.PlaneGeometry(0.9, 0.22), plaqueMat);
+      plaque.position.set(mx + nx * (offset + 0.1), wallHeight / 2 + 0.3 - frameH/2 - 0.25, mz + nz * (offset + 0.1));
+      plaque.lookAt(0, plaque.position.y, 0);
+      scene.add(plaque);
+    }
+
+    // === カメラ ===
+    const camera = new THREE.PerspectiveCamera(70, W()/H(), 0.1, 200);
+    camera.position.set(0, 1.7, 0);
+    let yaw = 0, pitch = 0;
+
+    // === 入力 ===
+    const keys = { w:0, a:0, s:0, d:0 };
+    window.addEventListener('keydown', e => {
+      if (!ov.classList.contains('open')) return;
+      const k = e.key.toLowerCase();
+      if (k === 'w' || e.key === 'ArrowUp') keys.w = 1;
+      if (k === 's' || e.key === 'ArrowDown') keys.s = 1;
+      if (k === 'a' || e.key === 'ArrowLeft') keys.a = 1;
+      if (k === 'd' || e.key === 'ArrowRight') keys.d = 1;
+    });
+    window.addEventListener('keyup', e => {
+      const k = e.key.toLowerCase();
+      if (k === 'w' || e.key === 'ArrowUp') keys.w = 0;
+      if (k === 's' || e.key === 'ArrowDown') keys.s = 0;
+      if (k === 'a' || e.key === 'ArrowLeft') keys.a = 0;
+      if (k === 'd' || e.key === 'ArrowRight') keys.d = 0;
+    });
+    // ドラッグで見回す
+    let dragging = false, lastX = 0, lastY = 0, dragStartId = null;
+    renderer.domElement.addEventListener('pointerdown', e => {
+      dragStartId = e.pointerId;
+      dragging = true; lastX = e.clientX; lastY = e.clientY;
+    });
+    renderer.domElement.addEventListener('pointermove', e => {
+      if (!dragging) return;
+      yaw -= (e.clientX - lastX) * 0.004;
+      pitch = Math.max(-1.2, Math.min(1.2, pitch - (e.clientY - lastY) * 0.004));
+      lastX = e.clientX; lastY = e.clientY;
+    });
+    const stopDrag = () => { dragging = false; dragStartId = null; };
+    renderer.domElement.addEventListener('pointerup', stopDrag);
+    renderer.domElement.addEventListener('pointercancel', stopDrag);
+    renderer.domElement.addEventListener('pointerleave', stopDrag);
+    // モバイル: スティック
+    const stick = ov.querySelector('#m3dStick');
+    const knob = ov.querySelector('#m3dKnob');
+    let stickActive = false, stickDX = 0, stickDY = 0;
+    const stickStart = e => {
+      stickActive = true;
+      const t = e.touches ? e.touches[0] : e;
+      stick.dataset.cx = t.clientX; stick.dataset.cy = t.clientY;
+      stickDX = stickDY = 0; e.preventDefault();
+    };
+    const stickMove = e => {
+      if (!stickActive) return;
+      const t = e.touches ? e.touches[0] : e;
+      const cx = +stick.dataset.cx, cy = +stick.dataset.cy;
+      let dx = t.clientX - cx, dy = t.clientY - cy;
+      const d = Math.hypot(dx, dy);
+      const MAX = 40;
+      if (d > MAX) { dx = dx/d*MAX; dy = dy/d*MAX; }
+      knob.style.transform = `translate(${dx}px, ${dy}px)`;
+      stickDX = dx / MAX; stickDY = dy / MAX;
+      e.preventDefault();
+    };
+    const stickEnd = () => {
+      stickActive = false; knob.style.transform = 'translate(0,0)'; stickDX = stickDY = 0;
+    };
+    stick.addEventListener('touchstart', stickStart, { passive: false });
+    stick.addEventListener('touchmove', stickMove, { passive: false });
+    stick.addEventListener('touchend', stickEnd);
+    stick.addEventListener('mousedown', stickStart);
+    window.addEventListener('mousemove', stickMove);
+    window.addEventListener('mouseup', stickEnd);
+
+    // 閉じる
+    let running = true;
+    const close = () => {
+      running = false;
       ov.classList.remove('open');
       setTimeout(() => ov.remove(), 500);
+    };
+    ov.querySelector('.museum3d-close').addEventListener('click', close);
+
+    // 近くの絵を判定 & ビューボタン
+    let currentNear = null;
+    viewBtn.addEventListener('click', () => {
+      if (currentNear) openMuseum(currentNear.userData.work.img,
+        `${currentNear.userData.work.origin}　${currentNear.userData.work.chapterTitle}　／　${currentNear.userData.work.caption}`);
     });
-    ov.querySelectorAll('.myth-hall-art').forEach(fig => {
-      fig.addEventListener('click', () => {
-        const idx = +fig.dataset.idx;
-        const w = works[idx];
-        if (w) openMuseum(w.img, `${w.origin}　${w.chapterTitle}　／　${w.caption}`);
+
+    // アニメ
+    const raycaster = new THREE.Raycaster();
+    function animate() {
+      if (!running) return;
+      // 移動
+      const speed = 0.08;
+      const fwd = (keys.w - keys.s) - stickDY;
+      const strafe = (keys.d - keys.a) + stickDX;
+      const moveLen = Math.hypot(fwd, strafe);
+      if (moveLen > 0) {
+        const nx = Math.sin(yaw), nz = -Math.cos(yaw);
+        const sx = Math.cos(yaw), sz = Math.sin(yaw);
+        let dx = (nx * fwd + sx * strafe) * speed;
+        let dz = (nz * fwd + sz * strafe) * speed;
+        camera.position.x += dx; camera.position.z += dz;
+        // 壁コリジョン（中心からの距離を制限）
+        const d = Math.hypot(camera.position.x, camera.position.z);
+        const maxD = radius - 1.5;
+        if (d > maxD) {
+          camera.position.x = camera.position.x / d * maxD;
+          camera.position.z = camera.position.z / d * maxD;
+        }
+      }
+      // カメラ向き（yaw, pitch）
+      const lookDist = 5;
+      camera.lookAt(
+        camera.position.x + Math.sin(yaw) * Math.cos(pitch) * lookDist,
+        camera.position.y + Math.sin(pitch) * lookDist,
+        camera.position.z - Math.cos(yaw) * Math.cos(pitch) * lookDist
+      );
+      // 最寄絵を検索
+      let best = null, bestD = 4;
+      paintings.forEach(p => {
+        const dx = p.position.x - camera.position.x;
+        const dz = p.position.z - camera.position.z;
+        const dist = Math.hypot(dx, dz);
+        if (dist < bestD) {
+          // 前方判定
+          const fx = Math.sin(yaw), fz = -Math.cos(yaw);
+          const dot = (dx/dist) * fx + (dz/dist) * fz;
+          if (dot > 0.3) { best = p; bestD = dist; }
+        }
       });
+      if (best !== currentNear) {
+        currentNear = best;
+        if (best) {
+          info.textContent = `${best.userData.work.origin}　—　${best.userData.work.chapterTitle}`;
+          info.classList.add('show');
+          viewBtn.classList.add('show');
+        } else {
+          info.classList.remove('show');
+          viewBtn.classList.remove('show');
+        }
+      }
+      // シャンデリアゆらぎ
+      chandLight.intensity = 2.0 + Math.sin(Date.now() * 0.003) * 0.15;
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      renderer.setSize(W(), H());
+      camera.aspect = W()/H();
+      camera.updateProjectionMatrix();
     });
+
+    // ヒント3秒でフェード
+    setTimeout(() => { const h = ov.querySelector('#m3dHint'); if (h) h.classList.add('fade'); }, 4500);
   }
   window.openMythMuseum = openMythMuseum;
 

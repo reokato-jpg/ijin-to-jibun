@@ -522,9 +522,12 @@ function showView(name, pushHistory = true) {
       if (typeof stopPhoneAmbience === 'function') stopPhoneAmbience();
     }
   } catch {}
-  // レキットはホーム画面のみ表示
+  // ラビン/レキット：お気に入り（独自デザイン）と人物詳細以外では常に表示
   const rabin = document.getElementById('powerHintAnim');
-  if (rabin) rabin.hidden = (name !== 'people');
+  if (rabin) {
+    const hideOnViews = new Set(['favorites', 'person']);
+    rabin.hidden = hideOnViews.has(name);
+  }
   const intro = document.getElementById('welcomeIntro');
   if (intro && name !== 'people') intro.hidden = true;
   views.forEach(v => {

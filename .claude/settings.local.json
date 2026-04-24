@@ -44,7 +44,8 @@
       "mcp__Claude_in_Chrome__tabs_context_mcp",
       "mcp__Claude_in_Chrome__javascript_tool",
       "WebFetch(domain:ijin-to-jibun.com)",
-      "Bash(vercel ls *)"
+      "Bash(vercel ls *)",
+      "mcp__Claude_in_Chrome__read_console_messages"
     ]
   }
 }
