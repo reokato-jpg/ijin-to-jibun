@@ -5549,6 +5549,14 @@
           <div class="tale-home-sub">──  世界が始まる前、人はどんな話を語り合ったか</div>
         </div>
         <div class="tale-grid">${coverHTML}</div>
+        <button class="myth-museum-btn" id="mythMuseumBtn">
+          <span class="mmb-icon">🏛</span>
+          <span class="mmb-body">
+            <span class="mmb-title">美 術 館</span>
+            <span class="mmb-sub">神話を描いた名画を、ホールで鑑賞する</span>
+          </span>
+          <span class="mmb-arrow">›</span>
+        </button>
         <div class="tale-home-foot">すべての神話は、宇宙を理解しようとした人の心の形。</div>
       </div>
       <div class="tale-reader" id="taleReader">
@@ -5724,6 +5732,8 @@
     ov.querySelectorAll('.tale-cover').forEach(b => {
       b.addEventListener('click', () => openTale(b.dataset.tale));
     });
+    const mmBtn = ov.querySelector('#mythMuseumBtn');
+    if (mmBtn) mmBtn.addEventListener('click', () => openMythMuseum());
     ov.querySelector('#taleBack').addEventListener('click', () => {
       reader.classList.remove('show');
       home.classList.add('show');
@@ -6128,6 +6138,70 @@
     });
   }
   window.openMuseum = openMuseum;
+
+  // ============================================================
+  // 🏛 神話美術館（全作品のギャラリーウォーク）
+  // ============================================================
+  function openMythMuseum() {
+    // 全章から絵画を収集
+    const works = [];
+    Object.keys(MYTH_STORIES).forEach(k => {
+      const s = MYTH_STORIES[k];
+      if (!s.chapters) return;
+      s.chapters.forEach(c => {
+        if (c.img) works.push({
+          img: c.img,
+          caption: c.caption || c.t,
+          origin: s.name,
+          emoji: s.emoji,
+          chapterTitle: c.t,
+        });
+      });
+    });
+    const ov = document.createElement('div');
+    ov.className = 'myth-hall-overlay';
+    ov.innerHTML = `
+      <div class="myth-hall-sky"></div>
+      <button class="myth-hall-close" aria-label="閉じる">×</button>
+      <div class="myth-hall-header">
+        <div class="myth-hall-super">T H E　M U S E U M</div>
+        <div class="myth-hall-title">神 話 美 術 館</div>
+        <div class="myth-hall-sub">── 人類が神々を見た、その筆致に触れる ──</div>
+        <div class="myth-hall-stats">全 ${works.length} 作品 / ${new Set(works.map(w => w.origin)).size} 神話</div>
+      </div>
+      <div class="myth-hall-gallery" id="mythHallGallery">
+        ${works.map((w, i) => `
+          <figure class="myth-hall-art" data-idx="${i}" style="animation-delay: ${i * 60}ms">
+            <div class="myth-hall-spot"></div>
+            <div class="myth-hall-frame">
+              <img src="${w.img}" alt="${w.caption}" loading="lazy"
+                onerror="this.closest('.myth-hall-art').classList.add('art-fail')"/>
+            </div>
+            <figcaption class="myth-hall-plaque">
+              <div class="mhp-origin">${w.emoji} ${w.origin} — ${w.chapterTitle}</div>
+              <div class="mhp-caption">${w.caption}</div>
+              <div class="mhp-pd">Public Domain</div>
+            </figcaption>
+          </figure>
+        `).join('')}
+      </div>
+      <div class="myth-hall-foot">タップで拡大 ──  足を止めて、見る</div>
+    `;
+    document.body.appendChild(ov);
+    requestAnimationFrame(() => ov.classList.add('open'));
+    ov.querySelector('.myth-hall-close').addEventListener('click', () => {
+      ov.classList.remove('open');
+      setTimeout(() => ov.remove(), 500);
+    });
+    ov.querySelectorAll('.myth-hall-art').forEach(fig => {
+      fig.addEventListener('click', () => {
+        const idx = +fig.dataset.idx;
+        const w = works[idx];
+        if (w) openMuseum(w.img, `${w.origin}　${w.chapterTitle}　／　${w.caption}`);
+      });
+    });
+  }
+  window.openMythMuseum = openMythMuseum;
 
 
   // ============================================================
