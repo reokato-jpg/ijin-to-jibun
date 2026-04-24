@@ -4802,11 +4802,12 @@
         return new THREE.CanvasTexture(sc);
       })();
       const hullMat = new THREE.MeshStandardMaterial({
-        map: hullTex, roughness: 0.28, metalness: 0.78,
-        emissive: 0x0a0e18, envMapIntensity: 1.5,
+        map: hullTex, roughness: 0.35, metalness: 0.55,
+        emissive: 0xffffff, emissiveMap: hullTex, emissiveIntensity: 0.55,
+        envMapIntensity: 1.5,
       });
-      const darkMat = new THREE.MeshStandardMaterial({ color: 0x1a2030, roughness: 0.5, metalness: 0.9, emissive: 0x030508 });
-      const accentMat = new THREE.MeshStandardMaterial({ color: 0xe63a50, roughness: 0.35, metalness: 0.6, emissive: 0x3a0810 });
+      const darkMat = new THREE.MeshStandardMaterial({ color: 0x4a5268, roughness: 0.4, metalness: 0.85, emissive: 0x2a3040, emissiveIntensity: 0.6 });
+      const accentMat = new THREE.MeshStandardMaterial({ color: 0xff5060, roughness: 0.3, metalness: 0.5, emissive: 0xc03040, emissiveIntensity: 0.7 });
 
       // フューズラージ（流線型：前方細く後方太い）
       // SphereGeometryを引き伸ばして尖らせる
@@ -4917,10 +4918,18 @@
       rocketGroup.add(bigGlow);
       rocketGroup.userData.bigGlow = bigGlow;
 
-      // ロケット自体の補助照明（暗い宇宙で見えるように）
-      const headlight = new THREE.PointLight(0x88b0ff, 1.4, 6, 1.5);
-      headlight.position.set(0, 0.1, 0.6);
+      // ロケット自体の補助照明（暗い宇宙で見えるように）— 3灯体制で明るく
+      const headlight = new THREE.PointLight(0xc0e0ff, 3.2, 10, 1.5);
+      headlight.position.set(0, 0.15, 0.7);
       rocketGroup.add(headlight);
+      // 真横からの補助光（機体全体を柔らかく照らす）
+      const fillLight = new THREE.PointLight(0xfff4e0, 2.2, 6, 1.4);
+      fillLight.position.set(0, 0.8, 0);
+      rocketGroup.add(fillLight);
+      // 下からの微弱な上向き光（アンダーライト）
+      const underLight = new THREE.PointLight(0x6688cc, 1.4, 5, 1.6);
+      underLight.position.set(0, -0.5, -0.1);
+      rocketGroup.add(underLight);
       const engineLight = new THREE.PointLight(0x60a0ff, 0.0, 10, 2);
       engineLight.position.z = -0.9;
       rocketGroup.add(engineLight);
