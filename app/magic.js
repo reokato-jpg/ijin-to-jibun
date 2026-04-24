@@ -2084,9 +2084,31 @@
              <div class="mmo-title">🗺 世界地図</div>
              <button class="mmo-close" id="mmoClose" aria-label="閉じる">×</button>
            </div>
+           <div class="mmo-filters">
+             <div class="mmo-filter-row">
+               <span class="mmo-filter-label">時代</span>
+               <button class="mmo-chip active" data-merc-era="all">全</button>
+               <button class="mmo-chip" data-merc-era="ancient">古代</button>
+               <button class="mmo-chip" data-merc-era="medieval">中世</button>
+               <button class="mmo-chip" data-merc-era="early_modern">近世</button>
+               <button class="mmo-chip" data-merc-era="modern">近代</button>
+               <button class="mmo-chip" data-merc-era="contemporary">現代</button>
+             </div>
+             <div class="mmo-filter-row">
+               <span class="mmo-filter-label">大陸</span>
+               <button class="mmo-chip active" data-merc-cont="all">全</button>
+               <button class="mmo-chip" data-merc-cont="asia">アジア</button>
+               <button class="mmo-chip" data-merc-cont="europe">ヨーロッパ</button>
+               <button class="mmo-chip" data-merc-cont="africa">アフリカ</button>
+               <button class="mmo-chip" data-merc-cont="namerica">北米</button>
+               <button class="mmo-chip" data-merc-cont="samerica">南米</button>
+               <button class="mmo-chip" data-merc-cont="oceania">オセアニア</button>
+             </div>
+           </div>
            <div class="mmo-canvas-wrap">
              <canvas class="mmo-canvas" id="mmoCanvas"></canvas>
              <div class="mmo-tip" id="mmoTip"></div>
+             <div class="mmo-people" id="mmoPeople"></div>
            </div>
          </div>
          <div class="magic-globe-eras">
@@ -2670,6 +2692,59 @@
       mmo.classList.add('show');
       drawMercator();
     });
+    // フィルタ状態
+    const mercFilter = { era: 'all', cont: 'all' };
+    const classifyEra = (b) => {
+      if (b == null) return null;
+      if (b < 500) return 'ancient';
+      if (b < 1500) return 'medieval';
+      if (b < 1800) return 'early_modern';
+      if (b < 1945) return 'modern';
+      return 'contemporary';
+    };
+    const classifyContinent = (lat, lng) => {
+      if (lat > 30 && lng > -15 && lng < 65) return 'europe';
+      if (lat > -38 && lat < 37 && lng > -20 && lng < 55) return 'africa';
+      if (lat < 15 && lat > -55 && lng > -85 && lng < -30) return 'samerica';
+      if (lat > 12 && lng > -170 && lng < -50) return 'namerica';
+      if (lat < -5 && lng > 110 && lng < 180) return 'oceania';
+      return 'asia';
+    };
+    ov.querySelectorAll('[data-merc-era]').forEach(b => {
+      b.addEventListener('click', () => {
+        ov.querySelectorAll('[data-merc-era]').forEach(x => x.classList.remove('active'));
+        b.classList.add('active');
+        mercFilter.era = b.dataset.mercEra;
+        drawMercator();
+      });
+    });
+    ov.querySelectorAll('[data-merc-cont]').forEach(b => {
+      b.addEventListener('click', () => {
+        ov.querySelectorAll('[data-merc-cont]').forEach(x => x.classList.remove('active'));
+        b.classList.add('active');
+        mercFilter.cont = b.dataset.mercCont;
+        drawMercator();
+      });
+    });
+    // 与えられた country エントリが現在のフィルタに該当するか + 通過する人たちを返す
+    function filterCountry(b, key) {
+      if (!b.coord || !b.people.length) return null;
+      const [lat, lng] = b.coord;
+      if (typeof lat !== 'number' || typeof lng !== 'number') return null;
+      if (Math.abs(lat) < 0.01 && Math.abs(lng) < 0.01) return null;
+      if (lat < -85 || lat > 85 || lng < -180 || lng > 180) return null;
+      if (mercFilter.cont !== 'all') {
+        const cont = classifyContinent(lat, lng);
+        if (cont !== mercFilter.cont) return null;
+      }
+      let peopleArr = b.people;
+      if (mercFilter.era !== 'all') {
+        peopleArr = b.people.filter(p => classifyEra(p.birth) === mercFilter.era);
+        if (!peopleArr.length) return null;
+      }
+      return { lat, lng, people: peopleArr };
+    }
+    const mmoPeople = ov.querySelector('#mmoPeople');
     // 緯度→Mercator y (0-1)  投影
     const mercY = (lat) => {
       const rad = Math.max(-85, Math.min(85, lat)) * Math.PI / 180;
@@ -2728,7 +2803,7 @@
       ctx.strokeStyle = 'rgba(255,200,120,0.12)';
       ctx.beginPath(); ctx.moveTo(0, mercY(23.4) * H); ctx.lineTo(W, mercY(23.4) * H); ctx.stroke();
       ctx.beginPath(); ctx.moveTo(0, mercY(-23.4) * H); ctx.lineTo(W, mercY(-23.4) * H); ctx.stroke();
-      // 昼夜オーバーレイ: multiply禁止、上から暗色レイヤー（海が保たれる）
+      // 昼夜オーバーレイ: 弱めにして地図を見やすく
       const now = new Date();
       const utcH = now.getUTCHours() + now.getUTCMinutes() / 60;
       const sunLng = -((utcH - 12) * 15);
@@ -2739,8 +2814,8 @@
         const lng = -180 + (360 / 48) * i;
         let diff = Math.abs(((lng - sunLng + 540) % 360) - 180);
         const night = diff / 180;
-        const a = night * 0.58;
-        nightGrad.addColorStop(i / 48, `rgba(5, 8, 22, ${a})`);
+        const a = night * 0.28; // 地図を見えやすく
+        nightGrad.addColorStop(i / 48, `rgba(8, 14, 32, ${a})`);
       }
       ctx.fillStyle = nightGrad; ctx.fillRect(0, 0, W, H);
       // 夜側の都市光（明るい夜景風、薄く）
@@ -2777,32 +2852,40 @@
         ctx.beginPath(); ctx.arc(x1, y1, 2.5, 0, Math.PI*2); ctx.fill();
         ctx.beginPath(); ctx.arc(x2, y2, 2.5, 0, Math.PI*2); ctx.fill();
       });
-      // 国ピン（偉人の居る場所だけ、不正座標は除外）
+      // 国ピン（フィルタ適用）
+      const drawnPins = [];
       Object.keys(byCountry).forEach(k => {
         const b = byCountry[k];
-        if (!b.coord || !b.people.length) return;
-        const lat = b.coord[0], lng = b.coord[1];
-        // 不正な (0,0) 座標、範囲外を弾く
-        if (typeof lat !== 'number' || typeof lng !== 'number') return;
-        if (Math.abs(lat) < 0.01 && Math.abs(lng) < 0.01) return; // Null Island
-        if (lat < -85 || lat > 85) return;
-        if (lng < -180 || lng > 180) return;
-        const x = mercX(lng) * W;
-        const y = mercY(lat) * H;
-        // 人数に応じてピンサイズ
-        const n = b.people.length;
-        const rBase = 2.5 + Math.min(5, Math.sqrt(n) * 0.9);
-        const rGlow = rBase * 3.5;
+        const f = filterCountry(b, k);
+        if (!f) return;
+        const x = mercX(f.lng) * W;
+        const y = mercY(f.lat) * H;
+        const n = f.people.length;
+        const rBase = 3 + Math.min(7, Math.sqrt(n) * 1.2);
+        const rGlow = rBase * 3.8;
         const g = ctx.createRadialGradient(x, y, 0, x, y, rGlow);
         g.addColorStop(0, 'rgba(255,230,150,0.95)');
         g.addColorStop(0.3, 'rgba(255,190,90,0.45)');
         g.addColorStop(1, 'rgba(255,170,60,0)');
         ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, rGlow, 0, Math.PI*2); ctx.fill();
         ctx.fillStyle = '#ffe890';
-        ctx.strokeStyle = 'rgba(255,140,40,0.9)';
-        ctx.lineWidth = 1;
+        ctx.strokeStyle = 'rgba(140,60,20,0.95)';
+        ctx.lineWidth = 1.2;
         ctx.beginPath(); ctx.arc(x, y, rBase, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+        // 国名＋人数（ピンの右側）
+        if (n >= 2) {
+          ctx.font = `bold ${Math.min(13, 10 + Math.sqrt(n))}px "Shippori Mincho", serif`;
+          ctx.fillStyle = '#fff6d0';
+          ctx.strokeStyle = 'rgba(20,10,30,0.9)';
+          ctx.lineWidth = 3;
+          const lbl = `${k} ${n}`;
+          ctx.strokeText(lbl, x + rBase + 4, y + 4);
+          ctx.fillText(lbl, x + rBase + 4, y + 4);
+        }
+        drawnPins.push({ x, y, r: Math.max(rBase, 10), country: k, people: f.people });
       });
+      // ピン配列をドロー後でアクセスできるよう保存
+      mmoCanvas._pins = drawnPins;
       // 主要都市ラベル
       const CITIES = [
         { name: '東京',     lat: 35.68, lng: 139.69 },
@@ -2843,26 +2926,44 @@
       ctx.font = '10px "Shippori Mincho", serif';
       ctx.fillText('World Map · 偉人ゆかりの地と都市', W - 240, H - 12);
     }
-    // ピンクリック判定
+    // ピンクリック判定 → 偉人リスト表示
     mmoCanvas.addEventListener('click', (e) => {
       const rect = mmoCanvas.getBoundingClientRect();
-      const W = rect.width, H = rect.height;
       const mx = e.clientX - rect.left, my = e.clientY - rect.top;
-      let hit = null, hitD = 12;
-      Object.keys(byCountry).forEach(k => {
-        const b = byCountry[k];
-        if (!b.coord || !b.people.length) return;
-        const x = mercX(b.coord[1]) * W;
-        const y = mercY(b.coord[0]) * H;
-        const d = Math.hypot(mx - x, my - y);
-        if (d < hitD) { hitD = d; hit = k; }
+      const pins = mmoCanvas._pins || [];
+      let hit = null, hitD = 18;
+      pins.forEach(p => {
+        const d = Math.hypot(mx - p.x, my - p.y);
+        if (d < Math.max(hitD, p.r + 6)) { hitD = d; hit = p; }
       });
       if (hit) {
-        mmoTip.textContent = `${hit} · ${byCountry[hit].people.length}人`;
-        mmoTip.style.left = (mx + 14) + 'px';
-        mmoTip.style.top = (my - 20) + 'px';
-        mmoTip.classList.add('show');
-        setTimeout(() => mmoTip.classList.remove('show'), 2600);
+        const items = hit.people.slice(0, 20).map(p => `
+          <button class="mmo-person" data-pid="${p.id}">
+            <span class="mmo-pname">${p.name}</span>
+            <span class="mmo-pbirth">${p.birth != null ? p.birth + '年生' : ''}</span>
+          </button>
+        `).join('');
+        mmoPeople.innerHTML = `
+          <div class="mmo-ppl-head">
+            <div class="mmo-ppl-title">${hit.country}<span class="mmo-ppl-count">${hit.people.length}人</span></div>
+            <button class="mmo-ppl-close" aria-label="閉じる">×</button>
+          </div>
+          <div class="mmo-ppl-list">${items}</div>
+          ${hit.people.length > 20 ? `<div class="mmo-ppl-more">+ ${hit.people.length - 20}人</div>` : ''}
+        `;
+        mmoPeople.classList.add('show');
+        mmoPeople.querySelector('.mmo-ppl-close').addEventListener('click', () => mmoPeople.classList.remove('show'));
+        mmoPeople.querySelectorAll('.mmo-person').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const id = btn.dataset.pid;
+            mmoPeople.classList.remove('show');
+            mmo.classList.remove('show');
+            ov.querySelector('.magic-deep-close')?.click();
+            setTimeout(() => { if (typeof window.showPerson === 'function') window.showPerson(id); }, 260);
+          });
+        });
+      } else {
+        mmoPeople.classList.remove('show');
       }
     });
     window.addEventListener('resize', () => { if (mmo.classList.contains('show')) drawMercator(); });
