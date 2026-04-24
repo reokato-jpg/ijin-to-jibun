@@ -3549,6 +3549,26 @@
         <button class="cosmos-zoom-btn" data-cosmos-zoom="in" aria-label="ズームイン">＋</button>
         <button class="cosmos-zoom-btn" data-cosmos-zoom="out" aria-label="ズームアウト">−</button>
       </div>
+      <button class="cosmos-rocket-toggle" id="cosmosRocketToggle" aria-label="ロケット操縦">🚀 ROCKET</button>
+      <div class="cosmos-rocket-ui" id="cosmosRocketUI">
+        <div class="cosmos-crosshair"></div>
+        <div class="cosmos-rocket-readout" id="cosmosRocketReadout">
+          <div class="rc-line"><span>TARGET</span><b id="rcTarget">—</b></div>
+          <div class="rc-line"><span>DIST</span><b id="rcDist">—</b></div>
+          <div class="rc-line"><span>SPD</span><b id="rcSpd">0.00</b></div>
+        </div>
+        <div class="cosmos-dpad" id="cosmosDpad">
+          <button class="dp dp-up"    data-dpad="up"    aria-label="上">▲</button>
+          <button class="dp dp-left"  data-dpad="left"  aria-label="左">◀</button>
+          <button class="dp dp-right" data-dpad="right" aria-label="右">▶</button>
+          <button class="dp dp-down"  data-dpad="down"  aria-label="下">▼</button>
+          <div class="dp-center"></div>
+        </div>
+        <div class="cosmos-rocket-actions">
+          <button class="cosmos-boost-btn" id="cosmosBoost" aria-label="加速">BOOST</button>
+          <button class="cosmos-brake-btn" id="cosmosBrake" aria-label="ブレーキ">BRAKE</button>
+        </div>
+      </div>
       <div class="cosmos-info-panel" id="cosmosInfoPanel">
         <button class="cosmos-info-close" aria-label="閉じる">×</button>
         <div class="cosmos-info-content" id="cosmosInfoContent"></div>
@@ -4355,6 +4375,163 @@
         userControlling = true;
       });
     });
+
+    // ============================================================
+    // 🚀 ロケット操縦モード（任天堂的な気持ちよさ目指し）
+    // ============================================================
+    let rocketMode = false;
+    const rocketPos = new THREE.Vector3(0, 10, 40);
+    const rocketVel = new THREE.Vector3(0, 0, 0);
+    let rocketYaw = Math.PI; // 太陽の方向へ
+    let rocketPitch = -0.1;
+    const dpadState = { up:false, down:false, left:false, right:false };
+    let thrustHold = false;
+    let brakeHold = false;
+    let visitedPlanet = null; // 直近訪問した惑星（連続トリガー防止）
+    const rocketToggle = ov.querySelector('#cosmosRocketToggle');
+    const rocketUI = ov.querySelector('#cosmosRocketUI');
+    const rcTarget = ov.querySelector('#rcTarget');
+    const rcDist = ov.querySelector('#rcDist');
+    const rcSpd = ov.querySelector('#rcSpd');
+    rocketToggle.addEventListener('click', () => {
+      if (phase !== 'universe') return;
+      rocketMode = !rocketMode;
+      rocketToggle.classList.toggle('active', rocketMode);
+      rocketUI.classList.toggle('show', rocketMode);
+      ov.querySelector('#cosmosZoomCtrl').style.display = rocketMode ? 'none' : '';
+      if (rocketMode) {
+        // カメラ位置から出発
+        rocketPos.copy(camera.position);
+        rocketVel.set(0,0,0);
+        // 初期向き：太陽（原点）方向
+        const dir = new THREE.Vector3().subVectors(new THREE.Vector3(0,0,0), rocketPos).normalize();
+        rocketYaw = Math.atan2(dir.x, dir.z);
+        rocketPitch = Math.asin(dir.y);
+        hud.textContent = '🚀 十字キーで操縦 / BOOSTで加速';
+        hud.classList.add('show');
+        setTimeout(() => hud.classList.remove('show'), 3000);
+      } else {
+        visitedPlanet = null;
+      }
+    });
+    // 十字キー（押下中ずっと入力）
+    const holdButton = (btn, onDown, onUp) => {
+      const down = (e) => { e.preventDefault(); onDown(); };
+      const up = (e) => { e.preventDefault(); onUp(); };
+      btn.addEventListener('pointerdown', down);
+      btn.addEventListener('pointerup', up);
+      btn.addEventListener('pointerleave', up);
+      btn.addEventListener('pointercancel', up);
+    };
+    ov.querySelectorAll('[data-dpad]').forEach(btn => {
+      const dir = btn.dataset.dpad;
+      holdButton(btn, () => { dpadState[dir] = true; }, () => { dpadState[dir] = false; });
+    });
+    holdButton(ov.querySelector('#cosmosBoost'), () => { thrustHold = true; }, () => { thrustHold = false; });
+    holdButton(ov.querySelector('#cosmosBrake'), () => { brakeHold = true; }, () => { brakeHold = false; });
+    // キーボード対応（PC向けボーナス）
+    const keyMap = { ArrowUp:'up', ArrowDown:'down', ArrowLeft:'left', ArrowRight:'right' };
+    window.addEventListener('keydown', (e) => {
+      if (!rocketMode) return;
+      if (keyMap[e.key]) { dpadState[keyMap[e.key]] = true; e.preventDefault(); }
+      if (e.key === ' ' || e.key === 'Shift') { thrustHold = true; e.preventDefault(); }
+      if (e.key === 'z' || e.key === 'Z') { brakeHold = true; }
+    });
+    window.addEventListener('keyup', (e) => {
+      if (keyMap[e.key]) dpadState[keyMap[e.key]] = false;
+      if (e.key === ' ' || e.key === 'Shift') thrustHold = false;
+      if (e.key === 'z' || e.key === 'Z') brakeHold = false;
+    });
+    function rocketForward() {
+      const cp = Math.cos(rocketPitch), sp = Math.sin(rocketPitch);
+      const cy = Math.cos(rocketYaw), sy = Math.sin(rocketYaw);
+      return new THREE.Vector3(cp * sy, sp, cp * cy);
+    }
+    function rocketUpdate() {
+      // 十字キーで向き変更（マリオカート的 easing）
+      const turnRate = 0.022;
+      const pitchRate = 0.018;
+      if (dpadState.left)  rocketYaw   += turnRate;
+      if (dpadState.right) rocketYaw   -= turnRate;
+      if (dpadState.up)    rocketPitch += pitchRate;
+      if (dpadState.down)  rocketPitch -= pitchRate;
+      rocketPitch = Math.max(-1.3, Math.min(1.3, rocketPitch));
+      // 推進
+      const fwd = rocketForward();
+      if (thrustHold) {
+        rocketVel.addScaledVector(fwd, 0.04);
+      }
+      if (brakeHold) {
+        rocketVel.multiplyScalar(0.92);
+      }
+      // 最高速度クランプ（気持ちよさのため）
+      const maxSpd = 2.8;
+      const sp = rocketVel.length();
+      if (sp > maxSpd) rocketVel.multiplyScalar(maxSpd / sp);
+      // 僅かなドラッグ（ゲーム的）
+      rocketVel.multiplyScalar(0.995);
+      rocketPos.add(rocketVel);
+      // 宇宙の果てガード
+      const maxR = 140;
+      if (rocketPos.length() > maxR) {
+        rocketPos.setLength(maxR);
+        rocketVel.multiplyScalar(0.3);
+      }
+      // カメラ反映：ロケットは見えないので一人称＋少し後方
+      const back = fwd.clone().multiplyScalar(-2.5);
+      const up = new THREE.Vector3(0,1,0);
+      camera.position.copy(rocketPos).add(back).addScaledVector(up, 0.8);
+      const look = rocketPos.clone().addScaledVector(fwd, 10);
+      camera.lookAt(look);
+      // 近接ターゲット検出
+      let nearest = null, nearestD = Infinity;
+      planetMeshes.forEach(pm => {
+        const d = pm.mesh.position.distanceTo(rocketPos);
+        if (d < nearestD) { nearestD = d; nearest = pm; }
+      });
+      if (nearest) {
+        rcTarget.textContent = nearest.planet.jname;
+        rcDist.textContent = nearestD.toFixed(1);
+        const arrivalR = nearest.planet.size * 3.5 + 2;
+        if (nearestD < arrivalR && visitedPlanet !== nearest) {
+          visitedPlanet = nearest;
+          showPlanetInfo(nearest);
+          // 到着時は減速
+          rocketVel.multiplyScalar(0.2);
+        } else if (nearestD > arrivalR * 2.5) {
+          if (visitedPlanet === nearest) visitedPlanet = null;
+        }
+      }
+      rcSpd.textContent = sp.toFixed(2);
+    }
+    function showPlanetInfo(pm) {
+      const p = pm.mesh.userData;
+      if (!p.facts) return;
+      const infoEl = ov.querySelector('#cosmosInfoContent');
+      const panel = ov.querySelector('#cosmosInfoPanel');
+      infoEl.innerHTML = `
+        <div class="cosmos-info-name">🚀 到着: ${p.jname}</div>
+        <div class="cosmos-info-sub">${p.isBlackHole ? 'BLACK HOLE · いて座A*' : p.name === '地球' ? 'EARTH · 偉人が生まれた星' : p.name.toUpperCase()}</div>
+        <dl class="cosmos-info-facts">
+          <dt>直径</dt><dd>${p.facts.diameter}</dd>
+          <dt>距離</dt><dd>${p.facts.distance}</dd>
+          <dt>周期</dt><dd>${p.facts.period}</dd>
+          <dt>温度</dt><dd>${p.facts.temp}</dd>
+          <dt>衛星</dt><dd>${p.facts.moons}</dd>
+          <dt>NASA</dt><dd>${p.facts.nasa}</dd>
+        </dl>
+        <div class="cosmos-info-trivia">${p.facts.trivia}</div>
+        ${p.isEarth ? `<button class="cosmos-info-cta" id="cosmosInfoCta">🌍 地球儀で偉人を見る</button>` : ''}
+      `;
+      panel.classList.add('show');
+      const cta = infoEl.querySelector('#cosmosInfoCta');
+      if (cta) {
+        cta.addEventListener('click', () => {
+          ov.classList.remove('open');
+          setTimeout(() => { ov.remove(); running = false; if (typeof openWorldMap === 'function') openWorldMap(); }, 300);
+        });
+      }
+    }
     function animate() {
       if (!running) return;
       if (phase === 'warp') {
@@ -4466,7 +4643,9 @@
           }
         }
         // カメラ
-        if (cameraZoomTarget) {
+        if (rocketMode) {
+          rocketUpdate();
+        } else if (cameraZoomTarget) {
           const t = cameraZoomTarget.mesh;
           const lerp = 0.05;
           camera.position.x += (t.position.x * 1.3 - camera.position.x) * lerp;
@@ -4500,6 +4679,7 @@
     const mouse = new THREE.Vector2();
     renderer.domElement.addEventListener('click', (e) => {
       if (phase !== 'universe') return;
+      if (rocketMode) return;
       const rect = renderer.domElement.getBoundingClientRect();
       mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;

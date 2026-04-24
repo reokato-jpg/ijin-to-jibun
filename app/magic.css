@@ -3336,6 +3336,178 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
   transition: background 0.2s, transform 0.1s;
 }
 .cosmos-zoom-btn:active { transform: scale(0.92); background: rgba(60,40,90,0.9); }
+
+/* 🚀 ロケット操縦モード */
+.cosmos-rocket-toggle {
+  position: absolute;
+  top: 14px;
+  right: 60px;
+  z-index: 16;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(80,40,140,0.85), rgba(30,20,60,0.85));
+  border: 1px solid rgba(200,170,255,0.5);
+  color: #fff;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 14px rgba(80,40,140,0.4);
+  transition: transform 0.12s, box-shadow 0.2s, background 0.2s;
+}
+.cosmos-rocket-toggle:active { transform: scale(0.94); }
+.cosmos-rocket-toggle.active {
+  background: linear-gradient(135deg, #ff5e7a, #ff9560);
+  border-color: rgba(255,230,180,0.8);
+  box-shadow: 0 0 18px rgba(255,120,100,0.6), 0 0 32px rgba(255,120,100,0.3);
+}
+
+.cosmos-rocket-ui {
+  position: absolute;
+  inset: 0;
+  z-index: 14;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.cosmos-rocket-ui.show { opacity: 1; }
+.cosmos-rocket-ui.show > * { pointer-events: auto; }
+.cosmos-rocket-ui.show .cosmos-crosshair { pointer-events: none; }
+
+/* クロスヘア */
+.cosmos-crosshair {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 44px; height: 44px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.cosmos-crosshair::before,
+.cosmos-crosshair::after {
+  content: '';
+  position: absolute;
+  background: rgba(200,255,230,0.6);
+  box-shadow: 0 0 4px rgba(200,255,230,0.5);
+}
+.cosmos-crosshair::before { left: 50%; top: 0; width: 1px; height: 100%; transform: translateX(-0.5px); }
+.cosmos-crosshair::after  { top: 50%; left: 0; height: 1px; width: 100%; transform: translateY(-0.5px); }
+
+/* ヘッドアップ計器 */
+.cosmos-rocket-readout {
+  position: absolute;
+  top: 56px;
+  left: 14px;
+  padding: 8px 12px;
+  background: rgba(10,10,30,0.55);
+  border: 1px solid rgba(180,220,255,0.25);
+  border-radius: 10px;
+  color: #cfe6ff;
+  font-family: ui-monospace, 'Menlo', 'Consolas', monospace;
+  font-size: 11px;
+  line-height: 1.5;
+  letter-spacing: 0.05em;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  min-width: 128px;
+}
+.cosmos-rocket-readout .rc-line {
+  display: flex; justify-content: space-between; gap: 10px;
+}
+.cosmos-rocket-readout .rc-line span { opacity: 0.6; }
+.cosmos-rocket-readout .rc-line b { color: #fff; font-weight: 600; }
+
+/* 十字キー */
+.cosmos-dpad {
+  position: absolute;
+  left: 18px;
+  bottom: 28px;
+  width: 150px; height: 150px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  user-select: none;
+  touch-action: none;
+}
+.cosmos-dpad .dp {
+  background: linear-gradient(180deg, rgba(40,40,70,0.9), rgba(20,20,40,0.9));
+  border: 1px solid rgba(180,200,255,0.35);
+  color: #fff;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: transform 0.08s, background 0.12s;
+}
+.cosmos-dpad .dp:active {
+  background: linear-gradient(180deg, #6a8cff, #3a54c8);
+  transform: scale(0.94);
+}
+.cosmos-dpad .dp-up    { grid-column: 2; grid-row: 1; border-radius: 10px 10px 3px 3px; }
+.cosmos-dpad .dp-left  { grid-column: 1; grid-row: 2; border-radius: 10px 3px 3px 10px; }
+.cosmos-dpad .dp-right { grid-column: 3; grid-row: 2; border-radius: 3px 10px 10px 3px; }
+.cosmos-dpad .dp-down  { grid-column: 2; grid-row: 3; border-radius: 3px 3px 10px 10px; }
+.cosmos-dpad .dp-center {
+  grid-column: 2; grid-row: 2;
+  background: linear-gradient(180deg, rgba(40,40,70,0.9), rgba(20,20,40,0.9));
+  border-top: 1px solid rgba(180,200,255,0.35);
+  border-bottom: 1px solid rgba(180,200,255,0.35);
+}
+
+/* BOOST / BRAKE */
+.cosmos-rocket-actions {
+  position: absolute;
+  right: 18px;
+  bottom: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.cosmos-boost-btn,
+.cosmos-brake-btn {
+  width: 88px; height: 88px;
+  border-radius: 50%;
+  border: none;
+  color: #fff;
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  user-select: none;
+  touch-action: none;
+  transition: transform 0.08s, box-shadow 0.15s;
+}
+.cosmos-boost-btn {
+  background: radial-gradient(circle at 35% 30%, #ffd080, #ff6030 55%, #a01d10);
+  box-shadow: 0 4px 14px rgba(255,80,40,0.5), inset 0 2px 4px rgba(255,255,255,0.4), inset 0 -4px 8px rgba(0,0,0,0.35);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+}
+.cosmos-boost-btn:active {
+  transform: scale(0.92);
+  box-shadow: 0 0 24px rgba(255,140,80,0.9), 0 0 48px rgba(255,100,60,0.6), inset 0 2px 4px rgba(255,255,255,0.4);
+}
+.cosmos-brake-btn {
+  width: 72px; height: 72px;
+  font-size: 11px;
+  background: radial-gradient(circle at 35% 30%, #c8d4e6, #5a7090 55%, #283048);
+  box-shadow: 0 4px 10px rgba(40,60,100,0.5), inset 0 2px 4px rgba(255,255,255,0.3), inset 0 -4px 8px rgba(0,0,0,0.3);
+  align-self: flex-end;
+}
+.cosmos-brake-btn:active { transform: scale(0.92); }
+
+@media (max-width: 480px) {
+  .cosmos-rocket-toggle { top: 10px; right: 54px; font-size: 11px; padding: 7px 11px; }
+  .cosmos-dpad { width: 132px; height: 132px; left: 12px; bottom: 22px; }
+  .cosmos-boost-btn { width: 78px; height: 78px; font-size: 13px; }
+  .cosmos-brake-btn { width: 62px; height: 62px; }
+  .cosmos-rocket-actions { right: 12px; bottom: 22px; }
+  .cosmos-rocket-readout { top: 50px; font-size: 10px; padding: 6px 10px; min-width: 112px; }
+}
 .cosmos-info-close {
   position: absolute;
   top: 8px;
