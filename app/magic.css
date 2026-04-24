@@ -4803,6 +4803,22 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
 }
+/* 逆回転（上の回転と組み合わせて星座風） */
+.svg-counter-rotate { animation: svgCounterRotate 120s linear infinite; transform-origin: center; }
+@keyframes svgCounterRotate { to { transform: rotate(-360deg); } }
+.svg-rotate-reverse { animation: svgRotateReverse 40s linear infinite; transform-origin: center; }
+@keyframes svgRotateReverse { to { transform: rotate(-360deg); } }
+/* 波紋（外側に広がる光輪） */
+.svg-ripple {
+  animation: svgRipple 4s ease-out infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+@keyframes svgRipple {
+  0% { transform: scale(0.2); opacity: 0.9; }
+  80% { opacity: 0.3; }
+  100% { transform: scale(6); opacity: 0; }
+}
 
 /* 🖼 パブリックドメイン名画 */
 .tale-art {

@@ -4731,37 +4731,93 @@
           caption: 'Gustave Doré（1861）',
           body: 'はじめに、神は天と地とを創造された。地は形なく、闇が深淵の面にあり、神の霊が水の面を動いていた。\n\n何もなかった。だが「なかった」という言葉すら、まだなかった。' },
         { t: '2. 光あれ',
-          svgArt: `<svg class="myth-svg myth-svg-light" viewBox="0 0 600 380" xmlns="http://www.w3.org/2000/svg">
+          svgArt: `<svg class="myth-svg myth-svg-light" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <radialGradient id="lightCore" cx="50%" cy="50%">
-                <stop offset="0%" stop-color="#fff6d8" stop-opacity="1"/>
-                <stop offset="30%" stop-color="#ffd480" stop-opacity="0.8"/>
-                <stop offset="70%" stop-color="#b06020" stop-opacity="0.3"/>
-                <stop offset="100%" stop-color="#1a0a00" stop-opacity="0"/>
+              <!-- 神秘的なグロー -->
+              <filter id="bigGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="18" result="blur"/>
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+              <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="6"/>
+                <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+              <radialGradient id="coreHeart">
+                <stop offset="0" stop-color="#fff" stop-opacity="1"/>
+                <stop offset="0.3" stop-color="#fff4c0" stop-opacity="0.9"/>
+                <stop offset="0.7" stop-color="#ffa040" stop-opacity="0.4"/>
+                <stop offset="1" stop-color="#ff6010" stop-opacity="0"/>
               </radialGradient>
-              <radialGradient id="lightBG" cx="50%" cy="50%"><stop offset="0%" stop-color="#0a0510"/><stop offset="100%" stop-color="#000"/></radialGradient>
+              <radialGradient id="goldHalo">
+                <stop offset="0" stop-color="#ffd880" stop-opacity="0.6"/>
+                <stop offset="0.5" stop-color="#c86020" stop-opacity="0.25"/>
+                <stop offset="1" stop-color="#3a0a00" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="voidBG" cx="50%" cy="55%">
+                <stop offset="0" stop-color="#1a0a20"/>
+                <stop offset="0.5" stop-color="#08040e"/>
+                <stop offset="1" stop-color="#000"/>
+              </radialGradient>
+              <linearGradient id="rayGrad" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0" stop-color="#fff8e0" stop-opacity="0.95"/>
+                <stop offset="0.6" stop-color="#ffb040" stop-opacity="0.35"/>
+                <stop offset="1" stop-color="#ff4020" stop-opacity="0"/>
+              </linearGradient>
             </defs>
-            <rect width="600" height="380" fill="url(#lightBG)"/>
-            <!-- 放射光条 -->
-            <g transform="translate(300,190)">
+            <rect width="600" height="400" fill="url(#voidBG)"/>
+            <!-- 遠い星屑 -->
+            <g fill="#fff0c0" opacity="0.5">
+              <circle cx="40" cy="60" r="1"/><circle cx="90" cy="120" r="0.8"/>
+              <circle cx="510" cy="70" r="1.2"/><circle cx="560" cy="130" r="0.8"/>
+              <circle cx="70" cy="320" r="1"/><circle cx="540" cy="340" r="0.9"/>
+              <circle cx="200" cy="40" r="0.6"/><circle cx="400" cy="50" r="0.8"/>
+            </g>
+            <!-- 中央：原初の光 -->
+            <g transform="translate(300,200)">
+              <!-- 大きな外側ハロ（フィルタ付き） -->
+              <circle r="260" fill="url(#goldHalo)" filter="url(#bigGlow)" class="svg-breathe"/>
+              <!-- 長い光の柱（24本、回転） -->
               <g class="svg-rotate-slow">
-                ${Array.from({length: 24}).map((_, i) => {
-                  const a = (i / 24) * 360;
-                  return `<rect x="-1.5" y="-200" width="3" height="200" fill="#ffd480" opacity="${0.2 + (i%3)*0.15}" transform="rotate(${a})"/>`;
+                ${Array.from({length: 32}).map((_, i) => {
+                  const a = (i / 32) * 360;
+                  const w = i % 3 === 0 ? 4 : i % 2 === 0 ? 2 : 1.2;
+                  const h = i % 3 === 0 ? 280 : 220;
+                  return `<rect x="${-w/2}" y="-${h}" width="${w}" height="${h}" fill="url(#rayGrad)" transform="rotate(${a})"/>`;
                 }).join('')}
               </g>
-              <circle r="180" fill="url(#lightCore)" opacity="0.55"/>
-              <circle r="120" fill="url(#lightCore)" opacity="0.8"/>
-              <circle r="50" fill="#fff8e8" opacity="0.9"/>
-              <circle r="30" fill="#ffffff" class="svg-pulse"/>
+              <!-- 反転放射（細かい光） -->
+              <g class="svg-counter-rotate" opacity="0.5">
+                ${Array.from({length: 48}).map((_, i) => {
+                  const a = (i / 48) * 360 + 3.75;
+                  return `<rect x="-0.5" y="-160" width="1" height="160" fill="#ffe0a0" transform="rotate(${a})"/>`;
+                }).join('')}
+              </g>
+              <!-- 拡散ハロ -->
+              <circle r="150" fill="url(#coreHeart)" opacity="0.5"/>
+              <circle r="90" fill="url(#coreHeart)" opacity="0.85"/>
+              <!-- 核 -->
+              <circle r="42" fill="#fff8e0" filter="url(#softGlow)" class="svg-pulse"/>
+              <circle r="26" fill="#ffffff"/>
+              <!-- 外側に広がる波動（3つ、時間差） -->
+              <circle r="40" fill="none" stroke="#ffd480" stroke-width="1.2" class="svg-ripple" style="opacity:0"/>
+              <circle r="40" fill="none" stroke="#ffa050" stroke-width="1" class="svg-ripple" style="animation-delay:-1.3s"/>
+              <circle r="40" fill="none" stroke="#ff8030" stroke-width="0.8" class="svg-ripple" style="animation-delay:-2.6s"/>
             </g>
-            <!-- はじまりの水のさざなみ -->
+            <!-- 深淵の水面（光が映る） -->
+            <g opacity="0.45">
+              <path d="M 0 340 Q 150 330 300 336 T 600 332" stroke="#4a6a90" stroke-width="1.4" fill="none"/>
+              <path d="M 0 355 Q 150 348 300 352 T 600 350" stroke="#3a5a80" stroke-width="1.1" fill="none"/>
+              <path d="M 0 370 Q 150 366 300 368 T 600 366" stroke="#2a4060" stroke-width="0.9" fill="none"/>
+              <path d="M 0 385 Q 150 382 300 384 T 600 383" stroke="#1a2a40" stroke-width="0.7" fill="none"/>
+            </g>
+            <!-- 水面の光の反射（中央下） -->
             <g opacity="0.4">
-              <path d="M 0 330 Q 150 318 300 326 T 600 322" stroke="#3a6080" stroke-width="1.2" fill="none"/>
-              <path d="M 0 345 Q 150 337 300 342 T 600 340" stroke="#2a4060" stroke-width="1" fill="none"/>
-              <path d="M 0 360 Q 150 354 300 358 T 600 356" stroke="#1a2a40" stroke-width="0.8" fill="none"/>
+              <ellipse cx="300" cy="340" rx="80" ry="4" fill="#ffd480" class="svg-pulse"/>
+              <ellipse cx="300" cy="348" rx="60" ry="3" fill="#ffa060" opacity="0.7"/>
             </g>
-            <text x="300" y="50" text-anchor="middle" fill="#ffd480" font-size="14" letter-spacing="0.3em" font-style="italic" opacity="0.7" font-family="Cormorant Garamond">FIAT LUX</text>
+            <!-- ラテン語 -->
+            <text x="300" y="60" text-anchor="middle" fill="#ffd880" font-size="18" letter-spacing="0.5em" font-style="italic" opacity="0.85" font-family="Cormorant Garamond" filter="url(#softGlow)">FIAT · LVX</text>
+            <text x="300" y="82" text-anchor="middle" fill="#ffa050" font-size="9" letter-spacing="0.3em" opacity="0.6" font-family="Cormorant Garamond">— GENESIS 1:3 —</text>
           </svg>`,
           caption: '光あれ — 言葉が世界を生んだ最初の瞬間',
           body: '神は言われた — 「光あれ」\nそして光があった。神は光を見て、よしとされた。\n\n言葉が、世界を産んだ最初の瞬間。' },
@@ -5230,7 +5286,144 @@
         { t: '1. 宇宙の呼吸', body: '宇宙は無限に生まれ、無限に消える。ブラフマーが目覚めれば宇宙が創られ、眠れば宇宙は消える。\n\n彼の一日は人間の四十三億二千万年。彼の一生は百のブラフマー年。それが終わると、宇宙そのものが溶け、また新しい宇宙が始まる。' },
         { t: '2. トリムールティ', body: '三主神。ブラフマー（創造）、ヴィシュヌ（維持）、シヴァ（破壊と再生）。\n\n三者は本来一つの至高存在ブラフマンの三つの相。呼吸するように、創っては保ち、保っては壊し、壊しては新しく生む。' },
         { t: '3. ヴィシュヌの化身', body: 'ヴィシュヌは世界の危機ごとに化身（アヴァターラ）して降りてくる。魚マツヤで大洪水から人類を救い、亀クールマで海を攪拌して不死の甘露を得た。\n\nラーマとして悪王ラーヴァナを倒し、クリシュナとして戦士アルジュナにバガヴァッド・ギーターを説いた。最後の化身カルキは、終末に白馬に乗って現れる。' },
-        { t: '4. シヴァの舞踏', body: 'シヴァは破壊神にして、再生の神。額に第三の眼、首に蛇、髪に月とガンジス川の女神を宿す。\n\n宇宙を焼き尽くす時、彼はナタラージャとして舞を踊る。その炎が古い世界を清め、次の世界への扉を開く。' },
+        { t: '4. シヴァの舞踏',
+          svgArt: `<svg class="myth-svg" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <filter id="fireGlow" x="-30%" y="-30%" width="160%" height="160%">
+                <feGaussianBlur stdDeviation="4"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+              <radialGradient id="cosmicBG" cx="50%" cy="50%">
+                <stop offset="0" stop-color="#4a1060"/>
+                <stop offset="0.5" stop-color="#200840"/>
+                <stop offset="1" stop-color="#040208"/>
+              </radialGradient>
+              <radialGradient id="fireCore" cx="50%" cy="50%">
+                <stop offset="0" stop-color="#fff8c0"/>
+                <stop offset="0.4" stop-color="#ffa020"/>
+                <stop offset="0.8" stop-color="#c02040" stop-opacity="0.6"/>
+                <stop offset="1" stop-color="#c02040" stop-opacity="0"/>
+              </radialGradient>
+              <linearGradient id="flameGrad" x1="0" x2="0" y1="1" y2="0">
+                <stop offset="0" stop-color="#ff4020" stop-opacity="0"/>
+                <stop offset="0.3" stop-color="#ff6020"/>
+                <stop offset="0.7" stop-color="#ffb040"/>
+                <stop offset="1" stop-color="#fff0a0"/>
+              </linearGradient>
+            </defs>
+            <rect width="600" height="600" fill="url(#cosmicBG)"/>
+            <!-- 星屑 -->
+            <g fill="#ffd8ff" opacity="0.55">
+              ${Array.from({length: 40}).map(() => {
+                const x = (Math.random() * 600).toFixed(1);
+                const y = (Math.random() * 600).toFixed(1);
+                const r = (0.5 + Math.random() * 1.2).toFixed(1);
+                return `<circle cx="${x}" cy="${y}" r="${r}"/>`;
+              }).join('')}
+            </g>
+            <!-- マンダラ背景 -->
+            <g transform="translate(300,300)" opacity="0.22">
+              <g class="svg-rotate-slow">
+                ${Array.from({length: 12}).map((_, i) => {
+                  const a = (i / 12) * 360;
+                  return `<path d="M 0 -240 Q -30 -200 0 -180 Q 30 -200 0 -240 Z" fill="#d080ff" transform="rotate(${a})"/>`;
+                }).join('')}
+              </g>
+              <circle r="200" fill="none" stroke="#d080ff" stroke-width="1" stroke-dasharray="2 6"/>
+              <circle r="160" fill="none" stroke="#d080ff" stroke-width="0.6"/>
+            </g>
+            <!-- 炎の輪（プラバーマンダラ） -->
+            <g transform="translate(300,300)">
+              <circle r="220" fill="url(#fireCore)" filter="url(#fireGlow)" opacity="0.75" class="svg-breathe"/>
+              <!-- 24の炎 -->
+              <g class="svg-rotate-reverse">
+                ${Array.from({length: 24}).map((_, i) => {
+                  const a = (i / 24) * 360;
+                  return `<g transform="rotate(${a})"><path d="M 0 -230 Q -15 -210 -10 -180 Q -5 -200 0 -210 Q 5 -200 10 -180 Q 15 -210 0 -230 Z" fill="url(#flameGrad)" opacity="0.92"/></g>`;
+                }).join('')}
+              </g>
+              <!-- 内側の金環 -->
+              <circle r="200" fill="none" stroke="#ffd480" stroke-width="2.5" opacity="0.7"/>
+              <circle r="180" fill="none" stroke="#ffa040" stroke-width="1" opacity="0.5" stroke-dasharray="1 4"/>
+            </g>
+            <!-- ナタラージャ（シヴァの舞姿） -->
+            <g transform="translate(300,310)">
+              <!-- 踏みつけるアパスマーラ（無知の悪魔） -->
+              <g transform="translate(0,140)">
+                <ellipse cx="0" cy="0" rx="70" ry="10" fill="#2a1a30" opacity="0.7"/>
+                <circle cx="15" cy="-4" r="6" fill="#4a2a40"/>
+                <path d="M -20 -2 L 30 -6 L 30 6 L -20 6 Z" fill="#4a2a40"/>
+              </g>
+              <!-- 左足（持ち上げ） -->
+              <path d="M -5 80 Q -30 60 -60 30" stroke="#d48050" stroke-width="12" stroke-linecap="round" fill="none"/>
+              <!-- 右足（踏みつける） -->
+              <path d="M 5 80 Q 5 110 10 134" stroke="#d48050" stroke-width="12" stroke-linecap="round" fill="none"/>
+              <!-- 胴体 -->
+              <ellipse cx="0" cy="40" rx="28" ry="50" fill="#d48050"/>
+              <!-- 腰布（赤い） -->
+              <path d="M -30 60 Q 0 75 30 60 L 35 100 Q 0 105 -35 100 Z" fill="#c02030" stroke="#6a0a18" stroke-width="1"/>
+              <!-- 首 -->
+              <rect x="-6" y="-12" width="12" height="14" fill="#d48050"/>
+              <!-- 青い首の毒（ニーラカンタ） -->
+              <rect x="-6" y="-6" width="12" height="4" fill="#4060a0"/>
+              <!-- 頭 -->
+              <circle cx="0" cy="-28" r="22" fill="#d48050"/>
+              <!-- 髪（黒い長髪、放射状に広がる） -->
+              <g transform="translate(0,-28)">
+                ${Array.from({length: 14}).map((_, i) => {
+                  const a = 180 + (i / 14) * 180;
+                  const rad = a * Math.PI / 180;
+                  const x1 = Math.cos(rad) * 18;
+                  const y1 = Math.sin(rad) * 18;
+                  const x2 = Math.cos(rad) * (30 + (i % 3) * 8);
+                  const y2 = Math.sin(rad) * (30 + (i % 3) * 8);
+                  return `<path d="M ${x1.toFixed(1)} ${y1.toFixed(1)} Q ${(x2*0.6).toFixed(1)} ${(y2*1.2).toFixed(1)} ${x2.toFixed(1)} ${y2.toFixed(1)}" stroke="#1a0a1a" stroke-width="2" fill="none"/>`;
+                }).join('')}
+              </g>
+              <!-- 三日月（髪に） -->
+              <path d="M -22 -42 A 6 6 0 0 1 -10 -42 A 4 4 0 0 0 -22 -42 Z" fill="#ffe890"/>
+              <!-- 第三の眼（額） -->
+              <circle cx="0" cy="-32" r="1.5" fill="#ff4020" class="svg-pulse"/>
+              <!-- 目 -->
+              <ellipse cx="-6" cy="-28" rx="2" ry="1" fill="#1a1a1a"/>
+              <ellipse cx="6" cy="-28" rx="2" ry="1" fill="#1a1a1a"/>
+              <!-- 4本の腕 -->
+              <!-- 右上腕（ダマル太鼓を持つ） -->
+              <path d="M 20 20 Q 60 -10 85 -30" stroke="#d48050" stroke-width="10" stroke-linecap="round" fill="none"/>
+              <!-- 太鼓 -->
+              <g transform="translate(92,-38)">
+                <rect x="-8" y="-5" width="16" height="10" fill="#8a5020" stroke="#4a2010" stroke-width="1"/>
+                <ellipse cx="-8" cy="0" rx="3" ry="5" fill="#d8b080"/>
+                <ellipse cx="8" cy="0" rx="3" ry="5" fill="#d8b080"/>
+              </g>
+              <!-- 左上腕（火を持つ） -->
+              <path d="M -20 20 Q -60 -10 -85 -30" stroke="#d48050" stroke-width="10" stroke-linecap="round" fill="none"/>
+              <!-- 火 -->
+              <g transform="translate(-90,-40)" class="svg-pulse">
+                <path d="M 0 0 Q -4 -10 0 -14 Q 4 -10 0 0 Z" fill="#ffa040"/>
+                <path d="M 0 -3 Q -2 -8 0 -10 Q 2 -8 0 -3 Z" fill="#fff4c0"/>
+              </g>
+              <!-- 右下腕（アバヤ・ムドラ、恐れるなの手印） -->
+              <path d="M 15 45 Q 55 60 75 55" stroke="#d48050" stroke-width="9" stroke-linecap="round" fill="none"/>
+              <circle cx="80" cy="55" r="7" fill="#d48050"/>
+              <!-- 手のひら線 -->
+              <path d="M 76 50 L 84 50 M 76 55 L 84 55" stroke="#8a4020" stroke-width="0.6"/>
+              <!-- 左下腕（ガジャ・ハスタ、足を指す） -->
+              <path d="M -15 45 Q -40 60 -55 75" stroke="#d48050" stroke-width="9" stroke-linecap="round" fill="none"/>
+              <!-- 首の蛇 -->
+              <path d="M -14 -8 Q -20 -15 -10 -18 Q 0 -20 10 -18 Q 20 -15 14 -8" stroke="#2a6a3a" stroke-width="2.5" fill="none"/>
+              <circle cx="-16" cy="-10" r="2" fill="#2a6a3a"/>
+              <!-- 装飾の金 -->
+              <circle cx="0" cy="15" r="3" fill="#ffd880"/>
+              <circle cx="-20" cy="30" r="2" fill="#ffd880"/>
+              <circle cx="20" cy="30" r="2" fill="#ffd880"/>
+            </g>
+            <!-- サンスクリット風ラベル -->
+            <text x="300" y="40" text-anchor="middle" fill="#ffd880" font-size="16" letter-spacing="0.4em" opacity="0.9" font-family="Cormorant Garamond" font-style="italic">ŚIVA NAṬARĀJA</text>
+            <text x="300" y="58" text-anchor="middle" fill="#d080ff" font-size="10" letter-spacing="0.3em" opacity="0.6" font-family="Cormorant Garamond">— COSMIC DANCE —</text>
+            <text x="300" y="575" text-anchor="middle" fill="#ffa050" font-size="10" letter-spacing="0.2em" opacity="0.65">宇宙を焼き尽くし、再び創る者</text>
+          </svg>`,
+          caption: 'ナタラージャ — 宇宙の破壊と再生の舞',
+          body: 'シヴァは破壊神にして、再生の神。額に第三の眼、首に蛇、髪に月とガンジス川の女神を宿す。\n\n宇宙を焼き尽くす時、彼はナタラージャとして舞を踊る。その炎が古い世界を清め、次の世界への扉を開く。' },
         { t: '5. 女神たちの力', body: 'すべての神にはシャクティ（女神の力）がある。ブラフマーにはサラスヴァティー（学問）、ヴィシュヌにはラクシュミー（富）、シヴァにはパールヴァティー。\n\nそして破壊の女神カーリー。シヴァが倒せぬ悪魔を首を切って飲み干し、血が地に落ちぬようにした。舌は血に染まる。' },
         { t: '6. ガネーシャの誕生', body: 'シヴァが遠征中、妻パールヴァティーは自分の体の垢から息子を作り、浴室の番をさせた。戻ってきたシヴァは見知らぬ子に道を塞がれ、激怒して首を刎ねた。\n\n妻に怒られ、通りすがりの最初の動物の首を代わりにつけると約束し、それが象だった。\n\nこうして障害を取り除く神、ガネーシャは生まれた。' },
       ]
