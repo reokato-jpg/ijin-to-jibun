@@ -400,18 +400,8 @@ body:has(.quote-zoom.open) .magic-parade {
   overflow: hidden;
   isolation: isolate;
 }
-/* 背景 Canvas（タイムスリップ） */
-.magic-topbook-warp {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  /* 上は素直に始まる、下だけフェードして背景と溶け合う */
-  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 78%, transparent 100%);
-          mask-image: linear-gradient(180deg, #000 0%, #000 78%, transparent 100%);
-  pointer-events: none;
-}
+/* 背景 Canvas（タイムスリップ）— 消去済み */
+.magic-topbook-warp { display: none !important; }
 .magic-topbook-bg {
   position: absolute;
   inset: 0;
@@ -422,21 +412,8 @@ body:has(.quote-zoom.open) .magic-parade {
   pointer-events: none;
   z-index: 1;
 }
-/* 金ラインは控えめに（上下フェード時代なので） */
-.magic-topbook::before,
-.magic-topbook::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(50%, 220px);
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(212, 176, 85, 0.35), transparent);
-  pointer-events: none;
-  z-index: 2;
-}
-.magic-topbook::before { top: 14px; }
-.magic-topbook::after  { bottom: 14px; }
+/* 金ライン装飾は削除（気持ち悪い背景対策） */
+.magic-topbook::before, .magic-topbook::after { display: none; }
 
 .magic-topbook-inner {
   position: relative;
