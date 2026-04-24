@@ -1169,13 +1169,30 @@
       ctx.textAlign = 'center';
       ctx.fillText('◆', c.width / 2, 220);
 
-      // ロゴ「偉人と自分。」— 大きく主役に
-      ctx.fillStyle = '#ead296';
-      ctx.font = 'bold 118px "Shippori Mincho", serif';
-      ctx.textAlign = 'center';
-      // 2行に分けて格調高く
-      ctx.fillText('偉人と', c.width / 2, c.height / 2 - 130);
-      ctx.fillText('自分。', c.width / 2, c.height / 2 + 10);
+      // ロゴ「偉人と自分。」— 画像を使用（title-logo.png）
+      const logoImg = makeCoverTexture._logoImg || (makeCoverTexture._logoImg = new Image());
+      if (!logoImg.src) {
+        logoImg.src = 'assets/title-logo.png?v=2';
+        logoImg.onload = () => {
+          if (makeCoverTexture._lastTex) makeCoverTexture._lastTex.needsUpdate = true;
+        };
+      }
+      if (logoImg.complete && logoImg.naturalWidth > 0) {
+        // ロゴを大きく中央配置（3D本のカバー中心やや上）
+        const maxW = c.width * 0.78;
+        const maxH = 360;
+        const scale = Math.min(maxW / logoImg.naturalWidth, maxH / logoImg.naturalHeight);
+        const dw = logoImg.naturalWidth * scale;
+        const dh = logoImg.naturalHeight * scale;
+        ctx.drawImage(logoImg, (c.width - dw) / 2, c.height / 2 - dh / 2 - 80, dw, dh);
+      } else {
+        // フォールバック: テキスト描画
+        ctx.fillStyle = '#ead296';
+        ctx.font = 'bold 118px "Shippori Mincho", serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('偉人と', c.width / 2, c.height / 2 - 130);
+        ctx.fillText('自分。', c.width / 2, c.height / 2 + 10);
+      }
 
       // 区切り
       ctx.strokeStyle = 'rgba(212,176,85,0.55)';
@@ -1224,6 +1241,7 @@
 
       const tex = new window.THREE.CanvasTexture(c);
       tex.anisotropy = 8;
+      makeCoverTexture._lastTex = tex; // ロゴ遅延ロード完了時にneedsUpdateするため
       return tex;
     }
 
@@ -1537,6 +1555,15 @@
          <button class="magic-graph-ctrl" data-filter="art">美術</button>
          <button class="magic-graph-ctrl" data-filter="history">歴史</button>
          <button class="magic-graph-ctrl" data-filter="science">科学</button>
+       </div>
+       <div class="magic-graph-controls magic-graph-eras">
+         <span class="magic-graph-eras-label">時代:</span>
+         <button class="magic-graph-era active" data-era="all">すべて</button>
+         <button class="magic-graph-era" data-era="ancient">古代(〜500)</button>
+         <button class="magic-graph-era" data-era="medieval">中世(500〜1500)</button>
+         <button class="magic-graph-era" data-era="early_modern">近世(1500〜1800)</button>
+         <button class="magic-graph-era" data-era="modern">近代(1800〜1900)</button>
+         <button class="magic-graph-era" data-era="contemporary">現代(1900〜)</button>
        </div>`);
 
     const canvas = ov.querySelector('#magicGraphCanvas');
@@ -1610,6 +1637,7 @@
       cat: categoryOf(p.field),
       img: p.imageUrl,
       imageUrl: p.imageUrl,
+      birth: p.birth,
       x: safeW/2 + (Math.random() - 0.5) * safeW * 0.7,
       y: safeH/2 + (Math.random() - 0.5) * safeH * 0.7,
       vx: 0, vy: 0,
@@ -1630,6 +1658,20 @@
     nodes.forEach(n => { n.r = Math.min(22, 12 + Math.sqrt(n.degree) * 2); });
 
     let activeFilter = 'all';
+    let activeEra = 'all';
+    function matchesEra(n) {
+      if (activeEra === 'all') return true;
+      const b = n.birth;
+      if (b == null) return false;
+      switch (activeEra) {
+        case 'ancient': return b < 500;
+        case 'medieval': return b >= 500 && b < 1500;
+        case 'early_modern': return b >= 1500 && b < 1800;
+        case 'modern': return b >= 1800 && b < 1900;
+        case 'contemporary': return b >= 1900;
+      }
+      return true;
+    }
     let view = { x: 0, y: 0, k: 1 };
     // 先に宣言（step() で参照するため TDZ を回避）
     let draggingNode = null;
@@ -1682,7 +1724,10 @@
         n.y += n.vy;
       });
     }
-    function matchesFilter(n) { return activeFilter === 'all' || n.cat === activeFilter; }
+    function matchesFilter(n) {
+      const catOk = activeFilter === 'all' || n.cat === activeFilter;
+      return catOk && matchesEra(n);
+    }
     function draw() {
       ctx.clearRect(0, 0, W, H);
       ctx.save();
@@ -1864,11 +1909,18 @@
       view.k = Math.max(0.3, Math.min(3, view.k * zoom));
     }, { passive: false });
 
-    // フィルタ
+    // カテゴリフィルタ
     ov.querySelectorAll('.magic-graph-ctrl').forEach(btn => {
       btn.addEventListener('click', () => {
         ov.querySelectorAll('.magic-graph-ctrl').forEach(b => b.classList.toggle('active', b === btn));
         activeFilter = btn.dataset.filter;
+      });
+    });
+    // 時代フィルタ
+    ov.querySelectorAll('.magic-graph-era').forEach(btn => {
+      btn.addEventListener('click', () => {
+        ov.querySelectorAll('.magic-graph-era').forEach(b => b.classList.toggle('active', b === btn));
+        activeEra = btn.dataset.era;
       });
     });
 
