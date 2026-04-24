@@ -37,7 +37,8 @@
       "Bash(python scripts/add_relations_batch.py)",
       "Bash(python -c ' *)",
       "Bash(node --check \"G:/共有ドライブ/Access Level 2/★新フォルダ★/システムフォルダ/偉人と自分。/app/magic.js\")",
-      "Bash(node --check \"G:/共有ドライブ/Access Level 2/★新フォルダ★/システムフォルダ/偉人と自分。/app/sw.js\")"
+      "Bash(node --check \"G:/共有ドライブ/Access Level 2/★新フォルダ★/システムフォルダ/偉人と自分。/app/sw.js\")",
+      "Bash(grep -E \"^\\(\\\\.\\\\/|[^:]*/$|$\\)\")"
     ]
   }
 }
