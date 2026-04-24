@@ -172,7 +172,7 @@
       "description": "論語を近代日本で実践した書。"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Confucius_02.png?width=500",
+  "imageUrl": "assets/portraits/confucius.webp",
   "wikiTitle": "孔子",
   "imageCredit": {
     "artist": "Wu Daozi",
@@ -281,5 +281,6 @@
       "巧言令色",
       "怪力乱神"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Confucius_02.png?width=500"
 }

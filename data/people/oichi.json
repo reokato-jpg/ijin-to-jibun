@@ -7,7 +7,7 @@
   "country": "日本",
   "field": "武家女性",
   "summary": "織田信長の妹。戦国一の美女と謳われた。浅井長政に嫁ぎ3人の娘（茶々・初・江）を産むが、兄・信長と夫・長政の対立で小谷城落城、娘と共に脱出。のち柴田勝家と再婚するも賤ヶ岳の戦いで勝家と共に自害した。",
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Oichinokata.jpg?width=500",
+  "imageUrl": "assets/portraits/oichi.webp",
   "wikiTitle": "お市の方",
   "birthMonth": 0,
   "birthDay": 0,
@@ -124,5 +124,6 @@
       "label": "兄",
       "relation": "兄妹"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Oichinokata.jpg?width=500"
 }

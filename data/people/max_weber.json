@@ -34,7 +34,7 @@
   "relations": [],
   "places": [],
   "books": [],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Max_Weber%2C_1918.jpg?width=500",
+  "imageUrl": "assets/portraits/max_weber.webp",
   "wikiTitle": "マックス・ウェーバー",
   "birthMonth": 4,
   "birthDay": 21,
@@ -53,5 +53,6 @@
     "personality": "知的、情熱的、鬱傾向、禁欲的。学問と行動を統合しようと苦しんだ思想家。",
     "likes": [],
     "dislikes": []
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Max_Weber%2C_1918.jpg?width=500"
 }

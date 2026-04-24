@@ -7,7 +7,7 @@
   "country": "日本",
   "field": "志士・教育者",
   "summary": "会津藩砲術師範の娘。戊辰戦争で鶴ヶ城に籠城し、男装しスペンサー銃で戦った「幕末のジャンヌ・ダルク」。維新後は新島襄と結婚し同志社の礎を築き、晩年は日本赤十字の篤志看護婦として86歳まで活動。「ハンサム・ウーマン」と呼ばれた。",
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Niijima_Yae_big_portrait.png?width=500",
+  "imageUrl": "assets/portraits/niijima_yae.webp",
   "wikiTitle": "新島八重",
   "birthMonth": 12,
   "birthDay": 1,
@@ -135,5 +135,6 @@
       "晩年は茶道師範"
     ]
   },
-  "relations": []
+  "relations": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Niijima_Yae_big_portrait.png?width=500"
 }

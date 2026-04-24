@@ -186,7 +186,7 @@
       "description": "望遠鏡による宇宙観測の記録"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Justus_Sustermans_-_Portrait_of_Galileo_Galilei_%28Uffizi%29.jpg?width=500",
+  "imageUrl": "assets/portraits/galileo.webp",
   "wikiTitle": "ガリレオ・ガリレイ",
   "imageCredit": {
     "artist": "Justus Sustermans",
@@ -222,5 +222,6 @@
       "アリストテレス至上主義",
       "宗教的独断"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Justus_Sustermans_-_Portrait_of_Galileo_Galilei_%28Uffizi%29.jpg?width=500"
 }

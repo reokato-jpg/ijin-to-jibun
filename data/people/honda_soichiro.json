@@ -139,7 +139,7 @@
       "description": "宗一郎の経営哲学"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Asahigraph-1955-Shinshun-1.jpg?width=500",
+  "imageUrl": "assets/portraits/honda_soichiro.webp",
   "wikiTitle": "本田宗一郎",
   "birthMonth": 11,
   "birthDay": 17,
@@ -168,5 +168,6 @@
       "前例主義",
       "官僚的思考"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Asahigraph-1955-Shinshun-1.jpg?width=500"
 }

@@ -11,12 +11,13 @@
   "events": [],
   "quotes": [],
   "places": [],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Zheng_He_statue_%28cropped%29.jpg?width=500",
+  "imageUrl": "assets/portraits/zheng_he.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
   "lifeDigest": "",
   "traits": {},
-  "relations": []
+  "relations": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Zheng_He_statue_%28cropped%29.jpg?width=500"
 }

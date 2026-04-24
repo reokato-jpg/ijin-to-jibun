@@ -261,7 +261,7 @@
       "description": "もう一人の弟子による回想。プラトンと違う角度から。"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Socrate_du_Louvre.jpg?width=500",
+  "imageUrl": "assets/portraits/socrates.webp",
   "wikiTitle": "ソクラテス",
   "imageCredit": {
     "artist": "Copy of Lysippos (?)",
@@ -371,5 +371,6 @@
       "ソフィスト（知恵の商人）",
       "形式的民主制"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Socrate_du_Louvre.jpg?width=500"
 }

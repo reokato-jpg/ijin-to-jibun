@@ -181,7 +181,7 @@
       "description": "決定版評伝。"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Portrait_of_Sir_Isaac_Newton%2C_1689_%28brightened%29.jpg?width=500",
+  "imageUrl": "assets/portraits/newton.webp",
   "wikiTitle": "アイザック・ニュートン",
   "imageCredit": {
     "artist": "Godfrey Kneller",
@@ -233,5 +233,6 @@
       "批判",
       "ライバル（フックやライプニッツ）"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Portrait_of_Sir_Isaac_Newton%2C_1689_%28brightened%29.jpg?width=500"
 }

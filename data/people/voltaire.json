@@ -84,7 +84,7 @@
       "source": "ヴォルテールの手紙"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Atelier_de_Nicolas_de_Largilli%C3%A8re%2C_portrait_de_Voltaire%2C_d%C3%A9tail_%28mus%C3%A9e_Carnavalet%29_-002.jpg?width=500",
+  "imageUrl": "assets/portraits/voltaire.webp",
   "wikiTitle": "ヴォルテール",
   "imageCredit": {
     "artist": "Atelier de Nicolas de Largillière",
@@ -149,5 +149,6 @@
       "name": "ライプニッツ",
       "relation": "楽観主義を嘲笑した相手"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Atelier_de_Nicolas_de_Largilli%C3%A8re%2C_portrait_de_Voltaire%2C_d%C3%A9tail_%28mus%C3%A9e_Carnavalet%29_-002.jpg?width=500"
 }

@@ -84,7 +84,7 @@
       "source": "『お気に召すまま』"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/CHANDOS3.jpg?width=500",
+  "imageUrl": "assets/portraits/shakespeare.webp",
   "wikiTitle": "ウィリアム・シェイクスピア",
   "imageCredit": {
     "artist": "John Taylor (attributed)",
@@ -166,5 +166,6 @@
       "description": "愛の悲劇の原型。",
       "asin": "4102020012"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/CHANDOS3.jpg?width=500"
 }

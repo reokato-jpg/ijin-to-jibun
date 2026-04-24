@@ -80,7 +80,7 @@
       "source": "甲陽軍鑑"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Takeda_Harunobu.jpg?width=500",
+  "imageUrl": "assets/portraits/takeda_shingen.webp",
   "wikiTitle": "武田信玄",
   "imageCredit": {
     "artist": "Unknown",
@@ -147,5 +147,6 @@
   ],
   "themes": [
     "sengoku"
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Takeda_Harunobu.jpg?width=500"
 }

@@ -34,7 +34,7 @@
   "relations": [],
   "places": [],
   "books": [],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Virginia_Woolf_1939.jpg?width=500",
+  "imageUrl": "assets/portraits/virginia_woolf.webp",
   "wikiTitle": "ヴァージニア・ウルフ",
   "birthMonth": 1,
   "birthDay": 25,
@@ -53,5 +53,6 @@
     "personality": "繊細、知性的、鬱病、完璧主義。光と闇を行き来した天才。",
     "likes": [],
     "dislikes": []
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Virginia_Woolf_1939.jpg?width=500"
 }

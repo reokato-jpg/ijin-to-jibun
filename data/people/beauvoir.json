@@ -159,7 +159,7 @@
       "description": "フェミニズムの記念碑的名著"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Simone_de_Beauvoir2.png?width=500",
+  "imageUrl": "assets/portraits/beauvoir.webp",
   "wikiTitle": "シモーヌ・ド・ボーヴォワール",
   "imageCredit": {
     "artist": "Moshe Milner",
@@ -205,5 +205,6 @@
     "dislikes": [
       "女性を家庭に閉じ込める社会"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Simone_de_Beauvoir2.png?width=500"
 }

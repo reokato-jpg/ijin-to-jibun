@@ -279,7 +279,7 @@
       "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%95%E3%83%A9%E3%83%B3%E3%83%84%E3%83%BB%E3%83%AA%E3%82%B9%E3%83%88%20%E5%B7%A1%E7%A4%BC%E3%81%AE%E5%B9%B4%20%E7%AC%AC2%E5%B9%B4%E3%80%8E%E3%82%A4%E3%82%BF%E3%83%AA%E3%82%A2%E3%80%8F"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Franz_Liszt.png?width=500",
+  "imageUrl": "assets/portraits/liszt.webp",
   "wikiTitle": "フランツ・リスト",
   "imageCredit": {
     "artist": "Franz Hanfstaengl",
@@ -376,5 +376,6 @@
     "dislikes": [
       "職業演奏家として使い捨てられること"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Franz_Liszt.png?width=500"
 }

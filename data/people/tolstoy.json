@@ -171,7 +171,7 @@
       "description": "『すべての幸福な家庭は…』"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/LNTolstoy.jpg?width=500",
+  "imageUrl": "assets/portraits/tolstoy.webp",
   "wikiTitle": "レフ・トルストイ",
   "imageCredit": {
     "artist": "В.Г. Чертков",
@@ -294,5 +294,6 @@
       "貴族階級の欺瞞",
       "教会の形式"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/LNTolstoy.jpg?width=500"
 }

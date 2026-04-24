@@ -169,7 +169,7 @@
       "description": "光と影を描いた評伝小説"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Noguchi_Hideyo.jpg?width=500",
+  "imageUrl": "assets/portraits/noguchi_hideyo.webp",
   "wikiTitle": "野口英世",
   "imageCredit": {
     "artist": "Unknown author Unknown author",
@@ -204,5 +204,6 @@
       "貧困時代の卑屈さ",
       "日本医学界の閉鎖性"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Noguchi_Hideyo.jpg?width=500"
 }

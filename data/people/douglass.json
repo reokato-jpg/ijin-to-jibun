@@ -11,12 +11,13 @@
   "events": [],
   "quotes": [],
   "places": [],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Frederick_Douglass_%28circa_1879%29_%28cropped%29.jpg?width=500",
+  "imageUrl": "assets/portraits/douglass.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
   "lifeDigest": "",
   "traits": {},
-  "relations": []
+  "relations": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Frederick_Douglass_%28circa_1879%29_%28cropped%29.jpg?width=500"
 }

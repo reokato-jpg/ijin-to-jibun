@@ -7,7 +7,7 @@
   "country": "日本",
   "field": "思想家・教育者",
   "summary": "長州藩の兵学師範。黒船に乗り込もうとして密航に失敗、投獄。萩の松下村塾でわずか1年半のうちに高杉晋作・久坂玄瑞・伊藤博文・山縣有朋ら維新の志士たちを育て、安政の大獄で処刑された。29歳の生涯で幕末を決定づけた魂の教師。",
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Yoshida_Shoin2.jpg?width=500",
+  "imageUrl": "assets/portraits/yoshida_shoin.webp",
   "wikiTitle": "吉田松陰",
   "birthMonth": 9,
   "birthDay": 20,
@@ -218,5 +218,6 @@
     "獄中で囚人たちに書物を教え、囚人からも学問を得ていた。『教育は双方向』の原点。",
     "処刑の朝、伝馬町牢屋敷で『留魂録』を書き上げ、同房の沼崎吉五郎に託した。沼崎は40年後にその一冊を松陰の教え子・野村靖に届ける。",
     "塾の教えはたった1年半。それでも明治政府の中枢を担う人材が9割この塾から出た。"
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Yoshida_Shoin2.jpg?width=500"
 }

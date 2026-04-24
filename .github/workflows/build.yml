@@ -1,0 +1,76 @@
+name: Auto Build
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'data/people/**/*.json'
+      - 'data/manifest.json'
+      - 'data/glossary.json'
+      - 'data/eras.json'
+      - 'data/tags.json'
+      - 'data/updates.json'
+      - 'data/articles.json'
+      - 'app/app.js'
+      - 'app/ai-consult.js'
+      - 'app/era-lore.js'
+      - 'app/history-patterns.js'
+      - 'app/style.css'
+      - 'app/era-theme.css'
+      - 'build.sh'
+      - 'build-people-bundle.py'
+  workflow_dispatch: {}
+
+# bot 自身のpushで再帰しないよう concurrency を切る
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    # CI bot が push した [skip ci] コミットには反応しない
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Show inputs summary
+        run: |
+          echo "📂 people JSONs: $(ls data/people/*.json | wc -l)"
+          echo "📦 current bundle size: $(du -k data/people-bundle.json 2>/dev/null | awk '{print $1}') KB"
+
+      - name: Run build (minify + people bundles)
+        run: |
+          chmod +x build.sh
+          ./build.sh
+
+      - name: Show output summary
+        run: |
+          echo "✅ Build done"
+          du -h app/dist/*.js app/dist/*.css data/people-bundle.json data/people-lite.json 2>/dev/null | sort -h || true
+
+      - name: Commit & push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A app/dist data/people-bundle.json data/people-lite.json 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "🤖 auto-build: bundles & minified assets [skip ci]"
+            git push origin HEAD:main
+          fi

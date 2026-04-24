@@ -11,12 +11,13 @@
   "events": [],
   "quotes": [],
   "places": [],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Yasunari_Kawabata_1938.jpg?width=500",
+  "imageUrl": "assets/portraits/kawabata_yasunari.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
   "lifeDigest": "",
   "traits": {},
-  "relations": []
+  "relations": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Yasunari_Kawabata_1938.jpg?width=500"
 }

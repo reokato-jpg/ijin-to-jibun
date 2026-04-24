@@ -190,7 +190,7 @@
       "description": "友人たちが語る素顔のブラームス。"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/JohannesBrahms.jpg?width=500",
+  "imageUrl": "assets/portraits/brahms.webp",
   "wikiTitle": "ヨハネス・ブラームス",
   "imageCredit": {
     "artist": "C. Brasch , Berlin ( biography )",
@@ -288,5 +288,6 @@
       "ワーグナー派の派手さ",
       "自分の肖像画"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/JohannesBrahms.jpg?width=500"
 }

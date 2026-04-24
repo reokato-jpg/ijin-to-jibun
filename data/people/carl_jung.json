@@ -46,7 +46,7 @@
       "asin": "4314008296"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/CGJung.jpg?width=500",
+  "imageUrl": "assets/portraits/carl_jung.webp",
   "wikiTitle": "カール・グスタフ・ユング",
   "birthMonth": 7,
   "birthDay": 26,
@@ -66,5 +66,6 @@
     "personality": "神秘主義的、深遠、独立独歩、夢と神話の研究者。フロイトを超えた精神探求者。",
     "likes": [],
     "dislikes": []
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/CGJung.jpg?width=500"
 }

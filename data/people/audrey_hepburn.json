@@ -148,7 +148,7 @@
       "description": "息子が語る母の素顔。"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/AudreyKHepburn.jpg?width=500",
+  "imageUrl": "assets/portraits/audrey_hepburn.webp",
   "wikiTitle": "オードリー・ヘプバーン",
   "birthMonth": 5,
   "birthDay": 4,
@@ -178,5 +178,6 @@
       "タブロイド",
       "戦争と飢餓"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/AudreyKHepburn.jpg?width=500"
 }

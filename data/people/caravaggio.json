@@ -11,12 +11,13 @@
   "events": [],
   "quotes": [],
   "places": [],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Bild-Ottavio_Leoni%2C_Caravaggio.jpg?width=500",
+  "imageUrl": "assets/portraits/caravaggio.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
   "lifeDigest": "",
   "traits": {},
-  "relations": []
+  "relations": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Bild-Ottavio_Leoni%2C_Caravaggio.jpg?width=500"
 }

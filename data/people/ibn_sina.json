@@ -57,7 +57,7 @@
       "source": "『医学典範』"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Avicenna.jpg?width=500",
+  "imageUrl": "assets/portraits/ibn_sina.webp",
   "wikiTitle": "イブン・スィーナー",
   "imageCredit": {
     "artist": "Unknown medieval Persian miniature",
@@ -96,5 +96,6 @@
       "思考停止"
     ]
   },
-  "id": "ibn_sina"
+  "id": "ibn_sina",
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Avicenna.jpg?width=500"
 }

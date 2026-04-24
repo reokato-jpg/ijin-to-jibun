@@ -180,7 +180,7 @@
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Thomaskirche_Leipzig_-_2014_12_30.webm/330px--Thomaskirche_Leipzig_-_2014_12_30.webm.jpg"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Johann_Sebastian_Bach.jpg?width=500",
+  "imageUrl": "assets/portraits/bach.webp",
   "wikiTitle": "ヨハン・ゼバスティアン・バッハ",
   "imageCredit": {
     "artist": "Elias Gottlob Haussmann",
@@ -443,5 +443,6 @@
       "relation": "憧れの先達",
       "note": "1705年リューベックまで400km徒歩で聴きに行った。"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Johann_Sebastian_Bach.jpg?width=500"
 }

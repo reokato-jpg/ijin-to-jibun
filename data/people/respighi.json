@@ -185,7 +185,7 @@
       "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%AA%E3%83%83%E3%83%88%E3%83%AA%E3%83%BC%E3%83%8E%E3%83%BB%E3%83%AC%E3%82%B9%E3%83%94%E3%83%BC%E3%82%AE%20%E4%BA%A4%E9%9F%BF%E8%A9%A9%E3%80%8E%E3%83%AD%E3%83%BC%E3%83%9E%E3%81%AE%E7%A5%AD%E3%80%8F"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Respighi_1935.jpg?width=500",
+  "imageUrl": "assets/portraits/respighi.webp",
   "wikiTitle": "オットリーノ・レスピーギ",
   "imageCredit": {
     "artist": "Madeline Grimoldi",
@@ -218,5 +218,6 @@
     "dislikes": [
       "政治への音楽動員"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Respighi_1935.jpg?width=500"
 }

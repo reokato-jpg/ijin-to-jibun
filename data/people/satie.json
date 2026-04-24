@@ -163,7 +163,7 @@
       "description": "奇才サティの素描。"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Ericsatie.jpg?width=500",
+  "imageUrl": "assets/portraits/satie.webp",
   "wikiTitle": "エリック・サティ",
   "imageCredit": {
     "artist": "Henri Manuel",
@@ -283,5 +283,6 @@
       "name": "シュザンヌ・ヴァラドン",
       "relation": "短い恋人"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Ericsatie.jpg?width=500"
 }

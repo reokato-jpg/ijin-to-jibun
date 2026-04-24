@@ -85,7 +85,7 @@
       "source": "ワイルドの言葉"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Oscar_Wilde_by_Napoleon_Sarony._Three-quarter-length_photograph%2C_seated.jpg?width=500",
+  "imageUrl": "assets/portraits/oscar_wilde.webp",
   "wikiTitle": "オスカー・ワイルド",
   "imageCredit": {
     "artist": "Napoleon Sarony (1882)",
@@ -162,5 +162,6 @@
       "author": "オスカー・ワイルド",
       "description": "監獄から書かれた愛と悔恨の手紙。"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Oscar_Wilde_by_Napoleon_Sarony._Three-quarter-length_photograph%2C_seated.jpg?width=500"
 }

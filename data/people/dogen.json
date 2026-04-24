@@ -11,12 +11,13 @@
   "events": [],
   "quotes": [],
   "places": [],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Soto-Zen-Master-Dogen-Zenji-Portrait.png?width=500",
+  "imageUrl": "assets/portraits/dogen.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
   "lifeDigest": "",
   "traits": {},
-  "relations": []
+  "relations": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Soto-Zen-Master-Dogen-Zenji-Portrait.png?width=500"
 }

@@ -197,7 +197,7 @@
       "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%A2%E3%83%BC%E3%83%AD%E3%83%B3%E3%83%BB%E3%82%B3%E3%83%BC%E3%83%97%E3%83%A9%E3%83%B3%E3%83%89%20%E3%83%90%E3%83%AC%E3%82%A8%E3%80%8E%E3%83%AD%E3%83%87%E3%82%AA%E3%80%8F"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Aaron_Copland_1970.JPG?width=500",
+  "imageUrl": "assets/portraits/copland.webp",
   "wikiTitle": "アーロン・コープランド",
   "imageCredit": {
     "artist": "CBS Television",
@@ -230,5 +230,6 @@
       "政治的迫害",
       "欧州至上主義"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Aaron_Copland_1970.JPG?width=500"
 }

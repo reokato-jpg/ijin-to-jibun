@@ -204,7 +204,7 @@
       "description": "世界を揺るがした40ページの小冊子"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Karl_Marx_by_John_Jabez_Edwin_Mayall_1875_-_Restored_%26_Adjusted_%283x4_cropped_b%29.png?width=500",
+  "imageUrl": "assets/portraits/marx.webp",
   "wikiTitle": "カール・マルクス",
   "imageCredit": {
     "artist": "John Jabez Edwin Mayall",
@@ -324,5 +324,6 @@
       "資本家階級",
       "プチブルジョアの欺瞞"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Karl_Marx_by_John_Jabez_Edwin_Mayall_1875_-_Restored_%26_Adjusted_%283x4_cropped_b%29.png?width=500"
 }

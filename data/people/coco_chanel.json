@@ -140,7 +140,7 @@
       "description": "本人が友人に語ったシャネル哲学。"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Coco_Chanel_in_Los_Angeles%2C_1931_%28cropped%29.jpg?width=500",
+  "imageUrl": "assets/portraits/coco_chanel.webp",
   "wikiTitle": "ココ・シャネル",
   "birthMonth": 8,
   "birthDay": 19,
@@ -170,5 +170,6 @@
       "流行追随",
       "束縛"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Coco_Chanel_in_Los_Angeles%2C_1931_%28cropped%29.jpg?width=500"
 }

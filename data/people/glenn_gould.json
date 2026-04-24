@@ -82,7 +82,7 @@
       "source": "ドキュメンタリー"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Glenn_Gould_1.jpg?width=500",
+  "imageUrl": "assets/portraits/glenn_gould.webp",
   "wikiTitle": "グレン・グールド",
   "imageCredit": {
     "artist": "CBC Television",
@@ -121,5 +121,6 @@
       "モーツァルト（公言していた）"
     ]
   },
-  "id": "glenn_gould"
+  "id": "glenn_gould",
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Glenn_Gould_1.jpg?width=500"
 }

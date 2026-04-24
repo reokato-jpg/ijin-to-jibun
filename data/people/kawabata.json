@@ -171,7 +171,7 @@
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Zushi_Marina_02.jpg/330px-Zushi_Marina_02.jpg"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Yasunari_Kawabata_1938.jpg?width=500",
+  "imageUrl": "assets/portraits/kawabata.webp",
   "wikiTitle": "川端康成",
   "imageCredit": {
     "artist": "Unknown author Unknown author",
@@ -256,5 +256,6 @@
       "relation": "日本人初受賞",
       "years": "1968"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Yasunari_Kawabata_1938.jpg?width=500"
 }

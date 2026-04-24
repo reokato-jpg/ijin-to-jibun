@@ -89,7 +89,7 @@
       "source": "ロックの随筆"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/John_Locke.jpg?width=500",
+  "imageUrl": "assets/portraits/john_locke.webp",
   "wikiTitle": "ジョン・ロック",
   "imageCredit": {
     "artist": "Godfrey Kneller (1697)",
@@ -156,5 +156,6 @@
       "relation": "思想的父",
       "note": "独立宣言・合衆国憲法に影響。"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/John_Locke.jpg?width=500"
 }

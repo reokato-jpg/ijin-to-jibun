@@ -81,7 +81,7 @@
       "source": "手紙より"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Bruckner_final_years.jpg?width=500",
+  "imageUrl": "assets/portraits/bruckner.webp",
   "wikiTitle": "アントン・ブルックナー",
   "imageCredit": {
     "artist": "Unknown photographer 1854",
@@ -173,5 +173,6 @@
       "relation": "批判者",
       "note": "ウィーンの評論家。ブルックナー作品を執拗に酷評。"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Bruckner_final_years.jpg?width=500"
 }

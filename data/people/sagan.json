@@ -159,7 +159,7 @@
       "description": "科学的思考の入門書。"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Carl_Sagan_Planetary_Society.JPG?width=500",
+  "imageUrl": "assets/portraits/sagan.webp",
   "wikiTitle": "カール・セーガン",
   "lifeDigest": "アメリカの天文学者・惑星科学者・作家。コーネル大学教授として金星の温室効果、火星の地表温度、タイタンの有機物など惑星科学の基礎を築き、パイオニア・ボイジャー探査機のメッセージプレート／ゴールデンレコードを監修した。1980年のTVシリーズ『コスモス』は世界60ヶ国6億人に宇宙科学を伝え、科学普及の金字塔となった。SF小説『コンタクト』、名言「ペイル・ブルー・ドット」など、科学の詩人として20世紀後半の宇宙観を形作った。",
   "traits": {
@@ -181,5 +181,6 @@
       "疑似科学",
       "権威主義"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Carl_Sagan_Planetary_Society.JPG?width=500"
 }

@@ -147,7 +147,7 @@
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Mus%C3%A9e_Marmottan.JPG/330px-Mus%C3%A9e_Marmottan.JPG"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Claude_Monet_1899_Nadar.jpg?width=500",
+  "imageUrl": "assets/portraits/monet.webp",
   "wikiTitle": "クロード・モネ",
   "imageCredit": {
     "artist": "Nadar",
@@ -329,5 +329,6 @@
       "name": "ジヴェルニーの庭",
       "relation": "生涯の主題"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Claude_Monet_1899_Nadar.jpg?width=500"
 }

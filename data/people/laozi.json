@@ -172,7 +172,7 @@
       "description": "五千字に凝縮された東洋思想の原典"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Lao-Tzu_on_his_buffalo%2C_followed_by_a_disciple.jpg?width=500",
+  "imageUrl": "assets/portraits/laozi.webp",
   "wikiTitle": "老子",
   "imageCredit": {
     "artist": "Unknown author Unknown author",
@@ -217,5 +217,6 @@
       "争い",
       "名声"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Lao-Tzu_on_his_buffalo%2C_followed_by_a_disciple.jpg?width=500"
 }

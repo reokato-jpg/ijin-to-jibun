@@ -178,7 +178,7 @@
       "description": "日本初の独自哲学書"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Portrait-of-Kitaro-Nishida.png?width=500",
+  "imageUrl": "assets/portraits/nishida.webp",
   "wikiTitle": "西田幾多郎",
   "imageCredit": {
     "artist": "Unknown author Unknown author",
@@ -246,5 +246,6 @@
       "name": "西欧哲学",
       "relation": "対峙と融合"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Portrait-of-Kitaro-Nishida.png?width=500"
 }

@@ -11,12 +11,13 @@
   "events": [],
   "quotes": [],
   "places": [],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Diogenes_Mosaic_R%C3%B6misch-Germanisches_Museum.jpg?width=500",
+  "imageUrl": "assets/portraits/diogenes.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
   "lifeDigest": "",
   "traits": {},
-  "relations": []
+  "relations": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Diogenes_Mosaic_R%C3%B6misch-Germanisches_Museum.jpg?width=500"
 }

@@ -7,7 +7,7 @@
   "country": "日本",
   "field": "志士・奇兵隊総督",
   "summary": "長州藩士。松下村塾で吉田松陰に学び、身分を問わない奇兵隊を創設。『おもしろきこともなき世をおもしろく』と詠み、29歳で肺結核により早世。短くも鮮烈な生涯で幕末を動かした風雲児。",
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Takasugi_Sinsaku.jpg?width=500",
+  "imageUrl": "assets/portraits/takasugi_shinsaku.webp",
   "wikiTitle": "高杉晋作",
   "birthMonth": 9,
   "birthDay": 27,
@@ -182,5 +182,6 @@
   ],
   "themes": [
     "bakumatsu"
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Takasugi_Sinsaku.jpg?width=500"
 }

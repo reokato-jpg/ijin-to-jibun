@@ -188,7 +188,7 @@
       "description": "若き日の観察が進化論の礎に。"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/1878_Darwin_photo_by_Leonard_from_Woodall_1884.jpg?width=500",
+  "imageUrl": "assets/portraits/darwin.webp",
   "wikiTitle": "チャールズ・ダーウィン",
   "imageCredit": {
     "artist": "Leonard Darwin",
@@ -341,5 +341,6 @@
       "公の場",
       "奴隷制度"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/1878_Darwin_photo_by_Leonard_from_Woodall_1884.jpg?width=500"
 }

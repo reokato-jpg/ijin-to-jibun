@@ -197,7 +197,7 @@
       "description": "生涯と作品を辿る評伝"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Joan_Miro_%28cropped%29.jpg?width=500",
+  "imageUrl": "assets/portraits/miro.webp",
   "wikiTitle": "ジョアン・ミロ",
   "birthMonth": 4,
   "birthDay": 20,
@@ -227,5 +227,6 @@
       "フランコ独裁",
       "騒がしいパリ"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Joan_Miro_%28cropped%29.jpg?width=500"
 }

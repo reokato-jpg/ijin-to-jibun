@@ -34,7 +34,7 @@
   "relations": [],
   "places": [],
   "books": [],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Jimi_Hendrix_cropped.jpg?width=500",
+  "imageUrl": "assets/portraits/jimi_hendrix.webp",
   "wikiTitle": "ジミ・ヘンドリックス",
   "birthMonth": 11,
   "birthDay": 27,
@@ -53,5 +53,6 @@
     "personality": "シャイ、完璧主義、革新的、破壊的。ギターと共にしか自分を表現できなかった。",
     "likes": [],
     "dislikes": []
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Jimi_Hendrix_cropped.jpg?width=500"
 }

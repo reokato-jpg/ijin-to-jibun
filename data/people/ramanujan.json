@@ -11,12 +11,13 @@
   "events": [],
   "quotes": [],
   "places": [],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Srinivasa_Ramanujan-Add._MS_a94_version2_%28cropped%29.jpg?width=500",
+  "imageUrl": "assets/portraits/ramanujan.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
   "lifeDigest": "",
   "traits": {},
-  "relations": []
+  "relations": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Srinivasa_Ramanujan-Add._MS_a94_version2_%28cropped%29.jpg?width=500"
 }

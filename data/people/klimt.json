@@ -157,7 +157,7 @@
       "description": "TASCHEN版"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Klimt.jpg?width=500",
+  "imageUrl": "assets/portraits/klimt.webp",
   "wikiTitle": "グスタフ・クリムト",
   "imageCredit": {
     "artist": "Josef Anton Trčka",
@@ -192,5 +192,6 @@
       "公の場",
       "インタビュー"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Klimt.jpg?width=500"
 }

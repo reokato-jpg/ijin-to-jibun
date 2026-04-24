@@ -11,12 +11,13 @@
   "events": [],
   "quotes": [],
   "places": [],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Folio_from_The_book_of_knowledge_of_ingenious_mechanical_devices_%281354_copy%29._Part_of_a_water_clock_%28detail%29.jpg?width=500",
+  "imageUrl": "assets/portraits/saladin.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
   "lifeDigest": "",
   "traits": {},
-  "relations": []
+  "relations": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Folio_from_The_book_of_knowledge_of_ingenious_mechanical_devices_%281354_copy%29._Part_of_a_water_clock_%28detail%29.jpg?width=500"
 }

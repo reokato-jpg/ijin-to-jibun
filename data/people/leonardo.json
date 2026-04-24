@@ -248,7 +248,7 @@
       "description": "万能の天才の思索（岩波文庫）。"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Leonardo_da_Vinci_-_presumed_self-portrait_-_WGA12798.jpg?width=500",
+  "imageUrl": "assets/portraits/leonardo.webp",
   "wikiTitle": "レオナルド・ダ・ヴィンチ",
   "imageCredit": {
     "artist": "Leonardo da Vinci",
@@ -450,5 +450,6 @@
       "title": "ベジタリアンで、市場で鳥を買って逃がしていた",
       "body": "当時としては珍しい菜食主義者。市場に売られている鳥かごの鳥を買い取って、わざわざ空へ逃がしていた記録が複数ある。『いつか人間が動物を殺すことを、動物を殺人と同じ罪と見なす時が来るだろう』と予言した。ダ・ヴィンチの手稿には哺乳類の心臓構造の詳細な解剖図もあり、生命への畏敬が科学研究の核にあった。"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Leonardo_da_Vinci_-_presumed_self-portrait_-_WGA12798.jpg?width=500"
 }

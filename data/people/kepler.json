@@ -158,7 +158,7 @@
     }
   ],
   "books": [],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/JKepler.jpg?width=500",
+  "imageUrl": "assets/portraits/kepler.webp",
   "wikiTitle": "ヨハネス・ケプラー",
   "imageCredit": {
     "artist": "August Köhler [1]",
@@ -194,5 +194,6 @@
       "魔女狩り",
       "ティコとの口論"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/JKepler.jpg?width=500"
 }

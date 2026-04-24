@@ -191,7 +191,7 @@
       "description": "辛辣だが不思議と慰めを与える人生指南。"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Arthur_Schopenhauer_by_J_Sch%C3%A4fer%2C_1859b.jpg?width=500",
+  "imageUrl": "assets/portraits/schopenhauer.webp",
   "wikiTitle": "アルトゥル・ショーペンハウアー",
   "imageCredit": {
     "artist": "Johann Schäfer",
@@ -274,5 +274,6 @@
       "name": "母・ヨハンナ",
       "relation": "不仲の肉親"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Arthur_Schopenhauer_by_J_Sch%C3%A4fer%2C_1859b.jpg?width=500"
 }

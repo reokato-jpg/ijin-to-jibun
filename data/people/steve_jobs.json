@@ -195,7 +195,7 @@
       "description": "公式伝記。本人が最後に語った姿。"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Steve_Jobs_Headshot_2010-CROP_%28cropped_2%29.jpg?width=500",
+  "imageUrl": "assets/portraits/steve_jobs.webp",
   "wikiTitle": "スティーブ・ジョブズ",
   "imageCredit": {
     "artist": "Matthew Yohe ( talk )",
@@ -297,5 +297,6 @@
       "複雑さ",
       "中途半端な仕事"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Steve_Jobs_Headshot_2010-CROP_%28cropped_2%29.jpg?width=500"
 }

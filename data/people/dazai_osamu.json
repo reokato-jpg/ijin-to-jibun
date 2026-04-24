@@ -179,7 +179,7 @@
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/251213_Nanzen-ji_Kyoto_Japan01s3.jpg/330px-251213_Nanzen-ji_Kyoto_Japan01s3.jpg"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Osamu_Dazai.jpg?width=500",
+  "imageUrl": "assets/portraits/dazai_osamu.webp",
   "wikiTitle": "太宰治",
   "imageCredit": {
     "artist": "Shigeru Tamura",
@@ -476,5 +476,6 @@
       "title": "桜桃忌 — 6月19日は命日でも誕生日でもある",
       "body": "1948年6月19日、玉川上水で遺体発見。偶然にも6月19日は太宰の39歳の誕生日。『桜桃忌』と名付けられ、毎年この日は三鷹の禅林寺（墓所）に大勢のファンが集まる。死を願いながら自分の誕生日を『遺体発見日』として残したのは、最後のレトリックだったのかもしれない。"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Osamu_Dazai.jpg?width=500"
 }

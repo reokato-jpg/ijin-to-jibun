@@ -34,7 +34,7 @@
   "relations": [],
   "places": [],
   "books": [],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Guglielmo_Marconi.jpg?width=500",
+  "imageUrl": "assets/portraits/marconi.webp",
   "wikiTitle": "グリエルモ・マルコーニ",
   "birthMonth": 4,
   "birthDay": 25,
@@ -53,5 +53,6 @@
     "personality": "情熱的、実務的、社交家、愛国的。発明を実用化しビジネスにした経営者肌の科学者。",
     "likes": [],
     "dislikes": []
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Guglielmo_Marconi.jpg?width=500"
 }

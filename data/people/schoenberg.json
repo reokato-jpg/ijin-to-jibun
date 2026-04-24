@@ -82,7 +82,7 @@
       "source": "インタビュー"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Arnold_Schoenberg_la_1948.jpg?width=500",
+  "imageUrl": "assets/portraits/schoenberg.webp",
   "wikiTitle": "アルノルト・シェーンベルク",
   "imageCredit": {
     "artist": "Man Ray (1927)",
@@ -119,5 +119,6 @@
       "伝統への盲従"
     ]
   },
-  "id": "schoenberg"
+  "id": "schoenberg",
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Arnold_Schoenberg_la_1948.jpg?width=500"
 }

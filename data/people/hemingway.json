@@ -166,7 +166,7 @@
       "description": "失われた世代の青春"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/ErnestHemingway.jpg?width=500",
+  "imageUrl": "assets/portraits/hemingway.webp",
   "wikiTitle": "アーネスト・ヘミングウェイ",
   "imageCredit": {
     "artist": "Lloyd Arnold",
@@ -265,5 +265,6 @@
       "批評家",
       "弱音"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/ErnestHemingway.jpg?width=500"
 }

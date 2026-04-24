@@ -38,7 +38,7 @@
   "relations": [],
   "places": [],
   "books": [],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/John_Lennon%2C_1974_%28restored_cropped%29.jpg?width=500",
+  "imageUrl": "assets/portraits/john_lennon.webp",
   "wikiTitle": "ジョン・レノン",
   "birthMonth": 10,
   "birthDay": 9,
@@ -58,5 +58,6 @@
     "personality": "率直、反骨精神、皮肉屋、深く愛情深い。傷つきやすくも愛を貫いた。",
     "likes": [],
     "dislikes": []
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/John_Lennon%2C_1974_%28restored_cropped%29.jpg?width=500"
 }

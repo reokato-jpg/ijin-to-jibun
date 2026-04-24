@@ -167,7 +167,7 @@
       "description": "第一級のフランス史家による定評ある伝記。"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Fran%C3%A7ois_G%C3%A9rard_-_Napoleon_I_001.JPG?width=500",
+  "imageUrl": "assets/portraits/napoleon.webp",
   "wikiTitle": "ナポレオン・ボナパルト",
   "imageCredit": {
     "artist": "Workshop of François Gérard",
@@ -268,5 +268,6 @@
       "貴族の気取り",
       "イギリス"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Fran%C3%A7ois_G%C3%A9rard_-_Napoleon_I_001.JPG?width=500"
 }

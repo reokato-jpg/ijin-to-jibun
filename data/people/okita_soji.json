@@ -173,7 +173,7 @@
       "note": "東京都渋谷区"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Portrait_of_Okita_S%C5%8Dji.jpg?width=500",
+  "imageUrl": "assets/portraits/okita_soji.webp",
   "wikiTitle": "沖田総司",
   "imageCredit": {
     "artist": "Unknown author Unknown author",
@@ -292,5 +292,6 @@
     "性格は明るく、子どもと遊ぶのが何より好きだった。殺伐とした新選組で最も朗らかな人物。",
     "最期の日、庭の黒猫を斬ろうとしたが斬れず、『もう自分の剣は役に立たない』と悟ったという（伝説）。",
     "享年はたった25歳。天才剣士の伝説は、その短すぎる生涯によって神話となった。"
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Portrait_of_Okita_S%C5%8Dji.jpg?width=500"
 }

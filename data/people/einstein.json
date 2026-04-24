@@ -176,7 +176,7 @@
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/140927_Nara_National_Museum_Nara_Japan03bs5.jpg/330px-140927_Nara_National_Museum_Nara_Japan03bs5.jpg"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Albert_Einstein_Head_cleaned.jpg?width=500",
+  "imageUrl": "assets/portraits/einstein.webp",
   "wikiTitle": "アルベルト・アインシュタイン",
   "imageCredit": {
     "artist": "Orren Jack Turner",
@@ -440,5 +440,6 @@
       "title": "イスラエル大統領就任を断った",
       "body": "1952年、初代イスラエル大統領ハイム・ヴァイツマンの死去に伴い、第2代大統領として就任を要請された。『人類を扱うには、私はあまりに世間知らずだ。数式なら扱えるが、人間は扱えない』と辞退。ユダヤ人のアイデンティティは強く持ちながら、政治から距離を置いた。"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Albert_Einstein_Head_cleaned.jpg?width=500"
 }

@@ -86,7 +86,7 @@
       "source": "最期の言葉"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Goethe_%28Stieler_1828%29.jpg?width=500",
+  "imageUrl": "assets/portraits/goethe.webp",
   "wikiTitle": "ヨハン・ヴォルフガング・フォン・ゲーテ",
   "imageCredit": {
     "artist": "Joseph Karl Stieler (1828)",
@@ -157,5 +157,6 @@
       "name": "ヘルダー",
       "relation": "師"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Goethe_%28Stieler_1828%29.jpg?width=500"
 }

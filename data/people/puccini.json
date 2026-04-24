@@ -242,7 +242,7 @@
       "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%B8%E3%83%A3%E3%82%B3%E3%83%A2%E3%83%BB%E3%83%97%E3%83%83%E3%83%81%E3%83%BC%E3%83%8B%20%E6%AD%8C%E5%8A%87%E3%80%8E%E3%83%88%E3%82%A5%E3%83%BC%E3%83%A9%E3%83%B3%E3%83%89%E3%83%83%E3%83%88%E3%80%8F%E3%82%88%E3%82%8A%E3%80%8E%E8%AA%B0%E3%82%82%E5%AF%9D%E3%81%A6%E3%81%AF%E3%81%AA%E3%82%89%E3%81%AC%E3%80%8F"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/GiacomoPuccini.jpg?width=500",
+  "imageUrl": "assets/portraits/puccini.webp",
   "wikiTitle": "ジャコモ・プッチーニ",
   "imageCredit": {
     "artist": "Unknown author Unknown author",
@@ -279,5 +279,6 @@
       "歌詞（いつも書き直させた）",
       "批評家"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/GiacomoPuccini.jpg?width=500"
 }

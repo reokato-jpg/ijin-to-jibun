@@ -235,7 +235,7 @@
       "description": "明治の名著による古典的評伝"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Toyotomi_Hideyoshi_c1598_Kodai-ji_Temple.png?width=500",
+  "imageUrl": "assets/portraits/toyotomi_hideyoshi.webp",
   "wikiTitle": "豊臣秀吉",
   "imageCredit": {
     "artist": "百楽兎",
@@ -316,5 +316,6 @@
       "足利将軍家",
       "朝鮮の抵抗"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Toyotomi_Hideyoshi_c1598_Kodai-ji_Temple.png?width=500"
 }

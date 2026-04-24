@@ -34,7 +34,7 @@
   "relations": [],
   "places": [],
   "books": [],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Mark_Twain_by_AF_Bradley.jpg?width=500",
+  "imageUrl": "assets/portraits/mark_twain.webp",
   "wikiTitle": "マーク・トウェイン",
   "birthMonth": 11,
   "birthDay": 30,
@@ -54,5 +54,6 @@
     "personality": "ユーモア、皮肉、反骨、愛国でありながら批判者。アメリカの自画像。",
     "likes": [],
     "dislikes": []
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Mark_Twain_by_AF_Bradley.jpg?width=500"
 }

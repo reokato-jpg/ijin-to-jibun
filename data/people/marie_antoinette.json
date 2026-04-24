@@ -184,7 +184,7 @@
       "description": "名作伝記"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Vig%C3%A9e-Lebrun_Marie_Antoinette_1783.jpg?width=500",
+  "imageUrl": "assets/portraits/marie_antoinette.webp",
   "wikiTitle": "マリー・アントワネット",
   "imageCredit": {
     "artist": "Élisabeth Louise Vigée Le Brun",
@@ -220,5 +220,6 @@
       "ヴェルサイユの堅苦しさ",
       "ルイ16世の鈍さ"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Vig%C3%A9e-Lebrun_Marie_Antoinette_1783.jpg?width=500"
 }

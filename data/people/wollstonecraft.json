@@ -11,12 +11,13 @@
   "events": [],
   "quotes": [],
   "places": [],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Mary_Wollstonecraft_by_John_Opie_%28c._1797%29.jpg?width=500",
+  "imageUrl": "assets/portraits/wollstonecraft.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
   "lifeDigest": "",
   "traits": {},
-  "relations": []
+  "relations": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Mary_Wollstonecraft_by_John_Opie_%28c._1797%29.jpg?width=500"
 }

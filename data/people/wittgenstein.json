@@ -371,7 +371,7 @@
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Flag_of_Ireland.svg/langja-330px-Flag_of_Ireland.svg.png"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Ludwig_Wittgenstein.jpg?width=500",
+  "imageUrl": "assets/portraits/wittgenstein.webp",
   "wikiTitle": "ルートヴィヒ・ウィトゲンシュタイン",
   "books": [
     {
@@ -493,5 +493,6 @@
       "哲学の職業化",
       "贅沢"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Ludwig_Wittgenstein.jpg?width=500"
 }

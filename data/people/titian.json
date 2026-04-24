@@ -11,12 +11,13 @@
   "events": [],
   "quotes": [],
   "places": [],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Titian_-_Self-portrait_%28Museo_del_Prado%29.jpg?width=500",
+  "imageUrl": "assets/portraits/titian.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
   "lifeDigest": "",
   "traits": {},
-  "relations": []
+  "relations": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Titian_-_Self-portrait_%28Museo_del_Prado%29.jpg?width=500"
 }

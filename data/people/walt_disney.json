@@ -158,7 +158,7 @@
     }
   ],
   "books": [],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Walt_disney_portrait.jpg?width=500",
+  "imageUrl": "assets/portraits/walt_disney.webp",
   "wikiTitle": "ウォルト・ディズニー",
   "imageCredit": {
     "artist": "NASA",
@@ -233,5 +233,6 @@
       "労働組合",
       "フレキシブルな予算"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Walt_disney_portrait.jpg?width=500"
 }

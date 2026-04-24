@@ -220,7 +220,7 @@
       "description": "精神分析の世界観を自ら解説した入門書"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Sigmund_Freud%2C_by_Max_Halberstadt_%28cropped%29.jpg?width=500",
+  "imageUrl": "assets/portraits/freud.webp",
   "wikiTitle": "ジークムント・フロイト",
   "imageCredit": {
     "artist": "Max Halberstadt",
@@ -340,5 +340,6 @@
       "宗教（幻想と断定）",
       "音楽（例外的に嫌った）"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Sigmund_Freud%2C_by_Max_Halberstadt_%28cropped%29.jpg?width=500"
 }

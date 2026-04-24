@@ -116,7 +116,7 @@
       "description": "家庭向けに書かれた最後の料理書"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Auguste_Escoffier_01.jpg?width=500",
+  "imageUrl": "assets/portraits/escoffier.webp",
   "wikiTitle": "オーギュスト・エスコフィエ",
   "birthMonth": 10,
   "birthDay": 28,
@@ -189,5 +189,6 @@
       "手抜き",
       "素材への冒涜"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Auguste_Escoffier_01.jpg?width=500"
 }

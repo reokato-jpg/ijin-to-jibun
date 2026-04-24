@@ -7,7 +7,7 @@
   "country": "日本",
   "field": "武士・警察官",
   "summary": "新選組三番隊組長。『牙突』と称される左片手平突きの達人。寡黙で私情を語らず、幕末の動乱を駆け抜けた後、明治政府の警視庁で西南戦争を戦い、晩年は教育者として女学校の守衛を務めた。",
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Goro_Fujita_aka_Hajime_Saito.jpg?width=500",
+  "imageUrl": "assets/portraits/saito_hajime.webp",
   "wikiTitle": "斎藤一",
   "birthMonth": 1,
   "birthDay": 1,
@@ -188,5 +188,6 @@
   "themes": [
     "shinsengumi",
     "bakumatsu"
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Goro_Fujita_aka_Hajime_Saito.jpg?width=500"
 }

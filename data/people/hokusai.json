@@ -180,7 +180,7 @@
       "description": "江戸の万象を描いた巨人のスケッチ集"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Hokusai_portrait.jpg?width=500",
+  "imageUrl": "assets/portraits/hokusai.webp",
   "wikiTitle": "葛飾北斎",
   "imageCredit": {
     "artist": "Katsushika Hokusai",
@@ -250,5 +250,6 @@
       "弟子の怠慢",
       "金の管理"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Hokusai_portrait.jpg?width=500"
 }

@@ -213,7 +213,7 @@
       "note": "東京都板橋区"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Kondo_Isami02.jpg?width=500",
+  "imageUrl": "assets/portraits/kondo_isami.webp",
   "wikiTitle": "近藤勇",
   "imageCredit": {
     "artist": "Unknown author Unknown author",
@@ -314,5 +314,6 @@
     "試衛館時代は貧乏で、近所の味噌屋から借金しながら道場を続けていた。",
     "無類の子ども好きで、京都でも近所の子どもたちに慕われていた。",
     "板橋の刑場に向かう直前、最後の望みとして髭を剃り身だしなみを整えた。"
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Kondo_Isami02.jpg?width=500"
 }

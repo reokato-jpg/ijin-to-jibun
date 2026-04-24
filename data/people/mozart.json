@@ -214,7 +214,7 @@
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Karl_Marx_by_John_Jabez_Edwin_Mayall_1875_-_Restored_%26_Adjusted_%283x4_cropped_b%29.png/330px-Karl_Marx_by_John_Jabez_Edwin_Mayall_1875_-_Restored_%26_Adjusted_%283x4_cropped_b%29.png"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Wolfgang-amadeus-mozart_1.jpg?width=500",
+  "imageUrl": "assets/portraits/mozart.webp",
   "wikiTitle": "ヴォルフガング・アマデウス・モーツァルト",
   "imageCredit": {
     "artist": "Barbara Krafft",
@@ -544,5 +544,6 @@
       "title": "フリーメイソンだった — 『魔笛』は秘密儀式の暗号",
       "body": "1784年フリーメイソンに入会、積極的に活動。最後のオペラ『魔笛』には三度打たれる柱、太陽と月、火と水の試練など、メイソン儀式の象徴が散りばめられている。啓蒙主義と神秘主義が同居する彼の世界観の集大成。『葬送のためのフリーメイソン音楽』K.477 はメイソン会員のみに向けて書かれた追悼曲。"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Wolfgang-amadeus-mozart_1.jpg?width=500"
 }

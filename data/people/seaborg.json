@@ -123,7 +123,7 @@
       "source": "シーボーグの言葉"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Glenn_Seaborg_-_1964.jpg?width=500",
+  "imageUrl": "assets/portraits/seaborg.webp",
   "wikiTitle": "グレン・シーボーグ",
   "imageCredit": {
     "artist": "US Department of Energy",
@@ -243,5 +243,6 @@
       "name": "ケネディ大統領",
       "relation": "原子力委員会委員長の任命者"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Glenn_Seaborg_-_1964.jpg?width=500"
 }

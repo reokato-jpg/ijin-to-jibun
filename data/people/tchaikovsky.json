@@ -188,7 +188,7 @@
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Alexander_Nevsky_Lavra.jpg/330px-Alexander_Nevsky_Lavra.jpg"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Tchaikovsky2.jpg?width=500",
+  "imageUrl": "assets/portraits/tchaikovsky.webp",
   "wikiTitle": "ピョートル・チャイコフスキー",
   "imageCredit": {
     "artist": "Unknown author Unknown author",
@@ -411,5 +411,6 @@
       "relation": "失敗した妻",
       "note": "形式的結婚、数週間で破綻し自殺未遂。"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Tchaikovsky2.jpg?width=500"
 }

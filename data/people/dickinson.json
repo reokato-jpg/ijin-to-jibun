@@ -11,12 +11,13 @@
   "events": [],
   "quotes": [],
   "places": [],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Black-white_photograph_of_Emily_Dickinson2.png?width=500",
+  "imageUrl": "assets/portraits/dickinson.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
   "lifeDigest": "",
   "traits": {},
-  "relations": []
+  "relations": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Black-white_photograph_of_Emily_Dickinson2.png?width=500"
 }

@@ -11,12 +11,13 @@
   "events": [],
   "quotes": [],
   "places": [],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Elvis_Presley_promoting_Jailhouse_Rock.jpg?width=500",
+  "imageUrl": "assets/portraits/elvis.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
   "lifeDigest": "",
   "traits": {},
-  "relations": []
+  "relations": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Elvis_Presley_promoting_Jailhouse_Rock.jpg?width=500"
 }

@@ -160,7 +160,7 @@
       "description": "人間を「ポリス的動物」と定義した名著。"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Aristotle_Altemps_Inv8575.jpg?width=500",
+  "imageUrl": "assets/portraits/aristotle.webp",
   "wikiTitle": "アリストテレス",
   "imageCredit": {
     "artist": "After Lysippos",
@@ -238,5 +238,6 @@
       "relation": "批判",
       "note": "『イデアが個物と離れて存在することはありえない』と師の中心思想を批判。"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Aristotle_Altemps_Inv8575.jpg?width=500"
 }

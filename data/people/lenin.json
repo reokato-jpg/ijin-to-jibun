@@ -34,7 +34,7 @@
   "relations": [],
   "places": [],
   "books": [],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Lenin_in_1920_%28cropped%29.jpg?width=500",
+  "imageUrl": "assets/portraits/lenin.webp",
   "wikiTitle": "ウラジーミル・レーニン",
   "birthMonth": 4,
   "birthDay": 22,
@@ -53,5 +53,6 @@
     "personality": "冷徹、戦略的、禁欲的、カリスマ。理論と行動を一体化させた革命家。",
     "likes": [],
     "dislikes": []
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Lenin_in_1920_%28cropped%29.jpg?width=500"
 }

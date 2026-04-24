@@ -40,7 +40,7 @@
       "description": "ロック史の異端児を辿る決定版。"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/David_Bowie_Lodger_%281979_RCA_publicity_photo_01%29.jpg?width=500",
+  "imageUrl": "assets/portraits/david_bowie.webp",
   "wikiTitle": "デヴィッド・ボウイ",
   "birthMonth": 1,
   "birthDay": 8,
@@ -59,5 +59,6 @@
     "personality": "知性的、変幻自在、孤独、読書家。芸術に人生を捧げたインテリ・ロッカー。",
     "likes": [],
     "dislikes": []
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/David_Bowie_Lodger_%281979_RCA_publicity_photo_01%29.jpg?width=500"
 }

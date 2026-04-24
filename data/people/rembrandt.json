@@ -101,7 +101,7 @@
       "source": "伝承"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Self-portrait_at_34_by_Rembrandt_%28rectangular_detail%29.jpg?width=500",
+  "imageUrl": "assets/portraits/rembrandt.webp",
   "wikiTitle": "レンブラント・ファン・レイン",
   "imageCredit": {
     "artist": "Rembrandt van Rijn (Self-Portrait)",
@@ -173,5 +173,6 @@
       "author": "ガリー・シュヴァルツ",
       "description": "自画像と人生を辿る評伝。"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Self-portrait_at_34_by_Rembrandt_%28rectangular_detail%29.jpg?width=500"
 }

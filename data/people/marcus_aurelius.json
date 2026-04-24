@@ -84,7 +84,7 @@
       "source": "『自省録』第5巻"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Marcus_Aurelius_Glyptothek_Munich.jpg?width=500",
+  "imageUrl": "assets/portraits/marcus_aurelius.webp",
   "wikiTitle": "マルクス・アウレリウス・アントニヌス",
   "imageCredit": {
     "artist": "Unknown (Roman bronze c.175AD)",
@@ -148,5 +148,6 @@
       "name": "ウェルス",
       "relation": "共同皇帝"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Marcus_Aurelius_Glyptothek_Munich.jpg?width=500"
 }

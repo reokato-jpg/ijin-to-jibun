@@ -350,7 +350,7 @@
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/View_of_Westward_from_Sky_Deck_MIRAI360%2C_Nishiki_Naka_Ward_Nagoya_2022.jpg/330px-View_of_Westward_from_Sky_Deck_MIRAI360%2C_Nishiki_Naka_Ward_Nagoya_2022.jpg"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Sergei_Rachmaninoff_cph.3a40575.jpg?width=500",
+  "imageUrl": "assets/portraits/rachmaninoff.webp",
   "wikiTitle": "セルゲイ・ラフマニノフ",
   "books": [
     {
@@ -478,5 +478,6 @@
       "近代音楽",
       "ソビエト批判を受けたこと"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Sergei_Rachmaninoff_cph.3a40575.jpg?width=500"
 }

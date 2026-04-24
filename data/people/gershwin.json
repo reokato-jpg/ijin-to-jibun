@@ -198,7 +198,7 @@
       "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%B8%E3%83%A7%E3%83%BC%E3%82%B8%E3%83%BB%E3%82%AC%E3%83%BC%E3%82%B7%E3%83%A5%E3%82%A6%E3%82%A3%E3%83%B3%20%E3%83%94%E3%82%A2%E3%83%8E%E5%8D%94%E5%A5%8F%E6%9B%B2%20%E3%83%98%E8%AA%BF"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/George_Gershwin_1937.jpg?width=500",
+  "imageUrl": "assets/portraits/gershwin.webp",
   "wikiTitle": "ジョージ・ガーシュウィン",
   "imageCredit": {
     "artist": "Carl Van Vechten",
@@ -231,5 +231,6 @@
     "dislikes": [
       "真面目すぎる音楽論争"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/George_Gershwin_1937.jpg?width=500"
 }

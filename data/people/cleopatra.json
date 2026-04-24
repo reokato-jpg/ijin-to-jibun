@@ -156,7 +156,7 @@
       "description": "伝説を解体し、実像に迫る伝記。"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Kleopatra-VII.-Altes-Museum-Berlin1.jpg?width=500",
+  "imageUrl": "assets/portraits/cleopatra.webp",
   "wikiTitle": "クレオパトラ",
   "imageCredit": {
     "artist": "Louis le Grand",
@@ -190,5 +190,6 @@
       "ローマの属国化",
       "妹アルシノエ"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Kleopatra-VII.-Altes-Museum-Berlin1.jpg?width=500"
 }

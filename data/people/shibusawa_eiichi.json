@@ -120,7 +120,7 @@
       "description": "道徳と経済を両立させる思想の書"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Eiichi_Shibusawa.jpg?width=500",
+  "imageUrl": "assets/portraits/shibusawa_eiichi.webp",
   "wikiTitle": "渋沢栄一",
   "birthMonth": 3,
   "birthDay": 16,
@@ -148,5 +148,6 @@
       "利己主義",
       "私利私欲の経営"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Eiichi_Shibusawa.jpg?width=500"
 }

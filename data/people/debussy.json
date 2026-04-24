@@ -199,7 +199,7 @@
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Passy.JPG/330px-Passy.JPG"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Claude_Debussy_by_Atelier_Nadar.jpg?width=500",
+  "imageUrl": "assets/portraits/debussy.webp",
   "wikiTitle": "クロード・ドビュッシー",
   "imageCredit": {
     "artist": "Adam Cuerden",
@@ -334,5 +334,6 @@
       "relation": "霊感の源",
       "note": "1889年パリ万博で衝撃を受けた。"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Claude_Debussy_by_Atelier_Nadar.jpg?width=500"
 }

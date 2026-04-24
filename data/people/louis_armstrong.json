@@ -34,7 +34,7 @@
   "relations": [],
   "places": [],
   "books": [],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Louis_Armstrong_in_Color_%28restored%29.jpg?width=500",
+  "imageUrl": "assets/portraits/louis_armstrong.webp",
   "wikiTitle": "ルイ・アームストロング",
   "birthMonth": 8,
   "birthDay": 4,
@@ -53,5 +53,6 @@
     "personality": "明るい、温かい、ユーモア、信念。どんな差別の中でも音楽で応えた。",
     "likes": [],
     "dislikes": []
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Louis_Armstrong_in_Color_%28restored%29.jpg?width=500"
 }

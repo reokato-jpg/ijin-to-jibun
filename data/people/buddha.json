@@ -205,7 +205,7 @@
       "description": "涅槃へ至る旅を描いた経典。"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Buddha_in_Sarnath_Museum_%28Dhammajak_Mutra%29.jpg?width=500",
+  "imageUrl": "assets/portraits/buddha.webp",
   "imageCredit": {
     "artist": "พระมหาเทวประภาส วชิรญาณเมธี (ผู้ถ่าย-ปล่อยสัญญาอนุญาตภาพให้นำไปใช้ได้เพื่อการศึกษาโดยอยู่ภา่ยใต้ cc-by-sa-3.0) ผู้สร้างสรรค์ผลงาน/ส่งข้อมูลเก็บในคลังข้อมูลเสรีวิกิมีเดียคอมมอนส์ - เทวประภาส มากคล้าย",
     "license": "CC BY-SA 3.0",
@@ -299,5 +299,6 @@
       "苦行の極端",
       "形式的儀礼"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Buddha_in_Sarnath_Museum_%28Dhammajak_Mutra%29.jpg?width=500"
 }

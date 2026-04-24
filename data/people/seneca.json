@@ -83,7 +83,7 @@
       "source": "『倫理書簡集』76"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/SenecaELWI.jpg?width=500",
+  "imageUrl": "assets/portraits/seneca.webp",
   "wikiTitle": "ルキウス・アンナエウス・セネカ",
   "imageCredit": {
     "artist": "Roman bust, copy c.3rd c.",
@@ -160,5 +160,6 @@
       "author": "セネカ",
       "description": "哲学書簡集。日々の迷いに効く。"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/SenecaELWI.jpg?width=500"
 }

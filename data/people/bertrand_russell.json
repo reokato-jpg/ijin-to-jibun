@@ -102,7 +102,7 @@
       "source": "BBC放送『顔と顔』1959年"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Bertrand_Russell_smoking_in_1936.jpg?width=500",
+  "imageUrl": "assets/portraits/bertrand_russell.webp",
   "wikiTitle": "バートランド・ラッセル",
   "imageCredit": {
     "artist": "Bassano Ltd",
@@ -171,5 +171,6 @@
       "relation": "批判",
       "note": "若き日に心酔するも後に痛烈に批判、分析哲学へ転向。"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Bertrand_Russell_smoking_in_1936.jpg?width=500"
 }

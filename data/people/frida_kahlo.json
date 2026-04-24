@@ -34,7 +34,7 @@
   "relations": [],
   "places": [],
   "books": [],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Block_Kahlo_Rivera_1932_cropped.jpg?width=500",
+  "imageUrl": "assets/portraits/frida_kahlo.webp",
   "wikiTitle": "フリーダ・カーロ",
   "birthMonth": 7,
   "birthDay": 6,
@@ -54,5 +54,6 @@
     "personality": "情熱的、痛みを抱えた楽観主義、皮肉、反骨。痛みを美に変える錬金術師。",
     "likes": [],
     "dislikes": []
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Block_Kahlo_Rivera_1932_cropped.jpg?width=500"
 }

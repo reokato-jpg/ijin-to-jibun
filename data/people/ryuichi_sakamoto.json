@@ -206,7 +206,7 @@
       "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E5%9D%82%E6%9C%AC%E9%BE%8D%E4%B8%80%20%E3%82%A2%E3%82%AF%E3%82%A2%EF%BC%88Aqua%EF%BC%89"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Ryuichi_Sakamoto_side.jpg?width=500",
+  "imageUrl": "assets/portraits/ryuichi_sakamoto.webp",
   "wikiTitle": "坂本龍一",
   "coverImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Tokyo_geidai_logo.svg/langja-330px-Tokyo_geidai_logo.svg.png",
   "coverImageCaption": "東京芸術大学",
@@ -243,5 +243,6 @@
       "原発",
       "大音量"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Ryuichi_Sakamoto_side.jpg?width=500"
 }

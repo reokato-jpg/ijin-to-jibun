@@ -231,7 +231,7 @@
       "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%A2%E3%83%AC%E3%82%AF%E3%82%B5%E3%83%B3%E3%83%89%E3%83%AB%E3%83%BB%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%A3%E3%83%BC%E3%83%93%E3%83%B3%20%E3%82%A8%E3%83%81%E3%83%A5%E3%83%BC%E3%83%89%E5%AC%B0%E3%83%8B%E7%9F%AD%E8%AA%BF%20%E4%BD%9C%E5%93%818-12"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Skrjabin_Alexander.jpg?width=500",
+  "imageUrl": "assets/portraits/scriabin.webp",
   "wikiTitle": "アレクサンドル・スクリャービン",
   "imageCredit": {
     "artist": "",
@@ -265,5 +265,6 @@
       "凡庸さ",
       "地上的な制約"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Skrjabin_Alexander.jpg?width=500"
 }

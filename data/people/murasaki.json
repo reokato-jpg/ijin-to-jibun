@@ -181,7 +181,7 @@
       "description": "現代語訳で読む世界最古級の長編。"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Tosa_Mitsuoki_001.jpg?width=500",
+  "imageUrl": "assets/portraits/murasaki.webp",
   "wikiTitle": "紫式部",
   "imageCredit": {
     "artist": "Tosa Mitsuoki (1617-1691)",
@@ -221,5 +221,6 @@
     "dislikes": [
       "清少納言（日記で酷評）"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Tosa_Mitsuoki_001.jpg?width=500"
 }

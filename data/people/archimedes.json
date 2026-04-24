@@ -62,7 +62,7 @@
       "source": "アルキメデスに帰される言葉"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Retrato_de_un_erudito_%28%C2%BFArqu%C3%ADmedes%3F%29%2C_por_Domenico_Fetti.jpg?width=500",
+  "imageUrl": "assets/portraits/archimedes.webp",
   "wikiTitle": "アルキメデス",
   "imageCredit": {
     "artist": "Domenico Fetti (1620)",
@@ -99,5 +99,6 @@
       "不正確さ"
     ]
   },
-  "id": "archimedes"
+  "id": "archimedes",
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Retrato_de_un_erudito_%28%C2%BFArqu%C3%ADmedes%3F%29%2C_por_Domenico_Fetti.jpg?width=500"
 }

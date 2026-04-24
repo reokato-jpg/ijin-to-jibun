@@ -214,7 +214,7 @@
       "youtubeId": "2FmfZWjKUlE"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Giuseppi_Verdi_by_Ferdinand_Mulnier_c1870.jpg?width=500",
+  "imageUrl": "assets/portraits/verdi.webp",
   "wikiTitle": "ジュゼッペ・ヴェルディ",
   "imageCredit": {
     "artist": "Ferdinand Mulnier",
@@ -250,5 +250,6 @@
       "ワーグナー派の批判",
       "政治的演説"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Giuseppi_Verdi_by_Ferdinand_Mulnier_c1870.jpg?width=500"
 }

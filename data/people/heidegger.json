@@ -150,7 +150,7 @@
       "description": "存在の意味を問う20世紀哲学の金字塔"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Heidegger_2_%281960%29.jpg?width=500",
+  "imageUrl": "assets/portraits/heidegger.webp",
   "wikiTitle": "マルティン・ハイデガー",
   "imageCredit": {
     "artist": "Willy Pragher",
@@ -194,5 +194,6 @@
       "技術文明",
       "都市"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Heidegger_2_%281960%29.jpg?width=500"
 }

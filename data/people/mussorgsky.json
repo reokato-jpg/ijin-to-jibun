@@ -212,7 +212,7 @@
       "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%83%A2%E3%83%87%E3%82%B9%E3%83%88%E3%83%BB%E3%83%A0%E3%82%BD%E3%83%AB%E3%82%B0%E3%82%B9%E3%82%AD%E3%83%BC%20%E4%BA%A4%E9%9F%BF%E8%A9%A9%E3%80%8E%E3%81%AF%E3%81%92%E5%B1%B1%E3%81%AE%E4%B8%80%E5%A4%9C%E3%80%8F"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/MussorgskySignature.png?width=500",
+  "imageUrl": "assets/portraits/mussorgsky.webp",
   "wikiTitle": "モデスト・ムソルグスキー",
   "imageCredit": {
     "artist": "Modest Mussorgsky",
@@ -245,5 +245,6 @@
       "西欧音楽の模倣",
       "帝国音楽院の形式"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/MussorgskySignature.png?width=500"
 }

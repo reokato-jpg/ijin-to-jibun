@@ -127,7 +127,7 @@
       "description": "ロボット少年アトムと21世紀の未来"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Osamu_Tezuka_1951_Scan10008-2.JPG?width=500",
+  "imageUrl": "assets/portraits/tezuka_osamu.webp",
   "wikiTitle": "手塚治虫",
   "birthMonth": 11,
   "birthDay": 3,
@@ -156,5 +156,6 @@
       "後進に追い抜かれること",
       "権威主義"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Osamu_Tezuka_1951_Scan10008-2.JPG?width=500"
 }

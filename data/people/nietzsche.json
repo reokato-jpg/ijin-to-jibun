@@ -341,7 +341,7 @@
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Turin_Montage.png/330px-Turin_Montage.png"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Nietzsche1882.jpg?width=500",
+  "imageUrl": "assets/portraits/nietzsche.webp",
   "wikiTitle": "フリードリヒ・ニーチェ",
   "books": [
     {
@@ -550,5 +550,6 @@
       "title": "発狂前、奇跡のように書き続けた3年間",
       "body": "1886〜1888年、発狂の直前3年間に『善悪の彼岸』『道徳の系譜』『偶像の黄昏』『アンチクリスト』『この人を見よ』『ワーグナーの場合』——6冊の傑作を一気に書いた。医師は『脳梅毒による狂気の前兆（異常な創作意欲）』と診断。『自分の身に、何か巨大なものが近づいている』と『この人を見よ』で予感めいた言葉を残している。"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Nietzsche1882.jpg?width=500"
 }

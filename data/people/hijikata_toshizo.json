@@ -208,7 +208,7 @@
       "note": "東京都日野市"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Hijikata_Toshizo.jpg?width=500",
+  "imageUrl": "assets/portraits/hijikata_toshizo.webp",
   "wikiTitle": "土方歳三",
   "imageCredit": {
     "artist": "Tamoto Kenzō",
@@ -322,5 +322,6 @@
     "句集『豊玉発句集』を残すほどの俳人で、戦の合間に句を詠んだ。",
     "モテすぎて女性が絶えなかったが、最後まで独身を貫いた。",
     "洋装に身を包み断髪した後の写真は、日本で最もセクシーな武士像として遺った。"
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Hijikata_Toshizo.jpg?width=500"
 }

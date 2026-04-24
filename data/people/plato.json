@@ -175,7 +175,7 @@
       "description": "師ソクラテスの裁判を描く対話篇。"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Plato_Pio-Clemetino_Inv305.jpg?width=500",
+  "imageUrl": "assets/portraits/plato.webp",
   "wikiTitle": "プラトン",
   "imageCredit": {
     "artist": "Unknown artist Unknown artist",
@@ -296,5 +296,6 @@
       "民主制の暴走",
       "詩人の嘘"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Plato_Pio-Clemetino_Inv305.jpg?width=500"
 }

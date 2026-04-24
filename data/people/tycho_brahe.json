@@ -124,7 +124,7 @@
       "description": "自作観測機器を図解した書"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Tycho_Brahe.JPG?width=500",
+  "imageUrl": "assets/portraits/tycho_brahe.webp",
   "wikiTitle": "ティコ・ブラーエ",
   "lifeDigest": "デンマーク貴族出身の観測天文学者。望遠鏡が発明される前の時代に、肉眼観測で前例のない精度のデータを残した。決闘で鼻を失った銀の義鼻、島に築いたウラニボリ天文台、助手として雇ったケプラー——奇行と業績で語り継がれる人物。彼の観測データがケプラーの惑星運動三法則を生む土壌となった。",
   "traits": {
@@ -146,5 +146,6 @@
       "怠慢な観測",
       "根拠のない理論"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Tycho_Brahe.JPG?width=500"
 }

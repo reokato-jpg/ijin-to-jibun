@@ -70,7 +70,7 @@
       "source": "ビゼーの覚え書き"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Georges_bizet.jpg?width=500",
+  "imageUrl": "assets/portraits/bizet.webp",
   "wikiTitle": "ジョルジュ・ビゼー",
   "imageCredit": {
     "artist": "Étienne Carjat",
@@ -151,5 +151,6 @@
       "relation": "批判者",
       "note": "『カルメン』初演は酷評、3ヶ月後に失意のまま没した。"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Georges_bizet.jpg?width=500"
 }

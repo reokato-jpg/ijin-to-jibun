@@ -98,7 +98,7 @@
       "description": "名騎手の騎乗哲学を綴る"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Happy_progress_and_kunihiko_take.jpg?width=500",
+  "imageUrl": "assets/portraits/take_kunihiko.webp",
   "wikiTitle": "武邦彦",
   "birthMonth": 3,
   "birthDay": 15,
@@ -124,5 +124,6 @@
       "派手な言動",
       "弟子の甘え"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Happy_progress_and_kunihiko_take.jpg?width=500"
 }

@@ -160,7 +160,7 @@
       "description": "映画化された名作小説"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Vermeer_autograph.png?width=500",
+  "imageUrl": "assets/portraits/vermeer.webp",
   "wikiTitle": "ヨハネス・フェルメール",
   "imageCredit": {
     "artist": "Immanuel Giel (history)",
@@ -191,5 +191,6 @@
     "dislikes": [
       "戦争（仏侵攻で破産）"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Vermeer_autograph.png?width=500"
 }

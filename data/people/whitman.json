@@ -11,12 +11,13 @@
   "events": [],
   "quotes": [],
   "places": [],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Walt_Whitman_-_George_Collins_Cox.jpg?width=500",
+  "imageUrl": "assets/portraits/whitman.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
   "lifeDigest": "",
   "traits": {},
-  "relations": []
+  "relations": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Walt_Whitman_-_George_Collins_Cox.jpg?width=500"
 }

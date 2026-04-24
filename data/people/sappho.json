@@ -11,12 +11,13 @@
   "events": [],
   "quotes": [],
   "places": [],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Bust_Sappho_Musei_Capitolini_MC1164.jpg?width=500",
+  "imageUrl": "assets/portraits/sappho.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
   "lifeDigest": "",
   "traits": {},
-  "relations": []
+  "relations": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Bust_Sappho_Musei_Capitolini_MC1164.jpg?width=500"
 }

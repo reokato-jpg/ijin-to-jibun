@@ -82,7 +82,7 @@
       "source": "スタニスラフスキーへの手紙"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Anton_Chekhov_1889.jpg?width=500",
+  "imageUrl": "assets/portraits/chekhov.webp",
   "wikiTitle": "アントン・チェーホフ",
   "imageCredit": {
     "artist": "Unknown photographer",
@@ -132,5 +132,6 @@
       "author": "チェーホフ",
       "description": "愛と芸術を巡る名作戯曲。"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Anton_Chekhov_1889.jpg?width=500"
 }

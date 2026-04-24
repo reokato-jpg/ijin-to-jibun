@@ -90,7 +90,7 @@
       "source": "バウハウス講義"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Wassily_Kandinsky_1923_by_Hugo_Erfurth.jpg?width=500",
+  "imageUrl": "assets/portraits/kandinsky.webp",
   "wikiTitle": "ワシリー・カンディンスキー",
   "imageCredit": {
     "artist": "Unknown photographer c.1913",
@@ -127,5 +127,6 @@
       "形式主義"
     ]
   },
-  "id": "kandinsky"
+  "id": "kandinsky",
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Wassily_Kandinsky_1923_by_Hugo_Erfurth.jpg?width=500"
 }

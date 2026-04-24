@@ -62,7 +62,7 @@
       "source": "ピュタゴラス派"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Pythagoras_in_the_Roman_Forum%2C_Colosseum.jpg?width=500",
+  "imageUrl": "assets/portraits/pythagoras.webp",
   "wikiTitle": "ピタゴラス",
   "imageCredit": {
     "artist": "Roman bust",
@@ -101,5 +101,6 @@
       "無秩序"
     ]
   },
-  "id": "pythagoras"
+  "id": "pythagoras",
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Pythagoras_in_the_Roman_Forum%2C_Colosseum.jpg?width=500"
 }

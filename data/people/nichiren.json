@@ -11,12 +11,13 @@
   "events": [],
   "quotes": [],
   "places": [],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Nichiren_Daishonin_Hakii_Portrait.jpg?width=500",
+  "imageUrl": "assets/portraits/nichiren.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
   "lifeDigest": "",
   "traits": {},
-  "relations": []
+  "relations": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Nichiren_Daishonin_Hakii_Portrait.jpg?width=500"
 }

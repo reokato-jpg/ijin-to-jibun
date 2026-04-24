@@ -7,7 +7,7 @@
   "country": "日本",
   "field": "武士・思想家",
   "summary": "新選組参謀。学識豊かな尊王思想家で、北辰一刀流の剣豪。新選組に参謀として招かれるが、思想の違いから御陵衛士を結成して袂を分かつ。油小路事件で土方歳三の策により暗殺された。新選組内部の最大の悲劇。",
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Kashitarou_Itou_Shinsengumi.jpg?width=500",
+  "imageUrl": "assets/portraits/ito_kashitaro.webp",
   "wikiTitle": "伊東甲子太郎",
   "birthMonth": 0,
   "birthDay": 0,
@@ -110,5 +110,6 @@
       "label": "暗殺実行者",
       "relation": "対立"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Kashitarou_Itou_Shinsengumi.jpg?width=500"
 }

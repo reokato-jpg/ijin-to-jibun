@@ -176,7 +176,7 @@
       "description": "音と沈黙についての随筆"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Toru_Takemitsu_Shinchosha_1961-7.jpg?width=400",
+  "imageUrl": "assets/portraits/takemitsu.webp",
   "imageCredit": {
     "artist": "",
     "license": "",
@@ -284,5 +284,6 @@
       "name": "岩城宏之",
       "relation": "指揮者・盟友"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Toru_Takemitsu_Shinchosha_1961-7.jpg?width=400"
 }

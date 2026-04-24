@@ -116,7 +116,7 @@
       "description": "レストランの代表料理集"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Paul_Bocuse_2007.jpg?width=500",
+  "imageUrl": "assets/portraits/bocuse.webp",
   "wikiTitle": "ポール・ボキューズ",
   "birthMonth": 2,
   "birthDay": 11,
@@ -195,5 +195,6 @@
       "流行に媚びる料理",
       "料理人の低待遇"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Paul_Bocuse_2007.jpg?width=500"
 }

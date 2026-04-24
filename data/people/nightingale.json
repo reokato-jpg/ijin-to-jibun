@@ -127,7 +127,7 @@
       "description": "近代看護の礎を築いた古典。"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Florence_Nightingale_CDV_by_H_Lenthall.jpg?width=500",
+  "imageUrl": "assets/portraits/nightingale.webp",
   "wikiTitle": "フローレンス・ナイチンゲール",
   "birthMonth": 5,
   "birthDay": 12,
@@ -157,5 +157,6 @@
       "怠惰な医療従事者",
       "女性を家庭に閉じ込める社会"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Florence_Nightingale_CDV_by_H_Lenthall.jpg?width=500"
 }

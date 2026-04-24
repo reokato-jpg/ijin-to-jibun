@@ -227,7 +227,7 @@
       "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%BB%E3%83%AB%E3%82%B2%E3%82%A4%E3%83%BB%E3%83%97%E3%83%AD%E3%82%B3%E3%83%95%E3%82%A3%E3%82%A8%E3%83%95%20%E3%83%94%E3%82%A2%E3%83%8E%E3%82%BD%E3%83%8A%E3%82%BF%E7%AC%AC7%E7%95%AA%E3%80%8E%E6%88%A6%E4%BA%89%E3%82%BD%E3%83%8A%E3%82%BF%E3%80%8F%E4%BD%9C%E5%93%8183"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Sergei_Prokofiev_circa_1918_over_Chair_Bain.jpg?width=500",
+  "imageUrl": "assets/portraits/prokofiev.webp",
   "wikiTitle": "セルゲイ・プロコフィエフ",
   "imageCredit": {
     "artist": "Bain News Service, publisher",
@@ -261,5 +261,6 @@
       "社会主義リアリズム",
       "ソビエト官僚"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Sergei_Prokofiev_circa_1918_over_Chair_Bain.jpg?width=500"
 }

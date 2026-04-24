@@ -34,7 +34,7 @@
   "relations": [],
   "places": [],
   "books": [],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/CBRichmond.png?width=500",
+  "imageUrl": "assets/portraits/charlotte_bronte.webp",
   "wikiTitle": "シャーロット・ブロンテ",
   "birthMonth": 4,
   "birthDay": 21,
@@ -54,5 +54,6 @@
     "personality": "内向的、情熱的、意志の強さ、孤独。家族を相次いで失いながら書き続けた。",
     "likes": [],
     "dislikes": []
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/CBRichmond.png?width=500"
 }

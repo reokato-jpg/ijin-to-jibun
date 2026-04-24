@@ -178,7 +178,7 @@
       "youtubeId": "nLPdAx0I77I"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Joan_of_Arc_miniature_graded.jpg?width=500",
+  "imageUrl": "assets/portraits/jeanne_darc.webp",
   "wikiTitle": "ジャンヌ・ダルク",
   "imageCredit": {
     "artist": "",
@@ -213,5 +213,6 @@
       "イギリス人",
       "裏切り者"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Joan_of_Arc_miniature_graded.jpg?width=500"
 }

@@ -7,7 +7,7 @@
   "country": "日本",
   "field": "志士・政治家",
   "summary": "長州藩士。幕末は桂小五郎の名で『逃げの小五郎』と呼ばれた神道無念流の達人にして、敵に斬られる前に必ず逃げ切る知略の人。薩長同盟を結び、維新三傑（西郷・大久保・木戸）の一人として明治政府を樹立した。",
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Takayoshi_Kido_suit.jpg?width=500",
+  "imageUrl": "assets/portraits/kido_takayoshi.webp",
   "wikiTitle": "木戸孝允",
   "birthMonth": 8,
   "birthDay": 11,
@@ -192,5 +192,6 @@
   "themes": [
     "bakumatsu",
     "ishin_sanketsu"
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Takayoshi_Kido_suit.jpg?width=500"
 }

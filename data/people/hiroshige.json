@@ -11,12 +11,13 @@
   "events": [],
   "quotes": [],
   "places": [],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Memorial_Portrait_of_Hiroshige%2C_by_Kunisada.jpg?width=500",
+  "imageUrl": "assets/portraits/hiroshige.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
   "lifeDigest": "",
   "traits": {},
-  "relations": []
+  "relations": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Memorial_Portrait_of_Hiroshige%2C_by_Kunisada.jpg?width=500"
 }

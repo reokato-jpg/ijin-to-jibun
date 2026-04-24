@@ -40,7 +40,7 @@
       "description": "ジャズの女王の生涯。"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Ella_Fitzgerald_%281940%29.jpg?width=500",
+  "imageUrl": "assets/portraits/ella_fitzgerald.webp",
   "wikiTitle": "エラ・フィッツジェラルド",
   "birthMonth": 4,
   "birthDay": 25,
@@ -60,5 +60,6 @@
     "personality": "シャイ、謙虚、温かい、舞台では堂々。私生活では静かな人柄。",
     "likes": [],
     "dislikes": []
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Ella_Fitzgerald_%281940%29.jpg?width=500"
 }

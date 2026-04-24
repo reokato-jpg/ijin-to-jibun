@@ -190,7 +190,7 @@
       "description": "弟子による精密な評伝。"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/RavelSignature.png?width=500",
+  "imageUrl": "assets/portraits/ravel.webp",
   "wikiTitle": "モーリス・ラヴェル",
   "imageCredit": {
     "artist": "Maurice Ravel",
@@ -372,5 +372,6 @@
       "relation": "不公平を受けた学校",
       "note": "ローマ賞に5度挑戦するも受賞できず。"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/RavelSignature.png?width=500"
 }

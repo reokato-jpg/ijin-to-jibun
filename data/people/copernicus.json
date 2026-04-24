@@ -123,7 +123,7 @@
       "description": "地動説を提唱した歴史的名著"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Nikolaus_Kopernikus_MOT.jpg?width=500",
+  "imageUrl": "assets/portraits/copernicus.webp",
   "wikiTitle": "ニコラウス・コペルニクス",
   "lifeDigest": "ポーランドの天文学者・聖職者。1543年死の床で出版された『天球の回転について』で、地球が太陽の周りを回るという地動説を体系的に提唱した。フロムボルク大聖堂の塔で細々と観測を続け、30年かけて完成させた理論は、中世的世界観を根底から揺さぶり近代科学革命の出発点となった。",
   "traits": {
@@ -145,5 +145,6 @@
       "宗教的独断",
       "性急な結論"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Nikolaus_Kopernikus_MOT.jpg?width=500"
 }

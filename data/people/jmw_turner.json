@@ -34,7 +34,7 @@
   "relations": [],
   "places": [],
   "books": [],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Turner_selfportrait.jpg?width=500",
+  "imageUrl": "assets/portraits/jmw_turner.webp",
   "wikiTitle": "ジョゼフ・ターナー",
   "birthMonth": 4,
   "birthDay": 23,
@@ -53,5 +53,6 @@
     "personality": "内向的、偏屈、完璧主義、独立独歩。社交を嫌い、アトリエに籠った天才。",
     "likes": [],
     "dislikes": []
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Turner_selfportrait.jpg?width=500"
 }

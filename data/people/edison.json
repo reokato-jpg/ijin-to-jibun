@@ -189,7 +189,7 @@
       "description": "実業家としてのエジソン像。"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Thomas_Edison2.jpg?width=500",
+  "imageUrl": "assets/portraits/edison.webp",
   "wikiTitle": "トーマス・エジソン",
   "imageCredit": {
     "artist": "Louis Bachrach, Bachrach Studios , restored by Michel Vuijlsteke",
@@ -287,5 +287,6 @@
       "怠惰",
       "理論先行の科学"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Thomas_Edison2.jpg?width=500"
 }

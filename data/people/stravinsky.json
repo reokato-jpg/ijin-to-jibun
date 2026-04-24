@@ -210,7 +210,7 @@
       "description": "本人が語る自分の20世紀"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Igor_Stravinsky_LOC_32392u.jpg?width=500",
+  "imageUrl": "assets/portraits/stravinsky.webp",
   "wikiTitle": "イーゴリ・ストラヴィンスキー",
   "imageCredit": {
     "artist": "George Grantham Bain Collection",
@@ -321,5 +321,6 @@
       "name": "ショスタコーヴィチ",
       "relation": "祖国の後輩"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Igor_Stravinsky_LOC_32392u.jpg?width=500"
 }

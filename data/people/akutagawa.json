@@ -164,7 +164,7 @@
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/TabataBunshimuraKinenkan20120109.jpg/330px-TabataBunshimuraKinenkan20120109.jpg"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/AkutagawaRyunosuke.jpg?width=500",
+  "imageUrl": "assets/portraits/akutagawa.webp",
   "wikiTitle": "芥川龍之介",
   "imageCredit": {
     "artist": "- The person in the photo is Ryunosuke Akutagawa.",
@@ -363,5 +363,6 @@
       "name": "秀しげ子",
       "relation": "愛した人"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/AkutagawaRyunosuke.jpg?width=500"
 }

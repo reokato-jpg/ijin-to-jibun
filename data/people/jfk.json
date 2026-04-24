@@ -11,12 +11,13 @@
   "events": [],
   "quotes": [],
   "places": [],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/John_F._Kennedy%2C_White_House_color_photo_portrait.jpg?width=500",
+  "imageUrl": "assets/portraits/jfk.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
   "lifeDigest": "",
   "traits": {},
-  "relations": []
+  "relations": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/John_F._Kennedy%2C_White_House_color_photo_portrait.jpg?width=500"
 }

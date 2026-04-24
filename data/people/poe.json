@@ -45,7 +45,7 @@
       "description": "詩の極点「Nevermore」。"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Edgar_Allan_Poe%2C_circa_1849%2C_restored%2C_squared_off.jpg?width=500",
+  "imageUrl": "assets/portraits/poe.webp",
   "wikiTitle": "エドガー・アラン・ポー",
   "birthMonth": 1,
   "birthDay": 19,
@@ -65,5 +65,6 @@
     "personality": "憂鬱、情熱的、美への執着、破滅的。闇と光が同居した天才。",
     "likes": [],
     "dislikes": []
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Edgar_Allan_Poe%2C_circa_1849%2C_restored%2C_squared_off.jpg?width=500"
 }

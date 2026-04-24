@@ -163,7 +163,7 @@
       "description": "近代自伝文学の原点"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Maurice_Quentin_de_La_Tour_-_Portrait_of_Jean-Jacques_Rousseau_-_WGA12360.jpg?width=500",
+  "imageUrl": "assets/portraits/rousseau.webp",
   "wikiTitle": "ジャン＝ジャック・ルソー",
   "imageCredit": {
     "artist": "Maurice Quentin de La Tour",
@@ -280,5 +280,6 @@
       "知識人サロン",
       "パリの俗物"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Maurice_Quentin_de_La_Tour_-_Portrait_of_Jean-Jacques_Rousseau_-_WGA12360.jpg?width=500"
 }

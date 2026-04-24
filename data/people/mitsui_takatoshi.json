@@ -92,7 +92,7 @@
       "description": "兄弟和合・共同経営の家法"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Mitsui_Takatoshi.jpg?width=500",
+  "imageUrl": "assets/portraits/mitsui_takatoshi.webp",
   "wikiTitle": "三井高利",
   "birthMonth": 4,
   "birthDay": 26,
@@ -120,5 +120,6 @@
       "無駄な贅沢",
       "兄弟仲の悪さ"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Mitsui_Takatoshi.jpg?width=500"
 }

@@ -7,7 +7,7 @@
   "country": "日本",
   "field": "政治家",
   "summary": "薩摩藩士。西郷隆盛とは幼馴染。冷徹な政治家として明治新政府の実権を握り、廃藩置県・地租改正など近代国家の基礎を築いた。西郷の西南戦争を鎮圧し、翌年、紀尾井坂で暗殺された。維新三傑の最後の一人として、非情と孤独を背負った男。",
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Toshimichi_Okubo_4.jpg?width=500",
+  "imageUrl": "assets/portraits/okubo_toshimichi.webp",
   "wikiTitle": "大久保利通",
   "birthMonth": 9,
   "birthDay": 26,
@@ -187,5 +187,6 @@
     "暗殺時、懐に西郷からの古い手紙を大切に持っていた。",
     "ビリヤードが唯一の趣味だったが、そこでも戦略を練っていたという。",
     "子どもたちには学費も与えず、『国家のため』と私財を全く残さなかった。"
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Toshimichi_Okubo_4.jpg?width=500"
 }

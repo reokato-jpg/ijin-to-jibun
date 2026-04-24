@@ -247,7 +247,7 @@
       "youtubeSearchUrl": "https://www.youtube.com/results?search_query=%E3%82%B8%E3%83%A3%E3%83%B3%E3%83%BB%E3%82%B7%E3%83%99%E3%83%AA%E3%82%A6%E3%82%B9%20%E4%BA%A4%E9%9F%BF%E8%A9%A9%E3%80%8E%E3%82%BF%E3%83%94%E3%82%AA%E3%83%A9%E3%80%8F%E4%BD%9C%E5%93%81112"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Sibelius_with_notes.jpg?width=500",
+  "imageUrl": "assets/portraits/sibelius.webp",
   "wikiTitle": "ジャン・シベリウス",
   "imageCredit": {
     "artist": "Unknown author Unknown author",
@@ -282,5 +282,6 @@
     "dislikes": [
       "自分の作品を聴き直すこと"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Sibelius_with_notes.jpg?width=500"
 }

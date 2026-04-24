@@ -161,7 +161,7 @@
     }
   ],
   "books": [],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Tesla_Sarony.jpg?width=500",
+  "imageUrl": "assets/portraits/tesla.webp",
   "wikiTitle": "ニコラ・テスラ",
   "imageCredit": {
     "artist": "Napoleon Sarony",
@@ -267,5 +267,6 @@
       "体型の肥えた女性",
       "不潔なもの"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Tesla_Sarony.jpg?width=500"
 }

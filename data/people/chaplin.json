@@ -222,7 +222,7 @@
       "url": "https://www.amazon.co.jp/dp/B09G2D2TWF?tag="
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Charlie_Chaplin_portrait_Getty_1739411952.jpg?width=500",
+  "imageUrl": "assets/portraits/chaplin.webp",
   "wikiTitle": "チャールズ・チャップリン",
   "imageCredit": {
     "artist": "Strauss-Peyton Studio",
@@ -282,5 +282,6 @@
       "マッカーシズム",
       "アメリカの右傾化"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Charlie_Chaplin_portrait_Getty_1739411952.jpg?width=500"
 }

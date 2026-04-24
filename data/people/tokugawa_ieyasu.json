@@ -235,7 +235,7 @@
       "description": "『関ヶ原で家康は死んでいた』という大胆な仮説の歴史小説"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Tokugawa_Ieyasu_kao.jpg?width=500",
+  "imageUrl": "assets/portraits/tokugawa_ieyasu.webp",
   "wikiTitle": "徳川家康",
   "imageCredit": {
     "artist": "Tokugawa Ieyasu",
@@ -318,5 +318,6 @@
       "浪費",
       "派手な装飾"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Tokugawa_Ieyasu_kao.jpg?width=500"
 }

@@ -34,7 +34,7 @@
   "relations": [],
   "places": [],
   "books": [],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Andy_Warhol_1975.jpg?width=500",
+  "imageUrl": "assets/portraits/andy_warhol.webp",
   "wikiTitle": "アンディ・ウォーホル",
   "birthMonth": 8,
   "birthDay": 6,
@@ -54,5 +54,6 @@
     "personality": "内向的、シャイ、観察者、冷徹な商才。沈黙の哲学者。",
     "likes": [],
     "dislikes": []
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Andy_Warhol_1975.jpg?width=500"
 }

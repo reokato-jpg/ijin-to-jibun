@@ -167,7 +167,7 @@
       "description": "隠れ家で綴られた少女の魂の記録。"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Anne_Frank%2C_1942.jpg?width=500",
+  "imageUrl": "assets/portraits/anne_frank.webp",
   "wikiTitle": "アンネ・フランク",
   "imageCredit": {
     "artist": "Photo Collection Anne Frank House",
@@ -224,5 +224,6 @@
       "母との関係",
       "隠れ家の窮屈さ"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Anne_Frank%2C_1942.jpg?width=500"
 }

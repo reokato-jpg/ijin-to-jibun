@@ -52,7 +52,7 @@
       "description": "全体主義ディストピア小説の金字塔（ハヤカワepi文庫）。"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/George_Orwell_press_photo.jpg?width=500",
+  "imageUrl": "assets/portraits/orwell.webp",
   "wikiTitle": "ジョージ・オーウェル",
   "birthMonth": 6,
   "birthDay": 25,
@@ -72,5 +72,6 @@
     "personality": "反骨、誠実、観察者、皮肉。権力を常に疑った誠実なジャーナリスト。",
     "likes": [],
     "dislikes": []
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/George_Orwell_press_photo.jpg?width=500"
 }

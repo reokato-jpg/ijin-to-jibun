@@ -192,7 +192,7 @@
       "description": "素顔のシューベルト。"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Franz_Schubert_Signature.svg?width=500",
+  "imageUrl": "assets/portraits/schubert.webp",
   "wikiTitle": "フランツ・シューベルト",
   "imageCredit": {
     "artist": "Connormah , Franz Schubert",
@@ -375,5 +375,6 @@
       "relation": "没後の再発見者",
       "note": "交響曲『ザ・グレート』を発見。"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Franz_Schubert_Signature.svg?width=500"
 }

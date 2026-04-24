@@ -80,7 +80,7 @@
       "source": "伝承"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/NiccoloPaganini.jpeg?width=500",
+  "imageUrl": "assets/portraits/paganini.webp",
   "wikiTitle": "ニコロ・パガニーニ",
   "imageCredit": {
     "artist": "Unknown lithograph 19th c.",
@@ -161,5 +161,6 @@
       "name": "悪魔との契約の噂",
       "relation": "生涯ついて回った中傷"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/NiccoloPaganini.jpeg?width=500"
 }

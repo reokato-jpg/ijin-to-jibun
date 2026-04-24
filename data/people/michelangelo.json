@@ -183,7 +183,7 @@
       "description": "ロランの『英雄伝』の一編"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Miguel_%C3%81ngel%2C_por_Daniele_da_Volterra_%28detalle%29.jpg?width=500",
+  "imageUrl": "assets/portraits/michelangelo.webp",
   "wikiTitle": "ミケランジェロ",
   "imageCredit": {
     "artist": "Attributed to Daniele da Volterra",
@@ -264,5 +264,6 @@
       "ラファエロ",
       "自分の肖像画"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Miguel_%C3%81ngel%2C_por_Daniele_da_Volterra_%28detalle%29.jpg?width=500"
 }

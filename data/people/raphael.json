@@ -90,7 +90,7 @@
       "source": "伝承"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Raffaello_Sanzio.jpg?width=500",
+  "imageUrl": "assets/portraits/raphael.webp",
   "wikiTitle": "ラファエロ・サンティ",
   "imageCredit": {
     "artist": "Raphael (Self-portrait)",
@@ -163,5 +163,6 @@
       "author": "アントニオ・パオルッチ",
       "description": "ルネサンス三巨匠の評伝。"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Raffaello_Sanzio.jpg?width=500"
 }

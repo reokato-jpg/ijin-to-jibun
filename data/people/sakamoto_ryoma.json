@@ -185,7 +185,7 @@
       "note": "京都市伏見区"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Sakamoto_Ryoma.jpg?width=500",
+  "imageUrl": "assets/portraits/sakamoto_ryoma.webp",
   "wikiTitle": "坂本龍馬",
   "imageCredit": {
     "artist": "Unknown author Unknown author",
@@ -340,5 +340,6 @@
   ],
   "themes": [
     "bakumatsu"
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Sakamoto_Ryoma.jpg?width=500"
 }

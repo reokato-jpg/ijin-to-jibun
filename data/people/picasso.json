@@ -172,7 +172,7 @@
       "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Gernika2.jpg/330px-Gernika2.jpg"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Pablo_picasso_1.jpg?width=500",
+  "imageUrl": "assets/portraits/picasso.webp",
   "wikiTitle": "パブロ・ピカソ",
   "imageCredit": {
     "artist": "Argentina . Revista Vea y Lea",
@@ -347,5 +347,6 @@
       "name": "フランコ政権",
       "relation": "政治的敵"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Pablo_picasso_1.jpg?width=500"
 }

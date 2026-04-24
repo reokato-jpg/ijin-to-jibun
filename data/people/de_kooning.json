@@ -207,11 +207,12 @@
       "note": "オランダの光と陰の伝統を受け継いだ。"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Willem_de_Kooning_in_his_studio.jpg?width=500",
+  "imageUrl": "assets/portraits/de_kooning.webp",
   "wikiTitle": "ウィレム・デ・クーニング",
   "imageCredit": {
     "artist": "Unknown",
     "license": "Fair use / Public domain",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Willem_de_Kooning_1961.jpg"
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Willem_de_Kooning_in_his_studio.jpg?width=500"
 }

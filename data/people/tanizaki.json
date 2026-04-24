@@ -11,12 +11,13 @@
   "events": [],
   "quotes": [],
   "places": [],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Portrait_of_Tanizaki_Jun%27ichir%C5%8D_-_Atami_-_1950_-_Kimura_Ihei.png?width=500",
+  "imageUrl": "assets/portraits/tanizaki.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
   "lifeDigest": "",
   "traits": {},
-  "relations": []
+  "relations": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Portrait_of_Tanizaki_Jun%27ichir%C5%8D_-_Atami_-_1950_-_Kimura_Ihei.png?width=500"
 }

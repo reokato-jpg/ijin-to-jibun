@@ -156,7 +156,7 @@
       "description": "晩年の霊的苦悩を明かす書簡集。"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/MotherTeresa_090.jpg?width=500",
+  "imageUrl": "assets/portraits/mother_teresa.webp",
   "wikiTitle": "マザー・テレサ",
   "imageCredit": {
     "artist": "Túrelio",
@@ -199,5 +199,6 @@
     "dislikes": [
       "金銭の施し方（物でなく直接手渡し）"
     ]
-  }
+  },
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/MotherTeresa_090.jpg?width=500"
 }

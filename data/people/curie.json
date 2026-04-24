@@ -186,7 +186,7 @@
       "description": "本人による放射能研究の総論。科学史の原典。"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Marie_Curie_c._1920s.jpg?width=500",
+  "imageUrl": "assets/portraits/curie.webp",
   "wikiTitle": "マリー・キュリー",
   "imageCredit": {
     "artist": "Henri Manuel",
@@ -365,5 +365,6 @@
       "title": "ラジウムの特許を取らなかった",
       "body": "ラジウムは癌治療にも使われる貴重な元素として、特許を取れば莫大な富を得られた。だがマリーとピエールは『科学は人類のもの』と特許取得を拒否。その決断で夫婦は生涯経済的に苦しかった。『もし私が金持ちなら、自分のための研究室を持てたのに』と晩年の手紙に書いた。"
     }
-  ]
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Marie_Curie_c._1920s.jpg?width=500"
 }
