@@ -538,7 +538,7 @@
               <button class="magic-topbook-pill magic-topbook-pill-quiz" data-deep="quiz">🎓 偉人クイズ</button>
               <button class="magic-topbook-pill magic-topbook-pill-timeline" data-deep="timeline">📅 年表モード</button>
               <button class="magic-topbook-pill magic-topbook-pill-glossary" data-deep="glossary">📖 用語集</button>
-              <button class="magic-topbook-pill magic-topbook-pill-myth" data-deep="mythology">📜 原初の物語</button>
+              <button class="magic-topbook-pill magic-topbook-pill-myth" data-deep="mythology">✦ Genesis — はじまりの書</button>
             </div>
           </div>
         </div>
@@ -4722,7 +4722,7 @@
   // 📜 神話物語モード: 章構成で没入できる読み物
   const MYTH_STORIES = {
     genesis: {
-      name: '創世記', emoji: '🌿', theme: 'eden',
+      name: '創世記', emoji: '🍎', theme: 'eden', symbol: '✡',
       subtitle: '旧約聖書 — 光あれ、から楽園追放まで',
       palette: { bg1: '#2a1f0f', bg2: '#0f0804', accent: '#ffe090' },
       chapters: [
@@ -4737,7 +4737,7 @@
       ]
     },
     greek: {
-      name: 'ギリシャ神話', emoji: '⚡', theme: 'olympus',
+      name: 'ギリシャ神話', emoji: '⚡', theme: 'olympus', symbol: 'Ω',
       subtitle: 'カオスから、オリンポスまで',
       palette: { bg1: '#0f1830', bg2: '#050814', accent: '#ffd650' },
       chapters: [
@@ -4751,7 +4751,7 @@
       ]
     },
     japan: {
-      name: '日本神話', emoji: '🌸', theme: 'izanami',
+      name: '日本神話', emoji: '⛩', theme: 'izanami', symbol: '日',
       subtitle: '天地開闢から、国譲りまで',
       palette: { bg1: '#2a1030', bg2: '#10041a', accent: '#ffb0d0' },
       chapters: [
@@ -4766,7 +4766,7 @@
       ]
     },
     norse: {
-      name: '北欧神話', emoji: '🔨', theme: 'yggdrasil',
+      name: '北欧神話', emoji: '🌳', theme: 'yggdrasil', symbol: 'ᚱ',
       subtitle: 'ギンヌンガガプから、ラグナロクまで',
       palette: { bg1: '#0a1028', bg2: '#050612', accent: '#b0d8ff' },
       chapters: [
@@ -4779,7 +4779,7 @@
       ]
     },
     egypt: {
-      name: 'エジプト神話', emoji: '☀️', theme: 'nile',
+      name: 'エジプト神話', emoji: '𓂀', theme: 'nile', symbol: '𓂀',
       subtitle: '太初の水ヌンから、オシリスの復活まで',
       palette: { bg1: '#2a1505', bg2: '#120805', accent: '#ffc850' },
       chapters: [
@@ -4793,7 +4793,7 @@
       ]
     },
     hindu: {
-      name: 'ヒンドゥー神話', emoji: '🕉', theme: 'trimurti',
+      name: 'ヒンドゥー神話', emoji: '🪷', theme: 'trimurti', symbol: 'ॐ',
       subtitle: '宇宙の創造・維持・破壊',
       palette: { bg1: '#2a0a20', bg2: '#10041a', accent: '#ffb0a0' },
       chapters: [
@@ -4907,22 +4907,26 @@
       const s = MYTH_STORIES[k];
       return `
         <button class="tale-cover" data-tale="${k}" style="background: linear-gradient(165deg, ${s.palette.bg1}, ${s.palette.bg2});">
+          <div class="tale-cover-glyph">${s.symbol || s.emoji}</div>
           <div class="tale-cover-emoji">${s.emoji}</div>
           <div class="tale-cover-name">${s.name}</div>
           <div class="tale-cover-sub">${s.subtitle}</div>
-          <div class="tale-cover-open">開く →</div>
+          <div class="tale-cover-chapters">全${s.chapters.length}章</div>
+          <div class="tale-cover-open">ひらく  ›</div>
         </button>
       `;
     }).join('');
     ov.innerHTML = `
       <button class="tale-close" aria-label="閉じる">×</button>
       <div class="tale-home" id="taleHome">
+        <div class="tale-stars" aria-hidden="true"></div>
         <div class="tale-home-head">
-          <div class="tale-home-title">原初の物語</div>
-          <div class="tale-home-sub">世界が始まる前、人々はどんな話を語り合ったか</div>
+          <div class="tale-home-super">G E N E S I S</div>
+          <div class="tale-home-title">はじまりの書</div>
+          <div class="tale-home-sub">──  世界が始まる前、人はどんな話を語り合ったか</div>
         </div>
         <div class="tale-grid">${coverHTML}</div>
-        <div class="tale-home-foot">すべての神話は、世界を理解しようとした人の心の形。</div>
+        <div class="tale-home-foot">すべての神話は、宇宙を理解しようとした人の心の形。</div>
       </div>
       <div class="tale-reader" id="taleReader">
         <div class="tale-atmos" id="taleAtmos"></div>
@@ -5253,6 +5257,11 @@
             <span class="cms-i">✒️</span>
             <span class="cms-n">我が真理</span>
             <span class="cms-d">あなたの真理を宇宙に刻む</span>
+          </button>
+          <button class="cms-item" data-mode="prince">
+            <span class="cms-i">🌹</span>
+            <span class="cms-n">星の王子様</span>
+            <span class="cms-d">B-612と小さな星たち</span>
           </button>
         </div>
       </div>
@@ -7238,7 +7247,122 @@
           btn.classList.remove('active');
           modes.truth = false;
         }
+        if (mode === 'prince') {
+          togglePrinceMode(modes.prince);
+          flashBanner(modes.prince ? '🌹 B-612 — 小さな星たちの世界' : '🌍 太陽系に戻る', 2400);
+        }
       });
+    });
+
+    // ============================================================
+    // 🌹 星の王子様モード（B-612と小さな星たち）
+    // ============================================================
+    const PRINCE_DATA = [
+      { id:'b612', name:'B-612', role:'王子の星', color:'#80d0a0', emoji:'🌹', size: 1.2,
+        story:'王子が暮らす直径わずか家一軒ほどの小惑星。三つのバオバブの芽と、たった一輪のバラ。' },
+      { id:'rose', name:'バラ', role:'たった一人の', color:'#ff6080', emoji:'🌷', size: 0.5,
+        story:'王子を困らせる、唯一のバラ。「時間をかけたから特別なんだ」。' },
+      { id:'king', name:'王の星', role:'第325惑星', color:'#d04040', emoji:'👑', size: 0.8,
+        story:'命じる相手がいなくても「命じなさい」と命じる王。' },
+      { id:'vainman', name:'うぬぼれ屋', role:'第326惑星', color:'#e0a040', emoji:'🎩', size: 0.7,
+        story:'「賞賛して！」だけが聞こえる男。' },
+      { id:'drunkard', name:'のんだくれ', role:'第327惑星', color:'#5a3a20', emoji:'🍾', size: 0.7,
+        story:'「飲むことを忘れるために飲む」の輪。' },
+      { id:'business', name:'実業家', role:'第328惑星', color:'#4a4a4a', emoji:'💼', size: 0.7,
+        story:'5億2百50万の星を数え、金庫にしまう男。' },
+      { id:'lamp', name:'点灯夫', role:'第329惑星', color:'#f0c040', emoji:'🕯', size: 0.6,
+        story:'1分ごとに街灯を点け消す、王子を最も愛した友。' },
+      { id:'geographer', name:'地理学者', role:'第330惑星', color:'#8a6a4a', emoji:'📜', size: 0.8,
+        story:'自分の星を一度も歩いたことのない学者。' },
+      { id:'fox', name:'キツネ', role:'地球にて', color:'#ff9050', emoji:'🦊', size: 0.7,
+        story:'「心で見なくちゃ、肝心なことは目に見えない」。' },
+      { id:'snake', name:'ヘビ', role:'砂漠にて', color:'#404040', emoji:'🐍', size: 0.5,
+        story:'王子が星に帰るための、やさしい毒。' },
+    ];
+    let princeGroup = null;
+    function buildPrinceGroup() {
+      if (princeGroup) return princeGroup;
+      const g = new THREE.Group();
+      g.visible = false;
+      PRINCE_DATA.forEach((d, i) => {
+        const n = PRINCE_DATA.length;
+        const angle = (i / n) * Math.PI * 2;
+        const r = 14 + Math.sin(i * 1.7) * 4;
+        const y = Math.cos(i * 0.9) * 3;
+        // procedural texture with color + emoji
+        const sc = document.createElement('canvas'); sc.width = 256; sc.height = 256;
+        const ctx2 = sc.getContext('2d');
+        ctx2.fillStyle = d.color; ctx2.fillRect(0, 0, 256, 256);
+        // soft cloud details
+        for (let j = 0; j < 30; j++) {
+          const x = Math.random()*256, yy = Math.random()*256, rr = 15+Math.random()*40;
+          const grd = ctx2.createRadialGradient(x, yy, 0, x, yy, rr);
+          grd.addColorStop(0, 'rgba(255,255,255,0.22)');
+          grd.addColorStop(1, 'rgba(255,255,255,0)');
+          ctx2.fillStyle = grd;
+          ctx2.beginPath(); ctx2.arc(x, yy, rr, 0, Math.PI*2); ctx2.fill();
+        }
+        // emoji centered
+        ctx2.font = '120px serif';
+        ctx2.textAlign = 'center'; ctx2.textBaseline = 'middle';
+        ctx2.fillStyle = 'rgba(0,0,0,0.22)';
+        ctx2.fillText(d.emoji, 130, 138);
+        ctx2.fillStyle = 'rgba(255,255,255,0.95)';
+        ctx2.fillText(d.emoji, 128, 134);
+        const tex = new THREE.CanvasTexture(sc);
+        const mat = new THREE.MeshStandardMaterial({
+          map: tex, emissive: new THREE.Color(d.color),
+          emissiveIntensity: 0.3, roughness: 0.55, metalness: 0.1,
+        });
+        const sphere = new THREE.Mesh(new THREE.SphereGeometry(d.size, 24, 18), mat);
+        sphere.position.set(Math.cos(angle) * r, y, Math.sin(angle) * r);
+        sphere.userData = d;
+        g.add(sphere);
+        // subtle glow
+        const glowMat = new THREE.SpriteMaterial({ map: softDotTex, color: d.color, transparent: true, opacity: 0.5, depthWrite: false, blending: THREE.AdditiveBlending });
+        const glow = new THREE.Sprite(glowMat);
+        glow.scale.set(d.size * 4, d.size * 4, 1);
+        glow.position.copy(sphere.position);
+        g.add(glow);
+      });
+      scene.add(g);
+      princeGroup = g;
+      return g;
+    }
+    function togglePrinceMode(on) {
+      const group = buildPrinceGroup();
+      group.visible = on;
+      // 主要な惑星・太陽・衛星を隠す（ワイルドスケール: 再訪時に戻る）
+      planetMeshes.forEach(pm => { pm.mesh.visible = !on; if (pm.orbit) pm.orbit.visible = !on; if (pm.mesh.userData.ring) pm.mesh.userData.ring.visible = !on; if (pm.mesh.userData.moons) pm.mesh.userData.moons.forEach(m => m.mesh.visible = !on); if (pm.mesh.userData.atmShell) pm.mesh.userData.atmShell.visible = !on; });
+      sun.visible = !on;
+      corona.visible = !on;
+      if (typeof corona1 !== 'undefined' && corona1) corona1.visible = !on;
+      astPoints.visible = !on;
+      kbPoints.visible = !on;
+    }
+    // タップ判定に princeGroup も含める
+    function pickPrinceHit(e) {
+      if (!princeGroup || !princeGroup.visible) return null;
+      const rect = renderer.domElement.getBoundingClientRect();
+      mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      raycaster.setFromCamera(mouse, camera);
+      const hits = raycaster.intersectObjects(princeGroup.children.filter(c => c.isMesh), false);
+      return hits[0] || null;
+    }
+    renderer.domElement.addEventListener('click', (e) => {
+      const h = pickPrinceHit(e);
+      if (!h) return;
+      const d = h.object.userData;
+      const infoEl = ov.querySelector('#cosmosInfoContent');
+      const panel = ov.querySelector('#cosmosInfoPanel');
+      if (!infoEl || !panel) return;
+      infoEl.innerHTML = `
+        <div class="cosmos-info-name">${d.emoji} ${d.name}</div>
+        <div class="cosmos-info-sub">${d.role}</div>
+        <div class="cosmos-info-trivia">${d.story}</div>
+      `;
+      panel.classList.add('show');
     });
 
     // ============================================================
@@ -8912,6 +9036,16 @@
           pm.mesh.rotation.y += 0.01;
         });
         sun.rotation.y += 0.002;
+        // 🌹 Prince mode: 小惑星群がゆっくりドリフト + 自転
+        if (modes.prince && princeGroup) {
+          princeGroup.rotation.y += 0.0015;
+          princeGroup.children.forEach((c, i) => {
+            if (c.isMesh) {
+              c.rotation.y += 0.008 + (i % 5) * 0.001;
+              c.position.y += Math.sin(universeTime * 0.8 + i) * 0.003;
+            }
+          });
+        }
         // 🌌 軌道トレイル更新
         if (modes.trails) {
           planetTrails.forEach(t => {
