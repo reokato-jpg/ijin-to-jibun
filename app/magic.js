@@ -2137,17 +2137,9 @@
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(40, W / H, 0.1, 100);
-    // setViewOffset で描画を画面上方にずらす（地球が上に寄って下のポップと被らない）
-    camera.position.set(0, 0, 11);
+    // 地球を画面中央に、少し近めから初期表示
+    camera.position.set(0, 0, 10);
     camera.lookAt(0, 0, 0);
-    // 地球が画面の中央付近に来るよう、穏やかにシフト（上下のUIと被らない）
-    const applyViewOffset = () => {
-      const vh = H * 1.22;
-      camera.setViewOffset(W, vh, 0, vh - H, W, H);
-    };
-    applyViewOffset();
-    // 初期ズーム：少し近めに
-    camera.position.z = 9.2;
 
     // 🌅 昼夜境界：太陽位置を UTC 時刻から計算して、夜側は「深い青の夕暮れ」
     // （真っ暗にすると地球が見えなくなるので、昼夜差は残しつつ視認性を確保）
