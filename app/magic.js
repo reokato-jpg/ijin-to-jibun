@@ -3684,22 +3684,266 @@
     camera.position.set(0, 20, 60);
     camera.lookAt(0, 0, 0);
 
-    // 星（背景）
+    // ============================================================
+    // 🌌 銀河背景（恒星スペクトル色 + 天の川 + 星雲 + 遠方銀河）
+    // ============================================================
+    // ソフトな円形スプライトテクスチャ（星・星雲共通）
+    const softDotTex = (() => {
+      const sc = document.createElement('canvas'); sc.width = 64; sc.height = 64;
+      const g = sc.getContext('2d');
+      const grd = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+      grd.addColorStop(0, 'rgba(255,255,255,1)');
+      grd.addColorStop(0.35, 'rgba(255,255,255,0.55)');
+      grd.addColorStop(1, 'rgba(255,255,255,0)');
+      g.fillStyle = grd; g.fillRect(0, 0, 64, 64);
+      return new THREE.CanvasTexture(sc);
+    })();
+
+    // 恒星の色（スペクトル型分布に近い重み付け：M/K/G/F/A/B）
+    const STAR_PALETTE = [
+      [1.00, 0.78, 0.62], // M 赤橙（多い）
+      [1.00, 0.78, 0.62],
+      [1.00, 0.85, 0.70], // K オレンジ
+      [1.00, 0.92, 0.80], // G 黄（太陽型）
+      [1.00, 0.98, 0.90], // F 薄黄
+      [0.95, 0.96, 1.00], // A 白
+      [0.82, 0.88, 1.00], // B 青白（少ない）
+    ];
+    // 星（背景球面 + 天の川バンド強化）
     const stars = new THREE.BufferGeometry();
-    const starCount = 2500;
+    const starCount = 4500;
     const spos = new Float32Array(starCount * 3);
+    const scol = new Float32Array(starCount * 3);
+    const ssiz = new Float32Array(starCount);
+    // 天の川の平面法線（少し傾ける）
+    const MW_TILT = 0.55; // 約32度
     for (let i = 0; i < starCount; i++) {
-      const r = 200 + Math.random() * 200;
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(2 * Math.random() - 1);
-      spos[i*3] = r * Math.sin(phi) * Math.cos(theta);
-      spos[i*3+1] = r * Math.sin(phi) * Math.sin(theta);
-      spos[i*3+2] = r * Math.cos(phi);
+      // 60%は天の川バンドに集中配置、残りは全球面に散布
+      const inBand = Math.random() < 0.6;
+      const r = 260 + Math.random() * 180;
+      let x, y, z;
+      if (inBand) {
+        const theta = Math.random() * Math.PI * 2;
+        // バンド厚さ（薄い）
+        const bandY = (Math.random() - 0.5) * 0.18; // 正規化された薄い帯
+        x = r * Math.cos(theta);
+        z = r * Math.sin(theta);
+        y = r * bandY;
+        // 傾ける
+        const yy = y * Math.cos(MW_TILT) - z * Math.sin(MW_TILT);
+        const zz = y * Math.sin(MW_TILT) + z * Math.cos(MW_TILT);
+        y = yy; z = zz;
+      } else {
+        const theta = Math.random() * Math.PI * 2;
+        const phi = Math.acos(2 * Math.random() - 1);
+        x = r * Math.sin(phi) * Math.cos(theta);
+        y = r * Math.sin(phi) * Math.sin(theta);
+        z = r * Math.cos(phi);
+      }
+      spos[i*3] = x; spos[i*3+1] = y; spos[i*3+2] = z;
+      // 色：スペクトル分布
+      const c = STAR_PALETTE[Math.floor(Math.pow(Math.random(), 1.6) * STAR_PALETTE.length)];
+      // 輝度のランダム
+      const b = 0.55 + Math.random() * 0.45;
+      scol[i*3] = c[0] * b; scol[i*3+1] = c[1] * b; scol[i*3+2] = c[2] * b;
+      // サイズ：多くは小、稀に大（明るい恒星）
+      ssiz[i] = Math.random() < 0.02 ? 1.6 + Math.random() * 1.4 : 0.35 + Math.random() * 0.55;
     }
     stars.setAttribute('position', new THREE.BufferAttribute(spos, 3));
-    const starsMat = new THREE.PointsMaterial({ size: 0.6, color: 0xffffff, sizeAttenuation: false, opacity: 0, transparent: true });
+    stars.setAttribute('color', new THREE.BufferAttribute(scol, 3));
+    stars.setAttribute('size', new THREE.BufferAttribute(ssiz, 1));
+    // ShaderMaterialで可変サイズ＋ソフト円
+    const starsMat = new THREE.ShaderMaterial({
+      uniforms: { uTex: { value: softDotTex }, uOpacity: { value: 0.0 }, uTwinkle: { value: 0.0 } },
+      vertexShader: `
+        attribute float size;
+        attribute vec3 color;
+        varying vec3 vColor;
+        varying float vSize;
+        void main() {
+          vColor = color;
+          vSize = size;
+          vec4 mv = modelViewMatrix * vec4(position, 1.0);
+          gl_Position = projectionMatrix * mv;
+          gl_PointSize = size * 2.2;
+        }
+      `,
+      fragmentShader: `
+        uniform sampler2D uTex;
+        uniform float uOpacity;
+        uniform float uTwinkle;
+        varying vec3 vColor;
+        varying float vSize;
+        void main() {
+          vec4 t = texture2D(uTex, gl_PointCoord);
+          float tw = 0.85 + 0.15 * sin(uTwinkle + vSize * 37.0);
+          gl_FragColor = vec4(vColor * tw, t.a * uOpacity);
+          if (gl_FragColor.a < 0.01) discard;
+        }
+      `,
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+    });
     const starsPoints = new THREE.Points(stars, starsMat);
     scene.add(starsPoints);
+
+    // 天の川の淡いグロー帯（薄い板）
+    const mwGlowTex = (() => {
+      const sc = document.createElement('canvas'); sc.width = 1024; sc.height = 256;
+      const g = sc.getContext('2d');
+      // 中心に明るい帯、左右に拡がる塵
+      const grd = g.createLinearGradient(0, 0, 0, 256);
+      grd.addColorStop(0, 'rgba(20,10,40,0)');
+      grd.addColorStop(0.45, 'rgba(180,140,200,0.18)');
+      grd.addColorStop(0.5, 'rgba(220,200,255,0.32)');
+      grd.addColorStop(0.55, 'rgba(180,140,200,0.18)');
+      grd.addColorStop(1, 'rgba(20,10,40,0)');
+      g.fillStyle = grd; g.fillRect(0, 0, 1024, 256);
+      // ダークダストのムラ
+      for (let i = 0; i < 60; i++) {
+        const x = Math.random() * 1024, y = 100 + Math.random() * 56;
+        const r = 20 + Math.random() * 60;
+        const gg = g.createRadialGradient(x, y, 0, x, y, r);
+        gg.addColorStop(0, 'rgba(10,5,20,0.45)');
+        gg.addColorStop(1, 'rgba(10,5,20,0)');
+        g.fillStyle = gg;
+        g.beginPath(); g.arc(x, y, r, 0, Math.PI*2); g.fill();
+      }
+      // 星団の薄いピンク
+      for (let i = 0; i < 8; i++) {
+        const x = Math.random() * 1024, y = 110 + Math.random() * 36;
+        const r = 30 + Math.random() * 50;
+        const gg = g.createRadialGradient(x, y, 0, x, y, r);
+        gg.addColorStop(0, 'rgba(255,170,200,0.22)');
+        gg.addColorStop(1, 'rgba(255,170,200,0)');
+        g.fillStyle = gg;
+        g.beginPath(); g.arc(x, y, r, 0, Math.PI*2); g.fill();
+      }
+      return new THREE.CanvasTexture(sc);
+    })();
+    const mwGeo = new THREE.CylinderGeometry(420, 420, 120, 96, 1, true);
+    const mwMat = new THREE.MeshBasicMaterial({
+      map: mwGlowTex, transparent: true, opacity: 0.0,
+      side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending,
+    });
+    const milkyWay = new THREE.Mesh(mwGeo, mwMat);
+    milkyWay.rotation.z = MW_TILT;
+    milkyWay.rotation.x = Math.PI / 2;
+    scene.add(milkyWay);
+
+    // 星雲（カラフルなガス雲スプライト）
+    function makeNebulaTex(hue1, hue2) {
+      const sc = document.createElement('canvas'); sc.width = 512; sc.height = 512;
+      const g = sc.getContext('2d');
+      // 複数の柔らかいガス雲を重ねる
+      for (let i = 0; i < 80; i++) {
+        const x = 100 + Math.random() * 312;
+        const y = 100 + Math.random() * 312;
+        const r = 40 + Math.random() * 120;
+        const h = Math.random() < 0.5 ? hue1 : hue2;
+        const a = 0.04 + Math.random() * 0.12;
+        const gg = g.createRadialGradient(x, y, 0, x, y, r);
+        gg.addColorStop(0, `hsla(${h},85%,68%,${a})`);
+        gg.addColorStop(0.4, `hsla(${h},80%,55%,${a*0.5})`);
+        gg.addColorStop(1, `hsla(${h},80%,50%,0)`);
+        g.fillStyle = gg;
+        g.beginPath(); g.arc(x, y, r, 0, Math.PI*2); g.fill();
+      }
+      // 内部に小さな星
+      g.globalCompositeOperation = 'lighter';
+      for (let i = 0; i < 120; i++) {
+        const x = 100 + Math.random() * 312;
+        const y = 100 + Math.random() * 312;
+        g.fillStyle = `rgba(255,255,255,${0.3 + Math.random()*0.6})`;
+        g.beginPath(); g.arc(x, y, 0.6 + Math.random()*1.2, 0, Math.PI*2); g.fill();
+      }
+      return new THREE.CanvasTexture(sc);
+    }
+    const NEBULAE = [
+      { tex: makeNebulaTex(330, 280), pos: [-280, 80, -240], size: 220 },  // ピンク/紫（オリオン風）
+      { tex: makeNebulaTex(200, 240), pos: [260, -60, -260], size: 260 },  // 青/シアン
+      { tex: makeNebulaTex(20, 350),  pos: [-220, -140, 280], size: 200 }, // 赤/マゼンタ
+      { tex: makeNebulaTex(280, 210), pos: [240, 140, 240],  size: 240 },  // 紫/青
+      { tex: makeNebulaTex(160, 100), pos: [0, 200, -340],   size: 210 },  // 緑/黄（エメラルド星雲）
+    ];
+    const nebulaMeshes = [];
+    NEBULAE.forEach(n => {
+      const mat = new THREE.SpriteMaterial({ map: n.tex, transparent: true, opacity: 0.0, depthWrite: false, blending: THREE.AdditiveBlending });
+      const sp = new THREE.Sprite(mat);
+      sp.position.set(n.pos[0], n.pos[1], n.pos[2]);
+      sp.scale.set(n.size, n.size, 1);
+      scene.add(sp);
+      nebulaMeshes.push(sp);
+    });
+
+    // 遠方の小さな銀河（螺旋）
+    function makeDistantGalaxyTex(hue) {
+      const sc = document.createElement('canvas'); sc.width = 256; sc.height = 256;
+      const g = sc.getContext('2d');
+      g.translate(128, 128);
+      // 中央のバルジ
+      const bulge = g.createRadialGradient(0, 0, 0, 0, 0, 30);
+      bulge.addColorStop(0, `hsla(${hue},50%,95%,0.95)`);
+      bulge.addColorStop(0.5, `hsla(${hue},55%,75%,0.5)`);
+      bulge.addColorStop(1, `hsla(${hue},60%,60%,0)`);
+      g.fillStyle = bulge;
+      g.beginPath(); g.arc(0, 0, 30, 0, Math.PI*2); g.fill();
+      // 螺旋腕
+      g.globalCompositeOperation = 'lighter';
+      for (let arm = 0; arm < 2; arm++) {
+        const offset = arm * Math.PI;
+        for (let t = 0; t < 60; t++) {
+          const a = t * 0.18 + offset;
+          const r = t * 1.8;
+          const x = Math.cos(a) * r;
+          const y = Math.sin(a) * r * 0.4; // 薄い楕円
+          const gg = g.createRadialGradient(x, y, 0, x, y, 12);
+          gg.addColorStop(0, `hsla(${hue},70%,80%,0.4)`);
+          gg.addColorStop(1, `hsla(${hue},60%,60%,0)`);
+          g.fillStyle = gg;
+          g.beginPath(); g.arc(x, y, 12, 0, Math.PI*2); g.fill();
+        }
+      }
+      return new THREE.CanvasTexture(sc);
+    }
+    const distantGalaxies = [];
+    for (let i = 0; i < 12; i++) {
+      const hue = [210, 260, 30, 340, 200, 50][i % 6];
+      const tex = makeDistantGalaxyTex(hue);
+      const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, opacity: 0.0, depthWrite: false, blending: THREE.AdditiveBlending });
+      const sp = new THREE.Sprite(mat);
+      const r = 380 + Math.random() * 80;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2 * Math.random() - 1);
+      sp.position.set(r*Math.sin(phi)*Math.cos(theta), r*Math.sin(phi)*Math.sin(theta), r*Math.cos(phi));
+      const s = 30 + Math.random() * 30;
+      sp.scale.set(s, s, 1);
+      sp.material.rotation = Math.random() * Math.PI;
+      scene.add(sp);
+      distantGalaxies.push(sp);
+    }
+
+    // 宇宙塵（近距離パララックス粒子）
+    const dustCount = 400;
+    const dustGeo = new THREE.BufferGeometry();
+    const dpos = new Float32Array(dustCount * 3);
+    const dcol = new Float32Array(dustCount * 3);
+    for (let i = 0; i < dustCount; i++) {
+      const r = 80 + Math.random() * 140;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2 * Math.random() - 1);
+      dpos[i*3] = r * Math.sin(phi) * Math.cos(theta);
+      dpos[i*3+1] = r * Math.sin(phi) * Math.sin(theta);
+      dpos[i*3+2] = r * Math.cos(phi);
+      const c = [0.8, 0.75, 0.9];
+      dcol[i*3] = c[0]; dcol[i*3+1] = c[1]; dcol[i*3+2] = c[2];
+    }
+    dustGeo.setAttribute('position', new THREE.BufferAttribute(dpos, 3));
+    dustGeo.setAttribute('color', new THREE.BufferAttribute(dcol, 3));
+    const dustMat = new THREE.PointsMaterial({ size: 0.25, vertexColors: true, transparent: true, opacity: 0.0, depthWrite: false, blending: THREE.AdditiveBlending, map: softDotTex });
+    const dustPoints = new THREE.Points(dustGeo, dustMat);
+    scene.add(dustPoints);
 
     // ビッグバン用パーティクル
     const bbCount = 1500;
@@ -3768,6 +4012,44 @@
     const corona = new THREE.Mesh(coronaGeo, coronaMat);
     corona.visible = false;
     scene.add(corona);
+
+    // ☀️ 太陽光（PointLight）＋ 非常に弱いアンビエントで陰影コントラスト
+    const sunLight = new THREE.PointLight(0xfff2d8, 2.2, 200, 1.2);
+    sunLight.position.set(0, 0, 0);
+    scene.add(sunLight);
+    scene.add(new THREE.AmbientLight(0x2a2035, 0.28));
+
+    // 太陽レンズグロー（spriteで放射状の光）
+    const sunGlowTex = (() => {
+      const sc = document.createElement('canvas'); sc.width = 512; sc.height = 512;
+      const g = sc.getContext('2d');
+      const grd = g.createRadialGradient(256, 256, 0, 256, 256, 256);
+      grd.addColorStop(0, 'rgba(255,240,180,0.9)');
+      grd.addColorStop(0.15, 'rgba(255,200,120,0.55)');
+      grd.addColorStop(0.4, 'rgba(255,140,80,0.18)');
+      grd.addColorStop(1, 'rgba(255,100,40,0)');
+      g.fillStyle = grd; g.fillRect(0,0,512,512);
+      // 放射の光条
+      g.globalCompositeOperation = 'lighter';
+      for (let i = 0; i < 6; i++) {
+        const ang = (i / 6) * Math.PI * 2;
+        const gg = g.createLinearGradient(256, 256, 256 + Math.cos(ang)*256, 256 + Math.sin(ang)*256);
+        gg.addColorStop(0, 'rgba(255,230,160,0.35)');
+        gg.addColorStop(1, 'rgba(255,180,100,0)');
+        g.save();
+        g.translate(256, 256);
+        g.rotate(ang);
+        g.fillStyle = gg;
+        g.fillRect(-4, 0, 8, 256);
+        g.restore();
+      }
+      return new THREE.CanvasTexture(sc);
+    })();
+    const sunGlowMat = new THREE.SpriteMaterial({ map: sunGlowTex, transparent: true, opacity: 0.0, depthWrite: false, blending: THREE.AdditiveBlending });
+    const sunGlow = new THREE.Sprite(sunGlowMat);
+    sunGlow.scale.set(18, 18, 1);
+    sunGlow.position.set(0, 0, 0);
+    scene.add(sunGlow);
 
     // 惑星データ（距離, サイズ, 色, 教育情報）
     const PLANETS = [
@@ -4379,11 +4661,88 @@
     // ============================================================
     // 🚀 ロケット操縦モード（任天堂的な気持ちよさ目指し）
     // ============================================================
+    // 3Dロケットメッシュを組み立て（任天堂的にかわいく）
+    const rocketGroup = new THREE.Group();
+    rocketGroup.visible = false;
+    // デフォルト向き：+Z軸前方。コーンはY+向きなのでZ向きに回転
+    {
+      // 本体（白いカプセル）
+      const bodyMat = new THREE.MeshStandardMaterial({ color: 0xf8f8f8, roughness: 0.35, metalness: 0.25, emissive: 0x222222 });
+      const body = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.28, 1.2, 18), bodyMat);
+      body.rotation.x = Math.PI / 2;
+      rocketGroup.add(body);
+      // 赤い帯
+      const stripe = new THREE.Mesh(new THREE.CylinderGeometry(0.282, 0.282, 0.14, 18), new THREE.MeshStandardMaterial({ color: 0xe64a55, roughness: 0.4, metalness: 0.3, emissive: 0x220000 }));
+      stripe.rotation.x = Math.PI / 2;
+      stripe.position.z = 0.25;
+      rocketGroup.add(stripe);
+      // ノーズコーン（赤）
+      const nose = new THREE.Mesh(new THREE.ConeGeometry(0.24, 0.55, 18), new THREE.MeshStandardMaterial({ color: 0xe84a4a, roughness: 0.3, metalness: 0.35, emissive: 0x330000 }));
+      nose.rotation.x = Math.PI / 2;
+      nose.position.z = 0.88;
+      rocketGroup.add(nose);
+      // 丸窓（水色・発光）
+      const win = new THREE.Mesh(new THREE.SphereGeometry(0.1, 16, 16), new THREE.MeshStandardMaterial({ color: 0x7ac8ff, emissive: 0x4080c8, emissiveIntensity: 0.6, roughness: 0.1, metalness: 0.4 }));
+      win.position.set(0, 0.16, 0.3);
+      win.scale.set(1, 0.6, 0.6);
+      rocketGroup.add(win);
+      // フィン ×3
+      const finMat = new THREE.MeshStandardMaterial({ color: 0xe64a55, roughness: 0.4, metalness: 0.2, emissive: 0x200000, side: THREE.DoubleSide });
+      const finShape = new THREE.Shape();
+      finShape.moveTo(0, 0);
+      finShape.lineTo(0.32, -0.18);
+      finShape.lineTo(0.32, 0);
+      finShape.lineTo(0, 0.32);
+      finShape.lineTo(0, 0);
+      const finGeo = new THREE.ExtrudeGeometry(finShape, { depth: 0.03, bevelEnabled: false });
+      for (let f = 0; f < 3; f++) {
+        const fin = new THREE.Mesh(finGeo, finMat);
+        fin.position.set(0, 0, -0.6);
+        fin.rotation.y = (f / 3) * Math.PI * 2;
+        fin.rotation.x = -Math.PI / 2;
+        const pivot = new THREE.Group();
+        pivot.rotation.z = (f / 3) * Math.PI * 2;
+        pivot.add(fin);
+        rocketGroup.add(pivot);
+      }
+      // エンジンノズル（後部）
+      const nozzle = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.28, 0.18, 18), new THREE.MeshStandardMaterial({ color: 0x333540, roughness: 0.6, metalness: 0.8, emissive: 0x0a0a10 }));
+      nozzle.rotation.x = Math.PI / 2;
+      nozzle.position.z = -0.68;
+      rocketGroup.add(nozzle);
+      // 噴射炎（sprite）
+      const flameTex = (() => {
+        const sc = document.createElement('canvas'); sc.width = 128; sc.height = 256;
+        const g = sc.getContext('2d');
+        const grd = g.createRadialGradient(64, 60, 0, 64, 180, 120);
+        grd.addColorStop(0, 'rgba(255,255,220,1)');
+        grd.addColorStop(0.15, 'rgba(255,220,120,0.9)');
+        grd.addColorStop(0.4, 'rgba(255,140,60,0.65)');
+        grd.addColorStop(0.75, 'rgba(200,60,40,0.28)');
+        grd.addColorStop(1, 'rgba(120,30,20,0)');
+        g.fillStyle = grd; g.fillRect(0,0,128,256);
+        return new THREE.CanvasTexture(sc);
+      })();
+      const flameMat = new THREE.SpriteMaterial({ map: flameTex, transparent: true, opacity: 0.0, depthWrite: false, blending: THREE.AdditiveBlending });
+      const flame = new THREE.Sprite(flameMat);
+      flame.scale.set(0.6, 1.2, 1);
+      flame.position.z = -1.2;
+      rocketGroup.add(flame);
+      rocketGroup.userData.flame = flame;
+      // ポイントライト（エンジンの発光）
+      const engineLight = new THREE.PointLight(0xff8040, 0.0, 8, 2);
+      engineLight.position.z = -0.9;
+      rocketGroup.add(engineLight);
+      rocketGroup.userData.engineLight = engineLight;
+    }
+    scene.add(rocketGroup);
+
     let rocketMode = false;
     const rocketPos = new THREE.Vector3(0, 10, 40);
     const rocketVel = new THREE.Vector3(0, 0, 0);
     let rocketYaw = Math.PI; // 太陽の方向へ
     let rocketPitch = -0.1;
+    let rocketRoll = 0; // バンク（マリオカート的）
     const dpadState = { up:false, down:false, left:false, right:false };
     let thrustHold = false;
     let brakeHold = false;
@@ -4400,18 +4759,21 @@
       rocketUI.classList.toggle('show', rocketMode);
       ov.querySelector('#cosmosZoomCtrl').style.display = rocketMode ? 'none' : '';
       if (rocketMode) {
-        // カメラ位置から出発
+        // カメラ位置の少し前方から出発
         rocketPos.copy(camera.position);
         rocketVel.set(0,0,0);
         // 初期向き：太陽（原点）方向
         const dir = new THREE.Vector3().subVectors(new THREE.Vector3(0,0,0), rocketPos).normalize();
         rocketYaw = Math.atan2(dir.x, dir.z);
         rocketPitch = Math.asin(dir.y);
+        rocketRoll = 0;
+        rocketGroup.visible = true;
         hud.textContent = '🚀 十字キーで操縦 / BOOSTで加速';
         hud.classList.add('show');
         setTimeout(() => hud.classList.remove('show'), 3000);
       } else {
         visitedPlanet = null;
+        rocketGroup.visible = false;
       }
     });
     // 十字キー（押下中ずっと入力）
@@ -4456,6 +4818,9 @@
       if (dpadState.up)    rocketPitch += pitchRate;
       if (dpadState.down)  rocketPitch -= pitchRate;
       rocketPitch = Math.max(-1.3, Math.min(1.3, rocketPitch));
+      // バンク（左右入力で傾く）
+      const targetRoll = (dpadState.left ? 0.5 : 0) + (dpadState.right ? -0.5 : 0);
+      rocketRoll += (targetRoll - rocketRoll) * 0.12;
       // 推進
       const fwd = rocketForward();
       if (thrustHold) {
@@ -4477,11 +4842,27 @@
         rocketPos.setLength(maxR);
         rocketVel.multiplyScalar(0.3);
       }
-      // カメラ反映：ロケットは見えないので一人称＋少し後方
-      const back = fwd.clone().multiplyScalar(-2.5);
+      // ロケットの位置・姿勢を更新
+      rocketGroup.position.copy(rocketPos);
+      // Euler: yaw(Y) -> pitch(X) -> roll(Z)
+      rocketGroup.rotation.set(0, 0, 0);
+      rocketGroup.rotateY(rocketYaw);
+      rocketGroup.rotateX(-rocketPitch);
+      rocketGroup.rotateZ(rocketRoll);
+      // 噴射炎とエンジン光
+      const flame = rocketGroup.userData.flame;
+      const eLight = rocketGroup.userData.engineLight;
+      const flameTarget = thrustHold ? 0.95 : (sp > 0.05 ? 0.35 : 0);
+      flame.material.opacity += (flameTarget - flame.material.opacity) * 0.3;
+      const scl = 1 + (thrustHold ? 0.6 : 0) + Math.random() * 0.2;
+      flame.scale.set(0.55, 1.0 * scl, 1);
+      eLight.intensity += ((thrustHold ? 2.2 : sp * 0.8) - eLight.intensity) * 0.3;
+      // カメラ：三人称ビュー（ロケット後方やや上）
+      const back = fwd.clone().multiplyScalar(-4.5);
       const up = new THREE.Vector3(0,1,0);
-      camera.position.copy(rocketPos).add(back).addScaledVector(up, 0.8);
-      const look = rocketPos.clone().addScaledVector(fwd, 10);
+      const camTarget = rocketPos.clone().add(back).addScaledVector(up, 1.8);
+      camera.position.lerp(camTarget, 0.18);
+      const look = rocketPos.clone().addScaledVector(fwd, 6);
       camera.lookAt(look);
       // 近接ターゲット検出
       let nearest = null, nearestD = Infinity;
@@ -4550,7 +4931,7 @@
           }
         }
         stars.attributes.position.needsUpdate = true;
-        starsMat.opacity = Math.min(1, elapsed * 1.5);
+        starsMat.uniforms.uOpacity.value = Math.min(1, elapsed * 1.5);
         // ワープ1.5秒後にビッグバンへ
         if (elapsed > 1.5) {
           phase = 'bang';
@@ -4566,8 +4947,15 @@
         }
         bbGeo.attributes.position.needsUpdate = true;
         bbMat.opacity = Math.max(0, 0.9 - bbAge * 0.3);
-        starsMat.opacity = Math.min(1, bbAge * 0.4);
+        starsMat.uniforms.uOpacity.value = Math.min(1, bbAge * 0.4);
         sunMat.opacity = Math.min(1, (bbAge - 1) * 0.8);
+        sunGlowMat.opacity = Math.min(0.9, Math.max(0, (bbAge - 1) * 0.6));
+        // 銀河要素の登場
+        const reveal = Math.max(0, Math.min(1, (bbAge - 0.6) / 1.8));
+        mwMat.opacity = reveal * 0.75;
+        nebulaMeshes.forEach(m => m.material.opacity = reveal * 0.85);
+        distantGalaxies.forEach(g => g.material.opacity = reveal * 0.7);
+        dustMat.opacity = reveal * 0.55;
         if (bbAge > 1.5) {
           sun.visible = true;
           corona.visible = true;
@@ -4626,6 +5014,18 @@
         // ベルトの軌道回転
         astPoints.rotation.y += 0.0008;
         kbPoints.rotation.y += 0.0003;
+        // 🌌 銀河・星雲のゆるやかなドリフト + 瞬き
+        starsMat.uniforms.uTwinkle.value += 0.08;
+        starsPoints.rotation.y += 0.00005;
+        milkyWay.rotation.y += 0.00004;
+        nebulaMeshes.forEach((m, i) => {
+          m.material.rotation = Math.sin(universeTime * 0.05 + i) * 0.06;
+        });
+        distantGalaxies.forEach((g, i) => {
+          g.material.rotation += 0.0003 * (i % 2 === 0 ? 1 : -1);
+        });
+        dustPoints.rotation.y += 0.0002;
+        dustPoints.rotation.x += 0.0001;
         // ランダムに流れ星（低確率）
         if (Math.random() < 0.008 && shootingStars.length < 5) spawnShootingStar();
         // 流れ星を動かす
