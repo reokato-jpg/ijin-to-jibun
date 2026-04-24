@@ -6819,6 +6819,44 @@
     });
     scene.add(treeGroup);
 
+    // 🪞 水面への鏡像（safeな簡易リフレクション — 反転クローン + 水レイヤー）
+    // 注: ライトは複製せず、マテリアルはそのまま共有。水面は y = -0.1
+    const reflectGroup = new THREE.Group();
+    // 同じ treeGroup を再レンダリングする代わりに、inverted clone を作る
+    const reflectTree = treeGroup.clone(true);
+    reflectTree.scale.y = -1;
+    reflectTree.position.y = -0.2; // 水面反転の高さオフセット
+    // 反射の透明度演出: traverse して opacity 0.4 に
+    reflectTree.traverse(obj => {
+      if (obj.isMesh && obj.material) {
+        const m = Array.isArray(obj.material) ? obj.material : [obj.material];
+        m.forEach(mat => {
+          const cm = mat.clone ? mat.clone() : mat;
+          cm.transparent = true;
+          cm.opacity = 0.32;
+          cm.depthWrite = false;
+          if (obj.material === mat) obj.material = cm;
+        });
+      }
+      if (obj.isSprite && obj.material) {
+        obj.material = obj.material.clone();
+        obj.material.opacity *= 0.25;
+      }
+    });
+    reflectGroup.add(reflectTree);
+    scene.add(reflectGroup);
+    // 水面プレーン（透明）を最上面に置いて反射を色かぶりさせる
+    const waterSurface = new THREE.Mesh(
+      new THREE.CircleGeometry(30, 48),
+      new THREE.MeshStandardMaterial({
+        color: 0x88b0cc, transparent: true, opacity: 0.35,
+        roughness: 0.15, metalness: 0.5, depthWrite: false,
+      })
+    );
+    waterSurface.rotation.x = -Math.PI / 2;
+    waterSurface.position.y = -0.12;
+    scene.add(waterSurface);
+
     // 葉の揺れアニメ用参照
     treeGroup.userData.leaves = leaves;
     treeGroup.userData.leafBases = leafBases;
@@ -7571,7 +7609,66 @@
       block.castShadow = true;
       tower.add(block);
     }
+    // ブリューゲル風に塔を少し傾ける
+    tower.rotation.z = 0.035;
     scene.add(tower);
+
+    // ⚡ 雷ボルト（LineSegments、混乱時にフラッシュ）
+    const lightningMat = new THREE.LineBasicMaterial({
+      color: 0xffffe0, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, fog: false,
+    });
+    function makeBolt() {
+      // 雲(y=35)から塔頂上(topY)へ、ジグザグ
+      const start = new THREE.Vector3((Math.random() - 0.5) * 40, 55, (Math.random() - 0.5) * 30);
+      const end = new THREE.Vector3((Math.random() - 0.5) * 8, totalHeight + Math.random() * 4, (Math.random() - 0.5) * 8);
+      const pts = [start];
+      const steps = 10;
+      for (let i = 1; i < steps; i++) {
+        const t = i / steps;
+        const p = start.clone().lerp(end, t);
+        p.x += (Math.random() - 0.5) * 3;
+        p.z += (Math.random() - 0.5) * 3;
+        pts.push(p);
+      }
+      pts.push(end);
+      return pts;
+    }
+    const boltGeoA = new THREE.BufferGeometry().setFromPoints(makeBolt());
+    const bolt1 = new THREE.Line(boltGeoA, lightningMat.clone());
+    const bolt2 = new THREE.Line(new THREE.BufferGeometry().setFromPoints(makeBolt()), lightningMat.clone());
+    const bolt3 = new THREE.Line(new THREE.BufferGeometry().setFromPoints(makeBolt()), lightningMat.clone());
+    scene.add(bolt1); scene.add(bolt2); scene.add(bolt3);
+    const bolts = [bolt1, bolt2, bolt3];
+
+    // ☁️ 動く嵐雲（塔頂上近くに半透明プレーン）
+    const stormClouds = [];
+    const cloudTex = (() => {
+      const c = document.createElement('canvas'); c.width = 256; c.height = 128;
+      const g = c.getContext('2d');
+      for (let i = 0; i < 30; i++) {
+        const x = Math.random() * 256, y = 30 + Math.random() * 70;
+        const r = 30 + Math.random() * 50;
+        const grd = g.createRadialGradient(x, y, 0, x, y, r);
+        grd.addColorStop(0, 'rgba(35,25,40,0.8)');
+        grd.addColorStop(1, 'rgba(25,18,30,0)');
+        g.fillStyle = grd;
+        g.beginPath(); g.ellipse(x, y, r, r * 0.5, 0, 0, Math.PI*2); g.fill();
+      }
+      return new THREE.CanvasTexture(c);
+    })();
+    for (let i = 0; i < 5; i++) {
+      const c = new THREE.Mesh(
+        new THREE.PlaneGeometry(60, 18),
+        new THREE.MeshBasicMaterial({ map: cloudTex, transparent: true, opacity: 0.7, depthWrite: false, fog: false })
+      );
+      const a = (i / 5) * Math.PI * 2;
+      c.position.set(Math.cos(a) * 22, 46 + Math.random() * 6, Math.sin(a) * 22);
+      c.lookAt(0, c.position.y, 0);
+      c.userData.angle = a;
+      c.userData.speed = 0.05 + Math.random() * 0.04;
+      scene.add(c);
+      stormClouds.push(c);
+    }
 
     // 地面（砂漠・荒野）
     const groundTex = (() => {
@@ -7700,12 +7797,30 @@
 
     // 🌀 混乱を起こす！
     let chaosTrigger = 0; // 0〜1
+    let boltTimer = 0;
+    function strikeBolt() {
+      bolts.forEach((b, i) => {
+        b.geometry.setFromPoints(makeBolt());
+        b.geometry.attributes.position.needsUpdate = true;
+        b.material.opacity = 0.95;
+      });
+      setTimeout(() => bolts.forEach(b => b.material.opacity = 0), 100);
+      setTimeout(() => {
+        bolts.forEach(b => {
+          b.geometry.setFromPoints(makeBolt());
+          b.geometry.attributes.position.needsUpdate = true;
+          b.material.opacity = 0.8;
+        });
+      }, 180);
+      setTimeout(() => bolts.forEach(b => b.material.opacity = 0), 280);
+    }
     ov.querySelector('#babel3dChaos').addEventListener('click', () => {
       chaosTrigger = 1;
       // 雷閃光
       flashLight.intensity = 4;
+      strikeBolt();
       setTimeout(() => { flashLight.intensity = 0; }, 150);
-      setTimeout(() => { flashLight.intensity = 3; }, 300);
+      setTimeout(() => { flashLight.intensity = 3; strikeBolt(); }, 300);
       setTimeout(() => { flashLight.intensity = 0; }, 450);
       // 言葉にランダム速度
       wordSprites.forEach(s => {
@@ -7740,6 +7855,27 @@
       camera.position.y = 10 + camTilt * 25;
       lookY += ((topY / 2) - lookY) * 0.02;
       camera.lookAt(0, lookY, 0);
+      // 動く嵐雲
+      stormClouds.forEach(c => {
+        c.userData.angle += c.userData.speed * 0.008;
+        c.position.x = Math.cos(c.userData.angle) * 22;
+        c.position.z = Math.sin(c.userData.angle) * 22;
+        c.lookAt(0, c.position.y, 0);
+      });
+      // ランダムに遠くで雷（塔に落ちないもの、装飾）
+      boltTimer -= 0.016;
+      if (boltTimer <= 0) {
+        boltTimer = 3 + Math.random() * 5;
+        if (Math.random() < 0.5) {
+          bolts[Math.floor(Math.random() * bolts.length)].geometry.setFromPoints(makeBolt());
+          bolts.forEach(b => b.material.opacity = 0);
+          const pick = bolts[Math.floor(Math.random() * bolts.length)];
+          pick.material.opacity = 0.6;
+          setTimeout(() => pick.material.opacity = 0, 80);
+          setTimeout(() => pick.material.opacity = 0.45, 160);
+          setTimeout(() => pick.material.opacity = 0, 240);
+        }
+      }
       // 言葉の更新
       wordSprites.forEach(s => {
         s.userData.phase += 0.015;
