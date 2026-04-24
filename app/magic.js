@@ -6474,7 +6474,7 @@
       color: 0x7aa8cc, roughness: 0.2, metalness: 0.4,
       transparent: true, opacity: 0.85,
     });
-    const water = new THREE.Mesh(new THREE.CircleGeometry(200, 48), waterMat);
+    const water = new THREE.Mesh(new THREE.CircleGeometry(200, 32), waterMat);
     water.rotation.x = -Math.PI / 2;
     water.position.y = -18;
     scene.add(water);
@@ -7368,7 +7368,7 @@
       glowHalo.position.y = height * 0.7;
       glowHalo.scale.set(3.5, 4.5, 3.5);
       tg.add(glowHalo);
-      tg.traverse(o => { if (o.isMesh) o.castShadow = true; });
+      // tg.traverse castShadow // perf: bg trees no shadow
       scene.add(tg);
     }
 
@@ -7540,6 +7540,7 @@
     let t = 0;
     function animate() {
       if (!running) return;
+      if (document.hidden) { requestAnimationFrame(animate); return; }
       t += 0.016;
       // ドラッグ無い時はゆっくり自動旋回
       if (!dragging) camAngle += 0.002;
@@ -7940,7 +7941,7 @@
     // 🏛 塔本体：ブリューゲル風の階段状ジッグラト
     //   各段は「円柱（壁）＋アーチ窓＋はっきりしたテラス」。
     //   次の段は明確に縮む（＝段差が見える）
-    const STAGES = 12;
+    const STAGES = 10;
     const baseRadius = 28;
     const stageHeight = 4.5;
     const stepInset = 1.8; // 各段で半径がこれだけ縮む
@@ -7979,7 +7980,7 @@
       const rOuter = baseRadius - i * stepInset; // 段ごとに明確に縮む
       const yBase = i * stageHeight;
       // 壁（ストレート円柱、両面に見せるため DoubleSide + 閉じたジオメトリ）
-      const wallGeo = new THREE.CylinderGeometry(rOuter, rOuter, stageHeight * 0.85, 48, 1, false);
+      const wallGeo = new THREE.CylinderGeometry(rOuter, rOuter, stageHeight * 0.85, 32, 1, false);
       const wallMatDS = brickMat.clone();
       wallMatDS.side = THREE.DoubleSide;
       const wall = new THREE.Mesh(wallGeo, wallMatDS);
@@ -7988,13 +7989,13 @@
       tower.add(wall);
       // 🏛 内部コア（アーチ越しに見えても"気持ち悪くない"暗い内壁）
       const coreR = Math.max(1, rOuter - 1.2);
-      const coreGeo = new THREE.CylinderGeometry(coreR, coreR, stageHeight * 0.85, 24, 1, false);
+      const coreGeo = new THREE.CylinderGeometry(coreR, coreR, stageHeight * 0.85, 16, 1, false);
       const core = new THREE.Mesh(coreGeo, darkCoreMat);
       core.position.y = yBase + stageHeight * 0.425;
       core.receiveShadow = true;
       tower.add(core);
       // アーチ窓層（わずかに外側にずらす）
-      const archGeo = new THREE.CylinderGeometry(rOuter + 0.02, rOuter + 0.02, stageHeight * 0.6, 48, 1, true);
+      const archGeo = new THREE.CylinderGeometry(rOuter + 0.02, rOuter + 0.02, stageHeight * 0.6, 32, 1, true);
       const archMat = new THREE.MeshStandardMaterial({
         map: archTex, transparent: true, alphaTest: 0.1, roughness: 0.8,
       });
@@ -8006,39 +8007,39 @@
       // テラス（次の段のために、この段の頂上にリング状の床）
       const terraceOuter = rOuter;
       const terraceInner = Math.max(3, rOuter - stepInset - 0.1);
-      const terraceGeo = new THREE.RingGeometry(terraceInner, terraceOuter, 48);
+      const terraceGeo = new THREE.RingGeometry(terraceInner, terraceOuter, 24);
       const terrace = new THREE.Mesh(
         terraceGeo,
         new THREE.MeshStandardMaterial({ map: brickTex, color: 0xd8c098, roughness: 0.9 })
       );
       terrace.rotation.x = -Math.PI / 2;
       terrace.position.y = yBase + stageHeight * 0.85;
-      terrace.castShadow = true; terrace.receiveShadow = true;
+      terrace.receiveShadow = true;
       tower.add(terrace);
       // 段差の装飾リング（上下の帯）
       const trimTop = new THREE.Mesh(
-        new THREE.TorusGeometry(rOuter + 0.04, 0.15, 6, 48),
+        new THREE.TorusGeometry(rOuter + 0.04, 0.15, 6, 24),
         new THREE.MeshStandardMaterial({ color: 0x8a6a3a, roughness: 0.6, metalness: 0.15 })
       );
       trimTop.rotation.x = Math.PI / 2;
       trimTop.position.y = yBase + stageHeight * 0.85;
       tower.add(trimTop);
       const trimBottom = new THREE.Mesh(
-        new THREE.TorusGeometry(rOuter + 0.04, 0.12, 6, 48),
+        new THREE.TorusGeometry(rOuter + 0.04, 0.12, 6, 24),
         new THREE.MeshStandardMaterial({ color: 0x6a4a28, roughness: 0.8 })
       );
       trimBottom.rotation.x = Math.PI / 2;
       trimBottom.position.y = yBase + 0.08;
       tower.add(trimBottom);
       // 柱（4方向に）
-      for (let k = 0; k < 8; k++) {
-        const a = (k / 8) * Math.PI * 2;
+      for (let k = 0; k < 4; k++) {
+        const a = (k / 4) * Math.PI * 2;
         const col = new THREE.Mesh(
           new THREE.CylinderGeometry(0.3, 0.32, stageHeight * 0.85, 10),
           new THREE.MeshStandardMaterial({ color: 0xd8b078, roughness: 0.7 })
         );
         col.position.set(Math.cos(a) * (rOuter + 0.2), yBase + stageHeight * 0.425, Math.sin(a) * (rOuter + 0.2));
-        col.castShadow = true;
+        // col.castShadow = true;
         tower.add(col);
       }
       stageMeshes.push({ yTop: yBase + stageHeight * 0.85, r: rOuter });
@@ -8058,14 +8059,14 @@
       })
     );
     const ramp = new THREE.Mesh(
-      new THREE.TubeGeometry(spiralCurve, 240, 0.5, 8, false),
+      new THREE.TubeGeometry(spiralCurve, 120, 0.5, 6, false),
       new THREE.MeshStandardMaterial({ color: 0x7a5a38, roughness: 0.9 })
     );
-    ramp.castShadow = true;
+    // ramp.castShadow = true;
     tower.add(ramp);
     // 螺旋の欄干（石の小柱を一定間隔で）
-    for (let i = 0; i < 80; i++) {
-      const t = i / 79;
+    for (let i = 0; i < 30; i++) {
+      const t = i / 29;
       const p = spiralCurve.getPoint(t);
       const p2 = spiralCurve.getPoint(Math.min(1, t + 0.01));
       const pillar = new THREE.Mesh(
@@ -8096,7 +8097,7 @@
         new THREE.MeshStandardMaterial({ color: 0x5a3a18, roughness: 0.9 })
       );
       scaffold.position.set(Math.cos(a) * (finalTopRadius + 0.2), topY + 2.8, Math.sin(a) * (finalTopRadius + 0.2));
-      scaffold.castShadow = true;
+      // scaffold.castShadow = true;
       tower.add(scaffold);
     }
     // 水平の足場
@@ -8118,7 +8119,7 @@
       );
       block.position.set(Math.cos(a) * finalTopRadius * 0.6, topY + 0.9, Math.sin(a) * finalTopRadius * 0.6);
       block.rotation.y = Math.random() * Math.PI;
-      block.castShadow = true;
+      // block.castShadow = true;
       tower.add(block);
     }
     // ブリューゲル風に塔を少し傾ける
@@ -8133,8 +8134,8 @@
       blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide, fog: false,
     });
     const godRays = new THREE.Group();
-    for (let k = 0; k < 6; k++) {
-      const ang = (k - 2.5) * 0.11;
+    for (let k = 0; k < 3; k++) {
+      const ang = (k - 1) * 0.22;
       const cone = new THREE.Mesh(
         new THREE.ConeGeometry(6 + Math.random() * 3, 100, 24, 1, true),
         godRayMat.clone()
@@ -8190,8 +8191,8 @@
       }
       return new THREE.CanvasTexture(c);
     })();
-    for (let i = 0; i < 12; i++) {
-      const ang = (i / 12) * Math.PI * 2 + Math.random() * 0.3;
+    for (let i = 0; i < 8; i++) {
+      const ang = (i / 8) * Math.PI * 2 + Math.random() * 0.3;
       // 東側（港）は避ける
       if (Math.cos(ang) > 0.3 && Math.abs(Math.sin(ang)) < 0.5) continue;
       const r = 90 + Math.random() * 60;
@@ -8224,7 +8225,7 @@
           })
         );
         house.position.set(cx + (Math.random() - 0.5) * 10, 0.5, cz + (Math.random() - 0.5) * 10);
-        house.castShadow = true; house.receiveShadow = true;
+        house.receiveShadow = true;
         scene.add(house);
         // 赤い屋根
         const roof = new THREE.Mesh(
@@ -8239,7 +8240,7 @@
 
     // 🔥 松明（炎は多数だが PointLight は合計10個まで / 軽量化）
     const torchLights = [];
-    const MAX_TORCH_LIGHTS = 10;
+    const MAX_TORCH_LIGHTS = 4;
     const sharedHaloTex = (() => {
       const c = document.createElement('canvas'); c.width = 64; c.height = 64;
       const g = c.getContext('2d');
@@ -8262,7 +8263,7 @@
           new THREE.MeshStandardMaterial({ color: 0x3a2210, roughness: 0.9 })
         );
         pole.position.set(px, sm.yTop + 0.4, pz);
-        pole.castShadow = true;
+        // pole.castShadow = true; // perf
         tower.add(pole);
         // 炎（emissive球 + sprite halo）
         const flame = new THREE.Mesh(
@@ -8403,7 +8404,7 @@
       );
       block.position.set(Math.cos(a) * r, 0.12 + Math.random() * 0.2, Math.sin(a) * r);
       block.rotation.set(Math.random() * 0.4, Math.random() * Math.PI, Math.random() * 0.4);
-      block.castShadow = true;
+      // block.castShadow = true;
       block.receiveShadow = true;
       scene.add(block);
     }
@@ -8419,7 +8420,7 @@
         );
         blk.position.set(pileX + (Math.random() - 0.5) * 1.5, 0.15 + k * 0.28, pileZ + (Math.random() - 0.5) * 1.5);
         blk.rotation.y = Math.random() * Math.PI;
-        blk.castShadow = true;
+        // blk.castShadow = true;
         scene.add(blk);
       }
     }
@@ -8457,7 +8458,7 @@
       }
       return new THREE.CanvasTexture(c);
     })();
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 2; i++) {
       const m = new THREE.Mesh(
         new THREE.CylinderGeometry(baseRadius + 6, baseRadius + 4, 2, 24, 1, true),
         new THREE.MeshBasicMaterial({ map: mistTex, transparent: true, opacity: 0.4, depthWrite: false, side: THREE.DoubleSide, fog: false })
@@ -8559,7 +8560,7 @@
       return t;
     })();
     const ground = new THREE.Mesh(
-      new THREE.CircleGeometry(200, 48),
+      new THREE.CircleGeometry(200, 32),
       new THREE.MeshStandardMaterial({ map: groundTex, roughness: 1.0 })
     );
     ground.rotation.x = -Math.PI / 2;
@@ -8577,8 +8578,8 @@
     scene.add(bay);
 
     // 周囲の遠い丘（緑の丘陵、ブリューゲル風）
-    for (let i = 0; i < 10; i++) {
-      const a = (i / 10) * Math.PI * 2 + Math.random() * 0.2;
+    for (let i = 0; i < 6; i++) {
+      const a = (i / 6) * Math.PI * 2 + Math.random() * 0.2;
       // 東側（港）にはかぶせない
       if (Math.cos(a) > 0.3 && Math.abs(Math.sin(a)) < 0.6) continue;
       const r = 130 + Math.random() * 50;
@@ -8594,8 +8595,8 @@
 
     // 塔の岩盤（Bruegelの塔は岩山と一体化している）
     const rockMat = new THREE.MeshStandardMaterial({ color: 0x8a7058, roughness: 1.0 });
-    for (let i = 0; i < 6; i++) {
-      const a = (i / 6) * Math.PI * 2 + Math.random() * 0.3;
+    for (let i = 0; i < 4; i++) {
+      const a = (i / 4) * Math.PI * 2 + Math.random() * 0.3;
       const r = baseRadius + 1 + Math.random() * 3;
       const rock = new THREE.Mesh(
         new THREE.DodecahedronGeometry(2 + Math.random() * 2, 0),
@@ -8603,7 +8604,7 @@
       );
       rock.position.set(Math.cos(a) * r, 0.8 + Math.random() * 1.5, Math.sin(a) * r);
       rock.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
-      rock.castShadow = true; rock.receiveShadow = true;
+      rock.receiveShadow = true;
       scene.add(rock);
     }
 
@@ -8798,6 +8799,7 @@
     let t = 0;
     function animate() {
       if (!running) return;
+      if (document.hidden) { requestAnimationFrame(animate); return; }
       t += 0.016;
       // ドラッグ無い時は自動旋回
       if (!dragging) camAngle += 0.0015;
@@ -9178,6 +9180,7 @@
     let lastSelected = null;
     function animate() {
       if (!running) return;
+      if (document.hidden) { requestAnimationFrame(animate); return; }
       t += 0.016;
       if (!dragging) camAngle += 0.0008;
       camera.position.x = Math.cos(camAngle) * camDist;
