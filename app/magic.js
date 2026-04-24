@@ -540,7 +540,6 @@
               <button class="magic-topbook-pill magic-topbook-pill-glossary" data-deep="glossary">📖 用語集</button>
               <button class="magic-topbook-pill magic-topbook-pill-myth" data-deep="mythology">✦ Genesis — はじまりの書</button>
               <button class="magic-topbook-pill magic-topbook-pill-museum" data-deep="museum">🏛 美 術 館</button>
-              <button class="magic-topbook-pill magic-topbook-pill-multiverse" data-deep="multiverse">🌀 マ ル チ バ ー ス</button>
             </div>
           </div>
         </div>
@@ -574,7 +573,6 @@
         glossary: () => { try { openGlossary(); } catch (e) { console.warn('glossary', e); } },
         mythology: () => { try { openMythology(); } catch (e) { console.warn('mythology', e); } },
         museum:   () => { try { openMuseumHub(); } catch (e) { console.warn('museum', e); } },
-        multiverse: () => { try { openMultiverse(); } catch (e) { console.warn('multiverse', e); } },
       };
       wrap.querySelectorAll('[data-deep]').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -8112,7 +8110,146 @@
     tower.rotation.z = 0.035;
     scene.add(tower);
 
-    // ===== リアリズム増強パック =====
+    // ===== 🎬 アクロスマルチバース級リアリズム =====
+
+    // ☀️ ゴッドレイ（光の柱） — 雲間から差す太陽光、塔を照らす演出
+    const godRayMat = new THREE.MeshBasicMaterial({
+      color: 0xffeacc, transparent: true, opacity: 0.12,
+      blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide, fog: false,
+    });
+    const godRays = new THREE.Group();
+    for (let k = 0; k < 6; k++) {
+      const ang = (k - 2.5) * 0.11;
+      const cone = new THREE.Mesh(
+        new THREE.ConeGeometry(6 + Math.random() * 3, 100, 24, 1, true),
+        godRayMat.clone()
+      );
+      // 太陽方向（空の上方）から塔を照らす
+      const sd = new THREE.Vector3(-30, 80, 40).normalize();
+      cone.position.copy(sd.clone().multiplyScalar(40));
+      cone.lookAt(0, 20, 0);
+      cone.rotation.z += ang;
+      godRays.add(cone);
+    }
+    scene.add(godRays);
+
+    // 🐦 空を飛ぶ鳥（LineのVシェイプ、10羽）
+    const birds = [];
+    for (let i = 0; i < 12; i++) {
+      const bird = new THREE.Group();
+      const lineGeo = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(-0.5, 0.15, 0),
+        new THREE.Vector3(0, 0, 0),
+        new THREE.Vector3(0.5, 0.15, 0),
+      ]);
+      const lineMat = new THREE.LineBasicMaterial({ color: 0x1a1208 });
+      const line = new THREE.Line(lineGeo, lineMat);
+      bird.add(line);
+      bird.userData.orbit = 60 + Math.random() * 40;
+      bird.userData.angle = Math.random() * Math.PI * 2;
+      bird.userData.speed = 0.003 + Math.random() * 0.003;
+      bird.userData.height = 35 + Math.random() * 25;
+      bird.userData.flapPhase = Math.random() * Math.PI * 2;
+      scene.add(bird);
+      birds.push(bird);
+    }
+
+    // 💨 松明の煙（Points、上昇するグレー粒）
+    const SMOKE = 150;
+    const smokeGeo = new THREE.BufferGeometry();
+    const smokePos = new Float32Array(SMOKE * 3);
+    const smokeLife = new Float32Array(SMOKE);
+    const smokeOrigin = []; // 各粒の発生元松明インデックス
+    for (let i = 0; i < SMOKE; i++) {
+      const torch = torchLights[i % Math.max(1, torchLights.length)] || { basePos: new THREE.Vector3(0, 10, 0) };
+      smokePos[i*3] = torch.basePos.x;
+      smokePos[i*3+1] = torch.basePos.y + Math.random() * 2;
+      smokePos[i*3+2] = torch.basePos.z;
+      smokeLife[i] = Math.random();
+      smokeOrigin.push(torch.basePos.clone());
+    }
+    smokeGeo.setAttribute('position', new THREE.BufferAttribute(smokePos, 3));
+    const smokeTex = (() => {
+      const c = document.createElement('canvas'); c.width = 64; c.height = 64;
+      const g = c.getContext('2d');
+      const grd = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+      grd.addColorStop(0, 'rgba(120,110,100,0.9)');
+      grd.addColorStop(0.6, 'rgba(80,70,60,0.35)');
+      grd.addColorStop(1, 'rgba(60,50,40,0)');
+      g.fillStyle = grd; g.fillRect(0, 0, 64, 64);
+      return new THREE.CanvasTexture(c);
+    })();
+    const smokeMat = new THREE.PointsMaterial({
+      map: smokeTex, size: 1.2, sizeAttenuation: true,
+      transparent: true, opacity: 0.55, depthWrite: false,
+      blending: THREE.NormalBlending,
+    });
+    const smoke = new THREE.Points(smokeGeo, smokeMat);
+    scene.add(smoke);
+
+    // 🌾 遠景の畑・田畑パッチ（ブリューゲル的な田園風景）
+    const fieldTex = (() => {
+      const c = document.createElement('canvas'); c.width = 256; c.height = 256;
+      const g = c.getContext('2d');
+      g.fillStyle = '#8a9050'; g.fillRect(0, 0, 256, 256);
+      // 畑の筋
+      for (let i = 0; i < 40; i++) {
+        g.strokeStyle = `rgba(${140+Math.random()*30},${120+Math.random()*20},${70+Math.random()*20},${0.3+Math.random()*0.3})`;
+        g.lineWidth = 1 + Math.random() * 2;
+        g.beginPath();
+        const y = (i / 40) * 256;
+        g.moveTo(0, y);
+        g.lineTo(256, y + Math.random() * 8);
+        g.stroke();
+      }
+      return new THREE.CanvasTexture(c);
+    })();
+    for (let i = 0; i < 12; i++) {
+      const ang = (i / 12) * Math.PI * 2 + Math.random() * 0.3;
+      // 東側（港）は避ける
+      if (Math.cos(ang) > 0.3 && Math.abs(Math.sin(ang)) < 0.5) continue;
+      const r = 90 + Math.random() * 60;
+      const patch = new THREE.Mesh(
+        new THREE.PlaneGeometry(30 + Math.random() * 20, 25 + Math.random() * 15),
+        new THREE.MeshStandardMaterial({
+          map: fieldTex,
+          color: [0x7a8a48, 0x8a9058, 0x6a8040, 0xa09070][i % 4],
+          roughness: 0.95,
+        })
+      );
+      patch.rotation.x = -Math.PI / 2;
+      patch.rotation.z = Math.random() * Math.PI;
+      patch.position.set(Math.cos(ang) * r, -0.08, Math.sin(ang) * r);
+      patch.receiveShadow = true;
+      scene.add(patch);
+    }
+
+    // 🏘 遠景の町（小さなボックス群 — ブリューゲル右下の町並み）
+    for (let i = 0; i < 3; i++) {
+      const ang = Math.PI + (i - 1) * 0.3;
+      const r = 70 + Math.random() * 25;
+      const cx = Math.cos(ang) * r, cz = Math.sin(ang) * r;
+      for (let k = 0; k < 15; k++) {
+        const house = new THREE.Mesh(
+          new THREE.BoxGeometry(0.8 + Math.random() * 0.6, 0.8 + Math.random() * 0.8, 0.8 + Math.random() * 0.6),
+          new THREE.MeshStandardMaterial({
+            color: [0xb09070, 0xa06050, 0xc0a080, 0x906050][k % 4],
+            roughness: 0.9,
+          })
+        );
+        house.position.set(cx + (Math.random() - 0.5) * 10, 0.5, cz + (Math.random() - 0.5) * 10);
+        house.castShadow = true; house.receiveShadow = true;
+        scene.add(house);
+        // 赤い屋根
+        const roof = new THREE.Mesh(
+          new THREE.ConeGeometry(0.7, 0.5, 4),
+          new THREE.MeshStandardMaterial({ color: 0x9a3020, roughness: 0.85 })
+        );
+        roof.position.set(house.position.x, house.position.y + 0.7, house.position.z);
+        roof.rotation.y = Math.PI / 4;
+        scene.add(roof);
+      }
+    }
 
     // 🔥 松明（各テラスに複数、PointLight付き／Bloomで発光）
     const torchLights = [];
@@ -8646,6 +8783,36 @@
       camera.position.y = 10 + camTilt * 25;
       lookY += ((topY / 2) - lookY) * 0.02;
       camera.lookAt(0, lookY, 0);
+      // 🐦 鳥が飛ぶ
+      birds.forEach(b => {
+        b.userData.angle += b.userData.speed;
+        b.userData.flapPhase += 0.25;
+        b.position.x = Math.cos(b.userData.angle) * b.userData.orbit;
+        b.position.z = Math.sin(b.userData.angle) * b.userData.orbit;
+        b.position.y = b.userData.height + Math.sin(b.userData.flapPhase * 0.5) * 1.5;
+        // 進行方向を向く
+        const next = b.userData.angle + 0.01;
+        b.lookAt(Math.cos(next) * b.userData.orbit, b.position.y, Math.sin(next) * b.userData.orbit);
+        // 羽ばたきでYスケールが揺れる（V字開閉）
+        b.scale.y = 0.8 + Math.sin(b.userData.flapPhase) * 0.3;
+      });
+      // 💨 松明の煙（上昇、ランダムリセット）
+      {
+        const sp = smoke.geometry.attributes.position;
+        for (let i = 0; i < SMOKE; i++) {
+          smokeLife[i] += 0.008;
+          sp.array[i*3] += (Math.random() - 0.5) * 0.02;
+          sp.array[i*3+1] += 0.08;
+          sp.array[i*3+2] += (Math.random() - 0.5) * 0.02;
+          if (smokeLife[i] > 1) {
+            smokeLife[i] = 0;
+            sp.array[i*3]   = smokeOrigin[i].x + (Math.random() - 0.5) * 0.2;
+            sp.array[i*3+1] = smokeOrigin[i].y;
+            sp.array[i*3+2] = smokeOrigin[i].z + (Math.random() - 0.5) * 0.2;
+          }
+        }
+        sp.needsUpdate = true;
+      }
       // 雨を降らす
       {
         const pa = rain.geometry.attributes.position;
