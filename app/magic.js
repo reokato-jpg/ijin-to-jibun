@@ -2077,6 +2077,17 @@
          <div class="magic-globe-controls">
            <button class="magic-globe-zoom" data-globe-zoom="in" aria-label="ズームイン">＋</button>
            <button class="magic-globe-zoom" data-globe-zoom="out" aria-label="ズームアウト">−</button>
+           <button class="magic-globe-zoom magic-globe-mercator" id="magicGlobeMerc" aria-label="メルカトル図法">🗺</button>
+         </div>
+         <div class="magic-mercator-overlay" id="magicMercatorOverlay">
+           <div class="mmo-header">
+             <div class="mmo-title">🗺 メルカトル図法</div>
+             <button class="mmo-close" id="mmoClose" aria-label="閉じる">×</button>
+           </div>
+           <div class="mmo-canvas-wrap">
+             <canvas class="mmo-canvas" id="mmoCanvas"></canvas>
+             <div class="mmo-tip" id="mmoTip"></div>
+           </div>
          </div>
          <div class="magic-globe-eras">
            <button class="magic-globe-era active" data-era="all">全時代</button>
@@ -2398,6 +2409,119 @@
       });
     }
 
+    // ☀️ 見える太陽（DirectionalLight位置にグローするスプライト+球）
+    const sunVisible = new THREE.Group();
+    const sunBody = new THREE.Mesh(
+      new THREE.SphereGeometry(0.55, 32, 24),
+      new THREE.MeshBasicMaterial({ color: 0xfff2a8 })
+    );
+    sunVisible.add(sunBody);
+    // 太陽のグロー sprite
+    const sunGlowCan = document.createElement('canvas'); sunGlowCan.width = 256; sunGlowCan.height = 256;
+    (() => {
+      const g = sunGlowCan.getContext('2d');
+      const grd = g.createRadialGradient(128, 128, 0, 128, 128, 128);
+      grd.addColorStop(0, 'rgba(255,240,180,0.95)');
+      grd.addColorStop(0.2, 'rgba(255,210,120,0.6)');
+      grd.addColorStop(0.5, 'rgba(255,160,80,0.2)');
+      grd.addColorStop(1, 'rgba(255,120,40,0)');
+      g.fillStyle = grd; g.fillRect(0, 0, 256, 256);
+      // 放射光条
+      g.globalCompositeOperation = 'lighter';
+      for (let i = 0; i < 8; i++) {
+        const a = (i / 8) * Math.PI * 2;
+        const gg = g.createLinearGradient(128, 128, 128 + Math.cos(a)*128, 128 + Math.sin(a)*128);
+        gg.addColorStop(0, 'rgba(255,230,160,0.4)');
+        gg.addColorStop(1, 'rgba(255,180,100,0)');
+        g.save(); g.translate(128, 128); g.rotate(a); g.fillStyle = gg; g.fillRect(-3, 0, 6, 128); g.restore();
+      }
+    })();
+    const sunGlowTex = new THREE.CanvasTexture(sunGlowCan);
+    const sunGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map: sunGlowTex, transparent: true, opacity: 0.9, depthWrite: false, blending: THREE.AdditiveBlending }));
+    sunGlow.scale.set(3.8, 3.8, 1);
+    sunVisible.add(sunGlow);
+    scene.add(sunVisible);
+    // 太陽を sun(light) と同じ方向に配置（距離はもっと遠くに）
+    function updateSunVisible() {
+      const p = sun.position.clone().normalize().multiplyScalar(9.0);
+      sunVisible.position.copy(p);
+    }
+    updateSunVisible();
+
+    // 🌙 見える月（地球の周りを公転、現在の月齢に応じた位相で表示）
+    const moonTex2 = (() => {
+      const sc = document.createElement('canvas'); sc.width = 256; sc.height = 128;
+      const g = sc.getContext('2d');
+      const base = g.createLinearGradient(0, 0, 0, 128);
+      base.addColorStop(0, '#cac6c0'); base.addColorStop(0.5, '#b4b0aa'); base.addColorStop(1, '#98948e');
+      g.fillStyle = base; g.fillRect(0, 0, 256, 128);
+      [[80, 45, 18], [120, 60, 22], [150, 55, 14], [95, 80, 12], [170, 75, 16]].forEach(([x, y, r]) => {
+        const gr = g.createRadialGradient(x, y, 0, x, y, r);
+        gr.addColorStop(0, 'rgba(70,65,62,0.7)'); gr.addColorStop(1, 'rgba(70,65,62,0)');
+        g.fillStyle = gr; g.beginPath(); g.arc(x, y, r, 0, Math.PI*2); g.fill();
+      });
+      for (let i = 0; i < 60; i++) {
+        const x = Math.random() * 256, y = Math.random() * 128;
+        g.fillStyle = `rgba(60,55,50,${0.25 + Math.random()*0.3})`;
+        g.beginPath(); g.arc(x, y, 1 + Math.random()*3, 0, Math.PI*2); g.fill();
+      }
+      return new THREE.CanvasTexture(sc);
+    })();
+    const moonMat2 = new THREE.ShaderMaterial({
+      uniforms: {
+        uMap: { value: moonTex2 },
+        uSunPos: { value: new THREE.Vector3(0, 0, 0) },
+      },
+      vertexShader: `
+        varying vec2 vUv; varying vec3 vWorld; varying vec3 vN;
+        void main() {
+          vUv = uv;
+          vec4 wp = modelMatrix * vec4(position, 1.0);
+          vWorld = wp.xyz;
+          vN = normalize(mat3(modelMatrix) * normal);
+          gl_Position = projectionMatrix * viewMatrix * wp;
+        }
+      `,
+      fragmentShader: `
+        uniform sampler2D uMap;
+        uniform vec3 uSunPos;
+        varying vec2 vUv; varying vec3 vWorld; varying vec3 vN;
+        void main() {
+          vec3 tex = texture2D(uMap, vUv).rgb;
+          vec3 sd = normalize(uSunPos - vWorld);
+          float d = dot(vN, sd);
+          float lit = smoothstep(-0.08, 0.22, d);
+          vec3 night = vec3(0.025, 0.025, 0.045);
+          vec3 col = mix(night, tex, lit);
+          col += vec3(0.015, 0.02, 0.035) * (1.0 - lit) * 0.6;
+          gl_FragColor = vec4(col, 1.0);
+        }
+      `,
+    });
+    const globeMoon = new THREE.Mesh(new THREE.SphereGeometry(0.35, 24, 18), moonMat2);
+    scene.add(globeMoon);
+    // 月の位置：現在日時から月齢を算出、地球周りに配置
+    function updateGlobeMoon() {
+      const now = new Date();
+      // 基準: 2000/01/06 18:14 UTC 頃が新月。月齢29.53日周期
+      const ref = new Date(Date.UTC(2000, 0, 6, 18, 14));
+      const days = (now.getTime() - ref.getTime()) / 86400000;
+      const phase = (days / 29.5306) % 1; // 0=新月, 0.5=満月
+      // 月の位置角度：新月=太陽と同方向、満月=太陽の反対
+      const sunDir = sun.position.clone().normalize();
+      // 太陽方向からphase*2π回転した方向に月を置く（地球の赤道面を簡略で使う）
+      const ang = phase * Math.PI * 2;
+      // 回転軸はy（北極）
+      const cosA = Math.cos(ang), sinA = Math.sin(ang);
+      const mx = sunDir.x * cosA - sunDir.z * sinA;
+      const mz = sunDir.x * sinA + sunDir.z * cosA;
+      const MOON_DIST = 4.6;
+      globeMoon.position.set(mx * MOON_DIST, sunDir.y * 0.3 * MOON_DIST, mz * MOON_DIST);
+      // シェーダの太陽位置も更新
+      moonMat2.uniforms.uSunPos.value.copy(sun.position).multiplyScalar(4);
+    }
+    updateGlobeMoon();
+
     // 大気グロー（外側の半透明球 / 青いハロー）
     const atmGeo = new THREE.SphereGeometry(2.35, 32, 24);
     const atmMat = new THREE.MeshBasicMaterial({
@@ -2532,6 +2656,158 @@
         camera.position.z = Math.max(2.5, Math.min(18, camera.position.z + dir * 1.2));
       });
     });
+
+    // ============================================================
+    // 🗺 メルカトル図法の2D世界地図
+    // ============================================================
+    const mmo = ov.querySelector('#magicMercatorOverlay');
+    const mmoCanvas = ov.querySelector('#mmoCanvas');
+    const mmoTip = ov.querySelector('#mmoTip');
+    ov.querySelector('#mmoClose').addEventListener('click', () => mmo.classList.remove('show'));
+    ov.querySelector('#magicGlobeMerc').addEventListener('click', () => {
+      mmo.classList.add('show');
+      drawMercator();
+    });
+    // 緯度→Mercator y (0-1)  投影
+    const mercY = (lat) => {
+      const rad = Math.max(-85, Math.min(85, lat)) * Math.PI / 180;
+      return 0.5 - Math.log(Math.tan(Math.PI / 4 + rad / 2)) / (2 * Math.PI);
+    };
+    const mercX = (lng) => (lng + 180) / 360;
+    function drawMercator() {
+      const W = mmoCanvas.clientWidth || 800;
+      const H = mmoCanvas.clientHeight || 500;
+      mmoCanvas.width = W * (window.devicePixelRatio || 1);
+      mmoCanvas.height = H * (window.devicePixelRatio || 1);
+      const ctx = mmoCanvas.getContext('2d');
+      ctx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
+      // 背景：夜空のグラデ
+      const bg = ctx.createLinearGradient(0, 0, 0, H);
+      bg.addColorStop(0, '#0a1028');
+      bg.addColorStop(1, '#050814');
+      ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+      // 薄い緯度経度グリッド
+      ctx.strokeStyle = 'rgba(120,180,230,0.18)';
+      ctx.lineWidth = 0.6;
+      for (let lat = -60; lat <= 60; lat += 30) {
+        const y = mercY(lat) * H;
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+      }
+      for (let lng = -150; lng <= 150; lng += 30) {
+        const x = mercX(lng) * W;
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+      }
+      // 赤道を強調
+      ctx.strokeStyle = 'rgba(200,140,80,0.35)'; ctx.lineWidth = 1;
+      const eqY = mercY(0) * H;
+      ctx.beginPath(); ctx.moveTo(0, eqY); ctx.lineTo(W, eqY); ctx.stroke();
+      // NASAテクスチャを背景に展開（equirectangular→Mercator）
+      const tex = earthMat.map;
+      if (tex && tex.image) {
+        const srcImg = tex.image;
+        // srcImgが使えるなら1ピクセル毎に描画（重いのでサンプリング）
+        // 代替：水平方向にそのまま貼り付け、垂直方向はMercator変換でリサンプル
+        const tmp = document.createElement('canvas');
+        tmp.width = W; tmp.height = H;
+        const tctx = tmp.getContext('2d');
+        // 各ピクセル行のソース緯度をMercatorから逆算してサンプリング
+        const srcW = srcImg.naturalWidth || srcImg.width;
+        const srcH = srcImg.naturalHeight || srcImg.height;
+        for (let y = 0; y < H; y++) {
+          const yn = y / H; // 0..1
+          // mercY の逆関数: lat = atan(sinh(π(1-2yn)))
+          const lat = Math.atan(Math.sinh(Math.PI * (1 - 2 * yn))) * 180 / Math.PI;
+          const srcY = (90 - lat) / 180 * srcH;
+          tctx.drawImage(srcImg, 0, srcY, srcW, 1, 0, y, W, 1);
+        }
+        ctx.globalAlpha = 0.75;
+        ctx.drawImage(tmp, 0, 0);
+        ctx.globalAlpha = 1;
+      }
+      // 昼夜オーバーレイ: 太陽直下点からの距離に応じて夜側を暗く
+      const now = new Date();
+      const utcH = now.getUTCHours() + now.getUTCMinutes() / 60;
+      const sunLng = -((utcH - 12) * 15); // 太陽直下点の経度 (東経)
+      const doy = Math.floor((now - new Date(now.getUTCFullYear(), 0, 0)) / 86400000);
+      const sunLat = 23.4 * Math.sin(2 * Math.PI * (doy - 80) / 365.25);
+      // 簡易夜画像：各列で sunLng との経度差でグラデ
+      ctx.globalCompositeOperation = 'multiply';
+      const nightGrad = ctx.createLinearGradient(0, 0, W, 0);
+      for (let i = 0; i <= 24; i++) {
+        const lng = -180 + (360 / 24) * i;
+        let diff = Math.abs(((lng - sunLng + 540) % 360) - 180); // 0=正午, 180=真夜中
+        const night = diff / 180; // 0..1
+        const v = Math.round(200 - night * 160); // 200=明るい, 40=暗い
+        nightGrad.addColorStop(i / 24, `rgb(${v}, ${v}, ${Math.min(255, v + 20)})`);
+      }
+      ctx.fillStyle = nightGrad; ctx.fillRect(0, 0, W, H);
+      ctx.globalCompositeOperation = 'source-over';
+      // 太陽直下点マーカー
+      const sx = mercX(sunLng) * W;
+      const sy = mercY(sunLat) * H;
+      const sg = ctx.createRadialGradient(sx, sy, 0, sx, sy, 40);
+      sg.addColorStop(0, 'rgba(255,240,150,0.8)');
+      sg.addColorStop(1, 'rgba(255,240,150,0)');
+      ctx.fillStyle = sg; ctx.beginPath(); ctx.arc(sx, sy, 40, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = '#ffe080';
+      ctx.beginPath(); ctx.arc(sx, sy, 5, 0, Math.PI*2); ctx.fill();
+      // 国ピン
+      Object.keys(byCountry).forEach(k => {
+        const b = byCountry[k];
+        if (!b.coord || !b.people.length) return;
+        const x = mercX(b.coord[1]) * W;
+        const y = mercY(b.coord[0]) * H;
+        // グロー
+        const g = ctx.createRadialGradient(x, y, 0, x, y, 10);
+        g.addColorStop(0, 'rgba(255,220,140,0.9)');
+        g.addColorStop(1, 'rgba(255,220,140,0)');
+        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, 10, 0, Math.PI*2); ctx.fill();
+        // ドット
+        ctx.fillStyle = '#ffd880';
+        ctx.beginPath(); ctx.arc(x, y, 2.5, 0, Math.PI*2); ctx.fill();
+      });
+      // フライト弧
+      ctx.strokeStyle = 'rgba(255,200,120,0.45)';
+      ctx.lineWidth = 1;
+      FLIGHT_ROUTES.forEach(r => {
+        const x1 = mercX(r.from[1]) * W, y1 = mercY(r.from[0]) * H;
+        const x2 = mercX(r.to[1]) * W,   y2 = mercY(r.to[0]) * H;
+        // 経度差が180を超えたら分割描画（日付変更線またぎ）
+        ctx.beginPath();
+        // Quadratic curve with peak between
+        const mx = (x1 + x2) / 2, my = (y1 + y2) / 2 - Math.abs(x2 - x1) * 0.15;
+        ctx.moveTo(x1, y1);
+        ctx.quadraticCurveTo(mx, my, x2, y2);
+        ctx.stroke();
+        // 端点ドット
+        ctx.fillStyle = 'rgba(255,240,200,0.75)';
+        ctx.beginPath(); ctx.arc(x1, y1, 2, 0, Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.arc(x2, y2, 2, 0, Math.PI*2); ctx.fill();
+      });
+    }
+    // ピンクリック判定
+    mmoCanvas.addEventListener('click', (e) => {
+      const rect = mmoCanvas.getBoundingClientRect();
+      const W = rect.width, H = rect.height;
+      const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+      let hit = null, hitD = 12;
+      Object.keys(byCountry).forEach(k => {
+        const b = byCountry[k];
+        if (!b.coord || !b.people.length) return;
+        const x = mercX(b.coord[1]) * W;
+        const y = mercY(b.coord[0]) * H;
+        const d = Math.hypot(mx - x, my - y);
+        if (d < hitD) { hitD = d; hit = k; }
+      });
+      if (hit) {
+        mmoTip.textContent = `${hit} · ${byCountry[hit].people.length}人`;
+        mmoTip.style.left = (mx + 14) + 'px';
+        mmoTip.style.top = (my - 20) + 'px';
+        mmoTip.classList.add('show');
+        setTimeout(() => mmoTip.classList.remove('show'), 2600);
+      }
+    });
+    window.addEventListener('resize', () => { if (mmo.classList.contains('show')) drawMercator(); });
     // 時代フィルタ
     let globeActiveEra = 'all';
     const eraBirth = (b) => {
@@ -2768,6 +3044,8 @@
       const nowMs = performance.now();
       if (nowMs - lastSunUpdate > 10000) {
         updateSunPosition();
+        updateSunVisible();
+        updateGlobeMoon();
         updateClockHUD();
         lastSunUpdate = nowMs;
       }
