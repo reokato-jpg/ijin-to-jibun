@@ -4391,7 +4391,7 @@ function playPortalTransition(menuEl, onComplete) {
     {
       const el = document.getElementById('powerHintAnim');
       const activeView = document.querySelector('.view.active')?.id?.replace('view-', '');
-      if (el) el.hidden = (activeView !== 'people');
+      if (el) el.hidden = new Set(['favorites', 'person']).has(activeView);
     }
     onComplete?.();  // → showView(v) がここで走る ⇒ 対象ビューのBGMが鳴り始める
   }, 120);
@@ -4853,7 +4853,7 @@ function initPhoneMenu() {
     {
       const el = document.getElementById('powerHintAnim');
       const activeView = document.querySelector('.view.active')?.id?.replace('view-', '');
-      if (el) el.hidden = (activeView !== 'people');
+      if (el) el.hidden = new Set(['favorites', 'person']).has(activeView);
     }
     // スマホを閉じるときに内部状態をリセット（全てのツールアプリを閉じる）
     ['phonePlazaApp','phoneMusicApp','phoneMeshiruApp','phoneOtayoriApp','phoneHistoryApp'].forEach(id => {

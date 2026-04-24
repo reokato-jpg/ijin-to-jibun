@@ -6729,8 +6729,30 @@
 
     // === 壁 + 絵画 ===
     const paintings = []; // {mesh, painting: work}
-    const loader = new THREE.TextureLoader();
-    loader.setCrossOrigin('anonymous');
+    // Wikimediaの画像はリダイレクト + CORSの都合で TextureLoader が失敗しがち。
+    // fetch → blob → ObjectURL → Image → CanvasTexture で確実にロード。
+    function loadArtTexture(url) {
+      return new Promise((resolve, reject) => {
+        fetch(url, { mode: 'cors', credentials: 'omit' })
+          .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.blob(); })
+          .then(blob => {
+            const obj = URL.createObjectURL(blob);
+            const img = new Image();
+            img.onload = () => {
+              const tex = new THREE.Texture(img);
+              if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace || 'srgb';
+              else if ('encoding' in tex) tex.encoding = THREE.sRGBEncoding;
+              tex.anisotropy = renderer.capabilities.getMaxAnisotropy ? renderer.capabilities.getMaxAnisotropy() : 1;
+              tex.needsUpdate = true;
+              setTimeout(() => URL.revokeObjectURL(obj), 1000);
+              resolve(tex);
+            };
+            img.onerror = () => reject(new Error('img'));
+            img.src = obj;
+          })
+          .catch(reject);
+      });
+    }
     for (let i = 0; i < N; i++) {
       const a = i * wallAngle;
       const nextA = (i + 1) * wallAngle;
@@ -6788,21 +6810,36 @@
       canvasMesh.userData.work = work;
       canvasMesh.userData.wallMid = { x: mx, z: mz };
       paintings.push(canvasMesh);
-      // 画像ロード（非同期）
-      loader.load(work.img,
-        tex => {
-          tex.colorSpace = THREE.SRGBColorSpace || THREE.sRGBEncoding;
-          const img = tex.image;
-          const ar = img.width / img.height;
-          // 比率に合わせて表示スケール
-          let sx = 1, sy = 1;
-          if (ar > frameW / frameH) sy = (frameW / ar) / frameH; else sx = (frameH * ar) / frameW;
-          canvasMesh.scale.set(sx, sy, 1);
-          canvasMat.map = tex; canvasMat.needsUpdate = true;
-        },
-        undefined,
-        () => { /* ロード失敗はプレースホルダー維持 */ }
-      );
+      // 画像ロード（非同期・fetch経由でCORS確実に）
+      loadArtTexture(work.img).then(tex => {
+        const img = tex.image;
+        const ar = img.width / img.height;
+        const planeAR = frameW / frameH;
+        let sx = 1, sy = 1;
+        if (ar > planeAR) sy = planeAR / ar; else sx = ar / planeAR;
+        canvasMesh.scale.set(sx, sy, 1);
+        canvasMat.map = tex; canvasMat.needsUpdate = true;
+      }).catch(() => {
+        // フォールバック: 普通のImageでcrossOrigin抜きで試みる（表示専用）
+        const img = new Image();
+        img.onload = () => {
+          const c = document.createElement('canvas');
+          c.width = img.naturalWidth; c.height = img.naturalHeight;
+          try {
+            c.getContext('2d').drawImage(img, 0, 0);
+            const tex = new THREE.CanvasTexture(c);
+            if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace || 'srgb';
+            const ar = img.naturalWidth / img.naturalHeight;
+            const planeAR = frameW / frameH;
+            let sx = 1, sy = 1;
+            if (ar > planeAR) sy = planeAR / ar; else sx = ar / planeAR;
+            canvasMesh.scale.set(sx, sy, 1);
+            canvasMat.map = tex; canvasMat.needsUpdate = true;
+          } catch {}
+        };
+        img.crossOrigin = 'anonymous';
+        img.src = work.img;
+      });
       // スポットライト
       const spot = new THREE.SpotLight(0xfff0c0, 1.2, 8, Math.PI / 5, 0.4, 1.5);
       spot.position.set(mx + nx * 2.0, wallHeight - 0.5, mz + nz * 2.0);
