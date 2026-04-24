@@ -6507,24 +6507,22 @@
       const darkMat   = new THREE.MeshStandardMaterial({ color: 0x14141c, roughness: 0.5, metalness: 0.9,  emissive: 0x03030a });
       const glassBlue = new THREE.MeshStandardMaterial({ color: 0x60a8ff, roughness: 0.1, metalness: 0.3,  emissive: 0x2060b0, emissiveIntensity: 0.8, transparent: true, opacity: 0.9 });
 
-      // ===== 🧠 頭部 =====
-      // フェイス（青いマスク部分）
+      // ===== 🧠 頭部（pivot group で首から回転） =====
+      const headPivot = new THREE.Group();
+      headPivot.position.set(0, 0.5, 0);
+      mechaGroup.add(headPivot);
       const face = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.11, 0.13), deepBlue);
-      face.position.set(0, 0.46, 0.01);
-      mechaGroup.add(face);
-      // 頭頂部（白いカブト）
+      face.position.set(0, -0.04, 0.01);
+      headPivot.add(face);
       const crown = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.08, 0.14), whiteMat);
-      crown.position.set(0, 0.54, 0);
-      mechaGroup.add(crown);
-      // 後頭部（ダーク）
+      crown.position.set(0, 0.04, 0);
+      headPivot.add(crown);
       const backHead = new THREE.Mesh(new THREE.BoxGeometry(0.13, 0.1, 0.04), darkMat);
-      backHead.position.set(0, 0.46, -0.08);
-      mechaGroup.add(backHead);
-      // 額の黄色ジェム
+      backHead.position.set(0, -0.04, -0.08);
+      headPivot.add(backHead);
       const forehead = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.018, 0.005), yellowMat);
-      forehead.position.set(0, 0.54, 0.08);
-      mechaGroup.add(forehead);
-      // V字アンテナ（黄、シャープ）
+      forehead.position.set(0, 0.04, 0.08);
+      headPivot.add(forehead);
       const vShape = new THREE.Shape();
       vShape.moveTo(-0.10, 0); vShape.lineTo(-0.05, 0.16); vShape.lineTo(-0.025, 0.16);
       vShape.lineTo(0, 0.04);  vShape.lineTo(0.025, 0.16); vShape.lineTo(0.05, 0.16);
@@ -6532,19 +6530,17 @@
       vShape.lineTo(-0.01, 0.11); vShape.lineTo(-0.06, 0); vShape.lineTo(-0.10, 0);
       const vGeo = new THREE.ExtrudeGeometry(vShape, { depth: 0.015, bevelEnabled: true, bevelSize: 0.003, bevelThickness: 0.003, bevelSegments: 1 });
       const vfin = new THREE.Mesh(vGeo, yellowMat);
-      vfin.position.set(0, 0.58, 0.04);
-      mechaGroup.add(vfin);
-      // ツインアイ（緑発光 — フリーダムはグリーンアイ）
+      vfin.position.set(0, 0.08, 0.04);
+      headPivot.add(vfin);
       [-1, 1].forEach(side => {
         const eye = new THREE.Mesh(new THREE.BoxGeometry(0.025, 0.012, 0.005), new THREE.MeshBasicMaterial({ color: 0x60ffa0 }));
-        eye.position.set(side * 0.025, 0.465, 0.08);
-        mechaGroup.add(eye);
+        eye.position.set(side * 0.025, -0.035, 0.08);
+        headPivot.add(eye);
       });
-      // サイドイヤーダクト（黒）
       [-1, 1].forEach(side => {
         const ear = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.06, 0.04), darkMat);
-        ear.position.set(side * 0.08, 0.48, 0.0);
-        mechaGroup.add(ear);
+        ear.position.set(side * 0.08, -0.02, 0);
+        headPivot.add(ear);
       });
 
       // ===== 🫀 胴体 =====
@@ -6593,28 +6589,33 @@
         mechaGroup.add(shMark);
       });
 
-      // ===== 💪 腕 =====
+      // ===== 💪 腕（pivot groupで肩から回転） =====
+      const armPivots = {};
       [-1, 1].forEach(side => {
-        // 上腕（白）
+        const arm = new THREE.Group();
+        arm.position.set(side * 0.28, 0.22, 0); // 肩ピボット
+        mechaGroup.add(arm);
+        // 上腕（白）— pivotからの相対位置
         const upperArm = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.04, 0.18, 12), whiteMat);
-        upperArm.position.set(side * 0.28, 0.14, 0);
-        mechaGroup.add(upperArm);
+        upperArm.position.set(0, -0.08, 0);
+        arm.add(upperArm);
         // 肘関節（赤ブロック）
         const elbow = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.09, 0.1), redMat);
-        elbow.position.set(side * 0.28, 0.03, 0);
-        mechaGroup.add(elbow);
-        // 前腕（青アーマー + 白コア）
+        elbow.position.set(0, -0.19, 0);
+        arm.add(elbow);
+        // 前腕（青アーマー）
         const forearm = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.2, 0.11), blueMat);
-        forearm.position.set(side * 0.28, -0.1, 0);
-        mechaGroup.add(forearm);
-        // 前腕の白いコア
+        forearm.position.set(0, -0.32, 0);
+        arm.add(forearm);
+        // 前腕白コア
         const faCore = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.18, 0.02), whiteMat);
-        faCore.position.set(side * 0.28, -0.1, 0.055);
-        mechaGroup.add(faCore);
-        // 手甲（白）
+        faCore.position.set(0, -0.32, 0.055);
+        arm.add(faCore);
+        // 手甲
         const hand = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.1, 0.08), whiteMat);
-        hand.position.set(side * 0.28, -0.25, 0);
-        mechaGroup.add(hand);
+        hand.position.set(0, -0.47, 0);
+        arm.add(hand);
+        armPivots[side > 0 ? 'armR' : 'armL'] = arm;
       });
 
       // ===== 🔫 ビームライフル（右手） =====
@@ -6714,47 +6715,49 @@
         mechaGroup.add(foot);
       });
 
-      // ===== 🦅 ウィングバインダー（フリーダムの翼） =====
-      const wingMat = whiteMat;
-      const wingBlueMat = blueMat;
+      // ===== 🦅 ウィングバインダー（pivot groupで背中から展開可能） =====
+      const wingPivots = {};
       [-1, 1].forEach(side => {
-        // ベースブロック（背中の取り付け部）
+        const wing = new THREE.Group();
+        wing.position.set(side * 0.14, 0.3, -0.14); // 翼の付け根ピボット
+        mechaGroup.add(wing);
+        // ベースブロック
         const wingBase = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.18, 0.08), deepBlue);
-        wingBase.position.set(side * 0.14, 0.3, -0.14);
-        mechaGroup.add(wingBase);
-        // 上翼（大きく後方に張り出す）
+        wing.add(wingBase);
+        // 上翼
         const upperWingShape = new THREE.Shape();
         upperWingShape.moveTo(0, 0); upperWingShape.lineTo(0.6, 0.1);
         upperWingShape.lineTo(0.7, 0.05); upperWingShape.lineTo(0.68, -0.04);
         upperWingShape.lineTo(0.08, -0.1); upperWingShape.lineTo(0, 0);
         const upperWingGeo = new THREE.ExtrudeGeometry(upperWingShape, { depth: 0.02, bevelEnabled: true, bevelSize: 0.004, bevelThickness: 0.004, bevelSegments: 1 });
-        const upperWing = new THREE.Mesh(upperWingGeo, wingMat);
+        const upperWing = new THREE.Mesh(upperWingGeo, whiteMat);
         upperWing.scale.set(side, 1, 1);
-        upperWing.position.set(side * 0.17, 0.38, -0.16);
+        upperWing.position.set(side * 0.03, 0.08, -0.02);
         upperWing.rotation.y = side * 0.35;
         upperWing.rotation.z = side * -0.1;
-        mechaGroup.add(upperWing);
+        wing.add(upperWing);
         // 翼の先端赤ライン
         const wingTipRed = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.012, 0.025), redMat);
-        wingTipRed.position.set(side * 0.74, 0.42, -0.3);
-        mechaGroup.add(wingTipRed);
+        wingTipRed.position.set(side * 0.6, 0.12, -0.16);
+        wing.add(wingTipRed);
         // 下翼
         const lowerWingShape = new THREE.Shape();
         lowerWingShape.moveTo(0, 0); lowerWingShape.lineTo(0.5, -0.02);
         lowerWingShape.lineTo(0.58, -0.08); lowerWingShape.lineTo(0.55, -0.16);
         lowerWingShape.lineTo(0.05, -0.14); lowerWingShape.lineTo(0, 0);
         const lowerWingGeo = new THREE.ExtrudeGeometry(lowerWingShape, { depth: 0.018, bevelEnabled: false });
-        const lowerWing = new THREE.Mesh(lowerWingGeo, wingMat);
+        const lowerWing = new THREE.Mesh(lowerWingGeo, whiteMat);
         lowerWing.scale.set(side, 1, 1);
-        lowerWing.position.set(side * 0.17, 0.22, -0.16);
+        lowerWing.position.set(side * 0.03, -0.08, -0.02);
         lowerWing.rotation.y = side * 0.3;
         lowerWing.rotation.z = side * 0.15;
-        mechaGroup.add(lowerWing);
+        wing.add(lowerWing);
         // 翼内側の青アクセント
-        const wingBlue = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.012, 0.022), wingBlueMat);
-        wingBlue.position.set(side * 0.42, 0.35, -0.18);
-        wingBlue.rotation.y = side * 0.3;
-        mechaGroup.add(wingBlue);
+        const wingBlueLine = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.012, 0.022), blueMat);
+        wingBlueLine.position.set(side * 0.28, 0.05, -0.04);
+        wingBlueLine.rotation.y = side * 0.3;
+        wing.add(wingBlueLine);
+        wingPivots[side > 0 ? 'wingR' : 'wingL'] = wing;
       });
 
       // ===== 🎒 バックパック（スリム・中央） =====
@@ -6837,6 +6840,22 @@
 
       // メカ全体のスケール
       mechaGroup.scale.setScalar(0.75);
+
+      // アニメーション用に主要ピボットを保存
+      mechaGroup.userData.parts = {
+        head: headPivot,
+        wingL: wingPivots.wingL,
+        wingR: wingPivots.wingR,
+        armL: armPivots.armL,
+        armR: armPivots.armR,
+        rifle: rifleBody, // 右手のライフル（腕と連動させたければ armR.add で）
+      };
+      mechaGroup.userData.restPose = {
+        wingL_y: wingPivots.wingL.rotation.y,
+        wingR_y: wingPivots.wingR.rotation.y,
+        wingL_z: wingPivots.wingL.rotation.z,
+        wingR_z: wingPivots.wingR.rotation.z,
+      };
     }
     scene.add(mechaGroup);
 
@@ -7128,6 +7147,43 @@
       activeVehicle.rotateY(rocketYaw);
       activeVehicle.rotateX(-rocketPitch);
       activeVehicle.rotateZ(rocketRoll);
+      // 🤖 メカのパーツアニメーション
+      const parts = activeVehicle.userData.parts;
+      if (parts) {
+        const t = universeTime;
+        const rest = activeVehicle.userData.restPose;
+        // 🦅 翼: アイドルで微フラップ、BOOSTで展開、ターンで逆方向にチルト
+        const flap = Math.sin(t * 1.6) * 0.05;
+        const boostSpread = boostActive ? 0.22 : (thrustHold ? 0.12 : 0);
+        const turnTilt = rocketRoll * 0.6;
+        if (parts.wingL) {
+          parts.wingL.rotation.z = rest.wingL_z + flap - boostSpread + turnTilt;
+          parts.wingL.rotation.y = rest.wingL_y - boostSpread * 0.6;
+        }
+        if (parts.wingR) {
+          parts.wingR.rotation.z = rest.wingR_z - flap + boostSpread + turnTilt;
+          parts.wingR.rotation.y = rest.wingR_y + boostSpread * 0.6;
+        }
+        // 💪 腕: ターンで逆方向に振れる、BOOSTで後ろに引く
+        const armSwing = rocketRoll * -0.8;
+        const armBack = boostActive ? 0.35 : 0;
+        if (parts.armL) {
+          parts.armL.rotation.z = armSwing + Math.sin(t * 1.2) * 0.03;
+          parts.armL.rotation.x = armBack;
+        }
+        if (parts.armR) {
+          parts.armR.rotation.z = armSwing - Math.sin(t * 1.2) * 0.03;
+          parts.armR.rotation.x = armBack;
+        }
+        // 🧠 頭: 進行方向を少し向く + アイドルの小揺れ
+        if (parts.head) {
+          parts.head.rotation.y = -rocketRoll * 0.3 + Math.sin(t * 0.6) * 0.05;
+          parts.head.rotation.x = rocketPitch * 0.2 + Math.sin(t * 0.9) * 0.03;
+        }
+        // 🫁 全身ブリージング（スケール微脈動）
+        const breath = 1 + Math.sin(t * 0.9) * 0.008;
+        activeVehicle.scale.setScalar(0.75 * breath);
+      }
       // 噴射炎とエンジン光
       const flames = activeVehicle.userData.flames;
       const bigGlow = activeVehicle.userData.bigGlow;
