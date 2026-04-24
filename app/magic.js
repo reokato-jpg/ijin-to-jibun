@@ -2137,9 +2137,9 @@
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(40, W / H, 0.1, 100);
-    // 地球を画面中央に、少し近めから初期表示
-    camera.position.set(0, 0, 10);
-    camera.lookAt(0, 0, 0);
+    // 地球全体が画面内に収まるよう、少し遠めから見下ろし気味に
+    camera.position.set(0, 0.2, 12.5);
+    camera.lookAt(0, -0.1, 0);
 
     // 🌅 昼夜境界：太陽位置を UTC 時刻から計算して、夜側は「深い青の夕暮れ」
     // （真っ暗にすると地球が見えなくなるので、昼夜差は残しつつ視認性を確保）
@@ -2718,11 +2718,24 @@
         drawMercator();
       });
     });
+    // 大陸バウンディングボックス（Mercator画面上のズームに使用）
+    const CONT_BOUNDS = {
+      asia:     { latMin: -10, latMax: 60,  lngMin: 55,   lngMax: 150 },
+      europe:   { latMin: 34,  latMax: 72,  lngMin: -25,  lngMax: 55  },
+      africa:   { latMin: -38, latMax: 37,  lngMin: -20,  lngMax: 52  },
+      namerica: { latMin: 10,  latMax: 75,  lngMin: -170, lngMax: -55 },
+      samerica: { latMin: -58, latMax: 15,  lngMin: -85,  lngMax: -33 },
+      oceania:  { latMin: -47, latMax: 0,   lngMin: 110,  lngMax: 180 },
+    };
+    let mapView = null; // 現在のズーム領域
     ov.querySelectorAll('[data-merc-cont]').forEach(b => {
       b.addEventListener('click', () => {
         ov.querySelectorAll('[data-merc-cont]').forEach(x => x.classList.remove('active'));
         b.classList.add('active');
         mercFilter.cont = b.dataset.mercCont;
+        // 大陸が選ばれたら画面もズーム、「全」でリセット
+        mapView = (mercFilter.cont !== 'all' && CONT_BOUNDS[mercFilter.cont])
+          ? CONT_BOUNDS[mercFilter.cont] : null;
         drawMercator();
       });
     });
@@ -2751,6 +2764,17 @@
       return 0.5 - Math.log(Math.tan(Math.PI / 4 + rad / 2)) / (2 * Math.PI);
     };
     const mercX = (lng) => (lng + 180) / 360;
+    // ズーム領域を考慮した画面座標変換
+    function screenXY(lng, lat, W, H) {
+      if (!mapView) {
+        return { x: mercX(lng) * W, y: mercY(lat) * H };
+      }
+      const x0 = mercX(mapView.lngMin), x1 = mercX(mapView.lngMax);
+      const y0 = mercY(mapView.latMax), y1 = mercY(mapView.latMin);
+      const x = (mercX(lng) - x0) / (x1 - x0) * W;
+      const y = (mercY(lat) - y0) / (y1 - y0) * H;
+      return { x, y };
+    }
     function drawMercator() {
       const W = mmoCanvas.clientWidth || 800;
       const H = mmoCanvas.clientHeight || 500;
@@ -2773,13 +2797,20 @@
         const srcImg = tex.image;
         const srcW = srcImg.naturalWidth || srcImg.width;
         const srcH = srcImg.naturalHeight || srcImg.height;
-        // 行バッファ作成（40行ごとにまとめてブロック描画）
-        const BAND = 2; // 2pxごと
+        const BAND = 2;
+        // ズーム範囲
+        const yTop = mapView ? mercY(mapView.latMax) : mercY(85);
+        const yBot = mapView ? mercY(mapView.latMin) : mercY(-85);
+        const lngMin = mapView ? mapView.lngMin : -180;
+        const lngMax = mapView ? mapView.lngMax : 180;
+        const srcXStart = ((lngMin + 180) / 360) * srcW;
+        const srcXWidth = ((lngMax - lngMin) / 360) * srcW;
         for (let y = 0; y < H; y += BAND) {
-          const yn = y / H;
-          const lat = Math.atan(Math.sinh(Math.PI * (1 - 2 * yn))) * 180 / Math.PI;
+          const yn = y / H; // 0..1
+          const globalYn = yTop + yn * (yBot - yTop);
+          const lat = Math.atan(Math.sinh(Math.PI * (1 - 2 * globalYn))) * 180 / Math.PI;
           const srcY = Math.max(0, Math.min(srcH - 1, (90 - lat) / 180 * srcH));
-          ctx.drawImage(srcImg, 0, srcY, srcW, 1, 0, y, W, BAND + 0.5);
+          ctx.drawImage(srcImg, srcXStart, srcY, srcXWidth, 1, 0, y, W, BAND + 0.5);
         }
       }
       // 海の上に薄い青フィルターで色彩統一
@@ -2788,21 +2819,28 @@
       ctx.strokeStyle = 'rgba(200,220,255,0.14)';
       ctx.lineWidth = 0.8;
       ctx.setLineDash([2, 4]);
-      for (let lat = -60; lat <= 60; lat += 30) {
-        const y = mercY(lat) * H;
-        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+      const gridStep = mapView ? 10 : 30;
+      for (let lat = -80; lat <= 80; lat += gridStep) {
+        const yp = screenXY(0, lat, W, H).y;
+        if (yp < -5 || yp > H + 5) continue;
+        ctx.beginPath(); ctx.moveTo(0, yp); ctx.lineTo(W, yp); ctx.stroke();
       }
-      for (let lng = -150; lng <= 150; lng += 30) {
-        const x = mercX(lng) * W;
-        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+      for (let lng = -180; lng <= 180; lng += gridStep) {
+        const xp = screenXY(lng, 0, W, H).x;
+        if (xp < -5 || xp > W + 5) continue;
+        ctx.beginPath(); ctx.moveTo(xp, 0); ctx.lineTo(xp, H); ctx.stroke();
       }
       ctx.setLineDash([]);
-      // 赤道・回帰線を少し強調
-      ctx.strokeStyle = 'rgba(255,200,120,0.25)'; ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(0, mercY(0) * H); ctx.lineTo(W, mercY(0) * H); ctx.stroke();
-      ctx.strokeStyle = 'rgba(255,200,120,0.12)';
-      ctx.beginPath(); ctx.moveTo(0, mercY(23.4) * H); ctx.lineTo(W, mercY(23.4) * H); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(0, mercY(-23.4) * H); ctx.lineTo(W, mercY(-23.4) * H); ctx.stroke();
+      // 赤道・回帰線
+      const drawLat = (lat, style, width) => {
+        const yp = screenXY(0, lat, W, H).y;
+        if (yp < 0 || yp > H) return;
+        ctx.strokeStyle = style; ctx.lineWidth = width;
+        ctx.beginPath(); ctx.moveTo(0, yp); ctx.lineTo(W, yp); ctx.stroke();
+      };
+      drawLat(0, 'rgba(255,200,120,0.25)', 1);
+      drawLat(23.4, 'rgba(255,200,120,0.12)', 1);
+      drawLat(-23.4, 'rgba(255,200,120,0.12)', 1);
       // 昼夜オーバーレイ: 弱めにして地図を見やすく
       const now = new Date();
       const utcH = now.getUTCHours() + now.getUTCMinutes() / 60;
@@ -2823,8 +2861,8 @@
       ctx.fillStyle = 'rgba(0,0,0,0)'; // noop
       ctx.globalCompositeOperation = 'source-over';
       // 太陽直下点マーカー（大きなグロー）
-      const sx = mercX(sunLng) * W;
-      const sy = mercY(sunLat) * H;
+      const sxy = screenXY(sunLng, sunLat, W, H);
+      const sx = sxy.x, sy = sxy.y;
       const sg = ctx.createRadialGradient(sx, sy, 0, sx, sy, 55);
       sg.addColorStop(0, 'rgba(255,240,170,0.75)');
       sg.addColorStop(0.4, 'rgba(255,200,120,0.25)');
@@ -2839,40 +2877,32 @@
       ctx.lineWidth = 1.1;
       ctx.setLineDash([4, 3]);
       FLIGHT_ROUTES.forEach(r => {
-        const x1 = mercX(r.from[1]) * W, y1 = mercY(r.from[0]) * H;
-        const x2 = mercX(r.to[1]) * W,   y2 = mercY(r.to[0]) * H;
-        const midX = (x1 + x2) / 2, midY = (y1 + y2) / 2 - Math.abs(x2 - x1) * 0.13;
-        ctx.beginPath(); ctx.moveTo(x1, y1); ctx.quadraticCurveTo(midX, midY, x2, y2); ctx.stroke();
+        const p1 = screenXY(r.from[1], r.from[0], W, H);
+        const p2 = screenXY(r.to[1], r.to[0], W, H);
+        const midX = (p1.x + p2.x) / 2, midY = (p1.y + p2.y) / 2 - Math.abs(p2.x - p1.x) * 0.13;
+        ctx.beginPath(); ctx.moveTo(p1.x, p1.y); ctx.quadraticCurveTo(midX, midY, p2.x, p2.y); ctx.stroke();
       });
       ctx.setLineDash([]);
       FLIGHT_ROUTES.forEach(r => {
-        const x1 = mercX(r.from[1]) * W, y1 = mercY(r.from[0]) * H;
-        const x2 = mercX(r.to[1]) * W,   y2 = mercY(r.to[0]) * H;
+        const p1 = screenXY(r.from[1], r.from[0], W, H);
+        const p2 = screenXY(r.to[1], r.to[0], W, H);
         ctx.fillStyle = 'rgba(255,240,200,0.85)';
-        ctx.beginPath(); ctx.arc(x1, y1, 2.5, 0, Math.PI*2); ctx.fill();
-        ctx.beginPath(); ctx.arc(x2, y2, 2.5, 0, Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.arc(p1.x, p1.y, 2.5, 0, Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.arc(p2.x, p2.y, 2.5, 0, Math.PI*2); ctx.fill();
       });
-      // 🗾 選択中の大陸をハイライト
-      if (mercFilter.cont && mercFilter.cont !== 'all') {
-        const CONT_BOUNDS = {
-          asia:     { latMin: 0,   latMax: 70,  lngMin: 55,   lngMax: 145 },
-          europe:   { latMin: 36,  latMax: 72,  lngMin: -25,  lngMax: 55  },
-          africa:   { latMin: -35, latMax: 37,  lngMin: -20,  lngMax: 52  },
-          namerica: { latMin: 15,  latMax: 80,  lngMin: -170, lngMax: -55 },
-          samerica: { latMin: -55, latMax: 15,  lngMin: -85,  lngMax: -33 },
-          oceania:  { latMin: -47, latMax: -5,  lngMin: 110,  lngMax: 180 },
-        };
+      // 🗾 選択中の大陸をハイライト（全世界表示のときだけ枠を描く。ズーム中はいらない）
+      if (mercFilter.cont && mercFilter.cont !== 'all' && !mapView) {
         const b = CONT_BOUNDS[mercFilter.cont];
         if (b) {
-          const x1 = mercX(b.lngMin) * W, y1 = mercY(b.latMax) * H;
-          const x2 = mercX(b.lngMax) * W, y2 = mercY(b.latMin) * H;
+          const c1 = screenXY(b.lngMin, b.latMax, W, H);
+          const c2 = screenXY(b.lngMax, b.latMin, W, H);
           ctx.save();
           ctx.fillStyle = 'rgba(255,220,120,0.12)';
-          ctx.fillRect(x1, y1, x2 - x1, y2 - y1);
+          ctx.fillRect(c1.x, c1.y, c2.x - c1.x, c2.y - c1.y);
           ctx.strokeStyle = 'rgba(255,210,120,0.65)';
           ctx.lineWidth = 2;
           ctx.setLineDash([6, 4]);
-          ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+          ctx.strokeRect(c1.x, c1.y, c2.x - c1.x, c2.y - c1.y);
           ctx.setLineDash([]);
           ctx.restore();
         }
@@ -2883,8 +2913,9 @@
         const b = byCountry[k];
         const f = filterCountry(b, k);
         if (!f) return;
-        const x = mercX(f.lng) * W;
-        const y = mercY(f.lat) * H;
+        const xy = screenXY(f.lng, f.lat, W, H);
+        const x = xy.x, y = xy.y;
+        if (x < -30 || x > W + 30 || y < -30 || y > H + 30) return; // ズーム範囲外スキップ
         const n = f.people.length;
         const rBase = 3 + Math.min(7, Math.sqrt(n) * 1.2);
         const rGlow = rBase * 3.8;
@@ -2925,13 +2956,14 @@
       ];
       ctx.font = '11px "Shippori Mincho", "Hiragino Mincho ProN", serif';
       CITIES.forEach(c => {
-        const x = mercX(c.lng) * W, y = mercY(c.lat) * H;
+        const xy = screenXY(c.lng, c.lat, W, H);
+        if (xy.x < 0 || xy.x > W || xy.y < 0 || xy.y > H) return;
         ctx.fillStyle = 'rgba(255,255,255,0.85)';
         ctx.strokeStyle = 'rgba(0,0,0,0.7)'; ctx.lineWidth = 2.5;
-        ctx.strokeText(c.name, x + 6, y + 3);
-        ctx.fillText(c.name, x + 6, y + 3);
+        ctx.strokeText(c.name, xy.x + 6, xy.y + 3);
+        ctx.fillText(c.name, xy.x + 6, xy.y + 3);
         ctx.fillStyle = 'rgba(180,220,255,0.85)';
-        ctx.beginPath(); ctx.arc(x, y, 1.5, 0, Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.arc(xy.x, xy.y, 1.5, 0, Math.PI*2); ctx.fill();
       });
       // 凡例
       ctx.font = '10px "Shippori Mincho", serif';
@@ -2991,14 +3023,21 @@
         // ピン以外 → 大陸判定 + その大陸の偉人集約表示
         const rect2 = mmoCanvas.getBoundingClientRect();
         const W = rect2.width, H = rect2.height;
-        const clickLat = Math.atan(Math.sinh(Math.PI * (1 - 2 * (my / H)))) * 180 / Math.PI;
-        const clickLng = (mx / W) * 360 - 180;
+        // ズーム中は表示範囲から逆変換、そうでなければ全世界
+        const yTop = mapView ? mercY(mapView.latMax) : mercY(85);
+        const yBot = mapView ? mercY(mapView.latMin) : mercY(-85);
+        const lngMin = mapView ? mapView.lngMin : -180;
+        const lngMax = mapView ? mapView.lngMax : 180;
+        const globalYn = yTop + (my / H) * (yBot - yTop);
+        const clickLat = Math.atan(Math.sinh(Math.PI * (1 - 2 * globalYn))) * 180 / Math.PI;
+        const clickLng = lngMin + (mx / W) * (lngMax - lngMin);
         const cont = classifyContinent(clickLat, clickLng);
         const chip = ov.querySelector(`[data-merc-cont="${cont}"]`);
         if (chip) {
           ov.querySelectorAll('[data-merc-cont]').forEach(x => x.classList.remove('active'));
           chip.classList.add('active');
           mercFilter.cont = cont;
+          mapView = CONT_BOUNDS[cont] || null; // 大陸にズームイン
           drawMercator();
           const CONT_NAMES = { asia: 'アジア', europe: 'ヨーロッパ', africa: 'アフリカ', namerica: '北アメリカ', samerica: '南アメリカ', oceania: 'オセアニア' };
           const CONT_EMOJI = { asia: '🌏', europe: '🏰', africa: '🦁', namerica: '🗽', samerica: '🏞', oceania: '🦘' };
