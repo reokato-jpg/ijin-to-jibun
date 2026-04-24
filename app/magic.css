@@ -4470,6 +4470,159 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
   border-color: rgba(255,220,180,0.6) !important;
   color: #fff !important;
 }
+.magic-topbook-pill-myth {
+  background: linear-gradient(135deg, rgba(180,120,220,0.75), rgba(120,80,180,0.75)) !important;
+  border-color: rgba(240,200,255,0.6) !important;
+  color: #fff !important;
+}
+
+/* 🏛 神話の宇宙 */
+.myth-overlay {
+  position: fixed; inset: 0; z-index: 15000;
+  background: #000;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.4s ease;
+  display: flex; flex-direction: column;
+  color: #fff;
+  font-family: 'Shippori Mincho', serif;
+}
+.myth-overlay.open { opacity: 1; pointer-events: auto; }
+.myth-close {
+  position: absolute; top: 14px; right: 14px; z-index: 5;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(40,25,80,0.9);
+  border: 1px solid rgba(240,200,255,0.5);
+  color: #fff; font-size: 22px; cursor: pointer;
+  line-height: 1; padding: 0;
+}
+.myth-header { text-align: center; padding: 16px 20px 8px; }
+.myth-title {
+  font-size: 22px; font-weight: 800; letter-spacing: 0.14em;
+  background: linear-gradient(135deg, #fff, #ffd8a0);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.myth-sub {
+  font-size: 11px; color: rgba(240,200,255,0.75);
+  letter-spacing: 0.12em; margin-top: 4px;
+}
+.myth-tabs {
+  display: flex; justify-content: center; flex-wrap: wrap;
+  gap: 4px; padding: 6px 12px 10px;
+  border-bottom: 1px solid rgba(240,200,255,0.15);
+}
+.myth-tab {
+  padding: 6px 14px;
+  background: rgba(40,20,60,0.6);
+  border: 1px solid rgba(240,200,255,0.25);
+  color: rgba(255,255,255,0.7);
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 0.06em;
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: 'Shippori Mincho', serif;
+  transition: all 0.15s;
+}
+.myth-tab:hover { background: rgba(180,120,220,0.25); }
+.myth-tab.active {
+  background: linear-gradient(135deg, #c080ff, #6040a0);
+  border-color: rgba(255,230,180,0.8);
+  color: #fff;
+  box-shadow: 0 0 12px rgba(200,140,255,0.5);
+}
+.myth-stage {
+  flex: 1; position: relative;
+  overflow: hidden;
+  transition: background 0.8s ease;
+}
+.myth-labels {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+.myth-label {
+  position: absolute;
+  transform: translateX(-50%);
+  padding: 3px 9px;
+  background: rgba(20,10,30,0.7);
+  border: 1px solid rgba(240,200,255,0.3);
+  border-radius: 999px;
+  color: #ffe8a8;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  text-shadow: 0 0 6px rgba(0,0,0,0.8);
+  transition: opacity 0.25s;
+}
+.myth-hint {
+  text-align: center;
+  padding: 8px; font-size: 10px;
+  color: rgba(240,200,255,0.5);
+  letter-spacing: 0.12em;
+  border-top: 1px solid rgba(240,200,255,0.12);
+}
+.myth-info {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  width: min(92vw, 420px);
+  background: linear-gradient(180deg, rgba(30,15,50,0.97), rgba(12,6,22,0.97));
+  border: 1px solid rgba(240,200,255,0.45);
+  border-radius: 18px;
+  padding: 26px 24px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.85), 0 0 40px rgba(200,140,255,0.3);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s cubic-bezier(.3,1.3,.4,1);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  z-index: 4;
+  text-align: center;
+}
+.myth-info.show {
+  opacity: 1; pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
+}
+.myth-info-close {
+  position: absolute; top: 10px; right: 10px;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: rgba(60,40,110,0.85);
+  border: 1px solid rgba(240,200,255,0.4);
+  color: #fff; font-size: 16px; cursor: pointer;
+  padding: 0; line-height: 1;
+}
+.myth-info-emoji {
+  width: 80px; height: 80px;
+  margin: 4px auto 16px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 42px;
+  box-shadow: 0 0 26px rgba(255,255,255,0.2), inset 0 2px 8px rgba(255,255,255,0.2);
+}
+.myth-info-name {
+  font-size: 26px; font-weight: 800;
+  letter-spacing: 0.06em;
+  background: linear-gradient(135deg, #fff, #ffd8a0);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.myth-info-role {
+  font-size: 11px; color: #ffd080;
+  letter-spacing: 0.2em;
+  margin: 4px 0 14px;
+}
+.myth-info-story {
+  font-size: 13px; line-height: 1.85;
+  color: #e8d8ff;
+  text-align: left;
+}
+
+@media (max-width: 480px) {
+  .myth-tabs { gap: 3px; padding: 4px 8px 8px; }
+  .myth-tab { font-size: 10px; padding: 4px 9px; letter-spacing: 0.03em; }
+  .myth-title { font-size: 17px; }
+  .myth-info { padding: 22px 18px; }
+  .myth-info-name { font-size: 20px; }
+}
 
 /* ♿ アクセシビリティ — キーボードフォーカス可視化 */
 *:focus-visible {
