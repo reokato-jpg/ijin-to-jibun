@@ -3643,15 +3643,43 @@
       const orbit = new THREE.Mesh(orbitGeo, orbitMat);
       orbit.rotation.x = Math.PI / 2;
       scene.add(orbit);
-      // 月（地球のみ）
+      // 衛星
+      const moons = [];
       if (p.isEarth) {
+        // 月
         const mGeo = new THREE.SphereGeometry(0.28, 16, 16);
         const mMat = new THREE.MeshBasicMaterial({ color: 0xbbbbbb });
         const moon = new THREE.Mesh(mGeo, mMat);
         moon.visible = false;
         scene.add(moon);
-        pMesh.userData.moon = moon;
+        moons.push({ mesh: moon, orbit: 1.8, speed: 12, angle: 0 });
       }
+      if (p.name === '木星') {
+        // ガリレオ衛星（イオ・エウロパ・ガニメデ・カリスト）
+        [
+          { size: 0.2, color: 0xe8d080, orbit: 3.0, speed: 10 },  // イオ
+          { size: 0.22, color: 0xccb890, orbit: 3.6, speed: 8 },  // エウロパ
+          { size: 0.26, color: 0x8a7860, orbit: 4.3, speed: 6 },  // ガニメデ
+          { size: 0.24, color: 0x504838, orbit: 5.1, speed: 4 },  // カリスト
+        ].forEach(m => {
+          const mGeo = new THREE.SphereGeometry(m.size, 12, 12);
+          const mMat = new THREE.MeshBasicMaterial({ color: m.color });
+          const moonMesh = new THREE.Mesh(mGeo, mMat);
+          moonMesh.visible = false;
+          scene.add(moonMesh);
+          moons.push({ mesh: moonMesh, orbit: m.orbit, speed: m.speed, angle: Math.random() * Math.PI * 2 });
+        });
+      }
+      if (p.name === '土星') {
+        // タイタン
+        const mGeo = new THREE.SphereGeometry(0.32, 12, 12);
+        const mMat = new THREE.MeshBasicMaterial({ color: 0xd4a860 });
+        const titan = new THREE.Mesh(mGeo, mMat);
+        titan.visible = false;
+        scene.add(titan);
+        moons.push({ mesh: titan, orbit: 3.2, speed: 6, angle: Math.random() * Math.PI * 2 });
+      }
+      if (moons.length) pMesh.userData.moons = moons;
       // 土星のリング
       if (p.hasRing) {
         const rGeo = new THREE.RingGeometry(p.size * 1.3, p.size * 2.1, 64);
@@ -3665,10 +3693,28 @@
       planetMeshes.push({ mesh: pMesh, orbit, planet: p });
     });
 
+    // 流れ星プール
+    const shootingStars = [];
+    function spawnShootingStar() {
+      const geo = new THREE.BufferGeometry();
+      const pts = new Float32Array(6); // 線（2点）
+      geo.setAttribute('position', new THREE.BufferAttribute(pts, 3));
+      const mat = new THREE.LineBasicMaterial({ color: 0xfff0c8, transparent: true, opacity: 0.9 });
+      const line = new THREE.Line(geo, mat);
+      // ランダム位置＆方向
+      const sx = (Math.random() - 0.5) * 150, sy = 30 + Math.random() * 40, sz = (Math.random() - 0.5) * 150;
+      const dx = -3 - Math.random() * 4, dy = -0.5 - Math.random(), dz = -1 + Math.random() * 2;
+      pts[0] = sx; pts[1] = sy; pts[2] = sz;
+      pts[3] = sx - dx * 0.5; pts[4] = sy - dy * 0.5; pts[5] = sz - dz * 0.5;
+      scene.add(line);
+      shootingStars.push({ line, geo, mat, pts, dx, dy, dz, life: 0, maxLife: 60 + Math.random() * 40 });
+    }
+
     let phase = 'noise'; // noise → bang → universe
     let bbAge = 0;
     let universeTime = 0;
     let running = true;
+    let cameraZoomTarget = null;  // 惑星にズーム用
     function animate() {
       if (!running) return;
       if (phase === 'bang') {
@@ -3686,7 +3732,7 @@
         if (bbAge > 1.5) {
           sun.visible = true;
           corona.visible = true;
-          planetMeshes.forEach(pm => { pm.mesh.visible = true; if (pm.mesh.userData.moon) pm.mesh.userData.moon.visible = true; if (pm.mesh.userData.ring) pm.mesh.userData.ring.visible = true; pm.orbit.material.opacity = 0.25; });
+          planetMeshes.forEach(pm => { pm.mesh.visible = true; if (pm.mesh.userData.moons) pm.mesh.userData.moons.forEach(m => m.mesh.visible = true); if (pm.mesh.userData.ring) pm.mesh.userData.ring.visible = true; pm.orbit.material.opacity = 0.25; });
         }
         if (bbAge > 3) {
           phase = 'universe';
@@ -3701,13 +3747,16 @@
           pm.mesh.userData.angle += pm.planet.speed;
           const a = pm.mesh.userData.angle;
           pm.mesh.position.set(Math.cos(a) * pm.planet.dist, 0, Math.sin(a) * pm.planet.dist);
-          if (pm.mesh.userData.moon) {
-            const ma = a * 12;
-            pm.mesh.userData.moon.position.set(
-              pm.mesh.position.x + Math.cos(ma) * 1.8,
-              Math.sin(ma) * 0.4,
-              pm.mesh.position.z + Math.sin(ma) * 1.8
-            );
+          if (pm.mesh.userData.moons) {
+            pm.mesh.userData.moons.forEach(m => {
+              m.angle += 0.005 * m.speed / 6;
+              const o = m.orbit;
+              m.mesh.position.set(
+                pm.mesh.position.x + Math.cos(m.angle) * o,
+                Math.sin(m.angle * 0.7) * 0.25,
+                pm.mesh.position.z + Math.sin(m.angle) * o
+              );
+            });
           }
           if (pm.mesh.userData.ring) {
             pm.mesh.userData.ring.position.copy(pm.mesh.position);
@@ -3715,12 +3764,39 @@
           pm.mesh.rotation.y += 0.01;
         });
         sun.rotation.y += 0.002;
-        // カメラはゆっくり回る
-        const cAng = universeTime * 0.03;
-        camera.position.x = Math.cos(cAng) * 55;
-        camera.position.z = Math.sin(cAng) * 55;
-        camera.position.y = 20 + Math.sin(universeTime * 0.1) * 8;
-        camera.lookAt(0, 0, 0);
+        // ランダムに流れ星（低確率）
+        if (Math.random() < 0.008 && shootingStars.length < 5) spawnShootingStar();
+        // 流れ星を動かす
+        for (let i = shootingStars.length - 1; i >= 0; i--) {
+          const s = shootingStars[i];
+          s.life++;
+          s.pts[0] += s.dx; s.pts[1] += s.dy; s.pts[2] += s.dz;
+          s.pts[3] += s.dx; s.pts[4] += s.dy; s.pts[5] += s.dz;
+          s.geo.attributes.position.needsUpdate = true;
+          s.mat.opacity = Math.max(0, 0.9 - s.life / s.maxLife);
+          if (s.life > s.maxLife) {
+            scene.remove(s.line);
+            s.geo.dispose(); s.mat.dispose();
+            shootingStars.splice(i, 1);
+          }
+        }
+        // カメラ
+        if (cameraZoomTarget) {
+          // 惑星にスムーズに寄る
+          const t = cameraZoomTarget.mesh;
+          const dx = t.position.x - camera.position.x * 0.3;
+          const lerp = 0.05;
+          camera.position.x += (t.position.x * 1.3 - camera.position.x) * lerp;
+          camera.position.y += (8 - camera.position.y) * lerp;
+          camera.position.z += (t.position.z * 1.3 + 8 - camera.position.z) * lerp;
+          camera.lookAt(t.position);
+        } else {
+          const cAng = universeTime * 0.03;
+          camera.position.x = Math.cos(cAng) * 55;
+          camera.position.z = Math.sin(cAng) * 55;
+          camera.position.y = 20 + Math.sin(universeTime * 0.1) * 8;
+          camera.lookAt(0, 0, 0);
+        }
       }
       renderer.render(scene, camera);
       requestAnimationFrame(animate);
@@ -3737,18 +3813,28 @@
       mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
       raycaster.setFromCamera(mouse, camera);
       const hit = raycaster.intersectObjects(planetMeshes.map(p => p.mesh), false)[0];
-      if (!hit) return;
-      const p = hit.object.userData;
-      hud.textContent = `🪐 ${p.jname}`;
-      hud.classList.add('show');
-      setTimeout(() => hud.classList.remove('show'), 2000);
-      if (p.isEarth) {
-        // 地球タップ → 世界マップ(偉人)へ
-        setTimeout(() => {
-          ov.classList.remove('open');
-          setTimeout(() => { ov.remove(); running = false; if (typeof openWorldMap === 'function') openWorldMap(); }, 300);
-        }, 600);
+      if (!hit) {
+        // 何もないところをタップ → ズーム解除
+        cameraZoomTarget = null;
+        hud.classList.remove('show');
+        return;
       }
+      const p = hit.object.userData;
+      const pm = planetMeshes.find(x => x.mesh === hit.object);
+      hud.innerHTML = `🪐 ${p.jname}${p.isEarth ? '<span style="opacity:0.6;font-size:11px;display:block;margin-top:2px">もう一度タップで偉人の地図へ</span>' : ''}`;
+      hud.classList.add('show');
+      // 既にズーム済みの同じ惑星を再タップ
+      if (cameraZoomTarget && cameraZoomTarget.mesh === hit.object) {
+        if (p.isEarth) {
+          setTimeout(() => {
+            ov.classList.remove('open');
+            setTimeout(() => { ov.remove(); running = false; if (typeof openWorldMap === 'function') openWorldMap(); }, 300);
+          }, 200);
+        }
+        return;
+      }
+      // 初回タップ → ズームイン
+      cameraZoomTarget = pm;
     });
 
     // 初回タップでビッグバン
