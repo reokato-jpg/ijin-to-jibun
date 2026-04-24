@@ -12653,6 +12653,26 @@ const BLOG_POSTS = [
     cta: {kind:'travel'},
     affiliateBooks: [],
     relatedTheme: 'bakumatsu'
+  },
+  {
+    id: 'rekijo-women',
+    title: '時代に抗った女たち — 歴女が涙した6人の物語',
+    emoji: '<svg class="ij-icon"><use href="#ij-ribbon"/></svg>',
+    category: '歴史の女たち',
+    date: '2026年4月',
+    lead: '政略の駒として歴史に巻き込まれながらも、愛と信念を貫いた6人の女性たち。戦国から幕末まで、涙なしには読めないエピソード集。',
+    coverGradient: 'linear-gradient(135deg, #c1527a, #5a1a3a)',
+    sections: [
+      {h: '1. お市の方 — 戦国一の美女、愛と別れの連鎖', people:['oichi'], body:'兄・信長と夫・長政の対立で夫を失い、再婚した柴田勝家とも運命を共にした。三人の娘（茶々・初・江）を残して自害。'},
+      {h: '2. 淀殿 — 父も夫も母も失った悲劇の女性', people:['yodo_dono'], body:'秀吉の側室となり秀頼を産むも、大坂夏の陣で息子と共に自害。戦国最大の悲劇を生きた。'},
+      {h: '3. 細川ガラシャ — 信仰に殉じた誇り高き魂', people:['hosokawa_gracia'], body:'明智光秀の娘として父を失い、キリスト教に救いを求めた。関ヶ原前夜に人質拒否し自死。'},
+      {h: '4. 新島八重 — 会津の「ハンサム・ウーマン」', people:['niijima_yae'], body:'男装しスペンサー銃を手に鶴ヶ城籠城。維新後は同志社を築き、赤十字篤志看護婦として86歳まで活動。'},
+      {h: '5. 篤姫 — 徳川の家を守った御台所', people:['atsuhime'], body:'薩摩から江戸へ。夫・家定を失った後も大奥を統率し、江戸無血開城に尽力。'},
+      {h: '6. 和宮 — 引き裂かれた皇女の愛', people:['kazunomiya'], body:'婚約者と別れ政略結婚。家茂への愛が芽生えた矢先に死別。徳川家の嫁として最後まで生きた。'}
+    ],
+    cta: {kind:'theme', theme:'rekijo_women'},
+    affiliateBooks: ['八重の桜 1|山本むつみ|4140057599', '和宮様御留|有吉佐和子|4062755963', '細川ガラシャ|三浦綾子|4062748320'],
+    relatedTheme: 'rekijo_women'
   }
 ];
 
