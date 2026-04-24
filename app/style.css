@@ -4010,15 +4010,15 @@ h2 .ij-icon, h3 .ij-icon { vertical-align: -0.15em; margin-right: 4px; }
   .audible-hero-sub { font-size: 10px; }
 }
 
-/* 📑 ホーム目次 — 右下フローティングFAB（ミュートボタンの上に配置） */
-.home-toc-wrap { position: fixed; right: 14px; bottom: 140px; z-index: 45; }
+/* 📑 ホーム目次 — 右下フローティングFAB（ラジオ/ミュート/チャットから十分離して配置） */
+.home-toc-wrap { position: fixed; right: 14px; bottom: 200px; z-index: 45; }
 .home-toc { background: transparent; border: none; }
 .home-toc-summary { width: 48px; height: 48px; border-radius: 50%; padding: 0; background: var(--wine); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; list-style: none; font-size: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.25); transition: transform 0.15s; }
 .home-toc-summary:hover { transform: scale(1.05); }
 .home-toc-summary::-webkit-details-marker { display: none; }
 .home-toc-summary::after { display: none; }
 .home-toc[open] .home-toc-summary { background: var(--gold); color: var(--wine); }
-.home-toc-list { position: absolute; right: 0; bottom: 58px; display: flex; flex-direction: column; gap: 4px; padding: 10px; background: #fff; border: 1px solid var(--wine); border-radius: 10px; box-shadow: 0 6px 18px rgba(0,0,0,0.2); min-width: 180px; max-height: 70vh; overflow-y: auto; }
+.home-toc-list { position: absolute; right: 0; bottom: 58px; display: flex; flex-direction: column; gap: 4px; padding: 10px; background: rgba(255,253,246,0.98); backdrop-filter: blur(8px); border: 1px solid var(--wine); border-radius: 10px; box-shadow: 0 6px 22px rgba(0,0,0,0.28); min-width: 200px; max-width: calc(100vw - 40px); max-height: calc(100vh - 260px); overflow-y: auto; }
 .home-toc-item { font-family: var(--font-jp); font-size: 12px; font-weight: 600; color: var(--wine); background: #fff; border: 1px solid rgba(122,46,58,0.2); border-radius: 6px; padding: 7px 10px; cursor: pointer; text-align: left; transition: all 0.15s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 6px; }
 .home-toc-item .ij-icon { width: 14px; height: 14px; color: var(--wine); flex-shrink: 0; }
 .home-toc-summary .ij-icon { width: 22px; height: 22px; color: #fff; }
