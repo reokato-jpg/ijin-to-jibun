@@ -10611,21 +10611,21 @@ function showBeginnerGuide() {
         <h2 class="era-page-h2"><svg class="ij-icon"><use href="#ij-sparkle"/></svg> まずはここから</h2>
         <div class="beginner-route-list">
           <button class="beginner-route" data-goto-theme="shinsengumi">
-            <div class="beginner-route-emoji">⚔️</div>
+            <div class="beginner-route-emoji"><svg class="ij-icon"><use href="#ij-sword"/></svg></div>
             <div class="beginner-route-body">
               <div class="beginner-route-title">新選組から入る</div>
               <div class="beginner-route-desc">短い青春・熱い友情・悲しい最期。『燃えよ剣』のような世界が好きならここ。まずは副長・土方歳三から。</div>
             </div>
           </button>
           <button class="beginner-route" data-goto-theme="bakumatsu">
-            <div class="beginner-route-emoji">🏯</div>
+            <div class="beginner-route-emoji"><svg class="ij-icon"><use href="#ij-castle"/></svg></div>
             <div class="beginner-route-body">
               <div class="beginner-route-title">幕末の志士たちから入る</div>
               <div class="beginner-route-desc">時代を変えた若者たち。坂本龍馬・高杉晋作・吉田松陰——彼らの手紙や名言を辿ると、10代後半〜20代の熱量に心が震える。</div>
             </div>
           </button>
           <button class="beginner-route" data-goto-theme="sengoku">
-            <div class="beginner-route-emoji">🏹</div>
+            <div class="beginner-route-emoji"><svg class="ij-icon"><use href="#ij-bow"/></svg></div>
             <div class="beginner-route-body">
               <div class="beginner-route-title">戦国武将から入る</div>
               <div class="beginner-route-desc">信長・政宗・真田幸村——乱世を生き抜いた男たちの物語。大河ドラマが好きならこちら。</div>
@@ -10673,7 +10673,7 @@ function showBeginnerGuide() {
         <a class="audible-hero-banner" href="https://px.a8.net/svt/ejp?a8mat=4B1QDV+6MQUCY+5TB0+5ZU29" rel="noopener sponsored nofollow" target="_blank">
           <img class="audible-hero-img" src="https://www29.a8.net/svt/bgt?aid=260421331401&wid=001&eno=01&mid=s00000027126001007000&mc=1" width="120" height="60" alt="Audible">
           <div class="audible-hero-text">
-            <div class="audible-hero-title">📻 Audible 30日間無料</div>
+            <div class="audible-hero-title"><svg class="ij-icon"><use href="#ij-headphone"/></svg> Audible 30日間無料</div>
             <div class="audible-hero-sub">『竜馬がゆく』『燃えよ剣』ほか、プロ声優が朗読する歴史大河。12万冊聴き放題。</div>
           </div>
           <span class="audible-hero-cta">▶</span>
@@ -10686,10 +10686,10 @@ function showBeginnerGuide() {
         <div class="beginner-books">
           ${[
             // ASIN確定済（Wikipedia検証 + Amazon画像51KB+）
-            {title:'るろうに剣心 完全版 1', author:'和月伸宏', asin:'4088741501', emoji:'🗡', desc:'幕末を生き抜いた抜刀斎・緋村剣心。斎藤一も登場！アニメ・映画・舞台で人気爆発の入門作品。'},
+            {title:'るろうに剣心 完全版 1', author:'和月伸宏', asin:'4088741501', emoji:'<svg class="ij-icon"><use href="#ij-sword"/></svg>', desc:'幕末を生き抜いた抜刀斎・緋村剣心。斎藤一も登場！アニメ・映画・舞台で人気爆発の入門作品。'},
             {title:'銀魂 1', author:'空知英秋', asin:'4088736230', emoji:'🎪', desc:'新選組モデルの真選組＆攘夷志士モデルのキャラたちが織りなすSF時代劇。キャラで沼る王道。'},
             {title:'PEACE MAKER 鐵 1', author:'黒乃奈々絵', asin:'490192611X', emoji:'🌸', desc:'少年の視点から描かれる新選組。登場人物の心情描写が深い名作。'},
-            {title:'信長協奏曲 1', author:'石井あゆみ', asin:'4091221009', emoji:'👘', desc:'現代高校生が信長に入れ替わる戦国タイムスリップ漫画。実写化・アニメ化。'},
+            {title:'信長協奏曲 1', author:'石井あゆみ', asin:'4091221009', emoji:'<svg class="ij-icon"><use href="#ij-ribbon"/></svg>', desc:'現代高校生が信長に入れ替わる戦国タイムスリップ漫画。実写化・アニメ化。'},
             // ASIN確定追加分（NDLサーチ+Amazon画像検証済）
             {title:'風光る 1', author:'渡辺多恵子', asin:'4091373518', emoji:'🎐', desc:'新選組に身を投じた少女の物語。少女漫画の金字塔。'},
             {title:'おーい!竜馬 1', author:'武田鉄矢・小山ゆう', asin:'4091095208', emoji:'🌊', desc:'坂本龍馬の青春を熱く描く歴史漫画の名作。'},
@@ -10777,16 +10777,16 @@ function showBeginnerGuide() {
         <summary class="era-page-h2"><svg class="ij-icon"><use href="#ij-torii"/></svg> 聖地巡礼に出かける <span class="pr-tag">PR</span> <span class="beginner-coll-arrow">▾</span></summary>
         <p style="font-size:12px;color:var(--ink-3);margin-bottom:10px">推しが歩いた場所へ行く。歴女の究極の楽しみ方。</p>
         <ul class="pilgrimage-list">
-          <li><b>⚔️ 新選組</b> → 京都（壬生・池田屋）・日野（土方資料館）・函館（五稜郭）</li>
-          <li><b>🏯 幕末志士</b> → 萩（松下村塾）・下関（功山寺）・高知（龍馬生誕地）</li>
-          <li><b>🏹 戦国武将</b> → 安土・大坂・米沢・上田・仙台</li>
-          <li><b>🎀 歴女女性</b> → 会津（八重の鶴ヶ城）・京都（ガラシャ）・大坂（淀殿）</li>
+          <li><b><svg class="ij-icon"><use href="#ij-sword"/></svg> 新選組</b> → 京都（壬生・池田屋）・日野（土方資料館）・函館（五稜郭）</li>
+          <li><b><svg class="ij-icon"><use href="#ij-castle"/></svg> 幕末志士</b> → 萩（松下村塾）・下関（功山寺）・高知（龍馬生誕地）</li>
+          <li><b><svg class="ij-icon"><use href="#ij-bow"/></svg> 戦国武将</b> → 安土・大坂・米沢・上田・仙台</li>
+          <li><b><svg class="ij-icon"><use href="#ij-ribbon"/></svg> 歴女女性</b> → 会津（八重の鶴ヶ城）・京都（ガラシャ）・大坂（淀殿）</li>
         </ul>
         <!-- 楽天トラベル もしもアフィリエイト -->
         <a class="travel-hero-banner" href="//af.moshimo.com/af/c/click?a_id=5501667&p_id=55&pc_id=55&pl_id=630" rel="noopener sponsored nofollow" target="_blank" referrerpolicy="no-referrer-when-downgrade">
           <img class="travel-hero-img" src="//image.moshimo.com/af-img/0032/000000000630.jpg" width="468" height="60" alt="楽天トラベル">
           <div class="travel-hero-text">
-            <div class="travel-hero-title">🏨 楽天トラベルで宿を探す</div>
+            <div class="travel-hero-title"><svg class="ij-icon"><use href="#ij-torii"/></svg> 楽天トラベルで宿を探す</div>
             <div class="travel-hero-sub">ポイントが貯まる・使える。お得なプランで歴史の地へ。</div>
           </div>
           <span class="travel-hero-cta">→</span>
@@ -10795,7 +10795,7 @@ function showBeginnerGuide() {
         <a class="travel-hero-banner jalan-banner" href="https://px.a8.net/svt/ejp?a8mat=4B1QDV+76ZKXE+5R8A+5Z6WX" rel="noopener sponsored nofollow" target="_blank">
           <img class="travel-hero-img" src="https://www24.a8.net/svt/bgt?aid=260421331435&wid=001&eno=01&mid=s00000026857001004000&mc=1" width="120" height="60" alt="じゃらんnet">
           <div class="travel-hero-text">
-            <div class="travel-hero-title">🏯 じゃらんnetでも探す</div>
+            <div class="travel-hero-title"><svg class="ij-icon"><use href="#ij-castle"/></svg> じゃらんnetでも探す</div>
             <div class="travel-hero-sub">リクルート系。ご当地グルメ・体験プランが充実。</div>
           </div>
           <span class="travel-hero-cta">→</span>
@@ -10803,7 +10803,7 @@ function showBeginnerGuide() {
         <!-- OTTOCAST Amazon/楽天検索 -->
         <a class="travel-hero-banner ottocast-banner" href="https://www.amazon.co.jp/s?k=OTTOCAST+%E3%82%AA%E3%83%83%E3%83%88%E3%82%AD%E3%83%A3%E3%82%B9%E3%83%88${AMAZON_TAG ? '&tag=' + AMAZON_TAG : ''}" rel="noopener sponsored nofollow" target="_blank">
           <div class="travel-hero-text">
-            <div class="travel-hero-title">🚗 OTTOCAST（オットキャスト）</div>
+            <div class="travel-hero-title"><svg class="ij-icon"><use href="#ij-car"/></svg> OTTOCAST（オットキャスト）</div>
             <div class="travel-hero-sub">車で『燃えよ剣』『薄桜鬼』『銀魂』を観ながら聖地へ。長距離ドライブが映画館に。</div>
           </div>
           <span class="travel-hero-cta">→</span>
@@ -10820,16 +10820,16 @@ function showBeginnerGuide() {
         <p style="font-size:12px;color:var(--ink-3);margin-bottom:10px">聖地巡礼・推し活・日常使いまで。歴女の毎日を彩る実用品を厳選。</p>
         <div class="rekijo-goods-list">
           ${[
-            {emoji:'📓', title:'御朱印帳', q:'御朱印帳 蛇腹', desc:'聖地巡礼の必需品。神社仏閣で集めた御朱印を一冊に。推しの関連寺社（京都霊山護国神社／松陰神社など）で集めよう。'},
-            {emoji:'🗡', title:'刀剣乱舞 グッズ', q:'刀剣乱舞 グッズ フィギュア', desc:'歴女の推し活定番。三日月宗近・和泉守兼定（土方の刀）などキャラモチーフ多数。'},
-            {emoji:'👘', title:'着物・浴衣レンタル（京都用）', q:'着物 浴衣 レディース 和柄', desc:'京都で着物レンタルして新選組の屯所を歩くのが王道ムーブ。自前の浴衣があれば宿泊先でも楽しめる。'},
-            {emoji:'🎨', title:'和柄マスキングテープ', q:'和柄 マスキングテープ セット', desc:'御朱印帳の装飾・手帳デコに。歴史系SNS映え必須アイテム。'},
-            {emoji:'📷', title:'ミニ三脚・スマホジンバル', q:'スマホ 三脚 ジンバル 軽量', desc:'聖地で推しと一緒に自撮り。城・神社の広角撮影にも。長距離の聖地巡礼ブロガー必携。'},
-            {emoji:'🔋', title:'モバイルバッテリー', q:'モバイルバッテリー 大容量 軽量', desc:'聖地で一日中歩き回るなら必須。地図・撮影・SNS投稿で電池は一瞬で溶ける。'},
-            {emoji:'🧳', title:'ミニトランク・機内持込', q:'キャリーケース 機内持込 軽量 40L', desc:'会津・萩・高知など遠征用。2泊3日の聖地巡礼にちょうど良いサイズ。'},
-            {emoji:'🎟', title:'新選組・戦国武将グッズ', q:'新選組 誠 手ぬぐい', desc:'屯所や資料館で入手できる公式グッズ、家用のインテリアにも。「誠」の手ぬぐい／戦国武将の家紋マグカップなど。'},
-            {emoji:'📚', title:'歴史雑誌「歴史街道」「歴史人」', q:'歴史街道 雑誌', desc:'月刊の歴史雑誌。特集で新選組・幕末・戦国がローテーション。毎月買うと推しの情報が蓄積。'},
-            {emoji:'🎧', title:'ワイヤレスイヤホン', q:'ワイヤレスイヤホン bluetooth', desc:'Audibleで偉人伝を聴きながら通勤／聖地での自撮りムービーの音楽再生に。'}
+            {emoji:'<svg class="ij-icon"><use href="#ij-notebook"/></svg>', title:'御朱印帳', q:'御朱印帳 蛇腹', desc:'聖地巡礼の必需品。神社仏閣で集めた御朱印を一冊に。推しの関連寺社（京都霊山護国神社／松陰神社など）で集めよう。'},
+            {emoji:'<svg class="ij-icon"><use href="#ij-sword"/></svg>', title:'刀剣乱舞 グッズ', q:'刀剣乱舞 グッズ フィギュア', desc:'歴女の推し活定番。三日月宗近・和泉守兼定（土方の刀）などキャラモチーフ多数。'},
+            {emoji:'<svg class="ij-icon"><use href="#ij-ribbon"/></svg>', title:'着物・浴衣レンタル（京都用）', q:'着物 浴衣 レディース 和柄', desc:'京都で着物レンタルして新選組の屯所を歩くのが王道ムーブ。自前の浴衣があれば宿泊先でも楽しめる。'},
+            {emoji:'<svg class="ij-icon"><use href="#ij-palette"/></svg>', title:'和柄マスキングテープ', q:'和柄 マスキングテープ セット', desc:'御朱印帳の装飾・手帳デコに。歴史系SNS映え必須アイテム。'},
+            {emoji:'<svg class="ij-icon"><use href="#ij-camera"/></svg>', title:'ミニ三脚・スマホジンバル', q:'スマホ 三脚 ジンバル 軽量', desc:'聖地で推しと一緒に自撮り。城・神社の広角撮影にも。長距離の聖地巡礼ブロガー必携。'},
+            {emoji:'<svg class="ij-icon"><use href="#ij-pen"/></svg>', title:'モバイルバッテリー', q:'モバイルバッテリー 大容量 軽量', desc:'聖地で一日中歩き回るなら必須。地図・撮影・SNS投稿で電池は一瞬で溶ける。'},
+            {emoji:'<svg class="ij-icon"><use href="#ij-bag"/></svg>', title:'ミニトランク・機内持込', q:'キャリーケース 機内持込 軽量 40L', desc:'会津・萩・高知など遠征用。2泊3日の聖地巡礼にちょうど良いサイズ。'},
+            {emoji:'<svg class="ij-icon"><use href="#ij-flag"/></svg>', title:'新選組・戦国武将グッズ', q:'新選組 誠 手ぬぐい', desc:'屯所や資料館で入手できる公式グッズ、家用のインテリアにも。「誠」の手ぬぐい／戦国武将の家紋マグカップなど。'},
+            {emoji:'<svg class="ij-icon"><use href="#ij-book"/></svg>', title:'歴史雑誌「歴史街道」「歴史人」', q:'歴史街道 雑誌', desc:'月刊の歴史雑誌。特集で新選組・幕末・戦国がローテーション。毎月買うと推しの情報が蓄積。'},
+            {emoji:'<svg class="ij-icon"><use href="#ij-headphone"/></svg>', title:'ワイヤレスイヤホン', q:'ワイヤレスイヤホン bluetooth', desc:'Audibleで偉人伝を聴きながら通勤／聖地での自撮りムービーの音楽再生に。'}
           ].map(g => {
             const q = encodeURIComponent(g.q);
             const amz = `https://www.amazon.co.jp/s?k=${q}${AMAZON_TAG ? `&tag=${AMAZON_TAG}` : ''}`;

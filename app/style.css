@@ -3906,7 +3906,12 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 .rekijo-goods-list { display: flex; flex-direction: column; gap: 10px; }
 .rekijo-good { display: flex; gap: 12px; padding: 12px; background: #fff; border: 1px solid rgba(193,82,122,0.22); border-radius: 8px; transition: border-color 0.15s; }
 .rekijo-good:hover { border-color: #c1527a; }
-.rekijo-good-emoji { font-size: 32px; flex-shrink: 0; width: 40px; text-align: center; line-height: 1; padding-top: 4px; }
+.rekijo-good-emoji { font-size: 32px; flex-shrink: 0; width: 40px; text-align: center; line-height: 1; padding-top: 4px; color: var(--wine); }
+.rekijo-good-emoji .ij-icon { width: 28px; height: 28px; color: var(--wine); }
+.beginner-route-emoji { text-align: center; width: 32px; }
+.beginner-route-emoji .ij-icon { width: 28px; height: 28px; color: #c1527a; }
+.travel-hero-title .ij-icon, .audible-hero-title .ij-icon { width: 18px; height: 18px; vertical-align: -0.2em; margin-right: 3px; }
+.pilgrimage-list .ij-icon { width: 14px; height: 14px; vertical-align: -0.15em; margin-right: 2px; color: var(--wine); }
 .rekijo-good-body { flex: 1; min-width: 0; }
 .rekijo-good-title { font-family: var(--font-jp); font-weight: 800; font-size: 14px; color: #c1527a; margin-bottom: 4px; }
 .rekijo-good-desc { font-family: var(--font-jp); font-size: 11.5px; color: var(--ink-2); line-height: 1.6; margin-bottom: 6px; }
