@@ -2462,6 +2462,9 @@
         const rect = wrap.getBoundingClientRect();
         tip.style.left = (e.clientX - rect.left + 12) + 'px';
         tip.style.top = (e.clientY - rect.top + 12) + 'px';
+        // モバイル対応: 2秒後に自動で消す
+        clearTimeout(tip._hideTO);
+        tip._hideTO = setTimeout(() => { tip.style.opacity = '0'; }, 2200);
       } else {
         tip.style.opacity = '0';
       }
