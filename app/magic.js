@@ -8346,35 +8346,49 @@
           }, 1600);
           return;
         }
-        const arrivalR = nearest.planet.size * 3.5 + 2;
+        // 到着判定: size に応じた半径を広めに取って到着を確実に発火
+        const arrivalR = nearest.planet.size * 5 + 3;
         if (nearestD < arrivalR && visitedPlanet !== nearest) {
           visitedPlanet = nearest;
-          // 初回訪問
+          const ap = ov.querySelector('#cosmosArrivePopup');
           if (!nearest.mesh.userData.visited) {
+            // 初回訪問 — ボーナス付きド派手ポップ
             nearest.mesh.userData.visited = true;
             game.planets++;
             ov.querySelector('#sbPlanets').textContent = game.planets;
-            // 到着ポップ
-            const ap = ov.querySelector('#cosmosArrivePopup');
-            ap.innerHTML = `<div class="ap-label">到着！</div><div class="ap-name">${nearest.planet.jname}</div><div class="ap-bonus">+1000</div>`;
-            ap.classList.remove('show'); void ap.offsetWidth; ap.classList.add('show');
-            setTimeout(() => ap.classList.remove('show'), 1800);
+            if (ap) {
+              ap.innerHTML = `<div class="ap-label">🎉 初到着！</div><div class="ap-name">${nearest.planet.jname}</div><div class="ap-bonus">+1000 pt</div>`;
+              ap.classList.remove('show'); void ap.offsetWidth; ap.classList.add('show');
+              setTimeout(() => ap.classList.remove('show'), 1800);
+            }
             playArrive();
-            game.stars += 10; // ボーナス
+            game.stars += 10;
             ov.querySelector('#sbStars').textContent = game.stars;
+            haptic(24);
             // 全惑星制覇チェック
             if (game.planets >= planetMeshes.length) {
               setTimeout(() => {
                 const ap2 = ov.querySelector('#cosmosArrivePopup');
-                ap2.innerHTML = `<div class="ap-label">🏆 MISSION COMPLETE</div><div class="ap-name">全惑星制覇！</div><div class="ap-bonus">宇宙飛行士認定</div>`;
-                ap2.classList.remove('show'); void ap2.offsetWidth; ap2.classList.add('show');
+                if (ap2) {
+                  ap2.innerHTML = `<div class="ap-label">🏆 MISSION COMPLETE</div><div class="ap-name">全惑星制覇！</div><div class="ap-bonus">宇宙飛行士認定</div>`;
+                  ap2.classList.remove('show'); void ap2.offsetWidth; ap2.classList.add('show');
+                }
               }, 2000);
             }
+          } else {
+            // 再訪問 — 控えめな「到着」ポップ（必ず出す）
+            if (ap) {
+              ap.innerHTML = `<div class="ap-label">到着</div><div class="ap-name">${nearest.planet.jname}</div>`;
+              ap.classList.remove('show'); void ap.offsetWidth; ap.classList.add('show');
+              setTimeout(() => ap.classList.remove('show'), 1400);
+            }
+            haptic(12);
+            beep(660, 0.06, 'sine', 0.04);
           }
           showPlanetInfo(nearest);
-          // 到着時は減速
           rocketVel.multiplyScalar(0.2);
-        } else if (nearestD > arrivalR * 2.5) {
+        } else if (nearestD > arrivalR * 2.2) {
+          // 離脱判定も緩めて、次回の到着ポップが確実に出るように
           if (visitedPlanet === nearest) visitedPlanet = null;
         }
       }
