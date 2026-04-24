@@ -3716,6 +3716,13 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
   cursor: pointer;
   text-align: left;
   transition: background 0.12s;
+  white-space: nowrap;
+}
+.cpl-item > span:last-child {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .cpl-item:hover, .cpl-item:active {
   background: rgba(180,160,240,0.18);
@@ -4375,26 +4382,33 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
 .cosmos-crosshair::before { left: 50%; top: 0; width: 1px; height: 100%; transform: translateX(-0.5px); }
 .cosmos-crosshair::after  { top: 50%; left: 0; height: 1px; width: 100%; transform: translateY(-0.5px); }
 
-/* ヘッドアップ計器 */
+/* ヘッドアップ計器（D-padの上に配置、scoreboardと被らない） */
 .cosmos-rocket-readout {
   position: absolute;
-  top: 56px;
+  bottom: 200px;
   left: 14px;
-  padding: 8px 12px;
+  padding: 6px 10px;
   background: rgba(10,10,30,0.55);
   border: 1px solid rgba(180,220,255,0.25);
   border-radius: 10px;
   color: #cfe6ff;
   font-family: ui-monospace, 'Menlo', 'Consolas', monospace;
-  font-size: 11px;
+  font-size: 10px;
   line-height: 1.5;
   letter-spacing: 0.05em;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  min-width: 128px;
+  min-width: 118px;
 }
 .cosmos-rocket-readout .rc-line {
   display: flex; justify-content: space-between; gap: 10px;
+  white-space: nowrap;
+}
+.cosmos-rocket-readout .rc-line b {
+  white-space: nowrap;
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .cosmos-rocket-readout .rc-line span { opacity: 0.6; }
 .cosmos-rocket-readout .rc-line b { color: #fff; font-weight: 600; }
@@ -4728,7 +4742,7 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
   .cosmos-boost-btn { width: 78px; height: 78px; font-size: 13px; }
   .cosmos-brake-btn { width: 62px; height: 62px; }
   .cosmos-rocket-actions { right: 12px; bottom: 22px; }
-  .cosmos-rocket-readout { top: 50px; font-size: 10px; padding: 6px 10px; min-width: 112px; }
+  .cosmos-rocket-readout { bottom: 172px; top: auto; font-size: 9px; padding: 5px 9px; min-width: 100px; }
   .cosmos-scoreboard { top: 50px; gap: 6px; }
   .cosmos-scoreboard .sb-item { padding: 4px 9px; font-size: 11px; }
   .cosmos-boost-gauge { bottom: 120px; right: 12px; width: 100px; }
@@ -4751,14 +4765,16 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
   line-height: 1;
 }
 .cosmos-info-name {
-  font-size: 26px;
+  font-size: 24px;
   font-weight: 800;
   color: #fff;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
   margin-bottom: 2px;
   padding-right: 44px; /* 閉じるボタンと被らないよう */
   line-height: 1.22;
-  word-break: keep-all;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   text-shadow: 0 0 18px rgba(200,180,255,0.3), 0 2px 6px rgba(0,0,0,0.5);
   background: linear-gradient(135deg, #fff 0%, #e8d8ff 60%, #ffd8a0 100%);
   -webkit-background-clip: text;
