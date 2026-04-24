@@ -6497,127 +6497,286 @@
     const mechaGroup = new THREE.Group();
     mechaGroup.visible = false;
     {
-      const whiteMat = new THREE.MeshStandardMaterial({ color: 0xf0f0f0, roughness: 0.45, metalness: 0.5, emissive: 0x202020 });
-      const blueMat  = new THREE.MeshStandardMaterial({ color: 0x2850a8, roughness: 0.4, metalness: 0.55, emissive: 0x0a1030 });
-      const redMat   = new THREE.MeshStandardMaterial({ color: 0xd03030, roughness: 0.4, metalness: 0.4, emissive: 0x300808 });
-      const yellowMat= new THREE.MeshStandardMaterial({ color: 0xf0c830, roughness: 0.4, metalness: 0.5, emissive: 0x302000 });
-      const darkMat  = new THREE.MeshStandardMaterial({ color: 0x1a1a24, roughness: 0.5, metalness: 0.8, emissive: 0x050508 });
+      // 🎨 フリーダム系マテリアル
+      const whiteMat  = new THREE.MeshStandardMaterial({ color: 0xfafafa, roughness: 0.3, metalness: 0.55, emissive: 0x181820 });
+      const blueMat   = new THREE.MeshStandardMaterial({ color: 0x1d4ca8, roughness: 0.32, metalness: 0.7,  emissive: 0x061230 });
+      const deepBlue  = new THREE.MeshStandardMaterial({ color: 0x0f2f70, roughness: 0.35, metalness: 0.75, emissive: 0x040820 });
+      const redMat    = new THREE.MeshStandardMaterial({ color: 0xd62a2a, roughness: 0.3, metalness: 0.55, emissive: 0x300408 });
+      const yellowMat = new THREE.MeshStandardMaterial({ color: 0xffc830, roughness: 0.3, metalness: 0.6,  emissive: 0x4a2e00 });
+      const goldMat   = new THREE.MeshStandardMaterial({ color: 0xffe07a, roughness: 0.2, metalness: 0.85, emissive: 0x5a3d00 });
+      const darkMat   = new THREE.MeshStandardMaterial({ color: 0x14141c, roughness: 0.5, metalness: 0.9,  emissive: 0x03030a });
+      const glassBlue = new THREE.MeshStandardMaterial({ color: 0x60a8ff, roughness: 0.1, metalness: 0.3,  emissive: 0x2060b0, emissiveIntensity: 0.8, transparent: true, opacity: 0.9 });
 
-      // 🧠 頭部
-      const head = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.14, 0.14), whiteMat);
-      head.position.set(0, 0.45, 0.02);
-      mechaGroup.add(head);
-      // V字アンテナ（黄色）
+      // ===== 🧠 頭部 =====
+      // フェイス（青いマスク部分）
+      const face = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.11, 0.13), deepBlue);
+      face.position.set(0, 0.46, 0.01);
+      mechaGroup.add(face);
+      // 頭頂部（白いカブト）
+      const crown = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.08, 0.14), whiteMat);
+      crown.position.set(0, 0.54, 0);
+      mechaGroup.add(crown);
+      // 後頭部（ダーク）
+      const backHead = new THREE.Mesh(new THREE.BoxGeometry(0.13, 0.1, 0.04), darkMat);
+      backHead.position.set(0, 0.46, -0.08);
+      mechaGroup.add(backHead);
+      // 額の黄色ジェム
+      const forehead = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.018, 0.005), yellowMat);
+      forehead.position.set(0, 0.54, 0.08);
+      mechaGroup.add(forehead);
+      // V字アンテナ（黄、シャープ）
       const vShape = new THREE.Shape();
-      vShape.moveTo(-0.09, 0); vShape.lineTo(-0.04, 0.14); vShape.lineTo(-0.015, 0.14);
-      vShape.lineTo(0, 0.035); vShape.lineTo(0.015, 0.14); vShape.lineTo(0.04, 0.14);
-      vShape.lineTo(0.09, 0); vShape.lineTo(0.05, 0); vShape.lineTo(0, 0.09); vShape.lineTo(-0.05, 0);
-      const vGeo = new THREE.ExtrudeGeometry(vShape, { depth: 0.02, bevelEnabled: false });
+      vShape.moveTo(-0.10, 0); vShape.lineTo(-0.05, 0.16); vShape.lineTo(-0.025, 0.16);
+      vShape.lineTo(0, 0.04);  vShape.lineTo(0.025, 0.16); vShape.lineTo(0.05, 0.16);
+      vShape.lineTo(0.10, 0);  vShape.lineTo(0.06, 0);     vShape.lineTo(0.01, 0.11);
+      vShape.lineTo(-0.01, 0.11); vShape.lineTo(-0.06, 0); vShape.lineTo(-0.10, 0);
+      const vGeo = new THREE.ExtrudeGeometry(vShape, { depth: 0.015, bevelEnabled: true, bevelSize: 0.003, bevelThickness: 0.003, bevelSegments: 1 });
       const vfin = new THREE.Mesh(vGeo, yellowMat);
-      vfin.position.set(0, 0.52, 0.03);
+      vfin.position.set(0, 0.58, 0.04);
       mechaGroup.add(vfin);
-      // ツインアイ（赤発光）
-      const eyeStrip = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.015, 0.005), new THREE.MeshBasicMaterial({ color: 0xff3030 }));
-      eyeStrip.position.set(0, 0.46, 0.09);
-      mechaGroup.add(eyeStrip);
-
-      // 🫀 胴体
-      const torso = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.38, 0.22), whiteMat);
-      torso.position.set(0, 0.12, 0);
-      mechaGroup.add(torso);
-      // 胸ダクト（青）
-      const chest = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.22, 0.02), blueMat);
-      chest.position.set(0, 0.17, 0.115);
-      mechaGroup.add(chest);
-      // 腰コア（黄色アクセント）
-      const core = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.04, 12), yellowMat);
-      core.rotation.x = Math.PI / 2;
-      core.position.set(0, 0.15, 0.124);
-      mechaGroup.add(core);
-
-      // 🦾 肩ブロック（左右）
+      // ツインアイ（緑発光 — フリーダムはグリーンアイ）
       [-1, 1].forEach(side => {
-        const sh = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.14, 0.18), whiteMat);
-        sh.position.set(side * 0.26, 0.24, 0);
-        mechaGroup.add(sh);
-        // 肩のエッジ赤
-        const red = new THREE.Mesh(new THREE.BoxGeometry(0.148, 0.04, 0.19), redMat);
-        red.position.set(side * 0.26, 0.3, 0);
-        mechaGroup.add(red);
+        const eye = new THREE.Mesh(new THREE.BoxGeometry(0.025, 0.012, 0.005), new THREE.MeshBasicMaterial({ color: 0x60ffa0 }));
+        eye.position.set(side * 0.025, 0.465, 0.08);
+        mechaGroup.add(eye);
+      });
+      // サイドイヤーダクト（黒）
+      [-1, 1].forEach(side => {
+        const ear = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.06, 0.04), darkMat);
+        ear.position.set(side * 0.08, 0.48, 0.0);
+        mechaGroup.add(ear);
       });
 
-      // 💪 腕
+      // ===== 🫀 胴体 =====
+      // 上部胴（青）
+      const torsoUpper = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.18, 0.22), blueMat);
+      torsoUpper.position.set(0, 0.28, 0);
+      mechaGroup.add(torsoUpper);
+      // 下部胴（白）
+      const torsoLower = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.16, 0.22), whiteMat);
+      torsoLower.position.set(0, 0.12, 0);
+      mechaGroup.add(torsoLower);
+      // 胸中央V字（赤）
+      const chestVShape = new THREE.Shape();
+      chestVShape.moveTo(-0.09, 0.05); chestVShape.lineTo(-0.07, 0.05);
+      chestVShape.lineTo(0, -0.06); chestVShape.lineTo(0.07, 0.05);
+      chestVShape.lineTo(0.09, 0.05); chestVShape.lineTo(0, -0.09);
+      const chestVGeo = new THREE.ExtrudeGeometry(chestVShape, { depth: 0.015, bevelEnabled: false });
+      const chestV = new THREE.Mesh(chestVGeo, redMat);
+      chestV.position.set(0, 0.3, 0.11);
+      mechaGroup.add(chestV);
+      // ゴールドコア（ソーラージェネレータ）
+      const core = new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.022, 0.012, 16), goldMat);
+      core.rotation.x = Math.PI / 2;
+      core.position.set(0, 0.14, 0.115);
+      mechaGroup.add(core);
+      // ショルダーダクト（黒スリット）
       [-1, 1].forEach(side => {
-        const arm = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.045, 0.32, 10), whiteMat);
-        arm.position.set(side * 0.26, 0.02, 0);
-        mechaGroup.add(arm);
-        // 肘ブロック
-        const elbow = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.08, 0.09), redMat);
-        elbow.position.set(side * 0.26, -0.14, 0);
+        const dv = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.06, 0.01), darkMat);
+        dv.position.set(side * 0.1, 0.27, 0.115);
+        mechaGroup.add(dv);
+      });
+
+      // ===== 🦾 肩アーマー（フレアデザイン） =====
+      [-1, 1].forEach(side => {
+        // メイン肩ブロック（青、大きめ）
+        const shoulder = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.16, 0.18), blueMat);
+        shoulder.position.set(side * 0.28, 0.28, 0);
+        mechaGroup.add(shoulder);
+        // 肩の白いエッジ
+        const shEdge = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.04, 0.2), whiteMat);
+        shEdge.position.set(side * 0.28, 0.36, 0);
+        mechaGroup.add(shEdge);
+        // 肩前面の赤マーク
+        const shMark = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.06, 0.01), redMat);
+        shMark.position.set(side * 0.28, 0.3, 0.094);
+        mechaGroup.add(shMark);
+      });
+
+      // ===== 💪 腕 =====
+      [-1, 1].forEach(side => {
+        // 上腕（白）
+        const upperArm = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.04, 0.18, 12), whiteMat);
+        upperArm.position.set(side * 0.28, 0.14, 0);
+        mechaGroup.add(upperArm);
+        // 肘関節（赤ブロック）
+        const elbow = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.09, 0.1), redMat);
+        elbow.position.set(side * 0.28, 0.03, 0);
         mechaGroup.add(elbow);
-        // 手
+        // 前腕（青アーマー + 白コア）
+        const forearm = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.2, 0.11), blueMat);
+        forearm.position.set(side * 0.28, -0.1, 0);
+        mechaGroup.add(forearm);
+        // 前腕の白いコア
+        const faCore = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.18, 0.02), whiteMat);
+        faCore.position.set(side * 0.28, -0.1, 0.055);
+        mechaGroup.add(faCore);
+        // 手甲（白）
         const hand = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.1, 0.08), whiteMat);
-        hand.position.set(side * 0.26, -0.24, 0);
+        hand.position.set(side * 0.28, -0.25, 0);
         mechaGroup.add(hand);
       });
 
-      // 🔫 ビームライフル（右手）
-      const rifleBody = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.05, 0.38), darkMat);
-      rifleBody.position.set(0.28, -0.24, 0.15);
+      // ===== 🔫 ビームライフル（右手） =====
+      const rifleBody = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.07, 0.42), darkMat);
+      rifleBody.position.set(0.28, -0.26, 0.12);
       mechaGroup.add(rifleBody);
-      const rifleBarrel = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.12, 8), darkMat);
+      const rifleTop = new THREE.Mesh(new THREE.BoxGeometry(0.055, 0.025, 0.12), whiteMat);
+      rifleTop.position.set(0.28, -0.22, 0.2);
+      mechaGroup.add(rifleTop);
+      const rifleBarrel = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.018, 0.18, 10), darkMat);
       rifleBarrel.rotation.x = Math.PI / 2;
-      rifleBarrel.position.set(0.28, -0.24, 0.40);
+      rifleBarrel.position.set(0.28, -0.26, 0.42);
       mechaGroup.add(rifleBarrel);
-      // 銃口の青いグロー
-      const muzzle = new THREE.Mesh(new THREE.SphereGeometry(0.02, 8, 8), new THREE.MeshBasicMaterial({ color: 0x6ac8ff }));
-      muzzle.position.set(0.28, -0.24, 0.46);
+      // 銃口の青プラズマ
+      const muzzle = new THREE.Mesh(new THREE.SphereGeometry(0.025, 10, 8), glassBlue);
+      muzzle.position.set(0.28, -0.26, 0.52);
       mechaGroup.add(muzzle);
 
-      // 🛡 シールド（左腕）
-      const shield = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.36, 0.04), blueMat);
-      shield.position.set(-0.34, -0.12, 0.08);
-      shield.rotation.y = -0.15;
+      // ===== 🛡 シールド（左腕、フリーダム型） =====
+      const shieldShape = new THREE.Shape();
+      shieldShape.moveTo(-0.1, 0.2); shieldShape.lineTo(0.12, 0.18);
+      shieldShape.lineTo(0.12, -0.14); shieldShape.lineTo(0, -0.22);
+      shieldShape.lineTo(-0.12, -0.14); shieldShape.lineTo(-0.1, 0.2);
+      const shieldGeo = new THREE.ExtrudeGeometry(shieldShape, { depth: 0.04, bevelEnabled: true, bevelSize: 0.008, bevelThickness: 0.008, bevelSegments: 2 });
+      const shield = new THREE.Mesh(shieldGeo, whiteMat);
+      shield.position.set(-0.38, -0.15, 0.08);
+      shield.rotation.y = -0.25;
       mechaGroup.add(shield);
-      // シールド中央のマーク（黄）
-      const mark = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.1, 0.045), yellowMat);
-      mark.position.set(-0.34, -0.12, 0.09);
-      mark.rotation.y = -0.15;
-      mechaGroup.add(mark);
+      // シールドの青ストライプ
+      const shieldBlue = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.38, 0.05), blueMat);
+      shieldBlue.position.set(-0.38, -0.05, 0.11);
+      shieldBlue.rotation.y = -0.25;
+      mechaGroup.add(shieldBlue);
+      // シールドの赤エンブレム
+      const emblem = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.08, 0.015), redMat);
+      emblem.position.set(-0.38, -0.04, 0.145);
+      emblem.rotation.y = -0.25;
+      mechaGroup.add(emblem);
 
-      // 🦵 脚
+      // ===== 🎀 スカートアーマー（腰まわり） =====
+      // フロントスカート（赤、左右分割）
       [-1, 1].forEach(side => {
+        const frontSkirt = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.14, 0.06), redMat);
+        frontSkirt.position.set(side * 0.075, -0.04, 0.09);
+        mechaGroup.add(frontSkirt);
+      });
+      // サイドスカート（青）
+      [-1, 1].forEach(side => {
+        const sideSkirt = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.18, 0.14), blueMat);
+        sideSkirt.position.set(side * 0.17, -0.05, 0);
+        mechaGroup.add(sideSkirt);
+      });
+      // リアスカート（白）
+      const rearSkirt = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.16, 0.06), whiteMat);
+      rearSkirt.position.set(0, -0.05, -0.09);
+      mechaGroup.add(rearSkirt);
+
+      // ===== 💎 ヒップビームキャノン（フリーダムのバラエナ） =====
+      [-1, 1].forEach(side => {
+        const cannonBase = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.06, 0.3), deepBlue);
+        cannonBase.position.set(side * 0.19, -0.1, -0.18);
+        mechaGroup.add(cannonBase);
+        const cannonTip = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.025, 0.08, 8), darkMat);
+        cannonTip.rotation.x = Math.PI / 2;
+        cannonTip.position.set(side * 0.19, -0.1, -0.37);
+        mechaGroup.add(cannonTip);
+      });
+
+      // ===== 🦵 脚 =====
+      [-1, 1].forEach(side => {
+        // 太もも（白+青）
         const thigh = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.22, 0.14), whiteMat);
-        thigh.position.set(side * 0.08, -0.20, 0);
+        thigh.position.set(side * 0.08, -0.22, 0);
         mechaGroup.add(thigh);
-        const shin = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.24, 0.12), whiteMat);
-        shin.position.set(side * 0.08, -0.44, 0);
+        const thighBlue = new THREE.Mesh(new THREE.BoxGeometry(0.125, 0.08, 0.145), blueMat);
+        thighBlue.position.set(side * 0.08, -0.33, 0);
+        mechaGroup.add(thighBlue);
+        // 膝（黄色）
+        const knee = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.04, 0.14), yellowMat);
+        knee.position.set(side * 0.08, -0.37, 0);
+        mechaGroup.add(knee);
+        // 脛（白+青ストライプ）
+        const shin = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.22, 0.13), whiteMat);
+        shin.position.set(side * 0.08, -0.5, 0);
         mechaGroup.add(shin);
-        // 脛の赤アクセント
-        const shinRed = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.04, 0.13), redMat);
-        shinRed.position.set(side * 0.08, -0.34, 0);
-        mechaGroup.add(shinRed);
-        // 足
-        const foot = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.06, 0.18), whiteMat);
-        foot.position.set(side * 0.08, -0.58, 0.02);
+        const shinStripe = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.2, 0.135), blueMat);
+        shinStripe.position.set(side * 0.08, -0.5, 0);
+        mechaGroup.add(shinStripe);
+        // 足（尖ったブーツ）
+        const footShape = new THREE.Shape();
+        footShape.moveTo(-0.06, -0.04); footShape.lineTo(-0.06, 0.04);
+        footShape.lineTo(0.12, 0.03); footShape.lineTo(0.14, -0.02);
+        footShape.lineTo(0.1, -0.04); footShape.lineTo(-0.06, -0.04);
+        const footGeo = new THREE.ExtrudeGeometry(footShape, { depth: 0.1, bevelEnabled: true, bevelSize: 0.005, bevelThickness: 0.005, bevelSegments: 1 });
+        const foot = new THREE.Mesh(footGeo, whiteMat);
+        foot.position.set(side * 0.08 - 0.05, -0.63, -0.05);
         mechaGroup.add(foot);
       });
 
-      // 🎒 バックパック + ツインバーニア
-      const backpack = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.25, 0.1), whiteMat);
-      backpack.position.set(0, 0.15, -0.17);
-      mechaGroup.add(backpack);
-      // バーニア（2つ）
-      const vernieres = [];
+      // ===== 🦅 ウィングバインダー（フリーダムの翼） =====
+      const wingMat = whiteMat;
+      const wingBlueMat = blueMat;
       [-1, 1].forEach(side => {
-        const vern = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.065, 0.14, 12), darkMat);
+        // ベースブロック（背中の取り付け部）
+        const wingBase = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.18, 0.08), deepBlue);
+        wingBase.position.set(side * 0.14, 0.3, -0.14);
+        mechaGroup.add(wingBase);
+        // 上翼（大きく後方に張り出す）
+        const upperWingShape = new THREE.Shape();
+        upperWingShape.moveTo(0, 0); upperWingShape.lineTo(0.6, 0.1);
+        upperWingShape.lineTo(0.7, 0.05); upperWingShape.lineTo(0.68, -0.04);
+        upperWingShape.lineTo(0.08, -0.1); upperWingShape.lineTo(0, 0);
+        const upperWingGeo = new THREE.ExtrudeGeometry(upperWingShape, { depth: 0.02, bevelEnabled: true, bevelSize: 0.004, bevelThickness: 0.004, bevelSegments: 1 });
+        const upperWing = new THREE.Mesh(upperWingGeo, wingMat);
+        upperWing.scale.set(side, 1, 1);
+        upperWing.position.set(side * 0.17, 0.38, -0.16);
+        upperWing.rotation.y = side * 0.35;
+        upperWing.rotation.z = side * -0.1;
+        mechaGroup.add(upperWing);
+        // 翼の先端赤ライン
+        const wingTipRed = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.012, 0.025), redMat);
+        wingTipRed.position.set(side * 0.74, 0.42, -0.3);
+        mechaGroup.add(wingTipRed);
+        // 下翼
+        const lowerWingShape = new THREE.Shape();
+        lowerWingShape.moveTo(0, 0); lowerWingShape.lineTo(0.5, -0.02);
+        lowerWingShape.lineTo(0.58, -0.08); lowerWingShape.lineTo(0.55, -0.16);
+        lowerWingShape.lineTo(0.05, -0.14); lowerWingShape.lineTo(0, 0);
+        const lowerWingGeo = new THREE.ExtrudeGeometry(lowerWingShape, { depth: 0.018, bevelEnabled: false });
+        const lowerWing = new THREE.Mesh(lowerWingGeo, wingMat);
+        lowerWing.scale.set(side, 1, 1);
+        lowerWing.position.set(side * 0.17, 0.22, -0.16);
+        lowerWing.rotation.y = side * 0.3;
+        lowerWing.rotation.z = side * 0.15;
+        mechaGroup.add(lowerWing);
+        // 翼内側の青アクセント
+        const wingBlue = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.012, 0.022), wingBlueMat);
+        wingBlue.position.set(side * 0.42, 0.35, -0.18);
+        wingBlue.rotation.y = side * 0.3;
+        mechaGroup.add(wingBlue);
+      });
+
+      // ===== 🎒 バックパック（スリム・中央） =====
+      const backpack = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.22, 0.08), deepBlue);
+      backpack.position.set(0, 0.28, -0.16);
+      mechaGroup.add(backpack);
+      // バックパック中央の黄ライン
+      const bpLine = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.18, 0.005), yellowMat);
+      bpLine.position.set(0, 0.28, -0.2);
+      mechaGroup.add(bpLine);
+
+      // ===== ⚡ バーニア（背中中央 + 両翼） =====
+      const vernieres = [];
+      [[-0.08, 0.2, -0.24], [0.08, 0.2, -0.24], [-0.3, 0.35, -0.32], [0.3, 0.35, -0.32]].forEach(pos => {
+        const vern = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.055, 0.1, 12), darkMat);
         vern.rotation.x = Math.PI / 2;
-        vern.position.set(side * 0.1, 0.08, -0.27);
+        vern.position.set(...pos);
         mechaGroup.add(vern);
         vernieres.push(vern);
-        // 内側の発光リング
-        const ring = new THREE.Mesh(new THREE.TorusGeometry(0.045, 0.008, 8, 16), new THREE.MeshBasicMaterial({ color: 0xffa840 }));
-        ring.position.set(side * 0.1, 0.08, -0.34);
+        // 内部発光リング
+        const ring = new THREE.Mesh(new THREE.TorusGeometry(0.035, 0.008, 8, 16), new THREE.MeshBasicMaterial({ color: 0x60a8ff }));
+        ring.position.set(pos[0], pos[1], pos[2] - 0.06);
         mechaGroup.add(ring);
       });
 
@@ -6635,11 +6794,12 @@
         return new THREE.CanvasTexture(sc);
       })();
       const flames2 = [];
-      [-1, 1].forEach(side => {
+      // 中央バックパック2 + 翼2 = 4本の噴射
+      [[-0.08, 0.2, -0.45], [0.08, 0.2, -0.45], [-0.3, 0.35, -0.55], [0.3, 0.35, -0.55]].forEach(pos => {
         const fm = new THREE.SpriteMaterial({ map: flameTex2, transparent: true, opacity: 0.0, depthWrite: false, blending: THREE.AdditiveBlending });
         const fl = new THREE.Sprite(fm);
-        fl.scale.set(0.28, 0.7, 1);
-        fl.position.set(side * 0.1, 0.08, -0.55);
+        fl.scale.set(0.26, 0.7, 1);
+        fl.position.set(...pos);
         mechaGroup.add(fl);
         flames2.push(fl);
       });
@@ -6648,30 +6808,35 @@
       // 大きな後方グロー
       const bigGlowMat2 = new THREE.SpriteMaterial({ map: flameTex2, transparent: true, opacity: 0.0, depthWrite: false, blending: THREE.AdditiveBlending });
       const bigGlow2 = new THREE.Sprite(bigGlowMat2);
-      bigGlow2.scale.set(0.8, 1.2, 1);
-      bigGlow2.position.set(0, 0.08, -0.48);
+      bigGlow2.scale.set(0.9, 1.3, 1);
+      bigGlow2.position.set(0, 0.25, -0.5);
       mechaGroup.add(bigGlow2);
       mechaGroup.userData.bigGlow = bigGlow2;
 
       // エンジン光
-      const engineLight2 = new THREE.PointLight(0xff9040, 0.0, 8, 2);
-      engineLight2.position.set(0, 0.08, -0.4);
+      const engineLight2 = new THREE.PointLight(0x80c8ff, 0.0, 10, 2);
+      engineLight2.position.set(0, 0.25, -0.45);
       mechaGroup.add(engineLight2);
       mechaGroup.userData.engineLight = engineLight2;
 
-      // ヘッドライト補助光
-      const head2 = new THREE.PointLight(0x8ab0ff, 1.0, 4, 1.5);
-      head2.position.set(0, 0.45, 0.15);
+      // ヘッドライト補助光（フェイスの明るさ）
+      const head2 = new THREE.PointLight(0x80ffb0, 0.9, 3, 2);
+      head2.position.set(0, 0.48, 0.15);
       mechaGroup.add(head2);
 
-      // ナビライト（胴体下の点滅）
-      const blinkWhite2 = new THREE.Mesh(new THREE.SphereGeometry(0.018, 8, 8), new THREE.MeshBasicMaterial({ color: 0xffffff }));
-      blinkWhite2.position.set(0, -0.05, 0.12);
+      // 全身ライム（リムライトで輪郭を引き立てる）
+      const rim = new THREE.PointLight(0x6080ff, 0.6, 3, 2);
+      rim.position.set(0, 0.2, 1.0);
+      mechaGroup.add(rim);
+
+      // ナビライト（胴体下の点滅赤）
+      const blinkWhite2 = new THREE.Mesh(new THREE.SphereGeometry(0.016, 8, 8), new THREE.MeshBasicMaterial({ color: 0xff4040 }));
+      blinkWhite2.position.set(0, -0.07, 0.12);
       mechaGroup.add(blinkWhite2);
       mechaGroup.userData.blinkWhite = blinkWhite2;
 
-      // メカ全体のスケール（ロケットと同等の画面サイズ感に）
-      mechaGroup.scale.setScalar(0.85);
+      // メカ全体のスケール
+      mechaGroup.scale.setScalar(0.75);
     }
     scene.add(mechaGroup);
 
