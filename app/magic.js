@@ -2077,11 +2077,11 @@
          <div class="magic-globe-controls">
            <button class="magic-globe-zoom" data-globe-zoom="in" aria-label="ズームイン">＋</button>
            <button class="magic-globe-zoom" data-globe-zoom="out" aria-label="ズームアウト">−</button>
-           <button class="magic-globe-zoom magic-globe-mercator" id="magicGlobeMerc" aria-label="メルカトル図法">🗺</button>
+           <button class="magic-globe-zoom magic-globe-mercator" id="magicGlobeMerc" aria-label="世界地図">🗺</button>
          </div>
          <div class="magic-mercator-overlay" id="magicMercatorOverlay">
            <div class="mmo-header">
-             <div class="mmo-title">🗺 メルカトル図法</div>
+             <div class="mmo-title">🗺 世界地図</div>
              <button class="mmo-close" id="mmoClose" aria-label="閉じる">×</button>
            </div>
            <div class="mmo-canvas-wrap">
@@ -2115,7 +2115,9 @@
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(40, W / H, 0.1, 100);
-    camera.position.set(0, 0, 11); // 地球全体が見えるよう引き気味に
+    // カメラを少し下にずらして、地球が画面中央やや上に来るように（下部の時代バーと被らない）
+    camera.position.set(0, -0.9, 11);
+    camera.lookAt(0, 0.2, 0);
 
     // 🌅 昼夜境界：太陽位置を UTC 時刻から計算して、夜側は「深い青の夕暮れ」
     // （真っ暗にすると地球が見えなくなるので、昼夜差は残しつつ視認性を確保）
@@ -2839,7 +2841,7 @@
       // 投影法ラベル
       ctx.fillStyle = 'rgba(180,200,230,0.55)';
       ctx.font = '10px "Shippori Mincho", serif';
-      ctx.fillText('Mercator Projection · 16世紀ゲラルドゥス・メルカトル', W - 260, H - 12);
+      ctx.fillText('World Map · 偉人ゆかりの地と都市', W - 240, H - 12);
     }
     // ピンクリック判定
     mmoCanvas.addEventListener('click', (e) => {

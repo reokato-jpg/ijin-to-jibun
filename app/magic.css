@@ -1090,7 +1090,7 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
 /* 🌍 世界マップ 時代フィルタ */
 .magic-globe-eras {
   position: absolute;
-  bottom: 16px;
+  bottom: 10px;
   left: 16px;
   right: 16px;
   display: flex;
