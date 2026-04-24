@@ -8646,8 +8646,8 @@
     camera.position.set(0, 28, 80);
     camera.lookAt(0, topY / 2, 0);
 
-    // ✨ EffectComposer + UnrealBloomPass + グレード
-    if (useProB) {
+    // ✨ EffectComposer + UnrealBloomPass + グレード（失敗したらcomposer放棄）
+    if (useProB) try {
       composer = new ADDONS.EffectComposer(renderer);
       composer.addPass(new ADDONS.RenderPass(scene, camera));
       const bloomPass = new ADDONS.UnrealBloomPass(
@@ -8689,7 +8689,11 @@
         camera.userData.gradePass = gp;
       }
       if (ADDONS.OutputPass) composer.addPass(new ADDONS.OutputPass());
-    } else {
+    } catch (err) {
+      console.error('[babel composer init fail]', err);
+      composer = null;
+    }
+    if (!composer && !useProB) {
       bloom = createBloom(THREE, renderer, W(), H(), {
         threshold: 0.75, strength: 1.3,
         vignette: 0.58, chromatic: 0.005, grain: 0.05,
@@ -8903,13 +8907,20 @@
           s.position.z = Math.sin(a) * s.userData.baseR + Math.cos(s.userData.phase) * 0.5;
         }
       });
-      if (composer) {
-        if (camera.userData.gradePass) camera.userData.gradePass.uniforms.uTime.value = t;
-        composer.render();
-      } else if (bloom) {
-        bloom.render(scene, camera);
-      } else {
-        renderer.render(scene, camera);
+      // 🛡 何があっても次フレームは来る＆raw renderer にフォールバック
+      try {
+        if (composer) {
+          if (camera.userData.gradePass) camera.userData.gradePass.uniforms.uTime.value = t;
+          composer.render();
+        } else if (bloom) {
+          bloom.render(scene, camera);
+        } else {
+          renderer.render(scene, camera);
+        }
+      } catch (err) {
+        console.error('[babel render] fall back to raw:', err);
+        composer = null; bloom = null; // 以降は素のレンダラ
+        try { renderer.render(scene, camera); } catch (e2) { console.error(e2); }
       }
       requestAnimationFrame(animate);
     }
