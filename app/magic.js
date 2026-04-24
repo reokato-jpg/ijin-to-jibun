@@ -9618,9 +9618,11 @@
   // ============================================================
   // 🏛 美術館ホール（指定ゾーンの作品を3Dで表示）
   // ============================================================
-  function openMythMuseum(zoneKey = 'myth') {
+  async function openMythMuseum(zoneKey = 'myth') {
     if (!window.THREE) return;
     const THREE = window.THREE;
+    if (window.THREE_READY) { try { await window.THREE_READY; } catch {} }
+    const ADDONS = window.THREE_ADDONS || {};
     const zone = MUSEUM_ZONES[zoneKey] || MUSEUM_ZONES.myth;
     // 作品収集
     const works = [];
@@ -10217,10 +10219,28 @@
         `${currentNear.userData.work.origin}　${currentNear.userData.work.chapterTitle}　／　${currentNear.userData.work.caption}`);
     });
 
+    // ✨ OutlinePass: 近づいた絵画に金色の輪郭ハイライト
+    let mComposer = null, outlinePass = null;
+    if (ADDONS.EffectComposer && ADDONS.RenderPass && ADDONS.OutlinePass) {
+      try {
+        mComposer = new ADDONS.EffectComposer(renderer);
+        mComposer.addPass(new ADDONS.RenderPass(scene, camera));
+        outlinePass = new ADDONS.OutlinePass(new THREE.Vector2(W(), H()), scene, camera);
+        outlinePass.edgeStrength = 3.5;
+        outlinePass.edgeGlow = 0.8;
+        outlinePass.edgeThickness = 1.8;
+        outlinePass.pulsePeriod = 2;
+        outlinePass.visibleEdgeColor.set(0xfff0b0);
+        outlinePass.hiddenEdgeColor.set(0x997a40);
+        mComposer.addPass(outlinePass);
+      } catch (e) { console.warn('museum outline', e); mComposer = null; }
+    }
+
     // アニメ
     const raycaster = new THREE.Raycaster();
     function animate() {
       if (!running) return;
+      if (document.hidden) { requestAnimationFrame(animate); return; }
       // 移動
       const speed = 0.08;
       const fwd = (keys.w - keys.s) - stickDY;
@@ -10270,10 +10290,17 @@
           info.classList.remove('show');
           viewBtn.classList.remove('show');
         }
+        if (outlinePass) outlinePass.selectedObjects = best ? [best] : [];
       }
       // シャンデリアゆらぎ
       chandLight.intensity = 2.0 + Math.sin(Date.now() * 0.003) * 0.15;
-      renderer.render(scene, camera);
+      try {
+        if (mComposer) mComposer.render();
+        else renderer.render(scene, camera);
+      } catch (e) {
+        mComposer = null;
+        try { renderer.render(scene, camera); } catch {}
+      }
       requestAnimationFrame(animate);
     }
     animate();
@@ -10282,6 +10309,7 @@
       renderer.setSize(W(), H());
       camera.aspect = W()/H();
       camera.updateProjectionMatrix();
+      if (mComposer) mComposer.setSize(W(), H());
     });
 
     // ヒント3秒でフェード
