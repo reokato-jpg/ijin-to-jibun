@@ -5982,7 +5982,7 @@
     const W = stage.clientWidth || window.innerWidth;
     const H = stage.clientHeight || window.innerHeight;
     const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.2));
     renderer.setSize(W, H);
     if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 0.85;
@@ -6006,7 +6006,7 @@
     const sunLight = new THREE.DirectionalLight(0xffe8a8, 1.6);
     sunLight.position.set(8, 14, 6);
     sunLight.castShadow = true;
-    sunLight.shadow.mapSize.set(1024, 1024);
+    sunLight.shadow.mapSize.set(512, 512);
     sunLight.shadow.camera.near = 0.5;
     sunLight.shadow.camera.far = 60;
     sunLight.shadow.camera.left = -16; sunLight.shadow.camera.right = 16;
@@ -6500,7 +6500,7 @@
       map: grassTex, alphaTest: 0.5, transparent: true,
       side: THREE.DoubleSide, roughness: 0.9
     });
-    const GRASS = 2400;
+    const GRASS = 1000;
     const grassGeo = new THREE.PlaneGeometry(0.35, 0.5);
     grassGeo.translate(0, 0.25, 0);
     const grass = new THREE.InstancedMesh(grassGeo, grassMat, GRASS);
@@ -6598,7 +6598,7 @@
       g.lineWidth = 0.6; g.beginPath(); g.moveTo(0, -15); g.lineTo(0, 15); g.stroke();
       return new THREE.CanvasTexture(c);
     })();
-    const PETAL = 60;
+    const PETAL = 30;
     const petalGeo = new THREE.PlaneGeometry(0.18, 0.26);
     const petalMat = new THREE.MeshBasicMaterial({
       map: petalTex, transparent: true, alphaTest: 0.1,
@@ -6623,7 +6623,7 @@
     scene.add(petals);
 
     // 🧚 蛍（黄色く光る粒がふわふわ） — 夜の森感
-    const FIRE = 90;
+    const FIRE = 45;
     const fireGeo = new THREE.BufferGeometry();
     const firePos = new Float32Array(FIRE * 3);
     const firePhase = new Float32Array(FIRE);
@@ -6654,7 +6654,7 @@
 
     // ✨ ダストモート（空気中の微粒子、太陽光に舞う）
     const dustGeo = new THREE.BufferGeometry();
-    const DUST = 200;
+    const DUST = 100;
     const dustPos = new Float32Array(DUST * 3);
     const dustPhase = new Float32Array(DUST);
     for (let i = 0; i < DUST; i++) {
@@ -6896,7 +6896,7 @@
     });
 
     // 🍃 葉（InstancedMesh — 葉テクスチャ付き平面、クラウン全体に散布）
-    const LEAF_COUNT = 1600;
+    const LEAF_COUNT = 900;
     const leafGeo = new THREE.PlaneGeometry(0.42, 0.55);
     const leafMat = new THREE.MeshStandardMaterial({
       map: leafTex,
@@ -7774,7 +7774,7 @@
     const W = () => stage.clientWidth || window.innerWidth;
     const H = () => stage.clientHeight || window.innerHeight;
     const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.2));
     renderer.setSize(W(), H());
     if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.1;
@@ -7851,7 +7851,7 @@
     const sunLight = new THREE.DirectionalLight(0xffefd0, 2.2);
     sunLight.position.set(-30, 50, 20);
     sunLight.castShadow = true;
-    sunLight.shadow.mapSize.set(1024, 1024);
+    sunLight.shadow.mapSize.set(512, 512);
     sunLight.shadow.camera.near = 1;
     sunLight.shadow.camera.far = 200;
     sunLight.shadow.camera.left = -40; sunLight.shadow.camera.right = 40;
@@ -8150,7 +8150,7 @@
 
     // 🐦 空を飛ぶ鳥（LineのVシェイプ、10羽）
     const birds = [];
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 6; i++) {
       const bird = new THREE.Group();
       const lineGeo = new THREE.BufferGeometry().setFromPoints([
         new THREE.Vector3(-0.5, 0.15, 0),
@@ -8171,7 +8171,7 @@
 
     // 💨 煙は torchLights が populated されてから作る（下で定義）
     let smoke = null, smokeLife = null, smokeOrigin = null;
-    const SMOKE = 150;
+    const SMOKE = 60;
 
     // 🌾 遠景の畑・田畑パッチ（ブリューゲル的な田園風景）
     const fieldTex = (() => {
@@ -8215,7 +8215,7 @@
       const ang = Math.PI + (i - 1) * 0.3;
       const r = 70 + Math.random() * 25;
       const cx = Math.cos(ang) * r, cz = Math.sin(ang) * r;
-      for (let k = 0; k < 15; k++) {
+      for (let k = 0; k < 8; k++) {
         const house = new THREE.Mesh(
           new THREE.BoxGeometry(0.8 + Math.random() * 0.6, 0.8 + Math.random() * 0.8, 0.8 + Math.random() * 0.6),
           new THREE.MeshStandardMaterial({
@@ -8237,10 +8237,21 @@
       }
     }
 
-    // 🔥 松明（各テラスに複数、PointLight付き／Bloomで発光）
+    // 🔥 松明（炎は多数だが PointLight は合計10個まで / 軽量化）
     const torchLights = [];
+    const MAX_TORCH_LIGHTS = 10;
+    const sharedHaloTex = (() => {
+      const c = document.createElement('canvas'); c.width = 64; c.height = 64;
+      const g = c.getContext('2d');
+      const grd = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+      grd.addColorStop(0, 'rgba(255,220,120,1)');
+      grd.addColorStop(0.4, 'rgba(255,140,50,0.7)');
+      grd.addColorStop(1, 'rgba(255,80,20,0)');
+      g.fillStyle = grd; g.fillRect(0, 0, 64, 64);
+      return new THREE.CanvasTexture(c);
+    })();
     stageMeshes.forEach((sm, si) => {
-      const count = Math.max(3, Math.floor(sm.r / 2));
+      const count = Math.max(2, Math.floor(sm.r / 3.5));
       for (let k = 0; k < count; k++) {
         const a = (k / count) * Math.PI * 2 + si * 0.3;
         const px = Math.cos(a) * (sm.r - 0.3);
@@ -8261,25 +8272,19 @@
         flame.position.set(px, sm.yTop + 0.85, pz);
         tower.add(flame);
         const halo = new THREE.Sprite(new THREE.SpriteMaterial({
-          map: (() => {
-            const c = document.createElement('canvas'); c.width = 64; c.height = 64;
-            const g = c.getContext('2d');
-            const grd = g.createRadialGradient(32, 32, 0, 32, 32, 32);
-            grd.addColorStop(0, 'rgba(255,220,120,1)');
-            grd.addColorStop(0.4, 'rgba(255,140,50,0.7)');
-            grd.addColorStop(1, 'rgba(255,80,20,0)');
-            g.fillStyle = grd; g.fillRect(0, 0, 64, 64);
-            return new THREE.CanvasTexture(c);
-          })(),
+          map: sharedHaloTex,
           transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, fog: false,
         }));
         halo.position.copy(flame.position);
         halo.scale.set(0.9, 0.9, 0.9);
         tower.add(halo);
-        // 光源（Bloomがこれで光る）
-        const light = new THREE.PointLight(0xffa030, 0.7, 6, 1.8);
-        light.position.copy(flame.position);
-        tower.add(light);
+        // 光源は上限まで（残りは halo 発光のみ）
+        let light = null;
+        if (torchLights.length < MAX_TORCH_LIGHTS) {
+          light = new THREE.PointLight(0xffa030, 0.7, 6, 1.8);
+          light.position.copy(flame.position);
+          tower.add(light);
+        }
         torchLights.push({ flame, halo, light, basePos: flame.position.clone(), phase: Math.random() * Math.PI * 2 });
       }
     });
@@ -8389,7 +8394,7 @@
     });
 
     // 🧱 建設中の瓦礫（塔の根元の周り）
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 14; i++) {
       const a = Math.random() * Math.PI * 2;
       const r = baseRadius + 2 + Math.random() * 10;
       const block = new THREE.Mesh(
@@ -8420,7 +8425,7 @@
     }
 
     // 🌧 雨（軽量Pointsで線を模す）
-    const RAIN = 1500;
+    const RAIN = 350;
     const rainGeo = new THREE.BufferGeometry();
     const rainPos = new Float32Array(RAIN * 3);
     for (let i = 0; i < RAIN; i++) {
@@ -8605,7 +8610,7 @@
     // 📜 塔の周りを飛ぶ「言葉の断片」— 混乱を起こすとバラバラに
     const WORDS = ['א', 'ב', 'ג', '言', '愛', 'A', 'Я', '𒀀', '𓀀', 'Ω', '王', '神', '天', 'तौ', 'ⴰ'];
     const wordSprites = [];
-    for (let i = 0; i < 36; i++) {
+    for (let i = 0; i < 20; i++) {
       const cvs = document.createElement('canvas'); cvs.width = 64; cvs.height = 64;
       const g = cvs.getContext('2d');
       g.fillStyle = 'rgba(0,0,0,0)'; g.fillRect(0, 0, 64, 64);
@@ -8845,7 +8850,7 @@
       torchLights.forEach(tl => {
         tl.phase += 0.1;
         const f = 0.85 + Math.sin(tl.phase) * 0.12 + (Math.random() - 0.5) * 0.05;
-        tl.light.intensity = 0.6 * f;
+        if (tl.light) tl.light.intensity = 0.6 * f;
         tl.flame.scale.setScalar(f);
         tl.halo.material.opacity = 0.65 * f;
       });
@@ -8976,7 +8981,7 @@
     const H = () => stage.clientHeight || window.innerHeight;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.2));
     renderer.setSize(W(), H());
     if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.1;
@@ -9481,7 +9486,7 @@
     const W = () => stage.clientWidth || window.innerWidth;
     const H = () => stage.clientHeight || window.innerHeight;
     const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.2));
     renderer.setSize(W(), H());
     if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
     stage.appendChild(renderer.domElement);
