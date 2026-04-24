@@ -17706,3 +17706,5 @@ body, .view, main, .visitors-list, .history-list,
 /* ブログカードの絵文字がSVGになった時のサイズ調整 */
 .blog-post-emoji .ij-icon { width: 36px; height: 36px; }
 .blog-category-badge .ij-icon { width: 14px; height: 14px; vertical-align: -0.15em; }
+
+.oshi-routine-ic .ij-icon, .oshi-routine-ic svg { width: 14px; height: 14px; color: var(--wine); }

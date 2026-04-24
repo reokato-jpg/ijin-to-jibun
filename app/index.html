@@ -72,9 +72,9 @@
 <!-- フォントは非ブロッキングで読み込み（print → all でフォールバック） -->
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet"></noscript>
-<link rel="stylesheet" href="dist/style.min.css?v=20260427V">
-<link rel="stylesheet" href="dist/era-theme.min.css?v=20260427V">
-<link rel="stylesheet" href="magic.css?v=20260427V1">
+<link rel="stylesheet" href="dist/style.min.css?v=20260427W">
+<link rel="stylesheet" href="dist/era-theme.min.css?v=20260427W">
+<link rel="stylesheet" href="magic.css?v=20260427W1">
 </head>
 <body>
   <header class="app-header">
@@ -131,6 +131,13 @@
       <symbol id="ij-calendar" viewBox="0 0 24 24"><path fill="currentColor" d="M7 2v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7zm-2 8h14v10H5V10zm0-4v2h14V6H5z"/></symbol>
       <symbol id="ij-ai" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a2 2 0 0 1 2 2v1h3a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3h-2l-3 3-3-3H7a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3h3V4a2 2 0 0 1 2-2zM8 10a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm8 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/></symbol>
       <symbol id="ij-film" viewBox="0 0 24 24"><path fill="currentColor" d="M4 4h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1zm2 2v3h2V6H6zm10 0v3h2V6h-2zM6 11v3h2v-3H6zm10 0v3h2v-3h-2zM6 16v3h2v-3H6zm10 0v3h2v-3h-2z"/></symbol>
+      <symbol id="ij-moon" viewBox="0 0 24 24"><path fill="currentColor" d="M12 3a9 9 0 1 0 9 9A7 7 0 0 1 12 3z"/></symbol>
+      <symbol id="ij-coffee" viewBox="0 0 24 24"><path fill="currentColor" d="M4 5h14v2h2a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2v2a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V5zm14 4v3h2V9h-2z"/></symbol>
+      <symbol id="ij-walk" viewBox="0 0 24 24"><path fill="currentColor" d="M13 3a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm-3 6h3l3 3v5h-2v-4l-2-2v8h-2l-1-5-3 4-2-1 4-5V9z"/></symbol>
+      <symbol id="ij-chat" viewBox="0 0 24 24"><path fill="currentColor" d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9l-5 4V6a2 2 0 0 1 2-2z"/></symbol>
+      <symbol id="ij-bolt" viewBox="0 0 24 24"><path fill="currentColor" d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></symbol>
+      <symbol id="ij-clock" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M12 7v5l3 2"/></symbol>
+      <symbol id="ij-music-note" viewBox="0 0 24 24"><path fill="currentColor" d="M9 3v11a3 3 0 1 1-3-3V5l12-2v10a3 3 0 1 1-3-3V5L9 7V3z"/></symbol>
     </defs>
   </svg>
 
@@ -868,15 +875,15 @@
   </div>
 
   <!-- minified bundles（dist/）と era-lore.min.js は年表画面を開いた時に遅延読み込み -->
-  <script src="dist/history-patterns.min.js?v=20260427V" defer></script>
-  <script src="dist/app.min.js?v=20260427V" defer></script>
-  <script src="auth.js?v=20260427V" type="module"></script>
-  <script src="dist/ai-consult.min.js?v=20260427V" defer></script>
+  <script src="dist/history-patterns.min.js?v=20260427W" defer></script>
+  <script src="dist/app.min.js?v=20260427W" defer></script>
+  <script src="auth.js?v=20260427W" type="module"></script>
+  <script src="dist/ai-consult.min.js?v=20260427W" defer></script>
 
   <!-- ============ Magic Layer（ピクチャ：3D本・Lenis・ViewTransitions等） ============ -->
   <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.159.0/build/three.min.js" defer></script>
-  <script src="magic.js?v=20260427V1" defer></script>
+  <script src="magic.js?v=20260427W1" defer></script>
   <script>
     // Service Worker 登録（2回目以降のロードを爆速化）
     if ('serviceWorker' in navigator) {

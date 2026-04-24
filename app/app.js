@@ -800,9 +800,9 @@ const TRAIT_GROUPS = {
     { label: '🍰 甘いもの', items: ['チョコレート','スイーツ','アイスクリーム','チーズ','タバコ'] },
   ],
   hobbies: [
-    { label: '📖 文化・芸術', items: ['読書','映画鑑賞','音楽鑑賞','楽器演奏','歌う','絵を描く','写真','書道','演劇鑑賞','ライブ・コンサート','美術館・博物館','詩を書く','日記を書く','手紙を書く'] },
+    { label: '<svg class="ij-icon"><use href="#ij-book"/></svg> 文化・芸術', items: ['読書','映画鑑賞','音楽鑑賞','楽器演奏','歌う','絵を描く','写真','書道','演劇鑑賞','ライブ・コンサート','美術館・博物館','詩を書く','日記を書く','手紙を書く'] },
     { label: '🏃 運動・アウトドア', items: ['散歩','ランニング','筋トレ','ヨガ','瞑想','登山','サイクリング','水泳','旅行','温泉・銭湯','ハイキング'] },
-    { label: '🎨 制作・生活', items: ['料理','お菓子作り','ガーデニング','園芸','ペットと過ごす','カフェ巡り'] },
+    { label: '<svg class="ij-icon"><use href="#ij-palette"/></svg> 制作・生活', items: ['料理','お菓子作り','ガーデニング','園芸','ペットと過ごす','カフェ巡り'] },
     { label: '🎲 遊び', items: ['ゲーム','将棋・囲碁','チェス','パズル','カードゲーム','賭博'] },
     { label: '📱 デジタル', items: ['SNS','YouTube','ポッドキャスト'] },
     { label: '☀️ リズム', items: ['早起き','夜更かし','友人と語らう','一人で過ごす'] },
@@ -818,10 +818,10 @@ const TRAIT_GROUPS = {
   ],
   dislikes: [
     { label: '🔊 環境', items: ['騒音','人混み','満員電車','急かされること','ルーティン','暗い場所'] },
-    { label: '🗣 人間関係', items: ['嘘','偽善','裏切り','陰口','マウント','詮索','無関心','冷笑'] },
+    { label: '<svg class="ij-icon"><use href="#ij-chat"/></svg> 人間関係', items: ['嘘','偽善','裏切り','陰口','マウント','詮索','無関心','冷笑'] },
     { label: '💼 仕事・生活', items: ['早起き','夜更かし','残業','会議','書類仕事','見栄','贅沢な浪費'] },
     { label: '😱 恐怖', items: ['虫','爬虫類','高所','閉所'] },
-    { label: '⚡ 理不尽', items: ['怒号','威圧','暴力','戦争','差別','理不尽','依存'] },
+    { label: '<svg class="ij-icon"><use href="#ij-bolt"/></svg> 理不尽', items: ['怒号','威圧','暴力','戦争','差別','理不尽','依存'] },
   ],
 };
 // フラットアクセス用のエイリアス
@@ -1081,7 +1081,7 @@ function renderTraitsMatch() {
         <div class="match-intro">気になる項目をタップして選択（複数可）。もう一度タップで解除。<br>共通点の多い偉人が下に表示されます。</div>
         ${profileHtml}
         ${makeChips('foods', '🍽 好きな食べ物・飲み物')}
-        ${makeChips('hobbies', '🎨 趣味・日課')}
+        ${makeChips('hobbies', '<svg class="ij-icon"><use href="#ij-palette"/></svg> 趣味・日課')}
         ${makeChips('likes', '❤ 好きなもの')}
         ${makeChips('dislikes', '✖ 嫌いなもの')}
         ${selectedCount > 0 ? `<button class="match-clear" id="matchClear">選択をクリア</button>` : ''}
@@ -1207,7 +1207,7 @@ function openMapPopup() {
     <div class="map-popup-backdrop" data-close="1"></div>
     <div class="map-popup-panel">
       <button class="map-popup-close" data-close="1" aria-label="閉じる">×</button>
-      <div class="map-popup-head">📜 案内図</div>
+      <div class="map-popup-head"><svg class="ij-icon"><use href="#ij-book"/></svg> 案内図</div>
       <div class="map-popup-grid">
         ${maps.map(m => `
           <button class="map-tile" data-go-view="${m.view}">
@@ -1327,7 +1327,7 @@ function openWorldviewModal() {
         <div class="worldview-chara-avatar">${(typeof rekittoAvatarHtml === 'function') ? rekittoAvatarHtml() : ''}</div>
         <div class="worldview-chara-body">
           <div class="worldview-chara-role">歴史の管理人</div>
-          <h2 class="worldview-chara-name">📜 レキット</h2>
+          <h2 class="worldview-chara-name"><svg class="ij-icon"><use href="#ij-book"/></svg> レキット</h2>
           <p class="worldview-chara-bio">
             現代の側に立ち、歴史が改変されぬよう静かに見張る管理人。
             偉人からの便りや、この世界で起きる出来事を、あなたの手元へ届ける役目を担う。
@@ -1510,18 +1510,18 @@ function openMemberSettings() {
       </div>
 
       ${renderChips('foods', '🍽 好きな食べ物・飲み物', options.foods)}
-      ${renderChips('hobbies', '🎨 趣味・日課', options.hobbies)}
+      ${renderChips('hobbies', '<svg class="ij-icon"><use href="#ij-palette"/></svg> 趣味・日課', options.hobbies)}
       ${renderChips('likes', '❤ 好きなもの', options.likes)}
       ${renderChips('dislikes', '🚫 苦手なもの', options.dislikes)}
 
       <div class="settings-section">
-        <div class="settings-sec-label">📖 自己紹介（任意・あなたの物語）</div>
+        <div class="settings-sec-label"><svg class="ij-icon"><use href="#ij-book"/></svg> 自己紹介（任意・あなたの物語）</div>
         <textarea class="settings-input settings-textarea" id="settingsBio" placeholder="あなた自身の言葉で。趣味、仕事、今興味があること、生き方、価値観、夢……何でも。">${escapeHtml(localStorage.getItem('ijin_my_bio') || '')}</textarea>
         <div class="settings-sec-hint">いつか偉人として振り返られる、あなた自身の物語を書いてみてください。</div>
       </div>
 
       <div class="settings-section">
-        <div class="settings-sec-label">📜 わたしの歩み（年表・任意）</div>
+        <div class="settings-sec-label"><svg class="ij-icon"><use href="#ij-book"/></svg> わたしの歩み（年表・任意）</div>
         <div id="settingsCareerList" class="settings-career-list"></div>
         <button type="button" class="settings-career-add" id="settingsCareerAdd">＋ 節目を追加</button>
         <div class="settings-sec-hint">生まれた年、転機、達成、別れ——あなたの人生の節目を年表にできます。</div>
@@ -1654,7 +1654,7 @@ function openMemberSettings() {
     setTimeout(update, 400);
   });
 
-  // 📜 わたしの歩み（career）エディタ
+  // <svg class="ij-icon"><use href="#ij-book"/></svg> わたしの歩み（career）エディタ
   const renderCareerList = () => {
     const list = modal.querySelector('#settingsCareerList');
     if (!list) return;
@@ -2273,7 +2273,7 @@ function openUserProfileModal(uid, usersCache) {
 
       <!-- 好きなもの・趣味・性格まで（ここまでが偉人と同じ） -->
       <div class="user-prof-row"><b>🍽 好きな食べ物・飲み物</b><div class="user-prof-chips">${chip(u.traits.foods)}</div></div>
-      <div class="user-prof-row"><b>🎨 趣味・日課</b><div class="user-prof-chips">${chip(u.traits.hobbies)}</div></div>
+      <div class="user-prof-row"><b><svg class="ij-icon"><use href="#ij-palette"/></svg> 趣味・日課</b><div class="user-prof-chips">${chip(u.traits.hobbies)}</div></div>
       <div class="user-prof-row"><b>❤ 好きなもの</b><div class="user-prof-chips">${chip(u.traits.likes)}</div></div>
       <div class="user-prof-row"><b>🚫 嫌いなもの</b><div class="user-prof-chips">${chip(u.traits.dislikes)}</div></div>
       ${u.traits.personality ? `<div class="user-prof-row user-prof-personality"><b>🎭 性格</b><p>${escapeHtml(u.traits.personality)}</p></div>` : ''}
@@ -2293,10 +2293,10 @@ function openUserProfileModal(uid, usersCache) {
         </div>
       ` : ''}
 
-      <!-- 📖 わたしの本（本人のみ表示） -->
+      <!-- <svg class="ij-icon"><use href="#ij-book"/></svg> わたしの本（本人のみ表示） -->
       ${u.isMe ? `
         <div class="user-prof-row user-prof-mybook">
-          <b>📖 わたしの本 <span class="user-prof-private">（あなた専用）</span></b>
+          <b><svg class="ij-icon"><use href="#ij-book"/></svg> わたしの本 <span class="user-prof-private">（あなた専用）</span></b>
           <button class="user-prof-mybook-btn" id="userProfMyBook">ノート・スタンプ・お気に入りを見る →</button>
         </div>
       ` : ''}
@@ -2511,7 +2511,7 @@ function renderCalendarToday() {
       <article class="cal-card cal-card-event" data-person-id="${p.id}">
         ${avatar}
         <div class="cal-body">
-          <div class="cal-label event">📜 この日の出来事</div>
+          <div class="cal-label event"><svg class="ij-icon"><use href="#ij-book"/></svg> この日の出来事</div>
           <div class="cal-name">${e.year}年 ${p.name}</div>
           <div class="cal-event-title">${e.title}</div>
           ${e.detail ? `<div class="cal-event-detail">${e.detail.slice(0, 80)}${e.detail.length > 80 ? '…' : ''}</div>` : ''}
@@ -3103,7 +3103,7 @@ function renderOshi() {
       <div class="oshi-today-letter-sign">— ${escapeHtml(p.name)}</div>
     </div>`;
   // 推しの1日ルーティン抜粋（work/exercise/meal 中心に3件）
-  const ICON = { sleep:'😴', meal:'☕', work:'✍️', exercise:'🚶', rest:'🛋', social:'🗣', study:'📖', create:'🎨', hobby:'🎼' };
+  const ICON = { sleep:'<svg class="ij-icon"><use href="#ij-moon"/></svg>', meal:'<svg class="ij-icon"><use href="#ij-coffee"/></svg>', work:'<svg class="ij-icon"><use href="#ij-pen"/></svg>', exercise:'<svg class="ij-icon"><use href="#ij-walk"/></svg>', rest:'<svg class="ij-icon"><use href="#ij-heart"/></svg>', social:'<svg class="ij-icon"><use href="#ij-chat"/></svg>', study:'<svg class="ij-icon"><use href="#ij-book"/></svg>', create:'<svg class="ij-icon"><use href="#ij-palette"/></svg>', hobby:'<svg class="ij-icon"><use href="#ij-music-note"/></svg>' };
   const routine = Array.isArray(p.routine) ? p.routine : [];
   const pickRoutine = [];
   const priorities = ['work','create','exercise','meal','study'];
@@ -3344,7 +3344,7 @@ function renderTodayEcho() {
   const events = window.findTodayEchoes(DATA.people || [], m, d);
   if (events.length === 0) { block.style.display = 'none'; return; }
   block.style.display = '';
-  dateEl.textContent = `📜 ${m}月${d}日`;
+  dateEl.textContent = `<svg class="ij-icon"><use href="#ij-book"/></svg> ${m}月${d}日`;
   const yearNow = now.getFullYear();
   list.innerHTML = events.map(e => {
     const p = DATA.people.find(x => x.id === e.id);
@@ -4058,7 +4058,7 @@ function checkFollowBackEligibility(personId) {
     markFollowNotified(personId);
   }
 }
-// ============ 📜 レキット（歴史管理人）— チャット風お知らせ担当 ============
+// ============ <svg class="ij-icon"><use href="#ij-book"/></svg> レキット（歴史管理人）— チャット風お知らせ担当 ============
 const REKITTO_MSGS_KEY = 'ijin_rekitto_msgs';
 const REKITTO_LAST_READ_KEY = 'ijin_rekitto_last_read';
 const REKITTO_SEEN_UPDATES_KEY = 'ijin_rekitto_seen_updates';
@@ -5677,7 +5677,7 @@ function initPhoneMenu() {
     function renderPlan() {
       const plan = loadMeshiruMap(MESHIRU_PLAN_KEY);
       const week = currentWeekDates();
-      const mealLabels = [['breakfast','🌅 朝'],['lunch','☀️ 昼'],['dinner','🌙 夜']];
+      const mealLabels = [['breakfast','🌅 朝'],['lunch','☀️ 昼'],['dinner','<svg class="ij-icon"><use href="#ij-moon"/></svg> 夜']];
       planMount.innerHTML = `
         <div class="meshiru-intro">
           <div class="meshiru-intro-title">📅 今週の献立</div>
@@ -6222,7 +6222,7 @@ function initPhoneMenu() {
         </div>
         <div class="plaza-talk-info">
           <div class="plaza-talk-head">
-            <span class="plaza-talk-name">📜 レキット <span class="plaza-talk-role">歴史管理人</span></span>
+            <span class="plaza-talk-name"><svg class="ij-icon"><use href="#ij-book"/></svg> レキット <span class="plaza-talk-role">歴史管理人</span></span>
             <span class="plaza-talk-date">${rkDate}</span>
           </div>
           <div class="plaza-talk-preview">${escapeHtml(rkPreview)}</div>
@@ -6259,7 +6259,7 @@ function initPhoneMenu() {
     if (!plaza) return;
     const title = document.getElementById('plazaChatTitle');
     const body = document.getElementById('plazaChatBody');
-    if (title) title.textContent = '📜 レキット（歴史管理人）';
+    if (title) title.textContent = '<svg class="ij-icon"><use href="#ij-book"/></svg> レキット（歴史管理人）';
     if (body) renderRekittoChat(body);
     plaza.querySelectorAll('.plaza-tab-panel').forEach(p => {
       p.hidden = (p.dataset.plazaPanel !== 'chat');
@@ -6275,7 +6275,7 @@ function initPhoneMenu() {
   function renderRekittoChat(body) {
     const msgs = getRekittoMsgs();
     if (msgs.length === 0) {
-      body.innerHTML = `<div class="line-chat rekitto-chat"><div class="line-msg-received"><div class="line-avatar rekitto-line-avatar">${rekittoAvatarHtml()}</div><div class="line-msg-col"><div class="line-msg-name">📜 レキット</div><div class="line-msg-bubble rekitto-bubble">はじめまして。私はレキット。\n歴史が書き換えられぬよう、ここから見張っています。\n\n向こう側には、もう一人——ラビン。\n私たちは会うことが叶いません。けれど歴史を知ってもらうため、二人で同じ世界を守っています。\n\n偉人や会員からの便りは、私が必ずここへ届けますね。</div></div></div></div>`;
+      body.innerHTML = `<div class="line-chat rekitto-chat"><div class="line-msg-received"><div class="line-avatar rekitto-line-avatar">${rekittoAvatarHtml()}</div><div class="line-msg-col"><div class="line-msg-name"><svg class="ij-icon"><use href="#ij-book"/></svg> レキット</div><div class="line-msg-bubble rekitto-bubble">はじめまして。私はレキット。\n歴史が書き換えられぬよう、ここから見張っています。\n\n向こう側には、もう一人——ラビン。\n私たちは会うことが叶いません。けれど歴史を知ってもらうため、二人で同じ世界を守っています。\n\n偉人や会員からの便りは、私が必ずここへ届けますね。</div></div></div></div>`;
       return;
     }
     body.innerHTML = `
@@ -6304,7 +6304,7 @@ function initPhoneMenu() {
             <div class="line-msg-received">
               <div class="line-avatar rekitto-line-avatar">${rekittoAvatarHtml()}</div>
               <div class="line-msg-col">
-                <div class="line-msg-name">📜 レキット</div>
+                <div class="line-msg-name"><svg class="ij-icon"><use href="#ij-book"/></svg> レキット</div>
                 <div class="line-msg-bubble rekitto-bubble">
                   ${escapeHtml(m.text || '')}
                   ${linkBtn ? `<div class="rekitto-link-row">${linkBtn}</div>` : ''}
@@ -7058,7 +7058,7 @@ async function showPerson(id) {
         if (!eraLinks.length) return '';
         return `
           <div class="profile-era-jump">
-            <span class="profile-era-jump-label">📜 この偉人が生きた時代：</span>
+            <span class="profile-era-jump-label"><svg class="ij-icon"><use href="#ij-book"/></svg> この偉人が生きた時代：</span>
             ${eraLinks.map(e => `<button class="profile-era-jump-btn" data-era-jump-cat="${e.catId}" data-era-jump-era="${e.eraId}">${escapeHtml(e.name)}</button>`).join('')}
           </div>
         `;
@@ -7145,7 +7145,7 @@ async function showPerson(id) {
       const dislikesClassified = classifyTraitItems(p.traits.dislikes || []);
       const categoryLabels = {
         nature: { label: '🌿 自然・風景', order: 1 },
-        art: { label: '🎨 芸術・文化', order: 2 },
+        art: { label: '<svg class="ij-icon"><use href="#ij-palette"/></svg> 芸術・文化', order: 2 },
         abstract: { label: '✨ 思想・価値観', order: 3 },
         daily: { label: '🕯 日常・暮らし', order: 4 },
         activity: { label: '🎯 活動', order: 5 },
@@ -7185,7 +7185,7 @@ async function showPerson(id) {
           ` : ''}
           ${(p.traits.hobbies || []).length ? `
             <div class="traits-section">
-              <div class="traits-sec-label">🎨 趣味・日課</div>
+              <div class="traits-sec-label"><svg class="ij-icon"><use href="#ij-palette"/></svg> 趣味・日課</div>
               <div class="traits-sec-chips">${p.traits.hobbies.map(x => `<span class="traits-chip">${x}</span>`).join('')}</div>
             </div>
           ` : ''}
@@ -7503,7 +7503,7 @@ async function showPerson(id) {
                   <div class="work-links">
                     <a class="work-btn work-btn-yt" href="${ytSearch}" target="_blank" rel="noopener" onclick="event.stopPropagation()"><span class="work-btn-icon">▶</span> YouTubeで聴く</a>
                     ${betterImslp ? `<a class="work-btn work-btn-imslp" href="${betterImslp}" target="_blank" rel="noopener" onclick="event.stopPropagation()">♫ 楽譜</a>` : ''}
-                    ${isMusic ? `<a class="work-btn work-btn-musescore" href="${buildMusescoreUrl(p, w)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">🎼 Musescore</a>` : ''}
+                    ${isMusic ? `<a class="work-btn work-btn-musescore" href="${buildMusescoreUrl(p, w)}" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg class="ij-icon"><use href="#ij-music-note"/></svg> Musescore</a>` : ''}
                   </div>
                 </div>
               </div>
@@ -7571,7 +7571,7 @@ async function showPerson(id) {
               <p class="happenings-empty-title">${p.name}関連のイベント情報</p>
               <p class="happenings-empty-text">登録されているイベントはありません。<br>最新の情報は以下で探せます。</p>
               <div class="happenings-empty-links">
-                <a class="happening-btn" href="https://www.google.com/search?q=${encodeURIComponent(p.name + ' 展覧会 2026')}" target="_blank" rel="noopener">🎨 展覧会を探す</a>
+                <a class="happening-btn" href="https://www.google.com/search?q=${encodeURIComponent(p.name + ' 展覧会 2026')}" target="_blank" rel="noopener"><svg class="ij-icon"><use href="#ij-palette"/></svg> 展覧会を探す</a>
                 <a class="happening-btn" href="https://www.google.com/search?q=${encodeURIComponent(p.name + ' イベント')}" target="_blank" rel="noopener">🎭 イベントを探す</a>
                 <a class="happening-btn" href="https://www.google.com/search?q=${encodeURIComponent(p.name + ' 公演')}" target="_blank" rel="noopener">🎵 公演を探す</a>
               </div>
@@ -7582,7 +7582,7 @@ async function showPerson(id) {
           <p class="happenings-intro">${p.name}の展覧会・公演・記念祭など。期間限定のものは公式サイトで要確認。</p>
           <div class="happenings-list">
             ${events.map(h => {
-              const typeLabel = { exhibition: '🎨 展覧会', concert: '🎵 公演・演奏会', festival: '🎭 フェス・記念祭', book_fair: '📚 ブックフェア', other: '✨ その他' }[h.type] || '✨ イベント';
+              const typeLabel = { exhibition: '<svg class="ij-icon"><use href="#ij-palette"/></svg> 展覧会', concert: '🎵 公演・演奏会', festival: '🎭 フェス・記念祭', book_fair: '📚 ブックフェア', other: '✨ その他' }[h.type] || '✨ イベント';
               const searchQ = encodeURIComponent(`${p.name} ${h.title}`);
               return `
                 <div class="happening-card">
@@ -9100,7 +9100,7 @@ const STAMP_SOURCE_LABELS = {
   watch_work: '▶ 作品に触れた',
   comment: '💬 対話した',
   like: '♥ 心を動かされた',
-  era_visit: '📜 時代を旅した',
+  era_visit: '<svg class="ij-icon"><use href="#ij-book"/></svg> 時代を旅した',
   visit_loyal: '👣 10回訪れた',
 };
 
