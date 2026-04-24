@@ -7514,6 +7514,49 @@
       scene.add(g);
     });
 
+    // 🦩 GLTF で本物の動物モデル（アニメーション付き）
+    //   three.js 公式サンプルの Horse/Flamingo/Parrot.glb を読み込む
+    const gltfMixers = [];
+    if (ADDONS.GLTFLoader) {
+      const gltfLoader = new ADDONS.GLTFLoader();
+      const base = 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r159/examples/models/gltf/';
+      // フラミンゴ（飛行アニメ）
+      gltfLoader.load(base + 'Flamingo.glb', (gltf) => {
+        const flamingo = gltf.scene.children[0];
+        flamingo.scale.set(0.015, 0.015, 0.015);
+        flamingo.position.set(6, 7, 0);
+        flamingo.rotation.y = Math.PI / 2;
+        flamingo.traverse(o => { if (o.isMesh) o.castShadow = true; });
+        scene.add(flamingo);
+        const mixer = new THREE.AnimationMixer(flamingo);
+        mixer.clipAction(gltf.animations[0]).setDuration(1.2).play();
+        gltfMixers.push({ mixer, obj: flamingo, orbit: 7, angle: 0, speed: 0.006, baseY: 7 });
+      }, undefined, (e) => console.warn('flamingo', e));
+      // パロット（枝に止まる）
+      gltfLoader.load(base + 'Parrot.glb', (gltf) => {
+        const parrot = gltf.scene.children[0];
+        parrot.scale.set(0.02, 0.02, 0.02);
+        parrot.position.set(-5, 8, 2);
+        parrot.traverse(o => { if (o.isMesh) o.castShadow = true; });
+        scene.add(parrot);
+        const mixer = new THREE.AnimationMixer(parrot);
+        mixer.clipAction(gltf.animations[0]).play();
+        gltfMixers.push({ mixer, obj: parrot, orbit: 6, angle: Math.PI, speed: 0.004, baseY: 8 });
+      }, undefined, (e) => console.warn('parrot', e));
+      // 馬（地上を走る）
+      gltfLoader.load(base + 'Horse.glb', (gltf) => {
+        const horse = gltf.scene.children[0];
+        horse.scale.set(0.015, 0.015, 0.015);
+        horse.position.set(-6, 0, 5);
+        horse.rotation.y = 0.5;
+        horse.traverse(o => { if (o.isMesh) o.castShadow = true; });
+        scene.add(horse);
+        const mixer = new THREE.AnimationMixer(horse);
+        mixer.clipAction(gltf.animations[0]).play();
+        gltfMixers.push({ mixer, obj: horse, orbit: 0, angle: 0, speed: 0, baseY: 0 });
+      }, undefined, (e) => console.warn('horse', e));
+    }
+
     // 🐦 赤い鳥（樹の枝に止まる × 10）
     for (let i = 0; i < 10; i++) {
       const bird = new THREE.Mesh(
@@ -7725,6 +7768,17 @@
       if (edenCubeCam && (Math.floor(t * 60) % 120 === 0)) {
         try { edenCubeCam.update(renderer, scene); } catch {}
       }
+      // 🦩 GLTF アニメーション更新 + 飛行軌道
+      gltfMixers.forEach(gm => {
+        gm.mixer.update(1 / 60);
+        if (gm.orbit > 0) {
+          gm.angle += gm.speed;
+          gm.obj.position.x = Math.cos(gm.angle) * gm.orbit;
+          gm.obj.position.z = Math.sin(gm.angle) * gm.orbit;
+          gm.obj.position.y = gm.baseY + Math.sin(t + gm.angle) * 0.5;
+          gm.obj.rotation.y = -gm.angle - Math.PI / 2;
+        }
+      });
       // レンズフレア: 太陽→カメラ中心を結ぶ線上に配置
       {
         const sv = SUN_POS.clone().project(camera); // NDC座標
