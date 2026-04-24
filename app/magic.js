@@ -5887,21 +5887,209 @@
     scene.add(sky);
     // フォグを空の色に合わせて（浮遊感を出す）
     scene.fog = new THREE.Fog(0xe8d8c8, 30, 110);
-    // 太陽本体（柔らかい光球）
-    const sunMesh = new THREE.Mesh(
-      new THREE.SphereGeometry(2.2, 24, 16),
-      new THREE.MeshBasicMaterial({ color: 0xfff8dc, fog: false })
-    );
-    sunMesh.position.set(28, 32, -48);
+    // ☀️ 太陽 — 宇宙モードと同格のシェーダベース（プラズマ + 彩層 + 多層コロナ + 輝き）
+    const SUN_POS = new THREE.Vector3(22, 28, -42);
+    const SUN_R = 4.5;
+    const sunUniforms = { uTime: { value: 0 } };
+    // プラズマ本体 — 手続きノイズで表面が流れる
+    const sunPlasmaMat = new THREE.ShaderMaterial({
+      uniforms: sunUniforms,
+      vertexShader: `
+        varying vec2 vUv; varying vec3 vN;
+        void main() {
+          vUv = uv;
+          vN = normalize(normalMatrix * normal);
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform float uTime;
+        varying vec2 vUv; varying vec3 vN;
+        // 2D ハッシュノイズ
+        float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+        float noise(vec2 p) {
+          vec2 i = floor(p), f = fract(p);
+          float a = hash(i), b = hash(i + vec2(1.0, 0.0)), c = hash(i + vec2(0.0, 1.0)), d = hash(i + vec2(1.0, 1.0));
+          vec2 u = f*f*(3.0 - 2.0*f);
+          return mix(mix(a,b,u.x), mix(c,d,u.x), u.y);
+        }
+        float fbm(vec2 p) {
+          float v = 0.0; float a = 0.5;
+          for (int i = 0; i < 5; i++) { v += a * noise(p); p *= 2.1; a *= 0.5; }
+          return v;
+        }
+        void main() {
+          vec2 uv = vUv * 3.5;
+          float n1 = fbm(uv + uTime * 0.12);
+          float n2 = fbm(uv * 1.5 - uTime * 0.08);
+          float n = n1 * 0.6 + n2 * 0.4;
+          // 顆粒
+          float gran = fbm(uv * 8.0 + uTime * 0.3) * 0.4;
+          n = mix(n, gran, 0.25);
+          // 黄→橙→赤
+          vec3 col = mix(vec3(1.0, 0.95, 0.7), vec3(1.0, 0.55, 0.15), n);
+          col = mix(col, vec3(1.0, 0.25, 0.05), pow(max(0.0, 1.0 - n), 2.5) * 0.4);
+          // 明るく
+          col *= 1.4;
+          // 脈動
+          col *= 0.95 + 0.05 * sin(uTime * 1.5);
+          gl_FragColor = vec4(col, 1.0);
+        }
+      `,
+      fog: false,
+    });
+    const sunMesh = new THREE.Mesh(new THREE.SphereGeometry(SUN_R, 48, 32), sunPlasmaMat);
+    sunMesh.position.copy(SUN_POS);
     scene.add(sunMesh);
-    // 太陽のハロ
-    const sunHalo = new THREE.Sprite(new THREE.SpriteMaterial({
-      color: 0xfff0c0, transparent: true, opacity: 0.6,
+
+    // 🔥 彩層（すぐ外側の赤いリム）
+    const chromoMat = new THREE.ShaderMaterial({
+      uniforms: sunUniforms,
+      vertexShader: `
+        varying vec3 vN; varying vec3 vView;
+        void main() {
+          vN = normalize(normalMatrix * normal);
+          vec4 mv = modelViewMatrix * vec4(position, 1.0);
+          vView = normalize(-mv.xyz);
+          gl_Position = projectionMatrix * mv;
+        }
+      `,
+      fragmentShader: `
+        uniform float uTime;
+        varying vec3 vN; varying vec3 vView;
+        void main() {
+          float rim = 1.0 - max(0.0, dot(vN, vView));
+          rim = pow(rim, 2.8);
+          vec3 col = mix(vec3(1.0, 0.5, 0.15), vec3(1.0, 0.85, 0.45), rim);
+          float flick = 0.92 + 0.08 * sin(uTime * 1.2);
+          gl_FragColor = vec4(col, rim * 0.9 * flick);
+          if (gl_FragColor.a < 0.01) discard;
+        }
+      `,
+      transparent: true, depthWrite: false, side: THREE.FrontSide,
+      blending: THREE.AdditiveBlending, fog: false,
+    });
+    const chromosphere = new THREE.Mesh(new THREE.SphereGeometry(SUN_R * 1.04, 32, 20), chromoMat);
+    chromosphere.position.copy(SUN_POS);
+    scene.add(chromosphere);
+
+    // 🌟 多層コロナ（内・中・外、BackSide additive）
+    function makeCorona(scale, alpha) {
+      const mat = new THREE.ShaderMaterial({
+        uniforms: sunUniforms,
+        vertexShader: `
+          varying vec3 vN; varying vec3 vView;
+          void main() {
+            vN = normalize(normalMatrix * normal);
+            vec4 mv = modelViewMatrix * vec4(position, 1.0);
+            vView = normalize(-mv.xyz);
+            gl_Position = projectionMatrix * mv;
+          }
+        `,
+        fragmentShader: `
+          uniform float uTime;
+          varying vec3 vN; varying vec3 vView;
+          void main() {
+            float rim = 1.0 - max(0.0, dot(vN, vView));
+            rim = pow(rim, 2.0);
+            vec3 col = mix(vec3(1.0, 0.6, 0.2), vec3(1.0, 0.9, 0.55), rim);
+            float breathe = 0.9 + 0.1 * sin(uTime * 0.5);
+            gl_FragColor = vec4(col, rim * ${alpha.toFixed(2)} * breathe);
+            if (gl_FragColor.a < 0.01) discard;
+          }
+        `,
+        transparent: true, depthWrite: false, side: THREE.BackSide,
+        blending: THREE.AdditiveBlending, fog: false,
+      });
+      const m = new THREE.Mesh(new THREE.SphereGeometry(SUN_R * scale, 32, 20), mat);
+      m.position.copy(SUN_POS);
+      scene.add(m);
+      return m;
+    }
+    const corona1 = makeCorona(1.35, 0.6);
+    const corona2 = makeCorona(1.9, 0.4);
+    const corona3 = makeCorona(2.8, 0.22);
+
+    // 🔆 大輝（巨大なソフト光）
+    const bigHaloTex = (() => {
+      const c = document.createElement('canvas'); c.width = 256; c.height = 256;
+      const g = c.getContext('2d');
+      const grd = g.createRadialGradient(128, 128, 0, 128, 128, 128);
+      grd.addColorStop(0, 'rgba(255,250,220,1)');
+      grd.addColorStop(0.18, 'rgba(255,220,160,0.9)');
+      grd.addColorStop(0.4, 'rgba(255,170,80,0.4)');
+      grd.addColorStop(0.75, 'rgba(255,120,40,0.1)');
+      grd.addColorStop(1, 'rgba(255,100,30,0)');
+      g.fillStyle = grd; g.fillRect(0, 0, 256, 256);
+      return new THREE.CanvasTexture(c);
+    })();
+    const sunBigHalo = new THREE.Sprite(new THREE.SpriteMaterial({
+      map: bigHaloTex, transparent: true, opacity: 0.85,
       blending: THREE.AdditiveBlending, depthWrite: false, fog: false,
     }));
-    sunHalo.position.copy(sunMesh.position);
-    sunHalo.scale.set(14, 14, 14);
-    scene.add(sunHalo);
+    sunBigHalo.position.copy(SUN_POS);
+    sunBigHalo.scale.set(45, 45, 45);
+    scene.add(sunBigHalo);
+
+    // ✨ 光条（縦横の十字光）— シャフト風
+    const shaftTex = (() => {
+      const c = document.createElement('canvas'); c.width = 512; c.height = 64;
+      const g = c.getContext('2d');
+      const grd = g.createLinearGradient(0, 32, 512, 32);
+      grd.addColorStop(0, 'rgba(255,220,150,0)');
+      grd.addColorStop(0.5, 'rgba(255,245,210,0.85)');
+      grd.addColorStop(1, 'rgba(255,220,150,0)');
+      g.fillStyle = grd; g.fillRect(0, 28, 512, 8);
+      return new THREE.CanvasTexture(c);
+    })();
+    const shaftMat = new THREE.SpriteMaterial({
+      map: shaftTex, transparent: true, opacity: 0.55,
+      blending: THREE.AdditiveBlending, depthWrite: false, fog: false,
+      rotation: 0,
+    });
+    const shaft1 = new THREE.Sprite(shaftMat.clone());
+    shaft1.position.copy(SUN_POS); shaft1.scale.set(40, 6, 1);
+    scene.add(shaft1);
+    const shaft2 = new THREE.Sprite(shaftMat.clone());
+    shaft2.material.rotation = Math.PI / 2;
+    shaft2.position.copy(SUN_POS); shaft2.scale.set(40, 6, 1);
+    scene.add(shaft2);
+
+    // 💎 レンズフレア（6個のゴースト、サイズ違い）
+    function makeFlareTex(color) {
+      const c = document.createElement('canvas'); c.width = 128; c.height = 128;
+      const g = c.getContext('2d');
+      const grd = g.createRadialGradient(64, 64, 0, 64, 64, 64);
+      grd.addColorStop(0, color + '1)');
+      grd.addColorStop(0.3, color + '0.5)');
+      grd.addColorStop(1, color + '0)');
+      g.fillStyle = grd; g.fillRect(0, 0, 128, 128);
+      return new THREE.CanvasTexture(c);
+    }
+    const flareTex1 = makeFlareTex('rgba(255,230,160,');
+    const flareTex2 = makeFlareTex('rgba(255,180,90,');
+    const flareTex3 = makeFlareTex('rgba(200,160,255,');
+    const flares = [];
+    const flareDefs = [
+      { tex: flareTex1, t: 0.85, size: 2.0 },
+      { tex: flareTex2, t: 1.15, size: 1.4 },
+      { tex: flareTex3, t: 1.4, size: 1.2 },
+      { tex: flareTex1, t: 1.7, size: 2.5 },
+      { tex: flareTex2, t: 2.1, size: 0.9 },
+      { tex: flareTex3, t: 2.5, size: 1.5 },
+    ];
+    // 画面中心から太陽への直線上にレンズフレア配置。3D空間で近似するため
+    // 太陽 → カメラ方向の逆側に配置（動的更新）
+    flareDefs.forEach(d => {
+      const spr = new THREE.Sprite(new THREE.SpriteMaterial({
+        map: d.tex, transparent: true, opacity: 0.5,
+        blending: THREE.AdditiveBlending, depthWrite: false, depthTest: false, fog: false,
+      }));
+      spr.scale.set(d.size, d.size, 1);
+      spr.renderOrder = 999;
+      flares.push({ spr, t: d.t, size: d.size });
+      scene.add(spr);
+    });
 
     // 🏝 浮島テクスチャ
     const groundTex = (() => {
@@ -6903,6 +7091,23 @@
       camera.position.z = Math.sin(camAngle) * camDist;
       camera.position.y = 6.5 + camTilt * 8 + shakeY;
       camera.lookAt(0, 5.0, 0);
+      // 太陽シェーダのアニメ
+      sunUniforms.uTime.value = t;
+      // レンズフレア: 太陽→カメラ中心を結ぶ線上に配置
+      {
+        const sv = SUN_POS.clone().project(camera); // NDC座標
+        const cv = new THREE.Vector3(0, 0, sv.z); // 画面中心
+        flares.forEach(f => {
+          // NDC上で太陽から中心へ向かってfactor*tの位置
+          const fx = sv.x + (cv.x - sv.x) * f.t;
+          const fy = sv.y + (cv.y - sv.y) * f.t;
+          const pos = new THREE.Vector3(fx, fy, 0.5).unproject(camera);
+          f.spr.position.copy(pos);
+          // 太陽が画面外/裏側のときはフェード
+          const hidden = sv.z > 1 || Math.abs(sv.x) > 1.3 || Math.abs(sv.y) > 1.3;
+          f.spr.material.opacity = hidden ? 0 : 0.45;
+        });
+      }
       // リンゴのゆらぎ & 落下物理
       treeGroup.children.forEach(c => {
         if (!c.userData.basePos) return;
@@ -7191,58 +7396,142 @@
     })();
     const brickMat = new THREE.MeshStandardMaterial({ map: brickTex, roughness: 0.9, color: 0xe8d8b8 });
 
-    // 🏛 塔本体：多段 ziggurat （下から上へ細く、10段）
-    const STAGES = 10;
-    const baseRadius = 18;
-    const topRadius = 3.5;
-    const stageHeight = 3.2;
+    // 🏛 塔本体：ブリューゲル風の階段状ジッグラト
+    //   各段は「円柱（壁）＋アーチ窓＋はっきりしたテラス」。
+    //   次の段は明確に縮む（＝段差が見える）
+    const STAGES = 9;
+    const baseRadius = 20;
+    const stageHeight = 4.0;
+    const stepInset = 1.6; // 各段で半径がこれだけ縮む
     const tower = new THREE.Group();
     const stageMeshes = [];
+    // アーチ窓のテクスチャ（壁の前面に貼る）
+    const archTex = (() => {
+      const c = document.createElement('canvas'); c.width = 1024; c.height = 128;
+      const g = c.getContext('2d');
+      g.clearRect(0, 0, 1024, 128);
+      // 一定間隔でアーチの暗い穴
+      const archCount = 24;
+      const archW = 28, archH = 60;
+      for (let k = 0; k < archCount; k++) {
+        const cx = (k + 0.5) * (1024 / archCount);
+        const cy = 80;
+        // 暗い背景（中）
+        g.fillStyle = 'rgba(10,6,2,0.88)';
+        g.beginPath();
+        g.moveTo(cx - archW/2, cy + archH/2);
+        g.lineTo(cx - archW/2, cy - archH/2 + archW/2);
+        g.arc(cx, cy - archH/2 + archW/2, archW/2, Math.PI, 0);
+        g.lineTo(cx + archW/2, cy + archH/2);
+        g.closePath();
+        g.fill();
+        // ハイライトエッジ
+        g.strokeStyle = 'rgba(255,220,170,0.5)';
+        g.lineWidth = 2;
+        g.stroke();
+      }
+      const t = new THREE.CanvasTexture(c);
+      t.wrapS = THREE.RepeatWrapping;
+      return t;
+    })();
     for (let i = 0; i < STAGES; i++) {
-      const t = i / (STAGES - 1);
-      const rBottom = baseRadius - (baseRadius - topRadius) * (i / STAGES);
-      const rTop = baseRadius - (baseRadius - topRadius) * ((i + 1) / STAGES);
-      // メインシリンダー
-      const stage = new THREE.Mesh(
-        new THREE.CylinderGeometry(rTop, rBottom, stageHeight, 36, 1, false),
-        brickMat
-      );
-      stage.position.y = i * stageHeight + stageHeight / 2;
-      stage.castShadow = true;
-      stage.receiveShadow = true;
-      tower.add(stage);
-      // テラス（各段の頂上にリング状の歩道 — 見栄え向上）
+      const rOuter = baseRadius - i * stepInset; // 段ごとに明確に縮む
+      const yBase = i * stageHeight;
+      // 壁（ストレート円柱、rTop===rBottom なので台形にならない）
+      const wallGeo = new THREE.CylinderGeometry(rOuter, rOuter, stageHeight * 0.85, 48, 1, true);
+      const wall = new THREE.Mesh(wallGeo, brickMat);
+      wall.position.y = yBase + stageHeight * 0.425;
+      wall.castShadow = true; wall.receiveShadow = true;
+      tower.add(wall);
+      // アーチ窓層（わずかに外側にずらす）
+      const archGeo = new THREE.CylinderGeometry(rOuter + 0.02, rOuter + 0.02, stageHeight * 0.6, 48, 1, true);
+      const archMat = new THREE.MeshStandardMaterial({
+        map: archTex, transparent: true, alphaTest: 0.1, roughness: 0.8,
+      });
+      // UV tiling: 周囲に沿って archCount*周回数を貼る
+      archTex.repeat.set(Math.round(rOuter * 0.5), 1);
+      const arches = new THREE.Mesh(archGeo, archMat);
+      arches.position.y = yBase + stageHeight * 0.38;
+      tower.add(arches);
+      // テラス（次の段のために、この段の頂上にリング状の床）
+      const terraceOuter = rOuter;
+      const terraceInner = Math.max(3, rOuter - stepInset - 0.1);
+      const terraceGeo = new THREE.RingGeometry(terraceInner, terraceOuter, 48);
       const terrace = new THREE.Mesh(
-        new THREE.TorusGeometry(rTop + 0.1, 0.25, 8, 36),
+        terraceGeo,
+        new THREE.MeshStandardMaterial({ map: brickTex, color: 0xd8c098, roughness: 0.9 })
+      );
+      terrace.rotation.x = -Math.PI / 2;
+      terrace.position.y = yBase + stageHeight * 0.85;
+      terrace.castShadow = true; terrace.receiveShadow = true;
+      tower.add(terrace);
+      // 段差の装飾リング（上下の帯）
+      const trimTop = new THREE.Mesh(
+        new THREE.TorusGeometry(rOuter + 0.04, 0.15, 6, 48),
+        new THREE.MeshStandardMaterial({ color: 0x8a6a3a, roughness: 0.6, metalness: 0.15 })
+      );
+      trimTop.rotation.x = Math.PI / 2;
+      trimTop.position.y = yBase + stageHeight * 0.85;
+      tower.add(trimTop);
+      const trimBottom = new THREE.Mesh(
+        new THREE.TorusGeometry(rOuter + 0.04, 0.12, 6, 48),
         new THREE.MeshStandardMaterial({ color: 0x6a4a28, roughness: 0.8 })
       );
-      terrace.rotation.x = Math.PI / 2;
-      terrace.position.y = (i + 1) * stageHeight - 0.1;
-      tower.add(terrace);
-      stageMeshes.push({ stage, y: i * stageHeight, r: (rBottom + rTop) / 2 });
+      trimBottom.rotation.x = Math.PI / 2;
+      trimBottom.position.y = yBase + 0.08;
+      tower.add(trimBottom);
+      // 柱（4方向に）
+      for (let k = 0; k < 8; k++) {
+        const a = (k / 8) * Math.PI * 2;
+        const col = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.3, 0.32, stageHeight * 0.85, 10),
+          new THREE.MeshStandardMaterial({ color: 0xd8b078, roughness: 0.7 })
+        );
+        col.position.set(Math.cos(a) * (rOuter + 0.2), yBase + stageHeight * 0.425, Math.sin(a) * (rOuter + 0.2));
+        col.castShadow = true;
+        tower.add(col);
+      }
+      stageMeshes.push({ yTop: yBase + stageHeight * 0.85, r: rOuter });
     }
 
-    // 🌀 螺旋スロープ（塔に巻きつく）
+    // 🌀 螺旋スロープ（段差を縫うように巻きつく）
+    const totalHeight = STAGES * stageHeight;
     const spiralCurve = new THREE.CatmullRomCurve3(
-      Array.from({length: 120}).map((_, i) => {
-        const t = i / 119;
-        const y = 0.2 + t * (STAGES * stageHeight - 1);
-        const r = baseRadius - (baseRadius - topRadius) * t - 0.3; // 壁から少し離す
-        const a = t * Math.PI * 8; // 4周回
+      Array.from({length: 200}).map((_, i) => {
+        const t = i / 199;
+        const y = 0.2 + t * (totalHeight - 0.5);
+        // 現在のyに対応する段のrを取得
+        const stageIdx = Math.min(STAGES - 1, Math.floor(y / stageHeight));
+        const r = (baseRadius - stageIdx * stepInset) + 0.5; // 壁の外側に沿う
+        const a = t * Math.PI * 6; // 3周
         return new THREE.Vector3(Math.cos(a) * r, y, Math.sin(a) * r);
       })
     );
     const ramp = new THREE.Mesh(
-      new THREE.TubeGeometry(spiralCurve, 200, 0.6, 8, false),
+      new THREE.TubeGeometry(spiralCurve, 240, 0.5, 8, false),
       new THREE.MeshStandardMaterial({ color: 0x7a5a38, roughness: 0.9 })
     );
     ramp.castShadow = true;
     tower.add(ramp);
+    // 螺旋の欄干（石の小柱を一定間隔で）
+    for (let i = 0; i < 80; i++) {
+      const t = i / 79;
+      const p = spiralCurve.getPoint(t);
+      const p2 = spiralCurve.getPoint(Math.min(1, t + 0.01));
+      const pillar = new THREE.Mesh(
+        new THREE.BoxGeometry(0.12, 0.5, 0.12),
+        new THREE.MeshStandardMaterial({ color: 0xa08060, roughness: 0.8 })
+      );
+      pillar.position.set(p.x, p.y + 0.3, p.z);
+      pillar.lookAt(p2.x, p.y + 0.3, p2.z);
+      tower.add(pillar);
+    }
 
     // 塔頂上（未完成の足場）
-    const topY = STAGES * stageHeight;
+    const topY = totalHeight;
+    const finalTopRadius = Math.max(3, baseRadius - (STAGES - 1) * stepInset);
     const topPlatform = new THREE.Mesh(
-      new THREE.CylinderGeometry(topRadius, topRadius, 0.8, 36),
+      new THREE.CylinderGeometry(finalTopRadius - 0.5, finalTopRadius - 0.5, 0.8, 36),
       brickMat
     );
     topPlatform.position.y = topY + 0.4;
@@ -7256,14 +7545,14 @@
         new THREE.BoxGeometry(0.15, 4, 0.15),
         new THREE.MeshStandardMaterial({ color: 0x5a3a18, roughness: 0.9 })
       );
-      scaffold.position.set(Math.cos(a) * (topRadius + 0.2), topY + 2.8, Math.sin(a) * (topRadius + 0.2));
+      scaffold.position.set(Math.cos(a) * (finalTopRadius + 0.2), topY + 2.8, Math.sin(a) * (finalTopRadius + 0.2));
       scaffold.castShadow = true;
       tower.add(scaffold);
     }
     // 水平の足場
     for (let k = 0; k < 3; k++) {
       const hRing = new THREE.Mesh(
-        new THREE.TorusGeometry(topRadius + 0.25, 0.06, 6, 24),
+        new THREE.TorusGeometry(finalTopRadius + 0.25, 0.06, 6, 24),
         new THREE.MeshStandardMaterial({ color: 0x5a3a18, roughness: 0.9 })
       );
       hRing.rotation.x = Math.PI / 2;
@@ -7277,7 +7566,7 @@
         new THREE.BoxGeometry(0.5, 0.3, 0.35),
         brickMat
       );
-      block.position.set(Math.cos(a) * topRadius * 0.6, topY + 0.9, Math.sin(a) * topRadius * 0.6);
+      block.position.set(Math.cos(a) * finalTopRadius * 0.6, topY + 0.9, Math.sin(a) * finalTopRadius * 0.6);
       block.rotation.y = Math.random() * Math.PI;
       block.castShadow = true;
       tower.add(block);
