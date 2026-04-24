@@ -4322,6 +4322,27 @@
             <span class="cms-n">マトリョーシカ</span>
             <span class="cms-d">宇宙→素粒子→意識→宇宙</span>
           </button>
+          <button class="cms-item" data-mode="truth">
+            <span class="cms-i">✒️</span>
+            <span class="cms-n">我が真理</span>
+            <span class="cms-d">あなたの真理を宇宙に刻む</span>
+          </button>
+        </div>
+      </div>
+      <!-- 真理ティッカー（上部に緩やかに流れる） -->
+      <div class="cosmos-truth-ticker" id="cosmosTruthTicker"></div>
+      <!-- 真理入力ダイアログ -->
+      <div class="cosmos-truth-dialog" id="cosmosTruthDialog">
+        <div class="ctd-inner">
+          <div class="ctd-title">✒️ この世の真理</div>
+          <div class="ctd-sub">あなたの気づきを宇宙に刻む</div>
+          <textarea id="ctdInput" maxlength="80" placeholder="真理は、一行に宿る..."></textarea>
+          <div class="ctd-saved-label" id="ctdSavedLabel"></div>
+          <div class="ctd-saved" id="ctdSaved"></div>
+          <div class="ctd-buttons">
+            <button id="ctdCancel" class="ctd-btn ctd-cancel">閉じる</button>
+            <button id="ctdSave" class="ctd-btn ctd-save">宇宙に刻む ✨</button>
+          </div>
         </div>
       </div>
       <div class="cosmos-matryoshka" id="cosmosMatryoshka">
@@ -6223,8 +6244,90 @@
           m.classList.toggle('show', modes.matryoshka);
           if (modes.matryoshka) { mIdx = 7; renderMatryoshka(); }
         }
+        if (mode === 'truth') {
+          openTruthDialog();
+          // このモードは表示トグルではないので classList を即 OFF
+          btn.classList.remove('active');
+          modes.truth = false;
+        }
       });
     });
+
+    // ============================================================
+    // ✒️ 我が真理（ユーザーが刻んだ真理がティッカーで流れる）
+    // ============================================================
+    const truthDialog = ov.querySelector('#cosmosTruthDialog');
+    const truthTicker = ov.querySelector('#cosmosTruthTicker');
+    const ctdInput = ov.querySelector('#ctdInput');
+    const ctdSaved = ov.querySelector('#ctdSaved');
+    const ctdSavedLabel = ov.querySelector('#ctdSavedLabel');
+    function loadTruths() {
+      try { return JSON.parse(localStorage.getItem('cosmosTruths') || '[]'); } catch (e) { return []; }
+    }
+    function saveTruths(arr) {
+      try { localStorage.setItem('cosmosTruths', JSON.stringify(arr)); } catch (e) {}
+    }
+    function renderSavedTruths() {
+      const arr = loadTruths();
+      if (!arr.length) {
+        ctdSavedLabel.textContent = '';
+        ctdSaved.innerHTML = '';
+        return;
+      }
+      ctdSavedLabel.textContent = `過去の真理（${arr.length}件）`;
+      ctdSaved.innerHTML = arr.slice().reverse().map((t, i) => `
+        <div class="ctd-row">
+          <span class="ctd-text">${t.text.replace(/[<>&]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]))}</span>
+          <button class="ctd-del" data-idx="${arr.length - 1 - i}" aria-label="削除">×</button>
+        </div>
+      `).join('');
+      ctdSaved.querySelectorAll('.ctd-del').forEach(b => {
+        b.addEventListener('click', () => {
+          const a2 = loadTruths();
+          a2.splice(parseInt(b.dataset.idx, 10), 1);
+          saveTruths(a2);
+          renderSavedTruths();
+          updateTicker();
+        });
+      });
+    }
+    function openTruthDialog() {
+      ctdInput.value = '';
+      renderSavedTruths();
+      truthDialog.classList.add('show');
+      setTimeout(() => ctdInput.focus(), 100);
+    }
+    ov.querySelector('#ctdSave').addEventListener('click', () => {
+      const text = ctdInput.value.trim();
+      if (text) {
+        const arr = loadTruths();
+        arr.push({ text, at: Date.now() });
+        saveTruths(arr);
+        renderSavedTruths();
+        ctdInput.value = '';
+        updateTicker();
+        flashBanner('✒️ 真理が宇宙に刻まれた', 2200);
+      }
+    });
+    ov.querySelector('#ctdCancel').addEventListener('click', () => {
+      truthDialog.classList.remove('show');
+    });
+
+    // 真理ティッカー: universe相でゆっくり切り替えて流す
+    let truthIdx = 0;
+    let truthCycleTimer = 0;
+    function updateTicker() {
+      const arr = loadTruths();
+      if (arr.length === 0) {
+        truthTicker.classList.remove('show');
+        truthTicker.textContent = '';
+      } else {
+        truthTicker.classList.add('show');
+        const t = arr[truthIdx % arr.length];
+        truthTicker.textContent = '— ' + t.text + ' —';
+      }
+    }
+    updateTicker();
 
     // ============================================================
     // 🪆 マトリョーシカ階層（宇宙→素粒子→意識→宇宙 の輪）
@@ -7869,6 +7972,13 @@
         if (meteorBurst > 0 && shootingStars.length < 12 && Math.random() < 0.5) {
           spawnShootingStar();
           meteorBurst--;
+        }
+        // ✒️ 真理ティッカー切り替え（9秒ごと）
+        truthCycleTimer += 0.016;
+        if (truthCycleTimer > 9) {
+          truthCycleTimer = 0;
+          truthIdx++;
+          updateTicker();
         }
         // 🌠 願い星の呼吸（ゆっくり輝度がゆらぐ）
         wishStars.forEach(s => {

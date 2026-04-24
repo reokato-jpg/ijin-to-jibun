@@ -3711,7 +3711,7 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
 .cosmos-planet-list {
   position: absolute;
   top: 56px;
-  right: 14px;
+  left: 14px; /* 右側はモード/ズーム/Vehicleと競合するので左へ */
   z-index: 17;
 }
 .cpl-toggle {
@@ -3735,22 +3735,22 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
 .cpl-body {
   position: absolute;
   top: 52px;
-  right: 0;
-  width: 180px;
+  left: 0;
+  width: 260px;
   max-height: 0;
   overflow: hidden;
-  background: linear-gradient(180deg, rgba(30,20,60,0.92), rgba(15,10,30,0.92));
+  background: linear-gradient(180deg, rgba(30,20,60,0.94), rgba(15,10,30,0.94));
   border-radius: 14px;
-  border: 1px solid rgba(200,180,255,0.3);
+  border: 1px solid rgba(200,180,255,0.35);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   box-shadow: 0 8px 24px rgba(0,0,0,0.6);
   transition: max-height 0.3s ease, padding 0.3s ease;
-  padding: 0 10px;
+  padding: 0 12px;
 }
 .cpl-body.open {
   max-height: 420px;
-  padding: 12px 10px;
+  padding: 12px 12px 14px;
 }
 .cpl-title {
   color: #e0d0ff;
@@ -3760,32 +3760,39 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
   margin: 0 0 8px 2px;
   opacity: 0.8;
 }
+/* 2列グリッドで惑星を横並びに（縦長を解消） */
 .cpl-items {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
 }
 .cpl-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 7px 10px;
-  background: transparent;
-  border: none;
+  gap: 6px;
+  padding: 6px 8px;
+  background: rgba(80,60,140,0.12);
+  border: 1px solid rgba(180,160,220,0.18);
   color: #fff;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   border-radius: 8px;
   cursor: pointer;
   text-align: left;
   transition: background 0.12s;
-  white-space: nowrap;
+  font-family: 'Shippori Mincho', serif;
+  min-width: 0;
+}
+.cpl-item:hover {
+  background: rgba(180,160,240,0.25);
+  border-color: rgba(255,210,140,0.5);
 }
 .cpl-item > span:last-child {
   flex: 1;
-  white-space: nowrap;
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .cpl-item:hover, .cpl-item:active {
   background: rgba(180,160,240,0.18);
@@ -4111,6 +4118,144 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
   50%      { filter: brightness(1.15) saturate(1.3); }
 }
 
+/* ✒️ 真理ティッカー */
+.cosmos-truth-ticker {
+  position: absolute;
+  top: 108px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 80vw;
+  padding: 6px 18px;
+  color: #e8d8ff;
+  font-size: 12px;
+  font-family: 'Shippori Mincho', serif;
+  letter-spacing: 0.12em;
+  font-weight: 500;
+  text-align: center;
+  text-shadow: 0 0 10px rgba(200,180,255,0.5), 0 1px 3px rgba(0,0,0,0.8);
+  z-index: 14;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.4s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cosmos-truth-ticker.show { opacity: 0.9; }
+@media (max-width: 480px) {
+  .cosmos-truth-ticker { top: 100px; font-size: 11px; max-width: 90vw; }
+}
+
+/* ✒️ 真理ダイアログ */
+.cosmos-truth-dialog {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  background: rgba(5,5,15,0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.cosmos-truth-dialog.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+.ctd-inner {
+  width: min(92vw, 400px);
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 22px 22px 20px;
+  background: linear-gradient(180deg, rgba(40,25,80,0.95), rgba(15,10,35,0.95));
+  border: 1px solid rgba(220,200,255,0.4);
+  border-radius: 18px;
+  box-shadow: 0 12px 40px rgba(80,40,140,0.5), 0 0 40px rgba(140,100,230,0.2);
+  text-align: center;
+}
+.ctd-title { font-size: 18px; font-weight: 700; color: #fff; letter-spacing: 0.08em; margin-bottom: 6px; font-family: 'Shippori Mincho', serif; }
+.ctd-sub   { font-size: 11px; color: #c0b0e0; letter-spacing: 0.1em; margin-bottom: 18px; }
+#ctdInput {
+  width: 100%;
+  height: 76px;
+  padding: 10px 12px;
+  background: rgba(10,5,25,0.8);
+  border: 1px solid rgba(180,160,220,0.4);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 14px;
+  resize: none;
+  font-family: 'Shippori Mincho', serif;
+  margin-bottom: 12px;
+  outline: none;
+}
+#ctdInput:focus { border-color: rgba(220,200,255,0.8); }
+.ctd-saved-label {
+  text-align: left;
+  font-size: 10px;
+  color: rgba(200,180,255,0.7);
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+}
+.ctd-saved {
+  max-height: 160px;
+  overflow-y: auto;
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.ctd-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  background: rgba(60,40,110,0.35);
+  border-radius: 8px;
+  text-align: left;
+}
+.ctd-text {
+  flex: 1;
+  font-size: 12px;
+  color: #e8d8ff;
+  font-family: 'Shippori Mincho', serif;
+  line-height: 1.5;
+}
+.ctd-del {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 1px solid rgba(200,100,140,0.4);
+  background: rgba(120,40,60,0.5);
+  color: #fff;
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+}
+.ctd-buttons { display: flex; gap: 10px; }
+.ctd-btn {
+  flex: 1;
+  padding: 10px;
+  border-radius: 999px;
+  border: none;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+}
+.ctd-cancel { background: rgba(100,80,140,0.5); color: #e0d0ff; border: 1px solid rgba(180,160,220,0.3); }
+.ctd-save {
+  background: linear-gradient(135deg, #a060e0, #6030a8);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(140,80,230,0.4);
+}
+.ctd-save:active { transform: scale(0.96); }
+
 /* 🌠 願い星ダイアログ */
 .cosmos-wish-dialog {
   position: absolute;
@@ -4332,8 +4477,8 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
 }
 
 @media (max-width: 480px) {
-  .cosmos-planet-list { top: 52px; right: 10px; }
-  .cpl-body { width: 160px; }
+  .cosmos-planet-list { top: 52px; left: 10px; }
+  .cpl-body { width: calc(100vw - 40px); max-width: 260px; }
   .cosmos-time-ctrl button { min-width: 34px; padding: 5px 8px; font-size: 11px; }
   .cosmos-modes { top: 104px; right: 10px; }
   .cosmos-modes button { width: 36px; height: 36px; font-size: 16px; }
