@@ -3708,30 +3708,43 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
   transform: translate(-50%, 0) scale(1);
 }
 
-/* スピードライン（BOOST時のラディアルブラー風） */
+/* スピードライン（なめらかなラディアルブラー） */
 .cosmos-speedlines {
   position: absolute;
-  inset: 0;
+  inset: -8%;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.15s;
+  transition: opacity 0.35s ease;
   z-index: 5;
   background:
-    radial-gradient(ellipse at center, transparent 30%, rgba(255,255,255,0.04) 50%, transparent 60%),
-    repeating-conic-gradient(from 0deg at 50% 50%,
-      rgba(255,255,255,0) 0deg, rgba(255,255,255,0) 4deg,
-      rgba(255,240,220,0.18) 4.2deg, rgba(255,240,220,0) 5deg);
+    radial-gradient(ellipse 55% 55% at center,
+      transparent 45%,
+      rgba(180,200,255,0.08) 70%,
+      rgba(200,220,255,0.18) 90%,
+      rgba(220,235,255,0.28) 100%);
+  filter: blur(18px);
   mix-blend-mode: screen;
-  mask-image: radial-gradient(ellipse at center, transparent 30%, black 65%);
-  -webkit-mask-image: radial-gradient(ellipse at center, transparent 30%, black 65%);
 }
-.cosmos-speedlines.on {
-  opacity: 1;
-  animation: speedSpin 1.2s linear infinite;
+.cosmos-speedlines::before,
+.cosmos-speedlines::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 40% 60% at center, transparent 50%, rgba(255,255,255,0.12) 85%, rgba(255,255,255,0.22) 100%);
+  filter: blur(24px);
+  mix-blend-mode: screen;
+  opacity: 0;
+  transition: opacity 0.4s;
 }
-@keyframes speedSpin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.cosmos-speedlines::after {
+  animation: warpZoom 0.9s ease-in-out infinite alternate;
+}
+.cosmos-speedlines.on { opacity: 1; }
+.cosmos-speedlines.on::before { opacity: 1; }
+.cosmos-speedlines.on::after { opacity: 0.8; }
+@keyframes warpZoom {
+  from { transform: scale(0.9); }
+  to   { transform: scale(1.08); }
 }
 
 @media (max-width: 480px) {

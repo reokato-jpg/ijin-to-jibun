@@ -4634,12 +4634,12 @@
           // F環 (細い、外側): 470-485
           g.fillStyle = 'rgba(232,216,176,0.42)';
           g.fillRect(0, 470, 64, 15);
-          // 放射状のスポーク（微妙な筋）
-          for (let s = 0; s < 30; s++) {
+          // 放射方向の微妙な濃淡（薄く）
+          for (let s = 0; s < 14; s++) {
             const y = 100 + Math.random() * 350;
-            const alpha = 0.05 + Math.random() * 0.1;
-            g.fillStyle = `rgba(60,40,20,${alpha})`;
-            g.fillRect(0, y, 64, 1 + Math.random() * 2);
+            const alpha = 0.025 + Math.random() * 0.04;
+            g.fillStyle = `rgba(80,60,40,${alpha})`;
+            g.fillRect(0, y, 64, 2 + Math.random() * 3);
           }
           return new THREE.CanvasTexture(sc);
         })();
@@ -5022,13 +5022,13 @@
         const base = g.createLinearGradient(0, 0, 0, 256);
         base.addColorStop(0, '#e8ecf2'); base.addColorStop(1, '#c8d2de');
         g.fillStyle = base; g.fillRect(0, 0, 512, 256);
-        // パネルライン
-        g.strokeStyle = 'rgba(30,40,60,0.35)'; g.lineWidth = 1;
-        for (let i = 0; i < 12; i++) {
-          g.beginPath(); g.moveTo(i * 42, 0); g.lineTo(i * 42 + 30, 256); g.stroke();
+        // パネルライン（柔らかく）
+        g.strokeStyle = 'rgba(40,52,78,0.22)'; g.lineWidth = 2.2;
+        for (let i = 0; i < 6; i++) {
+          g.beginPath(); g.moveTo(i * 84, 0); g.lineTo(i * 84 + 40, 256); g.stroke();
         }
-        for (let i = 0; i < 8; i++) {
-          g.beginPath(); g.moveTo(0, i * 32); g.lineTo(512, i * 32 + 4); g.stroke();
+        for (let i = 0; i < 4; i++) {
+          g.beginPath(); g.moveTo(0, i * 64 + 20); g.lineTo(512, i * 64 + 24); g.stroke();
         }
         // アクセントストライプ（赤）
         g.fillStyle = '#c83040'; g.fillRect(0, 118, 512, 8);
@@ -5702,7 +5702,7 @@
             if (pm.mesh.userData.accretion) pm.mesh.userData.accretion.visible = true;
             if (pm.mesh.userData.bhHalo) pm.mesh.userData.bhHalo.visible = true;
             if (pm.mesh.userData.isBlackHole) pm.orbit.material.opacity = 0.0;
-            else pm.orbit.material.opacity = 0.25;
+            else pm.orbit.material.opacity = 0.12;
             if (pm.mesh.userData.atmShell) pm.mesh.userData.atmShell.visible = true;
             if (pm.mesh.userData.shadowShell) pm.mesh.userData.shadowShell.visible = true;
           });
