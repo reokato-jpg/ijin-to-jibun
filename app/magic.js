@@ -3544,6 +3544,10 @@
       <div class="cosmos-conscious-label" id="cosmosConsciousLabel">CONSCIOUSNESS&nbsp;&nbsp;FIELD</div>
       <button class="cosmos-tap" id="cosmosTap">TAP</button>
       <div class="cosmos-hud" id="cosmosHud"></div>
+      <div class="cosmos-info-panel" id="cosmosInfoPanel">
+        <button class="cosmos-info-close" aria-label="閉じる">×</button>
+        <div class="cosmos-info-content" id="cosmosInfoContent"></div>
+      </div>
     `;
     document.body.appendChild(ov);
     requestAnimationFrame(() => ov.classList.add('open'));
@@ -3707,16 +3711,116 @@
     corona.visible = false;
     scene.add(corona);
 
-    // 惑星データ（距離, サイズ, 色, 名前）
+    // 惑星データ（距離, サイズ, 色, 教育情報）
     const PLANETS = [
-      { name: '水星', jname: '水星', dist: 7,  size: 0.5, color: 0xa89080, speed: 0.015 },
-      { name: '金星', jname: '金星', dist: 10, size: 0.9, color: 0xe8c078, speed: 0.012 },
-      { name: '地球', jname: '地球', dist: 14, size: 1.0, color: 0x4a7fb8, speed: 0.010, isEarth: true },
-      { name: '火星', jname: '火星', dist: 18, size: 0.7, color: 0xc87040, speed: 0.008 },
-      { name: '木星', jname: '木星', dist: 24, size: 2.2, color: 0xd8b088, speed: 0.005 },
-      { name: '土星', jname: '土星', dist: 30, size: 1.9, color: 0xe0c890, speed: 0.004, hasRing: true },
-      { name: '天王星', jname: '天王星', dist: 36, size: 1.3, color: 0x9fd0d8, speed: 0.003 },
-      { name: '海王星', jname: '海王星', dist: 42, size: 1.3, color: 0x5080c8, speed: 0.002 }
+      {
+        name: '水星', jname: '水星', dist: 7, size: 0.5, color: 0xa89080, speed: 0.015,
+        facts: {
+          diameter: '4,880 km (地球の約38%)',
+          distance: '太陽から約5,790万km (0.39天文単位、光で3分)',
+          period: '公転88日 / 自転59日',
+          temp: '昼430℃ / 夜-180℃（大気がほぼ無い）',
+          moons: '衛星なし',
+          nasa: 'NASA探査機MESSENGERが2011-2015年に周回観測。BepiColombo（JAXA/ESA）が2025年到達予定。',
+          trivia: '太陽系で最も小さい惑星。表面はクレーターだらけで月に似ている。'
+        }
+      },
+      {
+        name: '金星', jname: '金星', dist: 10, size: 0.9, color: 0xe8c078, speed: 0.012,
+        facts: {
+          diameter: '12,104 km (地球の約95%)',
+          distance: '太陽から約1.08億km (0.72AU、光で6分)',
+          period: '公転225日 / 自転243日（逆回転！）',
+          temp: '表面約460℃ — 水星より暑い',
+          moons: '衛星なし',
+          nasa: '厚い二酸化炭素の雲で覆われ、気圧は地球の92倍。温室効果の極端な例として研究対象。',
+          trivia: '夜空で最も明るい惑星（金星の太白）。日本でも古代から愛される。'
+        }
+      },
+      {
+        name: '地球', jname: '地球', dist: 14, size: 1.0, color: 0x4a7fb8, speed: 0.010, isEarth: true,
+        facts: {
+          diameter: '12,742 km',
+          distance: '太陽から約1.496億km (1AU、光で8分)',
+          period: '公転365.25日 / 自転24時間',
+          temp: '平均15℃（液体の水が存在する唯一の惑星）',
+          moons: '月（直径3,474km）',
+          nasa: '現在観測された唯一の生命存在惑星。NASAのEarth Observatoryが気候変動を常時監視。',
+          trivia: '190人以上の偉人が生まれ、歴史を紡いだ青い惑星。'
+        }
+      },
+      {
+        name: '火星', jname: '火星', dist: 18, size: 0.7, color: 0xc87040, speed: 0.008,
+        facts: {
+          diameter: '6,779 km (地球の53%)',
+          distance: '太陽から約2.28億km (1.52AU、光で13分)',
+          period: '公転687日 / 自転24.6時間（地球と似る）',
+          temp: '平均-63℃',
+          moons: 'フォボスとダイモス（2つの小衛星）',
+          nasa: 'Perseverance（2021-）と Curiosity（2012-）が地表で活動中。火星サンプルリターン計画進行中。',
+          trivia: 'オリンポス山は標高約21,230m（太陽系最大の火山、エベレストの2.4倍）。'
+        }
+      },
+      {
+        name: '木星', jname: '木星', dist: 24, size: 2.2, color: 0xd8b088, speed: 0.005,
+        facts: {
+          diameter: '139,820 km (地球の11倍、全惑星質量の2/3)',
+          distance: '太陽から約7.78億km (5.2AU、光で43分)',
+          period: '公転11.86年 / 自転9.9時間（最速！）',
+          temp: '上層-110℃（ガス惑星）',
+          moons: '95個以上（ガリレオ衛星: イオ・エウロパ・ガニメデ・カリスト）',
+          nasa: 'Juno探査機が2016年から周回観測中。エウロパには氷の下に海がある可能性。',
+          trivia: '大赤斑は350年以上続く巨大嵐（地球が2個入るサイズ）。'
+        }
+      },
+      {
+        name: '土星', jname: '土星', dist: 30, size: 1.9, color: 0xe0c890, speed: 0.004, hasRing: true,
+        facts: {
+          diameter: '116,460 km',
+          distance: '太陽から約14.33億km (9.54AU、光で79分)',
+          period: '公転29.5年 / 自転10.7時間',
+          temp: '上層-140℃',
+          moons: '146個以上（タイタンは大気を持つ唯一の衛星）',
+          nasa: 'Cassini探査機が2004-2017年に観測。北極の六角形模様は謎のまま。',
+          trivia: 'リングは氷の粒子でできており、厚さはわずか10-20m程度。'
+        }
+      },
+      {
+        name: '天王星', jname: '天王星', dist: 36, size: 1.3, color: 0x9fd0d8, speed: 0.003,
+        facts: {
+          diameter: '50,724 km',
+          distance: '太陽から約28.7億km (19.2AU、光で2.6時間)',
+          period: '公転84年 / 自転17時間',
+          temp: '上層-224℃（太陽系最低）',
+          moons: '27個（ミランダ、アリエル等）',
+          nasa: 'Voyager 2が1986年に唯一フライバイ観測。次の探査機計画が2030年代に。',
+          trivia: '自転軸が98°倒れており、ほぼ横倒しで太陽を公転する変わり者。'
+        }
+      },
+      {
+        name: '海王星', jname: '海王星', dist: 42, size: 1.3, color: 0x5080c8, speed: 0.002,
+        facts: {
+          diameter: '49,244 km',
+          distance: '太陽から約44.95億km (30.1AU、光で4.2時間)',
+          period: '公転165年 / 自転16時間',
+          temp: '上層-214℃',
+          moons: '14個（トリトンは逆行軌道で独特）',
+          nasa: 'Voyager 2が1989年にフライバイ観測。大暗斑を発見。',
+          trivia: '最速風速は時速2,100km（太陽系最強の嵐）。'
+        }
+      },
+      {
+        name: 'ブラックホール', jname: 'いて座A*', dist: 70, size: 1.8, color: 0x000000, speed: 0, isBlackHole: true,
+        facts: {
+          diameter: '事象の地平線 直径約2,400万km (太陽の17倍)',
+          distance: '地球から約2万6,000光年（天の川銀河の中心）',
+          period: '恒星S2の公転周期は16年',
+          temp: '降着円盤は数百万℃に達する',
+          moons: '周囲を多数の星が高速公転',
+          nasa: 'Event Horizon Telescopeが2022年に初撮影公開。M87銀河のブラックホール画像もこのチーム。',
+          trivia: '質量は太陽の約400万倍。光すら脱出不可。ホーキング放射により微量に蒸発する。'
+        }
+      }
     ];
     // 惑星の手描きテクスチャ生成（惑星ごとに特徴ある柄）
     function makePlanetTexture(p) {
@@ -3790,75 +3894,202 @@
           cx.ellipse(Math.random() * c.width, 40 + Math.random() * (c.height - 80), 30 + Math.random() * 80, 6 + Math.random() * 14, Math.random() * Math.PI * 0.2, 0, Math.PI * 2);
           cx.fill();
         }
-      } else if (p.name === '木星' || p.name === '土星') {
-        // ガス惑星の横縞
-        const stripes = p.name === '木星' ? 14 : 10;
-        for (let i = 0; i < stripes; i++) {
-          const y = (i / stripes) * c.height;
-          const h = c.height / stripes;
-          const shade = (Math.sin(i * 1.3) * 0.15 + 1) * (p.name === '木星' ? 0.9 : 1);
-          cx.fillStyle = p.name === '木星'
-            ? `rgba(${220 * shade | 0},${180 * shade | 0},${130 * shade | 0},1)`
-            : `rgba(${220 * shade | 0},${200 * shade | 0},${140 * shade | 0},1)`;
-          cx.fillRect(0, y, c.width, h);
+      } else if (p.name === '木星') {
+        c.width = 1024; c.height = 512;
+        // 複数の茶色〜黄色系のベルト
+        const bands = [
+          { y: 0, h: 0.05, color: '#c9a375' },
+          { y: 0.05, h: 0.06, color: '#d8b88a' },
+          { y: 0.11, h: 0.07, color: '#a88868' },
+          { y: 0.18, h: 0.08, color: '#e0c798' },
+          { y: 0.26, h: 0.10, color: '#c09878' },
+          { y: 0.36, h: 0.08, color: '#e8d8aa' },
+          { y: 0.44, h: 0.06, color: '#b88860' },
+          { y: 0.50, h: 0.08, color: '#d8b488' },
+          { y: 0.58, h: 0.10, color: '#c09878' },
+          { y: 0.68, h: 0.08, color: '#e0c798' },
+          { y: 0.76, h: 0.07, color: '#a88868' },
+          { y: 0.83, h: 0.06, color: '#d8b88a' },
+          { y: 0.89, h: 0.05, color: '#c9a375' },
+          { y: 0.94, h: 0.06, color: '#b89868' }
+        ];
+        bands.forEach(b => {
+          cx.fillStyle = b.color;
+          cx.fillRect(0, b.y * c.height, c.width, b.h * c.height);
+          // 乱流（渦巻き）
+          cx.globalAlpha = 0.25;
+          for (let i = 0; i < 8; i++) {
+            cx.fillStyle = 'rgba(120,80,50,0.5)';
+            cx.beginPath();
+            cx.ellipse(Math.random() * c.width, (b.y + b.h/2) * c.height, 40 + Math.random() * 80, b.h * c.height * 0.35, 0, 0, Math.PI * 2);
+            cx.fill();
+          }
+          cx.globalAlpha = 1;
+        });
+        // 大赤斑
+        cx.save();
+        const gr = cx.createRadialGradient(c.width * 0.35, c.height * 0.6, 0, c.width * 0.35, c.height * 0.6, 70);
+        gr.addColorStop(0, '#c84030');
+        gr.addColorStop(0.5, '#a03020');
+        gr.addColorStop(1, 'rgba(160,48,32,0)');
+        cx.fillStyle = gr;
+        cx.beginPath();
+        cx.ellipse(c.width * 0.35, c.height * 0.6, 70, 28, 0, 0, Math.PI * 2);
+        cx.fill();
+        cx.restore();
+      } else if (p.name === '土星') {
+        c.width = 1024; c.height = 512;
+        // 淡い黄色の縞
+        const bands = [
+          { y: 0, h: 0.08, color: '#e8d8a8' },
+          { y: 0.08, h: 0.10, color: '#d8c898' },
+          { y: 0.18, h: 0.12, color: '#f0e0b0' },
+          { y: 0.30, h: 0.10, color: '#e0c890' },
+          { y: 0.40, h: 0.20, color: '#f5e8c0' },
+          { y: 0.60, h: 0.10, color: '#e0c890' },
+          { y: 0.70, h: 0.12, color: '#d8c898' },
+          { y: 0.82, h: 0.10, color: '#c8b888' },
+          { y: 0.92, h: 0.08, color: '#b8a878' }
+        ];
+        bands.forEach(b => {
+          cx.fillStyle = b.color;
+          cx.fillRect(0, b.y * c.height, c.width, b.h * c.height);
+        });
+        // 北極の六角形パターン（ヘキサゴン）
+        cx.strokeStyle = 'rgba(120,90,50,0.4)';
+        cx.lineWidth = 2;
+        cx.beginPath();
+        const hcx = c.width * 0.5, hcy = c.height * 0.12, hr = 30;
+        for (let i = 0; i <= 6; i++) {
+          const a = (i / 6) * Math.PI * 2 - Math.PI / 2;
+          if (i === 0) cx.moveTo(hcx + Math.cos(a) * hr, hcy + Math.sin(a) * hr);
+          else cx.lineTo(hcx + Math.cos(a) * hr, hcy + Math.sin(a) * hr);
         }
-        // 大赤斑（木星のみ）
-        if (p.name === '木星') {
-          cx.fillStyle = 'rgba(180,80,60,0.8)';
-          cx.beginPath();
-          cx.ellipse(c.width * 0.35, c.height * 0.55, 40, 18, 0, 0, Math.PI * 2);
-          cx.fill();
-        }
+        cx.stroke();
       } else if (p.name === '火星') {
-        // 赤っぽい砂漠＋クレーター
-        cx.fillStyle = '#b54a28';
+        c.width = 1024; c.height = 512;
+        // 赤い砂漠 + グラデ（西部は暗く、東部は明るく）
+        const grd = cx.createLinearGradient(0, 0, c.width, 0);
+        grd.addColorStop(0, '#a03818');
+        grd.addColorStop(0.5, '#c85030');
+        grd.addColorStop(1, '#9a3818');
+        cx.fillStyle = grd;
         cx.fillRect(0, 0, c.width, c.height);
-        cx.fillStyle = 'rgba(80,30,10,0.4)';
-        for (let i = 0; i < 30; i++) {
+        // 峡谷（マリネリス峡谷を暗い線で表現）
+        cx.fillStyle = 'rgba(40,15,5,0.7)';
+        cx.fillRect(c.width * 0.35, c.height * 0.48, c.width * 0.35, 8);
+        // オリンポス山（大きな明るいスポット）
+        const og = cx.createRadialGradient(c.width * 0.25, c.height * 0.40, 0, c.width * 0.25, c.height * 0.40, 50);
+        og.addColorStop(0, '#e88858');
+        og.addColorStop(1, 'rgba(232,136,88,0)');
+        cx.fillStyle = og;
+        cx.beginPath();
+        cx.arc(c.width * 0.25, c.height * 0.40, 50, 0, Math.PI * 2);
+        cx.fill();
+        // クレーター（多数の小さい暗い丸）
+        for (let i = 0; i < 80; i++) {
+          cx.fillStyle = `rgba(60,20,10,${0.3 + Math.random() * 0.3})`;
           cx.beginPath();
-          cx.arc(Math.random() * c.width, Math.random() * c.height, 8 + Math.random() * 30, 0, Math.PI * 2);
+          cx.arc(Math.random() * c.width, Math.random() * c.height, 3 + Math.random() * 20, 0, Math.PI * 2);
           cx.fill();
         }
-        // 極冠（氷）
-        cx.fillStyle = 'rgba(250,245,230,0.9)';
-        cx.fillRect(0, 0, c.width, 18);
-        cx.fillRect(0, c.height - 18, c.width, 18);
+        // 極冠
+        cx.fillStyle = 'rgba(248,240,220,0.92)';
+        cx.fillRect(0, 0, c.width, 32);
+        cx.fillRect(0, c.height - 32, c.width, 32);
       } else if (p.name === '金星') {
-        // 黄色の厚い雲
-        cx.fillStyle = '#d8a048';
+        c.width = 1024; c.height = 512;
+        cx.fillStyle = '#c8944c';
         cx.fillRect(0, 0, c.width, c.height);
-        for (let i = 0; i < 30; i++) {
-          cx.fillStyle = `rgba(255,220,140,${0.1 + Math.random()*0.3})`;
+        // 渦巻く雲層
+        for (let i = 0; i < 80; i++) {
+          const alpha = 0.1 + Math.random() * 0.25;
+          cx.fillStyle = `rgba(255,220,140,${alpha})`;
           cx.beginPath();
-          cx.ellipse(Math.random() * c.width, Math.random() * c.height, 40 + Math.random() * 80, 10 + Math.random() * 20, 0, 0, Math.PI * 2);
+          cx.ellipse(Math.random() * c.width, Math.random() * c.height, 50 + Math.random() * 120, 8 + Math.random() * 20, (Math.random() - 0.5) * 0.4, 0, Math.PI * 2);
+          cx.fill();
+        }
+        // 影の縞
+        for (let i = 0; i < 40; i++) {
+          cx.fillStyle = `rgba(100,60,20,${0.08 + Math.random() * 0.12})`;
+          cx.beginPath();
+          cx.ellipse(Math.random() * c.width, Math.random() * c.height, 60 + Math.random() * 100, 4 + Math.random() * 10, 0, 0, Math.PI * 2);
           cx.fill();
         }
       } else if (p.name === '水星') {
-        // クレーター
-        cx.fillStyle = '#98867a';
-        cx.fillRect(0, 0, c.width, c.height);
-        cx.fillStyle = 'rgba(60,50,40,0.5)';
-        for (let i = 0; i < 60; i++) {
-          cx.beginPath();
-          cx.arc(Math.random() * c.width, Math.random() * c.height, 3 + Math.random() * 15, 0, Math.PI * 2);
-          cx.fill();
-        }
-      } else if (p.name === '天王星' || p.name === '海王星') {
-        // 滑らかな青
+        c.width = 1024; c.height = 512;
+        // 灰色グラデ
         const grd = cx.createLinearGradient(0, 0, 0, c.height);
-        const baseColor = toHex(p.color);
-        grd.addColorStop(0, baseColor);
-        grd.addColorStop(0.5, '#' + ((p.color & 0xfefefe) >> 1).toString(16).padStart(6,'0'));
-        grd.addColorStop(1, baseColor);
+        grd.addColorStop(0, '#a89888');
+        grd.addColorStop(0.5, '#887868');
+        grd.addColorStop(1, '#785858');
         cx.fillStyle = grd;
         cx.fillRect(0, 0, c.width, c.height);
-        // 薄い雲
-        cx.fillStyle = 'rgba(255,255,255,0.08)';
-        for (let i = 0; i < 10; i++) {
+        // カロリス盆地（巨大クレーター）
+        const cgrd = cx.createRadialGradient(c.width * 0.25, c.height * 0.4, 0, c.width * 0.25, c.height * 0.4, 90);
+        cgrd.addColorStop(0, '#584838');
+        cgrd.addColorStop(1, 'rgba(88,72,56,0)');
+        cx.fillStyle = cgrd;
+        cx.beginPath();
+        cx.arc(c.width * 0.25, c.height * 0.4, 90, 0, Math.PI * 2);
+        cx.fill();
+        // 無数の小クレーター
+        for (let i = 0; i < 200; i++) {
+          const r = 2 + Math.random() * 20;
+          cx.fillStyle = `rgba(40,30,20,${0.3 + Math.random() * 0.4})`;
           cx.beginPath();
-          cx.ellipse(Math.random() * c.width, Math.random() * c.height, 60 + Math.random() * 80, 5 + Math.random() * 12, 0, 0, Math.PI * 2);
+          cx.arc(Math.random() * c.width, Math.random() * c.height, r, 0, Math.PI * 2);
+          cx.fill();
+          // クレーター縁の明るい部分
+          if (r > 6) {
+            cx.strokeStyle = 'rgba(200,180,160,0.25)';
+            cx.lineWidth = 1;
+            cx.stroke();
+          }
+        }
+      } else if (p.name === '天王星' || p.name === '海王星') {
+        c.width = 1024; c.height = 512;
+        const isUranus = p.name === '天王星';
+        const grd = cx.createLinearGradient(0, 0, 0, c.height);
+        if (isUranus) {
+          grd.addColorStop(0, '#9fe0e8');
+          grd.addColorStop(0.5, '#a8d8e0');
+          grd.addColorStop(1, '#6ab5c0');
+        } else {
+          grd.addColorStop(0, '#5080c8');
+          grd.addColorStop(0.5, '#4070b8');
+          grd.addColorStop(1, '#2858a0');
+        }
+        cx.fillStyle = grd;
+        cx.fillRect(0, 0, c.width, c.height);
+        // 細い雲の帯
+        for (let i = 0; i < 20; i++) {
+          cx.fillStyle = `rgba(255,255,255,${0.05 + Math.random() * 0.12})`;
+          cx.beginPath();
+          cx.ellipse(Math.random() * c.width, Math.random() * c.height, 80 + Math.random() * 120, 4 + Math.random() * 8, 0, 0, Math.PI * 2);
           cx.fill();
         }
+        // 海王星の大暗斑
+        if (!isUranus) {
+          cx.fillStyle = 'rgba(20,40,80,0.7)';
+          cx.beginPath();
+          cx.ellipse(c.width * 0.4, c.height * 0.45, 35, 14, 0, 0, Math.PI * 2);
+          cx.fill();
+        }
+      } else if (p.name === 'ブラックホール') {
+        // 完全な黒 + 降着円盤の色
+        c.width = 512; c.height = 256;
+        cx.fillStyle = '#000';
+        cx.fillRect(0, 0, c.width, c.height);
+        // 赤いホットスポット
+        cx.globalCompositeOperation = 'lighter';
+        for (let i = 0; i < 50; i++) {
+          cx.fillStyle = `rgba(${200 + Math.random()*55},${100 + Math.random()*50},${Math.random()*30},${0.1 + Math.random()*0.2})`;
+          cx.beginPath();
+          cx.arc(Math.random() * c.width, Math.random() * c.height, 5 + Math.random() * 20, 0, Math.PI * 2);
+          cx.fill();
+        }
+        cx.globalCompositeOperation = 'source-over';
       }
       const tex = new THREE.CanvasTexture(c);
       tex.anisotropy = 4;
@@ -3933,6 +4164,35 @@
         scene.add(ring);
         pMesh.userData.ring = ring;
       }
+      // ブラックホールの降着円盤
+      if (p.isBlackHole) {
+        const adGeo = new THREE.RingGeometry(p.size * 1.5, p.size * 3.5, 96);
+        // 放射状グラデのcanvasテクスチャ
+        const adCan = document.createElement('canvas'); adCan.width = 512; adCan.height = 512;
+        const adCtx = adCan.getContext('2d');
+        const adGrd = adCtx.createRadialGradient(256, 256, 80, 256, 256, 256);
+        adGrd.addColorStop(0.0, 'rgba(0,0,0,0)');
+        adGrd.addColorStop(0.25, 'rgba(255,200,80,0.9)');
+        adGrd.addColorStop(0.5, 'rgba(255,100,50,0.7)');
+        adGrd.addColorStop(0.8, 'rgba(120,30,20,0.4)');
+        adGrd.addColorStop(1.0, 'rgba(0,0,0,0)');
+        adCtx.fillStyle = adGrd;
+        adCtx.fillRect(0, 0, 512, 512);
+        const adTex = new THREE.CanvasTexture(adCan);
+        const adMat = new THREE.MeshBasicMaterial({ map: adTex, side: THREE.DoubleSide, transparent: true, opacity: 0.85 });
+        const ad = new THREE.Mesh(adGeo, adMat);
+        ad.rotation.x = Math.PI / 2.5;
+        ad.visible = false;
+        scene.add(ad);
+        pMesh.userData.accretion = ad;
+        // 重力レンズ効果の代わりに外側に暗いハロー
+        const hGeo = new THREE.SphereGeometry(p.size * 1.1, 32, 32);
+        const hMat = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.9 });
+        const halo = new THREE.Mesh(hGeo, hMat);
+        halo.visible = false;
+        scene.add(halo);
+        pMesh.userData.bhHalo = halo;
+      }
       planetMeshes.push({ mesh: pMesh, orbit, planet: p });
     });
 
@@ -3975,7 +4235,16 @@
         if (bbAge > 1.5) {
           sun.visible = true;
           corona.visible = true;
-          planetMeshes.forEach(pm => { pm.mesh.visible = true; if (pm.mesh.userData.moons) pm.mesh.userData.moons.forEach(m => m.mesh.visible = true); if (pm.mesh.userData.ring) pm.mesh.userData.ring.visible = true; if (pm.mesh.userData.atmosphere) pm.mesh.userData.atmosphere.visible = true; pm.orbit.material.opacity = 0.25; });
+          planetMeshes.forEach(pm => {
+            pm.mesh.visible = true;
+            if (pm.mesh.userData.moons) pm.mesh.userData.moons.forEach(m => m.mesh.visible = true);
+            if (pm.mesh.userData.ring) pm.mesh.userData.ring.visible = true;
+            if (pm.mesh.userData.atmosphere) pm.mesh.userData.atmosphere.visible = true;
+            if (pm.mesh.userData.accretion) pm.mesh.userData.accretion.visible = true;
+            if (pm.mesh.userData.bhHalo) pm.mesh.userData.bhHalo.visible = true;
+            if (pm.mesh.userData.isBlackHole) pm.orbit.material.opacity = 0.0;
+            else pm.orbit.material.opacity = 0.25;
+          });
         }
         if (bbAge > 3) {
           phase = 'universe';
@@ -4006,6 +4275,13 @@
           }
           if (pm.mesh.userData.atmosphere) {
             pm.mesh.userData.atmosphere.position.copy(pm.mesh.position);
+          }
+          if (pm.mesh.userData.accretion) {
+            pm.mesh.userData.accretion.position.copy(pm.mesh.position);
+            pm.mesh.userData.accretion.rotation.z += 0.005;
+          }
+          if (pm.mesh.userData.bhHalo) {
+            pm.mesh.userData.bhHalo.position.copy(pm.mesh.position);
           }
           pm.mesh.rotation.y += 0.01;
         });
@@ -4067,8 +4343,7 @@
       }
       const p = hit.object.userData;
       const pm = planetMeshes.find(x => x.mesh === hit.object);
-      hud.innerHTML = `🪐 ${p.jname}${p.isEarth ? '<span style="opacity:0.6;font-size:11px;display:block;margin-top:2px">もう一度タップで偉人の地図へ</span>' : ''}`;
-      hud.classList.add('show');
+      hud.classList.remove('show');
       // 既にズーム済みの同じ惑星を再タップ
       if (cameraZoomTarget && cameraZoomTarget.mesh === hit.object) {
         if (p.isEarth) {
@@ -4079,8 +4354,39 @@
         }
         return;
       }
-      // 初回タップ → ズームイン
+      // 初回タップ → ズームイン + 情報パネル表示
       cameraZoomTarget = pm;
+      if (p.facts) {
+        const infoEl = ov.querySelector('#cosmosInfoContent');
+        const panel = ov.querySelector('#cosmosInfoPanel');
+        infoEl.innerHTML = `
+          <div class="cosmos-info-name">${p.jname}</div>
+          <div class="cosmos-info-sub">${p.isBlackHole ? 'BLACK HOLE · いて座A*' : p.name === '地球' ? 'EARTH · 偉人が生まれた星' : p.name.toUpperCase()}</div>
+          <dl class="cosmos-info-facts">
+            <dt>直径</dt><dd>${p.facts.diameter}</dd>
+            <dt>距離</dt><dd>${p.facts.distance}</dd>
+            <dt>周期</dt><dd>${p.facts.period}</dd>
+            <dt>温度</dt><dd>${p.facts.temp}</dd>
+            <dt>衛星</dt><dd>${p.facts.moons}</dd>
+            <dt>NASA</dt><dd>${p.facts.nasa}</dd>
+          </dl>
+          <div class="cosmos-info-trivia">${p.facts.trivia}</div>
+          ${p.isEarth ? `<button class="cosmos-info-cta" id="cosmosInfoCta">🌍 偉人たちの地図へ</button>` : ''}
+        `;
+        panel.classList.add('show');
+        const cta = infoEl.querySelector('#cosmosInfoCta');
+        if (cta) {
+          cta.addEventListener('click', () => {
+            ov.classList.remove('open');
+            setTimeout(() => { ov.remove(); running = false; if (typeof openWorldMap === 'function') openWorldMap(); }, 300);
+          });
+        }
+      }
+    });
+    // infoパネル閉じるボタン
+    ov.querySelector('.cosmos-info-close')?.addEventListener('click', () => {
+      ov.querySelector('#cosmosInfoPanel').classList.remove('show');
+      cameraZoomTarget = null;
     });
 
     // タップ: 意識の接続 → 集約 → ビッグバン
