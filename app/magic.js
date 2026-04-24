@@ -2677,18 +2677,40 @@
     function drawMercator() {
       const W = mmoCanvas.clientWidth || 800;
       const H = mmoCanvas.clientHeight || 500;
-      mmoCanvas.width = W * (window.devicePixelRatio || 1);
-      mmoCanvas.height = H * (window.devicePixelRatio || 1);
+      const dpr = window.devicePixelRatio || 1;
+      mmoCanvas.width = W * dpr;
+      mmoCanvas.height = H * dpr;
       const ctx = mmoCanvas.getContext('2d');
-      ctx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
-      // 背景：夜空のグラデ
-      const bg = ctx.createLinearGradient(0, 0, 0, H);
-      bg.addColorStop(0, '#0a1028');
-      bg.addColorStop(1, '#050814');
-      ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
-      // 薄い緯度経度グリッド
-      ctx.strokeStyle = 'rgba(120,180,230,0.18)';
-      ctx.lineWidth = 0.6;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      // 🌊 海のベース（明確な海色）
+      const ocean = ctx.createLinearGradient(0, 0, 0, H);
+      ocean.addColorStop(0, '#0a2340');   // 北極海 暗い
+      ocean.addColorStop(0.2, '#14406b'); // 北の海
+      ocean.addColorStop(0.5, '#1a5a8a'); // 温帯の海
+      ocean.addColorStop(0.8, '#14406b'); // 南の海
+      ocean.addColorStop(1, '#0a2340');   // 南極海
+      ctx.fillStyle = ocean; ctx.fillRect(0, 0, W, H);
+      // NASA テクスチャを Mercator 変換して描画（海/陸の本物データ）
+      const tex = earthMat.map;
+      if (tex && tex.image && tex.image.width) {
+        const srcImg = tex.image;
+        const srcW = srcImg.naturalWidth || srcImg.width;
+        const srcH = srcImg.naturalHeight || srcImg.height;
+        // 行バッファ作成（40行ごとにまとめてブロック描画）
+        const BAND = 2; // 2pxごと
+        for (let y = 0; y < H; y += BAND) {
+          const yn = y / H;
+          const lat = Math.atan(Math.sinh(Math.PI * (1 - 2 * yn))) * 180 / Math.PI;
+          const srcY = Math.max(0, Math.min(srcH - 1, (90 - lat) / 180 * srcH));
+          ctx.drawImage(srcImg, 0, srcY, srcW, 1, 0, y, W, BAND + 0.5);
+        }
+      }
+      // 海の上に薄い青フィルターで色彩統一
+      ctx.fillStyle = 'rgba(20,60,110,0.12)'; ctx.fillRect(0, 0, W, H);
+      // 緯度経度グリッド
+      ctx.strokeStyle = 'rgba(200,220,255,0.14)';
+      ctx.lineWidth = 0.8;
+      ctx.setLineDash([2, 4]);
       for (let lat = -60; lat <= 60; lat += 30) {
         const y = mercY(lat) * H;
         ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
@@ -2697,93 +2719,127 @@
         const x = mercX(lng) * W;
         ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
       }
-      // 赤道を強調
-      ctx.strokeStyle = 'rgba(200,140,80,0.35)'; ctx.lineWidth = 1;
-      const eqY = mercY(0) * H;
-      ctx.beginPath(); ctx.moveTo(0, eqY); ctx.lineTo(W, eqY); ctx.stroke();
-      // NASAテクスチャを背景に展開（equirectangular→Mercator）
-      const tex = earthMat.map;
-      if (tex && tex.image) {
-        const srcImg = tex.image;
-        // srcImgが使えるなら1ピクセル毎に描画（重いのでサンプリング）
-        // 代替：水平方向にそのまま貼り付け、垂直方向はMercator変換でリサンプル
-        const tmp = document.createElement('canvas');
-        tmp.width = W; tmp.height = H;
-        const tctx = tmp.getContext('2d');
-        // 各ピクセル行のソース緯度をMercatorから逆算してサンプリング
-        const srcW = srcImg.naturalWidth || srcImg.width;
-        const srcH = srcImg.naturalHeight || srcImg.height;
-        for (let y = 0; y < H; y++) {
-          const yn = y / H; // 0..1
-          // mercY の逆関数: lat = atan(sinh(π(1-2yn)))
-          const lat = Math.atan(Math.sinh(Math.PI * (1 - 2 * yn))) * 180 / Math.PI;
-          const srcY = (90 - lat) / 180 * srcH;
-          tctx.drawImage(srcImg, 0, srcY, srcW, 1, 0, y, W, 1);
-        }
-        ctx.globalAlpha = 0.75;
-        ctx.drawImage(tmp, 0, 0);
-        ctx.globalAlpha = 1;
-      }
-      // 昼夜オーバーレイ: 太陽直下点からの距離に応じて夜側を暗く
+      ctx.setLineDash([]);
+      // 赤道・回帰線を少し強調
+      ctx.strokeStyle = 'rgba(255,200,120,0.25)'; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(0, mercY(0) * H); ctx.lineTo(W, mercY(0) * H); ctx.stroke();
+      ctx.strokeStyle = 'rgba(255,200,120,0.12)';
+      ctx.beginPath(); ctx.moveTo(0, mercY(23.4) * H); ctx.lineTo(W, mercY(23.4) * H); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0, mercY(-23.4) * H); ctx.lineTo(W, mercY(-23.4) * H); ctx.stroke();
+      // 昼夜オーバーレイ: multiply禁止、上から暗色レイヤー（海が保たれる）
       const now = new Date();
       const utcH = now.getUTCHours() + now.getUTCMinutes() / 60;
-      const sunLng = -((utcH - 12) * 15); // 太陽直下点の経度 (東経)
+      const sunLng = -((utcH - 12) * 15);
       const doy = Math.floor((now - new Date(now.getUTCFullYear(), 0, 0)) / 86400000);
       const sunLat = 23.4 * Math.sin(2 * Math.PI * (doy - 80) / 365.25);
-      // 簡易夜画像：各列で sunLng との経度差でグラデ
-      ctx.globalCompositeOperation = 'multiply';
       const nightGrad = ctx.createLinearGradient(0, 0, W, 0);
-      for (let i = 0; i <= 24; i++) {
-        const lng = -180 + (360 / 24) * i;
-        let diff = Math.abs(((lng - sunLng + 540) % 360) - 180); // 0=正午, 180=真夜中
-        const night = diff / 180; // 0..1
-        const v = Math.round(200 - night * 160); // 200=明るい, 40=暗い
-        nightGrad.addColorStop(i / 24, `rgb(${v}, ${v}, ${Math.min(255, v + 20)})`);
+      for (let i = 0; i <= 48; i++) {
+        const lng = -180 + (360 / 48) * i;
+        let diff = Math.abs(((lng - sunLng + 540) % 360) - 180);
+        const night = diff / 180;
+        const a = night * 0.58;
+        nightGrad.addColorStop(i / 48, `rgba(5, 8, 22, ${a})`);
       }
       ctx.fillStyle = nightGrad; ctx.fillRect(0, 0, W, H);
+      // 夜側の都市光（明るい夜景風、薄く）
+      ctx.globalCompositeOperation = 'screen';
+      ctx.fillStyle = 'rgba(0,0,0,0)'; // noop
       ctx.globalCompositeOperation = 'source-over';
-      // 太陽直下点マーカー
+      // 太陽直下点マーカー（大きなグロー）
       const sx = mercX(sunLng) * W;
       const sy = mercY(sunLat) * H;
-      const sg = ctx.createRadialGradient(sx, sy, 0, sx, sy, 40);
-      sg.addColorStop(0, 'rgba(255,240,150,0.8)');
-      sg.addColorStop(1, 'rgba(255,240,150,0)');
-      ctx.fillStyle = sg; ctx.beginPath(); ctx.arc(sx, sy, 40, 0, Math.PI*2); ctx.fill();
-      ctx.fillStyle = '#ffe080';
-      ctx.beginPath(); ctx.arc(sx, sy, 5, 0, Math.PI*2); ctx.fill();
-      // 国ピン
-      Object.keys(byCountry).forEach(k => {
-        const b = byCountry[k];
-        if (!b.coord || !b.people.length) return;
-        const x = mercX(b.coord[1]) * W;
-        const y = mercY(b.coord[0]) * H;
-        // グロー
-        const g = ctx.createRadialGradient(x, y, 0, x, y, 10);
-        g.addColorStop(0, 'rgba(255,220,140,0.9)');
-        g.addColorStop(1, 'rgba(255,220,140,0)');
-        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, 10, 0, Math.PI*2); ctx.fill();
-        // ドット
-        ctx.fillStyle = '#ffd880';
-        ctx.beginPath(); ctx.arc(x, y, 2.5, 0, Math.PI*2); ctx.fill();
-      });
-      // フライト弧
-      ctx.strokeStyle = 'rgba(255,200,120,0.45)';
-      ctx.lineWidth = 1;
+      const sg = ctx.createRadialGradient(sx, sy, 0, sx, sy, 55);
+      sg.addColorStop(0, 'rgba(255,240,170,0.75)');
+      sg.addColorStop(0.4, 'rgba(255,200,120,0.25)');
+      sg.addColorStop(1, 'rgba(255,180,100,0)');
+      ctx.fillStyle = sg; ctx.beginPath(); ctx.arc(sx, sy, 55, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = '#ffec90';
+      ctx.beginPath(); ctx.arc(sx, sy, 6, 0, Math.PI*2); ctx.fill();
+      ctx.strokeStyle = 'rgba(255,230,140,0.7)'; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.arc(sx, sy, 10, 0, Math.PI*2); ctx.stroke();
+      // フライト弧（先に描いてピンで隠す）
+      ctx.strokeStyle = 'rgba(255,210,130,0.55)';
+      ctx.lineWidth = 1.1;
+      ctx.setLineDash([4, 3]);
       FLIGHT_ROUTES.forEach(r => {
         const x1 = mercX(r.from[1]) * W, y1 = mercY(r.from[0]) * H;
         const x2 = mercX(r.to[1]) * W,   y2 = mercY(r.to[0]) * H;
-        // 経度差が180を超えたら分割描画（日付変更線またぎ）
-        ctx.beginPath();
-        // Quadratic curve with peak between
-        const mx = (x1 + x2) / 2, my = (y1 + y2) / 2 - Math.abs(x2 - x1) * 0.15;
-        ctx.moveTo(x1, y1);
-        ctx.quadraticCurveTo(mx, my, x2, y2);
-        ctx.stroke();
-        // 端点ドット
-        ctx.fillStyle = 'rgba(255,240,200,0.75)';
-        ctx.beginPath(); ctx.arc(x1, y1, 2, 0, Math.PI*2); ctx.fill();
-        ctx.beginPath(); ctx.arc(x2, y2, 2, 0, Math.PI*2); ctx.fill();
+        const midX = (x1 + x2) / 2, midY = (y1 + y2) / 2 - Math.abs(x2 - x1) * 0.13;
+        ctx.beginPath(); ctx.moveTo(x1, y1); ctx.quadraticCurveTo(midX, midY, x2, y2); ctx.stroke();
       });
+      ctx.setLineDash([]);
+      FLIGHT_ROUTES.forEach(r => {
+        const x1 = mercX(r.from[1]) * W, y1 = mercY(r.from[0]) * H;
+        const x2 = mercX(r.to[1]) * W,   y2 = mercY(r.to[0]) * H;
+        ctx.fillStyle = 'rgba(255,240,200,0.85)';
+        ctx.beginPath(); ctx.arc(x1, y1, 2.5, 0, Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.arc(x2, y2, 2.5, 0, Math.PI*2); ctx.fill();
+      });
+      // 国ピン（偉人の居る場所だけ、不正座標は除外）
+      Object.keys(byCountry).forEach(k => {
+        const b = byCountry[k];
+        if (!b.coord || !b.people.length) return;
+        const lat = b.coord[0], lng = b.coord[1];
+        // 不正な (0,0) 座標、範囲外を弾く
+        if (typeof lat !== 'number' || typeof lng !== 'number') return;
+        if (Math.abs(lat) < 0.01 && Math.abs(lng) < 0.01) return; // Null Island
+        if (lat < -85 || lat > 85) return;
+        if (lng < -180 || lng > 180) return;
+        const x = mercX(lng) * W;
+        const y = mercY(lat) * H;
+        // 人数に応じてピンサイズ
+        const n = b.people.length;
+        const rBase = 2.5 + Math.min(5, Math.sqrt(n) * 0.9);
+        const rGlow = rBase * 3.5;
+        const g = ctx.createRadialGradient(x, y, 0, x, y, rGlow);
+        g.addColorStop(0, 'rgba(255,230,150,0.95)');
+        g.addColorStop(0.3, 'rgba(255,190,90,0.45)');
+        g.addColorStop(1, 'rgba(255,170,60,0)');
+        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, rGlow, 0, Math.PI*2); ctx.fill();
+        ctx.fillStyle = '#ffe890';
+        ctx.strokeStyle = 'rgba(255,140,40,0.9)';
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.arc(x, y, rBase, 0, Math.PI*2); ctx.fill(); ctx.stroke();
+      });
+      // 主要都市ラベル
+      const CITIES = [
+        { name: '東京',     lat: 35.68, lng: 139.69 },
+        { name: 'ニューヨーク', lat: 40.71, lng: -74.01 },
+        { name: 'ロンドン', lat: 51.51, lng: -0.13 },
+        { name: 'パリ',     lat: 48.86, lng: 2.35 },
+        { name: 'シドニー', lat: -33.87, lng: 151.21 },
+        { name: '北京',     lat: 39.90, lng: 116.40 },
+        { name: 'ドバイ',   lat: 25.20, lng: 55.27 },
+        { name: 'カイロ',   lat: 30.04, lng: 31.23 },
+        { name: 'リオ',     lat: -22.91, lng: -43.17 },
+      ];
+      ctx.font = '11px "Shippori Mincho", "Hiragino Mincho ProN", serif';
+      CITIES.forEach(c => {
+        const x = mercX(c.lng) * W, y = mercY(c.lat) * H;
+        ctx.fillStyle = 'rgba(255,255,255,0.85)';
+        ctx.strokeStyle = 'rgba(0,0,0,0.7)'; ctx.lineWidth = 2.5;
+        ctx.strokeText(c.name, x + 6, y + 3);
+        ctx.fillText(c.name, x + 6, y + 3);
+        ctx.fillStyle = 'rgba(180,220,255,0.85)';
+        ctx.beginPath(); ctx.arc(x, y, 1.5, 0, Math.PI*2); ctx.fill();
+      });
+      // 凡例
+      ctx.font = '10px "Shippori Mincho", serif';
+      const legY = H - 34;
+      ctx.fillStyle = 'rgba(10,20,40,0.75)';
+      ctx.fillRect(10, legY - 4, 230, 30);
+      ctx.strokeStyle = 'rgba(180,220,255,0.3)'; ctx.lineWidth = 1;
+      ctx.strokeRect(10, legY - 4, 230, 30);
+      ctx.fillStyle = '#ffe890';
+      ctx.beginPath(); ctx.arc(22, legY + 4, 3.5, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = '#d8e4f4'; ctx.fillText('偉人の国', 30, legY + 8);
+      ctx.fillStyle = '#ffec90';
+      ctx.beginPath(); ctx.arc(100, legY + 4, 4, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = '#d8e4f4'; ctx.fillText('太陽直下点', 108, legY + 8);
+      // 投影法ラベル
+      ctx.fillStyle = 'rgba(180,200,230,0.55)';
+      ctx.font = '10px "Shippori Mincho", serif';
+      ctx.fillText('Mercator Projection · 16世紀ゲラルドゥス・メルカトル', W - 260, H - 12);
     }
     // ピンクリック判定
     mmoCanvas.addEventListener('click', (e) => {
