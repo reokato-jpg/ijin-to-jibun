@@ -540,7 +540,6 @@
               <button class="magic-topbook-pill magic-topbook-pill-glossary" data-deep="glossary">📖 用語集</button>
               <button class="magic-topbook-pill magic-topbook-pill-myth" data-deep="mythology">✦ Genesis — はじまりの書</button>
               <button class="magic-topbook-pill magic-topbook-pill-museum" data-deep="museum">🏛 美 術 館</button>
-              <button class="magic-topbook-pill magic-topbook-pill-unity" data-deep="unity">🎮 Unity 版</button>
             </div>
           </div>
         </div>
@@ -574,7 +573,6 @@
         glossary: () => { try { openGlossary(); } catch (e) { console.warn('glossary', e); } },
         mythology: () => { try { openMythology(); } catch (e) { console.warn('mythology', e); } },
         museum:   () => { try { openMuseumHub(); } catch (e) { console.warn('museum', e); } },
-        unity:    () => { window.open('unity/', '_blank'); },
       };
       wrap.querySelectorAll('[data-deep]').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -5842,6 +5840,12 @@
         tBloom1: { value: null },
         tBloom2: { value: null },
         strength: { value: strength },
+        uTime: { value: 0 },
+        uVignette: { value: opts.vignette ?? 0.45 },      // 0-1, 周辺減光の強さ
+        uChromatic: { value: opts.chromatic ?? 0.003 },   // 色収差の強さ
+        uGrain: { value: opts.grain ?? 0.035 },           // フィルムグレイン
+        uSaturation: { value: opts.saturation ?? 1.08 },  // 彩度持ち上げ
+        uLift: { value: opts.lift ?? 0.0 },               // 黒レベル
       },
       vertexShader: `varying vec2 vUv; void main(){vUv=uv;gl_Position=vec4(position,1.0);}`,
       fragmentShader: `
@@ -5850,12 +5854,50 @@
         uniform sampler2D tBloom1;
         uniform sampler2D tBloom2;
         uniform float strength;
+        uniform float uTime;
+        uniform float uVignette;
+        uniform float uChromatic;
+        uniform float uGrain;
+        uniform float uSaturation;
+        uniform float uLift;
+
+        // 疑似乱数（グレイン用）
+        float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+
         void main(){
-          vec3 s = texture2D(tScene, vUv).rgb;
+          vec2 center = vec2(0.5);
+          vec2 dir = vUv - center;
+          float dist = length(dir);
+
+          // 🔴 Chromatic Aberration (色収差) — 画面端に向かってRGBずれ
+          vec2 caOff = dir * uChromatic * (0.5 + dist * 1.5);
+          float r = texture2D(tScene, vUv - caOff).r;
+          float g = texture2D(tScene, vUv).g;
+          float b = texture2D(tScene, vUv + caOff).b;
+          vec3 s = vec3(r, g, b);
+
+          // Bloom
           vec3 b1 = texture2D(tBloom1, vUv).rgb;
           vec3 b2 = texture2D(tBloom2, vUv).rgb;
           vec3 bloom = b1 * 0.6 + b2 * 0.8;
-          gl_FragColor = vec4(s + bloom * strength, 1.0);
+          vec3 col = s + bloom * strength;
+
+          // Lift（黒レベル調整）
+          col += vec3(uLift);
+
+          // 彩度
+          float lum = dot(col, vec3(0.2126, 0.7152, 0.0722));
+          col = mix(vec3(lum), col, uSaturation);
+
+          // 🎞 Vignette (周辺減光)
+          float vig = smoothstep(0.8, 0.3, dist);
+          col *= mix(1.0 - uVignette, 1.0, vig);
+
+          // 🎞 Film grain (細かいノイズ)
+          float grain = hash(vUv * 1000.0 + uTime * 0.1) - 0.5;
+          col += grain * uGrain;
+
+          gl_FragColor = vec4(col, 1.0);
         }
       `,
     });
@@ -5871,6 +5913,7 @@
         blurMatQuarter.uniforms.resolution.value.set(w / 4, h / 4);
       },
       render(scene, camera) {
+        compositeMat.uniforms.uTime.value = performance.now() * 0.001;
         // 1. Scene → rtScene
         renderer.setRenderTarget(rtScene);
         renderer.render(scene, camera);
@@ -5948,7 +5991,11 @@
     stage.appendChild(renderer.domElement);
     renderer.domElement.style.touchAction = 'none';
     // 🌟 Bloom ポストプロセス
-    const bloom = createBloom(THREE, renderer, W, H, { threshold: 0.65, strength: 0.9 });
+    const bloom = createBloom(THREE, renderer, W, H, {
+      threshold: 0.65, strength: 0.9,
+      vignette: 0.38, chromatic: 0.0025, grain: 0.03,
+      saturation: 1.12, lift: 0.01,
+    });
 
     const scene = new THREE.Scene();
     // 空のグラデ（半球光）
@@ -7487,7 +7534,11 @@
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     stage.appendChild(renderer.domElement);
     renderer.domElement.style.touchAction = 'none';
-    const bloom = createBloom(THREE, renderer, W(), H(), { threshold: 0.75, strength: 1.3 });
+    const bloom = createBloom(THREE, renderer, W(), H(), {
+      threshold: 0.75, strength: 1.3,
+      vignette: 0.58, chromatic: 0.005, grain: 0.05,
+      saturation: 1.15, lift: -0.01,
+    });
 
     const scene = new THREE.Scene();
     // 嵐の空（暗い青紫→遠くに黄土）
