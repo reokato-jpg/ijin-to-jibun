@@ -535,6 +535,7 @@
               <button class="magic-topbook-pill" data-deep="city">都市群像</button>
               <button class="magic-topbook-pill" data-deep="drift">365日カレンダー</button>
               <button class="magic-topbook-pill magic-topbook-pill-cosmos" data-deep="cosmos">🌌 宇宙の誕生</button>
+              <button class="magic-topbook-pill magic-topbook-pill-quiz" data-deep="quiz">🎓 偉人クイズ</button>
             </div>
           </div>
         </div>
@@ -563,6 +564,7 @@
         century: () => { try { if (typeof openSimultaneity === 'function') openSimultaneity({ centuryMode: true }); } catch {} },
         city:    () => { try { if (typeof openCityGathering === 'function') openCityGathering(); } catch {} },
         drift:   () => { try { if (typeof openDriftCalendar === 'function') openDriftCalendar(); } catch {} },
+        quiz:    () => { try { openIjinQuiz(); } catch (e) { console.warn('quiz', e); } },
       };
       wrap.querySelectorAll('[data-deep]').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -4241,6 +4243,151 @@
   // ============================================================
   // 🌌 COSMOS — ノイズ → ビッグバン → 太陽系
   // ============================================================
+  // ============================================================
+  // 🎓 偉人クイズ（教材モード）
+  // 4種類の問題タイプを混ぜて出題、スコアをローカル保存
+  // ============================================================
+  async function openIjinQuiz() {
+    const people = await (MAGIC._peopleBundle ? Promise.resolve(MAGIC._peopleBundle) : loadPeopleBundle());
+    if (!people.length) return;
+    const pool = people.filter(p => p.name && p.summary && p.country && p.birth != null);
+    if (pool.length < 10) return;
+
+    // スコア管理
+    const statsKey = 'ijinQuizStats';
+    let stats = JSON.parse(localStorage.getItem(statsKey) || '{"total":0,"correct":0,"streak":0,"best":0}');
+    const saveStats = () => localStorage.setItem(statsKey, JSON.stringify(stats));
+
+    const ov = document.createElement('div');
+    ov.className = 'ijin-quiz-overlay';
+    ov.innerHTML = `
+      <button class="iq-close" aria-label="閉じる">×</button>
+      <div class="iq-frame">
+        <div class="iq-head">
+          <div class="iq-title">🎓 偉人クイズ</div>
+          <div class="iq-score">
+            <span class="iq-s">正解 <b id="iqCorrect">${stats.correct}</b>/<b id="iqTotal">${stats.total}</b></span>
+            <span class="iq-s">🔥 連続 <b id="iqStreak">${stats.streak}</b></span>
+            <span class="iq-s">★ 最高 <b id="iqBest">${stats.best}</b></span>
+          </div>
+        </div>
+        <div class="iq-question" id="iqQuestion"></div>
+        <div class="iq-choices" id="iqChoices"></div>
+        <div class="iq-feedback" id="iqFeedback"></div>
+        <div class="iq-actions">
+          <button class="iq-next" id="iqNext" style="display:none">次の問題 →</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(ov);
+    requestAnimationFrame(() => ov.classList.add('open'));
+    ov.querySelector('.iq-close').addEventListener('click', () => {
+      ov.classList.remove('open');
+      setTimeout(() => ov.remove(), 300);
+    });
+
+    const rand = arr => arr[Math.floor(Math.random() * arr.length)];
+    const sample = (arr, n, exclude) => {
+      const pool = arr.filter(x => !exclude || !exclude.includes(x));
+      const out = [];
+      while (out.length < n && pool.length) {
+        const i = Math.floor(Math.random() * pool.length);
+        out.push(pool.splice(i, 1)[0]);
+      }
+      return out;
+    };
+    const eraOf = (y) => {
+      if (y < 500) return '古代';
+      if (y < 1500) return '中世';
+      if (y < 1800) return '近世';
+      if (y < 1945) return '近代';
+      return '現代';
+    };
+
+    function makeQuestion() {
+      const type = rand(['whoSaid', 'whichCountry', 'whichField', 'whichEra', 'whoIs']);
+      const person = rand(pool);
+      let q, correct, choices;
+
+      if (type === 'whoSaid' && person.quotes && person.quotes.length) {
+        const rawQ = person.quotes[0];
+        const text = typeof rawQ === 'string' ? rawQ : (rawQ.text || '');
+        if (!text) return makeQuestion();
+        q = `この言葉を言ったのは誰？<br><div class="iq-quote">「${text}」</div>`;
+        correct = person.name;
+        const names = new Set([correct]);
+        pool.forEach(p => { if (p.name !== correct) names.add(p.name); });
+        choices = [correct, ...sample([...names].filter(n => n !== correct), 3)];
+      } else if (type === 'whichCountry') {
+        q = `<b>${person.name}</b> の出身国・活動国は？`;
+        correct = person.country;
+        const allCountries = [...new Set(pool.map(p => p.country))];
+        choices = [correct, ...sample(allCountries.filter(c => c !== correct), 3)];
+      } else if (type === 'whichField') {
+        q = `<b>${person.name}</b> の分野は？`;
+        correct = person.field || '思想家';
+        const allFields = [...new Set(pool.map(p => p.field).filter(Boolean))];
+        choices = [correct, ...sample(allFields.filter(f => f !== correct), 3)];
+      } else if (type === 'whichEra') {
+        q = `<b>${person.name}</b> (${person.birth}年生) が活躍したのは？`;
+        correct = eraOf(person.birth);
+        choices = ['古代', '中世', '近世', '近代', '現代'];
+        // 正解を含む4つをランダムに
+        choices = [correct, ...sample(choices.filter(e => e !== correct), 3)];
+      } else { // whoIs
+        q = `この人物は誰？<br><div class="iq-hint">${person.summary.slice(0, 90)}...</div>`;
+        correct = person.name;
+        choices = [correct, ...sample(pool.map(p => p.name).filter(n => n !== correct), 3)];
+      }
+      // シャッフル
+      choices.sort(() => Math.random() - 0.5);
+      return { q, correct, choices, person };
+    }
+
+    function render() {
+      const { q, correct, choices, person } = makeQuestion();
+      ov.querySelector('#iqQuestion').innerHTML = q;
+      const cEl = ov.querySelector('#iqChoices');
+      cEl.innerHTML = choices.map((c, i) => `<button class="iq-choice" data-c="${i}">${c}</button>`).join('');
+      ov.querySelector('#iqFeedback').textContent = '';
+      ov.querySelector('#iqFeedback').className = 'iq-feedback';
+      ov.querySelector('#iqNext').style.display = 'none';
+      cEl.querySelectorAll('.iq-choice').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const chosen = btn.textContent;
+          const isRight = chosen === correct;
+          stats.total++;
+          if (isRight) {
+            stats.correct++;
+            stats.streak++;
+            if (stats.streak > stats.best) stats.best = stats.streak;
+            btn.classList.add('iq-right');
+            ov.querySelector('#iqFeedback').textContent = `✨ 正解！ ${person.name}（${person.country}・${person.field || ''}）`;
+            ov.querySelector('#iqFeedback').classList.add('right');
+          } else {
+            stats.streak = 0;
+            btn.classList.add('iq-wrong');
+            cEl.querySelectorAll('.iq-choice').forEach(b => {
+              if (b.textContent === correct) b.classList.add('iq-right');
+            });
+            ov.querySelector('#iqFeedback').textContent = `❌ 正解は ${correct} / ${person.name}: ${person.summary.slice(0, 60)}…`;
+            ov.querySelector('#iqFeedback').classList.add('wrong');
+          }
+          cEl.querySelectorAll('.iq-choice').forEach(b => b.disabled = true);
+          saveStats();
+          ov.querySelector('#iqCorrect').textContent = stats.correct;
+          ov.querySelector('#iqTotal').textContent = stats.total;
+          ov.querySelector('#iqStreak').textContent = stats.streak;
+          ov.querySelector('#iqBest').textContent = stats.best;
+          ov.querySelector('#iqNext').style.display = '';
+        });
+      });
+    }
+    ov.querySelector('#iqNext').addEventListener('click', render);
+    render();
+  }
+  window.openIjinQuiz = openIjinQuiz;
+
   async function openCosmos() {
     if (!window.THREE) return;
     const ov = document.createElement('div');
