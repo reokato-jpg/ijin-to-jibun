@@ -1158,7 +1158,7 @@ function renderTodayBirthday() {
   block.style.display = '';
   // ラベルも更新
   const labelEl = block.querySelector('.home-block-label');
-  if (labelEl) labelEl.textContent = isUpcoming ? '<svg class="ij-icon"><use href="#ij-cake"/></svg> 近日の誕生日' : '<svg class="ij-icon"><use href="#ij-cake"/></svg> 今日が誕生日の偉人';
+  if (labelEl) labelEl.innerHTML = isUpcoming ? '<svg class="ij-icon"><use href="#ij-cake"/></svg> 近日の誕生日' : '<svg class="ij-icon"><use href="#ij-cake"/></svg> 今日が誕生日の偉人';
   const my = (typeof loadMyTraits === 'function') ? loadMyTraits() : {};
   const sameAsMe = (my.birthMonth && my.birthDay &&
     parseInt(my.birthMonth,10) === m && parseInt(my.birthDay,10) === d);
@@ -3344,7 +3344,7 @@ function renderTodayEcho() {
   const events = window.findTodayEchoes(DATA.people || [], m, d);
   if (events.length === 0) { block.style.display = 'none'; return; }
   block.style.display = '';
-  dateEl.textContent = `<svg class="ij-icon"><use href="#ij-book"/></svg> ${m}月${d}日`;
+  dateEl.innerHTML = `<svg class="ij-icon"><use href="#ij-book"/></svg> ${m}月${d}日`;
   const yearNow = now.getFullYear();
   list.innerHTML = events.map(e => {
     const p = DATA.people.find(x => x.id === e.id);
@@ -6259,7 +6259,7 @@ function initPhoneMenu() {
     if (!plaza) return;
     const title = document.getElementById('plazaChatTitle');
     const body = document.getElementById('plazaChatBody');
-    if (title) title.textContent = '<svg class="ij-icon"><use href="#ij-book"/></svg> レキット（歴史管理人）';
+    if (title) title.innerHTML = '<svg class="ij-icon"><use href="#ij-book"/></svg> レキット（歴史管理人）';
     if (body) renderRekittoChat(body);
     plaza.querySelectorAll('.plaza-tab-panel').forEach(p => {
       p.hidden = (p.dataset.plazaPanel !== 'chat');
@@ -8199,11 +8199,11 @@ async function showPerson(id) {
       if (getOshi() === pid) {
         setOshi('');
         oshiBtn.classList.remove('active');
-        oshiBtn.textContent = '<svg class="ij-icon"><use href="#ij-heart"/></svg> 推しにする';
+        oshiBtn.innerHTML = '<svg class="ij-icon"><use href="#ij-heart"/></svg> 推しにする';
       } else {
         setOshi(pid);
         oshiBtn.classList.add('active');
-        oshiBtn.textContent = '<svg class="ij-icon"><use href="#ij-heart"/></svg> 推し中';
+        oshiBtn.innerHTML = '<svg class="ij-icon"><use href="#ij-heart"/></svg> 推し中';
         try { grantStamp(pid, 'oshi'); } catch {}
       }
       renderOshi();
@@ -8882,7 +8882,7 @@ async function showTag(tagId) {
       if (favTags.has(tagId)) favTags.delete(tagId); else favTags.add(tagId);
       saveSet(FAV_TAGS_KEY, favTags);
       favTagBtn.classList.toggle('active');
-      favTagBtn.textContent = favTags.has(tagId) ? '<svg class="ij-icon"><use href="#ij-sparkle"/></svg> 棚に飾り中' : '<svg class="ij-icon"><use href="#ij-sparkle"/></svg> この感情を棚に飾る';
+      favTagBtn.innerHTML = favTags.has(tagId) ? '<svg class="ij-icon"><use href="#ij-sparkle"/></svg> 棚に飾り中' : '<svg class="ij-icon"><use href="#ij-sparkle"/></svg> この感情を棚に飾る';
     });
   }
   await flipPromise;
