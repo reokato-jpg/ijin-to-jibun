@@ -3470,10 +3470,92 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
 }
 .cosmos-time-ctrl button:active { transform: scale(0.95); }
 
+/* モードバー（右端縦列） */
+.cosmos-modes {
+  position: absolute;
+  top: 112px;
+  right: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 17;
+}
+.cosmos-modes button {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(180,160,220,0.35);
+  background: rgba(20,15,40,0.75);
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 0;
+  transition: background 0.15s, transform 0.1s, box-shadow 0.2s;
+}
+.cosmos-modes button:active { transform: scale(0.92); }
+.cosmos-modes button.active {
+  background: linear-gradient(135deg, #8a60e0, #5a40b0);
+  border-color: rgba(255,230,180,0.7);
+  box-shadow: 0 0 14px rgba(140,100,230,0.7);
+}
+
+/* イベントバナー */
+.cosmos-event-banner {
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  z-index: 18;
+  padding: 10px 22px;
+  background: linear-gradient(135deg, rgba(80,40,140,0.92), rgba(30,20,60,0.92));
+  border: 1px solid rgba(220,200,255,0.6);
+  border-radius: 999px;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  box-shadow: 0 4px 18px rgba(100,60,180,0.6), 0 0 24px rgba(140,100,230,0.35);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  transition: none;
+}
+.cosmos-event-banner.show {
+  animation: cosmosEventPop 2.2s cubic-bezier(.3,1.4,.4,1) forwards;
+}
+@keyframes cosmosEventPop {
+  0%   { transform: translate(-50%, -50%) scale(0.7); opacity: 0; }
+  15%  { transform: translate(-50%, -50%) scale(1.12); opacity: 1; }
+  30%  { transform: translate(-50%, -50%) scale(1); }
+  85%  { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1.05); opacity: 0; }
+}
+
+/* 星座ラベル */
+.cosmos-const-label {
+  position: absolute;
+  pointer-events: none;
+  color: #a8dcff;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  text-shadow: 0 0 8px rgba(122,200,255,0.7), 0 1px 2px rgba(0,0,0,0.6);
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  z-index: 11;
+  transition: opacity 0.3s;
+  white-space: nowrap;
+}
+
 @media (max-width: 480px) {
   .cosmos-planet-list { top: 52px; right: 10px; }
   .cpl-body { width: 160px; }
   .cosmos-time-ctrl button { min-width: 34px; padding: 5px 8px; font-size: 11px; }
+  .cosmos-modes { top: 104px; right: 10px; }
+  .cosmos-modes button { width: 36px; height: 36px; font-size: 16px; }
+  .cosmos-event-banner { font-size: 13px; padding: 8px 16px; }
 }
 
 

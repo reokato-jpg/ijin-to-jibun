@@ -3564,6 +3564,13 @@
         <button data-speed="5" aria-label="5倍">5×</button>
         <button data-speed="30" aria-label="30倍">30×</button>
       </div>
+      <div class="cosmos-modes" id="cosmosModes">
+        <button data-mode="trails" aria-label="軌道">🌌</button>
+        <button data-mode="constellations" aria-label="星座">⭐</button>
+        <button data-mode="tour" aria-label="ツアー">🎬</button>
+        <button data-mode="real" aria-label="実寸">🪄</button>
+      </div>
+      <div class="cosmos-event-banner" id="cosmosEventBanner"></div>
       <div class="cosmos-rocket-ui" id="cosmosRocketUI">
         <div class="cosmos-crosshair"></div>
         <div class="cosmos-speedlines" id="cosmosSpeedLines"></div>
@@ -5105,6 +5112,149 @@
         timeSpeed = parseFloat(btn.dataset.speed);
       });
     });
+
+    // ============================================================
+    // 🪐 モード群: 軌道/星座/ツアー/実寸
+    // ============================================================
+    const modes = { trails: false, constellations: false, tour: false, real: false };
+    let tourIdx = 0, tourTimer = 0;
+    const eventBanner = ov.querySelector('#cosmosEventBanner');
+    function flashBanner(text, dur = 2200) {
+      eventBanner.textContent = text;
+      eventBanner.classList.remove('show'); void eventBanner.offsetWidth;
+      eventBanner.classList.add('show');
+      setTimeout(() => eventBanner.classList.remove('show'), dur);
+    }
+
+    // ⭐ 星座データ（代表的なもの、簡略化した位置）
+    const CONSTELLATIONS = [
+      { name: 'オリオン座', label: 'Orion',
+        stars: [[0.55, 0.30, -0.78],[0.10, 0.35, -0.93],[-0.45, 0.28, -0.85],
+                [-0.05, -0.10, -0.99],[-0.12, -0.12, -0.99],[-0.20, -0.14, -0.97],
+                [0.15, -0.55, -0.82],[-0.40, -0.55, -0.73]],
+        lines: [[0,2],[2,5],[5,3],[3,0],[0,6],[2,7],[6,4],[4,7]] },
+      { name: '北斗七星', label: 'Big Dipper',
+        stars: [[0.85, 0.45, 0.28],[0.78, 0.52, 0.35],[0.68, 0.58, 0.45],
+                [0.58, 0.60, 0.55],[0.47, 0.62, 0.62],[0.38, 0.55, 0.72],[0.30, 0.45, 0.83]],
+        lines: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6]] },
+      { name: 'カシオペア座', label: 'Cassiopeia',
+        stars: [[-0.90, 0.40, -0.20],[-0.78, 0.55, -0.30],[-0.65, 0.42, -0.40],
+                [-0.50, 0.60, -0.50],[-0.35, 0.48, -0.62]],
+        lines: [[0,1],[1,2],[2,3],[3,4]] },
+      { name: '白鳥座', label: 'Cygnus',
+        stars: [[0.20, 0.85, 0.48],[0.15, 0.72, 0.58],[0.10, 0.58, 0.70],
+                [-0.20, 0.65, 0.62],[0.35, 0.65, 0.52],[-0.05, 0.45, 0.84]],
+        lines: [[0,1],[1,2],[2,5],[3,1],[1,4]] },
+      { name: 'さそり座', label: 'Scorpius',
+        stars: [[-0.30, -0.70, -0.55],[-0.20, -0.75, -0.50],[-0.10, -0.78, -0.45],
+                [0.05, -0.70, -0.45],[0.20, -0.60, -0.50],[0.30, -0.50, -0.60],[0.38, -0.40, -0.70]],
+        lines: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6]] },
+    ];
+    const CONST_R = 240;
+    const constGroup = new THREE.Group();
+    constGroup.visible = false;
+    const labelDivs = [];
+    CONSTELLATIONS.forEach(c => {
+      const posArr = c.stars.map(s => {
+        const v = new THREE.Vector3(s[0], s[1], s[2]).normalize().multiplyScalar(CONST_R);
+        return v;
+      });
+      // 星スプライト
+      posArr.forEach(p => {
+        const m = new THREE.SpriteMaterial({ map: softDotTex, color: 0xffffff, transparent: true, opacity: 0.9, depthWrite: false, blending: THREE.AdditiveBlending });
+        const sp = new THREE.Sprite(m);
+        sp.scale.set(5, 5, 1);
+        sp.position.copy(p);
+        constGroup.add(sp);
+      });
+      // ライン
+      const linePts = [];
+      c.lines.forEach(([a, b]) => { linePts.push(posArr[a]); linePts.push(posArr[b]); });
+      const lgeo = new THREE.BufferGeometry().setFromPoints(linePts);
+      const lmat = new THREE.LineBasicMaterial({ color: 0x7ac8ff, transparent: true, opacity: 0.5 });
+      constGroup.add(new THREE.LineSegments(lgeo, lmat));
+      // HTMLラベル（画面座標に投影）
+      const div = document.createElement('div');
+      div.className = 'cosmos-const-label';
+      div.textContent = c.name;
+      ov.appendChild(div);
+      const center = posArr.reduce((acc, p) => acc.add(p), new THREE.Vector3()).multiplyScalar(1/posArr.length);
+      labelDivs.push({ div, pos: center });
+    });
+    scene.add(constGroup);
+
+    // 🌌 軌道トレイル（惑星が通った軌跡を Line で残す）
+    const planetTrails = planetMeshes.map(pm => {
+      const N = 160;
+      const posArr = new Float32Array(N * 3);
+      for (let i = 0; i < N * 3; i++) posArr[i] = -9999;
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.BufferAttribute(posArr, 3));
+      geo.setDrawRange(0, 0);
+      const col = (pm.planet.color || 0xaaaaaa);
+      const mat = new THREE.LineBasicMaterial({ color: col, transparent: true, opacity: 0.55 });
+      const line = new THREE.Line(geo, mat);
+      line.visible = false;
+      line.frustumCulled = false;
+      scene.add(line);
+      return { line, posArr, N, count: 0, write: 0, pm };
+    });
+
+    // 🪄 実寸モード: 惑星スケール倍率
+    const REAL_SCALE = {
+      '水星': 0.55, '金星': 0.75, '地球': 0.8, '火星': 0.6,
+      '木星': 2.2, '土星': 2.0, '天王星': 1.3, '海王星': 1.3,
+    };
+    // 🌑 日食検出
+    let eclipseCooldown = 0;
+    // 🌠 流星群タイマー
+    let meteorTimer = 0;
+    let meteorBurst = 0;
+
+    // モードトグル
+    ov.querySelectorAll('#cosmosModes button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const mode = btn.dataset.mode;
+        modes[mode] = !modes[mode];
+        btn.classList.toggle('active', modes[mode]);
+        if (mode === 'trails') {
+          planetTrails.forEach(t => {
+            t.line.visible = modes.trails;
+            if (modes.trails) { t.count = 0; t.write = 0; t.line.geometry.setDrawRange(0, 0); }
+          });
+          // 軌道リングも強調
+          planetMeshes.forEach(pm => {
+            if (!pm.mesh.userData.isBlackHole) pm.orbit.material.opacity = modes.trails ? 0.38 : 0.12;
+          });
+          flashBanner(modes.trails ? '🌌 軌道トレイル ON' : '🌌 軌道トレイル OFF');
+        }
+        if (mode === 'constellations') {
+          constGroup.visible = modes.constellations;
+          labelDivs.forEach(l => l.div.style.display = modes.constellations ? '' : 'none');
+          flashBanner(modes.constellations ? '⭐ 星座オーバーレイ ON' : '⭐ 星座 OFF');
+        }
+        if (mode === 'tour') {
+          if (modes.tour) {
+            tourIdx = 0; tourTimer = 0;
+            cameraZoomTarget = planetMeshes[0];
+            flashBanner('🎬 惑星ツアー開始');
+          } else {
+            cameraZoomTarget = null;
+            flashBanner('🎬 ツアー終了');
+          }
+        }
+        if (mode === 'real') {
+          planetMeshes.forEach(pm => {
+            if (pm.planet.isBlackHole) return;
+            const s = modes.real ? (REAL_SCALE[pm.planet.name] || 1) : 1;
+            pm.mesh.scale.setScalar(s);
+            if (pm.mesh.userData.atmShell) pm.mesh.userData.atmShell.scale.setScalar(s);
+          });
+          sun.scale.setScalar(modes.real ? 1.5 : 1);
+          flashBanner(modes.real ? '🪄 実寸比率（ガス惑星大きく）' : '🪄 ゲーム比率');
+        }
+      });
+    });
     // ユーザー操作: ドラッグ回転 + ホイール/ピンチでズーム
     let userControlling = false;
     let userRotation = 0;
@@ -5962,6 +6112,69 @@
           pm.mesh.rotation.y += 0.01;
         });
         sun.rotation.y += 0.002;
+        // 🌌 軌道トレイル更新
+        if (modes.trails) {
+          planetTrails.forEach(t => {
+            const p = t.pm.mesh.position;
+            const idx = t.write % t.N;
+            t.posArr[idx*3] = p.x; t.posArr[idx*3+1] = p.y; t.posArr[idx*3+2] = p.z;
+            t.write++;
+            t.count = Math.min(t.count + 1, t.N);
+            // setDrawRange: 順序に沿って描画（未満なら0から、フルなら循環せずカット）
+            if (t.count < t.N) {
+              t.line.geometry.setDrawRange(0, t.count);
+            } else {
+              // リングバッファ: 描画範囲をwrite点から前N個の連続区間に絞る
+              // シンプルに: 1周回っていれば全てを描画。ただ最新→最古で飛ぶ点は
+              // 1点だけなので視覚的にほぼ気にならない
+              t.line.geometry.setDrawRange(0, t.N);
+            }
+            t.line.geometry.attributes.position.needsUpdate = true;
+          });
+        }
+        // 🎬 ツアーモード: 12秒ごとに次の惑星へ
+        if (modes.tour) {
+          tourTimer += 0.016;
+          if (tourTimer > 12) {
+            tourTimer = 0;
+            tourIdx = (tourIdx + 1) % planetMeshes.length;
+            cameraZoomTarget = planetMeshes[tourIdx];
+            flashBanner(`🎬 到着: ${planetMeshes[tourIdx].planet.jname}`);
+          }
+        }
+        // 🌑 日食検出（月-地球-太陽が一直線）
+        if (eclipseCooldown > 0) eclipseCooldown -= 0.016;
+        else {
+          const earthPm = planetMeshes.find(p => p.planet.isEarth);
+          if (earthPm && earthPm.mesh.userData.moons && earthPm.mesh.userData.moons.length > 0) {
+            const moon = earthPm.mesh.userData.moons[0].mesh;
+            const earthPos = earthPm.mesh.position;
+            const sunToEarth = earthPos.clone().normalize();
+            const earthToMoon = moon.position.clone().sub(earthPos);
+            const mDist = earthToMoon.length();
+            if (mDist > 0.01) {
+              earthToMoon.divideScalar(mDist);
+              // 月が地球から太陽方向へ伸びているか（月-地球ベクトル = -太陽方向とほぼ一致）
+              const align = earthToMoon.dot(sunToEarth.clone().negate());
+              if (align > 0.995) {
+                flashBanner('🌑 日食発生！月が太陽を覆う', 3500);
+                cameraZoomTarget = earthPm;
+                eclipseCooldown = 30; // 30秒クールダウン
+              }
+            }
+          }
+        }
+        // 🌠 流星群: 45秒ごとに発動
+        meteorTimer += 0.016;
+        if (meteorTimer > 45 && meteorBurst === 0) {
+          meteorBurst = 24;
+          meteorTimer = 0;
+          flashBanner('🌠 流星群襲来！', 3000);
+        }
+        if (meteorBurst > 0 && shootingStars.length < 12 && Math.random() < 0.5) {
+          spawnShootingStar();
+          meteorBurst--;
+        }
         // ☀️ 太陽シェーダの時間更新
         sunMat.uniforms.uTime.value = universeTime;
         chromoMat.uniforms.uTime.value = universeTime;
@@ -6080,6 +6293,17 @@
         }
       }
       renderer.render(scene, camera);
+      // ⭐ 星座ラベル投影
+      if (modes.constellations && labelDivs.length) {
+        const W = window.innerWidth, H = window.innerHeight;
+        labelDivs.forEach(l => {
+          const s = l.pos.clone().project(camera);
+          const behind = s.z > 1;
+          l.div.style.left = ((s.x + 1) / 2 * W) + 'px';
+          l.div.style.top = ((1 - (s.y + 1) / 2) * H) + 'px';
+          l.div.style.opacity = behind ? 0 : 0.75;
+        });
+      }
       requestAnimationFrame(animate);
     }
     animate();
