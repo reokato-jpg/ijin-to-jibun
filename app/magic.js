@@ -3545,6 +3545,10 @@
       <button class="cosmos-tap" id="cosmosTap">TAP</button>
       <div class="cosmos-warp-flash" id="cosmosWarpFlash"></div>
       <div class="cosmos-hud" id="cosmosHud"></div>
+      <div class="cosmos-zoom-ctrl" id="cosmosZoomCtrl">
+        <button class="cosmos-zoom-btn" data-cosmos-zoom="in" aria-label="ズームイン">＋</button>
+        <button class="cosmos-zoom-btn" data-cosmos-zoom="out" aria-label="ズームアウト">−</button>
+      </div>
       <div class="cosmos-info-panel" id="cosmosInfoPanel">
         <button class="cosmos-info-close" aria-label="閉じる">×</button>
         <div class="cosmos-info-content" id="cosmosInfoContent"></div>
@@ -3699,15 +3703,48 @@
     bbPoints.visible = false;
     scene.add(bbPoints);
 
-    // 太陽
-    const sunGeo = new THREE.SphereGeometry(3.5, 32, 32);
-    const sunMat = new THREE.MeshBasicMaterial({ color: 0xffd466 });
+    // 太陽（顆粒模様テクスチャ）
+    const sunTex = (() => {
+      const sc = document.createElement('canvas'); sc.width = 512; sc.height = 256;
+      const sctx = sc.getContext('2d');
+      sctx.fillStyle = '#ffdc70';
+      sctx.fillRect(0,0,512,256);
+      // 顆粒模様
+      for (let i = 0; i < 400; i++) {
+        const x = Math.random() * 512, y = Math.random() * 256;
+        const r = 5 + Math.random() * 20;
+        const alpha = 0.2 + Math.random() * 0.3;
+        const grd = sctx.createRadialGradient(x, y, 0, x, y, r);
+        grd.addColorStop(0, `rgba(255,220,120,${alpha})`);
+        grd.addColorStop(0.5, `rgba(255,170,80,${alpha*0.7})`);
+        grd.addColorStop(1, 'rgba(255,170,80,0)');
+        sctx.fillStyle = grd;
+        sctx.beginPath();
+        sctx.arc(x, y, r, 0, Math.PI * 2);
+        sctx.fill();
+      }
+      // 黒点
+      for (let i = 0; i < 8; i++) {
+        sctx.fillStyle = 'rgba(120,60,20,0.7)';
+        sctx.beginPath();
+        sctx.ellipse(Math.random() * 512, Math.random() * 256, 4 + Math.random() * 8, 3 + Math.random() * 5, 0, 0, Math.PI * 2);
+        sctx.fill();
+      }
+      return new THREE.CanvasTexture(sc);
+    })();
+    const sunGeo = new THREE.SphereGeometry(3.5, 48, 32);
+    const sunMat = new THREE.MeshBasicMaterial({ map: sunTex });
     const sun = new THREE.Mesh(sunGeo, sunMat);
     sun.visible = false;
     scene.add(sun);
-    // 太陽のコロナ
-    const coronaGeo = new THREE.SphereGeometry(4.3, 32, 32);
-    const coronaMat = new THREE.MeshBasicMaterial({ color: 0xffb848, transparent: true, opacity: 0.18, side: THREE.BackSide });
+    // 多層コロナ
+    const coronaGeo1 = new THREE.SphereGeometry(4.0, 32, 32);
+    const coronaMat1 = new THREE.MeshBasicMaterial({ color: 0xffb848, transparent: true, opacity: 0.3, side: THREE.BackSide });
+    const corona1 = new THREE.Mesh(coronaGeo1, coronaMat1);
+    corona1.visible = false;
+    scene.add(corona1);
+    const coronaGeo = new THREE.SphereGeometry(5.2, 32, 32);
+    const coronaMat = new THREE.MeshBasicMaterial({ color: 0xffa038, transparent: true, opacity: 0.15, side: THREE.BackSide });
     const corona = new THREE.Mesh(coronaGeo, coronaMat);
     corona.visible = false;
     scene.add(corona);
@@ -4097,6 +4134,12 @@
       return tex;
     }
 
+    // 軸傾き（実測値・ラジアン）
+    const AXIAL_TILT = {
+      '水星': 0.03, '金星': 3.10, '地球': 0.41, '火星': 0.44,
+      '木星': 0.05, '土星': 0.47, '天王星': 1.71, '海王星': 0.49,
+      'ブラックホール': 0
+    };
     const planetMeshes = [];
     PLANETS.forEach(p => {
       const pGeo = new THREE.SphereGeometry(p.size, 48, 32); // 高解像度
@@ -4104,6 +4147,8 @@
       const pMesh = new THREE.Mesh(pGeo, pMat);
       pMesh.visible = false;
       pMesh.userData = { ...p, angle: Math.random() * Math.PI * 2 };
+      // 軸傾き適用
+      pMesh.rotation.z = AXIAL_TILT[p.name] || 0;
       scene.add(pMesh);
       // 軌道リング
       const orbitGeo = new THREE.RingGeometry(p.dist - 0.02, p.dist + 0.02, 128);
@@ -4197,6 +4242,39 @@
       planetMeshes.push({ mesh: pMesh, orbit, planet: p });
     });
 
+    // 🪨 アステロイドベルト（火星-木星間、dist 20-22）
+    const astCount = 400;
+    const astGeo = new THREE.BufferGeometry();
+    const astPos = new Float32Array(astCount * 3);
+    for (let i = 0; i < astCount; i++) {
+      const ar = 20 + Math.random() * 2;
+      const theta = Math.random() * Math.PI * 2;
+      const yOff = (Math.random() - 0.5) * 0.4;
+      astPos[i*3] = Math.cos(theta) * ar;
+      astPos[i*3+1] = yOff;
+      astPos[i*3+2] = Math.sin(theta) * ar;
+    }
+    astGeo.setAttribute('position', new THREE.BufferAttribute(astPos, 3));
+    const astMat = new THREE.PointsMaterial({ color: 0x988060, size: 0.06, transparent: true, opacity: 0 });
+    const astPoints = new THREE.Points(astGeo, astMat);
+    scene.add(astPoints);
+    // カイパーベルト（海王星外側、dist 46-50）
+    const kbCount = 250;
+    const kbGeo = new THREE.BufferGeometry();
+    const kbPos = new Float32Array(kbCount * 3);
+    for (let i = 0; i < kbCount; i++) {
+      const kr = 46 + Math.random() * 4;
+      const theta = Math.random() * Math.PI * 2;
+      const yOff = (Math.random() - 0.5) * 0.6;
+      kbPos[i*3] = Math.cos(theta) * kr;
+      kbPos[i*3+1] = yOff;
+      kbPos[i*3+2] = Math.sin(theta) * kr;
+    }
+    kbGeo.setAttribute('position', new THREE.BufferAttribute(kbPos, 3));
+    const kbMat = new THREE.PointsMaterial({ color: 0x807090, size: 0.08, transparent: true, opacity: 0 });
+    const kbPoints = new THREE.Points(kbGeo, kbMat);
+    scene.add(kbPoints);
+
     // 流れ星プール
     const shootingStars = [];
     function spawnShootingStar() {
@@ -4268,6 +4346,15 @@
         userControlling = true; autoFade = 0;
       }
     });
+    // +/- ズームボタン
+    ov.querySelectorAll('[data-cosmos-zoom]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (phase !== 'universe') return;
+        const dir = btn.dataset.cosmosZoom === 'in' ? -8 : 8;
+        userZoom = Math.max(15, Math.min(120, userZoom + dir));
+        userControlling = true;
+      });
+    });
     function animate() {
       if (!running) return;
       if (phase === 'warp') {
@@ -4317,6 +4404,7 @@
             if (pm.mesh.userData.isBlackHole) pm.orbit.material.opacity = 0.0;
             else pm.orbit.material.opacity = 0.25;
           });
+          astMat.opacity = 0.7; kbMat.opacity = 0.5;
         }
         if (bbAge > 3) {
           phase = 'universe';
@@ -4358,6 +4446,9 @@
           pm.mesh.rotation.y += 0.01;
         });
         sun.rotation.y += 0.002;
+        // ベルトの軌道回転
+        astPoints.rotation.y += 0.0008;
+        kbPoints.rotation.y += 0.0003;
         // ランダムに流れ星（低確率）
         if (Math.random() < 0.008 && shootingStars.length < 5) spawnShootingStar();
         // 流れ星を動かす

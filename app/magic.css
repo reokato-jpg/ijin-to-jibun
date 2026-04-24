@@ -3308,6 +3308,34 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
   transition: transform 0.4s cubic-bezier(.3,1.3,.4,1), opacity 0.4s;
 }
 .cosmos-info-panel.show { transform: translateX(0); opacity: 1; }
+.cosmos-zoom-ctrl {
+  position: absolute;
+  right: 14px;
+  bottom: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 15;
+}
+.cosmos-zoom-btn {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: rgba(20,10,30,0.8);
+  border: 1px solid rgba(180,160,220,0.5);
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 300;
+  line-height: 1;
+  padding: 0;
+  transition: background 0.2s, transform 0.1s;
+}
+.cosmos-zoom-btn:active { transform: scale(0.92); background: rgba(60,40,90,0.9); }
 .cosmos-info-close {
   position: absolute;
   top: 8px;
