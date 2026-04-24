@@ -7787,8 +7787,8 @@
     const scene = new THREE.Scene();
     let composer = null;
     let bloom = null;
-    // 一時的に composer を完全無効化（真っ黒問題の切り分け）
-    const useProB = false;
+    // torchLights TDZバグ修正後、composer 復活
+    const useProB = ADDONS.EffectComposer && ADDONS.RenderPass && ADDONS.UnrealBloomPass;
     // camera 作成後に初期化
     // 嵐の空（暗い青紫→遠くに黄土）
     // 晴天フォールバック空（Sky addon 失敗時用、Bruegel明るい午後）
@@ -8649,10 +8649,25 @@
       color: 0x5a85a0, roughness: 0.25, metalness: 0.35,
       transparent: true, opacity: 0.88,
     });
-    const bay = new THREE.Mesh(new THREE.PlaneGeometry(320, 180), bayMat);
-    bay.rotation.x = -Math.PI / 2;
-    bay.position.set(160, -0.15, 0); // 東側に港
-    scene.add(bay);
+    // 🪞 本物の鏡面反射（Reflector addon があれば使う）
+    let bay;
+    if (ADDONS.Reflector) {
+      const bayGeo = new THREE.PlaneGeometry(320, 180);
+      bay = new ADDONS.Reflector(bayGeo, {
+        color: 0x5a85a0,
+        textureWidth: 512,  // 解像度控えめで軽量化
+        textureHeight: 512,
+        clipBias: 0.003,
+      });
+      bay.rotation.x = -Math.PI / 2;
+      bay.position.set(160, -0.15, 0);
+      scene.add(bay);
+    } else {
+      bay = new THREE.Mesh(new THREE.PlaneGeometry(320, 180), bayMat);
+      bay.rotation.x = -Math.PI / 2;
+      bay.position.set(160, -0.15, 0);
+      scene.add(bay);
+    }
 
     // 🚢 港湾の帆船（InstancedMesh）
     {
