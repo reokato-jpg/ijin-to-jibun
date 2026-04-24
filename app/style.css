@@ -3793,7 +3793,10 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
 .theme-tile > * { pointer-events: none; }
 .theme-tiles { position: relative; z-index: 2; }
 .theme-tile:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(122,46,58,0.2); }
-.theme-tile-emoji { font-size: 28px; flex-shrink: 0; align-self: center; }
+.theme-tile-emoji { font-size: 28px; flex-shrink: 0; align-self: center; color: var(--wine); }
+.theme-tile-emoji .ij-icon { width: 28px; height: 28px; color: var(--wine); }
+.theme-tile-beginner .theme-tile-emoji { color: #c1527a; }
+.theme-tile-beginner .theme-tile-emoji .ij-icon { color: #c1527a; }
 .theme-tile-info { flex: 1; min-width: 0; }
 .theme-tile-name { font-family: var(--font-jp); font-weight: 800; font-size: 14px; color: var(--wine); letter-spacing: 0.05em; }
 .theme-tile-tag { font-size: 10px; color: var(--ink-3); margin-top: 2px; line-height: 1.4; font-family: var(--font-jp); }

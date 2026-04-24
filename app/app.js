@@ -3064,7 +3064,7 @@ function renderOshi() {
       : `<div class="oshi-book-fallback"><div class="oshi-book-fallback-orn">✦</div><div class="oshi-book-fallback-title">${escapeHtml(todayBook.title)}</div>${todayBook.author ? `<div class="oshi-book-fallback-author">${escapeHtml(todayBook.author)}</div>` : ''}</div>`;
     bookHtml = `
       <div class="oshi-today-book">
-        <div class="oshi-today-book-head">📖 きょうの1冊</div>
+        <div class="oshi-today-book-head"><svg class="ij-icon"><use href="#ij-book"/></svg> きょうの1冊</div>
         <div class="oshi-today-book-card">
           <a class="oshi-book-cover ${hasAsin ? '' : 'no-cover'}" href="${amz}" target="_blank" rel="noopener sponsored" onclick="event.stopPropagation()">${coverInner}</a>
           <div class="oshi-book-info">
@@ -3080,7 +3080,7 @@ function renderOshi() {
   }
   const quoteHtml = todayQuote ? `
     <div class="oshi-today-quote">
-      <div class="oshi-today-quote-head">💬 きょうの一言</div>
+      <div class="oshi-today-quote-head"><svg class="ij-icon"><use href="#ij-heart"/></svg> きょうの一言</div>
       <div class="oshi-today-quote-text">「${escapeHtml(todayQuote.text)}」</div>
       ${todayQuote.source ? `<div class="oshi-today-quote-src">— ${escapeHtml(todayQuote.source)}</div>` : ''}
     </div>` : '';
@@ -3098,7 +3098,7 @@ function renderOshi() {
   const letterText = LETTER_TEMPLATES[seed % LETTER_TEMPLATES.length];
   const letterHtml = `
     <div class="oshi-today-letter">
-      <div class="oshi-today-letter-head">💌 ${escapeHtml(p.name)}からの手紙</div>
+      <div class="oshi-today-letter-head"><svg class="ij-icon"><use href="#ij-heart"/></svg> ${escapeHtml(p.name)}からの手紙</div>
       <div class="oshi-today-letter-body">${escapeHtml(letterText)}</div>
       <div class="oshi-today-letter-sign">— ${escapeHtml(p.name)}</div>
     </div>`;
@@ -3121,7 +3121,7 @@ function renderOshi() {
   }
   const routineHtml = pickRoutine.length ? `
     <div class="oshi-today-routine">
-      <div class="oshi-today-routine-head">🕰 推しの1日から</div>
+      <div class="oshi-today-routine-head"><svg class="ij-icon"><use href="#ij-sparkle"/></svg> 推しの1日から</div>
       <div class="oshi-today-routine-list">
         ${pickRoutine.map(r => `
           <div class="oshi-routine-row">
@@ -3420,7 +3420,7 @@ function renderBookOfTheDay() {
       </div>
     </button>
     <div class="book-day-card">
-      ${cover ? `<div class="book-day-cover" style="background-image:url('${cover}')"></div>` : '<div class="book-day-cover no-img">📖</div>'}
+      ${cover ? `<div class="book-day-cover" style="background-image:url('${cover}')"></div>` : '<div class="book-day-cover no-img"><svg class="ij-icon"><use href="#ij-book"/></svg></div>'}
       <div class="book-day-info">
         <div class="book-day-title">${escapeHtml(b.title)}</div>
         ${b.author ? `<div class="book-day-author">${escapeHtml(b.author)}</div>` : ''}
@@ -10445,35 +10445,35 @@ function renderHistoryTimeline() {
 // ====================== 🎎 歴女向けテーマまとめページ ======================
 const THEME_DEFS = {
   shinsengumi: {
-    emoji: '⚔️',
+    emoji: '<svg class="ij-icon"><use href="#ij-sword"/></svg>',
     name: '新選組',
     tagline: '誠の一字に、すべてを懸けた。',
     intro: '幕末の京を駆けた剣客集団。局長・近藤勇、副長・土方歳三、一番隊・沖田総司、二番隊・永倉新八、三番隊・斎藤一——彼らは時代に逆らい、それぞれの最期まで誠を貫いた。',
     order: ['kondo_isami','hijikata_toshizo','okita_soji','nagakura_shinpachi','saito_hajime','yamanami_keisuke','harada_sanosuke','ito_kashitaro']
   },
   bakumatsu: {
-    emoji: '🏯',
+    emoji: '<svg class="ij-icon"><use href="#ij-castle"/></svg>',
     name: '幕末',
     tagline: '時代が裂け、志士たちが駆けた14年。',
     intro: '黒船来航から明治維新まで、日本が震えた動乱の時代。吉田松陰の松下村塾から始まり、新選組、志士たち、海を渡った男たち——それぞれの正義が交差した。最後の将軍・徳川慶喜は自ら幕府を終わらせ、維新三傑が明治を創った。',
     order: ['yoshida_shoin','sakamoto_ryoma','takasugi_shinsaku','saigo_takamori','okubo_toshimichi','kido_takayoshi','katsu_kaishu','tokugawa_yoshinobu','kondo_isami','hijikata_toshizo','okita_soji','nagakura_shinpachi','saito_hajime','yamanami_keisuke','harada_sanosuke','ito_kashitaro','niijima_yae','atsuhime','kazunomiya']
   },
   sengoku: {
-    emoji: '🏹',
+    emoji: '<svg class="ij-icon"><use href="#ij-bow"/></svg>',
     name: '戦国武将',
     tagline: '乱世を生き抜いた、男たちの生き様。',
     intro: '戦国時代——武力と知略、忠義と裏切りが渦巻いた時代。天下人、智将、赤備えの英雄——それぞれの生き様が、いまも胸を打つ。',
     order: ['oda_nobunaga','takeda_shingen','date_masamune','sanada_yukimura']
   },
   ishin_sanketsu: {
-    emoji: '🌸',
+    emoji: '<svg class="ij-icon"><use href="#ij-cherry"/></svg>',
     name: '維新三傑',
     tagline: '明治を創り、時代に引き裂かれた三人。',
     intro: '西郷隆盛・大久保利通・木戸孝允。倒幕の同志として手を取り合い、新政府を築き、そして袂を分かった。',
     order: ['saigo_takamori','okubo_toshimichi','kido_takayoshi']
   },
   rekijo_women: {
-    emoji: '🎀',
+    emoji: '<svg class="ij-icon"><use href="#ij-ribbon"/></svg>',
     name: '歴史の女たち',
     tagline: '時代に抗い、愛に生き、誇りを貫いた。',
     intro: '幕末の八重・篤姫・和宮、戦国のお市・淀殿・ガラシャ——政略の駒として歴史に巻き込まれながらも、それぞれの信念と愛を貫いた女性たち。',
