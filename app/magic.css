@@ -3500,6 +3500,205 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
 }
 .cosmos-brake-btn:active { transform: scale(0.92); }
 
+/* スコアボード */
+.cosmos-scoreboard {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 16;
+  pointer-events: none;
+}
+.cosmos-scoreboard .sb-item {
+  background: linear-gradient(180deg, rgba(40,20,70,0.85), rgba(15,10,30,0.85));
+  border: 1px solid rgba(220,200,255,0.35);
+  border-radius: 999px;
+  padding: 6px 12px;
+  color: #fff;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.cosmos-scoreboard .sb-ico { font-size: 14px; }
+.cosmos-scoreboard .sb-max { opacity: 0.6; font-size: 11px; }
+.cosmos-scoreboard .sb-combo {
+  background: linear-gradient(180deg, #ff9040, #d04030);
+  border-color: rgba(255,220,180,0.8);
+  animation: comboPulse 0.5s ease infinite alternate;
+}
+@keyframes comboPulse {
+  from { transform: scale(1); box-shadow: 0 3px 10px rgba(255,100,40,0.4); }
+  to { transform: scale(1.08); box-shadow: 0 3px 20px rgba(255,150,60,0.8); }
+}
+
+/* ブーストゲージ */
+.cosmos-boost-gauge {
+  position: absolute;
+  bottom: 140px;
+  right: 18px;
+  width: 120px;
+  z-index: 16;
+  pointer-events: none;
+}
+.cosmos-boost-gauge .bg-label {
+  color: #ffdc80;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  font-weight: 700;
+  margin-bottom: 3px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+}
+.cosmos-boost-gauge .bg-bar {
+  height: 8px;
+  background: rgba(10,0,20,0.7);
+  border: 1px solid rgba(255,200,120,0.4);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.7);
+}
+.cosmos-boost-gauge .bg-fill {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, #ff4040, #ffb040, #ffe080);
+  box-shadow: 0 0 8px rgba(255,180,80,0.6);
+  transition: width 0.08s linear;
+}
+.cosmos-boost-gauge.low .bg-fill {
+  background: linear-gradient(90deg, #aa3030, #dd6040);
+  animation: boostLow 0.4s ease infinite alternate;
+}
+@keyframes boostLow {
+  from { opacity: 0.6; }
+  to { opacity: 1; }
+}
+
+/* コンパス矢印 */
+.cosmos-compass {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px; height: 200px;
+  pointer-events: none;
+  z-index: 13;
+}
+.cosmos-compass .cp-arrow {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform-origin: 50% 100px;
+  color: #7affc8;
+  font-size: 22px;
+  text-shadow: 0 0 10px rgba(122,255,200,0.9), 0 0 20px rgba(122,255,200,0.5);
+  animation: compassPulse 1.2s ease infinite alternate;
+}
+@keyframes compassPulse {
+  from { opacity: 0.5; }
+  to { opacity: 1; }
+}
+
+/* 到着ポップアップ（任天堂的バウンス） */
+.cosmos-arrive-popup {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  pointer-events: none;
+  z-index: 20;
+  text-align: center;
+  opacity: 0;
+  transition: none;
+}
+.cosmos-arrive-popup.show {
+  animation: arrivePop 1.8s cubic-bezier(.3,1.5,.4,1) forwards;
+}
+@keyframes arrivePop {
+  0%   { transform: translate(-50%, -50%) scale(0) rotate(-15deg); opacity: 0; }
+  15%  { transform: translate(-50%, -50%) scale(1.3) rotate(5deg); opacity: 1; }
+  30%  { transform: translate(-50%, -50%) scale(0.95) rotate(-2deg); }
+  50%  { transform: translate(-50%, -50%) scale(1.05) rotate(0deg); }
+  80%  { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1.1) rotate(0deg); opacity: 0; }
+}
+.cosmos-arrive-popup .ap-label {
+  font-size: 14px;
+  letter-spacing: 0.3em;
+  color: #ffdc80;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(255,200,80,0.8);
+}
+.cosmos-arrive-popup .ap-name {
+  font-size: 40px;
+  font-weight: 900;
+  color: #fff;
+  margin: 6px 0;
+  text-shadow: 0 0 16px rgba(255,220,120,0.9), 0 3px 8px rgba(0,0,0,0.8), 0 0 32px rgba(255,150,80,0.6);
+  letter-spacing: 0.04em;
+}
+.cosmos-arrive-popup .ap-bonus {
+  font-size: 20px;
+  color: #90ffc0;
+  font-weight: 800;
+  text-shadow: 0 0 10px rgba(120,255,180,0.8);
+}
+
+/* コレクトポップ（スター取得時の +100 表示） */
+.cosmos-collect-pop {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ffe080;
+  font-size: 26px;
+  font-weight: 900;
+  text-shadow: 0 0 12px rgba(255,220,80,0.9), 0 2px 6px rgba(0,0,0,0.8);
+  pointer-events: none;
+  z-index: 19;
+  opacity: 0;
+}
+.cosmos-collect-pop.pop {
+  animation: collectPop 0.7s ease-out forwards;
+}
+@keyframes collectPop {
+  0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+  30% { transform: translate(-50%, -80%) scale(1.3); opacity: 1; }
+  100% { transform: translate(-50%, -140%) scale(1); opacity: 0; }
+}
+
+/* スピードライン（BOOST時のラディアルブラー風） */
+.cosmos-speedlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 12;
+  background:
+    radial-gradient(ellipse at center, transparent 30%, rgba(255,255,255,0.04) 50%, transparent 60%),
+    repeating-conic-gradient(from 0deg at 50% 50%,
+      rgba(255,255,255,0) 0deg, rgba(255,255,255,0) 4deg,
+      rgba(255,240,220,0.18) 4.2deg, rgba(255,240,220,0) 5deg);
+  mix-blend-mode: screen;
+  mask-image: radial-gradient(ellipse at center, transparent 30%, black 65%);
+  -webkit-mask-image: radial-gradient(ellipse at center, transparent 30%, black 65%);
+}
+.cosmos-speedlines.on {
+  opacity: 1;
+  animation: speedSpin 1.2s linear infinite;
+}
+@keyframes speedSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 @media (max-width: 480px) {
   .cosmos-rocket-toggle { top: 10px; right: 54px; font-size: 11px; padding: 7px 11px; }
   .cosmos-dpad { width: 132px; height: 132px; left: 12px; bottom: 22px; }
@@ -3507,6 +3706,12 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
   .cosmos-brake-btn { width: 62px; height: 62px; }
   .cosmos-rocket-actions { right: 12px; bottom: 22px; }
   .cosmos-rocket-readout { top: 50px; font-size: 10px; padding: 6px 10px; min-width: 112px; }
+  .cosmos-scoreboard { top: 50px; gap: 6px; }
+  .cosmos-scoreboard .sb-item { padding: 4px 9px; font-size: 11px; }
+  .cosmos-boost-gauge { bottom: 120px; right: 12px; width: 100px; }
+  .cosmos-arrive-popup .ap-name { font-size: 28px; }
+  .cosmos-compass { width: 160px; height: 160px; }
+  .cosmos-compass .cp-arrow { transform-origin: 50% 80px; font-size: 18px; }
 }
 .cosmos-info-close {
   position: absolute;

@@ -3552,6 +3552,19 @@
       <button class="cosmos-rocket-toggle" id="cosmosRocketToggle" aria-label="ロケット操縦">🚀 ROCKET</button>
       <div class="cosmos-rocket-ui" id="cosmosRocketUI">
         <div class="cosmos-crosshair"></div>
+        <div class="cosmos-speedlines" id="cosmosSpeedLines"></div>
+        <div class="cosmos-scoreboard" id="cosmosScore">
+          <div class="sb-item"><span class="sb-ico">⭐</span><b id="sbStars">0</b><span class="sb-max">/60</span></div>
+          <div class="sb-item"><span class="sb-ico">🪐</span><b id="sbPlanets">0</b><span class="sb-max">/9</span></div>
+          <div class="sb-item sb-combo" id="sbCombo" style="display:none"><span class="sb-ico">🔥</span><b id="sbComboN">0</b>×</div>
+        </div>
+        <div class="cosmos-boost-gauge" id="cosmosBoostGauge">
+          <div class="bg-label">BOOST</div>
+          <div class="bg-bar"><div class="bg-fill" id="bgFill"></div></div>
+        </div>
+        <div class="cosmos-compass" id="cosmosCompass"><div class="cp-arrow">▲</div></div>
+        <div class="cosmos-arrive-popup" id="cosmosArrivePopup"></div>
+        <div class="cosmos-collect-pop" id="cosmosCollectPop"></div>
         <div class="cosmos-rocket-readout" id="cosmosRocketReadout">
           <div class="rc-line"><span>TARGET</span><b id="rcTarget">—</b></div>
           <div class="rc-line"><span>DIST</span><b id="rcDist">—</b></div>
@@ -4737,6 +4750,145 @@
     }
     scene.add(rocketGroup);
 
+    // ============================================================
+    // ⭐ 収集アイテム（スターコイン）
+    // ============================================================
+    const starCoinTex = (() => {
+      const sc = document.createElement('canvas'); sc.width = 128; sc.height = 128;
+      const g = sc.getContext('2d');
+      g.translate(64, 64);
+      // 星型
+      const drawStar = (outerR, innerR, color, glow) => {
+        g.beginPath();
+        for (let i = 0; i < 10; i++) {
+          const r = i % 2 === 0 ? outerR : innerR;
+          const a = -Math.PI/2 + (i / 10) * Math.PI * 2;
+          g.lineTo(Math.cos(a) * r, Math.sin(a) * r);
+        }
+        g.closePath();
+        if (glow) { g.shadowColor = glow; g.shadowBlur = 30; }
+        g.fillStyle = color; g.fill();
+        g.shadowBlur = 0;
+      };
+      // 外側のグロー
+      const glow = g.createRadialGradient(0, 0, 0, 0, 0, 60);
+      glow.addColorStop(0, 'rgba(255,240,120,0.8)');
+      glow.addColorStop(0.5, 'rgba(255,200,80,0.25)');
+      glow.addColorStop(1, 'rgba(255,200,80,0)');
+      g.fillStyle = glow; g.beginPath(); g.arc(0,0,60,0,Math.PI*2); g.fill();
+      drawStar(36, 16, '#ffd24a', '#ff9020');
+      drawStar(20, 8, '#fff4b0', null);
+      return new THREE.CanvasTexture(sc);
+    })();
+    const collectibles = [];
+    const COLLECTIBLE_COUNT = 60;
+    for (let i = 0; i < COLLECTIBLE_COUNT; i++) {
+      const mat = new THREE.SpriteMaterial({ map: starCoinTex, transparent: true, opacity: 0.0, depthWrite: false, blending: THREE.AdditiveBlending });
+      const sp = new THREE.Sprite(mat);
+      // 惑星軌道の近くにちりばめる
+      const ringIdx = Math.floor(Math.random() * 8);
+      const baseR = [7, 10, 14, 18, 24, 30, 36, 42][ringIdx];
+      const dr = (Math.random() - 0.5) * 4;
+      const a = Math.random() * Math.PI * 2;
+      sp.position.set(
+        Math.cos(a) * (baseR + dr),
+        (Math.random() - 0.5) * 6,
+        Math.sin(a) * (baseR + dr)
+      );
+      sp.scale.set(1.5, 1.5, 1);
+      sp.userData = { collected: false, spin: Math.random() * Math.PI * 2, bob: Math.random() * Math.PI * 2 };
+      scene.add(sp);
+      collectibles.push(sp);
+    }
+
+    // ============================================================
+    // 🌠 ロケットのコントレイル（軌跡）
+    // ============================================================
+    const TRAIL_LEN = 60;
+    const trailGeo = new THREE.BufferGeometry();
+    const trailPos = new Float32Array(TRAIL_LEN * 3);
+    const trailCol = new Float32Array(TRAIL_LEN * 3);
+    const trailSiz = new Float32Array(TRAIL_LEN);
+    for (let i = 0; i < TRAIL_LEN; i++) {
+      trailPos[i*3] = 0; trailPos[i*3+1] = -9999; trailPos[i*3+2] = 0;
+      const t = i / TRAIL_LEN;
+      trailCol[i*3] = 1.0;
+      trailCol[i*3+1] = 0.7 - t * 0.4;
+      trailCol[i*3+2] = 0.3;
+      trailSiz[i] = (1 - t) * 6 + 1;
+    }
+    trailGeo.setAttribute('position', new THREE.BufferAttribute(trailPos, 3));
+    trailGeo.setAttribute('color', new THREE.BufferAttribute(trailCol, 3));
+    trailGeo.setAttribute('trailSize', new THREE.BufferAttribute(trailSiz, 1));
+    const trailMat = new THREE.ShaderMaterial({
+      uniforms: { uTex: { value: softDotTex }, uOpacity: { value: 0.0 } },
+      vertexShader: `
+        attribute float trailSize;
+        attribute vec3 color;
+        varying vec3 vColor;
+        varying float vSize;
+        void main() {
+          vColor = color;
+          vSize = trailSize;
+          vec4 mv = modelViewMatrix * vec4(position, 1.0);
+          gl_Position = projectionMatrix * mv;
+          gl_PointSize = trailSize * 8.0 / -mv.z * 100.0 * 0.01 + trailSize * 3.0;
+        }
+      `,
+      fragmentShader: `
+        uniform sampler2D uTex;
+        uniform float uOpacity;
+        varying vec3 vColor;
+        varying float vSize;
+        void main() {
+          vec4 t = texture2D(uTex, gl_PointCoord);
+          gl_FragColor = vec4(vColor, t.a * uOpacity * (vSize / 6.0));
+          if (gl_FragColor.a < 0.01) discard;
+        }
+      `,
+      transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+    });
+    const trailPoints = new THREE.Points(trailGeo, trailMat);
+    scene.add(trailPoints);
+    let trailWriteIdx = 0;
+
+    // ============================================================
+    // 🎮 ゲーム状態
+    // ============================================================
+    const game = {
+      stars: 0,
+      planets: 0,
+      boost: 100,
+      combo: 0,
+      comboTimer: 0,
+    };
+
+    // Web Audio（軽いSE）
+    let audioCtx = null;
+    const getCtx = () => audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    function beep(freq, dur, type = 'sine', gain = 0.06) {
+      try {
+        const c = getCtx();
+        const o = c.createOscillator(); const g = c.createGain();
+        o.type = type; o.frequency.value = freq;
+        o.connect(g); g.connect(c.destination);
+        g.gain.setValueAtTime(gain, c.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + dur);
+        o.start(); o.stop(c.currentTime + dur);
+      } catch(e) {}
+    }
+    function playCollect(combo) {
+      const base = 660 + combo * 40;
+      beep(base, 0.08, 'triangle', 0.07);
+      setTimeout(() => beep(base * 1.5, 0.1, 'triangle', 0.05), 60);
+    }
+    function playArrive() {
+      beep(392, 0.1, 'sine', 0.08);
+      setTimeout(() => beep(494, 0.1, 'sine', 0.08), 100);
+      setTimeout(() => beep(659, 0.2, 'sine', 0.1), 200);
+    }
+    function playBoost() { beep(80, 0.15, 'sawtooth', 0.04); }
+
     let rocketMode = false;
     const rocketPos = new THREE.Vector3(0, 10, 40);
     const rocketVel = new THREE.Vector3(0, 0, 0);
@@ -4789,7 +4941,7 @@
       const dir = btn.dataset.dpad;
       holdButton(btn, () => { dpadState[dir] = true; }, () => { dpadState[dir] = false; });
     });
-    holdButton(ov.querySelector('#cosmosBoost'), () => { thrustHold = true; }, () => { thrustHold = false; });
+    holdButton(ov.querySelector('#cosmosBoost'), () => { thrustHold = true; if (game.boost > 5) playBoost(); }, () => { thrustHold = false; });
     holdButton(ov.querySelector('#cosmosBrake'), () => { brakeHold = true; }, () => { brakeHold = false; });
     // キーボード対応（PC向けボーナス）
     const keyMap = { ArrowUp:'up', ArrowDown:'down', ArrowLeft:'left', ArrowRight:'right' };
@@ -4821,16 +4973,24 @@
       // バンク（左右入力で傾く）
       const targetRoll = (dpadState.left ? 0.5 : 0) + (dpadState.right ? -0.5 : 0);
       rocketRoll += (targetRoll - rocketRoll) * 0.12;
-      // 推進
+      // 推進（ブーストはゲージ消費）
       const fwd = rocketForward();
-      if (thrustHold) {
-        rocketVel.addScaledVector(fwd, 0.04);
+      const boostActive = thrustHold && game.boost > 0;
+      if (boostActive) {
+        rocketVel.addScaledVector(fwd, 0.06);
+        game.boost = Math.max(0, game.boost - 0.8);
+      } else if (thrustHold) {
+        // ゲージ切れでも弱めに前進
+        rocketVel.addScaledVector(fwd, 0.02);
+      } else {
+        // ブースト自然回復
+        game.boost = Math.min(100, game.boost + 0.35);
       }
       if (brakeHold) {
-        rocketVel.multiplyScalar(0.92);
+        rocketVel.multiplyScalar(0.9);
       }
       // 最高速度クランプ（気持ちよさのため）
-      const maxSpd = 2.8;
+      const maxSpd = boostActive ? 4.0 : 2.8;
       const sp = rocketVel.length();
       if (sp > maxSpd) rocketVel.multiplyScalar(maxSpd / sp);
       // 僅かなドラッグ（ゲーム的）
@@ -4857,25 +5017,129 @@
       const scl = 1 + (thrustHold ? 0.6 : 0) + Math.random() * 0.2;
       flame.scale.set(0.55, 1.0 * scl, 1);
       eLight.intensity += ((thrustHold ? 2.2 : sp * 0.8) - eLight.intensity) * 0.3;
-      // カメラ：三人称ビュー（ロケット後方やや上）
+      // カメラ：三人称ビュー（ロケット後方やや上）+ シェイク
       const back = fwd.clone().multiplyScalar(-4.5);
       const up = new THREE.Vector3(0,1,0);
       const camTarget = rocketPos.clone().add(back).addScaledVector(up, 1.8);
+      // 高速時カメラシェイク
+      const shakeAmt = boostActive ? 0.12 : sp > 2 ? 0.04 : 0;
+      if (shakeAmt > 0) {
+        camTarget.x += (Math.random() - 0.5) * shakeAmt;
+        camTarget.y += (Math.random() - 0.5) * shakeAmt;
+      }
       camera.position.lerp(camTarget, 0.18);
       const look = rocketPos.clone().addScaledVector(fwd, 6);
       camera.lookAt(look);
+
+      // コントレイル書き込み
+      const tIdx = trailWriteIdx % TRAIL_LEN;
+      const tailPos = rocketPos.clone().addScaledVector(fwd, -0.9);
+      trailPos[tIdx*3] = tailPos.x;
+      trailPos[tIdx*3+1] = tailPos.y;
+      trailPos[tIdx*3+2] = tailPos.z;
+      // sizeを最新に
+      trailSiz[tIdx] = boostActive ? 6 : 3.5;
+      // 書き込み順に基づいて色・サイズを falloff
+      for (let i = 0; i < TRAIL_LEN; i++) {
+        const age = (trailWriteIdx - i + TRAIL_LEN) % TRAIL_LEN;
+        const f = 1 - age / TRAIL_LEN;
+        if (i === tIdx) continue;
+        trailSiz[i] *= 0.97;
+      }
+      trailGeo.attributes.position.needsUpdate = true;
+      trailGeo.attributes.trailSize.needsUpdate = true;
+      trailMat.uniforms.uOpacity.value = Math.min(0.9, sp * 0.35 + (boostActive ? 0.3 : 0));
+      trailWriteIdx++;
+
+      // ⭐ スターコイン衝突判定 + アニメーション
+      collectibles.forEach(sp => {
+        if (sp.userData.collected) return;
+        sp.userData.spin += 0.05;
+        sp.material.rotation = sp.userData.spin;
+        const bob = Math.sin(universeTime * 2 + sp.userData.bob) * 0.2;
+        sp.position.y += bob * 0.01;
+        sp.material.opacity = 0.9;
+        const d = sp.position.distanceTo(rocketPos);
+        if (d < 1.4) {
+          sp.userData.collected = true;
+          sp.material.opacity = 0;
+          sp.visible = false;
+          game.stars++;
+          game.combo++;
+          game.comboTimer = 120;
+          ov.querySelector('#sbStars').textContent = game.stars;
+          const cEl = ov.querySelector('#sbCombo');
+          if (game.combo >= 2) { cEl.style.display = ''; ov.querySelector('#sbComboN').textContent = game.combo; }
+          playCollect(game.combo);
+          // ポップアニメ
+          const pop = ov.querySelector('#cosmosCollectPop');
+          pop.textContent = '+' + (100 * game.combo);
+          pop.classList.remove('pop'); void pop.offsetWidth; pop.classList.add('pop');
+        }
+      });
+      // コンボタイマー減衰
+      if (game.comboTimer > 0) {
+        game.comboTimer--;
+        if (game.comboTimer === 0) {
+          game.combo = 0;
+          ov.querySelector('#sbCombo').style.display = 'none';
+        }
+      }
+
       // 近接ターゲット検出
       let nearest = null, nearestD = Infinity;
       planetMeshes.forEach(pm => {
         const d = pm.mesh.position.distanceTo(rocketPos);
         if (d < nearestD) { nearestD = d; nearest = pm; }
       });
+      // コンパス：未訪問惑星で一番近いものを指す
+      let compassTarget = null;
+      let minUD = Infinity;
+      planetMeshes.forEach(pm => {
+        if (pm.mesh.userData.visited) return;
+        const d = pm.mesh.position.distanceTo(rocketPos);
+        if (d < minUD) { minUD = d; compassTarget = pm; }
+      });
+      if (compassTarget) {
+        const cDir = new THREE.Vector3().subVectors(compassTarget.mesh.position, rocketPos).normalize();
+        // 画面座標に投影して矢印を回転
+        const projected = cDir.clone().applyQuaternion(camera.quaternion.clone().invert());
+        const ang = Math.atan2(projected.x, -projected.y); // 2D向き
+        const cp = ov.querySelector('#cosmosCompass');
+        cp.style.display = '';
+        cp.querySelector('.cp-arrow').style.transform = `rotate(${ang}rad)`;
+      } else {
+        ov.querySelector('#cosmosCompass').style.display = 'none';
+      }
+
       if (nearest) {
         rcTarget.textContent = nearest.planet.jname;
         rcDist.textContent = nearestD.toFixed(1);
         const arrivalR = nearest.planet.size * 3.5 + 2;
         if (nearestD < arrivalR && visitedPlanet !== nearest) {
           visitedPlanet = nearest;
+          // 初回訪問
+          if (!nearest.mesh.userData.visited) {
+            nearest.mesh.userData.visited = true;
+            game.planets++;
+            ov.querySelector('#sbPlanets').textContent = game.planets;
+            // 到着ポップ
+            const ap = ov.querySelector('#cosmosArrivePopup');
+            ap.innerHTML = `<div class="ap-label">到着！</div><div class="ap-name">${nearest.planet.jname}</div><div class="ap-bonus">+1000</div>`;
+            ap.classList.remove('show'); void ap.offsetWidth; ap.classList.add('show');
+            setTimeout(() => ap.classList.remove('show'), 1800);
+            playArrive();
+            game.stars += 10; // ボーナス
+            ov.querySelector('#sbStars').textContent = game.stars;
+            // 全惑星制覇チェック
+            if (game.planets >= planetMeshes.length) {
+              setTimeout(() => {
+                const ap2 = ov.querySelector('#cosmosArrivePopup');
+                ap2.innerHTML = `<div class="ap-label">🏆 MISSION COMPLETE</div><div class="ap-name">全惑星制覇！</div><div class="ap-bonus">宇宙飛行士認定</div>`;
+                ap2.classList.remove('show'); void ap2.offsetWidth; ap2.classList.add('show');
+              }, 2000);
+            }
+          }
           showPlanetInfo(nearest);
           // 到着時は減速
           rocketVel.multiplyScalar(0.2);
@@ -4884,6 +5148,15 @@
         }
       }
       rcSpd.textContent = sp.toFixed(2);
+
+      // ブーストゲージUI
+      ov.querySelector('#bgFill').style.width = game.boost + '%';
+      ov.querySelector('#cosmosBoostGauge').classList.toggle('low', game.boost < 25);
+
+      // スピードライン発動
+      const sl = ov.querySelector('#cosmosSpeedLines');
+      if (sp > 1.8 || boostActive) sl.classList.add('on');
+      else sl.classList.remove('on');
     }
     function showPlanetInfo(pm) {
       const p = pm.mesh.userData;
