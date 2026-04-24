@@ -574,17 +574,8 @@
       // タイムスリップ背景アニメーション起動
       initTimeWarp(wrap.querySelector('#magicTopWarp'));
 
-      // ラビン（.home-rabin-greet）を本のヒーロー内に取り込む
-      const rabinHost = wrap.querySelector('#magicTopRabin');
-      const moveRabin = () => {
-        const rabin = document.querySelector('.home-rabin-greet');
-        if (!rabin || !rabinHost) return;
-        if (rabin.parentNode !== rabinHost) rabinHost.appendChild(rabin);
-      };
-      moveRabin();
-      const moRabin = new MutationObserver(moveRabin);
-      moRabin.observe(home, { childList: true, subtree: true });
-      MAGIC._topBookRabinMO = moRabin;
+      // ラビン（.home-rabin-greet）をヒーロー内に取り込む処理は停止
+      // （ユーザー指示: レキットが変な場所に出る）
       return true;
     }
 

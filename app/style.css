@@ -14874,8 +14874,9 @@ img.welcome-intro-video { mix-blend-mode: normal !important; }
   .worldview-chara-traits { text-align: left; align-self: stretch; }
 }
 
-/* ホームのラビン挨拶（ヒーロー直下） */
-.home-rabin-greet {
+/* ホームのラビン挨拶は完全非表示（FABラビンのみに統一） */
+.home-rabin-greet, .magic-topbook-rabin { display: none !important; }
+.home-rabin-greet-disabled {
   margin: 0 0 14px;
   padding: 16px 18px;
   background: linear-gradient(135deg, rgba(255,248,234,0.6) 0%, rgba(245,232,208,0.4) 100%);
