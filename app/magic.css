@@ -3164,6 +3164,16 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
   overflow: hidden;
 }
 .cosmos-overlay.open { opacity: 1; pointer-events: auto; }
+/* シネマティックなヴィネット（画面隅が暗くなる） */
+.cosmos-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.5) 100%);
+  mix-blend-mode: multiply;
+}
 .cosmos-stage { position: absolute; inset: 0; }
 .cosmos-close {
   position: absolute;
@@ -3293,14 +3303,21 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
   top: 60px;
   width: min(360px, calc(100vw - 28px));
   max-height: calc(100vh - 180px);
-  padding: 22px 20px 24px;
-  background: linear-gradient(135deg, rgba(10,5,20,0.95), rgba(20,10,30,0.95));
-  border: 1px solid rgba(180,160,220,0.5);
-  border-radius: 14px;
+  padding: 24px 22px 26px;
+  background:
+    radial-gradient(ellipse at top right, rgba(120,80,200,0.18), transparent 60%),
+    radial-gradient(ellipse at bottom left, rgba(80,140,200,0.14), transparent 55%),
+    linear-gradient(160deg, rgba(18,10,32,0.95), rgba(8,4,18,0.96));
+  border: 1px solid rgba(200,180,255,0.45);
+  border-radius: 18px;
   color: #e8d8ff;
   font-family: 'Shippori Mincho', serif;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.7), 0 0 32px rgba(180,160,220,0.15);
-  backdrop-filter: blur(14px);
+  box-shadow:
+    0 12px 40px rgba(0,0,0,0.75),
+    0 0 48px rgba(180,160,220,0.2),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+  backdrop-filter: blur(16px) saturate(1.15);
+  -webkit-backdrop-filter: blur(16px) saturate(1.15);
   z-index: 18;
   overflow-y: auto;
   transform: translateX(120%);
@@ -3308,6 +3325,23 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
   transition: transform 0.4s cubic-bezier(.3,1.3,.4,1), opacity 0.4s;
 }
 .cosmos-info-panel.show { transform: translateX(0); opacity: 1; }
+
+/* 情報パネル内のセクション・スタガーイン */
+.cosmos-info-panel .cosmos-info-content > * {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: cosmosInfoStagger 0.6s cubic-bezier(.2,.8,.3,1) forwards;
+}
+.cosmos-info-panel .cosmos-info-content > *:nth-child(1) { animation-delay: 0.05s; }
+.cosmos-info-panel .cosmos-info-content > *:nth-child(2) { animation-delay: 0.12s; }
+.cosmos-info-panel .cosmos-info-content > *:nth-child(3) { animation-delay: 0.18s; }
+.cosmos-info-panel .cosmos-info-content > *:nth-child(4) { animation-delay: 0.25s; }
+.cosmos-info-panel .cosmos-info-content > *:nth-child(5) { animation-delay: 0.32s; }
+.cosmos-info-panel .cosmos-info-content > *:nth-child(6) { animation-delay: 0.4s; }
+@keyframes cosmosInfoStagger {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 .cosmos-zoom-ctrl {
   position: absolute;
   right: 14px;
@@ -4133,14 +4167,19 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
   line-height: 1;
 }
 .cosmos-info-name {
-  font-size: 22px;
+  font-size: 26px;
   font-weight: 800;
   color: #fff;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   margin-bottom: 2px;
   padding-right: 44px; /* 閉じるボタンと被らないよう */
-  line-height: 1.25;
+  line-height: 1.22;
   word-break: keep-all;
+  text-shadow: 0 0 18px rgba(200,180,255,0.3), 0 2px 6px rgba(0,0,0,0.5);
+  background: linear-gradient(135deg, #fff 0%, #e8d8ff 60%, #ffd8a0 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 .cosmos-info-sub {
   font-family: 'Cormorant Garamond', serif;

@@ -5240,6 +5240,39 @@
     });
 
     // ============================================================
+    // 🎵 アンビエント宇宙ドローン（universe相でずっと鳴る、超小音量）
+    // ============================================================
+    let ambientDrone = null;
+    function startAmbient() {
+      if (ambientDrone) return;
+      try {
+        const c = getCtx();
+        ambientDrone = { nodes: [] };
+        // 極小音量の倍音ドローン
+        [55, 82.5, 110, 165].forEach((f, i) => {
+          const o = c.createOscillator();
+          o.type = i === 0 ? 'sine' : 'triangle';
+          o.frequency.value = f;
+          const g = c.createGain();
+          g.gain.value = 0;
+          // 10秒でフェードイン、極めて小さく
+          g.gain.linearRampToValueAtTime(0.005 + i * 0.002, c.currentTime + 10);
+          // LFO でゆらぎ
+          const lfo = c.createOscillator(); lfo.frequency.value = 0.04 + i * 0.02;
+          const lfoGain = c.createGain(); lfoGain.gain.value = 0.003;
+          lfo.connect(lfoGain); lfoGain.connect(g.gain);
+          lfo.start();
+          o.connect(g); g.connect(c.destination); o.start();
+          ambientDrone.nodes.push({ o, g, lfo });
+        });
+      } catch (e) {}
+    }
+    // Haptic feedback
+    function haptic(ms = 10) {
+      if (navigator.vibrate) { try { navigator.vibrate(ms); } catch (e) {} }
+    }
+
+    // ============================================================
     // 🪐 モード群: 軌道/星座/ツアー/実寸
     // ============================================================
     const modes = { trails: false, constellations: false, tour: false, real: false };
@@ -6317,6 +6350,7 @@
         if (bbAge > 3) {
           phase = 'universe';
           bbPoints.visible = false;
+          startAmbient();
           hud.classList.add('show');
           hud.textContent = '🪐 惑星をタップ';
           setTimeout(() => hud.classList.remove('show'), 3500);
@@ -6555,10 +6589,16 @@
           rocketUpdate();
         } else if (cameraZoomTarget) {
           const t = cameraZoomTarget.mesh;
-          const lerp = 0.05;
-          camera.position.x += (t.position.x * 1.3 - camera.position.x) * lerp;
-          camera.position.y += (8 - camera.position.y) * lerp;
-          camera.position.z += (t.position.z * 1.3 + 8 - camera.position.z) * lerp;
+          // スムーズ減衰（距離が大きいほど早く、近づくほどゆっくり）
+          const dx = t.position.x * 1.3 - camera.position.x;
+          const dy = 8 - camera.position.y;
+          const dz = t.position.z * 1.3 + 8 - camera.position.z;
+          const dist = Math.hypot(dx, dy, dz);
+          // critically-damped spring のようなカーブ
+          const lerp = Math.min(0.09, 0.025 + dist * 0.005);
+          camera.position.x += dx * lerp;
+          camera.position.y += dy * lerp;
+          camera.position.z += dz * lerp;
           camera.lookAt(t.position);
         } else if (!userControlling) {
           // 自動旋回（ユーザー操作中は停止）
@@ -6634,6 +6674,10 @@
         return;
       }
       const p = hit.object.userData;
+      // タップフィードバック（全共通）
+      haptic(12);
+      beep(640, 0.05, 'sine', 0.04);
+      setTimeout(() => beep(960, 0.08, 'sine', 0.035), 50);
       // 太陽をタップ → 情報パネル（惑星と同じフォーマット）
       if (hit.object === sun) {
         const infoEl = ov.querySelector('#cosmosInfoContent');
