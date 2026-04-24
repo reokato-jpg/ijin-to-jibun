@@ -1556,8 +1556,8 @@
          <button class="magic-graph-ctrl" data-filter="history">歴史</button>
          <button class="magic-graph-ctrl" data-filter="science">科学</button>
        </div>
-       <div class="magic-graph-controls magic-graph-eras">
-         <span class="magic-graph-eras-label">時代:</span>
+       <div class="magic-graph-eras">
+         <span class="magic-graph-eras-label">時代</span>
          <button class="magic-graph-era active" data-era="all">すべて</button>
          <button class="magic-graph-era" data-era="ancient">古代(〜500)</button>
          <button class="magic-graph-era" data-era="medieval">中世(500〜1500)</button>
@@ -2461,9 +2461,15 @@
       const { country, info: cInfo } = pin;
       // 💫 パルス衝撃波を発射
       spawnShockwave(pin.pos);
-      info.innerHTML = `<h4>📍 ${country}（${cInfo.people.length}名）</h4>`
+      info.innerHTML = `
+        <button class="magic-globe-info-close" aria-label="閉じる">×</button>
+        <h4>📍 ${country}（${cInfo.people.length}名）</h4>`
         + cInfo.people.map(p => `<button class="magic-globe-item" data-id="${p.id}">${p.name}</button>`).join('');
       info.classList.add('visible');
+      info.querySelector('.magic-globe-info-close')?.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        info.classList.remove('visible');
+      });
       info.querySelectorAll('.magic-globe-item').forEach(b => {
         b.addEventListener('click', () => {
           const id = b.dataset.id;
