@@ -538,7 +538,7 @@
               <button class="magic-topbook-pill magic-topbook-pill-quiz" data-deep="quiz">🎓 偉人クイズ</button>
               <button class="magic-topbook-pill magic-topbook-pill-timeline" data-deep="timeline">📅 年表モード</button>
               <button class="magic-topbook-pill magic-topbook-pill-glossary" data-deep="glossary">📖 用語集</button>
-              <button class="magic-topbook-pill magic-topbook-pill-myth" data-deep="mythology">🏛 神話の宇宙</button>
+              <button class="magic-topbook-pill magic-topbook-pill-myth" data-deep="mythology">📜 原初の物語</button>
             </div>
           </div>
         </div>
@@ -4719,6 +4719,95 @@
   // - 星の王子様タブは静かに、単独の小さな星と1人ずつのキャラクター
   // - タップで神話・エピソード表示
   // ============================================================
+  // 📜 神話物語モード: 章構成で没入できる読み物
+  const MYTH_STORIES = {
+    genesis: {
+      name: '創世記', emoji: '🌿', theme: 'eden',
+      subtitle: '旧約聖書 — 光あれ、から楽園追放まで',
+      palette: { bg1: '#2a1f0f', bg2: '#0f0804', accent: '#ffe090' },
+      chapters: [
+        { t: '1. はじまりの闇', body: 'はじめに、神は天と地とを創造された。地は形なく、闇が深淵の面にあり、神の霊が水の面を動いていた。\n\n何もなかった。だが「なかった」という言葉すら、まだなかった。' },
+        { t: '2. 光あれ', body: '神は言われた — 「光あれ」\nそして光があった。神は光を見て、よしとされた。\n\n言葉が、世界を産んだ最初の瞬間。' },
+        { t: '3. 六日間の創造', body: '第一日に光を。第二日に空を。第三日に海と陸を。第四日に太陽と月と星を。第五日に魚と鳥を。第六日に獣と — そして、神は言われた。\n\n「われわれの像に人を造ろう」\n土の塵からアダムが形作られ、その鼻に命の息が吹き入れられた。' },
+        { t: '4. エデンの園', body: '主なる神は東の方エデンに園を設け、造った人をそこに置かれた。見て麗しく食べて良い実を結ぶあらゆる木が、そこに生えた。\n\nそして園の中央には「命の木」と、「善悪を知る木」があった。' },
+        { t: '5. 助け手イヴ', body: '人が独りでいるのはよくない。主は人を深く眠らせ、その肋骨から女を造られた。アダムは言った — 「これこそ、私の骨の骨、肉の肉」\n\nふたりは裸でも恥じなかった。' },
+        { t: '6. 禁断の果実', body: '蛇は女に言った — 「決して死なない。神はそれを食べる日に、目が開け、神のようになることを知っておられる」\n\nイヴは実を取って食べ、アダムにも渡した。目が開け、ふたりは初めて裸を恥じた。' },
+        { t: '7. 楽園追放', body: '主は言われた — 「人はわれわれの一人のようになった。善悪を知る者として。今や彼が手を伸ばし、命の木からも取って食べ、永遠に生きるといけない」\n\nふたりはエデンから追放された。園の東には、炎の剣を持つケルビムが置かれた。' },
+        { t: '8. カインとアベル', body: 'アダムとイヴの子、兄カインは弟アベルを野で殺した。主は問われた — 「お前の弟アベルはどこにいるのか」\n\nカインは答えた — 「知りません。私は弟の番人なのですか」\n\n人類最初の殺人。' },
+      ]
+    },
+    greek: {
+      name: 'ギリシャ神話', emoji: '⚡', theme: 'olympus',
+      subtitle: 'カオスから、オリンポスまで',
+      palette: { bg1: '#0f1830', bg2: '#050814', accent: '#ffd650' },
+      chapters: [
+        { t: '1. カオス', body: 'はじめにカオスがあった。形なきもの、境界なきもの、すべてが混ざり合う深淵。\n\nそこからガイア（大地）、タルタロス（奈落）、エロス（愛の欲望）、エレボス（闇）、ニュクス（夜）が生まれた。' },
+        { t: '2. ウラノスとガイア', body: 'ガイアは一人でウラノス（天空）を生み、彼と交わって十二のティタン神、三つ目の巨人キュクロプス、百の腕を持つヘカトンケイルを産んだ。\n\nウラノスは子らを厭い、大地の胎内に閉じ込めた。ガイアは苦しみ、末子クロノスに鋼の鎌を渡した。' },
+        { t: '3. クロノスの父殺し', body: 'クロノスは父ウラノスを切り、神々の時代を始めた。しかし自らも子に倒されるという予言を恐れ、生まれる子を次々に呑み込んだ。\n\n妻レアはゼウスを隠し、クロノスには石を食わせた。' },
+        { t: '4. ティタノマキア', body: '成長したゼウスは兄姉を呑まれた神々を解放し、ティタン神たちと十年の大戦争を繰り広げた。\n\nキュクロプスが鍛えた雷霆、三叉の矛、隠れ兜を武器に、オリンポス神族が勝利した。' },
+        { t: '5. オリンポスの十二神', body: 'ゼウスは天を、ポセイドンは海を、ハデスは冥界を分けた。アテナが知恵を、アポロンが音楽を、アルテミスが狩りを、アフロディーテが愛を、ヘルメスが伝令を司った。\n\n神々は雲のオリンポスに住まい、人間を見下ろした。' },
+        { t: '6. プロメテウスの火', body: '人間は弱かった。プロメテウスは天から火を盗み、葦の茎に隠して人間に渡した。ゼウスは怒り、プロメテウスをカウカソスの岩に磔にし、毎日鷲に肝臓を啄ませた。\n\n夜ごと再生し、昼ごと啄まれ続ける刑。' },
+        { t: '7. パンドラの箱', body: 'ゼウスは人間に復讐した。火の神ヘファイストスに土と水で「すべての贈り物を持つ女」パンドラを造らせ、開けてはならぬ甕を持たせ地上に送った。\n\n好奇心に負けたパンドラが甕を開けると、病・争い・苦しみ・老い — すべての災いが飛び出した。\n慌てて閉じた時、底に残ったのはただ一つ — エルピス、希望だけ。' },
+      ]
+    },
+    japan: {
+      name: '日本神話', emoji: '🌸', theme: 'izanami',
+      subtitle: '天地開闢から、国譲りまで',
+      palette: { bg1: '#2a1030', bg2: '#10041a', accent: '#ffb0d0' },
+      chapters: [
+        { t: '1. 天地開闢', body: '天地がまだ分かれず、渾沌として卵のようだった頃。清く明るきもの薄くたなびいて天となり、重く濁れるものが凝り積もって地となった。\n\n高天原に最初に現れたのは、天之御中主神（あめのみなかぬしのかみ）。続いて神々が次々と生まれた。' },
+        { t: '2. 国生み', body: '神々はイザナギとイザナミに命じた — 「この漂う国を修めよ」\n\n二神は天の浮橋に立ち、天沼矛を下ろして海水をかき回した。引き上げた矛の先から滴り落ちた塩が固まり、淤能碁呂島（おのごろじま）となった。そこに降り立ち、夫婦となった。' },
+        { t: '3. 八百万の神々', body: 'イザナギとイザナミは日本の国土を次々に産んだ。淡路、四国、九州、本州、北陸、対馬、佐渡 — 八つの島、大八島の国。\n\nさらに山、海、風、木、草の神々 — 八百万の神が生まれた。' },
+        { t: '4. イザナミの死と黄泉', body: 'イザナミは火の神カグツチを産んで火傷を負い、黄泉の国へ旅立った。\n\nイザナギは妻を連れ戻そうと黄泉を訪れた。「見ないで」という妻の言葉を破り、蛆の湧く姿を見てしまう。恥じたイザナミは追いかけ、黄泉比良坂で別れた。「一日に千人殺すならば千五百人産む」— 命と死の契約。' },
+        { t: '5. 三貴子の誕生', body: 'イザナギは穢れを祓うため禊をした。左目を洗うと天照大神（太陽）、右目を洗うと月読命（月）、鼻を洗うと須佐之男命（嵐）が生まれた。\n\n父は彼らにそれぞれ「高天原」「夜の国」「海原」を治めよと命じた。' },
+        { t: '6. 天岩戸', body: 'スサノオは乱暴を働き、高天原を追われた。嘆いた天照は天岩戸に閉じこもり、世界は闇に沈んだ。\n\n八百万の神は岩戸の前で祭りを開いた。アメノウズメが裸で舞い、神々は大笑いした。不思議に思って岩戸を少し開けた天照を、タヂカラオが引き出した。世界に光が戻った。' },
+        { t: '7. ヤマタノオロチ', body: '出雲に降りたスサノオは、八つの頭を持つ大蛇ヤマタノオロチに娘を食われる夫婦に出会った。\n\n八塩折の酒を八つの桶に満たし、酔った大蛇を斬った。尾から現れたのが草薙剣 — 三種の神器の一つ。' },
+        { t: '8. 国譲り', body: 'オオクニヌシが築いた葦原中国を、高天原の神々は欲した。使者が派遣され、オオクニヌシは国を譲った代わりに、出雲大社という「天につながる神社」を建ててもらった。\n\n天孫ニニギが葦原中国に降り、日本の皇室の祖先となった。' },
+      ]
+    },
+    norse: {
+      name: '北欧神話', emoji: '🔨', theme: 'yggdrasil',
+      subtitle: 'ギンヌンガガプから、ラグナロクまで',
+      palette: { bg1: '#0a1028', bg2: '#050612', accent: '#b0d8ff' },
+      chapters: [
+        { t: '1. ギンヌンガガプ', body: 'はじめに、何もなかった。ただ巨大な虚空ギンヌンガガプがあり、北には氷の国ニヴルヘイム、南には炎の国ムスペルヘイムがあった。\n\n氷と炎が出会い、最初の巨人ユミルと牝牛アウズンブラが生まれた。' },
+        { t: '2. 世界樹ユグドラシル', body: 'オーディンは兄弟と共にユミルを殺し、その体から世界を作った。肉は大地、血は海、骨は山、髪は森、頭蓋は天。\n\n宇宙の中心には世界樹ユグドラシルがそびえ、九つの世界を支えた。根元には運命の三女神ノルンが住み、未来を織っていた。' },
+        { t: '3. 知恵の代価', body: 'オーディンは知恵を求めてミーミルの泉に片目を捧げた。さらに自らを槍で刺し、世界樹に九日九夜吊るされ、ルーン文字を発見した。\n\n「我は我に、我を捧げた」' },
+        { t: '4. トールとミョルニル', body: '雷神トールは巨人族の天敵。ドワーフが鍛えた魔槌ミョルニルは、投げれば必ず戻り、山を砕いた。\n\n腰の力帯は力を倍に、鉄の手袋で槌を握った。雷鳴が轟くとき、それはトールが巨人を討つ音。' },
+        { t: '5. ロキの悪戯', body: '火の巨人の血を引くロキ。美しき神バルドルを愛したフリッグ母は、あらゆるものに息子を傷つけない誓いを立てさせた。だがヤドリギだけは忘れた。\n\nロキは盲目の神ヘズにヤドリギの枝を渡した。バルドルは倒れた。光が消え、神々は泣いた。' },
+        { t: '6. ラグナロク', body: 'いつか来る「神々の黄昏」。ロキは鎖を解かれ、巨人フレーズの船ナグルファルで進軍する。ミッドガルドの蛇ヨルムンガンドが陸に這い上がり、炎の巨人スルトが炎の剣を振るう。\n\nオーディンは狼フェンリルに呑まれる。トールはヨルムンガンドと相打つ。そして世界が燃え、海に沈む。\n\nしかし — 新しい大地が海から昇り、生き残った二人の人間が新たな世界を始める。' },
+      ]
+    },
+    egypt: {
+      name: 'エジプト神話', emoji: '☀️', theme: 'nile',
+      subtitle: '太初の水ヌンから、オシリスの復活まで',
+      palette: { bg1: '#2a1505', bg2: '#120805', accent: '#ffc850' },
+      chapters: [
+        { t: '1. 太初の水ヌン', body: 'はじめに、ヌンと呼ばれる原初の水があった。混沌、果てしない深淵。\n\nその水の中から一つの丘が現れ、自ら生まれた神アトゥムが立った。彼は名乗った — 「我、在りて在るもの」' },
+        { t: '2. 九柱神の誕生', body: 'アトゥムは自らに口づけし、シュ（大気）とテフヌト（湿気）を生んだ。二人からゲブ（大地）とヌト（天空）が。二人からオシリス、イシス、セト、ネフティス。\n\nこれがヘリオポリスの九柱神（エネアド）。' },
+        { t: '3. ラーの昼と夜', body: '太陽神ラーは毎日、船マアンジェトに乗って東から昇り、十二時間かけて天を渡る。夜は船メセクテトに乗り換え、十二時間かけて冥界を航行する。\n\n冥界では毎夜、混沌の蛇アポフィスが船を襲う。ラーは戦士たちと戦い、勝ち続けなければ明日の朝は来ない。' },
+        { t: '4. オシリスの治世', body: 'ゲブの長子オシリスは地上を治めた。人々に農業を教え、法を与え、音楽を教えた。妻は聡明なイシス。\n\n弟セトは兄を妬んだ。' },
+        { t: '5. セトの裏切り', body: 'セトはオシリスを宴に招き、美しい棺に体を入れた者に棺を贈ると約束した。オシリスが横たわると、セトは蓋を閉じ、鉛で封じ、ナイル川に流した。\n\nさらに遺体を十四に切り刻み、国中に撒いた。' },
+        { t: '6. イシスの愛', body: 'イシスは鳥となって夫の遺体を探し歩いた。十三の断片を集め、魔術で再構築した。失った一部は金で作った。\n\n一夜だけ魂を呼び戻し、その夜にホルスが身篭られた。オシリスは冥界の王となった。' },
+        { t: '7. ホルスの復讐', body: '息子ホルスは成長し、叔父セトと八十年間戦った。最後に神々の裁きで、ホルスは地上の王となり、セトは砂漠に追放された。\n\nオシリスは死後の裁き手となり、人が死ぬと心臓が真実の羽と秤にかけられ、罪があれば魂を喰らう獣に食われる。' },
+      ]
+    },
+    hindu: {
+      name: 'ヒンドゥー神話', emoji: '🕉', theme: 'trimurti',
+      subtitle: '宇宙の創造・維持・破壊',
+      palette: { bg1: '#2a0a20', bg2: '#10041a', accent: '#ffb0a0' },
+      chapters: [
+        { t: '1. 宇宙の呼吸', body: '宇宙は無限に生まれ、無限に消える。ブラフマーが目覚めれば宇宙が創られ、眠れば宇宙は消える。\n\n彼の一日は人間の四十三億二千万年。彼の一生は百のブラフマー年。それが終わると、宇宙そのものが溶け、また新しい宇宙が始まる。' },
+        { t: '2. トリムールティ', body: '三主神。ブラフマー（創造）、ヴィシュヌ（維持）、シヴァ（破壊と再生）。\n\n三者は本来一つの至高存在ブラフマンの三つの相。呼吸するように、創っては保ち、保っては壊し、壊しては新しく生む。' },
+        { t: '3. ヴィシュヌの化身', body: 'ヴィシュヌは世界の危機ごとに化身（アヴァターラ）して降りてくる。魚マツヤで大洪水から人類を救い、亀クールマで海を攪拌して不死の甘露を得た。\n\nラーマとして悪王ラーヴァナを倒し、クリシュナとして戦士アルジュナにバガヴァッド・ギーターを説いた。最後の化身カルキは、終末に白馬に乗って現れる。' },
+        { t: '4. シヴァの舞踏', body: 'シヴァは破壊神にして、再生の神。額に第三の眼、首に蛇、髪に月とガンジス川の女神を宿す。\n\n宇宙を焼き尽くす時、彼はナタラージャとして舞を踊る。その炎が古い世界を清め、次の世界への扉を開く。' },
+        { t: '5. 女神たちの力', body: 'すべての神にはシャクティ（女神の力）がある。ブラフマーにはサラスヴァティー（学問）、ヴィシュヌにはラクシュミー（富）、シヴァにはパールヴァティー。\n\nそして破壊の女神カーリー。シヴァが倒せぬ悪魔を首を切って飲み干し、血が地に落ちぬようにした。舌は血に染まる。' },
+        { t: '6. ガネーシャの誕生', body: 'シヴァが遠征中、妻パールヴァティーは自分の体の垢から息子を作り、浴室の番をさせた。戻ってきたシヴァは見知らぬ子に道を塞がれ、激怒して首を刎ねた。\n\n妻に怒られ、通りすがりの最初の動物の首を代わりにつけると約束し、それが象だった。\n\nこうして障害を取り除く神、ガネーシャは生まれた。' },
+      ]
+    },
+  };
+
+  // 旧データは参考に残す（星の王子様は宇宙モードへ移植）
   const MYTH_WORLDS = {
     japan: {
       name: '日本神話', sky: '#1a0a24', accent: '#ffd8a0',
@@ -4811,272 +4900,145 @@
   };
 
   async function openMythology() {
-    if (!window.THREE) return;
-    const THREE = window.THREE;
     const ov = document.createElement('div');
-    ov.className = 'myth-overlay';
-    const tabs = Object.keys(MYTH_WORLDS).map((k, i) => `
-      <button class="myth-tab ${i === 0 ? 'active' : ''}" data-myth="${k}">${MYTH_WORLDS[k].name}</button>
-    `).join('');
+    ov.className = 'tale-overlay';
+    const ids = Object.keys(MYTH_STORIES);
+    const coverHTML = ids.map(k => {
+      const s = MYTH_STORIES[k];
+      return `
+        <button class="tale-cover" data-tale="${k}" style="background: linear-gradient(165deg, ${s.palette.bg1}, ${s.palette.bg2});">
+          <div class="tale-cover-emoji">${s.emoji}</div>
+          <div class="tale-cover-name">${s.name}</div>
+          <div class="tale-cover-sub">${s.subtitle}</div>
+          <div class="tale-cover-open">開く →</div>
+        </button>
+      `;
+    }).join('');
     ov.innerHTML = `
-      <button class="myth-close" aria-label="閉じる">×</button>
-      <div class="myth-header">
-        <div class="myth-title" id="mythTitle">🏛 神話の宇宙</div>
-        <div class="myth-sub" id="mythSub">各神話の神々が、小さな星になって浮かぶ</div>
+      <button class="tale-close" aria-label="閉じる">×</button>
+      <div class="tale-home" id="taleHome">
+        <div class="tale-home-head">
+          <div class="tale-home-title">原初の物語</div>
+          <div class="tale-home-sub">世界が始まる前、人々はどんな話を語り合ったか</div>
+        </div>
+        <div class="tale-grid">${coverHTML}</div>
+        <div class="tale-home-foot">すべての神話は、世界を理解しようとした人の心の形。</div>
       </div>
-      <div class="myth-tabs">${tabs}</div>
-      <div class="myth-stage" id="mythStage"></div>
-      <div class="myth-info" id="mythInfo"></div>
-      <div class="myth-hint">星をタップすると、その神の物語が開く</div>
+      <div class="tale-reader" id="taleReader">
+        <div class="tale-atmos" id="taleAtmos"></div>
+        <button class="tale-back" id="taleBack">← 戻る</button>
+        <div class="tale-progress" id="taleProgress"></div>
+        <div class="tale-chapter-num" id="taleChapterNum"></div>
+        <div class="tale-chapter-title" id="taleChapterTitle"></div>
+        <div class="tale-chapter-body" id="taleChapterBody"></div>
+        <div class="tale-nav">
+          <button class="tale-prev" id="talePrev">◀ 前</button>
+          <button class="tale-next" id="taleNext">次 ▶</button>
+        </div>
+      </div>
     `;
     document.body.appendChild(ov);
     requestAnimationFrame(() => ov.classList.add('open'));
-    ov.querySelector('.myth-close').addEventListener('click', () => {
-      running = false;
+    ov.querySelector('.tale-close').addEventListener('click', () => {
       ov.classList.remove('open');
-      setTimeout(() => ov.remove(), 350);
+      setTimeout(() => ov.remove(), 400);
     });
 
-    // THREE.js シーン初期化
-    const stage = ov.querySelector('#mythStage');
-    const W = stage.clientWidth || window.innerWidth;
-    const H = stage.clientHeight || (window.innerHeight - 220);
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
-    renderer.setSize(W, H);
-    stage.appendChild(renderer.domElement);
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(45, W/H, 0.1, 200);
-    camera.position.set(0, 2, 28);
-    camera.lookAt(0, 0, 0);
-    scene.add(new THREE.AmbientLight(0xffffff, 0.7));
-    const keyLight = new THREE.DirectionalLight(0xffe8b0, 0.6);
-    keyLight.position.set(5, 10, 15);
-    scene.add(keyLight);
+    let curKey = null, curIdx = 0;
+    const home = ov.querySelector('#taleHome');
+    const reader = ov.querySelector('#taleReader');
+    const atmos = ov.querySelector('#taleAtmos');
 
-    // 背景の星
-    const starsGeo = new THREE.BufferGeometry();
-    const NS = 400;
-    const spos = new Float32Array(NS * 3);
-    for (let i = 0; i < NS; i++) {
-      const r = 80 + Math.random() * 20;
-      const t = Math.random() * Math.PI * 2;
-      const p = Math.acos(2 * Math.random() - 1);
-      spos[i*3] = r * Math.sin(p) * Math.cos(t);
-      spos[i*3+1] = r * Math.sin(p) * Math.sin(t);
-      spos[i*3+2] = r * Math.cos(p);
-    }
-    starsGeo.setAttribute('position', new THREE.BufferAttribute(spos, 3));
-    const starsMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.3, sizeAttenuation: false, transparent: true, opacity: 0.7 });
-    scene.add(new THREE.Points(starsGeo, starsMat));
-
-    // 現在のエンティティ群
-    let currentEntities = [];  // { mesh, data, labelDiv, baseY, phase }
-    const raycaster = new THREE.Raycaster();
-    const mouse = new THREE.Vector2();
-
-    // ソフトな円形テクスチャ（ラベル背景やグロー用）
-    const softTex = (() => {
-      const sc = document.createElement('canvas'); sc.width = 128; sc.height = 128;
-      const g = sc.getContext('2d');
-      const grd = g.createRadialGradient(64, 64, 0, 64, 64, 64);
-      grd.addColorStop(0, 'rgba(255,255,255,1)');
-      grd.addColorStop(0.4, 'rgba(255,255,255,0.5)');
-      grd.addColorStop(1, 'rgba(255,255,255,0)');
-      g.fillStyle = grd; g.fillRect(0, 0, 128, 128);
-      return new THREE.CanvasTexture(sc);
-    })();
-
-    // 神・キャラごとに procedural テクスチャを作る
-    function makeEntityTex(data) {
-      const sc = document.createElement('canvas'); sc.width = 256; sc.height = 256;
-      const g = sc.getContext('2d');
-      // ベースカラー
-      g.fillStyle = data.color; g.fillRect(0, 0, 256, 256);
-      // 色味のバリエーション（雲・模様）
-      for (let i = 0; i < 30; i++) {
-        const x = Math.random() * 256, y = Math.random() * 256;
-        const r = 20 + Math.random() * 50;
-        const grd = g.createRadialGradient(x, y, 0, x, y, r);
-        grd.addColorStop(0, 'rgba(255,255,255,0.18)');
-        grd.addColorStop(1, 'rgba(255,255,255,0)');
-        g.fillStyle = grd;
-        g.beginPath(); g.arc(x, y, r, 0, Math.PI*2); g.fill();
-      }
-      // 絵文字を中央に配置（神の象徴）
-      g.font = '120px serif';
-      g.textAlign = 'center';
-      g.textBaseline = 'middle';
-      g.fillStyle = 'rgba(0,0,0,0.22)';
-      g.fillText(data.emoji || '✨', 130, 138);
-      g.fillStyle = 'rgba(255,255,255,0.95)';
-      g.fillText(data.emoji || '✨', 128, 134);
-      return new THREE.CanvasTexture(sc);
-    }
-
-    // ラベル（HTML DOM）
-    const labelLayer = document.createElement('div');
-    labelLayer.className = 'myth-labels';
-    stage.appendChild(labelLayer);
-
-    // 世界切替
-    function loadWorld(key) {
-      // 既存を片付け
-      currentEntities.forEach(e => {
-        scene.remove(e.mesh);
-        e.mesh.geometry.dispose();
-        if (Array.isArray(e.mesh.material)) e.mesh.material.forEach(m => m.dispose());
-        else e.mesh.material.dispose();
-        if (e.glow) { scene.remove(e.glow); e.glow.material.dispose(); }
-        if (e.labelDiv) e.labelDiv.remove();
-      });
-      currentEntities = [];
-      const world = MYTH_WORLDS[key];
-      stage.style.background = `radial-gradient(ellipse at center, ${world.sky}, #000)`;
-      ov.querySelector('#mythTitle').textContent = `🏛 ${world.name}`;
-      ov.querySelector('#mythSub').textContent = world.subtitle;
-
-      const N = world.entities.length;
-      world.entities.forEach((data, i) => {
-        // 円形配置 or 星の王子様は特殊レイアウト
-        const isPrince = key === 'prince';
-        let x, y, z, size;
-        if (isPrince) {
-          // 不規則にばら撒く（星の王子様らしく）
-          const angle = (i / N) * Math.PI * 2;
-          const r = 10 + (i % 3) * 2;
-          x = Math.cos(angle) * r + (Math.random() - 0.5) * 2;
-          y = ((i % 2 === 0 ? 1 : -1) * 2) + (Math.random() - 0.5) * 2;
-          z = Math.sin(angle) * r + (Math.random() - 0.5) * 2;
-          size = data.id === 'b612' ? 1.3 : 0.8 + Math.random() * 0.4;
-        } else {
-          // 神々は整然とサークル状に
-          const angle = (i / N) * Math.PI * 2 - Math.PI / 2;
-          const r = 11;
-          x = Math.cos(angle) * r;
-          y = Math.sin(angle * 2) * 1.5;
-          z = Math.sin(angle) * r;
-          size = 1.6;
-        }
-        const geo = new THREE.SphereGeometry(size, 32, 24);
-        const tex = makeEntityTex(data);
-        const mat = new THREE.MeshStandardMaterial({
-          map: tex,
-          emissive: new THREE.Color(data.color),
-          emissiveIntensity: 0.25,
-          roughness: 0.55,
-          metalness: 0.15,
+    // 大気的な背景: シンプルな流れる粒子とグラデ
+    let atmosRAF = 0;
+    let atmosCanvas = null, atmosCtx = null, atmosParticles = [];
+    function setupAtmos(palette) {
+      if (atmosCanvas) { cancelAnimationFrame(atmosRAF); atmosCanvas.remove(); }
+      atmosCanvas = document.createElement('canvas');
+      atmosCanvas.width = window.innerWidth;
+      atmosCanvas.height = window.innerHeight;
+      atmos.appendChild(atmosCanvas);
+      atmosCtx = atmosCanvas.getContext('2d');
+      atmos.style.background = `radial-gradient(ellipse at center, ${palette.bg1}, ${palette.bg2})`;
+      atmosParticles = [];
+      const N = 80;
+      for (let i = 0; i < N; i++) {
+        atmosParticles.push({
+          x: Math.random() * atmosCanvas.width,
+          y: Math.random() * atmosCanvas.height,
+          r: 0.5 + Math.random() * 2,
+          vy: 0.1 + Math.random() * 0.3,
+          vx: (Math.random() - 0.5) * 0.1,
+          alpha: 0.2 + Math.random() * 0.5,
         });
-        const mesh = new THREE.Mesh(geo, mat);
-        mesh.position.set(x, y, z);
-        mesh.userData = data;
-        scene.add(mesh);
-        // グロー
-        const glowMat = new THREE.SpriteMaterial({ map: softTex, color: data.color, transparent: true, opacity: 0.5, depthWrite: false, blending: THREE.AdditiveBlending });
-        const glow = new THREE.Sprite(glowMat);
-        glow.scale.set(size * 3.5, size * 3.5, 1);
-        glow.position.copy(mesh.position);
-        scene.add(glow);
-        // HTMLラベル
-        const labelDiv = document.createElement('div');
-        labelDiv.className = 'myth-label';
-        labelDiv.textContent = data.name;
-        labelLayer.appendChild(labelDiv);
-        currentEntities.push({ mesh, glow, data, labelDiv, baseY: y, phase: Math.random() * Math.PI * 2 });
-      });
+      }
+      function tick() {
+        atmosCtx.clearRect(0, 0, atmosCanvas.width, atmosCanvas.height);
+        atmosParticles.forEach(p => {
+          p.y += p.vy;
+          p.x += p.vx;
+          if (p.y > atmosCanvas.height) { p.y = -5; p.x = Math.random() * atmosCanvas.width; }
+          atmosCtx.fillStyle = `rgba(255,240,180,${p.alpha})`;
+          atmosCtx.beginPath();
+          atmosCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          atmosCtx.fill();
+        });
+        atmosRAF = requestAnimationFrame(tick);
+      }
+      tick();
     }
-    loadWorld('japan');
 
-    // タブ切替
-    ov.querySelectorAll('.myth-tab').forEach(btn => {
-      btn.addEventListener('click', () => {
-        ov.querySelectorAll('.myth-tab').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        loadWorld(btn.dataset.myth);
-        closeInfo();
-      });
-    });
-
-    // タップで info panel
-    function openInfo(data) {
-      const info = ov.querySelector('#mythInfo');
-      info.innerHTML = `
-        <button class="myth-info-close" aria-label="閉じる">×</button>
-        <div class="myth-info-emoji" style="background:${data.color}">${data.emoji || '✨'}</div>
-        <div class="myth-info-name">${data.name}</div>
-        <div class="myth-info-role">${data.role}</div>
-        <div class="myth-info-story">${data.story}</div>
-      `;
-      info.classList.add('show');
-      info.querySelector('.myth-info-close').addEventListener('click', closeInfo);
+    function openTale(k) {
+      curKey = k; curIdx = 0;
+      home.classList.remove('show');
+      reader.classList.add('show');
+      setupAtmos(MYTH_STORIES[k].palette);
+      renderChapter();
     }
-    function closeInfo() { ov.querySelector('#mythInfo').classList.remove('show'); }
-
-    renderer.domElement.addEventListener('click', e => {
-      const rect = renderer.domElement.getBoundingClientRect();
-      mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-      mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
-      raycaster.setFromCamera(mouse, camera);
-      const hit = raycaster.intersectObjects(currentEntities.map(e => e.mesh))[0];
-      if (hit) openInfo(hit.object.userData);
-      else closeInfo();
-    });
-
-    // ドラッグでシーン回転
-    let dragging = false, dx0 = 0, dy0 = 0, rotX = 0, rotY = 0;
-    renderer.domElement.addEventListener('pointerdown', e => { dragging = true; dx0 = e.clientX; dy0 = e.clientY; });
-    renderer.domElement.addEventListener('pointermove', e => {
-      if (!dragging) return;
-      rotY += (e.clientX - dx0) * 0.005;
-      rotX = Math.max(-1, Math.min(1, rotX + (e.clientY - dy0) * 0.003));
-      dx0 = e.clientX; dy0 = e.clientY;
-    });
-    renderer.domElement.addEventListener('pointerup', () => dragging = false);
-    renderer.domElement.addEventListener('pointerleave', () => dragging = false);
-
-    // アニメーション
-    let running = true;
-    let t = 0;
-    function animate() {
-      if (!running) return;
-      t += 0.01;
-      // エンティティを浮遊＆自転
-      currentEntities.forEach(e => {
-        e.phase += 0.01;
-        e.mesh.position.y = e.baseY + Math.sin(e.phase) * 0.2;
-        e.glow.position.copy(e.mesh.position);
-        e.mesh.rotation.y += 0.004;
-        // ラベル位置を画面座標へ
-        const p = e.mesh.position.clone().project(camera);
-        const sx = (p.x + 1) / 2 * stage.clientWidth;
-        const sy = (1 - (p.y + 1) / 2) * stage.clientHeight;
-        const behind = p.z > 1;
-        e.labelDiv.style.left = sx + 'px';
-        e.labelDiv.style.top = (sy + 40) + 'px';
-        e.labelDiv.style.opacity = behind ? 0 : 0.85;
-      });
-      // カメラをゆっくり旋回（ドラッグ優先）
-      const r = 28;
-      const autoY = dragging ? rotY : (rotY + t * 0.03);
-      camera.position.x = Math.cos(autoY) * r;
-      camera.position.z = Math.sin(autoY) * r;
-      camera.position.y = 2 + rotX * 5;
-      camera.lookAt(0, 0, 0);
-      renderer.render(scene, camera);
-      requestAnimationFrame(animate);
+    function renderChapter() {
+      const s = MYTH_STORIES[curKey];
+      const c = s.chapters[curIdx];
+      ov.querySelector('#taleProgress').innerHTML = s.chapters.map((_, i) =>
+        `<span class="tp-dot ${i === curIdx ? 'active' : i < curIdx ? 'done' : ''}"></span>`
+      ).join('');
+      ov.querySelector('#taleChapterNum').textContent = `${s.emoji} ${s.name} — 第${curIdx + 1}章 / ${s.chapters.length}`;
+      ov.querySelector('#taleChapterTitle').textContent = c.t;
+      ov.querySelector('#taleChapterBody').textContent = c.body;
+      ov.querySelector('#taleChapterTitle').classList.remove('fade-in');
+      ov.querySelector('#taleChapterBody').classList.remove('fade-in');
+      void ov.querySelector('#taleChapterTitle').offsetWidth;
+      ov.querySelector('#taleChapterTitle').classList.add('fade-in');
+      ov.querySelector('#taleChapterBody').classList.add('fade-in');
+      ov.querySelector('#talePrev').disabled = curIdx === 0;
+      ov.querySelector('#taleNext').textContent = curIdx === s.chapters.length - 1 ? '終わり ★' : '次 ▶';
     }
-    animate();
-
-    // リサイズ
-    window.addEventListener('resize', () => {
-      const w = stage.clientWidth || window.innerWidth;
-      const h = stage.clientHeight || (window.innerHeight - 220);
-      renderer.setSize(w, h);
-      camera.aspect = w/h;
-      camera.updateProjectionMatrix();
+    ov.querySelectorAll('.tale-cover').forEach(b => {
+      b.addEventListener('click', () => openTale(b.dataset.tale));
     });
+    ov.querySelector('#taleBack').addEventListener('click', () => {
+      reader.classList.remove('show');
+      home.classList.add('show');
+      cancelAnimationFrame(atmosRAF);
+      if (atmosCanvas) { atmosCanvas.remove(); atmosCanvas = null; }
+    });
+    ov.querySelector('#taleNext').addEventListener('click', () => {
+      const s = MYTH_STORIES[curKey];
+      if (curIdx < s.chapters.length - 1) { curIdx++; renderChapter(); }
+      else {
+        reader.classList.remove('show');
+        home.classList.add('show');
+        cancelAnimationFrame(atmosRAF);
+        if (atmosCanvas) { atmosCanvas.remove(); atmosCanvas = null; }
+      }
+    });
+    ov.querySelector('#talePrev').addEventListener('click', () => {
+      if (curIdx > 0) { curIdx--; renderChapter(); }
+    });
+    // 初期: ホーム表示
+    home.classList.add('show');
   }
   window.openMythology = openMythology;
+
 
   // ============================================================
   // 🖨 チートシート印刷（偉人ページに「一枚にまとめる」ボタンを挿入）
