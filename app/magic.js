@@ -6026,16 +6026,26 @@
 
     // ✨ EffectComposer パイプライン（公式Bloom + 手書きGrade）
     let bloom = null; // fallback用
-    if (usePro) {
+    let edenOutlinePass = null;
+    if (usePro) try {
       composer = new ADDONS.EffectComposer(renderer);
       composer.addPass(new ADDONS.RenderPass(scene, camera));
       const bloomPass = new ADDONS.UnrealBloomPass(
         new THREE.Vector2(W, H),
-        0.25, // strength (さらに抑制)
-        0.55, // radius
-        0.78  // threshold
+        0.25, 0.55, 0.78
       );
       composer.addPass(bloomPass);
+      // 🍎 OutlinePass: リンゴ（対話可能）にハイライト
+      if (ADDONS.OutlinePass) {
+        edenOutlinePass = new ADDONS.OutlinePass(new THREE.Vector2(W, H), scene, camera);
+        edenOutlinePass.edgeStrength = 3.0;
+        edenOutlinePass.edgeGlow = 0.9;
+        edenOutlinePass.edgeThickness = 1.5;
+        edenOutlinePass.pulsePeriod = 1.8;
+        edenOutlinePass.visibleEdgeColor.set(0xffc0a0); // 赤っぽい金
+        edenOutlinePass.hiddenEdgeColor.set(0x6a3028);
+        composer.addPass(edenOutlinePass);
+      }
       // カラーグレード（Vignette/Chromatic/Grain）を ShaderPass で追加
       if (ADDONS.ShaderPass) {
         const gradeShader = {
@@ -6076,8 +6086,11 @@
         camera.userData.gradePass = gradePass;
       }
       if (ADDONS.OutputPass) composer.addPass(new ADDONS.OutputPass());
-    } else {
-      // フォールバック：手書きbloom
+    } catch (err) {
+      console.error('[eden composer fail]', err);
+      composer = null;
+    }
+    if (!composer && !usePro) {
       bloom = createBloom(THREE, renderer, W, H, {
         threshold: 0.65, strength: 0.9,
         vignette: 0.38, chromatic: 0.0025, grain: 0.03,
@@ -6167,7 +6180,7 @@
       scene.add(sky);
     }
     // フォグ（Sky利用時も浮遊感のために薄め）
-    scene.fog = new THREE.Fog(0xe8d8c8, 35, 130);
+    scene.fog = new THREE.FogExp2(0xe8d8c8, 0.008); // 指数フォグ：浮島の気球感
     // ☀️ 太陽 — 宇宙モードと同格のシェーダベース（プラズマ + 彩層 + 多層コロナ + 輝き）
     const SUN_POS = new THREE.Vector3(22, 28, -42);
     const SUN_R = 4.5;
@@ -6683,8 +6696,8 @@
       scene.add(stone);
     }
 
-    // 大気感 — フォグで奥行き
-    scene.fog = new THREE.Fog(0xc08060, 28, 95);
+    // 大気感 — 指数フォグで奥行き（自然な減衰）
+    scene.fog = new THREE.FogExp2(0xc08060, 0.018);
 
     // === ヘルパー: 曲線とラジウス配列から「細る」チューブを作る ===
     function makeTaperedTube(curve, radii, radialSegs, material) {
@@ -7046,9 +7059,21 @@
       t.repeat.set(6, 1);
       return t;
     })();
+    // 🎥 CubeCamera: 蛇の鱗に空と樹を動的反射
+    let edenCubeCam = null, edenCubeRT = null;
+    try {
+      edenCubeRT = new THREE.WebGLCubeRenderTarget(128, {
+        generateMipmaps: true,
+        minFilter: THREE.LinearMipmapLinearFilter,
+      });
+      edenCubeCam = new THREE.CubeCamera(0.1, 100, edenCubeRT);
+      edenCubeCam.position.set(0, 4, 0);
+      scene.add(edenCubeCam);
+    } catch (e) { console.warn('Eden cubeCam', e); }
     const serpentMat = new THREE.MeshStandardMaterial({
-      map: scaleTex, roughness: 0.4, metalness: 0.25,
-      emissive: 0x2a4a08, emissiveIntensity: 0.55, // より光る
+      map: scaleTex, roughness: 0.3, metalness: 0.55, // 鱗を光らせる
+      emissive: 0x2a4a08, emissiveIntensity: 0.45,
+      envMap: edenCubeRT ? edenCubeRT.texture : null,
     });
     const serpent = makeTaperedTube(serpentCurve, serpentRadii, 14, serpentMat);
     treeGroup.add(serpent);
@@ -7560,6 +7585,14 @@
       // 水面のアニメ（THREE.Water は material.uniforms.time を回す）
       if (treeGroup.userData.water && treeGroup.userData.water.material?.uniforms?.time) {
         treeGroup.userData.water.material.uniforms.time.value += 1 / 60;
+      }
+      // 🍎 OutlinePass: 落ちた＆onTreeのリンゴをハイライト対象に
+      if (edenOutlinePass) {
+        edenOutlinePass.selectedObjects = apples.filter(a => a.userData.state === 'fallen' || a.userData.state === 'onTree');
+      }
+      // 🎥 CubeCamera 更新（120フレーム=2秒に1回、軽量）
+      if (edenCubeCam && (Math.floor(t * 60) % 120 === 0)) {
+        try { edenCubeCam.update(renderer, scene); } catch {}
       }
       // レンズフレア: 太陽→カメラ中心を結ぶ線上に配置
       {
