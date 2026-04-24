@@ -4129,15 +4129,56 @@
         <button data-speed="5" aria-label="5倍">5×</button>
         <button data-speed="30" aria-label="30倍">30×</button>
       </div>
-      <div class="cosmos-modes" id="cosmosModes">
-        <button data-mode="trails" aria-label="軌道">🌌</button>
-        <button data-mode="constellations" aria-label="星座">⭐</button>
-        <button data-mode="tour" aria-label="ツアー">🎬</button>
-        <button data-mode="real" aria-label="実寸">🪄</button>
-        <button data-mode="ijin" aria-label="偉人星座">👤</button>
-        <button data-mode="meditate" aria-label="瞑想">🧘</button>
-        <button data-mode="wish" aria-label="願い星">🌠</button>
-        <button data-mode="matryoshka" aria-label="マトリョーシカ">🪆</button>
+      <button class="cosmos-modes-trigger" id="cosmosModesTrigger" aria-label="モード選択">
+        <span class="cmt-icon">✦</span><span class="cmt-label">モード</span>
+      </button>
+      <div class="cosmos-modes-sheet" id="cosmosModesSheet">
+        <div class="cms-head">
+          <div class="cms-title">モードを選ぶ</div>
+          <button class="cms-close" id="cmsClose" aria-label="閉じる">×</button>
+        </div>
+        <div class="cms-list" id="cosmosModes">
+          <button class="cms-item" data-mode="trails">
+            <span class="cms-i">🌌</span>
+            <span class="cms-n">軌道トレイル</span>
+            <span class="cms-d">惑星の軌跡を残す</span>
+          </button>
+          <button class="cms-item" data-mode="constellations">
+            <span class="cms-i">⭐</span>
+            <span class="cms-n">星座オーバーレイ</span>
+            <span class="cms-d">オリオン・北斗七星など</span>
+          </button>
+          <button class="cms-item" data-mode="tour">
+            <span class="cms-i">🎬</span>
+            <span class="cms-n">惑星ツアー</span>
+            <span class="cms-d">全惑星を自動巡回</span>
+          </button>
+          <button class="cms-item" data-mode="real">
+            <span class="cms-i">🪄</span>
+            <span class="cms-n">実寸モード</span>
+            <span class="cms-d">ガス惑星がドーンと大きく</span>
+          </button>
+          <button class="cms-item" data-mode="ijin">
+            <span class="cms-i">👤</span>
+            <span class="cms-n">偉人の星座</span>
+            <span class="cms-d">科学者5人の思想の連鎖</span>
+          </button>
+          <button class="cms-item" data-mode="meditate">
+            <span class="cms-i">🧘</span>
+            <span class="cms-n">瞑想モード</span>
+            <span class="cms-d">時間が遅く、宇宙が呼吸</span>
+          </button>
+          <button class="cms-item" data-mode="wish">
+            <span class="cms-i">🌠</span>
+            <span class="cms-n">願い星モード</span>
+            <span class="cms-d">空をタップして願いを星に</span>
+          </button>
+          <button class="cms-item" data-mode="matryoshka">
+            <span class="cms-i">🪆</span>
+            <span class="cms-n">マトリョーシカ</span>
+            <span class="cms-d">宇宙→素粒子→意識→宇宙</span>
+          </button>
+        </div>
       </div>
       <div class="cosmos-matryoshka" id="cosmosMatryoshka">
         <button class="cmy-close" id="cmyClose" aria-label="閉じる">×</button>
@@ -5955,6 +5996,16 @@
     let meteorTimer = 0;
     let meteorBurst = 0;
 
+    // モードシート開閉
+    const modesSheet = ov.querySelector('#cosmosModesSheet');
+    const modesTrigger = ov.querySelector('#cosmosModesTrigger');
+    modesTrigger.addEventListener('click', () => {
+      modesSheet.classList.toggle('show');
+      haptic(8);
+    });
+    ov.querySelector('#cmsClose').addEventListener('click', () => {
+      modesSheet.classList.remove('show');
+    });
     // モードトグル
     ov.querySelectorAll('#cosmosModes button').forEach(btn => {
       btn.addEventListener('click', () => {
