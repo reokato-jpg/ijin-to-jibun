@@ -1035,6 +1035,59 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
   border-color: rgba(212, 176, 85, 0.6);
   color: #fff3c8;
 }
+/* 🌍 世界マップ ズームボタン */
+.magic-globe-controls {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 5;
+}
+.magic-globe-zoom {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: rgba(20,10,16,0.8);
+  border: 1px solid rgba(212,176,85,0.5);
+  color: var(--gold-light);
+  font-size: 18px;
+  cursor: pointer;
+  font-weight: 700;
+  backdrop-filter: blur(6px);
+}
+.magic-globe-zoom:hover { background: rgba(122,46,58,0.7); }
+/* 🌍 世界マップ 時代フィルタ */
+.magic-globe-eras {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+  z-index: 5;
+}
+.magic-globe-era {
+  background: rgba(20,10,16,0.6);
+  border: 1px solid rgba(212,176,85,0.3);
+  color: rgba(234,210,150,0.75);
+  border-radius: 14px;
+  padding: 5px 12px;
+  font-size: 11px;
+  cursor: pointer;
+  font-family: var(--font-jp);
+  letter-spacing: 0.06em;
+  backdrop-filter: blur(6px);
+  transition: all 0.15s;
+}
+.magic-globe-era:hover { background: rgba(122,46,58,0.5); color: var(--gold-light); }
+.magic-globe-era.active {
+  background: rgba(122, 46, 58, 0.85);
+  border-color: rgba(212, 176, 85, 0.7);
+  color: #fff3c8;
+}
 
 /* ---------- O) 同時代ライン ---------- */
 .magic-simul-wrap {

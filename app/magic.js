@@ -2048,7 +2048,7 @@
       (byCountry[c] = byCountry[c] || { coord, people: [] }).people.push(p);
     });
 
-    const ov = openDeepOverlay('🌍 地球儀', 'ドラッグで回す。歴史が生まれた土地に光る点。',
+    const ov = openDeepOverlay('🌍 地球儀', 'ドラッグで回す / ホイール・ピンチでズーム / 時代で絞り込み',
       `<div class="magic-globe-wrap" id="magicGlobeWrap">
          <canvas class="magic-globe-net" id="magicGlobeNet"></canvas>
          <div class="magic-globe-scan"></div>
@@ -2056,6 +2056,18 @@
          <div class="magic-globe-hint">DRAG · ROTATE · TAP</div>
          <div class="magic-globe-tooltip" id="magicGlobeTip"></div>
          <div class="magic-globe-info" id="magicGlobeInfo"></div>
+         <div class="magic-globe-controls">
+           <button class="magic-globe-zoom" data-globe-zoom="in" aria-label="ズームイン">＋</button>
+           <button class="magic-globe-zoom" data-globe-zoom="out" aria-label="ズームアウト">−</button>
+         </div>
+         <div class="magic-globe-eras">
+           <button class="magic-globe-era active" data-era="all">全時代</button>
+           <button class="magic-globe-era" data-era="ancient">古代</button>
+           <button class="magic-globe-era" data-era="medieval">中世</button>
+           <button class="magic-globe-era" data-era="early_modern">近世</button>
+           <button class="magic-globe-era" data-era="modern">近代</button>
+           <button class="magic-globe-era" data-era="contemporary">現代</button>
+         </div>
        </div>`);
 
     await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
@@ -2366,8 +2378,49 @@
     el.addEventListener('pointercancel', endDrag);
     el.addEventListener('wheel', (e) => {
       e.preventDefault();
-      camera.position.z = Math.max(3, Math.min(12, camera.position.z + e.deltaY * 0.004));
+      camera.position.z = Math.max(2.5, Math.min(18, camera.position.z + e.deltaY * 0.004));
     }, { passive: false });
+    // ボタンズーム
+    ov.querySelectorAll('[data-globe-zoom]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const dir = btn.dataset.globeZoom === 'in' ? -1 : 1;
+        camera.position.z = Math.max(2.5, Math.min(18, camera.position.z + dir * 1.2));
+      });
+    });
+    // 時代フィルタ
+    let globeActiveEra = 'all';
+    const eraBirth = (b) => {
+      if (b == null) return null;
+      if (b < 500) return 'ancient';
+      if (b < 1500) return 'medieval';
+      if (b < 1800) return 'early_modern';
+      if (b < 1900) return 'modern';
+      return 'contemporary';
+    };
+    ov.querySelectorAll('.magic-globe-era').forEach(btn => {
+      btn.addEventListener('click', () => {
+        ov.querySelectorAll('.magic-globe-era').forEach(b => b.classList.toggle('active', b === btn));
+        globeActiveEra = btn.dataset.era;
+        // ピンの可視性を更新
+        pins.forEach(pin => {
+          if (globeActiveEra === 'all') { pin.visible = true; return; }
+          const hasMatching = (pin.people || []).some(p => eraBirth(p.birth) === globeActiveEra);
+          pin.visible = hasMatching;
+        });
+        // Three.jsに反映（Pointsなら attributes更新、Meshならvisible）
+        try {
+          if (typeof updatePinsVisibility === 'function') updatePinsVisibility();
+        } catch {}
+      });
+    });
+    // ピン可視性を更新する関数（後方で利用）
+    window.__globeUpdateVis = () => {
+      pins.forEach(pin => {
+        if (globeActiveEra === 'all') { pin.visible = true; return; }
+        const hasMatching = (pin.people || []).some(p => eraBirth(p.birth) === globeActiveEra);
+        pin.visible = hasMatching;
+      });
+    };
 
     // ピンのクリック判定（Points用にスクリーン座標で距離比較）
     function pickPin(clientX, clientY) {

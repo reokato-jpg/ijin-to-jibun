@@ -472,6 +472,23 @@ function showView(name, pushHistory = true) {
       const m = document.getElementById(id);
       if (m) m.remove();
     });
+    // ホームに戻ったら3D本のレンダラーをリサイズで再描画させる
+    if (name === 'people') {
+      setTimeout(() => {
+        try {
+          const book = window.MAGIC?._topBookScene;
+          if (book?.renderer) {
+            const stage = document.getElementById('magicTopBookStage');
+            if (stage) {
+              const w = stage.clientWidth, h = stage.clientHeight;
+              if (w > 0 && h > 0) book.renderer.setSize(w, h);
+            }
+          }
+          // ウィンドウリサイズイベントを発火してThree.jsシーンを再配置
+          window.dispatchEvent(new Event('resize'));
+        } catch (e) { console.warn('topbook resize', e); }
+      }, 100);
+    }
   } catch {}
   // わたしの本タブは背景画像なし（独自の本デザインを活かす）
   document.documentElement.classList.toggle('view-no-bg', name === 'favorites');
