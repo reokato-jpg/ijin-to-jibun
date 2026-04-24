@@ -191,7 +191,7 @@
       "description": "辛辣だが不思議と慰めを与える人生指南。"
     }
   ],
-  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Arthur_Schopenhauer_by_J_Sch%C3%A4fer%2C_1859b.jpg?width=500",
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Arthur_Schopenhauer_by_J_Sch%25C3%25A4fer%252C_1859b.jpg?width=500",
   "wikiTitle": "アルトゥル・ショーペンハウアー",
   "imageCredit": {
     "artist": "Johann Schäfer",
