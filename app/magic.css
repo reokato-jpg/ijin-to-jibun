@@ -4757,6 +4757,46 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
 .tale-chapter-text {
   white-space: pre-wrap;
 }
+/* 🎨 神話カスタムSVGアート（オリジナル作画・アニメ付き） */
+.myth-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 640px;
+  margin: 0 auto 8px;
+  border-radius: 8px;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,216,128,0.25);
+  background: #000;
+}
+/* ゆっくり回る（光の放射など） */
+.svg-rotate-slow { animation: svgRotate 80s linear infinite; transform-origin: center; }
+@keyframes svgRotate { to { transform: rotate(360deg); } }
+/* 脈動（光・心臓・星） */
+.svg-pulse { animation: svgPulse 3s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
+@keyframes svgPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.75; transform: scale(1.08); }
+}
+/* 呼吸（葉・肺） */
+.svg-breathe { animation: svgBreathe 6s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
+@keyframes svgBreathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+/* 揺れる（実・風・花） */
+.svg-swing { animation: svgSwing 4s ease-in-out infinite; transform-origin: top center; transform-box: fill-box; }
+@keyframes svgSwing {
+  0%, 100% { transform: rotate(-1.5deg); }
+  50% { transform: rotate(1.5deg); }
+}
+/* 浮遊 */
+.svg-float { animation: svgFloat 6s ease-in-out infinite; }
+@keyframes svgFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
 /* 🖼 パブリックドメイン名画 */
 .tale-art {
   margin: 0 auto 24px;

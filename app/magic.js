@@ -4731,16 +4731,117 @@
           caption: 'Gustave Doré（1861）',
           body: 'はじめに、神は天と地とを創造された。地は形なく、闇が深淵の面にあり、神の霊が水の面を動いていた。\n\n何もなかった。だが「なかった」という言葉すら、まだなかった。' },
         { t: '2. 光あれ',
-          img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Gustave_Dor%C3%A9_-_The_Holy_Bible_-_Plate_I%2C_The_Creation_of_Light.jpg?width=700',
-          caption: 'Gustave Doré《光の創造》（1866）',
+          svgArt: `<svg class="myth-svg myth-svg-light" viewBox="0 0 600 380" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="lightCore" cx="50%" cy="50%">
+                <stop offset="0%" stop-color="#fff6d8" stop-opacity="1"/>
+                <stop offset="30%" stop-color="#ffd480" stop-opacity="0.8"/>
+                <stop offset="70%" stop-color="#b06020" stop-opacity="0.3"/>
+                <stop offset="100%" stop-color="#1a0a00" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="lightBG" cx="50%" cy="50%"><stop offset="0%" stop-color="#0a0510"/><stop offset="100%" stop-color="#000"/></radialGradient>
+            </defs>
+            <rect width="600" height="380" fill="url(#lightBG)"/>
+            <!-- 放射光条 -->
+            <g transform="translate(300,190)">
+              <g class="svg-rotate-slow">
+                ${Array.from({length: 24}).map((_, i) => {
+                  const a = (i / 24) * 360;
+                  return `<rect x="-1.5" y="-200" width="3" height="200" fill="#ffd480" opacity="${0.2 + (i%3)*0.15}" transform="rotate(${a})"/>`;
+                }).join('')}
+              </g>
+              <circle r="180" fill="url(#lightCore)" opacity="0.55"/>
+              <circle r="120" fill="url(#lightCore)" opacity="0.8"/>
+              <circle r="50" fill="#fff8e8" opacity="0.9"/>
+              <circle r="30" fill="#ffffff" class="svg-pulse"/>
+            </g>
+            <!-- はじまりの水のさざなみ -->
+            <g opacity="0.4">
+              <path d="M 0 330 Q 150 318 300 326 T 600 322" stroke="#3a6080" stroke-width="1.2" fill="none"/>
+              <path d="M 0 345 Q 150 337 300 342 T 600 340" stroke="#2a4060" stroke-width="1" fill="none"/>
+              <path d="M 0 360 Q 150 354 300 358 T 600 356" stroke="#1a2a40" stroke-width="0.8" fill="none"/>
+            </g>
+            <text x="300" y="50" text-anchor="middle" fill="#ffd480" font-size="14" letter-spacing="0.3em" font-style="italic" opacity="0.7" font-family="Cormorant Garamond">FIAT LUX</text>
+          </svg>`,
+          caption: '光あれ — 言葉が世界を生んだ最初の瞬間',
           body: '神は言われた — 「光あれ」\nそして光があった。神は光を見て、よしとされた。\n\n言葉が、世界を産んだ最初の瞬間。' },
         { t: '3. 六日間の創造',
           img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Michelangelo_-_Creation_of_Adam_(cropped).jpg?width=700',
           caption: 'Michelangelo《アダムの創造》（1512）',
           body: '第一日に光を。第二日に空を。第三日に海と陸を。第四日に太陽と月と星を。第五日に魚と鳥を。第六日に獣と — そして、神は言われた。\n\n「われわれの像に人を造ろう」\n土の塵からアダムが形作られ、その鼻に命の息が吹き入れられた。' },
         { t: '4. エデンの園',
-          img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Lucas_Cranach_d._%C3%84._-_Das_Paradies_(Kunsthistorisches_Museum).jpg?width=700',
-          caption: 'Lucas Cranach《パラダイス》（1530）',
+          svgArt: `<svg class="myth-svg" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="edenSky" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0" stop-color="#4a2860"/><stop offset="0.5" stop-color="#8a5030"/><stop offset="1" stop-color="#d8a068"/>
+              </linearGradient>
+              <radialGradient id="edenSun" cx="50%" cy="50%">
+                <stop offset="0" stop-color="#ffd480" stop-opacity="1"/><stop offset="1" stop-color="#ffd480" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <rect width="600" height="400" fill="url(#edenSky)"/>
+            <!-- 太陽 -->
+            <circle cx="480" cy="85" r="38" fill="url(#edenSun)"/>
+            <circle cx="480" cy="85" r="20" fill="#fff4c0" class="svg-pulse"/>
+            <!-- 山並み -->
+            <path d="M 0 280 L 120 220 L 200 250 L 320 200 L 420 240 L 530 210 L 600 260 L 600 400 L 0 400 Z" fill="#3a2a30" opacity="0.7"/>
+            <!-- 地面 -->
+            <path d="M 0 320 Q 300 305 600 320 L 600 400 L 0 400 Z" fill="#4a6a3a"/>
+            <!-- 生命の樹（中央） -->
+            <g transform="translate(300,315)">
+              <!-- 幹 -->
+              <path d="M -8 0 Q -10 -80 -4 -140 L 4 -140 Q 10 -80 8 0 Z" fill="#3a2818" stroke="#1a1008" stroke-width="1"/>
+              <!-- 根（地面に広がる） -->
+              <path d="M -8 -2 Q -40 4 -70 10 M 8 -2 Q 40 4 70 10 M 0 0 Q -15 8 -25 14 M 0 0 Q 15 8 25 14" stroke="#2a1810" stroke-width="1.5" fill="none"/>
+              <!-- 枝 -->
+              <g stroke="#3a2818" stroke-width="3" fill="none">
+                <path d="M 0 -100 Q -40 -130 -80 -150"/>
+                <path d="M 0 -110 Q 40 -140 80 -155"/>
+                <path d="M -20 -130 Q -60 -160 -90 -180"/>
+                <path d="M 20 -135 Q 60 -165 95 -180"/>
+                <path d="M 0 -140 Q 0 -170 0 -200"/>
+              </g>
+              <!-- 葉の群れ（円で表現） -->
+              <g class="svg-breathe">
+                <circle cx="-80" cy="-150" r="30" fill="#4a7a3a" opacity="0.85"/>
+                <circle cx="-95" cy="-135" r="22" fill="#5a8a4a" opacity="0.8"/>
+                <circle cx="80" cy="-155" r="32" fill="#4a7a3a" opacity="0.85"/>
+                <circle cx="95" cy="-140" r="24" fill="#5a8a4a" opacity="0.8"/>
+                <circle cx="-90" cy="-180" r="28" fill="#3a6a2a" opacity="0.85"/>
+                <circle cx="95" cy="-180" r="30" fill="#3a6a2a" opacity="0.85"/>
+                <circle cx="0" cy="-200" r="38" fill="#5a8a4a" opacity="0.9"/>
+                <circle cx="-40" cy="-195" r="26" fill="#4a7a3a" opacity="0.8"/>
+                <circle cx="40" cy="-195" r="26" fill="#4a7a3a" opacity="0.8"/>
+              </g>
+              <!-- 禁断の実（赤いリンゴ） -->
+              <g class="svg-swing">
+                <circle cx="-60" cy="-160" r="4" fill="#c02020"/>
+                <circle cx="-58" cy="-161" r="1" fill="#ff6060"/>
+                <circle cx="50" cy="-165" r="4" fill="#c02020"/>
+                <circle cx="52" cy="-166" r="1" fill="#ff6060"/>
+                <circle cx="-15" cy="-210" r="5" fill="#c02020"/>
+                <circle cx="-13" cy="-211" r="1" fill="#ff8080"/>
+              </g>
+              <!-- 蛇（幹に巻き付く） -->
+              <path d="M 4 -60 Q -10 -70 4 -80 Q 18 -90 4 -100 Q -10 -110 4 -120" stroke="#6a9040" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+              <circle cx="4" cy="-60" r="2.5" fill="#6a9040"/>
+              <circle cx="3" cy="-59" r="0.6" fill="#1a1a1a"/>
+              <!-- 蛇の舌 -->
+              <path d="M 2 -60 L -3 -59 M 2 -60 L -3 -62" stroke="#c02020" stroke-width="0.6"/>
+            </g>
+            <!-- 石の小路 -->
+            <circle cx="150" cy="355" r="10" fill="#2a1810" opacity="0.5"/>
+            <circle cx="200" cy="365" r="8" fill="#2a1810" opacity="0.5"/>
+            <circle cx="440" cy="360" r="9" fill="#2a1810" opacity="0.5"/>
+            <!-- 鳥（飛ぶ） -->
+            <g class="svg-float" transform="translate(120,130)">
+              <path d="M 0 0 Q -6 -4 -12 0 M 0 0 Q 6 -4 12 0" stroke="#1a1008" stroke-width="1.5" fill="none"/>
+            </g>
+            <g class="svg-float" transform="translate(400,160)" style="animation-delay:-2s">
+              <path d="M 0 0 Q -5 -3 -10 0 M 0 0 Q 5 -3 10 0" stroke="#1a1008" stroke-width="1.2" fill="none"/>
+            </g>
+          </svg>`,
+          caption: 'エデンの園 — 命の木と、ただ一匹の蛇',
           body: '主なる神は東の方エデンに園を設け、造った人をそこに置かれた。見て麗しく食べて良い実を結ぶあらゆる木が、そこに生えた。\n\nそして園の中央には「命の木」と、「善悪を知る木」があった。' },
         { t: '5. 助け手イヴ',
           img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Michelangelo%2C_Creation_of_Eve_01.jpg?width=700',
@@ -4782,8 +4883,62 @@
           caption: 'Cornelis van Haarlem《ティタンの没落》（1590）',
           body: '成長したゼウスは兄姉を呑まれた神々を解放し、ティタン神たちと十年の大戦争を繰り広げた。\n\nキュクロプスが鍛えた雷霆、三叉の矛、隠れ兜を武器に、オリンポス神族が勝利した。' },
         { t: '5. オリンポスの十二神',
-          img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Giulio_Romano_-_Council_of_the_Gods_-_WGA09542.jpg?width=700',
-          caption: 'Giulio Romano《神々の会議》（1530）',
+          svgArt: `<svg class="myth-svg" viewBox="0 0 600 420" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="olympusBG"><stop offset="0" stop-color="#2040a0" stop-opacity="0.6"/><stop offset="1" stop-color="#081430"/></radialGradient>
+              <linearGradient id="mountGrad" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#d0c8e0"/><stop offset="1" stop-color="#4a4a6a"/></linearGradient>
+            </defs>
+            <rect width="600" height="420" fill="url(#olympusBG)"/>
+            <!-- 雷雲 -->
+            <g opacity="0.35">
+              <ellipse cx="130" cy="60" rx="60" ry="12" fill="#d0d0e0"/>
+              <ellipse cx="470" cy="80" rx="70" ry="14" fill="#d0d0e0"/>
+              <ellipse cx="300" cy="45" rx="50" ry="10" fill="#d0d0e0"/>
+            </g>
+            <!-- オリンポス山 -->
+            <path d="M 80 330 L 200 180 L 280 230 L 340 140 L 420 200 L 520 330 Z" fill="url(#mountGrad)" stroke="#1a1a2a" stroke-width="1.5"/>
+            <!-- 山頂の神殿 -->
+            <g transform="translate(340,135)">
+              <rect x="-20" y="0" width="40" height="3" fill="#f0e0a0"/>
+              <rect x="-18" y="-30" width="3" height="30" fill="#f0e0a0"/>
+              <rect x="-6" y="-30" width="3" height="30" fill="#f0e0a0"/>
+              <rect x="6" y="-30" width="3" height="30" fill="#f0e0a0"/>
+              <rect x="15" y="-30" width="3" height="30" fill="#f0e0a0"/>
+              <path d="M -24 -30 L 0 -44 L 24 -30 Z" fill="#f0e0a0" stroke="#8a6020" stroke-width="1"/>
+            </g>
+            <!-- 十二神の位置を示す円盤（ゾディアック風） -->
+            <g transform="translate(300,230)">
+              <circle r="170" fill="none" stroke="rgba(255,216,128,0.3)" stroke-dasharray="4 4"/>
+              <circle r="140" fill="none" stroke="rgba(255,216,128,0.2)"/>
+              ${[
+                {sym:'⚡', name:'Zeus', a:-90},
+                {sym:'🔱', name:'Poseidon', a:-60},
+                {sym:'🦉', name:'Athena', a:-30},
+                {sym:'🎵', name:'Apollon', a:0},
+                {sym:'🏹', name:'Artemis', a:30},
+                {sym:'🌹', name:'Aphrodite', a:60},
+                {sym:'⚔', name:'Ares', a:90},
+                {sym:'🔨', name:'Hephaistos', a:120},
+                {sym:'🌾', name:'Demeter', a:150},
+                {sym:'🪶', name:'Hermes', a:180},
+                {sym:'🏛', name:'Hera', a:210},
+                {sym:'🍷', name:'Dionysos', a:240},
+              ].map(g => {
+                const rad = g.a * Math.PI / 180;
+                const cx = Math.cos(rad) * 155;
+                const cy = Math.sin(rad) * 155;
+                return `<g transform="translate(${cx.toFixed(1)},${cy.toFixed(1)})">
+                  <circle r="18" fill="rgba(255,216,128,0.12)" stroke="#ffd880" stroke-width="1"/>
+                  <text text-anchor="middle" dy="5" font-size="18">${g.sym}</text>
+                  <text text-anchor="middle" dy="30" font-size="8" fill="#ffd880" font-family="Cormorant Garamond" font-style="italic">${g.name}</text>
+                </g>`;
+              }).join('')}
+              <!-- 中央: ゼウスの雷 -->
+              <path d="M 0 -20 L -6 0 L 0 -5 L -6 15 L 10 -5 L 4 0 L 10 -20 Z" fill="#ffd880" stroke="#8a5a00" stroke-width="1" class="svg-pulse"/>
+              <text text-anchor="middle" dy="45" font-size="10" fill="#ffd880" letter-spacing="0.3em">OLYMPUS</text>
+            </g>
+          </svg>`,
+          caption: 'オリンポスの十二神 — 天の王国の座',
           body: 'ゼウスは天を、ポセイドンは海を、ハデスは冥界を分けた。アテナが知恵を、アポロンが音楽を、アルテミスが狩りを、アフロディーテが愛を、ヘルメスが伝令を司った。\n\n神々は雲のオリンポスに住まい、人間を見下ろした。' },
         { t: '6. プロメテウスの火',
           img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Peter_Paul_Rubens_-_Prometheus_Bound.jpg?width=700',
@@ -4813,8 +4968,62 @@
         { t: '5. 三貴子の誕生',
           body: 'イザナギは穢れを祓うため禊をした。左目を洗うと天照大神（太陽）、右目を洗うと月読命（月）、鼻を洗うと須佐之男命（嵐）が生まれた。\n\n父は彼らにそれぞれ「高天原」「夜の国」「海原」を治めよと命じた。' },
         { t: '6. 天岩戸',
-          img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Amaterasu_cave_edit2.jpg?width=700',
-          caption: '春斎年昌《天の岩戸》（19世紀）',
+          svgArt: `<svg class="myth-svg" viewBox="0 0 600 420" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="amaGlow" cx="30%" cy="50%"><stop offset="0" stop-color="#fff8d8"/><stop offset="0.4" stop-color="#ffd480" stop-opacity="0.6"/><stop offset="1" stop-color="#ffd480" stop-opacity="0"/></radialGradient>
+              <linearGradient id="amaDark" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#1a0a28"/><stop offset="1" stop-color="#05020a"/></linearGradient>
+            </defs>
+            <rect width="600" height="420" fill="url(#amaDark)"/>
+            <!-- 岩山 -->
+            <path d="M 0 420 L 0 180 Q 60 150 120 160 L 180 180 L 240 140 Q 280 120 320 140 L 380 200 Q 420 220 470 210 L 540 180 L 600 200 L 600 420 Z" fill="#2a1a2a" stroke="#4a2a4a" stroke-width="1"/>
+            <!-- 岩戸の隙間（光が漏れる） -->
+            <g transform="translate(240,230)">
+              <!-- 光のグロー -->
+              <ellipse cx="0" cy="0" rx="180" ry="120" fill="url(#amaGlow)"/>
+              <ellipse cx="0" cy="0" rx="110" ry="80" fill="url(#amaGlow)" opacity="0.8"/>
+              <!-- 隙間の形 -->
+              <path d="M -20 -40 Q -8 -50 5 -40 L 10 40 Q -5 55 -20 40 Z" fill="#fff8d8" class="svg-pulse"/>
+              <!-- 放射光 -->
+              <g class="svg-rotate-slow" opacity="0.5">
+                ${Array.from({length: 16}).map((_, i) => {
+                  const a = (i / 16) * 360;
+                  return `<rect x="-1" y="-150" width="2" height="150" fill="#ffd480" opacity="${0.3 + (i%2)*0.2}" transform="rotate(${a})"/>`;
+                }).join('')}
+              </g>
+            </g>
+            <!-- 鳥居 -->
+            <g transform="translate(150,380)">
+              <rect x="0" y="0" width="60" height="6" fill="#c02020"/>
+              <rect x="-6" y="-6" width="72" height="6" fill="#c02020"/>
+              <rect x="6" y="0" width="4" height="45" fill="#c02020"/>
+              <rect x="50" y="0" width="4" height="45" fill="#c02020"/>
+            </g>
+            <!-- 祭りの八百万の神々（シルエット） -->
+            <g transform="translate(440,360)" opacity="0.7">
+              <circle cx="-40" cy="0" r="6" fill="#2a1a2a"/>
+              <circle cx="-25" cy="-3" r="6" fill="#2a1a2a"/>
+              <circle cx="-10" cy="0" r="6" fill="#2a1a2a"/>
+              <circle cx="5" cy="-2" r="6" fill="#2a1a2a"/>
+              <circle cx="20" cy="0" r="6" fill="#2a1a2a"/>
+              <circle cx="35" cy="-3" r="6" fill="#2a1a2a"/>
+              <!-- 体 -->
+              <path d="M -46 5 L -34 5 L -34 25 L -46 25 Z" fill="#2a1a2a"/>
+              <path d="M -31 5 L -19 5 L -19 25 L -31 25 Z" fill="#2a1a2a"/>
+              <path d="M -16 5 L -4 5 L -4 25 L -16 25 Z" fill="#2a1a2a"/>
+              <path d="M -1 5 L 11 5 L 11 25 L -1 25 Z" fill="#2a1a2a"/>
+              <path d="M 14 5 L 26 5 L 26 25 L 14 25 Z" fill="#2a1a2a"/>
+              <path d="M 29 5 L 41 5 L 41 25 L 29 25 Z" fill="#2a1a2a"/>
+            </g>
+            <!-- アメノウズメの舞 -->
+            <g transform="translate(380,320)">
+              <circle cx="0" cy="-20" r="5" fill="#d8a090"/>
+              <path d="M -12 -15 Q -20 5 -16 25 L 16 25 Q 20 5 12 -15 Z" fill="#ff4060"/>
+              <line x1="-15" y1="0" x2="-25" y2="-8" stroke="#d8a090" stroke-width="2"/>
+              <line x1="15" y1="0" x2="26" y2="-15" stroke="#d8a090" stroke-width="2"/>
+            </g>
+            <text x="300" y="45" text-anchor="middle" fill="#ffd880" font-size="12" letter-spacing="0.3em" opacity="0.7">天 岩 戸</text>
+          </svg>`,
+          caption: '天岩戸 — 世界に光が戻った夜',
           body: 'スサノオは乱暴を働き、高天原を追われた。嘆いた天照は天岩戸に閉じこもり、世界は闇に沈んだ。\n\n八百万の神は岩戸の前で祭りを開いた。アメノウズメが裸で舞い、神々は大笑いした。不思議に思って岩戸を少し開けた天照を、タヂカラオが引き出した。世界に光が戻った。' },
         { t: '7. ヤマタノオロチ',
           img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Susanoo_no_Mikoto-Yoshitoshi.jpg?width=700',
@@ -4832,8 +5041,85 @@
         { t: '1. ギンヌンガガプ',
           body: 'はじめに、何もなかった。ただ巨大な虚空ギンヌンガガプがあり、北には氷の国ニヴルヘイム、南には炎の国ムスペルヘイムがあった。\n\n氷と炎が出会い、最初の巨人ユミルと牝牛アウズンブラが生まれた。' },
         { t: '2. 世界樹ユグドラシル',
-          img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Processed_SAM_yggdrasil.png?width=700',
-          caption: '17世紀写本『Edda』のユグドラシル',
+          svgArt: `<svg class="myth-svg" viewBox="0 0 600 500" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="yggBG"><stop offset="0" stop-color="#1a2030"/><stop offset="1" stop-color="#050810"/></radialGradient>
+              <linearGradient id="trunkGrad" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#3a2818"/><stop offset="0.5" stop-color="#6a4a28"/><stop offset="1" stop-color="#3a2818"/></linearGradient>
+            </defs>
+            <rect width="600" height="500" fill="url(#yggBG)"/>
+            <!-- 星 -->
+            <g fill="#b0c8f0" opacity="0.7">
+              <circle cx="50" cy="80" r="1.5"/>
+              <circle cx="140" cy="50" r="1"/>
+              <circle cx="480" cy="100" r="1.5"/>
+              <circle cx="550" cy="70" r="1"/>
+              <circle cx="90" cy="150" r="0.8"/>
+              <circle cx="530" cy="170" r="1"/>
+            </g>
+            <!-- 上枝（アスガルド方向） -->
+            <g stroke="#5a4028" stroke-width="3" fill="none">
+              <path d="M 300 260 Q 240 180 180 130"/>
+              <path d="M 300 260 Q 360 180 420 130"/>
+              <path d="M 300 260 L 300 90"/>
+              <path d="M 300 180 Q 250 140 220 110"/>
+              <path d="M 300 180 Q 350 140 380 110"/>
+              <path d="M 300 140 Q 270 100 240 75"/>
+              <path d="M 300 140 Q 330 100 360 75"/>
+            </g>
+            <!-- 葉の冠 -->
+            <g class="svg-breathe" opacity="0.8">
+              <ellipse cx="300" cy="120" rx="170" ry="80" fill="#2a4a2a"/>
+              <ellipse cx="300" cy="100" rx="140" ry="60" fill="#3a6a3a"/>
+              <circle cx="200" cy="130" r="40" fill="#3a6a3a"/>
+              <circle cx="400" cy="130" r="40" fill="#3a6a3a"/>
+            </g>
+            <!-- 幹 -->
+            <path d="M 280 260 Q 275 340 275 440 L 325 440 Q 325 340 320 260 Z" fill="url(#trunkGrad)" stroke="#1a0a08" stroke-width="1"/>
+            <!-- 根（下方に広がる） -->
+            <g stroke="#2a1810" stroke-width="3" fill="none">
+              <path d="M 275 440 Q 230 460 170 470"/>
+              <path d="M 325 440 Q 370 460 430 470"/>
+              <path d="M 290 440 Q 260 478 220 488"/>
+              <path d="M 310 440 Q 340 478 380 488"/>
+              <path d="M 300 440 L 300 490"/>
+            </g>
+            <!-- 9つの世界のラベル -->
+            <g font-size="9" fill="#b8a080" font-family="Cormorant Garamond" letter-spacing="0.15em" font-style="italic">
+              <!-- 上段 3つ -->
+              <text x="300" y="85" text-anchor="middle">ASGARD</text>
+              <text x="220" y="115" text-anchor="middle">VANAHEIM</text>
+              <text x="380" y="115" text-anchor="middle">ALFHEIM</text>
+              <!-- 中段 3つ -->
+              <text x="140" y="260" text-anchor="middle">JOTUNHEIM</text>
+              <text x="300" y="390" text-anchor="middle" fill="#d0a060">MIDGARD</text>
+              <text x="470" y="260" text-anchor="middle">MUSPELHEIM</text>
+              <!-- 下段 3つ -->
+              <text x="170" y="475" text-anchor="middle">SVARTALFHEIM</text>
+              <text x="300" y="500" text-anchor="middle">HELHEIM</text>
+              <text x="430" y="475" text-anchor="middle">NIFLHEIM</text>
+            </g>
+            <!-- 中央に MIDGARD の円 -->
+            <circle cx="300" cy="380" r="20" fill="none" stroke="#d0a060" stroke-width="1" opacity="0.6"/>
+            <!-- ヴェズルヴォルニル（噛む龍）— 根元 -->
+            <g transform="translate(300, 480)">
+              <path d="M -40 0 Q -20 -5 0 0 Q 20 5 40 0" stroke="#4a3020" stroke-width="2" fill="none"/>
+              <circle cx="-35" cy="0" r="2" fill="#c02020"/>
+              <circle cx="35" cy="0" r="2" fill="#c02020"/>
+            </g>
+            <!-- 鷲 — 頂上 -->
+            <text x="300" y="60" text-anchor="middle" font-size="16" fill="#d0a060">🦅</text>
+            <!-- ラタトスク（リス） -->
+            <text x="250" y="340" font-size="10">🐿</text>
+            <!-- ルーン文字 -->
+            <g fill="#b0a080" font-size="14" opacity="0.6">
+              <text x="30" y="270">ᚢ</text>
+              <text x="555" y="270">ᚱ</text>
+              <text x="30" y="240">ᚦ</text>
+              <text x="555" y="240">ᚨ</text>
+            </g>
+            <text x="300" y="30" text-anchor="middle" fill="#ffd880" font-size="13" letter-spacing="0.4em" opacity="0.75">YGGDRASIL</text>
+          </svg>`,
+          caption: 'ユグドラシル — 九つの世界を支える樹',
           body: 'オーディンは兄弟と共にユミルを殺し、その体から世界を作った。肉は大地、血は海、骨は山、髪は森、頭蓋は天。\n\n宇宙の中心には世界樹ユグドラシルがそびえ、九つの世界を支えた。根元には運命の三女神ノルンが住み、未来を織っていた。' },
         { t: '3. 知恵の代価',
           img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Georg_von_Rosen_-_Oden_som_vandringsman%2C_1886_(Odin%2C_the_Wanderer).jpg?width=700',
@@ -5213,14 +5499,14 @@
       ).join('');
       ov.querySelector('#taleChapterNum').textContent = `${s.emoji} ${s.name} — 第${curIdx + 1}章 / ${s.chapters.length}`;
       ov.querySelector('#taleChapterTitle').textContent = c.t;
-      // パブリックドメインの名画を章の冒頭に
-      const imgHTML = c.img ? `
-        <figure class="tale-art">
-          <img src="${c.img}" alt="${c.caption || c.t}" loading="lazy" onerror="this.parentNode.style.display='none'"/>
-          ${c.caption ? `<figcaption>${c.caption}　<span class="tale-pd">Public Domain</span></figcaption>` : ''}
-        </figure>
-      ` : '';
-      const bodyHTML = imgHTML + '<div class="tale-chapter-text">' + c.body.replace(/\n/g, '<br>') + '</div>';
+      // SVG アート優先、なければ PD 名画
+      let artHTML = '';
+      if (c.svgArt) {
+        artHTML = `<figure class="tale-art">${c.svgArt}${c.caption ? `<figcaption>${c.caption}　<span class="tale-pd">Original SVG</span></figcaption>` : ''}</figure>`;
+      } else if (c.img) {
+        artHTML = `<figure class="tale-art"><img src="${c.img}" alt="${c.caption || c.t}" loading="lazy" onerror="this.parentNode.style.display='none'"/>${c.caption ? `<figcaption>${c.caption}　<span class="tale-pd">Public Domain</span></figcaption>` : ''}</figure>`;
+      }
+      const bodyHTML = artHTML + '<div class="tale-chapter-text">' + c.body.replace(/\n/g, '<br>') + '</div>';
       ov.querySelector('#taleChapterBody').innerHTML = bodyHTML;
       ov.querySelector('#taleChapterTitle').classList.remove('fade-in');
       ov.querySelector('#taleChapterBody').classList.remove('fade-in');
