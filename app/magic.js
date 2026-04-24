@@ -6039,6 +6039,15 @@
     if (usePro) try {
       composer = new ADDONS.EffectComposer(renderer);
       composer.addPass(new ADDONS.RenderPass(scene, camera));
+      // 🕳 SSAOPass: 環境光遮蔽（隙間に自然な影、地面・葉の根元が沈む）
+      if (ADDONS.SSAOPass) {
+        const ssao = new ADDONS.SSAOPass(scene, camera, W, H);
+        ssao.kernelRadius = 0.6;        // サンプル半径（小さめ=ディテール重視）
+        ssao.minDistance = 0.001;
+        ssao.maxDistance = 0.1;
+        ssao.output = ADDONS.SSAOPass.OUTPUT.Default; // 通常合成
+        composer.addPass(ssao);
+      }
       const bloomPass = new ADDONS.UnrealBloomPass(
         new THREE.Vector2(W, H),
         0.25, 0.55, 0.78
@@ -6136,6 +6145,11 @@
         const gradePass = new ADDONS.ShaderPass(gradeShader);
         composer.addPass(gradePass);
         camera.userData.gradePass = gradePass;
+      }
+      // 🔲 SMAAPass: 高品質アンチエイリアス（FXAAより高品質、Subpixel Morphological）
+      if (ADDONS.SMAAPass) {
+        const smaa = new ADDONS.SMAAPass(W * renderer.getPixelRatio(), H * renderer.getPixelRatio());
+        composer.addPass(smaa);
       }
       if (ADDONS.OutputPass) composer.addPass(new ADDONS.OutputPass());
     } catch (err) {
@@ -7059,8 +7073,13 @@
 
     // 🌳 生命の樹（中央・巨木） — 壮大・神秘的に
     const treeGroup = new THREE.Group();
-    const trunkMat = new THREE.MeshStandardMaterial({
-      map: barkTex, roughness: 0.95, color: 0xc8a080,
+    // MeshPhysicalMaterial + anisotropy: 木目方向に光の反射が変わる（本物の木材感）
+    const trunkMat = new THREE.MeshPhysicalMaterial({
+      map: barkTex, roughness: 0.88, color: 0xc8a080,
+      anisotropy: 0.75,           // 異方性（0-1、木目方向の反射差）
+      anisotropyRotation: 0,      // 0rad = 縦方向の木目
+      clearcoat: 0.1,             // 微かな表皮
+      clearcoatRoughness: 0.6,
     });
     // 幹: 高さ14m、ドラマチックな曲がり — 壮大な世界樹スケール
     const trunkCurve = new THREE.CatmullRomCurve3([
