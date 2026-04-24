@@ -4012,8 +4012,9 @@ h2 .ij-icon, h3 .ij-icon { vertical-align: -0.15em; margin-right: 4px; }
   .audible-hero-sub { font-size: 10px; }
 }
 
-/* 📑 ホーム目次 — N64 Cボタン風タイトクラスタの上頂点（右下ギュッと） */
-.home-toc-wrap { position: fixed; right: 36px; left: auto; transform: none; bottom: 68px; z-index: 45; }
+/* 📑 ホーム目次 — N64 Cボタン並みにギュッと密集（上頂点） */
+.home-toc-wrap { position: fixed; right: 30px; left: auto; transform: none; bottom: 52px; z-index: 45; }
+.home-toc-summary { width: 38px !important; height: 38px !important; font-size: 16px !important; }
 /* 💬 チャットFAB（おーい）を非表示 — ユーザー指示により削除 */
 .chat-fab-wrap, .chat-fab { display: none !important; }
 /* ▲ トップへ戻るFAB — 削除（ユーザー指示） */
@@ -12812,8 +12813,10 @@ h2 .ij-icon, h3 .ij-icon { vertical-align: -0.15em; margin-right: 4px; }
 /* ================ ミュート切替ボタン ================ */
 .mute-toggle {
   position: fixed;
-  right: 14px;
-  bottom: 14px;
+  right: 10px;
+  bottom: 10px;
+  width: 40px;
+  height: 40px;
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -13891,12 +13894,14 @@ h2 .ij-icon, h3 .ij-icon { vertical-align: -0.15em; margin-right: 4px; }
 }
 .phone-close-btn:hover { transform: scale(1.1); }
 
-/* 電源ボタンを指さすキャラアニメ（ラジオ）— タイト三角の左下 */
+/* 電源ボタンを指さすキャラアニメ（ラジオ）— N64 Cボタン並みタイト */
 .power-hint-anim {
   position: fixed;
-  right: 68px;
+  right: 58px;
   left: auto;
-  bottom: 14px;
+  bottom: 10px;
+  width: 44px !important;
+  height: 44px !important;
   width: 56px;
   height: 56px;
   z-index: 49;
