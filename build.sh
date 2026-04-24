@@ -18,6 +18,9 @@ npx -y esbuild app/era-theme.css      --minify --outfile=app/dist/era-theme.min.
 # 偉人データのバンドル再生成
 python build-people-bundle.py 2>/dev/null || python3 build-people-bundle.py 2>/dev/null || true
 
+# SEO/OGP: 偉人個別HTML + sitemap.xml 生成
+python scripts/generate_person_pages.py 2>/dev/null || python3 scripts/generate_person_pages.py 2>/dev/null || true
+
 echo ""
 echo "✓ Build complete. Minified outputs:"
 du -h app/dist/*.js app/dist/*.css 2>&1 | sort -h

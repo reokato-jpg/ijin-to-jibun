@@ -58,6 +58,69 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    // ============ コメント・レビュー（偉人ごと） ============
+    // docId = personId__uid__timestamp
+    // - 作成: ログイン必須、textは1-500字、本人uidのみ
+    // - 読み取り: 全員（ログイン不要でもいい、教材用途で公開）
+    // - 更新: 本人のみ（編集可能だが投稿時刻は不変）
+    // - 削除: 本人または管理者
+    // - モデレーション: report フィールドが3以上で自動非表示
+    match /personComments/{id} {
+      allow read: if true;
+      allow create: if request.auth != null
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.personId is string
+        && request.resource.data.text is string
+        && request.resource.data.text.size() >= 1
+        && request.resource.data.text.size() <= 500
+        && request.resource.data.createdAt == request.time
+        && (request.resource.data.reports == null || request.resource.data.reports == 0);
+      allow update: if request.auth != null
+        && (
+          // 本人による編集（createdAtは不変、uid/personIdも不変）
+          (resource.data.uid == request.auth.uid
+            && request.resource.data.uid == resource.data.uid
+            && request.resource.data.personId == resource.data.personId
+            && request.resource.data.createdAt == resource.data.createdAt
+            && request.resource.data.text.size() >= 1
+            && request.resource.data.text.size() <= 500)
+          // または他会員が report をインクリメント（textは変更不可）
+          || (request.auth.uid != resource.data.uid
+            && request.resource.data.text == resource.data.text
+            && request.resource.data.uid == resource.data.uid
+            && (request.resource.data.reports == (resource.data.reports != null ? resource.data.reports : 0) + 1))
+          // または管理者
+          || request.auth.token.admin == true
+        );
+      allow delete: if request.auth != null
+        && (resource.data.uid == request.auth.uid
+            || request.auth.token.admin == true);
+    }
+
+    // ============ フォロー関係 (user -> user) ============
+    // docId = followerUid__followeeUid
+    match /userFollows/{docId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null
+        && request.resource.data.follower == request.auth.uid
+        && docId.matches("^" + request.auth.uid + "__.*");
+      allow delete: if request.auth != null
+        && resource.data.follower == request.auth.uid;
+    }
+
+    // ============ 通報（モデレーション用） ============
+    // - 誰でも作成可（誤報対策で admin が後から確認）
+    // - 読み取り・削除は管理者のみ
+    match /reports/{id} {
+      allow create: if request.auth != null
+        && request.resource.data.reporterUid == request.auth.uid
+        && request.resource.data.targetType in ['comment', 'user', 'person']
+        && request.resource.data.reason is string
+        && request.resource.data.reason.size() <= 300;
+      allow read, update, delete: if request.auth != null
+        && request.auth.token.admin == true;
+    }
+
     // ============ デフォルト拒否 ============
     match /{document=**} {
       allow read, write: if false;
