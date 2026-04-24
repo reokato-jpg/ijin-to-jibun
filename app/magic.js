@@ -7777,7 +7777,7 @@
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     renderer.setSize(W(), H());
     if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 0.55;
+    renderer.toneMappingExposure = 0.95;
     if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -7826,6 +7826,7 @@
       return new THREE.CanvasTexture(sc);
     })();
     // 🌤 空：ブリューゲル忠実 — 明るい午後、澄んだ青空
+    scene.background = new THREE.Color(0xb0c4d8); // 青空フォールバック（Sky失敗時）
     if (ADDONS.Sky) {
       const bsky = new ADDONS.Sky();
       bsky.scale.setScalar(600);
@@ -7844,7 +7845,7 @@
         pmrem.compileEquirectangularShader();
         const envRT = pmrem.fromScene(bsky);
         scene.environment = envRT.texture;
-        if ('environmentIntensity' in scene) scene.environmentIntensity = 0.35;
+        if ('environmentIntensity' in scene) scene.environmentIntensity = 0.7;
       } catch (e) { console.warn('babel PMREM', e); }
     } else {
       scene.background = skyTex;
@@ -7852,10 +7853,10 @@
     scene.fog = new THREE.Fog(0xd4c8a8, 80, 420); // 淡い黄土の大気
 
     // 環境光・主光源
-    scene.add(new THREE.AmbientLight(0xb0a888, 0.3));
-    const hemi = new THREE.HemisphereLight(0xc8b890, 0x6a5a3a, 0.5);
+    scene.add(new THREE.AmbientLight(0xc8c0a0, 0.55));
+    const hemi = new THREE.HemisphereLight(0xe0d0a8, 0x6a5a3a, 0.9);
     scene.add(hemi);
-    const sunLight = new THREE.DirectionalLight(0xffeac0, 0.9);
+    const sunLight = new THREE.DirectionalLight(0xffeac0, 1.4);
     sunLight.position.set(-30, 50, 20);
     sunLight.castShadow = true;
     sunLight.shadow.mapSize.set(1024, 1024);
@@ -7918,9 +7919,8 @@
       t.wrapS = t.wrapT = THREE.RepeatWrapping;
       return t;
     })();
-    const brickMat = new THREE.MeshStandardMaterial({ map: brickTex, roughness: 0.92, color: 0xb8a080 });
-    // 暗いコア用（内部が見えても気持ち悪くない色）
-    const darkCoreMat = new THREE.MeshStandardMaterial({ color: 0x3a2a1a, roughness: 0.95 });
+    const brickMat = new THREE.MeshStandardMaterial({ map: brickTex, roughness: 0.92, color: 0xd8c8a8 });
+    const darkCoreMat = new THREE.MeshStandardMaterial({ color: 0x4a3a28, roughness: 0.95 });
 
     // 🏛 塔本体：ブリューゲル風の階段状ジッグラト
     //   各段は「円柱（壁）＋アーチ窓＋はっきりしたテラス」。
