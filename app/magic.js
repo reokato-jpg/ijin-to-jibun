@@ -4133,6 +4133,26 @@
         <button data-mode="ijin" aria-label="偉人星座">👤</button>
         <button data-mode="meditate" aria-label="瞑想">🧘</button>
         <button data-mode="wish" aria-label="願い星">🌠</button>
+        <button data-mode="matryoshka" aria-label="マトリョーシカ">🪆</button>
+      </div>
+      <div class="cosmos-matryoshka" id="cosmosMatryoshka">
+        <button class="cmy-close" id="cmyClose" aria-label="閉じる">×</button>
+        <div class="cmy-frame">
+          <div class="cmy-icon" id="cmyIcon">🌌</div>
+          <div class="cmy-level" id="cmyLevel">1 / 14</div>
+          <div class="cmy-name" id="cmyName">多元宇宙</div>
+          <div class="cmy-scale" id="cmyScale">10^? m</div>
+          <div class="cmy-quote" id="cmyQuote">「世界は一つとは限らない」</div>
+          <div class="cmy-who" id="cmyWho">— ヒュー・エヴェレット</div>
+        </div>
+        <div class="cmy-controls">
+          <button class="cmy-nav" id="cmyZoomOut" aria-label="外へ">◀ 外へ</button>
+          <button class="cmy-nav cmy-dive" id="cmyZoomIn" aria-label="中へ">中へ ▶</button>
+        </div>
+        <div class="cmy-track">
+          <div class="cmy-dots" id="cmyDots"></div>
+        </div>
+        <div class="cmy-hint">世の中はマトリョーシカ。中にも、外にも、同じ構造が繰り返す。</div>
       </div>
       <div class="cosmos-wish-dialog" id="cosmosWishDialog">
         <div class="cwd-inner">
@@ -5999,7 +6019,64 @@
             flashBanner('🌠 願い星モード OFF');
           }
         }
+        if (mode === 'matryoshka') {
+          const m = ov.querySelector('#cosmosMatryoshka');
+          m.classList.toggle('show', modes.matryoshka);
+          if (modes.matryoshka) { mIdx = 7; renderMatryoshka(); }
+        }
       });
+    });
+
+    // ============================================================
+    // 🪆 マトリョーシカ階層（宇宙→素粒子→意識→宇宙 の輪）
+    // ============================================================
+    const MATRYOSHKA = [
+      { icon: '♾️', name: '多元宇宙',     scale: '∞',         quote: '世界は一つとは限らない',       who: 'ヒュー・エヴェレット' },
+      { icon: '🌌', name: '観測可能な宇宙', scale: '10²⁶ m',    quote: '宇宙が理解しうることが最も理解しがたい', who: 'アインシュタイン' },
+      { icon: '🌀', name: '銀河',         scale: '10²¹ m',    quote: '天の川は無数の星でできている', who: 'ガリレオ' },
+      { icon: '☀️', name: '太陽系',       scale: '10¹³ m',    quote: 'それでも地球は動いている',     who: 'ガリレオ' },
+      { icon: '🌍', name: '地球',         scale: '10⁷ m',     quote: '我々はたった一つの地球を持つ', who: 'カール・セーガン' },
+      { icon: '🏙', name: '都市',         scale: '10⁴ m',     quote: '都市は人類の最高の発明',       who: 'アリストテレス' },
+      { icon: '🏠', name: '家',           scale: '10¹ m',     quote: '家は人の城である',             who: 'エドワード・コーク' },
+      { icon: '🧑', name: '人間',         scale: '10⁰ m',     quote: '我思うゆえに我あり',           who: 'デカルト' },
+      { icon: '🧠', name: '脳',           scale: '10⁻¹ m',    quote: '全ての思考は脳の電気',         who: 'ラマチャンドラン' },
+      { icon: '🦠', name: '細胞',         scale: '10⁻⁵ m',    quote: 'すべての生命は細胞からなる',   who: 'ウィルヒョウ' },
+      { icon: '🧬', name: 'DNA',          scale: '10⁻⁹ m',    quote: '我々は4文字の本である',         who: 'クリック' },
+      { icon: '⚛️', name: '原子',         scale: '10⁻¹⁰ m',   quote: '原子は分割不可能…と思っていた', who: 'デモクリトス' },
+      { icon: '✨', name: '素粒子',       scale: '10⁻¹⁸ m',   quote: '神はサイコロを振らない',       who: 'アインシュタイン' },
+      { icon: '🔮', name: 'プランク',     scale: '10⁻³⁵ m',   quote: '空間と時間の限界点',           who: 'マックス・プランク' },
+      { icon: '💭', name: '意識',         scale: '?',          quote: '宇宙はあなたが見るから存在する', who: 'ユング' },
+    ];
+    let mIdx = 7; // 人間からスタート
+    function renderMatryoshka() {
+      const m = MATRYOSHKA[mIdx];
+      ov.querySelector('#cmyIcon').textContent = m.icon;
+      ov.querySelector('#cmyLevel').textContent = `${mIdx + 1} / ${MATRYOSHKA.length}`;
+      ov.querySelector('#cmyName').textContent = m.name;
+      ov.querySelector('#cmyScale').textContent = m.scale;
+      ov.querySelector('#cmyQuote').textContent = `「${m.quote}」`;
+      ov.querySelector('#cmyWho').textContent = `— ${m.who}`;
+      // ドット列
+      const dots = ov.querySelector('#cmyDots');
+      dots.innerHTML = MATRYOSHKA.map((_, i) => `<span class="cmy-dot ${i === mIdx ? 'active' : ''}"></span>`).join('');
+      // 意識から多元宇宙へ → ループ
+      const icon = ov.querySelector('#cmyIcon');
+      icon.classList.remove('zooming'); void icon.offsetWidth; icon.classList.add('zooming');
+    }
+    ov.querySelector('#cmyZoomIn').addEventListener('click', () => {
+      mIdx = (mIdx + 1) % MATRYOSHKA.length; // 最後→最初でループ（意識→多元宇宙）
+      renderMatryoshka();
+      haptic(8); beep(500 - mIdx * 20, 0.07, 'sine', 0.05);
+    });
+    ov.querySelector('#cmyZoomOut').addEventListener('click', () => {
+      mIdx = (mIdx - 1 + MATRYOSHKA.length) % MATRYOSHKA.length;
+      renderMatryoshka();
+      haptic(8); beep(400 + mIdx * 20, 0.07, 'sine', 0.05);
+    });
+    ov.querySelector('#cmyClose').addEventListener('click', () => {
+      modes.matryoshka = false;
+      ov.querySelector('[data-mode="matryoshka"]').classList.remove('active');
+      ov.querySelector('#cosmosMatryoshka').classList.remove('show');
     });
 
     // ============================================================
