@@ -7995,7 +7995,7 @@
       core.receiveShadow = true;
       tower.add(core);
       // アーチ窓層（わずかに外側にずらす）
-      const archGeo = new THREE.CylinderGeometry(rOuter + 0.02, rOuter + 0.02, stageHeight * 0.6, 32, 1, true);
+      const archGeo = new THREE.CylinderGeometry(rOuter + 0.15, rOuter + 0.15, stageHeight * 0.6, 32, 1, true);
       const archMat = new THREE.MeshStandardMaterial({
         map: archTex, transparent: true, alphaTest: 0.1, roughness: 0.8,
       });
@@ -8516,7 +8516,8 @@
         new THREE.MeshBasicMaterial({ map: cloudTex, transparent: true, opacity: 0.7, depthWrite: false, fog: false })
       );
       const a = (i / 5) * Math.PI * 2;
-      c.position.set(Math.cos(a) * 22, 46 + Math.random() * 6, Math.sin(a) * 22);
+      c.position.set(Math.cos(a) * 38, 58 + Math.random() * 6, Math.sin(a) * 38);
+      c.visible = false; // 平時は非表示。混乱時だけ出す
       c.lookAt(0, c.position.y, 0);
       c.userData.angle = a;
       c.userData.speed = 0.05 + Math.random() * 0.04;
@@ -8753,7 +8754,8 @@
     }
     ov.querySelector('#babel3dChaos').addEventListener('click', () => {
       chaosTrigger = 1;
-      // 空を暗転（嵐モードに切替）+ 雨を発生
+      // 空を暗転（嵐モードに切替）+ 雨・雲を発生
+      stormClouds.forEach(c => c.visible = true);
       if (scene.fog) scene.fog.color.setHex(0x2a2028);
       hemi.intensity = 0.3; hemi.color.setHex(0x3a3040);
       sunLight.intensity = 0.3; sunLight.color.setHex(0xa090a0);
@@ -8848,10 +8850,10 @@
         }
         pa.needsUpdate = true;
       }
-      // 松明のちらつき
+      // 松明のちらつき（滑らかに、ランダム項を除去）
       torchLights.forEach(tl => {
-        tl.phase += 0.1;
-        const f = 0.85 + Math.sin(tl.phase) * 0.12 + (Math.random() - 0.5) * 0.05;
+        tl.phase += 0.04; // ゆっくり
+        const f = 0.9 + Math.sin(tl.phase) * 0.07 + Math.sin(tl.phase * 2.3) * 0.03;
         if (tl.light) tl.light.intensity = 0.6 * f;
         tl.flame.scale.setScalar(f);
         tl.halo.material.opacity = 0.65 * f;
@@ -8871,20 +8873,7 @@
         c.position.z = Math.sin(c.userData.angle) * 22;
         c.lookAt(0, c.position.y, 0);
       });
-      // ランダムに遠くで雷（塔に落ちないもの、装飾）
-      boltTimer -= 0.016;
-      if (boltTimer <= 0) {
-        boltTimer = 3 + Math.random() * 5;
-        if (Math.random() < 0.5) {
-          bolts[Math.floor(Math.random() * bolts.length)].geometry.setFromPoints(makeBolt());
-          bolts.forEach(b => b.material.opacity = 0);
-          const pick = bolts[Math.floor(Math.random() * bolts.length)];
-          pick.material.opacity = 0.6;
-          setTimeout(() => pick.material.opacity = 0, 80);
-          setTimeout(() => pick.material.opacity = 0.45, 160);
-          setTimeout(() => pick.material.opacity = 0, 240);
-        }
-      }
+      // 平時の雷は出さない（混乱トリガー時のみ）。晴天バベルは静かに。
       // 言葉の更新
       wordSprites.forEach(s => {
         s.userData.phase += 0.015;
