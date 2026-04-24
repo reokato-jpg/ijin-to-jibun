@@ -4281,6 +4281,7 @@
         <div class="iq-actions">
           <button class="iq-next" id="iqNext" style="display:none">次の問題 →</button>
         </div>
+        <div class="iq-aff-slot"></div>
       </div>
     `;
     document.body.appendChild(ov);
@@ -4387,10 +4388,114 @@
         });
       });
     }
-    ov.querySelector('#iqNext').addEventListener('click', render);
+    ov.querySelector('#iqNext').addEventListener('click', () => {
+      // 5問ごとに広告を再抽選（学び切った区切りに）
+      if (stats.total > 0 && stats.total % 5 === 0) {
+        const slot = ov.querySelector('.iq-aff-slot');
+        if (slot) { slot.innerHTML = ''; MAGIC.renderAffiliate('quiz-end', slot, 1, stats.total); }
+      }
+      render();
+    });
     render();
+    // 初回: スロットは空のまま（5問目まで出さない）
   }
   window.openIjinQuiz = openIjinQuiz;
+
+  // ============================================================
+  // 💰 アフィリエイト・プール（人間の真理ベース）
+  // - 高関心モーメント（学び終わった直後／深掘り中／気分が動いた時）にだけ出す
+  // - ランダム＋日替わりで同じ人に同じ広告を出しすぎない
+  // - 目立つ配色ではなく、コンテンツの続きに見える自然な溶け込み
+  // ============================================================
+  // 日付シード（同じ日は同じ並び、日をまたぐと並び替わる）
+  function dayHash() {
+    const d = new Date();
+    return d.getFullYear() * 10000 + (d.getMonth()+1) * 100 + d.getDate();
+  }
+  function seededShuffle(arr, seed) {
+    const a = arr.slice();
+    let s = seed;
+    for (let i = a.length - 1; i > 0; i--) {
+      s = (s * 9301 + 49297) % 233280;
+      const r = s / 233280;
+      const j = Math.floor(r * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+  // 各広告: id / 文脈タグ / 人間のモード (求めている心理) / HTML
+  MAGIC.AFFILIATES = [
+    {
+      id: 'studysapuri', ctx: ['learning-end','quiz-end','timeline','home-study'],
+      mood: '知的好奇心が動いた直後 → 体系学習への橋渡し',
+      html: `<a class="aff-inline" href="https://px.a8.net/svt/ejp?a8mat=4B1SPX+D3JBW2+36T2+TU14H" rel="noopener sponsored nofollow" target="_blank">
+        <span class="aff-icon">📚</span>
+        <span class="aff-text"><b>体系的に学ぶなら</b> — スタディサプリで映像授業</span>
+        <span class="aff-tag">PR</span></a>
+        <img border="0" width="1" height="1" src="https://www18.a8.net/0.gif?a8mat=4B1SPX+D3JBW2+36T2+TU14H" alt="" style="position:absolute;opacity:0">`
+    },
+    {
+      id: 'audible', ctx: ['learning-end','person-writer','home-study','place'],
+      mood: '文学・名言に触れた後 → 耳で続きを聴きたくなる',
+      html: `<a class="aff-inline" href="https://px.a8.net/svt/ejp?a8mat=4B1QDV+6MQUCY+5TB0+5ZU29" rel="noopener sponsored nofollow" target="_blank">
+        <span class="aff-icon">🎧</span>
+        <span class="aff-text"><b>耳で聴く偉人伝</b> — Audible 30日間無料</span>
+        <span class="aff-tag">PR</span></a>
+        <img border="0" width="1" height="1" src="https://www10.a8.net/0.gif?a8mat=4B1QDV+6MQUCY+5TB0+5ZU29" alt="" style="position:absolute;opacity:0">`
+    },
+    {
+      id: 'rakuten-travel', ctx: ['place','pilgrimage','beginner'],
+      mood: '偉人ゆかりの地を読んだ後 → 実際に行きたくなる',
+      html: `<a class="aff-inline" href="//af.moshimo.com/af/c/click?a_id=5501667&p_id=55&pc_id=55&pl_id=630" rel="noopener sponsored nofollow" target="_blank">
+        <span class="aff-icon">⛩</span>
+        <span class="aff-text"><b>聖地巡礼の宿</b> — 楽天トラベルで探す</span>
+        <span class="aff-tag">PR</span></a>
+        <img src="//i.moshimo.com/af/i/impression?a_id=5501667&p_id=55&pc_id=55&pl_id=630" width="1" height="1" style="position:absolute;border:0;opacity:0" alt="">`
+    },
+    {
+      id: 'jalan', ctx: ['place','pilgrimage','beginner'],
+      mood: '旅のわくわくに火がついた → 体験プランを探す',
+      html: `<a class="aff-inline" href="https://px.a8.net/svt/ejp?a8mat=4B1QDV+76ZKXE+5R8A+5Z6WX" rel="noopener sponsored nofollow" target="_blank">
+        <span class="aff-icon">🏯</span>
+        <span class="aff-text"><b>ご当地プラン</b> — じゃらんnet</span>
+        <span class="aff-tag">PR</span></a>
+        <img border="0" width="1" height="1" src="https://www13.a8.net/0.gif?a8mat=4B1QDV+76ZKXE+5R8A+5Z6WX" alt="" style="position:absolute;opacity:0">`
+    },
+    {
+      id: 'tiktok', ctx: ['goods','lifestyle','beginner'],
+      mood: '推し活・グッズ欲 → 動画で見てすぐ買う',
+      html: `<a class="aff-inline" href="https://px.a8.net/svt/ejp?a8mat=4B1SPX+DAOJ5E+5V86+61Z81" rel="noopener sponsored nofollow" target="_blank">
+        <span class="aff-icon">🛒</span>
+        <span class="aff-text"><b>トレンドを今すぐ</b> — TikTok Shop</span>
+        <span class="aff-tag">PR</span></a>
+        <img border="0" width="1" height="1" src="https://www16.a8.net/0.gif?a8mat=4B1SPX+DAOJ5E+5V86+61Z81" alt="" style="position:absolute;opacity:0">`
+    },
+    {
+      id: 'uranai', ctx: ['birthday','spiritual','cosmos-end','home-discovery'],
+      mood: '意味・運命を探す気分 → 内省的モーメント',
+      html: `<a class="aff-inline" href="https://px.a8.net/svt/ejp?a8mat=4B1SPX+DJ0LMA+2PEO+1BTBLD" rel="noopener sponsored nofollow" target="_blank">
+        <span class="aff-icon">🔮</span>
+        <span class="aff-text"><b>今日の運勢</b> — 偉人と同じ星のもとに</span>
+        <span class="aff-tag">PR</span></a>
+        <img border="0" width="1" height="1" src="https://www10.a8.net/0.gif?a8mat=4B1SPX+DJ0LMA+2PEO+1BTBLD" alt="" style="position:absolute;opacity:0">`
+    },
+  ];
+  // 指定文脈に合う広告をランダム選択（日替わりシード）
+  MAGIC.pickAffiliates = function(ctx, count = 1, salt = 0) {
+    const pool = MAGIC.AFFILIATES.filter(a => a.ctx.includes(ctx));
+    if (!pool.length) return [];
+    return seededShuffle(pool, dayHash() + salt).slice(0, count);
+  };
+  // 文脈に広告1枚だけを挿入するヘルパー
+  MAGIC.renderAffiliate = function(ctx, container, count = 1, salt = 0) {
+    if (!container) return;
+    const ads = MAGIC.pickAffiliates(ctx, count, salt);
+    if (!ads.length) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'aff-inline-wrap';
+    wrap.innerHTML = ads.map(a => a.html).join('');
+    container.appendChild(wrap);
+  };
 
   // ============================================================
   // 📅 年表モード（教材モード）
@@ -4479,11 +4584,7 @@
       <div class="tlm-frame">
         <div class="tlm-title">📅 年表モード <span class="tlm-sub">人類史の骨組み × 偉人297人</span></div>
         <div class="tlm-scroll">${sections}</div>
-        <a class="tlm-aff" href="https://px.a8.net/svt/ejp?a8mat=4B1SPX+D3JBW2+36T2+TU14H" rel="noopener sponsored nofollow" target="_blank">
-          <img src="https://www25.a8.net/svt/bgt?aid=260424357792&wid=001&eno=01&mid=s00000014879005011000&mc=1" width="234" height="60" alt="スタディサプリ" loading="lazy">
-          <span class="tlm-aff-tag">📚 体系的に学びたいなら</span>
-        </a>
-        <img border="0" width="1" height="1" src="https://www18.a8.net/0.gif?a8mat=4B1SPX+D3JBW2+36T2+TU14H" alt="" style="position:absolute;opacity:0">
+        <div class="tlm-aff-slot"></div>
       </div>
     `;
     document.body.appendChild(ov);
@@ -4499,6 +4600,8 @@
         setTimeout(() => { ov.remove(); if (typeof window.showPerson === 'function') window.showPerson(id); }, 250);
       });
     });
+    // 文脈: 'timeline'（学習の終わり） — 日替わり1件
+    try { MAGIC.renderAffiliate('timeline', ov.querySelector('.tlm-aff-slot'), 1); } catch {}
   }
   window.openTimelineMode = openTimelineMode;
 
@@ -4562,6 +4665,13 @@
     }
     ov.querySelector('#glsSearch').addEventListener('input', e => render(e.target.value));
     render('');
+    // 用語集の底 → 学習文脈で1枚（日替わり）
+    try {
+      const slot = document.createElement('div');
+      slot.className = 'gls-aff-slot';
+      ov.querySelector('.gls-frame').appendChild(slot);
+      MAGIC.renderAffiliate('learning-end', slot, 1);
+    } catch {}
   }
   window.openGlossary = openGlossary;
 
