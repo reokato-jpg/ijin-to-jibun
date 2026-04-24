@@ -8169,38 +8169,9 @@
       birds.push(bird);
     }
 
-    // 💨 松明の煙（Points、上昇するグレー粒）
+    // 💨 煙は torchLights が populated されてから作る（下で定義）
+    let smoke = null, smokeLife = null, smokeOrigin = null;
     const SMOKE = 150;
-    const smokeGeo = new THREE.BufferGeometry();
-    const smokePos = new Float32Array(SMOKE * 3);
-    const smokeLife = new Float32Array(SMOKE);
-    const smokeOrigin = []; // 各粒の発生元松明インデックス
-    for (let i = 0; i < SMOKE; i++) {
-      const torch = torchLights[i % Math.max(1, torchLights.length)] || { basePos: new THREE.Vector3(0, 10, 0) };
-      smokePos[i*3] = torch.basePos.x;
-      smokePos[i*3+1] = torch.basePos.y + Math.random() * 2;
-      smokePos[i*3+2] = torch.basePos.z;
-      smokeLife[i] = Math.random();
-      smokeOrigin.push(torch.basePos.clone());
-    }
-    smokeGeo.setAttribute('position', new THREE.BufferAttribute(smokePos, 3));
-    const smokeTex = (() => {
-      const c = document.createElement('canvas'); c.width = 64; c.height = 64;
-      const g = c.getContext('2d');
-      const grd = g.createRadialGradient(32, 32, 0, 32, 32, 32);
-      grd.addColorStop(0, 'rgba(120,110,100,0.9)');
-      grd.addColorStop(0.6, 'rgba(80,70,60,0.35)');
-      grd.addColorStop(1, 'rgba(60,50,40,0)');
-      g.fillStyle = grd; g.fillRect(0, 0, 64, 64);
-      return new THREE.CanvasTexture(c);
-    })();
-    const smokeMat = new THREE.PointsMaterial({
-      map: smokeTex, size: 1.2, sizeAttenuation: true,
-      transparent: true, opacity: 0.55, depthWrite: false,
-      blending: THREE.NormalBlending,
-    });
-    const smoke = new THREE.Points(smokeGeo, smokeMat);
-    scene.add(smoke);
 
     // 🌾 遠景の畑・田畑パッチ（ブリューゲル的な田園風景）
     const fieldTex = (() => {
@@ -8312,6 +8283,39 @@
         torchLights.push({ flame, halo, light, basePos: flame.position.clone(), phase: Math.random() * Math.PI * 2 });
       }
     });
+
+    // 💨 松明の煙（torchLights populated 後に初期化）
+    {
+      const smokeGeo = new THREE.BufferGeometry();
+      const smokePos = new Float32Array(SMOKE * 3);
+      smokeLife = new Float32Array(SMOKE);
+      smokeOrigin = [];
+      for (let i = 0; i < SMOKE; i++) {
+        const torch = torchLights[i % Math.max(1, torchLights.length)] || { basePos: new THREE.Vector3(0, 10, 0) };
+        smokePos[i*3] = torch.basePos.x;
+        smokePos[i*3+1] = torch.basePos.y + Math.random() * 2;
+        smokePos[i*3+2] = torch.basePos.z;
+        smokeLife[i] = Math.random();
+        smokeOrigin.push(torch.basePos.clone());
+      }
+      smokeGeo.setAttribute('position', new THREE.BufferAttribute(smokePos, 3));
+      const smokeTex = (() => {
+        const c = document.createElement('canvas'); c.width = 64; c.height = 64;
+        const g = c.getContext('2d');
+        const grd = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+        grd.addColorStop(0, 'rgba(120,110,100,0.9)');
+        grd.addColorStop(0.6, 'rgba(80,70,60,0.35)');
+        grd.addColorStop(1, 'rgba(60,50,40,0)');
+        g.fillStyle = grd; g.fillRect(0, 0, 64, 64);
+        return new THREE.CanvasTexture(c);
+      })();
+      const smokeMat = new THREE.PointsMaterial({
+        map: smokeTex, size: 1.2, sizeAttenuation: true,
+        transparent: true, opacity: 0.55, depthWrite: false,
+      });
+      smoke = new THREE.Points(smokeGeo, smokeMat);
+      scene.add(smoke);
+    }
 
     // 🏗 クレーン（頂上の木造ブーム） — 建設中の象徴
     const craneGroup = new THREE.Group();
@@ -8811,7 +8815,7 @@
         b.scale.y = 0.8 + Math.sin(b.userData.flapPhase) * 0.3;
       });
       // 💨 松明の煙（上昇、ランダムリセット）
-      {
+      if (smoke) {
         const sp = smoke.geometry.attributes.position;
         for (let i = 0; i < SMOKE; i++) {
           smokeLife[i] += 0.008;
