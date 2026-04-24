@@ -6826,6 +6826,82 @@
     scene.add(souls);
     treeGroup.userData.soulMat = soulMat;
 
+    // 🔮 プラズマの魂球（自作 Raymarching + Noise + Fresnel）
+    // 完全手続き、テクスチャ不要、シェーダのみで神秘の光源
+    const orbMat = new THREE.ShaderMaterial({
+      uniforms: {
+        uTime: { value: 0 },
+        uColA: { value: new THREE.Color(0x6020c0) }, // 紫
+        uColB: { value: new THREE.Color(0x40e8ff) }, // 水色
+        uColC: { value: new THREE.Color(0xffc060) }, // 金
+      },
+      vertexShader: `
+        varying vec3 vNormal;
+        varying vec3 vWorld;
+        varying vec3 vView;
+        void main() {
+          vNormal = normalize(normalMatrix * normal);
+          vec4 w = modelMatrix * vec4(position, 1.0);
+          vWorld = w.xyz;
+          vec4 mv = viewMatrix * w;
+          vView = normalize(-mv.xyz);
+          gl_Position = projectionMatrix * mv;
+        }
+      `,
+      fragmentShader: `
+        uniform float uTime;
+        uniform vec3 uColA, uColB, uColC;
+        varying vec3 vNormal;
+        varying vec3 vWorld;
+        varying vec3 vView;
+        // 3D hash + value noise
+        float hash(vec3 p) { return fract(sin(dot(p, vec3(127.1, 311.7, 74.7))) * 43758.5453123); }
+        float noise(vec3 p) {
+          vec3 i = floor(p), f = fract(p);
+          f = f * f * (3.0 - 2.0 * f);
+          float a = hash(i), b = hash(i + vec3(1,0,0));
+          float c = hash(i + vec3(0,1,0)), d = hash(i + vec3(1,1,0));
+          float e = hash(i + vec3(0,0,1)), g = hash(i + vec3(1,0,1));
+          float h = hash(i + vec3(0,1,1)), k = hash(i + vec3(1,1,1));
+          return mix(mix(mix(a,b,f.x), mix(c,d,f.x), f.y),
+                     mix(mix(e,g,f.x), mix(h,k,f.x), f.y), f.z);
+        }
+        // Fractional Brownian Motion: 自然な乱流
+        float fbm(vec3 p) {
+          float v = 0.0, a = 0.5;
+          for (int i = 0; i < 5; i++) { v += a * noise(p); p = p * 2.03 + 1.7; a *= 0.5; }
+          return v;
+        }
+        void main() {
+          // 時間で動く3D座標を noise に渡す
+          vec3 p = normalize(vWorld - vec3(0.0)) * 3.0 + vec3(uTime * 0.25);
+          float n = fbm(p);
+          float n2 = fbm(p * 2.5 - uTime * 0.15);
+          // 3色を noise で混合
+          vec3 col = mix(uColA, uColB, smoothstep(0.3, 0.7, n));
+          col = mix(col, uColC, smoothstep(0.5, 0.9, n2) * 0.6);
+          // Fresnel: 輪郭を光らせる
+          float fres = pow(1.0 - max(0.0, dot(vNormal, vView)), 2.5);
+          col += uColC * fres * 1.5;
+          // 内部の渦
+          col *= 0.7 + 0.8 * n;
+          // 脈動
+          col *= 0.9 + 0.15 * sin(uTime * 1.5);
+          gl_FragColor = vec4(col, 1.0);
+        }
+      `,
+    });
+    const orb = new THREE.Mesh(new THREE.SphereGeometry(0.5, 48, 32), orbMat);
+    orb.position.set(1.8, 5.5, 1.2); // 蛇の頭付近
+    scene.add(orb);
+    // 光源も仕込む（近くを実際に照らす）
+    const orbLight = new THREE.PointLight(0x8040ff, 1.5, 8, 1.8);
+    orbLight.position.copy(orb.position);
+    scene.add(orbLight);
+    treeGroup.userData.orb = orb;
+    treeGroup.userData.orbMat = orbMat;
+    treeGroup.userData.orbLight = orbLight;
+
     // 🍎 リンゴの光輪（発光の後光） — bloomの代わり
     const appleHalos = [];
     // （apples 配列は後で作られるので、その後で halo を追加する pending フラグ）
@@ -7934,6 +8010,16 @@
       sunUniforms.uTime.value = t;
       // ✨ 魂粒子シェーダ時間
       if (treeGroup.userData.soulMat) treeGroup.userData.soulMat.uniforms.uTime.value = t;
+      // 🔮 プラズマ魂球の時間 + 浮遊
+      if (treeGroup.userData.orbMat) {
+        treeGroup.userData.orbMat.uniforms.uTime.value = t;
+        const orb = treeGroup.userData.orb;
+        orb.position.y = 5.5 + Math.sin(t * 0.6) * 0.4;
+        orb.position.x = 1.8 + Math.cos(t * 0.3) * 0.3;
+        orb.rotation.y = t * 0.2;
+        treeGroup.userData.orbLight.position.copy(orb.position);
+        treeGroup.userData.orbLight.intensity = 1.3 + Math.sin(t * 2) * 0.4;
+      }
       // 🌟 God ray: 太陽のスクリーン空間座標を毎フレーム更新
       if (camera.userData.godRayPass) {
         const sv = camera.userData.godRaySunPos.clone().project(camera);
