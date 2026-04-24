@@ -7776,7 +7776,7 @@
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     renderer.setSize(W(), H());
     if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.1;
+    renderer.toneMappingExposure = 0.75;
     if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -7850,10 +7850,10 @@
     scene.fog = new THREE.Fog(0xd4c8a8, 80, 420); // 淡い黄土の大気
 
     // 環境光・主光源
-    scene.add(new THREE.AmbientLight(0xc8c0a0, 0.55));
-    const hemi = new THREE.HemisphereLight(0xe8dcc0, 0x6a5a3a, 0.85);
+    scene.add(new THREE.AmbientLight(0xb0a888, 0.3));
+    const hemi = new THREE.HemisphereLight(0xc8b890, 0x6a5a3a, 0.5);
     scene.add(hemi);
-    const sunLight = new THREE.DirectionalLight(0xffdca0, 1.4);
+    const sunLight = new THREE.DirectionalLight(0xffeac0, 0.9);
     sunLight.position.set(-30, 50, 20);
     sunLight.castShadow = true;
     sunLight.shadow.mapSize.set(1024, 1024);
@@ -8475,7 +8475,7 @@
       composer.addPass(new ADDONS.RenderPass(scene, camera));
       const bloomPass = new ADDONS.UnrealBloomPass(
         new THREE.Vector2(W(), H()),
-        0.28, 0.55, 0.82  // Bruegel忠実: ほぼ写実、ハイライトだけ軽く光る
+        0.14, 0.4, 0.92  // ほぼbloom無し（白飛び完全回避）
       );
       composer.addPass(bloomPass);
       if (ADDONS.ShaderPass) {
