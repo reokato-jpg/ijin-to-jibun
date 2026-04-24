@@ -3913,9 +3913,11 @@
           <text y="${r + 14}" class="magic-ripple-name">${shortName}</text>
         `;
       }
+      // 画像が無い場合：円内にイニシャルだけ、名前は下に1回だけ表示
+      const initial = shortName.charAt(0);
       return `
-        <circle r="${r}"></circle>
-        <text y="4">${shortName}</text>
+        <circle r="${r}" class="magic-ripple-node-circle"></circle>
+        <text y="5" class="magic-ripple-initial">${initial}</text>
         <text y="${r + 14}" class="magic-ripple-name">${shortName}</text>
       `;
     };
@@ -3937,9 +3939,18 @@
       </g>`;
     }).join('');
 
+    // 推し状態を取得（app.jsのgetOshi/setOshiはグローバル関数）
+    const getOshiFn = (typeof window.getOshi === 'function') ? window.getOshi : (typeof getOshi === 'function' ? getOshi : null);
+    const setOshiFn = (typeof window.setOshi === 'function') ? window.setOshi : (typeof setOshi === 'function' ? setOshi : null);
+    const isOshi = getOshiFn ? getOshiFn() === person.id : false;
     ov.innerHTML = `
+      <div class="magic-ripple-header">
+        <div class="magic-ripple-title">🪞 ${person.name}の影響の波紋</div>
+        <button class="magic-ripple-oshi ${isOshi ? 'active' : ''}" data-ripple-oshi="${person.id}">
+          ${isOshi ? '♥ 推し中' : '♡ 推しにする'}
+        </button>
+      </div>
       <button class="magic-ripple-close" aria-label="閉じる">×</button>
-      <div class="magic-ripple-title">🪞 ${person.name}の影響の波紋</div>
       <svg class="magic-ripple-svg" viewBox="0 0 ${VW} ${VH}" preserveAspectRatio="xMidYMid meet">
         <circle class="magic-ripple-ring" cx="${CX}" cy="${CY}" r="${R1}"></circle>
         <circle class="magic-ripple-ring" cx="${CX}" cy="${CY}" r="${R2}"></circle>
@@ -3952,9 +3963,9 @@
             <clipPath id="ripclip-center"><circle r="34"/></clipPath>
             <image href="${person.imageUrl}" x="-34" y="-34" width="68" height="68" preserveAspectRatio="xMidYMid slice" clip-path="url(#ripclip-center)"/>
           ` : `
-            <text y="5" style="fill:#5c1f2a; font-family:'Shippori Mincho',serif; font-size:12px; font-weight:800; text-anchor:middle">${person.name.split(/[・\s]/)[0]}</text>
+            <text y="5" style="fill:#5c1f2a; font-family:'Shippori Mincho',serif; font-size:13px; font-weight:800; text-anchor:middle">${person.name.charAt(0)}</text>
           `}
-          <text y="54" style="fill:#ead296; font-family:'Shippori Mincho',serif; font-size:11px; font-weight:700; text-anchor:middle">${person.name.split(/[・\s]/)[0]}</text>
+          <text y="${person.imageUrl ? 64 : 58}" style="fill:#ead296; font-family:'Shippori Mincho',serif; font-size:12px; font-weight:700; text-anchor:middle">${person.name.split(/[・\s]/)[0]}</text>
         </g>
       </svg>
     `;
@@ -3964,6 +3975,24 @@
       ov.classList.remove('open');
       setTimeout(() => ov.remove(), 350);
     });
+    // 推しトグル
+    const oshiBtn = ov.querySelector('.magic-ripple-oshi');
+    if (oshiBtn && setOshiFn) {
+      oshiBtn.addEventListener('click', () => {
+        const isCurrentlyOshi = getOshiFn && getOshiFn() === person.id;
+        if (isCurrentlyOshi) {
+          setOshiFn(null);
+          oshiBtn.classList.remove('active');
+          oshiBtn.textContent = '♡ 推しにする';
+        } else {
+          setOshiFn(person.id);
+          oshiBtn.classList.add('active');
+          oshiBtn.textContent = '♥ 推し中';
+        }
+      });
+    } else if (oshiBtn) {
+      oshiBtn.style.display = 'none';
+    }
     ov.querySelectorAll('.magic-ripple-node').forEach(g => {
       g.addEventListener('click', () => {
         const id = g.dataset.id;
