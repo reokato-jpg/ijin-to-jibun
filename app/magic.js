@@ -6004,6 +6004,9 @@
     }
     const scene = new THREE.Scene();
 
+    // 先行定義：composer内でも使うため
+    const SUN_POS = new THREE.Vector3(22, 28, -42);
+
     // 🌟 ポストプロセス：公式 EffectComposer + UnrealBloomPass（利用可能なら）
     let composer = null;
     const usePro = ADDONS.EffectComposer && ADDONS.RenderPass && ADDONS.UnrealBloomPass;
@@ -6038,14 +6041,25 @@
     let edenOutlinePass = null;
     if (usePro) try {
       composer = new ADDONS.EffectComposer(renderer);
-      composer.addPass(new ADDONS.RenderPass(scene, camera));
-      // 🕳 SSAOPass: 環境光遮蔽（隙間に自然な影、地面・葉の根元が沈む）
-      if (ADDONS.SSAOPass) {
+      // TAARenderPass（利用可能なら）: 時間方向に積算して超滑らかに
+      if (ADDONS.TAARenderPass) {
+        const taa = new ADDONS.TAARenderPass(scene, camera);
+        taa.sampleLevel = 2; // 4サンプル積算
+        taa.unbiased = false;
+        composer.addPass(taa);
+      } else {
+        composer.addPass(new ADDONS.RenderPass(scene, camera));
+      }
+      // 🕳 GTAOPass（r152+、旧SSAOより高品質）。失敗したらSSAOPassにフォールバック
+      if (ADDONS.GTAOPass) {
+        try {
+          const gtao = new ADDONS.GTAOPass(scene, camera, W, H);
+          gtao.output = ADDONS.GTAOPass.OUTPUT.Default;
+          composer.addPass(gtao);
+        } catch (e) { console.warn('GTAO', e); }
+      } else if (ADDONS.SSAOPass) {
         const ssao = new ADDONS.SSAOPass(scene, camera, W, H);
-        ssao.kernelRadius = 0.6;        // サンプル半径（小さめ=ディテール重視）
-        ssao.minDistance = 0.001;
-        ssao.maxDistance = 0.1;
-        ssao.output = ADDONS.SSAOPass.OUTPUT.Default; // 通常合成
+        ssao.kernelRadius = 0.6; ssao.minDistance = 0.001; ssao.maxDistance = 0.1;
         composer.addPass(ssao);
       }
       const bloomPass = new ADDONS.UnrealBloomPass(
@@ -6248,7 +6262,7 @@
     // フォグ（Sky利用時も浮遊感のために薄め）
     scene.fog = new THREE.FogExp2(0xe8d8c8, 0.008); // 指数フォグ：浮島の気球感
     // ☀️ 太陽 — 宇宙モードと同格のシェーダベース（プラズマ + 彩層 + 多層コロナ + 輝き）
-    const SUN_POS = new THREE.Vector3(22, 28, -42);
+    // SUN_POS は先頭で宣言済み
     const SUN_R = 4.5;
     const sunUniforms = { uTime: { value: 0 } };
     // プラズマ本体 — 手続きノイズで表面が流れる
@@ -6838,7 +6852,7 @@
     });
     const souls = new THREE.Points(soulGeo, soulMat);
     scene.add(souls);
-    treeGroup.userData.soulMat = soulMat;
+    scene.userData.soulMat = soulMat; // treeGroup はまだ未定義なので scene に保管
 
     // 🔮 プラズマの魂球（自作 Raymarching + Noise + Fresnel）
     // 完全手続き、テクスチャ不要、シェーダのみで神秘の光源
@@ -6912,9 +6926,9 @@
     const orbLight = new THREE.PointLight(0x8040ff, 1.5, 8, 1.8);
     orbLight.position.copy(orb.position);
     scene.add(orbLight);
-    treeGroup.userData.orb = orb;
-    treeGroup.userData.orbMat = orbMat;
-    treeGroup.userData.orbLight = orbLight;
+    scene.userData.orb = orb;
+    scene.userData.orbMat = orbMat;
+    scene.userData.orbLight = orbLight;
 
     // 🍎 リンゴの光輪（発光の後光） — bloomの代わり
     const appleHalos = [];
@@ -7787,10 +7801,17 @@
       const base = 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r159/examples/models/gltf/';
       // フラミンゴ（飛行アニメ）— SkeletonUtils.clone で5羽の群れ
       gltfLoader.load(base + 'Flamingo.glb', (gltf) => {
-        const cloneFn = ADDONS.SkeletonUtils ? ADDONS.SkeletonUtils.clone : (o) => o.clone(true);
+        const cloneFn = (ADDONS.SkeletonUtils && ADDONS.SkeletonUtils.clone)
+          ? ADDONS.SkeletonUtils.clone
+          : (ADDONS.clone || ((o) => o.clone(true)));
+        // glTFの構造に柔軟に対応：SkinnedMesh を探すか、scene.children[0] を使う
+        let source = null;
+        gltf.scene.traverse(o => { if (o.isSkinnedMesh && !source) source = o; });
+        if (!source) source = gltf.scene.children[0] || gltf.scene;
+        if (!source) return;
         const FLOCK = 5;
         for (let k = 0; k < FLOCK; k++) {
-          const bird = cloneFn(gltf.scene.children[0]);
+          const bird = cloneFn(source);
           bird.scale.set(0.015, 0.015, 0.015);
           const orbit = 7 + k * 0.8;
           const angle = (k / FLOCK) * Math.PI * 2;
@@ -7805,7 +7826,10 @@
       }, undefined, (e) => console.warn('flamingo', e));
       // パロット（枝に止まる）
       gltfLoader.load(base + 'Parrot.glb', (gltf) => {
-        const parrot = gltf.scene.children[0];
+        let parrot = null;
+        gltf.scene.traverse(o => { if (o.isSkinnedMesh && !parrot) parrot = o; });
+        if (!parrot) parrot = gltf.scene.children[0] || gltf.scene;
+        if (!parrot) return;
         parrot.scale.set(0.02, 0.02, 0.02);
         parrot.position.set(-5, 8, 2);
         parrot.traverse(o => { if (o.isMesh) o.castShadow = true; });
@@ -7816,7 +7840,10 @@
       }, undefined, (e) => console.warn('parrot', e));
       // 馬（地上を走る）
       gltfLoader.load(base + 'Horse.glb', (gltf) => {
-        const horse = gltf.scene.children[0];
+        let horse = null;
+        gltf.scene.traverse(o => { if (o.isSkinnedMesh && !horse) horse = o; });
+        if (!horse) horse = gltf.scene.children[0] || gltf.scene;
+        if (!horse) return;
         horse.scale.set(0.015, 0.015, 0.015);
         horse.position.set(-6, 0, 5);
         horse.rotation.y = 0.5;
@@ -8028,16 +8055,16 @@
       // 太陽シェーダのアニメ
       sunUniforms.uTime.value = t;
       // ✨ 魂粒子シェーダ時間
-      if (treeGroup.userData.soulMat) treeGroup.userData.soulMat.uniforms.uTime.value = t;
+      if (scene.userData.soulMat) scene.userData.soulMat.uniforms.uTime.value = t;
       // 🔮 プラズマ魂球の時間 + 浮遊
-      if (treeGroup.userData.orbMat) {
-        treeGroup.userData.orbMat.uniforms.uTime.value = t;
-        const orb = treeGroup.userData.orb;
+      if (scene.userData.orbMat) {
+        scene.userData.orbMat.uniforms.uTime.value = t;
+        const orb = scene.userData.orb;
         orb.position.y = 5.5 + Math.sin(t * 0.6) * 0.4;
         orb.position.x = 1.8 + Math.cos(t * 0.3) * 0.3;
         orb.rotation.y = t * 0.2;
-        treeGroup.userData.orbLight.position.copy(orb.position);
-        treeGroup.userData.orbLight.intensity = 1.3 + Math.sin(t * 2) * 0.4;
+        scene.userData.orbLight.position.copy(orb.position);
+        scene.userData.orbLight.intensity = 1.3 + Math.sin(t * 2) * 0.4;
       }
       // 🌟 God ray: 太陽のスクリーン空間座標を毎フレーム更新
       if (camera.userData.godRayPass) {
