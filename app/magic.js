@@ -4825,7 +4825,7 @@
           img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Michelangelo_-_Creation_of_Adam_(cropped).jpg?width=700',
           caption: 'Michelangelo《アダムの創造》（1512）',
           body: '第一日に光を。第二日に空を。第三日に海と陸を。第四日に太陽と月と星を。第五日に魚と鳥を。第六日に獣と — そして、神は言われた。\n\n「われわれの像に人を造ろう」\n土の塵からアダムが形作られ、その鼻に命の息が吹き入れられた。' },
-        { t: '4. エデンの園',
+        { t: '4. エデンの園', scene3D: 'eden',
           svgArt: `<svg class="myth-svg" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <linearGradient id="edenSky" x1="0" x2="0" y1="0" y2="1">
@@ -5697,9 +5697,14 @@
       if (c.svgArt) {
         artHTML = `<figure class="tale-art">${c.svgArt}${c.caption ? `<figcaption>${c.caption}　<span class="tale-pd">Original SVG</span></figcaption>` : ''}</figure>`;
       } else if (c.img) {
-        artHTML = `<figure class="tale-art"><img src="${c.img}" alt="${c.caption || c.t}" loading="lazy" onerror="this.parentNode.style.display='none'"/>${c.caption ? `<figcaption>${c.caption}　<span class="tale-pd">Public Domain</span></figcaption>` : ''}</figure>`;
+        artHTML = `<figure class="tale-art"><img src="${c.img}" alt="${c.caption || c.t}" loading="lazy" onerror="this.closest('figure').classList.add('tale-art-fail')"/>${c.caption ? `<figcaption>${c.caption}　<span class="tale-pd">Public Domain</span></figcaption>` : ''}</figure>`;
       }
-      const bodyHTML = artHTML + '<div class="tale-chapter-text">' + c.body.replace(/\n/g, '<br>') + '</div>';
+      // 🎨 アクションボタン群
+      const actions = [];
+      if (c.scene3D === 'eden') actions.push(`<button class="tale-action tale-action-3d" data-act="eden3d">🌳 3Dで庭園に入る</button>`);
+      if (c.img) actions.push(`<button class="tale-action tale-action-gallery" data-act="museum" data-src="${c.img}" data-caption="${c.caption || ''}">🖼 美術館で見る</button>`);
+      const actionHTML = actions.length ? `<div class="tale-actions">${actions.join('')}</div>` : '';
+      const bodyHTML = artHTML + actionHTML + '<div class="tale-chapter-text">' + c.body.replace(/\n/g, '<br>') + '</div>';
       ov.querySelector('#taleChapterBody').innerHTML = bodyHTML;
       ov.querySelector('#taleChapterTitle').classList.remove('fade-in');
       ov.querySelector('#taleChapterBody').classList.remove('fade-in');
@@ -5708,6 +5713,13 @@
       ov.querySelector('#taleChapterBody').classList.add('fade-in');
       ov.querySelector('#talePrev').disabled = curIdx === 0;
       ov.querySelector('#taleNext').textContent = curIdx === s.chapters.length - 1 ? '終わり ★' : '次 ▶';
+      // アクションボタン配線
+      ov.querySelectorAll('.tale-action').forEach(b => {
+        b.addEventListener('click', () => {
+          if (b.dataset.act === 'eden3d') openEden3D();
+          else if (b.dataset.act === 'museum') openMuseum(b.dataset.src, b.dataset.caption);
+        });
+      });
     }
     ov.querySelectorAll('.tale-cover').forEach(b => {
       b.addEventListener('click', () => openTale(b.dataset.tale));
@@ -5735,6 +5747,387 @@
     home.classList.add('show');
   }
   window.openMythology = openMythology;
+
+  // ============================================================
+  // 🌳 3Dエデンの園（Three.jsで没入型シーン）
+  // ============================================================
+  async function openEden3D() {
+    if (!window.THREE) return;
+    const THREE = window.THREE;
+    const ov = document.createElement('div');
+    ov.className = 'eden3d-overlay';
+    ov.innerHTML = `
+      <button class="eden3d-close" aria-label="閉じる">×</button>
+      <div class="eden3d-stage" id="eden3dStage"></div>
+      <div class="eden3d-hint">ドラッグで視点を回す　／　ピンチでズーム</div>
+      <div class="eden3d-title">エデンの園</div>
+    `;
+    document.body.appendChild(ov);
+    requestAnimationFrame(() => ov.classList.add('open'));
+    let running = true;
+    ov.querySelector('.eden3d-close').addEventListener('click', () => {
+      running = false;
+      ov.classList.remove('open');
+      setTimeout(() => ov.remove(), 400);
+    });
+
+    const stage = ov.querySelector('#eden3dStage');
+    const W = stage.clientWidth || window.innerWidth;
+    const H = stage.clientHeight || window.innerHeight;
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+    renderer.setSize(W, H);
+    if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    stage.appendChild(renderer.domElement);
+    renderer.domElement.style.touchAction = 'none';
+
+    const scene = new THREE.Scene();
+    // 空のグラデ（半球光）
+    scene.background = new THREE.Color(0x6a4030);
+    const hemi = new THREE.HemisphereLight(0xfff0c0, 0x3a5a28, 1.0);
+    scene.add(hemi);
+    const sunLight = new THREE.DirectionalLight(0xffe8a8, 1.3);
+    sunLight.position.set(8, 12, 6);
+    scene.add(sunLight);
+    scene.add(new THREE.AmbientLight(0x402020, 0.3));
+
+    const camera = new THREE.PerspectiveCamera(55, W/H, 0.1, 500);
+    camera.position.set(0, 2.8, 10);
+    camera.lookAt(0, 1.5, 0);
+
+    // 空のドーム（大きな球を内側から見る）
+    const skyTex = (() => {
+      const sc = document.createElement('canvas'); sc.width = 1024; sc.height = 512;
+      const g = sc.getContext('2d');
+      const grd = g.createLinearGradient(0, 0, 0, 512);
+      grd.addColorStop(0, '#3a1a4a');   // 紫夕空
+      grd.addColorStop(0.4, '#c0603a'); // オレンジ
+      grd.addColorStop(0.7, '#f0a060'); // 金
+      grd.addColorStop(1, '#ffe0a0');   // 地平
+      g.fillStyle = grd; g.fillRect(0, 0, 1024, 512);
+      // 雲
+      g.globalCompositeOperation = 'lighter';
+      for (let i = 0; i < 20; i++) {
+        const x = Math.random() * 1024, y = 50 + Math.random() * 250;
+        const w = 40 + Math.random() * 120;
+        const grd2 = g.createRadialGradient(x, y, 0, x, y, w);
+        grd2.addColorStop(0, 'rgba(255,230,180,0.4)');
+        grd2.addColorStop(1, 'rgba(255,230,180,0)');
+        g.fillStyle = grd2;
+        g.beginPath(); g.ellipse(x, y, w, w * 0.3, 0, 0, Math.PI*2); g.fill();
+      }
+      return new THREE.CanvasTexture(sc);
+    })();
+    const sky = new THREE.Mesh(
+      new THREE.SphereGeometry(90, 32, 16),
+      new THREE.MeshBasicMaterial({ map: skyTex, side: THREE.BackSide })
+    );
+    scene.add(sky);
+    // 太陽本体
+    const sunMesh = new THREE.Mesh(
+      new THREE.SphereGeometry(2.5, 24, 16),
+      new THREE.MeshBasicMaterial({ color: 0xfff0b0 })
+    );
+    sunMesh.position.set(35, 22, -40);
+    scene.add(sunMesh);
+
+    // 地面
+    const groundTex = (() => {
+      const sc = document.createElement('canvas'); sc.width = 512; sc.height = 512;
+      const g = sc.getContext('2d');
+      g.fillStyle = '#3a6028'; g.fillRect(0, 0, 512, 512);
+      for (let i = 0; i < 1200; i++) {
+        const c = Math.random() < 0.5 ? '#4a7030' : '#2a5018';
+        g.fillStyle = c;
+        g.fillRect(Math.random()*512, Math.random()*512, 1 + Math.random()*2, 1 + Math.random()*3);
+      }
+      // 小さな花
+      for (let i = 0; i < 40; i++) {
+        const colors = ['#ff6080', '#ffd070', '#ffffff', '#d080ff'];
+        g.fillStyle = colors[i % 4];
+        const x = Math.random()*512, y = Math.random()*512;
+        g.beginPath(); g.arc(x, y, 2, 0, Math.PI*2); g.fill();
+      }
+      const t = new THREE.CanvasTexture(sc);
+      t.wrapS = t.wrapT = THREE.RepeatWrapping;
+      t.repeat.set(20, 20);
+      return t;
+    })();
+    const ground = new THREE.Mesh(
+      new THREE.CircleGeometry(80, 48),
+      new THREE.MeshStandardMaterial({ map: groundTex, roughness: 0.95 })
+    );
+    ground.rotation.x = -Math.PI / 2;
+    scene.add(ground);
+    // 小径（石）
+    for (let i = 0; i < 25; i++) {
+      const r = 3 + i * 0.8;
+      const a = i * 0.4;
+      const stone = new THREE.Mesh(
+        new THREE.SphereGeometry(0.2, 8, 6),
+        new THREE.MeshStandardMaterial({ color: 0x8a6a4a, roughness: 0.9 })
+      );
+      stone.position.set(Math.cos(a) * r, 0.02, Math.sin(a) * r);
+      stone.scale.y = 0.4;
+      scene.add(stone);
+    }
+
+    // 🌳 生命の樹（中央）
+    const treeGroup = new THREE.Group();
+    // 幹（カスタム曲線 → TubeGeometry で有機的に）
+    const trunkCurve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(0, 0, 0),
+      new THREE.Vector3(0.15, 0.8, 0.05),
+      new THREE.Vector3(-0.1, 1.8, -0.1),
+      new THREE.Vector3(0.2, 2.8, 0.15),
+      new THREE.Vector3(0, 3.8, 0),
+    ]);
+    const trunk = new THREE.Mesh(
+      new THREE.TubeGeometry(trunkCurve, 20, 0.35, 10, false),
+      new THREE.MeshStandardMaterial({ color: 0x5a3820, roughness: 0.85 })
+    );
+    // 下ほど太く（scale修正は難しいのでそのまま）
+    treeGroup.add(trunk);
+    // 枝（複数の分岐）
+    const branchCurves = [
+      new THREE.CatmullRomCurve3([new THREE.Vector3(0, 2.8, 0), new THREE.Vector3(0.8, 3.2, 0.3), new THREE.Vector3(1.6, 3.5, 0.8)]),
+      new THREE.CatmullRomCurve3([new THREE.Vector3(0, 2.9, 0), new THREE.Vector3(-0.7, 3.3, 0.2), new THREE.Vector3(-1.5, 3.4, -0.6)]),
+      new THREE.CatmullRomCurve3([new THREE.Vector3(0, 3.2, 0), new THREE.Vector3(0.4, 3.6, -0.6), new THREE.Vector3(0.8, 3.9, -1.4)]),
+      new THREE.CatmullRomCurve3([new THREE.Vector3(0, 3.4, 0), new THREE.Vector3(-0.4, 3.9, 0.3), new THREE.Vector3(-1.0, 4.1, 1.0)]),
+      new THREE.CatmullRomCurve3([new THREE.Vector3(0, 3.7, 0), new THREE.Vector3(0.2, 4.1, 0.2), new THREE.Vector3(0.5, 4.4, 0.5)]),
+    ];
+    branchCurves.forEach(curve => {
+      const br = new THREE.Mesh(
+        new THREE.TubeGeometry(curve, 16, 0.08, 8, false),
+        new THREE.MeshStandardMaterial({ color: 0x4a2810, roughness: 0.85 })
+      );
+      treeGroup.add(br);
+    });
+    // 葉の群れ（たくさんの小さな緑球）
+    for (let i = 0; i < 90; i++) {
+      const r = 1.6 + Math.random() * 1.2;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2 * Math.random() - 1) * 0.7 + 0.2;
+      const lx = Math.cos(theta) * Math.sin(phi) * r;
+      const lz = Math.sin(theta) * Math.sin(phi) * r;
+      const ly = 3.4 + Math.cos(phi) * r * 0.8;
+      const leaf = new THREE.Mesh(
+        new THREE.SphereGeometry(0.25 + Math.random() * 0.2, 10, 8),
+        new THREE.MeshStandardMaterial({
+          color: new THREE.Color().setHSL(0.28 + Math.random() * 0.08, 0.55, 0.3 + Math.random() * 0.15),
+          roughness: 0.8,
+        })
+      );
+      leaf.position.set(lx, ly, lz);
+      leaf.userData.basePos = leaf.position.clone();
+      leaf.userData.phase = Math.random() * Math.PI * 2;
+      treeGroup.add(leaf);
+    }
+    // 🍎 禁断のリンゴ
+    const apples = [];
+    for (let i = 0; i < 6; i++) {
+      const theta = (i / 6) * Math.PI * 2 + Math.random() * 0.5;
+      const r = 1.5 + Math.random() * 1.0;
+      const apple = new THREE.Mesh(
+        new THREE.SphereGeometry(0.13, 12, 10),
+        new THREE.MeshStandardMaterial({
+          color: 0xc01020, roughness: 0.3, metalness: 0.3,
+          emissive: 0x4a0410, emissiveIntensity: 0.25,
+        })
+      );
+      apple.position.set(Math.cos(theta) * r, 3.5 + Math.random() * 0.6, Math.sin(theta) * r);
+      apple.userData.basePos = apple.position.clone();
+      apple.userData.phase = Math.random() * Math.PI * 2;
+      apples.push(apple);
+      treeGroup.add(apple);
+    }
+    // 🐍 蛇（幹に巻き付く螺旋）
+    const serpentCurve = new THREE.CatmullRomCurve3(
+      Array.from({length: 40}).map((_, i) => {
+        const t = i / 39;
+        const y = 0.3 + t * 3.2;
+        const a = t * Math.PI * 4;
+        const r = 0.42 + Math.sin(t * 10) * 0.03;
+        return new THREE.Vector3(Math.cos(a) * r, y, Math.sin(a) * r);
+      })
+    );
+    const serpent = new THREE.Mesh(
+      new THREE.TubeGeometry(serpentCurve, 60, 0.08, 8, false),
+      new THREE.MeshStandardMaterial({ color: 0x6a9030, roughness: 0.5, emissive: 0x1a2a0a, emissiveIntensity: 0.3 })
+    );
+    treeGroup.add(serpent);
+    // 蛇の頭（最上部に小さな球）
+    const snakeHead = new THREE.Mesh(
+      new THREE.SphereGeometry(0.12, 12, 10),
+      new THREE.MeshStandardMaterial({ color: 0x6a9030, emissive: 0x1a2a0a, emissiveIntensity: 0.3 })
+    );
+    const lastPt = serpentCurve.getPoint(0.98);
+    snakeHead.position.copy(lastPt);
+    treeGroup.add(snakeHead);
+    // 蛇の赤い目
+    const eye1 = new THREE.Mesh(new THREE.SphereGeometry(0.02, 8, 6), new THREE.MeshBasicMaterial({ color: 0xff3030 }));
+    eye1.position.copy(lastPt); eye1.position.x += 0.08; eye1.position.y += 0.05;
+    treeGroup.add(eye1);
+    scene.add(treeGroup);
+
+    // 周辺の小さな木々
+    for (let i = 0; i < 8; i++) {
+      const a = (i / 8) * Math.PI * 2 + 0.3;
+      const r = 12 + Math.random() * 8;
+      const tg = new THREE.Group();
+      const tr = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.3, 0.4, 2.5, 8),
+        new THREE.MeshStandardMaterial({ color: 0x5a3820, roughness: 0.85 })
+      );
+      tr.position.y = 1.25;
+      tg.add(tr);
+      const cloud = new THREE.Mesh(
+        new THREE.SphereGeometry(1.3, 14, 10),
+        new THREE.MeshStandardMaterial({ color: 0x3a6a28, roughness: 0.85 })
+      );
+      cloud.position.y = 3.2;
+      tg.add(cloud);
+      tg.position.set(Math.cos(a) * r, 0, Math.sin(a) * r);
+      scene.add(tg);
+    }
+
+    // 🌺 バラ（小さな赤い点）
+    for (let i = 0; i < 20; i++) {
+      const a = Math.random() * Math.PI * 2;
+      const r = 2 + Math.random() * 5;
+      const stem = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.015, 0.02, 0.3, 6),
+        new THREE.MeshStandardMaterial({ color: 0x3a6a4a })
+      );
+      stem.position.set(Math.cos(a) * r, 0.15, Math.sin(a) * r);
+      scene.add(stem);
+      const flower = new THREE.Mesh(
+        new THREE.SphereGeometry(0.06, 8, 6),
+        new THREE.MeshStandardMaterial({ color: 0xff3060, roughness: 0.4, emissive: 0x4a0810, emissiveIntensity: 0.3 })
+      );
+      flower.position.copy(stem.position); flower.position.y = 0.32;
+      scene.add(flower);
+    }
+
+    // 蝶（ドット群で飛ぶ）
+    const butterflies = [];
+    for (let i = 0; i < 5; i++) {
+      const bf = new THREE.Mesh(
+        new THREE.SphereGeometry(0.08, 6, 6),
+        new THREE.MeshBasicMaterial({ color: i % 2 === 0 ? 0xffd070 : 0xff80c0 })
+      );
+      bf.position.set((Math.random() - 0.5) * 12, 1.5 + Math.random() * 2, (Math.random() - 0.5) * 12);
+      bf.userData.phase = Math.random() * Math.PI * 2;
+      scene.add(bf);
+      butterflies.push(bf);
+    }
+
+    // 操作: ドラッグで視点を回す
+    let dragging = false, lastX = 0, lastY = 0;
+    let camAngle = 0, camTilt = 0, camDist = 10;
+    renderer.domElement.addEventListener('pointerdown', e => { dragging = true; lastX = e.clientX; lastY = e.clientY; });
+    renderer.domElement.addEventListener('pointermove', e => {
+      if (!dragging) return;
+      camAngle -= (e.clientX - lastX) * 0.008;
+      camTilt = Math.max(-0.3, Math.min(0.8, camTilt + (e.clientY - lastY) * 0.005));
+      lastX = e.clientX; lastY = e.clientY;
+    });
+    renderer.domElement.addEventListener('pointerup', () => dragging = false);
+    renderer.domElement.addEventListener('pointerleave', () => dragging = false);
+    renderer.domElement.addEventListener('wheel', e => {
+      e.preventDefault();
+      camDist = Math.max(4, Math.min(30, camDist + e.deltaY * 0.01));
+    }, { passive: false });
+    // ピンチ
+    let pinchBase = 0, pinchBaseDist = 10;
+    renderer.domElement.addEventListener('touchstart', e => {
+      if (e.touches.length === 2) {
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        pinchBase = Math.hypot(dx, dy);
+        pinchBaseDist = camDist;
+      }
+    });
+    renderer.domElement.addEventListener('touchmove', e => {
+      if (e.touches.length === 2 && pinchBase > 0) {
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        const d = Math.hypot(dx, dy);
+        camDist = Math.max(4, Math.min(30, pinchBaseDist * pinchBase / d));
+      }
+    });
+
+    let t = 0;
+    function animate() {
+      if (!running) return;
+      t += 0.016;
+      // ドラッグ無い時はゆっくり自動旋回
+      if (!dragging) camAngle += 0.002;
+      camera.position.x = Math.cos(camAngle) * camDist;
+      camera.position.z = Math.sin(camAngle) * camDist;
+      camera.position.y = 3 + camTilt * 5;
+      camera.lookAt(0, 2.2, 0);
+      // 葉のそよぎ
+      treeGroup.children.forEach(c => {
+        if (c.userData.basePos) {
+          c.userData.phase += 0.03;
+          c.position.x = c.userData.basePos.x + Math.sin(c.userData.phase) * 0.04;
+          c.position.y = c.userData.basePos.y + Math.cos(c.userData.phase * 0.7) * 0.03;
+        }
+      });
+      // 蝶の浮遊
+      butterflies.forEach(bf => {
+        bf.userData.phase += 0.05;
+        bf.position.y += Math.sin(bf.userData.phase) * 0.01;
+        bf.position.x += Math.cos(bf.userData.phase * 0.6) * 0.02;
+      });
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      const w = stage.clientWidth || window.innerWidth;
+      const h = stage.clientHeight || window.innerHeight;
+      renderer.setSize(w, h);
+      camera.aspect = w/h;
+      camera.updateProjectionMatrix();
+    });
+  }
+  window.openEden3D = openEden3D;
+
+  // ============================================================
+  // 🖼 美術館モード（タップした絵画を3D展示室で大画面で見る）
+  // ============================================================
+  function openMuseum(imgUrl, caption) {
+    if (!imgUrl) return;
+    const ov = document.createElement('div');
+    ov.className = 'museum-overlay';
+    ov.innerHTML = `
+      <button class="museum-close" aria-label="閉じる">×</button>
+      <div class="museum-hall">
+        <div class="museum-wall">
+          <div class="museum-spotlight"></div>
+          <div class="museum-frame">
+            <img src="${imgUrl}" alt="${caption || ''}" />
+          </div>
+          <div class="museum-plaque">${caption || ''}</div>
+        </div>
+        <div class="museum-floor"></div>
+      </div>
+      <div class="museum-hint">— 作品をじっくり鑑賞する —</div>
+    `;
+    document.body.appendChild(ov);
+    requestAnimationFrame(() => ov.classList.add('open'));
+    ov.querySelector('.museum-close').addEventListener('click', () => {
+      ov.classList.remove('open');
+      setTimeout(() => ov.remove(), 400);
+    });
+    ov.addEventListener('click', e => {
+      if (e.target === ov) { ov.classList.remove('open'); setTimeout(() => ov.remove(), 400); }
+    });
+  }
+  window.openMuseum = openMuseum;
 
 
   // ============================================================

@@ -6338,3 +6338,195 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   box-shadow: 0 4px 12px rgba(0,0,0,0.5);
 }
 .cosmos-info-cta:hover { filter: brightness(1.15); }
+
+/* ===== Tale action buttons (3D / Museum) ===== */
+.tale-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 18px 0 8px;
+  justify-content: center;
+}
+.tale-action {
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(200,180,240,0.5);
+  background: linear-gradient(135deg, rgba(70,50,120,0.85), rgba(40,25,80,0.85));
+  color: #f4ecff;
+  font-family: 'Shippori Mincho', serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: transform .18s, box-shadow .18s, filter .18s;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.4);
+}
+.tale-action:hover { transform: translateY(-2px); filter: brightness(1.2); box-shadow: 0 6px 16px rgba(150,120,220,0.5); }
+.tale-action-3d { background: linear-gradient(135deg, #2d6b3a, #1a4525); border-color: rgba(150,220,170,0.6); }
+.tale-action-gallery { background: linear-gradient(135deg, #7a5a2d, #4a3515); border-color: rgba(220,190,130,0.6); }
+
+.tale-art-fail { display: none; }
+
+/* ===== 3D Eden overlay ===== */
+.eden3d-overlay {
+  position: fixed; inset: 0;
+  background: #0a0612;
+  z-index: 10000;
+  display: flex; align-items: center; justify-content: center;
+  animation: eden3dFade .5s ease-out;
+}
+@keyframes eden3dFade { from { opacity: 0; } to { opacity: 1; } }
+.eden3d-stage {
+  position: absolute; inset: 0;
+  cursor: grab;
+}
+.eden3d-stage:active { cursor: grabbing; }
+.eden3d-stage canvas { display: block; width: 100% !important; height: 100% !important; }
+.eden3d-close {
+  position: absolute; top: 16px; right: 16px;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: rgba(10,5,20,0.7);
+  border: 1px solid rgba(200,180,240,0.5);
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 10;
+  backdrop-filter: blur(8px);
+}
+.eden3d-title {
+  position: absolute; top: 24px; left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Shippori Mincho', serif;
+  font-size: 22px;
+  color: #f8f0d8;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.8), 0 0 30px rgba(255,220,140,0.4);
+  letter-spacing: 0.15em;
+  pointer-events: none;
+}
+.eden3d-hint {
+  position: absolute; bottom: 20px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  color: rgba(255,255,255,0.6);
+  background: rgba(0,0,0,0.4);
+  padding: 6px 14px;
+  border-radius: 999px;
+  pointer-events: none;
+  backdrop-filter: blur(6px);
+}
+
+/* ===== Museum overlay ===== */
+.museum-overlay {
+  position: fixed; inset: 0;
+  z-index: 10000;
+  background: radial-gradient(ellipse at center top, #3a2e24 0%, #1a130d 70%, #0a0705 100%);
+  display: flex; align-items: center; justify-content: center;
+  animation: museumFade .5s ease-out;
+  overflow: hidden;
+}
+@keyframes museumFade { from { opacity: 0; } to { opacity: 1; } }
+.museum-hall {
+  position: relative;
+  width: min(90vw, 900px);
+  height: min(90vh, 720px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 40px;
+}
+.museum-wall {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  background:
+    linear-gradient(180deg, rgba(90,70,55,0.25) 0%, rgba(50,38,28,0.15) 100%),
+    repeating-linear-gradient(90deg, rgba(255,240,210,0.02) 0 40px, transparent 40px 80px);
+  border-radius: 6px 6px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.museum-spotlight {
+  position: absolute; top: -40px; left: 50%;
+  transform: translateX(-50%);
+  width: 120%;
+  height: 120%;
+  background: radial-gradient(ellipse at 50% 0%, rgba(255,230,180,0.35) 0%, transparent 55%);
+  pointer-events: none;
+}
+.museum-frame {
+  position: relative;
+  max-width: 78%;
+  max-height: 78%;
+  padding: 14px;
+  background: linear-gradient(135deg, #8a6f3a 0%, #d4b168 40%, #7a5c2a 80%, #c9a455 100%);
+  box-shadow:
+    0 0 0 3px #3a2a12 inset,
+    0 20px 60px rgba(0,0,0,0.7),
+    0 0 100px rgba(255,220,140,0.2);
+  border-radius: 4px;
+  animation: museumEnter .8s cubic-bezier(.2,.9,.3,1.2);
+}
+@keyframes museumEnter {
+  from { transform: scale(.85); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.museum-frame img {
+  display: block;
+  max-width: 100%;
+  max-height: 60vh;
+  box-shadow: 0 0 0 2px #1a1208 inset;
+}
+.museum-plaque {
+  margin-top: 18px;
+  padding: 10px 22px;
+  background: linear-gradient(135deg, #3a2e1e, #1f180f);
+  color: #e8d8a8;
+  font-family: 'Shippori Mincho', serif;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  border: 1px solid rgba(220,190,130,0.3);
+  border-radius: 3px;
+  text-align: center;
+  max-width: 70%;
+  line-height: 1.6;
+}
+.museum-floor {
+  width: 100%;
+  height: 60px;
+  background:
+    linear-gradient(180deg, rgba(30,22,14,0.9), rgba(10,6,4,1)),
+    repeating-linear-gradient(90deg, rgba(0,0,0,0.3) 0 2px, transparent 2px 60px);
+  border-radius: 0 0 6px 6px;
+  box-shadow: inset 0 8px 20px rgba(0,0,0,0.6);
+}
+.museum-hint {
+  position: absolute; bottom: 16px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  color: rgba(230,210,170,0.6);
+  letter-spacing: 0.15em;
+  font-style: italic;
+  pointer-events: none;
+}
+.museum-close {
+  position: absolute; top: 16px; right: 16px;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: rgba(10,5,2,0.7);
+  border: 1px solid rgba(220,190,130,0.4);
+  color: #e8d8a8;
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 10;
+  backdrop-filter: blur(8px);
+}
+.museum-close:hover { background: rgba(80,60,30,0.7); }
+@media (max-width: 600px) {
+  .museum-frame { max-width: 90%; padding: 8px; }
+  .museum-plaque { max-width: 90%; font-size: 11px; }
+  .eden3d-title { font-size: 17px; }
+}
