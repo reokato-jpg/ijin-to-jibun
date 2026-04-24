@@ -10608,7 +10608,7 @@ function showBeginnerGuide() {
         <p>歴史って難しそう？ ぜんぜん大丈夫。<br>ここは<b>『推し偉人に出会う』</b>ための入口です。最初の3つから、興味のある方向に飛んでみて。</p>
       </section>
       <section class="era-page-section">
-        <h2 class="era-page-h2">🎯 まずはここから</h2>
+        <h2 class="era-page-h2"><svg class="ij-icon"><use href="#ij-sparkle"/></svg> まずはここから</h2>
         <div class="beginner-route-list">
           <button class="beginner-route" data-goto-theme="shinsengumi">
             <div class="beginner-route-emoji">⚔️</div>
@@ -10634,7 +10634,7 @@ function showBeginnerGuide() {
         </div>
       </section>
       <details class="era-page-section beginner-collapsible">
-        <summary class="era-page-h2">📚 読みやすい入門書 <span class="pr-tag">PR</span> <span class="beginner-coll-arrow">▾</span></summary>
+        <summary class="era-page-h2"><svg class="ij-icon"><use href="#ij-book"/></svg> 読みやすい入門書 <span class="pr-tag">PR</span> <span class="beginner-coll-arrow">▾</span></summary>
         <div class="beginner-books">
           ${[
             {title:'燃えよ剣 上', author:'司馬遼太郎', asin:'4167105764', desc:'土方歳三の生涯。新選組入門の鉄板。'},
@@ -10668,7 +10668,7 @@ function showBeginnerGuide() {
         </div>
       </details>
       <details class="era-page-section beginner-collapsible">
-        <summary class="era-page-h2">📻 耳で聴く入門 — Audible <span class="pr-tag">PR</span> <span class="beginner-coll-arrow">▾</span></summary>
+        <summary class="era-page-h2"><svg class="ij-icon"><use href="#ij-headphone"/></svg> 耳で聴く入門 — Audible <span class="pr-tag">PR</span> <span class="beginner-coll-arrow">▾</span></summary>
         <p style="font-size:12px;color:var(--ink-3);margin-bottom:10px">司馬遼太郎の長編も、通勤や家事しながら「耳で読める」。活字が重い日にも最強。</p>
         <a class="audible-hero-banner" href="https://px.a8.net/svt/ejp?a8mat=4B1QDV+6MQUCY+5TB0+5ZU29" rel="noopener sponsored nofollow" target="_blank">
           <img class="audible-hero-img" src="https://www29.a8.net/svt/bgt?aid=260421331401&wid=001&eno=01&mid=s00000027126001007000&mc=1" width="120" height="60" alt="Audible">
@@ -10681,7 +10681,7 @@ function showBeginnerGuide() {
         <img border="0" width="1" height="1" src="https://www10.a8.net/0.gif?a8mat=4B1QDV+6MQUCY+5TB0+5ZU29" alt="" style="position:absolute;opacity:0">
       </details>
       <details class="era-page-section beginner-collapsible">
-        <summary class="era-page-h2">🎬 漫画・小説・ドラマから入る <span class="pr-tag">PR</span> <span class="beginner-coll-arrow">▾</span></summary>
+        <summary class="era-page-h2"><svg class="ij-icon"><use href="#ij-screen"/></svg> 漫画・小説・ドラマから入る <span class="pr-tag">PR</span> <span class="beginner-coll-arrow">▾</span></summary>
         <p style="font-size:12px;color:var(--ink-3);margin-bottom:8px">硬い歴史書より、まずは物語から。歴女の多くがここから沼に落ちた名作たち。</p>
         <div class="beginner-books">
           ${[
@@ -10739,7 +10739,7 @@ function showBeginnerGuide() {
         </div>
       </details>
       <details class="era-page-section beginner-collapsible">
-        <summary class="era-page-h2">📺 映像で観る（DVD・Blu-ray） <span class="pr-tag">PR</span> <span class="beginner-coll-arrow">▾</span></summary>
+        <summary class="era-page-h2"><svg class="ij-icon"><use href="#ij-screen"/></svg> 映像で観る（DVD・Blu-ray） <span class="pr-tag">PR</span> <span class="beginner-coll-arrow">▾</span></summary>
         <p style="font-size:12px;color:var(--ink-3);margin-bottom:8px">大河ドラマや映画なら、キャストの顔で推しが決まる。週末イッキ見のお供に。</p>
         <div class="beginner-books">
           ${[
@@ -10774,7 +10774,7 @@ function showBeginnerGuide() {
         </div>
       </details>
       <details class="era-page-section beginner-collapsible">
-        <summary class="era-page-h2">🏨 聖地巡礼に出かける <span class="pr-tag">PR</span> <span class="beginner-coll-arrow">▾</span></summary>
+        <summary class="era-page-h2"><svg class="ij-icon"><use href="#ij-torii"/></svg> 聖地巡礼に出かける <span class="pr-tag">PR</span> <span class="beginner-coll-arrow">▾</span></summary>
         <p style="font-size:12px;color:var(--ink-3);margin-bottom:10px">推しが歩いた場所へ行く。歴女の究極の楽しみ方。</p>
         <ul class="pilgrimage-list">
           <li><b>⚔️ 新選組</b> → 京都（壬生・池田屋）・日野（土方資料館）・函館（五稜郭）</li>
@@ -10816,7 +10816,7 @@ function showBeginnerGuide() {
         <img border="0" width="1" height="1" src="https://www13.a8.net/0.gif?a8mat=4B1QDV+76ZKXE+5R8A+5Z6WX" alt="" style="position:absolute;opacity:0">
       </details>
       <details class="era-page-section beginner-collapsible">
-        <summary class="era-page-h2">🎁 歴女におすすめのグッズ・ツール <span class="pr-tag">PR</span> <span class="beginner-coll-arrow">▾</span></summary>
+        <summary class="era-page-h2"><svg class="ij-icon"><use href="#ij-gift"/></svg> 歴女におすすめのグッズ・ツール <span class="pr-tag">PR</span> <span class="beginner-coll-arrow">▾</span></summary>
         <p style="font-size:12px;color:var(--ink-3);margin-bottom:10px">聖地巡礼・推し活・日常使いまで。歴女の毎日を彩る実用品を厳選。</p>
         <div class="rekijo-goods-list">
           ${[
@@ -10850,7 +10850,7 @@ function showBeginnerGuide() {
         </div>
       </details>
       <section class="era-page-section">
-        <h2 class="era-page-h2">✨ 推し偉人の見つけかた</h2>
+        <h2 class="era-page-h2"><svg class="ij-icon"><use href="#ij-sparkle"/></svg> 推し偉人の見つけかた</h2>
         <p style="line-height:1.9">プロフィールページの<b>『♡ 推しに設定』</b>ボタンをタップすると、ホームに「推しのきょう」が毎日表示されます。<br>その日の手紙・名言・本・ルーティンが届く、ミニ手帳みたいな機能です。</p>
       </section>
     </article>
@@ -12709,7 +12709,7 @@ function showBlogPost(postId) {
   // アフィリ本
   const affHtml = (post.affiliateBooks || []).length ? `
     <section class="blog-section">
-      <h2 class="blog-h2">📚 あわせて読みたい本 <span class="pr-tag">PR</span></h2>
+      <h2 class="blog-h2"><svg class="ij-icon"><use href="#ij-book"/></svg> あわせて読みたい本 <span class="pr-tag">PR</span></h2>
       <div class="beginner-books">
         ${post.affiliateBooks.map(s => {
           const [t, a, asin] = s.split('|');
@@ -12738,11 +12738,11 @@ function showBlogPost(postId) {
   // CTA
   const ctaHtml = post.cta?.kind === 'beginner' ? `
     <section class="blog-section blog-cta">
-      <h2 class="blog-h2">🌸 もっと深く知るには</h2>
+      <h2 class="blog-h2"><svg class="ij-icon"><use href="#ij-heart"/></svg> もっと深く知るには</h2>
       <button type="button" class="blog-cta-btn" onclick="document.getElementById('blogPostModal')?.remove();document.body.classList.remove('modal-open');setTimeout(()=>window.showBeginnerGuide && window.showBeginnerGuide(),50)">🌸 歴女入門ガイドを開く →</button>
     </section>` : post.cta?.kind === 'theme' ? `
     <section class="blog-section blog-cta">
-      <h2 class="blog-h2">👥 関連テーマ</h2>
+      <h2 class="blog-h2"><svg class="ij-icon"><use href="#ij-flag"/></svg> 関連テーマ</h2>
       <button type="button" class="blog-cta-btn" onclick="document.getElementById('blogPostModal')?.remove();document.body.classList.remove('modal-open');setTimeout(()=>window.showThemePage && window.showThemePage('${post.cta.theme}'),50)">このテーマを開く →</button>
     </section>` : '';
 
