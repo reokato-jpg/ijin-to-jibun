@@ -3533,6 +3533,47 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
   100% { transform: translate(-50%, -50%) scale(1.05); opacity: 0; }
 }
 
+/* 🪐 惑星象徴性ブロック */
+.cosmos-symbol {
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: linear-gradient(135deg, rgba(80,40,140,0.35), rgba(30,15,60,0.35));
+  border: 1px solid rgba(200,180,255,0.35);
+  border-radius: 12px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+}
+.csm-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.csm-sym {
+  font-size: 24px;
+  color: #ffd880;
+  text-shadow: 0 0 10px rgba(255,210,120,0.7);
+  line-height: 1;
+}
+.csm-theme {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffe0a8;
+  letter-spacing: 0.08em;
+}
+.csm-body {
+  font-size: 12px;
+  line-height: 1.7;
+  color: #e8dff8;
+  margin-bottom: 8px;
+}
+.csm-ijin {
+  font-size: 10px;
+  color: #b89ae0;
+  letter-spacing: 0.05em;
+  padding-top: 6px;
+  border-top: 1px dashed rgba(180,160,220,0.25);
+}
+
 /* 偉人ラベル */
 .cosmos-ijin-label {
   color: #ffe090 !important;

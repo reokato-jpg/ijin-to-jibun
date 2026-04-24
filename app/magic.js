@@ -4649,13 +4649,80 @@
         atm.visible = false;
         scene.add(atm);
         pMesh.userData.atmosphere = atm;
-        // 月
-        const mGeo = new THREE.SphereGeometry(0.28, 16, 16);
-        const mMat = new THREE.MeshBasicMaterial({ color: 0xbbbbbb });
+        // 🌙 月（クレーターテクスチャ + 位相シェーダで満ち欠け再現）
+        const moonTex = (() => {
+          const sc = document.createElement('canvas'); sc.width = 256; sc.height = 128;
+          const g = sc.getContext('2d');
+          // グレー基色
+          const base = g.createLinearGradient(0, 0, 0, 128);
+          base.addColorStop(0, '#c8c4c0');
+          base.addColorStop(0.5, '#b0aca8');
+          base.addColorStop(1, '#908c88');
+          g.fillStyle = base; g.fillRect(0, 0, 256, 128);
+          // 海（ダークスポット）
+          [[80, 45, 18], [120, 60, 22], [150, 55, 14], [95, 80, 12], [170, 75, 16], [60, 65, 10]].forEach(([x, y, r]) => {
+            const gr = g.createRadialGradient(x, y, 0, x, y, r);
+            gr.addColorStop(0, 'rgba(70,65,62,0.7)');
+            gr.addColorStop(1, 'rgba(70,65,62,0)');
+            g.fillStyle = gr;
+            g.beginPath(); g.arc(x, y, r, 0, Math.PI*2); g.fill();
+          });
+          // クレーター
+          for (let i = 0; i < 80; i++) {
+            const x = Math.random() * 256, y = Math.random() * 128;
+            const r = 1.5 + Math.random() * 4;
+            g.fillStyle = `rgba(60,55,50,${0.3 + Math.random()*0.3})`;
+            g.beginPath(); g.arc(x, y, r, 0, Math.PI*2); g.fill();
+            if (r > 2.5) {
+              g.strokeStyle = 'rgba(220,215,210,0.25)';
+              g.lineWidth = 0.8;
+              g.stroke();
+            }
+          }
+          return new THREE.CanvasTexture(sc);
+        })();
+        const mGeo = new THREE.SphereGeometry(0.28, 24, 18);
+        const mMat = new THREE.ShaderMaterial({
+          uniforms: {
+            uMap: { value: moonTex },
+            uSunPos: { value: new THREE.Vector3(0, 0, 0) },
+          },
+          vertexShader: `
+            varying vec2 vUv;
+            varying vec3 vWorld;
+            varying vec3 vN;
+            void main() {
+              vUv = uv;
+              vec4 wp = modelMatrix * vec4(position, 1.0);
+              vWorld = wp.xyz;
+              vN = normalize(mat3(modelMatrix) * normal);
+              gl_Position = projectionMatrix * viewMatrix * wp;
+            }
+          `,
+          fragmentShader: `
+            uniform sampler2D uMap;
+            uniform vec3 uSunPos;
+            varying vec2 vUv;
+            varying vec3 vWorld;
+            varying vec3 vN;
+            void main() {
+              vec3 tex = texture2D(uMap, vUv).rgb;
+              vec3 sd = normalize(uSunPos - vWorld);
+              float d = dot(vN, sd);
+              // 昼夜境界：日向は明るく、影は夜の青黒
+              float lit = smoothstep(-0.08, 0.22, d);
+              vec3 night = vec3(0.02, 0.02, 0.04);
+              vec3 col = mix(night, tex, lit);
+              // 地球照（Earthshine）— 夜側にわずかな青み
+              col += vec3(0.015, 0.02, 0.035) * (1.0 - lit) * 0.7;
+              gl_FragColor = vec4(col, 1.0);
+            }
+          `,
+        });
         const moon = new THREE.Mesh(mGeo, mMat);
         moon.visible = false;
         scene.add(moon);
-        moons.push({ mesh: moon, orbit: 1.8, speed: 12, angle: 0 });
+        moons.push({ mesh: moon, orbit: 1.8, speed: 12, angle: 0, isMoon: true });
 
         // 🛰️ 人工衛星（近づくと見える）
         const satellites = [];
@@ -5078,6 +5145,51 @@
     let running = true;
     let cameraZoomTarget = null;  // 惑星にズーム用
     let timeSpeed = 1;             // 宇宙の時間倍率
+
+    // 🪐 惑星の象徴性（占星術・神話由来 + 偉人関連）
+    const PLANET_SYMBOL = {
+      '太陽':       { sym: '☉', theme: '自己・生命の源',
+                      body: '光・意志・中心。あなたが「どう存在したいか」を映す。生命そのものの根。',
+                      ijin: '全ての偉人の顔を照らした光' },
+      '水星':       { sym: '☿', theme: '知性・言葉・旅',
+                      body: '学ぶ速さ、言葉の選び方、情報との関わり。水星はあなたの頭脳を映す。',
+                      ijin: '紫式部・夏目漱石・福澤諭吉' },
+      '金星':       { sym: '♀', theme: '愛・美・価値観',
+                      body: '何に惹かれ、何を美しいと感じるか。関係性と芸術の導き手。',
+                      ijin: 'クレオパトラ・紫式部・オードリー' },
+      '地球':       { sym: '⊕', theme: '生命・今ここ',
+                      body: '肉体と物語が紡がれる唯一の場所。「今ここにいる」という奇跡。',
+                      ijin: '190人以上の偉人が、この星で歴史を編んだ' },
+      '火星':       { sym: '♂', theme: '情熱・行動・闘志',
+                      body: '挑む勇気、怒り、欲望のエネルギー。火星はあなたの戦場を示す。',
+                      ijin: 'ナポレオン・織田信長・坂本龍馬' },
+      '木星':       { sym: '♃', theme: '拡大・寛容・幸運',
+                      body: '器の大きさ、学び、機会。木星はあなたの世界をどこまで広げるかを映す。',
+                      ijin: 'ブッダ・アリストテレス・渋沢栄一' },
+      '土星':       { sym: '♄', theme: '試練・構造・責任',
+                      body: '時間をかけて築く。規律と孤独の美しさ。土星は大人の星。',
+                      ijin: 'カント・二宮尊徳・リンカーン' },
+      '天王星':     { sym: '♅', theme: '革新・自由・覚醒',
+                      body: '常識を壊し、新しい自分へ。天王星は突然の目覚めを授ける。',
+                      ijin: 'エジソン・アインシュタイン・スティーブ・ジョブズ' },
+      '海王星':     { sym: '♆', theme: '夢・幻想・芸術',
+                      body: '直感と超越。境界を溶かし、目に見えないものと繋ぐ。',
+                      ijin: 'ゴッホ・モーツァルト・宮沢賢治' },
+      'ブラックホール': { sym: '✶', theme: '死と再生・無',
+                      body: 'すべてが消え、すべてが生まれる境界。意識の究極の鏡。',
+                      ijin: '哲学: ブッダの「空」、ハイデガーの「無」' },
+    };
+    function buildSymbolBlock(planetName) {
+      const s = PLANET_SYMBOL[planetName];
+      if (!s) return '';
+      return `
+        <div class="cosmos-symbol">
+          <div class="csm-head"><span class="csm-sym">${s.sym}</span><span class="csm-theme">${s.theme}</span></div>
+          <div class="csm-body">${s.body}</div>
+          <div class="csm-ijin">🧙 ${s.ijin}</div>
+        </div>
+      `;
+    }
     // ============================================================
     // 🪐 惑星一覧パネル（タップで追跡）
     // ============================================================
@@ -6126,6 +6238,7 @@
           <dt>NASA</dt><dd>${p.facts.nasa}</dd>
         </dl>
         <div class="cosmos-info-trivia">${p.facts.trivia}</div>
+        ${buildSymbolBlock(p.name)}
         ${p.isEarth ? `<button class="cosmos-info-cta" id="cosmosInfoCta">🌍 地球儀で偉人を見る</button>` : ''}
       `;
       panel.classList.add('show');
@@ -6537,6 +6650,7 @@
             <dt>NASA</dt><dd>${p.facts.nasa}</dd>
           </dl>
           <div class="cosmos-info-trivia">${p.facts.trivia}</div>
+          ${buildSymbolBlock('太陽')}
         `;
         panel.classList.add('show');
         return;
@@ -6570,6 +6684,7 @@
             <dt>NASA</dt><dd>${p.facts.nasa}</dd>
           </dl>
           <div class="cosmos-info-trivia">${p.facts.trivia}</div>
+          ${buildSymbolBlock(p.name)}
           ${p.isEarth ? `<button class="cosmos-info-cta" id="cosmosInfoCta">🌍 偉人たちの地図へ</button>` : ''}
         `;
         panel.classList.add('show');
