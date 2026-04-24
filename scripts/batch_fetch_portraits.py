@@ -80,13 +80,19 @@ def batch_fetch_images(titles: list[str], lang='ja') -> dict[str, str]:
     return result
 
 def commons_special(url: str, width=500) -> str:
-    """upload.wikimedia.org のURLを commons.wikimedia.org/Special:FilePath に書き換え（hotlink対策）"""
+    """upload.wikimedia.org のURLを commons.wikimedia.org/Special:FilePath に書き換え（hotlink対策）
+    ⚠ ファイル名はすでに URL エンコードされた状態で来るので、
+       unquote で生の文字列に戻してから 1 回だけ quote し直す（二重エンコード防止）
+    """
     import re
     if 'upload.wikimedia.org/wikipedia/' in url:
         m = re.search(r'/wikipedia/(?:commons|[a-z]+)/(?:thumb/)?[0-9a-f]/[0-9a-f]{2}/([^/?]+)', url)
         if m:
             fname = m.group(1)
-            return f'https://commons.wikimedia.org/wiki/Special:FilePath/{urllib.parse.quote(fname)}?width={width}'
+            # 一旦完全にデコード（%252C などの二重エンコードにも対応）、その後 1 回だけエンコード
+            raw = urllib.parse.unquote(urllib.parse.unquote(fname))
+            encoded = urllib.parse.quote(raw, safe='/')
+            return f'https://commons.wikimedia.org/wiki/Special:FilePath/{encoded}?width={width}'
     return url
 
 def main():

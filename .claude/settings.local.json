@@ -38,7 +38,11 @@
       "Bash(python -c ' *)",
       "Bash(node --check \"G:/共有ドライブ/Access Level 2/★新フォルダ★/システムフォルダ/偉人と自分。/app/magic.js\")",
       "Bash(node --check \"G:/共有ドライブ/Access Level 2/★新フォルダ★/システムフォルダ/偉人と自分。/app/sw.js\")",
-      "Bash(grep -E \"^\\(\\\\.\\\\/|[^:]*/$|$\\)\")"
+      "Bash(grep -E \"^\\(\\\\.\\\\/|[^:]*/$|$\\)\")",
+      "mcp__Claude_in_Chrome__navigate",
+      "mcp__Claude_in_Chrome__tabs_create_mcp",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "mcp__Claude_in_Chrome__javascript_tool"
     ]
   }
 }
