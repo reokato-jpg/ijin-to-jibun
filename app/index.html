@@ -72,8 +72,8 @@
 <!-- フォントは非ブロッキングで読み込み（print → all でフォールバック） -->
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet"></noscript>
-<link rel="stylesheet" href="dist/style.min.css?v=20260427O">
-<link rel="stylesheet" href="dist/era-theme.min.css?v=20260427O">
+<link rel="stylesheet" href="dist/style.min.css?v=20260427P">
+<link rel="stylesheet" href="dist/era-theme.min.css?v=20260427P">
 <link rel="stylesheet" href="magic.css?v=20260427S1">
 </head>
 <body>
@@ -132,11 +132,11 @@
           <!-- すぐに検索したい人向けのショートカット -->
           <div class="hero-shortcut-row">
             <button class="hero-shortcut-btn" data-hero-shortcut="tags">
-              <span class="hero-shortcut-ic">🔍</span>
+              <span class="hero-shortcut-ic"><svg class="ij-icon"><use href="#ij-sparkle"/></svg></span>
               <span>偉人を探す</span>
             </button>
             <button class="hero-shortcut-btn" data-hero-shortcut="history">
-              <span class="hero-shortcut-ic">🕰</span>
+              <span class="hero-shortcut-ic"><svg class="ij-icon"><use href="#ij-castle"/></svg></span>
               <span>年表から探す</span>
             </button>
           </div>
@@ -201,7 +201,7 @@
       <!-- あなたに似た偉人を探す（強調・折りたたみ） -->
       <details class="home-block home-details home-details-hero" id="traitsMatchDetails">
         <summary class="home-details-summary">
-          <span class="home-details-hero-icon">✨</span>
+          <span class="home-details-hero-icon"><svg class="ij-icon home-details-hero-icon-svg"><use href="#ij-sparkle"/></svg></span>
           <span class="home-details-hero-label">
             <span class="home-details-hero-title">あなたに似た偉人を探す</span>
             <span class="home-details-hero-sub">趣味・性格・生き方が重なる偉人がわかる</span>
@@ -213,7 +213,7 @@
 
       <!-- 推し偉人 — きょうのおすすめ -->
       <div class="home-block">
-        <div class="home-block-label">♡ 推しのきょう <span class="pr-tag">PR</span></div>
+        <div class="home-block-label"><svg class="ij-icon"><use href="#ij-heart"/></svg> <span>推しのきょう</span> <span class="pr-tag">PR</span></div>
         <div id="oshiSection"></div>
       </div>
 
@@ -854,10 +854,10 @@
   </div>
 
   <!-- minified bundles（dist/）と era-lore.min.js は年表画面を開いた時に遅延読み込み -->
-  <script src="dist/history-patterns.min.js?v=20260427O" defer></script>
-  <script src="dist/app.min.js?v=20260427O" defer></script>
-  <script src="auth.js?v=20260427O" type="module"></script>
-  <script src="dist/ai-consult.min.js?v=20260427O" defer></script>
+  <script src="dist/history-patterns.min.js?v=20260427P" defer></script>
+  <script src="dist/app.min.js?v=20260427P" defer></script>
+  <script src="auth.js?v=20260427P" type="module"></script>
+  <script src="dist/ai-consult.min.js?v=20260427P" defer></script>
 
   <!-- ============ Magic Layer（ピクチャ：3D本・Lenis・ViewTransitions等） ============ -->
   <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js" defer></script>
