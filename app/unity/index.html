@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Unity 版 — 偉人と自分。</title>
+<link rel="icon" href="../assets/favicon-32.png">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%;
+    background: radial-gradient(ellipse at top, #1a0f2a 0%, #050208 80%);
+    color: #e8d8c8;
+    font-family: 'Shippori Mincho', serif;
+    overflow: hidden;
+  }
+  .u-hero {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+  }
+  .u-super {
+    font-size: 11px; letter-spacing: 0.8em;
+    color: rgba(220,190,130,0.6);
+    margin-bottom: 18px;
+  }
+  .u-title {
+    font-size: clamp(34px, 6vw, 58px);
+    letter-spacing: 0.35em;
+    color: #f4e6c0;
+    text-shadow: 0 0 40px rgba(180,140,220,0.45);
+    margin-bottom: 18px;
+  }
+  .u-sub {
+    font-size: 14px; color: rgba(230,210,170,0.75);
+    letter-spacing: 0.12em;
+    font-style: italic;
+    margin-bottom: 46px;
+    max-width: 620px;
+    line-height: 1.9;
+  }
+  .u-frame {
+    position: relative;
+    width: min(1280px, 92vw);
+    aspect-ratio: 16 / 9;
+    background:
+      radial-gradient(ellipse at center, rgba(80,50,120,0.35), transparent 70%),
+      #08060e;
+    border: 1px solid rgba(180,140,220,0.35);
+    border-radius: 10px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.7), inset 0 0 60px rgba(120,80,200,0.1);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .u-frame iframe {
+    width: 100%; height: 100%;
+    border: 0;
+  }
+  .u-placeholder {
+    text-align: center; padding: 40px;
+  }
+  .u-pl-icon {
+    font-size: 72px;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 30px rgba(180,140,220,0.5));
+  }
+  .u-pl-title {
+    font-size: 22px; letter-spacing: 0.3em;
+    color: #f4e6c0; margin-bottom: 12px;
+  }
+  .u-pl-sub {
+    font-size: 12px; color: rgba(230,210,170,0.6);
+    letter-spacing: 0.1em; line-height: 2;
+  }
+  .u-pl-roadmap {
+    margin-top: 28px;
+    display: flex; flex-direction: column; gap: 10px;
+    text-align: left;
+    background: rgba(20,12,30,0.4);
+    padding: 20px 28px;
+    border-radius: 8px;
+    border: 1px solid rgba(180,140,220,0.2);
+    font-size: 12px;
+    line-height: 1.8;
+  }
+  .u-pl-step { display: flex; align-items: center; gap: 12px; }
+  .u-pl-step::before {
+    content: ''; display: inline-block;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: rgba(200,160,240,0.7);
+    flex-shrink: 0;
+  }
+  .u-back {
+    position: absolute; top: 20px; left: 20px;
+    padding: 10px 22px;
+    background: rgba(20,12,30,0.7);
+    border: 1px solid rgba(180,140,220,0.4);
+    border-radius: 999px;
+    color: #e8d8c8;
+    font-family: inherit;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    text-decoration: none;
+    z-index: 10;
+  }
+  .u-back:hover { filter: brightness(1.2); }
+  .u-stars {
+    position: fixed; inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(1px 1px at 20% 30%, rgba(220,200,255,0.8), transparent),
+      radial-gradient(1px 1px at 70% 15%, rgba(220,200,255,0.8), transparent),
+      radial-gradient(1px 1px at 40% 75%, rgba(220,200,255,0.8), transparent),
+      radial-gradient(1px 1px at 85% 55%, rgba(220,200,255,0.8), transparent),
+      radial-gradient(1px 1px at 15% 90%, rgba(220,200,255,0.8), transparent),
+      radial-gradient(1px 1px at 55% 45%, rgba(220,200,255,0.8), transparent);
+    background-size: 100% 100%;
+    opacity: 0.6;
+    animation: starsTwinkle 4s ease-in-out infinite alternate;
+  }
+  @keyframes starsTwinkle { to { opacity: 0.9; } }
+  @media (max-width: 700px) {
+    .u-frame { aspect-ratio: 9 / 16; width: 94vw; }
+    .u-pl-roadmap { font-size: 11px; padding: 14px 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="u-stars"></div>
+<a href="../" class="u-back">← 戻る</a>
+<div class="u-hero">
+  <div class="u-super">I J I N 　 U N I T Y 　 E D I T I O N</div>
+  <div class="u-title">Unity 版</div>
+  <div class="u-sub">── 宇宙・エデン・バベル・神話・戦国<br>すべての世界に、あなたの足で立つ ──</div>
+  <div class="u-frame">
+    <!-- Unity WebGL build 配置後、以下の iframe を有効化 -->
+    <!-- <iframe src="build/index.html" allow="fullscreen; xr-spatial-tracking; accelerometer; gyroscope" allowfullscreen></iframe> -->
+    <div class="u-placeholder">
+      <div class="u-pl-icon">🎮</div>
+      <div class="u-pl-title">B U I L D　I N　P R O G R E S S</div>
+      <div class="u-pl-sub">Unity WebGL ビルドの配置を待機中</div>
+      <div class="u-pl-roadmap">
+        <div class="u-pl-step"><span>Unity Editor で <code>/unity-source/</code> を開く</span></div>
+        <div class="u-pl-step"><span>File → Build Settings → WebGL → Build</span></div>
+        <div class="u-pl-step"><span>出力を <code>/app/unity/build/</code> へ配置</span></div>
+        <div class="u-pl-step"><span>下のiframeコメント外す → 完了</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

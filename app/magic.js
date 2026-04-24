@@ -540,6 +540,7 @@
               <button class="magic-topbook-pill magic-topbook-pill-glossary" data-deep="glossary">📖 用語集</button>
               <button class="magic-topbook-pill magic-topbook-pill-myth" data-deep="mythology">✦ Genesis — はじまりの書</button>
               <button class="magic-topbook-pill magic-topbook-pill-museum" data-deep="museum">🏛 美 術 館</button>
+              <button class="magic-topbook-pill magic-topbook-pill-unity" data-deep="unity">🎮 Unity 版</button>
             </div>
           </div>
         </div>
@@ -573,6 +574,7 @@
         glossary: () => { try { openGlossary(); } catch (e) { console.warn('glossary', e); } },
         mythology: () => { try { openMythology(); } catch (e) { console.warn('mythology', e); } },
         museum:   () => { try { openMuseumHub(); } catch (e) { console.warn('museum', e); } },
+        unity:    () => { window.open('unity/', '_blank'); },
       };
       wrap.querySelectorAll('[data-deep]').forEach(btn => {
         btn.addEventListener('click', () => {
