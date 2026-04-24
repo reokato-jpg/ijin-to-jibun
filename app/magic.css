@@ -4749,11 +4749,55 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
   color: #f0e8d8;
   max-width: 680px;
   margin: 0 auto;
-  white-space: pre-wrap;
   text-shadow: 0 2px 6px rgba(0,0,0,0.5);
   z-index: 10;
   position: relative;
   padding: 0 8px 12px;
+}
+.tale-chapter-text {
+  white-space: pre-wrap;
+}
+/* 🖼 パブリックドメイン名画 */
+.tale-art {
+  margin: 0 auto 24px;
+  padding: 10px;
+  background: linear-gradient(135deg, rgba(40,25,15,0.5), rgba(20,12,8,0.5));
+  border: 1px solid rgba(255,216,128,0.3);
+  border-radius: 6px;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.08);
+  max-width: 600px;
+}
+.tale-art img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 3px;
+  filter: sepia(0.1);
+  transition: filter 0.4s;
+}
+.tale-art img:hover { filter: sepia(0); }
+.tale-art figcaption {
+  margin-top: 10px;
+  font-size: 11px;
+  color: rgba(240,220,180,0.75);
+  letter-spacing: 0.06em;
+  text-align: center;
+  font-style: italic;
+  font-family: 'Cormorant Garamond', serif;
+}
+.tale-pd {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 7px;
+  background: rgba(255,216,128,0.15);
+  border: 1px solid rgba(255,216,128,0.35);
+  border-radius: 999px;
+  font-size: 9px;
+  color: #ffd880;
+  letter-spacing: 0.1em;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: normal;
+  vertical-align: middle;
 }
 .fade-in {
   animation: taleFade 0.9s ease;
