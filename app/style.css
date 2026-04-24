@@ -13886,7 +13886,12 @@ main { flex: 1; overflow-y: auto; overflow-x: hidden; background: rgba(255,255,2
   background: transparent;
   border: none;
   cursor: pointer;
+  transition: opacity 0.2s;
 }
+/* スマホメニュー開き中・モーダル表示中はラビン（ラジオ）を隠す — 重なり回避 */
+body.modal-open .power-hint-anim { opacity: 0 !important; pointer-events: none !important; }
+body:has(.phone-menu.open) .power-hint-anim { opacity: 0 !important; pointer-events: none !important; }
+body:has(#welcomeIntro:not([hidden])) .power-hint-anim { opacity: 0 !important; pointer-events: none !important; }
 .power-hint-anim[hidden] { display: none; }
 .power-hint-video {
   display: block;
