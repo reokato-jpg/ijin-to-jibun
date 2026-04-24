@@ -3554,7 +3554,7 @@
         <div class="cosmos-crosshair"></div>
         <div class="cosmos-speedlines" id="cosmosSpeedLines"></div>
         <div class="cosmos-scoreboard" id="cosmosScore">
-          <div class="sb-item"><span class="sb-ico">💎</span><b id="sbStars">0</b><span class="sb-max">/60</span></div>
+          <div class="sb-item"><span class="sb-ico">💎</span><b id="sbStars">0</b><span class="sb-max">/30</span></div>
           <div class="sb-item"><span class="sb-ico">🪐</span><b id="sbPlanets">0</b><span class="sb-max">/9</span></div>
           <div class="sb-item sb-combo" id="sbCombo" style="display:none"><span class="sb-ico">🔥</span><b id="sbComboN">0</b>×</div>
         </div>
@@ -3730,7 +3730,7 @@
     ];
     // 星（背景球面 + 天の川バンド強化）
     const stars = new THREE.BufferGeometry();
-    const starCount = 4500;
+    const starCount = 2400;
     const spos = new Float32Array(starCount * 3);
     const scol = new Float32Array(starCount * 3);
     const ssiz = new Float32Array(starCount);
@@ -4035,30 +4035,13 @@
         uniform float uTime;
         uniform sampler2D uMap;
         varying vec2 vUv;
-        varying vec3 vPos;
-        // 疑似ノイズ
-        float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
-        float noise(vec2 p) {
-          vec2 i = floor(p); vec2 f = fract(p);
-          float a = hash(i); float b = hash(i + vec2(1,0));
-          float c = hash(i + vec2(0,1)); float d = hash(i + vec2(1,1));
-          vec2 u = f * f * (3.0 - 2.0 * f);
-          return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
-        }
         void main() {
-          // ベーステクスチャ
-          vec3 base = texture2D(uMap, vUv).rgb;
-          // 流動するプラズマ（時間で UV をずらしてノイズを重ねる）
-          vec2 flow = vUv * 8.0 + vec2(uTime * 0.03, uTime * 0.02);
-          float n1 = noise(flow);
-          float n2 = noise(flow * 2.3 + vec2(uTime * 0.05, 0.0));
-          float plasma = smoothstep(0.3, 0.95, n1 * 0.6 + n2 * 0.5);
-          // 熱い核部分（白に近づく）
-          vec3 hot = vec3(1.0, 0.95, 0.78);
-          vec3 mid = vec3(1.0, 0.65, 0.25);
-          vec3 col = mix(base, mid, plasma * 0.6);
-          col = mix(col, hot, plasma * plasma * 0.55);
-          // 脈動（全体の明るさが呼吸）
+          // テクスチャをわずかにドリフト（顆粒が流れる見た目）
+          vec2 uv1 = vUv + vec2(uTime * 0.0015, 0.0);
+          vec2 uv2 = vUv * 1.03 + vec2(-uTime * 0.0009, uTime * 0.0006);
+          vec3 a = texture2D(uMap, uv1).rgb;
+          vec3 b = texture2D(uMap, uv2).rgb;
+          vec3 col = mix(a, b, 0.5) * 1.05;
           float pulse = 1.0 + 0.08 * sin(uTime * 0.8);
           gl_FragColor = vec4(col * pulse, 1.0);
         }
@@ -4883,46 +4866,14 @@
       scene.add(atmShell);
       pm.mesh.userData.atmShell = atmShell;
 
-      // 昼夜境界シャドウ（太陽に背を向ける側が暗く）
-      const shGeo = new THREE.SphereGeometry(pm.planet.size * 1.002, 32, 24);
-      const shMat = new THREE.ShaderMaterial({
-        uniforms: { uSunPos: { value: new THREE.Vector3(0,0,0) } },
-        vertexShader: `
-          varying vec3 vWorld;
-          varying vec3 vN;
-          void main() {
-            vec4 wp = modelMatrix * vec4(position, 1.0);
-            vWorld = wp.xyz;
-            vN = normalize(mat3(modelMatrix) * normal);
-            gl_Position = projectionMatrix * viewMatrix * wp;
-          }
-        `,
-        fragmentShader: `
-          uniform vec3 uSunPos;
-          varying vec3 vWorld;
-          varying vec3 vN;
-          void main() {
-            vec3 sd = normalize(uSunPos - vWorld);
-            float d = dot(vN, sd);
-            float shadow = smoothstep(0.30, -0.18, d);
-            gl_FragColor = vec4(0.01, 0.01, 0.03, shadow * 0.78);
-            if (shadow < 0.02) discard;
-          }
-        `,
-        transparent: true, depthWrite: false, side: THREE.FrontSide,
-      });
-      const shShell = new THREE.Mesh(shGeo, shMat);
-      shShell.visible = false;
-      scene.add(shShell);
-      pm.mesh.userData.shadowShell = shShell;
     });
 
     // ============================================================
     // ☀️ 太陽プロミネンス（プラズマアーク6本）
     // ============================================================
     const prominences = [];
-    for (let i = 0; i < 6; i++) {
-      const a = (i / 6) * Math.PI * 2;
+    for (let i = 0; i < 4; i++) {
+      const a = (i / 4) * Math.PI * 2;
       const h = 1.2 + Math.random() * 1.4;
       // 放物線カーブ
       const curve = new THREE.CubicBezierCurve3(
@@ -4931,7 +4882,7 @@
         new THREE.Vector3(Math.cos(a + 0.3) * 4.5, Math.sin(a + 0.3) * 4.5 + h * 0.8, 0),
         new THREE.Vector3(Math.cos(a + 0.6) * 3.5, Math.sin(a + 0.6) * 3.5, 0),
       );
-      const pGeo = new THREE.TubeGeometry(curve, 24, 0.08, 8, false);
+      const pGeo = new THREE.TubeGeometry(curve, 16, 0.08, 6, false);
       const pMat = new THREE.MeshBasicMaterial({ color: 0xff8030, transparent: true, opacity: 0.0, blending: THREE.AdditiveBlending, depthWrite: false });
       const pMesh = new THREE.Mesh(pGeo, pMat);
       pMesh.rotation.z = Math.random() * Math.PI;
@@ -4955,7 +4906,7 @@
     cometCorona.scale.set(1.6, 1.6, 1);
     scene.add(cometCorona);
     // 尾の粒子
-    const cometTailCount = 80;
+    const cometTailCount = 40;
     const cometTailGeo = new THREE.BufferGeometry();
     const cometTailPos = new Float32Array(cometTailCount * 3);
     const cometTailCol = new Float32Array(cometTailCount * 3);
@@ -5016,7 +4967,7 @@
     // ============================================================
     // 🌟 太陽風粒子（太陽から放射状に流れる）
     // ============================================================
-    const swCount = 300;
+    const swCount = 100;
     const swGeo = new THREE.BufferGeometry();
     const swPos = new Float32Array(swCount * 3);
     const swVel = [];
@@ -5366,7 +5317,7 @@
       return new THREE.CanvasTexture(sc);
     })();
     const collectibles = [];
-    const COLLECTIBLE_COUNT = 60;
+    const COLLECTIBLE_COUNT = 30;
     for (let i = 0; i < COLLECTIBLE_COUNT; i++) {
       const mat = new THREE.SpriteMaterial({ map: starCoinTex, transparent: true, opacity: 0.0, depthWrite: false, blending: THREE.AdditiveBlending });
       const sp = new THREE.Sprite(mat);
@@ -5872,7 +5823,6 @@
             if (pm.mesh.userData.isBlackHole) pm.orbit.material.opacity = 0.0;
             else pm.orbit.material.opacity = 0.12;
             if (pm.mesh.userData.atmShell) pm.mesh.userData.atmShell.visible = true;
-            if (pm.mesh.userData.shadowShell) pm.mesh.userData.shadowShell.visible = true;
           });
           astMat.opacity = 0.7; kbMat.opacity = 0.5;
           // プロミネンス・彗星・太陽風を出現
@@ -5937,12 +5887,6 @@
           }
           if (pm.mesh.userData.atmShell) {
             pm.mesh.userData.atmShell.position.copy(pm.mesh.position);
-          }
-          if (pm.mesh.userData.shadowShell) {
-            pm.mesh.userData.shadowShell.position.copy(pm.mesh.position);
-            pm.mesh.userData.shadowShell.rotation.copy(pm.mesh.rotation);
-            // sunPos uniform (太陽は原点なのでそのまま)
-            pm.mesh.userData.shadowShell.material.uniforms.uSunPos.value.set(0, 0, 0);
           }
           if (pm.mesh.userData.accretion) {
             pm.mesh.userData.accretion.position.copy(pm.mesh.position);
