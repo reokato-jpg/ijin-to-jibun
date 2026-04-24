@@ -4010,32 +4010,12 @@ h2 .ij-icon, h3 .ij-icon { vertical-align: -0.15em; margin-right: 4px; }
   .audible-hero-sub { font-size: 10px; }
 }
 
-/* 📑 ホーム目次 — 右下フローティングFAB */
-.home-toc-wrap { position: fixed; right: 14px; bottom: 110px; z-index: 45; }
+/* 📑 ホーム目次 — 三角形の頂点（画面下中央、ラジオ＆ボイスの上） */
+.home-toc-wrap { position: fixed; left: 50%; transform: translateX(-50%); right: auto; bottom: 80px; z-index: 45; }
 /* 💬 チャットFAB（おーい）を非表示 — ユーザー指示により削除 */
 .chat-fab-wrap, .chat-fab { display: none !important; }
-/* ▲ トップへ戻るFAB — ◁配置の左頂点（TOCとミュートの間の高さに、左にオフセット） */
-.back-to-top-fab {
-  position: fixed;
-  right: 66px;
-  bottom: 66px;
-  z-index: 44;
-  width: 40px; height: 40px;
-  border-radius: 50%;
-  background: rgba(74,24,34,0.9);
-  color: var(--gold-light);
-  border: 1.5px solid var(--gold);
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s;
-}
-body:has(.view.active#view-people) .back-to-top-fab { opacity: 1; pointer-events: auto; }
-body.modal-open .back-to-top-fab { opacity: 0 !important; pointer-events: none !important; }
-body:has(#phoneMusicApp:not([hidden])) .back-to-top-fab { opacity: 0 !important; pointer-events: none !important; }
+/* ▲ トップへ戻るFAB — 削除（ユーザー指示） */
+.back-to-top-fab { display: none !important; }
 .home-toc { background: transparent; border: none; }
 .home-toc-summary { width: 48px; height: 48px; border-radius: 50%; padding: 0; background: var(--wine); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; list-style: none; font-size: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.25); transition: transform 0.15s; }
 .home-toc-summary:hover { transform: scale(1.05); }
@@ -13909,10 +13889,10 @@ body:has(#phoneMusicApp:not([hidden])) .back-to-top-fab { opacity: 0 !important;
 }
 .phone-close-btn:hover { transform: scale(1.1); }
 
-/* 電源ボタンを指さすキャラアニメ */
+/* 電源ボタンを指さすキャラアニメ（ラジオ）— 三角形の左下 */
 .power-hint-anim {
   position: fixed;
-  left: 82px;
+  left: 14px;
   bottom: 22px;
   width: 56px;
   height: 56px;
