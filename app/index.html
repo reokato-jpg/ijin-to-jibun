@@ -72,9 +72,9 @@
 <!-- フォントは非ブロッキングで読み込み（print → all でフォールバック） -->
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet"></noscript>
-<link rel="stylesheet" href="dist/style.min.css?v=20260502AZ">
-<link rel="stylesheet" href="dist/era-theme.min.css?v=20260502AZ">
-<link rel="stylesheet" href="magic.css?v=20260502AZ">
+<link rel="stylesheet" href="dist/style.min.css?v=20260502BA">
+<link rel="stylesheet" href="dist/era-theme.min.css?v=20260502BA">
+<link rel="stylesheet" href="magic.css?v=20260502BA">
 </head>
 <body>
   <header class="app-header">
@@ -881,10 +881,10 @@
   </div>
 
   <!-- minified bundles（dist/）と era-lore.min.js は年表画面を開いた時に遅延読み込み -->
-  <script src="dist/history-patterns.min.js?v=20260502AZ" defer></script>
-  <script src="dist/app.min.js?v=20260502AZ" defer></script>
-  <script src="auth.js?v=20260502AZ" type="module"></script>
-  <script src="dist/ai-consult.min.js?v=20260502AZ" defer></script>
+  <script src="dist/history-patterns.min.js?v=20260502BA" defer></script>
+  <script src="dist/app.min.js?v=20260502BA" defer></script>
+  <script src="auth.js?v=20260502BA" type="module"></script>
+  <script src="dist/ai-consult.min.js?v=20260502BA" defer></script>
 
   <!-- ============ Magic Layer（ピクチャ：3D本・Lenis・ViewTransitions等） ============ -->
   <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js" defer></script>
@@ -917,11 +917,21 @@
       Reflector:         'three/addons/objects/Reflector.js',
       OutlinePass:       'three/addons/postprocessing/OutlinePass.js',
       GLTFLoader:        'three/addons/loaders/GLTFLoader.js',
+      Lensflare:         'three/addons/objects/Lensflare.js',
+      Line2:             'three/addons/lines/Line2.js',
+      LineMaterial:      'three/addons/lines/LineMaterial.js',
+      LineGeometry:      'three/addons/lines/LineGeometry.js',
+      TextGeometry:      'three/addons/geometries/TextGeometry.js',
+      FontLoader:        'three/addons/loaders/FontLoader.js',
     };
     const loadPromises = Object.entries(addonPaths).map(async ([key, path]) => {
       try {
         const mod = await import(path);
         window.THREE_ADDONS[key] = mod[key] || mod.default || mod;
+        // 同じモジュール内の他のexportも拾う（例: LensflareElement）
+        for (const k of Object.keys(mod)) {
+          if (!(k in window.THREE_ADDONS)) window.THREE_ADDONS[k] = mod[k];
+        }
       } catch (e) {
         console.warn('addon load fail', key, e);
       }
@@ -930,7 +940,7 @@
       window.dispatchEvent(new CustomEvent('three-ready'));
     });
   </script>
-  <script src="magic.js?v=20260502AZ" defer></script>
+  <script src="magic.js?v=20260502BA" defer></script>
   <script>
     // Service Worker 登録（2回目以降のロードを爆速化）
     if ('serviceWorker' in navigator) {

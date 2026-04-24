@@ -6236,6 +6236,36 @@
     sunMesh.position.copy(SUN_POS);
     scene.add(sunMesh);
 
+    // 💫 Lensflare（DirectionalLight に装着）
+    if (ADDONS.Lensflare && ADDONS.LensflareElement) {
+      const flareMainTex = (() => {
+        const c = document.createElement('canvas'); c.width = 256; c.height = 256;
+        const g = c.getContext('2d');
+        const grd = g.createRadialGradient(128, 128, 0, 128, 128, 128);
+        grd.addColorStop(0, 'rgba(255,255,220,1)');
+        grd.addColorStop(0.2, 'rgba(255,220,150,0.9)');
+        grd.addColorStop(0.5, 'rgba(255,160,80,0.4)');
+        grd.addColorStop(1, 'rgba(255,120,40,0)');
+        g.fillStyle = grd; g.fillRect(0, 0, 256, 256);
+        return new THREE.CanvasTexture(c);
+      })();
+      const flareDotTex = (() => {
+        const c = document.createElement('canvas'); c.width = 128; c.height = 128;
+        const g = c.getContext('2d');
+        const grd = g.createRadialGradient(64, 64, 0, 64, 64, 64);
+        grd.addColorStop(0, 'rgba(255,230,180,1)');
+        grd.addColorStop(1, 'rgba(255,180,100,0)');
+        g.fillStyle = grd; g.fillRect(0, 0, 128, 128);
+        return new THREE.CanvasTexture(c);
+      })();
+      const lf = new ADDONS.Lensflare();
+      lf.addElement(new ADDONS.LensflareElement(flareMainTex, 280, 0, new THREE.Color(0xffeacc)));
+      lf.addElement(new ADDONS.LensflareElement(flareDotTex, 60, 0.6));
+      lf.addElement(new ADDONS.LensflareElement(flareDotTex, 90, 0.8));
+      lf.addElement(new ADDONS.LensflareElement(flareDotTex, 40, 1.0));
+      sunLight.add(lf);
+    }
+
     // 🔥 彩層（すぐ外側の赤いリム）
     const chromoMat = new THREE.ShaderMaterial({
       uniforms: sunUniforms,
@@ -6966,9 +6996,14 @@
 
     // 🍎 禁断のリンゴ
     const apples = [];
-    const appleMat = new THREE.MeshStandardMaterial({
-      color: 0xd01828, roughness: 0.25, metalness: 0.2,
-      emissive: 0x500818, emissiveIntensity: 0.3,
+    // MeshPhysicalMaterial: clearcoat（透明ニス層）でリンゴの艶
+    const appleMat = new THREE.MeshPhysicalMaterial({
+      color: 0xd01828, roughness: 0.45, metalness: 0.0,
+      emissive: 0x400614, emissiveIntensity: 0.2,
+      clearcoat: 1.0,           // 完全ニス層
+      clearcoatRoughness: 0.08, // ニスはほぼ鏡面
+      sheen: 0.3,               // 産毛のふわっと
+      sheenColor: new THREE.Color(0xff8060),
     });
     for (let i = 0; i < 18; i++) {
       const theta = (i / 18) * Math.PI * 2 + Math.random() * 0.6;
@@ -8775,12 +8810,8 @@
       scene.add(m);
     }
 
-    // ⚡ 雷ボルト（LineSegments、混乱時にフラッシュ）
-    const lightningMat = new THREE.LineBasicMaterial({
-      color: 0xffffe0, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, fog: false,
-    });
+    // ⚡ 雷ボルト（Line2 で太線、Flatな1pxより遥かに見える）
     function makeBolt() {
-      // 雲(y=35)から塔頂上(topY)へ、ジグザグ
       const start = new THREE.Vector3((Math.random() - 0.5) * 40, 55, (Math.random() - 0.5) * 30);
       const end = new THREE.Vector3((Math.random() - 0.5) * 8, totalHeight + Math.random() * 4, (Math.random() - 0.5) * 8);
       const pts = [start];
@@ -8795,10 +8826,35 @@
       pts.push(end);
       return pts;
     }
-    const boltGeoA = new THREE.BufferGeometry().setFromPoints(makeBolt());
-    const bolt1 = new THREE.Line(boltGeoA, lightningMat.clone());
-    const bolt2 = new THREE.Line(new THREE.BufferGeometry().setFromPoints(makeBolt()), lightningMat.clone());
-    const bolt3 = new THREE.Line(new THREE.BufferGeometry().setFromPoints(makeBolt()), lightningMat.clone());
+    function pointsToArray(pts) {
+      const arr = [];
+      pts.forEach(p => { arr.push(p.x, p.y, p.z); });
+      return arr;
+    }
+    const useLine2 = ADDONS.Line2 && ADDONS.LineMaterial && ADDONS.LineGeometry;
+    function makeBoltMesh() {
+      if (useLine2) {
+        const geo = new ADDONS.LineGeometry();
+        geo.setPositions(pointsToArray(makeBolt()));
+        const mat = new ADDONS.LineMaterial({
+          color: 0xffffe0, linewidth: 4, // px
+          transparent: true, opacity: 0,
+          blending: THREE.AdditiveBlending, depthWrite: false, fog: false,
+          resolution: new THREE.Vector2(W(), H()),
+        });
+        const line = new ADDONS.Line2(geo, mat);
+        line.computeLineDistances();
+        return line;
+      } else {
+        const mat = new THREE.LineBasicMaterial({
+          color: 0xffffe0, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, fog: false,
+        });
+        return new THREE.Line(new THREE.BufferGeometry().setFromPoints(makeBolt()), mat);
+      }
+    }
+    const bolt1 = makeBoltMesh();
+    const bolt2 = makeBoltMesh();
+    const bolt3 = makeBoltMesh();
     scene.add(bolt1); scene.add(bolt2); scene.add(bolt3);
     const bolts = [bolt1, bolt2, bolt3];
 
@@ -9101,20 +9157,19 @@
     // 🌀 混乱を起こす！
     let chaosTrigger = 0; // 0〜1
     let boltTimer = 0;
-    function strikeBolt() {
-      bolts.forEach((b, i) => {
+    function rebuildBolt(b) {
+      if (useLine2) {
+        b.geometry.setPositions(pointsToArray(makeBolt()));
+        b.computeLineDistances();
+      } else {
         b.geometry.setFromPoints(makeBolt());
         b.geometry.attributes.position.needsUpdate = true;
-        b.material.opacity = 0.95;
-      });
+      }
+    }
+    function strikeBolt() {
+      bolts.forEach(b => { rebuildBolt(b); b.material.opacity = 0.95; });
       setTimeout(() => bolts.forEach(b => b.material.opacity = 0), 100);
-      setTimeout(() => {
-        bolts.forEach(b => {
-          b.geometry.setFromPoints(makeBolt());
-          b.geometry.attributes.position.needsUpdate = true;
-          b.material.opacity = 0.8;
-        });
-      }, 180);
+      setTimeout(() => bolts.forEach(b => { rebuildBolt(b); b.material.opacity = 0.8; }), 180);
       setTimeout(() => bolts.forEach(b => b.material.opacity = 0), 280);
     }
     ov.querySelector('#babel3dChaos').addEventListener('click', () => {
