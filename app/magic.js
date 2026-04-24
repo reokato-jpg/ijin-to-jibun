@@ -6044,6 +6044,49 @@
         0.25, 0.55, 0.78
       );
       composer.addPass(bloomPass);
+      // 🌟 自作 Volumetric God Ray ShaderPass（太陽から放射状光線）
+      if (ADDONS.ShaderPass) {
+        const godRayShader = {
+          uniforms: {
+            tDiffuse: { value: null },
+            sunScreen: { value: new THREE.Vector2(0.5, 0.5) },
+            exposure: { value: 0.3 },
+            decay: { value: 0.96 },
+            density: { value: 0.96 },
+            weight: { value: 0.35 },
+            samples: { value: 40 }, // int 相当
+          },
+          vertexShader: `varying vec2 vUv; void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
+          fragmentShader: `
+            varying vec2 vUv;
+            uniform sampler2D tDiffuse;
+            uniform vec2 sunScreen;
+            uniform float exposure, decay, density, weight;
+            const int SAMPLES = 40;
+            void main(){
+              vec2 tc = vUv;
+              vec2 delta = tc - sunScreen;
+              delta *= 1.0 / float(SAMPLES) * density;
+              float illum = exposure;
+              vec3 col = texture2D(tDiffuse, tc).rgb;
+              vec3 ray = vec3(0.0);
+              for (int i = 0; i < SAMPLES; i++) {
+                tc -= delta;
+                vec3 s = texture2D(tDiffuse, tc).rgb;
+                // 輝度を抽出、遠ざかるほど減衰
+                float lum = dot(s, vec3(0.299, 0.587, 0.114));
+                ray += vec3(lum, lum * 0.96, lum * 0.88) * illum * weight;
+                illum *= decay;
+              }
+              gl_FragColor = vec4(col + ray, 1.0);
+            }
+          `,
+        };
+        const grPass = new ADDONS.ShaderPass(godRayShader);
+        composer.addPass(grPass);
+        camera.userData.godRayPass = grPass;
+        camera.userData.godRaySunPos = SUN_POS;
+      }
       // 🍎 OutlinePass: リンゴ（対話可能）にハイライト
       if (ADDONS.OutlinePass) {
         edenOutlinePass = new ADDONS.OutlinePass(new THREE.Vector2(W, H), scene, camera);
@@ -6726,6 +6769,62 @@
     });
     const fireflies = new THREE.Points(fireGeo, fireMat);
     scene.add(fireflies);
+
+    // ✨ 自作 ShaderMaterial の光の粒子（GPU 側でサイン波動かし）
+    //   CPU で position を毎フレーム書き換えず、シェーダで時間から計算
+    const SOUL = 400;
+    const soulGeo = new THREE.BufferGeometry();
+    const soulPos = new Float32Array(SOUL * 3);
+    const soulOff = new Float32Array(SOUL);  // 各粒子の位相オフセット
+    for (let i = 0; i < SOUL; i++) {
+      const r = 2 + Math.random() * 12;
+      const a = Math.random() * Math.PI * 2;
+      soulPos[i*3] = Math.cos(a) * r;
+      soulPos[i*3+1] = 0.5 + Math.random() * 8;
+      soulPos[i*3+2] = Math.sin(a) * r;
+      soulOff[i] = Math.random() * Math.PI * 2;
+    }
+    soulGeo.setAttribute('position', new THREE.BufferAttribute(soulPos, 3));
+    soulGeo.setAttribute('aOffset', new THREE.BufferAttribute(soulOff, 1));
+    const soulMat = new THREE.ShaderMaterial({
+      uniforms: {
+        uTime: { value: 0 },
+        uColor: { value: new THREE.Color(0xffc080) },
+        uSize: { value: 18.0 },
+      },
+      vertexShader: `
+        attribute float aOffset;
+        uniform float uTime;
+        uniform float uSize;
+        varying float vAlpha;
+        void main() {
+          vec3 p = position;
+          // GPU側でサイン波移動
+          p.x += sin(uTime * 0.5 + aOffset) * 0.4;
+          p.y += sin(uTime * 0.7 + aOffset * 1.3) * 0.25;
+          p.z += cos(uTime * 0.6 + aOffset) * 0.4;
+          vAlpha = 0.55 + 0.45 * sin(uTime * 2.0 + aOffset * 3.0);
+          vec4 mv = modelViewMatrix * vec4(p, 1.0);
+          gl_PointSize = uSize * (20.0 / -mv.z);
+          gl_Position = projectionMatrix * mv;
+        }
+      `,
+      fragmentShader: `
+        uniform vec3 uColor;
+        varying float vAlpha;
+        void main() {
+          vec2 c = gl_PointCoord - 0.5;
+          float d = length(c);
+          if (d > 0.5) discard;
+          float alpha = (1.0 - d * 2.0) * vAlpha;
+          gl_FragColor = vec4(uColor, alpha);
+        }
+      `,
+      transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+    });
+    const souls = new THREE.Points(soulGeo, soulMat);
+    scene.add(souls);
+    treeGroup.userData.soulMat = soulMat;
 
     // 🍎 リンゴの光輪（発光の後光） — bloomの代わり
     const appleHalos = [];
@@ -7833,6 +7932,20 @@
       camera.lookAt(0, 7.5, 0);
       // 太陽シェーダのアニメ
       sunUniforms.uTime.value = t;
+      // ✨ 魂粒子シェーダ時間
+      if (treeGroup.userData.soulMat) treeGroup.userData.soulMat.uniforms.uTime.value = t;
+      // 🌟 God ray: 太陽のスクリーン空間座標を毎フレーム更新
+      if (camera.userData.godRayPass) {
+        const sv = camera.userData.godRaySunPos.clone().project(camera);
+        camera.userData.godRayPass.uniforms.sunScreen.value.set(
+          sv.x * 0.5 + 0.5,
+          sv.y * 0.5 + 0.5
+        );
+        // 太陽が画面外・背面ならrayを弱める
+        const behind = sv.z > 1;
+        const outside = Math.abs(sv.x) > 1.2 || Math.abs(sv.y) > 1.2;
+        camera.userData.godRayPass.uniforms.exposure.value = (behind || outside) ? 0 : 0.3;
+      }
       // 水面のアニメ（THREE.Water は material.uniforms.time を回す）
       if (treeGroup.userData.water && treeGroup.userData.water.material?.uniforms?.time) {
         treeGroup.userData.water.material.uniforms.time.value += 1 / 60;
