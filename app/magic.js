@@ -5802,8 +5802,8 @@
     scene.add(new THREE.AmbientLight(0x402020, 0.3));
 
     const camera = new THREE.PerspectiveCamera(55, W/H, 0.1, 500);
-    camera.position.set(0, 2.8, 10);
-    camera.lookAt(0, 1.5, 0);
+    camera.position.set(0, 4, 13);
+    camera.lookAt(0, 3.2, 0);
 
     // 空のドーム（大きな球を内側から見る）
     const skyTex = (() => {
@@ -5882,103 +5882,364 @@
       scene.add(stone);
     }
 
-    // 🌳 生命の樹（中央）
+    // 大気感 — フォグで奥行き
+    scene.fog = new THREE.Fog(0xc08060, 28, 95);
+
+    // === ヘルパー: 曲線とラジウス配列から「細る」チューブを作る ===
+    function makeTaperedTube(curve, radii, radialSegs, material) {
+      const N = radii.length;
+      const positions = [], uvs = [], indices = [];
+      const frames = curve.computeFrenetFrames(N - 1, false);
+      for (let i = 0; i < N; i++) {
+        const center = curve.getPointAt(i / (N - 1));
+        const normal = frames.normals[i];
+        const binormal = frames.binormals[i];
+        const r = radii[i];
+        for (let j = 0; j <= radialSegs; j++) {
+          const a = (j / radialSegs) * Math.PI * 2;
+          const c = Math.cos(a), s = Math.sin(a);
+          positions.push(
+            center.x + r * (c * normal.x + s * binormal.x),
+            center.y + r * (c * normal.y + s * binormal.y),
+            center.z + r * (c * normal.z + s * binormal.z)
+          );
+          uvs.push(j / radialSegs, i / (N - 1));
+        }
+      }
+      for (let i = 0; i < N - 1; i++) {
+        for (let j = 0; j < radialSegs; j++) {
+          const a = i * (radialSegs + 1) + j;
+          const b = a + 1;
+          const c = a + (radialSegs + 1);
+          const d = c + 1;
+          indices.push(a, c, b, b, c, d);
+        }
+      }
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+      geo.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+      geo.setIndex(indices);
+      geo.computeVertexNormals();
+      return new THREE.Mesh(geo, material);
+    }
+
+    // === 樹皮テクスチャ（手続き） ===
+    const barkTex = (() => {
+      const sc = document.createElement('canvas'); sc.width = 512; sc.height = 512;
+      const g = sc.getContext('2d');
+      // ベース
+      const grd = g.createLinearGradient(0, 0, 512, 0);
+      grd.addColorStop(0, '#3a2612');
+      grd.addColorStop(0.5, '#5a3a1a');
+      grd.addColorStop(1, '#3a2612');
+      g.fillStyle = grd; g.fillRect(0, 0, 512, 512);
+      // 縦の筋
+      for (let i = 0; i < 120; i++) {
+        const x = Math.random() * 512;
+        const w = 1 + Math.random() * 4;
+        const shade = Math.random() < 0.5 ? '#2a1808' : '#6a4a22';
+        g.strokeStyle = shade;
+        g.lineWidth = w;
+        g.globalAlpha = 0.3 + Math.random() * 0.4;
+        g.beginPath();
+        g.moveTo(x, 0);
+        let y = 0;
+        while (y < 512) {
+          y += 10 + Math.random() * 20;
+          g.lineTo(x + (Math.random() - 0.5) * 6, y);
+        }
+        g.stroke();
+      }
+      g.globalAlpha = 1;
+      // 苔・斑
+      for (let i = 0; i < 60; i++) {
+        g.fillStyle = Math.random() < 0.6 ? 'rgba(60,80,30,0.25)' : 'rgba(20,10,4,0.4)';
+        const x = Math.random() * 512, y = Math.random() * 512;
+        const r = 4 + Math.random() * 14;
+        g.beginPath(); g.ellipse(x, y, r, r * 0.6, Math.random() * Math.PI, 0, Math.PI * 2); g.fill();
+      }
+      const t = new THREE.CanvasTexture(sc);
+      t.wrapS = t.wrapT = THREE.RepeatWrapping;
+      t.repeat.set(1, 3);
+      return t;
+    })();
+
+    // === 葉テクスチャ（アルファ付き葉っぱ形） ===
+    const leafTex = (() => {
+      const sc = document.createElement('canvas'); sc.width = 128; sc.height = 128;
+      const g = sc.getContext('2d');
+      g.clearRect(0, 0, 128, 128);
+      // 葉のシルエット
+      g.translate(64, 64);
+      const grd = g.createLinearGradient(0, -50, 0, 50);
+      grd.addColorStop(0, '#8fc552');
+      grd.addColorStop(0.5, '#5a9a28');
+      grd.addColorStop(1, '#2a5012');
+      g.fillStyle = grd;
+      g.beginPath();
+      // 左右対称の葉
+      g.moveTo(0, -55);
+      g.bezierCurveTo(30, -45, 40, -10, 28, 30);
+      g.bezierCurveTo(15, 50, 5, 55, 0, 55);
+      g.bezierCurveTo(-5, 55, -15, 50, -28, 30);
+      g.bezierCurveTo(-40, -10, -30, -45, 0, -55);
+      g.fill();
+      // 主脈
+      g.strokeStyle = 'rgba(40,70,20,0.7)';
+      g.lineWidth = 1.2;
+      g.beginPath(); g.moveTo(0, -50); g.lineTo(0, 50); g.stroke();
+      // 側脈
+      g.strokeStyle = 'rgba(40,70,20,0.4)';
+      g.lineWidth = 0.6;
+      for (let i = -35; i < 40; i += 10) {
+        g.beginPath(); g.moveTo(0, i); g.lineTo(22, i + 10); g.stroke();
+        g.beginPath(); g.moveTo(0, i); g.lineTo(-22, i + 10); g.stroke();
+      }
+      // ハイライト
+      g.fillStyle = 'rgba(220,255,180,0.2)';
+      g.beginPath(); g.ellipse(-8, -15, 8, 20, -0.3, 0, Math.PI*2); g.fill();
+      const t = new THREE.CanvasTexture(sc);
+      return t;
+    })();
+
+    // 🌳 生命の樹（中央・巨木）
     const treeGroup = new THREE.Group();
-    // 幹（カスタム曲線 → TubeGeometry で有機的に）
+    const trunkMat = new THREE.MeshStandardMaterial({
+      map: barkTex, roughness: 0.95, color: 0xb89070,
+    });
+    // 幹: もっと高く・有機的に
     const trunkCurve = new THREE.CatmullRomCurve3([
       new THREE.Vector3(0, 0, 0),
-      new THREE.Vector3(0.15, 0.8, 0.05),
-      new THREE.Vector3(-0.1, 1.8, -0.1),
-      new THREE.Vector3(0.2, 2.8, 0.15),
-      new THREE.Vector3(0, 3.8, 0),
+      new THREE.Vector3(0.18, 1.2, 0.1),
+      new THREE.Vector3(-0.08, 2.5, -0.15),
+      new THREE.Vector3(0.22, 3.8, 0.2),
+      new THREE.Vector3(0.05, 5.2, 0.1),
+      new THREE.Vector3(0.0, 6.0, 0.0),
     ]);
-    const trunk = new THREE.Mesh(
-      new THREE.TubeGeometry(trunkCurve, 20, 0.35, 10, false),
-      new THREE.MeshStandardMaterial({ color: 0x5a3820, roughness: 0.85 })
-    );
-    // 下ほど太く（scale修正は難しいのでそのまま）
+    // 下太→上細（テーパ）
+    const trunkRadii = [0.65, 0.55, 0.45, 0.35, 0.25, 0.18];
+    const trunk = makeTaperedTube(trunkCurve, trunkRadii, 20, trunkMat);
     treeGroup.add(trunk);
-    // 枝（複数の分岐）
-    const branchCurves = [
-      new THREE.CatmullRomCurve3([new THREE.Vector3(0, 2.8, 0), new THREE.Vector3(0.8, 3.2, 0.3), new THREE.Vector3(1.6, 3.5, 0.8)]),
-      new THREE.CatmullRomCurve3([new THREE.Vector3(0, 2.9, 0), new THREE.Vector3(-0.7, 3.3, 0.2), new THREE.Vector3(-1.5, 3.4, -0.6)]),
-      new THREE.CatmullRomCurve3([new THREE.Vector3(0, 3.2, 0), new THREE.Vector3(0.4, 3.6, -0.6), new THREE.Vector3(0.8, 3.9, -1.4)]),
-      new THREE.CatmullRomCurve3([new THREE.Vector3(0, 3.4, 0), new THREE.Vector3(-0.4, 3.9, 0.3), new THREE.Vector3(-1.0, 4.1, 1.0)]),
-      new THREE.CatmullRomCurve3([new THREE.Vector3(0, 3.7, 0), new THREE.Vector3(0.2, 4.1, 0.2), new THREE.Vector3(0.5, 4.4, 0.5)]),
-    ];
-    branchCurves.forEach(curve => {
-      const br = new THREE.Mesh(
-        new THREE.TubeGeometry(curve, 16, 0.08, 8, false),
-        new THREE.MeshStandardMaterial({ color: 0x4a2810, roughness: 0.85 })
-      );
-      treeGroup.add(br);
-    });
-    // 葉の群れ（たくさんの小さな緑球）
-    for (let i = 0; i < 90; i++) {
-      const r = 1.6 + Math.random() * 1.2;
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(2 * Math.random() - 1) * 0.7 + 0.2;
-      const lx = Math.cos(theta) * Math.sin(phi) * r;
-      const lz = Math.sin(theta) * Math.sin(phi) * r;
-      const ly = 3.4 + Math.cos(phi) * r * 0.8;
-      const leaf = new THREE.Mesh(
-        new THREE.SphereGeometry(0.25 + Math.random() * 0.2, 10, 8),
-        new THREE.MeshStandardMaterial({
-          color: new THREE.Color().setHSL(0.28 + Math.random() * 0.08, 0.55, 0.3 + Math.random() * 0.15),
-          roughness: 0.8,
-        })
-      );
-      leaf.position.set(lx, ly, lz);
-      leaf.userData.basePos = leaf.position.clone();
-      leaf.userData.phase = Math.random() * Math.PI * 2;
-      treeGroup.add(leaf);
+    // 根の張り出し（地面への食い込み）
+    for (let i = 0; i < 6; i++) {
+      const a = (i / 6) * Math.PI * 2;
+      const rootCurve = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(Math.cos(a) * 0.3, 0.3, Math.sin(a) * 0.3),
+        new THREE.Vector3(Math.cos(a) * 0.9, 0.02, Math.sin(a) * 0.9),
+        new THREE.Vector3(Math.cos(a) * 1.7, -0.02, Math.sin(a) * 1.7),
+      ]);
+      const root = makeTaperedTube(rootCurve, [0.3, 0.18, 0.06], 10, trunkMat);
+      treeGroup.add(root);
     }
+    // 枝（テーパ付き・8本）
+    const branchEnds = [];
+    const branchDefs = [
+      [[0, 3.6, 0], [0.8, 4.2, 0.4], [1.8, 4.6, 1.0]],
+      [[0, 3.7, 0], [-0.9, 4.3, 0.3], [-2.0, 4.5, -0.8]],
+      [[0, 4.0, 0], [0.5, 4.6, -0.8], [1.2, 5.0, -1.9]],
+      [[0, 4.2, 0], [-0.5, 4.8, 0.5], [-1.3, 5.2, 1.6]],
+      [[0, 4.6, 0], [0.3, 5.3, 0.3], [0.8, 5.9, 0.9]],
+      [[0, 4.8, 0], [-0.3, 5.5, -0.3], [-0.9, 6.0, -0.8]],
+      [[0, 3.2, 0], [1.3, 3.5, -0.3], [2.3, 3.6, -1.2]],
+      [[0, 3.3, 0], [-1.2, 3.5, 0.4], [-2.1, 3.4, 1.3]],
+    ];
+    branchDefs.forEach(def => {
+      const cv = new THREE.CatmullRomCurve3(def.map(p => new THREE.Vector3(p[0], p[1], p[2])));
+      const br = makeTaperedTube(cv, [0.22, 0.13, 0.06], 12, trunkMat);
+      treeGroup.add(br);
+      branchEnds.push(new THREE.Vector3(...def[2]));
+      // 小枝
+      const sub1 = def[2];
+      for (let k = 0; k < 2; k++) {
+        const offX = (Math.random() - 0.5) * 1.0;
+        const offY = 0.3 + Math.random() * 0.3;
+        const offZ = (Math.random() - 0.5) * 1.0;
+        const tip = new THREE.Vector3(sub1[0] + offX, sub1[1] + offY, sub1[2] + offZ);
+        const sub = new THREE.CatmullRomCurve3([
+          new THREE.Vector3(...sub1),
+          new THREE.Vector3(sub1[0] + offX * 0.5, sub1[1] + offY * 0.5, sub1[2] + offZ * 0.5),
+          tip,
+        ]);
+        treeGroup.add(makeTaperedTube(sub, [0.065, 0.04, 0.02], 8, trunkMat));
+        branchEnds.push(tip);
+      }
+    });
+
+    // 🍃 葉（InstancedMesh — 葉テクスチャ付き平面、クラウン全体に散布）
+    const LEAF_COUNT = 480;
+    const leafGeo = new THREE.PlaneGeometry(0.42, 0.55);
+    const leafMat = new THREE.MeshStandardMaterial({
+      map: leafTex,
+      alphaTest: 0.5,
+      transparent: true,
+      side: THREE.DoubleSide,
+      roughness: 0.75,
+    });
+    const leaves = new THREE.InstancedMesh(leafGeo, leafMat, LEAF_COUNT);
+    const leafDummy = new THREE.Object3D();
+    const leafBases = [];
+    for (let i = 0; i < LEAF_COUNT; i++) {
+      // 70%は枝先周辺、30%は中央クラウン
+      let base;
+      if (i < LEAF_COUNT * 0.7 && branchEnds.length) {
+        const end = branchEnds[i % branchEnds.length];
+        base = new THREE.Vector3(
+          end.x + (Math.random() - 0.5) * 1.6,
+          end.y + (Math.random() - 0.5) * 0.9,
+          end.z + (Math.random() - 0.5) * 1.6
+        );
+      } else {
+        const r = 1.8 + Math.random() * 1.4;
+        const th = Math.random() * Math.PI * 2;
+        const ph = Math.acos(2 * Math.random() - 1) * 0.65 + 0.15;
+        base = new THREE.Vector3(
+          Math.cos(th) * Math.sin(ph) * r,
+          4.6 + Math.cos(ph) * r * 0.9,
+          Math.sin(th) * Math.sin(ph) * r
+        );
+      }
+      leafDummy.position.copy(base);
+      leafDummy.rotation.set(
+        Math.random() * Math.PI,
+        Math.random() * Math.PI * 2,
+        Math.random() * Math.PI
+      );
+      const scl = 0.8 + Math.random() * 0.7;
+      leafDummy.scale.set(scl, scl, scl);
+      leafDummy.updateMatrix();
+      leaves.setMatrixAt(i, leafDummy.matrix);
+      // 個体色のゆらぎ
+      const col = new THREE.Color().setHSL(
+        0.22 + Math.random() * 0.13,
+        0.5 + Math.random() * 0.25,
+        0.35 + Math.random() * 0.2
+      );
+      leaves.setColorAt(i, col);
+      leafBases.push({ base: base.clone(), rotY: Math.random() * Math.PI * 2, phase: Math.random() * Math.PI * 2 });
+    }
+    leaves.instanceMatrix.needsUpdate = true;
+    if (leaves.instanceColor) leaves.instanceColor.needsUpdate = true;
+    treeGroup.add(leaves);
+
     // 🍎 禁断のリンゴ
     const apples = [];
-    for (let i = 0; i < 6; i++) {
-      const theta = (i / 6) * Math.PI * 2 + Math.random() * 0.5;
-      const r = 1.5 + Math.random() * 1.0;
-      const apple = new THREE.Mesh(
-        new THREE.SphereGeometry(0.13, 12, 10),
-        new THREE.MeshStandardMaterial({
-          color: 0xc01020, roughness: 0.3, metalness: 0.3,
-          emissive: 0x4a0410, emissiveIntensity: 0.25,
-        })
+    const appleMat = new THREE.MeshStandardMaterial({
+      color: 0xd01828, roughness: 0.25, metalness: 0.2,
+      emissive: 0x500818, emissiveIntensity: 0.3,
+    });
+    for (let i = 0; i < 10; i++) {
+      const theta = (i / 10) * Math.PI * 2 + Math.random() * 0.6;
+      const r = 1.8 + Math.random() * 1.2;
+      const apple = new THREE.Mesh(new THREE.SphereGeometry(0.14, 14, 12), appleMat);
+      apple.position.set(Math.cos(theta) * r, 4.3 + Math.random() * 0.8, Math.sin(theta) * r);
+      // ハイライト
+      const hl = new THREE.Mesh(
+        new THREE.SphereGeometry(0.05, 8, 6),
+        new THREE.MeshBasicMaterial({ color: 0xffb0a0, transparent: true, opacity: 0.6 })
       );
-      apple.position.set(Math.cos(theta) * r, 3.5 + Math.random() * 0.6, Math.sin(theta) * r);
+      hl.position.set(apple.position.x - 0.04, apple.position.y + 0.06, apple.position.z);
+      // 茎
+      const stem = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.01, 0.012, 0.08, 5),
+        new THREE.MeshStandardMaterial({ color: 0x4a2810 })
+      );
+      stem.position.set(apple.position.x, apple.position.y + 0.13, apple.position.z);
       apple.userData.basePos = apple.position.clone();
       apple.userData.phase = Math.random() * Math.PI * 2;
       apples.push(apple);
-      treeGroup.add(apple);
+      treeGroup.add(apple); treeGroup.add(hl); treeGroup.add(stem);
     }
-    // 🐍 蛇（幹に巻き付く螺旋）
-    const serpentCurve = new THREE.CatmullRomCurve3(
-      Array.from({length: 40}).map((_, i) => {
-        const t = i / 39;
-        const y = 0.3 + t * 3.2;
-        const a = t * Math.PI * 4;
-        const r = 0.42 + Math.sin(t * 10) * 0.03;
-        return new THREE.Vector3(Math.cos(a) * r, y, Math.sin(a) * r);
-      })
-    );
-    const serpent = new THREE.Mesh(
-      new THREE.TubeGeometry(serpentCurve, 60, 0.08, 8, false),
-      new THREE.MeshStandardMaterial({ color: 0x6a9030, roughness: 0.5, emissive: 0x1a2a0a, emissiveIntensity: 0.3 })
-    );
+
+    // 🐍 蛇（幹に巻き付く・テーパ付き）
+    const serpentPts = Array.from({length: 48}).map((_, i) => {
+      const t = i / 47;
+      const y = 0.25 + t * 4.8;
+      const a = t * Math.PI * 4.5;
+      const trunkR = 0.65 - t * 0.45; // 幹のテーパに追従
+      const r = trunkR + 0.08 + Math.sin(t * 12) * 0.02;
+      return new THREE.Vector3(Math.cos(a) * r, y, Math.sin(a) * r);
+    });
+    const serpentCurve = new THREE.CatmullRomCurve3(serpentPts);
+    // 尾細い→頭太い
+    const serpentRadii = [];
+    for (let i = 0; i < 48; i++) {
+      const t = i / 47;
+      // 尾(t=0)は細く、頭付近(t=1)で一度太くなり、先端はやや絞る
+      const base = 0.04 + 0.07 * Math.sin(t * Math.PI);
+      serpentRadii.push(base + (t > 0.92 ? 0.04 * (1 - (t - 0.92) / 0.08) : 0));
+    }
+    // 蛇用テクスチャ（鱗）
+    const scaleTex = (() => {
+      const sc = document.createElement('canvas'); sc.width = 256; sc.height = 128;
+      const g = sc.getContext('2d');
+      const grd = g.createLinearGradient(0, 0, 0, 128);
+      grd.addColorStop(0, '#4a7820');
+      grd.addColorStop(0.5, '#6fa032');
+      grd.addColorStop(1, '#2a4812');
+      g.fillStyle = grd; g.fillRect(0, 0, 256, 128);
+      // 鱗パターン
+      for (let y = 0; y < 128; y += 8) {
+        for (let x = 0; x < 256; x += 10) {
+          g.strokeStyle = 'rgba(20,40,8,0.55)';
+          g.lineWidth = 0.8;
+          g.beginPath();
+          const off = (Math.floor(y / 8) % 2) * 5;
+          g.arc(x + off, y, 4, Math.PI, 0);
+          g.stroke();
+        }
+      }
+      const t = new THREE.CanvasTexture(sc);
+      t.wrapS = t.wrapT = THREE.RepeatWrapping;
+      t.repeat.set(6, 1);
+      return t;
+    })();
+    const serpentMat = new THREE.MeshStandardMaterial({
+      map: scaleTex, roughness: 0.45, metalness: 0.2,
+      emissive: 0x0a1a04, emissiveIntensity: 0.25,
+    });
+    const serpent = makeTaperedTube(serpentCurve, serpentRadii, 12, serpentMat);
     treeGroup.add(serpent);
-    // 蛇の頭（最上部に小さな球）
+    // 蛇の頭（楕円に伸ばした）
     const snakeHead = new THREE.Mesh(
-      new THREE.SphereGeometry(0.12, 12, 10),
-      new THREE.MeshStandardMaterial({ color: 0x6a9030, emissive: 0x1a2a0a, emissiveIntensity: 0.3 })
+      new THREE.SphereGeometry(0.13, 14, 10),
+      serpentMat
     );
     const lastPt = serpentCurve.getPoint(0.98);
+    const prevPt = serpentCurve.getPoint(0.94);
     snakeHead.position.copy(lastPt);
+    snakeHead.scale.set(1.2, 0.85, 1.6);
+    snakeHead.lookAt(lastPt.clone().add(lastPt.clone().sub(prevPt).multiplyScalar(5)));
     treeGroup.add(snakeHead);
-    // 蛇の赤い目
-    const eye1 = new THREE.Mesh(new THREE.SphereGeometry(0.02, 8, 6), new THREE.MeshBasicMaterial({ color: 0xff3030 }));
-    eye1.position.copy(lastPt); eye1.position.x += 0.08; eye1.position.y += 0.05;
-    treeGroup.add(eye1);
+    // 赤い目×2
+    const headDir = lastPt.clone().sub(prevPt).normalize();
+    const eyeBase = lastPt.clone().add(headDir.clone().multiplyScalar(0.08));
+    [-1, 1].forEach(sgn => {
+      const eye = new THREE.Mesh(
+        new THREE.SphereGeometry(0.024, 8, 6),
+        new THREE.MeshBasicMaterial({ color: 0xff2028 })
+      );
+      const side = new THREE.Vector3(-headDir.z, 0, headDir.x).normalize();
+      eye.position.copy(eyeBase).add(side.multiplyScalar(0.06 * sgn));
+      eye.position.y += 0.04;
+      treeGroup.add(eye);
+    });
+    // 二股の舌
+    const tongueGeo = new THREE.BufferGeometry().setFromPoints([
+      eyeBase.clone().add(headDir.clone().multiplyScalar(0.02)),
+      eyeBase.clone().add(headDir.clone().multiplyScalar(0.14)),
+      eyeBase.clone().add(headDir.clone().multiplyScalar(0.2)).add(new THREE.Vector3(0.03, 0, 0.03)),
+      eyeBase.clone().add(headDir.clone().multiplyScalar(0.14)),
+      eyeBase.clone().add(headDir.clone().multiplyScalar(0.2)).add(new THREE.Vector3(-0.03, 0, -0.03)),
+    ]);
+    const tongue = new THREE.Line(tongueGeo, new THREE.LineBasicMaterial({ color: 0xff3050 }));
+    treeGroup.add(tongue);
+
     scene.add(treeGroup);
+
+    // 葉の揺れアニメ用参照
+    treeGroup.userData.leaves = leaves;
+    treeGroup.userData.leafBases = leafBases;
+    treeGroup.userData.leafDummy = leafDummy;
 
     // 周辺の小さな木々
     for (let i = 0; i < 8; i++) {
@@ -6034,7 +6295,7 @@
 
     // 操作: ドラッグで視点を回す
     let dragging = false, lastX = 0, lastY = 0;
-    let camAngle = 0, camTilt = 0, camDist = 10;
+    let camAngle = 0, camTilt = 0, camDist = 13;
     renderer.domElement.addEventListener('pointerdown', e => { dragging = true; lastX = e.clientX; lastY = e.clientY; });
     renderer.domElement.addEventListener('pointermove', e => {
       if (!dragging) return;
@@ -6075,16 +6336,42 @@
       if (!dragging) camAngle += 0.002;
       camera.position.x = Math.cos(camAngle) * camDist;
       camera.position.z = Math.sin(camAngle) * camDist;
-      camera.position.y = 3 + camTilt * 5;
-      camera.lookAt(0, 2.2, 0);
-      // 葉のそよぎ
+      camera.position.y = 4 + camTilt * 6;
+      camera.lookAt(0, 3.8, 0);
+      // リンゴのゆらぎ
       treeGroup.children.forEach(c => {
         if (c.userData.basePos) {
           c.userData.phase += 0.03;
-          c.position.x = c.userData.basePos.x + Math.sin(c.userData.phase) * 0.04;
-          c.position.y = c.userData.basePos.y + Math.cos(c.userData.phase * 0.7) * 0.03;
+          c.position.x = c.userData.basePos.x + Math.sin(c.userData.phase) * 0.03;
+          c.position.y = c.userData.basePos.y + Math.cos(c.userData.phase * 0.7) * 0.02;
         }
       });
+      // 葉のそよぎ（InstancedMesh）
+      if (treeGroup.userData.leaves) {
+        const lv = treeGroup.userData.leaves;
+        const bases = treeGroup.userData.leafBases;
+        const dm = treeGroup.userData.leafDummy;
+        const wind = Math.sin(t * 0.8) * 0.15;
+        for (let i = 0; i < bases.length; i++) {
+          const b = bases[i];
+          b.phase += 0.04;
+          dm.position.set(
+            b.base.x + Math.sin(b.phase) * 0.04 + wind * 0.08,
+            b.base.y + Math.cos(b.phase * 0.7) * 0.03,
+            b.base.z + Math.cos(b.phase * 0.9) * 0.04
+          );
+          dm.rotation.set(
+            Math.sin(b.phase) * 0.3 + b.rotY * 0.01,
+            b.rotY + wind * 0.5,
+            Math.cos(b.phase * 0.8) * 0.2
+          );
+          const s = 1.0 + Math.sin(b.phase * 2) * 0.03;
+          dm.scale.set(s, s, s);
+          dm.updateMatrix();
+          lv.setMatrixAt(i, dm.matrix);
+        }
+        lv.instanceMatrix.needsUpdate = true;
+      }
       // 蝶の浮遊
       butterflies.forEach(bf => {
         bf.userData.phase += 0.05;
