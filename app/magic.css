@@ -1626,6 +1626,23 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
   line-height: 1;
   padding: 0;
 }
+.mmo-cc-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 6px 10px 8px;
+  border-bottom: 1px solid rgba(180,220,255,0.12);
+}
+.mmo-cc-chip {
+  font-size: 10px;
+  padding: 3px 8px;
+  background: rgba(80,120,200,0.2);
+  border: 1px solid rgba(180,220,255,0.25);
+  border-radius: 999px;
+  color: #c8dcff;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
 .mmo-ppl-list {
   flex: 1;
   overflow-y: auto;

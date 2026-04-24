@@ -2852,6 +2852,31 @@
         ctx.beginPath(); ctx.arc(x1, y1, 2.5, 0, Math.PI*2); ctx.fill();
         ctx.beginPath(); ctx.arc(x2, y2, 2.5, 0, Math.PI*2); ctx.fill();
       });
+      // 🗾 選択中の大陸をハイライト
+      if (mercFilter.cont && mercFilter.cont !== 'all') {
+        const CONT_BOUNDS = {
+          asia:     { latMin: 0,   latMax: 70,  lngMin: 55,   lngMax: 145 },
+          europe:   { latMin: 36,  latMax: 72,  lngMin: -25,  lngMax: 55  },
+          africa:   { latMin: -35, latMax: 37,  lngMin: -20,  lngMax: 52  },
+          namerica: { latMin: 15,  latMax: 80,  lngMin: -170, lngMax: -55 },
+          samerica: { latMin: -55, latMax: 15,  lngMin: -85,  lngMax: -33 },
+          oceania:  { latMin: -47, latMax: -5,  lngMin: 110,  lngMax: 180 },
+        };
+        const b = CONT_BOUNDS[mercFilter.cont];
+        if (b) {
+          const x1 = mercX(b.lngMin) * W, y1 = mercY(b.latMax) * H;
+          const x2 = mercX(b.lngMax) * W, y2 = mercY(b.latMin) * H;
+          ctx.save();
+          ctx.fillStyle = 'rgba(255,220,120,0.12)';
+          ctx.fillRect(x1, y1, x2 - x1, y2 - y1);
+          ctx.strokeStyle = 'rgba(255,210,120,0.65)';
+          ctx.lineWidth = 2;
+          ctx.setLineDash([6, 4]);
+          ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+          ctx.setLineDash([]);
+          ctx.restore();
+        }
+      }
       // 国ピン（フィルタ適用）
       const drawnPins = [];
       Object.keys(byCountry).forEach(k => {
@@ -2963,7 +2988,64 @@
           });
         });
       } else {
-        mmoPeople.classList.remove('show');
+        // ピン以外 → 大陸判定 + その大陸の偉人集約表示
+        const rect2 = mmoCanvas.getBoundingClientRect();
+        const W = rect2.width, H = rect2.height;
+        const clickLat = Math.atan(Math.sinh(Math.PI * (1 - 2 * (my / H)))) * 180 / Math.PI;
+        const clickLng = (mx / W) * 360 - 180;
+        const cont = classifyContinent(clickLat, clickLng);
+        const chip = ov.querySelector(`[data-merc-cont="${cont}"]`);
+        if (chip) {
+          ov.querySelectorAll('[data-merc-cont]').forEach(x => x.classList.remove('active'));
+          chip.classList.add('active');
+          mercFilter.cont = cont;
+          drawMercator();
+          const CONT_NAMES = { asia: 'アジア', europe: 'ヨーロッパ', africa: 'アフリカ', namerica: '北アメリカ', samerica: '南アメリカ', oceania: 'オセアニア' };
+          const CONT_EMOJI = { asia: '🌏', europe: '🏰', africa: '🦁', namerica: '🗽', samerica: '🏞', oceania: '🦘' };
+          const peopleInCont = [];
+          const countriesInCont = [];
+          Object.keys(byCountry).forEach(k => {
+            const b = byCountry[k];
+            const f = filterCountry(b, k);
+            if (f && classifyContinent(f.lat, f.lng) === cont) {
+              countriesInCont.push({ country: k, count: f.people.length });
+              peopleInCont.push(...f.people.map(p => ({ ...p, country: k })));
+            }
+          });
+          if (peopleInCont.length > 0) {
+            const byCountryHTML = countriesInCont.map(c => `<span class="mmo-cc-chip">${c.country}·${c.count}</span>`).join('');
+            const items = peopleInCont.slice(0, 40).map(p => `
+              <button class="mmo-person" data-pid="${p.id}">
+                <span class="mmo-pname">${p.name}</span>
+                <span class="mmo-pbirth">${p.country} · ${p.birth != null ? p.birth + '年生' : ''}</span>
+              </button>
+            `).join('');
+            mmoPeople.innerHTML = `
+              <div class="mmo-ppl-head">
+                <div class="mmo-ppl-title">${CONT_EMOJI[cont] || ''} ${CONT_NAMES[cont]}<span class="mmo-ppl-count">${peopleInCont.length}人 · ${countriesInCont.length}か国</span></div>
+                <button class="mmo-ppl-close" aria-label="閉じる">×</button>
+              </div>
+              <div class="mmo-cc-wrap">${byCountryHTML}</div>
+              <div class="mmo-ppl-list">${items}</div>
+              ${peopleInCont.length > 40 ? `<div class="mmo-ppl-more">+ ${peopleInCont.length - 40}人</div>` : ''}
+            `;
+            mmoPeople.classList.add('show');
+            mmoPeople.querySelector('.mmo-ppl-close').addEventListener('click', () => mmoPeople.classList.remove('show'));
+            mmoPeople.querySelectorAll('.mmo-person').forEach(btn => {
+              btn.addEventListener('click', () => {
+                const id = btn.dataset.pid;
+                mmoPeople.classList.remove('show');
+                mmo.classList.remove('show');
+                ov.querySelector('.magic-deep-close')?.click();
+                setTimeout(() => { if (typeof window.showPerson === 'function') window.showPerson(id); }, 260);
+              });
+            });
+          } else {
+            mmoPeople.classList.remove('show');
+          }
+        } else {
+          mmoPeople.classList.remove('show');
+        }
       }
     });
     window.addEventListener('resize', () => { if (mmo.classList.contains('show')) drawMercator(); });
