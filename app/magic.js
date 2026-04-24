@@ -7221,50 +7221,86 @@
     stage.appendChild(renderer.domElement);
     renderer.domElement.style.touchAction = 'none';
 
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x1a1208);
-    scene.fog = new THREE.Fog(0x1a1208, 15, 50);
+    const isWa = zone.hallStyle === 'wa';
 
-    // === 大理石床テクスチャ ===
+    const scene = new THREE.Scene();
+    const bgColor = isWa ? 0x0a0604 : 0x1a1208;
+    scene.background = new THREE.Color(bgColor);
+    scene.fog = new THREE.Fog(bgColor, 15, 50);
+
+    // === 床テクスチャ（洋＝大理石 / 和＝畳風） ===
     const floorTex = (() => {
       const c = document.createElement('canvas'); c.width = 512; c.height = 512;
       const g = c.getContext('2d');
-      const grd = g.createLinearGradient(0,0,512,512);
-      grd.addColorStop(0, '#d8d0c0'); grd.addColorStop(0.5, '#b0a895'); grd.addColorStop(1, '#e0d8c8');
-      g.fillStyle = grd; g.fillRect(0,0,512,512);
-      for (let i = 0; i < 40; i++) {
-        g.strokeStyle = `rgba(${80+Math.random()*60},${70+Math.random()*40},${50+Math.random()*30},${0.1+Math.random()*0.3})`;
-        g.lineWidth = 0.5 + Math.random() * 1.5;
-        g.beginPath();
-        let x = Math.random()*512, y = Math.random()*512;
-        g.moveTo(x, y);
-        for (let k = 0; k < 20; k++) {
-          x += (Math.random()-0.5)*40; y += (Math.random()-0.5)*40;
-          g.lineTo(x, y);
+      if (isWa) {
+        // 畳（イ草）
+        const grd = g.createLinearGradient(0, 0, 0, 512);
+        grd.addColorStop(0, '#b8a66a'); grd.addColorStop(0.5, '#c8b474'); grd.addColorStop(1, '#a89450');
+        g.fillStyle = grd; g.fillRect(0, 0, 512, 512);
+        // 縦イ草
+        for (let x = 0; x < 512; x += 2) {
+          g.strokeStyle = `rgba(${100+Math.random()*40},${85+Math.random()*30},${40+Math.random()*25},${0.25+Math.random()*0.3})`;
+          g.lineWidth = 1; g.beginPath(); g.moveTo(x, 0); g.lineTo(x, 512); g.stroke();
         }
-        g.stroke();
+        // 畳の境目（縁）
+        g.strokeStyle = '#3a2814'; g.lineWidth = 4;
+        g.strokeRect(4, 4, 504, 504);
+        g.strokeStyle = '#2a1a08'; g.lineWidth = 1;
+        g.strokeRect(6, 6, 500, 500);
+      } else {
+        const grd = g.createLinearGradient(0,0,512,512);
+        grd.addColorStop(0, '#d8d0c0'); grd.addColorStop(0.5, '#b0a895'); grd.addColorStop(1, '#e0d8c8');
+        g.fillStyle = grd; g.fillRect(0,0,512,512);
+        for (let i = 0; i < 40; i++) {
+          g.strokeStyle = `rgba(${80+Math.random()*60},${70+Math.random()*40},${50+Math.random()*30},${0.1+Math.random()*0.3})`;
+          g.lineWidth = 0.5 + Math.random() * 1.5;
+          g.beginPath();
+          let x = Math.random()*512, y = Math.random()*512;
+          g.moveTo(x, y);
+          for (let k = 0; k < 20; k++) {
+            x += (Math.random()-0.5)*40; y += (Math.random()-0.5)*40;
+            g.lineTo(x, y);
+          }
+          g.stroke();
+        }
+        g.strokeStyle = 'rgba(40,30,20,0.3)';
+        g.lineWidth = 1;
+        for (let i = 0; i < 8; i++) { g.beginPath(); g.moveTo(i*64, 0); g.lineTo(i*64, 512); g.stroke(); g.beginPath(); g.moveTo(0, i*64); g.lineTo(512, i*64); g.stroke(); }
       }
-      // タイル目地
-      g.strokeStyle = 'rgba(40,30,20,0.3)';
-      g.lineWidth = 1;
-      for (let i = 0; i < 8; i++) { g.beginPath(); g.moveTo(i*64, 0); g.lineTo(i*64, 512); g.stroke(); g.beginPath(); g.moveTo(0, i*64); g.lineTo(512, i*64); g.stroke(); }
       const t = new THREE.CanvasTexture(c);
       t.wrapS = t.wrapT = THREE.RepeatWrapping;
-      t.repeat.set(10, 10);
+      t.repeat.set(isWa ? 6 : 10, isWa ? 6 : 10);
       return t;
     })();
-    // === 壁テクスチャ ===
+    // === 壁テクスチャ（洋＝石 / 和＝漆喰に縦格子） ===
     const wallTex = (() => {
       const c = document.createElement('canvas'); c.width = 512; c.height = 512;
       const g = c.getContext('2d');
-      g.fillStyle = '#6a5a48'; g.fillRect(0,0,512,512);
-      for (let i = 0; i < 500; i++) {
-        g.fillStyle = `rgba(${60+Math.random()*50},${45+Math.random()*35},${30+Math.random()*25},${0.2+Math.random()*0.3})`;
-        g.fillRect(Math.random()*512, Math.random()*512, 1+Math.random()*3, 1+Math.random()*3);
+      if (isWa) {
+        // 漆喰の白+朱の壁
+        g.fillStyle = '#e8d8b8'; g.fillRect(0, 0, 512, 512);
+        for (let i = 0; i < 400; i++) {
+          g.fillStyle = `rgba(${160+Math.random()*40},${120+Math.random()*30},${70+Math.random()*30},${0.15+Math.random()*0.25})`;
+          g.fillRect(Math.random()*512, Math.random()*512, 1+Math.random()*2, 1+Math.random()*2);
+        }
+        // 縦格子（木材）
+        g.fillStyle = '#3a2210';
+        for (let x = 0; x < 512; x += 42) {
+          g.fillRect(x, 0, 4, 512);
+        }
+        // 横木
+        g.fillRect(0, 0, 512, 12);
+        g.fillRect(0, 500, 512, 12);
+        g.fillRect(0, 250, 512, 8);
+      } else {
+        g.fillStyle = '#6a5a48'; g.fillRect(0,0,512,512);
+        for (let i = 0; i < 500; i++) {
+          g.fillStyle = `rgba(${60+Math.random()*50},${45+Math.random()*35},${30+Math.random()*25},${0.2+Math.random()*0.3})`;
+          g.fillRect(Math.random()*512, Math.random()*512, 1+Math.random()*3, 1+Math.random()*3);
+        }
+        g.strokeStyle = 'rgba(200,170,110,0.15)'; g.lineWidth = 1;
+        for (let i = 0; i < 8; i++) { g.beginPath(); g.moveTo(i*64, 0); g.lineTo(i*64, 512); g.stroke(); }
       }
-      // 縦の装飾線
-      g.strokeStyle = 'rgba(200,170,110,0.15)'; g.lineWidth = 1;
-      for (let i = 0; i < 8; i++) { g.beginPath(); g.moveTo(i*64, 0); g.lineTo(i*64, 512); g.stroke(); }
       const t = new THREE.CanvasTexture(c);
       t.wrapS = t.wrapT = THREE.RepeatWrapping;
       return t;
@@ -7288,61 +7324,189 @@
     const ceilTex = (() => {
       const c = document.createElement('canvas'); c.width = 256; c.height = 256;
       const g = c.getContext('2d');
-      const grd = g.createRadialGradient(128, 128, 20, 128, 128, 128);
-      grd.addColorStop(0, '#fff0c0'); grd.addColorStop(0.5, '#8a6030'); grd.addColorStop(1, '#2a1808');
-      g.fillStyle = grd; g.fillRect(0,0,256,256);
-      // 装飾模様
-      g.strokeStyle = 'rgba(255,220,160,0.4)'; g.lineWidth = 2;
-      for (let i = 0; i < 8; i++) {
-        const a = (i/8) * Math.PI * 2;
-        g.beginPath(); g.moveTo(128, 128); g.lineTo(128+Math.cos(a)*120, 128+Math.sin(a)*120); g.stroke();
+      if (isWa) {
+        // 格天井風 (gohtenjou)
+        g.fillStyle = '#2a1a0a'; g.fillRect(0,0,256,256);
+        g.strokeStyle = '#8a6030'; g.lineWidth = 3;
+        for (let i = 0; i <= 8; i++) {
+          g.beginPath(); g.moveTo(0, i*32); g.lineTo(256, i*32); g.stroke();
+          g.beginPath(); g.moveTo(i*32, 0); g.lineTo(i*32, 256); g.stroke();
+        }
+        // 升ごとに金の菱
+        g.strokeStyle = 'rgba(220,170,80,0.4)'; g.lineWidth = 1;
+        for (let y = 0; y < 8; y++) for (let x = 0; x < 8; x++) {
+          const cx = x*32+16, cy = y*32+16;
+          g.beginPath(); g.moveTo(cx, cy-8); g.lineTo(cx+8, cy); g.lineTo(cx, cy+8); g.lineTo(cx-8, cy); g.closePath(); g.stroke();
+        }
+      } else {
+        const grd = g.createRadialGradient(128, 128, 20, 128, 128, 128);
+        grd.addColorStop(0, '#fff0c0'); grd.addColorStop(0.5, '#8a6030'); grd.addColorStop(1, '#2a1808');
+        g.fillStyle = grd; g.fillRect(0,0,256,256);
+        g.strokeStyle = 'rgba(255,220,160,0.4)'; g.lineWidth = 2;
+        for (let i = 0; i < 8; i++) {
+          const a = (i/8) * Math.PI * 2;
+          g.beginPath(); g.moveTo(128, 128); g.lineTo(128+Math.cos(a)*120, 128+Math.sin(a)*120); g.stroke();
+        }
+        g.beginPath(); g.arc(128,128,60,0,Math.PI*2); g.stroke();
+        g.beginPath(); g.arc(128,128,100,0,Math.PI*2); g.stroke();
       }
-      g.beginPath(); g.arc(128,128,60,0,Math.PI*2); g.stroke();
-      g.beginPath(); g.arc(128,128,100,0,Math.PI*2); g.stroke();
-      return new THREE.CanvasTexture(c);
+      const t = new THREE.CanvasTexture(c);
+      if (isWa) { t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(4, 4); }
+      return t;
     })();
-    const ceiling = new THREE.Mesh(ceilGeo, new THREE.MeshStandardMaterial({ map: ceilTex, roughness: 0.7, side: THREE.DoubleSide }));
+    const ceiling = new THREE.Mesh(ceilGeo, new THREE.MeshStandardMaterial({ map: ceilTex, roughness: 0.9, side: THREE.DoubleSide }));
     ceiling.rotation.x = Math.PI / 2;
     ceiling.position.y = wallHeight;
     scene.add(ceiling);
 
-    // シャンデリア（中央の光源＋ジオメトリ）
-    const chandelier = new THREE.Group();
-    const chandLight = new THREE.PointLight(0xffd890, 2.0, 30, 1.5);
+    // 照明（洋＝シャンデリア / 和＝中央に釣り灯籠 + 周囲の赤提灯）
+    const chandLight = new THREE.PointLight(
+      isWa ? 0xff9060 : 0xffd890,
+      isWa ? 1.6 : 2.0,
+      isWa ? 22 : 30, 1.5
+    );
     chandLight.position.set(0, wallHeight - 0.5, 0);
     scene.add(chandLight);
-    const chandCore = new THREE.Mesh(
-      new THREE.SphereGeometry(0.3, 16, 12),
-      new THREE.MeshBasicMaterial({ color: 0xfff0c0 })
-    );
-    chandCore.position.set(0, wallHeight - 0.8, 0);
-    chandelier.add(chandCore);
-    for (let i = 0; i < 8; i++) {
-      const a = (i/8) * Math.PI * 2;
-      const arm = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.015, 0.03, 0.9, 6),
-        new THREE.MeshStandardMaterial({ color: 0xc8a040, metalness: 0.8, roughness: 0.3 })
+    const chandelier = new THREE.Group();
+    if (isWa) {
+      // 中央に大きな和提灯
+      const lantern = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.55, 0.55, 1.1, 20, 6, true),
+        new THREE.MeshStandardMaterial({
+          color: 0xd02020, roughness: 0.6, emissive: 0x801010, emissiveIntensity: 0.8,
+          side: THREE.DoubleSide,
+        })
       );
-      arm.position.set(Math.cos(a)*0.6, wallHeight-1.0, Math.sin(a)*0.6);
-      arm.rotation.z = -Math.cos(a)*0.8;
-      arm.rotation.x = Math.sin(a)*0.8;
-      chandelier.add(arm);
-      const bulb = new THREE.Mesh(
-        new THREE.SphereGeometry(0.08, 10, 8),
-        new THREE.MeshBasicMaterial({ color: 0xfff0a0 })
+      lantern.position.set(0, wallHeight - 1.1, 0);
+      chandelier.add(lantern);
+      // 提灯の上下の輪
+      for (const dy of [-0.55, 0.55]) {
+        const ring = new THREE.Mesh(
+          new THREE.TorusGeometry(0.58, 0.04, 8, 24),
+          new THREE.MeshStandardMaterial({ color: 0x2a1808, metalness: 0.5, roughness: 0.5 })
+        );
+        ring.position.set(0, wallHeight - 1.1 + dy, 0);
+        ring.rotation.x = Math.PI / 2;
+        chandelier.add(ring);
+      }
+      // 吊り紐
+      const rope = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.012, 0.012, wallHeight - (wallHeight - 0.55), 6),
+        new THREE.MeshStandardMaterial({ color: 0x2a1808 })
       );
-      bulb.position.set(Math.cos(a)*1.2, wallHeight-1.2, Math.sin(a)*1.2);
-      chandelier.add(bulb);
+      rope.position.set(0, wallHeight - 0.28, 0);
+      chandelier.add(rope);
+      // 4本の梁（天井から降りるアクセント）
+      for (let i = 0; i < 4; i++) {
+        const a = i * Math.PI / 2;
+        const beam = new THREE.Mesh(
+          new THREE.BoxGeometry(radius * 2 + 2, 0.18, 0.22),
+          new THREE.MeshStandardMaterial({ color: 0x3a2210, roughness: 0.8 })
+        );
+        beam.rotation.y = a;
+        beam.position.set(0, wallHeight - 0.15, 0);
+        chandelier.add(beam);
+      }
+    } else {
+      const chandCore = new THREE.Mesh(
+        new THREE.SphereGeometry(0.3, 16, 12),
+        new THREE.MeshBasicMaterial({ color: 0xfff0c0 })
+      );
+      chandCore.position.set(0, wallHeight - 0.8, 0);
+      chandelier.add(chandCore);
+      for (let i = 0; i < 8; i++) {
+        const a = (i/8) * Math.PI * 2;
+        const arm = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.015, 0.03, 0.9, 6),
+          new THREE.MeshStandardMaterial({ color: 0xc8a040, metalness: 0.8, roughness: 0.3 })
+        );
+        arm.position.set(Math.cos(a)*0.6, wallHeight-1.0, Math.sin(a)*0.6);
+        arm.rotation.z = -Math.cos(a)*0.8;
+        arm.rotation.x = Math.sin(a)*0.8;
+        chandelier.add(arm);
+        const bulb = new THREE.Mesh(
+          new THREE.SphereGeometry(0.08, 10, 8),
+          new THREE.MeshBasicMaterial({ color: 0xfff0a0 })
+        );
+        bulb.position.set(Math.cos(a)*1.2, wallHeight-1.2, Math.sin(a)*1.2);
+        chandelier.add(bulb);
+      }
     }
     scene.add(chandelier);
 
     // 環境光
-    scene.add(new THREE.AmbientLight(0x6a5a3a, 0.5));
-    const hemi = new THREE.HemisphereLight(0xd0b080, 0x2a2010, 0.4);
+    scene.add(new THREE.AmbientLight(isWa ? 0x3a1810 : 0x6a5a3a, 0.5));
+    const hemi = new THREE.HemisphereLight(isWa ? 0xc08040 : 0xd0b080, 0x2a1a10, 0.4);
     scene.add(hemi);
+
+    // 和ホール: 壁の四隅に赤提灯を吊り下げる
+    if (isWa) {
+      for (let i = 0; i < N; i += 2) {
+        const a = i * wallAngle + wallAngle / 2;
+        const px = Math.cos(a) * (radius - 1.2), pz = Math.sin(a) * (radius - 1.2);
+        // 提灯本体
+        const lt = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.2, 0.2, 0.38, 14, 4, true),
+          new THREE.MeshStandardMaterial({
+            color: 0xd02820, roughness: 0.6, emissive: 0x701010, emissiveIntensity: 1.1,
+            side: THREE.DoubleSide,
+          })
+        );
+        lt.position.set(px, wallHeight - 1.4, pz);
+        scene.add(lt);
+        // 提灯の光
+        const lg = new THREE.PointLight(0xff8040, 0.6, 6, 1.5);
+        lg.position.copy(lt.position);
+        scene.add(lg);
+        // 吊り紐
+        const str = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.008, 0.008, 1.2, 4),
+          new THREE.MeshStandardMaterial({ color: 0x2a1a08 })
+        );
+        str.position.set(px, wallHeight - 0.6, pz);
+        scene.add(str);
+      }
+    }
 
     // === 壁 + 絵画 ===
     const paintings = []; // {mesh, painting: work}
+
+    // ★ Wikimedia Commons URL を CORS-clean な upload.wikimedia.org thumbnail URL に解決
+    //   Special:FilePath リダイレクトを経由せず、API から直接サムネURLを得る
+    async function resolveCommonsUrls(urlList) {
+      const out = new Map();
+      const batches = [];
+      const need = [];
+      urlList.forEach(u => {
+        const m = u.match(/Special:FilePath\/([^?]+)/);
+        if (m) need.push({ orig: u, filename: decodeURIComponent(m[1]).replace(/_/g, ' ') });
+        else out.set(u, u);
+      });
+      for (let i = 0; i < need.length; i += 40) batches.push(need.slice(i, i + 40));
+      for (const batch of batches) {
+        const titles = batch.map(b => 'File:' + b.filename).join('|');
+        const api = `https://commons.wikimedia.org/w/api.php?action=query&format=json&prop=imageinfo&iiprop=url&iiurlwidth=1024&titles=${encodeURIComponent(titles)}&origin=*`;
+        try {
+          const r = await fetch(api);
+          const d = await r.json();
+          const pages = Object.values(d.query?.pages || {});
+          const byTitle = new Map();
+          pages.forEach(p => {
+            if (p.title && p.imageinfo?.[0]) {
+              byTitle.set(p.title.replace(/^File:/, ''), p.imageinfo[0].thumburl || p.imageinfo[0].url);
+            }
+          });
+          batch.forEach(b => {
+            const url = byTitle.get(b.filename);
+            if (url) out.set(b.orig, url);
+            else out.set(b.orig, b.orig); // フォールバック: 元URL
+          });
+        } catch (e) {
+          batch.forEach(b => out.set(b.orig, b.orig));
+        }
+      }
+      return out;
+    }
     // Wikimedia画像は 302→301→200 リダイレクト。
     // キャッシュ汚染を避けるためcache-busterを付与。
     // 戦略1: Image + crossOrigin="anonymous" (最速)
@@ -7421,12 +7585,14 @@
       // 中心から内側に少し出す（壁から浮かせる）
       const nx = -Math.cos((a + nextA) / 2), nz = -Math.sin((a + nextA) / 2);
       const offset = 0.06;
-      // 額縁（金色）
+      // 額縁（洋＝金色 / 和＝黒漆＋朱の内枠）
       const frameW = Math.min(segLen * 0.75, 2.4);
       const frameH = frameW * 1.3;
-      const frameThick = 0.14;
+      const frameThick = isWa ? 0.18 : 0.14;
       const frameGeo = new THREE.BoxGeometry(frameW + frameThick*2, frameH + frameThick*2, 0.08);
-      const frameMat = new THREE.MeshStandardMaterial({ color: 0xc8a050, metalness: 0.8, roughness: 0.35 });
+      const frameMat = isWa
+        ? new THREE.MeshStandardMaterial({ color: 0x1a1008, metalness: 0.4, roughness: 0.5 })
+        : new THREE.MeshStandardMaterial({ color: 0xc8a050, metalness: 0.8, roughness: 0.35 });
       const frame = new THREE.Mesh(frameGeo, frameMat);
       frame.position.set(mx + nx * offset, wallHeight / 2 + 0.3, mz + nz * offset);
       frame.lookAt(0, wallHeight / 2 + 0.3, 0);
@@ -7448,36 +7614,38 @@
       canvasMesh.userData.work = work;
       canvasMesh.userData.wallMid = { x: mx, z: mz };
       paintings.push(canvasMesh);
-      // 画像ロード（非同期・fetch経由でCORS確実に）
-      loadArtTexture(work.img).then(tex => {
-        const img = tex.image;
-        const ar = img.width / img.height;
-        const planeAR = frameW / frameH;
-        let sx = 1, sy = 1;
-        if (ar > planeAR) sy = planeAR / ar; else sx = ar / planeAR;
-        canvasMesh.scale.set(sx, sy, 1);
-        canvasMat.map = tex; canvasMat.needsUpdate = true;
-      }).catch(() => {
-        // フォールバック: 普通のImageでcrossOrigin抜きで試みる（表示専用）
-        const img = new Image();
-        img.onload = () => {
-          const c = document.createElement('canvas');
-          c.width = img.naturalWidth; c.height = img.naturalHeight;
-          try {
-            c.getContext('2d').drawImage(img, 0, 0);
-            const tex = new THREE.CanvasTexture(c);
-            if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace || 'srgb';
-            const ar = img.naturalWidth / img.naturalHeight;
-            const planeAR = frameW / frameH;
-            let sx = 1, sy = 1;
-            if (ar > planeAR) sy = planeAR / ar; else sx = ar / planeAR;
-            canvasMesh.scale.set(sx, sy, 1);
-            canvasMat.map = tex; canvasMat.needsUpdate = true;
-          } catch {}
-        };
-        img.crossOrigin = 'anonymous';
-        img.src = work.img;
-      });
+      canvasMesh.userData.load = () => {
+        const src = work._resolvedImg || work.img;
+        loadArtTexture(src).then(tex => {
+          const img = tex.image;
+          const ar = img.width / img.height;
+          const planeAR = frameW / frameH;
+          let sx = 1, sy = 1;
+          if (ar > planeAR) sy = planeAR / ar; else sx = ar / planeAR;
+          canvasMesh.scale.set(sx, sy, 1);
+          canvasMat.map = tex; canvasMat.needsUpdate = true;
+        }).catch(() => {
+          // フォールバック（crossOrigin抜き、タイントしてもOK：canvas描画で洗浄は不可だが同一オリジンblobなら有効）
+          const im = new Image();
+          im.onload = () => {
+            try {
+              const c = document.createElement('canvas');
+              c.width = im.naturalWidth; c.height = im.naturalHeight;
+              c.getContext('2d').drawImage(im, 0, 0);
+              const tex = new THREE.CanvasTexture(c);
+              if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace || 'srgb';
+              const ar = im.naturalWidth / im.naturalHeight;
+              const planeAR = frameW / frameH;
+              let sx = 1, sy = 1;
+              if (ar > planeAR) sy = planeAR / ar; else sx = ar / planeAR;
+              canvasMesh.scale.set(sx, sy, 1);
+              canvasMat.map = tex; canvasMat.needsUpdate = true;
+            } catch {}
+          };
+          im.crossOrigin = 'anonymous';
+          im.src = src;
+        });
+      };
       // スポットライト
       const spot = new THREE.SpotLight(0xfff0c0, 1.2, 8, Math.PI / 5, 0.4, 1.5);
       spot.position.set(mx + nx * 2.0, wallHeight - 0.5, mz + nz * 2.0);
@@ -7499,6 +7667,15 @@
       plaque.lookAt(0, plaque.position.y, 0);
       scene.add(plaque);
     }
+
+    // ★ URLをまとめて解決してから画像ロード開始
+    resolveCommonsUrls(works.map(w => w.img)).then(resolved => {
+      works.forEach(w => { w._resolvedImg = resolved.get(w.img) || w.img; });
+      paintings.forEach(p => p.userData.load && p.userData.load());
+    }).catch(() => {
+      // 解決に失敗しても元URLで試みる
+      paintings.forEach(p => p.userData.load && p.userData.load());
+    });
 
     // === カメラ ===
     const camera = new THREE.PerspectiveCamera(70, W()/H(), 0.1, 200);
