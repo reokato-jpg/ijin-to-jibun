@@ -5002,35 +5002,46 @@
     scene.add(sunLight);
     scene.add(new THREE.AmbientLight(0x2a2035, 0.28));
 
-    // 太陽レンズグロー（spriteで放射状の光）
+    // 太陽レンズグロー（すべて円対称で「いびつ」にならない造形）
     const sunGlowTex = (() => {
-      const sc = document.createElement('canvas'); sc.width = 512; sc.height = 512;
+      const sc = document.createElement('canvas'); sc.width = 1024; sc.height = 1024;
       const g = sc.getContext('2d');
-      const grd = g.createRadialGradient(256, 256, 0, 256, 256, 256);
-      grd.addColorStop(0, 'rgba(255,240,180,0.9)');
-      grd.addColorStop(0.15, 'rgba(255,200,120,0.55)');
-      grd.addColorStop(0.4, 'rgba(255,140,80,0.18)');
-      grd.addColorStop(1, 'rgba(255,100,40,0)');
-      g.fillStyle = grd; g.fillRect(0,0,512,512);
-      // 放射の光条
+      // 二段の放射状グロー（内側 明るいコア / 外側 拡散）
+      const grdInner = g.createRadialGradient(512, 512, 0, 512, 512, 300);
+      grdInner.addColorStop(0,   'rgba(255,248,210,0.95)');
+      grdInner.addColorStop(0.08,'rgba(255,230,170,0.8)');
+      grdInner.addColorStop(0.25,'rgba(255,190,110,0.35)');
+      grdInner.addColorStop(0.55,'rgba(255,140,70,0.1)');
+      grdInner.addColorStop(1,   'rgba(255,100,40,0)');
+      g.fillStyle = grdInner; g.fillRect(0, 0, 1024, 1024);
+      // もう一段外側の拡散ハロ
+      const grdOuter = g.createRadialGradient(512, 512, 200, 512, 512, 512);
+      grdOuter.addColorStop(0,   'rgba(255,180,100,0.25)');
+      grdOuter.addColorStop(0.5, 'rgba(255,140,70,0.08)');
+      grdOuter.addColorStop(1,   'rgba(255,120,50,0)');
       g.globalCompositeOperation = 'lighter';
-      for (let i = 0; i < 6; i++) {
-        const ang = (i / 6) * Math.PI * 2;
-        const gg = g.createLinearGradient(256, 256, 256 + Math.cos(ang)*256, 256 + Math.sin(ang)*256);
-        gg.addColorStop(0, 'rgba(255,230,160,0.35)');
+      g.fillStyle = grdOuter; g.fillRect(0, 0, 1024, 1024);
+      // 極細・多数の光条（48本）を薄く＆放射対称に
+      for (let i = 0; i < 48; i++) {
+        const ang = (i / 48) * Math.PI * 2;
+        const gg = g.createLinearGradient(512, 512, 512 + Math.cos(ang)*512, 512 + Math.sin(ang)*512);
+        const alpha = 0.06 + (i % 4 === 0 ? 0.08 : 0);
+        gg.addColorStop(0, `rgba(255,240,180,${alpha})`);
         gg.addColorStop(1, 'rgba(255,180,100,0)');
         g.save();
-        g.translate(256, 256);
+        g.translate(512, 512);
         g.rotate(ang);
         g.fillStyle = gg;
-        g.fillRect(-4, 0, 8, 256);
+        g.fillRect(-1.2, 0, 2.4, 512);
         g.restore();
       }
-      return new THREE.CanvasTexture(sc);
+      const t = new THREE.CanvasTexture(sc);
+      t.anisotropy = 8;
+      return t;
     })();
     const sunGlowMat = new THREE.SpriteMaterial({ map: sunGlowTex, transparent: true, opacity: 0.0, depthWrite: false, blending: THREE.AdditiveBlending });
     const sunGlow = new THREE.Sprite(sunGlowMat);
-    sunGlow.scale.set(18, 18, 1);
+    sunGlow.scale.set(16, 16, 1);
     sunGlow.position.set(0, 0, 0);
     scene.add(sunGlow);
 
@@ -5820,9 +5831,9 @@
     // ☀️ 太陽プロミネンス（プラズマアーク6本）
     // ============================================================
     const prominences = [];
-    for (let i = 0; i < 4; i++) {
-      const a = (i / 4) * Math.PI * 2;
-      const h = 1.2 + Math.random() * 1.4;
+    for (let i = 0; i < 8; i++) {
+      const a = (i / 8) * Math.PI * 2 + Math.random() * 0.2;
+      const h = 1.0 + Math.random() * 1.2;
       // 放物線カーブ
       const curve = new THREE.CubicBezierCurve3(
         new THREE.Vector3(Math.cos(a) * 3.5, Math.sin(a) * 3.5, 0),
