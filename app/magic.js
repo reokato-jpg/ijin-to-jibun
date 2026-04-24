@@ -5809,9 +5809,9 @@
     sunLight.castShadow = true;
     sunLight.shadow.mapSize.set(1024, 1024);
     sunLight.shadow.camera.near = 0.5;
-    sunLight.shadow.camera.far = 40;
-    sunLight.shadow.camera.left = -12; sunLight.shadow.camera.right = 12;
-    sunLight.shadow.camera.top = 12; sunLight.shadow.camera.bottom = -4;
+    sunLight.shadow.camera.far = 60;
+    sunLight.shadow.camera.left = -16; sunLight.shadow.camera.right = 16;
+    sunLight.shadow.camera.top = 16; sunLight.shadow.camera.bottom = -6;
     sunLight.shadow.bias = -0.0005;
     sunLight.shadow.radius = 3;
     scene.add(sunLight);
@@ -5821,75 +5821,188 @@
     scene.add(rimLight);
     scene.add(new THREE.AmbientLight(0x402020, 0.25));
 
-    const camera = new THREE.PerspectiveCamera(55, W/H, 0.1, 500);
-    camera.position.set(0, 4, 13);
-    camera.lookAt(0, 3.2, 0);
+    const camera = new THREE.PerspectiveCamera(48, W/H, 0.1, 500);
+    camera.position.set(0, 6, 18);
+    camera.lookAt(0, 4.5, 0);
 
-    // 空のドーム（大きな球を内側から見る）
+    // ☁️ ジブリ的な空（柔らかい青→薄紫→白金、ふわふわの雲）
     const skyTex = (() => {
-      const sc = document.createElement('canvas'); sc.width = 1024; sc.height = 512;
+      const sc = document.createElement('canvas'); sc.width = 2048; sc.height = 1024;
       const g = sc.getContext('2d');
-      const grd = g.createLinearGradient(0, 0, 0, 512);
-      grd.addColorStop(0, '#3a1a4a');   // 紫夕空
-      grd.addColorStop(0.4, '#c0603a'); // オレンジ
-      grd.addColorStop(0.7, '#f0a060'); // 金
-      grd.addColorStop(1, '#ffe0a0');   // 地平
-      g.fillStyle = grd; g.fillRect(0, 0, 1024, 512);
-      // 雲
-      g.globalCompositeOperation = 'lighter';
-      for (let i = 0; i < 20; i++) {
-        const x = Math.random() * 1024, y = 50 + Math.random() * 250;
-        const w = 40 + Math.random() * 120;
+      const grd = g.createLinearGradient(0, 0, 0, 1024);
+      grd.addColorStop(0, '#5a7ab0');   // 高空の青
+      grd.addColorStop(0.35, '#9ab8d8');
+      grd.addColorStop(0.6, '#e8d8c8'); // 薄い桃
+      grd.addColorStop(0.82, '#f8e8b8'); // 金色地平
+      grd.addColorStop(1, '#ffeabc');
+      g.fillStyle = grd; g.fillRect(0, 0, 2048, 1024);
+      // ジブリ風のぽわっとした雲（大小、グラデ、重ね）
+      for (let i = 0; i < 35; i++) {
+        const x = Math.random() * 2048, y = 50 + Math.random() * 520;
+        const w = 80 + Math.random() * 280;
+        const h = w * (0.25 + Math.random() * 0.15);
+        // 本体
         const grd2 = g.createRadialGradient(x, y, 0, x, y, w);
-        grd2.addColorStop(0, 'rgba(255,230,180,0.4)');
-        grd2.addColorStop(1, 'rgba(255,230,180,0)');
+        grd2.addColorStop(0, 'rgba(255,255,255,0.85)');
+        grd2.addColorStop(0.5, 'rgba(255,250,240,0.5)');
+        grd2.addColorStop(1, 'rgba(255,240,220,0)');
         g.fillStyle = grd2;
-        g.beginPath(); g.ellipse(x, y, w, w * 0.3, 0, 0, Math.PI*2); g.fill();
+        g.beginPath(); g.ellipse(x, y, w, h, 0, 0, Math.PI*2); g.fill();
+        // ぽこぽこ雲のコブ
+        for (let k = 0; k < 5; k++) {
+          const ox = x + (Math.random() - 0.5) * w * 1.6;
+          const oy = y - h * 0.3 - Math.random() * h * 0.4;
+          const ow = w * (0.25 + Math.random() * 0.35);
+          const grd3 = g.createRadialGradient(ox, oy, 0, ox, oy, ow);
+          grd3.addColorStop(0, 'rgba(255,255,255,0.6)');
+          grd3.addColorStop(1, 'rgba(255,255,255,0)');
+          g.fillStyle = grd3;
+          g.beginPath(); g.ellipse(ox, oy, ow, ow * 0.7, 0, 0, Math.PI*2); g.fill();
+        }
+      }
+      // 遠景の水平雲帯
+      for (let i = 0; i < 14; i++) {
+        const y = 520 + Math.random() * 300;
+        const grd4 = g.createLinearGradient(0, y, 2048, y);
+        grd4.addColorStop(0, 'rgba(255,240,220,0)');
+        grd4.addColorStop(0.5, 'rgba(255,248,235,0.35)');
+        grd4.addColorStop(1, 'rgba(255,240,220,0)');
+        g.fillStyle = grd4;
+        g.fillRect(0, y, 2048, 12 + Math.random() * 18);
       }
       return new THREE.CanvasTexture(sc);
     })();
+    scene.background = skyTex; // 背景に直接
+    // 空のドーム（補助）
     const sky = new THREE.Mesh(
-      new THREE.SphereGeometry(90, 32, 16),
-      new THREE.MeshBasicMaterial({ map: skyTex, side: THREE.BackSide })
+      new THREE.SphereGeometry(120, 48, 24),
+      new THREE.MeshBasicMaterial({ map: skyTex, side: THREE.BackSide, fog: false })
     );
     scene.add(sky);
-    // 太陽本体
+    // フォグを空の色に合わせて（浮遊感を出す）
+    scene.fog = new THREE.Fog(0xe8d8c8, 30, 110);
+    // 太陽本体（柔らかい光球）
     const sunMesh = new THREE.Mesh(
-      new THREE.SphereGeometry(2.5, 24, 16),
-      new THREE.MeshBasicMaterial({ color: 0xfff0b0 })
+      new THREE.SphereGeometry(2.2, 24, 16),
+      new THREE.MeshBasicMaterial({ color: 0xfff8dc, fog: false })
     );
-    sunMesh.position.set(35, 22, -40);
+    sunMesh.position.set(28, 32, -48);
     scene.add(sunMesh);
+    // 太陽のハロ
+    const sunHalo = new THREE.Sprite(new THREE.SpriteMaterial({
+      color: 0xfff0c0, transparent: true, opacity: 0.6,
+      blending: THREE.AdditiveBlending, depthWrite: false, fog: false,
+    }));
+    sunHalo.position.copy(sunMesh.position);
+    sunHalo.scale.set(14, 14, 14);
+    scene.add(sunHalo);
 
-    // 地面
+    // 🏝 浮島テクスチャ
     const groundTex = (() => {
       const sc = document.createElement('canvas'); sc.width = 512; sc.height = 512;
       const g = sc.getContext('2d');
-      g.fillStyle = '#3a6028'; g.fillRect(0, 0, 512, 512);
-      for (let i = 0; i < 1200; i++) {
-        const c = Math.random() < 0.5 ? '#4a7030' : '#2a5018';
+      g.fillStyle = '#4a7030'; g.fillRect(0, 0, 512, 512);
+      for (let i = 0; i < 1400; i++) {
+        const c = Math.random() < 0.5 ? '#5a8035' : '#2a5018';
         g.fillStyle = c;
         g.fillRect(Math.random()*512, Math.random()*512, 1 + Math.random()*2, 1 + Math.random()*3);
       }
-      // 小さな花
-      for (let i = 0; i < 40; i++) {
-        const colors = ['#ff6080', '#ffd070', '#ffffff', '#d080ff'];
-        g.fillStyle = colors[i % 4];
+      // 黄金色の草ぶき
+      for (let i = 0; i < 200; i++) {
+        g.fillStyle = `rgba(${200+Math.random()*50},${180+Math.random()*40},${90+Math.random()*40},0.4)`;
+        g.fillRect(Math.random()*512, Math.random()*512, 1, 2 + Math.random()*3);
+      }
+      // 花
+      for (let i = 0; i < 50; i++) {
+        const colors = ['#ff6080', '#ffd070', '#ffffff', '#d080ff', '#ffb040'];
+        g.fillStyle = colors[i % 5];
         const x = Math.random()*512, y = Math.random()*512;
-        g.beginPath(); g.arc(x, y, 2, 0, Math.PI*2); g.fill();
+        g.beginPath(); g.arc(x, y, 2.5, 0, Math.PI*2); g.fill();
       }
       const t = new THREE.CanvasTexture(sc);
       t.wrapS = t.wrapT = THREE.RepeatWrapping;
-      t.repeat.set(20, 20);
+      t.repeat.set(8, 8);
       return t;
     })();
+    // 🏝 浮島本体 — 中央が盛り上がり、端は緩やかに落ちて霧に消える
+    const islandGeo = new THREE.PlaneGeometry(80, 80, 120, 120);
+    {
+      const posAttr = islandGeo.attributes.position;
+      for (let i = 0; i < posAttr.count; i++) {
+        const x = posAttr.getX(i), y = posAttr.getY(i);
+        const r = Math.hypot(x, y);
+        // 中央の大きな丘（tree が立つ場所）
+        const hill = Math.exp(-r * r / 120) * 2.4;
+        // 副丘（なだらかな起伏）
+        const sub1 = Math.exp(-((x - 6)**2 + (y + 5)**2) / 60) * 0.8;
+        const sub2 = Math.exp(-((x + 7)**2 + (y - 4)**2) / 80) * 0.6;
+        // 岩の微細ノイズ
+        const noise = (Math.sin(x * 0.6) * Math.cos(y * 0.55)
+                     + Math.sin(x * 1.3 + 1) * Math.cos(y * 0.9) * 0.6) * 0.22;
+        // 端に向かって沈降（浮島のふち）
+        const edge = r > 22 ? -(r - 22) * 0.9 : 0;
+        posAttr.setZ(i, hill + sub1 + sub2 + noise + edge);
+      }
+      posAttr.needsUpdate = true;
+      islandGeo.computeVertexNormals();
+    }
     const ground = new THREE.Mesh(
-      new THREE.CircleGeometry(80, 48),
+      islandGeo,
       new THREE.MeshStandardMaterial({ map: groundTex, roughness: 0.95 })
     );
     ground.rotation.x = -Math.PI / 2;
     ground.receiveShadow = true;
     scene.add(ground);
+
+    // 🪨 島の縁下部（岩肌の逆円錐 — 浮島の根元を見せる）
+    const cliffGeo = new THREE.CylinderGeometry(28, 8, 14, 36, 6, true);
+    const cliffTex = (() => {
+      const sc = document.createElement('canvas'); sc.width = 256; sc.height = 256;
+      const g = sc.getContext('2d');
+      g.fillStyle = '#5a4638'; g.fillRect(0, 0, 256, 256);
+      for (let i = 0; i < 300; i++) {
+        g.fillStyle = `rgba(${70+Math.random()*50},${55+Math.random()*35},${40+Math.random()*25},${0.3+Math.random()*0.3})`;
+        g.fillRect(Math.random()*256, Math.random()*256, 2 + Math.random()*6, 1 + Math.random()*2);
+      }
+      // 苔の筋
+      for (let i = 0; i < 40; i++) {
+        g.fillStyle = `rgba(${60+Math.random()*40},${90+Math.random()*40},${40+Math.random()*20},${0.3+Math.random()*0.3})`;
+        const y = Math.random() * 60;
+        g.fillRect(Math.random() * 256, y, 2 + Math.random() * 8, 30 + Math.random() * 40);
+      }
+      const t = new THREE.CanvasTexture(sc);
+      t.wrapS = t.wrapT = THREE.RepeatWrapping;
+      t.repeat.set(6, 2);
+      return t;
+    })();
+    const cliff = new THREE.Mesh(
+      cliffGeo,
+      new THREE.MeshStandardMaterial({ map: cliffTex, roughness: 0.95, side: THREE.DoubleSide })
+    );
+    cliff.position.y = -7;
+    scene.add(cliff);
+
+    // 🌫 島を包む霧の層（薄い半透明の円盤を数枚）
+    for (let k = 0; k < 5; k++) {
+      const mistMat = new THREE.MeshBasicMaterial({
+        color: 0xffffff, transparent: true, opacity: 0.1 + Math.random() * 0.08,
+        depthWrite: false, fog: false,
+      });
+      const mist = new THREE.Mesh(new THREE.CircleGeometry(36 + k * 4, 48), mistMat);
+      mist.rotation.x = -Math.PI / 2;
+      mist.position.y = -2.5 - k * 0.8;
+      scene.add(mist);
+    }
+
+    // 🌊 遠い下界（薄い水色の大円 — 鏡面の暗示）
+    const waterMat = new THREE.MeshStandardMaterial({
+      color: 0x7aa8cc, roughness: 0.2, metalness: 0.4,
+      transparent: true, opacity: 0.85,
+    });
+    const water = new THREE.Mesh(new THREE.CircleGeometry(200, 48), waterMat);
+    water.rotation.x = -Math.PI / 2;
+    water.position.y = -18;
+    scene.add(water);
 
     // 🌿 草（InstancedMeshのビルボード） — 手前を埋める
     const grassTex = (() => {
@@ -6635,7 +6748,7 @@
 
     // 操作: ドラッグで視点を回す / タップで幹を叩くとリンゴが落ちる
     let dragging = false, lastX = 0, lastY = 0, dragStart = 0, startX = 0, startY = 0;
-    let camAngle = 0, camTilt = 0, camDist = 18;
+    let camAngle = 0, camTilt = 0.15, camDist = 22;
     const edenRay = new THREE.Raycaster();
     const edenPtr = new THREE.Vector2();
     function handleTap(cx, cy) {
@@ -6746,7 +6859,7 @@
     }
     renderer.domElement.addEventListener('wheel', e => {
       e.preventDefault();
-      camDist = Math.max(4, Math.min(30, camDist + e.deltaY * 0.01));
+      camDist = Math.max(6, Math.min(50, camDist + e.deltaY * 0.01));
     }, { passive: false });
     // ピンチ
     let pinchBase = 0, pinchBaseDist = 10;
@@ -6763,7 +6876,7 @@
         const dx = e.touches[0].clientX - e.touches[1].clientX;
         const dy = e.touches[0].clientY - e.touches[1].clientY;
         const d = Math.hypot(dx, dy);
-        camDist = Math.max(4, Math.min(30, pinchBaseDist * pinchBase / d));
+        camDist = Math.max(6, Math.min(50, pinchBaseDist * pinchBase / d));
       }
     });
 
@@ -6782,8 +6895,8 @@
       }
       camera.position.x = Math.cos(camAngle) * camDist + shakeX;
       camera.position.z = Math.sin(camAngle) * camDist;
-      camera.position.y = 5.5 + camTilt * 7 + shakeY;
-      camera.lookAt(0, 4.8, 0);
+      camera.position.y = 6.5 + camTilt * 8 + shakeY;
+      camera.lookAt(0, 5.0, 0);
       // リンゴのゆらぎ & 落下物理
       treeGroup.children.forEach(c => {
         if (!c.userData.basePos) return;
