@@ -7994,16 +7994,7 @@
       core.position.y = yBase + stageHeight * 0.425;
       core.receiveShadow = true;
       tower.add(core);
-      // アーチ窓層（わずかに外側にずらす）
-      const archGeo = new THREE.CylinderGeometry(rOuter + 0.15, rOuter + 0.15, stageHeight * 0.6, 32, 1, true);
-      const archMat = new THREE.MeshStandardMaterial({
-        map: archTex, transparent: true, alphaTest: 0.1, roughness: 0.8,
-      });
-      // UV tiling: 周囲に沿って archCount*周回数を貼る
-      archTex.repeat.set(Math.round(rOuter * 0.5), 1);
-      const arches = new THREE.Mesh(archGeo, archMat);
-      arches.position.y = yBase + stageHeight * 0.38;
-      tower.add(arches);
+      // 旧アーチ層は削除。InstancedMeshで本物の3D窓を下で作成
       // テラス（次の段のために、この段の頂上にリング状の床）
       const terraceOuter = rOuter;
       const terraceInner = Math.max(3, rOuter - stepInset - 0.1);
@@ -8045,6 +8036,89 @@
       stageMeshes.push({ yTop: yBase + stageHeight * 0.85, r: rOuter });
     }
 
+    // 🏛 実3Dアーチ窓（InstancedMesh で数百個を1ドローコール）
+    //   Bruegelの塔は無数の小さな窓。それを本物のBoxの凹みで再現
+    {
+      // ---- アーチ窓のジオメトリ（小さな暗い box を壁の表面にめり込ませる）
+      const archW = 0.6, archH = 1.4, archD = 0.35;
+      const archWinGeo = new THREE.BoxGeometry(archW, archH, archD);
+      const archWinMat = new THREE.MeshStandardMaterial({
+        color: 0x08060a, roughness: 0.95, metalness: 0,
+      });
+      // 総数を数える
+      let totalWindows = 0;
+      stageMeshes.forEach(sm => {
+        const perRing = Math.max(14, Math.floor(sm.r * 2.2));
+        totalWindows += perRing * 2; // 上段/下段2列
+      });
+      const windows = new THREE.InstancedMesh(archWinGeo, archWinMat, totalWindows);
+      const wd = new THREE.Object3D();
+      let idx = 0;
+      stageMeshes.forEach((sm, si) => {
+        const perRing = Math.max(14, Math.floor(sm.r * 2.2));
+        for (let row = 0; row < 2; row++) {
+          const yOff = (row === 0 ? -1 : 1) * 0.75;
+          for (let k = 0; k < perRing; k++) {
+            const ang = (k / perRing) * Math.PI * 2 + (si + row) * 0.2;
+            const px = Math.cos(ang) * sm.r;
+            const pz = Math.sin(ang) * sm.r;
+            wd.position.set(px, sm.yTop - stageHeight * 0.5 + yOff, pz);
+            wd.lookAt(0, wd.position.y, 0); // 塔中心を向く
+            wd.updateMatrix();
+            windows.setMatrixAt(idx++, wd.matrix);
+          }
+        }
+      });
+      windows.count = idx;
+      windows.instanceMatrix.needsUpdate = true;
+      tower.add(windows);
+
+      // ---- アーチの上半円（キャンバスで描いた白い縁を Sprite 様に）
+      // 実際には小さな CircleGeometry の半円リングを Instanced で
+      const archArcMat = new THREE.MeshStandardMaterial({ color: 0xa08860, roughness: 0.85 });
+      const archArcGeo = new THREE.TorusGeometry(archW * 0.5, 0.08, 6, 10, Math.PI);
+      const archArc = new THREE.InstancedMesh(archArcGeo, archArcMat, totalWindows);
+      idx = 0;
+      stageMeshes.forEach((sm, si) => {
+        const perRing = Math.max(14, Math.floor(sm.r * 2.2));
+        for (let row = 0; row < 2; row++) {
+          const yOff = (row === 0 ? -1 : 1) * 0.75 + archH * 0.5;
+          for (let k = 0; k < perRing; k++) {
+            const ang = (k / perRing) * Math.PI * 2 + (si + row) * 0.2;
+            const px = Math.cos(ang) * (sm.r + 0.18);
+            const pz = Math.sin(ang) * (sm.r + 0.18);
+            wd.position.set(px, sm.yTop - stageHeight * 0.5 + yOff, pz);
+            wd.lookAt(0, wd.position.y, 0);
+            wd.rotateX(Math.PI / 2);
+            wd.updateMatrix();
+            archArc.setMatrixAt(idx++, wd.matrix);
+          }
+        }
+      });
+      archArc.count = idx;
+      archArc.instanceMatrix.needsUpdate = true;
+      tower.add(archArc);
+    }
+
+    // 👥 小さな人影（螺旋スロープを登る豆粒） — InstancedMesh
+    {
+      const peopleGeo = new THREE.CapsuleGeometry(0.08, 0.2, 4, 6);
+      const peopleMat = new THREE.MeshStandardMaterial({ color: 0x2a1a14, roughness: 0.9 });
+      const CROWD = 40;
+      const crowd = new THREE.InstancedMesh(peopleGeo, peopleMat, CROWD);
+      const cd = new THREE.Object3D();
+      const crowdData = [];
+      for (let i = 0; i < CROWD; i++) {
+        const t = i / CROWD + Math.random() * 0.03;
+        crowdData.push({ t, speed: 0.00003 + Math.random() * 0.00003 });
+      }
+      tower.add(crowd);
+      tower.userData.crowd = crowd;
+      tower.userData.crowdData = crowdData;
+      tower.userData.crowdDummy = cd;
+      tower.userData.spiralCurveRef = null; // set below
+    }
+
     // 🌀 螺旋スロープ（段差を縫うように巻きつく）
     const totalHeight = STAGES * stageHeight;
     const spiralCurve = new THREE.CatmullRomCurve3(
@@ -8058,6 +8132,8 @@
         return new THREE.Vector3(Math.cos(a) * r, y, Math.sin(a) * r);
       })
     );
+    // 群衆を螺旋に紐付け
+    tower.userData.spiralCurveRef = spiralCurve;
     const ramp = new THREE.Mesh(
       new THREE.TubeGeometry(spiralCurve, 120, 0.5, 6, false),
       new THREE.MeshStandardMaterial({ color: 0x7a5a38, roughness: 0.9 })
@@ -8578,6 +8654,48 @@
     bay.position.set(160, -0.15, 0); // 東側に港
     scene.add(bay);
 
+    // 🚢 港湾の帆船（InstancedMesh）
+    {
+      // 船体: 細長い箱
+      const hullGeo = new THREE.BoxGeometry(1.8, 0.4, 0.6);
+      const hullMat = new THREE.MeshStandardMaterial({ color: 0x5a3820, roughness: 0.9 });
+      const SHIPS = 8;
+      const hulls = new THREE.InstancedMesh(hullGeo, hullMat, SHIPS);
+      const sd = new THREE.Object3D();
+      // 帆（平面）
+      const sailGeo = new THREE.PlaneGeometry(1.2, 1.0);
+      const sailMat = new THREE.MeshStandardMaterial({ color: 0xe8e0c8, roughness: 0.95, side: THREE.DoubleSide });
+      const sails = new THREE.InstancedMesh(sailGeo, sailMat, SHIPS);
+      // マスト
+      const mastGeo = new THREE.CylinderGeometry(0.04, 0.04, 1.4, 6);
+      const mastMat = new THREE.MeshStandardMaterial({ color: 0x3a2210, roughness: 0.9 });
+      const masts = new THREE.InstancedMesh(mastGeo, mastMat, SHIPS);
+      const shipData = [];
+      for (let i = 0; i < SHIPS; i++) {
+        const shipX = 70 + Math.random() * 180;
+        const shipZ = (Math.random() - 0.5) * 120;
+        const rot = Math.random() * Math.PI * 2;
+        sd.position.set(shipX, 0, shipZ);
+        sd.rotation.y = rot;
+        sd.updateMatrix();
+        hulls.setMatrixAt(i, sd.matrix);
+        sd.position.set(shipX, 0.7, shipZ);
+        sd.updateMatrix();
+        masts.setMatrixAt(i, sd.matrix);
+        sd.position.set(shipX, 0.9, shipZ);
+        sd.rotation.y = rot + Math.PI / 2; // 帆は横向き
+        sd.updateMatrix();
+        sails.setMatrixAt(i, sd.matrix);
+        shipData.push({ x: shipX, z: shipZ, rot, phase: Math.random() * Math.PI * 2 });
+      }
+      hulls.instanceMatrix.needsUpdate = true;
+      masts.instanceMatrix.needsUpdate = true;
+      sails.instanceMatrix.needsUpdate = true;
+      scene.add(hulls); scene.add(masts); scene.add(sails);
+      // データ保存（波で上下させるため animate で使う）
+      scene.userData.ships = { hulls, masts, sails, data: shipData, dummy: sd };
+    }
+
     // 周囲の遠い丘（緑の丘陵、ブリューゲル風）
     for (let i = 0; i < 6; i++) {
       const a = (i / 6) * Math.PI * 2 + Math.random() * 0.2;
@@ -8849,6 +8967,46 @@
           if (pa.array[i*3+1] < 0) { pa.array[i*3+1] = 50; pa.array[i*3] = (Math.random()-0.5)*120; }
         }
         pa.needsUpdate = true;
+      }
+      // 🚢 船が波で揺れる
+      if (scene.userData.ships) {
+        const sh = scene.userData.ships;
+        for (let i = 0; i < sh.data.length; i++) {
+          const d = sh.data[i];
+          const bob = Math.sin(t * 1.2 + d.phase) * 0.08;
+          sh.dummy.position.set(d.x, bob, d.z);
+          sh.dummy.rotation.set(Math.sin(t + d.phase) * 0.04, d.rot, Math.cos(t * 0.8 + d.phase) * 0.03);
+          sh.dummy.updateMatrix();
+          sh.hulls.setMatrixAt(i, sh.dummy.matrix);
+          sh.dummy.position.set(d.x, 0.7 + bob, d.z);
+          sh.dummy.updateMatrix();
+          sh.masts.setMatrixAt(i, sh.dummy.matrix);
+          sh.dummy.position.set(d.x, 0.9 + bob, d.z);
+          sh.dummy.rotation.set(Math.sin(t + d.phase) * 0.04, d.rot + Math.PI / 2, Math.cos(t * 0.8 + d.phase) * 0.03);
+          sh.dummy.updateMatrix();
+          sh.sails.setMatrixAt(i, sh.dummy.matrix);
+        }
+        sh.hulls.instanceMatrix.needsUpdate = true;
+        sh.masts.instanceMatrix.needsUpdate = true;
+        sh.sails.instanceMatrix.needsUpdate = true;
+      }
+      // 👥 群衆が螺旋を登る
+      if (tower.userData.crowd && tower.userData.spiralCurveRef) {
+        const crowd = tower.userData.crowd;
+        const data = tower.userData.crowdData;
+        const dm = tower.userData.crowdDummy;
+        const cv = tower.userData.spiralCurveRef;
+        for (let i = 0; i < data.length; i++) {
+          data[i].t += data[i].speed;
+          if (data[i].t > 1) data[i].t = 0;
+          const p = cv.getPoint(data[i].t);
+          const pNext = cv.getPoint(Math.min(1, data[i].t + 0.005));
+          dm.position.set(p.x, p.y + 0.15, p.z);
+          dm.lookAt(pNext.x, p.y + 0.15, pNext.z);
+          dm.updateMatrix();
+          crowd.setMatrixAt(i, dm.matrix);
+        }
+        crowd.instanceMatrix.needsUpdate = true;
       }
       // 松明のちらつき（滑らかに、ランダム項を除去）
       torchLights.forEach(tl => {
