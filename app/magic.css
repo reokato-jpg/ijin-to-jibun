@@ -3673,6 +3673,33 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
   100% { transform: translate(-50%, -140%) scale(1); opacity: 0; }
 }
 
+/* 衛星接近ラベル */
+.cosmos-sat-hud {
+  position: absolute;
+  top: calc(50% + 60px);
+  left: 50%;
+  transform: translate(-50%, 0) scale(0.9);
+  background: linear-gradient(180deg, rgba(20,30,50,0.85), rgba(10,15,30,0.85));
+  border: 1px solid rgba(120,200,255,0.6);
+  border-radius: 8px;
+  padding: 6px 14px;
+  color: #a8e4ff;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 17;
+  text-shadow: 0 0 8px rgba(120,200,255,0.6);
+  box-shadow: 0 0 12px rgba(80,160,255,0.4);
+  transition: opacity 0.2s, transform 0.3s cubic-bezier(.3,1.4,.4,1);
+}
+.cosmos-sat-hud.show {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+}
+
 /* スピードライン（BOOST時のラディアルブラー風） */
 .cosmos-speedlines {
   position: absolute;

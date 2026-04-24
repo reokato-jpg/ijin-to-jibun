@@ -3565,6 +3565,7 @@
         <div class="cosmos-compass" id="cosmosCompass"><div class="cp-arrow">▲</div></div>
         <div class="cosmos-arrive-popup" id="cosmosArrivePopup"></div>
         <div class="cosmos-collect-pop" id="cosmosCollectPop"></div>
+        <div class="cosmos-sat-hud" id="cosmosSatHud"></div>
         <div class="cosmos-rocket-readout" id="cosmosRocketReadout">
           <div class="rc-line"><span>TARGET</span><b id="rcTarget">—</b></div>
           <div class="rc-line"><span>DIST</span><b id="rcDist">—</b></div>
@@ -3691,6 +3692,11 @@
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.setSize(W, H);
+    // Cygamesリスペクト：HDR風トーンマッピング + sRGB出力
+    if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.15;
+    if (THREE.SRGBColorSpace) renderer.outputColorSpace = THREE.SRGBColorSpace;
+    else if (THREE.sRGBEncoding) renderer.outputEncoding = THREE.sRGBEncoding;
     stage.appendChild(renderer.domElement);
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(50, W/H, 0.1, 1000);
@@ -4488,6 +4494,90 @@
         moon.visible = false;
         scene.add(moon);
         moons.push({ mesh: moon, orbit: 1.8, speed: 12, angle: 0 });
+
+        // 🛰️ 人工衛星（近づくと見える）
+        const satellites = [];
+        // ISS（国際宇宙ステーション）: 中央モジュール + ソーラーパネル
+        const buildISS = () => {
+          const g = new THREE.Group();
+          const hub = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.08, 10), new THREE.MeshStandardMaterial({ color: 0xdddddd, metalness: 0.9, roughness: 0.3 }));
+          hub.rotation.z = Math.PI / 2;
+          g.add(hub);
+          // モジュール
+          const mod = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.025, 0.025), new THREE.MeshStandardMaterial({ color: 0xeeeeee, metalness: 0.7, roughness: 0.3 }));
+          g.add(mod);
+          // ソーラーパネル ×4
+          const panelMat = new THREE.MeshStandardMaterial({ color: 0x1a3a7a, metalness: 0.5, roughness: 0.4, emissive: 0x0a1840, emissiveIntensity: 0.3 });
+          [[-0.06,0], [0.06,0], [-0.06,0.04], [0.06,0.04], [-0.06,-0.04], [0.06,-0.04]].forEach(([x, z]) => {
+            const p2 = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.003, 0.022), panelMat);
+            p2.position.set(x, 0, z);
+            g.add(p2);
+          });
+          // 点滅ライト
+          const blink = new THREE.Mesh(new THREE.SphereGeometry(0.006, 6, 6), new THREE.MeshBasicMaterial({ color: 0xff4040 }));
+          blink.position.y = 0.018;
+          g.add(blink);
+          g.userData.blink = blink;
+          g.userData.label = 'ISS';
+          return g;
+        };
+        // ハッブル宇宙望遠鏡: 円筒
+        const buildHubble = () => {
+          const g = new THREE.Group();
+          const body = new THREE.Mesh(new THREE.CylinderGeometry(0.028, 0.028, 0.09, 12), new THREE.MeshStandardMaterial({ color: 0xd0cab0, metalness: 0.6, roughness: 0.4 }));
+          body.rotation.z = Math.PI / 2;
+          g.add(body);
+          // 開口部
+          const lens = new THREE.Mesh(new THREE.CircleGeometry(0.024, 12), new THREE.MeshBasicMaterial({ color: 0x101018 }));
+          lens.rotation.y = -Math.PI / 2;
+          lens.position.x = 0.046;
+          g.add(lens);
+          // ソーラーパネル
+          const panel = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.003, 0.025), new THREE.MeshStandardMaterial({ color: 0x2050a0, metalness: 0.4, roughness: 0.5, emissive: 0x081030 }));
+          g.add(panel);
+          g.userData.label = 'HUBBLE';
+          return g;
+        };
+        // 一般的な衛星: 箱+パネル
+        const buildGenericSat = (color) => {
+          const g = new THREE.Group();
+          const body = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.02, 0.02), new THREE.MeshStandardMaterial({ color, metalness: 0.6, roughness: 0.4 }));
+          g.add(body);
+          const pan = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.002, 0.018), new THREE.MeshStandardMaterial({ color: 0x1a3a7a, metalness: 0.5, roughness: 0.4, emissive: 0x081030 }));
+          g.add(pan);
+          return g;
+        };
+        // ISS
+        const iss = buildISS();
+        iss.visible = false;
+        scene.add(iss);
+        satellites.push({ mesh: iss, orbit: p.size * 1.28, speed: 28, angle: 0, inclin: 0.9, axis: 0.2, label: 'ISS' });
+        // ハッブル
+        const hubble = buildHubble();
+        hubble.visible = false;
+        scene.add(hubble);
+        satellites.push({ mesh: hubble, orbit: p.size * 1.36, speed: 22, angle: Math.PI, inclin: 0.5, axis: 0.1, label: 'HUBBLE' });
+        // GPS 6衛星（中軌道リング）
+        for (let gi = 0; gi < 6; gi++) {
+          const gs = buildGenericSat(0xaaaaaa);
+          gs.visible = false;
+          scene.add(gs);
+          satellites.push({
+            mesh: gs, orbit: p.size * 1.55, speed: 14,
+            angle: (gi / 6) * Math.PI * 2, inclin: 0.55, axis: gi * 0.3, label: 'GPS'
+          });
+        }
+        // Starlink（低軌道リング、多数）
+        for (let si = 0; si < 24; si++) {
+          const ss = buildGenericSat(0x8899aa);
+          ss.visible = false;
+          scene.add(ss);
+          satellites.push({
+            mesh: ss, orbit: p.size * 1.22 + (si%3)*0.05, speed: 32,
+            angle: (si / 24) * Math.PI * 2, inclin: 0.15 + (si%4)*0.1, axis: si * 0.25, label: 'STARLINK'
+          });
+        }
+        pMesh.userData.satellites = satellites;
       }
       if (p.name === '木星') {
         // ガリレオ衛星（イオ・エウロパ・ガニメデ・カリスト）
@@ -4674,79 +4764,173 @@
     // ============================================================
     // 🚀 ロケット操縦モード（任天堂的な気持ちよさ目指し）
     // ============================================================
-    // 3Dロケットメッシュを組み立て（任天堂的にかわいく）
+    // ============================================================
+    // 🚀 宇宙船メッシュ（サイゲリスペクト：スタイリッシュ sci-fi フリゲート）
+    // ============================================================
     const rocketGroup = new THREE.Group();
     rocketGroup.visible = false;
-    // デフォルト向き：+Z軸前方。コーンはY+向きなのでZ向きに回転
     {
-      // 本体（白いカプセル）
-      const bodyMat = new THREE.MeshStandardMaterial({ color: 0xf8f8f8, roughness: 0.35, metalness: 0.25, emissive: 0x222222 });
-      const body = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.28, 1.2, 18), bodyMat);
-      body.rotation.x = Math.PI / 2;
-      rocketGroup.add(body);
-      // 赤い帯
-      const stripe = new THREE.Mesh(new THREE.CylinderGeometry(0.282, 0.282, 0.14, 18), new THREE.MeshStandardMaterial({ color: 0xe64a55, roughness: 0.4, metalness: 0.3, emissive: 0x220000 }));
-      stripe.rotation.x = Math.PI / 2;
-      stripe.position.z = 0.25;
-      rocketGroup.add(stripe);
-      // ノーズコーン（赤）
-      const nose = new THREE.Mesh(new THREE.ConeGeometry(0.24, 0.55, 18), new THREE.MeshStandardMaterial({ color: 0xe84a4a, roughness: 0.3, metalness: 0.35, emissive: 0x330000 }));
+      // 機体パネルテクスチャ（船体の線・警告マーク）
+      const hullTex = (() => {
+        const sc = document.createElement('canvas'); sc.width = 512; sc.height = 256;
+        const g = sc.getContext('2d');
+        // ベース：冷白→極淡い青
+        const base = g.createLinearGradient(0, 0, 0, 256);
+        base.addColorStop(0, '#e8ecf2'); base.addColorStop(1, '#c8d2de');
+        g.fillStyle = base; g.fillRect(0, 0, 512, 256);
+        // パネルライン
+        g.strokeStyle = 'rgba(30,40,60,0.35)'; g.lineWidth = 1;
+        for (let i = 0; i < 12; i++) {
+          g.beginPath(); g.moveTo(i * 42, 0); g.lineTo(i * 42 + 30, 256); g.stroke();
+        }
+        for (let i = 0; i < 8; i++) {
+          g.beginPath(); g.moveTo(0, i * 32); g.lineTo(512, i * 32 + 4); g.stroke();
+        }
+        // アクセントストライプ（赤）
+        g.fillStyle = '#c83040'; g.fillRect(0, 118, 512, 8);
+        g.fillStyle = '#1a2a44'; g.fillRect(0, 128, 512, 3);
+        // リベット
+        g.fillStyle = 'rgba(40,50,70,0.5)';
+        for (let y = 20; y < 240; y += 40) for (let x = 12; x < 512; x += 36) {
+          g.beginPath(); g.arc(x, y, 1.4, 0, Math.PI*2); g.fill();
+        }
+        // ロゴ / 機体番号
+        g.fillStyle = '#1a2a44'; g.font = 'bold 22px system-ui';
+        g.fillText('IJIN-01', 28, 180);
+        g.fillStyle = '#c83040'; g.font = 'bold 14px system-ui';
+        g.fillText('⚠ CAUTION', 260, 156);
+        return new THREE.CanvasTexture(sc);
+      })();
+      const hullMat = new THREE.MeshStandardMaterial({
+        map: hullTex, roughness: 0.28, metalness: 0.78,
+        emissive: 0x0a0e18, envMapIntensity: 1.5,
+      });
+      const darkMat = new THREE.MeshStandardMaterial({ color: 0x1a2030, roughness: 0.5, metalness: 0.9, emissive: 0x030508 });
+      const accentMat = new THREE.MeshStandardMaterial({ color: 0xe63a50, roughness: 0.35, metalness: 0.6, emissive: 0x3a0810 });
+
+      // フューズラージ（流線型：前方細く後方太い）
+      // SphereGeometryを引き伸ばして尖らせる
+      const fuselage = new THREE.Mesh(new THREE.SphereGeometry(0.38, 24, 16), hullMat);
+      fuselage.scale.set(0.7, 0.55, 1.6); // 横扁平、縦長の楕円体
+      rocketGroup.add(fuselage);
+
+      // 前方のシャープなノーズ（短い円錐＋丸め）
+      const nose = new THREE.Mesh(new THREE.ConeGeometry(0.24, 0.55, 24), hullMat);
       nose.rotation.x = Math.PI / 2;
-      nose.position.z = 0.88;
+      nose.scale.set(0.9, 0.9, 1);
+      nose.position.z = 0.72;
       rocketGroup.add(nose);
-      // 丸窓（水色・発光）
-      const win = new THREE.Mesh(new THREE.SphereGeometry(0.1, 16, 16), new THREE.MeshStandardMaterial({ color: 0x7ac8ff, emissive: 0x4080c8, emissiveIntensity: 0.6, roughness: 0.1, metalness: 0.4 }));
-      win.position.set(0, 0.16, 0.3);
-      win.scale.set(1, 0.6, 0.6);
-      rocketGroup.add(win);
-      // フィン ×3
-      const finMat = new THREE.MeshStandardMaterial({ color: 0xe64a55, roughness: 0.4, metalness: 0.2, emissive: 0x200000, side: THREE.DoubleSide });
-      const finShape = new THREE.Shape();
-      finShape.moveTo(0, 0);
-      finShape.lineTo(0.32, -0.18);
-      finShape.lineTo(0.32, 0);
-      finShape.lineTo(0, 0.32);
-      finShape.lineTo(0, 0);
-      const finGeo = new THREE.ExtrudeGeometry(finShape, { depth: 0.03, bevelEnabled: false });
-      for (let f = 0; f < 3; f++) {
-        const fin = new THREE.Mesh(finGeo, finMat);
-        fin.position.set(0, 0, -0.6);
-        fin.rotation.y = (f / 3) * Math.PI * 2;
-        fin.rotation.x = -Math.PI / 2;
-        const pivot = new THREE.Group();
-        pivot.rotation.z = (f / 3) * Math.PI * 2;
-        pivot.add(fin);
-        rocketGroup.add(pivot);
-      }
-      // エンジンノズル（後部）
-      const nozzle = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.28, 0.18, 18), new THREE.MeshStandardMaterial({ color: 0x333540, roughness: 0.6, metalness: 0.8, emissive: 0x0a0a10 }));
-      nozzle.rotation.x = Math.PI / 2;
-      nozzle.position.z = -0.68;
-      rocketGroup.add(nozzle);
-      // 噴射炎（sprite）
+
+      // コックピットドーム（ティール発光ガラス）
+      const cockpitMat = new THREE.MeshStandardMaterial({
+        color: 0x1a2838, roughness: 0.08, metalness: 0.2,
+        emissive: 0x4ac8ff, emissiveIntensity: 0.8,
+        transparent: true, opacity: 0.9,
+      });
+      const cockpit = new THREE.Mesh(new THREE.SphereGeometry(0.18, 18, 14, 0, Math.PI*2, 0, Math.PI/2), cockpitMat);
+      cockpit.rotation.x = Math.PI;
+      cockpit.scale.set(1.3, 0.8, 1.7);
+      cockpit.position.set(0, 0.13, 0.25);
+      rocketGroup.add(cockpit);
+
+      // スイープドウイング（三角翼、左右）
+      const wingShape = new THREE.Shape();
+      wingShape.moveTo(0, 0);
+      wingShape.lineTo(0.9, -0.25);
+      wingShape.lineTo(0.85, -0.3);
+      wingShape.lineTo(0.15, -0.05);
+      wingShape.lineTo(0, 0);
+      const wingGeo = new THREE.ExtrudeGeometry(wingShape, { depth: 0.06, bevelEnabled: true, bevelSize: 0.015, bevelThickness: 0.015, bevelSegments: 2 });
+      [1, -1].forEach(side => {
+        const wing = new THREE.Mesh(wingGeo, hullMat);
+        wing.position.set(side * 0.05, -0.05, -0.15);
+        wing.scale.set(side, 1, 1);
+        wing.rotation.z = side > 0 ? 0 : 0;
+        rocketGroup.add(wing);
+        // 翼端のアクセントライン（発光）
+        const tipLight = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.015, 0.08), new THREE.MeshBasicMaterial({ color: side > 0 ? 0x40ff60 : 0xff4040 }));
+        tipLight.position.set(side * 0.92, -0.28, -0.19);
+        rocketGroup.add(tipLight);
+      });
+
+      // 背面フィン（垂直尾翼）
+      const tailShape = new THREE.Shape();
+      tailShape.moveTo(0, 0);
+      tailShape.lineTo(-0.35, 0.35);
+      tailShape.lineTo(-0.35, 0.32);
+      tailShape.lineTo(-0.05, 0);
+      tailShape.lineTo(0, 0);
+      const tailGeo = new THREE.ExtrudeGeometry(tailShape, { depth: 0.04, bevelEnabled: true, bevelSize: 0.01, bevelThickness: 0.01, bevelSegments: 1 });
+      const tail = new THREE.Mesh(tailGeo, hullMat);
+      tail.position.set(-0.02, 0.08, -0.4);
+      rocketGroup.add(tail);
+
+      // レッドアクセントストリップ（胴体下部）
+      const stripe = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.02, 1.2), accentMat);
+      stripe.position.set(0, -0.22, 0);
+      rocketGroup.add(stripe);
+
+      // 双発イオンエンジン
+      const engines = [];
+      [-1, 1].forEach(side => {
+        const nacelle = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.12, 0.38, 16), darkMat);
+        nacelle.rotation.x = Math.PI / 2;
+        nacelle.position.set(side * 0.22, -0.02, -0.55);
+        rocketGroup.add(nacelle);
+        // 発光リング（イオン燃焼部）
+        const ring = new THREE.Mesh(new THREE.TorusGeometry(0.09, 0.015, 10, 24), new THREE.MeshBasicMaterial({ color: 0x60c8ff }));
+        ring.position.set(side * 0.22, -0.02, -0.74);
+        rocketGroup.add(ring);
+        engines.push({ ring, side });
+      });
+      rocketGroup.userData.engines = engines;
+
+      // 噴射（青白プラズマ）
       const flameTex = (() => {
         const sc = document.createElement('canvas'); sc.width = 128; sc.height = 256;
         const g = sc.getContext('2d');
-        const grd = g.createRadialGradient(64, 60, 0, 64, 180, 120);
-        grd.addColorStop(0, 'rgba(255,255,220,1)');
-        grd.addColorStop(0.15, 'rgba(255,220,120,0.9)');
-        grd.addColorStop(0.4, 'rgba(255,140,60,0.65)');
-        grd.addColorStop(0.75, 'rgba(200,60,40,0.28)');
-        grd.addColorStop(1, 'rgba(120,30,20,0)');
+        const grd = g.createRadialGradient(64, 40, 0, 64, 180, 130);
+        grd.addColorStop(0, 'rgba(240,250,255,1)');
+        grd.addColorStop(0.1, 'rgba(200,230,255,0.95)');
+        grd.addColorStop(0.3, 'rgba(100,180,255,0.7)');
+        grd.addColorStop(0.6, 'rgba(60,130,255,0.35)');
+        grd.addColorStop(1, 'rgba(30,60,140,0)');
         g.fillStyle = grd; g.fillRect(0,0,128,256);
         return new THREE.CanvasTexture(sc);
       })();
-      const flameMat = new THREE.SpriteMaterial({ map: flameTex, transparent: true, opacity: 0.0, depthWrite: false, blending: THREE.AdditiveBlending });
-      const flame = new THREE.Sprite(flameMat);
-      flame.scale.set(0.6, 1.2, 1);
-      flame.position.z = -1.2;
-      rocketGroup.add(flame);
-      rocketGroup.userData.flame = flame;
-      // ポイントライト（エンジンの発光）
-      const engineLight = new THREE.PointLight(0xff8040, 0.0, 8, 2);
+      const flames = [];
+      [-1, 1].forEach(side => {
+        const fm = new THREE.SpriteMaterial({ map: flameTex, transparent: true, opacity: 0.0, depthWrite: false, blending: THREE.AdditiveBlending });
+        const fl = new THREE.Sprite(fm);
+        fl.scale.set(0.3, 0.9, 1);
+        fl.position.set(side * 0.22, -0.02, -1.1);
+        rocketGroup.add(fl);
+        flames.push(fl);
+      });
+      rocketGroup.userData.flames = flames;
+
+      // 大きなトレイル風グローspriteで両エンジンを包む
+      const glowMat = new THREE.SpriteMaterial({ map: flameTex, transparent: true, opacity: 0.0, depthWrite: false, blending: THREE.AdditiveBlending });
+      const bigGlow = new THREE.Sprite(glowMat);
+      bigGlow.scale.set(0.9, 1.5, 1);
+      bigGlow.position.set(0, -0.02, -1.0);
+      rocketGroup.add(bigGlow);
+      rocketGroup.userData.bigGlow = bigGlow;
+
+      // ロケット自体の補助照明（暗い宇宙で見えるように）
+      const headlight = new THREE.PointLight(0x88b0ff, 1.4, 6, 1.5);
+      headlight.position.set(0, 0.1, 0.6);
+      rocketGroup.add(headlight);
+      const engineLight = new THREE.PointLight(0x60a0ff, 0.0, 10, 2);
       engineLight.position.z = -0.9;
       rocketGroup.add(engineLight);
       rocketGroup.userData.engineLight = engineLight;
+
+      // ナビゲーションライト点滅（赤・緑・白）
+      const blinkWhite = new THREE.Mesh(new THREE.SphereGeometry(0.02, 8, 8), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+      blinkWhite.position.set(0, 0.2, -0.35);
+      rocketGroup.add(blinkWhite);
+      rocketGroup.userData.blinkWhite = blinkWhite;
     }
     scene.add(rocketGroup);
 
@@ -5010,13 +5194,21 @@
       rocketGroup.rotateX(-rocketPitch);
       rocketGroup.rotateZ(rocketRoll);
       // 噴射炎とエンジン光
-      const flame = rocketGroup.userData.flame;
+      const flames = rocketGroup.userData.flames;
+      const bigGlow = rocketGroup.userData.bigGlow;
       const eLight = rocketGroup.userData.engineLight;
-      const flameTarget = thrustHold ? 0.95 : (sp > 0.05 ? 0.35 : 0);
-      flame.material.opacity += (flameTarget - flame.material.opacity) * 0.3;
-      const scl = 1 + (thrustHold ? 0.6 : 0) + Math.random() * 0.2;
-      flame.scale.set(0.55, 1.0 * scl, 1);
-      eLight.intensity += ((thrustHold ? 2.2 : sp * 0.8) - eLight.intensity) * 0.3;
+      const flameTarget = boostActive ? 0.95 : (thrustHold ? 0.7 : sp > 0.05 ? 0.3 : 0);
+      flames.forEach(fl => {
+        fl.material.opacity += (flameTarget - fl.material.opacity) * 0.3;
+        const scl = 1 + (boostActive ? 0.8 : thrustHold ? 0.3 : 0) + Math.random() * 0.15;
+        fl.scale.set(0.28, 0.75 * scl, 1);
+      });
+      bigGlow.material.opacity += (flameTarget * 0.6 - bigGlow.material.opacity) * 0.3;
+      eLight.intensity += ((boostActive ? 3.2 : thrustHold ? 2.0 : sp * 0.5) - eLight.intensity) * 0.3;
+      eLight.color.setHex(boostActive ? 0x80c8ff : 0x60a0ff);
+      // ナビライト点滅
+      const bw = rocketGroup.userData.blinkWhite;
+      if (bw) bw.visible = Math.floor(universeTime * 2) % 2 === 0;
       // カメラ：三人称ビュー（ロケット後方やや上）+ シェイク
       const back = fwd.clone().multiplyScalar(-4.5);
       const up = new THREE.Vector3(0,1,0);
@@ -5149,6 +5341,23 @@
       }
       rcSpd.textContent = sp.toFixed(2);
 
+      // 🛰️ 衛星接近検出（地球周辺で ISS / HUBBLE のラベル）
+      const earthPm = planetMeshes.find(p => p.planet.isEarth);
+      if (earthPm && earthPm.mesh.userData.satellites) {
+        let nearSat = null, nearSatD = 0.6;
+        earthPm.mesh.userData.satellites.forEach(s => {
+          const d = s.mesh.position.distanceTo(rocketPos);
+          if (d < nearSatD) { nearSatD = d; nearSat = s; }
+        });
+        const satHud = ov.querySelector('#cosmosSatHud');
+        if (nearSat && satHud) {
+          satHud.textContent = '🛰️ ' + nearSat.label;
+          satHud.classList.add('show');
+        } else if (satHud) {
+          satHud.classList.remove('show');
+        }
+      }
+
       // ブーストゲージUI
       ov.querySelector('#bgFill').style.width = game.boost + '%';
       ov.querySelector('#cosmosBoostGauge').classList.toggle('low', game.boost < 25);
@@ -5266,6 +5475,32 @@
                 Math.sin(m.angle * 0.7) * 0.25,
                 pm.mesh.position.z + Math.sin(m.angle) * o
               );
+            });
+          }
+          if (pm.mesh.userData.satellites) {
+            // 地球に近いときだけ表示
+            const distToRocket = rocketMode ? rocketPos.distanceTo(pm.mesh.position) : 999;
+            const show = distToRocket < 8 || !rocketMode; // 非ロケット時は常時（遠いので小さく見える）
+            pm.mesh.userData.satellites.forEach(s => {
+              s.angle += 0.005 * s.speed / 10;
+              s.axis += 0.02;
+              // 軌道平面：inclin 傾斜
+              const o = s.orbit;
+              const x = Math.cos(s.angle) * o;
+              const z = Math.sin(s.angle) * o;
+              const y = Math.sin(s.angle) * o * Math.sin(s.inclin);
+              const z2 = z * Math.cos(s.inclin);
+              s.mesh.position.set(
+                pm.mesh.position.x + x,
+                pm.mesh.position.y + y,
+                pm.mesh.position.z + z2
+              );
+              s.mesh.rotation.y = s.axis;
+              s.mesh.visible = show && pm.mesh.visible;
+              // ISSの点滅ライト
+              if (s.mesh.userData && s.mesh.userData.blink) {
+                s.mesh.userData.blink.visible = Math.floor(universeTime * 3) % 2 === 0;
+              }
             });
           }
           if (pm.mesh.userData.ring) {
