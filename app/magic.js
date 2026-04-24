@@ -2491,9 +2491,13 @@
       }
       return new THREE.CanvasTexture(sc);
     })();
+    const moonMap2Uniform = { value: moonTex2 };
+    loader.load('https://www.solarsystemscope.com/textures/download/2k_moon.jpg',
+      (t) => { t.anisotropy = 8; moonMap2Uniform.value = t; },
+      undefined, () => {});
     const moonMat2 = new THREE.ShaderMaterial({
       uniforms: {
-        uMap: { value: moonTex2 },
+        uMap: moonMap2Uniform,
         uSunPos: { value: new THREE.Vector3(0, 0, 0) },
       },
       vertexShader: `
@@ -4842,12 +4846,19 @@
       }
       return new THREE.CanvasTexture(sc);
     })();
-    const sunGeo = new THREE.SphereGeometry(3.5, 32, 24);
+    const sunGeo = new THREE.SphereGeometry(3.5, 48, 32);
+    // ☀️ 実写太陽テクスチャ（非同期で procedural を差し替え）
+    const sunUniform = { value: sunTex };
+    const _sunLoader = new THREE.TextureLoader();
+    _sunLoader.crossOrigin = 'anonymous';
+    _sunLoader.load('https://www.solarsystemscope.com/textures/download/2k_sun.jpg',
+      (tex) => { tex.anisotropy = 8; sunUniform.value = tex; sunMat.needsUpdate = true; },
+      undefined, () => {});
     // ☀️ アニメーションするプラズマ表面シェーダ
     const sunMat = new THREE.ShaderMaterial({
       uniforms: {
         uTime: { value: 0 },
-        uMap: { value: sunTex },
+        uMap: sunUniform,
       },
       vertexShader: `
         varying vec2 vUv;
@@ -5414,10 +5425,48 @@
       '木星': 0.05, '土星': 0.47, '天王星': 1.71, '海王星': 0.49,
       'ブラックホール': 0
     };
+    // 🌌 NASA / Solar System Scope 実写テクスチャのURL（CC-BY 4.0）
+    const SSS = 'https://www.solarsystemscope.com/textures/download/';
+    const PLANET_TEX_URLS = {
+      '水星': SSS + '2k_mercury.jpg',
+      '金星': SSS + '2k_venus_surface.jpg',
+      '地球': SSS + '2k_earth_daymap.jpg',
+      '火星': SSS + '2k_mars.jpg',
+      '木星': SSS + '2k_jupiter.jpg',
+      '土星': SSS + '2k_saturn.jpg',
+      '天王星': SSS + '2k_uranus.jpg',
+      '海王星': SSS + '2k_neptune.jpg',
+    };
+    const textureLoader = new THREE.TextureLoader();
+    textureLoader.crossOrigin = 'anonymous';
     const planetMeshes = [];
     PLANETS.forEach(p => {
-      const pGeo = new THREE.SphereGeometry(p.size, 48, 32); // 高解像度
-      const pMat = new THREE.MeshBasicMaterial({ map: makePlanetTexture(p) });
+      const pGeo = new THREE.SphereGeometry(p.size, 64, 48); // 解像度UP
+      const procTex = makePlanetTexture(p);
+      // MeshStandardMaterial で太陽光に反応するように（陰影が自然に）
+      const pMat = p.isBlackHole
+        ? new THREE.MeshBasicMaterial({ map: procTex })
+        : new THREE.MeshStandardMaterial({
+            map: procTex,
+            emissiveMap: procTex,
+            emissive: 0xffffff,
+            emissiveIntensity: 0.35,
+            roughness: 0.85,
+            metalness: 0.0,
+          });
+      // 実写テクスチャを非同期で差し替え（失敗しても手描きのまま）
+      const url = PLANET_TEX_URLS[p.name];
+      if (url) {
+        textureLoader.load(url, (tex) => {
+          tex.anisotropy = 8;
+          if (pMat.map && pMat.map !== tex && pMat.map.isCanvasTexture) pMat.map.dispose();
+          pMat.map = tex;
+          if (pMat.emissiveMap !== undefined) pMat.emissiveMap = tex;
+          pMat.needsUpdate = true;
+        }, undefined, () => {
+          /* CORS失敗でも procTex のまま継続 */
+        });
+      }
       const pMesh = new THREE.Mesh(pGeo, pMat);
       pMesh.visible = false;
       pMesh.userData = { ...p, angle: Math.random() * Math.PI * 2 };
@@ -5472,10 +5521,15 @@
           }
           return new THREE.CanvasTexture(sc);
         })();
-        const mGeo = new THREE.SphereGeometry(0.28, 24, 18);
+        const mGeo = new THREE.SphereGeometry(0.28, 32, 24);
+        const moonMapUniform = { value: moonTex };
+        // 実写月テクスチャを非同期ロード
+        textureLoader.load('https://www.solarsystemscope.com/textures/download/2k_moon.jpg',
+          (tex) => { tex.anisotropy = 8; moonMapUniform.value = tex; },
+          undefined, () => {});
         const mMat = new THREE.ShaderMaterial({
           uniforms: {
-            uMap: { value: moonTex },
+            uMap: moonMapUniform,
             uSunPos: { value: new THREE.Vector3(0, 0, 0) },
           },
           vertexShader: `
