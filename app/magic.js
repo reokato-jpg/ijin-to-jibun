@@ -7397,6 +7397,137 @@
       scene.add(tg);
     }
 
+    // 🏔 遠景の青い山並み（ブリューゲルの大気遠近）
+    for (let i = 0; i < 14; i++) {
+      const ang = (i / 14) * Math.PI * 2 + Math.random() * 0.2;
+      const r = 55 + Math.random() * 25;
+      const h = 6 + Math.random() * 14;
+      const mount = new THREE.Mesh(
+        new THREE.ConeGeometry(8 + Math.random() * 6, h, 8),
+        new THREE.MeshBasicMaterial({
+          color: new THREE.Color().setHSL(0.58, 0.25, 0.45 + Math.random() * 0.15),
+          fog: true,
+        })
+      );
+      mount.position.set(Math.cos(ang) * r, h * 0.3 - 5, Math.sin(ang) * r);
+      scene.add(mount);
+    }
+
+    // 🐎 🦁 🦢 動物たち（低ポリ・ブリューゲル的配置）
+    //   ジオメトリは簡素にして InstancedMesh を使わず、名前で区別
+    const animalMat = {
+      horse: new THREE.MeshStandardMaterial({ color: 0xe0e0d8, roughness: 0.85 }),  // 白馬
+      lion:  new THREE.MeshStandardMaterial({ color: 0xc8a060, roughness: 0.9 }),   // 獅子 黄褐色
+      swan:  new THREE.MeshStandardMaterial({ color: 0xfafaf0, roughness: 0.7 }),   // 白鳥
+      deer:  new THREE.MeshStandardMaterial({ color: 0x8a5a38, roughness: 0.9 }),   // 鹿
+      leopard: new THREE.MeshStandardMaterial({ color: 0xc89030, roughness: 0.85 }),// 豹
+      bird: new THREE.MeshStandardMaterial({ color: 0xff4030, roughness: 0.8 }),    // 赤い鳥
+    };
+    function makeQuadruped(color, scale = 1) {
+      // 4足動物：胴体 + 頭 + 4本脚
+      const g = new THREE.Group();
+      const body = new THREE.Mesh(
+        new THREE.CapsuleGeometry(0.35 * scale, 0.9 * scale, 4, 8),
+        color
+      );
+      body.rotation.z = Math.PI / 2;
+      body.position.y = 0.5 * scale;
+      g.add(body);
+      const head = new THREE.Mesh(
+        new THREE.SphereGeometry(0.28 * scale, 10, 8),
+        color
+      );
+      head.position.set(0.75 * scale, 0.7 * scale, 0);
+      g.add(head);
+      const neck = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.12 * scale, 0.18 * scale, 0.35 * scale, 6),
+        color
+      );
+      neck.position.set(0.6 * scale, 0.62 * scale, 0);
+      neck.rotation.z = -0.8;
+      g.add(neck);
+      for (let lx = 0; lx < 2; lx++) for (let lz = 0; lz < 2; lz++) {
+        const leg = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.08 * scale, 0.07 * scale, 0.5 * scale, 6),
+          color
+        );
+        leg.position.set((lx ? 0.45 : -0.45) * scale, 0.25 * scale, (lz ? 0.2 : -0.2) * scale);
+        g.add(leg);
+      }
+      // 尻尾
+      const tail = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.05 * scale, 0.02 * scale, 0.4 * scale, 5),
+        color
+      );
+      tail.position.set(-0.55 * scale, 0.55 * scale, 0);
+      tail.rotation.z = 0.6;
+      g.add(tail);
+      return g;
+    }
+    function makeSwan() {
+      const g = new THREE.Group();
+      const body = new THREE.Mesh(
+        new THREE.SphereGeometry(0.3, 12, 8),
+        animalMat.swan
+      );
+      body.scale.set(1.3, 0.8, 0.9);
+      body.position.y = 0.35;
+      g.add(body);
+      // S字の首
+      const neckCurve = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(0.3, 0.35, 0),
+        new THREE.Vector3(0.45, 0.6, 0),
+        new THREE.Vector3(0.3, 0.85, 0),
+        new THREE.Vector3(0.5, 1.0, 0),
+      ]);
+      const neck = new THREE.Mesh(
+        new THREE.TubeGeometry(neckCurve, 16, 0.06, 6, false),
+        animalMat.swan
+      );
+      g.add(neck);
+      const head = new THREE.Mesh(new THREE.SphereGeometry(0.08, 8, 6), animalMat.swan);
+      head.position.set(0.55, 1.05, 0);
+      g.add(head);
+      const beak = new THREE.Mesh(
+        new THREE.ConeGeometry(0.04, 0.12, 6),
+        new THREE.MeshStandardMaterial({ color: 0xd06020 })
+      );
+      beak.position.set(0.66, 1.05, 0);
+      beak.rotation.z = -Math.PI / 2;
+      g.add(beak);
+      return g;
+    }
+    // 動物を配置（浮島の上、中央の樹の周囲に散らばる）
+    const animalSpots = [
+      { maker: () => makeQuadruped(animalMat.horse, 1.2), pos: [-5, 0.1, 4], rot: -0.6 },   // 白馬
+      { maker: () => makeQuadruped(animalMat.lion, 1.1), pos: [4, 0.1, 5], rot: -2.0 },     // ライオン
+      { maker: () => makeQuadruped(animalMat.deer, 0.9), pos: [6, 0.1, -3], rot: 1.2 },     // 鹿
+      { maker: () => makeQuadruped(animalMat.leopard, 0.95), pos: [-4, 0.1, -5], rot: 0.5 }, // 豹
+      { maker: () => makeSwan(), pos: [2, 0.15, -2], rot: 0.8 }, // 白鳥（水辺）
+      { maker: () => makeSwan(), pos: [-2, 0.15, -3], rot: 1.4 }, // 白鳥2
+    ];
+    animalSpots.forEach(a => {
+      const g = a.maker();
+      g.position.set(a.pos[0], a.pos[1], a.pos[2]);
+      g.rotation.y = a.rot;
+      g.traverse(o => { if (o.isMesh) o.castShadow = true; });
+      scene.add(g);
+    });
+
+    // 🐦 赤い鳥（樹の枝に止まる × 10）
+    for (let i = 0; i < 10; i++) {
+      const bird = new THREE.Mesh(
+        new THREE.SphereGeometry(0.1, 8, 6),
+        animalMat.bird
+      );
+      const a = Math.random() * Math.PI * 2;
+      const r = 3 + Math.random() * 4;
+      const y = 4 + Math.random() * 5;
+      bird.position.set(Math.cos(a) * r, y, Math.sin(a) * r);
+      bird.scale.set(1.3, 0.8, 1);
+      scene.add(bird);
+    }
+
     // 🌺 バラ（小さな赤い点）
     for (let i = 0; i < 20; i++) {
       const a = Math.random() * Math.PI * 2;
