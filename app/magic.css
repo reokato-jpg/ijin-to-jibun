@@ -3232,12 +3232,28 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
 }
 .cosmos-conscious-label.vanish { opacity: 0; }
 .cosmos-tap.bang {
-  animation: cosmosBang 0.8s ease-out forwards;
+  animation: cosmosTapFade 0.5s ease-out forwards;
 }
-@keyframes cosmosBang {
-  0% { transform: translate(-50%,-50%) scale(1); opacity: 1; }
-  50% { transform: translate(-50%,-50%) scale(3); opacity: 0.9; box-shadow: 0 0 100px 80px rgba(255,220,140,1); }
-  100% { transform: translate(-50%,-50%) scale(15); opacity: 0; }
+@keyframes cosmosTapFade {
+  0% { opacity: 0.85; }
+  100% { opacity: 0; transform: translate(-50%,-50%) scale(0.9); }
+}
+/* ワープ白フラッシュ（画面全体） */
+.cosmos-warp-flash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(255,240,200,0.95), rgba(255,200,140,0.6) 30%, transparent 70%);
+  z-index: 12;
+  opacity: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+.cosmos-warp-flash.fire { animation: cosmosWarpFlash 1.5s ease-out forwards; }
+@keyframes cosmosWarpFlash {
+  0% { opacity: 0; }
+  20% { opacity: 1; }
+  55% { opacity: 0.3; }
+  100% { opacity: 0; }
 }
 .cosmos-hud {
   position: absolute;

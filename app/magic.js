@@ -3543,6 +3543,7 @@
       <canvas class="cosmos-conscious-canvas" id="cosmosConsciousCanvas"></canvas>
       <div class="cosmos-conscious-label" id="cosmosConsciousLabel">CONSCIOUSNESS&nbsp;&nbsp;FIELD</div>
       <button class="cosmos-tap" id="cosmosTap">TAP</button>
+      <div class="cosmos-warp-flash" id="cosmosWarpFlash"></div>
       <div class="cosmos-hud" id="cosmosHud"></div>
       <div class="cosmos-info-panel" id="cosmosInfoPanel">
         <button class="cosmos-info-close" aria-label="閉じる">×</button>
@@ -4213,14 +4214,85 @@
       shootingStars.push({ line, geo, mat, pts, dx, dy, dz, life: 0, maxLife: 60 + Math.random() * 40 });
     }
 
-    let phase = 'noise'; // noise → bang → universe
+    let phase = 'noise'; // noise → warp → bang → universe
     let bbAge = 0;
     let universeTime = 0;
+    let warpStartTime = 0;
     let running = true;
     let cameraZoomTarget = null;  // 惑星にズーム用
+    // ユーザー操作: ドラッグ回転 + ホイール/ピンチでズーム
+    let userControlling = false;
+    let userRotation = 0;
+    let userTilt = 0;
+    let userZoom = 55;
+    let autoFade = 0; // 操作終了から何秒経ったか
+    let dragging = false;
+    let dragStartX = 0, dragStartY = 0;
+    let dragBaseRot = 0, dragBaseTilt = 0;
+    stage.addEventListener('pointerdown', (e) => {
+      if (phase !== 'universe') return;
+      dragging = true;
+      dragStartX = e.clientX; dragStartY = e.clientY;
+      dragBaseRot = userRotation; dragBaseTilt = userTilt;
+      userControlling = true; autoFade = 0;
+    });
+    stage.addEventListener('pointermove', (e) => {
+      if (!dragging) return;
+      userRotation = dragBaseRot - (e.clientX - dragStartX) * 0.005;
+      userTilt = Math.max(-0.5, Math.min(0.8, dragBaseTilt - (e.clientY - dragStartY) * 0.003));
+    });
+    stage.addEventListener('pointerup', () => { dragging = false; });
+    stage.addEventListener('pointerleave', () => { dragging = false; });
+    stage.addEventListener('wheel', (e) => {
+      if (phase !== 'universe') return;
+      e.preventDefault();
+      userZoom = Math.max(15, Math.min(120, userZoom + e.deltaY * 0.05));
+      userControlling = true; autoFade = 0;
+    }, { passive: false });
+    // ピンチ（touch）
+    let pinchStart = 0, pinchBaseZoom = 55;
+    stage.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 2) {
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        pinchStart = Math.hypot(dx, dy);
+        pinchBaseZoom = userZoom;
+      }
+    });
+    stage.addEventListener('touchmove', (e) => {
+      if (e.touches.length === 2 && pinchStart > 0) {
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        const d = Math.hypot(dx, dy);
+        userZoom = Math.max(15, Math.min(120, pinchBaseZoom * pinchStart / d));
+        userControlling = true; autoFade = 0;
+      }
+    });
     function animate() {
       if (!running) return;
-      if (phase === 'bang') {
+      if (phase === 'warp') {
+        // ワープ: 星が後ろに流れる ＋ カメラが突進
+        const elapsed = (performance.now() - warpStartTime) / 1000;
+        // 星をストリーク風に加速(Z軸方向)
+        for (let i = 0; i < starCount; i++) {
+          spos[i*3+2] += 8 + Math.random() * 4; // 前方に流れる(プレイヤー後方へ)
+          if (spos[i*3+2] > 100) {
+            const r = 200 + Math.random() * 200;
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.acos(2 * Math.random() - 1);
+            spos[i*3] = r * Math.sin(phi) * Math.cos(theta);
+            spos[i*3+1] = r * Math.sin(phi) * Math.sin(theta);
+            spos[i*3+2] = -200;
+          }
+        }
+        stars.attributes.position.needsUpdate = true;
+        starsMat.opacity = Math.min(1, elapsed * 1.5);
+        // ワープ1.5秒後にビッグバンへ
+        if (elapsed > 1.5) {
+          phase = 'bang';
+          bbAge = 0;
+        }
+      } else if (phase === 'bang') {
         bbAge += 0.016;
         for (let i = 0; i < bbCount; i++) {
           const v = bbVel[i];
@@ -4304,19 +4376,26 @@
         }
         // カメラ
         if (cameraZoomTarget) {
-          // 惑星にスムーズに寄る
           const t = cameraZoomTarget.mesh;
-          const dx = t.position.x - camera.position.x * 0.3;
           const lerp = 0.05;
           camera.position.x += (t.position.x * 1.3 - camera.position.x) * lerp;
           camera.position.y += (8 - camera.position.y) * lerp;
           camera.position.z += (t.position.z * 1.3 + 8 - camera.position.z) * lerp;
           camera.lookAt(t.position);
+        } else if (!userControlling) {
+          // 自動旋回（ユーザー操作中は停止）
+          const cAng = universeTime * 0.03 + userRotation;
+          const camDist = userZoom;
+          camera.position.x = Math.cos(cAng) * camDist;
+          camera.position.z = Math.sin(cAng) * camDist;
+          camera.position.y = 20 + Math.sin(universeTime * 0.1) * 8 + userTilt * 30;
+          camera.lookAt(0, 0, 0);
         } else {
-          const cAng = universeTime * 0.03;
-          camera.position.x = Math.cos(cAng) * 55;
-          camera.position.z = Math.sin(cAng) * 55;
-          camera.position.y = 20 + Math.sin(universeTime * 0.1) * 8;
+          // ユーザー操作: 手動回転
+          const camDist = userZoom;
+          camera.position.x = Math.cos(userRotation) * camDist;
+          camera.position.z = Math.sin(userRotation) * camDist;
+          camera.position.y = 20 + userTilt * 30;
           camera.lookAt(0, 0, 0);
         }
       }
@@ -4389,17 +4468,14 @@
       cameraZoomTarget = null;
     });
 
-    // タップ: 意識の接続 → 集約 → ビッグバン
+    // タップ: 意識の接続 → ワープ → ビッグバン → 宇宙
     tapBtn.addEventListener('click', () => {
-      // ① 意識を接続フェーズ（粒子が中心に集まる、線が濃くなる）
       consciousConnecting = true;
       consciousLabel.textContent = 'CONSCIOUSNESS · CONNECTING';
       tapBtn.style.pointerEvents = 'none';
       tapBtn.style.opacity = '0.3';
-      // ② 1.2秒後にビッグバン発火
       setTimeout(() => {
         tapBtn.classList.add('bang');
-        tapBtn.style.opacity = '1';
         consciousLabel.classList.add('vanish');
         ccan.style.opacity = '0';
         noise.classList.add('vanish');
@@ -4408,8 +4484,12 @@
           noise.style.display = 'none';
           ccan.style.display = 'none';
           cancelAnimationFrame(consciousRAF);
-        }, 800);
-        phase = 'bang';
+        }, 600);
+        // ワープフラッシュ
+        ov.querySelector('#cosmosWarpFlash').classList.add('fire');
+        phase = 'warp';
+        // ワープ中: 星をストリーク風に加速
+        warpStartTime = performance.now();
         bbPoints.visible = true;
       }, 1200);
     }, { once: true });
