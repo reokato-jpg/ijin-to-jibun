@@ -539,6 +539,7 @@
               <button class="magic-topbook-pill magic-topbook-pill-timeline" data-deep="timeline">📅 年表モード</button>
               <button class="magic-topbook-pill magic-topbook-pill-glossary" data-deep="glossary">📖 用語集</button>
               <button class="magic-topbook-pill magic-topbook-pill-myth" data-deep="mythology">✦ Genesis — はじまりの書</button>
+              <button class="magic-topbook-pill magic-topbook-pill-museum" data-deep="museum">🏛 美 術 館</button>
             </div>
           </div>
         </div>
@@ -571,6 +572,7 @@
         timeline: () => { try { openTimelineMode(); } catch (e) { console.warn('timeline', e); } },
         glossary: () => { try { openGlossary(); } catch (e) { console.warn('glossary', e); } },
         mythology: () => { try { openMythology(); } catch (e) { console.warn('mythology', e); } },
+        museum:   () => { try { openMuseumHub(); } catch (e) { console.warn('museum', e); } },
       };
       wrap.querySelectorAll('[data-deep]').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -6843,32 +6845,135 @@
   window.openMuseum = openMuseum;
 
   // ============================================================
-  // 🏛 神話美術館（全作品のギャラリーウォーク）
+  // 🏛 美術館: エリア選択ハブ（神話・戦国・…）
   // ============================================================
-  function openMythMuseum() {
+  const MUSEUM_ZONES = {
+    myth: {
+      name: '神話エリア',
+      emoji: '✦',
+      sub: '世界各地の創世と神々',
+      palette: { bg1: '#2e2418', bg2: '#15100a' },
+      hallStyle: 'classic',
+    },
+    sengoku: {
+      name: '戦国エリア',
+      emoji: '⚔',
+      sub: '日本の戦国時代 — 武将と合戦図',
+      palette: { bg1: '#2a1a14', bg2: '#140a06' },
+      hallStyle: 'wa',
+      works: [
+        { img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Odanobunaga.jpg?width=800',
+          caption: '織田信長像', origin: '戦国エリア', emoji: '⚔', chapterTitle: '織田信長' },
+        { img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Toyotomi_hideyoshi.jpg?width=800',
+          caption: '豊臣秀吉像', origin: '戦国エリア', emoji: '⚔', chapterTitle: '豊臣秀吉' },
+        { img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Tokugawa_Ieyasu2.JPG?width=800',
+          caption: '徳川家康像', origin: '戦国エリア', emoji: '⚔', chapterTitle: '徳川家康' },
+        { img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Takeda_Shingen.jpg?width=800',
+          caption: '武田信玄像', origin: '戦国エリア', emoji: '⚔', chapterTitle: '武田信玄' },
+        { img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Uesugi_Kenshin.jpg?width=800',
+          caption: '上杉謙信像', origin: '戦国エリア', emoji: '⚔', chapterTitle: '上杉謙信' },
+        { img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Date_Masamune.jpg?width=800',
+          caption: '伊達政宗像', origin: '戦国エリア', emoji: '⚔', chapterTitle: '伊達政宗' },
+        { img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Sanada_Yukimura.jpg?width=800',
+          caption: '真田幸村像', origin: '戦国エリア', emoji: '⚔', chapterTitle: '真田幸村' },
+        { img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Mori_Motonari.jpg?width=800',
+          caption: '毛利元就像', origin: '戦国エリア', emoji: '⚔', chapterTitle: '毛利元就' },
+        { img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Oda_Nobunaga_statue_in_Kiyosu_park.jpg?width=800',
+          caption: '清洲公園の信長像', origin: '戦国エリア', emoji: '⚔', chapterTitle: '清洲城' },
+        { img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Battle_of_Sekigahara_folding_screen.jpg?width=800',
+          caption: '関ヶ原合戦図屏風', origin: '戦国エリア', emoji: '⚔', chapterTitle: '関ヶ原の戦い' },
+        { img: 'https://commons.wikimedia.org/wiki/Special:FilePath/The_Siege_of_Osaka_Castle.jpg?width=800',
+          caption: '大坂の陣 (Siege of Osaka Castle)', origin: '戦国エリア', emoji: '⚔', chapterTitle: '大坂の陣' },
+        { img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Kawanakajima_no_kassen_LCCN2008660089.jpg?width=800',
+          caption: '川中島合戦図', origin: '戦国エリア', emoji: '⚔', chapterTitle: '川中島の戦い' },
+        { img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Sengoku_period_battle.jpg?width=800',
+          caption: '戦国の合戦', origin: '戦国エリア', emoji: '⚔', chapterTitle: '戦国合戦図' },
+      ],
+    },
+  };
+
+  function openMuseumHub() {
+    const ov = document.createElement('div');
+    ov.className = 'museum-hub-overlay';
+    ov.innerHTML = `
+      <button class="museum-hub-close" aria-label="閉じる">×</button>
+      <div class="museum-hub-wrap">
+        <div class="museum-hub-head">
+          <div class="museum-hub-super">T H E 　 M U S E U M</div>
+          <div class="museum-hub-title">美 術 館</div>
+          <div class="museum-hub-sub">── 人類が見たものに、足を踏み入れる ──</div>
+        </div>
+        <div class="museum-hub-zones">
+          ${Object.keys(MUSEUM_ZONES).map(k => {
+            const z = MUSEUM_ZONES[k];
+            const count = k === 'myth'
+              ? (() => { let n = 0; Object.values(MYTH_STORIES).forEach(s => s.chapters && s.chapters.forEach(c => { if (c.img) n++; })); return n; })()
+              : (z.works || []).length;
+            return `
+              <button class="museum-hub-zone" data-zone="${k}"
+                style="background: linear-gradient(160deg, ${z.palette.bg1}, ${z.palette.bg2});">
+                <div class="mhz-emoji">${z.emoji}</div>
+                <div class="mhz-name">${z.name}</div>
+                <div class="mhz-sub">${z.sub}</div>
+                <div class="mhz-count">全 ${count} 作品</div>
+                <div class="mhz-enter">入 る ›</div>
+              </button>
+            `;
+          }).join('')}
+        </div>
+        <div class="museum-hub-foot">新しいエリアは順次追加中です</div>
+      </div>
+    `;
+    document.body.appendChild(ov);
+    requestAnimationFrame(() => ov.classList.add('open'));
+    ov.querySelector('.museum-hub-close').addEventListener('click', () => {
+      ov.classList.remove('open');
+      setTimeout(() => ov.remove(), 400);
+    });
+    ov.querySelectorAll('.museum-hub-zone').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const zone = btn.dataset.zone;
+        ov.classList.remove('open');
+        setTimeout(() => { ov.remove(); openMythMuseum(zone); }, 300);
+      });
+    });
+  }
+  window.openMuseumHub = openMuseumHub;
+
+  // ============================================================
+  // 🏛 美術館ホール（指定ゾーンの作品を3Dで表示）
+  // ============================================================
+  function openMythMuseum(zoneKey = 'myth') {
     if (!window.THREE) return;
     const THREE = window.THREE;
-    // 全章から絵画を収集
+    const zone = MUSEUM_ZONES[zoneKey] || MUSEUM_ZONES.myth;
+    // 作品収集
     const works = [];
-    Object.keys(MYTH_STORIES).forEach(k => {
-      const s = MYTH_STORIES[k];
-      if (!s.chapters) return;
-      s.chapters.forEach(c => {
-        if (c.img) works.push({
-          img: c.img,
-          caption: c.caption || c.t,
-          origin: s.name,
+    if (zoneKey === 'myth') {
+      Object.keys(MYTH_STORIES).forEach(k => {
+        const s = MYTH_STORIES[k];
+        if (!s.chapters) return;
+        s.chapters.forEach(c => {
+          if (c.img) works.push({
+            img: c.img,
+            caption: c.caption || c.t,
+            origin: s.name,
           emoji: s.emoji,
           chapterTitle: c.t,
         });
       });
     });
+    } else {
+      // その他のゾーンはzone.worksを使う
+      (zone.works || []).forEach(w => works.push(w));
+    }
+    if (!works.length) { alert('このエリアには作品がありません'); return; }
     const ov = document.createElement('div');
-    ov.className = 'museum3d-overlay';
+    ov.className = 'museum3d-overlay museum3d-zone-' + zoneKey;
     ov.innerHTML = `
       <div class="museum3d-stage" id="m3dStage"></div>
       <button class="museum3d-close" aria-label="閉じる">×</button>
-      <div class="museum3d-title">神 話 美 術 館</div>
+      <div class="museum3d-title">${zone.name.replace('エリア', '')} 美 術 館</div>
       <div class="museum3d-info" id="m3dInfo"></div>
       <div class="museum3d-reticle">·</div>
       <div class="museum3d-hint" id="m3dHint">
@@ -7017,28 +7122,52 @@
 
     // === 壁 + 絵画 ===
     const paintings = []; // {mesh, painting: work}
-    // Wikimediaの画像はリダイレクト + CORSの都合で TextureLoader が失敗しがち。
-    // fetch → blob → ObjectURL → Image → CanvasTexture で確実にロード。
+    // Wikimedia画像は 302→301→200 リダイレクト。
+    // キャッシュ汚染を避けるためcache-busterを付与。
+    // 戦略1: Image + crossOrigin="anonymous" (最速)
+    // 戦略2: fetch → blob → ObjectURL (Image失敗時)
     function loadArtTexture(url) {
+      // cache-bust: 既に non-CORS で読まれた可能性があるので、別URLとしてfetchさせる
+      const bustedUrl = url + (url.includes('?') ? '&' : '?') + 'c3d=1';
       return new Promise((resolve, reject) => {
-        fetch(url, { mode: 'cors', credentials: 'omit' })
-          .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.blob(); })
-          .then(blob => {
-            const obj = URL.createObjectURL(blob);
-            const img = new Image();
-            img.onload = () => {
-              const tex = new THREE.Texture(img);
-              if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace || 'srgb';
-              else if ('encoding' in tex) tex.encoding = THREE.sRGBEncoding;
-              tex.anisotropy = renderer.capabilities.getMaxAnisotropy ? renderer.capabilities.getMaxAnisotropy() : 1;
-              tex.needsUpdate = true;
-              setTimeout(() => URL.revokeObjectURL(obj), 1000);
-              resolve(tex);
-            };
-            img.onerror = () => reject(new Error('img'));
-            img.src = obj;
-          })
-          .catch(reject);
+        // 戦略1
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => {
+          try {
+            const tex = new THREE.Texture(img);
+            if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace || 'srgb';
+            else if ('encoding' in tex) tex.encoding = THREE.sRGBEncoding;
+            tex.anisotropy = renderer.capabilities.getMaxAnisotropy ? renderer.capabilities.getMaxAnisotropy() : 1;
+            tex.needsUpdate = true;
+            resolve(tex);
+          } catch (e) { strategy2(); }
+        };
+        img.onerror = () => strategy2();
+        img.src = bustedUrl;
+
+        // 戦略2: fetch (別cache-busterで再試行)
+        function strategy2() {
+          const busted2 = url + (url.includes('?') ? '&' : '?') + 'c3d=2';
+          fetch(busted2, { mode: 'cors', credentials: 'omit', cache: 'reload' })
+            .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.blob(); })
+            .then(blob => {
+              const obj = URL.createObjectURL(blob);
+              const im2 = new Image();
+              im2.onload = () => {
+                const tex = new THREE.Texture(im2);
+                if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace || 'srgb';
+                else if ('encoding' in tex) tex.encoding = THREE.sRGBEncoding;
+                tex.anisotropy = renderer.capabilities.getMaxAnisotropy ? renderer.capabilities.getMaxAnisotropy() : 1;
+                tex.needsUpdate = true;
+                setTimeout(() => URL.revokeObjectURL(obj), 2000);
+                resolve(tex);
+              };
+              im2.onerror = () => reject(new Error('img2'));
+              im2.src = obj;
+            })
+            .catch(reject);
+        }
       });
     }
     for (let i = 0; i < N; i++) {
