@@ -6132,15 +6132,41 @@
       }
       return new THREE.CanvasTexture(sc);
     })();
-    scene.background = skyTex; // 背景に直接
-    // 空のドーム（補助）
-    const sky = new THREE.Mesh(
-      new THREE.SphereGeometry(120, 48, 24),
-      new THREE.MeshBasicMaterial({ map: skyTex, side: THREE.BackSide, fog: false })
-    );
-    scene.add(sky);
-    // フォグを空の色に合わせて（浮遊感を出す）
-    scene.fog = new THREE.Fog(0xe8d8c8, 30, 110);
+    // 🌅 空：THREE.Sky（物理ベースの大気散乱）があれば最優先で使う
+    let sky;
+    if (ADDONS.Sky) {
+      sky = new ADDONS.Sky();
+      sky.scale.setScalar(450);
+      const sp = sky.material.uniforms;
+      sp['turbidity'].value = 3.5;        // 霞の多さ
+      sp['rayleigh'].value = 2.2;         // 青空成分
+      sp['mieCoefficient'].value = 0.008;
+      sp['mieDirectionalG'].value = 0.82; // 太陽付近のハロ
+      // 太陽方向（夕方寄り）
+      const phi = THREE.MathUtils.degToRad(90 - 14);    // 高度: 14°（低め=夕景）
+      const theta = THREE.MathUtils.degToRad(40);
+      const sunDir = new THREE.Vector3().setFromSphericalCoords(1, phi, theta);
+      sp['sunPosition'].value.copy(sunDir);
+      scene.add(sky);
+      // PMREM: Sky を環境光マップにして PBR マテリアルに反映
+      try {
+        const pmrem = new THREE.PMREMGenerator(renderer);
+        pmrem.compileEquirectangularShader();
+        const envRT = pmrem.fromScene(sky);
+        scene.environment = envRT.texture;
+      } catch (e) { console.warn('PMREM failed', e); }
+      // 太陽方向の方向光も Sky に揃える
+      sunLight.position.copy(sunDir).multiplyScalar(60);
+    } else {
+      scene.background = skyTex;
+      sky = new THREE.Mesh(
+        new THREE.SphereGeometry(120, 48, 24),
+        new THREE.MeshBasicMaterial({ map: skyTex, side: THREE.BackSide, fog: false })
+      );
+      scene.add(sky);
+    }
+    // フォグ（Sky利用時も浮遊感のために薄め）
+    scene.fog = new THREE.Fog(0xe8d8c8, 35, 130);
     // ☀️ 太陽 — 宇宙モードと同格のシェーダベース（プラズマ + 彩層 + 多層コロナ + 輝き）
     const SUN_POS = new THREE.Vector3(22, 28, -42);
     const SUN_R = 4.5;
@@ -6781,18 +6807,19 @@
     const trunkMat = new THREE.MeshStandardMaterial({
       map: barkTex, roughness: 0.95, color: 0xc8a080,
     });
-    // 幹: 高さ9m、ドラマチックな曲がり
+    // 幹: 高さ14m、ドラマチックな曲がり — 壮大な世界樹スケール
     const trunkCurve = new THREE.CatmullRomCurve3([
       new THREE.Vector3(0, 0, 0),
-      new THREE.Vector3(0.25, 1.5, 0.15),
-      new THREE.Vector3(-0.1, 3.0, -0.2),
-      new THREE.Vector3(0.3, 4.6, 0.25),
-      new THREE.Vector3(-0.05, 6.2, 0.15),
-      new THREE.Vector3(0.15, 7.8, -0.1),
-      new THREE.Vector3(0.0, 9.0, 0.0),
+      new THREE.Vector3(0.35, 2.3, 0.25),
+      new THREE.Vector3(-0.15, 4.6, -0.3),
+      new THREE.Vector3(0.45, 7.0, 0.35),
+      new THREE.Vector3(-0.1, 9.5, 0.25),
+      new THREE.Vector3(0.25, 11.8, -0.15),
+      new THREE.Vector3(0.05, 13.5, 0.1),
+      new THREE.Vector3(0.0, 14.0, 0.0),
     ]);
-    // 下太(1.1)→上細(0.2)：荘厳な寸胴
-    const trunkRadii = [1.1, 0.95, 0.78, 0.6, 0.45, 0.32, 0.2];
+    // 下太(1.7)→上細(0.25)：神木級
+    const trunkRadii = [1.7, 1.45, 1.15, 0.9, 0.65, 0.48, 0.32, 0.22];
     const trunk = makeTaperedTube(trunkCurve, trunkRadii, 24, trunkMat);
     treeGroup.add(trunk);
     // 神秘のルーン（幹に発光の筋） — 黄金の文字が螺旋を描く
@@ -6800,54 +6827,54 @@
       color: 0xffe890, transparent: true, opacity: 0.55,
       blending: THREE.AdditiveBlending, depthWrite: false,
     });
-    for (let k = 0; k < 3; k++) {
-      const runePts = Array.from({length: 40}).map((_, i) => {
-        const t = i / 39;
-        const y = 0.5 + t * 8.0;
-        const r = 1.05 - t * 0.85;
-        const a = t * Math.PI * 3 + k * (Math.PI * 2 / 3);
-        return new THREE.Vector3(Math.cos(a) * r * 1.02, y, Math.sin(a) * r * 1.02);
+    for (let k = 0; k < 4; k++) {
+      const runePts = Array.from({length: 60}).map((_, i) => {
+        const t = i / 59;
+        const y = 0.7 + t * 12.5;
+        const r = 1.6 - t * 1.35;
+        const a = t * Math.PI * 4 + k * (Math.PI * 2 / 4);
+        return new THREE.Vector3(Math.cos(a) * r * 1.03, y, Math.sin(a) * r * 1.03);
       });
       const runeCurve = new THREE.CatmullRomCurve3(runePts);
       const rune = new THREE.Mesh(
-        new THREE.TubeGeometry(runeCurve, 80, 0.015, 6, false),
+        new THREE.TubeGeometry(runeCurve, 120, 0.022, 6, false),
         runeMat
       );
       treeGroup.add(rune);
     }
-    // 根（壮大な buttress roots、8本）
-    for (let i = 0; i < 8; i++) {
-      const a = (i / 8) * Math.PI * 2 + Math.random() * 0.2;
+    // 根（壮大な buttress roots、12本、大きく広がる）
+    for (let i = 0; i < 12; i++) {
+      const a = (i / 12) * Math.PI * 2 + Math.random() * 0.15;
       const rootCurve = new THREE.CatmullRomCurve3([
-        new THREE.Vector3(Math.cos(a) * 0.5, 0.6, Math.sin(a) * 0.5),
-        new THREE.Vector3(Math.cos(a) * 1.2, 0.15, Math.sin(a) * 1.2),
-        new THREE.Vector3(Math.cos(a) * 2.2, -0.05, Math.sin(a) * 2.2),
-        new THREE.Vector3(Math.cos(a) * 3.0, -0.08, Math.sin(a) * 3.0),
+        new THREE.Vector3(Math.cos(a) * 0.7, 1.0, Math.sin(a) * 0.7),
+        new THREE.Vector3(Math.cos(a) * 1.8, 0.25, Math.sin(a) * 1.8),
+        new THREE.Vector3(Math.cos(a) * 3.4, -0.08, Math.sin(a) * 3.4),
+        new THREE.Vector3(Math.cos(a) * 4.8, -0.1, Math.sin(a) * 4.8),
       ]);
-      const root = makeTaperedTube(rootCurve, [0.5, 0.35, 0.18, 0.06], 12, trunkMat);
+      const root = makeTaperedTube(rootCurve, [0.75, 0.55, 0.28, 0.09], 12, trunkMat);
       treeGroup.add(root);
     }
-    // 枝: 14本の主枝、クラウン全体に放射状
+    // 枝: 22本の主枝、クラウンを広く覆う
     const branchEnds = [];
     const branchDefs = [];
-    for (let i = 0; i < 14; i++) {
-      const ang = (i / 14) * Math.PI * 2 + Math.random() * 0.3;
-      const h0 = 4.5 + Math.random() * 3.0;
-      const h1 = h0 + 0.7 + Math.random() * 0.8;
-      const h2 = h1 + 0.3 + Math.random() * 0.7;
-      const r1 = 0.8 + Math.random() * 0.6;
-      const r2 = 2.0 + Math.random() * 1.2;
-      const r3 = 3.0 + Math.random() * 1.5;
+    for (let i = 0; i < 22; i++) {
+      const ang = (i / 22) * Math.PI * 2 + Math.random() * 0.25;
+      const h0 = 7.0 + Math.random() * 4.5;
+      const h1 = h0 + 1.0 + Math.random() * 1.2;
+      const h2 = h1 + 0.4 + Math.random() * 1.0;
+      const r1 = 1.3 + Math.random() * 0.9;
+      const r2 = 3.2 + Math.random() * 1.8;
+      const r3 = 4.8 + Math.random() * 2.4;
       branchDefs.push([
-        [Math.cos(ang) * 0.15, h0 - 0.4, Math.sin(ang) * 0.15],
-        [Math.cos(ang) * r1, h0 + 0.2, Math.sin(ang) * r1],
+        [Math.cos(ang) * 0.22, h0 - 0.5, Math.sin(ang) * 0.22],
+        [Math.cos(ang) * r1, h0 + 0.3, Math.sin(ang) * r1],
         [Math.cos(ang) * r2, h1, Math.sin(ang) * r2],
         [Math.cos(ang) * r3, h2, Math.sin(ang) * r3],
       ]);
     }
     branchDefs.forEach(def => {
       const cv = new THREE.CatmullRomCurve3(def.map(p => new THREE.Vector3(p[0], p[1], p[2])));
-      const br = makeTaperedTube(cv, [0.32, 0.22, 0.13, 0.06], 14, trunkMat);
+      const br = makeTaperedTube(cv, [0.48, 0.33, 0.19, 0.08], 14, trunkMat);
       treeGroup.add(br);
       branchEnds.push(new THREE.Vector3(...def[3]));
       // 小枝3本ずつ
@@ -6868,7 +6895,7 @@
     });
 
     // 🍃 葉（InstancedMesh — 葉テクスチャ付き平面、クラウン全体に散布）
-    const LEAF_COUNT = 900;
+    const LEAF_COUNT = 1600;
     const leafGeo = new THREE.PlaneGeometry(0.42, 0.55);
     const leafMat = new THREE.MeshStandardMaterial({
       map: leafTex,
@@ -6891,12 +6918,12 @@
           end.z + (Math.random() - 0.5) * 1.6
         );
       } else {
-        const r = 2.4 + Math.random() * 2.2;
+        const r = 3.8 + Math.random() * 3.2;
         const th = Math.random() * Math.PI * 2;
         const ph = Math.acos(2 * Math.random() - 1) * 0.65 + 0.15;
         base = new THREE.Vector3(
           Math.cos(th) * Math.sin(ph) * r,
-          6.8 + Math.cos(ph) * r * 0.9,
+          10.5 + Math.cos(ph) * r * 0.9,
           Math.sin(th) * Math.sin(ph) * r
         );
       }
@@ -6929,11 +6956,11 @@
       color: 0xd01828, roughness: 0.25, metalness: 0.2,
       emissive: 0x500818, emissiveIntensity: 0.3,
     });
-    for (let i = 0; i < 14; i++) {
-      const theta = (i / 14) * Math.PI * 2 + Math.random() * 0.6;
-      const r = 2.4 + Math.random() * 2.0;
-      const apple = new THREE.Mesh(new THREE.SphereGeometry(0.18, 16, 12), appleMat);
-      apple.position.set(Math.cos(theta) * r, 6.2 + Math.random() * 1.3, Math.sin(theta) * r);
+    for (let i = 0; i < 18; i++) {
+      const theta = (i / 18) * Math.PI * 2 + Math.random() * 0.6;
+      const r = 3.8 + Math.random() * 3.0;
+      const apple = new THREE.Mesh(new THREE.SphereGeometry(0.24, 16, 12), appleMat);
+      apple.position.set(Math.cos(theta) * r, 9.5 + Math.random() * 2.0, Math.sin(theta) * r);
       // ハイライト
       const hl = new THREE.Mesh(
         new THREE.SphereGeometry(0.05, 8, 6),
@@ -6970,12 +6997,12 @@
     }
 
     // 🐍 蛇（幹に巻き付く・ずっと大きく、頭が正面へ来るよう最後にカメラ側へ伸びる）
-    const serpentPts = Array.from({length: 60}).map((_, i) => {
-      const t = i / 59;
-      const y = 0.4 + t * 7.2;
-      const a = t * Math.PI * 3.5 + Math.PI * 0.3; // カメラ方向から始まる
-      const trunkR = 1.1 - t * 0.85;
-      const r = trunkR + 0.16 + Math.sin(t * 10) * 0.04;
+    const serpentPts = Array.from({length: 72}).map((_, i) => {
+      const t = i / 71;
+      const y = 0.6 + t * 11.5;
+      const a = t * Math.PI * 4.5 + Math.PI * 0.3; // カメラ方向から始まる
+      const trunkR = 1.7 - t * 1.45;
+      const r = trunkR + 0.22 + Math.sin(t * 10) * 0.05;
       const p = new THREE.Vector3(Math.cos(a) * r, y, Math.sin(a) * r);
       // 最後の20%は頭を手前に突き出す
       if (t > 0.78) {
@@ -6988,10 +7015,10 @@
     const serpentCurve = new THREE.CatmullRomCurve3(serpentPts);
     // 尾細い→頭太い（全体に太く）
     const serpentRadii = [];
-    for (let i = 0; i < 60; i++) {
-      const t = i / 59;
-      const base = 0.09 + 0.14 * Math.sin(t * Math.PI);
-      serpentRadii.push(base + (t > 0.90 ? 0.09 * (1 - (t - 0.90) / 0.10) : 0));
+    for (let i = 0; i < 72; i++) {
+      const t = i / 71;
+      const base = 0.14 + 0.22 * Math.sin(t * Math.PI);
+      serpentRadii.push(base + (t > 0.90 ? 0.12 * (1 - (t - 0.90) / 0.10) : 0));
     }
     // 蛇用テクスチャ（鱗）
     const scaleTex = (() => {
@@ -7377,7 +7404,7 @@
 
     // 操作: ドラッグで視点を回す / タップで幹を叩くとリンゴが落ちる
     let dragging = false, lastX = 0, lastY = 0, dragStart = 0, startX = 0, startY = 0;
-    let camAngle = 0, camTilt = 0.15, camDist = 22;
+    let camAngle = 0, camTilt = 0.2, camDist = 32;
     const edenRay = new THREE.Raycaster();
     const edenPtr = new THREE.Vector2();
     function handleTap(cx, cy) {
@@ -7524,8 +7551,8 @@
       }
       camera.position.x = Math.cos(camAngle) * camDist + shakeX;
       camera.position.z = Math.sin(camAngle) * camDist;
-      camera.position.y = 6.5 + camTilt * 8 + shakeY;
-      camera.lookAt(0, 5.0, 0);
+      camera.position.y = 8.5 + camTilt * 10 + shakeY;
+      camera.lookAt(0, 7.5, 0);
       // 太陽シェーダのアニメ
       sunUniforms.uTime.value = t;
       // 水面のアニメ（THREE.Water は material.uniforms.time を回す）
