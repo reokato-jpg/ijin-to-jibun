@@ -4605,10 +4605,57 @@
         moons.push({ mesh: titan, orbit: 3.2, speed: 6, angle: Math.random() * Math.PI * 2 });
       }
       if (moons.length) pMesh.userData.moons = moons;
-      // 土星のリング
+      // 土星のリング（カッシーニの間隙・エンケの間隙あり）
       if (p.hasRing) {
-        const rGeo = new THREE.RingGeometry(p.size * 1.3, p.size * 2.1, 64);
-        const rMat = new THREE.MeshBasicMaterial({ color: 0xd8b888, side: THREE.DoubleSide, transparent: true, opacity: 0.7 });
+        const ringTex = (() => {
+          const sc = document.createElement('canvas'); sc.width = 64; sc.height = 512;
+          const g = sc.getContext('2d');
+          // 透明ベース
+          g.clearRect(0, 0, 64, 512);
+          // 内側から外側 (V=0 → V=1 が内→外に対応)
+          // C環 (faint, inner): 0-80
+          g.fillStyle = 'rgba(184,152,112,0.35)'; g.fillRect(0, 0, 64, 80);
+          // B環 (brightest, densest): 80-280
+          const bg = g.createLinearGradient(0, 80, 0, 280);
+          bg.addColorStop(0, 'rgba(232,216,176,0.92)');
+          bg.addColorStop(0.5, 'rgba(248,230,192,0.98)');
+          bg.addColorStop(1, 'rgba(216,192,152,0.88)');
+          g.fillStyle = bg; g.fillRect(0, 80, 64, 200);
+          // 🌀 カッシーニの間隙: 280-320
+          g.clearRect(0, 280, 64, 40);
+          g.fillStyle = 'rgba(30,20,10,0.3)'; g.fillRect(0, 280, 64, 40);
+          // A環: 320-460
+          const ag = g.createLinearGradient(0, 320, 0, 460);
+          ag.addColorStop(0, 'rgba(216,192,152,0.78)');
+          ag.addColorStop(1, 'rgba(192,168,128,0.62)');
+          g.fillStyle = ag; g.fillRect(0, 320, 64, 140);
+          // エンケの間隙: 420-428 (A環の外側寄り)
+          g.clearRect(0, 420, 64, 8);
+          // F環 (細い、外側): 470-485
+          g.fillStyle = 'rgba(232,216,176,0.42)';
+          g.fillRect(0, 470, 64, 15);
+          // 放射状のスポーク（微妙な筋）
+          for (let s = 0; s < 30; s++) {
+            const y = 100 + Math.random() * 350;
+            const alpha = 0.05 + Math.random() * 0.1;
+            g.fillStyle = `rgba(60,40,20,${alpha})`;
+            g.fillRect(0, y, 64, 1 + Math.random() * 2);
+          }
+          return new THREE.CanvasTexture(sc);
+        })();
+        const rGeo = new THREE.RingGeometry(p.size * 1.2, p.size * 2.3, 128, 8);
+        // UVをラジアル方向にマップ
+        const pos = rGeo.attributes.position;
+        const uv = rGeo.attributes.uv;
+        for (let i = 0; i < pos.count; i++) {
+          const x = pos.getX(i), y = pos.getY(i);
+          const r = Math.sqrt(x*x + y*y);
+          const t = (r - p.size * 1.2) / (p.size * 2.3 - p.size * 1.2);
+          const a = Math.atan2(y, x);
+          uv.setXY(i, a / (Math.PI * 2) + 0.5, t);
+        }
+        uv.needsUpdate = true;
+        const rMat = new THREE.MeshBasicMaterial({ map: ringTex, side: THREE.DoubleSide, transparent: true, opacity: 0.95, alphaTest: 0.02 });
         const ring = new THREE.Mesh(rGeo, rMat);
         ring.rotation.x = Math.PI / 2.2;
         ring.visible = false;
@@ -4646,6 +4693,203 @@
       }
       planetMeshes.push({ mesh: pMesh, orbit, planet: p });
     });
+
+    // ============================================================
+    // 🌍 大気フレネル・リム発光 + 昼夜境界シャドウシェル
+    // ============================================================
+    const ATM_COLOR = {
+      '水星': new THREE.Color(0x886050), '金星': new THREE.Color(0xf0d878),
+      '地球': new THREE.Color(0x7ac8ff), '火星': new THREE.Color(0xe08058),
+      '木星': new THREE.Color(0xf0d8a0), '土星': new THREE.Color(0xf0e0b8),
+      '天王星': new THREE.Color(0xa8e4ec), '海王星': new THREE.Color(0x6098e0),
+    };
+    planetMeshes.forEach(pm => {
+      if (pm.planet.isBlackHole) return;
+      const atmC = ATM_COLOR[pm.planet.name] || new THREE.Color(0xaaaaaa);
+      // 大気フレネル発光シェル（やや大きい球、リムだけ光る）
+      const atmGeo = new THREE.SphereGeometry(pm.planet.size * 1.035, 32, 24);
+      const atmMat = new THREE.ShaderMaterial({
+        uniforms: { uColor: { value: atmC }, uPower: { value: pm.planet.name === '地球' ? 2.2 : 3.0 }, uIntensity: { value: pm.planet.name === '地球' ? 1.0 : 0.7 } },
+        vertexShader: `
+          varying vec3 vN;
+          varying vec3 vView;
+          void main() {
+            vec4 wp = modelMatrix * vec4(position, 1.0);
+            vN = normalize(mat3(modelMatrix) * normal);
+            vView = normalize(cameraPosition - wp.xyz);
+            gl_Position = projectionMatrix * viewMatrix * wp;
+          }
+        `,
+        fragmentShader: `
+          uniform vec3 uColor;
+          uniform float uPower;
+          uniform float uIntensity;
+          varying vec3 vN;
+          varying vec3 vView;
+          void main() {
+            float rim = 1.0 - max(0.0, dot(vN, vView));
+            rim = pow(rim, uPower) * uIntensity;
+            gl_FragColor = vec4(uColor * rim, rim);
+            if (rim < 0.02) discard;
+          }
+        `,
+        transparent: true, depthWrite: false, side: THREE.FrontSide, blending: THREE.AdditiveBlending,
+      });
+      const atmShell = new THREE.Mesh(atmGeo, atmMat);
+      atmShell.visible = false;
+      scene.add(atmShell);
+      pm.mesh.userData.atmShell = atmShell;
+
+      // 昼夜境界シャドウ（太陽に背を向ける側が暗く）
+      const shGeo = new THREE.SphereGeometry(pm.planet.size * 1.002, 32, 24);
+      const shMat = new THREE.ShaderMaterial({
+        uniforms: { uSunPos: { value: new THREE.Vector3(0,0,0) } },
+        vertexShader: `
+          varying vec3 vWorld;
+          varying vec3 vN;
+          void main() {
+            vec4 wp = modelMatrix * vec4(position, 1.0);
+            vWorld = wp.xyz;
+            vN = normalize(mat3(modelMatrix) * normal);
+            gl_Position = projectionMatrix * viewMatrix * wp;
+          }
+        `,
+        fragmentShader: `
+          uniform vec3 uSunPos;
+          varying vec3 vWorld;
+          varying vec3 vN;
+          void main() {
+            vec3 sd = normalize(uSunPos - vWorld);
+            float d = dot(vN, sd);
+            float shadow = smoothstep(0.30, -0.18, d);
+            gl_FragColor = vec4(0.01, 0.01, 0.03, shadow * 0.78);
+            if (shadow < 0.02) discard;
+          }
+        `,
+        transparent: true, depthWrite: false, side: THREE.FrontSide,
+      });
+      const shShell = new THREE.Mesh(shGeo, shMat);
+      shShell.visible = false;
+      scene.add(shShell);
+      pm.mesh.userData.shadowShell = shShell;
+    });
+
+    // ============================================================
+    // ☀️ 太陽プロミネンス（プラズマアーク6本）
+    // ============================================================
+    const prominences = [];
+    for (let i = 0; i < 6; i++) {
+      const a = (i / 6) * Math.PI * 2;
+      const h = 1.2 + Math.random() * 1.4;
+      // 放物線カーブ
+      const curve = new THREE.CubicBezierCurve3(
+        new THREE.Vector3(Math.cos(a) * 3.5, Math.sin(a) * 3.5, 0),
+        new THREE.Vector3(Math.cos(a) * 4.5, Math.sin(a) * 4.5 + h, 0),
+        new THREE.Vector3(Math.cos(a + 0.3) * 4.5, Math.sin(a + 0.3) * 4.5 + h * 0.8, 0),
+        new THREE.Vector3(Math.cos(a + 0.6) * 3.5, Math.sin(a + 0.6) * 3.5, 0),
+      );
+      const pGeo = new THREE.TubeGeometry(curve, 24, 0.08, 8, false);
+      const pMat = new THREE.MeshBasicMaterial({ color: 0xff8030, transparent: true, opacity: 0.0, blending: THREE.AdditiveBlending, depthWrite: false });
+      const pMesh = new THREE.Mesh(pGeo, pMat);
+      pMesh.rotation.z = Math.random() * Math.PI;
+      pMesh.rotation.x = (Math.random() - 0.5) * 0.4;
+      pMesh.visible = false;
+      scene.add(pMesh);
+      prominences.push({ mesh: pMesh, mat: pMat, phase: Math.random() * Math.PI * 2, baseRot: pMesh.rotation.z });
+    }
+
+    // ============================================================
+    // ☄️ 彗星（太陽の反対側に尾が伸びる）
+    // ============================================================
+    const cometCore = new THREE.Mesh(
+      new THREE.SphereGeometry(0.18, 16, 12),
+      new THREE.MeshBasicMaterial({ color: 0xe8f4ff })
+    );
+    cometCore.visible = false;
+    scene.add(cometCore);
+    const cometCoronaMat = new THREE.SpriteMaterial({ map: softDotTex, color: 0xc8e8ff, transparent: true, opacity: 0.0, blending: THREE.AdditiveBlending, depthWrite: false });
+    const cometCorona = new THREE.Sprite(cometCoronaMat);
+    cometCorona.scale.set(1.6, 1.6, 1);
+    scene.add(cometCorona);
+    // 尾の粒子
+    const cometTailCount = 80;
+    const cometTailGeo = new THREE.BufferGeometry();
+    const cometTailPos = new Float32Array(cometTailCount * 3);
+    const cometTailCol = new Float32Array(cometTailCount * 3);
+    const cometTailSiz = new Float32Array(cometTailCount);
+    for (let i = 0; i < cometTailCount; i++) {
+      const t = i / cometTailCount;
+      cometTailPos[i*3] = 0; cometTailPos[i*3+1] = -9999; cometTailPos[i*3+2] = 0;
+      // ダスト尾（白）とイオン尾（青）の2系統
+      const isIon = i % 2 === 0;
+      if (isIon) {
+        cometTailCol[i*3] = 0.55; cometTailCol[i*3+1] = 0.75; cometTailCol[i*3+2] = 1.0;
+      } else {
+        cometTailCol[i*3] = 1.0; cometTailCol[i*3+1] = 0.95; cometTailCol[i*3+2] = 0.85;
+      }
+      cometTailSiz[i] = (1 - t) * 4 + 0.5;
+    }
+    cometTailGeo.setAttribute('position', new THREE.BufferAttribute(cometTailPos, 3));
+    cometTailGeo.setAttribute('color', new THREE.BufferAttribute(cometTailCol, 3));
+    cometTailGeo.setAttribute('ctSize', new THREE.BufferAttribute(cometTailSiz, 1));
+    const cometTailMat = new THREE.ShaderMaterial({
+      uniforms: { uTex: { value: softDotTex }, uOpacity: { value: 0.0 } },
+      vertexShader: `
+        attribute float ctSize;
+        attribute vec3 color;
+        varying vec3 vColor;
+        varying float vS;
+        void main() {
+          vColor = color;
+          vS = ctSize;
+          vec4 mv = modelViewMatrix * vec4(position, 1.0);
+          gl_Position = projectionMatrix * mv;
+          gl_PointSize = ctSize * 6.0;
+        }
+      `,
+      fragmentShader: `
+        uniform sampler2D uTex;
+        uniform float uOpacity;
+        varying vec3 vColor;
+        varying float vS;
+        void main() {
+          vec4 t = texture2D(uTex, gl_PointCoord);
+          gl_FragColor = vec4(vColor, t.a * uOpacity * (vS/4.0));
+          if (gl_FragColor.a < 0.01) discard;
+        }
+      `,
+      transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+    });
+    const cometTail = new THREE.Points(cometTailGeo, cometTailMat);
+    scene.add(cometTail);
+    // 彗星の軌道：楕円
+    const cometState = {
+      angle: 0,
+      a: 55, b: 35, // 長半径、短半径
+      speed: 0.003,
+      rotZ: 0.4, // 軌道傾き
+    };
+
+    // ============================================================
+    // 🌟 太陽風粒子（太陽から放射状に流れる）
+    // ============================================================
+    const swCount = 300;
+    const swGeo = new THREE.BufferGeometry();
+    const swPos = new Float32Array(swCount * 3);
+    const swVel = [];
+    for (let i = 0; i < swCount; i++) {
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2 * Math.random() - 1);
+      const r = 4 + Math.random() * 40;
+      swPos[i*3] = r * Math.sin(phi) * Math.cos(theta);
+      swPos[i*3+1] = r * Math.sin(phi) * Math.sin(theta);
+      swPos[i*3+2] = r * Math.cos(phi);
+      swVel.push({ vx: swPos[i*3] * 0.003, vy: swPos[i*3+1] * 0.003, vz: swPos[i*3+2] * 0.003 });
+    }
+    swGeo.setAttribute('position', new THREE.BufferAttribute(swPos, 3));
+    const swMat = new THREE.PointsMaterial({ size: 0.4, color: 0xfff0c0, transparent: true, opacity: 0.0, depthWrite: false, blending: THREE.AdditiveBlending, map: softDotTex });
+    const solarWind = new THREE.Points(swGeo, swMat);
+    scene.add(solarWind);
 
     // 🪨 アステロイドベルト（火星-木星間、dist 20-22）
     const astCount = 400;
@@ -5459,8 +5703,13 @@
             if (pm.mesh.userData.bhHalo) pm.mesh.userData.bhHalo.visible = true;
             if (pm.mesh.userData.isBlackHole) pm.orbit.material.opacity = 0.0;
             else pm.orbit.material.opacity = 0.25;
+            if (pm.mesh.userData.atmShell) pm.mesh.userData.atmShell.visible = true;
+            if (pm.mesh.userData.shadowShell) pm.mesh.userData.shadowShell.visible = true;
           });
           astMat.opacity = 0.7; kbMat.opacity = 0.5;
+          // プロミネンス・彗星・太陽風を出現
+          prominences.forEach(pr => pr.mesh.visible = true);
+          cometCore.visible = true;
         }
         if (bbAge > 3) {
           phase = 'universe';
@@ -5518,6 +5767,15 @@
           if (pm.mesh.userData.atmosphere) {
             pm.mesh.userData.atmosphere.position.copy(pm.mesh.position);
           }
+          if (pm.mesh.userData.atmShell) {
+            pm.mesh.userData.atmShell.position.copy(pm.mesh.position);
+          }
+          if (pm.mesh.userData.shadowShell) {
+            pm.mesh.userData.shadowShell.position.copy(pm.mesh.position);
+            pm.mesh.userData.shadowShell.rotation.copy(pm.mesh.rotation);
+            // sunPos uniform (太陽は原点なのでそのまま)
+            pm.mesh.userData.shadowShell.material.uniforms.uSunPos.value.set(0, 0, 0);
+          }
           if (pm.mesh.userData.accretion) {
             pm.mesh.userData.accretion.position.copy(pm.mesh.position);
             pm.mesh.userData.accretion.rotation.z += 0.005;
@@ -5528,6 +5786,60 @@
           pm.mesh.rotation.y += 0.01;
         });
         sun.rotation.y += 0.002;
+        // ☀️ プロミネンス：脈動＋ゆっくり回転
+        prominences.forEach(pr => {
+          pr.phase += 0.02;
+          pr.mat.opacity = 0.4 + Math.sin(pr.phase) * 0.3;
+          pr.mesh.rotation.z = pr.baseRot + universeTime * 0.05;
+        });
+        // ☄️ 彗星の公転と尾
+        cometState.angle += cometState.speed;
+        const ca = cometState.angle;
+        const cx2 = Math.cos(ca) * cometState.a;
+        const cz2 = Math.sin(ca) * cometState.b;
+        const cy2 = Math.sin(ca * 0.8) * 3;
+        // 軌道傾き
+        const cyR = cy2 * Math.cos(cometState.rotZ) - cz2 * Math.sin(cometState.rotZ);
+        const czR = cy2 * Math.sin(cometState.rotZ) + cz2 * Math.cos(cometState.rotZ);
+        cometCore.position.set(cx2, cyR, czR);
+        cometCorona.position.copy(cometCore.position);
+        // 尾：太陽から遠ざかる方向へ伸ばす（太陽は原点）
+        const tailDir = cometCore.position.clone().normalize();
+        const dSun = cometCore.position.length();
+        const tailLen = Math.max(3, 20 / Math.max(dSun * 0.12, 0.4)); // 太陽に近いと長い
+        const tailOpacity = Math.max(0.2, Math.min(1, 60 / (dSun * dSun + 1)));
+        cometCoronaMat.opacity = tailOpacity * 0.9;
+        cometCorona.scale.setScalar(1.2 + 3 / Math.max(dSun * 0.3, 1));
+        cometTailMat.uniforms.uOpacity.value = tailOpacity;
+        for (let i = 0; i < cometTailCount; i++) {
+          const t = i / cometTailCount;
+          // ダスト尾は少し曲がる（公転方向に遅れる）
+          const curve = (i % 2 === 0) ? 0 : Math.sin(t * Math.PI) * 0.8;
+          const perp = new THREE.Vector3(-tailDir.z, 0, tailDir.x);
+          const p = cometCore.position.clone()
+            .addScaledVector(tailDir, t * tailLen)
+            .addScaledVector(perp, curve);
+          cometTailPos[i*3] = p.x; cometTailPos[i*3+1] = p.y; cometTailPos[i*3+2] = p.z;
+        }
+        cometTailGeo.attributes.position.needsUpdate = true;
+        // 🌟 太陽風：放射方向に流れる
+        for (let i = 0; i < swCount; i++) {
+          const v = swVel[i];
+          swPos[i*3] += v.vx; swPos[i*3+1] += v.vy; swPos[i*3+2] += v.vz;
+          const r = Math.hypot(swPos[i*3], swPos[i*3+1], swPos[i*3+2]);
+          if (r > 50) {
+            // 太陽近傍からリスポーン
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.acos(2 * Math.random() - 1);
+            const r0 = 4;
+            swPos[i*3] = r0 * Math.sin(phi) * Math.cos(theta);
+            swPos[i*3+1] = r0 * Math.sin(phi) * Math.sin(theta);
+            swPos[i*3+2] = r0 * Math.cos(phi);
+            v.vx = swPos[i*3] * 0.015; v.vy = swPos[i*3+1] * 0.015; v.vz = swPos[i*3+2] * 0.015;
+          }
+        }
+        swGeo.attributes.position.needsUpdate = true;
+        swMat.opacity = 0.35;
         // ベルトの軌道回転
         astPoints.rotation.y += 0.0008;
         kbPoints.rotation.y += 0.0003;
