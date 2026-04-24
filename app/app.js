@@ -3084,7 +3084,7 @@ function renderOshi() {
       <div class="oshi-today-quote-text">「${escapeHtml(todayQuote.text)}」</div>
       ${todayQuote.source ? `<div class="oshi-today-quote-src">— ${escapeHtml(todayQuote.source)}</div>` : ''}
     </div>` : '';
-  // 💌 推しからのきょうの手紙（テンプレート＋日替わり）
+  // <svg class="ij-icon"><use href="#ij-mail"/></svg> 推しからのきょうの手紙（テンプレート＋日替わり）
   const LETTER_TEMPLATES = [
     '今日はどんな一日だった？ 私の時代も、迷うことばかりだったよ。',
     'うまくいかない日があっても、それは歩いている証拠。',
@@ -6849,7 +6849,7 @@ async function showPerson(id) {
   (p.media || []).forEach(m => {
     const yt = m.youtubeId ? `https://i.ytimg.com/vi/${m.youtubeId}/mqdefault.jpg` : null;
     const ytLink = m.youtubeId ? `<a class="x-post-embed-link" href="https://www.youtube.com/watch?v=${m.youtubeId}" target="_blank" rel="noopener">▶ 予告編を観る</a>` : '';
-    const typeLbl = {movie:'🎬 映画', drama:'📺 ドラマ', anime:'🎞 アニメ', doc:'📹 ドキュメンタリー'}[m.type] || '🎬 映像';
+    const typeLbl = {movie:'<svg class="ij-icon"><use href="#ij-film"/></svg> 映画', drama:'📺 ドラマ', anime:'🎞 アニメ', doc:'📹 ドキュメンタリー'}[m.type] || '🎬 映像';
     stream.push({ sortYear: m.year || 99999, sortPri: 4, html: xPostCard({
       year: m.year, icon: 'media', typeLabel: typeLbl,
       title: m.title, body: m.description || (m.cast ? `主演: ${m.cast}` : ''), image: yt, extra: ytLink
@@ -7650,7 +7650,7 @@ async function showPerson(id) {
       <p class="media-intro">${p.name}の映画・ドラマ・アニメ。購入ページで作品をチェックできます。</p>
       <div class="media-list">
         ${p.media.map(m => {
-          const typeLabel = { movie: '🎬 映画', drama: '📺 ドラマ', anime: '🎞 アニメ', doc: '📹 ドキュメンタリー' }[m.type] || '🎬 作品';
+          const typeLabel = { movie: '<svg class="ij-icon"><use href="#ij-film"/></svg> 映画', drama: '📺 ドラマ', anime: '🎞 アニメ', doc: '📹 ドキュメンタリー' }[m.type] || '🎬 作品';
           const thumb = m.youtubeId
             ? `https://i.ytimg.com/vi/${m.youtubeId}/mqdefault.jpg`
             : (m.imageUrl || '');
@@ -12597,7 +12597,7 @@ const BLOG_POSTS = [
   {
     id: 'shinsengumi-beginner',
     title: '【完全版】新選組 初心者ガイド — 推しが見つかる5つの入口',
-    emoji: '⚔️',
+    emoji: '<svg class="ij-icon"><use href="#ij-sword"/></svg>',
     category: '新選組',
     date: '2026年4月',
     lead: '大河ドラマで興味持ったけど名前が多すぎてわからない…そんなあなたへ。新選組の核メンバー5人を、キャラ別の「沼の入口」として紹介します。',
@@ -12616,7 +12616,7 @@ const BLOG_POSTS = [
   {
     id: 'bakumatsu-ranking',
     title: '幕末志士ランキング — 歴女が選ぶ「推したい男」ベスト5',
-    emoji: '🏯',
+    emoji: '<svg class="ij-icon"><use href="#ij-castle"/></svg>',
     category: '幕末',
     date: '2026年4月',
     lead: '短く激しく生きた幕末の男たち。時代に選ばれ、時代に散った5人の生き様を「推しポイント」付きで紹介。',
@@ -12635,7 +12635,7 @@ const BLOG_POSTS = [
   {
     id: 'seichi-junrei-guide',
     title: '新選組・幕末の聖地巡礼スポット8選 — 京都から函館まで',
-    emoji: '🏨',
+    emoji: '<svg class="ij-icon"><use href="#ij-torii"/></svg>',
     category: '聖地巡礼',
     date: '2026年4月',
     lead: '推しの足跡を追う旅。京都の壬生・池田屋から、萩の松下村塾、函館の五稜郭まで。一度は行きたい歴史の聖地を厳選。',

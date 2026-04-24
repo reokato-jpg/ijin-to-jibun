@@ -72,14 +72,14 @@
 <!-- フォントは非ブロッキングで読み込み（print → all でフォールバック） -->
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet"></noscript>
-<link rel="stylesheet" href="dist/style.min.css?v=20260427U">
-<link rel="stylesheet" href="dist/era-theme.min.css?v=20260427U">
-<link rel="stylesheet" href="magic.css?v=20260427U1">
+<link rel="stylesheet" href="dist/style.min.css?v=20260427V">
+<link rel="stylesheet" href="dist/era-theme.min.css?v=20260427V">
+<link rel="stylesheet" href="magic.css?v=20260427V1">
 </head>
 <body>
   <header class="app-header">
     <div class="header-left">
-      <button id="backBtn" class="back-btn" aria-label="戻る">‹</button>
+      <button id="backBtn" class="back-btn" aria-label="戻る"><svg class="ij-icon"><use href="#ij-arrow-left"/></svg></button>
     </div>
     <button id="appTitle" class="app-title-btn" aria-label="偉人と自分。 — メニューを開く">
       <img class="app-title-logo" src="assets/title-logo.png?v=2" alt="偉人と自分。">
@@ -126,6 +126,11 @@
       <symbol id="ij-notebook" viewBox="0 0 24 24"><path fill="currentColor" d="M4 4h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4V4zm14 14V6h-1v12h1zM6 8h8v2H6zm0 4h8v2H6z"/></symbol>
       <symbol id="ij-bag" viewBox="0 0 24 24"><path fill="currentColor" d="M7 7V5a5 5 0 0 1 10 0v2h2l1 14H4l1-14h2zm2 0h6V5a3 3 0 0 0-6 0v2z"/></symbol>
       <symbol id="ij-palette" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 0 0 0 20 2 2 0 0 0 2-2 2 2 0 0 1 2-2h2a4 4 0 0 0 4-4A10 10 0 0 0 12 2zM6 10a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm4-4a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm6 0a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/></symbol>
+      <symbol id="ij-arrow-left" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></symbol>
+      <symbol id="ij-mail" viewBox="0 0 24 24"><path fill="currentColor" d="M2 6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6zm2 0l8 6 8-6H4zm0 2.3V18h16V8.3l-8 6-8-6z"/></symbol>
+      <symbol id="ij-calendar" viewBox="0 0 24 24"><path fill="currentColor" d="M7 2v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7zm-2 8h14v10H5V10zm0-4v2h14V6H5z"/></symbol>
+      <symbol id="ij-ai" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a2 2 0 0 1 2 2v1h3a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3h-2l-3 3-3-3H7a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3h3V4a2 2 0 0 1 2-2zM8 10a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm8 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/></symbol>
+      <symbol id="ij-film" viewBox="0 0 24 24"><path fill="currentColor" d="M4 4h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1zm2 2v3h2V6H6zm10 0v3h2V6h-2zM6 11v3h2v-3H6zm10 0v3h2v-3h-2zM6 16v3h2v-3H6zm10 0v3h2v-3h-2z"/></symbol>
     </defs>
   </svg>
 
@@ -863,15 +868,15 @@
   </div>
 
   <!-- minified bundles（dist/）と era-lore.min.js は年表画面を開いた時に遅延読み込み -->
-  <script src="dist/history-patterns.min.js?v=20260427U" defer></script>
-  <script src="dist/app.min.js?v=20260427U" defer></script>
-  <script src="auth.js?v=20260427U" type="module"></script>
-  <script src="dist/ai-consult.min.js?v=20260427U" defer></script>
+  <script src="dist/history-patterns.min.js?v=20260427V" defer></script>
+  <script src="dist/app.min.js?v=20260427V" defer></script>
+  <script src="auth.js?v=20260427V" type="module"></script>
+  <script src="dist/ai-consult.min.js?v=20260427V" defer></script>
 
   <!-- ============ Magic Layer（ピクチャ：3D本・Lenis・ViewTransitions等） ============ -->
   <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.159.0/build/three.min.js" defer></script>
-  <script src="magic.js?v=20260427U1" defer></script>
+  <script src="magic.js?v=20260427V1" defer></script>
   <script>
     // Service Worker 登録（2回目以降のロードを爆速化）
     if ('serviceWorker' in navigator) {
