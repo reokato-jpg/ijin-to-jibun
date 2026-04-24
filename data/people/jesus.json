@@ -1,0 +1,22 @@
+{
+  "id": "jesus",
+  "name": "イエス・キリスト",
+  "nameEn": "Jesus Christ",
+  "birth": -4,
+  "death": 30,
+  "country": "ローマ帝国（ユダヤ）",
+  "field": "宗教指導者",
+  "summary": "キリスト教の中心人物。愛と赦しを説き「隣人を愛せよ」と教えた。磔刑と復活の物語は西洋文明の核となった。",
+  "wikiTitle": "イエス・キリスト",
+  "events": [],
+  "quotes": [],
+  "places": [],
+  "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/JesusYeshua2.svg?width=500",
+  "books": [],
+  "media": [],
+  "works": [],
+  "routine": {},
+  "lifeDigest": "",
+  "traits": {},
+  "relations": []
+}
