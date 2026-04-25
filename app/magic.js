@@ -11659,34 +11659,74 @@
         scene.add(cloud);
       }
 
-      // 🌃 眼下の街（雲のさらに下に夜景）— リアル夜景バージョン
-      // 街の地表（深い藍 + 微かな道路グリッド）
+      // 🌃 眼下の街（雲のさらに下に夜景）— 詩的な夜景
+      // 街の地表（高解像度・有機的な道路網 + 街灯の星雲）
       const groundTex = (() => {
-        const c = document.createElement('canvas'); c.width = 1024; c.height = 1024;
+        const c = document.createElement('canvas'); c.width = 2048; c.height = 2048;
         const g = c.getContext('2d');
-        // ベース
-        const grd = g.createRadialGradient(512, 512, 100, 512, 512, 512);
-        grd.addColorStop(0, '#0a1028'); grd.addColorStop(0.7, '#040618'); grd.addColorStop(1, '#020308');
-        g.fillStyle = grd; g.fillRect(0, 0, 1024, 1024);
-        // 道路グリッド（夜の街灯っぽくほんのり光る）
-        g.strokeStyle = 'rgba(255,200,120,0.12)';
-        g.lineWidth = 1.5;
-        for (let i = 0; i <= 32; i++) {
-          g.beginPath(); g.moveTo(i * 32, 0); g.lineTo(i * 32, 1024); g.stroke();
-          g.beginPath(); g.moveTo(0, i * 32); g.lineTo(1024, i * 32); g.stroke();
+        // 深い藍のベース（中心から放射）
+        const grd = g.createRadialGradient(1024, 1024, 200, 1024, 1024, 1100);
+        grd.addColorStop(0, '#0a142a'); grd.addColorStop(0.5, '#04081a'); grd.addColorStop(1, '#010206');
+        g.fillStyle = grd; g.fillRect(0, 0, 2048, 2048);
+        // 細かい道路グリッド（街区）
+        g.strokeStyle = 'rgba(255,200,120,0.06)';
+        g.lineWidth = 1;
+        for (let i = 0; i <= 64; i++) {
+          g.beginPath(); g.moveTo(i * 32, 0); g.lineTo(i * 32, 2048); g.stroke();
+          g.beginPath(); g.moveTo(0, i * 32); g.lineTo(2048, i * 32); g.stroke();
         }
-        // 大通り（主要道路）
-        g.strokeStyle = 'rgba(255,220,150,0.28)';
-        g.lineWidth = 4;
-        for (let i = 0; i < 4; i++) {
-          const p = 200 + i * 200;
-          g.beginPath(); g.moveTo(0, p); g.lineTo(1024, p); g.stroke();
-          g.beginPath(); g.moveTo(p, 0); g.lineTo(p, 1024); g.stroke();
+        // 中規模道路（光る）
+        g.strokeStyle = 'rgba(255,210,140,0.18)';
+        g.lineWidth = 2.5;
+        for (let i = 0; i <= 16; i++) {
+          g.beginPath(); g.moveTo(i * 128, 0); g.lineTo(i * 128, 2048); g.stroke();
+          g.beginPath(); g.moveTo(0, i * 128); g.lineTo(2048, i * 128); g.stroke();
         }
-        // 街灯のドット
-        g.fillStyle = 'rgba(255,220,160,0.6)';
-        for (let i = 0; i < 600; i++) {
-          g.fillRect(Math.random()*1024, Math.random()*1024, 1.2, 1.2);
+        // 大通り（主要道路 — 都市の動脈）
+        g.strokeStyle = 'rgba(255,235,170,0.42)';
+        g.lineWidth = 6;
+        for (let i = 0; i < 6; i++) {
+          const p = 200 + i * 320;
+          g.beginPath(); g.moveTo(0, p); g.lineTo(2048, p); g.stroke();
+          g.beginPath(); g.moveTo(p, 0); g.lineTo(p, 2048); g.stroke();
+        }
+        // 川（曲線）
+        g.strokeStyle = 'rgba(120,160,220,0.5)';
+        g.lineWidth = 18;
+        g.beginPath();
+        g.moveTo(0, 1300);
+        g.bezierCurveTo(500, 1100, 1000, 1500, 1500, 1200);
+        g.bezierCurveTo(1800, 1050, 2000, 1300, 2048, 1100);
+        g.stroke();
+        // 川の輝き（月光反射）
+        g.strokeStyle = 'rgba(220,230,255,0.25)';
+        g.lineWidth = 10;
+        g.beginPath();
+        g.moveTo(0, 1300);
+        g.bezierCurveTo(500, 1100, 1000, 1500, 1500, 1200);
+        g.bezierCurveTo(1800, 1050, 2000, 1300, 2048, 1100);
+        g.stroke();
+        // 街灯のドット（密度の濃淡で都市らしさ）
+        for (let i = 0; i < 2200; i++) {
+          const cx = 1024, cy = 1024;
+          const r = Math.sqrt(Math.random()) * 900;
+          const a = Math.random() * Math.PI * 2;
+          const x = cx + Math.cos(a) * r;
+          const y = cy + Math.sin(a) * r;
+          const colors = ['rgba(255,220,160,0.8)', 'rgba(255,200,120,0.7)', 'rgba(220,200,255,0.5)', 'rgba(255,180,80,0.6)'];
+          g.fillStyle = colors[i % 4];
+          g.fillRect(x, y, 1.5, 1.5);
+        }
+        // 公園・広場の暗いパッチ（5つ）
+        for (let i = 0; i < 5; i++) {
+          const x = 200 + Math.random() * 1600;
+          const y = 200 + Math.random() * 1600;
+          const r = 50 + Math.random() * 80;
+          const grd2 = g.createRadialGradient(x, y, 0, x, y, r);
+          grd2.addColorStop(0, 'rgba(8,12,8,0.7)');
+          grd2.addColorStop(1, 'rgba(8,12,8,0)');
+          g.fillStyle = grd2;
+          g.beginPath(); g.arc(x, y, r, 0, Math.PI*2); g.fill();
         }
         return new THREE.CanvasTexture(c);
       })();
@@ -11996,6 +12036,124 @@
       ceiling.position.y = 10;
       scene.add(ceiling);
 
+      // 🏛 大入口：南方向（z=+22 方向）に荘厳な門
+      if (zone === 'hub') {
+        const portalG = new THREE.Group();
+        const stoneMat = new THREE.MeshStandardMaterial({ color: 0xc8b8d8, roughness: 0.6, metalness: 0.15 });
+        const goldMat = new THREE.MeshStandardMaterial({ color: 0xe8c060, roughness: 0.4, metalness: 0.85, emissive: 0x4a3008, emissiveIntensity: 0.35 });
+        // 門柱（左右）
+        for (const dx of [-2.4, 2.4]) {
+          const col = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.65, 8.5, 18), stoneMat);
+          col.position.set(dx, 4.25, 0);
+          portalG.add(col);
+          // 柱頭装飾（金の輪）
+          const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.75, 0.75, 0.35, 18), goldMat);
+          cap.position.set(dx, 8.2, 0);
+          portalG.add(cap);
+          const base = new THREE.Mesh(new THREE.CylinderGeometry(0.85, 0.85, 0.35, 18), goldMat);
+          base.position.set(dx, 0.18, 0);
+          portalG.add(base);
+        }
+        // 半円アーチ（金）
+        const archGeo = new THREE.TorusGeometry(2.4, 0.32, 10, 28, Math.PI);
+        const arch = new THREE.Mesh(archGeo, goldMat);
+        arch.position.set(0, 8.2, 0);
+        portalG.add(arch);
+        // キーストーン
+        const key = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.7, 0.6), goldMat);
+        key.position.set(0, 10.65, 0);
+        portalG.add(key);
+        // 門の上に「神 殿」プレート
+        const plateC = document.createElement('canvas'); plateC.width = 1024; plateC.height = 256;
+        const pg2 = plateC.getContext('2d');
+        const grd = pg2.createLinearGradient(0, 0, 0, 256);
+        grd.addColorStop(0, 'rgba(20,10,30,0.95)'); grd.addColorStop(1, 'rgba(40,28,60,0.95)');
+        pg2.fillStyle = grd; pg2.fillRect(0, 0, 1024, 256);
+        pg2.strokeStyle = '#e8c060'; pg2.lineWidth = 5;
+        pg2.strokeRect(8, 8, 1008, 240);
+        pg2.lineWidth = 1.5;
+        pg2.strokeRect(20, 20, 984, 216);
+        // 装飾紋章（左右）
+        ['❦','❦'].forEach((g, i) => {
+          pg2.font = '60px serif';
+          pg2.fillStyle = '#e8c060';
+          pg2.textAlign = 'center'; pg2.textBaseline = 'middle';
+          pg2.fillText(g, i === 0 ? 100 : 924, 128);
+        });
+        // 「神 殿」
+        pg2.font = 'bold 140px "Shippori Mincho", serif';
+        pg2.fillStyle = '#fff8e0';
+        pg2.shadowColor = '#e8c060'; pg2.shadowBlur = 24;
+        pg2.fillText('神　殿', 512, 110);
+        pg2.shadowBlur = 0;
+        pg2.font = 'italic 30px "Cormorant Garamond", serif';
+        pg2.fillStyle = '#e8c060';
+        pg2.fillText('—  Pantheon  of  the  Six  Mythologies  —', 512, 200);
+        const plateTex = new THREE.CanvasTexture(plateC);
+        if ('colorSpace' in plateTex) plateTex.colorSpace = THREE.SRGBColorSpace;
+        const plate = new THREE.Mesh(
+          new THREE.PlaneGeometry(6.5, 1.6),
+          new THREE.MeshBasicMaterial({ map: plateTex, transparent: true, side: THREE.DoubleSide })
+        );
+        plate.position.set(0, 11.7, 0);
+        portalG.add(plate);
+        // 階段（外向き＝門の外側）
+        for (let s = 0; s < 5; s++) {
+          const step = new THREE.Mesh(
+            new THREE.BoxGeometry(8 + s*0.6, 0.18, 0.6),
+            stoneMat
+          );
+          step.position.set(0, -s * 0.18, 1.0 + s * 0.6);
+          portalG.add(step);
+        }
+        // 入口の光（門内側へ柔らかい光）
+        const entLight = new THREE.PointLight(0xffd890, 2.5, 18, 1.4);
+        entLight.position.set(0, 4, -0.5);
+        portalG.add(entLight);
+        // 🌫 門の外に「入口の靄」
+        const mistC = document.createElement('canvas'); mistC.width = 256; mistC.height = 256;
+        const mg = mistC.getContext('2d');
+        const mgr = mg.createRadialGradient(128, 128, 0, 128, 128, 128);
+        mgr.addColorStop(0, 'rgba(255,232,200,0.7)');
+        mgr.addColorStop(1, 'rgba(255,232,200,0)');
+        mg.fillStyle = mgr; mg.fillRect(0, 0, 256, 256);
+        const mistTex = new THREE.CanvasTexture(mistC);
+        const mist = new THREE.Sprite(new THREE.SpriteMaterial({
+          map: mistTex, transparent: true, opacity: 0.5, depthWrite: false,
+        }));
+        mist.scale.set(7, 5, 1);
+        mist.position.set(0, 4, 1);
+        portalG.add(mist);
+        // 門の位置
+        portalG.position.set(0, 0, 22);
+        portalG.rotation.y = Math.PI; // 門を中心方向に向ける
+        scene.add(portalG);
+
+        // ⛩ 浮かぶ神殿らしさを強調 — 神殿の縁に金の縁取りを
+        const rim = new THREE.Mesh(
+          new THREE.TorusGeometry(20, 0.18, 8, 64),
+          new THREE.MeshStandardMaterial({ color: 0xe8c060, roughness: 0.4, metalness: 0.85, emissive: 0x4a3008, emissiveIntensity: 0.4 })
+        );
+        rim.rotation.x = Math.PI / 2;
+        rim.position.y = 0.05;
+        scene.add(rim);
+        // 床下に神殿の基壇（円形プラットフォーム）が浮いている感じ
+        const basePlat = new THREE.Mesh(
+          new THREE.CylinderGeometry(22, 24, 1.8, 48),
+          new THREE.MeshStandardMaterial({ color: 0x5a4a78, roughness: 0.6, metalness: 0.25 })
+        );
+        basePlat.position.y = -1.0;
+        scene.add(basePlat);
+        // 基壇の下にも金縁
+        const baseRim = new THREE.Mesh(
+          new THREE.TorusGeometry(24, 0.22, 8, 64),
+          new THREE.MeshStandardMaterial({ color: 0xe8c060, roughness: 0.4, metalness: 0.85, emissive: 0x4a3008, emissiveIntensity: 0.5 })
+        );
+        baseRim.rotation.x = Math.PI / 2;
+        baseRim.position.y = -1.95;
+        scene.add(baseRim);
+      }
+
       // 配置するアイテム
       const items = (zone === 'hub')
         ? Object.entries(PANTHEON_DATA).map(([key, d]) => ({
@@ -12007,15 +12165,116 @@
             accent: PANTHEON_DATA[zone].accent,
           }));
 
-      // 円形に台座を配置
+      // 円形に配置 — HUB は「浮かぶ神話の本」、ゾーン内は神様の台座
       const N = items.length;
       const ringR = N >= 5 ? 12 : 9;
+      const isHubZone = (zone === 'hub');
       items.forEach((item, i) => {
         const a = (i / N) * Math.PI * 2;
         const px = Math.cos(a) * ringR, pz = Math.sin(a) * ringR;
         const group = new THREE.Group();
-        group.position.set(px, 0, pz);
-        // 台座
+        group.position.set(px, isHubZone ? 1.8 : 0, pz);
+
+        if (isHubZone) {
+          // 📖 HUB: 浮かぶ豪華な神話本
+          const accentHex = '#' + (item.accent || 0x9080d0).toString(16).padStart(6, '0');
+          const c = document.createElement('canvas'); c.width = 512; c.height = 720;
+          const cg = c.getContext('2d');
+          // 神話別カラーマップ
+          const palette = {
+            genesis: ['#3a2818','#0a0408'],
+            greek:   ['#1a2a4a','#050818'],
+            japan:   ['#3a1a1a','#0a0408'],
+            norse:   ['#2a3a48','#080a14'],
+            egypt:   ['#6a4a1a','#1a1004'],
+            hindu:   ['#3a1830','#100418'],
+          };
+          const cols = palette[item.key] || ['#2a1840','#0a0418'];
+          const grd = cg.createRadialGradient(256, 360, 50, 256, 360, 600);
+          grd.addColorStop(0, cols[0]); grd.addColorStop(1, cols[1]);
+          cg.fillStyle = grd; cg.fillRect(0, 0, 512, 720);
+          // 質感ノイズ
+          for (let n = 0; n < 1500; n++) {
+            cg.fillStyle = `rgba(255,255,255,${0.03+Math.random()*0.07})`;
+            cg.fillRect(Math.random()*512, Math.random()*720, 1.2, 1.2);
+          }
+          // 二重装飾枠
+          cg.strokeStyle = accentHex; cg.lineWidth = 8;
+          cg.strokeRect(20, 20, 472, 680);
+          cg.lineWidth = 2;
+          cg.strokeRect(36, 36, 440, 648);
+          // 角飾り
+          [[36,36],[476,36],[36,684],[476,684]].forEach(([cx,cy])=>{
+            cg.fillStyle = accentHex;
+            cg.beginPath(); cg.arc(cx,cy,7,0,Math.PI*2); cg.fill();
+          });
+          // 神話名（神話によって縦書き/横書き判断、ここは折り返し）
+          cg.font = 'bold 52px "Shippori Mincho", serif';
+          cg.fillStyle = accentHex;
+          cg.textAlign = 'center'; cg.textBaseline = 'middle';
+          cg.shadowColor = 'rgba(0,0,0,0.7)'; cg.shadowBlur = 12;
+          const titleLines = (item.name || '').match(/.{1,6}/g) || [item.name];
+          titleLines.forEach((l, li) => cg.fillText(l, 256, 150 + li * 60));
+          cg.shadowBlur = 0;
+          // セパレーター
+          cg.strokeStyle = accentHex; cg.lineWidth = 1.5;
+          cg.beginPath(); cg.moveTo(160, 290); cg.lineTo(352, 290); cg.stroke();
+          cg.fillStyle = accentHex; cg.beginPath(); cg.arc(256, 290, 5, 0, Math.PI*2); cg.fill();
+          // シンボル/絵文字
+          cg.font = '210px serif';
+          cg.fillStyle = accentHex;
+          cg.shadowColor = 'rgba(0,0,0,0.6)'; cg.shadowBlur = 22;
+          cg.fillText(item.emoji || '✦', 256, 460);
+          cg.shadowBlur = 0;
+          // 下部装飾
+          cg.strokeStyle = accentHex; cg.lineWidth = 1;
+          cg.beginPath(); cg.moveTo(120, 580); cg.lineTo(392, 580); cg.stroke();
+          // 副題
+          cg.font = 'italic 22px "Cormorant Garamond", "Shippori Mincho", serif';
+          cg.fillStyle = '#fff8e0';
+          cg.fillText(item.sub || '', 256, 620);
+          cg.font = '16px "Cormorant Garamond", serif';
+          cg.fillStyle = accentHex;
+          cg.fillText('— Mythologia —', 256, 660);
+          cg.font = '24px serif';
+          cg.fillText('❦', 256, 690);
+          const coverTex = new THREE.CanvasTexture(c);
+          if ('colorSpace' in coverTex) coverTex.colorSpace = THREE.SRGBColorSpace;
+          // 重厚な本体
+          const bookMesh = new THREE.Mesh(
+            new THREE.BoxGeometry(2.6, 3.8, 0.55),
+            [
+              new THREE.MeshStandardMaterial({ color: 0x2a1810, roughness: 0.7 }),
+              new THREE.MeshStandardMaterial({ color: 0x2a1810, roughness: 0.7 }),
+              new THREE.MeshStandardMaterial({ color: 0xf5e8c0, roughness: 0.85 }),
+              new THREE.MeshStandardMaterial({ color: 0xf5e8c0, roughness: 0.85 }),
+              new THREE.MeshStandardMaterial({ map: coverTex, roughness: 0.55, metalness: 0.15 }),
+              new THREE.MeshStandardMaterial({ color: 0x2a1810, roughness: 0.7 }),
+            ]
+          );
+          bookMesh.lookAt(0, group.position.y, 0);
+          group.add(bookMesh);
+          // 後光（accent色）
+          const haloC = document.createElement('canvas'); haloC.width = 256; haloC.height = 256;
+          const hc = haloC.getContext('2d');
+          const hg = hc.createRadialGradient(128, 128, 0, 128, 128, 128);
+          hg.addColorStop(0, accentHex + 'cc');
+          hg.addColorStop(0.5, accentHex + '44');
+          hg.addColorStop(1, accentHex + '00');
+          hc.fillStyle = hg; hc.fillRect(0, 0, 256, 256);
+          const halo = new THREE.Sprite(new THREE.SpriteMaterial({
+            map: new THREE.CanvasTexture(haloC), color: 0xffffff,
+            transparent: true, opacity: 0.55, depthWrite: false, blending: THREE.AdditiveBlending,
+          }));
+          halo.scale.set(7, 7, 1);
+          group.add(halo);
+          group.userData = { item, isBook: true, bookMesh, halo, baseY: group.position.y };
+          plinths.push(group);
+          scene.add(group);
+          return; // HUB はここで終了（古い plinth UI は使わない）
+        }
+
+        // 以下、ゾーン内の神様用台座（HUB 以外）
         const plinth = new THREE.Mesh(
           new THREE.CylinderGeometry(1.2, 1.4, 1.0, 24),
           new THREE.MeshStandardMaterial({ color: 0x2a2040, roughness: 0.5, metalness: 0.4 })
@@ -12550,12 +12809,29 @@
           obj.material.color.setHex(beaconOn ? 0xff3040 : 0x401010);
         }
       });
-      // ホログラム回転 + リング脈動 + ラベル ビルボード
-      plinths.forEach(p => {
-        p.userData.figure.lookAt(camera.position.x, p.userData.figure.getWorldPosition(new THREE.Vector3()).y, camera.position.z);
+      // ホログラム/本 アニメ
+      plinths.forEach((p, idx) => {
+        if (p.userData.isBook) {
+          // 📖 浮かぶ本: ふわふわ漂う + ゆっくり回転 + カメラ向き調整
+          const baseY = p.userData.baseY || 1.8;
+          p.position.y = baseY + Math.sin(t * 0.6 + idx * 0.7) * 0.25;
+          // 本がプレイヤーの方を向く（背表紙→表紙）
+          if (p.userData.bookMesh) {
+            const targetY = Math.atan2(camera.position.x - p.position.x, camera.position.z - p.position.z);
+            p.userData.bookMesh.rotation.y += (targetY - p.userData.bookMesh.rotation.y) * 0.05;
+            p.userData.bookMesh.rotation.x = Math.sin(t * 0.4 + idx) * 0.06;
+          }
+          // 後光脈動
+          if (p.userData.halo) {
+            p.userData.halo.material.opacity = 0.45 + Math.sin(t * 1.3 + idx * 0.6) * 0.15;
+            const s = 7 + Math.sin(t * 0.8 + idx) * 0.4;
+            p.userData.halo.scale.set(s, s, 1);
+          }
+          return;
+        }
+        if (p.userData.figure) p.userData.figure.lookAt(camera.position.x, p.userData.figure.getWorldPosition(new THREE.Vector3()).y, camera.position.z);
         if (p.userData.holo) p.userData.holo.rotation.y += 0.005;
         if (p.userData.ring && p.userData.ring.material) p.userData.ring.material.opacity = 0.4 + Math.sin(t * 2 + p.position.x) * 0.2;
-        // ラベルもカメラ向き
         p.children.forEach(ch => {
           if (ch.userData && ch.userData.isLabel) {
             ch.lookAt(camera.position.x, ch.getWorldPosition(new THREE.Vector3()).y, camera.position.z);
@@ -12636,16 +12912,25 @@
     stage.appendChild(renderer.domElement);
 
     const scene = new THREE.Scene();
-    // 灰色の嵐空 → 後で晴れる
-    scene.background = new THREE.Color(0x4a5060);
-    scene.fog = new THREE.FogExp2(0x6a7080, 0.012);
+    // 灰色の嵐空 → 後で晴れる（fog と background を一致 — 距離が溶け込む）
+    const stormBG = new THREE.Color(0x6a7888);
+    scene.background = stormBG;
+    scene.fog = new THREE.FogExp2(0x6a7888, 0.012);
+    if (THREE.SRGBColorSpace) renderer.outputColorSpace = THREE.SRGBColorSpace;
 
-    // 太陽（雲の合間にうっすら）
-    const sun = new THREE.DirectionalLight(0xfff0c0, 1.0);
+    // 🎬 HDRI環境（嵐空 → 後半は晴れる）
+    applyCinematicEnv(renderer, scene,
+      'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/kloppenheim_02_puresky_1k.hdr',
+      { intensity: 0.85 });
+
+    // 3光源レシピ（key/fill/rim）
+    const sun = new THREE.DirectionalLight(0xfff0c0, 1.6);
     sun.position.set(20, 30, 10);
     scene.add(sun);
-    scene.add(new THREE.AmbientLight(0x6080a0, 0.7));
-    scene.add(new THREE.HemisphereLight(0xc8d8e8, 0x405060, 0.7));
+    scene.add(new THREE.HemisphereLight(0x88aabb, 0x223344, 0.55));
+    const rim = new THREE.DirectionalLight(0x99ccff, 0.6);
+    rim.position.set(-15, 8, -12);
+    scene.add(rim);
 
     // 水面（広大）
     const seaTex = (() => {
@@ -12664,7 +12949,11 @@
     })();
     const sea = new THREE.Mesh(
       new THREE.PlaneGeometry(400, 400, 32, 32),
-      new THREE.MeshStandardMaterial({ map: seaTex, color: 0x405870, roughness: 0.3, metalness: 0.4, flatShading: false })
+      new THREE.MeshStandardMaterial({
+        map: seaTex, color: 0x405870,
+        roughness: 0.18, metalness: 0.35,
+        envMapIntensity: 1.6, // 環境マップ強反射
+      })
     );
     sea.rotation.x = -Math.PI / 2;
     scene.add(sea);
@@ -12866,6 +13155,31 @@
   window.openNoahArk3D = openNoahArk3D;
 
   // ============================================================
+  // 🎬 シネマティック環境ヘルパー（PMREM + HDRI）
+  // 1k HDRI を PBR マテリアルの IBL として適用
+  // ============================================================
+  function applyCinematicEnv(renderer, scene, hdrUrl, opts) {
+    const intensity = (opts && opts.intensity) || 1.0;
+    const ADDONS = window.THREE_ADDONS || {};
+    if (!ADDONS.RGBELoader || !window.THREE) return;
+    try {
+      const rgbe = new ADDONS.RGBELoader();
+      rgbe.setDataType(window.THREE.HalfFloatType);
+      rgbe.load(hdrUrl, (hdr) => {
+        try {
+          const pmrem = new window.THREE.PMREMGenerator(renderer);
+          pmrem.compileEquirectangularShader();
+          const envRT = pmrem.fromEquirectangular(hdr);
+          scene.environment = envRT.texture;
+          if ('environmentIntensity' in scene) scene.environmentIntensity = intensity;
+          hdr.dispose();
+          pmrem.dispose();
+        } catch (e) { console.warn('PMREM convert failed', e); }
+      }, undefined, () => { /* ロード失敗は無視 */ });
+    } catch (e) { console.warn('HDRI load failed', e); }
+  }
+
+  // ============================================================
   // 🔱 アトランティス — 海底に沈んだ古代都市
   // ============================================================
   async function openAtlantis3D() {
@@ -12899,8 +13213,15 @@
     stage.appendChild(renderer.domElement);
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x0a3a5a);
-    scene.fog = new THREE.FogExp2(0x0a3a5a, 0.025);
+    // 海中：青緑で埋める（fog も同色 → 距離が溶ける）
+    const seaBG = new THREE.Color(0x0e3a58);
+    scene.background = seaBG;
+    scene.fog = new THREE.FogExp2(0x0e3a58, 0.028);
+    if (THREE.SRGBColorSpace) renderer.outputColorSpace = THREE.SRGBColorSpace;
+    // 🎬 HDRI（海上→海中の青緑色フィルタは fog で表現、IBL は朝の海岸）
+    applyCinematicEnv(renderer, scene,
+      'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/qwantani_puresky_1k.hdr',
+      { intensity: 0.75 });
 
     // 海底の砂地
     const sandTex = (() => {
@@ -12928,25 +13249,31 @@
     sand.geometry.computeVertexNormals();
     scene.add(sand);
 
-    // 光（海面からのコースティクス）
-    scene.add(new THREE.AmbientLight(0x4080a0, 0.7));
-    const sunRay = new THREE.DirectionalLight(0xa0d8f0, 1.5);
+    // 光（3-light: 海面からの差し込み + 海底のフィル + 青リム）
+    scene.add(new THREE.HemisphereLight(0x88c0e0, 0x002030, 0.85));
+    const sunRay = new THREE.DirectionalLight(0xa0d8f0, 1.6);
     sunRay.position.set(10, 30, 5);
     scene.add(sunRay);
+    const blueRim = new THREE.DirectionalLight(0x4080a0, 0.4);
+    blueRim.position.set(-10, 5, -10);
+    scene.add(blueRim);
 
-    // 🏛 中央神殿（ポセイドン）
+    // 🏛 中央神殿（ポセイドン）— 苔と古びた質感
     const temple = new THREE.Group();
+    const stepMat = new THREE.MeshStandardMaterial({
+      color: 0x90a0a8, roughness: 0.92, metalness: 0.05, envMapIntensity: 0.6
+    });
     // 段（基壇）
     for (let i = 0; i < 3; i++) {
-      const step = new THREE.Mesh(
-        new THREE.BoxGeometry(14 - i*2, 0.5, 14 - i*2),
-        new THREE.MeshStandardMaterial({ color: 0xa0a8b0, roughness: 0.85 })
-      );
+      const step = new THREE.Mesh(new THREE.BoxGeometry(14 - i*2, 0.5, 14 - i*2), stepMat);
       step.position.y = i * 0.5;
       temple.add(step);
     }
-    // 8柱の円柱（6本ファサード+2本サイド）
-    const colMat = new THREE.MeshStandardMaterial({ color: 0xc0c8d0, roughness: 0.7 });
+    // 8柱の円柱（PBR、苔色を含む）
+    const colMat = new THREE.MeshStandardMaterial({
+      color: 0xc0c8d0, roughness: 0.78, metalness: 0.08,
+      envMapIntensity: 0.7,
+    });
     const positions = [];
     for (let i = 0; i < 8; i++) positions.push([-5 + (i%4)*3.3, 4, i < 4 ? -4 : 4]);
     positions.push([-5, 4, 0], [5.6, 4, 0]);
@@ -13170,16 +13497,24 @@
     stage.appendChild(renderer.domElement);
 
     const scene = new THREE.Scene();
-    // 黄金の朝の空
-    scene.background = new THREE.Color(0xffe8b0);
-    scene.fog = new THREE.FogExp2(0xffd890, 0.012);
+    // 黄金の朝霧（fog 色で世界を統一）
+    const goldBG = new THREE.Color(0xffd9a8);
+    scene.background = goldBG;
+    scene.fog = new THREE.FogExp2(0xffd9a8, 0.0085);
+    if (THREE.SRGBColorSpace) renderer.outputColorSpace = THREE.SRGBColorSpace;
+    // 🎬 HDRI: 朝焼けの丘
+    applyCinematicEnv(renderer, scene,
+      'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/spruit_sunrise_1k.hdr',
+      { intensity: 1.0 });
 
-    // 太陽（強い金色の光）
-    const sun = new THREE.DirectionalLight(0xfff0c0, 2.2);
+    // 3光源レシピ（強い金色の太陽 + 淡い空 + 涼しいリム）
+    const sun = new THREE.DirectionalLight(0xfff1c8, 2.4);
     sun.position.set(20, 30, 5);
     scene.add(sun);
-    scene.add(new THREE.AmbientLight(0xfff0d0, 1.2));
-    scene.add(new THREE.HemisphereLight(0xfff0c0, 0xc8a060, 1.0));
+    scene.add(new THREE.HemisphereLight(0xfff0c0, 0xb8884a, 0.8));
+    const elyRim = new THREE.DirectionalLight(0xa0c8ff, 0.4);
+    elyRim.position.set(-10, 8, -8);
+    scene.add(elyRim);
 
     // 黄金の草原（凹凸あり）
     const fieldTex = (() => {
@@ -13216,7 +13551,9 @@
 
     // 🏛 円形神殿（モノプテロス）
     const temple = new THREE.Group();
-    const stoneMat = new THREE.MeshStandardMaterial({ color: 0xfff8e8, roughness: 0.5 });
+    const stoneMat = new THREE.MeshStandardMaterial({
+      color: 0xfff8e8, roughness: 0.45, metalness: 0.05, envMapIntensity: 1.1
+    });
     // 基壇
     const base = new THREE.Mesh(new THREE.CylinderGeometry(7, 7.5, 1, 32), stoneMat);
     base.position.y = 0.5; temple.add(base);
@@ -14124,7 +14461,14 @@
     stage.appendChild(renderer.domElement);
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x040220);
+    const ehBG = new THREE.Color(0x050425);
+    scene.background = ehBG;
+    scene.fog = new THREE.FogExp2(0x050425, 0.012);
+    if (THREE.SRGBColorSpace) renderer.outputColorSpace = THREE.SRGBColorSpace;
+    // 🎬 HDRI: 夜の宇宙感
+    applyCinematicEnv(renderer, scene,
+      'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/satara_night_1k.hdr',
+      { intensity: 0.5 });
 
     // 星空（軽量化: 1500→500）
     const starGeo = new THREE.BufferGeometry();
@@ -14392,6 +14736,12 @@
 
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x05031a);
+    scene.fog = new THREE.FogExp2(0x05031a, 0.008);
+    if (THREE.SRGBColorSpace) renderer.outputColorSpace = THREE.SRGBColorSpace;
+    // 🎬 HDRI: 紫の宇宙
+    applyCinematicEnv(renderer, scene,
+      'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/dikhololo_night_1k.hdr',
+      { intensity: 0.6 });
 
     // 星空
     const starGeo = new THREE.BufferGeometry();
