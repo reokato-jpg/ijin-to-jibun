@@ -9512,3 +9512,43 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
 
 /* 視線パッド廃止（ドラッグ視点のみ） */
 .lib-look { display: none !important; }
+
+/* ============================================================
+   🦒 動物ストーリーオーバーレイ（自然モード時、構成作家の一行）
+============================================================ */
+.koh-animal-story {
+  position: fixed;
+  bottom: 25vh; left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  max-width: 86vw;
+  text-align: center;
+  color: #f0e8d0;
+  font-family: 'Noto Serif JP', 'Times New Roman', serif;
+  text-shadow: 0 0 8px rgba(0,0,0,0.7), 0 0 18px rgba(80,60,30,0.5);
+  pointer-events: none;
+  z-index: 10005;
+  opacity: 0;
+  transition: opacity 1.2s ease, transform 1.2s ease;
+}
+.koh-animal-story.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.kas-name {
+  font-size: 14px;
+  letter-spacing: 8px;
+  color: #d4b888;
+  margin-bottom: 6px;
+}
+.kas-line {
+  font-size: 16px;
+  letter-spacing: 1.5px;
+  line-height: 1.7;
+  color: #fff0d8;
+  font-weight: 300;
+}
+@media (max-width: 640px) {
+  .koh-animal-story { bottom: 30vh; }
+  .kas-name { font-size: 11px; letter-spacing: 5px; }
+  .kas-line { font-size: 13px; }
+}

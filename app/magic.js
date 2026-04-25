@@ -14292,6 +14292,8 @@
       </div>
       <!-- ⛩ 神話シーン切替タイトルカード -->
       <div class="koh-myth-title" id="kohMythTitle"></div>
+      <!-- 🦒 動物ストーリー（自然モード時、たまに浮かぶ） -->
+      <div class="koh-animal-story" id="kohAnimalStory"></div>
       <!-- 🥽 AIグラスHUD — 関係者情報＋広告（半透過） -->
       <button class="koh-ar-toggle" id="kohArToggle" aria-pressed="true">
         <span class="kat-icon">🥽</span>
@@ -17075,6 +17077,14 @@
       eden3D.add(motes);
       eden3D.userData.motes = motes;
     }
+    // 🪄 観客席より上に動物が見えるよう、自然シーン全体を持ち上げる
+    eden3D.position.y = 2.5; // 観客の頭(y≈1.4)より上にプラトーを構築
+    // 専用ライト（自然モードを明るく、動物が黒くならないように）
+    const natureAmbient = new THREE.AmbientLight(0xfff0d8, 0.7);
+    eden3D.add(natureAmbient);
+    const natureHemi = new THREE.HemisphereLight(0xffe0a8, 0x4a3018, 1.4);
+    natureHemi.position.set(0, 20, 0);
+    eden3D.add(natureHemi);
     natureGroup.add(eden3D);
     natureGroup.userData.eden3D = eden3D;
 
@@ -17313,8 +17323,14 @@
       { species: 'deer', count: 3, bodyLen: 1.2, bodyH: 0.55, bodyW: 0.45, legH: 0.7, legR: 0.06, neckLen: 0.45, headSize: 0.25, tailLen: 0.2, bodyColor: 0xa07048, speed: 0.05 },
       { species: 'bear', count: 2, bodyLen: 1.3, bodyH: 0.75, bodyW: 0.65, legH: 0.55, legR: 0.13, neckLen: 0.15, headSize: 0.42, tailLen: 0.15, bodyColor: 0x3a2010, speed: 0.03 },
       { species: 'rabbit', count: 4, bodyLen: 0.4, bodyH: 0.3, bodyW: 0.3, legH: 0.18, legR: 0.05, neckLen: 0, headSize: 0.2, tailLen: 0.05, bodyColor: 0xf0e8d8, speed: 0.06 },
-      // フクロウ（枝に止まる、座標は y=4 の樹上に手動配置）
+      // フクロウ（枝に止まる）
       { species: 'owl', count: 3, bodyLen: 0.35, bodyH: 0.42, bodyW: 0.32, legH: 0.10, legR: 0.05, neckLen: 0, headSize: 0.28, tailLen: 0.05, bodyColor: 0x6a4828, perched: true, speed: 0 },
+      // 🦏 サイ（重厚なボディ、低い頭）
+      { species: 'rhino', count: 2, bodyLen: 1.7, bodyH: 1.0, bodyW: 0.85, legH: 0.7, legR: 0.18, neckLen: 0.15, headSize: 0.55, tailLen: 0.25, bodyColor: 0x6a6058, speed: 0.025 },
+      // 🦓 シマウマ（馬ベース、後で縞模様を被せる）
+      { species: 'zebra', count: 3, bodyLen: 1.2, bodyH: 0.55, bodyW: 0.45, legH: 0.85, legR: 0.07, neckLen: 0.55, headSize: 0.28, tailLen: 0.55, bodyColor: 0xf4f0e8, speed: 0.045 },
+      // 🐼 パンダ（白黒、丸い体）
+      { species: 'panda', count: 2, bodyLen: 1.1, bodyH: 0.7, bodyW: 0.6, legH: 0.5, legR: 0.13, neckLen: 0, headSize: 0.4, tailLen: 0.08, bodyColor: 0xf8f4ec, speed: 0.022 },
     ];
     let aphase = 0;
     ANIMAL_SET.forEach(spec => {
@@ -17350,6 +17366,83 @@
           mane.position.copy(g.userData.head.position);
           mane.position.x -= 0.10;
           g.add(mane);
+        }
+        // 🦏 サイの角（鼻先に大小2本）
+        if (spec.species === 'rhino' && g.userData.head) {
+          const horn1 = new THREE.Mesh(
+            new THREE.ConeGeometry(0.10, 0.45, 8),
+            new THREE.MeshStandardMaterial({ color: 0xc0b0a0, roughness: 0.6, flatShading: true })
+          );
+          horn1.position.set(0.45, 0.05, 0);
+          horn1.rotation.z = -Math.PI / 2.4;
+          g.userData.head.add(horn1);
+          const horn2 = new THREE.Mesh(
+            new THREE.ConeGeometry(0.06, 0.22, 8),
+            new THREE.MeshStandardMaterial({ color: 0xc0b0a0, roughness: 0.6, flatShading: true })
+          );
+          horn2.position.set(0.30, 0.08, 0);
+          horn2.rotation.z = -Math.PI / 2.4;
+          g.userData.head.add(horn2);
+        }
+        // 🦓 シマウマの黒縞（胴体に薄い黒板を等間隔で被せる）
+        if (spec.species === 'zebra') {
+          const stripeMat = new THREE.MeshStandardMaterial({ color: 0x101010, roughness: 0.8 });
+          for (let s = 0; s < 8; s++) {
+            const stripe = new THREE.Mesh(
+              new THREE.PlaneGeometry(0.08, 0.42),
+              stripeMat
+            );
+            stripe.position.set(-0.5 + s * 0.14, spec.legH + 0.08, 0.31);
+            g.add(stripe);
+            const stripe2 = stripe.clone();
+            stripe2.position.z = -0.31;
+            stripe2.rotation.y = Math.PI;
+            g.add(stripe2);
+          }
+          // たてがみ（黒）
+          const mane = new THREE.Mesh(
+            new THREE.BoxGeometry(0.42, 0.10, 0.08),
+            new THREE.MeshStandardMaterial({ color: 0x101010, roughness: 0.85 })
+          );
+          mane.position.set(0.45, spec.legH + spec.bodyH * 0.45 + 0.1, 0);
+          mane.rotation.z = -0.6;
+          g.add(mane);
+        }
+        // 🐼 パンダ（黒い目周り・耳・脚）
+        if (spec.species === 'panda' && g.userData.head) {
+          const blackMat = new THREE.MeshStandardMaterial({ color: 0x141414, roughness: 0.85, flatShading: true });
+          // 黒い目周り（大きい黒丸）
+          [-1, 1].forEach(sz => {
+            const eyepatch = new THREE.Mesh(new THREE.SphereGeometry(0.12, 10, 8), blackMat);
+            eyepatch.scale.set(0.85, 1.0, 0.55);
+            eyepatch.position.set(0.10, 0.05, sz * 0.16);
+            g.userData.head.add(eyepatch);
+          });
+          // 耳（黒）
+          [-1, 1].forEach(sz => {
+            const ear = new THREE.Mesh(new THREE.SphereGeometry(0.10, 10, 8), blackMat);
+            ear.position.set(-0.1, 0.30, sz * 0.18);
+            g.userData.head.add(ear);
+          });
+          // 4本の黒脚 — 既存の脚に重ねる（脚 group にメッシュを追加）
+          if (g.userData.legs) {
+            g.userData.legs.forEach(leg => {
+              const sock = new THREE.Mesh(
+                new THREE.CapsuleGeometry(0.15, 0.35, 4, 8),
+                blackMat
+              );
+              sock.position.y = -0.25;
+              leg.add(sock);
+            });
+          }
+          // 黒い肩バンド
+          const band = new THREE.Mesh(
+            new THREE.TorusGeometry(0.30, 0.12, 8, 16),
+            blackMat
+          );
+          band.position.set(0.2, spec.legH + spec.bodyH * 0.3, 0);
+          band.rotation.y = Math.PI / 2;
+          g.add(band);
         }
         // フクロウ：くちばし＋大きな目
         if (spec.species === 'owl' && g.userData.head) {
@@ -17408,6 +17501,53 @@
       }
     });
     eden3D.userData.walkAnimals = walkAnimals;
+
+    // 📖 動物ストーリー（構成作家：短い詩のような一行で各動物の世界観を伝える）
+    const ANIMAL_STORIES = [
+      { sp: 'giraffe',   ja: 'キリン',     line: '雲と話せる首の高さ。地上を歩く者に、彼は何を聴いたか語らない。' },
+      { sp: 'elephant',  ja: 'ゾウ',       line: '百年の記憶を歩く。鼻先には、忘れられた川の地図がある。' },
+      { sp: 'lion',      ja: 'ライオン',   line: '群れの王、孤独な瞑想。眠っているのではない、大地に問いかけている。' },
+      { sp: 'deer',      ja: 'シカ',       line: '森の境界線で耳を澄ます。風が運ぶのは、まだ言葉にならない予兆。' },
+      { sp: 'bear',      ja: 'クマ',       line: '蜂蜜の夢を見ている。冬は彼の本棚で、春は栞のひとつ。' },
+      { sp: 'rabbit',    ja: 'ウサギ',     line: '草の中、心臓の音だけが時を刻む。生きるとは、走り続けることではない。' },
+      { sp: 'owl',       ja: 'フクロウ',   line: '夜の図書館員。月光が彼の本、瞬きが彼の栞。' },
+      { sp: 'rhino',     ja: 'サイ',       line: '鎧の下に、湖の優しさを持つ。傷つくことを知っているから、強い。' },
+      { sp: 'zebra',     ja: 'シマウマ',   line: '光と影、それ自体が衣装。彼の縞は、世界を二つに分けない約束。' },
+      { sp: 'panda',     ja: 'パンダ',     line: '竹を噛む音だけが、世界の沈黙を保っている。' },
+      { sp: 'fox',       ja: 'キツネ',     line: '問いを残して、彼は去る。答えを求める者は、まだ準備ができていない。' },
+      { sp: 'horse',     ja: '馬',         line: '風そのものになる瞬間。蹄の数だけ、彼は自由を計っている。' },
+      { sp: 'flamingo',  ja: 'フラミンゴ', line: '夕焼けの色を借りた羽。立ち姿は、片足で地球を支える祈り。' },
+      { sp: 'stork',     ja: 'コウノトリ', line: 'はじまりを運ぶ。すべての赤子は、彼のくちばしから落ちた星屑。' },
+      { sp: 'parrot',    ja: 'インコ',     line: '人の言葉を真似ながら、自分の真実を隠している。' },
+      { sp: 'hawk',      ja: 'タカ',       line: '空の高さを測る者。視力は心の鋭さに比例する。' },
+      { sp: 'seagull',   ja: 'カモメ',     line: '海と空のあいだに住む。風向きを知る者だけが、自由になる。' },
+    ];
+    natureGroup.userData.animalStories = ANIMAL_STORIES;
+    let storyIdx = Math.floor(Math.random() * ANIMAL_STORIES.length);
+    function showAnimalStory() {
+      if (!ov.isConnected) return;
+      if (currentMode !== 'nature') return; // 自然モード以外は出さない
+      const el = ov.querySelector('#kohAnimalStory');
+      if (!el) return;
+      const s = ANIMAL_STORIES[storyIdx % ANIMAL_STORIES.length];
+      storyIdx++;
+      el.innerHTML = `
+        <div class="kas-name">${s.ja}</div>
+        <div class="kas-line">${s.line}</div>
+      `;
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 7500);
+    }
+    function scheduleNextStory() {
+      if (!ov.isConnected) return;
+      const delay = 22000 + Math.random() * 18000; // 22〜40秒間隔
+      setTimeout(() => {
+        showAnimalStory();
+        scheduleNextStory();
+      }, delay);
+    }
+    setTimeout(showAnimalStory, 4000);
+    scheduleNextStory();
 
     // 既存のCanvasスプライトは飛行鳥のみ残す（地上＋フクロウは3Dに置き換え）
     animalSprites.forEach(s => {
