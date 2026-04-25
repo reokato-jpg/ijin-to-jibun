@@ -540,6 +540,7 @@
               <button class="magic-topbook-pill magic-topbook-pill-glossary" data-deep="glossary">📖 用語集</button>
               <button class="magic-topbook-pill magic-topbook-pill-myth" data-deep="mythology">✦ Genesis — はじまりの書</button>
               <button class="magic-topbook-pill magic-topbook-pill-museum" data-deep="museum">🏛 美 術 館</button>
+              <button class="magic-topbook-pill magic-topbook-pill-pantheon" data-deep="pantheon">⛩ 神 殿</button>
             </div>
           </div>
         </div>
@@ -573,6 +574,7 @@
         glossary: () => { try { openGlossary(); } catch (e) { console.warn('glossary', e); } },
         mythology: () => { try { openMythology(); } catch (e) { console.warn('mythology', e); } },
         museum:   () => { try { openMuseumHub(); } catch (e) { console.warn('museum', e); } },
+        pantheon: () => { try { openPantheon3D(); } catch (e) { console.warn('pantheon', e); } },
       };
       wrap.querySelectorAll('[data-deep]').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -10072,9 +10074,17 @@
           <div class="mpn-title">${mainTitle}</div>
           <div class="mpn-pd">— Public Domain —</div>
         </div>
+        <div class="museum-affiliate" id="museumAff"></div>
       </div>
     `;
     document.body.appendChild(ov);
+    // アフィリエイト紛れ込ませ：神話/絵画系の文脈
+    try {
+      const affEl = ov.querySelector('#museumAff');
+      if (affEl && window.MAGIC && typeof MAGIC.renderAffiliate === 'function') {
+        MAGIC.renderAffiliate('myth', affEl, 1);
+      }
+    } catch {}
     requestAnimationFrame(() => ov.classList.add('open'));
     const close = () => { ov.classList.remove('open'); setTimeout(() => ov.remove(), 400); };
     ov.querySelector('.museum-close').addEventListener('click', close);
@@ -10971,6 +10981,516 @@
     setTimeout(() => { const h = ov.querySelector('#m3dHint'); if (h) h.classList.add('fade'); }, 4500);
   }
   window.openMythMuseum = openMythMuseum;
+
+  // ============================================================
+  // 🏛 神殿 (Pantheon) — 3Dで歩ける神殿、ホログラムの神々
+  // ============================================================
+  // 各神話のキー神々（公開ドメインのWikimedia画像）
+  const PANTHEON_DATA = {
+    genesis: {
+      name: '創世記', emoji: '✦', accent: 0xffd890,
+      gods: [
+        { n: 'ヤハウェ', t: '唯一神', img: 'Special:FilePath/God2-Sistine_Chapel.png',
+          lore: '宇宙を6日で創造し、7日目に休んだ。光あれと言うと光があった。' },
+        { n: 'アダム', t: '最初の人', img: 'Special:FilePath/Michelangelo_-_Creation_of_Adam_(cropped).jpg',
+          lore: '土から創られた最初の人間。エデンの園を耕し守る役を与えられた。' },
+        { n: 'イヴ', t: '生命の母', img: 'Special:FilePath/Michelangelo%2C_Creation_of_Eve_01.jpg',
+          lore: 'アダムの肋骨から創られた女。蛇に唆されて知恵の実を食べた。' },
+        { n: '蛇', t: '誘惑者', img: 'Special:FilePath/Lucas_Cranach_the_Elder,_Adam_and_Eve_in_Paradise,_1509,_NGA_6060.jpg',
+          lore: '園の最も賢い生き物。神のごとくなれると囁いた。' },
+        { n: '大天使', t: '楽園の番人', img: 'Special:FilePath/Masaccio-Expulsion_of_Adam_and_Eve-_Brancacci_Chapel2.jpg',
+          lore: '炎の剣を持ちエデンの東で命の木への道を守る。' },
+      ],
+    },
+    greek: {
+      name: 'ギリシャ神話', emoji: '⚡', accent: 0xfff0a8,
+      gods: [
+        { n: 'ゼウス', t: '主神・雷霆', img: 'Special:FilePath/Zeus_Otricoli_Pio-Clementino_Inv257.jpg',
+          lore: '神々の王。雷を武器にオリンポスを統べる。' },
+        { n: 'ポセイドン', t: '海神', img: 'Special:FilePath/Poseidon_sculpture_Copenhagen_2005.jpg',
+          lore: '三叉矛で海と地震を司る。アテナとアテネを争った。' },
+        { n: 'アテナ', t: '知恵と戦', img: 'Special:FilePath/Mattei_Athena_Louvre_Ma530_n2.jpg',
+          lore: 'ゼウスの額から武装して生まれた。フクロウとオリーブの女神。' },
+        { n: 'アポロン', t: '太陽・芸術', img: 'Special:FilePath/Apollo_of_the_Belvedere.jpg',
+          lore: '太陽・音楽・予言・医術。デルフォイの神託を司る。' },
+        { n: 'アフロディーテ', t: '愛と美', img: 'Special:FilePath/La_naissance_de_V%C3%A9nus.jpg',
+          lore: '海の泡から生まれた愛と美の女神。' },
+      ],
+    },
+    japan: {
+      name: '日本神話', emoji: '⛩', accent: 0xffd8a0,
+      gods: [
+        { n: '天照大神', t: '太陽神', img: 'Special:FilePath/Amaterasu_cave_crop.jpg',
+          lore: '高天原を統べる太陽の女神。天岩戸に隠れ世界が闇に。' },
+        { n: '須佐之男', t: '嵐神', img: 'Special:FilePath/Susanoo-no-Mikoto-slays-Yamata-no-Orochi-in-Izumo-By-Tsukioka-Yoshitoshi.png',
+          lore: '海原の暴神。ヤマタノオロチを退治し草薙剣を得た。' },
+        { n: '伊邪那岐', t: '創造神', img: 'Special:FilePath/Kobayashi_Izanami_and_Izanagi.jpg',
+          lore: '妻イザナミと日本列島を生んだ男神。三貴子の父。' },
+        { n: '大国主', t: '国つ神', img: 'Special:FilePath/%C5%8Ckuninushi_no_Mikoto.jpg',
+          lore: '出雲を治める地上の王。因幡の白兎、縁結びの神。' },
+        { n: '月読命', t: '月神', img: 'Special:FilePath/Tsukuyomi_no_Mikoto.jpg',
+          lore: '夜の世界を司る月の神。' },
+      ],
+    },
+    norse: {
+      name: '北欧神話', emoji: '🌳', accent: 0xb0d0ff,
+      gods: [
+        { n: 'オーディン', t: '主神', img: 'Special:FilePath/Georg_von_Rosen_-_Oden_som_vandringsman%2C_1886_(Odin%2C_the_Wanderer).jpg',
+          lore: '世界樹で知恵を得るため片目を捧げた全父。' },
+        { n: 'トール', t: '雷神', img: 'Special:FilePath/M%C3%A5rten_Eskil_Winge_-_Tor%27s_Fight_with_the_Giants_-_Google_Art_Project.jpg',
+          lore: 'ミョルニルを持つ雷霆の神。巨人と戦い続ける戦士。' },
+        { n: 'ロキ', t: '詐術神', img: 'Special:FilePath/Mardr-and-Loki.jpg',
+          lore: '巨人の血を引くトリックスター。ラグナロクの引き金。' },
+        { n: 'フレイヤ', t: '愛と戦', img: 'Special:FilePath/Freyja-Penrose.jpg',
+          lore: '美と愛、豊穣の女神。戦死者の半分を連れていく。' },
+      ],
+    },
+    egypt: {
+      name: 'エジプト神話', emoji: '𓂀', accent: 0xffc850,
+      gods: [
+        { n: 'ラー', t: '太陽神', img: 'Special:FilePath/Re-Horakhty.svg',
+          lore: 'ハヤブサ頭の太陽神。毎日天を渡り、夜は地下界で蛇と戦う。' },
+        { n: 'オシリス', t: '冥界王', img: 'Special:FilePath/Standing_Osiris_edit1.svg',
+          lore: '農業と死後の世界の神。弟セトに殺され妻イシスに復活された。' },
+        { n: 'イシス', t: '母神', img: 'Special:FilePath/Isis-tomb_of_Seti_I.jpg',
+          lore: '魔術と母性の女神。夫オシリスを蘇らせ息子ホルスを守った。' },
+        { n: 'アヌビス', t: '死者の導き手', img: 'Special:FilePath/Anubis_standing.svg',
+          lore: 'ジャッカル頭の神。ミイラ作りと死者の心臓を秤る。' },
+      ],
+    },
+    hindu: {
+      name: 'ヒンドゥー神話', emoji: '🪷', accent: 0xffb0a0,
+      gods: [
+        { n: 'ブラフマー', t: '創造神', img: 'Special:FilePath/19th_century_Brahma_painting.jpg',
+          lore: '四つの顔と腕を持つ宇宙の創造者。ヴェーダを司る。' },
+        { n: 'ヴィシュヌ', t: '維持神', img: 'Special:FilePath/Bhagavan_Vishnu.jpg',
+          lore: '十の化身で世界を救う維持の神。ラーマとクリシュナも彼の姿。' },
+        { n: 'シヴァ', t: '破壊と再生', img: 'Special:FilePath/Shiva_Pashupati.jpg',
+          lore: '第三の眼を持つ破壊と再生の神。宇宙を踊りで破壊し再創造する。' },
+      ],
+    },
+  };
+
+  async function openPantheon3D() {
+    if (!window.THREE) return;
+    const THREE = window.THREE;
+    if (window.THREE_READY) { try { await window.THREE_READY; } catch {} }
+    const ADDONS = window.THREE_ADDONS || {};
+
+    let currentZone = 'hub'; // 'hub' or pantheon key
+    const ov = document.createElement('div');
+    ov.className = 'museum3d-overlay pantheon-overlay';
+    ov.innerHTML = `
+      <div class="museum3d-stage" id="pantheonStage"></div>
+      <button class="museum3d-close" aria-label="閉じる">×</button>
+      <div class="museum3d-title" id="pantheonTitle">神 殿</div>
+      <div class="museum3d-info" id="pantheonInfo"></div>
+      <div class="museum3d-reticle">·</div>
+      <div class="museum3d-hint">WASD で歩く / ドラッグで見回す / 台座をタップ</div>
+      <div class="museum3d-stick" id="ptStick"><div class="m3d-stick-knob" id="ptKnob"></div></div>
+      <button class="museum3d-view-btn" id="ptViewBtn">この神殿に入る ›</button>
+      <button class="pantheon-back-btn" id="ptBackBtn">← 神殿選択へ</button>
+    `;
+    document.body.appendChild(ov);
+    requestAnimationFrame(() => ov.classList.add('open'));
+
+    const stage = ov.querySelector('#pantheonStage');
+    const titleEl = ov.querySelector('#pantheonTitle');
+    const infoEl = ov.querySelector('#pantheonInfo');
+    const enterBtn = ov.querySelector('#ptViewBtn');
+    const backBtn = ov.querySelector('#ptBackBtn');
+    const W = () => stage.clientWidth || window.innerWidth;
+    const H = () => stage.clientHeight || window.innerHeight;
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.2));
+    renderer.setSize(W(), H());
+    if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 0.85;
+    if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
+    stage.appendChild(renderer.domElement);
+    renderer.domElement.style.touchAction = 'none';
+
+    // シーン構築（zone 切替で再構築）
+    let scene, camera, plinths = [], textureCache = new Map(), composer = null, outlinePass = null;
+    let yaw = 0, pitch = -0.1;
+    const keys = { w:0, a:0, s:0, d:0 };
+    let stickDX = 0, stickDY = 0;
+    let currentNear = null;
+
+    // Wikimedia 画像ロード（既存美術館と同じ手法）
+    function loadGodImage(url) {
+      if (textureCache.has(url)) return Promise.resolve(textureCache.get(url));
+      return new Promise((resolve, reject) => {
+        const fullUrl = 'https://commons.wikimedia.org/wiki/' + url + '?width=512';
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => {
+          const tex = new THREE.Texture(img);
+          if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace;
+          tex.needsUpdate = true;
+          textureCache.set(url, tex);
+          resolve(tex);
+        };
+        img.onerror = () => reject();
+        img.src = fullUrl;
+      });
+    }
+
+    function buildScene(zone) {
+      // 古いシーンクリーンアップ
+      if (scene) {
+        scene.traverse(o => {
+          if (o.material) {
+            (Array.isArray(o.material) ? o.material : [o.material]).forEach(m => m.dispose && m.dispose());
+          }
+          if (o.geometry) o.geometry.dispose && o.geometry.dispose();
+        });
+      }
+      plinths = [];
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x0a0815);
+      scene.fog = new THREE.FogExp2(0x0a0815, 0.018);
+
+      // 環境光
+      scene.add(new THREE.AmbientLight(0x404060, 0.5));
+      const hemi = new THREE.HemisphereLight(0x8080a0, 0x202030, 0.5);
+      scene.add(hemi);
+
+      // 床（暗い大理石）
+      const floorTex = (() => {
+        const c = document.createElement('canvas'); c.width = 512; c.height = 512;
+        const g = c.getContext('2d');
+        g.fillStyle = '#181228'; g.fillRect(0,0,512,512);
+        for (let i = 0; i < 60; i++) {
+          g.strokeStyle = `rgba(${100+Math.random()*60},${80+Math.random()*40},${120+Math.random()*60},${0.1+Math.random()*0.2})`;
+          g.lineWidth = 0.5 + Math.random();
+          g.beginPath();
+          let x = Math.random()*512, y = Math.random()*512;
+          g.moveTo(x, y);
+          for (let k = 0; k < 8; k++) {
+            x += (Math.random()-0.5)*40; y += (Math.random()-0.5)*40;
+            g.lineTo(x, y);
+          }
+          g.stroke();
+        }
+        const t = new THREE.CanvasTexture(c);
+        t.wrapS = t.wrapT = THREE.RepeatWrapping;
+        t.repeat.set(8, 8);
+        return t;
+      })();
+      const floor = new THREE.Mesh(
+        new THREE.CircleGeometry(30, 48),
+        new THREE.MeshStandardMaterial({ map: floorTex, roughness: 0.4, metalness: 0.5 })
+      );
+      floor.rotation.x = -Math.PI / 2;
+      scene.add(floor);
+
+      // 中央の光源
+      const centerLight = new THREE.PointLight(0xc0a0ff, 1.5, 40, 1.5);
+      centerLight.position.set(0, 8, 0);
+      scene.add(centerLight);
+
+      // 周囲の柱（アトモスフェアのため）
+      const colMat = new THREE.MeshStandardMaterial({ color: 0x2a2040, roughness: 0.7 });
+      const numCols = 16;
+      for (let i = 0; i < numCols; i++) {
+        const a = (i / numCols) * Math.PI * 2;
+        const col = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.4, 0.5, 8, 12),
+          colMat
+        );
+        col.position.set(Math.cos(a) * 22, 4, Math.sin(a) * 22);
+        scene.add(col);
+      }
+      // 天井
+      const ceiling = new THREE.Mesh(
+        new THREE.CircleGeometry(30, 48),
+        new THREE.MeshStandardMaterial({ color: 0x1a0a25, roughness: 0.8, side: THREE.DoubleSide })
+      );
+      ceiling.rotation.x = Math.PI / 2;
+      ceiling.position.y = 10;
+      scene.add(ceiling);
+
+      // 配置するアイテム
+      const items = (zone === 'hub')
+        ? Object.entries(PANTHEON_DATA).map(([key, d]) => ({
+            type: 'pantheon', key, name: d.name, emoji: d.emoji, accent: d.accent,
+            sub: d.gods.length + '柱の神'
+          }))
+        : (PANTHEON_DATA[zone]?.gods || []).map(g => ({
+            type: 'god', name: g.n, sub: g.t, img: g.img, lore: g.lore,
+            accent: PANTHEON_DATA[zone].accent,
+          }));
+
+      // 円形に台座を配置
+      const N = items.length;
+      const ringR = N >= 5 ? 12 : 9;
+      items.forEach((item, i) => {
+        const a = (i / N) * Math.PI * 2;
+        const px = Math.cos(a) * ringR, pz = Math.sin(a) * ringR;
+        const group = new THREE.Group();
+        group.position.set(px, 0, pz);
+        // 台座
+        const plinth = new THREE.Mesh(
+          new THREE.CylinderGeometry(1.2, 1.4, 1.0, 24),
+          new THREE.MeshStandardMaterial({ color: 0x2a2040, roughness: 0.5, metalness: 0.4 })
+        );
+        plinth.position.y = 0.5;
+        group.add(plinth);
+        // ホログラム円柱（半透明エメッシブ）
+        const holoMat = new THREE.MeshBasicMaterial({
+          color: item.accent, transparent: true, opacity: 0.18,
+          side: THREE.DoubleSide, depthWrite: false,
+        });
+        const holo = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.95, 0.95, 2.4, 16, 1, true),
+          holoMat
+        );
+        holo.position.y = 2.2;
+        group.add(holo);
+        // ホログラム底のリング
+        const ring = new THREE.Mesh(
+          new THREE.RingGeometry(0.95, 1.15, 32),
+          new THREE.MeshBasicMaterial({ color: item.accent, transparent: true, opacity: 0.6, side: THREE.DoubleSide })
+        );
+        ring.rotation.x = -Math.PI / 2;
+        ring.position.y = 1.05;
+        group.add(ring);
+        // 中の絵（最初はプレースホルダ）
+        const phCanvas = document.createElement('canvas');
+        phCanvas.width = 256; phCanvas.height = 384;
+        const pg = phCanvas.getContext('2d');
+        const grd = pg.createLinearGradient(0, 0, 0, 384);
+        grd.addColorStop(0, '#3a2050'); grd.addColorStop(1, '#181028');
+        pg.fillStyle = grd; pg.fillRect(0, 0, 256, 384);
+        pg.font = 'bold 80px serif'; pg.fillStyle = '#fff';
+        pg.textAlign = 'center';
+        pg.fillText(item.emoji || '✦', 128, 220);
+        pg.font = 'bold 24px serif';
+        pg.fillText(item.name.slice(0, 6), 128, 280);
+        const phTex = new THREE.CanvasTexture(phCanvas);
+        const figMat = new THREE.MeshBasicMaterial({
+          map: phTex, transparent: true, depthWrite: false, side: THREE.DoubleSide,
+        });
+        const figure = new THREE.Mesh(new THREE.PlaneGeometry(1.6, 2.2), figMat);
+        figure.position.y = 2.2;
+        group.add(figure);
+        // 画像非同期ロード（神々のみ）
+        if (item.img) {
+          loadGodImage(item.img).then(tex => {
+            figMat.map = tex;
+            // アスペクト比に合わせて
+            const ar = tex.image.width / tex.image.height;
+            const planeAR = 1.6 / 2.2;
+            if (ar > planeAR) figure.scale.set(1, planeAR / ar, 1);
+            else figure.scale.set(ar / planeAR, 1, 1);
+            figMat.needsUpdate = true;
+          }).catch(() => {});
+        }
+        // ラベル板（台座下に名前）
+        const labelCanvas = document.createElement('canvas');
+        labelCanvas.width = 256; labelCanvas.height = 64;
+        const lg = labelCanvas.getContext('2d');
+        lg.fillStyle = 'rgba(20,15,30,0.9)'; lg.fillRect(0, 0, 256, 64);
+        lg.fillStyle = `#${item.accent.toString(16).padStart(6, '0')}`;
+        lg.font = 'bold 22px serif'; lg.textAlign = 'center';
+        lg.fillText(item.name, 128, 28);
+        lg.fillStyle = '#c8b8d8';
+        lg.font = '14px serif';
+        lg.fillText(item.sub, 128, 50);
+        const labelTex = new THREE.CanvasTexture(labelCanvas);
+        const label = new THREE.Mesh(
+          new THREE.PlaneGeometry(1.6, 0.4),
+          new THREE.MeshBasicMaterial({ map: labelTex, transparent: true })
+        );
+        label.position.y = 0.55;
+        group.add(label);
+
+        group.userData = { item, holo, ring, figure };
+        plinths.push(group);
+        scene.add(group);
+      });
+
+      titleEl.textContent = zone === 'hub' ? '神 殿' : (PANTHEON_DATA[zone]?.name || '神 殿');
+      backBtn.style.display = (zone === 'hub') ? 'none' : 'inline-block';
+    }
+
+    // カメラ
+    camera = new THREE.PerspectiveCamera(70, W()/H(), 0.1, 200);
+    camera.position.set(0, 1.6, 0);
+
+    buildScene('hub');
+
+    // 入力
+    window.addEventListener('keydown', e => {
+      if (!ov.classList.contains('open')) return;
+      const k = e.key.toLowerCase();
+      if (k === 'w' || e.key === 'ArrowUp') keys.w = 1;
+      if (k === 's' || e.key === 'ArrowDown') keys.s = 1;
+      if (k === 'a' || e.key === 'ArrowLeft') keys.a = 1;
+      if (k === 'd' || e.key === 'ArrowRight') keys.d = 1;
+    });
+    window.addEventListener('keyup', e => {
+      const k = e.key.toLowerCase();
+      if (k === 'w' || e.key === 'ArrowUp') keys.w = 0;
+      if (k === 's' || e.key === 'ArrowDown') keys.s = 0;
+      if (k === 'a' || e.key === 'ArrowLeft') keys.a = 0;
+      if (k === 'd' || e.key === 'ArrowRight') keys.d = 0;
+    });
+    let dragging = false, lastX = 0, lastY = 0;
+    renderer.domElement.addEventListener('pointerdown', e => { dragging = true; lastX = e.clientX; lastY = e.clientY; });
+    renderer.domElement.addEventListener('pointermove', e => {
+      if (!dragging) return;
+      yaw -= (e.clientX - lastX) * 0.004;
+      pitch = Math.max(-1.2, Math.min(1.2, pitch - (e.clientY - lastY) * 0.004));
+      lastX = e.clientX; lastY = e.clientY;
+    });
+    renderer.domElement.addEventListener('pointerup', () => dragging = false);
+    renderer.domElement.addEventListener('pointercancel', () => dragging = false);
+    renderer.domElement.addEventListener('pointerleave', () => dragging = false);
+    // モバイル: スティック
+    const stick = ov.querySelector('#ptStick');
+    const knob = ov.querySelector('#ptKnob');
+    let stickActive = false;
+    const stickStart = e => {
+      stickActive = true;
+      const t = e.touches ? e.touches[0] : e;
+      stick.dataset.cx = t.clientX; stick.dataset.cy = t.clientY;
+      stickDX = stickDY = 0; e.preventDefault();
+    };
+    const stickMove = e => {
+      if (!stickActive) return;
+      const t = e.touches ? e.touches[0] : e;
+      const cx = +stick.dataset.cx, cy = +stick.dataset.cy;
+      let dx = t.clientX - cx, dy = t.clientY - cy;
+      const d = Math.hypot(dx, dy);
+      const MAX = 40;
+      if (d > MAX) { dx = dx/d*MAX; dy = dy/d*MAX; }
+      knob.style.transform = `translate(${dx}px, ${dy}px)`;
+      stickDX = dx / MAX; stickDY = dy / MAX;
+      e.preventDefault();
+    };
+    const stickEnd = () => { stickActive = false; knob.style.transform = 'translate(0,0)'; stickDX = stickDY = 0; };
+    stick.addEventListener('touchstart', stickStart, { passive: false });
+    stick.addEventListener('touchmove', stickMove, { passive: false });
+    stick.addEventListener('touchend', stickEnd);
+
+    enterBtn.addEventListener('click', () => {
+      if (!currentNear) return;
+      const item = currentNear.userData.item;
+      if (item.type === 'pantheon') {
+        currentZone = item.key;
+        buildScene(item.key);
+        camera.position.set(0, 1.6, 0); yaw = 0;
+      } else if (item.type === 'god') {
+        showGodModal(item, currentZone);
+      }
+    });
+    backBtn.addEventListener('click', () => {
+      currentZone = 'hub';
+      buildScene('hub');
+      camera.position.set(0, 1.6, 0); yaw = 0;
+    });
+
+    function showGodModal(god, zoneKey) {
+      const m = document.createElement('div');
+      m.className = 'pantheon-modal';
+      m.innerHTML = `
+        <div class="pm-card">
+          <button class="pm-close">×</button>
+          <img class="pm-img" src="https://commons.wikimedia.org/wiki/${god.img}?width=600" alt="${god.n}">
+          <div class="pm-body">
+            <div class="pm-sub">${god.t}</div>
+            <div class="pm-name">${god.n}</div>
+            <div class="pm-lore">${god.lore}</div>
+            <div class="pm-zone">— ${PANTHEON_DATA[zoneKey].name} —</div>
+          </div>
+        </div>
+      `;
+      ov.appendChild(m);
+      requestAnimationFrame(() => m.classList.add('show'));
+      const close = () => { m.classList.remove('show'); setTimeout(() => m.remove(), 300); };
+      m.querySelector('.pm-close').addEventListener('click', close);
+      m.addEventListener('click', e => { if (e.target === m) close(); });
+    }
+
+    let running = true;
+    ov.querySelector('.museum3d-close').addEventListener('click', () => {
+      running = false;
+      ov.classList.remove('open');
+      setTimeout(() => ov.remove(), 500);
+    });
+
+    let t = 0;
+    function animate() {
+      if (!running) return;
+      if (document.hidden) { requestAnimationFrame(animate); return; }
+      t += 0.016;
+      // 移動
+      const speed = 0.08;
+      const fwd = (keys.w - keys.s) - stickDY;
+      const strafe = (keys.d - keys.a) + stickDX;
+      if (Math.hypot(fwd, strafe) > 0) {
+        const nx = Math.sin(yaw), nz = -Math.cos(yaw);
+        const sx = Math.cos(yaw), sz = Math.sin(yaw);
+        camera.position.x += (nx * fwd + sx * strafe) * speed;
+        camera.position.z += (nz * fwd + sz * strafe) * speed;
+        const d = Math.hypot(camera.position.x, camera.position.z);
+        if (d > 18) {
+          camera.position.x = camera.position.x / d * 18;
+          camera.position.z = camera.position.z / d * 18;
+        }
+      }
+      camera.lookAt(
+        camera.position.x + Math.sin(yaw) * Math.cos(pitch) * 5,
+        camera.position.y + Math.sin(pitch) * 5,
+        camera.position.z - Math.cos(yaw) * Math.cos(pitch) * 5
+      );
+      // ホログラム回転 + リング脈動
+      plinths.forEach(p => {
+        p.userData.figure.rotation.y = -Math.sin(yaw) * 0.0; // 常にカメラを向く
+        p.userData.figure.lookAt(camera.position.x, p.userData.figure.getWorldPosition(new THREE.Vector3()).y, camera.position.z);
+        p.userData.holo.rotation.y += 0.005;
+        p.userData.ring.material.opacity = 0.4 + Math.sin(t * 2 + p.position.x) * 0.2;
+      });
+      // 最寄りの台座を判定
+      let best = null, bestD = 5;
+      plinths.forEach(p => {
+        const dx = p.position.x - camera.position.x;
+        const dz = p.position.z - camera.position.z;
+        const dist = Math.hypot(dx, dz);
+        if (dist < bestD) {
+          const fx = Math.sin(yaw), fz = -Math.cos(yaw);
+          const dot = (dx/dist) * fx + (dz/dist) * fz;
+          if (dot > 0.4) { best = p; bestD = dist; }
+        }
+      });
+      if (best !== currentNear) {
+        currentNear = best;
+        if (best) {
+          const it = best.userData.item;
+          infoEl.innerHTML = `<div class="mv-info-name">${it.name}</div><div class="mv-info-sub">${it.sub}</div>`;
+          infoEl.classList.add('show');
+          enterBtn.classList.add('show');
+          enterBtn.textContent = it.type === 'pantheon' ? 'この神殿に入る ›' : '詳しく見る ›';
+        } else {
+          infoEl.classList.remove('show');
+          enterBtn.classList.remove('show');
+        }
+      }
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      renderer.setSize(W(), H());
+      camera.aspect = W()/H();
+      camera.updateProjectionMatrix();
+    });
+  }
+  window.openPantheon3D = openPantheon3D;
 
 
   // ============================================================

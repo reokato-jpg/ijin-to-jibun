@@ -7367,3 +7367,77 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   .mv-info { bottom: 140px; min-width: 200px; padding: 10px 18px; }
   .mv-enter-btn { bottom: 50px; font-size: 13px; padding: 12px 28px; }
 }
+
+/* ===== Pantheon 神殿 ===== */
+.magic-topbook-pill-pantheon {
+  background: linear-gradient(135deg, #2a1055, #150528) !important;
+  border-color: rgba(180,140,240,0.5) !important;
+  color: #d8c8ff !important;
+}
+.pantheon-overlay { background: #0a0815 !important; }
+.pantheon-back-btn {
+  position: absolute; top: 70px; left: 16px;
+  padding: 8px 16px;
+  background: rgba(20,10,40,0.78);
+  border: 1px solid rgba(180,140,240,0.45);
+  border-radius: 999px;
+  color: #d8c8ff;
+  font-family: 'Shippori Mincho', serif;
+  font-size: 12px; letter-spacing: 0.1em;
+  cursor: pointer;
+  display: none;
+  z-index: 12;
+  backdrop-filter: blur(6px);
+}
+.pantheon-back-btn:hover { filter: brightness(1.2); }
+.pantheon-modal {
+  position: absolute; inset: 0; z-index: 30;
+  background: rgba(5,2,15,0.85);
+  backdrop-filter: blur(10px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0;
+  transition: opacity .3s;
+  padding: 20px;
+}
+.pantheon-modal.show { opacity: 1; }
+.pm-card {
+  display: flex; gap: 24px;
+  background: linear-gradient(160deg, #1a1030, #0a0518);
+  border: 1px solid rgba(180,140,240,0.4);
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 720px; width: 90vw;
+  max-height: 80vh;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 40px rgba(160,120,240,0.15);
+}
+.pm-img {
+  width: 240px; max-height: 360px; object-fit: cover;
+  border-radius: 6px;
+  border: 2px solid rgba(220,200,255,0.2);
+}
+.pm-body { flex: 1; color: #f4ecff; font-family: 'Shippori Mincho', serif; min-width: 0; }
+.pm-sub { font-size: 11px; letter-spacing: 0.2em; color: #c0a0ff; margin-bottom: 6px; }
+.pm-name { font-size: 24px; letter-spacing: 0.15em; margin-bottom: 14px; }
+.pm-lore { font-size: 13px; line-height: 2; color: #d8d0f0; margin-bottom: 18px; }
+.pm-zone { font-size: 11px; letter-spacing: 0.25em; color: rgba(180,160,220,0.6); font-style: italic; }
+.pm-close {
+  position: absolute; top: 8px; right: 12px;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(20,10,30,0.7);
+  border: 1px solid rgba(180,140,240,0.4);
+  color: #fff; font-size: 18px; cursor: pointer;
+}
+@media (max-width: 600px) {
+  .pm-card { flex-direction: column; padding: 16px; gap: 14px; }
+  .pm-img { width: 100%; max-height: 200px; }
+  .pm-name { font-size: 18px; }
+}
+
+.museum-affiliate {
+  margin-top: 10px;
+  max-width: 360px;
+  font-size: 11px;
+  opacity: 0.75;
+}
+.museum-affiliate:empty { display: none; }
