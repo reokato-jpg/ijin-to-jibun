@@ -12308,17 +12308,47 @@
             accent: PANTHEON_DATA[zone].accent,
           }));
 
-      // 円形に配置 — HUB は「浮かぶ神話の本」、ゾーン内は神様の台座
+      // 配置：HUB=浮かぶ神話の本（円形）、ゾーン内=DQ7風の神殿廊下
       const N = items.length;
-      const ringR = N >= 5 ? 12 : 9;
+      const ringR = 12;
       const isHubZone = (zone === 'hub');
+
+      // ⛩ ゾーン内は「廊下＋奥の主神」レイアウト
+      // 入口 z=14 → 中央 z=0 → 主神 z=-9
+      function zoneLayout(idx, total) {
+        // 主神を最後の1柱に。残りは2列で参道に並べる。
+        const others = total - 1;
+        if (idx === total - 1) {
+          // 主神（中央奥）— 大きめスケール
+          return { x: 0, z: -9, scale: 1.35, isMain: true };
+        }
+        // 残りを左右に分割
+        const half = Math.ceil(others / 2);
+        const isLeft = idx < half;
+        const rowIndex = isLeft ? idx : (idx - half);
+        const rowCount = isLeft ? half : (others - half);
+        // 廊下に沿って z = 4 → -6 で並ぶ（入口側 z>4 は石板用に空ける）
+        const t = rowCount > 1 ? rowIndex / (rowCount - 1) : 0;
+        const z = 4 - t * 10; // 4, -1, -6 ...
+        const x = isLeft ? -4.5 : 4.5;
+        return { x, z, scale: 1.0, isMain: false };
+      }
+
       items.forEach((item, i) => {
-        const a = (i / N) * Math.PI * 2;
-        const px = Math.cos(a) * ringR, pz = Math.sin(a) * ringR;
+        let px, pz, hubY = 0, scale = 1, isMain = false;
+        if (isHubZone) {
+          const a = (i / N) * Math.PI * 2;
+          px = Math.cos(a) * ringR;
+          pz = Math.sin(a) * ringR;
+          hubY = 1.8 + Math.sin(i * 1.7) * 1.0;
+        } else {
+          const L = zoneLayout(i, N);
+          px = L.x; pz = L.z; scale = L.scale; isMain = L.isMain;
+        }
         const group = new THREE.Group();
-        // 魂の宇宙では本が高さの違うところに浮かぶ（より宇宙感）
-        const hubY = isHubZone ? (1.8 + Math.sin(i * 1.7) * 1.0) : 0;
         group.position.set(px, hubY, pz);
+        if (!isHubZone) group.scale.setScalar(scale);
+        group.userData.isMain = isMain;
 
         if (isHubZone) {
           // 📖 HUB: 浮かぶ豪華な神話本
@@ -12421,6 +12451,58 @@
         }
 
         // 以下、ゾーン内の神様用台座（HUB 以外）
+        // 主神（isMain）には特別な装飾を追加
+        if (isMain) {
+          // 主神の周りに光の柱
+          const beamC = document.createElement('canvas'); beamC.width = 64; beamC.height = 256;
+          const bg = beamC.getContext('2d');
+          const accentHex = '#' + (item.accent || 0xffd890).toString(16).padStart(6, '0');
+          const bgrd = bg.createLinearGradient(0, 0, 0, 256);
+          bgrd.addColorStop(0, accentHex + '00');
+          bgrd.addColorStop(0.5, accentHex + 'aa');
+          bgrd.addColorStop(1, accentHex + '00');
+          bg.fillStyle = bgrd; bg.fillRect(0, 0, 64, 256);
+          const beamTex = new THREE.CanvasTexture(beamC);
+          const beam = new THREE.Sprite(new THREE.SpriteMaterial({
+            map: beamTex, transparent: true, opacity: 0.55,
+            depthWrite: false, blending: THREE.AdditiveBlending,
+          }));
+          beam.scale.set(4, 9, 1);
+          beam.position.y = 4.5;
+          group.add(beam);
+          // 主神の地面に魔法陣
+          const circleC = document.createElement('canvas'); circleC.width = 256; circleC.height = 256;
+          const ccg = circleC.getContext('2d');
+          ccg.strokeStyle = accentHex; ccg.lineWidth = 3;
+          ccg.beginPath(); ccg.arc(128, 128, 110, 0, Math.PI*2); ccg.stroke();
+          ccg.lineWidth = 1.5;
+          ccg.beginPath(); ccg.arc(128, 128, 90, 0, Math.PI*2); ccg.stroke();
+          // 五芒星
+          for (let i = 0; i < 5; i++) {
+            const a1 = (i / 5) * Math.PI * 2 - Math.PI / 2;
+            const a2 = ((i + 2) / 5) * Math.PI * 2 - Math.PI / 2;
+            ccg.beginPath();
+            ccg.moveTo(128 + Math.cos(a1) * 90, 128 + Math.sin(a1) * 90);
+            ccg.lineTo(128 + Math.cos(a2) * 90, 128 + Math.sin(a2) * 90);
+            ccg.stroke();
+          }
+          ccg.fillStyle = accentHex;
+          ccg.font = '32px serif'; ccg.textAlign = 'center'; ccg.textBaseline = 'middle';
+          ccg.fillText('❋', 128, 128);
+          const circleTex = new THREE.CanvasTexture(circleC);
+          const magicCircle = new THREE.Mesh(
+            new THREE.PlaneGeometry(4.5, 4.5),
+            new THREE.MeshBasicMaterial({ map: circleTex, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending })
+          );
+          magicCircle.rotation.x = -Math.PI / 2;
+          magicCircle.position.y = 0.05;
+          group.add(magicCircle);
+          group.userData.magicCircle = magicCircle;
+          // 主神の自己発光
+          const mainLight = new THREE.PointLight(item.accent, 2.0, 12, 1.5);
+          mainLight.position.y = 3;
+          group.add(mainLight);
+        }
         const plinth = new THREE.Mesh(
           new THREE.CylinderGeometry(1.2, 1.4, 1.0, 24),
           new THREE.MeshStandardMaterial({ color: 0x2a2040, roughness: 0.5, metalness: 0.4 })
@@ -12551,12 +12633,104 @@
         scene.add(group);
       });
 
+      // 🪨 入口前の石板（神話の導入）— 左右に1枚ずつ
+      if (zone !== 'hub' && PANTHEON_DATA[zone]) {
+        const accentHex = '#' + PANTHEON_DATA[zone].accent.toString(16).padStart(6, '0');
+        const myth = PANTHEON_DATA[zone];
+        const introTexts = [
+          { title: myth.name, sub: myth.emoji + '   神 々', body: '入口より\n奥へ進めば\n神々と出会う' },
+          { title: '案 内', sub: '— Hierarch —', body: `中央奥に\n${myth.name}を\n統べる神` },
+        ];
+        introTexts.forEach((info, i) => {
+          const tablet = new THREE.Group();
+          // 石板本体（傾斜した石碑）
+          const stone = new THREE.Mesh(
+            new THREE.BoxGeometry(2.0, 2.6, 0.25),
+            new THREE.MeshStandardMaterial({ color: 0x8a7a98, roughness: 0.85, metalness: 0.1 })
+          );
+          stone.position.y = 1.5;
+          tablet.add(stone);
+          // 石の台座
+          const tabBase = new THREE.Mesh(
+            new THREE.BoxGeometry(2.4, 0.4, 0.6),
+            new THREE.MeshStandardMaterial({ color: 0x5a4a68, roughness: 0.85 })
+          );
+          tabBase.position.y = 0.2;
+          tablet.add(tabBase);
+          // 文字テクスチャ
+          const tc = document.createElement('canvas'); tc.width = 384; tc.height = 512;
+          const tg = tc.getContext('2d');
+          // 石の質感
+          const grd = tg.createLinearGradient(0, 0, 0, 512);
+          grd.addColorStop(0, '#a89aac'); grd.addColorStop(1, '#6a5a78');
+          tg.fillStyle = grd; tg.fillRect(0, 0, 384, 512);
+          // ノイズ
+          for (let n = 0; n < 1200; n++) {
+            tg.fillStyle = `rgba(0,0,0,${0.04+Math.random()*0.08})`;
+            tg.fillRect(Math.random()*384, Math.random()*512, 1, 1);
+          }
+          // 縁飾り
+          tg.strokeStyle = accentHex; tg.lineWidth = 4;
+          tg.strokeRect(20, 20, 344, 472);
+          // タイトル
+          tg.font = 'bold 50px "Shippori Mincho", serif';
+          tg.fillStyle = '#1a0a04';
+          tg.textAlign = 'center';
+          tg.shadowColor = 'rgba(0,0,0,0.4)'; tg.shadowBlur = 4;
+          tg.fillText(info.title, 192, 100);
+          tg.shadowBlur = 0;
+          // セパレーター
+          tg.strokeStyle = accentHex; tg.lineWidth = 2;
+          tg.beginPath(); tg.moveTo(80, 140); tg.lineTo(304, 140); tg.stroke();
+          // サブタイトル
+          tg.font = 'italic 24px "Cormorant Garamond", "Shippori Mincho", serif';
+          tg.fillStyle = accentHex;
+          tg.fillText(info.sub, 192, 180);
+          // 本文（石に刻まれた文字風）
+          tg.font = '28px "Shippori Mincho", serif';
+          tg.fillStyle = '#2a1a08';
+          tg.shadowColor = 'rgba(255,255,255,0.3)'; tg.shadowBlur = 1; tg.shadowOffsetY = 1;
+          info.body.split('\n').forEach((line, li) => {
+            tg.fillText(line, 192, 260 + li * 50);
+          });
+          tg.shadowBlur = 0;
+          // 装飾紋章
+          tg.font = '32px serif';
+          tg.fillStyle = accentHex;
+          tg.fillText('❦', 192, 460);
+          const tabTex = new THREE.CanvasTexture(tc);
+          if ('colorSpace' in tabTex) tabTex.colorSpace = THREE.SRGBColorSpace;
+          const inscription = new THREE.Mesh(
+            new THREE.PlaneGeometry(1.7, 2.3),
+            new THREE.MeshStandardMaterial({ map: tabTex, transparent: true, roughness: 0.85, side: THREE.DoubleSide })
+          );
+          inscription.position.set(0, 1.5, 0.13);
+          tablet.add(inscription);
+          // 石板の上の装飾燭台
+          const candle = new THREE.Mesh(
+            new THREE.SphereGeometry(0.08, 10, 8),
+            new THREE.MeshBasicMaterial({ color: 0xfff4a0 })
+          );
+          candle.position.set(0, 3.0, 0);
+          tablet.add(candle);
+          const candleLight = new THREE.PointLight(0xffd890, 1.0, 5, 1.5);
+          candleLight.position.set(0, 3.0, 0);
+          tablet.add(candleLight);
+          // 入口寄り（z=10）に左右配置
+          const tx = i === 0 ? -3.5 : 3.5;
+          tablet.position.set(tx, 0, 10);
+          // 中央を向く
+          tablet.lookAt(0, 1.5, 0);
+          scene.add(tablet);
+        });
+      }
+
       // 各神話部屋の中央に「神話を読む」看板（hub では出さない）
       if (zone !== 'hub' && PANTHEON_DATA[zone]) {
         const tk = MYTH_STORY_KEY_MAP[zone];
         if (tk && window.MYTH_STORIES && window.MYTH_STORIES[tk] || tk) {
           const sign = new THREE.Group();
-          sign.position.set(0, 0, 0);
+          sign.position.set(0, 0, 6.5); // 入口寄り（参道の前方）
           // 石の台座
           const stone = new THREE.Mesh(
             new THREE.CylinderGeometry(0.9, 1.1, 0.5, 16),
@@ -13145,6 +13319,7 @@
         }
         if (p.userData.figure) p.userData.figure.lookAt(camera.position.x, p.userData.figure.getWorldPosition(new THREE.Vector3()).y, camera.position.z);
         if (p.userData.holo) p.userData.holo.rotation.y += 0.005;
+        if (p.userData.magicCircle) p.userData.magicCircle.rotation.z += 0.003;
         if (p.userData.ring && p.userData.ring.material) p.userData.ring.material.opacity = 0.4 + Math.sin(t * 2 + p.position.x) * 0.2;
         p.children.forEach(ch => {
           if (ch.userData && ch.userData.isLabel) {
@@ -14979,24 +15154,21 @@
     pedRim.position.y = 1.32;
     pedestalG.add(pedRim);
 
-    // 開かれた絵本（V字に開いた2ページ）— 台座の少し上に浮く
+    // 開かれた絵本（プレイヤーに正面向き — 縦に立った2ページ）
     const bookOpen = new THREE.Group();
-    // ページが少し読みやすい角度（前傾15度）+ 高さ 2.5 で浮遊
-    const PAGE_BASE_Y = 0.0; // bookOpen.position.y で制御
-    // 左ページ
+    // 左ページ（カメラに正面向き、左にずれて少し内側に傾く）
     const leftPage = new THREE.Mesh(
       new THREE.PlaneGeometry(0.85, 1.1),
       new THREE.MeshStandardMaterial({ color: 0xfdf4d8, roughness: 0.92, side: THREE.DoubleSide })
     );
-    // 前傾 + 中心軸でV字
-    leftPage.rotation.x = -Math.PI / 2 + 0.25;
-    leftPage.rotation.z = -0.18;
-    leftPage.position.set(-0.42, 0, 0);
+    leftPage.position.set(-0.43, 0, 0);
+    leftPage.rotation.y = 0.20; // 内側へ少し閉じ気味（V字の左半分）
     bookOpen.add(leftPage);
     // 右ページ
     const rightPage = leftPage.clone();
-    rightPage.rotation.z = 0.18;
-    rightPage.position.set(0.42, 0, 0);
+    rightPage.material = leftPage.material;
+    rightPage.position.set(0.43, 0, 0);
+    rightPage.rotation.y = -0.20;
     bookOpen.add(rightPage);
     // 左ページの装飾（タイトル）
     const lpC = document.createElement('canvas'); lpC.width = 256; lpC.height = 320;
@@ -15043,9 +15215,9 @@
     const rpTex = new THREE.CanvasTexture(rpC);
     if ('colorSpace' in rpTex) rpTex.colorSpace = THREE.SRGBColorSpace;
     rightPage.material = new THREE.MeshStandardMaterial({ map: rpTex, roughness: 0.92, side: THREE.DoubleSide });
-    // 背表紙（V字の中央）
+    // 背表紙（V字の中央 — 縦向き）
     const spine = new THREE.Mesh(
-      new THREE.BoxGeometry(0.05, 0.08, 1.1),
+      new THREE.BoxGeometry(0.06, 1.15, 0.08),
       new THREE.MeshStandardMaterial({ color: 0x4a2810, roughness: 0.7 })
     );
     spine.position.set(0, 0, 0);
@@ -15053,7 +15225,7 @@
     // 本のグループにマーキング
     bookOpen.userData.isOpenBook = true;
     // 🪶 本は台座から浮く: 高さ 2.6（台座頂点 y=1.32 の上に 1.3 浮遊）
-    bookOpen.position.set(0, 2.6, 0);
+    bookOpen.position.set(0, 2.2, 0);
     pedestalG.add(bookOpen);
 
     // 本の下に光のドット（浮遊感を強調）
@@ -15067,11 +15239,11 @@
       return new THREE.CanvasTexture(c);
     })();
     const bookGlow = new THREE.Sprite(new THREE.SpriteMaterial({
-      map: bookDotTex, transparent: true, opacity: 0.6,
+      map: bookDotTex, transparent: true, opacity: 0.7,
       depthWrite: false, blending: THREE.AdditiveBlending,
     }));
-    bookGlow.scale.set(2.0, 0.4, 1);
-    bookGlow.position.set(0, 2.55, 0); // 本の真下
+    bookGlow.scale.set(2.4, 0.5, 1);
+    bookGlow.position.set(0, 1.95, 0); // 浮いた本の真下、台座上面
     pedestalG.add(bookGlow);
     pedestalG.userData.bookGlow = bookGlow;
 
@@ -15690,7 +15862,7 @@
       const ob = scene.userData.bookOpenAnim;
       if (ob) {
         // 上下にふわふわ + ゆっくり回転
-        ob.position.y = 2.6 + Math.sin(t * 0.8) * 0.12;
+        ob.position.y = 2.2 + Math.sin(t * 0.8) * 0.10;
         ob.rotation.y = Math.sin(t * 0.3) * 0.08;
         ob.rotation.x = Math.sin(t * 0.5) * 0.03;
         const pdist = Math.hypot(camera.position.x, camera.position.z);
