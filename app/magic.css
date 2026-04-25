@@ -7845,3 +7845,25 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   .lpbook-text { font-size: 13px; line-height: 1.85; }
   .lpbook-btn { padding: 8px 14px; font-size: 11px; }
 }
+
+/* 星の王子様モードのヒント */
+.prince-hint {
+  position: absolute;
+  top: 80px; left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 22px;
+  background: rgba(20,10,30,0.85);
+  border: 1px solid rgba(255,180,180,0.45);
+  border-radius: 999px;
+  color: #ffd0d8;
+  font-family: 'Shippori Mincho', serif;
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  text-align: center;
+  z-index: 50;
+  pointer-events: none;
+  backdrop-filter: blur(8px);
+  transition: opacity .8s;
+}
+.prince-hint small { font-size: 11px; color: rgba(255,200,210,0.7); }
+.prince-hint.fade { opacity: 0; }

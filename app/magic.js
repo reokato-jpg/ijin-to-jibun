@@ -12356,6 +12356,9 @@
             <path d="M -5 -8 L -7 8 L 7 8 L 5 -8 Z" fill="#3a6a90"/>
             <circle cx="0" cy="-15" r="7" fill="#f0c890"/>
             <path d="M -7 -20 Q -4 -25 0 -24 Q 4 -25 7 -20 Q 8 -16 6 -18 Q 0 -16 -6 -18 Q -8 -16 -7 -20 Z" fill="#ffd060"/>
+            <circle cx="-2.2" cy="-15" r="0.7" fill="#1a1a1a"/>
+            <circle cx="2.2" cy="-15" r="0.7" fill="#1a1a1a"/>
+            <path d="M -1.5 -12 Q 0 -11 1.5 -12" stroke="#8a5030" stroke-width="0.6" fill="none"/>
           </g>
         </g>
       </svg>`,
@@ -12379,6 +12382,9 @@
           <g><path d="M -8 -10 L -10 18 L 10 18 L 8 -10 Z" fill="#3a6a90"/>
           <circle cx="0" cy="-18" r="9" fill="#f0c890"/>
           <path d="M -10 -25 Q -5 -32 0 -30 Q 5 -32 10 -25 Q 11 -19 8 -22 Q 0 -19 -8 -22 Z" fill="#ffd060"/>
+          <circle cx="-3" cy="-18" r="0.9" fill="#1a1a1a"/>
+          <circle cx="3" cy="-18" r="0.9" fill="#1a1a1a"/>
+          <path d="M -2 -14 Q 0 -13 2 -14" stroke="#8a5030" stroke-width="0.8" fill="none"/>
           <path d="M -10 -8 L -2 -2 L 8 -10" stroke="#ffd060" stroke-width="2" fill="none"/></g>
         </g>
       </svg>`,
@@ -12400,6 +12406,11 @@
           <path d="M -10 -15 L -12 25 L 12 25 L 10 -15 Z" fill="#3a6a90"/>
           <circle cx="0" cy="-25" r="11" fill="#f0c890"/>
           <path d="M -12 -34 Q -8 -42 0 -40 Q 8 -42 12 -34 Q 14 -28 12 -30 Q 0 -27 -12 -30 Z" fill="#ffd060"/>
+          <circle cx="-4" cy="-24" r="1.1" fill="#1a1a1a"/>
+          <circle cx="4" cy="-24" r="1.1" fill="#1a1a1a"/>
+          <path d="M -3 -19 Q 0 -17 3 -19" stroke="#8a5030" stroke-width="0.9" fill="none"/>
+          <!-- 黄色マフラー -->
+          <path d="M -10 -15 Q 0 -10 10 -15 Q 14 -8 0 -6 Q -14 -8 -10 -15 Z" fill="#ffd060"/>
         </g>
         <!-- キツネ -->
         <g transform="translate(260,260)">
@@ -12454,6 +12465,10 @@
           <path d="M -8 -10 L -10 15 L 10 15 L 8 -10 Z" fill="#3a6a90"/>
           <circle cx="0" cy="-18" r="9" fill="#f0c890"/>
           <path d="M -10 -25 Q -5 -32 0 -30 Q 5 -32 10 -25 Z" fill="#ffd060"/>
+          <circle cx="-3" cy="-17" r="0.9" fill="#1a1a1a"/>
+          <circle cx="3" cy="-17" r="0.9" fill="#1a1a1a"/>
+          <path d="M -2 -13 Q 0 -12 2 -13" stroke="#8a5030" stroke-width="0.7" fill="none"/>
+          <path d="M -8 -10 Q 0 -7 8 -10 Q 10 -5 0 -4 Q -10 -5 -8 -10 Z" fill="#ffd060"/>
         </g>
       </svg>`,
     },
@@ -12479,8 +12494,10 @@
         <!-- 倒れた王子 -->
         <g transform="translate(200,300)" opacity="0.85">
           <ellipse cx="0" cy="0" rx="40" ry="6" fill="#3a6a90"/>
-          <ellipse cx="-30" cy="-3" r="9" rx="10" ry="8" fill="#f0c890"/>
+          <ellipse cx="-30" cy="-3" rx="10" ry="8" fill="#f0c890"/>
           <path d="M -38 -10 Q -34 -16 -28 -14 Q -22 -16 -18 -10 Z" fill="#ffd060"/>
+          <circle cx="-32" cy="-3" r="0.8" fill="#1a1a1a"/>
+          <circle cx="-26" cy="-3" r="0.8" fill="#1a1a1a"/>
         </g>
         <text x="200" y="340" text-anchor="middle" fill="#a89878" font-size="13" font-style="italic" font-family="serif">— 星が笑っている —</text>
       </svg>`,
@@ -15026,6 +15043,25 @@
       if (typeof corona1 !== 'undefined' && corona1) corona1.visible = !on;
       astPoints.visible = !on;
       kbPoints.visible = !on;
+      // 王子様視点：カメラを王子の星に近寄せる
+      if (on && princeGroup) {
+        // 中心(0,0,0)からズームアウト気味で各星が見える視点
+        camera.position.set(0, 8, 28);
+        camera.lookAt(0, 0, 0);
+        // ヒント表示
+        showPrinceHint();
+      }
+    }
+    function showPrinceHint() {
+      const existing = ov.querySelector('#princeHint');
+      if (existing) return;
+      const hint = document.createElement('div');
+      hint.id = 'princeHint';
+      hint.className = 'prince-hint';
+      hint.innerHTML = '🌹 星の王子様モード<br><small>各惑星をタップして登場人物に会いに行く</small>';
+      ov.appendChild(hint);
+      setTimeout(() => { hint.classList.add('fade'); }, 5000);
+      setTimeout(() => { hint.remove(); }, 7500);
     }
     // タップ判定に princeGroup も含める
     function pickPrinceHit(e) {
