@@ -553,6 +553,11 @@
                 <div class="mtc-name">絵 本</div>
                 <div class="mtc-sub">物語の世界に入る</div>
               </button>
+              <button class="magic-topbook-cat magic-topbook-cat-koh" data-cat="koh">
+                <div class="mtc-emoji">◎</div>
+                <div class="mtc-name">K O H</div>
+                <div class="mtc-sub">球体音楽堂（合言葉あり）</div>
+              </button>
             </div>
           </div>
         </div>
