@@ -14255,18 +14255,18 @@
     ov.innerHTML = `
       <div class="museum3d-stage" id="kohStage"></div>
       <button class="museum3d-close" aria-label="閉じる">×</button>
-      <div class="koh-now-playing" id="kohNowPlaying">
+      <div class="koh-now-playing koh-ar-only" id="kohNowPlaying">
         <div class="knp-eyebrow">N O W　P L A Y I N G</div>
         <div class="knp-title">${config.music.title}</div>
         <div class="knp-sub">${config.music.sub}</div>
       </div>
-      <!-- 🥽 AIグラス風 HUD（説明書き） -->
+      <!-- 🥽 AIグラスHUD（初期は座席だけ。ARオンで他項目が現れる） -->
       <div class="koh-hud" id="kohHud">
-        <div class="koh-hud-section koh-hud-tl">
+        <div class="koh-hud-section koh-hud-tl koh-ar-only">
           <div class="khs-label">L O C A T I O N</div>
           <div class="khs-value" id="kohLocation">中央ホール</div>
         </div>
-        <div class="koh-hud-section koh-hud-tr">
+        <div class="koh-hud-section koh-hud-tr koh-ar-only">
           <div class="khs-label">M O O D</div>
           <div class="khs-value">${config.music.title}</div>
         </div>
@@ -14274,11 +14274,11 @@
           <div class="khs-label">S E A T</div>
           <div class="khs-value">列${config.seat.r + 1}・${config.seat.c + 1}番</div>
         </div>
-        <div class="koh-hud-section koh-hud-br">
+        <div class="koh-hud-section koh-hud-br koh-ar-only">
           <div class="khs-label">M O D E</div>
           <div class="khs-value" id="kohModeLabel">CONCERT</div>
         </div>
-        <div class="koh-hud-reticle" aria-hidden="true">⊙</div>
+        <div class="koh-hud-reticle koh-ar-only" aria-hidden="true">⊙</div>
       </div>
       <!-- モード切替ボタン -->
       <div class="koh-mode-bar">
@@ -15684,9 +15684,10 @@
     const arState = ov.querySelector('#kohArState');
     const arInfo = ov.querySelector('#kohArInfoPanel');
     const arAds = ov.querySelector('#kohArAds');
-    let arOn = (localStorage.getItem('kohArOn') ?? '1') === '1';
+    let arOn = (localStorage.getItem('kohArOn') ?? '0') === '1'; // 初期OFF（最小UI）
     function applyAr() {
       arOverlay.classList.toggle('on', arOn);
+      ov.classList.toggle('koh-ar-on', arOn);
       arState.textContent = arOn ? 'ON' : 'OFF';
       arToggle.classList.toggle('on', arOn);
       arToggle.setAttribute('aria-pressed', String(arOn));
@@ -15754,16 +15755,14 @@
       { brand: 'PANTHEON CULT', tagline: '神々の書 PDF版', sub: '今だけ 50% OFF', accent: '#8050a0' },
     ];
     function renderArAds() {
-      // 上下にスクロールするアド3つを差し替えサイクル
+      // 横長「PR ○○」形式、画面下にバナー風で重ねる
       const picks = [];
       const pool = [...KOH_AR_ADS].sort(() => Math.random() - 0.5);
       for (let i = 0; i < 3; i++) picks.push(pool[i % pool.length]);
       arAds.innerHTML = picks.map((a, i) => `
-        <div class="kar-ad" style="--acc:${a.accent}; animation-delay: ${i * 0.6}s">
-          <div class="kar-ad-eyebrow">A D V E R T I S E M E N T</div>
-          <div class="kar-ad-brand">${a.brand}</div>
-          <div class="kar-ad-tag">${a.tagline}</div>
-          <div class="kar-ad-sub">${a.sub || ''}</div>
+        <div class="kar-ad" style="animation-delay: ${i * 0.5}s">
+          <span class="kar-ad-pr">PR</span>
+          <span class="kar-ad-text">${a.brand}　<span class="kar-ad-tag">${a.tagline}</span>${a.sub ? `　— ${a.sub}` : ''}</span>
         </div>
       `).join('');
     }
@@ -16851,6 +16850,200 @@
       }
     });
     natureGroup.userData.animalSprites = animalSprites;
+
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    // 🌳 エデンの園レベル：3D自然シーン (観客席の外周 r=29〜39 内)
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    const eden3D = new THREE.Group();
+    // 草原リング — トライアングル法線で起伏
+    {
+      const grassGeo = new THREE.RingGeometry(28.5, 39, 96, 6);
+      // 高さに揺らぎ
+      const pos = grassGeo.attributes.position;
+      for (let i = 0; i < pos.count; i++) {
+        const x = pos.getX(i), y = pos.getY(i);
+        const r = Math.hypot(x, y);
+        // 内側＝平ら、外側＝起伏
+        const h = (Math.sin(x * 0.4) + Math.cos(y * 0.4) + Math.sin((x+y) * 0.2)) * 0.45 * Math.min(1, (r - 28.5) / 5);
+        pos.setZ(i, h);
+      }
+      grassGeo.computeVertexNormals();
+      const grassMat = new THREE.MeshStandardMaterial({
+        color: 0x2c5028, roughness: 0.95,
+        emissive: 0x081808, emissiveIntensity: 0.2,
+      });
+      const grass = new THREE.Mesh(grassGeo, grassMat);
+      grass.rotation.x = -Math.PI / 2;
+      grass.position.y = -1.3;
+      eden3D.add(grass);
+      // 草の点（点光源との反射）
+      const blGeo = new THREE.BufferGeometry();
+      const BLN = 4000;
+      const bp = new Float32Array(BLN * 3);
+      const bc = new Float32Array(BLN * 3);
+      for (let i = 0; i < BLN; i++) {
+        const a = Math.random() * Math.PI * 2;
+        const r = 29 + Math.random() * 9.5;
+        bp[i*3] = Math.cos(a) * r;
+        bp[i*3+1] = -1.25 + Math.random() * 0.4;
+        bp[i*3+2] = Math.sin(a) * r;
+        const sh = 0.30 + Math.random() * 0.32;
+        bc[i*3] = sh * 0.55; bc[i*3+1] = sh; bc[i*3+2] = sh * 0.4;
+      }
+      blGeo.setAttribute('position', new THREE.BufferAttribute(bp, 3));
+      blGeo.setAttribute('color', new THREE.BufferAttribute(bc, 3));
+      const blades = new THREE.Points(blGeo, new THREE.PointsMaterial({
+        size: 0.45, vertexColors: true, transparent: true, opacity: 0.9,
+        depthWrite: false,
+      }));
+      eden3D.add(blades);
+    }
+    // 詳細な樹木ファクトリ（幹+多層の葉クラスタ）
+    function makeDetailedTree(species = 'broad') {
+      const t = new THREE.Group();
+      const trunkH = 3.5 + Math.random() * 2;
+      const trunkR = 0.18 + Math.random() * 0.1;
+      const trunk = new THREE.Mesh(
+        new THREE.CylinderGeometry(trunkR * 0.55, trunkR, trunkH, 8),
+        new THREE.MeshStandardMaterial({ color: 0x3a2010, roughness: 0.92 })
+      );
+      trunk.position.y = trunkH / 2 - 1.3;
+      t.add(trunk);
+      // 幹の質感ノブ（小枝）
+      for (let b = 0; b < 3; b++) {
+        const branch = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.04, 0.06, 0.6 + Math.random() * 0.5, 5),
+          new THREE.MeshStandardMaterial({ color: 0x3a2010, roughness: 0.92 })
+        );
+        branch.position.set((Math.random()-0.5) * 0.4, trunkH * (0.5 + Math.random() * 0.4) - 1.3, (Math.random()-0.5) * 0.4);
+        branch.rotation.z = (Math.random() - 0.5) * 1.5;
+        t.add(branch);
+      }
+      // 葉（5〜8層のスフィアクラスタ + 緑グラデ）
+      const leafCount = species === 'conifer' ? 4 : (5 + Math.floor(Math.random() * 4));
+      const baseHue = 0.27 + Math.random() * 0.07;
+      for (let l = 0; l < leafCount; l++) {
+        const sz = 1.2 + Math.random() * 0.9;
+        const leaf = new THREE.Mesh(
+          species === 'conifer'
+            ? new THREE.ConeGeometry(sz, sz * 1.6, 8)
+            : new THREE.SphereGeometry(sz, 12, 9),
+          new THREE.MeshStandardMaterial({
+            color: new THREE.Color().setHSL(baseHue + (Math.random() - 0.5) * 0.04, 0.55, 0.30 + Math.random() * 0.10),
+            roughness: 0.85, flatShading: true,
+          })
+        );
+        const angle = (l / leafCount) * Math.PI * 2;
+        const orad = species === 'conifer' ? 0 : 0.6 + Math.random() * 0.4;
+        leaf.position.set(
+          Math.cos(angle) * orad,
+          trunkH * (species === 'conifer' ? (0.6 + l * 0.18) : (0.85 + Math.random() * 0.15)) - 1.3,
+          Math.sin(angle) * orad
+        );
+        leaf.castShadow = false;
+        t.add(leaf);
+      }
+      // りんご・木の実（広葉のみ、低確率）
+      if (species === 'broad' && Math.random() < 0.5) {
+        for (let f = 0; f < 5; f++) {
+          const apple = new THREE.Mesh(
+            new THREE.SphereGeometry(0.18, 8, 6),
+            new THREE.MeshStandardMaterial({
+              color: 0xc83838, roughness: 0.4, metalness: 0.1,
+              emissive: 0x401010, emissiveIntensity: 0.4,
+            })
+          );
+          apple.position.set(
+            (Math.random() - 0.5) * 1.6,
+            trunkH * 0.85 - 1.3 + Math.random() * 0.6,
+            (Math.random() - 0.5) * 1.6
+          );
+          t.add(apple);
+        }
+      }
+      return t;
+    }
+    // 樹木80本を r=29.5〜38 にクラスタ配置
+    {
+      const treeCount = 80;
+      for (let i = 0; i < treeCount; i++) {
+        const a = Math.random() * Math.PI * 2;
+        const r = 29.5 + Math.random() * 8.5;
+        const isConifer = Math.random() < 0.4;
+        const tree = makeDetailedTree(isConifer ? 'conifer' : 'broad');
+        tree.position.set(Math.cos(a) * r, 0, Math.sin(a) * r);
+        tree.rotation.y = Math.random() * Math.PI;
+        const sc = 0.85 + Math.random() * 0.5;
+        tree.scale.set(sc, sc, sc);
+        eden3D.add(tree);
+      }
+    }
+    // 野花（カラフル点）
+    {
+      const flGeo = new THREE.BufferGeometry();
+      const FN = 800;
+      const fp = new Float32Array(FN * 3);
+      const fc = new Float32Array(FN * 3);
+      const flowerColors = [[1,0.4,0.5],[1,0.8,0.3],[0.7,0.5,1],[1,1,0.95],[0.95,0.6,0.95]];
+      for (let i = 0; i < FN; i++) {
+        const a = Math.random() * Math.PI * 2;
+        const r = 29 + Math.random() * 9;
+        fp[i*3] = Math.cos(a) * r;
+        fp[i*3+1] = -1.15 + Math.random() * 0.15;
+        fp[i*3+2] = Math.sin(a) * r;
+        const cc = flowerColors[Math.floor(Math.random() * flowerColors.length)];
+        fc[i*3] = cc[0]; fc[i*3+1] = cc[1]; fc[i*3+2] = cc[2];
+      }
+      flGeo.setAttribute('position', new THREE.BufferAttribute(fp, 3));
+      flGeo.setAttribute('color', new THREE.BufferAttribute(fc, 3));
+      const flowers = new THREE.Points(flGeo, new THREE.PointsMaterial({
+        size: 0.32, vertexColors: true, transparent: true, opacity: 0.92,
+        depthWrite: false,
+      }));
+      eden3D.add(flowers);
+    }
+    // 川（半透明の青リング、r=33-34）
+    {
+      const riverGeo = new THREE.RingGeometry(33.0, 34.4, 96);
+      const riverMat = new THREE.MeshStandardMaterial({
+        color: 0x4080a8, transparent: true, opacity: 0.8,
+        roughness: 0.05, metalness: 0.85,
+        emissive: 0x103048, emissiveIntensity: 0.4,
+      });
+      const river = new THREE.Mesh(riverGeo, riverMat);
+      river.rotation.x = -Math.PI / 2;
+      river.position.y = -1.18;
+      eden3D.add(river);
+      eden3D.userData.river = river;
+    }
+    // 太陽光（自然モード専用 DirectionalLight、natureGroup 内）
+    const natureSun = new THREE.DirectionalLight(0xffe0a0, 0.6);
+    natureSun.position.set(20, 25, -28);
+    eden3D.add(natureSun);
+    // ボリューム god ray（粒子 fog）
+    {
+      const dust = new THREE.BufferGeometry();
+      const DCN = 350;
+      const dpa = new Float32Array(DCN * 3);
+      for (let i = 0; i < DCN; i++) {
+        const a = Math.random() * Math.PI * 2;
+        const r = 29 + Math.random() * 10;
+        dpa[i*3] = Math.cos(a) * r;
+        dpa[i*3+1] = Math.random() * 14;
+        dpa[i*3+2] = Math.sin(a) * r;
+      }
+      dust.setAttribute('position', new THREE.BufferAttribute(dpa, 3));
+      const dustMat = new THREE.PointsMaterial({
+        size: 0.18, transparent: true, opacity: 0.45,
+        color: 0xffe8c0, depthWrite: false,
+        blending: THREE.AdditiveBlending,
+      });
+      const motes = new THREE.Points(dust, dustMat);
+      eden3D.add(motes);
+      eden3D.userData.motes = motes;
+    }
+    natureGroup.add(eden3D);
+    natureGroup.userData.eden3D = eden3D;
 
     scene.add(natureGroup);
     scene.userData.natureGroup = natureGroup;
