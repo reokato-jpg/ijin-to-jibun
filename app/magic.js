@@ -5662,6 +5662,14 @@
           </span>
           <span class="mmb-arrow">›</span>
         </button>
+        <button class="myth-museum-btn" id="mythElyBtn" style="margin-top:10px;background:linear-gradient(135deg,#8a6020,#c8a050);color:#fff;">
+          <span class="mmb-icon">🌾</span>
+          <span class="mmb-body">
+            <span class="mmb-title">エ リ ュ シ オ ン</span>
+            <span class="mmb-sub">英雄たちの楽園 — 黄金の野・忘却の川・ペガサス</span>
+          </span>
+          <span class="mmb-arrow">›</span>
+        </button>
         <div class="tale-home-foot">すべての神話は、宇宙を理解しようとした人の心の形。</div>
       </div>
       <div class="tale-reader" id="taleReader">
@@ -5845,6 +5853,8 @@
     if (noahBtn) noahBtn.addEventListener('click', () => window.openNoahArk3D && window.openNoahArk3D());
     const atlBtn = ov.querySelector('#mythAtlBtn');
     if (atlBtn) atlBtn.addEventListener('click', () => window.openAtlantis3D && window.openAtlantis3D());
+    const elyBtn = ov.querySelector('#mythElyBtn');
+    if (elyBtn) elyBtn.addEventListener('click', () => window.openElysion3D && window.openElysion3D());
     ov.querySelector('#taleBack').addEventListener('click', () => {
       reader.classList.remove('show');
       home.classList.add('show');
@@ -13102,6 +13112,311 @@
     });
   }
   window.openAtlantis3D = openAtlantis3D;
+
+  // ============================================================
+  // 🌾 エリュシオン — 英雄の楽園（黄金の野・忘却の川・白柱の神殿）
+  // ============================================================
+  async function openElysion3D() {
+    if (!window.THREE) return;
+    const THREE = window.THREE;
+    if (window.THREE_READY) { try { await window.THREE_READY; } catch {} }
+    const ov = document.createElement('div');
+    ov.className = 'museum3d-overlay';
+    ov.innerHTML = `
+      <div class="museum3d-stage" id="elyStage"></div>
+      <button class="museum3d-close" aria-label="閉じる">×</button>
+      <div class="museum3d-title">エ リ ュ シ オ ン</div>
+      <div class="museum3d-info show" id="elyInfo">英雄たちの魂が憩う、永遠の春の野原。</div>
+      <div class="museum3d-hint">ドラッグで見回す　／　ホイールでズーム</div>
+    `;
+    document.body.appendChild(ov);
+    requestAnimationFrame(() => ov.classList.add('open'));
+    const stage = ov.querySelector('#elyStage');
+    const W = () => stage.clientWidth || window.innerWidth;
+    const H = () => stage.clientHeight || window.innerHeight;
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.2));
+    renderer.setSize(W(), H());
+    if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.7;
+    stage.appendChild(renderer.domElement);
+
+    const scene = new THREE.Scene();
+    // 黄金の朝の空
+    scene.background = new THREE.Color(0xffe8b0);
+    scene.fog = new THREE.FogExp2(0xffd890, 0.012);
+
+    // 太陽（強い金色の光）
+    const sun = new THREE.DirectionalLight(0xfff0c0, 2.2);
+    sun.position.set(20, 30, 5);
+    scene.add(sun);
+    scene.add(new THREE.AmbientLight(0xfff0d0, 1.2));
+    scene.add(new THREE.HemisphereLight(0xfff0c0, 0xc8a060, 1.0));
+
+    // 黄金の草原（凹凸あり）
+    const fieldTex = (() => {
+      const c = document.createElement('canvas'); c.width = 512; c.height = 512;
+      const g = c.getContext('2d');
+      const grd = g.createRadialGradient(256, 256, 50, 256, 256, 380);
+      grd.addColorStop(0, '#e8d870'); grd.addColorStop(0.6, '#c8a850'); grd.addColorStop(1, '#8a7030');
+      g.fillStyle = grd; g.fillRect(0, 0, 512, 512);
+      // 草の質感
+      for (let i = 0; i < 3000; i++) {
+        g.strokeStyle = `rgba(${180+Math.random()*60},${150+Math.random()*60},${50+Math.random()*40},${0.3+Math.random()*0.5})`;
+        g.lineWidth = 0.5 + Math.random();
+        g.beginPath();
+        const x = Math.random()*512, y = Math.random()*512;
+        g.moveTo(x, y); g.lineTo(x + (Math.random()-0.5)*4, y - 2 - Math.random()*5);
+        g.stroke();
+      }
+      return new THREE.CanvasTexture(c);
+    })();
+    fieldTex.wrapS = fieldTex.wrapT = THREE.RepeatWrapping;
+    fieldTex.repeat.set(8, 8);
+    const field = new THREE.Mesh(
+      new THREE.PlaneGeometry(300, 300, 64, 64),
+      new THREE.MeshStandardMaterial({ map: fieldTex, roughness: 0.9 })
+    );
+    field.rotation.x = -Math.PI / 2;
+    const fp = field.geometry.attributes.position;
+    for (let i = 0; i < fp.count; i++) {
+      const x = fp.getX(i), y = fp.getY(i);
+      fp.setZ(i, Math.sin(x*0.08)*0.6 + Math.cos(y*0.1)*0.5);
+    }
+    field.geometry.computeVertexNormals();
+    scene.add(field);
+
+    // 🏛 円形神殿（モノプテロス）
+    const temple = new THREE.Group();
+    const stoneMat = new THREE.MeshStandardMaterial({ color: 0xfff8e8, roughness: 0.5 });
+    // 基壇
+    const base = new THREE.Mesh(new THREE.CylinderGeometry(7, 7.5, 1, 32), stoneMat);
+    base.position.y = 0.5; temple.add(base);
+    const base2 = new THREE.Mesh(new THREE.CylinderGeometry(6, 6.4, 0.5, 32), stoneMat);
+    base2.position.y = 1.25; temple.add(base2);
+    // 12本の円柱
+    for (let i = 0; i < 12; i++) {
+      const a = (i/12) * Math.PI * 2;
+      const x = Math.cos(a) * 5, z = Math.sin(a) * 5;
+      const col = new THREE.Mesh(new THREE.CylinderGeometry(0.32, 0.36, 6, 14), stoneMat);
+      col.position.set(x, 4.5, z);
+      // フルート（縦溝）はジオメトリで簡略化、テクスチャでも可
+      temple.add(col);
+      const cap = new THREE.Mesh(new THREE.BoxGeometry(0.85, 0.25, 0.85), stoneMat);
+      cap.position.set(x, 7.6, z); temple.add(cap);
+    }
+    // ドーム屋根
+    const dome = new THREE.Mesh(
+      new THREE.SphereGeometry(5.5, 24, 16, 0, Math.PI*2, 0, Math.PI/2),
+      new THREE.MeshStandardMaterial({ color: 0xe8c870, roughness: 0.4, metalness: 0.4 })
+    );
+    dome.position.y = 7.8;
+    temple.add(dome);
+    // 屋根の頂点に金の球
+    const finial = new THREE.Mesh(
+      new THREE.SphereGeometry(0.4, 12, 10),
+      new THREE.MeshStandardMaterial({ color: 0xffe080, metalness: 0.95, roughness: 0.2, emissive: 0x6a5010, emissiveIntensity: 0.6 })
+    );
+    finial.position.y = 13.4;
+    temple.add(finial);
+    temple.position.set(0, 0, 0);
+    scene.add(temple);
+
+    // 💧 忘却の川 Lethe（弧を描いて流れる）
+    const riverShape = new THREE.Shape();
+    const RIV_PTS = 30;
+    const riverPath = [];
+    for (let i = 0; i <= RIV_PTS; i++) {
+      const t = i / RIV_PTS;
+      const x = -60 + t * 120;
+      const z = 25 + Math.sin(t * Math.PI * 1.5) * 8;
+      riverPath.push([x, z]);
+    }
+    riverShape.moveTo(riverPath[0][0], riverPath[0][1] - 2);
+    for (let i = 0; i < riverPath.length; i++) riverShape.lineTo(riverPath[i][0], riverPath[i][1] - 2);
+    for (let i = riverPath.length - 1; i >= 0; i--) riverShape.lineTo(riverPath[i][0], riverPath[i][1] + 2);
+    const riverGeo = new THREE.ShapeGeometry(riverShape);
+    const river = new THREE.Mesh(
+      riverGeo,
+      new THREE.MeshStandardMaterial({ color: 0xc8e0f0, roughness: 0.2, metalness: 0.7, emissive: 0x4060a0, emissiveIntensity: 0.3, transparent: true, opacity: 0.85 })
+    );
+    river.rotation.x = -Math.PI / 2;
+    river.position.y = 0.05;
+    scene.add(river);
+
+    // 🌳 オリーブの木と糸杉
+    function makeTree(x, z, isCypress) {
+      const g = new THREE.Group();
+      const trunk = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.18, 0.25, isCypress ? 5 : 2.5, 8),
+        new THREE.MeshStandardMaterial({ color: 0x6a4828, roughness: 0.85 })
+      );
+      trunk.position.y = isCypress ? 2.5 : 1.25;
+      g.add(trunk);
+      if (isCypress) {
+        const leaf = new THREE.Mesh(
+          new THREE.ConeGeometry(0.9, 6, 10),
+          new THREE.MeshStandardMaterial({ color: 0x4a6a30, roughness: 0.8 })
+        );
+        leaf.position.y = 6;
+        g.add(leaf);
+      } else {
+        for (let i = 0; i < 5; i++) {
+          const blob = new THREE.Mesh(
+            new THREE.SphereGeometry(0.9 + Math.random()*0.4, 10, 8),
+            new THREE.MeshStandardMaterial({ color: 0x9aaa60, roughness: 0.85 })
+          );
+          blob.position.set(Math.cos(i*1.3)*0.7, 2.5 + Math.random()*0.7, Math.sin(i*1.3)*0.7);
+          g.add(blob);
+        }
+      }
+      g.position.set(x, 0, z);
+      scene.add(g);
+    }
+    for (let i = 0; i < 14; i++) {
+      const a = Math.random() * Math.PI * 2;
+      const r = 18 + Math.random() * 35;
+      makeTree(Math.cos(a)*r, Math.sin(a)*r, Math.random() < 0.5);
+    }
+
+    // ✨ 漂う英雄の魂（光る半透明のスプライト）
+    const soulTex = (() => {
+      const c = document.createElement('canvas'); c.width = 256; c.height = 256;
+      const g = c.getContext('2d');
+      const grd = g.createRadialGradient(128, 128, 0, 128, 128, 128);
+      grd.addColorStop(0, 'rgba(255,255,220,1)');
+      grd.addColorStop(0.4, 'rgba(255,220,150,0.5)');
+      grd.addColorStop(1, 'rgba(255,200,100,0)');
+      g.fillStyle = grd; g.fillRect(0, 0, 256, 256);
+      return new THREE.CanvasTexture(c);
+    })();
+    const SOULS = 24;
+    const souls = [];
+    for (let i = 0; i < SOULS; i++) {
+      const sp = new THREE.Sprite(new THREE.SpriteMaterial({
+        map: soulTex, color: 0xfff0a0, transparent: true, opacity: 0.8,
+        blending: THREE.AdditiveBlending, depthWrite: false, fog: true,
+      }));
+      sp.scale.set(2.5, 2.5, 1);
+      const a = Math.random() * Math.PI * 2;
+      const r = 8 + Math.random() * 35;
+      sp.position.set(Math.cos(a) * r, 2 + Math.random() * 4, Math.sin(a) * r);
+      sp.userData = { baseY: sp.position.y, phase: Math.random() * Math.PI * 2, speed: 0.3 + Math.random() * 0.5 };
+      scene.add(sp);
+      souls.push(sp);
+    }
+
+    // 🌸 アスポデルの花（白く咲く）
+    const flowerGeo = new THREE.SphereGeometry(0.12, 6, 4);
+    const flowerMat = new THREE.MeshStandardMaterial({ color: 0xfffae8, emissive: 0xffe0a0, emissiveIntensity: 0.6, roughness: 0.5 });
+    const FLW = 200;
+    const flowers = new THREE.InstancedMesh(flowerGeo, flowerMat, FLW);
+    const fdummy = new THREE.Object3D();
+    for (let i = 0; i < FLW; i++) {
+      const a = Math.random() * Math.PI * 2;
+      const r = 6 + Math.random() * 60;
+      fdummy.position.set(Math.cos(a)*r, 0.3, Math.sin(a)*r);
+      fdummy.scale.setScalar(0.7 + Math.random() * 0.6);
+      fdummy.updateMatrix();
+      flowers.setMatrixAt(i, fdummy.matrix);
+    }
+    scene.add(flowers);
+
+    // 🦅 翼のある馬（ペガサスの簡易シルエット）が空を飛ぶ
+    const peg = new THREE.Group();
+    const pegBody = new THREE.Mesh(new THREE.SphereGeometry(0.5, 12, 8), new THREE.MeshStandardMaterial({ color: 0xfff8f0, roughness: 0.5 }));
+    pegBody.scale.set(1.6, 0.8, 0.9);
+    peg.add(pegBody);
+    const pegHead = new THREE.Mesh(new THREE.SphereGeometry(0.25, 10, 8), new THREE.MeshStandardMaterial({ color: 0xfff8f0 }));
+    pegHead.position.set(0.7, 0.3, 0); peg.add(pegHead);
+    // 翼
+    const wMat = new THREE.MeshStandardMaterial({ color: 0xfffae8, side: THREE.DoubleSide, roughness: 0.5, transparent: true, opacity: 0.92 });
+    const wing = new THREE.Mesh(new THREE.PlaneGeometry(2.2, 1.2), wMat);
+    wing.position.set(0, 0.5, 0); wing.rotation.x = Math.PI/2; peg.add(wing);
+    peg.position.set(0, 14, 0);
+    scene.add(peg);
+
+    // ✨ 光の粉（背景に降る）
+    const DUST = 200;
+    const dustGeo = new THREE.BufferGeometry();
+    const dpos = new Float32Array(DUST * 3);
+    for (let i = 0; i < DUST; i++) {
+      dpos[i*3] = (Math.random() - 0.5) * 80;
+      dpos[i*3+1] = Math.random() * 20;
+      dpos[i*3+2] = (Math.random() - 0.5) * 80;
+    }
+    dustGeo.setAttribute('position', new THREE.BufferAttribute(dpos, 3));
+    const dust = new THREE.Points(dustGeo, new THREE.PointsMaterial({
+      color: 0xfff0a0, size: 0.18, transparent: true, opacity: 0.7, blending: THREE.AdditiveBlending, depthWrite: false,
+    }));
+    scene.add(dust);
+
+    // カメラ
+    const camera = new THREE.PerspectiveCamera(60, W()/H(), 0.1, 300);
+    let yaw = 0.6, pitch = -0.05, dist = 28;
+    let dragging = false, lx = 0, ly = 0;
+    renderer.domElement.addEventListener('pointerdown', e => { dragging = true; lx = e.clientX; ly = e.clientY; });
+    renderer.domElement.addEventListener('pointermove', e => {
+      if (!dragging) return;
+      yaw -= (e.clientX - lx) * 0.005;
+      pitch = Math.max(-0.6, Math.min(0.4, pitch - (e.clientY - ly) * 0.004));
+      lx = e.clientX; ly = e.clientY;
+    });
+    const stop = () => { dragging = false; };
+    renderer.domElement.addEventListener('pointerup', stop);
+    renderer.domElement.addEventListener('pointerleave', stop);
+    renderer.domElement.addEventListener('wheel', e => {
+      dist = Math.max(10, Math.min(80, dist + e.deltaY * 0.05));
+      e.preventDefault();
+    }, { passive: false });
+
+    let running = true;
+    ov.querySelector('.museum3d-close').addEventListener('click', () => {
+      running = false;
+      ov.classList.remove('open');
+      setTimeout(() => ov.remove(), 500);
+    });
+    const t0 = performance.now();
+    function animate() {
+      if (!running) return;
+      const t = (performance.now() - t0) / 1000;
+      camera.position.x = Math.cos(yaw) * Math.cos(pitch) * dist;
+      camera.position.z = Math.sin(yaw) * Math.cos(pitch) * dist;
+      camera.position.y = 6 + Math.sin(pitch) * dist * 0.6;
+      camera.lookAt(0, 4, 0);
+      // 魂が漂う
+      souls.forEach((s, i) => {
+        s.position.y = s.userData.baseY + Math.sin(t * s.userData.speed + s.userData.phase) * 0.6;
+        s.material.opacity = 0.5 + Math.sin(t * 0.6 + i) * 0.3;
+      });
+      // ペガサスが円を描いて飛ぶ
+      peg.position.x = Math.cos(t * 0.3) * 22;
+      peg.position.z = Math.sin(t * 0.3) * 22;
+      peg.position.y = 14 + Math.sin(t * 0.7) * 1.5;
+      peg.lookAt(Math.cos(t * 0.3 + 0.1) * 22, peg.position.y, Math.sin(t * 0.3 + 0.1) * 22);
+      // 翼ばたき
+      wing.rotation.x = Math.PI/2 + Math.sin(t * 6) * 0.5;
+      // 川の漣（emissive 揺らし）
+      river.material.emissiveIntensity = 0.3 + Math.sin(t * 1.3) * 0.15;
+      // 光の粉が落ちる
+      const dp = dust.geometry.attributes.position;
+      for (let i = 0; i < DUST; i++) {
+        dp.array[i*3+1] -= 0.02;
+        dp.array[i*3] += Math.sin(t + i) * 0.005;
+        if (dp.array[i*3+1] < 0) dp.array[i*3+1] = 22;
+      }
+      dp.needsUpdate = true;
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+    animate();
+    window.addEventListener('resize', () => {
+      renderer.setSize(W(), H());
+      camera.aspect = W()/H();
+      camera.updateProjectionMatrix();
+    });
+  }
+  window.openElysion3D = openElysion3D;
 
   // ============================================================
   // 📖 星の王子様 — 動くSVG絵本
