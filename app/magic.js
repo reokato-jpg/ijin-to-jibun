@@ -591,6 +591,7 @@
         godsbook: () => { try { openGodsBook(); } catch (e) { console.warn('godsbook', e); } },
         ehonspace: () => { try { openEhonSpace3D(); } catch (e) { console.warn('ehonspace', e); } },
         lpworld: () => { try { openLittlePrinceWorld3D(); } catch (e) { console.warn('lpworld', e); } },
+        koh: () => { try { openKohSphere(); } catch (e) { console.warn('koh', e); } },
       };
       wrap.querySelectorAll('[data-deep]').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -615,6 +616,9 @@
         ehon: { title: '📖 絵 本', sub: '宇宙に浮かぶ書斎', items: [
           { deep: 'ehonspace', label: '絵本の宇宙', desc: '星空に浮かぶ絵本をタップして読む', emoji: '📚' },
           { deep: 'littleprince', label: '星の王子様（絵本）', desc: 'サン=テグジュペリの絵本（動くSVG全8章）', emoji: '🌹' },
+        ]},
+        koh: { title: '◎ K O H', sub: '世界最大の球体音楽堂', items: [
+          { deep: 'koh', label: 'KOH に入る', desc: '合言葉のある秘密の音楽堂 — 座席を選び、音楽を聴く', emoji: '◎' },
         ]},
         ijin: { title: '👤 偉 人', sub: '297人の生涯と関係', items: [
           { deep: 'quiz', label: '偉人クイズ', desc: '5タイプの問題でテスト', emoji: '🎓' },
@@ -13995,6 +13999,549 @@
     });
   }
   window.openPantheon3D = openPantheon3D;
+
+  // ============================================================
+  // 🌐 KOH — 世界最大の球体音楽堂（パスワード: kk8869）
+  // ============================================================
+  const KOH_PASSWORD = 'kk8869';
+  const KOH_MUSIC = [
+    { id: 'home',     title: '夜明け',         sub: '光が射し込む',   src: 'assets/home-bgm.mp3',     mood: 0xfff0c0, scenery: 'dawn' },
+    { id: 'history',  title: '時の流れ',       sub: '歴史を巡る',     src: 'assets/history-bgm.mp3',  mood: 0xa080d0, scenery: 'flow' },
+    { id: 'blog',     title: '静かな午後',     sub: '思索の時間',     src: 'assets/blog-bgm.mp3',     mood: 0x80c8e0, scenery: 'calm' },
+    { id: 'routine',  title: '日々の祈り',     sub: '繰り返しの中で', src: 'assets/routine-bgm.mp3', mood: 0xffb0a0, scenery: 'gentle' },
+    { id: 'square',   title: '広場',           sub: '人々の声',       src: 'assets/square-bgm.mp3',   mood: 0xa0e0a0, scenery: 'lively' },
+    { id: 'favorites',title: '愛しき記憶',     sub: '心の片隅で',     src: 'assets/favorites-bgm.mp3',mood: 0xff80b0, scenery: 'love' },
+    { id: 'search',   title: '探求',           sub: '見つけたいもの', src: 'assets/search-bgm.mp3',   mood: 0x60a0d0, scenery: 'mystery' },
+  ];
+
+  async function openKohSphere() {
+    if (!window.THREE) return;
+    // ステップ1: パスワード
+    const pw = await kohPasswordPrompt();
+    if (pw !== KOH_PASSWORD) {
+      kohToast('パスワードが違います');
+      return;
+    }
+    // ステップ2: 座席 + 音楽選択
+    const config = await kohSelectScreen();
+    if (!config) return;
+    // ステップ3: 球体音楽堂を建てる
+    buildKohSphere3D(config);
+  }
+  window.openKohSphere = openKohSphere;
+
+  function kohToast(msg) {
+    const t = document.createElement('div');
+    t.className = 'koh-toast';
+    t.textContent = msg;
+    document.body.appendChild(t);
+    requestAnimationFrame(() => t.classList.add('show'));
+    setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 400); }, 2400);
+  }
+
+  function kohPasswordPrompt() {
+    return new Promise(resolve => {
+      const ov = document.createElement('div');
+      ov.className = 'koh-modal';
+      ov.innerHTML = `
+        <div class="koh-modal-card">
+          <div class="koh-modal-orn">◎</div>
+          <div class="koh-modal-title">K O H</div>
+          <div class="koh-modal-sub">— 世界最大の球体音楽堂 —</div>
+          <div class="koh-modal-instr">入場には、合言葉が必要です</div>
+          <input class="koh-pw-input" type="password" placeholder="合言葉を入力" maxlength="40" autocomplete="off">
+          <div class="koh-modal-actions">
+            <button class="koh-btn koh-btn-primary" id="kohPwOk">入る</button>
+            <button class="koh-btn" id="kohPwCancel">戻る</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(ov);
+      requestAnimationFrame(() => ov.classList.add('show'));
+      const input = ov.querySelector('.koh-pw-input');
+      setTimeout(() => input.focus(), 100);
+      const close = (val) => {
+        ov.classList.remove('show');
+        setTimeout(() => ov.remove(), 350);
+        resolve(val);
+      };
+      ov.querySelector('#kohPwOk').addEventListener('click', () => close(input.value));
+      ov.querySelector('#kohPwCancel').addEventListener('click', () => close(null));
+      input.addEventListener('keydown', (e) => { if (e.key === 'Enter') close(input.value); });
+    });
+  }
+
+  function kohSelectScreen() {
+    return new Promise(resolve => {
+      const ov = document.createElement('div');
+      ov.className = 'koh-modal koh-select';
+      // 座席マップ: 4列×12席 = 48席
+      const SEAT_ROWS = 4, SEAT_COLS = 12;
+      let chosenSeat = { r: 1, c: 5 }; // デフォルト
+      let chosenMusic = KOH_MUSIC[0];
+      function seatGrid() {
+        let html = '<div class="koh-seat-grid">';
+        for (let r = 0; r < SEAT_ROWS; r++) {
+          html += '<div class="koh-seat-row">';
+          for (let c = 0; c < SEAT_COLS; c++) {
+            html += `<button class="koh-seat" data-r="${r}" data-c="${c}"></button>`;
+          }
+          html += '</div>';
+        }
+        html += '</div>';
+        return html;
+      }
+      function musicCards() {
+        return KOH_MUSIC.map((m, i) => `
+          <button class="koh-music-card" data-music-id="${m.id}">
+            <div class="koh-music-num">${String(i+1).padStart(2,'0')}</div>
+            <div class="koh-music-title">${m.title}</div>
+            <div class="koh-music-sub">${m.sub}</div>
+          </button>
+        `).join('');
+      }
+      ov.innerHTML = `
+        <div class="koh-modal-card koh-select-card">
+          <div class="koh-modal-title">入場の準備</div>
+          <div class="koh-modal-sub">— 座席と、聴く音楽を選んでください —</div>
+          <div class="koh-stage-label">⊙ 中央のステージ ⊙</div>
+          ${seatGrid()}
+          <div class="koh-section-label">🎵 音 楽</div>
+          <div class="koh-music-list">${musicCards()}</div>
+          <div class="koh-modal-actions koh-final">
+            <button class="koh-btn koh-btn-primary" id="kohEnter">球体に入る ›</button>
+            <button class="koh-btn" id="kohCancelSel">戻る</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(ov);
+      requestAnimationFrame(() => ov.classList.add('show'));
+      // 座席選択
+      const updateSeats = () => {
+        ov.querySelectorAll('.koh-seat').forEach(el => {
+          const r = +el.dataset.r, c = +el.dataset.c;
+          el.classList.toggle('chosen', r === chosenSeat.r && c === chosenSeat.c);
+        });
+      };
+      ov.querySelectorAll('.koh-seat').forEach(el => {
+        el.addEventListener('click', () => {
+          chosenSeat = { r: +el.dataset.r, c: +el.dataset.c };
+          updateSeats();
+        });
+      });
+      updateSeats();
+      // 音楽選択
+      const updateMusic = () => {
+        ov.querySelectorAll('.koh-music-card').forEach(el => {
+          el.classList.toggle('chosen', el.dataset.musicId === chosenMusic.id);
+        });
+      };
+      ov.querySelectorAll('.koh-music-card').forEach(el => {
+        el.addEventListener('click', () => {
+          chosenMusic = KOH_MUSIC.find(m => m.id === el.dataset.musicId);
+          updateMusic();
+        });
+      });
+      updateMusic();
+      const close = (val) => {
+        ov.classList.remove('show');
+        setTimeout(() => ov.remove(), 350);
+        resolve(val);
+      };
+      ov.querySelector('#kohEnter').addEventListener('click', () => {
+        close({ seat: chosenSeat, music: chosenMusic, rows: SEAT_ROWS, cols: SEAT_COLS });
+      });
+      ov.querySelector('#kohCancelSel').addEventListener('click', () => close(null));
+    });
+  }
+
+  async function buildKohSphere3D(config) {
+    const THREE = window.THREE;
+    if (window.THREE_READY) { try { await window.THREE_READY; } catch {} }
+    const ov = document.createElement('div');
+    ov.className = 'museum3d-overlay koh-overlay';
+    ov.innerHTML = `
+      <div class="museum3d-stage" id="kohStage"></div>
+      <button class="museum3d-close" aria-label="閉じる">×</button>
+      <div class="koh-now-playing" id="kohNowPlaying">
+        <div class="knp-eyebrow">N O W　P L A Y I N G</div>
+        <div class="knp-title">${config.music.title}</div>
+        <div class="knp-sub">${config.music.sub}</div>
+      </div>
+      <div class="museum3d-info show" id="kohInfo">ドラッグで首を動かす（席は固定）</div>
+    `;
+    document.body.appendChild(ov);
+    requestAnimationFrame(() => ov.classList.add('open'));
+    const stage = ov.querySelector('#kohStage');
+    const W = () => stage.clientWidth || window.innerWidth;
+    const H = () => stage.clientHeight || window.innerHeight;
+    const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
+    renderer.shadowMap.enabled = false;
+    renderer.setPixelRatio(1);
+    const _RS = 0.7;
+    renderer.setSize(W() * _RS, H() * _RS, false);
+    renderer.domElement.style.width = '100%';
+    renderer.domElement.style.height = '100%';
+    if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.3;
+    if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
+    stage.appendChild(renderer.domElement);
+
+    const scene = new THREE.Scene();
+    const moodColor = new THREE.Color(config.music.mood);
+    scene.background = new THREE.Color(0x040218);
+    scene.fog = new THREE.FogExp2(0x080422, 0.012);
+
+    // 🌐 巨大な内側球体（背景＋音楽の色）
+    const sphereTex = (() => {
+      const c = document.createElement('canvas'); c.width = 1024; c.height = 512;
+      const g = c.getContext('2d');
+      // グラデーション背景
+      const grd = g.createLinearGradient(0, 0, 0, 512);
+      grd.addColorStop(0, '#0a0420'); grd.addColorStop(0.5, '#1a0a3a'); grd.addColorStop(1, '#04020a');
+      g.fillStyle = grd; g.fillRect(0, 0, 1024, 512);
+      // 星々
+      for (let i = 0; i < 1500; i++) {
+        const r = Math.random() < 0.05 ? 1.8 : 0.7;
+        g.fillStyle = `rgba(255,${230+Math.random()*25},${200+Math.random()*55},${0.4+Math.random()*0.6})`;
+        g.fillRect(Math.random()*1024, Math.random()*512, r, r);
+      }
+      return new THREE.CanvasTexture(c);
+    })();
+    const sphereMat = new THREE.MeshBasicMaterial({
+      map: sphereTex, side: THREE.BackSide, color: 0xffffff, fog: false,
+    });
+    const dome = new THREE.Mesh(new THREE.SphereGeometry(40, 64, 32), sphereMat);
+    scene.add(dome);
+
+    // 中央ステージ（円形の高い台）
+    const stageMat = new THREE.MeshStandardMaterial({ color: 0x4a3018, roughness: 0.5, metalness: 0.2 });
+    const stagePlat = new THREE.Mesh(
+      new THREE.CylinderGeometry(6, 6.5, 0.6, 32),
+      stageMat
+    );
+    stagePlat.position.y = -0.3;
+    scene.add(stagePlat);
+    const stageRim = new THREE.Mesh(
+      new THREE.TorusGeometry(6, 0.08, 8, 48),
+      new THREE.MeshStandardMaterial({ color: 0xc8a040, metalness: 0.85, roughness: 0.3, emissive: 0x4a3008, emissiveIntensity: 0.5 })
+    );
+    stageRim.rotation.x = Math.PI / 2;
+    stageRim.position.y = 0.0;
+    scene.add(stageRim);
+
+    // 🎹 グランドピアノ（中央の少し横）
+    const piano = new THREE.Group();
+    // 本体（黒）
+    const pianoBody = new THREE.Mesh(
+      new THREE.BoxGeometry(1.6, 0.6, 2.2),
+      new THREE.MeshStandardMaterial({ color: 0x080808, roughness: 0.25, metalness: 0.5 })
+    );
+    pianoBody.position.y = 0.3;
+    piano.add(pianoBody);
+    // 蓋（開いた）
+    const lid = new THREE.Mesh(
+      new THREE.BoxGeometry(1.5, 0.05, 2.1),
+      new THREE.MeshStandardMaterial({ color: 0x0a0a0a, roughness: 0.2, metalness: 0.6 })
+    );
+    lid.position.set(0.1, 1.2, 0);
+    lid.rotation.z = -0.6;
+    piano.add(lid);
+    // 鍵盤（白い帯）
+    const keyboard = new THREE.Mesh(
+      new THREE.BoxGeometry(1.5, 0.05, 0.4),
+      new THREE.MeshStandardMaterial({ color: 0xfff8e0, roughness: 0.5 })
+    );
+    keyboard.position.set(0, 0.65, 1.0);
+    piano.add(keyboard);
+    // 黒鍵（簡易）
+    for (let i = 0; i < 10; i++) {
+      const bk = new THREE.Mesh(
+        new THREE.BoxGeometry(0.06, 0.05, 0.2),
+        new THREE.MeshStandardMaterial({ color: 0x000000 })
+      );
+      bk.position.set(-0.7 + i * 0.15, 0.7, 0.92);
+      piano.add(bk);
+    }
+    // 脚3本
+    for (const [px, pz] of [[-0.65, -0.95], [0.65, -0.95], [0, 0.85]]) {
+      const leg = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.05, 0.06, 0.6, 8),
+        new THREE.MeshStandardMaterial({ color: 0x0a0a0a, metalness: 0.4 })
+      );
+      leg.position.set(px, -0.05, pz);
+      piano.add(leg);
+    }
+    piano.position.set(-2.5, 0, 0);
+    piano.rotation.y = 0.4;
+    scene.add(piano);
+
+    // 🎼 指揮者（中央前方）
+    const conductor = new THREE.Group();
+    const cBody = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.18, 0.25, 0.65, 12),
+      new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.5 })
+    );
+    cBody.position.y = 0.32;
+    conductor.add(cBody);
+    const cHead = new THREE.Mesh(
+      new THREE.SphereGeometry(0.13, 14, 10),
+      new THREE.MeshStandardMaterial({ color: 0xf0d8b0, roughness: 0.6 })
+    );
+    cHead.position.y = 0.78;
+    conductor.add(cHead);
+    // タクト（指揮棒）
+    const baton = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.01, 0.01, 0.35, 6),
+      new THREE.MeshStandardMaterial({ color: 0xfff8e0 })
+    );
+    baton.position.set(0.18, 0.65, 0.05);
+    baton.rotation.z = 0.3;
+    conductor.add(baton);
+    conductor.position.set(0, 0, -1.5);
+    conductor.rotation.y = Math.PI; // 観客側を向く
+    scene.add(conductor);
+    scene.userData.conductor = conductor;
+    scene.userData.baton = baton;
+
+    // 🎻 オーケストラ（指揮者の後ろに配置、シルエット）
+    const playerGeoChairs = []; // 椅子のメッシュ
+    function makePlayer(x, z, color = 0x2a2a3a, hasInstrument = 'violin') {
+      const g = new THREE.Group();
+      const chair = new THREE.Mesh(
+        new THREE.BoxGeometry(0.4, 0.5, 0.4),
+        new THREE.MeshStandardMaterial({ color: 0x4a3018, roughness: 0.7 })
+      );
+      chair.position.y = 0.25;
+      g.add(chair);
+      const body = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.13, 0.18, 0.45, 10),
+        new THREE.MeshStandardMaterial({ color: color, roughness: 0.5 })
+      );
+      body.position.y = 0.72;
+      g.add(body);
+      const head = new THREE.Mesh(
+        new THREE.SphereGeometry(0.1, 12, 8),
+        new THREE.MeshStandardMaterial({ color: 0xf0d8b0, roughness: 0.65 })
+      );
+      head.position.y = 1.05;
+      g.add(head);
+      // 楽器（簡易）
+      if (hasInstrument === 'violin') {
+        const violin = new THREE.Mesh(
+          new THREE.BoxGeometry(0.16, 0.04, 0.08),
+          new THREE.MeshStandardMaterial({ color: 0x6a3818, roughness: 0.5 })
+        );
+        violin.position.set(0.18, 0.95, 0);
+        violin.rotation.z = 0.5;
+        g.add(violin);
+      } else if (hasInstrument === 'cello') {
+        const cello = new THREE.Mesh(
+          new THREE.BoxGeometry(0.12, 0.45, 0.15),
+          new THREE.MeshStandardMaterial({ color: 0x8a4818, roughness: 0.5 })
+        );
+        cello.position.set(0.15, 0.82, 0.05);
+        g.add(cello);
+      } else if (hasInstrument === 'flute') {
+        const flute = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.012, 0.012, 0.3, 6),
+          new THREE.MeshStandardMaterial({ color: 0xc8c8c8, metalness: 0.7 })
+        );
+        flute.position.set(0.12, 0.95, 0.08);
+        flute.rotation.z = 0.6;
+        g.add(flute);
+      }
+      g.position.set(x, 0, z);
+      g.lookAt(0, 0.7, 0); // 指揮者を見る
+      scene.add(g);
+      return { group: g, head };
+    }
+    // 弦楽器（前列）
+    const orchestra = [];
+    for (let i = 0; i < 6; i++) {
+      const a = -Math.PI/4 + (i / 5) * (Math.PI/2);
+      orchestra.push(makePlayer(Math.sin(a) * 2.8, Math.cos(a) * 2.8 - 2.5, 0x2a2a3a, 'violin'));
+    }
+    // チェロ（後ろ列）
+    for (let i = 0; i < 4; i++) {
+      const a = -Math.PI/3.5 + (i / 3) * (Math.PI/1.8);
+      orchestra.push(makePlayer(Math.sin(a) * 4.0, Math.cos(a) * 4.0 - 2.5, 0x3a2820, 'cello'));
+    }
+    // フルート（横）
+    for (let i = 0; i < 2; i++) {
+      orchestra.push(makePlayer(i === 0 ? -3.5 : 3.5, -3, 0x4a3a2a, 'flute'));
+    }
+    scene.userData.orchestra = orchestra;
+
+    // ステージライト（暖色のダウンライト）
+    const stageLight = new THREE.SpotLight(0xfff0c0, 5, 18, Math.PI/4, 0.4, 1.5);
+    stageLight.position.set(0, 14, 0);
+    stageLight.target.position.set(0, 0, 0);
+    scene.add(stageLight);
+    scene.add(stageLight.target);
+    // 中央のシャンデリア光
+    const centerGlow = new THREE.PointLight(moodColor, 1.0, 30, 1.5);
+    centerGlow.position.set(0, 8, 0);
+    scene.add(centerGlow);
+
+    // 🎫 観客席（4列×12席のリング配置）
+    const SEAT_RING = [10, 12, 14, 16]; // 各列の半径
+    const SEATS_PER_ROW = config.cols;
+    const audience = [];
+    for (let r = 0; r < SEAT_RING.length; r++) {
+      const radius = SEAT_RING[r];
+      const seatCount = SEATS_PER_ROW + r * 4; // 後ろほど多い
+      for (let c = 0; c < seatCount; c++) {
+        const a = (c / seatCount) * Math.PI * 2;
+        const x = Math.cos(a) * radius;
+        const z = Math.sin(a) * radius;
+        // 段差（後ろほど高い）
+        const y = r * 0.35;
+        // 椅子
+        const chair = new THREE.Mesh(
+          new THREE.BoxGeometry(0.45, 0.55, 0.45),
+          new THREE.MeshStandardMaterial({ color: 0x4a2818, roughness: 0.7 })
+        );
+        chair.position.set(x, y + 0.3, z);
+        scene.add(chair);
+        // 観客（座っている）
+        const audBody = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.14, 0.18, 0.55, 8),
+          new THREE.MeshStandardMaterial({ color: 0x2a2030 + Math.random()*0x101010, roughness: 0.5 })
+        );
+        audBody.position.set(x, y + 0.85, z);
+        scene.add(audBody);
+        const audHead = new THREE.Mesh(
+          new THREE.SphereGeometry(0.1, 10, 8),
+          new THREE.MeshStandardMaterial({ color: 0xe8c890 + Math.random()*0x080808, roughness: 0.65 })
+        );
+        audHead.position.set(x, y + 1.2, z);
+        // 中央を向く
+        const dx = -x, dz = -z;
+        const ang = Math.atan2(dx, dz);
+        audBody.rotation.y = ang;
+        scene.add(audHead);
+      }
+    }
+
+    // 🪑 プレイヤー（あなた）の席位置
+    const myRow = config.seat.r;
+    const myCol = config.seat.c;
+    const myRadius = SEAT_RING[myRow] || 12;
+    const mySeatCount = SEATS_PER_ROW + myRow * 4;
+    const myAngle = (myCol / mySeatCount) * Math.PI * 2;
+    // 球面上の自分の位置（少しステージ寄りにオフセット）
+    const myX = Math.cos(myAngle) * (myRadius - 0.3);
+    const myY = myRow * 0.35 + 1.3; // 座高
+    const myZ = Math.sin(myAngle) * (myRadius - 0.3);
+
+    // 環境光
+    scene.add(new THREE.AmbientLight(0x4a4060, 0.5));
+    scene.add(new THREE.HemisphereLight(0x6080a0, 0x1a0a20, 0.4));
+
+    // 🎵 音楽再生
+    const audio = new Audio(config.music.src);
+    audio.loop = true;
+    audio.volume = 0.65;
+    audio.play().catch(() => { kohToast('音楽の再生がブロックされました。タップしてください'); });
+
+    // === カメラ（席に固定、首回しのみ） ===
+    const camera = new THREE.PerspectiveCamera(70, W()/H(), 0.1, 200);
+    camera.position.set(myX, myY, myZ);
+    // 中央のステージを見る
+    let yaw = Math.atan2(-myX, -myZ); // 中央方向
+    let pitch = -0.05;
+    camera.lookAt(0, 1.2, 0);
+
+    // ドラッグで首回し（席は固定）
+    let dragging = false, lx = 0, ly = 0;
+    renderer.domElement.addEventListener('pointerdown', e => { dragging = true; lx = e.clientX; ly = e.clientY; });
+    renderer.domElement.addEventListener('pointermove', e => {
+      if (!dragging) return;
+      yaw -= (e.clientX - lx) * 0.005;
+      pitch = Math.max(-0.8, Math.min(0.8, pitch - (e.clientY - ly) * 0.004));
+      lx = e.clientX; ly = e.clientY;
+    });
+    const stop = () => { dragging = false; };
+    renderer.domElement.addEventListener('pointerup', stop);
+    renderer.domElement.addEventListener('pointerleave', stop);
+
+    let running = true;
+    ov.querySelector('.museum3d-close').addEventListener('click', () => {
+      running = false;
+      try { audio.pause(); audio.src = ''; } catch {}
+      ov.classList.remove('open');
+      setTimeout(() => {
+        try {
+          scene.traverse(o => {
+            if (o.geometry) o.geometry.dispose && o.geometry.dispose();
+            if (o.material) {
+              const ms = Array.isArray(o.material) ? o.material : [o.material];
+              ms.forEach(m => { if (m.map) m.map.dispose && m.map.dispose(); m.dispose && m.dispose(); });
+            }
+          });
+          renderer.dispose();
+          renderer.forceContextLoss && renderer.forceContextLoss();
+        } catch {}
+        ov.remove();
+      }, 500);
+    });
+
+    // 🎶 音楽連動の情景パーティクル
+    const PARTC = 200;
+    const pgeo = new THREE.BufferGeometry();
+    const pp = new Float32Array(PARTC * 3);
+    for (let i = 0; i < PARTC; i++) {
+      const r = 8 + Math.random() * 25;
+      const a = Math.random() * Math.PI * 2;
+      const ph = Math.acos(2*Math.random() - 1);
+      pp[i*3]   = Math.sin(ph) * Math.cos(a) * r;
+      pp[i*3+1] = Math.cos(ph) * r * 0.5 + 4;
+      pp[i*3+2] = Math.sin(ph) * Math.sin(a) * r;
+    }
+    pgeo.setAttribute('position', new THREE.BufferAttribute(pp, 3));
+    const partMat = new THREE.PointsMaterial({
+      color: moodColor, size: 0.18, transparent: true, opacity: 0.7,
+      depthWrite: false, blending: THREE.AdditiveBlending, fog: false,
+    });
+    const particles = new THREE.Points(pgeo, partMat);
+    scene.add(particles);
+
+    const t0 = performance.now();
+    function animate() {
+      if (!running) return;
+      const t = (performance.now() - t0) / 1000;
+      // カメラは席に固定、視線のみ
+      camera.position.set(myX, myY, myZ);
+      camera.lookAt(
+        myX + Math.sin(yaw) * Math.cos(pitch) * 5,
+        myY + Math.sin(pitch) * 5,
+        myZ - Math.cos(yaw) * Math.cos(pitch) * 5
+      );
+      // 指揮者の腕（タクト）が音楽に合わせて振る
+      if (scene.userData.baton) {
+        scene.userData.baton.rotation.z = 0.3 + Math.sin(t * 2.5) * 0.6;
+      }
+      // オーケストラがほんの少し動く
+      scene.userData.orchestra.forEach((p, i) => {
+        if (p.head) p.head.position.y = 1.05 + Math.sin(t * 1.2 + i * 0.5) * 0.03;
+      });
+      // 中央光が脈動
+      centerGlow.intensity = 1.0 + Math.sin(t * 1.4) * 0.3;
+      // パーティクルがゆっくり回る
+      particles.rotation.y += 0.0008;
+      // 球体内の星もうっすら回る
+      dome.rotation.y += 0.0003;
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+    animate();
+    window.addEventListener('resize', () => {
+      renderer.setSize(W() * _RS, H() * _RS, false);
+      camera.aspect = W()/H();
+      camera.updateProjectionMatrix();
+    });
+  }
 
   // ============================================================
   // 🚢 ノアの箱舟 — 大洪水と虹の3Dシーン
