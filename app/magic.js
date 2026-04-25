@@ -11137,9 +11137,9 @@
     hindu: {
       name: 'ヒンドゥー神話', emoji: '🪷', accent: 0xffb0a0,
       gods: [
-        { n: 'ブラフマー', t: '創造神', img: 'Special:FilePath/19th_century_Brahma_painting.jpg',
+        { n: 'ブラフマー', t: '創造神', img: 'Special:FilePath/Brahma_on_hamsa.jpg',
           lore: '四つの顔と腕を持つ宇宙の創造者。ヴェーダを司る。' },
-        { n: 'ヴィシュヌ', t: '維持神', img: 'Special:FilePath/Bhagavan_Vishnu.jpg',
+        { n: 'ヴィシュヌ', t: '維持神', img: 'Special:FilePath/Vishnu_Lakshmi.jpg',
           lore: '十の化身で世界を救う維持の神。ラーマとクリシュナも彼の姿。' },
         { n: 'シヴァ', t: '破壊と再生', img: 'Special:FilePath/Shiva_Pashupati.jpg',
           lore: '第三の眼を持つ破壊と再生の神。宇宙を踊りで破壊し再創造する。' },
@@ -11198,19 +11198,29 @@
     // Wikimedia 画像ロード（既存美術館と同じ手法）
     function loadGodImage(url) {
       if (textureCache.has(url)) return Promise.resolve(textureCache.get(url));
+      // Wikimedia API で thumburl を解決（CORS-clean な upload.wikimedia.org に直接）
       return new Promise((resolve, reject) => {
-        const fullUrl = 'https://commons.wikimedia.org/wiki/' + url + '?width=512';
-        const img = new Image();
-        img.crossOrigin = 'anonymous';
-        img.onload = () => {
-          const tex = new THREE.Texture(img);
-          if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace;
-          tex.needsUpdate = true;
-          textureCache.set(url, tex);
-          resolve(tex);
-        };
-        img.onerror = () => reject();
-        img.src = fullUrl;
+        const m = url.match(/Special:FilePath\/([^?]+)/);
+        if (!m) return reject();
+        const filename = decodeURIComponent(m[1]).replace(/_/g, ' ');
+        const api = `https://commons.wikimedia.org/w/api.php?action=query&format=json&prop=imageinfo&iiprop=url&iiurlwidth=512&titles=${encodeURIComponent('File:' + filename)}&origin=*`;
+        fetch(api).then(r => r.json()).then(d => {
+          const pages = d.query?.pages || {};
+          const p = Object.values(pages)[0];
+          const thumb = p?.imageinfo?.[0]?.thumburl;
+          if (!thumb) return reject();
+          const img = new Image();
+          img.crossOrigin = 'anonymous';
+          img.onload = () => {
+            const tex = new THREE.Texture(img);
+            if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace;
+            tex.needsUpdate = true;
+            textureCache.set(url, tex);
+            resolve(tex);
+          };
+          img.onerror = () => reject();
+          img.src = thumb;
+        }).catch(reject);
       });
     }
 
@@ -11698,17 +11708,22 @@
     });
 
     function showGodModal(god, zoneKey) {
+      // god is the userData.item: { type:'god', name, sub, img, lore, accent }
       const m = document.createElement('div');
       m.className = 'pantheon-modal';
+      const accentHex = '#' + (god.accent || 0x9080d0).toString(16).padStart(6, '0');
+      const imgSrc = god.img
+        ? 'https://commons.wikimedia.org/wiki/' + god.img + '?width=600'
+        : '';
       m.innerHTML = `
         <div class="pm-card">
           <button class="pm-close">×</button>
-          <img class="pm-img" src="https://commons.wikimedia.org/wiki/${god.img}?width=600" alt="${god.n}">
+          ${imgSrc ? `<img class="pm-img" src="${imgSrc}" alt="${god.name}" onerror="this.classList.add('failed');this.src='data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;240&quot; height=&quot;320&quot;><rect width=&quot;240&quot; height=&quot;320&quot; fill=&quot;%231a0a30&quot;/><text x=&quot;120&quot; y=&quot;180&quot; text-anchor=&quot;middle&quot; fill=&quot;${encodeURIComponent(accentHex)}&quot; font-size=&quot;72&quot; font-family=&quot;serif&quot;>✦</text></svg>'">` : ''}
           <div class="pm-body">
-            <div class="pm-sub">${god.t}</div>
-            <div class="pm-name">${god.n}</div>
-            <div class="pm-lore">${god.lore}</div>
-            <div class="pm-zone">— ${PANTHEON_DATA[zoneKey].name} —</div>
+            <div class="pm-sub">${god.sub || ''}</div>
+            <div class="pm-name">${god.name || '神'}</div>
+            <div class="pm-lore">${god.lore || ''}</div>
+            <div class="pm-zone">— ${PANTHEON_DATA[zoneKey]?.name || ''} —</div>
           </div>
         </div>
       `;
