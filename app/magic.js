@@ -17137,6 +17137,44 @@
           gltfMixers.push({ mixer, obj: horse, type: 'walk', orbit: r, angle: a, speed: 0.002 });
         }
       }, undefined, (e) => console.warn('koh horse', e));
+      // 🦊 キツネ（idle / walk アニメ付き、よく動く）
+      gltfLoader.load(baseUrl + 'Fox/glTF-Binary/Fox.glb', (gltf) => {
+        let source = gltf.scene;
+        for (let k = 0; k < 3; k++) {
+          const fox = cloneFn(source);
+          fox.scale.set(0.018, 0.018, 0.018);
+          const a = (k / 3) * Math.PI * 2 + 0.4;
+          const r = 31 + k * 0.6;
+          fox.position.set(Math.cos(a) * r, -1.3, Math.sin(a) * r);
+          fox.rotation.y = a + Math.PI / 2;
+          fox.traverse(o => { if (o.isMesh) { o.castShadow = true; } });
+          eden3D.add(fox);
+          const mixer = new THREE.AnimationMixer(fox);
+          // Fox.glb には Survey / Walk / Run の3つのクリップがある
+          const clip = gltf.animations.find(c => /run|walk|survey/i.test(c.name)) || gltf.animations[1] || gltf.animations[0];
+          if (clip) mixer.clipAction(clip).play();
+          gltfMixers.push({ mixer, obj: fox, type: 'walk', orbit: r, angle: a, speed: 0.0035 });
+        }
+      }, undefined, (e) => console.warn('koh fox', e));
+      // 🦢 コウノトリ（飛翔）
+      gltfLoader.load(baseUrl + 'Stork.glb', (gltf) => {
+        let source = null;
+        gltf.scene.traverse(o => { if (o.isSkinnedMesh && !source) source = o; });
+        if (!source) source = gltf.scene.children[0] || gltf.scene;
+        if (!source) return;
+        for (let k = 0; k < 3; k++) {
+          const stork = cloneFn(source);
+          stork.scale.set(0.04, 0.04, 0.04);
+          const a = (k / 3) * Math.PI * 2 + 0.9;
+          const r = 31 + k;
+          stork.position.set(Math.cos(a) * r, 9 + k * 0.4, Math.sin(a) * r);
+          stork.rotation.y = a + Math.PI / 2;
+          eden3D.add(stork);
+          const mixer = new THREE.AnimationMixer(stork);
+          mixer.clipAction(gltf.animations[0]).play();
+          gltfMixers.push({ mixer, obj: stork, type: 'fly', orbit: r, angle: a, speed: 0.005, baseY: 9 + k * 0.4 });
+        }
+      }, undefined, (e) => console.warn('koh stork', e));
     }
     eden3D.userData.gltfMixers = gltfMixers;
 
@@ -17146,32 +17184,111 @@
     const walkAnimals = [];
     function makeWalkAnimal(opt) {
       const g = new THREE.Group();
-      const bodyMat = new THREE.MeshStandardMaterial({ color: opt.bodyColor, roughness: 0.85, flatShading: true });
-      const headMat = new THREE.MeshStandardMaterial({ color: opt.headColor || opt.bodyColor, roughness: 0.85, flatShading: true });
-      const body = new THREE.Mesh(new THREE.BoxGeometry(opt.bodyLen, opt.bodyH, opt.bodyW), bodyMat);
+      const bodyColor = new THREE.Color(opt.bodyColor);
+      const lightColor = bodyColor.clone().multiplyScalar(1.25);
+      const darkColor = bodyColor.clone().multiplyScalar(0.7);
+      const bodyMat = new THREE.MeshStandardMaterial({ color: bodyColor, roughness: 0.78, flatShading: true });
+      const lightMat = new THREE.MeshStandardMaterial({ color: lightColor, roughness: 0.78, flatShading: true });
+      const headMat = new THREE.MeshStandardMaterial({ color: opt.headColor ? new THREE.Color(opt.headColor) : darkColor, roughness: 0.78, flatShading: true });
+      const eyeMat = new THREE.MeshStandardMaterial({ color: 0x080808, roughness: 0.3 });
+      // ── 胴体（カプセルで滑らかに） ──
+      const body = new THREE.Mesh(
+        new THREE.CapsuleGeometry(opt.bodyW * 0.55, opt.bodyLen * 0.55, 6, 12),
+        bodyMat
+      );
+      body.rotation.z = Math.PI / 2;
       body.position.y = opt.legH;
       g.add(body);
-      // 頭
-      const head = new THREE.Mesh(new THREE.BoxGeometry(opt.headSize, opt.headSize, opt.headSize * 0.85), headMat);
-      head.position.set(opt.bodyLen / 2 + opt.neckLen * 0.4, opt.legH + opt.bodyH * 0.5 + opt.neckLen * 0.4, 0);
+      // 腹（明色アンダーベリー）
+      const belly = new THREE.Mesh(
+        new THREE.CapsuleGeometry(opt.bodyW * 0.40, opt.bodyLen * 0.50, 4, 10),
+        lightMat
+      );
+      belly.rotation.z = Math.PI / 2;
+      belly.position.set(0, opt.legH - opt.bodyH * 0.25, 0);
+      g.add(belly);
+      // ── 頭（球＋鼻） ──
+      const headSize = opt.headSize;
+      const headX = opt.bodyLen / 2 + opt.neckLen * 0.45 + headSize * 0.3;
+      const headY = opt.legH + opt.bodyH * 0.4 + opt.neckLen * 0.55;
+      const head = new THREE.Mesh(new THREE.SphereGeometry(headSize * 0.65, 14, 11), headMat);
+      head.scale.set(1.05, 0.95, 1.0);
+      head.position.set(headX, headY, 0);
       g.add(head); g.userData.head = head;
-      if (opt.neckLen > 0.3) {
-        const neck = new THREE.Mesh(new THREE.CylinderGeometry(opt.headSize * 0.3, opt.bodyH * 0.4, opt.neckLen, 8), bodyMat);
-        neck.position.set(opt.bodyLen / 2 + opt.neckLen * 0.2, opt.legH + opt.bodyH * 0.5 + opt.neckLen * 0.2, 0);
+      // 鼻（前方の小球）
+      const snout = new THREE.Mesh(new THREE.SphereGeometry(headSize * 0.42, 12, 9), headMat);
+      snout.position.set(headX + headSize * 0.55, headY - headSize * 0.15, 0);
+      snout.scale.set(0.95, 0.8, 0.85);
+      g.add(snout);
+      // 鼻先（黒）
+      const nose = new THREE.Mesh(new THREE.SphereGeometry(headSize * 0.18, 10, 8), eyeMat);
+      nose.position.set(headX + headSize * 0.85, headY - headSize * 0.1, 0);
+      g.add(nose);
+      // 目（左右）
+      [-1, 1].forEach(sz => {
+        const eye = new THREE.Mesh(new THREE.SphereGeometry(headSize * 0.12, 10, 8), eyeMat);
+        eye.position.set(headX + headSize * 0.30, headY + headSize * 0.20, sz * headSize * 0.35);
+        g.add(eye);
+        // 白目ハイライト
+        const hl = new THREE.Mesh(new THREE.SphereGeometry(headSize * 0.04, 6, 5), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+        hl.position.set(headX + headSize * 0.40, headY + headSize * 0.24, sz * headSize * 0.36);
+        g.add(hl);
+      });
+      // 耳（小さいコーン or 球）
+      [-1, 1].forEach(sz => {
+        const ear = new THREE.Mesh(new THREE.ConeGeometry(headSize * 0.20, headSize * 0.45, 7), headMat);
+        ear.position.set(headX - headSize * 0.05, headY + headSize * 0.55, sz * headSize * 0.40);
+        ear.rotation.x = -0.2 * sz;
+        ear.rotation.z = 0.15 * sz;
+        g.add(ear);
+      });
+      // ── 首（カプセル、傾斜） ──
+      if (opt.neckLen > 0.2) {
+        const neck = new THREE.Mesh(
+          new THREE.CapsuleGeometry(opt.headSize * 0.42, opt.neckLen, 4, 10),
+          bodyMat
+        );
+        neck.position.set(opt.bodyLen / 2 + opt.neckLen * 0.22, opt.legH + opt.bodyH * 0.4 + opt.neckLen * 0.3, 0);
         neck.rotation.z = -Math.PI / 4;
         g.add(neck);
       }
-      // 尾
-      const tail = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.06, opt.tailLen, 6), bodyMat);
-      tail.position.set(-opt.bodyLen / 2 - opt.tailLen * 0.3, opt.legH + opt.bodyH * 0.4, 0);
-      tail.rotation.z = Math.PI / 3;
+      // ── 尾（カプセル、上向き） ──
+      const tail = new THREE.Mesh(
+        new THREE.CapsuleGeometry(opt.tailLen * 0.10, opt.tailLen, 4, 8),
+        bodyMat
+      );
+      tail.position.set(-opt.bodyLen / 2 - opt.tailLen * 0.25, opt.legH + opt.bodyH * 0.5, 0);
+      tail.rotation.z = Math.PI / 2.4;
       g.add(tail); g.userData.tail = tail;
-      // 4本脚
+      // ── 4本脚（上腿+下腿の2セグメント、関節アニメ可能に） ──
       const legs = [];
       [[1, 1], [1, -1], [-1, 1], [-1, -1]].forEach(([sx, sz]) => {
-        const leg = new THREE.Mesh(new THREE.CylinderGeometry(opt.legR, opt.legR * 0.85, opt.legH, 6), bodyMat);
-        leg.position.set(sx * opt.bodyLen * 0.32, opt.legH / 2, sz * opt.bodyW * 0.35);
-        g.add(leg); legs.push(leg);
+        const legGroup = new THREE.Group();
+        legGroup.position.set(sx * opt.bodyLen * 0.32, opt.legH, sz * opt.bodyW * 0.35);
+        // 上腿
+        const upper = new THREE.Mesh(
+          new THREE.CapsuleGeometry(opt.legR * 1.1, opt.legH * 0.45, 4, 8),
+          bodyMat
+        );
+        upper.position.y = -opt.legH * 0.25;
+        legGroup.add(upper);
+        // 下腿
+        const lower = new THREE.Mesh(
+          new THREE.CapsuleGeometry(opt.legR * 0.85, opt.legH * 0.50, 4, 8),
+          bodyMat
+        );
+        lower.position.y = -opt.legH * 0.70;
+        legGroup.add(lower);
+        // 蹄／足
+        const foot = new THREE.Mesh(
+          new THREE.SphereGeometry(opt.legR * 1.3, 8, 6),
+          eyeMat
+        );
+        foot.scale.set(1, 0.4, 1.4);
+        foot.position.y = -opt.legH * 0.99;
+        legGroup.add(foot);
+        g.add(legGroup);
+        legs.push(legGroup);
       });
       g.userData.legs = legs;
       return g;
