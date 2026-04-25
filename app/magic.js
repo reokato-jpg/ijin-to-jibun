@@ -19064,13 +19064,6 @@
     );
     chandelier.add(chandelierBase);
     // 6個のロウソク
-    const chandelier = new THREE.Group();
-    const chandelierBase = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.6, 0.8, 0.3, 16),
-      new THREE.MeshStandardMaterial({ color: 0xc8a040, metalness: 0.95, roughness: 0.2, emissive: 0x4a3008, emissiveIntensity: 0.5 })
-    );
-    chandelier.add(chandelierBase);
-    // 6個のロウソク
     for (let i = 0; i < 6; i++) {
       const ang = (i / 6) * Math.PI * 2;
       const arm = new THREE.Mesh(

@@ -45,7 +45,14 @@
       "mcp__Claude_in_Chrome__javascript_tool",
       "WebFetch(domain:ijin-to-jibun.com)",
       "Bash(vercel ls *)",
-      "mcp__Claude_in_Chrome__read_console_messages"
+      "mcp__Claude_in_Chrome__read_console_messages",
+      "Bash(node -c app/magic.js)",
+      "Bash(sed -i 's/20260502EG/20260502EH/g' app/index.html app/sw.js)",
+      "Bash(rm -f .git/index.lock)",
+      "Bash(./build.sh)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)"
     ]
   }
 }
