@@ -11482,6 +11482,111 @@
         scene.add(cloud);
       }
 
+      // 🌃 眼下の街（雲のさらに下に夜景）
+      // 街の地表
+      const cityGround = new THREE.Mesh(
+        new THREE.CircleGeometry(180, 48),
+        new THREE.MeshBasicMaterial({ color: 0x080612, fog: false })
+      );
+      cityGround.rotation.x = -Math.PI / 2;
+      cityGround.position.y = -55;
+      scene.add(cityGround);
+
+      // ビル群（InstancedMesh、200棟）
+      const bldGeo = new THREE.BoxGeometry(1, 1, 1);
+      const bldMat = new THREE.MeshBasicMaterial({ color: 0x0a0820, fog: false });
+      const BLD = 220;
+      const buildings = new THREE.InstancedMesh(bldGeo, bldMat, BLD);
+      const bdummy = new THREE.Object3D();
+      // 窓の発光用に別 InstancedMesh
+      const winGeo = new THREE.PlaneGeometry(0.85, 0.85);
+      const winMat = new THREE.MeshBasicMaterial({
+        color: 0xfff0a0, fog: false, transparent: true, opacity: 0.9,
+      });
+      const windows = new THREE.InstancedMesh(winGeo, winMat, BLD);
+      const wdummy = new THREE.Object3D();
+      for (let i = 0; i < BLD; i++) {
+        // グリッド配置にややランダム
+        const a = (i / BLD) * Math.PI * 2 + Math.random() * 0.3;
+        const r = 30 + Math.random() * 130;
+        const x = Math.cos(a) * r + (Math.random() - 0.5) * 8;
+        const z = Math.sin(a) * r + (Math.random() - 0.5) * 8;
+        const w = 1.5 + Math.random() * 2.5;
+        const h = 4 + Math.random() * 16;
+        const d = 1.5 + Math.random() * 2.5;
+        bdummy.position.set(x, -55 + h / 2, z);
+        bdummy.scale.set(w, h, d);
+        bdummy.updateMatrix();
+        buildings.setMatrixAt(i, bdummy.matrix);
+        // 窓レイヤー（建物の正面を中心向きに）
+        const colors = [0xffec98, 0xf0d0a0, 0xc0d8ff, 0xffd060];
+        const col = new THREE.Color(colors[i % colors.length]);
+        windows.setColorAt(i, col);
+        wdummy.position.set(x, -55 + h / 2, z);
+        wdummy.lookAt(0, wdummy.position.y, 0);
+        // ビルサイズに合わせてスケール
+        wdummy.scale.set(w * 0.95, h * 0.95, 1);
+        wdummy.translateZ(d / 2 + 0.01); // 正面に少しオフセット
+        wdummy.updateMatrix();
+        windows.setMatrixAt(i, wdummy.matrix);
+      }
+      buildings.instanceMatrix.needsUpdate = true;
+      windows.instanceMatrix.needsUpdate = true;
+      if (windows.instanceColor) windows.instanceColor.needsUpdate = true;
+      scene.add(buildings); scene.add(windows);
+
+      // 🚗 車のヘッドライト（Points で動く軌跡）
+      // 同心円状の道路を周回するヘッドライト
+      const CARS = 80;
+      const carGeo = new THREE.BufferGeometry();
+      const carPos = new Float32Array(CARS * 3);
+      const carData = []; // {radius, angle, speed, color}
+      for (let i = 0; i < CARS; i++) {
+        const radius = 40 + Math.floor(i / 10) * 12;
+        const angle = (i / CARS) * Math.PI * 2 + Math.random() * 0.3;
+        const speed = 0.0015 + Math.random() * 0.0015;
+        const dir = i % 2 === 0 ? 1 : -1;
+        carData.push({ radius, angle, speed: speed * dir, isHead: i % 2 === 0 });
+        carPos[i*3] = Math.cos(angle) * radius;
+        carPos[i*3+1] = -54.5;
+        carPos[i*3+2] = Math.sin(angle) * radius;
+      }
+      carGeo.setAttribute('position', new THREE.BufferAttribute(carPos, 3));
+      // ヘッドライト用テクスチャ
+      const carTex = (() => {
+        const c = document.createElement('canvas'); c.width = 64; c.height = 64;
+        const g = c.getContext('2d');
+        const grd = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+        grd.addColorStop(0, 'rgba(255,255,220,1)');
+        grd.addColorStop(0.5, 'rgba(255,220,150,0.6)');
+        grd.addColorStop(1, 'rgba(255,180,80,0)');
+        g.fillStyle = grd; g.fillRect(0, 0, 64, 64);
+        return new THREE.CanvasTexture(c);
+      })();
+      const carMat = new THREE.PointsMaterial({
+        map: carTex, color: 0xffffff,
+        size: 1.8, sizeAttenuation: true,
+        transparent: true, opacity: 0.95,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false, fog: false,
+      });
+      const cars = new THREE.Points(carGeo, carMat);
+      scene.add(cars);
+      // 赤いテールライト（半数を赤に）— vertex colorsで実現
+      const carColors = new Float32Array(CARS * 3);
+      for (let i = 0; i < CARS; i++) {
+        if (carData[i].isHead) {
+          carColors[i*3] = 1.0; carColors[i*3+1] = 1.0; carColors[i*3+2] = 0.85;
+        } else {
+          carColors[i*3] = 1.0; carColors[i*3+1] = 0.2; carColors[i*3+2] = 0.15;
+        }
+      }
+      carGeo.setAttribute('color', new THREE.BufferAttribute(carColors, 3));
+      carMat.vertexColors = true;
+      // animate 用にデータ保管
+      scene.userData.carData = carData;
+      scene.userData.cars = cars;
+
       // 環境光（神殿内は明るく保つ）
       scene.add(new THREE.AmbientLight(0x8070b8, 0.7));
       const hemi = new THREE.HemisphereLight(0xc0a0ff, 0x180830, 0.7);
@@ -12087,6 +12192,17 @@
           ctx.fillText(a.item.name.slice(0, 8), cx, H2 - 45);
           a.tex.needsUpdate = true;
         });
+      }
+      // 🚗 車のヘッドライトが街を周回
+      if (scene.userData.carData && scene.userData.cars) {
+        const cd = scene.userData.carData;
+        const pa = scene.userData.cars.geometry.attributes.position;
+        for (let i = 0; i < cd.length; i++) {
+          cd[i].angle += cd[i].speed;
+          pa.array[i*3] = Math.cos(cd[i].angle) * cd[i].radius;
+          pa.array[i*3+2] = Math.sin(cd[i].angle) * cd[i].radius;
+        }
+        pa.needsUpdate = true;
       }
       // ホログラム回転 + リング脈動 + ラベル ビルボード
       plinths.forEach(p => {
