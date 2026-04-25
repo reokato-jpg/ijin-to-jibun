@@ -11106,13 +11106,14 @@
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.2));
     renderer.setSize(W(), H());
     if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 0.85;
+    renderer.toneMappingExposure = 1.15; // 明るめ
     if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
     stage.appendChild(renderer.domElement);
     renderer.domElement.style.touchAction = 'none';
 
     // シーン構築（zone 切替で再構築）
     let scene, camera, plinths = [], textureCache = new Map(), composer = null, outlinePass = null;
+    const animatedTextures = []; // 画像ない時の手続き的アニメ用
     let yaw = 0, pitch = -0.1;
     const keys = { w:0, a:0, s:0, d:0 };
     let stickDX = 0, stickDY = 0;
@@ -11148,22 +11149,26 @@
         });
       }
       plinths = [];
+      animatedTextures.length = 0;
       scene = new THREE.Scene();
-      scene.background = new THREE.Color(0x0a0815);
-      scene.fog = new THREE.FogExp2(0x0a0815, 0.018);
+      scene.background = new THREE.Color(0x2a2050);
+      scene.fog = new THREE.FogExp2(0x2a2050, 0.012);
 
-      // 環境光
-      scene.add(new THREE.AmbientLight(0x404060, 0.5));
-      const hemi = new THREE.HemisphereLight(0x8080a0, 0x202030, 0.5);
+      // 環境光（明るめ）
+      scene.add(new THREE.AmbientLight(0x9080d0, 0.85));
+      const hemi = new THREE.HemisphereLight(0xc0a0ff, 0x402060, 0.9);
       scene.add(hemi);
 
       // 床（暗い大理石）
       const floorTex = (() => {
         const c = document.createElement('canvas'); c.width = 512; c.height = 512;
         const g = c.getContext('2d');
-        g.fillStyle = '#181228'; g.fillRect(0,0,512,512);
-        for (let i = 0; i < 60; i++) {
-          g.strokeStyle = `rgba(${100+Math.random()*60},${80+Math.random()*40},${120+Math.random()*60},${0.1+Math.random()*0.2})`;
+        // 明るい大理石風（紫白）
+        const grd = g.createRadialGradient(256, 256, 50, 256, 256, 380);
+        grd.addColorStop(0, '#d0c0e8'); grd.addColorStop(0.6, '#9080b8'); grd.addColorStop(1, '#403060');
+        g.fillStyle = grd; g.fillRect(0,0,512,512);
+        for (let i = 0; i < 80; i++) {
+          g.strokeStyle = `rgba(${180+Math.random()*60},${160+Math.random()*40},${200+Math.random()*55},${0.15+Math.random()*0.2})`;
           g.lineWidth = 0.5 + Math.random();
           g.beginPath();
           let x = Math.random()*512, y = Math.random()*512;
@@ -11181,18 +11186,25 @@
       })();
       const floor = new THREE.Mesh(
         new THREE.CircleGeometry(30, 48),
-        new THREE.MeshStandardMaterial({ map: floorTex, roughness: 0.4, metalness: 0.5 })
+        new THREE.MeshStandardMaterial({ map: floorTex, roughness: 0.3, metalness: 0.6, color: 0xffffff })
       );
       floor.rotation.x = -Math.PI / 2;
       scene.add(floor);
 
-      // 中央の光源
-      const centerLight = new THREE.PointLight(0xc0a0ff, 1.5, 40, 1.5);
+      // 中央の光源（強め）
+      const centerLight = new THREE.PointLight(0xffeaff, 3.5, 50, 1.5);
       centerLight.position.set(0, 8, 0);
       scene.add(centerLight);
+      // 周囲の補助光×4
+      for (let i = 0; i < 4; i++) {
+        const a = (i / 4) * Math.PI * 2;
+        const fill = new THREE.PointLight(0xa0c0ff, 1.2, 25, 1.5);
+        fill.position.set(Math.cos(a) * 18, 4, Math.sin(a) * 18);
+        scene.add(fill);
+      }
 
       // 周囲の柱（アトモスフェアのため）
-      const colMat = new THREE.MeshStandardMaterial({ color: 0x2a2040, roughness: 0.7 });
+      const colMat = new THREE.MeshStandardMaterial({ color: 0xb8a8d8, roughness: 0.5, metalness: 0.2 });
       const numCols = 16;
       for (let i = 0; i < numCols; i++) {
         const a = (i / numCols) * Math.PI * 2;
@@ -11204,9 +11216,23 @@
         scene.add(col);
       }
       // 天井
+      // 天井：ステンドグラス風グラデ
+      const ceilTex = (() => {
+        const c = document.createElement('canvas'); c.width = 256; c.height = 256;
+        const g = c.getContext('2d');
+        const grd = g.createRadialGradient(128, 128, 0, 128, 128, 128);
+        grd.addColorStop(0, '#fff0c0'); grd.addColorStop(0.5, '#a070d0'); grd.addColorStop(1, '#3a2050');
+        g.fillStyle = grd; g.fillRect(0,0,256,256);
+        for (let i = 0; i < 12; i++) {
+          const a = (i/12) * Math.PI * 2;
+          g.strokeStyle = 'rgba(255,220,180,0.4)'; g.lineWidth = 2;
+          g.beginPath(); g.moveTo(128, 128); g.lineTo(128+Math.cos(a)*120, 128+Math.sin(a)*120); g.stroke();
+        }
+        return new THREE.CanvasTexture(c);
+      })();
       const ceiling = new THREE.Mesh(
         new THREE.CircleGeometry(30, 48),
-        new THREE.MeshStandardMaterial({ color: 0x1a0a25, roughness: 0.8, side: THREE.DoubleSide })
+        new THREE.MeshStandardMaterial({ map: ceilTex, color: 0xffffff, roughness: 0.6, side: THREE.DoubleSide })
       );
       ceiling.rotation.x = Math.PI / 2;
       ceiling.position.y = 10;
@@ -11280,13 +11306,37 @@
         if (item.img) {
           loadGodImage(item.img).then(tex => {
             figMat.map = tex;
-            // アスペクト比に合わせて
             const ar = tex.image.width / tex.image.height;
             const planeAR = 1.6 / 2.2;
             if (ar > planeAR) figure.scale.set(1, planeAR / ar, 1);
             else figure.scale.set(ar / planeAR, 1, 1);
             figMat.needsUpdate = true;
-          }).catch(() => {});
+          }).catch(() => {
+            // 画像なし → 動的procedural canvas を作る
+            const cv = document.createElement('canvas');
+            cv.width = 256; cv.height = 384;
+            const ctx = cv.getContext('2d');
+            const animTex = new THREE.CanvasTexture(cv);
+            animTex.colorSpace = THREE.SRGBColorSpace;
+            figMat.map = animTex;
+            figMat.needsUpdate = true;
+            // アニメ用に登録：item ごと毎フレーム再描画
+            const accentHex = '#' + item.accent.toString(16).padStart(6, '0');
+            animatedTextures.push({
+              ctx, tex: animTex, item, accent: accentHex,
+            });
+          });
+        } else if (item.type === 'pantheon') {
+          // ハブの神話タイル：常に動くプロシージャル
+          const cv = document.createElement('canvas');
+          cv.width = 256; cv.height = 384;
+          const ctx = cv.getContext('2d');
+          const animTex = new THREE.CanvasTexture(cv);
+          animTex.colorSpace = THREE.SRGBColorSpace;
+          figMat.map = animTex;
+          figMat.needsUpdate = true;
+          const accentHex = '#' + item.accent.toString(16).padStart(6, '0');
+          animatedTextures.push({ ctx, tex: animTex, item, accent: accentHex });
         }
         // ラベル板（台座下に名前）
         const labelCanvas = document.createElement('canvas');
@@ -11447,6 +11497,66 @@
         camera.position.y + Math.sin(pitch) * 5,
         camera.position.z - Math.cos(yaw) * Math.cos(pitch) * 5
       );
+      // 🎨 動くSVG/Canvas（画像なし神 or ハブタイル）を毎フレーム再描画
+      if (Math.floor(t * 60) % 3 === 0) { // 20fps で更新（軽量化）
+        animatedTextures.forEach(a => {
+          const ctx = a.ctx;
+          const W2 = 256, H2 = 384;
+          ctx.clearRect(0, 0, W2, H2);
+          // 流れる放射状グラデ背景
+          const cy = 192 + Math.sin(t * 1.5) * 8;
+          const grd = ctx.createRadialGradient(128, cy, 5, 128, cy, 200);
+          grd.addColorStop(0, a.accent);
+          grd.addColorStop(0.4, a.accent + '88');
+          grd.addColorStop(1, 'rgba(20,10,40,0)');
+          ctx.fillStyle = grd; ctx.fillRect(0, 0, W2, H2);
+          // 回転する神聖円環
+          ctx.save();
+          ctx.translate(128, cy);
+          ctx.rotate(t * 0.3);
+          ctx.strokeStyle = a.accent;
+          ctx.lineWidth = 2;
+          for (let r = 0; r < 3; r++) {
+            ctx.globalAlpha = 0.5 - r * 0.12;
+            ctx.beginPath();
+            const rad = 60 + r * 25;
+            for (let i = 0; i <= 12; i++) {
+              const ang = (i / 12) * Math.PI * 2;
+              const x = Math.cos(ang) * rad;
+              const y = Math.sin(ang) * rad * 0.95;
+              if (i === 0) ctx.moveTo(x, y);
+              else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+          }
+          ctx.restore();
+          // パルスする粒
+          ctx.globalAlpha = 1;
+          for (let i = 0; i < 8; i++) {
+            const ang = (i / 8) * Math.PI * 2 + t * 0.5;
+            const dr = 90 + Math.sin(t * 2 + i) * 12;
+            const px = 128 + Math.cos(ang) * dr;
+            const py = cy + Math.sin(ang) * dr * 0.95;
+            ctx.fillStyle = a.accent;
+            ctx.beginPath(); ctx.arc(px, py, 3 + Math.sin(t * 3 + i) * 1.5, 0, Math.PI * 2); ctx.fill();
+          }
+          // 中央のシンボル（emoji or 名前）
+          ctx.globalAlpha = 0.95;
+          ctx.font = 'bold 92px serif';
+          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          ctx.shadowColor = a.accent; ctx.shadowBlur = 30;
+          ctx.fillStyle = '#fff';
+          ctx.fillText(a.item.emoji || '✦', 128, cy);
+          ctx.shadowBlur = 0;
+          // 名前
+          ctx.font = 'bold 24px "Shippori Mincho", serif';
+          ctx.fillStyle = a.accent;
+          ctx.shadowColor = 'rgba(0,0,0,0.8)'; ctx.shadowBlur = 8;
+          ctx.fillText(a.item.name.slice(0, 8), 128, cy + 90);
+          ctx.shadowBlur = 0;
+          a.tex.needsUpdate = true;
+        });
+      }
       // ホログラム回転 + リング脈動
       plinths.forEach(p => {
         p.userData.figure.rotation.y = -Math.sin(yaw) * 0.0; // 常にカメラを向く
