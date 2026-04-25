@@ -4505,7 +4505,7 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
 
 /* 📜 原初の物語 — 没入型の物語読書モード */
 .tale-overlay {
-  position: fixed; inset: 0; z-index: 15500;
+  position: fixed; inset: 0; z-index: 21000; /* pantheon (19000) より上 */
   background: #000;
   opacity: 0; pointer-events: none;
   transition: opacity 0.5s ease;

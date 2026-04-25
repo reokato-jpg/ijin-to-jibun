@@ -12207,11 +12207,10 @@
         color: 0xffffff, envMapIntensity: 1.1,
       });
 
-      // === 神殿のサイズ（矩形プラン） ===
-      // 廊下方向 (z軸): -12 〜 +14、横幅 (x軸): ±9
-      const T_W = 18; // 横幅
-      const T_D = 28; // 奥行
-      const T_H = 9;  // 柱の高さ
+      // === 神殿のサイズ（矩形プラン）— 広く ===
+      const T_W = 26; // 横幅 (旧18)
+      const T_D = 36; // 奥行 (旧28)
+      const T_H = 10;  // 柱の高さ
       const STEP_H = 0.35;
 
       // 階段付き基壇（3段）
@@ -12301,9 +12300,8 @@
         return g;
       }
       // 周囲の柱（ペリスタイル）— 矩形配置
-      // 前面/背面: 6本ずつ（フロント＝z=+T_D/2, バック＝z=-T_D/2）
-      const COL_FRONT = 6;
-      const COL_SIDE = 8;
+      const COL_FRONT = 8;  // 前後 8本ずつ
+      const COL_SIDE = 11;  // 側面 11本ずつ（最前最後を含めて）
       // 前面 (入口側 z=+T_D/2)
       for (let i = 0; i < COL_FRONT; i++) {
         const x = -T_W/2 + (T_W / (COL_FRONT - 1)) * i;
@@ -12400,6 +12398,66 @@
       roofR.rotation.z = -slope;
       roofR.rotation.y = Math.PI / 2;
       scene.add(roofR);
+
+      // === 🔥 灯火（DQ7風の燭台）— 廊下の左右に並べる ===
+      const torchFlames = []; // animate で揺らす
+      function makeTorch(x, z) {
+        const g = new THREE.Group();
+        // 石の柱（燭台の脚）
+        const stand = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.18, 0.25, 2.5, 12),
+          new THREE.MeshStandardMaterial({ color: 0x7a7068, roughness: 0.85 })
+        );
+        stand.position.y = 1.25;
+        g.add(stand);
+        // 受け皿（金属）
+        const dish = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.32, 0.22, 0.18, 14),
+          new THREE.MeshStandardMaterial({ color: 0x4a3a20, roughness: 0.5, metalness: 0.7 })
+        );
+        dish.position.y = 2.6;
+        g.add(dish);
+        // 炎の核（明るいオレンジ）
+        const flame = new THREE.Mesh(
+          new THREE.SphereGeometry(0.22, 12, 10),
+          new THREE.MeshBasicMaterial({ color: 0xffe8a0 })
+        );
+        flame.position.y = 2.95;
+        flame.scale.set(0.7, 1.4, 0.7);
+        g.add(flame);
+        // 外炎（オレンジの後光）
+        const haloC = (() => {
+          const c = document.createElement('canvas'); c.width = 128; c.height = 128;
+          const cg = c.getContext('2d');
+          const grd = cg.createRadialGradient(64, 64, 0, 64, 64, 64);
+          grd.addColorStop(0, 'rgba(255,180,80,1)');
+          grd.addColorStop(0.4, 'rgba(255,140,40,0.6)');
+          grd.addColorStop(1, 'rgba(255,80,20,0)');
+          cg.fillStyle = grd; cg.fillRect(0, 0, 128, 128);
+          return new THREE.CanvasTexture(c);
+        })();
+        const halo = new THREE.Sprite(new THREE.SpriteMaterial({
+          map: haloC, transparent: true, opacity: 0.7,
+          depthWrite: false, blending: THREE.AdditiveBlending,
+        }));
+        halo.scale.set(1.4, 1.4, 1);
+        halo.position.y = 3.0;
+        g.add(halo);
+        // 光源（暖色 PointLight）
+        const fLight = new THREE.PointLight(0xff9050, 1.6, 8, 1.6);
+        fLight.position.y = 2.9;
+        g.add(fLight);
+        g.position.set(x, 0, z);
+        scene.add(g);
+        torchFlames.push({ flame, halo, light: fLight, baseScale: 1.4, basePower: 1.6 });
+      }
+      // 灯火の配置: 廊下に沿って 左右 4対（z=+8, +2, -4, -10）
+      const torchZs = [8, 2, -4, -10];
+      torchZs.forEach(z => {
+        makeTorch(-T_W/2 + 1.0, z);  // 左
+        makeTorch(T_W/2 - 1.0, z);   // 右
+      });
+      scene.userData.torchFlames = torchFlames;
 
       // === 階段（前面のみ大きく）===
       for (let s = 0; s < 5; s++) {
@@ -13025,8 +13083,8 @@
         scene.add(group);
       });
 
-      // 🪨 入口前の石板（神話の導入）— 左右に1枚ずつ
-      if (zone !== 'hub' && PANTHEON_DATA[zone]) {
+      // 🪨 入口前の石板 — ギリシャ神殿の正面プレートで案内するため無効化
+      if (false && zone !== 'hub' && PANTHEON_DATA[zone]) {
         const accentHex = '#' + PANTHEON_DATA[zone].accent.toString(16).padStart(6, '0');
         const myth = PANTHEON_DATA[zone];
         const introTexts = [
@@ -13116,6 +13174,97 @@
           scene.add(tablet);
         });
       }
+
+      // 🔮 神様の記憶 — 台座の上の球体（タップで関連3Dシーンへ吸い込まれる）
+      const MEMORY_ORBS = {
+        genesis: [
+          { id:'eden', label:'エデンの園', sub:'始まりの庭', color:0x80c890, action:()=>window.openEden3D && window.openEden3D() },
+          { id:'babel', label:'バベルの塔', sub:'天への塔', color:0xc8a060, action:()=>window.openBabel3D && window.openBabel3D() },
+          { id:'noah', label:'ノアの箱舟', sub:'大洪水の記憶', color:0x6090c0, action:()=>window.openNoahArk3D && window.openNoahArk3D() },
+        ],
+        greek: [
+          { id:'atlantis', label:'アトランティス', sub:'海に沈んだ都', color:0x4080c0, action:()=>window.openAtlantis3D && window.openAtlantis3D() },
+          { id:'elysion', label:'エリュシオン', sub:'英雄の楽園', color:0xffd890, action:()=>window.openElysion3D && window.openElysion3D() },
+        ],
+      };
+      const orbs = MEMORY_ORBS[zone] || [];
+      orbs.forEach((mem, i) => {
+        const og = new THREE.Group();
+        // 石の台座（小さめ）
+        const oBase = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.55, 0.7, 0.4, 16),
+          new THREE.MeshStandardMaterial({ color: 0x8a7a98, roughness: 0.85 })
+        );
+        oBase.position.y = 0.2;
+        og.add(oBase);
+        const oTop = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.45, 0.55, 0.6, 16),
+          new THREE.MeshStandardMaterial({ color: 0xa890b8, roughness: 0.7, metalness: 0.2 })
+        );
+        oTop.position.y = 0.7;
+        og.add(oTop);
+        // 金の縁
+        const oRim = new THREE.Mesh(
+          new THREE.TorusGeometry(0.45, 0.03, 8, 18),
+          new THREE.MeshStandardMaterial({ color: 0xe8c060, roughness: 0.3, metalness: 0.85, emissive: 0x4a3008, emissiveIntensity: 0.5 })
+        );
+        oRim.rotation.x = Math.PI / 2;
+        oRim.position.y = 1.0;
+        og.add(oRim);
+        // 🔮 記憶の球体（半透明、内側に光）
+        const orb = new THREE.Mesh(
+          new THREE.SphereGeometry(0.4, 24, 18),
+          new THREE.MeshPhysicalMaterial({
+            color: mem.color, transparent: true, opacity: 0.55,
+            roughness: 0.0, transmission: 0.7, thickness: 0.5,
+            emissive: new THREE.Color(mem.color), emissiveIntensity: 0.4,
+            envMapIntensity: 1.5,
+          })
+        );
+        orb.position.y = 1.5;
+        og.add(orb);
+        // 内側のコア（明るい光）
+        const core = new THREE.Mesh(
+          new THREE.SphereGeometry(0.18, 16, 12),
+          new THREE.MeshBasicMaterial({ color: mem.color })
+        );
+        core.position.y = 1.5;
+        og.add(core);
+        // 周囲の発光（Sprite）
+        const haloC = (() => {
+          const c = document.createElement('canvas'); c.width = 128; c.height = 128;
+          const cg = c.getContext('2d');
+          const grd = cg.createRadialGradient(64, 64, 0, 64, 64, 64);
+          const hex = '#' + mem.color.toString(16).padStart(6, '0');
+          grd.addColorStop(0, hex + 'cc');
+          grd.addColorStop(1, hex + '00');
+          cg.fillStyle = grd; cg.fillRect(0, 0, 128, 128);
+          return new THREE.CanvasTexture(c);
+        })();
+        const halo = new THREE.Sprite(new THREE.SpriteMaterial({
+          map: haloC, transparent: true, opacity: 0.6,
+          depthWrite: false, blending: THREE.AdditiveBlending,
+        }));
+        halo.scale.set(2.0, 2.0, 1);
+        halo.position.y = 1.5;
+        og.add(halo);
+        // 内部光源
+        const orbLight = new THREE.PointLight(mem.color, 1.5, 5, 1.5);
+        orbLight.position.y = 1.5;
+        og.add(orbLight);
+        // 配置: 入口側 z=10〜13、x はオーブ数で分散
+        const oN = orbs.length;
+        const ox = oN === 1 ? 0 : (-6 + (12 / (oN - 1)) * i);
+        og.position.set(ox, 0, 11);
+        // userData (タップで起動)
+        og.userData = {
+          item: { type: 'memory', name: mem.label, sub: mem.sub, accent: mem.color },
+          isMemory: true, memAction: mem.action,
+          orb, core, halo,
+        };
+        scene.add(og);
+        plinths.push(og); // 既存の最寄り判定システムに乗せる
+      });
 
       // 各神話部屋の中央に「神話を読む」看板（hub では出さない）
       if (zone !== 'hub' && PANTHEON_DATA[zone]) {
@@ -13364,6 +13513,18 @@
         showGodModal(item, currentZone);
       } else if (item.type === 'tale') {
         if (window.openMythology) window.openMythology(item.talekey);
+      } else if (item.type === 'memory') {
+        // 🔮 神様の記憶: フラッシュ → 関連3Dシーンへ
+        const memG = currentNear;
+        const flash = document.createElement('div');
+        flash.style.cssText = 'position:fixed;inset:0;background:#fff;opacity:0;z-index:25000;pointer-events:none;transition:opacity 0.5s';
+        document.body.appendChild(flash);
+        requestAnimationFrame(() => flash.style.opacity = '1');
+        setTimeout(() => {
+          try { memG.userData.memAction && memG.userData.memAction(); } catch (e) { console.warn('memory dive', e); }
+          flash.style.opacity = '0';
+          setTimeout(() => flash.remove(), 600);
+        }, 500);
       }
     });
     backBtn.addEventListener('click', () => {
@@ -13417,7 +13578,26 @@
     ov.querySelector('.museum3d-close').addEventListener('click', () => {
       running = false;
       ov.classList.remove('open');
-      setTimeout(() => ov.remove(), 500);
+      setTimeout(() => {
+        // 🧹 シーン・レンダラーの完全破棄（背景バグ防止）
+        try {
+          scene.traverse(o => {
+            if (o.geometry) o.geometry.dispose && o.geometry.dispose();
+            if (o.material) {
+              const mats = Array.isArray(o.material) ? o.material : [o.material];
+              mats.forEach(m => {
+                if (m.map) m.map.dispose && m.map.dispose();
+                m.dispose && m.dispose();
+              });
+            }
+          });
+          if (scene.environment) scene.environment.dispose && scene.environment.dispose();
+          renderer.dispose();
+          renderer.forceContextLoss && renderer.forceContextLoss();
+          renderer.domElement.parentNode && renderer.domElement.parentNode.removeChild(renderer.domElement);
+        } catch (e) { console.warn('cleanup', e); }
+        ov.remove();
+      }, 500);
     });
 
     let t = 0;
@@ -13690,6 +13870,17 @@
           obj.material.color.setHex(beaconOn ? 0xff3040 : 0x401010);
         }
       });
+      // 🔥 灯火のゆらぎアニメ
+      if (scene.userData.torchFlames) {
+        scene.userData.torchFlames.forEach((tf, i) => {
+          const flick = 0.85 + Math.sin(t * 6 + i) * 0.15 + Math.random() * 0.1;
+          tf.flame.scale.set(0.7 * flick, 1.4 * (1 + (1-flick)*0.3), 0.7 * flick);
+          const haloS = tf.baseScale * (0.9 + (flick - 0.85) * 1.5);
+          tf.halo.scale.set(haloS, haloS, 1);
+          tf.halo.material.opacity = 0.55 + flick * 0.25;
+          tf.light.intensity = tf.basePower * (0.85 + flick * 0.3);
+        });
+      }
       // ホログラム/本 アニメ
       plinths.forEach((p, idx) => {
         if (p.userData.isBook) {
@@ -13713,6 +13904,23 @@
         if (p.userData.figure) p.userData.figure.lookAt(camera.position.x, p.userData.figure.getWorldPosition(new THREE.Vector3()).y, camera.position.z);
         if (p.userData.holo) p.userData.holo.rotation.y += 0.005;
         if (p.userData.magicCircle) p.userData.magicCircle.rotation.z += 0.003;
+        if (p.userData.isMemory) {
+          // 🔮 記憶のオーブ: 脈動 + ふわふわ + ゆっくり回転
+          const pulse = 1 + Math.sin(t * 1.6 + p.position.x) * 0.08;
+          if (p.userData.orb) {
+            p.userData.orb.scale.setScalar(pulse);
+            p.userData.orb.rotation.y += 0.008;
+            p.userData.orb.position.y = 1.5 + Math.sin(t * 0.9 + p.position.x) * 0.1;
+          }
+          if (p.userData.core) {
+            p.userData.core.position.y = p.userData.orb ? p.userData.orb.position.y : 1.5;
+          }
+          if (p.userData.halo) {
+            const hs = 2.0 + Math.sin(t * 1.3) * 0.3;
+            p.userData.halo.scale.set(hs, hs, 1);
+            p.userData.halo.position.y = p.userData.orb ? p.userData.orb.position.y : 1.5;
+          }
+        }
         if (p.userData.ring && p.userData.ring.material) p.userData.ring.material.opacity = 0.4 + Math.sin(t * 2 + p.position.x) * 0.2;
         p.children.forEach(ch => {
           if (ch.userData && ch.userData.isLabel) {
@@ -13768,6 +13976,7 @@
           enterBtn.classList.add('show');
           enterBtn.textContent = it.type === 'pantheon' ? (soul ? '🌟 魂で本に入る ›' : 'この神殿に入る ›')
             : it.type === 'tale' ? '物語を読む ›'
+            : it.type === 'memory' ? '🔮 記憶に吸い込まれる ›'
             : '詳しく見る ›';
         } else {
           infoEl.classList.remove('show');
