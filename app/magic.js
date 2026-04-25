@@ -614,8 +614,7 @@
         ]},
         ehon: { title: '📖 絵 本', sub: '宇宙に浮かぶ書斎', items: [
           { deep: 'ehonspace', label: '絵本の宇宙', desc: '星空に浮かぶ絵本をタップして読む', emoji: '📚' },
-          { deep: 'littleprince', label: '星の王子様', desc: 'サン=テグジュペリの絵本（動くSVG全8章）', emoji: '🌹' },
-          { deep: 'lpworld', label: 'B-612 へ降りる', desc: '王子様の星に降り立つ3D体験', emoji: '🌍' },
+          { deep: 'littleprince', label: '星の王子様（絵本）', desc: 'サン=テグジュペリの絵本（動くSVG全8章）', emoji: '🌹' },
         ]},
         ijin: { title: '👤 偉 人', sub: '297人の生涯と関係', items: [
           { deep: 'quiz', label: '偉人クイズ', desc: '5タイプの問題でテスト', emoji: '🎓' },
@@ -12624,8 +12623,9 @@
     const info = ov.querySelector('#noahInfo');
     const W = () => stage.clientWidth || window.innerWidth;
     const H = () => stage.clientHeight || window.innerHeight;
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.0));
+    const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
+    renderer.shadowMap.enabled = false;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 0.7));
     renderer.setSize(W(), H());
     if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.2;
@@ -12880,8 +12880,9 @@
     const stage = ov.querySelector('#atlStage');
     const W = () => stage.clientWidth || window.innerWidth;
     const H = () => stage.clientHeight || window.innerHeight;
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.0));
+    const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
+    renderer.shadowMap.enabled = false;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 0.7));
     renderer.setSize(W(), H());
     if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.0;
@@ -13146,8 +13147,9 @@
     const stage = ov.querySelector('#elyStage');
     const W = () => stage.clientWidth || window.innerWidth;
     const H = () => stage.clientHeight || window.innerHeight;
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.0));
+    const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
+    renderer.shadowMap.enabled = false;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 0.7));
     renderer.setSize(W(), H());
     if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.7;
@@ -14099,8 +14101,9 @@
     const info = ov.querySelector('#ehSpaceInfo');
     const W = () => stage.clientWidth || window.innerWidth;
     const H = () => stage.clientHeight || window.innerHeight;
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.0));
+    const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
+    renderer.shadowMap.enabled = false;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 0.7));
     renderer.setSize(W(), H());
     if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.3;
@@ -14153,46 +14156,94 @@
       const angle = (i / EHON_BOOKS.length) * Math.PI * 2;
       const r = 8;
       const g = new THREE.Group();
-      // 表紙テクスチャ
-      const cc = document.createElement('canvas'); cc.width = 256; cc.height = 360;
+      // 表紙テクスチャ（高解像度＋装飾的）
+      const cc = document.createElement('canvas'); cc.width = 512; cc.height = 720;
       const cg = cc.getContext('2d');
-      const grd = cg.createLinearGradient(0, 0, 0, 360);
+      // ベース：レザー風グラデ
+      const grd = cg.createRadialGradient(256, 360, 50, 256, 360, 600);
       grd.addColorStop(0, book.color1); grd.addColorStop(1, book.color2);
-      cg.fillStyle = grd; cg.fillRect(0, 0, 256, 360);
-      // 装飾枠
-      cg.strokeStyle = book.accent; cg.lineWidth = 4;
-      cg.strokeRect(8, 8, 240, 344);
-      cg.lineWidth = 1;
-      cg.strokeRect(14, 14, 228, 332);
-      // タイトル
-      cg.font = 'bold 26px "Shippori Mincho", serif';
+      cg.fillStyle = grd; cg.fillRect(0, 0, 512, 720);
+      // ノイズ（質感）
+      for (let n = 0; n < 1200; n++) {
+        const a = 0.04 + Math.random() * 0.07;
+        cg.fillStyle = `rgba(255,255,255,${a})`;
+        cg.fillRect(Math.random()*512, Math.random()*720, 1, 1);
+      }
+      // 装飾枠（二重 + 内側に細線）
+      cg.strokeStyle = book.accent; cg.lineWidth = 6;
+      cg.strokeRect(20, 20, 472, 680);
+      cg.lineWidth = 1.5;
+      cg.strokeRect(32, 32, 448, 656);
+      // 角飾り（4隅）
+      const corners = [[32,32], [480,32], [32,688], [480,688]];
+      corners.forEach(([cx, cy]) => {
+        cg.fillStyle = book.accent;
+        cg.beginPath();
+        cg.arc(cx, cy, 5, 0, Math.PI * 2); cg.fill();
+        cg.strokeStyle = book.accent; cg.lineWidth = 1.2;
+        cg.beginPath();
+        cg.moveTo(cx - 22, cy); cg.lineTo(cx - 8, cy);
+        cg.moveTo(cx + 8, cy); cg.lineTo(cx + 22, cy);
+        cg.moveTo(cx, cy - 22); cg.lineTo(cx, cy - 8);
+        cg.moveTo(cx, cy + 8); cg.lineTo(cx, cy + 22);
+        cg.stroke();
+      });
+      // 上部装飾（唐草風）
+      cg.strokeStyle = book.accent; cg.lineWidth = 1;
+      cg.beginPath();
+      cg.moveTo(80, 80); cg.bezierCurveTo(150, 60, 180, 100, 256, 78);
+      cg.bezierCurveTo(332, 100, 362, 60, 432, 80);
+      cg.stroke();
+      // タイトル（大きく中央上部）
+      cg.font = 'bold 44px "Shippori Mincho", serif';
       cg.fillStyle = book.accent;
-      cg.textAlign = 'center';
-      // 縦書き風（折り返し）
-      const lines = book.title.match(/.{1,7}/g) || [book.title];
-      lines.forEach((l, li) => cg.fillText(l, 128, 80 + li * 32));
-      // 表紙絵文字
-      cg.font = '120px serif';
-      cg.fillText(book.cover, 128, 240);
-      // 著者
-      cg.font = '14px "Shippori Mincho", serif';
-      cg.fillStyle = '#fff';
-      cg.fillText(book.author, 128, 320);
-      // 年
-      cg.font = '11px serif';
+      cg.textAlign = 'center'; cg.textBaseline = 'middle';
+      // 影
+      cg.shadowColor = 'rgba(0,0,0,0.6)';
+      cg.shadowBlur = 8; cg.shadowOffsetY = 2;
+      const titleLines = book.title.match(/.{1,8}/g) || [book.title];
+      titleLines.forEach((l, li) => cg.fillText(l, 256, 150 + li * 52));
+      cg.shadowColor = 'transparent'; cg.shadowBlur = 0;
+      // セパレーター
+      cg.strokeStyle = book.accent; cg.lineWidth = 1;
+      cg.beginPath();
+      cg.moveTo(180, 280); cg.lineTo(332, 280);
+      cg.stroke();
+      cg.beginPath();
+      cg.arc(256, 280, 4, 0, Math.PI*2);
+      cg.fillStyle = book.accent; cg.fill();
+      // 中央エンブレム（emoji を金縁で）
+      cg.font = '180px serif';
       cg.fillStyle = book.accent;
-      cg.fillText(book.year, 128, 340);
+      cg.shadowColor = 'rgba(0,0,0,0.5)'; cg.shadowBlur = 16;
+      cg.fillText(book.cover, 256, 440);
+      cg.shadowBlur = 0;
+      // 下部装飾線
+      cg.strokeStyle = book.accent; cg.lineWidth = 0.8;
+      cg.beginPath();
+      cg.moveTo(120, 560); cg.lineTo(392, 560); cg.stroke();
+      // 著者（金で）
+      cg.font = 'italic 22px "Cormorant Garamond", "Shippori Mincho", serif';
+      cg.fillStyle = '#fff8e0';
+      cg.fillText(book.author, 256, 600);
+      // 年（小さく）
+      cg.font = '14px "Cormorant Garamond", serif';
+      cg.fillStyle = book.accent;
+      cg.fillText('— ' + book.year + ' —', 256, 640);
+      // 装飾紋章
+      cg.font = '20px serif';
+      cg.fillText('❦', 256, 670);
       const coverTex = new THREE.CanvasTexture(cc);
-      // 本体（薄い箱）
+      // 本体（厚みのある重厚な本）
       const bookMesh = new THREE.Mesh(
-        new THREE.BoxGeometry(2.2, 3.0, 0.35),
+        new THREE.BoxGeometry(2.4, 3.4, 0.5),
         [
-          new THREE.MeshStandardMaterial({ color: 0x2a1810 }), // R
-          new THREE.MeshStandardMaterial({ color: 0x2a1810 }), // L
-          new THREE.MeshStandardMaterial({ color: 0xfff0d8 }), // top
-          new THREE.MeshStandardMaterial({ color: 0xfff0d8 }), // bottom
-          new THREE.MeshStandardMaterial({ map: coverTex, roughness: 0.5 }), // front (cover)
-          new THREE.MeshStandardMaterial({ color: 0x2a1810 }), // back
+          new THREE.MeshStandardMaterial({ color: 0x2a1810, roughness: 0.7 }),
+          new THREE.MeshStandardMaterial({ color: 0x2a1810, roughness: 0.7 }),
+          new THREE.MeshStandardMaterial({ color: 0xf5e8c0, roughness: 0.85 }),
+          new THREE.MeshStandardMaterial({ color: 0xf5e8c0, roughness: 0.85 }),
+          new THREE.MeshStandardMaterial({ map: coverTex, roughness: 0.55, metalness: 0.1 }),
+          new THREE.MeshStandardMaterial({ color: 0x2a1810, roughness: 0.7 }),
         ]
       );
       bookMesh.userData.book = book;
@@ -14311,8 +14362,9 @@
     const info = ov.querySelector('#lpwInfo');
     const W = () => stage.clientWidth || window.innerWidth;
     const H = () => stage.clientHeight || window.innerHeight;
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.0));
+    const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
+    renderer.shadowMap.enabled = false;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 0.7));
     renderer.setSize(W(), H());
     if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.4;
@@ -14493,9 +14545,29 @@
     renderer.domElement.addEventListener('pointerup', stop);
     renderer.domElement.addEventListener('pointerleave', stop);
     renderer.domElement.addEventListener('wheel', e => {
-      dist = Math.max(5, Math.min(20, dist + e.deltaY * 0.02));
+      dist = Math.max(4, Math.min(60, dist + e.deltaY * 0.04));
       e.preventDefault();
     }, { passive: false });
+    // ピンチズーム（モバイル）
+    let pinchStart = 0, pinchInitDist = 0;
+    renderer.domElement.addEventListener('touchstart', e => {
+      if (e.touches.length === 2) {
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        pinchStart = Math.hypot(dx, dy);
+        pinchInitDist = dist;
+      }
+    }, { passive: true });
+    renderer.domElement.addEventListener('touchmove', e => {
+      if (e.touches.length === 2) {
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        const cur = Math.hypot(dx, dy);
+        if (pinchStart > 0) {
+          dist = Math.max(4, Math.min(60, pinchInitDist * (pinchStart / cur)));
+        }
+      }
+    }, { passive: true });
 
     // タップでバラ
     const raycaster = new THREE.Raycaster();
@@ -17044,6 +17116,11 @@
       const h = pickPrinceHit(e);
       if (!h) return;
       const d = h.object.userData;
+      // 🌍 B-612 タップ → 3D で星に降り立つ
+      if (d.id === 'b612' && window.openLittlePrinceWorld3D) {
+        window.openLittlePrinceWorld3D();
+        return;
+      }
       // 星へ「ダイブ」— カメラが近づく
       princeDiveTarget = h.object;
       // 情報パネルにキャラ固有のダイアログ
