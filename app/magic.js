@@ -14451,7 +14451,9 @@
       <div class="museum3d-stage" id="ehSpaceStage"></div>
       <button class="museum3d-close" aria-label="閉じる">×</button>
       <div class="museum3d-title">絵 本 の 宇 宙</div>
-      <div class="museum3d-info show" id="ehSpaceInfo">浮かんでいる絵本をタップして読む</div>
+      <div class="museum3d-info show" id="ehSpaceInfo">WASDで歩く / ドラッグで見回す / 本に近づいてタップ</div>
+      <div class="museum3d-stick" id="ehStick"><div class="m3d-stick-knob" id="ehKnob"></div></div>
+      <button class="museum3d-view-btn" id="ehViewBtn">📖 この本を読む</button>
     `;
     document.body.appendChild(ov);
     requestAnimationFrame(() => ov.classList.add('open'));
@@ -14525,7 +14527,7 @@
     const books = [];
     EHON_BOOKS.forEach((book, i) => {
       const angle = (i / EHON_BOOKS.length) * Math.PI * 2;
-      const r = 8;
+      const r = 9;
       const g = new THREE.Group();
       // 表紙テクスチャ（高解像度＋装飾的）
       const cc = document.createElement('canvas'); cc.width = 512; cc.height = 720;
@@ -14635,7 +14637,10 @@
       }));
       halo.scale.set(5, 5, 1);
       g.add(halo);
-      g.position.set(Math.cos(angle) * r, Math.sin(angle * 1.7) * 1.5, Math.sin(angle) * r);
+      // 歩行視点に合うように高さ 1.7 (目の高さ) 付近に配置
+      g.position.set(Math.cos(angle) * r, 1.7 + Math.sin(angle * 1.7) * 0.4, Math.sin(angle) * r);
+      // 表紙が中央向き
+      bookMesh.rotation.y = Math.atan2(-g.position.x, -g.position.z);
       g.userData.angle = angle;
       g.userData.bookMesh = bookMesh;
       g.userData.book = book;
@@ -14644,27 +14649,88 @@
       books.push(g);
     });
 
-    // カメラ
-    const camera = new THREE.PerspectiveCamera(60, W()/H(), 0.1, 200);
-    camera.position.set(0, 1, 16);
-    camera.lookAt(0, 0, 0);
-    let yaw = 0, pitch = 0, targetYaw = 0, targetPitch = 0;
-    let dragging = false, lx = 0, ly = 0;
-    renderer.domElement.addEventListener('pointerdown', e => { dragging = true; lx = e.clientX; ly = e.clientY; });
+    // === 美術館スタイル: 歩行カメラ（WASD + ドラッグ視点） ===
+    const camera = new THREE.PerspectiveCamera(70, W()/H(), 0.1, 300);
+    camera.position.set(0, 1.7, 0);
+    let yaw = 0, pitch = 0;
+
+    // キー入力
+    const keys = { w:0, a:0, s:0, d:0 };
+    const onKey = (val) => (e) => {
+      if (!ov.classList.contains('open')) return;
+      const k = e.key.toLowerCase();
+      if (k === 'w' || e.key === 'ArrowUp') keys.w = val;
+      if (k === 's' || e.key === 'ArrowDown') keys.s = val;
+      if (k === 'a' || e.key === 'ArrowLeft') keys.a = val;
+      if (k === 'd' || e.key === 'ArrowRight') keys.d = val;
+    };
+    const onKD = onKey(1), onKU = onKey(0);
+    window.addEventListener('keydown', onKD);
+    window.addEventListener('keyup', onKU);
+
+    // ドラッグで見回す（lerp なし — 美術館同様にダイレクト）
+    let dragging = false, lastX = 0, lastY = 0;
+    renderer.domElement.addEventListener('pointerdown', e => {
+      dragging = true; lastX = e.clientX; lastY = e.clientY;
+    });
     renderer.domElement.addEventListener('pointermove', e => {
       if (!dragging) return;
-      targetYaw -= (e.clientX - lx) * 0.005;
-      targetPitch = Math.max(-0.5, Math.min(0.5, targetPitch - (e.clientY - ly) * 0.004));
-      lx = e.clientX; ly = e.clientY;
+      yaw -= (e.clientX - lastX) * 0.004;
+      pitch = Math.max(-1.2, Math.min(1.2, pitch - (e.clientY - lastY) * 0.004));
+      lastX = e.clientX; lastY = e.clientY;
     });
-    const stop = () => { dragging = false; };
-    renderer.domElement.addEventListener('pointerup', stop);
-    renderer.domElement.addEventListener('pointerleave', stop);
+    const stopDrag = () => { dragging = false; };
+    renderer.domElement.addEventListener('pointerup', stopDrag);
+    renderer.domElement.addEventListener('pointercancel', stopDrag);
+    renderer.domElement.addEventListener('pointerleave', stopDrag);
 
-    // クリックで本を開く
+    // モバイル: 仮想スティック
+    const stick = ov.querySelector('#ehStick');
+    const knob = ov.querySelector('#ehKnob');
+    let stickActive = false, stickDX = 0, stickDY = 0;
+    const stickStart = e => {
+      stickActive = true;
+      const t = e.touches ? e.touches[0] : e;
+      stick.dataset.cx = t.clientX; stick.dataset.cy = t.clientY;
+      stickDX = stickDY = 0; e.preventDefault();
+    };
+    const stickMove = e => {
+      if (!stickActive) return;
+      const t = e.touches ? e.touches[0] : e;
+      const cx = +stick.dataset.cx, cy = +stick.dataset.cy;
+      let dx = t.clientX - cx, dy = t.clientY - cy;
+      const d = Math.hypot(dx, dy);
+      const MAX = 40;
+      if (d > MAX) { dx = dx/d*MAX; dy = dy/d*MAX; }
+      knob.style.transform = `translate(${dx}px, ${dy}px)`;
+      stickDX = dx / MAX; stickDY = dy / MAX;
+      e.preventDefault();
+    };
+    const stickEnd = () => {
+      stickActive = false; knob.style.transform = 'translate(0,0)'; stickDX = stickDY = 0;
+    };
+    stick.addEventListener('touchstart', stickStart, { passive: false });
+    stick.addEventListener('touchmove', stickMove, { passive: false });
+    stick.addEventListener('touchend', stickEnd);
+    stick.addEventListener('mousedown', stickStart);
+    window.addEventListener('mousemove', stickMove);
+    window.addEventListener('mouseup', stickEnd);
+
+    // 「本を読む」ボタン
+    const viewBtn = ov.querySelector('#ehViewBtn');
+    let currentNear = null;
+    viewBtn.addEventListener('click', () => {
+      if (currentNear) {
+        const book = currentNear.userData.book;
+        if (book.open) book.open();
+        else openPictureBook(book);
+      }
+    });
+    // クリックで直接タップして開ける
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
     renderer.domElement.addEventListener('click', e => {
+      if (Math.abs(e.clientX - lastX) > 5 || Math.abs(e.clientY - lastY) > 5) return; // ドラッグ中は無視
       const rect = renderer.domElement.getBoundingClientRect();
       mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
@@ -14681,6 +14747,8 @@
     let running = true;
     ov.querySelector('.museum3d-close').addEventListener('click', () => {
       running = false;
+      window.removeEventListener('keydown', onKD);
+      window.removeEventListener('keyup', onKU);
       ov.classList.remove('open');
       setTimeout(() => ov.remove(), 500);
     });
@@ -14688,18 +14756,55 @@
     function animate() {
       if (!running) return;
       const t = (performance.now() - t0) / 1000;
-      yaw += (targetYaw - yaw) * 0.1;
-      pitch += (targetPitch - pitch) * 0.1;
-      camera.position.x = Math.sin(yaw) * 16 * Math.cos(pitch);
-      camera.position.z = Math.cos(yaw) * 16 * Math.cos(pitch);
-      camera.position.y = 1 + Math.sin(pitch) * 12;
-      camera.lookAt(0, 0, 0);
+      // 移動（美術館と同じスタイル）
+      const speed = 0.12;
+      const fwd = (keys.w - keys.s) - stickDY;
+      const strafe = (keys.d - keys.a) + stickDX;
+      if (Math.hypot(fwd, strafe) > 0) {
+        const nx = Math.sin(yaw), nz = -Math.cos(yaw);
+        const sx = Math.cos(yaw), sz = Math.sin(yaw);
+        camera.position.x += (nx * fwd + sx * strafe) * speed;
+        camera.position.z += (nz * fwd + sz * strafe) * speed;
+        // 半径12を超えないように
+        const d = Math.hypot(camera.position.x, camera.position.z);
+        if (d > 12) {
+          camera.position.x = camera.position.x / d * 12;
+          camera.position.z = camera.position.z / d * 12;
+        }
+      }
+      // 視線（lerp なし — yaw/pitch をそのまま使う）
+      camera.lookAt(
+        camera.position.x + Math.sin(yaw) * Math.cos(pitch) * 5,
+        camera.position.y + Math.sin(pitch) * 5,
+        camera.position.z - Math.cos(yaw) * Math.cos(pitch) * 5
+      );
       // 本がふわふわ漂う
       books.forEach((g, i) => {
-        g.position.y = g.userData.basePos.y + Math.sin(t * 0.6 + i) * 0.5;
-        g.rotation.y = Math.sin(t * 0.4 + i * 0.7) * 0.4;
-        g.rotation.x = Math.cos(t * 0.3 + i) * 0.1;
+        g.position.y = g.userData.basePos.y + Math.sin(t * 0.5 + i) * 0.3;
+        g.rotation.y = Math.sin(t * 0.3 + i * 0.7) * 0.3;
       });
+      // 最寄り本の検出（前方判定）
+      let best = null, bestD = 4;
+      books.forEach(g => {
+        const dx = g.position.x - camera.position.x;
+        const dz = g.position.z - camera.position.z;
+        const dist = Math.hypot(dx, dz);
+        if (dist < bestD) {
+          const fx = Math.sin(yaw), fz = -Math.cos(yaw);
+          const dot = (dx/dist) * fx + (dz/dist) * fz;
+          if (dot > 0.3) { best = g; bestD = dist; }
+        }
+      });
+      if (best !== currentNear) {
+        currentNear = best;
+        if (best) {
+          info.textContent = best.userData.book.title + '　—　' + best.userData.book.author;
+          info.classList.add('show');
+          viewBtn.classList.add('show');
+        } else {
+          viewBtn.classList.remove('show');
+        }
+      }
       renderer.render(scene, camera);
       requestAnimationFrame(animate);
     }
@@ -18815,6 +18920,25 @@
     let rocketPitch = -0.1;
     let rocketRoll = 0; // バンク（マリオカート的）
     const dpadState = { up:false, down:false, left:false, right:false };
+    // 🖱 マウスドラッグで視点回転（美術館スタイルの自然な視点操作）
+    let rocketDragging = false, rocketDragX = 0, rocketDragY = 0;
+    const rocketCanvas = renderer.domElement;
+    rocketCanvas.addEventListener('pointerdown', (e) => {
+      if (!rocketMode) return;
+      // 既存UI（D-padやボタン）以外でのみ
+      rocketDragging = true; rocketDragX = e.clientX; rocketDragY = e.clientY;
+    });
+    rocketCanvas.addEventListener('pointermove', (e) => {
+      if (!rocketDragging || !rocketMode) return;
+      rocketYaw   -= (e.clientX - rocketDragX) * 0.0035;
+      rocketPitch += (e.clientY - rocketDragY) * 0.0030;
+      rocketPitch = Math.max(-1.3, Math.min(1.3, rocketPitch));
+      rocketDragX = e.clientX; rocketDragY = e.clientY;
+    });
+    const rocketStopDrag = () => { rocketDragging = false; };
+    rocketCanvas.addEventListener('pointerup', rocketStopDrag);
+    rocketCanvas.addEventListener('pointercancel', rocketStopDrag);
+    rocketCanvas.addEventListener('pointerleave', rocketStopDrag);
     let thrustHold = false;
     let brakeHold = false;
     let visitedPlanet = null; // 直近訪問した惑星（連続トリガー防止）
