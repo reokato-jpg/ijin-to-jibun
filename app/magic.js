@@ -11504,14 +11504,13 @@
     if (window.THREE_READY) { try { await window.THREE_READY; } catch {} }
     const ADDONS = window.THREE_ADDONS || {};
 
-    // 👁 瞬きアニメーション — 目を閉じて、開けると魂の世界
+    // 👁 瞬き — 自然に目を閉じて、ゆっくり開ける
     const blink = document.createElement('div');
     blink.className = 'pantheon-blink';
-    blink.innerHTML = '<div class="iris"></div><div class="pantheon-blink-text">— 魂　が　目　覚　め　る —</div>';
     document.body.appendChild(blink);
     requestAnimationFrame(() => blink.classList.add('closing'));
-    // 閉じきる（1.4s）→ シーン構築 → 開く
-    await new Promise(r => setTimeout(r, 1500));
+    // 閉じきる（0.7s）+ 暗闇の余韻（0.3s） → シーン構築 → 開く
+    await new Promise(r => setTimeout(r, 1000));
 
     let currentZone = 'hub'; // 'hub' (魂の宇宙) or pantheon key (神殿内部)
     const ov = document.createElement('div');
@@ -12637,11 +12636,11 @@
 
     buildScene('hub');
 
-    // 👁 目を開く（裏でシーン構築完了）
+    // 👁 目を開く（裏でシーン構築完了）— ゆっくり 2.2s
     requestAnimationFrame(() => {
       blink.classList.remove('closing');
       blink.classList.add('opening');
-      setTimeout(() => blink.remove(), 1700);
+      setTimeout(() => blink.remove(), 2300);
     });
 
     // 入力
@@ -13068,23 +13067,24 @@
           }
         }
       });
-      // 魂が本に「ぶつかる」と自動でその神話に入る
-      if (soul && best && bestD < 1.5) {
+      // 魂が本に「ぶつかる」と自動でその神話に入る（一度きり、loop 継続）
+      if (soul && best && bestD < 1.5 && !scene.userData.entering) {
         const it = best.userData.item;
         if (it.type === 'pantheon' && currentZone === 'hub') {
-          currentZone = it.key;
-          // フラッシュ演出 → ズーム → 神話シーンへ
+          scene.userData.entering = true; // 二重発火を防ぐ
+          // フラッシュ演出（CSS のみ・要素を上に被せる）
           const flash = document.createElement('div');
           flash.style.cssText = 'position:fixed;inset:0;background:#fff;opacity:0;z-index:9998;pointer-events:none;transition:opacity 0.4s';
           document.body.appendChild(flash);
           requestAnimationFrame(() => flash.style.opacity = '1');
           setTimeout(() => {
-            buildScene(it.key);
+            currentZone = it.key;
+            try { buildScene(it.key); } catch (e) { console.warn('buildScene failed', e); }
             camera.position.set(0, 1.6, 0); yaw = 0;
             flash.style.opacity = '0';
             setTimeout(() => flash.remove(), 500);
           }, 450);
-          return;
+          // フラグ後はそのまま animate を続行（freeze 防止）
         }
       }
       if (best !== currentNear) {
@@ -14727,11 +14727,99 @@
     })));
 
     // ライト（3光源レシピ）
-    scene.add(new THREE.AmbientLight(0x6080a0, 0.6));
-    const key = new THREE.DirectionalLight(0xfff0d0, 1.6);
+    scene.add(new THREE.AmbientLight(0x6080a0, 0.7));
+    const key = new THREE.DirectionalLight(0xfff0d0, 1.7);
     key.position.set(10, 10, 10); scene.add(key);
-    const fill = new THREE.HemisphereLight(0x88bbff, 0x223344, 0.5);
+    const fill = new THREE.HemisphereLight(0x88bbff, 0x223344, 0.55);
     scene.add(fill);
+
+    // 🌹 王子様アバター（プレイヤー）
+    function buildPrinceAvatar() {
+      const p = new THREE.Group();
+      // 髪（金色のツンツン）
+      const hair = new THREE.Mesh(
+        new THREE.ConeGeometry(0.25, 0.32, 12),
+        new THREE.MeshStandardMaterial({ color: 0xffd860, roughness: 0.4, emissive: 0x6a4000, emissiveIntensity: 0.35 })
+      );
+      hair.position.y = 0.95;
+      p.add(hair);
+      // 顔
+      const face = new THREE.Mesh(
+        new THREE.SphereGeometry(0.22, 18, 14),
+        new THREE.MeshStandardMaterial({ color: 0xf8d8b0, roughness: 0.6, emissive: 0x302018, emissiveIntensity: 0.2 })
+      );
+      face.position.y = 0.7;
+      p.add(face);
+      // マフラー（黄色）
+      const scarf = new THREE.Mesh(
+        new THREE.TorusGeometry(0.24, 0.07, 10, 18),
+        new THREE.MeshStandardMaterial({ color: 0xffe040, roughness: 0.5, emissive: 0x5a3a00, emissiveIntensity: 0.3 })
+      );
+      scarf.position.y = 0.45;
+      scarf.rotation.x = Math.PI / 2;
+      p.add(scarf);
+      // マフラーの尻尾（風になびく）
+      const scarfTail = new THREE.Mesh(
+        new THREE.BoxGeometry(0.1, 0.4, 0.05),
+        new THREE.MeshStandardMaterial({ color: 0xffe040, roughness: 0.4, emissive: 0x5a3a00, emissiveIntensity: 0.3 })
+      );
+      scarfTail.position.set(0.15, 0.28, -0.16);
+      scarfTail.rotation.z = 0.4;
+      p.add(scarfTail);
+      // 胴体（緑のロングコート）
+      const body = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.22, 0.32, 0.65, 16),
+        new THREE.MeshStandardMaterial({ color: 0x3a7a4a, roughness: 0.55, emissive: 0x0a1a12, emissiveIntensity: 0.18 })
+      );
+      body.position.y = 0.07;
+      p.add(body);
+      // 腕
+      [-1, 1].forEach(side => {
+        const arm = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.055, 0.055, 0.45, 10),
+          new THREE.MeshStandardMaterial({ color: 0x3a7a4a, roughness: 0.55 })
+        );
+        arm.position.set(side * 0.25, 0.1, 0);
+        arm.rotation.z = side * 0.25;
+        p.add(arm);
+      });
+      // 足
+      [-1, 1].forEach(side => {
+        const leg = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.075, 0.085, 0.35, 10),
+          new THREE.MeshStandardMaterial({ color: 0x5a3a20, roughness: 0.65 })
+        );
+        leg.position.set(side * 0.1, -0.42, 0);
+        p.add(leg);
+      });
+      // 周囲のオーラ（魔法の光）
+      const auraTex = (() => {
+        const c = document.createElement('canvas'); c.width = 128; c.height = 128;
+        const g = c.getContext('2d');
+        const grd = g.createRadialGradient(64, 64, 0, 64, 64, 64);
+        grd.addColorStop(0, 'rgba(255,232,180,0.6)');
+        grd.addColorStop(1, 'rgba(255,232,180,0)');
+        g.fillStyle = grd; g.fillRect(0, 0, 128, 128);
+        return new THREE.CanvasTexture(c);
+      })();
+      const aura = new THREE.Sprite(new THREE.SpriteMaterial({
+        map: auraTex, color: 0xffffff,
+        transparent: true, opacity: 0.55,
+        depthWrite: false, blending: THREE.AdditiveBlending,
+      }));
+      aura.scale.set(2.5, 2.5, 1);
+      aura.position.y = 0.5;
+      p.add(aura);
+      // 自己発光
+      const glow = new THREE.PointLight(0xffe890, 0.8, 5, 1.5);
+      glow.position.y = 0.7;
+      p.add(glow);
+      return { group: p, scarfTail, aura };
+    }
+    const princeAvatar = buildPrinceAvatar();
+    const prince = princeAvatar.group;
+    prince.position.set(0, 0.4, 5); // 中央少し前
+    scene.add(prince);
 
     // 星雲（背景に2つだけ — 軽量化）
     for (let i = 0; i < 2; i++) {
@@ -14875,10 +14963,13 @@
       books.push(g);
     });
 
-    // === 美術館スタイル: 歩行カメラ（WASD + ドラッグ視点） ===
-    const camera = new THREE.PerspectiveCamera(70, W()/H(), 0.1, 300);
-    camera.position.set(0, 1.7, 0);
-    let yaw = 0, pitch = 0;
+    // === 三人称カメラ（王子様を後ろ上から追う） ===
+    const camera = new THREE.PerspectiveCamera(60, W()/H(), 0.1, 300);
+    let yaw = 0, pitch = 0.15; // 少し上から見下ろし
+    const camDist = 4.5;
+    const camHeight = 2.2;
+    camera.position.set(0, camHeight, 5 + camDist);
+    camera.lookAt(0, 1, 0);
 
     // キー入力
     const keys = { w:0, a:0, s:0, d:0 };
@@ -14894,21 +14985,44 @@
     window.addEventListener('keydown', onKD);
     window.addEventListener('keyup', onKU);
 
-    // ドラッグで見回す（lerp なし — 美術館同様にダイレクト）
+    // ドラッグでカメラを王子様の周りに回す（オービット）
     let dragging = false, lastX = 0, lastY = 0;
     renderer.domElement.addEventListener('pointerdown', e => {
       dragging = true; lastX = e.clientX; lastY = e.clientY;
     });
     renderer.domElement.addEventListener('pointermove', e => {
       if (!dragging) return;
-      yaw -= (e.clientX - lastX) * 0.004;
-      pitch = Math.max(-1.2, Math.min(1.2, pitch - (e.clientY - lastY) * 0.004));
+      yaw -= (e.clientX - lastX) * 0.0055;
+      pitch = Math.max(-0.4, Math.min(1.0, pitch + (e.clientY - lastY) * 0.0040));
       lastX = e.clientX; lastY = e.clientY;
     });
     const stopDrag = () => { dragging = false; };
     renderer.domElement.addEventListener('pointerup', stopDrag);
     renderer.domElement.addEventListener('pointercancel', stopDrag);
     renderer.domElement.addEventListener('pointerleave', stopDrag);
+    // ピンチで距離調整
+    let pinchStart = 0, pinchInitDist = 0;
+    let dynamicCamDist = camDist;
+    renderer.domElement.addEventListener('wheel', e => {
+      dynamicCamDist = Math.max(2.5, Math.min(15, dynamicCamDist + e.deltaY * 0.01));
+      e.preventDefault();
+    }, { passive: false });
+    renderer.domElement.addEventListener('touchstart', e => {
+      if (e.touches.length === 2) {
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        pinchStart = Math.hypot(dx, dy);
+        pinchInitDist = dynamicCamDist;
+      }
+    }, { passive: true });
+    renderer.domElement.addEventListener('touchmove', e => {
+      if (e.touches.length === 2) {
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        const cur = Math.hypot(dx, dy);
+        if (pinchStart > 0) dynamicCamDist = Math.max(2.5, Math.min(15, pinchInitDist * (pinchStart / cur)));
+      }
+    }, { passive: true });
 
     // モバイル: 仮想スティック
     const stick = ov.querySelector('#ehStick');
@@ -14982,49 +15096,54 @@
     function animate() {
       if (!running) return;
       const t = (performance.now() - t0) / 1000;
-      // 移動（美術館と同じスタイル）
-      const speed = 0.12;
+      // 王子様を移動（カメラ向き基準）
+      const speed = 0.10;
       const fwd = (keys.w - keys.s) - stickDY;
       const strafe = (keys.d - keys.a) + stickDX;
       if (Math.hypot(fwd, strafe) > 0) {
         const nx = Math.sin(yaw), nz = -Math.cos(yaw);
         const sx = Math.cos(yaw), sz = Math.sin(yaw);
-        camera.position.x += (nx * fwd + sx * strafe) * speed;
-        camera.position.z += (nz * fwd + sz * strafe) * speed;
-        // 半径12を超えないように
-        const d = Math.hypot(camera.position.x, camera.position.z);
-        if (d > 12) {
-          camera.position.x = camera.position.x / d * 12;
-          camera.position.z = camera.position.z / d * 12;
+        prince.position.x += (nx * fwd + sx * strafe) * speed;
+        prince.position.z += (nz * fwd + sz * strafe) * speed;
+        // 半径15を超えないように
+        const d = Math.hypot(prince.position.x, prince.position.z);
+        if (d > 15) {
+          prince.position.x = prince.position.x / d * 15;
+          prince.position.z = prince.position.z / d * 15;
         }
+        // 王子様の進行方向を向く（移動先のヨー）
+        const moveAngle = Math.atan2(nx * fwd + sx * strafe, nz * fwd + sz * strafe);
+        prince.rotation.y = moveAngle;
       }
-      // 視線（lerp なし — yaw/pitch をそのまま使う）
-      camera.lookAt(
-        camera.position.x + Math.sin(yaw) * Math.cos(pitch) * 5,
-        camera.position.y + Math.sin(pitch) * 5,
-        camera.position.z - Math.cos(yaw) * Math.cos(pitch) * 5
-      );
+      // 王子様のアイドル動作
+      prince.position.y = 0.4 + Math.sin(t * 1.5) * 0.04; // 軽い浮遊
+      princeAvatar.scarfTail.rotation.z = 0.4 + Math.sin(t * 2.5) * 0.3; // マフラー
+      princeAvatar.aura.material.opacity = 0.5 + Math.sin(t * 2.0) * 0.15;
+
+      // カメラ: 王子様を中心とした三人称オービット
+      const cd = dynamicCamDist;
+      camera.position.x = prince.position.x + Math.sin(yaw) * Math.cos(pitch) * cd;
+      camera.position.y = prince.position.y + 1.2 + Math.sin(pitch) * cd;
+      camera.position.z = prince.position.z + Math.cos(yaw) * Math.cos(pitch) * cd;
+      camera.lookAt(prince.position.x, prince.position.y + 1.0, prince.position.z);
+
       // 本がふわふわ漂う
       books.forEach((g, i) => {
         g.position.y = g.userData.basePos.y + Math.sin(t * 0.5 + i) * 0.3;
         g.rotation.y = Math.sin(t * 0.3 + i * 0.7) * 0.3;
       });
-      // 最寄り本の検出（前方判定）
-      let best = null, bestD = 4;
+      // 最寄り本の検出（王子様基準・全方位）
+      let best = null, bestD = 3.5;
       books.forEach(g => {
-        const dx = g.position.x - camera.position.x;
-        const dz = g.position.z - camera.position.z;
+        const dx = g.position.x - prince.position.x;
+        const dz = g.position.z - prince.position.z;
         const dist = Math.hypot(dx, dz);
-        if (dist < bestD) {
-          const fx = Math.sin(yaw), fz = -Math.cos(yaw);
-          const dot = (dx/dist) * fx + (dz/dist) * fz;
-          if (dot > 0.3) { best = g; bestD = dist; }
-        }
+        if (dist < bestD) { best = g; bestD = dist; }
       });
       if (best !== currentNear) {
         currentNear = best;
         if (best) {
-          info.textContent = best.userData.book.title + '　—　' + best.userData.book.author;
+          info.textContent = '🌹 ' + best.userData.book.title + '　—　' + best.userData.book.author;
           info.classList.add('show');
           viewBtn.classList.add('show');
         } else {

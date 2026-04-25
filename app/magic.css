@@ -7895,7 +7895,7 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
 .prince-hint small { font-size: 11px; color: rgba(255,200,210,0.7); }
 .prince-hint.fade { opacity: 0; }
 
-/* 👁 神殿の瞬きアニメーション（目を閉じる→開く） */
+/* 👁 神殿の瞬き — 上下の瞼が自然に閉じて、ゆっくり開く */
 .pantheon-blink {
   position: fixed; inset: 0; z-index: 99999;
   pointer-events: auto;
@@ -7906,38 +7906,26 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
 .pantheon-blink::after {
   content: '';
   position: absolute; left: 0; right: 0;
-  height: 50%;
+  height: 52%;
   background: #000;
-  transition: transform 1.4s cubic-bezier(.5,.05,.4,.95);
+  /* 閉じるときは速め（0.7s ease-in）、開くときはゆっくり（2s ease-out） */
+  transition: transform 0.7s cubic-bezier(.6,.0,.7,.0);
 }
 .pantheon-blink::before { top: 0; transform: translateY(-100%); }
 .pantheon-blink::after { bottom: 0; transform: translateY(100%); }
 .pantheon-blink.closing::before { transform: translateY(0); }
 .pantheon-blink.closing::after { transform: translateY(0); }
-.pantheon-blink .iris {
-  position: absolute; inset: 0;
-  background: radial-gradient(ellipse 0% 0% at center, transparent 0%, transparent 50%, #000 51%);
-  transition: background 1.6s cubic-bezier(.5,.05,.4,.95);
-  pointer-events: none;
+.pantheon-blink.opening::before {
+  transform: translateY(-100%);
+  transition: transform 2.2s cubic-bezier(.2,.4,.2,1);
 }
-.pantheon-blink.opening .iris {
-  background: radial-gradient(ellipse 200% 200% at center, transparent 0%, transparent 50%, transparent 51%);
+.pantheon-blink.opening::after {
+  transform: translateY(100%);
+  transition: transform 2.2s cubic-bezier(.2,.4,.2,1);
 }
-.pantheon-blink.opening::before { transform: translateY(-100%); transition-duration: 1.6s; }
-.pantheon-blink.opening::after { transform: translateY(100%); transition-duration: 1.6s; }
-.pantheon-blink-text {
-  position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  color: #ffd890;
-  font-family: 'Cormorant Garamond', 'Shippori Mincho', serif;
-  font-size: 18px; letter-spacing: 0.45em;
-  opacity: 0;
-  transition: opacity .5s;
-  text-shadow: 0 0 12px rgba(255,216,144,0.5);
-  z-index: 2;
-  white-space: nowrap;
-}
-.pantheon-blink.closing .pantheon-blink-text { opacity: 1; }
+/* 瞼の縁に淡い影（自然なまつげ感） */
+.pantheon-blink::before { box-shadow: 0 6px 16px rgba(0,0,0,0.6); }
+.pantheon-blink::after  { box-shadow: 0 -6px 16px rgba(0,0,0,0.6); }
 
 /* 📖 神々の書 — 書物風グリモワール */
 .gods-book-overlay {
