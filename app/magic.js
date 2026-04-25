@@ -15986,7 +15986,7 @@
     galaxyGeo.setAttribute('color', new THREE.BufferAttribute(galaxyCol, 3));
     galaxyGeo.setAttribute('aScale', new THREE.BufferAttribute(galaxyScale, 1));
     const galaxyMat = new THREE.ShaderMaterial({
-      uniforms: { uTime: { value: 0 }, uSize: { value: 30 * renderer.getPixelRatio() } },
+      uniforms: { uTime: { value: 0 }, uSize: { value: 16 * renderer.getPixelRatio() } },
       vertexShader: `
         attribute float aScale;
         varying vec3 vColor;
@@ -16005,7 +16005,7 @@
           vec4 projectionPosition = projectionMatrix * viewPosition;
           gl_Position = projectionPosition;
           gl_PointSize = uSize * aScale;
-          gl_PointSize *= (1.0 / -viewPosition.z);
+          gl_PointSize *= clamp(1.0 / -viewPosition.z, 0.0, 0.6); // 上限固定で近距離フリッカー防止
           vColor = color;
         }
       `,
@@ -16016,7 +16016,8 @@
           float d = distance(gl_PointCoord, vec2(0.5));
           float a = 0.05 / d - 0.1;
           if (a <= 0.0) discard;
-          gl_FragColor = vec4(vColor, a);
+          a = min(a, 0.6); // 中心の高輝度をキャップ（チカチカ防止）
+          gl_FragColor = vec4(vColor * 0.7, a);
         }
       `,
       transparent: true,
@@ -16718,7 +16719,7 @@
       if (ADDONS.EffectComposer && ADDONS.RenderPass && ADDONS.UnrealBloomPass) {
         composer = new ADDONS.EffectComposer(renderer);
         composer.addPass(new ADDONS.RenderPass(scene, camera));
-        composer.addPass(new ADDONS.UnrealBloomPass(new THREE.Vector2(W(), H()), 0.55, 0.55, 0.55));
+        composer.addPass(new ADDONS.UnrealBloomPass(new THREE.Vector2(W(), H()), 0.30, 0.6, 0.75));
         if (ADDONS.OutputPass) composer.addPass(new ADDONS.OutputPass());
       }
     } catch (e) { console.warn('koh bloom', e); composer = null; }
@@ -16827,9 +16828,11 @@
       rimLights.forEach((rl, i) => {
         rl.intensity = 0.35 + bassS * 0.45 + midS * 0.15 + Math.sin(t * 1.2 + i * 0.7) * 0.05;
       });
+      // Bloomは音楽連動を弱めて点滅(チカチカ)を抑制
       if (composer && composer.passes) {
         composer.passes.forEach(p => {
-          if (p.strength !== undefined) p.strength = 0.32 + bassS * 0.5 + trebS * 0.2;
+          if (p.strength !== undefined) p.strength = 0.30 + bassS * 0.10;
+          if (p.threshold !== undefined) p.threshold = 0.75; // 高めで点滅源を絞る
         });
       }
       // ☀ God ray の脈動
