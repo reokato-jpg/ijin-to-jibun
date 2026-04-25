@@ -18823,23 +18823,27 @@
       <canvas id="libCanvas" class="lib-canvas"></canvas>
       <div class="lib-ui">
         <button class="lib-close" aria-label="閉じる">×</button>
-        <div class="lib-head">
+        <button class="lib-search-fab" id="libSearchFab" aria-label="検索パネル">🔍 検索</button>
+        <div class="lib-head" id="libHead">
           <div class="lib-title">図 書 館</div>
           <div class="lib-sub">— Bibliotheca · 偉人 神話 神々 音楽 —</div>
         </div>
-        <div class="lib-search">
-          <input type="search" id="libSearch" placeholder="🔍 本を探す（名前・神話・分野…）" />
-          <div class="lib-tabs">
-            <button class="lib-tab active" data-kind="all">すべて</button>
-            <button class="lib-tab" data-kind="person">偉人</button>
-            <button class="lib-tab" data-kind="myth">神話</button>
-            <button class="lib-tab" data-kind="god">神々</button>
-            <button class="lib-tab" data-kind="music">音楽</button>
+        <div class="lib-search-panel" id="libSearchPanel">
+          <button class="lib-panel-close" id="libPanelClose" aria-label="検索パネルを閉じる">×</button>
+          <div class="lib-search">
+            <input type="search" id="libSearch" placeholder="🔍 本を探す（名前・神話・分野…）" />
+            <div class="lib-tabs">
+              <button class="lib-tab active" data-kind="all">すべて</button>
+              <button class="lib-tab" data-kind="person">偉人</button>
+              <button class="lib-tab" data-kind="myth">神話</button>
+              <button class="lib-tab" data-kind="god">神々</button>
+              <button class="lib-tab" data-kind="music">音楽</button>
+            </div>
           </div>
-        </div>
-        <div class="lib-results" id="libResults"></div>
-        <div class="lib-foot">
-          <span id="libCount">${allBooks.length}</span> 冊蔵書 ／ 中央のレチクルで本を見て、クリック
+          <div class="lib-results" id="libResults"></div>
+          <div class="lib-foot">
+            <span id="libCount">${allBooks.length}</span> 冊蔵書 ／ 中央のレチクルで本を見て、クリック
+          </div>
         </div>
       </div>
       <div class="lib-controls-hint">W A S D：歩く ／ Shift：早歩き ／ ドラッグ：視線</div>
@@ -18854,6 +18858,17 @@
     };
     ov.querySelector('.lib-close').addEventListener('click', close);
     ov.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+    // 検索パネルの開閉
+    const sPanel = ov.querySelector('#libSearchPanel');
+    const sFab = ov.querySelector('#libSearchFab');
+    const sClose = ov.querySelector('#libPanelClose');
+    function setPanel(open) {
+      sPanel.classList.toggle('open', open);
+      sFab.classList.toggle('hidden', open);
+    }
+    setPanel(false);
+    sFab.addEventListener('click', () => setPanel(true));
+    sClose.addEventListener('click', () => setPanel(false));
 
     // ── Three.js シーン構築 ──
     const cv = ov.querySelector('#libCanvas');
@@ -19184,11 +19199,35 @@
         dragX = e.clientX; dragY = e.clientY;
       }
     });
-    // モバイル：仮想ジョイスティック
+    // 左下：仮想ジョイスティック（移動）
     const joy = document.createElement('div');
     joy.className = 'lib-joy';
     joy.innerHTML = '<div class="lib-joy-knob" id="libJoyKnob"></div>';
     ov.appendChild(joy);
+    // 右下：視線回転パッド（透明領域、ドラッグで yaw/pitch）
+    const lookPad = document.createElement('div');
+    lookPad.className = 'lib-look';
+    lookPad.innerHTML = '<span class="lib-look-label">L O O K</span>';
+    ov.appendChild(lookPad);
+    let lookActive = false, lookPX = 0, lookPY = 0;
+    lookPad.addEventListener('pointerdown', e => {
+      e.preventDefault(); e.stopPropagation();
+      lookActive = true; lookPX = e.clientX; lookPY = e.clientY;
+    });
+    lookPad.addEventListener('pointermove', e => {
+      if (!lookActive) return;
+      e.preventDefault();
+      const dx = e.clientX - lookPX;
+      const dy = e.clientY - lookPY;
+      camYaw -= dx * 0.005;
+      camPitch -= dy * 0.004;
+      camPitch = Math.max(-1.0, Math.min(1.0, camPitch));
+      lookPX = e.clientX; lookPY = e.clientY;
+    });
+    const lookEnd = () => { lookActive = false; };
+    lookPad.addEventListener('pointerup', lookEnd);
+    lookPad.addEventListener('pointercancel', lookEnd);
+    lookPad.addEventListener('pointerleave', lookEnd);
     const joyKnob = joy.querySelector('#libJoyKnob');
     let joyActive = false, joyDX = 0, joyDY = 0;
     const JOY_R = 50;
