@@ -14335,15 +14335,24 @@
     const stage = ov.querySelector('#kohStage');
     const W = () => stage.clientWidth || window.innerWidth;
     const H = () => stage.clientHeight || window.innerHeight;
-    // 🌐 KOHは「夢」なので画質優先（antialias+高解像度）
-    const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+    // 📱 モバイル/低性能機検出 → 軽量モードで発熱抑制
+    const IS_MOBILE = /android|iphone|ipad|mobile/i.test(navigator.userAgent) || (navigator.maxTouchPoints || 0) > 1;
+    const LOW_PERF = IS_MOBILE || (navigator.hardwareConcurrency || 4) <= 4;
+    // 画質優先だが低性能機では PixelRatio を下げて発熱を抑える
+    const renderer = new THREE.WebGLRenderer({
+      antialias: !LOW_PERF, // モバイルは MSAA 無効でフィルレート節約
+      powerPreference: LOW_PERF ? 'low-power' : 'high-performance',
+    });
     renderer.shadowMap.enabled = false;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, LOW_PERF ? 0.85 : 1.5));
     renderer.setSize(W(), H());
     if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.15;
     if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
     stage.appendChild(renderer.domElement);
+    // 上限フレームレート（モバイルは 30fps、PCは 60fps）
+    const TARGET_FPS = LOW_PERF ? 30 : 60;
+    const FRAME_INTERVAL = 1000 / TARGET_FPS;
 
     const scene = new THREE.Scene();
     const moodColor = new THREE.Color(config.music.mood);
@@ -16917,7 +16926,7 @@
       eden3D.add(grass);
       // 草の点（点光源との反射）
       const blGeo = new THREE.BufferGeometry();
-      const BLN = 4000;
+      const BLN = LOW_PERF ? 1200 : 4000;
       const bp = new Float32Array(BLN * 3);
       const bc = new Float32Array(BLN * 3);
       for (let i = 0; i < BLN; i++) {
@@ -17005,7 +17014,7 @@
     // 樹木80本を r=29.5〜38 にクラスタ配置（風揺れ用に refs 保持）
     const swayTrees = [];
     {
-      const treeCount = 80;
+      const treeCount = LOW_PERF ? 32 : 80;
       for (let i = 0; i < treeCount; i++) {
         const a = Math.random() * Math.PI * 2;
         const r = 29.5 + Math.random() * 8.5;
@@ -17028,7 +17037,7 @@
     // 野花（カラフル点）
     {
       const flGeo = new THREE.BufferGeometry();
-      const FN = 800;
+      const FN = LOW_PERF ? 200 : 800;
       const fp = new Float32Array(FN * 3);
       const fc = new Float32Array(FN * 3);
       const flowerColors = [[1,0.4,0.5],[1,0.8,0.3],[0.7,0.5,1],[1,1,0.95],[0.95,0.6,0.95]];
@@ -17070,7 +17079,7 @@
     // ボリューム god ray（粒子 fog）
     {
       const dust = new THREE.BufferGeometry();
-      const DCN = 350;
+      const DCN = LOW_PERF ? 100 : 350;
       const dpa = new Float32Array(DCN * 3);
       for (let i = 0; i < DCN; i++) {
         const a = Math.random() * Math.PI * 2;
@@ -17116,11 +17125,12 @@
         gltf.scene.traverse(o => { if (o.isSkinnedMesh && !source) source = o; });
         if (!source) source = gltf.scene.children[0] || gltf.scene;
         if (!source) return;
-        for (let k = 0; k < 4; k++) {
+        const flamingoCount = LOW_PERF ? 2 : 4;
+        for (let k = 0; k < flamingoCount; k++) {
           const bird = cloneFn(source);
           bird.scale.set(0.05, 0.05, 0.05);
           const orbit = 30 + k * 1.5;
-          const angle = (k / 4) * Math.PI * 2;
+          const angle = (k / flamingoCount) * Math.PI * 2;
           bird.position.set(Math.cos(angle) * orbit, 14 + k * 0.6, Math.sin(angle) * orbit);
           bird.rotation.y = angle + Math.PI / 2;
           eden3D.add(bird);
@@ -17135,7 +17145,8 @@
         gltf.scene.traverse(o => { if (o.isSkinnedMesh && !parrot) parrot = o; });
         if (!parrot) parrot = gltf.scene.children[0] || gltf.scene;
         if (!parrot) return;
-        for (let k = 0; k < 2; k++) {
+        const parrotCount = LOW_PERF ? 1 : 2;
+        for (let k = 0; k < parrotCount; k++) {
           const p = cloneFn(parrot);
           p.scale.set(0.06, 0.06, 0.06);
           const a = (k / 2) * Math.PI * 2 + 0.7;
@@ -17154,10 +17165,11 @@
         gltf.scene.traverse(o => { if (o.isSkinnedMesh && !source) source = o; });
         if (!source) source = gltf.scene.children[0] || gltf.scene;
         if (!source) return;
-        for (let k = 0; k < 3; k++) {
+        const horseCount = LOW_PERF ? 2 : 3;
+        for (let k = 0; k < horseCount; k++) {
           const horse = cloneFn(source);
           horse.scale.set(0.04, 0.04, 0.04);
-          const a = (k / 3) * Math.PI * 2 + 1.1;
+          const a = (k / horseCount) * Math.PI * 2 + 1.1;
           const r = 32 + k * 0.8;
           horse.position.set(Math.cos(a) * r, -1.3, Math.sin(a) * r);
           horse.rotation.y = a + Math.PI / 2;
@@ -17170,10 +17182,11 @@
       // 🦊 キツネ（idle / walk アニメ付き、よく動く）
       gltfLoader.load(baseUrl + 'Fox/glTF-Binary/Fox.glb', (gltf) => {
         let source = gltf.scene;
-        for (let k = 0; k < 3; k++) {
+        const foxCount = LOW_PERF ? 2 : 3;
+        for (let k = 0; k < foxCount; k++) {
           const fox = cloneFn(source);
           fox.scale.set(0.018, 0.018, 0.018);
-          const a = (k / 3) * Math.PI * 2 + 0.4;
+          const a = (k / foxCount) * Math.PI * 2 + 0.4;
           const r = 31 + k * 0.6;
           fox.position.set(Math.cos(a) * r, -1.3, Math.sin(a) * r);
           fox.rotation.y = a + Math.PI / 2;
@@ -17192,10 +17205,11 @@
         gltf.scene.traverse(o => { if (o.isSkinnedMesh && !source) source = o; });
         if (!source) source = gltf.scene.children[0] || gltf.scene;
         if (!source) return;
-        for (let k = 0; k < 3; k++) {
+        const storkCount = LOW_PERF ? 2 : 3;
+        for (let k = 0; k < storkCount; k++) {
           const stork = cloneFn(source);
           stork.scale.set(0.04, 0.04, 0.04);
-          const a = (k / 3) * Math.PI * 2 + 0.9;
+          const a = (k / storkCount) * Math.PI * 2 + 0.9;
           const r = 31 + k;
           stork.position.set(Math.cos(a) * r, 9 + k * 0.4, Math.sin(a) * r);
           stork.rotation.y = a + Math.PI / 2;
@@ -17608,7 +17622,7 @@
 
     // ✨ 蛍（地上を漂う発光粒子）
     {
-      const FIRE_N = 60;
+      const FIRE_N = LOW_PERF ? 20 : 60;
       const fGeo = new THREE.BufferGeometry();
       const fp = new Float32Array(FIRE_N * 3);
       for (let i = 0; i < FIRE_N; i++) {
@@ -18126,9 +18140,9 @@
     godRay.material.opacity = 0.3;
     scene.add(godRay);
 
-    // ✨ Bloom ポストプロセス
+    // ✨ Bloom ポストプロセス（モバイルは無効化、発熱の主要因のひとつ）
     let composer = null;
-    try {
+    if (!LOW_PERF) try {
       if (ADDONS.EffectComposer && ADDONS.RenderPass && ADDONS.UnrealBloomPass) {
         composer = new ADDONS.EffectComposer(renderer);
         composer.addPass(new ADDONS.RenderPass(scene, camera));
@@ -18159,11 +18173,20 @@
 
     const t0 = performance.now();
     let lastT = t0;
+    let lastRender = 0;
+    let frameCount = 0;
     let bassS = 0, midS = 0, trebS = 0; // smoothed
     let prevBass = 0;
     function animate() {
       if (!running) return;
       const now = performance.now();
+      // 🔥 発熱対策：フレームレート上限（モバイル30fps、PC60fps）
+      if (now - lastRender < FRAME_INTERVAL - 1) {
+        requestAnimationFrame(animate);
+        return;
+      }
+      lastRender = now;
+      frameCount++;
       const dt = Math.min(0.05, (now - lastT) / 1000);
       lastT = now;
       const t = (now - t0) / 1000;
@@ -18520,28 +18543,28 @@
                 // 新ヘディングは現在から ±60度
                 u.headingTarget = u.heading + (Math.random() - 0.5) * (Math.PI / 1.5);
               }
-              // ── 群れ引力（同種で半径10以内に同種がいたら少しその方向へ） ──
-              let herdX = 0, herdZ = 0, herdN = 0;
-              walkers.forEach(b => {
-                if (b === a || b.userData.species !== u.species) return;
-                const ddx = b.position.x - a.position.x;
-                const ddz = b.position.z - a.position.z;
-                const dist = Math.hypot(ddx, ddz);
-                if (dist > 0.5 && dist < 10) {
-                  // 近すぎる(<2)場合は離れる、遠い場合は引き寄せる
-                  const w = dist < 2.5 ? -1 : (dist < 6 ? 0.3 : 0.6);
-                  herdX += (ddx / dist) * w;
-                  herdZ += (ddz / dist) * w;
-                  herdN++;
+              // ── 群れ引力 — O(n²)なので発熱対策で 3フレーム毎にだけ計算 ──
+              if (frameCount % 3 === 0) {
+                let herdX = 0, herdZ = 0, herdN = 0;
+                walkers.forEach(b => {
+                  if (b === a || b.userData.species !== u.species) return;
+                  const ddx = b.position.x - a.position.x;
+                  const ddz = b.position.z - a.position.z;
+                  const dist = Math.hypot(ddx, ddz);
+                  if (dist > 0.5 && dist < 10) {
+                    const w = dist < 2.5 ? -1 : (dist < 6 ? 0.3 : 0.6);
+                    herdX += (ddx / dist) * w;
+                    herdZ += (ddz / dist) * w;
+                    herdN++;
+                  }
+                });
+                if (herdN > 0) {
+                  const herdHeading = Math.atan2(herdZ, herdX);
+                  let dHerd = herdHeading - u.headingTarget;
+                  while (dHerd > Math.PI) dHerd -= Math.PI * 2;
+                  while (dHerd < -Math.PI) dHerd += Math.PI * 2;
+                  u.headingTarget += dHerd * 0.15;
                 }
-              });
-              if (herdN > 0) {
-                const herdHeading = Math.atan2(herdZ, herdX);
-                // 群れ方向に headingTarget を 15% 寄せる
-                let dHerd = herdHeading - u.headingTarget;
-                while (dHerd > Math.PI) dHerd -= Math.PI * 2;
-                while (dHerd < -Math.PI) dHerd += Math.PI * 2;
-                u.headingTarget += dHerd * 0.15;
               }
               // ── ゾーン外に出そうなら中央へ向かわせる ──
               const dist0 = Math.hypot(a.position.x, a.position.z);
