@@ -10574,24 +10574,37 @@
         g.strokeStyle = '#2a1a08'; g.lineWidth = 1;
         g.strokeRect(6, 6, 500, 500);
       } else {
-        const grd = g.createLinearGradient(0,0,512,512);
-        grd.addColorStop(0, '#d8d0c0'); grd.addColorStop(0.5, '#b0a895'); grd.addColorStop(1, '#e0d8c8');
-        g.fillStyle = grd; g.fillRect(0,0,512,512);
-        for (let i = 0; i < 40; i++) {
-          g.strokeStyle = `rgba(${80+Math.random()*60},${70+Math.random()*40},${50+Math.random()*30},${0.1+Math.random()*0.3})`;
-          g.lineWidth = 0.5 + Math.random() * 1.5;
-          g.beginPath();
-          let x = Math.random()*512, y = Math.random()*512;
-          g.moveTo(x, y);
-          for (let k = 0; k < 20; k++) {
-            x += (Math.random()-0.5)*40; y += (Math.random()-0.5)*40;
-            g.lineTo(x, y);
+        // 🌳 どうぶつの森風 — ヘリンボーン木目床（暖色クリーム）
+        g.fillStyle = '#e8c890'; g.fillRect(0,0,512,512);
+        // ヘリンボーン板（互い違いの長方形）
+        const plankW = 28, plankH = 92;
+        for (let y = -plankH; y < 512 + plankH; y += plankH / 2) {
+          for (let x = -plankW; x < 512 + plankW; x += plankW * 4) {
+            const offset = ((y / (plankH / 2)) % 2 === 0) ? 0 : plankW * 2;
+            const px = x + offset;
+            const tone = 200 + Math.floor(Math.random() * 50);
+            // 縦板
+            g.fillStyle = `rgb(${tone},${Math.floor(tone*0.78)},${Math.floor(tone*0.55)})`;
+            g.fillRect(px, y, plankW, plankH);
+            // 横板（隣）
+            g.fillStyle = `rgb(${tone-20},${Math.floor((tone-20)*0.76)},${Math.floor((tone-20)*0.53)})`;
+            g.fillRect(px + plankW, y, plankH, plankW);
+            // 木目線
+            g.strokeStyle = 'rgba(120,80,40,0.35)';
+            g.lineWidth = 0.6;
+            for (let s = 0; s < 4; s++) {
+              g.beginPath();
+              g.moveTo(px + 2 + s * (plankW / 4), y + 2);
+              g.lineTo(px + 2 + s * (plankW / 4), y + plankH - 2);
+              g.stroke();
+            }
+            // 板の縁
+            g.strokeStyle = 'rgba(80,50,25,0.5)';
+            g.lineWidth = 1;
+            g.strokeRect(px, y, plankW, plankH);
+            g.strokeRect(px + plankW, y, plankH, plankW);
           }
-          g.stroke();
         }
-        g.strokeStyle = 'rgba(40,30,20,0.3)';
-        g.lineWidth = 1;
-        for (let i = 0; i < 8; i++) { g.beginPath(); g.moveTo(i*64, 0); g.lineTo(i*64, 512); g.stroke(); g.beginPath(); g.moveTo(0, i*64); g.lineTo(512, i*64); g.stroke(); }
       }
       const t = new THREE.CanvasTexture(c);
       t.wrapS = t.wrapT = THREE.RepeatWrapping;
@@ -10619,13 +10632,36 @@
         g.fillRect(0, 500, 512, 12);
         g.fillRect(0, 250, 512, 8);
       } else {
-        g.fillStyle = '#6a5a48'; g.fillRect(0,0,512,512);
-        for (let i = 0; i < 500; i++) {
-          g.fillStyle = `rgba(${60+Math.random()*50},${45+Math.random()*35},${30+Math.random()*25},${0.2+Math.random()*0.3})`;
-          g.fillRect(Math.random()*512, Math.random()*512, 1+Math.random()*3, 1+Math.random()*3);
+        // 🌸 どうぶつの森風 — クリーム色の漆喰壁＋下部に木の腰板
+        const grd = g.createLinearGradient(0, 0, 0, 512);
+        grd.addColorStop(0, '#fdf2dc');     // 上：明るいクリーム
+        grd.addColorStop(0.55, '#f4e0b8');   // 中：ベージュ
+        grd.addColorStop(0.65, '#c89060');   // 腰板上端
+        grd.addColorStop(1, '#a07040');      // 腰板下端（木）
+        g.fillStyle = grd; g.fillRect(0, 0, 512, 512);
+        // 漆喰の質感（細かいノイズ）
+        for (let i = 0; i < 300; i++) {
+          g.fillStyle = `rgba(255, 230, 180, ${0.05 + Math.random() * 0.1})`;
+          g.fillRect(Math.random()*512, Math.random()*340, 1+Math.random()*1.5, 1+Math.random()*1.5);
         }
-        g.strokeStyle = 'rgba(200,170,110,0.15)'; g.lineWidth = 1;
-        for (let i = 0; i < 8; i++) { g.beginPath(); g.moveTo(i*64, 0); g.lineTo(i*64, 512); g.stroke(); }
+        // 腰板の木目（縦線）
+        g.strokeStyle = 'rgba(80, 50, 20, 0.45)';
+        g.lineWidth = 1.2;
+        for (let x = 0; x < 512; x += 36) {
+          g.beginPath(); g.moveTo(x, 320); g.lineTo(x, 512); g.stroke();
+        }
+        // 腰板上端の金色トリム
+        g.fillStyle = '#e0b878';
+        g.fillRect(0, 318, 512, 5);
+        // 上部のドット模様（カワイイ装飾）
+        g.fillStyle = 'rgba(220, 180, 130, 0.5)';
+        for (let row = 0; row < 4; row++) {
+          for (let col = 0; col < 8; col++) {
+            const cx = col * 64 + 32 + (row % 2) * 16;
+            const cy = 30 + row * 50;
+            g.beginPath(); g.arc(cx, cy, 4, 0, Math.PI * 2); g.fill();
+          }
+        }
       }
       const t = new THREE.CanvasTexture(c);
       t.wrapS = t.wrapT = THREE.RepeatWrapping;
@@ -10668,16 +10704,32 @@
           g.beginPath(); g.moveTo(cx, cy-8); g.lineTo(cx+8, cy); g.lineTo(cx, cy+8); g.lineTo(cx-8, cy); g.closePath(); g.stroke();
         }
       } else {
-        const grd = g.createRadialGradient(128, 128, 20, 128, 128, 128);
-        grd.addColorStop(0, '#fff0c0'); grd.addColorStop(0.5, '#8a6030'); grd.addColorStop(1, '#2a1808');
-        g.fillStyle = grd; g.fillRect(0,0,256,256);
-        g.strokeStyle = 'rgba(255,220,160,0.4)'; g.lineWidth = 2;
-        for (let i = 0; i < 8; i++) {
-          const a = (i/8) * Math.PI * 2;
-          g.beginPath(); g.moveTo(128, 128); g.lineTo(128+Math.cos(a)*120, 128+Math.sin(a)*120); g.stroke();
+        // 🌼 どうぶつの森風 — 明るいクリーム天井＋格子＋花柄
+        g.fillStyle = '#fdf2dc'; g.fillRect(0, 0, 256, 256);
+        // 木の格子（梁）
+        g.strokeStyle = '#c89860'; g.lineWidth = 4;
+        for (let i = 0; i <= 4; i++) {
+          g.beginPath(); g.moveTo(0, i * 64); g.lineTo(256, i * 64); g.stroke();
+          g.beginPath(); g.moveTo(i * 64, 0); g.lineTo(i * 64, 256); g.stroke();
         }
-        g.beginPath(); g.arc(128,128,60,0,Math.PI*2); g.stroke();
-        g.beginPath(); g.arc(128,128,100,0,Math.PI*2); g.stroke();
+        // 各マスに花柄（4枚花弁の小花）
+        g.fillStyle = '#f4b8a0'; // ペールピンク
+        for (let row = 0; row < 4; row++) {
+          for (let col = 0; col < 4; col++) {
+            const cx = col * 64 + 32, cy = row * 64 + 32;
+            // 花弁×4
+            for (let p = 0; p < 4; p++) {
+              const a = (p / 4) * Math.PI * 2;
+              g.beginPath();
+              g.ellipse(cx + Math.cos(a) * 6, cy + Math.sin(a) * 6, 5, 8, a, 0, Math.PI * 2);
+              g.fill();
+            }
+            // 花の中心
+            g.fillStyle = '#ffe080';
+            g.beginPath(); g.arc(cx, cy, 3, 0, Math.PI * 2); g.fill();
+            g.fillStyle = '#f4b8a0';
+          }
+        }
       }
       const t = new THREE.CanvasTexture(c);
       if (isWa) { t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(4, 4); }
@@ -10763,15 +10815,116 @@
     }
     scene.add(chandelier);
 
-    // 環境光（美術館らしくしっかり明るく）
-    scene.add(new THREE.AmbientLight(isWa ? 0xb08858 : 0xe0c8a8, 1.6));
-    const hemi = new THREE.HemisphereLight(isWa ? 0xffd890 : 0xfff0c8, 0x6a5238, 1.4);
+    // 環境光（どうぶつの森風：明るく暖かく、広く均一）
+    scene.add(new THREE.AmbientLight(isWa ? 0xb08858 : 0xfff0d4, isWa ? 1.6 : 2.0));
+    const hemi = new THREE.HemisphereLight(isWa ? 0xffd890 : 0xfff8e0, isWa ? 0x6a5238 : 0xc89868, isWa ? 1.4 : 1.8);
     scene.add(hemi);
-    // フィルライト（補助）
-    const fill1 = new THREE.DirectionalLight(0xfff0d8, 0.6);
+    // フィルライト（補助、暖色寄せ）
+    const fill1 = new THREE.DirectionalLight(0xfff0d8, isWa ? 0.6 : 0.85);
     fill1.position.set(8, 10, 8); scene.add(fill1);
-    const fill2 = new THREE.DirectionalLight(0xd8e8ff, 0.4);
+    const fill2 = new THREE.DirectionalLight(isWa ? 0xd8e8ff : 0xfff8e0, isWa ? 0.4 : 0.55);
     fill2.position.set(-8, 8, -8); scene.add(fill2);
+
+    // 🌿 どうぶつの森風デコレーション（洋ホールのみ：観葉植物・ベンチ）
+    if (!isWa) {
+      // 観葉植物（壁沿いに6個）
+      for (let i = 0; i < 6; i++) {
+        const a = (i / 6) * Math.PI * 2 + wallAngle / 2;
+        const px = Math.cos(a) * (radius - 1.6);
+        const pz = Math.sin(a) * (radius - 1.6);
+        const plantGroup = new THREE.Group();
+        // 鉢（テラコッタ）
+        const pot = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.32, 0.40, 0.45, 12),
+          new THREE.MeshStandardMaterial({ color: 0xc06030, roughness: 0.85 })
+        );
+        pot.position.y = 0.225;
+        plantGroup.add(pot);
+        // 鉢の縁（黒い線）
+        const rim = new THREE.Mesh(
+          new THREE.TorusGeometry(0.32, 0.04, 8, 16),
+          new THREE.MeshStandardMaterial({ color: 0x6a3010, roughness: 0.7 })
+        );
+        rim.rotation.x = Math.PI / 2;
+        rim.position.y = 0.45;
+        plantGroup.add(rim);
+        // 葉（5〜7枚の球をランダム配置、大きさ違い）
+        const leafCount = 5 + Math.floor(Math.random() * 3);
+        const leafColor = new THREE.Color().setHSL(0.30 + Math.random() * 0.06, 0.55, 0.36);
+        for (let l = 0; l < leafCount; l++) {
+          const leaf = new THREE.Mesh(
+            new THREE.SphereGeometry(0.22 + Math.random() * 0.16, 10, 8),
+            new THREE.MeshStandardMaterial({ color: leafColor, roughness: 0.85, flatShading: true })
+          );
+          leaf.position.set(
+            (Math.random() - 0.5) * 0.4,
+            0.55 + Math.random() * 0.55,
+            (Math.random() - 0.5) * 0.4
+          );
+          plantGroup.add(leaf);
+        }
+        plantGroup.position.set(px, 0, pz);
+        scene.add(plantGroup);
+      }
+      // ベンチ（中央寄りに4基）
+      for (let i = 0; i < 4; i++) {
+        const a = (i / 4) * Math.PI * 2 + wallAngle / 4;
+        const r = radius * 0.55;
+        const bx = Math.cos(a) * r, bz = Math.sin(a) * r;
+        const bench = new THREE.Group();
+        // 座面（木）
+        const seat = new THREE.Mesh(
+          new THREE.BoxGeometry(1.6, 0.10, 0.5),
+          new THREE.MeshStandardMaterial({ color: 0xc88858, roughness: 0.65 })
+        );
+        seat.position.y = 0.45;
+        bench.add(seat);
+        // 背もたれ
+        const back = new THREE.Mesh(
+          new THREE.BoxGeometry(1.6, 0.55, 0.06),
+          new THREE.MeshStandardMaterial({ color: 0xb87848, roughness: 0.7 })
+        );
+        back.position.set(0, 0.78, -0.22);
+        bench.add(back);
+        // 脚×4
+        const legMat = new THREE.MeshStandardMaterial({ color: 0x6a3818, roughness: 0.7 });
+        [[-0.7, 0.18], [0.7, 0.18], [-0.7, -0.18], [0.7, -0.18]].forEach(([lx, lz]) => {
+          const leg = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.45, 0.08), legMat);
+          leg.position.set(lx, 0.225, lz);
+          bench.add(leg);
+        });
+        bench.position.set(bx, 0, bz);
+        bench.rotation.y = a + Math.PI;
+        scene.add(bench);
+      }
+      // 床に絨毯（中央の丸ラグ、円形パステル）
+      const rugTex = (() => {
+        const c = document.createElement('canvas'); c.width = 256; c.height = 256;
+        const g = c.getContext('2d');
+        const grd = g.createRadialGradient(128, 128, 0, 128, 128, 128);
+        grd.addColorStop(0, '#fde8d0');
+        grd.addColorStop(0.55, '#f4c098');
+        grd.addColorStop(1, '#e89868');
+        g.fillStyle = grd; g.fillRect(0, 0, 256, 256);
+        // 同心円のドット模様
+        g.fillStyle = '#ffffff';
+        for (let r = 30; r < 120; r += 22) {
+          const dots = Math.max(8, Math.floor(r / 4));
+          for (let d = 0; d < dots; d++) {
+            const a = (d / dots) * Math.PI * 2;
+            g.beginPath(); g.arc(128 + Math.cos(a) * r, 128 + Math.sin(a) * r, 2.5, 0, Math.PI * 2); g.fill();
+          }
+        }
+        return new THREE.CanvasTexture(c);
+      })();
+      const rug = new THREE.Mesh(
+        new THREE.CircleGeometry(radius * 0.35, 48),
+        new THREE.MeshStandardMaterial({ map: rugTex, roughness: 0.9 })
+      );
+      rug.rotation.x = -Math.PI / 2;
+      rug.position.y = 0.005;
+      scene.add(rug);
+    }
 
     // 和ホール: 壁の四隅に赤提灯を吊り下げる
     if (isWa) {
