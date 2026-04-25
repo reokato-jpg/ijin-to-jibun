@@ -14825,6 +14825,141 @@
       return c;
     }
 
+    // 🎭 演奏者シルエット — Canvas で絵描き、Plane に貼り付けてビルボード
+    // 影絵スタイルで「楽団員らしさ」を演出（3Dプリミティブより遥かにクオリティ高い）
+    function makeSilhouettePlayer(x, z, instrument = 'violin') {
+      const c = document.createElement('canvas'); c.width = 256; c.height = 384;
+      const g = c.getContext('2d');
+      // 透過背景
+      g.clearRect(0, 0, 256, 384);
+      // 演奏者本体を黒シルエットで描く
+      g.fillStyle = 'rgba(8,8,16,0.95)';
+      g.strokeStyle = 'rgba(8,8,16,1)';
+      g.lineWidth = 1;
+      // 共通: 頭
+      g.beginPath();
+      g.arc(128, 70, 28, 0, Math.PI * 2);
+      g.fill();
+      // 髪のシルエット（後頭部にちょっとボリューム）
+      g.beginPath();
+      g.arc(128, 60, 30, Math.PI * 0.95, Math.PI * 2.05);
+      g.fill();
+      // 首
+      g.fillRect(120, 95, 16, 14);
+      // 肩
+      g.beginPath();
+      g.moveTo(80, 110);
+      g.bezierCurveTo(95, 105, 161, 105, 176, 110);
+      g.lineTo(168, 130); g.lineTo(88, 130); g.closePath();
+      g.fill();
+      // 上半身（座っている演奏服）
+      g.beginPath();
+      g.moveTo(85, 130);
+      g.bezierCurveTo(82, 200, 78, 250, 80, 290);
+      g.lineTo(176, 290);
+      g.bezierCurveTo(178, 250, 174, 200, 171, 130);
+      g.closePath();
+      g.fill();
+      // 太もも（座位、前に伸びる）
+      g.beginPath();
+      g.moveTo(75, 290);
+      g.bezierCurveTo(70, 320, 70, 350, 95, 360);
+      g.lineTo(135, 360);
+      g.lineTo(135, 290);
+      g.closePath();
+      g.fill();
+      g.beginPath();
+      g.moveTo(125, 290);
+      g.lineTo(125, 360);
+      g.lineTo(165, 360);
+      g.bezierCurveTo(190, 350, 190, 320, 185, 290);
+      g.closePath();
+      g.fill();
+      // 楽器ごとの追加描画（白で輪郭、明るい色のハイライト）
+      if (instrument === 'violin') {
+        // バイオリン本体（顎の下）
+        g.fillStyle = 'rgba(120,60,30,0.95)';
+        g.beginPath();
+        g.ellipse(168, 120, 32, 14, -0.5, 0, Math.PI*2);
+        g.fill();
+        g.fillStyle = 'rgba(8,8,16,0.95)';
+        // 弓
+        g.strokeStyle = 'rgba(180,180,180,0.85)';
+        g.lineWidth = 2;
+        g.beginPath();
+        g.moveTo(195, 95); g.lineTo(245, 80);
+        g.stroke();
+        // 腕（弓を持つ）
+        g.fillStyle = 'rgba(8,8,16,0.95)';
+        g.beginPath();
+        g.moveTo(168, 130); g.bezierCurveTo(200, 130, 230, 110, 240, 90);
+        g.lineTo(245, 95); g.bezierCurveTo(235, 120, 210, 145, 178, 145);
+        g.closePath();
+        g.fill();
+      } else if (instrument === 'cello') {
+        // チェロ本体（脚の間に立てる、大きい）
+        g.fillStyle = 'rgba(140,70,30,0.95)';
+        g.beginPath();
+        g.ellipse(128, 230, 38, 70, 0, 0, Math.PI*2);
+        g.fill();
+        // ネックと弦
+        g.strokeStyle = 'rgba(40,30,20,0.9)';
+        g.lineWidth = 4;
+        g.beginPath();
+        g.moveTo(128, 165); g.lineTo(128, 165 - 100);
+        g.stroke();
+        // F字孔（白い細線2本）
+        g.strokeStyle = 'rgba(0,0,0,1)';
+        g.lineWidth = 1.5;
+        g.beginPath();
+        g.moveTo(110, 215); g.lineTo(115, 235);
+        g.moveTo(141, 215); g.lineTo(146, 235);
+        g.stroke();
+        // 弓
+        g.strokeStyle = 'rgba(180,180,180,0.8)';
+        g.lineWidth = 2;
+        g.beginPath();
+        g.moveTo(170, 200); g.lineTo(225, 215);
+        g.stroke();
+      } else if (instrument === 'flute') {
+        // フルート（横向きに構える）
+        g.fillStyle = 'rgba(220,220,220,0.95)';
+        g.fillRect(135, 100, 70, 4);
+        // 唇
+        g.fillStyle = 'rgba(180,80,80,0.6)';
+        g.fillRect(150, 96, 10, 2);
+      } else if (instrument === 'piano') {
+        // 鍵盤の前で手を構える（手）
+        g.fillStyle = 'rgba(8,8,16,0.95)';
+        g.fillRect(85, 200, 30, 8);
+        g.fillRect(141, 200, 30, 8);
+      }
+
+      const tex = new THREE.CanvasTexture(c);
+      if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace;
+      tex.minFilter = THREE.LinearFilter;
+      const sil = new THREE.Mesh(
+        new THREE.PlaneGeometry(1.2, 1.8),
+        new THREE.MeshStandardMaterial({
+          map: tex, transparent: true, side: THREE.DoubleSide,
+          roughness: 0.7, alphaTest: 0.05,
+        })
+      );
+      sil.position.set(x, 0.9, z);
+      // ビルボード化: animate でカメラ向きに回転
+      sil.userData.isBillboard = true;
+      // 椅子（小さめのシルエット風）
+      const chair = new THREE.Mesh(
+        new THREE.BoxGeometry(0.55, 0.5, 0.5),
+        new THREE.MeshStandardMaterial({ color: 0x141014, roughness: 0.85 })
+      );
+      chair.position.set(x, 0.25, z);
+      const grp = new THREE.Group();
+      grp.add(chair); grp.add(sil);
+      scene.add(grp);
+      return { group: grp, billboard: sil };
+    }
+
     function makePlayer(x, z, color = 0x14101a, hasInstrument = 'violin') {
       const g = new THREE.Group();
       const chair = buildConcertChair(0x3a2010);
@@ -14876,43 +15011,42 @@
       return g;
     }
 
-    // 🎻 オーケストラ（リアル配置: 弧形配列、譜面台付き）
+    // 🎻 オーケストラ（影絵スタイル — Canvas 2D シルエット）
     const orchestra = [];
-    // 第1バイオリン（左前、弧形 6人）
+    // 第1バイオリン（左前、弧形 6人）+ 譜面台
     for (let i = 0; i < 6; i++) {
       const a = -Math.PI/3 + (i / 5) * (Math.PI/3);
       const x = Math.sin(a) * 3.2 - 1.5, z = Math.cos(a) * 3.2 - 2;
       const angToCenter = Math.atan2(-x, -z + 1.5);
-      orchestra.push(makePlayer(x, z, 0x14101a, 'violin'));
+      orchestra.push(makeSilhouettePlayer(x, z, 'violin'));
       scene.add(makeMusicStand(x + Math.cos(angToCenter)*0.5, z + Math.sin(angToCenter)*0.5, angToCenter));
     }
-    // 第2バイオリン（右前、弧形 5人）
+    // 第2バイオリン
     for (let i = 0; i < 5; i++) {
       const a = -Math.PI/4 + (i / 4) * (Math.PI/3);
       const x = Math.sin(a) * 3.2 + 1.5, z = Math.cos(a) * 3.2 - 2;
-      orchestra.push(makePlayer(x, z, 0x14101a, 'violin'));
+      orchestra.push(makeSilhouettePlayer(x, z, 'violin'));
     }
-    // ヴィオラ（中央後ろ、4人）
+    // ヴィオラ（中央後ろ）
     for (let i = 0; i < 4; i++) {
-      const x = -1.5 + i, z = -3.5;
-      orchestra.push(makePlayer(x, z, 0x14101a, 'violin'));
+      orchestra.push(makeSilhouettePlayer(-1.5 + i, -3.5, 'violin'));
     }
-    // チェロ（左後ろ、4人）
+    // チェロ
     for (let i = 0; i < 4; i++) {
       const a = -Math.PI/4 + (i / 3) * (Math.PI/3);
-      orchestra.push(makePlayer(Math.sin(a) * 4.5 - 2, Math.cos(a) * 4.5 - 3.5, 0x14101a, 'cello'));
+      orchestra.push(makeSilhouettePlayer(Math.sin(a) * 4.5 - 2, Math.cos(a) * 4.5 - 3.5, 'cello'));
     }
-    // コントラバス（後列、3人立奏）
+    // コントラバス
     for (let i = 0; i < 3; i++) {
-      orchestra.push(makePlayer(-2 + i * 2, -5, 0x14101a, 'cello'));
+      orchestra.push(makeSilhouettePlayer(-2 + i * 2, -5, 'cello'));
     }
-    // 木管（右後ろ）
+    // 木管
     for (let i = 0; i < 3; i++) {
-      orchestra.push(makePlayer(3 + i * 0.8, -3.5, 0x14101a, 'flute'));
+      orchestra.push(makeSilhouettePlayer(3 + i * 0.8, -3.5, 'flute'));
     }
-    // ホルン（後ろ）
+    // ホルン
     for (let i = 0; i < 2; i++) {
-      orchestra.push(makePlayer(-1 + i * 2, -4.5, 0x14101a, 'flute'));
+      orchestra.push(makeSilhouettePlayer(-1 + i * 2, -4.5, 'flute'));
     }
     scene.userData.orchestra = orchestra;
     // 🎹 Bach等のソロピアノ曲ではオーケストラと指揮者を非表示（ピアニストだけ）
@@ -16317,9 +16451,14 @@
       camera.quaternion.setFromEuler(_euler);
 
       // 指揮者のタクト（音楽連動版が下にある）
-      // オーケストラの微動
+      // オーケストラ シルエット ビルボード化（カメラ向きに自動回転）
       scene.userData.orchestra.forEach((p, i) => {
-        if (p.head) p.head.position.y = 1.18 + Math.sin(t * 1.2 + i * 0.5) * 0.02;
+        if (p.billboard) {
+          p.billboard.lookAt(camera.position.x, p.billboard.position.y, camera.position.z);
+          // 微妙な体の揺れ（演奏中らしさ）
+          p.billboard.position.y = 0.9 + Math.sin(t * 1.5 + i * 0.5) * 0.015;
+          p.billboard.rotation.z = Math.sin(t * 0.8 + i * 0.4) * 0.02;
+        }
       });
       // 観客の微動 — InstancedMesh では省略（1000人だと毎フレ更新は重い）
       // 🎵 音楽連動: 中央光・ステージ光・Bloom強度
