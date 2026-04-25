@@ -11431,12 +11431,12 @@
         const figMat = new THREE.MeshBasicMaterial({
           map: phTex, transparent: true, depthWrite: false, side: THREE.DoubleSide,
         });
-        const figure = new THREE.Mesh(new THREE.PlaneGeometry(1.6, 2.2), figMat);
+        const figure = new THREE.Mesh(new THREE.PlaneGeometry(1.8, 2.25), figMat);
         figure.position.y = 2.2;
         group.add(figure);
         // 神 or ハブ：常に procedural canvas でアニメアバターを生成（信頼性優先）
         const cv = document.createElement('canvas');
-        cv.width = 256; cv.height = 384;
+        cv.width = 384; cv.height = 480;
         const ctx = cv.getContext('2d');
         const animTex = new THREE.CanvasTexture(cv);
         if ('colorSpace' in animTex) animTex.colorSpace = THREE.SRGBColorSpace;
@@ -11691,10 +11691,11 @@
       if (Math.floor(t * 60) % 3 === 0) {
         animatedTextures.forEach(a => {
           const ctx = a.ctx;
-          const W2 = 256, H2 = 384;
+          const W2 = 384, H2 = 480;
           ctx.clearRect(0, 0, W2, H2);
           // 背景: 神聖な放射グラデ
-          const cy = 200;
+          const cy = 240;
+          const cx = 192;
           const bg = ctx.createLinearGradient(0, 0, 0, H2);
           bg.addColorStop(0, '#0a0418');
           bg.addColorStop(0.5, a.accent + '40');
@@ -11702,7 +11703,7 @@
           ctx.fillStyle = bg; ctx.fillRect(0, 0, W2, H2);
           // 後ろの曼荼羅（回転）
           ctx.save();
-          ctx.translate(128, cy);
+          ctx.translate(cx, cy);
           ctx.rotate(t * 0.15);
           ctx.strokeStyle = a.accent + '99';
           ctx.lineWidth = 1.5;
@@ -11711,15 +11712,15 @@
             ctx.rotate((petal / 8) * Math.PI * 2);
             ctx.beginPath();
             ctx.moveTo(0, 0);
-            ctx.bezierCurveTo(40, -30, 40, -90, 0, -110);
-            ctx.bezierCurveTo(-40, -90, -40, -30, 0, 0);
+            ctx.bezierCurveTo(35, -25, 35, -75, 0, -90);
+            ctx.bezierCurveTo(-35, -75, -35, -25, 0, 0);
             ctx.stroke();
             ctx.restore();
           }
           ctx.restore();
-          // 後光（中心から放射）
+          // 後光（中心から放射、 canvas に収まる長さ）
           ctx.save();
-          ctx.translate(128, cy - 30);
+          ctx.translate(cx, cy - 40);
           ctx.rotate(-t * 0.1);
           for (let r = 0; r < 24; r++) {
             ctx.save();
@@ -11727,8 +11728,8 @@
             ctx.fillStyle = a.accent + (r % 2 === 0 ? '60' : '30');
             ctx.beginPath();
             ctx.moveTo(0, -50);
-            ctx.lineTo(4, -130);
-            ctx.lineTo(-4, -130);
+            ctx.lineTo(3.5, -150);
+            ctx.lineTo(-3.5, -150);
             ctx.closePath();
             ctx.fill();
             ctx.restore();
@@ -11736,7 +11737,7 @@
           ctx.restore();
           // 神の顔（シルエット）
           ctx.save();
-          ctx.translate(128, cy - 40);
+          ctx.translate(cx, cy - 50);
           // 髪/王冠（神話別）
           const headColor = a.accent;
           ctx.fillStyle = '#1a0a2a';
@@ -11796,24 +11797,24 @@
           // パルス粒（軌道を周回）
           for (let i = 0; i < 6; i++) {
             const ang = (i / 6) * Math.PI * 2 + t * 0.4;
-            const dr = 110 + Math.sin(t * 2 + i) * 10;
-            const px = 128 + Math.cos(ang) * dr;
-            const py = cy - 30 + Math.sin(ang) * dr * 0.7;
+            const dr = 130 + Math.sin(t * 2 + i) * 12;
+            const px = cx + Math.cos(ang) * dr;
+            const py = cy - 40 + Math.sin(ang) * dr * 0.7;
             ctx.fillStyle = a.accent;
             ctx.shadowColor = a.accent; ctx.shadowBlur = 12;
             ctx.beginPath(); ctx.arc(px, py, 3, 0, Math.PI * 2); ctx.fill();
             ctx.shadowBlur = 0;
           }
           // 名前プレート
-          ctx.fillStyle = 'rgba(20,10,30,0.85)';
-          ctx.fillRect(20, H2 - 60, W2 - 40, 44);
+          ctx.fillStyle = 'rgba(20,10,30,0.88)';
+          ctx.fillRect(30, H2 - 70, W2 - 60, 50);
           ctx.strokeStyle = a.accent;
           ctx.lineWidth = 1.5;
-          ctx.strokeRect(20, H2 - 60, W2 - 40, 44);
-          ctx.font = 'bold 22px "Shippori Mincho", serif';
+          ctx.strokeRect(30, H2 - 70, W2 - 60, 50);
+          ctx.font = 'bold 24px "Shippori Mincho", serif';
           ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
           ctx.fillStyle = a.accent;
-          ctx.fillText(a.item.name.slice(0, 8), 128, H2 - 38);
+          ctx.fillText(a.item.name.slice(0, 8), cx, H2 - 45);
           a.tex.needsUpdate = true;
         });
       }
