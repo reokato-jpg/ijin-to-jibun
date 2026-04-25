@@ -589,6 +589,8 @@
         pantheon: () => { try { openPantheon3D(); } catch (e) { console.warn('pantheon', e); } },
         littleprince: () => { try { openLittlePrinceBook(); } catch (e) { console.warn('lp', e); } },
         godsbook: () => { try { openGodsBook(); } catch (e) { console.warn('godsbook', e); } },
+        ehonspace: () => { try { openEhonSpace3D(); } catch (e) { console.warn('ehonspace', e); } },
+        lpworld: () => { try { openLittlePrinceWorld3D(); } catch (e) { console.warn('lpworld', e); } },
       };
       wrap.querySelectorAll('[data-deep]').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -610,8 +612,10 @@
         museum: { title: '🏛 美 術 館', sub: '名画を歩いて鑑賞', items: [
           { deep: 'museum', label: '美術館へ入る', desc: '神話エリア・戦国エリアから選ぶ', emoji: '🏛' },
         ]},
-        ehon: { title: '📖 絵 本', sub: 'ページを開いて物語の世界へ', items: [
-          { deep: 'littleprince', label: '星の王子様', desc: 'サン=テグジュペリの絵本。動くSVGで全章を読む', emoji: '🌹' },
+        ehon: { title: '📖 絵 本', sub: '宇宙に浮かぶ書斎', items: [
+          { deep: 'ehonspace', label: '絵本の宇宙', desc: '星空に浮かぶ絵本をタップして読む', emoji: '📚' },
+          { deep: 'littleprince', label: '星の王子様', desc: 'サン=テグジュペリの絵本（動くSVG全8章）', emoji: '🌹' },
+          { deep: 'lpworld', label: 'B-612 へ降りる', desc: '王子様の星に降り立つ3D体験', emoji: '🌍' },
         ]},
         ijin: { title: '👤 偉 人', sub: '297人の生涯と関係', items: [
           { deep: 'quiz', label: '偉人クイズ', desc: '5タイプの問題でテスト', emoji: '🎓' },
@@ -13940,6 +13944,604 @@
     requestAnimationFrame(() => ov.classList.add('open'));
   }
   window.openLittlePrinceBook = openLittlePrinceBook;
+
+  // ============================================================
+  // 📚 絵本ライブラリ（パブリックドメイン）
+  // ============================================================
+  const EHON_BOOKS = [
+    {
+      id: 'prince', title: '星の王子様', author: 'サン=テグジュペリ',
+      year: 1943, color1: '#1a0a30', color2: '#3a2050', accent: '#ffd060',
+      cover: '🌹', synopsis: '砂漠で出会った小さな王子の物語。',
+      open: () => openLittlePrinceBook(),
+    },
+    {
+      id: 'alice', title: '不思議の国のアリス', author: 'ルイス・キャロル',
+      year: 1865, color1: '#1a3020', color2: '#0a1810', accent: '#80e0a0',
+      cover: '🐰', synopsis: '白いウサギを追いかけて、アリスは穴に落ちた。',
+      pages: [
+        { title: '1. 退屈な午後', text: 'アリスは姉のそばで退屈していた。「絵も会話もない本に、なんの意味があるかしら」 — そのとき、白いウサギが懐中時計を見ながら走り過ぎた。「大変、遅刻だ！」',
+          svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="al1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a8a4a"/><stop offset="1" stop-color="#1a3020"/></linearGradient></defs><rect width="400" height="360" fill="url(#al1)"/><ellipse cx="200" cy="320" rx="200" ry="40" fill="#3a5a30"/><g transform="translate(280,200)"><animateTransform attributeName="transform" type="translate" values="280,200;-50,200" dur="6s" repeatCount="indefinite"/><ellipse cx="0" cy="-12" rx="22" ry="16" fill="#fff"/><circle cx="0" cy="-32" r="11" fill="#fff"/><ellipse cx="-4" cy="-46" rx="3" ry="10" fill="#fff"/><ellipse cx="4" cy="-46" rx="3" ry="10" fill="#fff"/><circle cx="-3" cy="-32" r="1.4" fill="#e02040"/><circle cx="3" cy="-32" r="1.4" fill="#e02040"/><circle cx="0" cy="-29" r="1" fill="#ffa0a0"/><circle cx="14" cy="-10" r="6" fill="#ffd060" stroke="#8a6020" stroke-width="0.8"/><line x1="14" y1="-10" x2="14" y2="-13" stroke="#8a6020" stroke-width="1"/></g><g transform="translate(120,260)"><circle cx="0" cy="-10" r="14" fill="#ffd0a0"/><path d="M -14 -8 Q -16 -22 0 -24 Q 16 -22 14 -8 Z" fill="#ffe080"/><circle cx="-4" cy="-12" r="1.2" fill="#1a1a1a"/><circle cx="4" cy="-12" r="1.2" fill="#1a1a1a"/><path d="M 0 30 L -10 60 L 10 60 Z" fill="#80c0e0"/><path d="M -10 60 L -14 90 L 14 90 L 10 60 Z" fill="#fff"/></g></svg>` },
+        { title: '2. 穴の中へ', text: 'ウサギを追って茂みの穴に飛び込んだら、どこまでも落ちていった。落ちながら本棚や瓶を眺める時間さえあった。「いったい、地球の中心はどこなのかしら？」',
+          svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="360" fill="#0a0420"/>${Array.from({length:30}).map((_,i)=>{const y=i*15;const x=(i%2)*60+50+Math.sin(i)*40;return `<rect x="${x-20}" y="${y}" width="40" height="3" fill="#5a3010" opacity="0.5"/>`}).join('')}${Array.from({length:8}).map((_,i)=>{const y=i*45;const x=80+i*30;return `<rect x="${x}" y="${y}" width="20" height="30" fill="#8a6020" stroke="#3a2010"/>`}).join('')}<g transform="translate(200,180)"><animateTransform attributeName="transform" type="translate" values="200,80;200,180;200,80" dur="3s" repeatCount="indefinite"/><circle cx="0" cy="0" r="14" fill="#ffd0a0"/><path d="M 0 14 L -12 50 L 12 50 Z" fill="#80c0e0"/><circle cx="-4" cy="-2" r="1.2" fill="#1a1a1a"/><circle cx="4" cy="-2" r="1.2" fill="#1a1a1a"/><path d="M -3 4 Q 0 6 3 4" stroke="#1a1a1a" stroke-width="0.8" fill="none"/></g></svg>` },
+        { title: '3. 飲んでごらん', text: '小さな扉の鍵を見つけても、扉は小さすぎた。テーブルの瓶には「飲んでごらん」と書いてあり、飲むと体は望遠鏡のように縮んだ。次は「食べてごらん」のケーキ。',
+          svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="360" fill="#3a2a4a"/><path d="M 0 280 L 400 280 L 400 360 L 0 360 Z" fill="#2a1830"/><rect x="180" y="200" width="40" height="80" fill="#5a3a20"/><circle cx="200" cy="240" r="3" fill="#ffd060"/><rect x="100" y="250" width="30" height="50" fill="#80c0e0" stroke="#5080a0"/><text x="115" y="275" font-size="6" fill="#1a1a1a" text-anchor="middle">DRINK ME</text><circle cx="115" cy="245" r="6" fill="#80c0e0"/><circle cx="280" cy="270" r="20" fill="#d8a060" stroke="#8a5020"/><text x="280" y="270" font-size="6" fill="#fff" text-anchor="middle">EAT ME</text><g transform="translate(60,260)"><animateTransform attributeName="transform" type="translate" values="60,200;60,260;60,200" dur="4s" repeatCount="indefinite"/><circle cx="0" cy="0" r="10" fill="#ffd0a0"/><circle cx="-3" cy="-2" r="1" fill="#1a1a1a"/><circle cx="3" cy="-2" r="1" fill="#1a1a1a"/><path d="M 0 10 L -8 30 L 8 30 Z" fill="#80c0e0"/></g></svg>` },
+        { title: '4. お茶会', text: '帽子屋とヤマネと三月ウサギは、いつも六時のお茶会。「時間を殺した」と言うので、時間が同じ場所で止まってしまったのだ。「お誕生日でない日のお祝いをするわ」',
+          svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="al4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a5a30"/><stop offset="1" stop-color="#1a2810"/></linearGradient></defs><rect width="400" height="360" fill="url(#al4)"/><rect x="20" y="220" width="360" height="20" fill="#fff" stroke="#aaa"/><g transform="translate(80,200)"><circle cx="0" cy="0" r="20" fill="#fff"/><rect x="-12" y="-5" width="24" height="10" fill="#fff" stroke="#aaa"/><rect x="-3" y="-30" width="6" height="25" fill="#5a3010"/><rect x="-15" y="-32" width="30" height="6" fill="#5a3010"/></g><g transform="translate(200,200)"><circle cx="0" cy="-5" r="22" fill="#a86040"/><circle cx="0" cy="-25" r="14" fill="#a86040"/><ellipse cx="-5" cy="-40" rx="3" ry="10" fill="#a86040"/><ellipse cx="5" cy="-40" rx="3" ry="10" fill="#a86040"/><circle cx="-4" cy="-25" r="1.5" fill="#1a1a1a"/><circle cx="4" cy="-25" r="1.5" fill="#1a1a1a"/></g><g transform="translate(320,205)"><circle cx="0" cy="-3" r="14" fill="#caa080"/><circle cx="0" cy="-13" r="6" fill="#caa080"/><circle cx="-2" cy="-13" r="0.8" fill="#1a1a1a"/></g><circle cx="80" cy="190" r="3" fill="#ffd060"><animate attributeName="r" values="3;5;3" dur="2s" repeatCount="indefinite"/></circle></svg>` },
+        { title: '5. 心はトランプ', text: '女王は誰でも「首をはねよ！」と叫んだ。でも王はいつも秘密に許してしまうので、誰一人本当には消えなかった。アリスは目を覚ました — 木陰の姉のそばで。「変な夢を見たわ」',
+          svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="360" fill="#fff8e8"/>${Array.from({length:20}).map((_,i)=>{const x=Math.random()*400;const y=Math.random()*360;const h=20+Math.random()*30;return `<rect x="${x}" y="${y}" width="${h*0.7}" height="${h}" fill="${['#e02040','#1a1a3a','#1a1a3a','#e02040'][i%4]}" stroke="#fff" stroke-width="0.5"><animateTransform attributeName="transform" type="rotate" from="0 ${x+h*0.35} ${y+h/2}" to="360 ${x+h*0.35} ${y+h/2}" dur="${4+Math.random()*4}s" repeatCount="indefinite"/></rect>`}).join('')}<g transform="translate(200,200)"><circle cx="0" cy="-10" r="20" fill="#ffd0a0"/><path d="M -20 -8 Q -22 -32 0 -34 Q 22 -32 20 -8 Z" fill="#ffe080"/><circle cx="-6" cy="-12" r="1.8" fill="#1a1a1a"/><circle cx="6" cy="-12" r="1.8" fill="#1a1a1a"/><path d="M -3 4 Q 0 8 3 4" stroke="#1a1a1a" stroke-width="1" fill="none"/></g></svg>` },
+      ]
+    },
+    {
+      id: 'oz', title: 'オズの魔法使い', author: 'L・フランク・ボーム',
+      year: 1900, color1: '#1a4030', color2: '#0a2018', accent: '#80ffa0',
+      cover: '🦁', synopsis: 'カンザスから竜巻に運ばれた少女ドロシーの旅。',
+      pages: [
+        { title: '1. 灰色のカンザス', text: 'すべてが灰色だった ─ 草原も家も、おばさんの顔も。だが小犬トトだけは違った。トトの瞳と鳴き声が、ドロシーの世界を色づかせていた。',
+          svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="360" fill="#888"/><path d="M 0 280 L 400 280 L 400 360 L 0 360 Z" fill="#666"/><rect x="160" y="180" width="80" height="100" fill="#777" stroke="#444"/><polygon points="160,180 200,140 240,180" fill="#555"/><g transform="translate(150,260)"><circle cx="0" cy="0" r="14" fill="#a8a8a8"/><path d="M 0 14 L -10 35 L 10 35 Z" fill="#909090"/></g><g transform="translate(180,275)"><ellipse cx="0" cy="0" rx="10" ry="6" fill="#3a2810"/><circle cx="-6" cy="-3" r="3" fill="#3a2810"/><circle cx="-7" cy="-3" r="0.8" fill="#fff"/></g></svg>` },
+        { title: '2. 竜巻', text: '空が緑色になり、家ごとドロシーは持ち上げられた。「トト、私たち、もうカンザスじゃないわ」 ─ 着いた先は色彩に満ちた、マンチキンの国だった。',
+          svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="oz2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a5a30"/><stop offset="1" stop-color="#1a1a08"/></linearGradient></defs><rect width="400" height="360" fill="url(#oz2)"/>${Array.from({length:20}).map((_,i)=>{const y=i*18;const w=200+Math.sin(i*0.5)*100;return `<ellipse cx="200" cy="${y}" rx="${w/2}" ry="6" fill="#888" opacity="${0.6-i*0.02}"><animateTransform attributeName="transform" type="rotate" from="0 200 ${y}" to="360 200 ${y}" dur="${1+i*0.1}s" repeatCount="indefinite"/></ellipse>`}).join('')}<g transform="translate(200,180)"><animateTransform attributeName="transform" type="rotate" from="0 200 180" to="360 200 180" dur="3s" repeatCount="indefinite"/><rect x="-30" y="-30" width="60" height="60" fill="#777"/><polygon points="-30,-30 0,-50 30,-30" fill="#555"/></g></svg>` },
+        { title: '3. 黄色いレンガ道', text: 'カカシ（脳が欲しい）、ブリキの木こり（心が欲しい）、ライオン（勇気が欲しい）。四人はオズに会いに、どこまでも続く黄色いレンガ道を歩いた。',
+          svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="360" fill="#80c0e0"/><path d="M 0 280 L 400 280 L 400 360 L 0 360 Z" fill="#5a8a4a"/><path d="M 100 360 L 180 280 L 220 280 L 300 360 Z" fill="#ffd060"/>${Array.from({length:20}).map((_,i)=>{const y=300+i*3;const w=180-i*8;return `<line x1="${200-w/2}" y1="${y}" x2="${200+w/2}" y2="${y}" stroke="#c8a040" stroke-width="0.5"/>`}).join('')}<g transform="translate(150,270)"><circle cx="0" cy="0" r="10" fill="#ffd0a0"/><path d="M 0 10 L -8 30 L 8 30 Z" fill="#80c0e0"/></g><g transform="translate(200,265)"><circle cx="0" cy="-3" r="10" fill="#e8c890"/><rect x="-2" y="6" width="4" height="20" fill="#5a3010"/><circle cx="-3" cy="-5" r="1" fill="#1a1a1a"/><circle cx="3" cy="-5" r="1" fill="#1a1a1a"/></g><g transform="translate(250,262)"><rect x="-10" y="-8" width="20" height="20" fill="#a8c0c8"/><circle cx="0" cy="-15" r="7" fill="#a8c0c8"/><circle cx="-2" cy="-15" r="1" fill="#1a1a1a"/></g><g transform="translate(290,262)"><ellipse cx="0" cy="0" rx="14" ry="10" fill="#c89060"/><circle cx="0" cy="-10" r="9" fill="#c89060"/><path d="M -8 -16 Q -10 -20 -6 -20 M 8 -16 Q 10 -20 6 -20" fill="#a86040"/></g></svg>` },
+        { title: '4. エメラルドの都', text: '緑のメガネをかけて入る都は、すべてが翡翠で輝いた。だが、オズの「魔法使い」は ─ 幕の向こうの、ただの小さな男だった。「みんな、すでに持っているのだ。脳も心も勇気も」',
+          svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="oz4"><stop offset="0" stop-color="#80ffa0"/><stop offset="1" stop-color="#0a2010"/></radialGradient></defs><rect width="400" height="360" fill="url(#oz4)"/>${Array.from({length:8}).map((_,i)=>{const x=80+i*38;return `<polygon points="${x-12},280 ${x},220 ${x+12},280" fill="#40c060" stroke="#206030"/><polygon points="${x-12},220 ${x},170 ${x+12},220" fill="#60d080"/><circle cx="${x}" cy="240" r="3" fill="#ffd060"><animate attributeName="opacity" values="1;0.3;1" dur="${1+i*0.2}s" repeatCount="indefinite"/></circle>`}).join('')}<polygon points="200,170 180,90 220,90" fill="#ffd060"/><polygon points="200,90 196,70 204,70" fill="#80ffa0"/></svg>` },
+        { title: '5. 銀の靴', text: 'ドロシーは、最初から銀の靴で帰れたのだ ─ ただ三度かかとを打ち合わせて、唱えるだけ。「おうちが一番」。\n気づきの旅 ─ それ自体が、答えだった。',
+          svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="360" fill="#fff8e8"/><circle cx="200" cy="180" r="120" fill="#80ffe0" opacity="0.3"><animate attributeName="r" values="120;130;120" dur="3s" repeatCount="indefinite"/></circle><g transform="translate(200,200)"><circle cx="0" cy="-30" r="22" fill="#ffd0a0"/><path d="M -22 -28 Q -24 -52 0 -54 Q 24 -52 22 -28 Z" fill="#5a3a18"/><circle cx="-7" cy="-32" r="1.8" fill="#1a1a1a"/><circle cx="7" cy="-32" r="1.8" fill="#1a1a1a"/><path d="M 0 80 L -10 80 L -10 90 L 10 90 L 10 80 Z" fill="#c0c0e0"><animate attributeName="fill" values="#c0c0e0;#fff8a0;#c0c0e0" dur="2s" repeatCount="indefinite"/></path><path d="M 0 80 L 10 80 L 10 90 L -10 90 L -10 80 Z" fill="#c0c0e0"/></g></svg>` },
+      ]
+    },
+    {
+      id: 'peter', title: 'ピーターラビット', author: 'ビアトリクス・ポター',
+      year: 1902, color1: '#3a2818', color2: '#1a1208', accent: '#ffaa60',
+      cover: '🐰', synopsis: 'いたずらな小ウサギの、危険な冒険。',
+      pages: [
+        { title: '1. お母さんの忠告', text: 'お母さんウサギは言った。「お畑にだけは行ってはいけませんよ。お父さんはあそこで、マグレガーさんに食べられてしまったの」。だがピーターは ─ 真っ直ぐにお畑へ向かった。',
+          svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="pr1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a8c8a0"/><stop offset="1" stop-color="#5a8050"/></linearGradient></defs><rect width="400" height="360" fill="url(#pr1)"/>${Array.from({length:30}).map(()=>{const x=Math.random()*400;const y=200+Math.random()*160;return `<line x1="${x}" y1="${y}" x2="${x}" y2="${y-8}" stroke="#3a6a30" stroke-width="0.7"/>`}).join('')}<g transform="translate(150,240)"><ellipse cx="0" cy="0" rx="30" ry="22" fill="#a86840"/><circle cx="0" cy="-20" r="14" fill="#a86840"/><ellipse cx="-7" cy="-36" rx="3" ry="14" fill="#a86840"/><ellipse cx="7" cy="-36" rx="3" ry="14" fill="#a86840"/><circle cx="-4" cy="-22" r="1.5" fill="#1a1a1a"/><circle cx="4" cy="-22" r="1.5" fill="#1a1a1a"/><path d="M 0 -16 L -2 -14 L 2 -14 Z" fill="#3a1a08"/></g><g transform="translate(260,250)"><ellipse cx="0" cy="0" rx="22" ry="16" fill="#80522a"/><circle cx="0" cy="-14" r="11" fill="#80522a"/><ellipse cx="-5" cy="-28" rx="2" ry="10" fill="#80522a"/><ellipse cx="5" cy="-28" rx="2" ry="10" fill="#80522a"/><circle cx="-3" cy="-16" r="1" fill="#1a1a1a"/><circle cx="3" cy="-16" r="1" fill="#1a1a1a"/></g></svg>` },
+        { title: '2. 青いコート', text: 'ピーターは新品の青いコートと靴のまま、お畑の柵をくぐった。レタスを食べ、サヤエンドウを食べ、ラディッシュを食べ ─ 気分が悪くなって、パセリを探した。',
+          svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="360" fill="#5a3a20"/><path d="M 0 280 L 400 280 L 400 360 L 0 360 Z" fill="#3a2010"/>${Array.from({length:8}).map((_,i)=>{const x=40+i*45;return `<g transform="translate(${x},250)"><ellipse cx="0" cy="0" rx="14" ry="20" fill="#5aa040"/><ellipse cx="-5" cy="-5" rx="8" ry="10" fill="#80c060"/><ellipse cx="5" cy="-5" rx="8" ry="10" fill="#80c060"/></g>`}).join('')}<g transform="translate(180,240)"><animateTransform attributeName="transform" type="translate" values="180,240;220,235;180,240" dur="2s" repeatCount="indefinite"/><ellipse cx="0" cy="0" rx="22" ry="16" fill="#80522a"/><rect x="-18" y="-8" width="36" height="22" fill="#5070a8" rx="3"/><circle cx="0" cy="-22" r="11" fill="#80522a"/><ellipse cx="-5" cy="-36" rx="2" ry="10" fill="#80522a"/><ellipse cx="5" cy="-36" rx="2" ry="10" fill="#80522a"/><circle cx="-3" cy="-22" r="1.2" fill="#1a1a1a"/><circle cx="3" cy="-22" r="1.2" fill="#1a1a1a"/><circle cx="0" cy="-19" r="0.8" fill="#3a1a08"/></g></svg>` },
+        { title: '3. マグレガーさん！', text: '突然、誰がいたかと言うと、マグレガーさんではないか。「泥棒め！」 ─ ピーターは走った。コートのボタンが網に引っかかり、靴を片方ずつ落とし、それでも走った。',
+          svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="360" fill="#3a4a28"/><g transform="translate(320,180)"><ellipse cx="0" cy="40" rx="24" ry="40" fill="#3a3018"/><circle cx="0" cy="-10" r="20" fill="#e8c8a0"/><rect x="-20" y="-30" width="40" height="14" fill="#5a3a10"/><rect x="-25" y="-30" width="50" height="4" fill="#3a2010"/><rect x="-3" y="20" width="6" height="60" fill="#3a3018"/><line x1="-3" y1="20" x2="-15" y2="60" stroke="#a06050" stroke-width="3"/></g><g transform="translate(120,260)"><animateTransform attributeName="transform" type="translate" values="120,260;100,255;120,260" dur="0.4s" repeatCount="indefinite"/><ellipse cx="0" cy="0" rx="22" ry="14" fill="#80522a"/><rect x="-16" y="-6" width="20" height="18" fill="#5070a8"/><circle cx="0" cy="-22" r="11" fill="#80522a"/><ellipse cx="-5" cy="-36" rx="2" ry="10" fill="#80522a"/><circle cx="-3" cy="-22" r="1" fill="#1a1a1a"/><circle cx="3" cy="-22" r="1" fill="#1a1a1a"/></g></svg>` },
+        { title: '4. ジョウロの中', text: 'ピーターはジョウロに飛び込んで隠れた。だがそこには水が入っていた。スズメたちが「行きなさい！」と励ました。',
+          svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="360" fill="#5a4a30"/><g transform="translate(200,200)"><ellipse cx="0" cy="40" rx="50" ry="14" fill="#000" opacity="0.3"/><path d="M -50 0 Q -50 50 0 60 Q 50 50 50 0 L 50 -10 L -50 -10 Z" fill="#80a0c0" stroke="#5070a0" stroke-width="2"/><ellipse cx="0" cy="-10" rx="50" ry="6" fill="#a0c0d0"/><ellipse cx="0" cy="-10" rx="40" ry="4" fill="#5070a0"/><path d="M 50 -5 L 80 -10 L 80 5 L 60 10 Z" fill="#80a0c0" stroke="#5070a0" stroke-width="2"/><g transform="translate(0,-30)"><circle cx="0" cy="0" r="10" fill="#80522a"/><ellipse cx="-3" cy="-12" rx="2" ry="6" fill="#80522a"/><ellipse cx="3" cy="-12" rx="2" ry="6" fill="#80522a"/><circle cx="-3" cy="-2" r="1" fill="#1a1a1a"/><circle cx="3" cy="-2" r="1" fill="#1a1a1a"/></g></g>${Array.from({length:5}).map((_,i)=>{const x=60+i*70;const y=80+(i%2)*30;return `<g transform="translate(${x},${y})"><animateTransform attributeName="transform" type="translate" values="${x},${y};${x+10},${y-5};${x},${y}" dur="${1+i*0.3}s" repeatCount="indefinite"/><ellipse cx="0" cy="0" rx="6" ry="4" fill="#a08050"/><circle cx="-4" cy="-2" r="3" fill="#a08050"/></g>`}).join('')}</svg>` },
+        { title: '5. お家へ', text: 'ようやく家に辿り着くと、ピーターはぐったり寝込んだ。お母さんは熱湯にカモミールを入れて、夕食代わりに飲ませた。お姉さんたちは、ベリーとミルクを食べた。',
+          svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="pr5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a2818"/><stop offset="1" stop-color="#1a0a04"/></linearGradient></defs><rect width="400" height="360" fill="url(#pr5)"/><ellipse cx="200" cy="280" rx="160" ry="50" fill="#5a3a20"/><g transform="translate(200,250)"><ellipse cx="0" cy="0" rx="80" ry="40" fill="#a86840" opacity="0.6"/><ellipse cx="-30" cy="-10" rx="22" ry="14" fill="#a86840"/><ellipse cx="30" cy="-10" rx="22" ry="14" fill="#a86840"/><ellipse cx="0" cy="-15" rx="26" ry="16" fill="#a86840"/><circle cx="0" cy="-30" r="14" fill="#a86840"/><ellipse cx="-5" cy="-44" rx="3" ry="10" fill="#a86840"/><ellipse cx="5" cy="-44" rx="3" ry="10" fill="#a86840"/><circle cx="0" cy="-30" r="0.8" fill="#1a1a1a"><animate attributeName="r" values="0.8;0.3;0.8" dur="3s" repeatCount="indefinite"/></circle></g><circle cx="100" cy="80" r="3" fill="#fff" opacity="0.6"/><circle cx="320" cy="60" r="2" fill="#fff" opacity="0.5"/></svg>` },
+      ]
+    },
+    {
+      id: 'pinocchio', title: 'ピノキオの冒険', author: 'カルロ・コッローディ',
+      year: 1883, color1: '#3a2010', color2: '#1a0a04', accent: '#80c0ff',
+      cover: '🪵', synopsis: '木でできた小さな人形が、心を学ぶまで。',
+      pages: [
+        { title: '1. 喋る丸太', text: '大工のチェリーじいさんが斧を振り上げると、丸太が叫んだ。「やめておくれ、痛いよ！」。気味悪がってジェペット爺さんに譲ると、彼はそれで人形を彫り、ピノキオと名づけた。',
+          svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="360" fill="#3a2010"/><rect x="0" y="280" width="400" height="80" fill="#2a1408"/><g transform="translate(150,200)"><rect x="-15" y="-5" width="30" height="60" fill="#a06030"/><circle cx="0" cy="-15" r="14" fill="#d8a060"/><circle cx="-4" cy="-18" r="1" fill="#1a1a1a"/><circle cx="4" cy="-18" r="1" fill="#1a1a1a"/><polygon points="0,-15 -2,-10 2,-10 10,-13" fill="#c08040"/><animateTransform attributeName="transform" type="translate" values="150,200;152,201;150,200" dur="2s" repeatCount="indefinite"/></g><g transform="translate(280,220)"><rect x="-10" y="-30" width="20" height="60" fill="#80522a"/><circle cx="0" cy="-50" r="22" fill="#e8c8a0"/><rect x="-22" y="-66" width="44" height="14" fill="#a8a8b0"/><line x1="-15" y1="-30" x2="-25" y2="-10" stroke="#80522a" stroke-width="6"/><line x1="15" y1="-30" x2="20" y2="-15" stroke="#80522a" stroke-width="6"/><circle cx="-5" cy="-52" r="1.5" fill="#1a1a1a"/><circle cx="5" cy="-52" r="1.5" fill="#1a1a1a"/></g></svg>` },
+        { title: '2. 嘘をつくと', text: '青い髪の妖精に、ピノキオは嘘をついた。すると鼻が、にょきっにょきっと伸び始めた。嘘をつくたび、伸び続ける ─ もう手がつけられないほどに。',
+          svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="pn2"><stop offset="0" stop-color="#80c0ff"/><stop offset="1" stop-color="#1a3050"/></radialGradient></defs><rect width="400" height="360" fill="url(#pn2)"/><g transform="translate(200,180)"><circle cx="0" cy="0" r="35" fill="#d8a060"/><circle cx="-10" cy="-5" r="2" fill="#1a1a1a"/><circle cx="10" cy="-5" r="2" fill="#1a1a1a"/><polygon points="0,2 -3,8 3,8" fill="#c08040"/><rect x="-2" y="2" width="4" height="100" fill="#c08040"><animate attributeName="height" values="20;120;20" dur="3s" repeatCount="indefinite"/></rect><polygon points="-3,4 3,4 0,2" fill="#a08040"/><path d="M -10 12 Q 0 18 10 12" stroke="#1a1a1a" stroke-width="1" fill="none"/></g><g transform="translate(330,140)"><circle cx="0" cy="0" r="20" fill="#a8c0e0"/><path d="M -25 -25 L 25 25 M 25 -25 L -25 25" stroke="#fff" stroke-width="0.5" opacity="0.5"/></g></svg>` },
+        { title: '3. 怠け者の国', text: '友だちに誘われ、ピノキオは「遊んでばかりの国」へ行った。学校もない、勉強もない、毎日お祭り。だがやがて ─ みんなロバに変わった。怠ける者の運命。',
+          svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="pn3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a86040"/><stop offset="1" stop-color="#3a1808"/></linearGradient></defs><rect width="400" height="360" fill="url(#pn3)"/><g transform="translate(120,260)"><ellipse cx="0" cy="0" rx="30" ry="20" fill="#7a6048"/><circle cx="0" cy="-25" r="15" fill="#7a6048"/><ellipse cx="-7" cy="-42" rx="3" ry="14" fill="#7a6048"/><ellipse cx="7" cy="-42" rx="3" ry="14" fill="#7a6048"/><circle cx="-4" cy="-25" r="1.4" fill="#1a1a1a"/><circle cx="4" cy="-25" r="1.4" fill="#1a1a1a"/><path d="M -3 -18 L 3 -18 L 0 -14 Z" fill="#3a2010"/></g><g transform="translate(260,265)"><ellipse cx="0" cy="0" rx="34" ry="22" fill="#5a4030"/><circle cx="0" cy="-28" r="16" fill="#5a4030"/><ellipse cx="-8" cy="-46" rx="3" ry="16" fill="#5a4030"/><ellipse cx="8" cy="-46" rx="3" ry="16" fill="#5a4030"/><circle cx="-4" cy="-28" r="1.4" fill="#1a1a1a"/></g><circle cx="340" cy="80" r="22" fill="#ffd860"/></svg>` },
+        { title: '4. クジラのお腹', text: 'ジェペット爺さんを探して海に飛び込むと、巨大なクジラに飲まれた。お腹の中で、爺さんと再会した。火を焚き、煙を吐かせ、二人は一緒にクジラから飛び出した。',
+          svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="pn4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a4a60"/><stop offset="0.5" stop-color="#1a3050"/><stop offset="1" stop-color="#0a1830"/></linearGradient></defs><rect width="400" height="360" fill="url(#pn4)"/><path d="M 0 220 Q 100 180 200 220 Q 300 240 400 220 L 400 360 L 0 360 Z" fill="#0a1830" opacity="0.6"/><g transform="translate(200,200)"><ellipse cx="0" cy="0" rx="170" ry="80" fill="#3a4a60"/><ellipse cx="0" cy="0" rx="100" ry="50" fill="#1a2a40"/><circle cx="-100" cy="-30" r="6" fill="#fff"/><circle cx="-100" cy="-30" r="3" fill="#1a1a1a"/><path d="M 130 -20 Q 150 -50 170 -30 L 165 0 L 145 -10 Z" fill="#3a4a60"/></g><g transform="translate(180,210)"><circle cx="0" cy="0" r="6" fill="#d8a060"/><rect x="-2" y="2" width="4" height="14" fill="#a06030"/></g><g transform="translate(220,210)"><circle cx="0" cy="0" r="8" fill="#e8c8a0"/><rect x="-22" y="-12" width="44" height="8" fill="#a8a8b0"/></g><circle cx="200" cy="180" r="18" fill="#ff8040" opacity="0.7"><animate attributeName="r" values="14;22;14" dur="1s" repeatCount="indefinite"/></circle></svg>` },
+        { title: '5. 本物の少年', text: 'すべての試練の果てに、ピノキオは「他人を思いやる心」を覚えた。\n眠りから目覚めると ─ 鏡の中にいたのは、もう木の人形ではなかった。本物の、頬の赤い少年だった。',
+          svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="360" fill="#fff8e8"/><circle cx="200" cy="180" r="160" fill="#ffe8c0" opacity="0.5"><animate attributeName="r" values="160;170;160" dur="3s" repeatCount="indefinite"/></circle><g transform="translate(200,200)"><circle cx="0" cy="-30" r="35" fill="#ffd0a0"/><circle cx="-12" cy="-32" r="2.5" fill="#1a1a1a"/><circle cx="12" cy="-32" r="2.5" fill="#1a1a1a"/><circle cx="-12" cy="-32" r="0.8" fill="#fff"/><circle cx="12" cy="-32" r="0.8" fill="#fff"/><circle cx="-15" cy="-22" r="6" fill="#ffa0a0" opacity="0.5"/><circle cx="15" cy="-22" r="6" fill="#ffa0a0" opacity="0.5"/><path d="M -10 -20 Q 0 -14 10 -20" stroke="#1a1a1a" stroke-width="1.2" fill="none"/><polygon points="0,-30 -2,-26 2,-26" fill="#c08070"/></g><circle cx="100" cy="80" r="3" fill="#ffd060"><animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/></circle><circle cx="320" cy="100" r="2" fill="#ffd060"/></svg>` },
+      ]
+    },
+    {
+      id: 'galaxy', title: '銀河鉄道の夜', author: '宮沢賢治',
+      year: 1934, color1: '#0a0a30', color2: '#040420', accent: '#ffe890',
+      cover: '🚂', synopsis: '夜空を駆ける汽車。少年ジョバンニとカムパネルラの旅。',
+      pages: [
+        { title: '1. 午後の授業', text: '先生は、天の川は何でできているか、と問うた。だがジョバンニは、答えられなかった。みんなが笑った ─ ザネリも、笑った。それでも、ジョバンニはカムパネルラの目だけを覚えていた。',
+          svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="360" fill="#3a2818"/><rect x="50" y="80" width="300" height="180" fill="#fff8e0" stroke="#3a2010"/><line x1="60" y1="100" x2="340" y2="100" stroke="#aaa"/><line x1="60" y1="120" x2="340" y2="120" stroke="#aaa"/>${Array.from({length:12}).map((_,i)=>{const x=70+(i%4)*70;const y=200+Math.floor(i/4)*30;return `<g transform="translate(${x},${y})"><circle cx="0" cy="0" r="6" fill="#d8a060"/><rect x="-3" y="6" width="6" height="14" fill="#5a3010"/></g>`}).join('')}<g transform="translate(80,290)"><circle cx="0" cy="0" r="10" fill="#d8a060"/><rect x="-4" y="10" width="8" height="20" fill="#3a2010"/><animate attributeName="opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite"/></g></svg>` },
+        { title: '2. お祭りの夜', text: 'ジョバンニは坂を駆け上がった ─ 頭の上には、青く清く光るケンタウル祭の星空。気がつくと、彼は不思議な汽車の中にいた。隣の席に、カムパネルラが座っていた。',
+          svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gx2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0a0a40"/><stop offset="1" stop-color="#040418"/></linearGradient></defs><rect width="400" height="360" fill="url(#gx2)"/>${Array.from({length:60}).map(()=>{const x=Math.random()*400;const y=Math.random()*360;const r=0.5+Math.random()*1.5;return `<circle cx="${x}" cy="${y}" r="${r}" fill="#fff"><animate attributeName="opacity" values="0.3;1;0.3" dur="${2+Math.random()*3}s" repeatCount="indefinite"/></circle>`}).join('')}<path d="M 0 220 Q 200 180 400 200" stroke="#a8c0ff" stroke-width="40" fill="none" opacity="0.3"/><path d="M 0 220 Q 200 180 400 200" stroke="#fff8e0" stroke-width="20" fill="none" opacity="0.4"/><path d="M 0 220 Q 200 180 400 200" stroke="#fff" stroke-width="3" fill="none"/></svg>` },
+        { title: '3. 銀河鉄道', text: '汽車は、銀河の岸を走った。プリオシン海岸では、二億年前のクルミの実が落ちていた。「どこまでも行こう、カムパネルラ」「うん、本当に」。',
+          svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="360" fill="#0a0a30"/>${Array.from({length:80}).map(()=>{const x=Math.random()*400;const y=Math.random()*220;return `<circle cx="${x}" cy="${y}" r="${0.5+Math.random()}" fill="#fff" opacity="${0.5+Math.random()*0.5}"/>`}).join('')}<path d="M 0 240 L 400 240" stroke="#5a4a30" stroke-width="3"/><path d="M 0 280 L 400 280" stroke="#5a4a30" stroke-width="2"/><g transform="translate(0,200)"><animateTransform attributeName="transform" type="translate" values="-100,200;500,200" dur="8s" repeatCount="indefinite"/><rect x="0" y="0" width="80" height="40" fill="#3a3a5a" rx="4"/><circle cx="20" cy="50" r="8" fill="#1a1a2a"/><circle cx="60" cy="50" r="8" fill="#1a1a2a"/><rect x="-30" y="-10" width="34" height="44" fill="#5a3a1a"/><polygon points="-30,-10 -50,5 -30,20" fill="#3a2010"/><circle cx="-25" cy="-15" r="4" fill="#ffd060"/><rect x="10" y="10" width="14" height="20" fill="#ffe890"/><rect x="40" y="10" width="14" height="20" fill="#ffe890"/></g></svg>` },
+        { title: '4. 蝎の火', text: '蝎は虫を食べて生きていた。ある日井戸に落ち、こう祈った ─ 「神よ、私の体を、人々の幸せのために使ってください」。すると蝎の体は、燃え上がり、夜空の星となった。',
+          svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="360" fill="#1a0a20"/><g transform="translate(200,180)"><circle cx="0" cy="0" r="40" fill="#ff8040" opacity="0.4"><animate attributeName="r" values="40;55;40" dur="2s" repeatCount="indefinite"/></circle><circle cx="0" cy="0" r="28" fill="#ff5020" opacity="0.7"/><circle cx="0" cy="0" r="14" fill="#fff8a0"/><path d="M -15 -5 L -20 -15 L -10 -10 M 15 -5 L 20 -15 L 10 -10 M 0 15 L 0 25" stroke="#ff5020" stroke-width="2" fill="none"/></g>${Array.from({length:15}).map((_,i)=>{const a=i*Math.PI*2/15;const r=80+Math.random()*60;const x=200+Math.cos(a)*r;const y=180+Math.sin(a)*r;return `<circle cx="${x}" cy="${y}" r="2" fill="#ffd060"><animate attributeName="opacity" values="0.3;1;0.3" dur="${1+Math.random()*2}s" repeatCount="indefinite"/></circle>`}).join('')}</svg>` },
+        { title: '5. 本当のさいわい', text: 'カムパネルラは、ふっと消えていた。ジョバンニは目を覚ます ─ 川辺の草の上で。家に戻る道、知らされた。ザネリを助けようとして、カムパネルラは、川に消えたのだと。\n本当のさいわいとは何か。それを彼は、生涯探し続けることになる。',
+          svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gx5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a1838"/><stop offset="1" stop-color="#3a2818"/></linearGradient></defs><rect width="400" height="360" fill="url(#gx5)"/>${Array.from({length:30}).map(()=>{const x=Math.random()*400;const y=Math.random()*200;return `<circle cx="${x}" cy="${y}" r="0.8" fill="#fff" opacity="0.7"/>`}).join('')}<path d="M 0 230 Q 200 210 400 230 L 400 360 L 0 360 Z" fill="#1a3050"/><path d="M 0 240 L 400 240" stroke="#5a8aa0" stroke-width="1" opacity="0.4"/><g transform="translate(200,260)"><circle cx="0" cy="0" r="14" fill="#d8a060"/><rect x="-5" y="14" width="10" height="40" fill="#3a2818"/><circle cx="-3" cy="-3" r="1" fill="#1a1a1a"/><circle cx="3" cy="-3" r="1" fill="#1a1a1a"/><path d="M -3 6 Q 0 4 3 6" stroke="#1a1a1a" stroke-width="0.6" fill="none"/></g><circle cx="80" cy="80" r="2" fill="#ffe890"><animate attributeName="opacity" values="0.5;1;0.5" dur="3s" repeatCount="indefinite"/></circle></svg>` },
+      ]
+    },
+  ];
+  function openPictureBook(book) {
+    let idx = 0;
+    const ov = document.createElement('div');
+    ov.className = 'lpbook-overlay';
+    function render() {
+      const p = book.pages[idx];
+      ov.innerHTML = `
+        <button class="lpbook-close" aria-label="閉じる">×</button>
+        <div class="lpbook-page">
+          <div class="lpbook-pageNo">${book.title} ／ ${idx + 1} / ${book.pages.length}</div>
+          <div class="lpbook-art">${p.svg}</div>
+          <div class="lpbook-title">${p.title}</div>
+          <div class="lpbook-text">${p.text.replace(/\n/g, '<br>')}</div>
+        </div>
+        <div class="lpbook-nav">
+          <button class="lpbook-btn" id="lpPrev" ${idx === 0 ? 'disabled' : ''}>‹ 前のページ</button>
+          <div class="lpbook-dots">${book.pages.map((_, i) => `<span class="lpbook-dot ${i === idx ? 'on' : ''}"></span>`).join('')}</div>
+          <button class="lpbook-btn" id="lpNext">${idx === book.pages.length - 1 ? 'おわり ★' : '次のページ ›'}</button>
+        </div>
+      `;
+      ov.querySelector('.lpbook-close').addEventListener('click', () => {
+        ov.classList.remove('open');
+        setTimeout(() => ov.remove(), 400);
+      });
+      ov.querySelector('#lpPrev').addEventListener('click', () => { if (idx > 0) { idx--; render(); } });
+      ov.querySelector('#lpNext').addEventListener('click', () => {
+        if (idx < book.pages.length - 1) { idx++; render(); }
+        else { ov.classList.remove('open'); setTimeout(() => ov.remove(), 400); }
+      });
+    }
+    document.body.appendChild(ov);
+    render();
+    requestAnimationFrame(() => ov.classList.add('open'));
+  }
+  window.openPictureBook = openPictureBook;
+  window.EHON_BOOKS = EHON_BOOKS;
+
+  // ============================================================
+  // 📚🌌 絵本の宇宙 — 浮かぶ絵本ハブ（Three.js）
+  // ============================================================
+  async function openEhonSpace3D() {
+    if (!window.THREE) return;
+    const THREE = window.THREE;
+    if (window.THREE_READY) { try { await window.THREE_READY; } catch {} }
+    const ov = document.createElement('div');
+    ov.className = 'museum3d-overlay ehon-space-overlay';
+    ov.innerHTML = `
+      <div class="museum3d-stage" id="ehSpaceStage"></div>
+      <button class="museum3d-close" aria-label="閉じる">×</button>
+      <div class="museum3d-title">絵 本 の 宇 宙</div>
+      <div class="museum3d-info show" id="ehSpaceInfo">浮かんでいる絵本をタップして読む</div>
+    `;
+    document.body.appendChild(ov);
+    requestAnimationFrame(() => ov.classList.add('open'));
+    const stage = ov.querySelector('#ehSpaceStage');
+    const info = ov.querySelector('#ehSpaceInfo');
+    const W = () => stage.clientWidth || window.innerWidth;
+    const H = () => stage.clientHeight || window.innerHeight;
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.0));
+    renderer.setSize(W(), H());
+    if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.3;
+    stage.appendChild(renderer.domElement);
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x040220);
+
+    // 星空
+    const starGeo = new THREE.BufferGeometry();
+    const SC = 1500;
+    const sp = new Float32Array(SC * 3);
+    for (let i = 0; i < SC; i++) {
+      const r = 50 + Math.random() * 100;
+      const th = Math.random() * Math.PI * 2;
+      const ph = Math.acos(2 * Math.random() - 1);
+      sp[i*3] = Math.sin(ph)*Math.cos(th)*r;
+      sp[i*3+1] = Math.cos(ph)*r;
+      sp[i*3+2] = Math.sin(ph)*Math.sin(th)*r;
+    }
+    starGeo.setAttribute('position', new THREE.BufferAttribute(sp, 3));
+    scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({
+      color: 0xffffff, size: 0.4, transparent: true, opacity: 0.9, depthWrite: false,
+    })));
+
+    // ライト
+    scene.add(new THREE.AmbientLight(0x6080a0, 0.8));
+    const key = new THREE.DirectionalLight(0xfff0d0, 1.0);
+    key.position.set(10, 10, 10); scene.add(key);
+
+    // 星雲（背景にいくつか）
+    for (let i = 0; i < 3; i++) {
+      const nc = document.createElement('canvas'); nc.width = 256; nc.height = 256;
+      const ng = nc.getContext('2d');
+      const grd = ng.createRadialGradient(128, 128, 0, 128, 128, 128);
+      const cols = [['#a060d0','#3010a0'], ['#d04060','#4a1830'], ['#4080d0','#0a2050']][i];
+      grd.addColorStop(0, cols[0] + 'cc');
+      grd.addColorStop(1, cols[1] + '00');
+      ng.fillStyle = grd; ng.fillRect(0, 0, 256, 256);
+      const tex = new THREE.CanvasTexture(nc);
+      const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, opacity: 0.7, depthWrite: false }));
+      sp.scale.set(60, 60, 1);
+      sp.position.set((Math.random()-0.5)*80, (Math.random()-0.5)*40, -40 - Math.random()*20);
+      scene.add(sp);
+    }
+
+    // 📕 浮かぶ絵本（カバー = 表紙画像）
+    const books = [];
+    EHON_BOOKS.forEach((book, i) => {
+      const angle = (i / EHON_BOOKS.length) * Math.PI * 2;
+      const r = 8;
+      const g = new THREE.Group();
+      // 表紙テクスチャ
+      const cc = document.createElement('canvas'); cc.width = 256; cc.height = 360;
+      const cg = cc.getContext('2d');
+      const grd = cg.createLinearGradient(0, 0, 0, 360);
+      grd.addColorStop(0, book.color1); grd.addColorStop(1, book.color2);
+      cg.fillStyle = grd; cg.fillRect(0, 0, 256, 360);
+      // 装飾枠
+      cg.strokeStyle = book.accent; cg.lineWidth = 4;
+      cg.strokeRect(8, 8, 240, 344);
+      cg.lineWidth = 1;
+      cg.strokeRect(14, 14, 228, 332);
+      // タイトル
+      cg.font = 'bold 26px "Shippori Mincho", serif';
+      cg.fillStyle = book.accent;
+      cg.textAlign = 'center';
+      // 縦書き風（折り返し）
+      const lines = book.title.match(/.{1,7}/g) || [book.title];
+      lines.forEach((l, li) => cg.fillText(l, 128, 80 + li * 32));
+      // 表紙絵文字
+      cg.font = '120px serif';
+      cg.fillText(book.cover, 128, 240);
+      // 著者
+      cg.font = '14px "Shippori Mincho", serif';
+      cg.fillStyle = '#fff';
+      cg.fillText(book.author, 128, 320);
+      // 年
+      cg.font = '11px serif';
+      cg.fillStyle = book.accent;
+      cg.fillText(book.year, 128, 340);
+      const coverTex = new THREE.CanvasTexture(cc);
+      // 本体（薄い箱）
+      const bookMesh = new THREE.Mesh(
+        new THREE.BoxGeometry(2.2, 3.0, 0.35),
+        [
+          new THREE.MeshStandardMaterial({ color: 0x2a1810 }), // R
+          new THREE.MeshStandardMaterial({ color: 0x2a1810 }), // L
+          new THREE.MeshStandardMaterial({ color: 0xfff0d8 }), // top
+          new THREE.MeshStandardMaterial({ color: 0xfff0d8 }), // bottom
+          new THREE.MeshStandardMaterial({ map: coverTex, roughness: 0.5 }), // front (cover)
+          new THREE.MeshStandardMaterial({ color: 0x2a1810 }), // back
+        ]
+      );
+      bookMesh.userData.book = book;
+      g.add(bookMesh);
+      // 後光
+      const halo = new THREE.Sprite(new THREE.SpriteMaterial({
+        map: (() => {
+          const c = document.createElement('canvas'); c.width = 128; c.height = 128;
+          const cg2 = c.getContext('2d');
+          const g2 = cg2.createRadialGradient(64, 64, 0, 64, 64, 64);
+          g2.addColorStop(0, book.accent + 'aa');
+          g2.addColorStop(1, book.accent + '00');
+          cg2.fillStyle = g2; cg2.fillRect(0, 0, 128, 128);
+          return new THREE.CanvasTexture(c);
+        })(),
+        color: 0xffffff, transparent: true, opacity: 0.45,
+        depthWrite: false, blending: THREE.AdditiveBlending,
+      }));
+      halo.scale.set(5, 5, 1);
+      g.add(halo);
+      g.position.set(Math.cos(angle) * r, Math.sin(angle * 1.7) * 1.5, Math.sin(angle) * r);
+      g.userData.angle = angle;
+      g.userData.bookMesh = bookMesh;
+      g.userData.book = book;
+      g.userData.basePos = g.position.clone();
+      scene.add(g);
+      books.push(g);
+    });
+
+    // カメラ
+    const camera = new THREE.PerspectiveCamera(60, W()/H(), 0.1, 200);
+    camera.position.set(0, 1, 16);
+    camera.lookAt(0, 0, 0);
+    let yaw = 0, pitch = 0, targetYaw = 0, targetPitch = 0;
+    let dragging = false, lx = 0, ly = 0;
+    renderer.domElement.addEventListener('pointerdown', e => { dragging = true; lx = e.clientX; ly = e.clientY; });
+    renderer.domElement.addEventListener('pointermove', e => {
+      if (!dragging) return;
+      targetYaw -= (e.clientX - lx) * 0.005;
+      targetPitch = Math.max(-0.5, Math.min(0.5, targetPitch - (e.clientY - ly) * 0.004));
+      lx = e.clientX; ly = e.clientY;
+    });
+    const stop = () => { dragging = false; };
+    renderer.domElement.addEventListener('pointerup', stop);
+    renderer.domElement.addEventListener('pointerleave', stop);
+
+    // クリックで本を開く
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+    renderer.domElement.addEventListener('click', e => {
+      const rect = renderer.domElement.getBoundingClientRect();
+      mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      raycaster.setFromCamera(mouse, camera);
+      const meshes = books.map(g => g.userData.bookMesh);
+      const hits = raycaster.intersectObjects(meshes, false);
+      if (hits.length) {
+        const book = hits[0].object.userData.book;
+        if (book.open) book.open();
+        else openPictureBook(book);
+      }
+    });
+
+    let running = true;
+    ov.querySelector('.museum3d-close').addEventListener('click', () => {
+      running = false;
+      ov.classList.remove('open');
+      setTimeout(() => ov.remove(), 500);
+    });
+    const t0 = performance.now();
+    function animate() {
+      if (!running) return;
+      const t = (performance.now() - t0) / 1000;
+      yaw += (targetYaw - yaw) * 0.1;
+      pitch += (targetPitch - pitch) * 0.1;
+      camera.position.x = Math.sin(yaw) * 16 * Math.cos(pitch);
+      camera.position.z = Math.cos(yaw) * 16 * Math.cos(pitch);
+      camera.position.y = 1 + Math.sin(pitch) * 12;
+      camera.lookAt(0, 0, 0);
+      // 本がふわふわ漂う
+      books.forEach((g, i) => {
+        g.position.y = g.userData.basePos.y + Math.sin(t * 0.6 + i) * 0.5;
+        g.rotation.y = Math.sin(t * 0.4 + i * 0.7) * 0.4;
+        g.rotation.x = Math.cos(t * 0.3 + i) * 0.1;
+      });
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+    animate();
+    window.addEventListener('resize', () => {
+      renderer.setSize(W(), H());
+      camera.aspect = W()/H();
+      camera.updateProjectionMatrix();
+    });
+  }
+  window.openEhonSpace3D = openEhonSpace3D;
+
+  // ============================================================
+  // 🌍 B-612 — 王子様の星に降り立つ（Three.js）
+  // ============================================================
+  async function openLittlePrinceWorld3D() {
+    if (!window.THREE) return;
+    const THREE = window.THREE;
+    if (window.THREE_READY) { try { await window.THREE_READY; } catch {} }
+    const ov = document.createElement('div');
+    ov.className = 'museum3d-overlay';
+    ov.innerHTML = `
+      <div class="museum3d-stage" id="lpwStage"></div>
+      <button class="museum3d-close" aria-label="閉じる">×</button>
+      <div class="museum3d-title">B - 6 1 2</div>
+      <div class="museum3d-info show" id="lpwInfo">王子様の星 — ドラッグで星を回す　／　タップでバラに話しかける</div>
+    `;
+    document.body.appendChild(ov);
+    requestAnimationFrame(() => ov.classList.add('open'));
+    const stage = ov.querySelector('#lpwStage');
+    const info = ov.querySelector('#lpwInfo');
+    const W = () => stage.clientWidth || window.innerWidth;
+    const H = () => stage.clientHeight || window.innerHeight;
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.0));
+    renderer.setSize(W(), H());
+    if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.4;
+    stage.appendChild(renderer.domElement);
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x05031a);
+
+    // 星空
+    const starGeo = new THREE.BufferGeometry();
+    const SC = 1500;
+    const sp = new Float32Array(SC * 3);
+    for (let i = 0; i < SC; i++) {
+      const r = 60 + Math.random() * 100;
+      const th = Math.random() * Math.PI * 2;
+      const ph = Math.acos(2 * Math.random() - 1);
+      sp[i*3] = Math.sin(ph)*Math.cos(th)*r;
+      sp[i*3+1] = Math.cos(ph)*r;
+      sp[i*3+2] = Math.sin(ph)*Math.sin(th)*r;
+    }
+    starGeo.setAttribute('position', new THREE.BufferAttribute(sp, 3));
+    scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({
+      color: 0xffffff, size: 0.5, transparent: true, opacity: 0.95, depthWrite: false,
+    })));
+
+    // 太陽
+    const sunDir = new THREE.DirectionalLight(0xfff0c0, 1.5);
+    sunDir.position.set(10, 8, 5);
+    scene.add(sunDir);
+    scene.add(new THREE.AmbientLight(0x6080a0, 0.6));
+    scene.add(new THREE.HemisphereLight(0xa0c0ff, 0x4a3a28, 0.5));
+
+    // 太陽（視覚）
+    const sunMesh = new THREE.Mesh(
+      new THREE.SphereGeometry(1.5, 16, 12),
+      new THREE.MeshBasicMaterial({ color: 0xffe890 })
+    );
+    sunMesh.position.set(15, 12, 5);
+    scene.add(sunMesh);
+
+    // 🌍 B-612 本体（小さな緑の星）
+    const planetGroup = new THREE.Group();
+    const planetTex = (() => {
+      const c = document.createElement('canvas'); c.width = 512; c.height = 512;
+      const g = c.getContext('2d');
+      const grd = g.createRadialGradient(256, 256, 50, 256, 256, 380);
+      grd.addColorStop(0, '#80c0a0'); grd.addColorStop(0.7, '#5a8060'); grd.addColorStop(1, '#2a4030');
+      g.fillStyle = grd; g.fillRect(0, 0, 512, 512);
+      // 草の質感
+      for (let i = 0; i < 2000; i++) {
+        g.strokeStyle = `rgba(${30+Math.random()*40},${80+Math.random()*40},${30+Math.random()*30},${0.4+Math.random()*0.4})`;
+        g.lineWidth = 0.6;
+        g.beginPath();
+        const x = Math.random()*512, y = Math.random()*512;
+        g.moveTo(x, y); g.lineTo(x + (Math.random()-0.5)*4, y - 3 - Math.random()*4);
+        g.stroke();
+      }
+      // 火山の口（2つ）
+      [128, 380].forEach(cx => {
+        g.fillStyle = '#3a2010';
+        g.beginPath(); g.arc(cx, 256, 22, 0, Math.PI*2); g.fill();
+        g.fillStyle = '#5a3a18';
+        g.beginPath(); g.arc(cx, 256, 14, 0, Math.PI*2); g.fill();
+      });
+      // 死火山（小さい）
+      g.fillStyle = '#4a4a4a';
+      g.beginPath(); g.arc(256, 200, 10, 0, Math.PI*2); g.fill();
+      return new THREE.CanvasTexture(c);
+    })();
+    const planet = new THREE.Mesh(
+      new THREE.SphereGeometry(3, 32, 24),
+      new THREE.MeshStandardMaterial({ map: planetTex, roughness: 0.85 })
+    );
+    planetGroup.add(planet);
+
+    // 🌹 バラ（北極に立つ）
+    const rose = new THREE.Group();
+    const stem = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.04, 0.06, 1.0, 8),
+      new THREE.MeshStandardMaterial({ color: 0x2a6a3a, roughness: 0.6 })
+    );
+    stem.position.y = 0.5;
+    rose.add(stem);
+    // 葉
+    [0, Math.PI].forEach(rot => {
+      const leaf = new THREE.Mesh(
+        new THREE.SphereGeometry(0.18, 8, 6),
+        new THREE.MeshStandardMaterial({ color: 0x40a050, roughness: 0.7 })
+      );
+      leaf.scale.set(1.4, 0.4, 0.7);
+      leaf.position.y = 0.5;
+      leaf.rotation.y = rot;
+      leaf.position.x = Math.cos(rot) * 0.18;
+      leaf.position.z = Math.sin(rot) * 0.18;
+      rose.add(leaf);
+    });
+    // 花
+    const flower = new THREE.Mesh(
+      new THREE.SphereGeometry(0.22, 14, 10),
+      new THREE.MeshStandardMaterial({ color: 0xff3060, roughness: 0.5, emissive: 0x4a0818, emissiveIntensity: 0.3 })
+    );
+    flower.position.y = 1.05;
+    flower.scale.set(1, 0.95, 1);
+    rose.add(flower);
+    // ガラスドーム
+    const dome = new THREE.Mesh(
+      new THREE.SphereGeometry(0.5, 16, 12, 0, Math.PI*2, 0, Math.PI*0.55),
+      new THREE.MeshPhysicalMaterial({
+        color: 0xc8e0f0, transparent: true, opacity: 0.25,
+        roughness: 0.0, transmission: 0.9, side: THREE.DoubleSide,
+      })
+    );
+    dome.position.y = 0.7;
+    rose.add(dome);
+    rose.position.y = 3;
+    rose.userData.isRose = true;
+    planetGroup.add(rose);
+
+    // 🌳 バオバブの芽（3つ、地面に小さく）
+    [0, 2.3, 4.6].forEach(rot => {
+      const baob = new THREE.Group();
+      const trunk = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.05, 0.08, 0.3, 6),
+        new THREE.MeshStandardMaterial({ color: 0x6a5028, roughness: 0.85 })
+      );
+      trunk.position.y = 0.15;
+      baob.add(trunk);
+      const leaf = new THREE.Mesh(
+        new THREE.SphereGeometry(0.18, 8, 6),
+        new THREE.MeshStandardMaterial({ color: 0x4a8030, roughness: 0.8 })
+      );
+      leaf.position.y = 0.4;
+      baob.add(leaf);
+      // 星表面に貼り付ける
+      const ax = Math.cos(rot) * 3.05;
+      const az = Math.sin(rot) * 3.05;
+      baob.position.set(ax, 0, az);
+      baob.lookAt(ax * 2, 0, az * 2);
+      baob.rotateX(Math.PI/2);
+      planetGroup.add(baob);
+    });
+
+    // 👑 王子様（小さく星の上に立つ）
+    const prince = new THREE.Group();
+    const head = new THREE.Mesh(new THREE.SphereGeometry(0.1, 12, 10), new THREE.MeshStandardMaterial({ color: 0xf8d8b0, roughness: 0.5 }));
+    head.position.y = 0.42;
+    prince.add(head);
+    const hair = new THREE.Mesh(new THREE.ConeGeometry(0.12, 0.18, 12), new THREE.MeshStandardMaterial({ color: 0xffd860, roughness: 0.4, emissive: 0x6a4000, emissiveIntensity: 0.3 }));
+    hair.position.y = 0.55;
+    prince.add(hair);
+    const scarf = new THREE.Mesh(new THREE.TorusGeometry(0.1, 0.025, 8, 14), new THREE.MeshStandardMaterial({ color: 0xffe040, roughness: 0.5 }));
+    scarf.position.y = 0.32; scarf.rotation.x = Math.PI/2;
+    prince.add(scarf);
+    const body = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.13, 0.28, 12), new THREE.MeshStandardMaterial({ color: 0x3a7a4a, roughness: 0.5 }));
+    body.position.y = 0.16;
+    prince.add(body);
+    prince.position.set(-2, 0, 1.6);
+    prince.lookAt(0, 0, 0);
+    prince.rotateX(Math.PI/2);
+    planetGroup.add(prince);
+
+    scene.add(planetGroup);
+
+    // カメラ
+    const camera = new THREE.PerspectiveCamera(55, W()/H(), 0.1, 300);
+    camera.position.set(0, 2, 9);
+    camera.lookAt(0, 0, 0);
+    let yaw = 0, pitch = 0.15, dist = 9, targetYaw = 0, targetPitch = 0.15;
+    let dragging = false, lx = 0, ly = 0;
+    renderer.domElement.addEventListener('pointerdown', e => { dragging = true; lx = e.clientX; ly = e.clientY; });
+    renderer.domElement.addEventListener('pointermove', e => {
+      if (!dragging) return;
+      targetYaw -= (e.clientX - lx) * 0.006;
+      targetPitch = Math.max(-0.4, Math.min(0.8, targetPitch - (e.clientY - ly) * 0.005));
+      lx = e.clientX; ly = e.clientY;
+    });
+    const stop = () => { dragging = false; };
+    renderer.domElement.addEventListener('pointerup', stop);
+    renderer.domElement.addEventListener('pointerleave', stop);
+    renderer.domElement.addEventListener('wheel', e => {
+      dist = Math.max(5, Math.min(20, dist + e.deltaY * 0.02));
+      e.preventDefault();
+    }, { passive: false });
+
+    // タップでバラ
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+    renderer.domElement.addEventListener('click', e => {
+      const rect = renderer.domElement.getBoundingClientRect();
+      mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      raycaster.setFromCamera(mouse, camera);
+      const hits = raycaster.intersectObject(rose, true);
+      if (hits.length) {
+        info.textContent = '🌹 「私があなたにとって特別なのは、あなたが私に費やした時間のせいよ」';
+      }
+    });
+
+    let running = true;
+    ov.querySelector('.museum3d-close').addEventListener('click', () => {
+      running = false;
+      ov.classList.remove('open');
+      setTimeout(() => ov.remove(), 500);
+    });
+    const t0 = performance.now();
+    function animate() {
+      if (!running) return;
+      const t = (performance.now() - t0) / 1000;
+      yaw += (targetYaw - yaw) * 0.1;
+      pitch += (targetPitch - pitch) * 0.1;
+      camera.position.x = Math.sin(yaw) * dist * Math.cos(pitch);
+      camera.position.z = Math.cos(yaw) * dist * Math.cos(pitch);
+      camera.position.y = Math.sin(pitch) * dist;
+      camera.lookAt(0, 0, 0);
+      // 自動回転（弱め）
+      planetGroup.rotation.y += 0.001;
+      // バラの揺れ
+      flower.rotation.z = Math.sin(t * 0.6) * 0.06;
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+    animate();
+    window.addEventListener('resize', () => {
+      renderer.setSize(W(), H());
+      camera.aspect = W()/H();
+      camera.updateProjectionMatrix();
+    });
+  }
+  window.openLittlePrinceWorld3D = openLittlePrinceWorld3D;
 
 
   // ============================================================
