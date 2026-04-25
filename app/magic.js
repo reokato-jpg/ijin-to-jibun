@@ -20848,44 +20848,70 @@
         dragX = e.clientX; dragY = e.clientY;
       }
     });
-    // 左下：仮想ジョイスティック（美術館と同じ「タッチ位置=中心」方式）
+    // 🕹 仮想ジョイスティック（業界標準実装）
+    // - 原点 = パッドの円の中心（固定）。指の位置と中心の差で入力ベクトル算出
+    // - PointerEvent + setPointerCapture で指が外れても追従
+    // - pointerId で複数タッチの混信防止
+    // - touch-action: none で他のジェスチャー無効化
+    // - デッドゾーン 0.10、上限で正規化、円形クランプ
     const joy = document.createElement('div');
     joy.className = 'lib-joy';
     joy.innerHTML = '<div class="lib-joy-knob" id="libJoyKnob"></div>';
     ov.appendChild(joy);
     const joyKnob = joy.querySelector('#libJoyKnob');
-    let joyActive = false, joyDX = 0, joyDY = 0;
-    const JOY_MAX = 50;
-    // 美術館と同じ：touchstart/mousedown でアンカー(cx,cy)を捕獲、以降の移動はそこからの差分
-    const stickStart = e => {
-      joyActive = true;
-      const t = e.touches ? e.touches[0] : e;
-      joy.dataset.cx = t.clientX; joy.dataset.cy = t.clientY;
-      joyDX = 0; joyDY = 0;
-      e.preventDefault();
-    };
-    const stickMove = e => {
-      if (!joyActive) return;
-      const t = e.touches ? e.touches[0] : e;
-      const cx = +joy.dataset.cx, cy = +joy.dataset.cy;
-      let dx = t.clientX - cx, dy = t.clientY - cy;
+    let joyDX = 0, joyDY = 0;          // 正規化入力 (-1..1)
+    let joyPid = null;                  // 追跡中の pointerId
+    let joyCx = 0, joyCy = 0;           // 円の中心（screen座標）
+    const JOY_R = 50;                   // パッド半径(px)
+    const DEAD = 0.10;                  // デッドゾーン
+    function joyCenter() {
+      const r = joy.getBoundingClientRect();
+      joyCx = r.left + r.width / 2;
+      joyCy = r.top + r.height / 2;
+    }
+    function joyApply(clientX, clientY) {
+      let dx = clientX - joyCx;
+      let dy = clientY - joyCy;
       const d = Math.hypot(dx, dy);
-      if (d > JOY_MAX) { dx = dx/d*JOY_MAX; dy = dy/d*JOY_MAX; }
+      if (d > JOY_R) { dx = dx / d * JOY_R; dy = dy / d * JOY_R; }
+      // ノブ位置（視覚フィードバック）
       joyKnob.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
-      joyDX = dx / JOY_MAX; joyDY = dy / JOY_MAX;
-      e.preventDefault();
-    };
-    const stickEnd = () => {
-      joyActive = false;
+      // 正規化＋デッドゾーン
+      let nx = dx / JOY_R, ny = dy / JOY_R;
+      const len = Math.hypot(nx, ny);
+      if (len < DEAD) { joyDX = 0; joyDY = 0; return; }
+      const k = (len - DEAD) / (1 - DEAD) / len;
+      joyDX = nx * k;
+      joyDY = ny * k;
+    }
+    function joyReset() {
+      joyDX = 0; joyDY = 0; joyPid = null;
       joyKnob.style.transform = 'translate(-50%, -50%)';
-      joyDX = 0; joyDY = 0;
-    };
-    joy.addEventListener('touchstart', stickStart, { passive: false });
-    joy.addEventListener('touchmove', stickMove, { passive: false });
-    joy.addEventListener('touchend', stickEnd);
-    joy.addEventListener('mousedown', stickStart);
-    window.addEventListener('mousemove', stickMove);
-    window.addEventListener('mouseup', stickEnd);
+    }
+    joy.addEventListener('pointerdown', e => {
+      if (joyPid !== null) return;       // 既に追跡中なら無視
+      joyPid = e.pointerId;
+      joyCenter();                       // 中心位置を更新（responsive対応）
+      try { joy.setPointerCapture(e.pointerId); } catch {}
+      joyApply(e.clientX, e.clientY);
+      e.preventDefault();
+    });
+    joy.addEventListener('pointermove', e => {
+      if (e.pointerId !== joyPid) return;
+      joyApply(e.clientX, e.clientY);
+      e.preventDefault();
+    });
+    function joyRelease(e) {
+      if (e.pointerId !== joyPid) return;
+      try { joy.releasePointerCapture(joyPid); } catch {}
+      joyReset();
+    }
+    joy.addEventListener('pointerup', joyRelease);
+    joy.addEventListener('pointercancel', joyRelease);
+    joy.addEventListener('lostpointercapture', joyRelease);
+    // ウィンドウリサイズで中心位置を更新
+    window.addEventListener('resize', joyCenter);
+    setTimeout(joyCenter, 0); // 初期化後に中心取得
 
     // ── レイキャスト：本のクリック ──
     const raycaster = new THREE.Raycaster();
