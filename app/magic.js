@@ -15034,14 +15034,14 @@
     scene.add(new THREE.AmbientLight(0x4a4068, 0.9));
     scene.add(new THREE.HemisphereLight(0x6a6a90, 0x14081e, 0.7));
 
-    // 🎚 モード切替
+    // 🎚 モード切替 — ステージとオーケストラは「全モードで」常時表示
     const modes = {
       concert:    { stageVisible: true,  audienceVisible: true,  uMode: 0.0, planets: false, nature: false, myth: false, label: 'CONCERT', loc: '中央ホール' },
-      planetarium:{ stageVisible: false, audienceVisible: true,  uMode: 1.0, planets: false, nature: false, myth: false, label: 'PLANETARIUM', loc: '星座のドーム' },
-      cosmos:     { stageVisible: false, audienceVisible: false, uMode: 2.0, planets: true,  nature: false, myth: false, label: 'COSMOS', loc: '惑星の海' },
-      nature:     { stageVisible: false, audienceVisible: false, uMode: 3.0, planets: false, nature: true,  myth: false, label: 'NATURE', loc: '森の囁き' },
-      myth:       { stageVisible: false, audienceVisible: false, uMode: 4.0, planets: false, nature: false, myth: true,  label: 'MYTH', loc: '神々の遺跡' },
-      timeslip:   { stageVisible: false, audienceVisible: false, uMode: 5.0, planets: false, nature: false, myth: false, timeslip: true, label: 'TIME-SLIP', loc: '過去の偉人たち' },
+      planetarium:{ stageVisible: true,  audienceVisible: true,  uMode: 1.0, planets: false, nature: false, myth: false, label: 'PLANETARIUM', loc: '星座のドーム' },
+      cosmos:     { stageVisible: true,  audienceVisible: true,  uMode: 2.0, planets: true,  nature: false, myth: false, label: 'COSMOS', loc: '惑星の海' },
+      nature:     { stageVisible: true,  audienceVisible: true,  uMode: 3.0, planets: false, nature: true,  myth: false, label: 'NATURE', loc: '森の囁き' },
+      myth:       { stageVisible: true,  audienceVisible: true,  uMode: 4.0, planets: false, nature: false, myth: true,  label: 'MYTH', loc: '神話の幻視' },
+      timeslip:   { stageVisible: true,  audienceVisible: true,  uMode: 5.0, planets: false, nature: false, myth: false, timeslip: true, label: 'TIME-SLIP', loc: '過去の偉人たち' },
     };
     let currentMode = 'concert';
     const stageGroups = [stagePlat, stageRim, stageBase, stageRim2, stageCircle, piano, conductor];
@@ -15635,301 +15635,330 @@
     mythGroup.visible = false;
     const mythScenes = {}; // 各シーン: { group, name }
 
-    // 🌳 エデンの園
+    // 🌳 エデンの園 — 観客の遠景に森、上空に動物が飛び交う
     const edenG = new THREE.Group();
-    // 中央の生命の樹
-    const treeTrunk = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.4, 0.7, 4, 12),
-      new THREE.MeshStandardMaterial({ color: 0x4a3018, roughness: 0.85 })
-    );
-    treeTrunk.position.y = 2;
-    edenG.add(treeTrunk);
-    // 葉（複数の球で表現）
+    // 観客席外側 r=32 に4本の生命の樹
+    const treePositions = [[0, 32], [32, 0], [0, -32], [-32, 0]];
+    treePositions.forEach(([tx, tz]) => {
+      const tree = new THREE.Group();
+      const trunk = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.6, 1.0, 8, 12),
+        new THREE.MeshStandardMaterial({ color: 0x4a3018, roughness: 0.85 })
+      );
+      trunk.position.y = 4;
+      tree.add(trunk);
+      // 葉のクラスター
+      for (let i = 0; i < 6; i++) {
+        const leaf = new THREE.Mesh(
+          new THREE.SphereGeometry(2.4 + Math.random() * 0.6, 16, 12),
+          new THREE.MeshStandardMaterial({ color: 0x4a8040 + (Math.random()*0x101010|0), roughness: 0.85 })
+        );
+        leaf.position.set((Math.random()-0.5)*2.5, 7 + Math.random()*2, (Math.random()-0.5)*2.5);
+        tree.add(leaf);
+      }
+      // りんご（金色の実）
+      for (let i = 0; i < 6; i++) {
+        const apple = new THREE.Mesh(
+          new THREE.SphereGeometry(0.22, 10, 8),
+          new THREE.MeshStandardMaterial({ color: 0xff5040, roughness: 0.4, emissive: 0x4a0808, emissiveIntensity: 0.4 })
+        );
+        apple.position.set((Math.random()-0.5)*3, 6 + Math.random()*3, (Math.random()-0.5)*3);
+        tree.add(apple);
+      }
+      tree.position.set(tx, 0, tz);
+      edenG.add(tree);
+    });
+    // 🦋 蝶（30匹、上空 y=8〜18 を飛ぶ）
+    const butterflies = [];
+    const butterflyTex = (() => {
+      const c = document.createElement('canvas'); c.width = 32; c.height = 32;
+      const g = c.getContext('2d');
+      const grd = g.createRadialGradient(16, 16, 0, 16, 16, 16);
+      grd.addColorStop(0, 'rgba(255,200,80,1)');
+      grd.addColorStop(0.6, 'rgba(255,140,180,0.6)');
+      grd.addColorStop(1, 'rgba(140,80,200,0)');
+      g.fillStyle = grd; g.fillRect(0, 0, 32, 32);
+      return new THREE.CanvasTexture(c);
+    })();
+    for (let i = 0; i < 30; i++) {
+      const b = new THREE.Sprite(new THREE.SpriteMaterial({
+        map: butterflyTex, transparent: true, opacity: 0.85,
+        depthWrite: false, blending: THREE.AdditiveBlending,
+      }));
+      b.scale.set(0.45, 0.45, 1);
+      b.userData = {
+        ax: Math.random() * Math.PI * 2,
+        ar: 18 + Math.random() * 8,
+        baseY: 8 + Math.random() * 10,
+        speed: 0.3 + Math.random() * 0.4,
+        phase: Math.random() * Math.PI * 2,
+      };
+      edenG.add(b);
+      butterflies.push(b);
+    }
+    edenG.userData.butterflies = butterflies;
+    // 🐦 鳥のV字編隊（5羽、上空をゆっくり旋回）
+    const birds = [];
     for (let i = 0; i < 5; i++) {
-      const a = (i / 5) * Math.PI * 2;
-      const leaf = new THREE.Mesh(
-        new THREE.SphereGeometry(1.4 + Math.random() * 0.3, 16, 12),
-        new THREE.MeshStandardMaterial({ color: 0x4a8030 + (Math.random() * 0x202010 | 0), roughness: 0.85 })
+      const bird = new THREE.Mesh(
+        new THREE.ConeGeometry(0.25, 0.6, 4),
+        new THREE.MeshStandardMaterial({ color: 0x2a2a2a, roughness: 0.6 })
       );
-      leaf.position.set(Math.cos(a) * 0.8, 4.5 + Math.random() * 0.5, Math.sin(a) * 0.8);
-      edenG.add(leaf);
+      bird.userData = {
+        offset: i * 0.15,
+        ax: 0,
+        ar: 24,
+        baseY: 18,
+      };
+      edenG.add(bird);
+      birds.push(bird);
     }
-    const topLeaf = new THREE.Mesh(
-      new THREE.SphereGeometry(1.6, 16, 12),
-      new THREE.MeshStandardMaterial({ color: 0x5a9040, roughness: 0.85 })
-    );
-    topLeaf.position.y = 5.6;
-    edenG.add(topLeaf);
-    // りんご
-    for (let i = 0; i < 8; i++) {
-      const a = Math.random() * Math.PI * 2;
-      const r = 1.2 + Math.random() * 0.6;
-      const apple = new THREE.Mesh(
-        new THREE.SphereGeometry(0.18, 12, 8),
-        new THREE.MeshStandardMaterial({ color: 0xd02020, roughness: 0.4, emissive: 0x4a0808, emissiveIntensity: 0.3 })
-      );
-      apple.position.set(Math.cos(a) * r, 4 + Math.random() * 1.5, Math.sin(a) * r);
-      edenG.add(apple);
-    }
-    // 蛇（樹に巻きつく螺旋）
-    const snakeCurve = new THREE.CatmullRomCurve3(
-      Array.from({length: 24}).map((_, i) => {
-        const t = i / 23;
-        const a = t * Math.PI * 4;
-        return new THREE.Vector3(Math.cos(a) * (0.55 + t*0.1), 0.5 + t * 3.5, Math.sin(a) * (0.55 + t*0.1));
-      })
-    );
-    const snakeMesh = new THREE.Mesh(
-      new THREE.TubeGeometry(snakeCurve, 48, 0.12, 8, false),
-      new THREE.MeshStandardMaterial({ color: 0x4a8030, roughness: 0.4, emissive: 0x1a3010, emissiveIntensity: 0.3 })
-    );
-    edenG.add(snakeMesh);
-    // 草地リング
-    for (let i = 0; i < 24; i++) {
-      const a = (i / 24) * Math.PI * 2;
-      const r = 5 + Math.random() * 2;
-      const grass = new THREE.Mesh(
-        new THREE.SphereGeometry(0.4, 8, 6),
-        new THREE.MeshStandardMaterial({ color: 0x5a8a40 + (Math.random()*0x101010|0), roughness: 0.85 })
-      );
-      grass.position.set(Math.cos(a) * r, 0.2, Math.sin(a) * r);
-      grass.scale.set(1, 0.5, 1);
-      edenG.add(grass);
-    }
+    edenG.userData.birds = birds;
     mythGroup.add(edenG);
     edenG.visible = false;
     mythScenes.eden = { group: edenG, name: 'エデンの園', sub: 'GARDEN OF EDEN' };
 
-    // 🚢 ノアの方舟
+    // 🚢 ノアの方舟 — 遠景に方舟、上空の雨と虹（神話博士監修）
     const noahG = new THREE.Group();
-    // 海（リングで囲む）
-    const seaRing = new THREE.Mesh(
-      new THREE.CircleGeometry(20, 64),
-      new THREE.MeshStandardMaterial({ color: 0x205070, roughness: 0.2, metalness: 0.6, transparent: true, opacity: 0.8 })
-    );
-    seaRing.rotation.x = -Math.PI / 2;
-    seaRing.position.y = -1.3;
-    noahG.add(seaRing);
-    // 方舟（中央の大きな船）
+    // 方舟（ドーム稜線 r=32 に傾いて漂う）
+    const ark = new THREE.Group();
     const arkHull = new THREE.Mesh(
-      new THREE.BoxGeometry(8, 2.5, 3.5),
-      new THREE.MeshStandardMaterial({ color: 0x6a3818, roughness: 0.7 })
+      new THREE.BoxGeometry(10, 3, 4),
+      new THREE.MeshStandardMaterial({ color: 0x6a3818, roughness: 0.85 })
     );
     arkHull.position.y = 0.5;
-    noahG.add(arkHull);
-    const arkBow = new THREE.Mesh(
-      new THREE.ConeGeometry(1.8, 2.5, 4),
-      new THREE.MeshStandardMaterial({ color: 0x6a3818, roughness: 0.7 })
-    );
-    arkBow.rotation.z = Math.PI / 2; arkBow.rotation.y = Math.PI / 4;
-    arkBow.position.set(4.8, 0.5, 0);
-    arkBow.scale.set(1, 1, 1.5);
-    noahG.add(arkBow);
-    // 屋根
+    ark.add(arkHull);
     const arkRoof = new THREE.Mesh(
-      new THREE.BoxGeometry(6, 1.5, 2.8),
-      new THREE.MeshStandardMaterial({ color: 0x8a5028, roughness: 0.6 })
+      new THREE.BoxGeometry(8, 2, 3.5),
+      new THREE.MeshStandardMaterial({ color: 0x8a5028, roughness: 0.7 })
     );
-    arkRoof.position.y = 2.5;
-    noahG.add(arkRoof);
+    arkRoof.position.y = 3;
+    ark.add(arkRoof);
     // 窓
-    for (let i = -2; i <= 2; i++) {
+    for (let i = -3; i <= 3; i++) {
       const win = new THREE.Mesh(
-        new THREE.PlaneGeometry(0.4, 0.4),
+        new THREE.PlaneGeometry(0.5, 0.5),
         new THREE.MeshBasicMaterial({ color: 0xffe890 })
       );
-      win.position.set(i * 1.2, 2.5, 1.41);
-      noahG.add(win);
+      win.position.set(i * 1.3, 3, 1.76);
+      ark.add(win);
     }
-    // 鳩（オリーブ持ち）
-    const dove = new THREE.Mesh(
-      new THREE.SphereGeometry(0.18, 12, 8),
-      new THREE.MeshStandardMaterial({ color: 0xf8f8ff, roughness: 0.4 })
-    );
-    dove.scale.set(1.4, 0.9, 0.9);
-    dove.position.set(2, 5, 2);
-    noahG.add(dove);
-    // 虹（上空の半円）
+    ark.position.set(0, 8, -32); // ドーム稜線の遠景
+    ark.rotation.z = 0.08; // 漂う傾き
+    noahG.add(ark);
+    // 雨（上空 y=10-30 を斜めに通過する 1500粒子）
+    const RAIN_N = 1500;
+    const rainPos = new Float32Array(RAIN_N * 3);
+    for (let i = 0; i < RAIN_N; i++) {
+      rainPos[i*3]   = (Math.random() - 0.5) * 60;
+      rainPos[i*3+1] = 10 + Math.random() * 25;
+      rainPos[i*3+2] = (Math.random() - 0.5) * 60;
+    }
+    const rainGeo = new THREE.BufferGeometry();
+    rainGeo.setAttribute('position', new THREE.BufferAttribute(rainPos, 3));
+    const rain = new THREE.Points(rainGeo, new THREE.PointsMaterial({
+      color: 0xa0c0e0, size: 0.12, transparent: true, opacity: 0.55,
+      depthWrite: false, fog: false,
+    }));
+    noahG.add(rain);
+    noahG.userData.rain = rain;
+    // 虹（ドーム稜線にアーチ）
     const rainbow = new THREE.Group();
-    const COLS = ['#ff4040','#ff9020','#ffe040','#40c040','#40a0e8','#5060d0','#9040c0'];
+    const COLS = ['#ff5060','#ff9040','#ffe060','#60c060','#60b0e0','#6080c8','#a060c0'];
     COLS.forEach((c, i) => {
       const ring = new THREE.Mesh(
-        new THREE.TorusGeometry(10 - i * 0.4, 0.25, 6, 48, Math.PI),
-        new THREE.MeshBasicMaterial({ color: c, transparent: true, opacity: 0.5, fog: false })
+        new THREE.TorusGeometry(28 - i * 0.5, 0.4, 6, 48, Math.PI),
+        new THREE.MeshBasicMaterial({ color: c, transparent: true, opacity: 0.45, fog: false })
       );
       rainbow.add(ring);
     });
-    rainbow.position.set(0, 3, -8);
+    rainbow.position.set(0, 5, 0);
     noahG.add(rainbow);
+    // 鳩（観客上空をゆっくり旋回）
+    const dove = new THREE.Mesh(
+      new THREE.SphereGeometry(0.25, 12, 8),
+      new THREE.MeshStandardMaterial({ color: 0xfffaf0, roughness: 0.4, emissive: 0x444444, emissiveIntensity: 0.3 })
+    );
+    dove.scale.set(1.5, 0.9, 0.9);
+    dove.position.set(20, 14, 0);
+    noahG.add(dove);
+    noahG.userData.dove = dove;
     mythGroup.add(noahG);
     noahG.visible = false;
     mythScenes.noah = { group: noahG, name: 'ノアの方舟', sub: "NOAH'S ARK" };
 
-    // 🔱 アトランティス
+    // 🔱 アトランティス — 遠景に沈んだ神殿、上空に水のコースティクス
     const atlG = new THREE.Group();
-    // 海底（青緑）
-    const seabed = new THREE.Mesh(
-      new THREE.CircleGeometry(20, 64),
-      new THREE.MeshStandardMaterial({ color: 0x3a5a78, roughness: 0.85 })
-    );
-    seabed.rotation.x = -Math.PI / 2;
-    seabed.position.y = -1.4;
-    atlG.add(seabed);
-    // 神殿（ポセイドン）
-    for (let i = 0; i < 3; i++) {
-      const step = new THREE.Mesh(
-        new THREE.BoxGeometry(8 - i * 1.5, 0.4, 8 - i * 1.5),
-        new THREE.MeshStandardMaterial({ color: 0x90a0a8, roughness: 0.85 })
-      );
-      step.position.y = -0.9 + i * 0.4;
-      atlG.add(step);
-    }
-    // 8柱の円柱
-    const colMat = new THREE.MeshStandardMaterial({ color: 0xc0c8d0, roughness: 0.7 });
+    // 8柱の遺跡（観客の遠景 r=33）
+    const atlColMat = new THREE.MeshStandardMaterial({ color: 0xa0b0b8, roughness: 0.8 });
     for (let i = 0; i < 8; i++) {
       const a = (i / 8) * Math.PI * 2;
-      const c = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.4, 5, 14), colMat);
-      c.position.set(Math.cos(a) * 3.2, 1.5, Math.sin(a) * 3.2);
-      // 1/3 倒れた柱
-      if (i === 2 || i === 5) {
-        c.rotation.z = 0.4 + Math.random()*0.2;
-        c.position.y = 0.5;
-      }
+      const c = new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.7, 7, 14), atlColMat);
+      c.position.set(Math.cos(a) * 33, 2, Math.sin(a) * 33);
+      if (i === 2 || i === 5) { c.rotation.z = 0.5; c.position.y = 1; }
       atlG.add(c);
+      const cap = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.3, 1.6), atlColMat);
+      cap.position.set(Math.cos(a) * 33, 5.7, Math.sin(a) * 33);
+      atlG.add(cap);
     }
-    // 三叉戟（ポセイドンの槍）
-    const trident = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.07, 0.07, 4.5, 8),
-      new THREE.MeshStandardMaterial({ color: 0xe0c870, metalness: 0.9, roughness: 0.3, emissive: 0x4a3a10, emissiveIntensity: 0.5 })
-    );
-    trident.position.y = 3;
-    atlG.add(trident);
-    // 魚の群れ（小さなコーン10個、円軌道で動く）
-    const fish = [];
-    for (let i = 0; i < 10; i++) {
-      const f = new THREE.Mesh(
-        new THREE.ConeGeometry(0.1, 0.3, 4),
-        new THREE.MeshStandardMaterial({ color: 0xffd870, emissive: 0x4a3000, emissiveIntensity: 0.3 })
-      );
-      f.userData = { angle: Math.random() * Math.PI * 2, r: 6 + Math.random() * 2, y: 2 + Math.random() * 2, speed: 0.3 + Math.random() * 0.4 };
-      atlG.add(f);
-      fish.push(f);
+    // 気泡（上空全域 1500粒子、上昇）
+    const ATL_BUB_N = 1500;
+    const atlBubP = new Float32Array(ATL_BUB_N * 3);
+    for (let i = 0; i < ATL_BUB_N; i++) {
+      atlBubP[i*3]   = (Math.random() - 0.5) * 60;
+      atlBubP[i*3+1] = Math.random() * 30;
+      atlBubP[i*3+2] = (Math.random() - 0.5) * 60;
     }
-    atlG.userData.fish = fish;
-    // 気泡
-    const bubGeo = new THREE.BufferGeometry();
-    const BUB = 60;
-    const bubP = new Float32Array(BUB * 3);
-    for (let i = 0; i < BUB; i++) {
-      bubP[i*3]   = (Math.random() - 0.5) * 18;
-      bubP[i*3+1] = Math.random() * 12;
-      bubP[i*3+2] = (Math.random() - 0.5) * 18;
-    }
-    bubGeo.setAttribute('position', new THREE.BufferAttribute(bubP, 3));
-    const bubbles = new THREE.Points(bubGeo, new THREE.PointsMaterial({
-      color: 0xc0e0ff, size: 0.18, transparent: true, opacity: 0.6,
-      depthWrite: false, sizeAttenuation: true,
+    const atlBubGeo = new THREE.BufferGeometry();
+    atlBubGeo.setAttribute('position', new THREE.BufferAttribute(atlBubP, 3));
+    const atlBubbles = new THREE.Points(atlBubGeo, new THREE.PointsMaterial({
+      color: 0xc0e0ff, size: 0.22, transparent: true, opacity: 0.55,
+      depthWrite: false, sizeAttenuation: true, fog: false,
     }));
-    atlG.add(bubbles);
-    atlG.userData.bubbles = bubbles;
+    atlG.add(atlBubbles);
+    atlG.userData.bubbles = atlBubbles;
+    // クジラ（遠景でゆっくり周回）
+    const whale = new THREE.Mesh(
+      new THREE.SphereGeometry(2, 16, 12),
+      new THREE.MeshStandardMaterial({ color: 0x3a5060, roughness: 0.5 })
+    );
+    whale.scale.set(2.5, 1, 1);
+    whale.position.set(35, 12, 0);
+    atlG.add(whale);
+    atlG.userData.whale = whale;
     mythGroup.add(atlG);
     atlG.visible = false;
     mythScenes.atlantis = { group: atlG, name: 'アトランティス', sub: 'ATLANTIS' };
 
-    // 🏛 バベルの塔
+    // 🏛 バベルの塔 — 北側の遠景に巨塔（ブリューゲル風）+ 雷
     const babelG = new THREE.Group();
-    // 螺旋状の塔（5段、上に行くほど細く）
-    for (let i = 0; i < 7; i++) {
-      const r = 4 - i * 0.45;
-      const h = 1.0;
+    const babelTower = new THREE.Group();
+    // 螺旋12段（高さ y=0〜30、ドーム稜線まで届く）
+    for (let i = 0; i < 12; i++) {
+      const r = 5 - i * 0.32;
+      const h = 2.5;
       const ring = new THREE.Mesh(
-        new THREE.CylinderGeometry(r, r + 0.2, h, 24),
-        new THREE.MeshStandardMaterial({ color: 0xa89878 + (i * 0x100808), roughness: 0.7 })
+        new THREE.CylinderGeometry(r, r + 0.3, h, 24),
+        new THREE.MeshStandardMaterial({ color: 0xa89878 + (i * 0x080404), roughness: 0.75 })
       );
-      ring.position.y = 0.5 + i * h;
-      babelG.add(ring);
-      // 各段の窓（4つ）
+      ring.position.y = h / 2 + i * h;
+      babelTower.add(ring);
+      // 各段に8窓
       for (let w = 0; w < 8; w++) {
         const a = (w / 8) * Math.PI * 2;
         const win = new THREE.Mesh(
-          new THREE.PlaneGeometry(0.3, 0.4),
-          new THREE.MeshBasicMaterial({ color: 0xffe890 })
+          new THREE.PlaneGeometry(0.4, 0.6),
+          new THREE.MeshBasicMaterial({ color: 0xffd860, transparent: true, opacity: 0.85 })
         );
-        win.position.set(Math.cos(a) * (r + 0.21), 0.5 + i * h, Math.sin(a) * (r + 0.21));
+        win.position.set(Math.cos(a) * (r + 0.31), h / 2 + i * h, Math.sin(a) * (r + 0.31));
         win.lookAt(0, win.position.y, 0);
         win.rotation.y += Math.PI;
-        babelG.add(win);
+        babelTower.add(win);
       }
     }
-    // 頂上の旗
-    const flagPole = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.05, 0.05, 1.5, 6),
-      new THREE.MeshStandardMaterial({ color: 0x6a4828 })
-    );
-    flagPole.position.y = 8.5;
-    babelG.add(flagPole);
-    // 雷雲（上空、暗い色）
-    for (let i = 0; i < 3; i++) {
+    // 塔は北側遠景 (z=-35)
+    babelTower.position.set(0, 0, -35);
+    babelG.add(babelTower);
+    // 雷雲（塔の上空に低く渦巻く）
+    for (let i = 0; i < 6; i++) {
       const cloud = new THREE.Mesh(
-        new THREE.SphereGeometry(2 + Math.random() * 1, 16, 12),
-        new THREE.MeshStandardMaterial({ color: 0x404050, roughness: 0.85 })
+        new THREE.SphereGeometry(3 + Math.random() * 2, 16, 12),
+        new THREE.MeshStandardMaterial({ color: 0x282838, roughness: 0.85 })
       );
-      cloud.scale.set(1.5, 0.5, 1.5);
-      cloud.position.set((Math.random()-0.5) * 8, 11 + Math.random() * 2, (Math.random()-0.5) * 8);
+      cloud.scale.set(2, 0.6, 2);
+      const a = (i / 6) * Math.PI * 2;
+      cloud.position.set(Math.cos(a) * 6 + 0, 30 + Math.random() * 4, Math.sin(a) * 6 - 35);
       babelG.add(cloud);
     }
-    // 雷の光
-    const lightning = new THREE.PointLight(0xc0c0ff, 0, 30, 1.5);
-    lightning.position.set(0, 11, 0);
+    // 雷光
+    const lightning = new THREE.PointLight(0xc0d0ff, 0, 60, 1.5);
+    lightning.position.set(0, 28, -32);
     babelG.add(lightning);
     babelG.userData.lightning = lightning;
+    // 烏の大群（150羽、塔の周りを旋回）
+    const crows = [];
+    for (let i = 0; i < 80; i++) {
+      const crow = new THREE.Mesh(
+        new THREE.ConeGeometry(0.12, 0.3, 4),
+        new THREE.MeshBasicMaterial({ color: 0x101018 })
+      );
+      crow.userData = {
+        ax: Math.random() * Math.PI * 2,
+        ar: 8 + Math.random() * 8,
+        baseY: 12 + Math.random() * 16,
+        baseZ: -35,
+        speed: 0.5 + Math.random() * 0.5,
+      };
+      babelG.add(crow);
+      crows.push(crow);
+    }
+    babelG.userData.crows = crows;
     mythGroup.add(babelG);
     babelG.visible = false;
     mythScenes.babel = { group: babelG, name: 'バベルの塔', sub: 'TOWER OF BABEL' };
 
-    // 🌾 エリュシオン
+    // 🌾 エリュシオン — 遠景に白亜の神殿、上空に英雄の魂が昇天
     const elysG = new THREE.Group();
-    // 黄金の草原
-    const elysField = new THREE.Mesh(
-      new THREE.CircleGeometry(20, 64),
-      new THREE.MeshStandardMaterial({ color: 0xc8a850, roughness: 0.95 })
-    );
-    elysField.rotation.x = -Math.PI / 2;
-    elysField.position.y = -1.4;
-    elysG.add(elysField);
-    // 円形神殿（モノプテロス）
-    for (let i = 0; i < 12; i++) {
-      const a = (i / 12) * Math.PI * 2;
-      const c = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.25, 0.28, 4, 12),
-        new THREE.MeshStandardMaterial({ color: 0xfff8e8, roughness: 0.5 })
+    // 4方向の遠景にミニ神殿
+    [[0, 32], [32, 0], [0, -32], [-32, 0]].forEach(([tx, tz]) => {
+      const temple = new THREE.Group();
+      for (let i = 0; i < 6; i++) {
+        const a = (i / 6) * Math.PI * 2;
+        const c = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.35, 0.4, 5, 14),
+          new THREE.MeshStandardMaterial({ color: 0xfff8e8, roughness: 0.5 })
+        );
+        c.position.set(Math.cos(a) * 1.6, 2.5, Math.sin(a) * 1.6);
+        temple.add(c);
+      }
+      const dome = new THREE.Mesh(
+        new THREE.SphereGeometry(2.0, 16, 10, 0, Math.PI*2, 0, Math.PI/2),
+        new THREE.MeshStandardMaterial({ color: 0xe8c870, roughness: 0.4, metalness: 0.4 })
       );
-      c.position.set(Math.cos(a) * 3.5, 1, Math.sin(a) * 3.5);
-      elysG.add(c);
-    }
-    // ドーム
-    const elysDome = new THREE.Mesh(
-      new THREE.SphereGeometry(3.8, 24, 16, 0, Math.PI*2, 0, Math.PI/2),
-      new THREE.MeshStandardMaterial({ color: 0xe8c870, roughness: 0.4, metalness: 0.5 })
-    );
-    elysDome.position.y = 3;
-    elysG.add(elysDome);
-    // 浮かぶ魂（金色のスプライト）
+      dome.position.y = 5;
+      temple.add(dome);
+      temple.position.set(tx, 0, tz);
+      elysG.add(temple);
+    });
+    // 英雄の魂 60体（観客の頭上から昇天）
     const souls = [];
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 60; i++) {
       const s = new THREE.Sprite(new THREE.SpriteMaterial({
-        map: dustTex, color: 0xfff0a0, transparent: true, opacity: 0.85,
+        map: dustTex, color: 0xfff0a0, transparent: true, opacity: 0.7,
         depthWrite: false, blending: THREE.AdditiveBlending,
       }));
-      s.scale.set(2, 2, 1);
+      s.scale.set(1.2, 1.6, 1);
       const a = Math.random() * Math.PI * 2;
-      const r = 5 + Math.random() * 8;
-      s.position.set(Math.cos(a) * r, 1 + Math.random() * 4, Math.sin(a) * r);
-      s.userData = { ax: a, ar: r, baseY: s.position.y, phase: Math.random() * Math.PI * 2 };
+      const r = 16 + Math.random() * 14;
+      s.position.set(Math.cos(a) * r, 4 + Math.random() * 6, Math.sin(a) * r);
+      s.userData = {
+        ax: a, ar: r,
+        baseY: s.position.y,
+        ascendStart: s.position.y,
+        ascendSpeed: 0.5 + Math.random() * 1.0,
+        cycle: Math.random() * 20,
+      };
       elysG.add(s);
       souls.push(s);
     }
     elysG.userData.souls = souls;
+    // 黄金の麦の粒子（地面付近、上空には届かない）
+    const ELYS_DUST = 600;
+    const eldp = new Float32Array(ELYS_DUST * 3);
+    for (let i = 0; i < ELYS_DUST; i++) {
+      const a = Math.random() * Math.PI * 2;
+      const r = 14 + Math.random() * 22;
+      eldp[i*3]   = Math.cos(a) * r;
+      eldp[i*3+1] = -1 + Math.random() * 2;
+      eldp[i*3+2] = Math.sin(a) * r;
+    }
+    const eldGeo = new THREE.BufferGeometry();
+    eldGeo.setAttribute('position', new THREE.BufferAttribute(eldp, 3));
+    const elysGold = new THREE.Points(eldGeo, new THREE.PointsMaterial({
+      map: dustTex, color: 0xffd860, size: 0.4, transparent: true, opacity: 0.6,
+      depthWrite: false, blending: THREE.AdditiveBlending, fog: false,
+    }));
+    elysG.add(elysGold);
     mythGroup.add(elysG);
     elysG.visible = false;
     mythScenes.elysion = { group: elysG, name: 'エリュシオン', sub: 'ELYSIUM' };
@@ -16216,38 +16245,93 @@
       // ⛩ 神話アニメ（アクティブシーンのみ）
       if (scene.userData.mythGroup && scene.userData.mythGroup.visible && scene.userData.mythScenes) {
         const ms = scene.userData.mythScenes;
-        // アトランティス: 魚の群れ + 気泡上昇
-        if (ms.atlantis.group.visible) {
-          (ms.atlantis.group.userData.fish || []).forEach(f => {
-            f.userData.angle += 0.008 * f.userData.speed;
-            const x = Math.cos(f.userData.angle) * f.userData.r;
-            const z = Math.sin(f.userData.angle) * f.userData.r;
-            f.position.set(x, f.userData.y + Math.sin(t * f.userData.speed) * 0.3, z);
-            f.lookAt(Math.cos(f.userData.angle + 0.1) * f.userData.r, f.userData.y, Math.sin(f.userData.angle + 0.1) * f.userData.r);
+        // 🌳 エデン: 蝶＋鳥
+        if (ms.eden.group.visible) {
+          (ms.eden.group.userData.butterflies || []).forEach((b, i) => {
+            b.userData.ax += 0.006 * b.userData.speed;
+            b.position.x = Math.cos(b.userData.ax) * b.userData.ar;
+            b.position.z = Math.sin(b.userData.ax) * b.userData.ar;
+            b.position.y = b.userData.baseY + Math.sin(t * 1.2 + b.userData.phase) * 1.5;
+            b.material.opacity = 0.7 + Math.sin(t * 3 + b.userData.phase) * 0.3;
           });
-          const bub = ms.atlantis.group.userData.bubbles;
-          if (bub) {
-            const bp = bub.geometry.attributes.position;
+          (ms.eden.group.userData.birds || []).forEach((bird, i) => {
+            bird.userData.ax += 0.0015;
+            const ang = bird.userData.ax + bird.userData.offset;
+            bird.position.set(
+              Math.cos(ang) * bird.userData.ar,
+              bird.userData.baseY + Math.sin(ang * 3) * 1.5,
+              Math.sin(ang) * bird.userData.ar
+            );
+            // 進行方向を向く
+            bird.rotation.y = -ang + Math.PI / 2;
+            bird.rotation.z = Math.sin(t * 8 + i) * 0.3; // 翼ばたき
+          });
+        }
+        // 🚢 ノア: 雨＋鳩
+        if (ms.noah.group.visible) {
+          if (ms.noah.group.userData.rain) {
+            const rp = ms.noah.group.userData.rain.geometry.attributes.position;
+            for (let i = 0; i < rp.count; i++) {
+              rp.array[i*3+1] -= 0.4;
+              if (rp.array[i*3+1] < 5) rp.array[i*3+1] = 35;
+            }
+            rp.needsUpdate = true;
+          }
+          if (ms.noah.group.userData.dove) {
+            const ang = t * 0.15;
+            ms.noah.group.userData.dove.position.set(
+              Math.cos(ang) * 22,
+              14 + Math.sin(ang * 2) * 1.5,
+              Math.sin(ang) * 22
+            );
+          }
+        }
+        // 🔱 アトランティス: 気泡＋クジラ
+        if (ms.atlantis.group.visible) {
+          if (ms.atlantis.group.userData.bubbles) {
+            const bp = ms.atlantis.group.userData.bubbles.geometry.attributes.position;
             for (let i = 0; i < bp.count; i++) {
-              bp.array[i*3+1] += 0.04;
-              if (bp.array[i*3+1] > 12) bp.array[i*3+1] = 0;
+              bp.array[i*3+1] += 0.025;
+              if (bp.array[i*3+1] > 30) bp.array[i*3+1] = 0;
             }
             bp.needsUpdate = true;
           }
+          if (ms.atlantis.group.userData.whale) {
+            const ang = t * 0.05;
+            ms.atlantis.group.userData.whale.position.set(
+              Math.cos(ang) * 35,
+              12 + Math.sin(ang * 2) * 2,
+              Math.sin(ang) * 35
+            );
+            ms.atlantis.group.userData.whale.rotation.y = -ang;
+          }
         }
-        // バベル: 雷
-        if (ms.babel.group.visible && ms.babel.group.userData.lightning) {
-          const flash = (Math.sin(t * 0.7) > 0.92) ? Math.random() * 5 : 0;
-          ms.babel.group.userData.lightning.intensity = flash;
+        // 🏛 バベル: 雷＋烏
+        if (ms.babel.group.visible) {
+          if (ms.babel.group.userData.lightning) {
+            const flash = (Math.sin(t * 0.6) > 0.93) ? Math.random() * 6 : 0;
+            ms.babel.group.userData.lightning.intensity = flash;
+          }
+          (ms.babel.group.userData.crows || []).forEach((c, i) => {
+            c.userData.ax += 0.012 * c.userData.speed;
+            c.position.set(
+              Math.cos(c.userData.ax) * c.userData.ar,
+              c.userData.baseY + Math.sin(c.userData.ax * 2) * 1.5,
+              Math.sin(c.userData.ax) * c.userData.ar + c.userData.baseZ
+            );
+            c.rotation.y = -c.userData.ax + Math.PI / 2;
+          });
         }
-        // エリュシオン: 魂が浮遊
+        // 🌾 エリュシオン: 魂が昇天
         if (ms.elysion.group.visible && ms.elysion.group.userData.souls) {
           ms.elysion.group.userData.souls.forEach((s, i) => {
-            s.userData.ax += 0.003;
+            s.userData.cycle += dt * s.userData.ascendSpeed;
+            const phase = (s.userData.cycle % 20) / 20; // 0-1 の昇天サイクル
+            s.position.y = s.userData.ascendStart + phase * 28;
+            s.material.opacity = (1 - phase) * 0.8;
+            s.userData.ax += 0.002;
             s.position.x = Math.cos(s.userData.ax) * s.userData.ar;
             s.position.z = Math.sin(s.userData.ax) * s.userData.ar;
-            s.position.y = s.userData.baseY + Math.sin(t * 0.8 + s.userData.phase) * 0.5;
-            s.material.opacity = 0.65 + Math.sin(t * 1.4 + s.userData.phase) * 0.25;
           });
         }
       }
