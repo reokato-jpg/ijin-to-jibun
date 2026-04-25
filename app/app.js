@@ -7018,7 +7018,7 @@ async function showPerson(id) {
     </div>
 
     <!-- プロフィールヘッダー -->
-    <div class="profile-header">
+    <div class="profile-header ${p.imageUrl ? 'has-bg' : ''}" style="${p.imageUrl ? `--profile-bg:url('${p.imageUrl}')` : ''}">
       <div class="profile-avatar ${p.imageUrl ? 'has-image' : ''}" style="${p.imageUrl ? `background-image:url('${p.imageUrl}')` : ''}">${p.imageUrl ? '' : p.name.charAt(0)}</div>
       <div style="display:flex;justify-content:space-between;align-items:flex-start">
         <div class="profile-names">
