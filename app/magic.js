@@ -17090,7 +17090,7 @@
       eden3D.userData.motes = motes;
     }
     // 🪄 観客席より上に動物が見えるよう、自然シーン全体を持ち上げる
-    eden3D.position.y = 2.5; // 観客の頭(y≈1.4)より上にプラトーを構築
+    eden3D.position.y = 3.5; // 観客の頭より十分上のプラトーで全動物を視認可能に
     // 専用ライト（自然モードを明るく、動物が黒くならないように）
     const natureAmbient = new THREE.AmbientLight(0xfff0d8, 0.7);
     eden3D.add(natureAmbient);
@@ -17334,7 +17334,8 @@
       { species: 'lion', count: 2, bodyLen: 1.4, bodyH: 0.65, bodyW: 0.55, legH: 0.6, legR: 0.10, neckLen: 0.25, headSize: 0.4, tailLen: 0.85, bodyColor: 0xc8a060, speed: 0.04 },
       { species: 'deer', count: 3, bodyLen: 1.2, bodyH: 0.55, bodyW: 0.45, legH: 0.7, legR: 0.06, neckLen: 0.45, headSize: 0.25, tailLen: 0.2, bodyColor: 0xa07048, speed: 0.05 },
       { species: 'bear', count: 2, bodyLen: 1.3, bodyH: 0.75, bodyW: 0.65, legH: 0.55, legR: 0.13, neckLen: 0.15, headSize: 0.42, tailLen: 0.15, bodyColor: 0x3a2010, speed: 0.03 },
-      { species: 'rabbit', count: 4, bodyLen: 0.4, bodyH: 0.3, bodyW: 0.3, legH: 0.18, legR: 0.05, neckLen: 0, headSize: 0.2, tailLen: 0.05, bodyColor: 0xf0e8d8, speed: 0.06 },
+      // 大きめサイズに（小さくて見えなかった）
+      { species: 'rabbit', count: 4, bodyLen: 0.85, bodyH: 0.55, bodyW: 0.55, legH: 0.40, legR: 0.10, neckLen: 0, headSize: 0.40, tailLen: 0.12, bodyColor: 0xf0e8d8, speed: 0.06 },
       // フクロウ（枝に止まる）
       { species: 'owl', count: 3, bodyLen: 0.35, bodyH: 0.42, bodyW: 0.32, legH: 0.10, legR: 0.05, neckLen: 0, headSize: 0.28, tailLen: 0.05, bodyColor: 0x6a4828, perched: true, speed: 0 },
       // 🦏 サイ（重厚なボディ、低い頭）
@@ -17342,7 +17343,7 @@
       // 🦓 シマウマ（馬ベース、後で縞模様を被せる）
       { species: 'zebra', count: 3, bodyLen: 1.2, bodyH: 0.55, bodyW: 0.45, legH: 0.85, legR: 0.07, neckLen: 0.55, headSize: 0.28, tailLen: 0.55, bodyColor: 0xf4f0e8, speed: 0.045 },
       // 🐼 パンダ（白黒、丸い体）
-      { species: 'panda', count: 2, bodyLen: 1.1, bodyH: 0.7, bodyW: 0.6, legH: 0.5, legR: 0.13, neckLen: 0, headSize: 0.4, tailLen: 0.08, bodyColor: 0xf8f4ec, speed: 0.022 },
+      { species: 'panda', count: 2, bodyLen: 1.6, bodyH: 1.05, bodyW: 0.85, legH: 0.7, legR: 0.18, neckLen: 0, headSize: 0.55, tailLen: 0.12, bodyColor: 0xf8f4ec, speed: 0.022 },
     ];
     let aphase = 0;
     ANIMAL_SET.forEach(spec => {
@@ -17350,11 +17351,23 @@
         const g = makeWalkAnimal(spec);
         // ウサギに耳
         if (spec.species === 'rabbit') {
-          [-0.06, 0.06].forEach(ex => {
-            const ear = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.03, 0.18, 6), new THREE.MeshStandardMaterial({ color: 0xf0e8d8, roughness: 0.85 }));
-            ear.position.set(ex, 0.55, 0.18);
+          // 長い耳（大型化に合わせて0.55長）
+          [-0.12, 0.12].forEach(ex => {
+            const ear = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.08, 0.55, 8), new THREE.MeshStandardMaterial({ color: 0xf0e8d8, roughness: 0.85 }));
+            ear.position.set(ex, 1.30, 0.30);
+            ear.rotation.x = -0.15;
             g.add(ear);
+            // 耳の内側（薄ピンク）
+            const inner = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.03, 0.40, 6), new THREE.MeshStandardMaterial({ color: 0xf0a8a0, roughness: 0.7 }));
+            inner.position.copy(ear.position);
+            inner.position.z += 0.04;
+            inner.rotation.x = -0.15;
+            g.add(inner);
           });
+          // 白い尻尾（大きい綿玉）
+          const tailFluff = new THREE.Mesh(new THREE.SphereGeometry(0.18, 12, 9), new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.95 }));
+          tailFluff.position.set(-0.5, 0.65, 0);
+          g.add(tailFluff);
         }
         // 角（鹿の半数）
         if (spec.species === 'deer' && i < 2) {
