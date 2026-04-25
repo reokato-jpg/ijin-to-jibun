@@ -9482,3 +9482,30 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   background: transparent !important;
   border: 1px solid var(--ar-border);
 }
+
+/* ============================================================
+   🥽 AIグラスHUD v4: ドット文字＋モザイク背景削除
+============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
+
+/* HUDモザイクグリッド背景を完全削除 */
+.koh-ar-overlay .koh-ar-hud-bg,
+.koh-ar-overlay .kah-grid { display: none !important; }
+
+/* AR系すべての文字を DotGothic16（ドット文字）に */
+.koh-hud-section, .koh-hud-section *,
+.koh-now-playing, .koh-now-playing *,
+.kar-card, .kar-card *,
+.kar-ad, .kar-ad *,
+.koh-ar-toggle, .koh-ar-toggle * {
+  font-family: 'DotGothic16', monospace !important;
+  letter-spacing: 1.2px !important;
+}
+/* ドット文字は太めの方が読みやすい */
+.knp-title, .kar-name, .kar-ad-text { font-weight: 400 !important; }
+
+/* PR タグもドット感 */
+.kar-ad-pr {
+  font-family: 'DotGothic16', monospace !important;
+  letter-spacing: 2px !important;
+}

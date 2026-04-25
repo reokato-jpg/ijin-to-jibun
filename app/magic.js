@@ -15760,24 +15760,39 @@
     const KOH_AR_ADS = (config.music.id === 'bwv903')
       ? [...NATSUMI_ADS, ...KOH_AR_ADS_BASE]
       : KOH_AR_ADS_BASE;
-    function renderArAds() {
-      // バッハ時は natsumi 2件を必ず最初に出し、残り1件はランダム
-      let picks;
+    // 広告は「たま〜にだけ」表示する：1枠だけ・現れて10秒で消え、長い静寂のあと次が出る
+    let adIndex = 0;
+    function pickNextAd() {
       if (config.music.id === 'bwv903') {
-        const rest = KOH_AR_ADS_BASE.sort(() => Math.random() - 0.5)[0];
-        picks = [...NATSUMI_ADS, rest];
-      } else {
-        picks = [...KOH_AR_ADS].sort(() => Math.random() - 0.5).slice(0, 3);
+        // バッハ時は natsumi を優先サイクル＋たまにベース広告
+        const pool = [NATSUMI_ADS[0], NATSUMI_ADS[1], ...KOH_AR_ADS_BASE.slice(0, 2)];
+        return pool[adIndex++ % pool.length];
       }
-      arAds.innerHTML = picks.map((a, i) => {
-        const inner = `<span class="kar-ad-pr">PR</span><span class="kar-ad-text">${a.brand}　<span class="kar-ad-tag">${a.tagline}</span>${a.sub ? `　— ${a.sub}` : ''}</span>`;
-        return a.url
-          ? `<a class="kar-ad" href="${a.url}" target="_blank" rel="noopener noreferrer sponsored" style="animation-delay: ${i * 0.5}s">${inner}</a>`
-          : `<div class="kar-ad" style="animation-delay: ${i * 0.5}s">${inner}</div>`;
-      }).join('');
+      const pool = KOH_AR_ADS_BASE;
+      return pool[Math.floor(Math.random() * pool.length)];
     }
-    renderArAds();
-    const adInterval = setInterval(() => { if (arOn && arOverlay.isConnected) renderArAds(); }, 8000);
+    function showAd() {
+      if (!arOn || !arOverlay.isConnected) return;
+      const a = pickNextAd();
+      const inner = `<span class="kar-ad-pr">PR</span><span class="kar-ad-text">${a.brand}<span class="kar-ad-tag">　${a.tagline}</span>${a.sub ? `　— ${a.sub}` : ''}</span>`;
+      arAds.innerHTML = a.url
+        ? `<a class="kar-ad" href="${a.url}" target="_blank" rel="noopener noreferrer sponsored">${inner}</a>`
+        : `<div class="kar-ad">${inner}</div>`;
+      // 10秒後に消す
+      setTimeout(() => {
+        if (arAds.isConnected) arAds.innerHTML = '';
+      }, 10000);
+    }
+    // 初回は 12秒後、以降は 45〜90秒のランダム間隔で次の広告
+    function scheduleNextAd(initial = false) {
+      if (!arOverlay.isConnected) return;
+      const delay = initial ? 12000 : 45000 + Math.random() * 45000;
+      setTimeout(() => {
+        showAd();
+        scheduleNextAd(false);
+      }, delay);
+    }
+    scheduleNextAd(true);
     applyAr();
 
     // 🎮 バーチャルパッド（首振り操作）
