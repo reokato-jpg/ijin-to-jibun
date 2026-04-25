@@ -15743,28 +15743,38 @@
       `;
     }
     renderArInfo(config.music.id);
-    // 広告ストック（半透過で流れる）
-    const KOH_AR_ADS = [
-      { brand: 'STEINWAY & SONS', tagline: '— 175年の音 —', sub: '世界の演奏家が選ぶ', accent: '#d4a050' },
-      { brand: 'GENESIS BOOK Co.', tagline: '神話を読む夜', sub: 'はじまりの書 全6章', accent: '#a08060' },
-      { brand: 'IJIN COFFEE', tagline: '哲学者のブレンド', sub: 'カント・ニーチェ・サルトル', accent: '#8a4818' },
-      { brand: 'KOH RECORDS', tagline: 'バッハ全集 完全版', sum: '32枚組 ハイレゾ', accent: '#4080a8' },
-      { brand: 'SPHERE TICKETS', tagline: '次回公演', sub: '5/15 ベートーヴェン交響曲第9番', accent: '#a06080' },
-      { brand: 'LIBRO MUSEUM', tagline: '神話の名画展', sub: '〜6/30 上野', accent: '#604888' },
-      { brand: 'NATSUMI Solo Recital', tagline: 'バッハ・リサイタル', sub: '6/8 サントリーホール', accent: '#406060' },
-      { brand: 'PANTHEON CULT', tagline: '神々の書 PDF版', sub: '今だけ 50% OFF', accent: '#8050a0' },
+    // 広告ストック（PR=アフィリエイト、クリックで外部リンク）
+    const KOH_AR_ADS_BASE = [
+      { brand: 'STEINWAY & SONS', tagline: '175年の音', sub: '世界の演奏家が選ぶ', url: 'https://www.steinway.com/' },
+      { brand: 'KOH RECORDS', tagline: 'バッハ全集 完全版', sub: '32枚組 ハイレゾ', url: 'https://www.deutschegrammophon.com/' },
+      { brand: 'SUNTORY HALL', tagline: 'クラシックを、もっとそばに', sub: '東京・赤坂', url: 'https://www.suntory.co.jp/suntoryhall/' },
+      { brand: 'YAMAHA Premium Piano', tagline: 'CFX Concert Grand', sub: '日本の職人技', url: 'https://jp.yamaha.com/products/musical_instruments/pianos/' },
+      { brand: 'IJIN COFFEE', tagline: '哲学者のブレンド', sub: 'カント・ニーチェ・サルトル' },
+      { brand: 'GENESIS BOOK', tagline: '神話を読む夜に', sub: 'はじまりの書 全6章' },
     ];
+    // バッハ演奏中（natsumi の曲）はピアニスト紹介を最優先で出す
+    const NATSUMI_ADS = [
+      { brand: 'natsumi｜YouTube', tagline: 'バッハBWV903を弾いた人', sub: 'チャンネル登録で応援する', url: 'https://www.youtube.com/@natsumi-piano' },
+      { brand: 'natsumi｜note', tagline: 'ピアノ・読書・日々の言葉', sub: '記事を読む', url: 'https://note.com/natsumi_by_piano' },
+    ];
+    const KOH_AR_ADS = (config.music.id === 'bwv903')
+      ? [...NATSUMI_ADS, ...KOH_AR_ADS_BASE]
+      : KOH_AR_ADS_BASE;
     function renderArAds() {
-      // 横長「PR ○○」形式、画面下にバナー風で重ねる
-      const picks = [];
-      const pool = [...KOH_AR_ADS].sort(() => Math.random() - 0.5);
-      for (let i = 0; i < 3; i++) picks.push(pool[i % pool.length]);
-      arAds.innerHTML = picks.map((a, i) => `
-        <div class="kar-ad" style="animation-delay: ${i * 0.5}s">
-          <span class="kar-ad-pr">PR</span>
-          <span class="kar-ad-text">${a.brand}　<span class="kar-ad-tag">${a.tagline}</span>${a.sub ? `　— ${a.sub}` : ''}</span>
-        </div>
-      `).join('');
+      // バッハ時は natsumi 2件を必ず最初に出し、残り1件はランダム
+      let picks;
+      if (config.music.id === 'bwv903') {
+        const rest = KOH_AR_ADS_BASE.sort(() => Math.random() - 0.5)[0];
+        picks = [...NATSUMI_ADS, rest];
+      } else {
+        picks = [...KOH_AR_ADS].sort(() => Math.random() - 0.5).slice(0, 3);
+      }
+      arAds.innerHTML = picks.map((a, i) => {
+        const inner = `<span class="kar-ad-pr">PR</span><span class="kar-ad-text">${a.brand}　<span class="kar-ad-tag">${a.tagline}</span>${a.sub ? `　— ${a.sub}` : ''}</span>`;
+        return a.url
+          ? `<a class="kar-ad" href="${a.url}" target="_blank" rel="noopener noreferrer sponsored" style="animation-delay: ${i * 0.5}s">${inner}</a>`
+          : `<div class="kar-ad" style="animation-delay: ${i * 0.5}s">${inner}</div>`;
+      }).join('');
     }
     renderArAds();
     const adInterval = setInterval(() => { if (arOn && arOverlay.isConnected) renderArAds(); }, 8000);
