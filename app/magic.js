@@ -18060,11 +18060,22 @@
     setTimeout(showAnimalStory, 4000);
     scheduleNextStory();
 
-    // 既存のCanvasスプライトは飛行鳥のみ残す（地上＋フクロウは3Dに置き換え）
+    // 🎬 Vegas Sphere方式：3D動物は全部非表示、ドーム面のスプライト投影に切替
+    walkAnimals.forEach(a => { a.visible = false; });
+    // GLTF も歩行系（馬・キツネ）は非表示、飛行系（フラミンゴ・パロット・コウノトリ）は高空なので残す
+    if (eden3D.userData.gltfMixers) {
+      eden3D.userData.gltfMixers.forEach(m => {
+        if (m.type === 'walk') m.obj.visible = false;
+      });
+    }
+    // スプライト：全種を r=39（ドーム内壁ぎりぎり）に移動、大型化して投影感を出す
     animalSprites.forEach(s => {
-      if (!['hawk', 'seagull'].includes(s.userData.species)) {
-        s.visible = false;
-      }
+      s.visible = true;  // 全種ON
+      const u = s.userData;
+      u.radius = 39; // ドーム面ぎりぎり
+      // スケール 2.2倍（迫力UP）
+      s.scale.x *= 2.2;
+      s.scale.y *= 2.2;
     });
 
     // 🌟 流れ星（時々空を横切る）
