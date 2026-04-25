@@ -15261,18 +15261,22 @@
       }
     }
 
-    // ステージライト（控えめ、ステージ床にだけ柔らかく）
-    [[0, 14, 0, 0.85], [-4, 14, 4, 0.45], [4, 14, 4, 0.45]].forEach(([x, y, z, intensity]) => {
-      const sl = new THREE.SpotLight(0xffe8c0, intensity, 14, Math.PI/4, 0.92, 1.6);
-      sl.position.set(x, y, z);
-      sl.target.position.set(x * 0.3, 0.5, z * 0.3);
+    // ステージリム照明（観客側からステージへ斜めに差し込む光、6灯）
+    // 球体の映像に干渉しないよう距離・強度ともに控えめ
+    const rimLights = [];
+    for (let i = 0; i < 6; i++) {
+      const a = (i / 6) * Math.PI * 2 + Math.PI / 6;
+      const lx = Math.cos(a) * 8.5;  // ステージ縁(r=6)の少し外
+      const lz = Math.sin(a) * 8.5;
+      const sl = new THREE.SpotLight(0xffe0b0, 0.6, 12, Math.PI / 6, 0.5, 1.8);
+      sl.position.set(lx, 2.6, lz); // 低い位置（観客の目線高）
+      sl.target.position.set(0, 1.0, 0); // ステージ中央上を向く（斜め上向き）
       scene.add(sl);
       scene.add(sl.target);
-    });
-    // 中央のシャンデリア光（高い位置に控えめに、観客にも届く色）
-    const centerGlow = new THREE.PointLight(moodColor, 0.55, 50, 1.4);
-    centerGlow.position.set(0, 18, 0); // 8 → 18（高く、不自然な近接光をなくす）
-    scene.add(centerGlow);
+      rimLights.push(sl);
+    }
+    // centerGlow は廃止（球体投影の邪魔になるため）— ダミーで音楽連動の参照保持
+    const centerGlow = { intensity: 0, position: { set: () => {} } };
     // 観客席を照らす補助光（4灯、温かい）
     for (let i = 0; i < 4; i++) {
       const a = (i / 4) * Math.PI * 2;
@@ -16819,8 +16823,10 @@
       });
       // 観客の微動 — InstancedMesh では省略（1000人だと毎フレ更新は重い）
       // 🎵 音楽連動: 中央光・ステージ光・Bloom強度
-      centerGlow.intensity = 0.4 + bassS * 1.2 + midS * 0.4;
-      // stageLight 連動は廃止（複数光源化のため省略）
+      // ステージリム光が音楽で脈動（控えめに）
+      rimLights.forEach((rl, i) => {
+        rl.intensity = 0.35 + bassS * 0.45 + midS * 0.15 + Math.sin(t * 1.2 + i * 0.7) * 0.05;
+      });
       if (composer && composer.passes) {
         composer.passes.forEach(p => {
           if (p.strength !== undefined) p.strength = 0.32 + bassS * 0.5 + trebS * 0.2;
