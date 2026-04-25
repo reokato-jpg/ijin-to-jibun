@@ -14419,13 +14419,13 @@
             float h2 = smoothstep(0.70, 0.98, uv.y);
             col = mix(skyHorizon, skyMid, h);
             col = mix(col, skyZenith, h2);
-            // 太陽（高い位置、強い光）
+            // 太陽（控えめ、Bloomで光るので素材自体は弱め）
             vec2 sunPos = vec2(0.68, 0.85);
             float sunDist = distance(uv, sunPos);
-            float sunCore = smoothstep(0.020, 0.0, sunDist);
-            float sunGlow = smoothstep(0.18, 0.0, sunDist);
-            col += vec3(1.0, 0.95, 0.8) * sunCore * 1.6;
-            col += vec3(1.0, 0.85, 0.55) * sunGlow * 0.40;
+            float sunCore = smoothstep(0.014, 0.0, sunDist);
+            float sunGlow = smoothstep(0.10, 0.0, sunDist);
+            col += vec3(1.0, 0.95, 0.8) * sunCore * 0.55;
+            col += vec3(1.0, 0.85, 0.55) * sunGlow * 0.10;
             // 雲（流れる、2層）
             float cloud1 = fbm(uv * 4.5 + vec2(uTime * 0.020, 0.0));
             float cloud2 = fbm(uv * 8.0 - vec2(uTime * 0.035, uTime * 0.005));
@@ -14467,8 +14467,8 @@
               col = mix(col, vec3(0.05, 0.05, 0.08), bird * 0.85);
             }
             // 雲の光縁（太陽側）
-            col += vec3(1.0, 0.85, 0.6) * cloudMask * sunGlow * 0.35;
-            col *= 1.05;
+            col += vec3(1.0, 0.85, 0.6) * cloudMask * sunGlow * 0.18;
+            col *= 0.85; // 全体のトーンを抑える
           }
           // ━━━ タイムスリップモード（古紙のセピア、文字の流れ）━━━
           else if (uMode > 4.5) {
@@ -15860,7 +15860,7 @@
       const sphere = p.emissive
         ? new THREE.Mesh(
             new THREE.SphereGeometry(p.r, 48, 32),
-            new THREE.MeshBasicMaterial({ map: ptex, toneMapped: false })
+            new THREE.MeshBasicMaterial({ map: ptex }) // toneMapped 有効化（眩し過ぎ防止）
           )
         : new THREE.Mesh(
             new THREE.SphereGeometry(p.r, 48, 32),
@@ -16079,10 +16079,10 @@
       return new THREE.CanvasTexture(c);
     })();
     const sunFlare = new THREE.Sprite(new THREE.SpriteMaterial({
-      map: flareTex, transparent: true, opacity: 0.7,
+      map: flareTex, transparent: true, opacity: 0.28,
       depthWrite: false, blending: THREE.AdditiveBlending,
     }));
-    sunFlare.scale.set(18, 18, 1);
+    sunFlare.scale.set(9, 9, 1);
     sunMesh.add(sunFlare);
 
     // ✦ プラネタリウム — 星座（球面に投影）
