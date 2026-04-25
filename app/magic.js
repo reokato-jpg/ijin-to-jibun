@@ -14113,6 +14113,15 @@
           ${seatGrid()}
           <div class="koh-section-label">🎵 音 楽</div>
           <div class="koh-music-list">${musicCards()}</div>
+          <div class="koh-section-label">🎬 球体に流す映像（任意）</div>
+          <div class="koh-video-input-wrap">
+            <input class="koh-video-input" type="text" placeholder="MP4/WebM の URL（YouTubeは ▶ 下のボタンから）" autocomplete="off">
+            <div class="koh-video-presets">
+              <button class="koh-video-preset" data-vid="">なし（星空のみ）</button>
+              <button class="koh-video-preset" data-vid="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4">サンプル：自然</button>
+            </div>
+            <div class="koh-video-hint">※YouTube動画はそのままでは再生不可（CORS制限）。MP4/WebM の直接URLで使えます。</div>
+          </div>
           <div class="koh-modal-actions koh-final">
             <button class="koh-btn koh-btn-primary" id="kohEnter">球体に入る ›</button>
             <button class="koh-btn" id="kohCancelSel">戻る</button>
@@ -14153,8 +14162,15 @@
         setTimeout(() => ov.remove(), 350);
         resolve(val);
       };
+      // 動画プリセット
+      ov.querySelectorAll('.koh-video-preset').forEach(b => {
+        b.addEventListener('click', () => {
+          ov.querySelector('.koh-video-input').value = b.dataset.vid;
+        });
+      });
       ov.querySelector('#kohEnter').addEventListener('click', () => {
-        close({ seat: chosenSeat, music: chosenMusic, rows: SEAT_ROWS, cols: SEAT_COLS });
+        const videoUrl = ov.querySelector('.koh-video-input').value.trim();
+        close({ seat: chosenSeat, music: chosenMusic, rows: SEAT_ROWS, cols: SEAT_COLS, videoUrl });
       });
       ov.querySelector('#kohCancelSel').addEventListener('click', () => close(null));
     });
@@ -14217,6 +14233,36 @@
     });
     const dome = new THREE.Mesh(new THREE.SphereGeometry(40, 64, 32), sphereMat);
     scene.add(dome);
+
+    // 🎬 動画テクスチャを球体に貼る（ラスベガス・スフィア方式）
+    let videoEl = null;
+    if (config.videoUrl) {
+      videoEl = document.createElement('video');
+      videoEl.src = config.videoUrl;
+      videoEl.crossOrigin = 'anonymous';
+      videoEl.loop = true;
+      videoEl.muted = false; // 音楽と並行再生
+      videoEl.playsInline = true;
+      videoEl.setAttribute('webkit-playsinline', '');
+      videoEl.style.display = 'none';
+      document.body.appendChild(videoEl);
+      videoEl.play().catch(() => {
+        kohToast('動画の再生がブロックされました。タップしてください');
+        // タップで再生
+        const tapResume = () => {
+          videoEl.play().catch(() => {});
+          renderer.domElement.removeEventListener('click', tapResume);
+        };
+        renderer.domElement.addEventListener('click', tapResume);
+      });
+      const vTex = new THREE.VideoTexture(videoEl);
+      vTex.colorSpace = THREE.SRGBColorSpace;
+      vTex.minFilter = THREE.LinearFilter;
+      vTex.magFilter = THREE.LinearFilter;
+      // 球体の内側にだけ動画を貼る
+      sphereMat.map = vTex;
+      sphereMat.needsUpdate = true;
+    }
 
     // 🌐 球体感の演出: 緯度リング（赤道+8本のラチチュード）
     for (let i = 1; i < 8; i++) {
@@ -14649,17 +14695,16 @@
     audio.volume = 0.65;
     audio.play().catch(() => { kohToast('音楽の再生がブロックされました。タップしてください'); });
 
-    // === カメラ（席に固定、首回しのみ） ===
+    // === カメラ（席に固定、首回し — VRパッド級に滑らか） ===
     const camera = new THREE.PerspectiveCamera(70, W()/H(), 0.1, 200);
     camera.position.set(myX, myY, myZ);
-    // 初期向き: 中央のステージを向く
     const initYaw = Math.atan2(-myX, -myZ);
     let yaw = initYaw, pitch = -0.05;
-    let yawT = initYaw, pitchT = -0.05;
     const PITCH_LIMIT = 1.2;
     const _euler = new THREE.Euler(0, 0, 0, 'YXZ');
 
-    // ドラッグで首回し（席は固定、targetを更新→指数減衰でlerp）
+    // 入力デルタを蓄積 → 毎フレーム消費（高Hzマウス対応）
+    let pendingDX = 0, pendingDY = 0;
     let dragging = false, lx = 0, ly = 0;
     renderer.domElement.addEventListener('pointerdown', e => {
       dragging = true; lx = e.clientX; ly = e.clientY;
@@ -14667,20 +14712,23 @@
     });
     renderer.domElement.addEventListener('pointermove', e => {
       if (!dragging) return;
-      yawT   -= (e.clientX - lx) * 0.0030;
-      pitchT  = Math.max(-PITCH_LIMIT, Math.min(PITCH_LIMIT,
-                pitchT - (e.clientY - ly) * 0.0028));
+      // 蓄積するだけ（フレーム時に消費）— 高Hzマウスでも飛び散らない
+      pendingDX += (e.clientX - lx);
+      pendingDY += (e.clientY - ly);
       lx = e.clientX; ly = e.clientY;
     }, { passive: true });
     const stop = () => { dragging = false; };
     renderer.domElement.addEventListener('pointerup', stop);
     renderer.domElement.addEventListener('pointercancel', stop);
     renderer.domElement.addEventListener('pointerleave', stop);
+    // 入力デルタをローパスフィルタ（指数移動平均で雑音除去）
+    let smoothDX = 0, smoothDY = 0;
 
     let running = true;
     ov.querySelector('.museum3d-close').addEventListener('click', () => {
       running = false;
       try { audio.pause(); audio.src = ''; } catch {}
+      try { if (videoEl) { videoEl.pause(); videoEl.src = ''; videoEl.remove(); } } catch {}
       ov.classList.remove('open');
       setTimeout(() => {
         try {
@@ -14736,14 +14784,22 @@
         myY + breath + bob,
         myZ + Math.cos(t * 0.4) * 0.005
       );
-      // 緩やかな自然な微小ドリフト（target に小さく加算）
-      const idleDriftYaw   = Math.sin(t * 0.23) * 0.0008 + Math.sin(t * 0.37) * 0.0006;
-      const idleDriftPitch = Math.sin(t * 0.19) * 0.0005;
-
-      // 🎯 スムーズ: 指数減衰 lerp（dt 依存）
-      const k = 1 - Math.exp(-dt * 14);
-      yaw   += (yawT   + idleDriftYaw   - yaw)   * k;
-      pitch += (pitchT + idleDriftPitch - pitch) * k;
+      // 🎯 VRパッド級スムーズ: 入力をローパスフィルタ → 1:1 で適用
+      // 指数移動平均（強度0.35 = 雑音除去 + 即応性）
+      const lp = 1 - Math.exp(-dt * 25); // 25 = 高い追従性
+      smoothDX += (pendingDX - smoothDX) * lp;
+      smoothDY += (pendingDY - smoothDY) * lp;
+      pendingDX = 0; pendingDY = 0;
+      // フレームごとに「平滑化されたデルタ」を消費（target なし、直接 yaw/pitch 更新）
+      yaw   -= smoothDX * 0.0028;
+      pitch -= smoothDY * 0.0026;
+      pitch = Math.max(-PITCH_LIMIT, Math.min(PITCH_LIMIT, pitch));
+      smoothDX *= 0.55; smoothDY *= 0.55; // 慣性減衰（指離した後も少し滑る）
+      // 自然な微小ドリフト（座ってる感）
+      const idleDriftYaw   = Math.sin(t * 0.23) * 0.00015;
+      const idleDriftPitch = Math.sin(t * 0.19) * 0.00010;
+      yaw += idleDriftYaw;
+      pitch += idleDriftPitch;
       _euler.set(pitch, yaw, 0);
       camera.quaternion.setFromEuler(_euler);
 
