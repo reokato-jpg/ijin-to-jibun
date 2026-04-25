@@ -14409,66 +14409,62 @@
             float band = smoothstep(0.45, 0.55, uv.y) * smoothstep(0.55, 0.45, uv.y);
             col += uMood * band * 0.5;
           }
-          // ━━━ 自然モード（Vegas Sphere方式：球体内壁に大自然パノラマ投影）━━━
+          // ━━━ 自然モード（Vegas Sphere方式：球体内壁に夕暮れパノラマ）━━━
           else if (uMode > 2.5 && uMode < 3.5) {
-            // 空グラデ（地平線の暖色→中空の水色→真上の青）
-            vec3 skyZenith  = vec3(0.20, 0.45, 0.78);
-            vec3 skyMid     = vec3(0.55, 0.72, 0.92);
-            vec3 skyHorizon = vec3(0.95, 0.80, 0.62);
+            // 夕暮れの落ち着いた空（明るすぎない、Bloomで飛ばないように暗め）
+            vec3 skyZenith  = vec3(0.05, 0.10, 0.22);   // 真上：濃紺
+            vec3 skyMid     = vec3(0.18, 0.22, 0.38);   // 中：藍
+            vec3 skyHorizon = vec3(0.38, 0.28, 0.30);   // 地平線：暗めの夕焼け
             float h = smoothstep(0.50, 0.70, uv.y);
             float h2 = smoothstep(0.70, 0.98, uv.y);
             col = mix(skyHorizon, skyMid, h);
             col = mix(col, skyZenith, h2);
-            // 太陽（控えめ、Bloomで光るので素材自体は弱め）
-            vec2 sunPos = vec2(0.68, 0.85);
-            float sunDist = distance(uv, sunPos);
-            float sunCore = smoothstep(0.014, 0.0, sunDist);
-            float sunGlow = smoothstep(0.10, 0.0, sunDist);
-            col += vec3(1.0, 0.95, 0.8) * sunCore * 0.55;
-            col += vec3(1.0, 0.85, 0.55) * sunGlow * 0.10;
-            // 雲（流れる、2層）
+            // 月（小さく、控えめ）
+            vec2 moonPos = vec2(0.70, 0.86);
+            float moonDist = distance(uv, moonPos);
+            float moonCore = smoothstep(0.014, 0.0, moonDist);
+            col += vec3(0.85, 0.82, 0.70) * moonCore * 0.45;
+            // 雲（暗めの夜雲）
             float cloud1 = fbm(uv * 4.5 + vec2(uTime * 0.020, 0.0));
-            float cloud2 = fbm(uv * 8.0 - vec2(uTime * 0.035, uTime * 0.005));
-            float cloudMask = smoothstep(0.45, 0.78, cloud1) * smoothstep(0.30, 0.65, cloud2);
+            float cloudMask = smoothstep(0.50, 0.78, cloud1);
             cloudMask *= smoothstep(0.62, 0.75, uv.y);
-            col = mix(col, vec3(1.0, 0.98, 0.95), cloudMask * 0.78);
-            // 奥の山並み（薄い青、雪冠付き）
-            float farMtn = sin(uv.x * 6.28 * 5.0) * 0.018 + sin(uv.x * 6.28 * 11.0 + 1.3) * 0.010 + sin(uv.x * 6.28 * 23.0 + 2.7) * 0.006;
+            col = mix(col, vec3(0.20, 0.22, 0.28), cloudMask * 0.55);
+            // 奥の山並み（暗いシルエット）
+            float farMtn = sin(uv.x * 6.28 * 5.0) * 0.018 + sin(uv.x * 6.28 * 11.0 + 1.3) * 0.010;
             float farLine = 0.55 + farMtn;
             float farMask = step(uv.y, farLine);
-            vec3 farColor = mix(vec3(0.55, 0.62, 0.74), vec3(0.65, 0.70, 0.80), smoothstep(0.46, 0.55, uv.y));
-            float snow = smoothstep(farLine - 0.022, farLine, uv.y) * smoothstep(farLine + 0.005, farLine - 0.005, uv.y);
-            farColor = mix(farColor, vec3(0.95, 0.96, 1.0), snow * 0.9);
-            col = mix(col, farColor, farMask);
-            // 手前の山（濃い緑がかった）
-            float nearMtn = sin(uv.x * 6.28 * 3.0 + 0.5) * 0.028 + sin(uv.x * 6.28 * 7.0 + 2.1) * 0.018 + sin(uv.x * 6.28 * 17.0) * 0.008;
+            col = mix(col, vec3(0.10, 0.12, 0.18), farMask);
+            // 手前の山（さらに暗い）
+            float nearMtn = sin(uv.x * 6.28 * 3.0 + 0.5) * 0.028 + sin(uv.x * 6.28 * 7.0 + 2.1) * 0.018;
             float nearLine = 0.46 + nearMtn;
             float nearMask = step(uv.y, nearLine);
-            vec3 nearColor = vec3(0.20, 0.32, 0.22);
-            col = mix(col, nearColor, nearMask);
-            // 森の樹冠線（ノイズで起伏）
+            col = mix(col, vec3(0.05, 0.08, 0.06), nearMask);
+            // 森の樹冠線（ほぼ黒）
             float treeNoise = fbm(vec2(uv.x * 28.0, uv.x * 5.0));
             float treeLine = 0.40 + treeNoise * 0.020;
             float treeMask = step(uv.y, treeLine);
-            vec3 forestColor = mix(vec3(0.10, 0.20, 0.10), vec3(0.18, 0.32, 0.16), fbm(uv * 18.0));
-            col = mix(col, forestColor, treeMask);
-            // 大地（草原）
+            col = mix(col, vec3(0.03, 0.05, 0.04), treeMask);
+            // 大地（暗い草原）
             float groundMask = step(uv.y, 0.34);
-            vec3 grass = mix(vec3(0.22, 0.40, 0.18), vec3(0.32, 0.52, 0.22), fbm(uv * 12.0 + vec2(uTime * 0.005, 0.0)));
-            grass += vec3(0.05, 0.08, 0.03) * sin(uv.x * 200.0 + fbm(uv * 30.0) * 8.0) * 0.5;
-            col = mix(col, grass, groundMask);
-            // 鳥のシルエット（V字編隊、空を横切る）
+            col = mix(col, vec3(0.06, 0.10, 0.06), groundMask);
+            // 鳥のシルエット
             for (int i = 0; i < 3; i++) {
               float fi = float(i);
               vec2 birdPos = vec2(fract(uTime * 0.018 + fi * 0.27), 0.80 + sin(uTime * 0.3 + fi) * 0.04);
               vec2 dB = uv - birdPos;
               float vShape = abs(dB.y - abs(dB.x) * 0.4);
               float bird = smoothstep(0.004, 0.0, vShape) * step(abs(dB.x), 0.012);
-              col = mix(col, vec3(0.05, 0.05, 0.08), bird * 0.85);
+              col = mix(col, vec3(0.0), bird * 0.85);
             }
-            // 雲の光縁（太陽側）
-            col += vec3(1.0, 0.85, 0.6) * cloudMask * sunGlow * 0.18;
-            col *= 0.85; // 全体のトーンを抑える
+            // ホタルのような点光（控えめ）
+            for (int i = 0; i < 6; i++) {
+              float fi = float(i);
+              vec2 fp = vec2(fract(0.13 + fi * 0.17 + sin(uTime * 0.2 + fi) * 0.02), 0.20 + fract(fi * 0.31) * 0.18);
+              float fd = distance(uv, fp);
+              float ff = smoothstep(0.006, 0.0, fd);
+              col += vec3(0.9, 0.85, 0.5) * ff * 0.4 * (0.5 + 0.5 * sin(uTime * 2.0 + fi * 1.7));
+            }
+            col = min(col, vec3(0.55)); // ハードクランプ：Bloomで白飛び防止
           }
           // ━━━ タイムスリップモード（古紙のセピア、文字の流れ）━━━
           else if (uMode > 4.5) {
