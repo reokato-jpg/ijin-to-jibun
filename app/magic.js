@@ -12171,86 +12171,285 @@
           { intensity: 0.5 });
       }
 
-      // 床（暗い大理石）
-      const floorTex = (() => {
+      // 🏛 ギリシャ神殿風 — 雲の上に浮かぶ白い大理石神殿
+      // 大理石テクスチャ（白＋淡い灰の脈）
+      const marbleTex = (() => {
         const c = document.createElement('canvas'); c.width = 512; c.height = 512;
         const g = c.getContext('2d');
-        // 明るい大理石風（紫白）
-        const grd = g.createRadialGradient(256, 256, 50, 256, 256, 380);
-        grd.addColorStop(0, '#d0c0e8'); grd.addColorStop(0.6, '#9080b8'); grd.addColorStop(1, '#403060');
-        g.fillStyle = grd; g.fillRect(0,0,512,512);
-        for (let i = 0; i < 80; i++) {
-          g.strokeStyle = `rgba(${180+Math.random()*60},${160+Math.random()*40},${200+Math.random()*55},${0.15+Math.random()*0.2})`;
-          g.lineWidth = 0.5 + Math.random();
+        const grd = g.createLinearGradient(0, 0, 512, 512);
+        grd.addColorStop(0, '#fafaf6'); grd.addColorStop(0.5, '#e8e6e0'); grd.addColorStop(1, '#d8d4cc');
+        g.fillStyle = grd; g.fillRect(0, 0, 512, 512);
+        // 大理石の脈
+        for (let i = 0; i < 30; i++) {
+          g.strokeStyle = `rgba(${180+Math.random()*40},${175+Math.random()*40},${165+Math.random()*40},${0.15+Math.random()*0.25})`;
+          g.lineWidth = 0.5 + Math.random() * 1.5;
           g.beginPath();
           let x = Math.random()*512, y = Math.random()*512;
           g.moveTo(x, y);
-          for (let k = 0; k < 8; k++) {
-            x += (Math.random()-0.5)*40; y += (Math.random()-0.5)*40;
+          for (let k = 0; k < 14; k++) {
+            x += (Math.random()-0.5)*60; y += (Math.random()-0.5)*60;
             g.lineTo(x, y);
           }
           g.stroke();
         }
+        // ブロック目地
+        g.strokeStyle = 'rgba(140,135,125,0.3)'; g.lineWidth = 1;
+        for (let i = 0; i <= 8; i++) {
+          g.beginPath(); g.moveTo(i*64, 0); g.lineTo(i*64, 512); g.stroke();
+          g.beginPath(); g.moveTo(0, i*64); g.lineTo(512, i*64); g.stroke();
+        }
         const t = new THREE.CanvasTexture(c);
         t.wrapS = t.wrapT = THREE.RepeatWrapping;
-        t.repeat.set(8, 8);
         return t;
       })();
+      const marbleMat = new THREE.MeshStandardMaterial({
+        map: marbleTex, roughness: 0.45, metalness: 0.1,
+        color: 0xffffff, envMapIntensity: 1.1,
+      });
+
+      // === 神殿のサイズ（矩形プラン） ===
+      // 廊下方向 (z軸): -12 〜 +14、横幅 (x軸): ±9
+      const T_W = 18; // 横幅
+      const T_D = 28; // 奥行
+      const T_H = 9;  // 柱の高さ
+      const STEP_H = 0.35;
+
+      // 階段付き基壇（3段）
+      for (let s = 0; s < 3; s++) {
+        const stepRepeat = marbleTex.clone();
+        stepRepeat.wrapS = stepRepeat.wrapT = THREE.RepeatWrapping;
+        stepRepeat.repeat.set(T_W * 0.4, T_D * 0.4);
+        const w = T_W + 4 - s * 1.2;
+        const d = T_D + 4 - s * 1.2;
+        const step = new THREE.Mesh(
+          new THREE.BoxGeometry(w, STEP_H, d),
+          new THREE.MeshStandardMaterial({ map: stepRepeat, roughness: 0.5, metalness: 0.1, color: 0xffffff })
+        );
+        step.position.y = -1.5 + s * STEP_H;
+        scene.add(step);
+      }
+      // メインの床（神殿の基盤）
+      const floorRepeat = marbleTex.clone();
+      floorRepeat.wrapS = floorRepeat.wrapT = THREE.RepeatWrapping;
+      floorRepeat.repeat.set(T_W * 0.5, T_D * 0.5);
       const floor = new THREE.Mesh(
-        new THREE.CircleGeometry(20, 48),
-        new THREE.MeshStandardMaterial({ map: floorTex, roughness: 0.3, metalness: 0.6, color: 0xffffff })
+        new THREE.BoxGeometry(T_W + 2, 0.3, T_D + 2),
+        new THREE.MeshStandardMaterial({ map: floorRepeat, roughness: 0.35, metalness: 0.15, color: 0xffffff })
       );
-      floor.rotation.x = -Math.PI / 2;
+      floor.position.y = -0.45;
       scene.add(floor);
 
-      // 中央の光源（強め）
-      const centerLight = new THREE.PointLight(0xffeaff, 3.5, 50, 1.5);
-      centerLight.position.set(0, 8, 0);
-      scene.add(centerLight);
-      // 周囲の補助光×4
-      for (let i = 0; i < 4; i++) {
-        const a = (i / 4) * Math.PI * 2;
-        const fill = new THREE.PointLight(0xa0c0ff, 1.2, 25, 1.5);
-        fill.position.set(Math.cos(a) * 18, 4, Math.sin(a) * 18);
-        scene.add(fill);
-      }
-
-      // 周囲の柱（アトモスフェアのため）
-      const colMat = new THREE.MeshStandardMaterial({ color: 0xb8a8d8, roughness: 0.5, metalness: 0.2 });
-      const numCols = 16;
-      for (let i = 0; i < numCols; i++) {
-        const a = (i / numCols) * Math.PI * 2;
-        const col = new THREE.Mesh(
-          new THREE.CylinderGeometry(0.4, 0.5, 8, 12),
-          colMat
-        );
-        col.position.set(Math.cos(a) * 22, 4, Math.sin(a) * 22);
-        scene.add(col);
-      }
-      // 天井
-      // 天井：ステンドグラス風グラデ
-      const ceilTex = (() => {
-        const c = document.createElement('canvas'); c.width = 256; c.height = 256;
+      // === ドリス式柱（縦のフルート溝で表現したテクスチャ） ===
+      const colTex = (() => {
+        const c = document.createElement('canvas'); c.width = 256; c.height = 512;
         const g = c.getContext('2d');
-        const grd = g.createRadialGradient(128, 128, 0, 128, 128, 128);
-        grd.addColorStop(0, '#fff0c0'); grd.addColorStop(0.5, '#a070d0'); grd.addColorStop(1, '#3a2050');
-        g.fillStyle = grd; g.fillRect(0,0,256,256);
-        for (let i = 0; i < 12; i++) {
-          const a = (i/12) * Math.PI * 2;
-          g.strokeStyle = 'rgba(255,220,180,0.4)'; g.lineWidth = 2;
-          g.beginPath(); g.moveTo(128, 128); g.lineTo(128+Math.cos(a)*120, 128+Math.sin(a)*120); g.stroke();
+        // 大理石ベース
+        const grd = g.createLinearGradient(0, 0, 256, 0);
+        grd.addColorStop(0, '#e8e4dc'); grd.addColorStop(0.5, '#fafaf4'); grd.addColorStop(1, '#e0dcd2');
+        g.fillStyle = grd; g.fillRect(0, 0, 256, 512);
+        // フルート（縦溝）— 20本
+        for (let i = 0; i < 20; i++) {
+          const x = i * (256 / 20);
+          const grdF = g.createLinearGradient(x, 0, x + 256/20, 0);
+          grdF.addColorStop(0, 'rgba(160,156,148,0.4)');
+          grdF.addColorStop(0.5, 'rgba(255,255,255,0.0)');
+          grdF.addColorStop(1, 'rgba(160,156,148,0.4)');
+          g.fillStyle = grdF;
+          g.fillRect(x, 0, 256/20, 512);
+        }
+        // 経年の汚れ
+        for (let i = 0; i < 60; i++) {
+          g.fillStyle = `rgba(120,110,95,${0.05+Math.random()*0.1})`;
+          g.fillRect(Math.random()*256, Math.random()*512, 1+Math.random()*2, 1+Math.random()*4);
         }
         return new THREE.CanvasTexture(c);
       })();
-      const ceiling = new THREE.Mesh(
-        new THREE.CircleGeometry(30, 48),
-        new THREE.MeshStandardMaterial({ map: ceilTex, color: 0xffffff, roughness: 0.6, side: THREE.DoubleSide })
-      );
-      ceiling.rotation.x = Math.PI / 2;
-      ceiling.position.y = 10;
-      scene.add(ceiling);
+      const fluteMat = new THREE.MeshStandardMaterial({
+        map: colTex, roughness: 0.55, metalness: 0.08, color: 0xffffff, envMapIntensity: 1.0,
+      });
+      // 柱を作る関数（ドリス式: 柱頭+本体+台座）
+      function makeColumn(x, z, height) {
+        const g = new THREE.Group();
+        // 本体（フルート溝のシリンダー）
+        const shaft = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.5, 0.55, height, 24),
+          fluteMat
+        );
+        shaft.position.y = height / 2;
+        g.add(shaft);
+        // 柱頭（エキヌス + アバクス）
+        const echinus = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.7, 0.5, 0.18, 16),
+          marbleMat
+        );
+        echinus.position.y = height + 0.09;
+        g.add(echinus);
+        const abacus = new THREE.Mesh(
+          new THREE.BoxGeometry(1.2, 0.18, 1.2),
+          marbleMat
+        );
+        abacus.position.y = height + 0.27;
+        g.add(abacus);
+        // 柱の台座（プリンス）
+        const pBase = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.65, 0.7, 0.15, 16),
+          marbleMat
+        );
+        pBase.position.y = -0.075;
+        g.add(pBase);
+        g.position.set(x, 0, z);
+        return g;
+      }
+      // 周囲の柱（ペリスタイル）— 矩形配置
+      // 前面/背面: 6本ずつ（フロント＝z=+T_D/2, バック＝z=-T_D/2）
+      const COL_FRONT = 6;
+      const COL_SIDE = 8;
+      // 前面 (入口側 z=+T_D/2)
+      for (let i = 0; i < COL_FRONT; i++) {
+        const x = -T_W/2 + (T_W / (COL_FRONT - 1)) * i;
+        scene.add(makeColumn(x, T_D / 2, T_H));
+      }
+      // 背面
+      for (let i = 0; i < COL_FRONT; i++) {
+        const x = -T_W/2 + (T_W / (COL_FRONT - 1)) * i;
+        scene.add(makeColumn(x, -T_D / 2, T_H));
+      }
+      // 左右側面（最前/最後を除く）
+      for (let i = 1; i < COL_SIDE - 1; i++) {
+        const z = -T_D/2 + (T_D / (COL_SIDE - 1)) * i;
+        scene.add(makeColumn(-T_W/2, z, T_H));
+        scene.add(makeColumn( T_W/2, z, T_H));
+      }
 
-      // 🚪 ゾーン内の入口アーチ（z=+15 に配置 — プレイヤーは z=14 から入る）
+      // === エンタブラチュア（柱の上の梁）===
+      // フリーズ（横一周の太い梁）
+      const friezeMat = marbleMat;
+      const friezeFront = new THREE.Mesh(
+        new THREE.BoxGeometry(T_W + 1.4, 0.7, 0.7),
+        friezeMat
+      );
+      friezeFront.position.set(0, T_H + 0.55, T_D / 2);
+      scene.add(friezeFront);
+      const friezeBack = friezeFront.clone();
+      friezeBack.position.z = -T_D / 2;
+      scene.add(friezeBack);
+      const friezeLeft = new THREE.Mesh(
+        new THREE.BoxGeometry(0.7, 0.7, T_D + 1.4),
+        friezeMat
+      );
+      friezeLeft.position.set(-T_W / 2, T_H + 0.55, 0);
+      scene.add(friezeLeft);
+      const friezeRight = friezeLeft.clone();
+      friezeRight.position.x = T_W / 2;
+      scene.add(friezeRight);
+      // コーニス（フリーズの下の薄い帯）
+      const corniceFront = new THREE.Mesh(
+        new THREE.BoxGeometry(T_W + 2, 0.18, 0.85),
+        new THREE.MeshStandardMaterial({ color: 0xf0eee4, roughness: 0.4, metalness: 0.15 })
+      );
+      corniceFront.position.set(0, T_H + 1.0, T_D / 2);
+      scene.add(corniceFront);
+      const corniceBack = corniceFront.clone();
+      corniceBack.position.z = -T_D / 2;
+      scene.add(corniceBack);
+
+      // === 三角破風（ペディメント） — 前面と背面 ===
+      function makePediment(side) {
+        // 三角形の正面
+        const shape = new THREE.Shape();
+        const half = T_W / 2 + 1;
+        const peakH = 2.6;
+        shape.moveTo(-half, 0);
+        shape.lineTo(half, 0);
+        shape.lineTo(0, peakH);
+        shape.lineTo(-half, 0);
+        const pedGeo = new THREE.ExtrudeGeometry(shape, { depth: 0.4, bevelEnabled: false });
+        const ped = new THREE.Mesh(pedGeo, new THREE.MeshStandardMaterial({
+          color: 0xf8f6f0, roughness: 0.5, metalness: 0.1, side: THREE.DoubleSide,
+        }));
+        ped.position.set(0, T_H + 1.18, side * (T_D / 2 + 0.2));
+        scene.add(ped);
+      }
+      makePediment(1);
+      makePediment(-1);
+
+      // === 屋根（傾斜した2枚の平面、瓦感） ===
+      const roofMat = new THREE.MeshStandardMaterial({
+        color: 0xc8c0b0, roughness: 0.7, metalness: 0.05, side: THREE.DoubleSide,
+      });
+      // 屋根の傾斜板（前面側 / 背面側）
+      const roofW = Math.hypot(T_W / 2 + 1, 2.6);
+      // 前面の傾斜
+      const roofFront = new THREE.Mesh(
+        new THREE.PlaneGeometry(T_W + 2.2, T_D + 2.2),
+        roofMat
+      );
+      // 屋根を山形に分割せず、簡易に1枚で薄く（神殿として印象的）
+      // 代わりに2枚の傾斜板で山形を形成
+      const half_T_W = T_W / 2 + 1.1;
+      const peakH = 2.6;
+      const slope = Math.atan2(peakH, half_T_W);
+      const slopeLen = Math.hypot(half_T_W, peakH);
+      const roofL = new THREE.Mesh(new THREE.PlaneGeometry(slopeLen * 2, T_D + 2.2), roofMat);
+      roofL.position.set(-half_T_W / 2, T_H + 1.18 + peakH / 2, 0);
+      roofL.rotation.z = slope;
+      roofL.rotation.y = Math.PI / 2;
+      scene.add(roofL);
+      const roofR = roofL.clone();
+      roofR.position.set(half_T_W / 2, T_H + 1.18 + peakH / 2, 0);
+      roofR.rotation.z = -slope;
+      roofR.rotation.y = Math.PI / 2;
+      scene.add(roofR);
+
+      // === 階段（前面のみ大きく）===
+      for (let s = 0; s < 5; s++) {
+        const step = new THREE.Mesh(
+          new THREE.BoxGeometry(T_W * 0.6 + s * 0.4, STEP_H, 0.6),
+          marbleMat
+        );
+        step.position.set(0, -1.5 + s * STEP_H * 0.7, T_D / 2 + 1.2 + s * 0.6);
+        scene.add(step);
+      }
+
+      // === 内部のフィル光 ===
+      const centerLight = new THREE.PointLight(0xfff0e0, 2.8, 40, 1.4);
+      centerLight.position.set(0, T_H - 1, 0);
+      scene.add(centerLight);
+      // 入口側の温かい光
+      const entryLight = new THREE.PointLight(0xffd890, 2.5, 25, 1.5);
+      entryLight.position.set(0, 4, T_D / 2 - 2);
+      scene.add(entryLight);
+      // 主神側の神聖な光
+      const altarLight = new THREE.PointLight(0xc0d8ff, 2.0, 20, 1.5);
+      altarLight.position.set(0, 5, -T_D / 2 + 3);
+      scene.add(altarLight);
+
+      // === シアンに光る側面の聖なる窓（参考画像の青い水晶のような） ===
+      for (let i = 0; i < 4; i++) {
+        const z = -T_D/2 + 4 + i * (T_D - 8) / 3;
+        for (const sx of [-1, 1]) {
+          const win = new THREE.Mesh(
+            new THREE.BoxGeometry(0.3, 1.6, 1.0),
+            new THREE.MeshStandardMaterial({
+              color: 0x40d8e0, transparent: true, opacity: 0.7,
+              emissive: 0x40d8e0, emissiveIntensity: 1.2,
+              roughness: 0.2, metalness: 0.3,
+            })
+          );
+          win.position.set(sx * (T_W / 2), 4, z);
+          scene.add(win);
+          // 周囲の枠
+          const frame = new THREE.Mesh(
+            new THREE.BoxGeometry(0.4, 1.9, 1.3),
+            new THREE.MeshStandardMaterial({ color: 0xe0dcd0, roughness: 0.5 })
+          );
+          frame.position.set(sx * (T_W / 2 + 0.05), 4, z);
+          scene.add(frame);
+        }
+      }
+
+      // 🚪 旧入口アーチ — ギリシャ神殿の正面が入口の役目を果たすため無効化
+      if (false) {
       const zoneArch = new THREE.Group();
       const archStone = new THREE.MeshStandardMaterial({ color: 0xc8b8d8, roughness: 0.6, metalness: 0.15 });
       const archGold = new THREE.MeshStandardMaterial({ color: 0xe8c060, roughness: 0.4, metalness: 0.85, emissive: 0x4a3008, emissiveIntensity: 0.4 });
@@ -12314,6 +12513,7 @@
       zoneArch.add(archLight);
       zoneArch.position.set(0, 0, 15);
       scene.add(zoneArch);
+      } // 🏛 旧入口アーチ無効化終了
 
       // 🏛 大入口：南方向（z=+22 方向）に荘厳な門
       if (zone === 'hub') {
@@ -13159,7 +13359,7 @@
         buildScene(item.key);
         // 🚪 入口（南側）から神殿に入った視点で配置
         // ringR=12 で台座が円形配置 → 入口は z=14 付近、奥（中心側）を見る
-        camera.position.set(0, 1.6, 14); yaw = 0; // 入口から中央を向く
+        camera.position.set(0, 1.6, 12); yaw = 0; // 神殿の前列柱間から、奥の主神を見る
       } else if (item.type === 'god') {
         showGodModal(item, currentZone);
       } else if (item.type === 'tale') {
@@ -13552,7 +13752,7 @@
             currentZone = it.key;
             try { buildScene(it.key); } catch (e) { console.warn('buildScene failed', e); }
             // 🚪 入口から神殿に入った視点
-            camera.position.set(0, 1.6, 14); yaw = 0; // 入口から中央を向く
+            camera.position.set(0, 1.6, 12); yaw = 0; // 神殿の前列柱間から、奥の主神を見る
             flash.style.opacity = '0';
             setTimeout(() => flash.remove(), 500);
           }, 450);
