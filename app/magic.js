@@ -11504,7 +11504,16 @@
     if (window.THREE_READY) { try { await window.THREE_READY; } catch {} }
     const ADDONS = window.THREE_ADDONS || {};
 
-    let currentZone = 'hub'; // 'hub' or pantheon key
+    // 👁 瞬きアニメーション — 目を閉じて、開けると魂の世界
+    const blink = document.createElement('div');
+    blink.className = 'pantheon-blink';
+    blink.innerHTML = '<div class="iris"></div><div class="pantheon-blink-text">— 魂　が　目　覚　め　る —</div>';
+    document.body.appendChild(blink);
+    requestAnimationFrame(() => blink.classList.add('closing'));
+    // 閉じきる（1.4s）→ シーン構築 → 開く
+    await new Promise(r => setTimeout(r, 1500));
+
+    let currentZone = 'hub'; // 'hub' (魂の宇宙) or pantheon key (神殿内部)
     const ov = document.createElement('div');
     ov.className = 'museum3d-overlay pantheon-overlay';
     ov.innerHTML = `
@@ -11634,6 +11643,10 @@
       moonHalo.scale.set(20, 20, 20);
       scene.add(moonHalo);
 
+      // ╔════════════════════════════════════════════╗
+      // ║ HUB と神殿内ゾーンで分岐 — HUB は魂の宇宙   ║
+      // ╚════════════════════════════════════════════╝
+      if (zone !== 'hub') {
       // 神殿は空に浮かぶ → 床下に雲を浮かべる
       const cloudTex = (() => {
         const c = document.createElement('canvas'); c.width = 512; c.height = 256;
@@ -12163,6 +12176,62 @@
         baseRim.position.y = -1.95;
         scene.add(baseRim);
       }
+      } // ← end of if (zone !== 'hub') — テンプル構造はHUB以外のみ
+
+      // 🌌 HUB は魂の宇宙: 大量の追加星と銀河
+      if (zone === 'hub') {
+        // より深い星空（宇宙感を強化）
+        const deepGeo = new THREE.BufferGeometry();
+        const DEEP = 1200;
+        const dp = new Float32Array(DEEP * 3);
+        const dc = new Float32Array(DEEP * 3);
+        for (let i = 0; i < DEEP; i++) {
+          const r = 30 + Math.random() * 50;
+          const th = Math.random() * Math.PI * 2;
+          const ph = Math.acos(2 * Math.random() - 1);
+          dp[i*3]   = Math.sin(ph) * Math.cos(th) * r;
+          dp[i*3+1] = Math.cos(ph) * r;
+          dp[i*3+2] = Math.sin(ph) * Math.sin(th) * r;
+          // 色: 白〜淡い紫〜淡い金
+          const tone = Math.random();
+          if (tone < 0.5) { dc[i*3]=1; dc[i*3+1]=1; dc[i*3+2]=1; }
+          else if (tone < 0.8) { dc[i*3]=0.8; dc[i*3+1]=0.7; dc[i*3+2]=1; }
+          else { dc[i*3]=1; dc[i*3+1]=0.9; dc[i*3+2]=0.6; }
+        }
+        deepGeo.setAttribute('position', new THREE.BufferAttribute(dp, 3));
+        deepGeo.setAttribute('color', new THREE.BufferAttribute(dc, 3));
+        scene.add(new THREE.Points(deepGeo, new THREE.PointsMaterial({
+          size: 0.5, sizeAttenuation: true, vertexColors: true,
+          transparent: true, opacity: 0.95, depthWrite: false, fog: false,
+        })));
+        // 紫の星雲
+        for (let i = 0; i < 3; i++) {
+          const nc = document.createElement('canvas'); nc.width = 256; nc.height = 256;
+          const ng = nc.getContext('2d');
+          const grd = ng.createRadialGradient(128, 128, 0, 128, 128, 128);
+          const cols = [['#a060d0','#3010a0'], ['#d04060','#4a1830'], ['#4080d0','#0a2050']][i];
+          grd.addColorStop(0, cols[0] + 'cc');
+          grd.addColorStop(1, cols[1] + '00');
+          ng.fillStyle = grd; ng.fillRect(0, 0, 256, 256);
+          const tex = new THREE.CanvasTexture(nc);
+          const sp2 = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, opacity: 0.5, depthWrite: false }));
+          sp2.scale.set(40, 40, 1);
+          const a = (i / 3) * Math.PI * 2;
+          sp2.position.set(Math.cos(a) * 35, (Math.random()-0.5)*15, Math.sin(a) * 35);
+          scene.add(sp2);
+        }
+        // 環境光（魂が光る程度に弱く）
+        scene.add(new THREE.AmbientLight(0x6080a0, 0.5));
+        scene.add(new THREE.HemisphereLight(0x88aacc, 0x110820, 0.6));
+        // 🎬 HDRI（夜の宇宙）
+        if (typeof applyCinematicEnv === 'function') {
+          applyCinematicEnv(renderer, scene,
+            'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/satara_night_1k.hdr',
+            { intensity: 0.4 });
+        }
+        scene.background = new THREE.Color(0x02010a);
+        scene.fog = new THREE.FogExp2(0x02010a, 0.012);
+      }
 
       // 配置するアイテム
       const items = (zone === 'hub')
@@ -12183,7 +12252,9 @@
         const a = (i / N) * Math.PI * 2;
         const px = Math.cos(a) * ringR, pz = Math.sin(a) * ringR;
         const group = new THREE.Group();
-        group.position.set(px, isHubZone ? 1.8 : 0, pz);
+        // 魂の宇宙では本が高さの違うところに浮かぶ（より宇宙感）
+        const hubY = isHubZone ? (1.8 + Math.sin(i * 1.7) * 1.0) : 0;
+        group.position.set(px, hubY, pz);
 
         if (isHubZone) {
           // 📖 HUB: 浮かぶ豪華な神話本
@@ -12492,6 +12563,65 @@
         }
       }
 
+      // 👻 HUB: 魂（プレイヤーアバター）— 半透明の発光球＋粒子
+      if (zone === 'hub') {
+        const soul = new THREE.Group();
+        // 内側コア
+        const core = new THREE.Mesh(
+          new THREE.SphereGeometry(0.18, 16, 12),
+          new THREE.MeshBasicMaterial({ color: 0xfff0e0, transparent: true, opacity: 0.95 })
+        );
+        soul.add(core);
+        // 中間層
+        const mid = new THREE.Mesh(
+          new THREE.SphereGeometry(0.32, 16, 12),
+          new THREE.MeshBasicMaterial({ color: 0xa0c8ff, transparent: true, opacity: 0.5, depthWrite: false, blending: THREE.AdditiveBlending })
+        );
+        soul.add(mid);
+        // 外殻オーラ
+        const auraTex = (() => {
+          const c = document.createElement('canvas'); c.width = 256; c.height = 256;
+          const g = c.getContext('2d');
+          const grd = g.createRadialGradient(128, 128, 0, 128, 128, 128);
+          grd.addColorStop(0, 'rgba(255,240,220,0.9)');
+          grd.addColorStop(0.4, 'rgba(180,200,255,0.4)');
+          grd.addColorStop(1, 'rgba(80,100,180,0)');
+          g.fillStyle = grd; g.fillRect(0, 0, 256, 256);
+          return new THREE.CanvasTexture(c);
+        })();
+        const aura = new THREE.Sprite(new THREE.SpriteMaterial({
+          map: auraTex, color: 0xffffff,
+          transparent: true, opacity: 0.85,
+          depthWrite: false, blending: THREE.AdditiveBlending,
+        }));
+        aura.scale.set(2.0, 2.0, 1);
+        soul.add(aura);
+        // 自己発光（点光源）
+        const soulLight = new THREE.PointLight(0xa0c8ff, 1.4, 8, 1.5);
+        soul.add(soulLight);
+        // 軌跡パーティクル
+        const trailGeo = new THREE.BufferGeometry();
+        const TRAIL = 40;
+        const trailPos = new Float32Array(TRAIL * 3);
+        for (let i = 0; i < TRAIL; i++) { trailPos[i*3]=0; trailPos[i*3+1]=0; trailPos[i*3+2]=0; }
+        trailGeo.setAttribute('position', new THREE.BufferAttribute(trailPos, 3));
+        const trail = new THREE.Points(trailGeo, new THREE.PointsMaterial({
+          color: 0xa0c8ff, size: 0.15, transparent: true, opacity: 0.7,
+          depthWrite: false, blending: THREE.AdditiveBlending, fog: false,
+        }));
+        scene.add(trail);
+        // 初期位置（中央、本のリングのすぐ内側）
+        soul.position.set(0, 1.8, 0);
+        scene.add(soul);
+        scene.userData.soul = soul;
+        scene.userData.soulCore = core;
+        scene.userData.soulMid = mid;
+        scene.userData.soulAura = aura;
+        scene.userData.soulTrail = trail;
+        scene.userData.soulTrailIdx = 0;
+        scene.userData.zoomOutT = 0; // 0→1 でカメラがズームアウト
+      }
+
       titleEl.textContent = zone === 'hub' ? '神 殿' : (PANTHEON_DATA[zone]?.name || '神 殿');
       backBtn.style.display = (zone === 'hub') ? 'none' : 'inline-block';
     }
@@ -12506,6 +12636,13 @@
     camera.position.set(0, 1.6, 0);
 
     buildScene('hub');
+
+    // 👁 目を開く（裏でシーン構築完了）
+    requestAnimationFrame(() => {
+      blink.classList.remove('closing');
+      blink.classList.add('opening');
+      setTimeout(() => blink.remove(), 1700);
+    });
 
     // 入力
     window.addEventListener('keydown', e => {
@@ -12634,26 +12771,90 @@
       if (!running) return;
       if (document.hidden) { requestAnimationFrame(animate); return; }
       t += 0.016;
-      // 移動
-      const speed = 0.08;
-      const fwd = (keys.w - keys.s) - stickDY;
-      const strafe = (keys.d - keys.a) + stickDX;
-      if (Math.hypot(fwd, strafe) > 0) {
-        const nx = Math.sin(yaw), nz = -Math.cos(yaw);
-        const sx = Math.cos(yaw), sz = Math.sin(yaw);
-        camera.position.x += (nx * fwd + sx * strafe) * speed;
-        camera.position.z += (nz * fwd + sz * strafe) * speed;
-        const d = Math.hypot(camera.position.x, camera.position.z);
-        if (d > 18) {
-          camera.position.x = camera.position.x / d * 18;
-          camera.position.z = camera.position.z / d * 18;
+      // ╔═══════════════════════════════════════════╗
+      // ║ HUB は魂の操作 + 三人称カメラ              ║
+      // ║ ゾーン内は従来の歩行（カメラ直接操作）       ║
+      // ╚═══════════════════════════════════════════╝
+      const soul = scene.userData.soul;
+      if (soul) {
+        // 🌟 魂の移動: WASD/スティックで進む（カメラ向き基準）
+        const speed = 0.10;
+        const fwd = (keys.w - keys.s) - stickDY;
+        const strafe = (keys.d - keys.a) + stickDX;
+        if (Math.hypot(fwd, strafe) > 0) {
+          const nx = Math.sin(yaw), nz = -Math.cos(yaw);
+          const sx = Math.cos(yaw), sz = Math.sin(yaw);
+          soul.position.x += (nx * fwd + sx * strafe) * speed;
+          soul.position.z += (nz * fwd + sz * strafe) * speed;
+          // 上下フリー（スペース未対応 → 高さは固定）
         }
+        // 半径22内に制限（本のリングは半径12）
+        const sd = Math.hypot(soul.position.x, soul.position.z);
+        if (sd > 22) {
+          soul.position.x = soul.position.x / sd * 22;
+          soul.position.z = soul.position.z / sd * 22;
+        }
+        // 魂の脈動
+        const pulse = 1 + Math.sin(t * 2.4) * 0.12;
+        if (scene.userData.soulCore) scene.userData.soulCore.scale.setScalar(pulse);
+        if (scene.userData.soulMid) scene.userData.soulMid.scale.setScalar(pulse * 1.05);
+        if (scene.userData.soulAura) {
+          const auraS = 2.0 + Math.sin(t * 1.5) * 0.4;
+          scene.userData.soulAura.scale.set(auraS, auraS, 1);
+          scene.userData.soulAura.material.opacity = 0.7 + Math.sin(t * 1.8) * 0.2;
+        }
+        // 軌跡更新
+        if (scene.userData.soulTrail) {
+          const tr = scene.userData.soulTrail.geometry.attributes.position;
+          const idx = scene.userData.soulTrailIdx % 40;
+          tr.array[idx*3] = soul.position.x;
+          tr.array[idx*3+1] = soul.position.y;
+          tr.array[idx*3+2] = soul.position.z;
+          tr.needsUpdate = true;
+          scene.userData.soulTrailIdx++;
+        }
+        // カメラ: 三人称（魂の後ろ上から） + 初期ズームアウト演出
+        scene.userData.zoomOutT = Math.min(1, scene.userData.zoomOutT + 0.012);
+        const zo = scene.userData.zoomOutT;
+        const easeOut = 1 - Math.pow(1 - zo, 3);
+        // 距離: 0.3 (顔のすぐ後ろ) → 5 (三人称)
+        const camDist = 0.3 + easeOut * 4.7;
+        const camHeight = 0.0 + easeOut * 1.8;
+        // カメラ位置: 魂から後方へ
+        const bx = -Math.sin(yaw), bz = Math.cos(yaw);
+        camera.position.set(
+          soul.position.x + bx * camDist,
+          soul.position.y + camHeight,
+          soul.position.z + bz * camDist
+        );
+        // 視線: 魂を見つめながら yaw/pitch 方向を加算
+        camera.lookAt(
+          soul.position.x + Math.sin(yaw) * Math.cos(pitch) * 5,
+          soul.position.y + Math.sin(pitch) * 3,
+          soul.position.z - Math.cos(yaw) * Math.cos(pitch) * 5
+        );
+      } else {
+        // 旧来の歩行（神殿内ゾーン）
+        const speed = 0.08;
+        const fwd = (keys.w - keys.s) - stickDY;
+        const strafe = (keys.d - keys.a) + stickDX;
+        if (Math.hypot(fwd, strafe) > 0) {
+          const nx = Math.sin(yaw), nz = -Math.cos(yaw);
+          const sx = Math.cos(yaw), sz = Math.sin(yaw);
+          camera.position.x += (nx * fwd + sx * strafe) * speed;
+          camera.position.z += (nz * fwd + sz * strafe) * speed;
+          const d = Math.hypot(camera.position.x, camera.position.z);
+          if (d > 18) {
+            camera.position.x = camera.position.x / d * 18;
+            camera.position.z = camera.position.z / d * 18;
+          }
+        }
+        camera.lookAt(
+          camera.position.x + Math.sin(yaw) * Math.cos(pitch) * 5,
+          camera.position.y + Math.sin(pitch) * 5,
+          camera.position.z - Math.cos(yaw) * Math.cos(pitch) * 5
+        );
       }
-      camera.lookAt(
-        camera.position.x + Math.sin(yaw) * Math.cos(pitch) * 5,
-        camera.position.y + Math.sin(pitch) * 5,
-        camera.position.z - Math.cos(yaw) * Math.cos(pitch) * 5
-      );
       // 🎨 動くSVG/Canvas（神話別のシンボル / 神の顔）
       if (Math.floor(t * 60) % 3 === 0) {
         animatedTextures.forEach(a => {
@@ -12849,18 +13050,43 @@
           }
         });
       });
-      // 最寄りの台座を判定
-      let best = null, bestD = 5;
+      // 最寄りの判定 — 魂モードは魂基準、それ以外はカメラ基準
+      const probe = soul ? soul.position : camera.position;
+      let best = null, bestD = soul ? 4 : 5;
       plinths.forEach(p => {
-        const dx = p.position.x - camera.position.x;
-        const dz = p.position.z - camera.position.z;
+        const dx = p.position.x - probe.x;
+        const dz = p.position.z - probe.z;
         const dist = Math.hypot(dx, dz);
         if (dist < bestD) {
-          const fx = Math.sin(yaw), fz = -Math.cos(yaw);
-          const dot = (dx/dist) * fx + (dz/dist) * fz;
-          if (dot > 0.4) { best = p; bestD = dist; }
+          if (soul) {
+            // 魂は方向に関係なく近さで判定
+            best = p; bestD = dist;
+          } else {
+            const fx = Math.sin(yaw), fz = -Math.cos(yaw);
+            const dot = (dx/dist) * fx + (dz/dist) * fz;
+            if (dot > 0.4) { best = p; bestD = dist; }
+          }
         }
       });
+      // 魂が本に「ぶつかる」と自動でその神話に入る
+      if (soul && best && bestD < 1.5) {
+        const it = best.userData.item;
+        if (it.type === 'pantheon' && currentZone === 'hub') {
+          currentZone = it.key;
+          // フラッシュ演出 → ズーム → 神話シーンへ
+          const flash = document.createElement('div');
+          flash.style.cssText = 'position:fixed;inset:0;background:#fff;opacity:0;z-index:9998;pointer-events:none;transition:opacity 0.4s';
+          document.body.appendChild(flash);
+          requestAnimationFrame(() => flash.style.opacity = '1');
+          setTimeout(() => {
+            buildScene(it.key);
+            camera.position.set(0, 1.6, 0); yaw = 0;
+            flash.style.opacity = '0';
+            setTimeout(() => flash.remove(), 500);
+          }, 450);
+          return;
+        }
+      }
       if (best !== currentNear) {
         currentNear = best;
         if (best) {
@@ -12868,7 +13094,7 @@
           infoEl.innerHTML = `<div class="mv-info-name">${it.name}</div><div class="mv-info-sub">${it.sub}</div>`;
           infoEl.classList.add('show');
           enterBtn.classList.add('show');
-          enterBtn.textContent = it.type === 'pantheon' ? 'この神殿に入る ›'
+          enterBtn.textContent = it.type === 'pantheon' ? (soul ? '🌟 魂で本に入る ›' : 'この神殿に入る ›')
             : it.type === 'tale' ? '物語を読む ›'
             : '詳しく見る ›';
         } else {
