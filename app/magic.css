@@ -8802,6 +8802,51 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   .koh-mode-btn { padding: 6px 8px; font-size: 10px; }
 }
 
+/* ⛩ 神話シーン切替タイトルカード */
+.koh-myth-title {
+  position: absolute;
+  top: 30%; left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  z-index: 32;
+  text-align: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1s, transform 1s cubic-bezier(.2,.9,.3,1.1);
+  font-family: 'Shippori Mincho', serif;
+  background: linear-gradient(135deg, rgba(20,10,40,0.5), rgba(40,28,80,0.3));
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,216,144,0.4);
+  border-radius: 6px;
+  padding: 18px 36px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5), 0 0 60px rgba(255,216,144,0.2);
+}
+.koh-myth-title.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  animation: kohMythFade 5s ease-out forwards;
+}
+@keyframes kohMythFade {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.85); }
+  10%, 70% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.05); }
+}
+.kmt-eyebrow {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 11px; letter-spacing: 0.6em;
+  color: #ffd890;
+  margin-bottom: 8px;
+}
+.kmt-name {
+  font-size: 36px; font-weight: 600;
+  color: #fff8e0;
+  letter-spacing: 0.25em;
+  text-shadow: 0 0 18px rgba(255,216,144,0.5);
+}
+@media (max-width: 600px) {
+  .koh-myth-title { padding: 14px 24px; }
+  .kmt-name { font-size: 26px; }
+}
+
 /* 🎮 バーチャルパッド（首振り） */
 .koh-vpad {
   position: absolute;
