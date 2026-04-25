@@ -588,6 +588,7 @@
         museum:   () => { try { openMuseumHub(); } catch (e) { console.warn('museum', e); } },
         pantheon: () => { try { openPantheon3D(); } catch (e) { console.warn('pantheon', e); } },
         littleprince: () => { try { openLittlePrinceBook(); } catch (e) { console.warn('lp', e); } },
+        godsbook: () => { try { openGodsBook(); } catch (e) { console.warn('godsbook', e); } },
       };
       wrap.querySelectorAll('[data-deep]').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -604,6 +605,7 @@
         myth: { title: '⛩ 神 話', sub: '神々と物語', items: [
           { deep: 'pantheon', label: '神殿', desc: '空に浮かぶ神殿で神々と物語に触れる', emoji: '⛩' },
           { deep: 'mythology', label: 'Genesis — はじまりの書', desc: '6つの神話を章ごとに読む', emoji: '✦' },
+          { deep: 'godsbook', label: '神々の書', desc: '全神話の神様一覧 — 書物風グリモワール／お気に入り保存', emoji: '📖' },
         ]},
         museum: { title: '🏛 美 術 館', sub: '名画を歩いて鑑賞', items: [
           { deep: 'museum', label: '美術館へ入る', desc: '神話エリア・戦国エリアから選ぶ', emoji: '🏛' },
@@ -5004,6 +5006,16 @@
           img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Pieter_Bruegel_the_Elder_-_The_Tower_of_Babel_(Vienna)_-_Google_Art_Project.jpg?width=700',
           caption: 'Pieter Bruegel《バベルの塔》（1563）',
           body: '人類は一つの言葉を話し、天に届く塔を建てようとした。「さあ、町を建てよう。頂を天に届かせ、名を高めよう」\n\n主は降りて来られた。そして言われた — 「彼らは一つの民で、同じ言葉を話している。これからは、望むことは何でもできるだろう。彼らの言葉を混乱させよう」\n\n塔は崩れ、人々は散った。以来、互いを理解できぬまま。' },
+        { t: '10. 神の嘆きとノア',
+          body: '人の悪が地に増し、心の思いがいつも悪に傾くのを、主は地の上に見られた。\n\n主は人を造ったことを悔やみ、心を痛められた。「私は私が創った人を、地のおもてから消し去ろう」。\n\nしかし、ノアは主の前に恵みを得た。' },
+        { t: '11. 箱舟を造れ',
+          body: '神はノアに言われた。「あなたはゴフェルの木で箱舟を造りなさい。長さ三百キュビト、幅五十キュビト、高さ三十キュビト。\n\nすべての生き物のうち、雄と雌、二つずつを箱舟に連れて入りなさい。彼らは生きながらえる」。\n\nノアは神が命じられたとおりに、すべて行った。' },
+        { t: '12. 大洪水', scene3D: 'noah',
+          body: '大いなる淵の源は、ことごとく裂け、天の窓が開かれた。雨は四十日四十夜、地に降り注いだ。\n\n水は地の上にみなぎり、すべての高い山々を覆った。地を歩くすべてのもの、すべての人は息絶えた。\n\nただ箱舟の中の者だけが、残された。' },
+        { t: '13. 鳩とオリーブの葉',
+          body: 'ノアは箱舟の窓を開け、鳩を放った。鳩は止まる場所を見つけられず、戻ってきた。\n\n七日後、再び放った。夕暮れ、鳩は口にオリーブの若葉をくわえて戻ってきた。\n\nノアは知った — 水は地から引いた、と。' },
+        { t: '14. 虹の契約',
+          body: '主は心の中で言われた。「もう二度と、人のゆえに地をのろうことはしない。\n\n地のあるかぎり、種まきと刈り入れ、寒さと暑さ、夏と冬、昼と夜は、休むことなく続く」。\n\n神は虹を雲の中に置き、永遠の契約のしるしとされた。' },
       ]
     },
     greek: {
@@ -5093,6 +5105,18 @@
           img: 'https://commons.wikimedia.org/wiki/Special:FilePath/Pandora_-_John_William_Waterhouse.jpg?width=700',
           caption: 'John William Waterhouse《パンドラ》（1896）',
           body: 'ゼウスは人間に復讐した。火の神ヘファイストスに土と水で「すべての贈り物を持つ女」パンドラを造らせ、開けてはならぬ甕を持たせ地上に送った。\n\n好奇心に負けたパンドラが甕を開けると、病・争い・苦しみ・老い — すべての災いが飛び出した。\n慌てて閉じた時、底に残ったのはただ一つ — エルピス、希望だけ。' },
+        { t: '8. ヘラクレスの柱の向こう — アトランティス',
+          body: 'プラトンは『ティマイオス』と『クリティアス』に書いた。約九千年前、ヘラクレスの柱（ジブラルタル）の向こうに、リビアとアジアを合わせたよりも大きな島があった。\n\nその名は アトランティス。海神ポセイドンが、人間の女クレイトーとの間に儲けた十人の王子たちが治めていた。' },
+        { t: '9. ポセイドンの都',
+          body: '中央には海神を祀る黄金と象牙の神殿があった。三重の堀と二重の城壁が同心円に都を囲み、そこを船で行き来した。\n\n地下から温泉と冷泉が湧き、果樹園と神聖な森が広がった。彼らは強大な軍勢を持ち、地中海全土を支配しかけた。' },
+        { t: '10. 海に沈んだ理想都市', scene3D: 'atlantis',
+          body: 'はじめ、アトランティスの民は徳高く、神々を敬っていた。だが世代を重ねるごとに、神性は薄れ、人間の欲望が彼らを満たした。\n\nゼウスは堕落した者たちを罰しようと神々を集めた。\n\n激しい地震と洪水が起こった。ただの一日と一夜のうちに、アトランティスは戦士たちもろとも、海に沈んだ。' },
+        { t: '11. 死後の三つの行き先',
+          body: '罪深き者は タルタロス へ落とされ、永遠に苦しむ。普通の魂は アスフォデルの野 を彷徨う。\n\nそして — 神々に愛された英雄、徳高き者は、エリュシオン へ迎えられる。' },
+        { t: '12. 永遠の春の野 — エリュシオン', scene3D: 'elysion',
+          body: 'エリュシオンには冬がない。雪も嵐もない。穏やかなゼピュロス（西風）がいつも吹き、海原は遠く、苦しみは触れない。\n\n果実は枝にたわわに実り、川は清く流れる。英雄たちは思うままに歌い、踊り、語らう。\n\nピンダロスは歌った — 「金の花が地に咲き、海の樹々に光り、彼らはその花を手と冠に飾る」。' },
+        { t: '13. 忘却の川 レテと英雄たち',
+          body: '楽園の入口に、レテ（忘却）の川が流れる。魂はその水を飲み、生前の苦しみと記憶を流す。\n\nアキレウス、ヘラクレス、テセウス、ペルセウス。神々の血を引く者、人として神々しく生きた者。彼らはここで再会し、永遠の語らいを続ける。\n\n翼の馬ペガサスは、空を駆け、彼らに祝福をもたらす。' },
       ]
     },
     japan: {
@@ -5515,56 +5539,6 @@
           body: 'シヴァは破壊神にして、再生の神。額に第三の眼、首に蛇、髪に月とガンジス川の女神を宿す。\n\n宇宙を焼き尽くす時、彼はナタラージャとして舞を踊る。その炎が古い世界を清め、次の世界への扉を開く。' },
         { t: '5. 女神たちの力', body: 'すべての神にはシャクティ（女神の力）がある。ブラフマーにはサラスヴァティー（学問）、ヴィシュヌにはラクシュミー（富）、シヴァにはパールヴァティー。\n\nそして破壊の女神カーリー。シヴァが倒せぬ悪魔を首を切って飲み干し、血が地に落ちぬようにした。舌は血に染まる。' },
         { t: '6. ガネーシャの誕生', body: 'シヴァが遠征中、妻パールヴァティーは自分の体の垢から息子を作り、浴室の番をさせた。戻ってきたシヴァは見知らぬ子に道を塞がれ、激怒して首を刎ねた。\n\n妻に怒られ、通りすがりの最初の動物の首を代わりにつけると約束し、それが象だった。\n\nこうして障害を取り除く神、ガネーシャは生まれた。' },
-      ]
-    },
-    noah: {
-      name: 'ノアの箱舟', emoji: '🚢', theme: 'flood', symbol: '🌈',
-      subtitle: '旧約聖書 — 大洪水と虹の契約',
-      palette: { bg1: '#1a3050', bg2: '#0a1830', accent: '#80c8ff' },
-      chapters: [
-        { t: '1. 神の嘆き',
-          body: '人の悪が地に増し、心の思いがいつも悪に傾くのを、主は地の上に見られた。\n\n主は人を造ったことを悔やみ、心を痛められた。「私は私が創った人を、地のおもてから消し去ろう」。\n\nしかし、ノアは主の前に恵みを得た。' },
-        { t: '2. 箱舟を造れ',
-          body: '神はノアに言われた。「あなたはゴフェルの木で箱舟を造りなさい。長さ三百キュビト、幅五十キュビト、高さ三十キュビト。\n\nすべての生き物のうち、雄と雌、二つずつを箱舟に連れて入りなさい。彼らは生きながらえる」。\n\nノアは神が命じられたとおりに、すべて行った。' },
-        { t: '3. 大洪水',
-          scene3D: 'noah',
-          body: '大いなる淵の源は、ことごとく裂け、天の窓が開かれた。雨は四十日四十夜、地に降り注いだ。\n\n水は地の上にみなぎり、すべての高い山々を覆った。地を歩くすべてのもの、すべての人は息絶えた。\n\nただ箱舟の中の者だけが、残された。' },
-        { t: '4. 鳩とオリーブの葉',
-          body: 'ノアは箱舟の窓を開け、鳩を放った。鳩は止まる場所を見つけられず、戻ってきた。\n\n七日後、再び放った。夕暮れ、鳩は口にオリーブの若葉をくわえて戻ってきた。\n\nノアは知った — 水は地から引いた、と。' },
-        { t: '5. 虹の契約',
-          body: '主は心の中で言われた。「もう二度と、人のゆえに地をのろうことはしない。\n\n地のあるかぎり、種まきと刈り入れ、寒さと暑さ、夏と冬、昼と夜は、休むことなく続く」。\n\n神は虹を雲の中に置き、永遠の契約のしるしとされた。' },
-      ]
-    },
-    atlantis: {
-      name: 'アトランティス', emoji: '🔱', theme: 'sunken', symbol: 'Ψ',
-      subtitle: 'プラトン — 海に沈んだ理想都市',
-      palette: { bg1: '#0a3a5a', bg2: '#031a30', accent: '#80e0ff' },
-      chapters: [
-        { t: '1. ヘラクレスの柱の向こう',
-          body: 'プラトンは『ティマイオス』と『クリティアス』に書いた。約九千年前、ヘラクレスの柱（ジブラルタル）の向こうに、リビアとアジアを合わせたよりも大きな島があった。\n\nその名は アトランティス。海神ポセイドンが、人間の女クレイトーとの間に儲けた十人の王子たちが治めていた。' },
-        { t: '2. ポセイドンの都',
-          body: '中央には海神を祀る黄金と象牙の神殿があった。三重の堀と二重の城壁が同心円に都を囲み、そこを船で行き来した。\n\n地下から温泉と冷泉が湧き、果樹園と神聖な森が広がった。彼らは強大な軍勢を持ち、地中海全土を支配しかけた。' },
-        { t: '3. 神々を忘れた者たち',
-          scene3D: 'atlantis',
-          body: 'はじめ、アトランティスの民は徳高く、神々を敬っていた。だが世代を重ねるごとに、神性は薄れ、人間の欲望が彼らを満たした。\n\nゼウスは、堕落した者たちを罰しようと神々を集めた。' },
-        { t: '4. 一日と一夜の災い',
-          body: '激しい地震と洪水が起こった。ただの一日と一夜のうちに、アトランティスは戦士たちもろとも、海に沈んだ。\n\n以来そこは、海の泥に阻まれ、誰一人渡ることのできぬ場所となった。\n\nプラトンの語ったその物語が、神話か歴史か — 二千四百年、人は問い続けている。' },
-      ]
-    },
-    elysion: {
-      name: 'エリュシオン', emoji: '🌾', theme: 'paradise', symbol: 'Ω',
-      subtitle: 'ギリシャ神話 — 英雄たちの楽園',
-      palette: { bg1: '#8a6020', bg2: '#3a2810', accent: '#ffe890' },
-      chapters: [
-        { t: '1. 死後の三つの行き先',
-          body: 'ギリシャ神話では、死者の魂は三つに分かれる。\n\n罪深き者は タルタロス へ落とされ、永遠に苦しむ。普通の魂は アスフォデルの野 を彷徨う。\n\nそして — 神々に愛された英雄、徳高き者は、エリュシオン へ迎えられる。' },
-        { t: '2. 永遠の春の野',
-          scene3D: 'elysion',
-          body: 'エリュシオンには冬がない。雪も嵐もない。穏やかなゼピュロス（西風）がいつも吹き、海原は遠く、苦しみは触れない。\n\n果実は枝にたわわに実り、川は清く流れる。英雄たちは思うままに歌い、踊り、語らう。\n\nピンダロスは歌った — 「金の花が地に咲き、海の樹々に光り、彼らはその花を手と冠に飾る」。' },
-        { t: '3. 忘却の川 レテ',
-          body: '楽園の入口に、レテ（忘却）の川が流れる。魂はその水を飲み、生前の苦しみと記憶を流す。\n\n軽くなった魂は、永遠の春の中を歩く。何も背負わず、誰も恨まず、ただ、在る。\n\nそれがエリュシオンの祝福だった。' },
-        { t: '4. 英雄たちの群像',
-          body: 'アキレウス、ヘラクレス、テセウス、ペルセウス。神々の血を引く者、人として神々しく生きた者。\n\n彼らはここで再会し、永遠の語らいを続ける。武勲を誇るためではない。すべては既に、為された。\n\nそして翼の馬ペガサスは、空を駆け、彼らに祝福をもたらす。' },
       ]
     },
   };
@@ -12647,7 +12621,7 @@
     const W = () => stage.clientWidth || window.innerWidth;
     const H = () => stage.clientHeight || window.innerHeight;
     const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.0));
     renderer.setSize(W(), H());
     if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.2;
@@ -12681,8 +12655,8 @@
       return new THREE.CanvasTexture(c);
     })();
     const sea = new THREE.Mesh(
-      new THREE.PlaneGeometry(400, 400, 64, 64),
-      new THREE.MeshStandardMaterial({ map: seaTex, color: 0x405870, roughness: 0.3, metalness: 0.4 })
+      new THREE.PlaneGeometry(400, 400, 32, 32),
+      new THREE.MeshStandardMaterial({ map: seaTex, color: 0x405870, roughness: 0.3, metalness: 0.4, flatShading: false })
     );
     sea.rotation.x = -Math.PI / 2;
     scene.add(sea);
@@ -12771,7 +12745,7 @@
     scene.add(dove);
 
     // 🌧 雨パーティクル
-    const RAIN = 800;
+    const RAIN = 400;
     const rainGeo = new THREE.BufferGeometry();
     const rainPos = new Float32Array(RAIN * 3);
     for (let i = 0; i < RAIN; i++) {
@@ -12814,16 +12788,21 @@
       ov.classList.remove('open');
       setTimeout(() => ov.remove(), 500);
     });
+    let frameNoah = 0;
     function animate() {
       if (!running) return;
       const t = (performance.now() - t0) / 1000;
-      // 波
-      for (let i = 0; i < seaPos.count; i++) {
-        const x = seaPos.getX(i), y = seaPos.getY(i);
-        seaPos.setZ(i, Math.sin(x * 0.15 + t * 0.8) * 0.4 + Math.cos(y * 0.2 + t * 0.6) * 0.3);
+      frameNoah++;
+      // 波（3フレームに1回更新で十分）
+      if (frameNoah % 3 === 0) {
+        for (let i = 0; i < seaPos.count; i++) {
+          const x = seaPos.getX(i), y = seaPos.getY(i);
+          seaPos.setZ(i, Math.sin(x * 0.15 + t * 0.8) * 0.4 + Math.cos(y * 0.2 + t * 0.6) * 0.3);
+        }
+        seaPos.needsUpdate = true;
+        // computeVertexNormals は重いので毎12フレーム
+        if (frameNoah % 12 === 0) sea.geometry.computeVertexNormals();
       }
-      seaPos.needsUpdate = true;
-      sea.geometry.computeVertexNormals();
       // 箱舟揺れ
       ark.position.y = Math.sin(t * 0.5) * 0.3;
       ark.rotation.z = Math.sin(t * 0.4) * 0.05;
@@ -12898,7 +12877,7 @@
     const W = () => stage.clientWidth || window.innerWidth;
     const H = () => stage.clientHeight || window.innerHeight;
     const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.0));
     renderer.setSize(W(), H());
     if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.0;
@@ -13008,7 +12987,7 @@
     }
 
     // 🐠 魚の群れ（小さな三角の魚たち）
-    const FISH = 60;
+    const FISH = 28;
     const fishGeo = new THREE.ConeGeometry(0.15, 0.5, 4);
     const fishMat = new THREE.MeshStandardMaterial({ color: 0xffd870, emissive: 0x4a3000, emissiveIntensity: 0.4 });
     const fishMesh = new THREE.InstancedMesh(fishGeo, fishMat, FISH);
@@ -13049,7 +13028,7 @@
     }
 
     // 気泡（空気のバブル）
-    const BUB = 100;
+    const BUB = 50;
     const bubGeo = new THREE.BufferGeometry();
     const bubPos = new Float32Array(BUB * 3);
     for (let i = 0; i < BUB; i++) {
@@ -13091,41 +13070,44 @@
       setTimeout(() => ov.remove(), 500);
     });
     const t0 = performance.now();
+    let frameAtl = 0;
     function animate() {
       if (!running) return;
+      frameAtl++;
       const t = (performance.now() - t0) / 1000;
       // カメラ更新
       camera.position.x = Math.cos(yaw) * Math.cos(pitch) * dist;
       camera.position.z = Math.sin(yaw) * Math.cos(pitch) * dist;
-      camera.position.y = 5 + Math.sin(pitch) * dist * 0.7 + Math.sin(t * 0.4) * 0.2; // 上下に揺れる（水中感）
+      camera.position.y = 5 + Math.sin(pitch) * dist * 0.7 + Math.sin(t * 0.4) * 0.2;
       camera.lookAt(0, 4, 0);
-      // 魚の群れ
-      for (let i = 0; i < FISH; i++) {
-        const f = fishData[i];
-        f.a += 0.005 * f.speed;
-        const x = Math.cos(f.a) * f.r;
-        const z = Math.sin(f.a) * f.r;
-        const y = f.y + Math.sin(t * f.speed + f.phase) * 0.5;
-        fdummy.position.set(x, y, z);
-        fdummy.lookAt(Math.cos(f.a + 0.1) * f.r, y, Math.sin(f.a + 0.1) * f.r);
-        fdummy.rotation.x += Math.PI / 2;
-        fdummy.updateMatrix();
-        fishMesh.setMatrixAt(i, fdummy.matrix);
-      }
-      fishMesh.instanceMatrix.needsUpdate = true;
-      // 気泡が上昇
-      const bp = bubbles.geometry.attributes.position;
-      for (let i = 0; i < BUB; i++) {
-        bp.array[i*3+1] += 0.04;
-        bp.array[i*3] += Math.sin(t + i) * 0.005;
-        if (bp.array[i*3+1] > 22) {
-          bp.array[i*3+1] = 0;
-          bp.array[i*3] = (Math.random() - 0.5) * 60;
-          bp.array[i*3+2] = (Math.random() - 0.5) * 60;
+      // 魚の群れ（2フレームに1回）
+      if (frameAtl % 2 === 0) {
+        for (let i = 0; i < FISH; i++) {
+          const f = fishData[i];
+          f.a += 0.01 * f.speed;
+          const x = Math.cos(f.a) * f.r;
+          const z = Math.sin(f.a) * f.r;
+          const y = f.y + Math.sin(t * f.speed + f.phase) * 0.5;
+          fdummy.position.set(x, y, z);
+          fdummy.rotation.set(Math.PI/2, 0, -f.a - Math.PI/2);
+          fdummy.updateMatrix();
+          fishMesh.setMatrixAt(i, fdummy.matrix);
         }
+        fishMesh.instanceMatrix.needsUpdate = true;
       }
-      bp.needsUpdate = true;
-      // 三叉戟がほのかに揺れる
+      // 気泡（2フレームに1回）
+      if (frameAtl % 2 === 0) {
+        const bp = bubbles.geometry.attributes.position;
+        for (let i = 0; i < BUB; i++) {
+          bp.array[i*3+1] += 0.08;
+          if (bp.array[i*3+1] > 22) {
+            bp.array[i*3+1] = 0;
+            bp.array[i*3] = (Math.random() - 0.5) * 60;
+            bp.array[i*3+2] = (Math.random() - 0.5) * 60;
+          }
+        }
+        bp.needsUpdate = true;
+      }
       shaft.rotation.z = Math.sin(t * 0.5) * 0.03;
       renderer.render(scene, camera);
       requestAnimationFrame(animate);
@@ -13161,7 +13143,7 @@
     const W = () => stage.clientWidth || window.innerWidth;
     const H = () => stage.clientHeight || window.innerHeight;
     const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.0));
     renderer.setSize(W(), H());
     if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.7;
@@ -13363,7 +13345,7 @@
     scene.add(peg);
 
     // ✨ 光の粉（背景に降る）
-    const DUST = 200;
+    const DUST = 100;
     const dustGeo = new THREE.BufferGeometry();
     const dpos = new Float32Array(DUST * 3);
     for (let i = 0; i < DUST; i++) {
@@ -13403,35 +13385,38 @@
       setTimeout(() => ov.remove(), 500);
     });
     const t0 = performance.now();
+    let frameEly = 0;
     function animate() {
       if (!running) return;
+      frameEly++;
       const t = (performance.now() - t0) / 1000;
       camera.position.x = Math.cos(yaw) * Math.cos(pitch) * dist;
       camera.position.z = Math.sin(yaw) * Math.cos(pitch) * dist;
       camera.position.y = 6 + Math.sin(pitch) * dist * 0.6;
       camera.lookAt(0, 4, 0);
-      // 魂が漂う
-      souls.forEach((s, i) => {
-        s.position.y = s.userData.baseY + Math.sin(t * s.userData.speed + s.userData.phase) * 0.6;
-        s.material.opacity = 0.5 + Math.sin(t * 0.6 + i) * 0.3;
-      });
-      // ペガサスが円を描いて飛ぶ
+      // 魂（2フレームに1回）
+      if (frameEly % 2 === 0) {
+        souls.forEach((s, i) => {
+          s.position.y = s.userData.baseY + Math.sin(t * s.userData.speed + s.userData.phase) * 0.6;
+          s.material.opacity = 0.5 + Math.sin(t * 0.6 + i) * 0.3;
+        });
+      }
+      // ペガサス
       peg.position.x = Math.cos(t * 0.3) * 22;
       peg.position.z = Math.sin(t * 0.3) * 22;
       peg.position.y = 14 + Math.sin(t * 0.7) * 1.5;
-      peg.lookAt(Math.cos(t * 0.3 + 0.1) * 22, peg.position.y, Math.sin(t * 0.3 + 0.1) * 22);
-      // 翼ばたき
+      peg.rotation.y = -t * 0.3 + Math.PI / 2;
       wing.rotation.x = Math.PI/2 + Math.sin(t * 6) * 0.5;
-      // 川の漣（emissive 揺らし）
       river.material.emissiveIntensity = 0.3 + Math.sin(t * 1.3) * 0.15;
-      // 光の粉が落ちる
-      const dp = dust.geometry.attributes.position;
-      for (let i = 0; i < DUST; i++) {
-        dp.array[i*3+1] -= 0.02;
-        dp.array[i*3] += Math.sin(t + i) * 0.005;
-        if (dp.array[i*3+1] < 0) dp.array[i*3+1] = 22;
+      // 光の粉（3フレームに1回）
+      if (frameEly % 3 === 0) {
+        const dp = dust.geometry.attributes.position;
+        for (let i = 0; i < DUST; i++) {
+          dp.array[i*3+1] -= 0.06;
+          if (dp.array[i*3+1] < 0) dp.array[i*3+1] = 22;
+        }
+        dp.needsUpdate = true;
       }
-      dp.needsUpdate = true;
       renderer.render(scene, camera);
       requestAnimationFrame(animate);
     }
@@ -13443,6 +13428,169 @@
     });
   }
   window.openElysion3D = openElysion3D;
+
+  // ============================================================
+  // 📖 神様一覧 — 書物風グリモワール
+  // ============================================================
+  const GODS_FAV_KEY = 'ijin.godsFav';
+  function loadGodsFav() {
+    try { return new Set(JSON.parse(localStorage.getItem(GODS_FAV_KEY) || '[]')); } catch { return new Set(); }
+  }
+  function saveGodsFav(set) {
+    try { localStorage.setItem(GODS_FAV_KEY, JSON.stringify([...set])); } catch {}
+  }
+  function openGodsBook() {
+    const fav = loadGodsFav();
+    const allGods = [];
+    Object.entries(PANTHEON_DATA).forEach(([key, m]) => {
+      m.gods.forEach((g, i) => {
+        allGods.push({
+          id: key + ':' + i,
+          mythKey: key,
+          mythName: m.name,
+          mythEmoji: m.emoji,
+          accent: m.accent,
+          name: g.n, sub: g.t, img: g.img, lore: g.lore,
+        });
+      });
+    });
+    const ov = document.createElement('div');
+    ov.className = 'gods-book-overlay';
+    ov.innerHTML = `
+      <div class="gods-book">
+        <div class="gb-paper">
+          <button class="gb-close" aria-label="閉じる">×</button>
+          <div class="gb-head">
+            <div class="gb-title">神 々 の 書</div>
+            <div class="gb-sub">— Pantheon Grimoire —</div>
+          </div>
+          <div class="gb-tabs" id="gbTabs">
+            <button class="gb-tab active" data-myth="all">すべて</button>
+            <button class="gb-tab" data-myth="fav">★ お気に入り</button>
+            ${Object.entries(PANTHEON_DATA).map(([k, m]) => `<button class="gb-tab" data-myth="${k}">${m.emoji} ${m.name}</button>`).join('')}
+          </div>
+          <div class="gb-list" id="gbList"></div>
+          <div class="gb-foot">記された神々は <b id="gbCount">${allGods.length}</b> 柱 — ★ で書に印をつける</div>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(ov);
+    requestAnimationFrame(() => ov.classList.add('open'));
+    let curTab = 'all';
+    function render() {
+      const list = ov.querySelector('#gbList');
+      const filtered = curTab === 'all' ? allGods
+        : curTab === 'fav' ? allGods.filter(g => fav.has(g.id))
+        : allGods.filter(g => g.mythKey === curTab);
+      if (filtered.length === 0) {
+        list.innerHTML = '<div class="gb-empty">— まだ印された神はおりません —</div>';
+        return;
+      }
+      list.innerHTML = filtered.map(g => {
+        const accentHex = '#' + (g.accent || 0x9080d0).toString(16).padStart(6, '0');
+        const isFav = fav.has(g.id);
+        return `
+          <div class="gb-entry" data-id="${g.id}" style="--acc:${accentHex}">
+            <div class="gb-thumb">
+              <div class="gb-glyph">${g.mythEmoji}</div>
+            </div>
+            <div class="gb-body">
+              <div class="gb-myth">${g.mythName}</div>
+              <div class="gb-name">${g.name}</div>
+              <div class="gb-role">${g.sub}</div>
+              <div class="gb-lore">${(g.lore || '').slice(0, 90)}${(g.lore || '').length > 90 ? '…' : ''}</div>
+            </div>
+            <button class="gb-fav ${isFav ? 'on' : ''}" data-id="${g.id}" aria-label="お気に入り">${isFav ? '★' : '☆'}</button>
+          </div>
+        `;
+      }).join('');
+      // 各エントリ: クリックで詳細（PANTHEON詳細モーダル流用）
+      list.querySelectorAll('.gb-entry').forEach(el => {
+        el.addEventListener('click', e => {
+          if (e.target.classList.contains('gb-fav')) return;
+          const g = filtered.find(x => x.id === el.dataset.id);
+          if (g) showGodsBookDetail(g);
+        });
+      });
+      list.querySelectorAll('.gb-fav').forEach(btn => {
+        btn.addEventListener('click', e => {
+          e.stopPropagation();
+          const id = btn.dataset.id;
+          if (fav.has(id)) { fav.delete(id); btn.classList.remove('on'); btn.textContent = '☆'; }
+          else { fav.add(id); btn.classList.add('on'); btn.textContent = '★'; }
+          saveGodsFav(fav);
+          if (curTab === 'fav') render();
+        });
+      });
+      // 画像差し替え
+      filtered.forEach(g => {
+        if (!g.img) return;
+        const m = g.img.match(/Special:FilePath\/([^?]+)/);
+        if (!m) return;
+        const filename = decodeURIComponent(m[1]).replace(/_/g, ' ');
+        const api = `https://commons.wikimedia.org/w/api.php?action=query&format=json&prop=imageinfo&iiprop=url&iiurlwidth=200&titles=${encodeURIComponent('File:' + filename)}&origin=*`;
+        fetch(api).then(r => r.json()).then(d => {
+          const pages = d.query?.pages || {};
+          const p = Object.values(pages)[0];
+          const thumb = p?.imageinfo?.[0]?.thumburl;
+          if (!thumb) return;
+          const el = list.querySelector(`.gb-entry[data-id="${g.id}"] .gb-thumb`);
+          if (el) el.innerHTML = `<img src="${thumb}" alt="${g.name}" loading="lazy">`;
+        }).catch(() => {});
+      });
+    }
+    function showGodsBookDetail(g) {
+      const m = document.createElement('div');
+      m.className = 'pantheon-modal';
+      const accentHex = '#' + (g.accent || 0x9080d0).toString(16).padStart(6, '0');
+      const placeholderSVG = `data:image/svg+xml;utf8,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="240" height="320"><rect width="240" height="320" fill="#1a0a30"/><text x="120" y="180" text-anchor="middle" fill="${accentHex}" font-size="72" font-family="serif">${g.mythEmoji}</text></svg>`)}`;
+      m.innerHTML = `
+        <div class="pm-card">
+          <button class="pm-close">×</button>
+          <img class="pm-img" alt="${g.name}" src="${placeholderSVG}">
+          <div class="pm-body">
+            <div class="pm-sub">${g.sub}</div>
+            <div class="pm-name">${g.name}</div>
+            <div class="pm-lore">${g.lore || ''}</div>
+            <div class="pm-zone">— ${g.mythName} —</div>
+          </div>
+        </div>
+      `;
+      ov.appendChild(m);
+      requestAnimationFrame(() => m.classList.add('show'));
+      const close = () => { m.classList.remove('show'); setTimeout(() => m.remove(), 300); };
+      m.querySelector('.pm-close').addEventListener('click', close);
+      m.addEventListener('click', e => { if (e.target === m) close(); });
+      if (g.img) {
+        const imgEl = m.querySelector('.pm-img');
+        const fm = g.img.match(/Special:FilePath\/([^?]+)/);
+        if (fm) {
+          const filename = decodeURIComponent(fm[1]).replace(/_/g, ' ');
+          const api = `https://commons.wikimedia.org/w/api.php?action=query&format=json&prop=imageinfo&iiprop=url&iiurlwidth=600&titles=${encodeURIComponent('File:' + filename)}&origin=*`;
+          fetch(api).then(r => r.json()).then(d => {
+            const pages = d.query?.pages || {};
+            const p = Object.values(pages)[0];
+            const thumb = p?.imageinfo?.[0]?.thumburl;
+            if (thumb) imgEl.src = thumb;
+          }).catch(() => {});
+        }
+      }
+    }
+    ov.querySelectorAll('.gb-tab').forEach(b => {
+      b.addEventListener('click', () => {
+        ov.querySelectorAll('.gb-tab').forEach(x => x.classList.remove('active'));
+        b.classList.add('active');
+        curTab = b.dataset.myth;
+        render();
+      });
+    });
+    ov.querySelector('.gb-close').addEventListener('click', () => {
+      ov.classList.remove('open');
+      setTimeout(() => ov.remove(), 350);
+    });
+    render();
+  }
+  window.openGodsBook = openGodsBook;
 
   // ============================================================
   // 📖 星の王子様 — 動くSVG絵本
