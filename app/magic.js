@@ -526,22 +526,30 @@
             </button>
           </div>
           <div class="magic-topbook-deep">
-            <div class="magic-topbook-deep-title">歴史の奥行き</div>
-            <div class="magic-topbook-deep-pills">
-              <button class="magic-topbook-pill" data-deep="graph">関係グラフ</button>
-              <button class="magic-topbook-pill" data-deep="simul">同時代</button>
-              <button class="magic-topbook-pill" data-deep="map">世界マップ</button>
-              <button class="magic-topbook-pill" data-deep="century">世紀ごと</button>
-              <button class="magic-topbook-pill" data-deep="city">都市群像</button>
-              <button class="magic-topbook-pill" data-deep="drift">365日カレンダー</button>
-              <button class="magic-topbook-pill magic-topbook-pill-cosmos" data-deep="cosmos">🌌 宇宙の誕生</button>
-              <button class="magic-topbook-pill magic-topbook-pill-quiz" data-deep="quiz">🎓 偉人クイズ</button>
-              <button class="magic-topbook-pill magic-topbook-pill-timeline" data-deep="timeline">📅 年表モード</button>
-              <button class="magic-topbook-pill magic-topbook-pill-glossary" data-deep="glossary">📖 用語集</button>
-              <button class="magic-topbook-pill magic-topbook-pill-myth" data-deep="mythology">✦ Genesis — はじまりの書</button>
-              <button class="magic-topbook-pill magic-topbook-pill-museum" data-deep="museum">🏛 美 術 館</button>
-              <button class="magic-topbook-pill magic-topbook-pill-pantheon" data-deep="pantheon">⛩ 神 殿</button>
+            <div class="magic-topbook-deep-title">世界を歩く</div>
+            <div class="magic-topbook-cats">
+              <button class="magic-topbook-cat magic-topbook-cat-cosmos" data-cat="cosmos">
+                <div class="mtc-emoji">🌌</div>
+                <div class="mtc-name">宇 宙</div>
+                <div class="mtc-sub">宇宙の誕生</div>
+              </button>
+              <button class="magic-topbook-cat magic-topbook-cat-myth" data-cat="myth">
+                <div class="mtc-emoji">⛩</div>
+                <div class="mtc-name">神 話</div>
+                <div class="mtc-sub">神殿・はじまりの書</div>
+              </button>
+              <button class="magic-topbook-cat magic-topbook-cat-museum" data-cat="museum">
+                <div class="mtc-emoji">🏛</div>
+                <div class="mtc-name">美 術 館</div>
+                <div class="mtc-sub">名画を歩いて鑑賞</div>
+              </button>
+              <button class="magic-topbook-cat magic-topbook-cat-ijin" data-cat="ijin">
+                <div class="mtc-emoji">👤</div>
+                <div class="mtc-name">偉 人</div>
+                <div class="mtc-sub">クイズ・年表・関係図</div>
+              </button>
             </div>
+            <div class="magic-topbook-subpills" id="magicTopbookSubpills"></div>
           </div>
         </div>
       `;
@@ -580,6 +588,58 @@
         btn.addEventListener('click', () => {
           const fn = deepMap[btn.dataset.deep];
           if (fn) fn();
+        });
+      });
+
+      // カテゴリ選択 → サブピル展開
+      const subPillsHost = wrap.querySelector('#magicTopbookSubpills');
+      const CATEGORY_SUB = {
+        cosmos: [
+          { deep: 'cosmos', label: '🌌 宇宙の誕生に入る', primary: true },
+        ],
+        myth: [
+          { deep: 'mythology', label: '✦ Genesis — はじまりの書', primary: true },
+          { deep: 'pantheon', label: '⛩ 神殿（神々を歩く）', primary: true },
+        ],
+        museum: [
+          { deep: 'museum', label: '🏛 美術館へ入る', primary: true },
+        ],
+        ijin: [
+          { deep: 'quiz', label: '🎓 偉人クイズ', primary: true },
+          { deep: 'timeline', label: '📅 年表モード' },
+          { deep: 'glossary', label: '📖 用語集' },
+          { deep: 'graph', label: '関係グラフ' },
+          { deep: 'simul', label: '同時代' },
+          { deep: 'map', label: '世界マップ' },
+          { deep: 'century', label: '世紀ごと' },
+          { deep: 'city', label: '都市群像' },
+          { deep: 'drift', label: '365日カレンダー' },
+        ],
+      };
+      let activeCat = null;
+      wrap.querySelectorAll('.magic-topbook-cat').forEach(catBtn => {
+        catBtn.addEventListener('click', () => {
+          const c = catBtn.dataset.cat;
+          if (activeCat === c) {
+            // 同じカテゴリ再クリック → 閉じる
+            subPillsHost.innerHTML = '';
+            subPillsHost.classList.remove('show');
+            wrap.querySelectorAll('.magic-topbook-cat').forEach(b => b.classList.remove('active'));
+            activeCat = null;
+            return;
+          }
+          activeCat = c;
+          wrap.querySelectorAll('.magic-topbook-cat').forEach(b => b.classList.toggle('active', b === catBtn));
+          subPillsHost.innerHTML = (CATEGORY_SUB[c] || []).map(s =>
+            `<button class="magic-topbook-pill ${s.primary ? 'is-primary' : ''}" data-deep="${s.deep}">${s.label}</button>`
+          ).join('');
+          subPillsHost.classList.add('show');
+          subPillsHost.querySelectorAll('[data-deep]').forEach(b => {
+            b.addEventListener('click', () => {
+              const fn = deepMap[b.dataset.deep];
+              if (fn) fn();
+            });
+          });
         });
       });
 
@@ -10339,15 +10399,16 @@
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.2));
     renderer.setSize(W(), H());
     if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.45; // 美術館もっと明るく
     stage.appendChild(renderer.domElement);
     renderer.domElement.style.touchAction = 'none';
 
     const isWa = zone.hallStyle === 'wa';
 
     const scene = new THREE.Scene();
-    const bgColor = isWa ? 0x0a0604 : 0x1a1208;
+    const bgColor = isWa ? 0x2a1810 : 0x3a2c1c; // 明るい暗茶 / 木の色
     scene.background = new THREE.Color(bgColor);
-    scene.fog = new THREE.Fog(bgColor, 15, 50);
+    scene.fog = new THREE.Fog(bgColor, 25, 80);
 
     // === 床テクスチャ（洋＝大理石 / 和＝畳風） ===
     const floorTex = (() => {
@@ -10485,9 +10546,9 @@
 
     // 照明（洋＝シャンデリア / 和＝中央に釣り灯籠 + 周囲の赤提灯）
     const chandLight = new THREE.PointLight(
-      isWa ? 0xff9060 : 0xffd890,
-      isWa ? 1.6 : 2.0,
-      isWa ? 22 : 30, 1.5
+      isWa ? 0xff9060 : 0xffe8a8,
+      isWa ? 3.5 : 4.5, // 倍以上に
+      isWa ? 35 : 45, 1.3
     );
     chandLight.position.set(0, wallHeight - 0.5, 0);
     scene.add(chandLight);
@@ -10559,8 +10620,8 @@
     scene.add(chandelier);
 
     // 環境光
-    scene.add(new THREE.AmbientLight(isWa ? 0x3a1810 : 0x6a5a3a, 0.5));
-    const hemi = new THREE.HemisphereLight(isWa ? 0xc08040 : 0xd0b080, 0x2a1a10, 0.4);
+    scene.add(new THREE.AmbientLight(isWa ? 0x8a6038 : 0xc0a880, 1.0));
+    const hemi = new THREE.HemisphereLight(isWa ? 0xe8b860 : 0xf0d8a0, 0x4a3a28, 0.9);
     scene.add(hemi);
 
     // 和ホール: 壁の四隅に赤提灯を吊り下げる
@@ -10961,7 +11022,7 @@
         if (outlinePass) outlinePass.selectedObjects = best ? [best] : [];
       }
       // シャンデリアゆらぎ
-      chandLight.intensity = 2.0 + Math.sin(Date.now() * 0.003) * 0.15;
+      chandLight.intensity = 4.5 + Math.sin(Date.now() * 0.003) * 0.25;
       try {
         if (mComposer) mComposer.render();
         else renderer.render(scene, camera);
@@ -11373,42 +11434,16 @@
         const figure = new THREE.Mesh(new THREE.PlaneGeometry(1.6, 2.2), figMat);
         figure.position.y = 2.2;
         group.add(figure);
-        // 画像非同期ロード（神々のみ）
-        if (item.img) {
-          loadGodImage(item.img).then(tex => {
-            figMat.map = tex;
-            const ar = tex.image.width / tex.image.height;
-            const planeAR = 1.6 / 2.2;
-            if (ar > planeAR) figure.scale.set(1, planeAR / ar, 1);
-            else figure.scale.set(ar / planeAR, 1, 1);
-            figMat.needsUpdate = true;
-          }).catch(() => {
-            // 画像なし → 動的procedural canvas を作る
-            const cv = document.createElement('canvas');
-            cv.width = 256; cv.height = 384;
-            const ctx = cv.getContext('2d');
-            const animTex = new THREE.CanvasTexture(cv);
-            animTex.colorSpace = THREE.SRGBColorSpace;
-            figMat.map = animTex;
-            figMat.needsUpdate = true;
-            // アニメ用に登録：item ごと毎フレーム再描画
-            const accentHex = '#' + item.accent.toString(16).padStart(6, '0');
-            animatedTextures.push({
-              ctx, tex: animTex, item, accent: accentHex,
-            });
-          });
-        } else if (item.type === 'pantheon') {
-          // ハブの神話タイル：常に動くプロシージャル
-          const cv = document.createElement('canvas');
-          cv.width = 256; cv.height = 384;
-          const ctx = cv.getContext('2d');
-          const animTex = new THREE.CanvasTexture(cv);
-          animTex.colorSpace = THREE.SRGBColorSpace;
-          figMat.map = animTex;
-          figMat.needsUpdate = true;
-          const accentHex = '#' + item.accent.toString(16).padStart(6, '0');
-          animatedTextures.push({ ctx, tex: animTex, item, accent: accentHex });
-        }
+        // 神 or ハブ：常に procedural canvas でアニメアバターを生成（信頼性優先）
+        const cv = document.createElement('canvas');
+        cv.width = 256; cv.height = 384;
+        const ctx = cv.getContext('2d');
+        const animTex = new THREE.CanvasTexture(cv);
+        if ('colorSpace' in animTex) animTex.colorSpace = THREE.SRGBColorSpace;
+        figMat.map = animTex;
+        figMat.needsUpdate = true;
+        const accentHex = '#' + item.accent.toString(16).padStart(6, '0');
+        animatedTextures.push({ ctx, tex: animTex, item, accent: accentHex });
         // ラベル板（台座下に名前）
         const labelCanvas = document.createElement('canvas');
         labelCanvas.width = 256; labelCanvas.height = 64;
@@ -11433,9 +11468,90 @@
         scene.add(group);
       });
 
+      // 各神話部屋の中央に「神話を読む」看板（hub では出さない）
+      if (zone !== 'hub' && PANTHEON_DATA[zone]) {
+        const tk = MYTH_STORY_KEY_MAP[zone];
+        if (tk && window.MYTH_STORIES && window.MYTH_STORIES[tk] || tk) {
+          const sign = new THREE.Group();
+          sign.position.set(0, 0, 0);
+          // 石の台座
+          const stone = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.9, 1.1, 0.5, 16),
+            new THREE.MeshStandardMaterial({ color: 0x6a5a78, roughness: 0.7, metalness: 0.2 })
+          );
+          stone.position.y = 0.25;
+          sign.add(stone);
+          // 看板（縦長プレート）
+          const accentHex = '#' + PANTHEON_DATA[zone].accent.toString(16).padStart(6, '0');
+          const cv = document.createElement('canvas');
+          cv.width = 256; cv.height = 384;
+          const ctx = cv.getContext('2d');
+          // 古文書風背景
+          const grd = ctx.createLinearGradient(0, 0, 0, 384);
+          grd.addColorStop(0, '#3a2a1a'); grd.addColorStop(1, '#1a1008');
+          ctx.fillStyle = grd; ctx.fillRect(0, 0, 256, 384);
+          // 装飾枠
+          ctx.strokeStyle = accentHex; ctx.lineWidth = 4;
+          ctx.strokeRect(16, 16, 224, 352);
+          ctx.lineWidth = 1;
+          ctx.strokeRect(24, 24, 208, 336);
+          // タイトル
+          ctx.font = 'bold 28px "Shippori Mincho", serif';
+          ctx.textAlign = 'center'; ctx.fillStyle = accentHex;
+          ctx.shadowColor = '#000'; ctx.shadowBlur = 4;
+          ctx.fillText(PANTHEON_DATA[zone].name, 128, 80);
+          // 神話絵文字
+          ctx.font = '90px serif';
+          ctx.fillStyle = '#fff';
+          ctx.shadowColor = accentHex; ctx.shadowBlur = 18;
+          ctx.fillText(PANTHEON_DATA[zone].emoji, 128, 200);
+          ctx.shadowBlur = 0;
+          // サブタイトル
+          ctx.font = '14px "Shippori Mincho", serif';
+          ctx.fillStyle = '#e8d8b0';
+          ctx.shadowColor = '#000'; ctx.shadowBlur = 4;
+          ctx.fillText('— 神話を読む —', 128, 250);
+          // 触れる印
+          ctx.fillStyle = accentHex;
+          ctx.font = 'bold 20px "Shippori Mincho", serif';
+          ctx.fillText('▶ 物語を開く', 128, 320);
+          ctx.fillStyle = '#a89878';
+          ctx.font = '10px serif';
+          ctx.fillText('近づいて選ぶ', 128, 345);
+          const signTex = new THREE.CanvasTexture(cv);
+          if ('colorSpace' in signTex) signTex.colorSpace = THREE.SRGBColorSpace;
+          const board = new THREE.Mesh(
+            new THREE.PlaneGeometry(2.0, 3.0),
+            new THREE.MeshBasicMaterial({ map: signTex, transparent: true, side: THREE.DoubleSide })
+          );
+          board.position.y = 2.0;
+          sign.add(board);
+          // 看板の縁を木材で
+          const frameMat = new THREE.MeshStandardMaterial({ color: 0x4a3220, roughness: 0.9 });
+          const frameTop = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.15, 0.2), frameMat);
+          frameTop.position.y = 3.55;
+          sign.add(frameTop);
+          const frameBottom = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.15, 0.2), frameMat);
+          frameBottom.position.y = 0.55;
+          sign.add(frameBottom);
+          // 看板を「触れる」item として登録（plinth として扱う）
+          sign.userData = {
+            item: { type: 'tale', name: PANTHEON_DATA[zone].name + 'を読む', sub: '物語の章へ', talekey: tk, accent: PANTHEON_DATA[zone].accent },
+            holo: stone, ring: stone, figure: board, // 共通インタフェース
+          };
+          scene.add(sign);
+          plinths.push(sign);
+        }
+      }
+
       titleEl.textContent = zone === 'hub' ? '神 殿' : (PANTHEON_DATA[zone]?.name || '神 殿');
       backBtn.style.display = (zone === 'hub') ? 'none' : 'inline-block';
     }
+    // 神殿zone → MYTH_STORIES key の対応
+    const MYTH_STORY_KEY_MAP = {
+      genesis: 'genesis', greek: 'greek', japan: 'japan',
+      norse: 'norse', egypt: 'egypt', hindu: 'hindu',
+    };
 
     // カメラ
     camera = new THREE.PerspectiveCamera(70, W()/H(), 0.1, 200);
@@ -11506,6 +11622,9 @@
         camera.position.set(0, 1.6, 0); yaw = 0;
       } else if (item.type === 'god') {
         showGodModal(item, currentZone);
+      } else if (item.type === 'tale') {
+        // 神話を読む（既存 openMythology を呼んで該当章へ）
+        if (window.openMythology) window.openMythology();
       }
     });
     backBtn.addEventListener('click', () => {
@@ -11568,63 +11687,133 @@
         camera.position.y + Math.sin(pitch) * 5,
         camera.position.z - Math.cos(yaw) * Math.cos(pitch) * 5
       );
-      // 🎨 動くSVG/Canvas（画像なし神 or ハブタイル）を毎フレーム再描画
-      if (Math.floor(t * 60) % 3 === 0) { // 20fps で更新（軽量化）
+      // 🎨 動くSVG/Canvas（神々のイラスト的アバター）
+      if (Math.floor(t * 60) % 3 === 0) {
         animatedTextures.forEach(a => {
           const ctx = a.ctx;
           const W2 = 256, H2 = 384;
           ctx.clearRect(0, 0, W2, H2);
-          // 流れる放射状グラデ背景
-          const cy = 192 + Math.sin(t * 1.5) * 8;
-          const grd = ctx.createRadialGradient(128, cy, 5, 128, cy, 200);
-          grd.addColorStop(0, a.accent);
-          grd.addColorStop(0.4, a.accent + '88');
-          grd.addColorStop(1, 'rgba(20,10,40,0)');
-          ctx.fillStyle = grd; ctx.fillRect(0, 0, W2, H2);
-          // 回転する神聖円環
+          // 背景: 神聖な放射グラデ
+          const cy = 200;
+          const bg = ctx.createLinearGradient(0, 0, 0, H2);
+          bg.addColorStop(0, '#0a0418');
+          bg.addColorStop(0.5, a.accent + '40');
+          bg.addColorStop(1, '#0a0418');
+          ctx.fillStyle = bg; ctx.fillRect(0, 0, W2, H2);
+          // 後ろの曼荼羅（回転）
           ctx.save();
           ctx.translate(128, cy);
-          ctx.rotate(t * 0.3);
-          ctx.strokeStyle = a.accent;
-          ctx.lineWidth = 2;
-          for (let r = 0; r < 3; r++) {
-            ctx.globalAlpha = 0.5 - r * 0.12;
+          ctx.rotate(t * 0.15);
+          ctx.strokeStyle = a.accent + '99';
+          ctx.lineWidth = 1.5;
+          for (let petal = 0; petal < 8; petal++) {
+            ctx.save();
+            ctx.rotate((petal / 8) * Math.PI * 2);
             ctx.beginPath();
-            const rad = 60 + r * 25;
-            for (let i = 0; i <= 12; i++) {
-              const ang = (i / 12) * Math.PI * 2;
-              const x = Math.cos(ang) * rad;
-              const y = Math.sin(ang) * rad * 0.95;
-              if (i === 0) ctx.moveTo(x, y);
-              else ctx.lineTo(x, y);
-            }
+            ctx.moveTo(0, 0);
+            ctx.bezierCurveTo(40, -30, 40, -90, 0, -110);
+            ctx.bezierCurveTo(-40, -90, -40, -30, 0, 0);
             ctx.stroke();
+            ctx.restore();
           }
           ctx.restore();
-          // パルスする粒
-          ctx.globalAlpha = 1;
-          for (let i = 0; i < 8; i++) {
-            const ang = (i / 8) * Math.PI * 2 + t * 0.5;
-            const dr = 90 + Math.sin(t * 2 + i) * 12;
-            const px = 128 + Math.cos(ang) * dr;
-            const py = cy + Math.sin(ang) * dr * 0.95;
-            ctx.fillStyle = a.accent;
-            ctx.beginPath(); ctx.arc(px, py, 3 + Math.sin(t * 3 + i) * 1.5, 0, Math.PI * 2); ctx.fill();
+          // 後光（中心から放射）
+          ctx.save();
+          ctx.translate(128, cy - 30);
+          ctx.rotate(-t * 0.1);
+          for (let r = 0; r < 24; r++) {
+            ctx.save();
+            ctx.rotate((r / 24) * Math.PI * 2);
+            ctx.fillStyle = a.accent + (r % 2 === 0 ? '60' : '30');
+            ctx.beginPath();
+            ctx.moveTo(0, -50);
+            ctx.lineTo(4, -130);
+            ctx.lineTo(-4, -130);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
           }
-          // 中央のシンボル（emoji or 名前）
-          ctx.globalAlpha = 0.95;
-          ctx.font = 'bold 92px serif';
-          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-          ctx.shadowColor = a.accent; ctx.shadowBlur = 30;
+          ctx.restore();
+          // 神の顔（シルエット）
+          ctx.save();
+          ctx.translate(128, cy - 40);
+          // 髪/王冠（神話別）
+          const headColor = a.accent;
+          ctx.fillStyle = '#1a0a2a';
+          // 顔の輪郭（楕円）
+          ctx.beginPath();
+          ctx.ellipse(0, 0, 36, 44, 0, 0, Math.PI * 2);
+          ctx.fill();
+          // 髪
+          ctx.fillStyle = headColor + 'dd';
+          ctx.beginPath();
+          ctx.moveTo(-38, -10);
+          ctx.bezierCurveTo(-44, -50, -20, -56, 0, -50);
+          ctx.bezierCurveTo(20, -56, 44, -50, 38, -10);
+          ctx.bezierCurveTo(34, -30, 0, -34, 0, -34);
+          ctx.bezierCurveTo(0, -34, -34, -30, -38, -10);
+          ctx.fill();
+          // 王冠（神格を示す）
+          ctx.fillStyle = '#fff8c0';
+          ctx.shadowColor = headColor; ctx.shadowBlur = 12;
+          ctx.beginPath();
+          for (let i = 0; i < 5; i++) {
+            const px = -24 + i * 12;
+            ctx.moveTo(px, -42);
+            ctx.lineTo(px + 4, -54);
+            ctx.lineTo(px + 8, -42);
+          }
+          ctx.fill();
+          ctx.shadowBlur = 0;
+          // 目（光る）
           ctx.fillStyle = '#fff';
-          ctx.fillText(a.item.emoji || '✦', 128, cy);
-          ctx.shadowBlur = 0;
-          // 名前
-          ctx.font = 'bold 24px "Shippori Mincho", serif';
+          ctx.beginPath();
+          ctx.ellipse(-12, -2, 4, 5, 0, 0, Math.PI * 2);
+          ctx.ellipse(12, -2, 4, 5, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = headColor;
+          const blink = Math.sin(t * 0.7) > 0.95 ? 0.3 : 1;
+          ctx.beginPath();
+          ctx.ellipse(-12, -2, 2.2, 2.8 * blink, 0, 0, Math.PI * 2);
+          ctx.ellipse(12, -2, 2.2, 2.8 * blink, 0, 0, Math.PI * 2);
+          ctx.fill();
+          // 鼻 + 口
+          ctx.strokeStyle = '#1a0a2a'; ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.moveTo(0, 5); ctx.lineTo(-2, 14);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.arc(0, 22, 6, 0.2, Math.PI - 0.2);
+          ctx.stroke();
+          // 第三の眼（ヒンドゥー神話だけ）
+          if (a.accent === '#ffb0a0') {
+            ctx.fillStyle = '#ff4040';
+            ctx.beginPath();
+            ctx.ellipse(0, -22, 4, 2.5, 0, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          ctx.restore();
+          // パルス粒（軌道を周回）
+          for (let i = 0; i < 6; i++) {
+            const ang = (i / 6) * Math.PI * 2 + t * 0.4;
+            const dr = 110 + Math.sin(t * 2 + i) * 10;
+            const px = 128 + Math.cos(ang) * dr;
+            const py = cy - 30 + Math.sin(ang) * dr * 0.7;
+            ctx.fillStyle = a.accent;
+            ctx.shadowColor = a.accent; ctx.shadowBlur = 12;
+            ctx.beginPath(); ctx.arc(px, py, 3, 0, Math.PI * 2); ctx.fill();
+            ctx.shadowBlur = 0;
+          }
+          // 名前プレート
+          ctx.fillStyle = 'rgba(20,10,30,0.85)';
+          ctx.fillRect(20, H2 - 60, W2 - 40, 44);
+          ctx.strokeStyle = a.accent;
+          ctx.lineWidth = 1.5;
+          ctx.strokeRect(20, H2 - 60, W2 - 40, 44);
+          ctx.font = 'bold 22px "Shippori Mincho", serif';
+          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
           ctx.fillStyle = a.accent;
-          ctx.shadowColor = 'rgba(0,0,0,0.8)'; ctx.shadowBlur = 8;
-          ctx.fillText(a.item.name.slice(0, 8), 128, cy + 90);
-          ctx.shadowBlur = 0;
+          ctx.fillText(a.item.name.slice(0, 8), 128, H2 - 38);
           a.tex.needsUpdate = true;
         });
       }
@@ -11654,7 +11843,9 @@
           infoEl.innerHTML = `<div class="mv-info-name">${it.name}</div><div class="mv-info-sub">${it.sub}</div>`;
           infoEl.classList.add('show');
           enterBtn.classList.add('show');
-          enterBtn.textContent = it.type === 'pantheon' ? 'この神殿に入る ›' : '詳しく見る ›';
+          enterBtn.textContent = it.type === 'pantheon' ? 'この神殿に入る ›'
+            : it.type === 'tale' ? '物語を読む ›'
+            : '詳しく見る ›';
         } else {
           infoEl.classList.remove('show');
           enterBtn.classList.remove('show');

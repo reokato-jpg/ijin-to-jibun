@@ -7441,3 +7441,61 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   opacity: 0.75;
 }
 .museum-affiliate:empty { display: none; }
+
+/* ===== TOP カテゴリーカード（4分類） ===== */
+.magic-topbook-cats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.magic-topbook-cat {
+  background: linear-gradient(135deg, rgba(50,30,80,0.5), rgba(20,10,40,0.7));
+  border: 1px solid rgba(180,140,240,0.35);
+  border-radius: 12px;
+  padding: 14px 8px;
+  color: #f0e8ff;
+  font-family: 'Shippori Mincho', serif;
+  cursor: pointer;
+  transition: transform .2s, filter .2s, box-shadow .2s, border-color .2s;
+  text-align: center;
+}
+.magic-topbook-cat:hover, .magic-topbook-cat.active {
+  transform: translateY(-2px);
+  filter: brightness(1.2);
+  border-color: rgba(220,180,255,0.7);
+  box-shadow: 0 6px 18px rgba(140,100,200,0.3);
+}
+.magic-topbook-cat.active {
+  background: linear-gradient(135deg, rgba(80,50,140,0.7), rgba(40,20,80,0.85));
+}
+.mtc-emoji { font-size: 28px; margin-bottom: 4px; }
+.mtc-name { font-size: 13px; letter-spacing: 0.18em; font-weight: 700; margin-bottom: 2px; }
+.mtc-sub { font-size: 9px; letter-spacing: 0.05em; color: rgba(220,200,255,0.7); }
+.magic-topbook-cat-cosmos { background: linear-gradient(135deg, rgba(40,20,90,0.7), rgba(10,5,30,0.85)); border-color: rgba(120,160,255,0.45); }
+.magic-topbook-cat-myth { background: linear-gradient(135deg, rgba(70,30,110,0.7), rgba(30,10,60,0.85)); border-color: rgba(220,180,255,0.45); }
+.magic-topbook-cat-museum { background: linear-gradient(135deg, rgba(110,80,40,0.7), rgba(50,30,15,0.85)); border-color: rgba(220,190,130,0.45); }
+.magic-topbook-cat-ijin { background: linear-gradient(135deg, rgba(70,30,40,0.7), rgba(30,10,15,0.85)); border-color: rgba(255,180,180,0.45); }
+
+.magic-topbook-subpills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .35s ease, padding .25s ease;
+  padding: 0;
+}
+.magic-topbook-subpills.show {
+  max-height: 400px;
+  padding: 6px 0 4px;
+}
+.magic-topbook-pill.is-primary {
+  background: linear-gradient(135deg, rgba(140,100,200,0.55), rgba(70,40,120,0.7));
+  border-color: rgba(220,180,255,0.6);
+}
+@media (max-width: 600px) {
+  .magic-topbook-cats { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .mtc-emoji { font-size: 24px; }
+  .mtc-name { font-size: 12px; letter-spacing: 0.15em; }
+}
