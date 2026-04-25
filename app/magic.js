@@ -11498,9 +11498,9 @@
         labelCanvas.width = 512; labelCanvas.height = 160;
         const lg = labelCanvas.getContext('2d');
         // 名前の背景: 立派な銘板
-        const grd = lg.createLinearGradient(0, 0, 0, 160);
-        grd.addColorStop(0, '#2a1838'); grd.addColorStop(1, '#0a0418');
-        lg.fillStyle = grd; lg.fillRect(0, 0, 512, 160);
+        const labelGrd = lg.createLinearGradient(0, 0, 0, 160);
+        labelGrd.addColorStop(0, '#2a1838'); labelGrd.addColorStop(1, '#0a0418');
+        lg.fillStyle = labelGrd; lg.fillRect(0, 0, 512, 160);
         // 縁
         const accentHex = `#${item.accent.toString(16).padStart(6, '0')}`;
         lg.strokeStyle = accentHex; lg.lineWidth = 4;
