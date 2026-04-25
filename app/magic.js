@@ -17940,6 +17940,85 @@
     });
     eden3D.userData.walkAnimals = walkAnimals;
 
+    // 🎪 迫力パレード — 巨大動物を観客のすぐ外（r=16）に配置、近距離で大きく見える
+    // 球体内壁が画面である世界観：動物が近づけば視界を埋める
+    // Vegas Sphere方式：観客の視界を埋めるサイズで存在感
+    const PARADE_SET = [
+      { species: 'giraffe',  scale: 3.5 },  // 高さ約11m、ドームの天井近くまで
+      { species: 'elephant', scale: 3.8 },  // 大型に
+      { species: 'lion',     scale: 4.2 },  // ライオンキング
+      { species: 'rhino',    scale: 3.8 },
+      { species: 'bear',     scale: 4.0 },
+    ];
+    PARADE_SET.forEach((p, i) => {
+      const base = ANIMAL_SET.find(s => s.species === p.species);
+      if (!base) return;
+      const sc = p.scale;
+      const spec = {
+        ...base,
+        bodyLen: base.bodyLen * sc, bodyH: base.bodyH * sc, bodyW: base.bodyW * sc,
+        legH: base.legH * sc, legR: base.legR * sc,
+        neckLen: base.neckLen * sc, headSize: base.headSize * sc, tailLen: base.tailLen * sc,
+      };
+      const g = makeWalkAnimal(spec);
+      // 装飾：種別ごと
+      if (p.species === 'elephant' && g.userData.head) {
+        const trunk = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.10 * sc, 0.18 * sc, 1.1 * sc, 8),
+          new THREE.MeshStandardMaterial({ color: 0x70787e })
+        );
+        trunk.position.set(g.userData.head.position.x + 0.35 * sc, g.userData.head.position.y - 0.3 * sc, 0);
+        trunk.rotation.z = -Math.PI / 3;
+        g.add(trunk); g.userData.trunk = trunk;
+      }
+      if (p.species === 'lion' && g.userData.head) {
+        const mane = new THREE.Mesh(
+          new THREE.SphereGeometry(0.38 * sc, 16, 12),
+          new THREE.MeshStandardMaterial({ color: 0x6a4020, roughness: 0.95 })
+        );
+        mane.position.copy(g.userData.head.position);
+        mane.position.x -= 0.10 * sc;
+        g.add(mane);
+      }
+      if (p.species === 'rhino' && g.userData.head) {
+        const horn1 = new THREE.Mesh(
+          new THREE.ConeGeometry(0.10 * sc, 0.45 * sc, 8),
+          new THREE.MeshStandardMaterial({ color: 0xc0b0a0, roughness: 0.6, flatShading: true })
+        );
+        horn1.position.set(0.45, 0.05, 0);
+        horn1.rotation.z = -Math.PI / 2.4;
+        g.userData.head.add(horn1);
+        const horn2 = new THREE.Mesh(
+          new THREE.ConeGeometry(0.06 * sc, 0.22 * sc, 8),
+          new THREE.MeshStandardMaterial({ color: 0xc0b0a0, roughness: 0.6, flatShading: true })
+        );
+        horn2.position.set(0.30, 0.08, 0);
+        horn2.rotation.z = -Math.PI / 2.4;
+        g.userData.head.add(horn2);
+      }
+      // 配置：観客のすぐ外（r=16）にパレード隊列で
+      const a0 = (i / PARADE_SET.length) * Math.PI * 2 + 0.4;
+      const r = 16 + Math.random() * 1.5;
+      g.position.set(Math.cos(a0) * r, -1.3, Math.sin(a0) * r);
+      g.userData.angle = a0;
+      g.userData.radius = r;
+      g.userData.speed = base.speed * 0.7; // パレードは少しゆっくり
+      g.userData.species = p.species;
+      g.userData.phase = Math.random() * Math.PI * 2;
+      g.userData.legH = spec.legH;
+      g.userData.heading = a0 + Math.PI / 2;
+      g.userData.headingTarget = g.userData.heading;
+      g.userData.headingNextChange = 1.0 + Math.random() * 2.0;
+      g.userData.headingTimer = 0;
+      g.userData.state = 'walk';
+      g.userData.stateDur = 4 + Math.random() * 3;
+      g.userData.stateTime = 0;
+      g.userData.stateBlend = 1.0;
+      g.userData.parade = true; // パレードマーク
+      eden3D.add(g);
+      walkAnimals.push(g);
+    });
+
     // 📖 動物ストーリー（構成作家：短い詩のような一行で各動物の世界観を伝える）
     const ANIMAL_STORIES = [
       { sp: 'giraffe',   ja: 'キリン',     line: '雲と話せる首の高さ。地上を歩く者に、彼は何を聴いたか語らない。' },
@@ -18999,12 +19078,14 @@
                   u.headingTarget += dHerd * 0.15;
                 }
               }
-              // ── ゾーン外に出そうなら中央へ向かわせる ──
+              // ── ゾーン制限：パレード組は近距離リング、通常組は外周ゾーン ──
               const dist0 = Math.hypot(a.position.x, a.position.z);
-              if (dist0 > 38) {
+              const minR = u.parade ? 12 : 29.5;
+              const maxR = u.parade ? 22 : 38;
+              if (dist0 > maxR) {
                 const inwardHeading = Math.atan2(-a.position.z, -a.position.x);
                 u.headingTarget = inwardHeading + (Math.random() - 0.5) * 0.4;
-              } else if (dist0 < 29.5) {
+              } else if (dist0 < minR) {
                 const outwardHeading = Math.atan2(a.position.z, a.position.x);
                 u.headingTarget = outwardHeading + (Math.random() - 0.5) * 0.4;
               }
