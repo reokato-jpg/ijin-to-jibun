@@ -234,6 +234,10 @@ async function loadData() {
             .then(full => {
               if (full && Array.isArray(full.people)) {
                 DATA.people = full.people;
+                _ALL_BOOKS_CACHE = null; // キャッシュ無効化（フルデータで再構築）
+                // 📚 本データは bundle にしかないので、ハイドレ後に本セクションを再描画
+                try { renderHomeBooks(); } catch (e) { console.warn('homeBooks rehydrate', e); }
+                try { renderBookOfTheDay(); } catch (e) { console.warn('bookOfDay rehydrate', e); }
                 // DATA.people が変わったので、詳細ページや波紋グラフがあれば更新
                 try { window.dispatchEvent(new CustomEvent('ijin:data-hydrated')); } catch {}
               }
@@ -3441,7 +3445,41 @@ function renderFeaturedTags() {
 }
 
 // ====================== TOPページ書籍 ======================
+// 📚 全偉人の本リスト（一度だけ計算してキャッシュ）
+let _ALL_BOOKS_CACHE = null;
+function _getAllBooks() {
+  if (_ALL_BOOKS_CACHE) return _ALL_BOOKS_CACHE;
+  const all = [];
+  if (!DATA.people || !DATA.people.length) return all;
+  for (let i = 0; i < DATA.people.length; i++) {
+    const p = DATA.people[i];
+    const bs = p.books;
+    if (!bs || !bs.length) continue;
+    for (let j = 0; j < bs.length; j++) {
+      const b = bs[j];
+      if (b && b.title) all.push({ ...b, person: p });
+    }
+  }
+  _ALL_BOOKS_CACHE = all;
+  return all;
+}
+
 function renderHomeBooks() {
+  const container = document.getElementById('homeBooks');
+  if (!container) return;
+  // 🌟 即時にスケルトンを表示（読み込み中のレイアウト崩れ防止）
+  if (!container.children.length) {
+    const skelCount = (window.innerWidth >= 900) ? 6 : 4;
+    container.innerHTML = Array(skelCount).fill(0).map(() => `
+      <div class="home-book-card home-book-skeleton">
+        <div class="home-book-cover-wrap"><div class="home-book-cover skel"></div></div>
+        <div class="home-book-title skel-line"></div>
+        <div class="home-book-person skel-line short"></div>
+      </div>
+    `).join('');
+  }
+  // データ未ロードなら待つ
+  if (!DATA.people || !DATA.people.length) return;
   // 偉人たちの本棚 — 毎日ランダム（日付seed）、ASIN無しでも検索URLでカバー
   const seed = daySeed();
   const picked = [];
@@ -3468,24 +3506,16 @@ function renderHomeBooks() {
     if (t && t.personId) pushBookOf(t.personId, '本日の案内人');
   } catch (e) {}
 
-  // 残りを日替わりランダムで埋める
-  const all = [];
-  DATA.people.forEach(p => {
-    (p.books || []).forEach(b => {
-      if (!b || !b.title) return;
-      const key = bookKey(b);
-      if (!usedKeys.has(key)) all.push({ ...b, person: p });
-    });
-  });
+  // 残りを日替わりランダムで埋める（キャッシュした全本リストから）
+  const all = _getAllBooks().filter(b => !usedKeys.has(bookKey(b)));
   all.sort((a, b) => ((hashStr(bookKey(a)) ^ seed) >>> 0) - ((hashStr(bookKey(b)) ^ seed) >>> 0));
   const bookCount = (typeof window !== 'undefined' && window.innerWidth >= 900) ? 6 : 4;
   while (picked.length < bookCount && all.length) {
     picked.push(all.shift());
   }
 
-  const container = document.getElementById('homeBooks');
-  if (!container || picked.length === 0) return;
-  container.innerHTML = picked.map(b => {
+  if (picked.length === 0) return;
+  container.innerHTML = picked.map((b, idx) => {
     const q = encodeURIComponent(`${b.title} ${b.author || ''}`);
     const amazon = hasValidAsin(b)
       ? `https://www.amazon.co.jp/dp/${b.asin}${AMAZON_TAG ? `?tag=${AMAZON_TAG}` : ''}`
@@ -3498,8 +3528,11 @@ function renderHomeBooks() {
         ${b.author ? `<div class="home-book-fallback-author">${escapeHtml(b.author)}</div>` : ''}
       </div>`;
     const openbd = hasValidAsin(b) ? openbdCover(b.asin) : null;
+    // 最初の 2 枚は eager（above-the-fold）で素早く表示
+    const eagerLoad = idx < 2 ? 'eager' : 'lazy';
+    const fetchPriority = idx < 2 ? 'fetchpriority="high"' : '';
     const coverHtml = hasValidAsin(b)
-      ? `<img src="${amazonCover(b.asin)}" alt="${escapeHtml(b.title)}" loading="lazy"
+      ? `<img src="${amazonCover(b.asin)}" alt="${escapeHtml(b.title)}" loading="${eagerLoad}" decoding="async" ${fetchPriority}
              data-openbd="${openbd || ''}"
              onerror="const bd=this.dataset.openbd;if(bd&&this.src!==bd){this.src=bd;}else{this.parentElement.classList.add('no-cover');this.remove();}"
              onload="if(this.naturalWidth<50){const bd=this.dataset.openbd;if(bd&&this.src!==bd){this.src=bd;}else{this.parentElement.classList.add('no-cover');this.remove();}}">${fallbackHtml}`
@@ -14318,15 +14351,17 @@ window.renderBookshelfGuides = renderBookshelfGuides;
       setTimeout(() => { try { fn(); } catch (e) { console.warn(e); } }, 150);
     }
   };
+  // 📚 本系は最優先で即時レンダ（ユーザーが一番見たい部分）
+  try { renderBookOfTheDay(); } catch (e) { console.warn('bookOfDay', e); }
+  try { renderHomeBooks(); } catch (e) { console.warn('homeBooks', e); }
+  // ↓ その他は idle時に
   defer(() => renderOshi());
   defer(() => renderTraitsMatch());
   defer(() => renderTodayEcho());
-  defer(() => renderBookOfTheDay());
   defer(() => renderHistoryMirrors());
   defer(() => renderCalendarToday());
   defer(() => renderQuoteCarousel());
   defer(() => renderFeaturedTags());
-  defer(() => renderHomeBooks());
   // TOCは他ブロックが描画された後に
   setTimeout(() => { try { renderHomeTOC(); } catch (e) { console.warn('toc', e); } }, 400);
   renderArticles();

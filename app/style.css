@@ -3751,6 +3751,34 @@ h2 .ij-icon, h3 .ij-icon { vertical-align: -0.15em; margin-right: 4px; }
   border-bottom: 4px solid var(--wine);
 }
 .home-book-cover.no-cover .home-book-fallback { display: flex; }
+
+/* 📚 本のスケルトン（即時表示してチラつき防止） */
+@keyframes skelShimmer {
+  0% { background-position: -300px 0; }
+  100% { background-position: 300px 0; }
+}
+.home-book-skeleton .home-book-cover.skel,
+.skel-line {
+  background: linear-gradient(90deg, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.12) 50%, rgba(0,0,0,0.06) 100%);
+  background-size: 600px 100%;
+  animation: skelShimmer 1.4s infinite linear;
+  border-radius: 4px;
+}
+.home-book-skeleton .home-book-cover.skel {
+  width: 100%; aspect-ratio: 0.7; height: auto;
+  border: none; box-shadow: none;
+}
+.skel-line {
+  height: 14px; margin: 6px 0;
+}
+.skel-line.short { width: 60%; }
+@media (prefers-color-scheme: dark) {
+  .home-book-skeleton .home-book-cover.skel,
+  .skel-line {
+    background: linear-gradient(90deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 100%);
+    background-size: 600px 100%;
+  }
+}
 .home-book-fallback-ornament {
   font-size: 18px;
   color: var(--gold);
