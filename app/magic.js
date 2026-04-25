@@ -12625,8 +12625,12 @@
     const H = () => stage.clientHeight || window.innerHeight;
     const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
     renderer.shadowMap.enabled = false;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 0.7));
-    renderer.setSize(W(), H());
+    // 🎯 CSS-upscale trick: 内部解像度を 70% にして CSS で実寸表示（fill rate 半減）
+    renderer.setPixelRatio(1);
+    const _RENDER_SCALE = 0.7;
+    renderer.setSize(W() * _RENDER_SCALE, H() * _RENDER_SCALE, false);
+    renderer.domElement.style.width = '100%';
+    renderer.domElement.style.height = '100%';
     if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.2;
     stage.appendChild(renderer.domElement);
@@ -12665,6 +12669,7 @@
     sea.rotation.x = -Math.PI / 2;
     scene.add(sea);
     const seaPos = sea.geometry.attributes.position;
+    seaPos.setUsage(THREE.DynamicDrawUsage);
 
     // ⛵ 箱舟（木造の大きな箱型船）
     const ark = new THREE.Group();
@@ -12852,6 +12857,7 @@
     }
     animate();
     window.addEventListener('resize', () => {
+      renderer.setSize(W() * _RENDER_SCALE, H() * _RENDER_SCALE, false); camera.aspect = W()/H(); camera.updateProjectionMatrix(); return;
       renderer.setSize(W(), H());
       camera.aspect = W()/H();
       camera.updateProjectionMatrix();
@@ -12882,8 +12888,12 @@
     const H = () => stage.clientHeight || window.innerHeight;
     const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
     renderer.shadowMap.enabled = false;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 0.7));
-    renderer.setSize(W(), H());
+    // 🎯 CSS-upscale trick: 内部解像度を 70% にして CSS で実寸表示（fill rate 半減）
+    renderer.setPixelRatio(1);
+    const _RENDER_SCALE = 0.7;
+    renderer.setSize(W() * _RENDER_SCALE, H() * _RENDER_SCALE, false);
+    renderer.domElement.style.width = '100%';
+    renderer.domElement.style.height = '100%';
     if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.0;
     stage.appendChild(renderer.domElement);
@@ -13149,8 +13159,12 @@
     const H = () => stage.clientHeight || window.innerHeight;
     const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
     renderer.shadowMap.enabled = false;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 0.7));
-    renderer.setSize(W(), H());
+    // 🎯 CSS-upscale trick: 内部解像度を 70% にして CSS で実寸表示（fill rate 半減）
+    renderer.setPixelRatio(1);
+    const _RENDER_SCALE = 0.7;
+    renderer.setSize(W() * _RENDER_SCALE, H() * _RENDER_SCALE, false);
+    renderer.domElement.style.width = '100%';
+    renderer.domElement.style.height = '100%';
     if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.7;
     stage.appendChild(renderer.domElement);
@@ -13929,13 +13943,9 @@
           ov.classList.remove('open');
           setTimeout(() => {
             ov.remove();
-            // 宇宙を開いて王子様モードを起動
+            // 宇宙を開いて王子様モードを自動起動（誕生→born→prince ON）
             if (window.openCosmos) {
-              window.openCosmos();
-              setTimeout(() => {
-                const princeBtn = document.querySelector('[data-mode="prince"]');
-                if (princeBtn && !princeBtn.classList.contains('active')) princeBtn.click();
-              }, 800);
+              window.openCosmos({ autoMode: 'prince' });
             }
           }, 400);
         });
@@ -14103,8 +14113,12 @@
     const H = () => stage.clientHeight || window.innerHeight;
     const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
     renderer.shadowMap.enabled = false;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 0.7));
-    renderer.setSize(W(), H());
+    // 🎯 CSS-upscale trick: 内部解像度を 70% にして CSS で実寸表示（fill rate 半減）
+    renderer.setPixelRatio(1);
+    const _RENDER_SCALE = 0.7;
+    renderer.setSize(W() * _RENDER_SCALE, H() * _RENDER_SCALE, false);
+    renderer.domElement.style.width = '100%';
+    renderer.domElement.style.height = '100%';
     if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.3;
     stage.appendChild(renderer.domElement);
@@ -14112,9 +14126,9 @@
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x040220);
 
-    // 星空
+    // 星空（軽量化: 1500→500）
     const starGeo = new THREE.BufferGeometry();
-    const SC = 1500;
+    const SC = 500;
     const sp = new Float32Array(SC * 3);
     for (let i = 0; i < SC; i++) {
       const r = 50 + Math.random() * 100;
@@ -14129,13 +14143,15 @@
       color: 0xffffff, size: 0.4, transparent: true, opacity: 0.9, depthWrite: false,
     })));
 
-    // ライト
-    scene.add(new THREE.AmbientLight(0x6080a0, 0.8));
-    const key = new THREE.DirectionalLight(0xfff0d0, 1.0);
+    // ライト（3光源レシピ）
+    scene.add(new THREE.AmbientLight(0x6080a0, 0.6));
+    const key = new THREE.DirectionalLight(0xfff0d0, 1.6);
     key.position.set(10, 10, 10); scene.add(key);
+    const fill = new THREE.HemisphereLight(0x88bbff, 0x223344, 0.5);
+    scene.add(fill);
 
-    // 星雲（背景にいくつか）
-    for (let i = 0; i < 3; i++) {
+    // 星雲（背景に2つだけ — 軽量化）
+    for (let i = 0; i < 2; i++) {
       const nc = document.createElement('canvas'); nc.width = 256; nc.height = 256;
       const ng = nc.getContext('2d');
       const grd = ng.createRadialGradient(128, 128, 0, 128, 128, 128);
@@ -14364,8 +14380,12 @@
     const H = () => stage.clientHeight || window.innerHeight;
     const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
     renderer.shadowMap.enabled = false;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 0.7));
-    renderer.setSize(W(), H());
+    // 🎯 CSS-upscale trick: 内部解像度を 70% にして CSS で実寸表示（fill rate 半減）
+    renderer.setPixelRatio(1);
+    const _RENDER_SCALE = 0.7;
+    renderer.setSize(W() * _RENDER_SCALE, H() * _RENDER_SCALE, false);
+    renderer.domElement.style.width = '100%';
+    renderer.domElement.style.height = '100%';
     if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.4;
     stage.appendChild(renderer.domElement);
@@ -14740,10 +14760,12 @@
   }
   setupPersonContextAds();
 
-  async function openCosmos() {
+  async function openCosmos(opts) {
     if (!window.THREE) return;
+    const autoMode = opts && opts.autoMode;
     const ov = document.createElement('div');
     ov.className = 'cosmos-overlay';
+    if (autoMode) ov.dataset.autoMode = autoMode;
     ov.innerHTML = `
       <button class="cosmos-close" aria-label="閉じる">×</button>
       <div class="cosmos-stage" id="cosmosStage"></div>
@@ -18942,6 +18964,14 @@
           setTimeout(() => hud.classList.remove('show'), 3500);
           // 🌌 誕生完了 → モード/ボタン類を表示
           ov.classList.add('born');
+          // 📖 絵本などからの自動遷移
+          if (ov.dataset.autoMode) {
+            const targetMode = ov.dataset.autoMode;
+            setTimeout(() => {
+              const btn = document.querySelector(`[data-mode="${targetMode}"]`);
+              if (btn && !btn.classList.contains('active')) btn.click();
+            }, 600);
+          }
         }
       } else if (phase === 'universe') {
         universeTime += 0.016;
@@ -19387,6 +19417,10 @@
       cameraZoomTarget = null;
     });
 
+    // 📖 絵本などからの自動遷移: TAPを自動発火
+    if (autoMode) {
+      setTimeout(() => { try { tapBtn.click(); } catch {} }, 600);
+    }
     // タップ: 意識の接続 → ワープ → ビッグバン → 宇宙
     tapBtn.addEventListener('click', () => {
       consciousConnecting = true;
