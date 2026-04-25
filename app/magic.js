@@ -17055,6 +17055,179 @@
     natureGroup.add(eden3D);
     natureGroup.userData.eden3D = eden3D;
 
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    // 🐎 GLTF アニメ動物（フラミンゴ・パロット・馬） — Eden と同じ素材
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    const gltfMixers = [];
+    if (window.THREE_ADDONS && window.THREE_ADDONS.GLTFLoader) {
+      const gltfLoader = new window.THREE_ADDONS.GLTFLoader();
+      const baseUrl = 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r159/examples/models/gltf/';
+      const cloneFn = (window.THREE_ADDONS.SkeletonUtils && window.THREE_ADDONS.SkeletonUtils.clone)
+        ? window.THREE_ADDONS.SkeletonUtils.clone
+        : ((o) => o.clone(true));
+      // フラミンゴ×4（球体内側、上空 y=14〜18 を旋回）
+      gltfLoader.load(baseUrl + 'Flamingo.glb', (gltf) => {
+        let source = null;
+        gltf.scene.traverse(o => { if (o.isSkinnedMesh && !source) source = o; });
+        if (!source) source = gltf.scene.children[0] || gltf.scene;
+        if (!source) return;
+        for (let k = 0; k < 4; k++) {
+          const bird = cloneFn(source);
+          bird.scale.set(0.05, 0.05, 0.05);
+          const orbit = 30 + k * 1.5;
+          const angle = (k / 4) * Math.PI * 2;
+          bird.position.set(Math.cos(angle) * orbit, 14 + k * 0.6, Math.sin(angle) * orbit);
+          bird.rotation.y = angle + Math.PI / 2;
+          eden3D.add(bird);
+          const mixer = new THREE.AnimationMixer(bird);
+          mixer.clipAction(gltf.animations[0]).setDuration(1.2 + k * 0.05).play();
+          gltfMixers.push({ mixer, obj: bird, type: 'fly', orbit, angle, speed: 0.0035, baseY: 14 + k * 0.6 });
+        }
+      }, undefined, (e) => console.warn('koh flamingo', e));
+      // パロット×2（樹の枝に止まる）
+      gltfLoader.load(baseUrl + 'Parrot.glb', (gltf) => {
+        let parrot = null;
+        gltf.scene.traverse(o => { if (o.isSkinnedMesh && !parrot) parrot = o; });
+        if (!parrot) parrot = gltf.scene.children[0] || gltf.scene;
+        if (!parrot) return;
+        for (let k = 0; k < 2; k++) {
+          const p = cloneFn(parrot);
+          p.scale.set(0.06, 0.06, 0.06);
+          const a = (k / 2) * Math.PI * 2 + 0.7;
+          const r = 33;
+          p.position.set(Math.cos(a) * r, 5 + Math.random() * 1.5, Math.sin(a) * r);
+          p.rotation.y = a + Math.PI / 2;
+          eden3D.add(p);
+          const mixer = new THREE.AnimationMixer(p);
+          mixer.clipAction(gltf.animations[0]).play();
+          gltfMixers.push({ mixer, obj: p, type: 'perch' });
+        }
+      }, undefined, (e) => console.warn('koh parrot', e));
+      // 馬×3（地上を歩行）
+      gltfLoader.load(baseUrl + 'Horse.glb', (gltf) => {
+        let source = null;
+        gltf.scene.traverse(o => { if (o.isSkinnedMesh && !source) source = o; });
+        if (!source) source = gltf.scene.children[0] || gltf.scene;
+        if (!source) return;
+        for (let k = 0; k < 3; k++) {
+          const horse = cloneFn(source);
+          horse.scale.set(0.04, 0.04, 0.04);
+          const a = (k / 3) * Math.PI * 2 + 1.1;
+          const r = 32 + k * 0.8;
+          horse.position.set(Math.cos(a) * r, -1.3, Math.sin(a) * r);
+          horse.rotation.y = a + Math.PI / 2;
+          eden3D.add(horse);
+          const mixer = new THREE.AnimationMixer(horse);
+          mixer.clipAction(gltf.animations[0]).play();
+          gltfMixers.push({ mixer, obj: horse, type: 'walk', orbit: r, angle: a, speed: 0.002 });
+        }
+      }, undefined, (e) => console.warn('koh horse', e));
+    }
+    eden3D.userData.gltfMixers = gltfMixers;
+
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    // 🦒🐘🦁🐻🦌  低ポリ歩行3D動物（脚をsin波で動かす）
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    const walkAnimals = [];
+    function makeWalkAnimal(opt) {
+      const g = new THREE.Group();
+      const bodyMat = new THREE.MeshStandardMaterial({ color: opt.bodyColor, roughness: 0.85, flatShading: true });
+      const headMat = new THREE.MeshStandardMaterial({ color: opt.headColor || opt.bodyColor, roughness: 0.85, flatShading: true });
+      const body = new THREE.Mesh(new THREE.BoxGeometry(opt.bodyLen, opt.bodyH, opt.bodyW), bodyMat);
+      body.position.y = opt.legH;
+      g.add(body);
+      // 頭
+      const head = new THREE.Mesh(new THREE.BoxGeometry(opt.headSize, opt.headSize, opt.headSize * 0.85), headMat);
+      head.position.set(opt.bodyLen / 2 + opt.neckLen * 0.4, opt.legH + opt.bodyH * 0.5 + opt.neckLen * 0.4, 0);
+      g.add(head); g.userData.head = head;
+      if (opt.neckLen > 0.3) {
+        const neck = new THREE.Mesh(new THREE.CylinderGeometry(opt.headSize * 0.3, opt.bodyH * 0.4, opt.neckLen, 8), bodyMat);
+        neck.position.set(opt.bodyLen / 2 + opt.neckLen * 0.2, opt.legH + opt.bodyH * 0.5 + opt.neckLen * 0.2, 0);
+        neck.rotation.z = -Math.PI / 4;
+        g.add(neck);
+      }
+      // 尾
+      const tail = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.06, opt.tailLen, 6), bodyMat);
+      tail.position.set(-opt.bodyLen / 2 - opt.tailLen * 0.3, opt.legH + opt.bodyH * 0.4, 0);
+      tail.rotation.z = Math.PI / 3;
+      g.add(tail); g.userData.tail = tail;
+      // 4本脚
+      const legs = [];
+      [[1, 1], [1, -1], [-1, 1], [-1, -1]].forEach(([sx, sz]) => {
+        const leg = new THREE.Mesh(new THREE.CylinderGeometry(opt.legR, opt.legR * 0.85, opt.legH, 6), bodyMat);
+        leg.position.set(sx * opt.bodyLen * 0.32, opt.legH / 2, sz * opt.bodyW * 0.35);
+        g.add(leg); legs.push(leg);
+      });
+      g.userData.legs = legs;
+      return g;
+    }
+    // 動物セット（種別・配置）
+    const ANIMAL_SET = [
+      { species: 'giraffe', count: 2, bodyLen: 1.6, bodyH: 1.0, bodyW: 0.7, legH: 2.0, legR: 0.13, neckLen: 2.6, headSize: 0.4, tailLen: 0.6, bodyColor: 0xd8a868, headColor: 0xd0a060, speed: 0.025 },
+      { species: 'elephant', count: 2, bodyLen: 2.0, bodyH: 1.3, bodyW: 1.0, legH: 1.0, legR: 0.22, neckLen: 0.3, headSize: 0.7, tailLen: 0.4, bodyColor: 0x808890, speed: 0.018 },
+      { species: 'lion', count: 2, bodyLen: 1.4, bodyH: 0.65, bodyW: 0.55, legH: 0.6, legR: 0.10, neckLen: 0.25, headSize: 0.4, tailLen: 0.85, bodyColor: 0xc8a060, speed: 0.04 },
+      { species: 'deer', count: 3, bodyLen: 1.2, bodyH: 0.55, bodyW: 0.45, legH: 0.7, legR: 0.06, neckLen: 0.45, headSize: 0.25, tailLen: 0.2, bodyColor: 0xa07048, speed: 0.05 },
+      { species: 'bear', count: 2, bodyLen: 1.3, bodyH: 0.75, bodyW: 0.65, legH: 0.55, legR: 0.13, neckLen: 0.15, headSize: 0.42, tailLen: 0.15, bodyColor: 0x3a2010, speed: 0.03 },
+      { species: 'rabbit', count: 4, bodyLen: 0.4, bodyH: 0.3, bodyW: 0.3, legH: 0.18, legR: 0.05, neckLen: 0, headSize: 0.2, tailLen: 0.05, bodyColor: 0xf0e8d8, speed: 0.06 },
+    ];
+    let aphase = 0;
+    ANIMAL_SET.forEach(spec => {
+      for (let i = 0; i < spec.count; i++) {
+        const g = makeWalkAnimal(spec);
+        // ウサギに耳
+        if (spec.species === 'rabbit') {
+          [-0.06, 0.06].forEach(ex => {
+            const ear = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.03, 0.18, 6), new THREE.MeshStandardMaterial({ color: 0xf0e8d8, roughness: 0.85 }));
+            ear.position.set(ex, 0.55, 0.18);
+            g.add(ear);
+          });
+        }
+        // 角（鹿の半数）
+        if (spec.species === 'deer' && i < 2) {
+          [-0.07, 0.07].forEach(az => {
+            const a1 = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.022, 0.32, 5), new THREE.MeshStandardMaterial({ color: 0x4a3018 }));
+            a1.position.set(g.userData.head.position.x + 0.05, g.userData.head.position.y + 0.22, az);
+            a1.rotation.z = az > 0 ? -0.3 : 0.3;
+            g.add(a1);
+          });
+        }
+        // 鼻（ゾウ）
+        if (spec.species === 'elephant') {
+          const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.10, 0.18, 1.1, 8), new THREE.MeshStandardMaterial({ color: 0x70787e }));
+          trunk.position.set(g.userData.head.position.x + 0.35, g.userData.head.position.y - 0.3, 0);
+          trunk.rotation.z = -Math.PI / 3;
+          g.add(trunk); g.userData.trunk = trunk;
+        }
+        // たてがみ（ライオン）
+        if (spec.species === 'lion') {
+          const mane = new THREE.Mesh(new THREE.SphereGeometry(0.38, 12, 10), new THREE.MeshStandardMaterial({ color: 0x6a4020, roughness: 0.95 }));
+          mane.position.copy(g.userData.head.position);
+          mane.position.x -= 0.10;
+          g.add(mane);
+        }
+        // 配置
+        const a0 = (aphase++ / 18) * Math.PI * 2 + Math.random() * 0.3;
+        const r = 30.5 + Math.random() * 7.5;
+        g.position.set(Math.cos(a0) * r, -1.3, Math.sin(a0) * r);
+        g.userData.angle = a0;
+        g.userData.radius = r;
+        g.userData.speed = spec.speed;
+        g.userData.species = spec.species;
+        g.userData.phase = Math.random() * Math.PI * 2;
+        g.userData.legH = spec.legH;
+        eden3D.add(g);
+        walkAnimals.push(g);
+      }
+    });
+    eden3D.userData.walkAnimals = walkAnimals;
+
+    // 既存のCanvasスプライトは鳥類のみ残す（地上動物は3Dに置き換え）
+    animalSprites.forEach(s => {
+      if (!['hawk', 'seagull', 'owl'].includes(s.userData.species)) {
+        s.visible = false;
+      }
+    });
+
     scene.add(natureGroup);
     scene.userData.natureGroup = natureGroup;
 
@@ -17817,21 +17990,79 @@
         if (ng.sparkles && ng.sparkles.material) {
           ng.sparkles.material.opacity = 0.5 + Math.sin(t * 2) * 0.3;
         }
-        // 動物スプライト：ドーム周回をゆっくり、種別ごとに速度を分ける
+        // 動物スプライト（鳥類のみ残存）：旋回＋羽ばたき風揺れ
         (ng.animalSprites || []).forEach(s => {
+          if (!s.visible) return;
           const u = s.userData;
-          let speed = 0.015;
-          let yWobble = Math.sin(t * 0.6 + u.phase) * 0.08;
-          if (u.species === 'hawk' || u.species === 'seagull') speed = 0.06;
-          else if (u.species === 'rabbit') { speed = 0.025; yWobble = Math.abs(Math.sin(t * 2 + u.phase)) * 0.6; }
-          else if (u.species === 'owl' || u.species === 'crocodile') speed = 0; // 静止
-          else if (u.species === 'ostrich') speed = 0.05;
-          else if (u.species === 'monkey') { speed = 0; yWobble = Math.sin(t * 1.5 + u.phase) * 0.3; }
+          let speed = 0.06;
+          if (u.species === 'owl') speed = 0; // フクロウは止まり木
           const ang = u.baseAngle + t * speed;
           s.position.x = Math.cos(ang) * u.radius;
           s.position.z = Math.sin(ang) * u.radius;
-          s.position.y = u.baseY + yWobble;
+          // 羽ばたき＝Y方向の微振動 + Xスケール伸縮
+          if (u.species === 'hawk' || u.species === 'seagull') {
+            s.position.y = u.baseY + Math.sin(t * 6 + u.phase) * 0.35;
+            s.scale.x = (u.species === 'hawk' ? 7.5 : 6.5) * (0.85 + Math.sin(t * 8 + u.phase) * 0.15);
+          } else if (u.species === 'owl') {
+            // 首振り（左右） — Sprite だが scale.x の符号で擬似フリップ
+            s.scale.x = 5.0 * (Math.sin(t * 0.6 + u.phase) > 0 ? 1 : -1);
+            s.position.y = u.baseY + Math.sin(t * 0.4 + u.phase) * 0.06;
+          }
         });
+        // GLTF動物（フラミンゴ・パロット・馬）のミキサー＆周回
+        if (ng.eden3D && ng.eden3D.userData.gltfMixers) {
+          ng.eden3D.userData.gltfMixers.forEach(m => {
+            try { m.mixer.update(dt); } catch {}
+            if (m.type === 'fly') {
+              m.angle += m.speed;
+              m.obj.position.x = Math.cos(m.angle) * m.orbit;
+              m.obj.position.z = Math.sin(m.angle) * m.orbit;
+              m.obj.position.y = m.baseY + Math.sin(t * 0.6) * 0.4;
+              m.obj.rotation.y = -m.angle - Math.PI / 2;
+            } else if (m.type === 'walk') {
+              m.angle += m.speed;
+              m.obj.position.x = Math.cos(m.angle) * m.orbit;
+              m.obj.position.z = Math.sin(m.angle) * m.orbit;
+              m.obj.rotation.y = -m.angle - Math.PI / 2;
+            } else if (m.type === 'perch') {
+              m.obj.rotation.y += 0.005;
+            }
+          });
+        }
+        // 低ポリ歩行3D動物
+        if (ng.eden3D && ng.eden3D.userData.walkAnimals) {
+          ng.eden3D.userData.walkAnimals.forEach(a => {
+            const u = a.userData;
+            // 円周ゆっくり歩行（種別速度）
+            u.angle += u.speed * dt * 0.6;
+            const x = Math.cos(u.angle) * u.radius;
+            const z = Math.sin(u.angle) * u.radius;
+            a.position.x = x;
+            a.position.z = z;
+            // ウサギは跳ねる、それ以外は微小バウンス
+            if (u.species === 'rabbit') {
+              const hop = Math.max(0, Math.sin(t * 4 + u.phase));
+              a.position.y = -1.3 + hop * 0.3;
+              a.rotation.x = -hop * 0.15;
+            } else {
+              a.position.y = -1.3 + Math.sin(t * 3 + u.phase) * 0.04;
+            }
+            a.rotation.y = -u.angle - Math.PI / 2;
+            // 脚の前後 sin 波（隣り合う脚は逆位相）
+            if (u.legs) {
+              u.legs.forEach((leg, idx) => {
+                const ph = (idx === 0 || idx === 3) ? 0 : Math.PI;
+                leg.rotation.x = Math.sin(t * 5 + ph + u.phase) * 0.45;
+              });
+            }
+            // 頭バウンス
+            if (u.head) u.head.rotation.x = Math.sin(t * 5 + u.phase) * 0.08;
+            // 尾揺れ
+            if (u.tail) u.tail.rotation.x = Math.sin(t * 4 + u.phase) * 0.25;
+            // ゾウの鼻
+            if (u.trunk) u.trunk.rotation.z = -Math.PI / 3 + Math.sin(t * 2 + u.phase) * 0.18;
+          });
+        }
       }
       // パーティクル + ドーム
       particles.rotation.y += 0.0008 + bassS * 0.002;
