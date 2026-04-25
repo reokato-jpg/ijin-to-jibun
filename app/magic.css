@@ -8035,14 +8035,29 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   box-shadow: 0 4px 14px rgba(80,50,20,0.18);
 }
 .gb-thumb {
-  width: 56px; height: 72px; flex-shrink: 0;
+  width: 64px; height: 88px; flex-shrink: 0;
   background: linear-gradient(165deg, #2a1810, #4a3018);
   border-radius: 3px;
   display: flex; align-items: center; justify-content: center;
   overflow: hidden;
   box-shadow: inset 0 0 12px rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.3);
+  position: relative;
 }
-.gb-thumb img { width: 100%; height: 100%; object-fit: cover; }
+/* 縦長画像でも全体が見えるように contain。背景を別途敷いて余白を埋める */
+.gb-thumb img {
+  width: 100%; height: 100%;
+  object-fit: contain;
+  position: relative; z-index: 1;
+}
+.gb-thumb::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: var(--blur-bg, none);
+  background-size: cover;
+  background-position: center;
+  filter: blur(8px) brightness(0.4);
+  z-index: 0;
+}
 .gb-glyph { font-size: 28px; opacity: 0.85; }
 .gb-body { flex: 1; min-width: 0; }
 .gb-myth {
@@ -8164,6 +8179,88 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   .related-reason { color: rgba(220,200,240,0.85); }
   .rel-chip { background: linear-gradient(135deg, #2a1838, #1a0a28); color: #f0e0ff; border-color: rgba(180,140,220,0.4); }
   .rel-chip:hover { background: linear-gradient(135deg, #3a2050, #2a1438); }
+}
+
+/* 🎴 キャラクターカード モーダル（絵本ワールド） */
+.char-card-modal {
+  position: fixed; inset: 0; z-index: 10000;
+  background: radial-gradient(ellipse at center, rgba(20,10,30,0.85), rgba(0,0,0,0.95));
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity .3s;
+  padding: 20px;
+}
+.char-card-modal.show { opacity: 1; pointer-events: auto; }
+.ccm-card {
+  width: min(420px, 92vw);
+  background: linear-gradient(165deg, #2a1840 0%, #1a0a28 100%);
+  border-radius: 8px;
+  padding: 28px 26px 22px;
+  border: 1px solid var(--acc, #a880d8);
+  border-left: 6px solid var(--acc, #a880d8);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.7), 0 0 60px var(--acc, #a880d8);
+  position: relative;
+  text-align: center;
+  transform: scale(0.92);
+  transition: transform .35s cubic-bezier(.2,.9,.3,1.2);
+}
+.char-card-modal.show .ccm-card { transform: scale(1); }
+.ccm-close {
+  position: absolute; top: 10px; right: 12px;
+  width: 32px; height: 32px;
+  background: rgba(0,0,0,0.4); border: none;
+  color: #fff; font-size: 22px; cursor: pointer;
+  border-radius: 50%;
+  transition: transform .2s;
+}
+.ccm-close:hover { transform: scale(1.1) rotate(90deg); }
+.ccm-emoji {
+  font-size: 96px;
+  margin: 0 auto 10px;
+  filter: drop-shadow(0 0 18px var(--acc, #a880d8));
+  animation: ccmFloat 3s ease-in-out infinite;
+}
+@keyframes ccmFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.ccm-name {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 26px; font-weight: 600;
+  color: #fff8e0;
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+}
+.ccm-role {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 14px; font-style: italic;
+  color: var(--acc, #a880d8);
+  letter-spacing: 0.2em;
+  margin-bottom: 12px;
+}
+.ccm-divider {
+  color: var(--acc, #a880d8);
+  font-size: 14px;
+  letter-spacing: 0.5em;
+  margin: 12px 0;
+  opacity: 0.7;
+}
+.ccm-quote {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 16px; line-height: 1.7;
+  color: #f0e0ff;
+  font-style: italic;
+  margin: 0 0 18px;
+  padding: 12px 8px;
+  border-left: 2px solid var(--acc, #a880d8);
+  border-right: 2px solid var(--acc, #a880d8);
+  background: rgba(0,0,0,0.2);
+  text-align: left;
+}
+.ccm-book {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 12px; letter-spacing: 0.2em;
+  color: #b89cd0; opacity: 0.85;
 }
 
 /* 絵本リーダー: 作者の偉人ページへリンク */

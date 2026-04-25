@@ -12058,6 +12058,71 @@
       ceiling.position.y = 10;
       scene.add(ceiling);
 
+      // 🚪 ゾーン内の入口アーチ（z=+15 に配置 — プレイヤーは z=14 から入る）
+      const zoneArch = new THREE.Group();
+      const archStone = new THREE.MeshStandardMaterial({ color: 0xc8b8d8, roughness: 0.6, metalness: 0.15 });
+      const archGold = new THREE.MeshStandardMaterial({ color: 0xe8c060, roughness: 0.4, metalness: 0.85, emissive: 0x4a3008, emissiveIntensity: 0.4 });
+      // 左右の柱
+      for (const dx of [-2.4, 2.4]) {
+        const col = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.6, 7.5, 16), archStone);
+        col.position.set(dx, 3.75, 0);
+        zoneArch.add(col);
+        const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.7, 0.7, 0.3, 16), archGold);
+        cap.position.set(dx, 7.5, 0); zoneArch.add(cap);
+        const base = new THREE.Mesh(new THREE.CylinderGeometry(0.78, 0.78, 0.3, 16), archGold);
+        base.position.set(dx, 0.15, 0); zoneArch.add(base);
+      }
+      // 半円アーチ（金）
+      const archMesh = new THREE.Mesh(
+        new THREE.TorusGeometry(2.4, 0.28, 8, 24, Math.PI),
+        archGold
+      );
+      archMesh.position.set(0, 7.5, 0);
+      zoneArch.add(archMesh);
+      // キーストーン（神話シンボル）
+      const ks = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.7, 0.55), archGold);
+      ks.position.set(0, 9.95, 0); zoneArch.add(ks);
+      // 神話名プレート（裏に）
+      const plateC = document.createElement('canvas'); plateC.width = 1024; plateC.height = 256;
+      const pg = plateC.getContext('2d');
+      const grd = pg.createLinearGradient(0, 0, 0, 256);
+      grd.addColorStop(0, 'rgba(20,10,30,0.95)'); grd.addColorStop(1, 'rgba(40,28,60,0.95)');
+      pg.fillStyle = grd; pg.fillRect(0, 0, 1024, 256);
+      pg.strokeStyle = '#e8c060'; pg.lineWidth = 5;
+      pg.strokeRect(8, 8, 1008, 240);
+      pg.font = 'bold 110px "Shippori Mincho", serif';
+      pg.fillStyle = '#fff8e0';
+      pg.shadowColor = '#e8c060'; pg.shadowBlur = 22;
+      pg.textAlign = 'center'; pg.textBaseline = 'middle';
+      pg.fillText(PANTHEON_DATA[zone]?.name || '神 殿', 512, 110);
+      pg.shadowBlur = 0;
+      pg.font = 'italic 28px "Cormorant Garamond", serif';
+      pg.fillStyle = '#e8c060';
+      pg.fillText(`— ${PANTHEON_DATA[zone]?.gods?.length || ''} Deities —`, 512, 200);
+      const plateTex = new THREE.CanvasTexture(plateC);
+      if ('colorSpace' in plateTex) plateTex.colorSpace = THREE.SRGBColorSpace;
+      const plate = new THREE.Mesh(
+        new THREE.PlaneGeometry(6, 1.5),
+        new THREE.MeshBasicMaterial({ map: plateTex, transparent: true, side: THREE.DoubleSide })
+      );
+      plate.position.set(0, 11.0, 0);
+      zoneArch.add(plate);
+      // 階段
+      for (let s = 0; s < 4; s++) {
+        const step = new THREE.Mesh(
+          new THREE.BoxGeometry(7 + s*0.5, 0.18, 0.5),
+          archStone
+        );
+        step.position.set(0, -s * 0.18, 0.6 + s * 0.5);
+        zoneArch.add(step);
+      }
+      // 入口の光
+      const archLight = new THREE.PointLight(0xffd890, 2.0, 14, 1.4);
+      archLight.position.set(0, 4, -1);
+      zoneArch.add(archLight);
+      zoneArch.position.set(0, 0, 15);
+      scene.add(zoneArch);
+
       // 🏛 大入口：南方向（z=+22 方向）に荘厳な門
       if (zone === 'hub') {
         const portalG = new THREE.Group();
@@ -12703,11 +12768,12 @@
       if (item.type === 'pantheon') {
         currentZone = item.key;
         buildScene(item.key);
-        camera.position.set(0, 1.6, 0); yaw = 0;
+        // 🚪 入口（南側）から神殿に入った視点で配置
+        // ringR=12 で台座が円形配置 → 入口は z=14 付近、奥（中心側）を見る
+        camera.position.set(0, 1.6, 14); yaw = Math.PI;
       } else if (item.type === 'god') {
         showGodModal(item, currentZone);
       } else if (item.type === 'tale') {
-        // 神話を読む（既存 openMythology を呼んで該当章へ）
         if (window.openMythology) window.openMythology(item.talekey);
       }
     });
@@ -13080,7 +13146,8 @@
           setTimeout(() => {
             currentZone = it.key;
             try { buildScene(it.key); } catch (e) { console.warn('buildScene failed', e); }
-            camera.position.set(0, 1.6, 0); yaw = 0;
+            // 🚪 入口から神殿に入った視点
+            camera.position.set(0, 1.6, 14); yaw = Math.PI;
             flash.style.opacity = '0';
             setTimeout(() => flash.remove(), 500);
           }, 450);
@@ -14129,7 +14196,11 @@
           const thumb = p?.imageinfo?.[0]?.thumburl;
           if (!thumb) return;
           const el = list.querySelector(`.gb-entry[data-id="${g.id}"] .gb-thumb`);
-          if (el) el.innerHTML = `<img src="${thumb}" alt="${g.name}" loading="lazy">`;
+          if (el) {
+            el.innerHTML = `<img src="${thumb}" alt="${g.name}" loading="lazy">`;
+            // 縦長画像の余白を画像自身のブラーで埋める
+            el.style.setProperty('--blur-bg', `url('${thumb}')`);
+          }
         }).catch(() => {});
       });
     }
@@ -14847,6 +14918,129 @@
     // 一人称（美術館スタイル）— アバターなし
     const ava = null;
 
+    // === 📖 中央の台座 + 開かれた絵本 ===
+    const pedestalG = new THREE.Group();
+    // 石の台座（円柱2段）
+    const pedBase = new THREE.Mesh(
+      new THREE.CylinderGeometry(1.5, 1.7, 0.5, 24),
+      new THREE.MeshStandardMaterial({ color: 0x6a5a78, roughness: 0.7, metalness: 0.2 })
+    );
+    pedBase.position.y = 0.25;
+    pedestalG.add(pedBase);
+    const pedTop = new THREE.Mesh(
+      new THREE.CylinderGeometry(1.2, 1.4, 0.8, 24),
+      new THREE.MeshStandardMaterial({ color: 0x8a7a98, roughness: 0.6, metalness: 0.3 })
+    );
+    pedTop.position.y = 0.9;
+    pedestalG.add(pedTop);
+    // 金縁
+    const pedRim = new THREE.Mesh(
+      new THREE.TorusGeometry(1.2, 0.04, 8, 24),
+      new THREE.MeshStandardMaterial({ color: 0xe8c060, metalness: 0.85, roughness: 0.3, emissive: 0x4a3008, emissiveIntensity: 0.4 })
+    );
+    pedRim.rotation.x = Math.PI / 2;
+    pedRim.position.y = 1.32;
+    pedestalG.add(pedRim);
+
+    // 開かれた絵本（V字に開いた2ページ + 表紙）
+    const bookOpen = new THREE.Group();
+    // 左ページ
+    const leftPage = new THREE.Mesh(
+      new THREE.PlaneGeometry(0.85, 1.1),
+      new THREE.MeshStandardMaterial({ color: 0xfdf4d8, roughness: 0.92, side: THREE.DoubleSide })
+    );
+    leftPage.rotation.x = -Math.PI / 2;
+    leftPage.rotation.z = -0.18;
+    leftPage.position.set(-0.42, 1.36, 0);
+    bookOpen.add(leftPage);
+    // 右ページ
+    const rightPage = leftPage.clone();
+    rightPage.rotation.z = 0.18;
+    rightPage.position.set(0.42, 1.36, 0);
+    bookOpen.add(rightPage);
+    // 左ページの装飾（タイトル）
+    const lpC = document.createElement('canvas'); lpC.width = 256; lpC.height = 320;
+    const lpG = lpC.getContext('2d');
+    lpG.fillStyle = '#fdf4d8'; lpG.fillRect(0, 0, 256, 320);
+    lpG.strokeStyle = book.accent || '#8a6020'; lpG.lineWidth = 3;
+    lpG.strokeRect(20, 20, 216, 280);
+    lpG.font = 'italic 20px "Cormorant Garamond", serif';
+    lpG.fillStyle = '#5a4020'; lpG.textAlign = 'center';
+    lpG.fillText('— ' + book.year + ' —', 128, 70);
+    lpG.font = 'bold 28px "Shippori Mincho", serif';
+    lpG.fillStyle = '#3a2010';
+    const titleLines = book.title.match(/.{1,8}/g) || [book.title];
+    titleLines.forEach((l, li) => lpG.fillText(l, 128, 130 + li * 36));
+    lpG.font = '15px "Shippori Mincho", serif';
+    lpG.fillStyle = '#7a5030';
+    lpG.fillText(book.author, 128, 250);
+    lpG.font = '40px serif';
+    lpG.fillText(book.cover || '✦', 128, 290);
+    const lpTex = new THREE.CanvasTexture(lpC);
+    if ('colorSpace' in lpTex) lpTex.colorSpace = THREE.SRGBColorSpace;
+    leftPage.material = new THREE.MeshStandardMaterial({ map: lpTex, roughness: 0.92, side: THREE.DoubleSide });
+    // 右ページ（あらすじ）
+    const rpC = document.createElement('canvas'); rpC.width = 256; rpC.height = 320;
+    const rpG = rpC.getContext('2d');
+    rpG.fillStyle = '#fdf4d8'; rpG.fillRect(0, 0, 256, 320);
+    rpG.strokeStyle = book.accent || '#8a6020'; rpG.lineWidth = 1;
+    rpG.strokeRect(28, 28, 200, 264);
+    rpG.font = '14px "Shippori Mincho", serif';
+    rpG.fillStyle = '#3a2818';
+    rpG.textAlign = 'left';
+    // あらすじを折り返し
+    const synopsis = book.synopsis || '';
+    const lineMax = 14;
+    for (let l = 0; l < 8; l++) {
+      const line = synopsis.slice(l * lineMax, (l + 1) * lineMax);
+      if (!line) break;
+      rpG.fillText(line, 40, 75 + l * 22);
+    }
+    rpG.font = 'italic 13px "Cormorant Garamond", serif';
+    rpG.fillStyle = book.accent || '#8a6020';
+    rpG.textAlign = 'center';
+    rpG.fillText('▶  Tap  to  Read  ▶', 128, 270);
+    const rpTex = new THREE.CanvasTexture(rpC);
+    if ('colorSpace' in rpTex) rpTex.colorSpace = THREE.SRGBColorSpace;
+    rightPage.material = new THREE.MeshStandardMaterial({ map: rpTex, roughness: 0.92, side: THREE.DoubleSide });
+    // 背表紙（V字の中央）
+    const spine = new THREE.Mesh(
+      new THREE.BoxGeometry(0.05, 0.08, 1.1),
+      new THREE.MeshStandardMaterial({ color: 0x4a2810, roughness: 0.7 })
+    );
+    spine.position.set(0, 1.34, 0);
+    bookOpen.add(spine);
+    // 本のグループにマーキング
+    bookOpen.userData.isOpenBook = true;
+    pedestalG.add(bookOpen);
+
+    // 上から照らすスポットライト
+    const pedLight = new THREE.PointLight(0xfff0c0, 1.4, 8, 1.5);
+    pedLight.position.set(0, 3, 0);
+    pedestalG.add(pedLight);
+
+    // 後光（光の柱）
+    const beamC = document.createElement('canvas'); beamC.width = 64; beamC.height = 256;
+    const bg = beamC.getContext('2d');
+    const bgrd = bg.createLinearGradient(0, 0, 0, 256);
+    bgrd.addColorStop(0, 'rgba(255,232,160,0)');
+    bgrd.addColorStop(0.5, 'rgba(255,232,160,0.4)');
+    bgrd.addColorStop(1, 'rgba(255,232,160,0)');
+    bg.fillStyle = bgrd; bg.fillRect(0, 0, 64, 256);
+    const beamTex = new THREE.CanvasTexture(beamC);
+    const beam = new THREE.Sprite(new THREE.SpriteMaterial({
+      map: beamTex, transparent: true, opacity: 0.5,
+      depthWrite: false, blending: THREE.AdditiveBlending,
+    }));
+    beam.scale.set(2.5, 6, 1);
+    beam.position.y = 3.5;
+    pedestalG.add(beam);
+
+    pedestalG.position.set(0, 0, 0);
+    scene.add(pedestalG);
+    scene.userData.pedestalBook = bookOpen; // 距離判定用
+    scene.userData.bookOpenAnim = bookOpen;
+
     // ╔══════════════════════════════════════╗
     // ║ 🌹 星の王子様の世界 — 特別な舞台装置     ║
     // ╚══════════════════════════════════════╝
@@ -15307,10 +15501,62 @@
 
     // 「読む」ボタン
     ov.querySelector('#bwReadBtn').addEventListener('click', () => {
-      // 絵本を開く
       if (book.open) book.open();
       else openPictureBook(book);
     });
+
+    // 中央の本（台座）+ キャラカードのレイキャストクリック
+    const bwRaycaster = new THREE.Raycaster();
+    const bwMouse = new THREE.Vector2();
+    let pdownX = 0, pdownY = 0;
+    renderer.domElement.addEventListener('pointerdown', e => { pdownX = e.clientX; pdownY = e.clientY; });
+    renderer.domElement.addEventListener('click', e => {
+      // ドラッグ操作と区別
+      if (Math.abs(e.clientX - pdownX) > 6 || Math.abs(e.clientY - pdownY) > 6) return;
+      const rect = renderer.domElement.getBoundingClientRect();
+      bwMouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      bwMouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      bwRaycaster.setFromCamera(bwMouse, camera);
+      // まずキャラカードに当たったか
+      const cardMeshes = cards.map(g => g.userData.cardMesh);
+      const cardHits = bwRaycaster.intersectObjects(cardMeshes, false);
+      if (cardHits.length) {
+        const card = cards.find(g => g.userData.cardMesh === cardHits[0].object);
+        if (card) showCharCardModal(card.userData.ch, book);
+        return;
+      }
+      // 中央の本に当たったか
+      if (scene.userData.bookOpenAnim) {
+        const bookHits = bwRaycaster.intersectObject(scene.userData.bookOpenAnim, true);
+        if (bookHits.length) {
+          if (book.open) book.open();
+          else openPictureBook(book);
+          return;
+        }
+      }
+    });
+
+    // 🎴 キャラクターカード モーダル
+    function showCharCardModal(ch, book) {
+      const m = document.createElement('div');
+      m.className = 'char-card-modal';
+      m.innerHTML = `
+        <div class="ccm-card" style="--acc:${ch.color}">
+          <button class="ccm-close" aria-label="閉じる">×</button>
+          <div class="ccm-emoji">${ch.emoji}</div>
+          <div class="ccm-name">${ch.name}</div>
+          <div class="ccm-role">${ch.role || ''}</div>
+          <div class="ccm-divider">— ❦ —</div>
+          ${ch.quote ? `<blockquote class="ccm-quote">「${ch.quote}」</blockquote>` : ''}
+          <div class="ccm-book">『${book.title}』 より</div>
+        </div>
+      `;
+      ov.appendChild(m);
+      requestAnimationFrame(() => m.classList.add('show'));
+      const close = () => { m.classList.remove('show'); setTimeout(() => m.remove(), 300); };
+      m.querySelector('.ccm-close').addEventListener('click', close);
+      m.addEventListener('click', e => { if (e.target === m) close(); });
+    }
 
     let running = true;
     ov.querySelector('.museum3d-close').addEventListener('click', () => {
@@ -15379,6 +15625,17 @@
         info.textContent = W_DATA.theme + '　／　近づくとカードが回ります';
       }
 
+      // 📖 中央の絵本台座: 静かに脈動 + プレイヤーが近いと光る
+      const ob = scene.userData.bookOpenAnim;
+      if (ob) {
+        ob.rotation.y = Math.sin(t * 0.3) * 0.08;
+        // 距離計算（カメラから台座中心まで）
+        const pdist = Math.hypot(camera.position.x, camera.position.z);
+        // 1.8 以内で「読む」プロンプト
+        if (pdist < 2.5) {
+          info.textContent = `📖 タップで「${book.title}」を読む`;
+        }
+      }
       // 🌹 星の王子様の世界の特別アニメ
       const pw = scene.userData.princeWorld;
       if (pw) {
