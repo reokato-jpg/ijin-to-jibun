@@ -15149,6 +15149,18 @@
       }, 500);
     });
 
+    // 🌫 ダスト用テクスチャ（蛍・塵で共用、定義を先に）
+    const dustTex = (() => {
+      const c = document.createElement('canvas'); c.width = 64; c.height = 64;
+      const g = c.getContext('2d');
+      const grd = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+      grd.addColorStop(0, 'rgba(255,250,230,1)');
+      grd.addColorStop(0.4, 'rgba(255,232,180,0.5)');
+      grd.addColorStop(1, 'rgba(255,200,140,0)');
+      g.fillStyle = grd; g.fillRect(0, 0, 64, 64);
+      return new THREE.CanvasTexture(c);
+    })();
+
     // 🪐 惑星（宇宙モードで表示）
     const planetGroup = new THREE.Group();
     planetGroup.visible = false;
@@ -15333,16 +15345,6 @@
     }
     const dustGeo = new THREE.BufferGeometry();
     dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPos, 3));
-    const dustTex = (() => {
-      const c = document.createElement('canvas'); c.width = 64; c.height = 64;
-      const g = c.getContext('2d');
-      const grd = g.createRadialGradient(32, 32, 0, 32, 32, 32);
-      grd.addColorStop(0, 'rgba(255,250,230,1)');
-      grd.addColorStop(0.4, 'rgba(255,232,180,0.5)');
-      grd.addColorStop(1, 'rgba(255,200,140,0)');
-      g.fillStyle = grd; g.fillRect(0, 0, 64, 64);
-      return new THREE.CanvasTexture(c);
-    })();
     const dust = new THREE.Points(dustGeo, new THREE.PointsMaterial({
       map: dustTex, size: 0.18, transparent: true, opacity: 0.55,
       blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true,
@@ -15375,10 +15377,16 @@
     godRay.position.set(0, 7, 0);
     scene.add(godRay);
 
-    // ✨ Bloom ポストプロセス（光が滲む幻想的な見た目）
-    // 注: 一旦無効化して確実に renderer.render を使う（黒バグ対策）
+    // ✨ Bloom ポストプロセス
     let composer = null;
-    let bloomEnabled = false; // 後で安定したら true に
+    try {
+      if (ADDONS.EffectComposer && ADDONS.RenderPass && ADDONS.UnrealBloomPass) {
+        composer = new ADDONS.EffectComposer(renderer);
+        composer.addPass(new ADDONS.RenderPass(scene, camera));
+        composer.addPass(new ADDONS.UnrealBloomPass(new THREE.Vector2(W(), H()), 0.55, 0.55, 0.55));
+        if (ADDONS.OutputPass) composer.addPass(new ADDONS.OutputPass());
+      }
+    } catch (e) { console.warn('koh bloom', e); composer = null; }
 
     // 🎶 音楽連動の情景パーティクル
     const PARTC = 200;
@@ -15521,9 +15529,14 @@
       if (scene.userData.baton) {
         scene.userData.baton.rotation.z = 0.3 + Math.sin(t * (2 + bassS * 4)) * (0.5 + midS * 0.4);
       }
-      // 描画（直接 renderer で確実に）
-      try { renderer.render(scene, camera); }
-      catch (e) { console.error('koh render error', e); running = false; }
+      // 描画（Bloomあり/なし両対応、エラーキャッチ）
+      try {
+        if (composer) composer.render();
+        else renderer.render(scene, camera);
+      } catch (e) {
+        console.error('koh render error', e);
+        try { renderer.render(scene, camera); } catch {}
+      }
       requestAnimationFrame(animate);
     }
     animate();
