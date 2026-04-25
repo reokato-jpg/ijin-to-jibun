@@ -19830,70 +19830,44 @@
         dragX = e.clientX; dragY = e.clientY;
       }
     });
-    // 左下：仮想ジョイスティック（移動）
+    // 左下：仮想ジョイスティック（美術館と同じ「タッチ位置=中心」方式）
     const joy = document.createElement('div');
     joy.className = 'lib-joy';
     joy.innerHTML = '<div class="lib-joy-knob" id="libJoyKnob"></div>';
     ov.appendChild(joy);
-    // 右下：視線回転パッド（透明領域、ドラッグで yaw/pitch）
-    const lookPad = document.createElement('div');
-    lookPad.className = 'lib-look';
-    lookPad.innerHTML = '<span class="lib-look-label">L O O K</span>';
-    ov.appendChild(lookPad);
-    let lookActive = false, lookPX = 0, lookPY = 0;
-    lookPad.addEventListener('pointerdown', e => {
-      e.preventDefault(); e.stopPropagation();
-      lookActive = true; lookPX = e.clientX; lookPY = e.clientY;
-    });
-    lookPad.addEventListener('pointermove', e => {
-      if (!lookActive) return;
-      e.preventDefault();
-      const dx = e.clientX - lookPX;
-      const dy = e.clientY - lookPY;
-      camYaw -= dx * 0.005;
-      camPitch -= dy * 0.004;
-      camPitch = Math.max(-1.0, Math.min(1.0, camPitch));
-      lookPX = e.clientX; lookPY = e.clientY;
-    });
-    const lookEnd = () => { lookActive = false; };
-    lookPad.addEventListener('pointerup', lookEnd);
-    lookPad.addEventListener('pointercancel', lookEnd);
-    lookPad.addEventListener('pointerleave', lookEnd);
     const joyKnob = joy.querySelector('#libJoyKnob');
-    let joyActive = false, joyDX = 0, joyDY = 0, joyPid = null;
-    const JOY_R = 50;
-    const DEAD = 0.12; // デッドゾーン（小さな揺れを無視）
-    function joyReset() {
-      joyActive = false; joyDX = 0; joyDY = 0; joyPid = null;
-      joyKnob.style.transform = 'translate(-50%, -50%)';
-    }
-    joy.addEventListener('pointerdown', e => {
-      e.preventDefault(); e.stopPropagation();
-      joyActive = true; joyPid = e.pointerId;
-      try { joy.setPointerCapture(e.pointerId); } catch {}
-    });
-    joy.addEventListener('pointermove', e => {
-      if (!joyActive || e.pointerId !== joyPid) return;
+    let joyActive = false, joyDX = 0, joyDY = 0;
+    const JOY_MAX = 50;
+    // 美術館と同じ：touchstart/mousedown でアンカー(cx,cy)を捕獲、以降の移動はそこからの差分
+    const stickStart = e => {
+      joyActive = true;
+      const t = e.touches ? e.touches[0] : e;
+      joy.dataset.cx = t.clientX; joy.dataset.cy = t.clientY;
+      joyDX = 0; joyDY = 0;
       e.preventDefault();
-      const r = joy.getBoundingClientRect();
-      const cx = r.left + r.width/2, cy = r.top + r.height/2;
-      let dx = e.clientX - cx, dy = e.clientY - cy;
-      const len = Math.hypot(dx, dy);
-      if (len > JOY_R) { dx = dx/len*JOY_R; dy = dy/len*JOY_R; }
-      let nx = dx / JOY_R, ny = dy / JOY_R;
-      // デッドゾーン適用
-      const nl = Math.hypot(nx, ny);
-      if (nl < DEAD) { nx = 0; ny = 0; }
-      else {
-        const k = (nl - DEAD) / (1 - DEAD) / nl;
-        nx *= k; ny *= k;
-      }
-      joyDX = nx; joyDY = ny;
+    };
+    const stickMove = e => {
+      if (!joyActive) return;
+      const t = e.touches ? e.touches[0] : e;
+      const cx = +joy.dataset.cx, cy = +joy.dataset.cy;
+      let dx = t.clientX - cx, dy = t.clientY - cy;
+      const d = Math.hypot(dx, dy);
+      if (d > JOY_MAX) { dx = dx/d*JOY_MAX; dy = dy/d*JOY_MAX; }
       joyKnob.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
-    });
-    joy.addEventListener('pointerup', joyReset);
-    joy.addEventListener('pointercancel', joyReset);
-    joy.addEventListener('lostpointercapture', joyReset);
+      joyDX = dx / JOY_MAX; joyDY = dy / JOY_MAX;
+      e.preventDefault();
+    };
+    const stickEnd = () => {
+      joyActive = false;
+      joyKnob.style.transform = 'translate(-50%, -50%)';
+      joyDX = 0; joyDY = 0;
+    };
+    joy.addEventListener('touchstart', stickStart, { passive: false });
+    joy.addEventListener('touchmove', stickMove, { passive: false });
+    joy.addEventListener('touchend', stickEnd);
+    joy.addEventListener('mousedown', stickStart);
+    window.addEventListener('mousemove', stickMove);
+    window.addEventListener('mouseup', stickEnd);
 
     // ── レイキャスト：本のクリック ──
     const raycaster = new THREE.Raycaster();

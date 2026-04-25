@@ -9509,3 +9509,6 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   font-family: 'DotGothic16', monospace !important;
   letter-spacing: 2px !important;
 }
+
+/* 視線パッド廃止（ドラッグ視点のみ） */
+.lib-look { display: none !important; }
