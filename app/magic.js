@@ -18777,7 +18777,44 @@
       tag: '音楽', color: 0x2080a8, accent: '#40b0d0', placeholder: false,
       action: () => { try { window.openKohSphere && window.openKohSphere({ music: m.id }); } catch {} },
     }));
-    const allBooks = [...people, ...myths, ...gods, ...musics];
+    // 📺 広告本（本棚に混ぜる）
+    const LIB_ADS = [
+      { brand: 'STEINWAY & SONS', tag: '175年の音', accent: '#d4a050', color: 0xd4a050 },
+      { brand: 'YAMAHA Premium', tag: 'CFX Concert Grand', accent: '#a02828', color: 0xa02828 },
+      { brand: 'GENESIS BOOK', tag: 'はじまりの書', accent: '#8868b8', color: 0x8868b8 },
+      { brand: 'IJIN COFFEE', tag: '哲学者ブレンド', accent: '#8a4818', color: 0x8a4818 },
+      { brand: 'KOH RECORDS', tag: 'バッハ全集', accent: '#4080a8', color: 0x4080a8 },
+      { brand: 'SUNTORY HALL', tag: '東京・赤坂', accent: '#a06010', color: 0xa06010 },
+      { brand: 'PANTHEON CULT', tag: '神々の書', accent: '#8050a0', color: 0x8050a0 },
+      { brand: 'LIBRO MUSEUM', tag: '神話の名画展', accent: '#604888', color: 0x604888 },
+      { brand: 'NATSUMI Recital', tag: 'Bach Solo Tour', accent: '#406880', color: 0x406880 },
+      { brand: 'SPHERE TICKETS', tag: '球体音楽堂', accent: '#a06080', color: 0xa06080 },
+      { brand: 'KOSMOS LENS', tag: 'AIグラス新世代', accent: '#40c0a0', color: 0x40c0a0 },
+      { brand: 'ALMA TEA', tag: '読書のお供に', accent: '#888050', color: 0x888050 },
+    ];
+    const ads = [];
+    for (let i = 0; i < 36; i++) {
+      const a = LIB_ADS[i % LIB_ADS.length];
+      ads.push({
+        kind: 'ad', id: 'ad_' + i, name: a.brand, sub: a.tag,
+        tag: '広告', color: a.color, accent: a.accent, placeholder: false, isAd: true,
+        action: () => {
+          // 広告クリック→トースト表示（ダミーリンク）
+          const t = document.createElement('div'); t.className = 'lib-ad-toast';
+          t.textContent = `${a.brand} — ${a.tag}`; document.body.appendChild(t);
+          setTimeout(() => t.remove(), 2000);
+        },
+      });
+    }
+    const allBooks = shuffle([...people, ...myths, ...gods, ...musics, ...ads]);
+    function shuffle(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
 
     // ── オーバーレイ DOM ──
     const ov = document.createElement('div');
@@ -18802,9 +18839,10 @@
         </div>
         <div class="lib-results" id="libResults"></div>
         <div class="lib-foot">
-          <span id="libCount">${allBooks.length}</span> 冊蔵書 ／ クリックして本を開く
+          <span id="libCount">${allBooks.length}</span> 冊蔵書 ／ 中央のレチクルで本を見て、クリック
         </div>
       </div>
+      <div class="lib-controls-hint">W A S D：歩く ／ Shift：早歩き ／ ドラッグ：視線</div>
     `;
     document.body.appendChild(ov);
     requestAnimationFrame(() => ov.classList.add('open'));
@@ -18832,11 +18870,14 @@
     scene.background = new THREE.Color(0x0a0810);
     scene.fog = new THREE.FogExp2(0x0a0608, 0.022);
 
-    const camera = new THREE.PerspectiveCamera(58, W()/H(), 0.1, 200);
-    camera.position.set(0, 4, 18);
-    camera.lookAt(0, 4, 0);
+    const camera = new THREE.PerspectiveCamera(70, W()/H(), 0.1, 300);
+    // 一人称視点：身長 1.7、入口に立つ
+    const PLAYER_EYE = 1.7;
+    camera.position.set(0, PLAYER_EYE, 28);
+    let camYaw = 0, camPitch = 0;
+    const camEuler = new THREE.Euler(0, 0, 0, 'YXZ');
 
-    // 床（大理石風）
+    // 床（大理石風、広い）
     const floorTex = (() => {
       const c = document.createElement('canvas'); c.width = 512; c.height = 512;
       const g = c.getContext('2d');
@@ -18857,129 +18898,172 @@
       tex.repeat.set(4, 4);
       return tex;
     })();
+    // 広いホール 80×60、床
+    const HALL_W = 80, HALL_D = 60;
     const floor = new THREE.Mesh(
-      new THREE.CircleGeometry(20, 64),
-      new THREE.MeshStandardMaterial({ map: floorTex, roughness: 0.6, metalness: 0.2, color: 0x6a5040 })
+      new THREE.PlaneGeometry(HALL_W, HALL_D),
+      new THREE.MeshStandardMaterial({ map: floorTex, roughness: 0.65, metalness: 0.15, color: 0x6a5040 })
     );
     floor.rotation.x = -Math.PI/2;
     scene.add(floor);
-
-    // 天井（ダークグリーン、ゴシック寺院風）
+    // 天井（ヴォルテッド・ゴシック天井）
     const ceiling = new THREE.Mesh(
-      new THREE.CircleGeometry(20, 32),
+      new THREE.PlaneGeometry(HALL_W, HALL_D),
       new THREE.MeshStandardMaterial({ color: 0x0e2a28, roughness: 0.85 })
     );
     ceiling.rotation.x = Math.PI/2;
     ceiling.position.y = 14;
     scene.add(ceiling);
+    // 4枚の壁
+    const wallMat = new THREE.MeshStandardMaterial({ color: 0x281810, roughness: 0.85 });
+    const wN = new THREE.Mesh(new THREE.PlaneGeometry(HALL_W, 14), wallMat);
+    wN.position.set(0, 7, -HALL_D/2); scene.add(wN);
+    const wS = new THREE.Mesh(new THREE.PlaneGeometry(HALL_W, 14), wallMat);
+    wS.position.set(0, 7, HALL_D/2); wS.rotation.y = Math.PI; scene.add(wS);
+    const wE = new THREE.Mesh(new THREE.PlaneGeometry(HALL_D, 14), wallMat);
+    wE.position.set(HALL_W/2, 7, 0); wE.rotation.y = -Math.PI/2; scene.add(wE);
+    const wW = new THREE.Mesh(new THREE.PlaneGeometry(HALL_D, 14), wallMat);
+    wW.position.set(-HALL_W/2, 7, 0); wW.rotation.y = Math.PI/2; scene.add(wW);
 
-    // ── 本棚（円形に8面、各面に5段） ──
-    const SHELVES_PER_RING = 8;
-    const SHELF_RADIUS = 13;
-    const SHELF_RING_Y = [1.0, 3.0, 5.0, 7.5, 9.8]; // 5段
-    const BOOKS_PER_SHELF = Math.ceil(allBooks.length / (SHELVES_PER_RING * SHELF_RING_Y.length));
-    const bookMeshes = []; // 各本: { mesh, book, baseColor, baseEmissive }
-    let bi = 0;
-
-    for (let s = 0; s < SHELVES_PER_RING; s++) {
-      const a = (s / SHELVES_PER_RING) * Math.PI * 2;
-      const cx = Math.cos(a) * SHELF_RADIUS;
-      const cz = Math.sin(a) * SHELF_RADIUS;
-      const facing = a + Math.PI; // 中央を向く
-      // 本棚の枠（暗い木目）
-      const frameMat = new THREE.MeshStandardMaterial({ color: 0x2a1810, roughness: 0.7 });
-      const frame = new THREE.Mesh(new THREE.BoxGeometry(7.0, 11.5, 0.4), frameMat);
-      frame.position.set(cx, 6.0, cz);
-      frame.lookAt(0, 6.0, 0);
+    // 本棚を作る共通関数（双面・5段、長さ可変）
+    const SHELF_Y_LEVELS = [0.6, 2.2, 3.8, 5.4, 7.0]; // 5段、棚高9
+    const BOOK_HEIGHT_AT = 1.4; // 各段の本の高さ
+    const SHELF_DEPTH = 0.9;
+    const bookMeshes = [];
+    function buildShelf(centerX, centerZ, length, rotationY, doubleSided = true) {
+      // 棚本体
+      const frame = new THREE.Mesh(
+        new THREE.BoxGeometry(length, 9, SHELF_DEPTH),
+        new THREE.MeshStandardMaterial({ color: 0x2a1810, roughness: 0.7 })
+      );
+      frame.position.set(centerX, 5.0, centerZ);
+      frame.rotation.y = rotationY;
       scene.add(frame);
-      // 各段の床板
-      SHELF_RING_Y.forEach(y => {
+      // 棚板
+      SHELF_Y_LEVELS.forEach(y => {
         const board = new THREE.Mesh(
-          new THREE.BoxGeometry(6.6, 0.08, 0.45),
+          new THREE.BoxGeometry(length - 0.2, 0.08, SHELF_DEPTH + 0.05),
           new THREE.MeshStandardMaterial({ color: 0x4a2a18, roughness: 0.6 })
         );
-        board.position.set(cx, y - 0.85, cz);
-        board.lookAt(0, y - 0.85, 0);
+        board.position.set(centerX, y, centerZ);
+        board.rotation.y = rotationY;
         scene.add(board);
       });
       // 金縁トリム（上下）
-      [11.6, 0.4].forEach(yy => {
+      [9.4, 0.5].forEach(yy => {
         const trim = new THREE.Mesh(
-          new THREE.BoxGeometry(6.8, 0.15, 0.5),
-          new THREE.MeshStandardMaterial({ color: 0xc8a040, metalness: 0.9, roughness: 0.25, emissive: 0x4a3008, emissiveIntensity: 0.6 })
+          new THREE.BoxGeometry(length + 0.1, 0.15, SHELF_DEPTH + 0.1),
+          new THREE.MeshStandardMaterial({ color: 0xc8a040, metalness: 0.9, roughness: 0.25, emissive: 0x4a3008, emissiveIntensity: 0.5 })
         );
-        trim.position.set(cx, yy, cz);
-        trim.lookAt(0, yy, 0);
+        trim.position.set(centerX, yy, centerZ);
+        trim.rotation.y = rotationY;
         scene.add(trim);
       });
-      // 本を並べる
-      for (let row = 0; row < SHELF_RING_Y.length; row++) {
-        const y = SHELF_RING_Y[row];
-        for (let i = 0; i < BOOKS_PER_SHELF && bi < allBooks.length; i++, bi++) {
-          const book = allBooks[bi];
-          // 本の幅・色は種類によって変わる
-          const w = 0.12 + Math.random() * 0.05;
-          const h = 0.85 + Math.random() * 0.25;
-          const bookGeo = new THREE.BoxGeometry(w, h, 0.4);
-          const baseColor = new THREE.Color(book.color);
-          if (book.placeholder) baseColor.multiplyScalar(0.4);
-          const baseEmissive = new THREE.Color(book.color).multiplyScalar(book.placeholder ? 0.0 : 0.18);
-          const bookMat = new THREE.MeshStandardMaterial({
-            color: baseColor,
-            roughness: 0.5,
-            emissive: baseEmissive,
-            emissiveIntensity: 1.0,
-          });
-          const bMesh = new THREE.Mesh(bookGeo, bookMat);
-          // 棚に並べる位置: 棚の中心(cx,y,cz)から面の左右に展開
-          const localX = -2.8 + (i + 0.5) * (5.6 / BOOKS_PER_SHELF);
-          // 棚の向き（facing=中央方向）に対するローカル座標を world に
-          const tx = cx + Math.cos(facing + Math.PI/2) * localX;
-          const tz = cz + Math.sin(facing + Math.PI/2) * localX;
-          bMesh.position.set(tx, y - 0.4, tz);
-          bMesh.lookAt(0, y - 0.4, 0);
-          // 軽くランダムに前後ずらし
-          bMesh.position.x += (Math.random() - 0.5) * 0.02;
-          bMesh.position.z += (Math.random() - 0.5) * 0.02;
-          bMesh.userData = { book, baseColor, baseEmissive, originalY: bMesh.position.y };
-          scene.add(bMesh);
-          bookMeshes.push(bMesh);
-        }
-      }
+      // 本を並べる（双面なら front/back の両側）
+      const sides = doubleSided ? [1, -1] : [1];
+      const bookSide = SHELF_DEPTH / 2 + 0.21;
+      sides.forEach(side => {
+        SHELF_Y_LEVELS.forEach(y => {
+          const usableLen = length - 0.4;
+          // 本のサイズはランダム → 並べきるだけ並べる
+          let cursor = -usableLen / 2;
+          while (cursor < usableLen / 2 - 0.2 && allBooks.length > 0) {
+            const book = allBooks.shift();
+            const w = 0.14 + Math.random() * 0.06;
+            const h = 1.05 + Math.random() * 0.25;
+            cursor += w / 2;
+            if (cursor > usableLen / 2) break;
+            const bookGeo = new THREE.BoxGeometry(w, h, 0.5);
+            const baseColor = new THREE.Color(book.color);
+            if (book.placeholder) baseColor.multiplyScalar(0.4);
+            const baseEmissive = new THREE.Color(book.color).multiplyScalar(book.placeholder ? 0.0 : (book.isAd ? 0.45 : 0.18));
+            const bookMat = new THREE.MeshStandardMaterial({
+              color: baseColor, roughness: 0.5,
+              emissive: baseEmissive, emissiveIntensity: 1.0,
+            });
+            const bMesh = new THREE.Mesh(bookGeo, bookMat);
+            // ローカル位置：棚の長さ方向に cursor、奥行きに bookSide*side
+            const lx = cursor;
+            const lz = bookSide * side;
+            // 回転考慮でワールド座標
+            bMesh.position.set(
+              centerX + Math.cos(rotationY) * lx + Math.sin(rotationY) * lz,
+              y + h/2 + 0.04,
+              centerZ - Math.sin(rotationY) * lx + Math.cos(rotationY) * lz
+            );
+            bMesh.rotation.y = rotationY + (side > 0 ? 0 : Math.PI);
+            bMesh.userData = { book, baseColor, baseEmissive, originalY: bMesh.position.y };
+            scene.add(bMesh);
+            bookMeshes.push(bMesh);
+            cursor += w / 2 + 0.005;
+          }
+        });
+      });
     }
 
-    // ── 中央の閲覧机 ──
-    const desk = new THREE.Mesh(
-      new THREE.CylinderGeometry(2.5, 2.8, 0.2, 32),
-      new THREE.MeshStandardMaterial({ color: 0x3a2010, roughness: 0.5, metalness: 0.2 })
-    );
-    desk.position.y = 1.0;
-    scene.add(desk);
-    // 緑の机布
-    const cloth = new THREE.Mesh(
-      new THREE.CylinderGeometry(2.2, 2.2, 0.02, 32),
-      new THREE.MeshStandardMaterial({ color: 0x1a4030, roughness: 0.85 })
-    );
-    cloth.position.y = 1.11;
-    scene.add(cloth);
-    // 卓上ランプ（緑笠＋金）
-    const lampStem = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.04, 0.06, 0.5, 8),
-      new THREE.MeshStandardMaterial({ color: 0xc8a040, metalness: 0.9, roughness: 0.3 })
-    );
-    lampStem.position.set(0, 1.45, 0);
-    scene.add(lampStem);
-    const lampShade = new THREE.Mesh(
-      new THREE.ConeGeometry(0.35, 0.35, 16, 1, true),
-      new THREE.MeshStandardMaterial({ color: 0x1a5030, roughness: 0.6, side: THREE.DoubleSide })
-    );
-    lampShade.position.set(0, 1.85, 0);
-    scene.add(lampShade);
-    const lampBulb = new THREE.PointLight(0xfff0c0, 1.4, 12, 1.4);
-    lampBulb.position.set(0, 1.75, 0);
-    scene.add(lampBulb);
+    // 4枚の壁に大きな本棚を配置（壁面、双面じゃなく単面）
+    buildShelf(0, -HALL_D/2 + 0.6, HALL_W - 4, 0, false);            // 北壁
+    buildShelf(0, HALL_D/2 - 0.6, HALL_W - 4, Math.PI, false);        // 南壁
+    buildShelf(-HALL_W/2 + 0.6, 0, HALL_D - 4, Math.PI/2, false);     // 西壁
+    buildShelf(HALL_W/2 - 0.6, 0, HALL_D - 4, -Math.PI/2, false);     // 東壁
+    // 中央のアイル（双面棚×3列、4本ずつ）
+    const aisleZPositions = [-18, -6, 6, 18];
+    const aisleSegmentX = [-26, -13, 0, 13, 26]; // 5本は配列、棚は4本
+    aisleZPositions.forEach((z, ri) => {
+      // 行の偶奇でアイルが揃わないように
+      [[-22, 12], [-7, 12], [8, 12], [23, 12]].forEach(([cx, len]) => {
+        if (Math.abs(cx) < HALL_W/2 - 5 && Math.abs(z) < HALL_D/2 - 5) {
+          buildShelf(cx, z, len, 0, true); // X軸方向、双面
+        }
+      });
+    });
 
-    // ── シャンデリア（中央上空、ゴシック風） ──
+    // ── 閲覧机（4卓を主通路に並べる） ──
+    const deskPositions = [[-12, 0], [-4, 0], [4, 0], [12, 0]];
+    deskPositions.forEach(([dx, dz]) => {
+      const desk = new THREE.Mesh(
+        new THREE.BoxGeometry(3.0, 0.18, 1.6),
+        new THREE.MeshStandardMaterial({ color: 0x3a2010, roughness: 0.5, metalness: 0.2 })
+      );
+      desk.position.set(dx, 0.95, dz); scene.add(desk);
+      // 緑のテーブルクロス
+      const cloth = new THREE.Mesh(
+        new THREE.PlaneGeometry(2.6, 1.3),
+        new THREE.MeshStandardMaterial({ color: 0x1a4030, roughness: 0.85, side: THREE.DoubleSide })
+      );
+      cloth.rotation.x = -Math.PI/2;
+      cloth.position.set(dx, 1.05, dz); scene.add(cloth);
+      // 椅子（4脚）
+      [[-1.2, -1.0], [1.2, -1.0], [-1.2, 1.0], [1.2, 1.0]].forEach(([sx, sz]) => {
+        const ch = new THREE.Mesh(
+          new THREE.BoxGeometry(0.45, 0.5, 0.45),
+          new THREE.MeshStandardMaterial({ color: 0x4a2818, roughness: 0.7 })
+        );
+        ch.position.set(dx + sx, 0.25, dz + sz); scene.add(ch);
+      });
+      // 卓上ランプ（緑笠）
+      const lampStem = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.04, 0.05, 0.4, 8),
+        new THREE.MeshStandardMaterial({ color: 0xc8a040, metalness: 0.9, roughness: 0.3 })
+      );
+      lampStem.position.set(dx, 1.30, dz); scene.add(lampStem);
+      const lampShade = new THREE.Mesh(
+        new THREE.ConeGeometry(0.30, 0.28, 16, 1, true),
+        new THREE.MeshStandardMaterial({ color: 0x1a5030, roughness: 0.6, side: THREE.DoubleSide })
+      );
+      lampShade.position.set(dx, 1.62, dz); scene.add(lampShade);
+      const lampBulb = new THREE.PointLight(0xfff0c0, 0.8, 8, 1.6);
+      lampBulb.position.set(dx, 1.55, dz); scene.add(lampBulb);
+    });
+
+    // ── シャンデリア（複数、ホール上空に配置） ──
+    const chandelier = new THREE.Group();
+    const chandelierBase = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.6, 0.8, 0.3, 16),
+      new THREE.MeshStandardMaterial({ color: 0xc8a040, metalness: 0.95, roughness: 0.2, emissive: 0x4a3008, emissiveIntensity: 0.5 })
+    );
+    chandelier.add(chandelierBase);
+    // 6個のロウソク
     const chandelier = new THREE.Group();
     const chandelierBase = new THREE.Mesh(
       new THREE.CylinderGeometry(0.6, 0.8, 0.3, 16),
@@ -19006,30 +19090,32 @@
       cl.position.copy(candle.position);
       chandelier.add(cl);
     }
-    chandelier.position.set(0, 9.5, 0);
+    chandelier.position.set(0, 11, 0);
     scene.add(chandelier);
+    // 副シャンデリア（4基、ホール各部に）
+    [[-22, 11, -16], [22, 11, -16], [-22, 11, 16], [22, 11, 16]].forEach(([px, py, pz]) => {
+      const c2 = chandelier.clone();
+      c2.position.set(px, py, pz);
+      scene.add(c2);
+    });
 
-    // ── アーチ装飾（柱）──
-    for (let i = 0; i < SHELVES_PER_RING; i++) {
-      const a = ((i + 0.5) / SHELVES_PER_RING) * Math.PI * 2;
-      const cx = Math.cos(a) * (SHELF_RADIUS - 0.5);
-      const cz = Math.sin(a) * (SHELF_RADIUS - 0.5);
-      const col = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.25, 0.3, 12, 12),
-        new THREE.MeshStandardMaterial({ color: 0x3a2818, roughness: 0.7 })
-      );
-      col.position.set(cx, 6.0, cz);
-      scene.add(col);
-    }
+    // ── 柱（4隅と中央列） ──
+    const colMat = new THREE.MeshStandardMaterial({ color: 0x3a2818, roughness: 0.7 });
+    [[-HALL_W/2 + 1.5, -HALL_D/2 + 1.5], [HALL_W/2 - 1.5, -HALL_D/2 + 1.5],
+     [-HALL_W/2 + 1.5, HALL_D/2 - 1.5], [HALL_W/2 - 1.5, HALL_D/2 - 1.5]].forEach(([cx, cz]) => {
+      const col = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.6, 14, 12), colMat);
+      col.position.set(cx, 7.0, cz); scene.add(col);
+    });
 
     // ── 環境光・直接光 ──
-    scene.add(new THREE.AmbientLight(0xfff0d8, 0.32));
+    scene.add(new THREE.AmbientLight(0xfff0d8, 0.42));
     scene.add(new THREE.HemisphereLight(0xffe8c0, 0x281a14, 0.55));
-    // 4灯のスポット（隅から本棚を照らす）
-    [[12, 8, 12], [-12, 8, 12], [12, 8, -12], [-12, 8, -12]].forEach(([x, y, z]) => {
-      const sl = new THREE.SpotLight(0xffe0a0, 1.0, 30, Math.PI / 4, 0.5, 1.6);
+    // 主要スポット（複数、ホール全体を満遍なく）
+    [[-30, 10, -22], [30, 10, -22], [-30, 10, 22], [30, 10, 22],
+     [0, 10, -25], [0, 10, 25]].forEach(([x, y, z]) => {
+      const sl = new THREE.SpotLight(0xffe0a0, 0.9, 40, Math.PI / 3.5, 0.5, 1.6);
       sl.position.set(x, y, z);
-      sl.target.position.set(0, 4, 0);
+      sl.target.position.set(x * 0.3, 3, z * 0.3);
       scene.add(sl); scene.add(sl.target);
     });
 
@@ -19058,47 +19144,110 @@
     }));
     scene.add(dust);
 
+    // ── 一人称コントロール（WASD移動 + ドラッグで視点回転） ──
+    const keys = { w: false, a: false, s: false, d: false, shift: false };
+    const PLAYER_SPEED = 5.5; // m/s
+    const RUN_MUL = 1.8;
+    document.addEventListener('keydown', e => {
+      if (!ov.isConnected) return;
+      const tgt = e.target;
+      if (tgt && (tgt.tagName === 'INPUT' || tgt.tagName === 'TEXTAREA')) return;
+      const k = e.key.toLowerCase();
+      if (k === 'w' || k === 'arrowup') keys.w = true;
+      if (k === 's' || k === 'arrowdown') keys.s = true;
+      if (k === 'a' || k === 'arrowleft') keys.a = true;
+      if (k === 'd' || k === 'arrowright') keys.d = true;
+      if (k === 'shift') keys.shift = true;
+    });
+    document.addEventListener('keyup', e => {
+      const k = e.key.toLowerCase();
+      if (k === 'w' || k === 'arrowup') keys.w = false;
+      if (k === 's' || k === 'arrowdown') keys.s = false;
+      if (k === 'a' || k === 'arrowleft') keys.a = false;
+      if (k === 'd' || k === 'arrowright') keys.d = false;
+      if (k === 'shift') keys.shift = false;
+    });
+    // ドラッグで視点
+    let dragging = false;
+    let dragX = 0, dragY = 0;
+    let mouseDown = false, mouseDragged = false;
+    cv.addEventListener('pointerdown', e => {
+      dragging = true; mouseDown = true; mouseDragged = false;
+      dragX = e.clientX; dragY = e.clientY;
+    });
+    window.addEventListener('pointerup', e => {
+      // ドラッグでなくクリックなら本拾い
+      if (mouseDown && !mouseDragged) tryPickBook(e);
+      dragging = false; mouseDown = false;
+    });
+    window.addEventListener('pointermove', e => {
+      if (dragging) {
+        const dx = e.clientX - dragX;
+        const dy = e.clientY - dragY;
+        if (Math.abs(dx) + Math.abs(dy) > 4) mouseDragged = true;
+        camYaw -= dx * 0.0035;
+        camPitch -= dy * 0.0030;
+        camPitch = Math.max(-1.0, Math.min(1.0, camPitch));
+        dragX = e.clientX; dragY = e.clientY;
+      }
+    });
+    // モバイル：仮想ジョイスティック
+    const joy = document.createElement('div');
+    joy.className = 'lib-joy';
+    joy.innerHTML = '<div class="lib-joy-knob" id="libJoyKnob"></div>';
+    ov.appendChild(joy);
+    const joyKnob = joy.querySelector('#libJoyKnob');
+    let joyActive = false, joyDX = 0, joyDY = 0;
+    const JOY_R = 50;
+    joy.addEventListener('pointerdown', e => {
+      e.preventDefault(); e.stopPropagation();
+      joyActive = true;
+    });
+    joy.addEventListener('pointermove', e => {
+      if (!joyActive) return;
+      e.preventDefault();
+      const r = joy.getBoundingClientRect();
+      const cx = r.left + r.width/2, cy = r.top + r.height/2;
+      let dx = e.clientX - cx, dy = e.clientY - cy;
+      const len = Math.hypot(dx, dy);
+      if (len > JOY_R) { dx = dx/len*JOY_R; dy = dy/len*JOY_R; }
+      joyDX = dx / JOY_R; joyDY = dy / JOY_R;
+      joyKnob.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
+    });
+    joy.addEventListener('pointerup', () => {
+      joyActive = false; joyDX = 0; joyDY = 0;
+      joyKnob.style.transform = 'translate(-50%, -50%)';
+    });
+    joy.addEventListener('pointercancel', () => {
+      joyActive = false; joyDX = 0; joyDY = 0;
+      joyKnob.style.transform = 'translate(-50%, -50%)';
+    });
+
     // ── レイキャスト：本のクリック ──
     const raycaster = new THREE.Raycaster();
     const pointer = new THREE.Vector2();
     let hovered = null;
-    function onPointerMove(e) {
+    function tryPickBook(e) {
       const rect = cv.getBoundingClientRect();
       pointer.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       pointer.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      raycaster.setFromCamera(pointer, camera);
+      const hits = raycaster.intersectObjects(bookMeshes);
+      if (hits[0]) {
+        const b = hits[0].object;
+        if (!b.userData.book.placeholder) {
+          b.material.emissiveIntensity = 4.0;
+          setTimeout(() => { b.userData.book.action(); close(); }, 350);
+        }
+      }
     }
     function pickBook() {
+      // 中央レチクル方向をピック（一人称用）
+      pointer.x = 0; pointer.y = 0;
       raycaster.setFromCamera(pointer, camera);
       const hits = raycaster.intersectObjects(bookMeshes);
       return hits[0] ? hits[0].object : null;
     }
-    cv.addEventListener('pointermove', onPointerMove);
-    cv.addEventListener('click', () => {
-      const b = pickBook();
-      if (b && !b.userData.book.placeholder) {
-        // 演出：本が浮かんで開く前に少し光る
-        b.material.emissiveIntensity = 4.0;
-        setTimeout(() => {
-          b.userData.book.action();
-          close();
-        }, 350);
-      }
-    });
-
-    // ── カメラ自動回転＋検索フォーカス ──
-    let camAngle = 0;
-    let manualMode = false;
-    let dragStartX = 0;
-    let dragStartAngle = 0;
-    let isDragging = false;
-    cv.addEventListener('pointerdown', (e) => {
-      isDragging = true; manualMode = true;
-      dragStartX = e.clientX; dragStartAngle = camAngle;
-    });
-    window.addEventListener('pointerup', () => { isDragging = false; });
-    window.addEventListener('pointermove', (e) => {
-      if (isDragging) camAngle = dragStartAngle - (e.clientX - dragStartX) * 0.005;
-    });
 
     // ── 検索ロジック ──
     let curTab = 'all';
@@ -19179,21 +19328,67 @@
     applyFilter();
 
     // ── アニメーション ──
+    let prevTs = 0;
     function tick(ts) {
       if (!ov.isConnected) return;
       const t = ts / 1000;
-      if (!manualMode) camAngle = t * 0.06;
-      camera.position.x = Math.sin(camAngle) * 11;
-      camera.position.z = Math.cos(camAngle) * 11;
-      camera.position.y = 4 + Math.sin(t * 0.4) * 0.3;
-      camera.lookAt(0, 4, 0);
+      const dt = Math.min(0.05, (ts - prevTs) / 1000 || 0.016); prevTs = ts;
+      // カメラ向き適用
+      camEuler.set(camPitch, camYaw, 0, 'YXZ');
+      camera.quaternion.setFromEuler(camEuler);
+      // 移動入力（WASD or ジョイスティック）
+      let moveX = 0, moveZ = 0;
+      if (keys.w) moveZ -= 1;
+      if (keys.s) moveZ += 1;
+      if (keys.a) moveX -= 1;
+      if (keys.d) moveX += 1;
+      if (joyDX !== 0 || joyDY !== 0) { moveX += joyDX; moveZ += joyDY; }
+      const ml = Math.hypot(moveX, moveZ);
+      if (ml > 0) {
+        moveX /= ml; moveZ /= ml;
+        const speed = PLAYER_SPEED * (keys.shift ? RUN_MUL : 1) * dt;
+        // カメラ向きで前進方向を決定（Y回転のみ）
+        const cosY = Math.cos(camYaw), sinY = Math.sin(camYaw);
+        const wx = moveX * cosY - moveZ * sinY;
+        const wz = moveX * sinY + moveZ * cosY;
+        // 衝突回避：ホール境界 + 本棚を避ける（本棚は X 方向長 12 で Z 軸位置 -18,-6,6,18）
+        let nx = camera.position.x + wx * speed;
+        let nz = camera.position.z + wz * speed;
+        // 壁
+        nx = Math.max(-HALL_W/2 + 1, Math.min(HALL_W/2 - 1, nx));
+        nz = Math.max(-HALL_D/2 + 2, Math.min(HALL_D/2 - 2, nz));
+        // 棚（4列のZ位置に対し +/- 1.0以内なら入れない）
+        for (const sz of aisleZPositions) {
+          if (Math.abs(nz - sz) < 1.0) {
+            // 棚の長さ範囲内なら戻す
+            // 各セグメント中心: -22, -7, 8, 23, 長さ 12 → 半長 6
+            for (const cx of [-22, -7, 8, 23]) {
+              if (nx > cx - 6.5 && nx < cx + 6.5) {
+                nz = camera.position.z; // Z移動拒否
+                break;
+              }
+            }
+          }
+        }
+        // 机（複数、各机 x=±12,±4, z=0, 半幅 1.7）
+        for (const [dx, dz] of deskPositions) {
+          if (Math.abs(nx - dx) < 1.8 && Math.abs(nz - dz) < 1.2) {
+            // 机の手前で止まる
+            nx = camera.position.x; nz = camera.position.z;
+            break;
+          }
+        }
+        camera.position.x = nx;
+        camera.position.z = nz;
+      }
+      camera.position.y = PLAYER_EYE + Math.sin(t * 4) * (ml > 0 ? 0.04 : 0); // 歩行時の僅かな上下
       // ハイライト本がふわっと浮く
       bookMeshes.forEach(m => {
         const target = (highlighted === m) ? m.userData.originalY + 0.08 : m.userData.originalY;
         m.position.y += (target - m.position.y) * 0.15;
       });
-      // ホバー
-      if (!isDragging) {
+      // ホバー（中央レチクル方向、ドラッグ中以外）
+      if (!dragging) {
         const h = pickBook();
         if (h !== hovered) {
           if (hovered) hovered.scale.set(1, 1, 1);
