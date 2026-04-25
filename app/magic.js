@@ -12664,16 +12664,39 @@
         const soulLight = new THREE.PointLight(0xa0c8ff, 1.4, 8, 1.5);
         soul.add(soulLight);
         // 軌跡パーティクル
-        const trailGeo = new THREE.BufferGeometry();
-        const TRAIL = 40;
-        const trailPos = new Float32Array(TRAIL * 3);
-        for (let i = 0; i < TRAIL; i++) { trailPos[i*3]=0; trailPos[i*3+1]=0; trailPos[i*3+2]=0; }
-        trailGeo.setAttribute('position', new THREE.BufferAttribute(trailPos, 3));
-        const trail = new THREE.Points(trailGeo, new THREE.PointsMaterial({
-          color: 0xa0c8ff, size: 0.15, transparent: true, opacity: 0.7,
+        // 🌟 軌跡: 高品質なスプライト光のリボン
+        const dotTex = (() => {
+          const c = document.createElement('canvas'); c.width = 128; c.height = 128;
+          const g = c.getContext('2d');
+          const grd = g.createRadialGradient(64, 64, 0, 64, 64, 64);
+          grd.addColorStop(0, 'rgba(255,255,255,1)');
+          grd.addColorStop(0.3, 'rgba(220,200,255,0.85)');
+          grd.addColorStop(0.6, 'rgba(120,140,200,0.4)');
+          grd.addColorStop(1, 'rgba(60,80,140,0)');
+          g.fillStyle = grd; g.fillRect(0, 0, 128, 128);
+          return new THREE.CanvasTexture(c);
+        })();
+        const TRAIL = 28;
+        const trailDots = [];
+        const trailMat = new THREE.SpriteMaterial({
+          map: dotTex, color: 0xc8d8ff,
+          transparent: true, opacity: 0.7,
           depthWrite: false, blending: THREE.AdditiveBlending, fog: false,
-        }));
-        scene.add(trail);
+        });
+        for (let i = 0; i < TRAIL; i++) {
+          const d = new THREE.Sprite(trailMat.clone());
+          // 後ろほど小さく薄く
+          const f = 1 - (i / TRAIL);
+          d.scale.set(0.45 * f, 0.45 * f, 1);
+          d.material.opacity = 0.7 * f;
+          d.position.set(0, 1.8, 0);
+          // 各ドットの色を少しずつ揺らす（虹色の魂）
+          const hue = (i * 14) % 360;
+          d.userData = { age: 0, baseHue: hue };
+          scene.add(d);
+          trailDots.push(d);
+        }
+        const trail = { dots: trailDots, head: 0 };
         // 初期位置（中央、本のリングのすぐ内側）
         soul.position.set(0, 1.8, 0);
         scene.add(soul);
@@ -12682,7 +12705,6 @@
         scene.userData.soulMid = mid;
         scene.userData.soulAura = aura;
         scene.userData.soulTrail = trail;
-        scene.userData.soulTrailIdx = 0;
         scene.userData.zoomOutT = 0; // 0→1 でカメラがズームアウト
       }
 
@@ -12770,7 +12792,7 @@
         buildScene(item.key);
         // 🚪 入口（南側）から神殿に入った視点で配置
         // ringR=12 で台座が円形配置 → 入口は z=14 付近、奥（中心側）を見る
-        camera.position.set(0, 1.6, 14); yaw = Math.PI;
+        camera.position.set(0, 1.6, 14); yaw = 0; // 入口から中央を向く
       } else if (item.type === 'god') {
         showGodModal(item, currentZone);
       } else if (item.type === 'tale') {
@@ -12868,15 +12890,30 @@
           scene.userData.soulAura.scale.set(auraS, auraS, 1);
           scene.userData.soulAura.material.opacity = 0.7 + Math.sin(t * 1.8) * 0.2;
         }
-        // 軌跡更新
-        if (scene.userData.soulTrail) {
-          const tr = scene.userData.soulTrail.geometry.attributes.position;
-          const idx = scene.userData.soulTrailIdx % 40;
-          tr.array[idx*3] = soul.position.x;
-          tr.array[idx*3+1] = soul.position.y;
-          tr.array[idx*3+2] = soul.position.z;
-          tr.needsUpdate = true;
-          scene.userData.soulTrailIdx++;
+        // 🌟 軌跡更新（スプライトリボン式）
+        if (scene.userData.soulTrail && scene.userData.soulTrail.dots) {
+          const tr = scene.userData.soulTrail;
+          // 5フレームに1回だけ新しい点を打つ（重複防止）
+          tr.head = (tr.head + 1) % tr.dots.length;
+          const head = tr.dots[tr.head];
+          head.position.set(
+            soul.position.x + (Math.random()-0.5) * 0.05,
+            soul.position.y + (Math.random()-0.5) * 0.05,
+            soul.position.z + (Math.random()-0.5) * 0.05
+          );
+          head.userData.age = 0;
+          // 全ドットを年齢に応じてフェードアウト
+          tr.dots.forEach((d, i) => {
+            d.userData.age += 0.016;
+            const a = d.userData.age;
+            const fade = Math.max(0, 1 - a * 0.5); // 約2秒で消える
+            d.material.opacity = fade * 0.85;
+            const s = 0.45 * fade;
+            d.scale.set(s, s, 1);
+            // ふわふわと上昇 + 横ゆらぎ
+            d.position.y += 0.005;
+            d.position.x += Math.sin(a * 4 + i) * 0.003;
+          });
         }
         // カメラ: 三人称（魂の後ろ上から） + 初期ズームアウト演出
         scene.userData.zoomOutT = Math.min(1, scene.userData.zoomOutT + 0.012);
@@ -13147,7 +13184,7 @@
             currentZone = it.key;
             try { buildScene(it.key); } catch (e) { console.warn('buildScene failed', e); }
             // 🚪 入口から神殿に入った視点
-            camera.position.set(0, 1.6, 14); yaw = Math.PI;
+            camera.position.set(0, 1.6, 14); yaw = 0; // 入口から中央を向く
             flash.style.opacity = '0';
             setTimeout(() => flash.remove(), 500);
           }, 450);
@@ -14942,21 +14979,24 @@
     pedRim.position.y = 1.32;
     pedestalG.add(pedRim);
 
-    // 開かれた絵本（V字に開いた2ページ + 表紙）
+    // 開かれた絵本（V字に開いた2ページ）— 台座の少し上に浮く
     const bookOpen = new THREE.Group();
+    // ページが少し読みやすい角度（前傾15度）+ 高さ 2.5 で浮遊
+    const PAGE_BASE_Y = 0.0; // bookOpen.position.y で制御
     // 左ページ
     const leftPage = new THREE.Mesh(
       new THREE.PlaneGeometry(0.85, 1.1),
       new THREE.MeshStandardMaterial({ color: 0xfdf4d8, roughness: 0.92, side: THREE.DoubleSide })
     );
-    leftPage.rotation.x = -Math.PI / 2;
+    // 前傾 + 中心軸でV字
+    leftPage.rotation.x = -Math.PI / 2 + 0.25;
     leftPage.rotation.z = -0.18;
-    leftPage.position.set(-0.42, 1.36, 0);
+    leftPage.position.set(-0.42, 0, 0);
     bookOpen.add(leftPage);
     // 右ページ
     const rightPage = leftPage.clone();
     rightPage.rotation.z = 0.18;
-    rightPage.position.set(0.42, 1.36, 0);
+    rightPage.position.set(0.42, 0, 0);
     bookOpen.add(rightPage);
     // 左ページの装飾（タイトル）
     const lpC = document.createElement('canvas'); lpC.width = 256; lpC.height = 320;
@@ -15008,11 +15048,32 @@
       new THREE.BoxGeometry(0.05, 0.08, 1.1),
       new THREE.MeshStandardMaterial({ color: 0x4a2810, roughness: 0.7 })
     );
-    spine.position.set(0, 1.34, 0);
+    spine.position.set(0, 0, 0);
     bookOpen.add(spine);
     // 本のグループにマーキング
     bookOpen.userData.isOpenBook = true;
+    // 🪶 本は台座から浮く: 高さ 2.6（台座頂点 y=1.32 の上に 1.3 浮遊）
+    bookOpen.position.set(0, 2.6, 0);
     pedestalG.add(bookOpen);
+
+    // 本の下に光のドット（浮遊感を強調）
+    const bookDotTex = (() => {
+      const c = document.createElement('canvas'); c.width = 64; c.height = 64;
+      const g = c.getContext('2d');
+      const grd = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+      grd.addColorStop(0, 'rgba(255,232,160,0.9)');
+      grd.addColorStop(1, 'rgba(255,232,160,0)');
+      g.fillStyle = grd; g.fillRect(0, 0, 64, 64);
+      return new THREE.CanvasTexture(c);
+    })();
+    const bookGlow = new THREE.Sprite(new THREE.SpriteMaterial({
+      map: bookDotTex, transparent: true, opacity: 0.6,
+      depthWrite: false, blending: THREE.AdditiveBlending,
+    }));
+    bookGlow.scale.set(2.0, 0.4, 1);
+    bookGlow.position.set(0, 2.55, 0); // 本の真下
+    pedestalG.add(bookGlow);
+    pedestalG.userData.bookGlow = bookGlow;
 
     // 上から照らすスポットライト
     const pedLight = new THREE.PointLight(0xfff0c0, 1.4, 8, 1.5);
@@ -15625,13 +15686,14 @@
         info.textContent = W_DATA.theme + '　／　近づくとカードが回ります';
       }
 
-      // 📖 中央の絵本台座: 静かに脈動 + プレイヤーが近いと光る
+      // 📖 中央の絵本台座: 浮遊 + 揺らぎ + 近づくと光る
       const ob = scene.userData.bookOpenAnim;
       if (ob) {
+        // 上下にふわふわ + ゆっくり回転
+        ob.position.y = 2.6 + Math.sin(t * 0.8) * 0.12;
         ob.rotation.y = Math.sin(t * 0.3) * 0.08;
-        // 距離計算（カメラから台座中心まで）
+        ob.rotation.x = Math.sin(t * 0.5) * 0.03;
         const pdist = Math.hypot(camera.position.x, camera.position.z);
-        // 1.8 以内で「読む」プロンプト
         if (pdist < 2.5) {
           info.textContent = `📖 タップで「${book.title}」を読む`;
         }
