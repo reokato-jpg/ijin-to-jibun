@@ -14254,14 +14254,14 @@
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     renderer.setSize(W(), H());
     if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 0.85; // 抑える
+    renderer.toneMappingExposure = 1.15;
     if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
     stage.appendChild(renderer.domElement);
 
     const scene = new THREE.Scene();
     const moodColor = new THREE.Color(config.music.mood);
-    scene.background = new THREE.Color(0x010108);
-    scene.fog = new THREE.FogExp2(0x020110, 0.022); // 少し濃くして暗い包まれる感
+    scene.background = new THREE.Color(0x0a0820);
+    scene.fog = new THREE.FogExp2(0x140a30, 0.013);
 
     // 🌐 巨大な内側球体（背景＋音楽の色）
     const sphereTex = (() => {
@@ -14335,10 +14335,9 @@
           vec3 nebula = mix(uMood2, uMood, band);
           // ハイライト（明るい筋）
           float bright = pow(n2, 3.0) * 1.5;
-          vec3 col = stars * 0.45 + nebula * 0.35 + uMood * bright * 0.18;
+          vec3 col = stars * 0.85 + nebula * 0.55 + uMood * bright * 0.32;
           float dist = abs(uv.y - 0.5) * 2.0;
-          col *= mix(0.5, 1.0, dist);
-          col *= 0.55;
+          col *= mix(0.75, 1.25, dist);
           // ━━━ プラネタリウムモード ━━━
           if (uMode > 0.5 && uMode < 1.5) {
             // 星空がはっきり、星座的な明るい点
@@ -14788,16 +14787,23 @@
     }
     scene.userData.orchestra = orchestra;
 
-    // ステージライト（暖色のダウンライト、控えめ）
-    const stageLight = new THREE.SpotLight(0xfff0c0, 2.0, 18, Math.PI/4, 0.5, 1.5);
+    // ステージライト（暖色のダウンライト）
+    const stageLight = new THREE.SpotLight(0xfff0c0, 4.5, 22, Math.PI/3.5, 0.5, 1.5);
     stageLight.position.set(0, 14, 0);
     stageLight.target.position.set(0, 0, 0);
     scene.add(stageLight);
     scene.add(stageLight.target);
     // 中央のシャンデリア光
-    const centerGlow = new THREE.PointLight(moodColor, 0.4, 30, 1.5);
+    const centerGlow = new THREE.PointLight(moodColor, 1.2, 40, 1.5);
     centerGlow.position.set(0, 8, 0);
     scene.add(centerGlow);
+    // 観客席を照らす補助光（4灯、温かい）
+    for (let i = 0; i < 4; i++) {
+      const a = (i / 4) * Math.PI * 2;
+      const fill = new THREE.PointLight(0xffd8a0, 0.8, 25, 1.6);
+      fill.position.set(Math.cos(a) * 18, 5, Math.sin(a) * 18);
+      scene.add(fill);
+    }
 
     // 🎫 観客席（10列の同心円、1000席、InstancedMeshで高速化）
     const SEAT_PER_ROW = config.seatPerRow || [40, 56, 72, 88, 104, 120, 136, 144, 152, 88];
@@ -14942,9 +14948,9 @@
     const myY = myRow * 0.45 + 1.3; // 段差込みの座高
     const myZ = Math.sin(myAngle) * (myRadius - 0.3);
 
-    // 環境光（暗いコンサート会場）
-    scene.add(new THREE.AmbientLight(0x14101e, 0.5));
-    scene.add(new THREE.HemisphereLight(0x2a2840, 0x05030a, 0.3));
+    // 環境光（コンサート会場、見える明るさ）
+    scene.add(new THREE.AmbientLight(0x4a4068, 0.9));
+    scene.add(new THREE.HemisphereLight(0x6a6a90, 0x14081e, 0.7));
 
     // 🎚 モード切替
     const modes = {
@@ -15367,9 +15373,9 @@
         composer.addPass(new ADDONS.RenderPass(scene, camera));
         const bloom = new ADDONS.UnrealBloomPass(
           new THREE.Vector2(W(), H()),
-          0.32, // strength（控えめに）
-          0.5,  // radius
-          0.78  // threshold（明るい部分だけ滲ませる）
+          0.55, // strength
+          0.55, // radius
+          0.55  // threshold（中程度の明るさで滲む）
         );
         composer.addPass(bloom);
         if (ADDONS.OutputPass) composer.addPass(new ADDONS.OutputPass());
