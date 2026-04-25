@@ -14284,7 +14284,9 @@
         uMood: { value: new THREE.Color(config.music.mood) },
         uMood2: { value: new THREE.Color(config.music.mood).multiplyScalar(0.4) },
         uTex: { value: sphereTex },
-        uMode: { value: 0.0 }, // 0=concert / 1=planetarium / 2=cosmos
+        uMode: { value: 0.0 },
+        uBass: { value: 0.0 },   // 0-1 の低音強度
+        uTreb: { value: 0.0 },   // 0-1 の高音強度
       },
       vertexShader: `
         varying vec3 vWorld;
@@ -14886,11 +14888,54 @@
       });
     });
 
-    // 🎵 音楽再生
+    // 🎵 音楽再生 + 🔬 周波数解析（音に反応する世界）
     const audio = new Audio(config.music.src);
+    audio.crossOrigin = 'anonymous';
     audio.loop = true;
-    audio.volume = 0.65;
-    audio.play().catch(() => { kohToast('音楽の再生がブロックされました。タップしてください'); });
+    audio.volume = 0.7;
+    let audioCtx = null, analyser = null, freqData = null;
+    function setupAudioAnalyser() {
+      if (audioCtx) return;
+      try {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const source = audioCtx.createMediaElementSource(audio);
+        analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 256;
+        analyser.smoothingTimeConstant = 0.78;
+        source.connect(analyser);
+        analyser.connect(audioCtx.destination);
+        freqData = new Uint8Array(analyser.frequencyBinCount);
+        // 🎚 リバーブ（コンサートホール感）
+        try {
+          const conv = audioCtx.createConvolver();
+          // 簡易IR: 短いノイズを指数減衰で擬似ホール残響に
+          const sr = audioCtx.sampleRate;
+          const len = sr * 2.2; // 2.2秒
+          const ir = audioCtx.createBuffer(2, len, sr);
+          for (let ch = 0; ch < 2; ch++) {
+            const d = ir.getChannelData(ch);
+            for (let i = 0; i < len; i++) {
+              const t = i / len;
+              d[i] = (Math.random() * 2 - 1) * Math.pow(1 - t, 2.2);
+            }
+          }
+          conv.buffer = ir;
+          // ドライ50% / ウェット30% (簡易ミックス)
+          const wetGain = audioCtx.createGain(); wetGain.gain.value = 0.28;
+          source.connect(conv); conv.connect(wetGain); wetGain.connect(audioCtx.destination);
+        } catch (e) { /* リバーブ失敗してもOK */ }
+      } catch (e) { console.warn('audio analyser failed', e); }
+    }
+    audio.addEventListener('play', setupAudioAnalyser, { once: true });
+    audio.play().then(() => setupAudioAnalyser()).catch(() => {
+      kohToast('音楽の再生にタップが必要です');
+      const tapStart = () => {
+        audio.play().catch(() => {});
+        setupAudioAnalyser();
+        renderer.domElement.removeEventListener('click', tapStart);
+      };
+      renderer.domElement.addEventListener('click', tapStart, { once: true });
+    });
 
     // === カメラ（席に固定、首回し — VRパッド級に滑らか） ===
     const camera = new THREE.PerspectiveCamera(70, W()/H(), 0.1, 200);
@@ -14983,6 +15028,58 @@
       }, 500);
     });
 
+    // 🌫 浮遊する塵（光に照らされて見える、空気感の核心）
+    const DUST_N = 600;
+    const dustPos = new Float32Array(DUST_N * 3);
+    for (let i = 0; i < DUST_N; i++) {
+      dustPos[i*3]   = (Math.random() - 0.5) * 30;
+      dustPos[i*3+1] = Math.random() * 18 - 2;
+      dustPos[i*3+2] = (Math.random() - 0.5) * 30;
+    }
+    const dustGeo = new THREE.BufferGeometry();
+    dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPos, 3));
+    const dustTex = (() => {
+      const c = document.createElement('canvas'); c.width = 64; c.height = 64;
+      const g = c.getContext('2d');
+      const grd = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+      grd.addColorStop(0, 'rgba(255,250,230,1)');
+      grd.addColorStop(0.4, 'rgba(255,232,180,0.5)');
+      grd.addColorStop(1, 'rgba(255,200,140,0)');
+      g.fillStyle = grd; g.fillRect(0, 0, 64, 64);
+      return new THREE.CanvasTexture(c);
+    })();
+    const dust = new THREE.Points(dustGeo, new THREE.PointsMaterial({
+      map: dustTex, size: 0.18, transparent: true, opacity: 0.55,
+      blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true,
+      color: 0xfff8e0,
+    }));
+    scene.add(dust);
+
+    // ☀ 偽 God Rays（ステージ上から差す光柱、Sprite + アディティブ）
+    const rayTex = (() => {
+      const c = document.createElement('canvas'); c.width = 128; c.height = 256;
+      const g = c.getContext('2d');
+      const grd = g.createLinearGradient(0, 0, 0, 256);
+      grd.addColorStop(0, 'rgba(255,238,180,0)');
+      grd.addColorStop(0.5, 'rgba(255,238,180,0.55)');
+      grd.addColorStop(1, 'rgba(255,238,180,0)');
+      g.fillStyle = grd;
+      // 中央に集中
+      g.fillRect(48, 0, 32, 256);
+      const grd2 = g.createRadialGradient(64, 128, 0, 64, 128, 64);
+      grd2.addColorStop(0, 'rgba(255,238,180,0.4)');
+      grd2.addColorStop(1, 'rgba(255,238,180,0)');
+      g.fillStyle = grd2; g.fillRect(0, 0, 128, 256);
+      return new THREE.CanvasTexture(c);
+    })();
+    const godRay = new THREE.Sprite(new THREE.SpriteMaterial({
+      map: rayTex, transparent: true, opacity: 0.55,
+      depthWrite: false, blending: THREE.AdditiveBlending, fog: false,
+    }));
+    godRay.scale.set(8, 14, 1);
+    godRay.position.set(0, 7, 0);
+    scene.add(godRay);
+
     // ✨ Bloom ポストプロセス（光が滲む幻想的な見た目）
     let composer = null;
     try {
@@ -15022,7 +15119,8 @@
 
     const t0 = performance.now();
     let lastT = t0;
-    const _q = new THREE.Quaternion();
+    let bassS = 0, midS = 0, trebS = 0; // smoothed
+    let prevBass = 0;
     function animate() {
       if (!running) return;
       const now = performance.now();
@@ -15030,13 +15128,34 @@
       lastT = now;
       const t = (now - t0) / 1000;
 
-      // 🪑 座っている感: 呼吸 + 微妙な体重移動
+      // 🔊 音楽の周波数解析 → 低音/中音/高音
+      let bass = 0, mid = 0, treb = 0;
+      if (analyser && freqData) {
+        analyser.getByteFrequencyData(freqData);
+        // 0-7: 低音、8-31: 中音、32-127: 高音
+        for (let i = 0; i < 8; i++) bass += freqData[i];
+        for (let i = 8; i < 32; i++) mid += freqData[i];
+        for (let i = 32; i < freqData.length; i++) treb += freqData[i];
+        bass /= (8 * 255);
+        mid  /= (24 * 255);
+        treb /= ((freqData.length - 32) * 255);
+      }
+      // スムージング
+      bassS += (bass - bassS) * 0.25;
+      midS  += (mid - midS) * 0.18;
+      trebS += (treb - trebS) * 0.30;
+
+      // 🪑 座っている感: 呼吸 + 微妙な体重移動 + 低音アタックのカメラ揺れ
       const breath = Math.sin(t * 1.6) * 0.012;
       const bob = Math.sin(t * 0.85) * 0.005;
+      // 低音アタック（attack のみ拾う）
+      const kick = Math.max(0, bassS - prevBass);
+      prevBass = bassS * 0.85;
+      const shake = kick * 0.18;
       camera.position.set(
-        myX + Math.sin(t * 0.5) * 0.006,
-        myY + breath + bob,
-        myZ + Math.cos(t * 0.4) * 0.005
+        myX + Math.sin(t * 0.5) * 0.006 + (Math.random() - 0.5) * shake,
+        myY + breath + bob + (Math.random() - 0.5) * shake,
+        myZ + Math.cos(t * 0.4) * 0.005 + (Math.random() - 0.5) * shake
       );
       // 🎮 バーチャルパッド入力（パッドの傾きで yawT/pitchT が連続的に動く）
       if (vpadActive && (vpadDX !== 0 || vpadDY !== 0)) {
@@ -15065,20 +15184,37 @@
       _euler.set(pitch, yaw, 0);
       camera.quaternion.setFromEuler(_euler);
 
-      // 指揮者のタクト
-      if (scene.userData.baton) {
-        scene.userData.baton.rotation.z = 0.3 + Math.sin(t * 2.5) * 0.6;
-      }
+      // 指揮者のタクト（音楽連動版が下にある）
       // オーケストラの微動
       scene.userData.orchestra.forEach((p, i) => {
         if (p.head) p.head.position.y = 1.18 + Math.sin(t * 1.2 + i * 0.5) * 0.02;
       });
-      // 観客の微動（呼吸）— InstancedMesh では省略（1000人だと毎フレ更新は重い）
-      centerGlow.intensity = 1.0 + Math.sin(t * 1.4) * 0.3;
-      particles.rotation.y += 0.0008;
+      // 観客の微動 — InstancedMesh では省略（1000人だと毎フレ更新は重い）
+      // 🎵 音楽連動: 中央光・ステージ光・Bloom強度
+      centerGlow.intensity = 0.4 + bassS * 1.2 + midS * 0.4;
+      stageLight.intensity = 2.0 + bassS * 4.0 + midS * 1.5;
+      if (composer && composer.passes) {
+        composer.passes.forEach(p => {
+          if (p.strength !== undefined) p.strength = 0.32 + bassS * 0.5 + trebS * 0.2;
+        });
+      }
+      // ☀ God ray の脈動
+      godRay.material.opacity = 0.4 + bassS * 0.5;
+      const rayS = 8 + bassS * 4;
+      godRay.scale.set(rayS, 14 + bassS * 4, 1);
+      // 🌫 ダスト: ゆっくり回転 + 中音で揺らぎ
+      dust.rotation.y += 0.00015 + midS * 0.0008;
+      // パーティクル + ドーム
+      particles.rotation.y += 0.0008 + bassS * 0.002;
       dome.rotation.y += 0.0003;
-      // 球体内シェーダーの時間更新
+      // シェーダー uniform 更新
       if (sphereMat.uniforms && sphereMat.uniforms.uTime) sphereMat.uniforms.uTime.value = t;
+      if (sphereMat.uniforms && sphereMat.uniforms.uBass) sphereMat.uniforms.uBass.value = bassS;
+      if (sphereMat.uniforms && sphereMat.uniforms.uTreb) sphereMat.uniforms.uTreb.value = trebS;
+      // 指揮者のタクト: 音楽に合わせてダイナミックに
+      if (scene.userData.baton) {
+        scene.userData.baton.rotation.z = 0.3 + Math.sin(t * (2 + bassS * 4)) * (0.5 + midS * 0.4);
+      }
       // 描画（Bloomあり/なし）
       if (composer) composer.render();
       else renderer.render(scene, camera);
