@@ -17942,14 +17942,8 @@
 
     // 🎪 迫力パレード — 巨大動物を観客のすぐ外（r=16）に配置、近距離で大きく見える
     // 球体内壁が画面である世界観：動物が近づけば視界を埋める
-    // Vegas Sphere方式：観客の視界を埋めるサイズで存在感
-    const PARADE_SET = [
-      { species: 'giraffe',  scale: 3.5 },  // 高さ約11m、ドームの天井近くまで
-      { species: 'elephant', scale: 3.8 },  // 大型に
-      { species: 'lion',     scale: 4.2 },  // ライオンキング
-      { species: 'rhino',    scale: 3.8 },
-      { species: 'bear',     scale: 4.0 },
-    ];
+    // Vegas Sphere方式：3Dの「部屋に居る動物」は撤去。ドーム面に投影される映像のみ。
+    const PARADE_SET = []; // 全廃止（観客の視界に3D動物が出るのを禁止）
     PARADE_SET.forEach((p, i) => {
       const base = ANIMAL_SET.find(s => s.species === p.species);
       if (!base) return;
@@ -20929,70 +20923,40 @@
         dragX = e.clientX; dragY = e.clientY;
       }
     });
-    // 🕹 仮想ジョイスティック（業界標準実装）
-    // - 原点 = パッドの円の中心（固定）。指の位置と中心の差で入力ベクトル算出
-    // - PointerEvent + setPointerCapture で指が外れても追従
-    // - pointerId で複数タッチの混信防止
-    // - touch-action: none で他のジェスチャー無効化
-    // - デッドゾーン 0.10、上限で正規化、円形クランプ
+    // 🕹 仮想ジョイスティック — 美術館と完全に同じ実装をコピペ
     const joy = document.createElement('div');
     joy.className = 'lib-joy';
     joy.innerHTML = '<div class="lib-joy-knob" id="libJoyKnob"></div>';
     ov.appendChild(joy);
     const joyKnob = joy.querySelector('#libJoyKnob');
-    let joyDX = 0, joyDY = 0;          // 正規化入力 (-1..1)
-    let joyPid = null;                  // 追跡中の pointerId
-    let joyCx = 0, joyCy = 0;           // 円の中心（screen座標）
-    const JOY_R = 50;                   // パッド半径(px)
-    const DEAD = 0.10;                  // デッドゾーン
-    function joyCenter() {
-      const r = joy.getBoundingClientRect();
-      joyCx = r.left + r.width / 2;
-      joyCy = r.top + r.height / 2;
-    }
-    function joyApply(clientX, clientY) {
-      let dx = clientX - joyCx;
-      let dy = clientY - joyCy;
+    let joyActive = false, joyDX = 0, joyDY = 0;
+    const stickStart = e => {
+      joyActive = true;
+      const t = e.touches ? e.touches[0] : e;
+      joy.dataset.cx = t.clientX; joy.dataset.cy = t.clientY;
+      joyDX = joyDY = 0; e.preventDefault();
+    };
+    const stickMove = e => {
+      if (!joyActive) return;
+      const t = e.touches ? e.touches[0] : e;
+      const cx = +joy.dataset.cx, cy = +joy.dataset.cy;
+      let dx = t.clientX - cx, dy = t.clientY - cy;
       const d = Math.hypot(dx, dy);
-      if (d > JOY_R) { dx = dx / d * JOY_R; dy = dy / d * JOY_R; }
-      // ノブ位置（視覚フィードバック）
-      joyKnob.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
-      // 正規化＋デッドゾーン
-      let nx = dx / JOY_R, ny = dy / JOY_R;
-      const len = Math.hypot(nx, ny);
-      if (len < DEAD) { joyDX = 0; joyDY = 0; return; }
-      const k = (len - DEAD) / (1 - DEAD) / len;
-      joyDX = nx * k;
-      joyDY = ny * k;
-    }
-    function joyReset() {
-      joyDX = 0; joyDY = 0; joyPid = null;
-      joyKnob.style.transform = 'translate(-50%, -50%)';
-    }
-    joy.addEventListener('pointerdown', e => {
-      if (joyPid !== null) return;       // 既に追跡中なら無視
-      joyPid = e.pointerId;
-      joyCenter();                       // 中心位置を更新（responsive対応）
-      try { joy.setPointerCapture(e.pointerId); } catch {}
-      joyApply(e.clientX, e.clientY);
+      const MAX = 40;
+      if (d > MAX) { dx = dx/d*MAX; dy = dy/d*MAX; }
+      joyKnob.style.transform = `translate(${dx}px, ${dy}px)`;
+      joyDX = dx / MAX; joyDY = dy / MAX;
       e.preventDefault();
-    });
-    joy.addEventListener('pointermove', e => {
-      if (e.pointerId !== joyPid) return;
-      joyApply(e.clientX, e.clientY);
-      e.preventDefault();
-    });
-    function joyRelease(e) {
-      if (e.pointerId !== joyPid) return;
-      try { joy.releasePointerCapture(joyPid); } catch {}
-      joyReset();
-    }
-    joy.addEventListener('pointerup', joyRelease);
-    joy.addEventListener('pointercancel', joyRelease);
-    joy.addEventListener('lostpointercapture', joyRelease);
-    // ウィンドウリサイズで中心位置を更新
-    window.addEventListener('resize', joyCenter);
-    setTimeout(joyCenter, 0); // 初期化後に中心取得
+    };
+    const stickEnd = () => {
+      joyActive = false; joyKnob.style.transform = 'translate(0,0)'; joyDX = joyDY = 0;
+    };
+    joy.addEventListener('touchstart', stickStart, { passive: false });
+    joy.addEventListener('touchmove', stickMove, { passive: false });
+    joy.addEventListener('touchend', stickEnd);
+    joy.addEventListener('mousedown', stickStart);
+    window.addEventListener('mousemove', stickMove);
+    window.addEventListener('mouseup', stickEnd);
 
     // ── レイキャスト：本のクリック ──
     const raycaster = new THREE.Raycaster();
