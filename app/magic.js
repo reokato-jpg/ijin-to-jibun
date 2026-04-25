@@ -14844,20 +14844,308 @@
     symSprite.position.set(0, 12, -25);
     scene.add(symSprite);
 
-    // 🌹 王子様アバター（プレイヤー — どの絵本でも王子様で歩く）
-    const ava = (typeof buildPrinceAvatar === 'function') ? buildPrinceAvatar() : null;
-    let prince;
-    if (ava) {
-      prince = ava.group;
-    } else {
-      prince = new THREE.Group();
-      prince.add(new THREE.Mesh(
-        new THREE.SphereGeometry(0.3, 16, 12),
-        new THREE.MeshBasicMaterial({ color: 0xffe890 })
-      ));
+    // 一人称（美術館スタイル）— アバターなし
+    const ava = null;
+
+    // ╔══════════════════════════════════════╗
+    // ║ 🌹 星の王子様の世界 — 特別な舞台装置     ║
+    // ╚══════════════════════════════════════╝
+    if (book.id === 'prince') {
+      // 砂漠の地面（不時着した砂の海）
+      const sandTex = (() => {
+        const c = document.createElement('canvas'); c.width = 512; c.height = 512;
+        const g = c.getContext('2d');
+        const grd = g.createRadialGradient(256, 256, 80, 256, 256, 380);
+        grd.addColorStop(0, '#ffd890'); grd.addColorStop(0.5, '#d8a050'); grd.addColorStop(1, '#3a2010');
+        g.fillStyle = grd; g.fillRect(0, 0, 512, 512);
+        // 砂粒
+        for (let i = 0; i < 4000; i++) {
+          g.fillStyle = `rgba(${100+Math.random()*100},${60+Math.random()*60},${30+Math.random()*40},${0.3+Math.random()*0.5})`;
+          g.fillRect(Math.random()*512, Math.random()*512, 1, 1);
+        }
+        return new THREE.CanvasTexture(c);
+      })();
+      sandTex.wrapS = sandTex.wrapT = THREE.RepeatWrapping;
+      sandTex.repeat.set(8, 8);
+      const sand = new THREE.Mesh(
+        new THREE.PlaneGeometry(80, 80, 32, 32),
+        new THREE.MeshStandardMaterial({ map: sandTex, roughness: 0.95 })
+      );
+      sand.rotation.x = -Math.PI / 2;
+      sand.position.y = -0.05;
+      // 砂丘の起伏
+      const sp2 = sand.geometry.attributes.position;
+      for (let i = 0; i < sp2.count; i++) {
+        const x = sp2.getX(i), y = sp2.getY(i);
+        sp2.setZ(i, Math.sin(x * 0.15) * 0.4 + Math.cos(y * 0.18) * 0.3);
+      }
+      sand.geometry.computeVertexNormals();
+      scene.add(sand);
+
+      // 🪐 B-612 が空に大きく浮かぶ
+      const b612 = new THREE.Group();
+      // 緑の星
+      const planetTex = (() => {
+        const c = document.createElement('canvas'); c.width = 256; c.height = 256;
+        const g = c.getContext('2d');
+        const grd = g.createRadialGradient(128, 128, 30, 128, 128, 128);
+        grd.addColorStop(0, '#90c890'); grd.addColorStop(0.6, '#5a8060'); grd.addColorStop(1, '#2a4030');
+        g.fillStyle = grd; g.fillRect(0, 0, 256, 256);
+        for (let i = 0; i < 800; i++) {
+          g.strokeStyle = `rgba(${30+Math.random()*40},${80+Math.random()*40},${30+Math.random()*30},0.4)`;
+          g.lineWidth = 0.5;
+          g.beginPath();
+          const x = Math.random()*256, y = Math.random()*256;
+          g.moveTo(x, y); g.lineTo(x + (Math.random()-0.5)*3, y - 2);
+          g.stroke();
+        }
+        return new THREE.CanvasTexture(c);
+      })();
+      const planet = new THREE.Mesh(
+        new THREE.SphereGeometry(1.4, 32, 24),
+        new THREE.MeshStandardMaterial({ map: planetTex, roughness: 0.85 })
+      );
+      planet.position.set(-12, 8, -18);
+      b612.add(planet);
+      // 火山2つ（小さな三角錐）
+      [0.4, -0.4].forEach(dx => {
+        const volc = new THREE.Mesh(
+          new THREE.ConeGeometry(0.18, 0.32, 12),
+          new THREE.MeshStandardMaterial({ color: 0x4a3018, roughness: 0.85 })
+        );
+        volc.position.set(-12 + dx, 9.2, -17.5);
+        b612.add(volc);
+      });
+      scene.add(b612);
+
+      // 🌹 巨大な薔薇（ガラスドーム入り、舞台中央前方）
+      const roseG = new THREE.Group();
+      const stem = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.06, 0.08, 1.6, 10),
+        new THREE.MeshStandardMaterial({ color: 0x2a6a3a, roughness: 0.65 })
+      );
+      stem.position.y = 0.8;
+      roseG.add(stem);
+      // 葉
+      [0, Math.PI].forEach(rot => {
+        const leaf = new THREE.Mesh(
+          new THREE.SphereGeometry(0.22, 10, 8),
+          new THREE.MeshStandardMaterial({ color: 0x40a050, roughness: 0.7 })
+        );
+        leaf.scale.set(1.4, 0.3, 0.7);
+        leaf.position.set(Math.cos(rot) * 0.2, 0.6, Math.sin(rot) * 0.2);
+        leaf.rotation.y = rot;
+        roseG.add(leaf);
+      });
+      // 花
+      const flower = new THREE.Mesh(
+        new THREE.SphereGeometry(0.32, 18, 14),
+        new THREE.MeshStandardMaterial({ color: 0xff3060, roughness: 0.5, emissive: 0x4a0818, emissiveIntensity: 0.45 })
+      );
+      flower.position.y = 1.7;
+      flower.scale.set(1, 0.95, 1);
+      roseG.add(flower);
+      // 花びらの重なり（外側に）
+      for (let i = 0; i < 5; i++) {
+        const petal = new THREE.Mesh(
+          new THREE.SphereGeometry(0.25, 10, 8),
+          new THREE.MeshStandardMaterial({ color: 0xff5070, roughness: 0.55, emissive: 0x6a1828, emissiveIntensity: 0.3 })
+        );
+        const a = (i / 5) * Math.PI * 2;
+        petal.position.set(Math.cos(a) * 0.18, 1.7, Math.sin(a) * 0.18);
+        petal.scale.set(0.7, 0.6, 0.4);
+        petal.rotation.y = a;
+        roseG.add(petal);
+      }
+      // ガラスドーム
+      const dome = new THREE.Mesh(
+        new THREE.SphereGeometry(0.8, 24, 18, 0, Math.PI*2, 0, Math.PI*0.55),
+        new THREE.MeshPhysicalMaterial({
+          color: 0xc8e0f0, transparent: true, opacity: 0.18,
+          roughness: 0.0, transmission: 0.95, side: THREE.DoubleSide,
+        })
+      );
+      dome.position.y = 1.0;
+      roseG.add(dome);
+      // ドーム下部のリング
+      const domeRing = new THREE.Mesh(
+        new THREE.TorusGeometry(0.8, 0.04, 8, 24),
+        new THREE.MeshStandardMaterial({ color: 0x8a6020, metalness: 0.7, roughness: 0.4 })
+      );
+      domeRing.rotation.x = Math.PI / 2;
+      domeRing.position.y = 1.0;
+      roseG.add(domeRing);
+      // 薔薇の光（下から）
+      const roseLight = new THREE.PointLight(0xff6080, 1.5, 6, 1.5);
+      roseLight.position.y = 1.7;
+      roseG.add(roseLight);
+      roseG.position.set(0, 0, -2);
+      scene.add(roseG);
+
+      // 🌳 バオバブの芽（地面のあちこちに小さく）
+      for (let i = 0; i < 6; i++) {
+        const a = Math.random() * Math.PI * 2;
+        const r = 5 + Math.random() * 8;
+        const x = Math.cos(a) * r, z = Math.sin(a) * r;
+        const trunk = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.06, 0.1, 0.4, 6),
+          new THREE.MeshStandardMaterial({ color: 0x6a4828, roughness: 0.85 })
+        );
+        trunk.position.set(x, 0.2, z);
+        scene.add(trunk);
+        const leaf = new THREE.Mesh(
+          new THREE.SphereGeometry(0.22, 8, 6),
+          new THREE.MeshStandardMaterial({ color: 0x4a8030, roughness: 0.8 })
+        );
+        leaf.position.set(x, 0.5, z);
+        scene.add(leaf);
+      }
+
+      // 🐍 砂漠を這う蛇（黄色く光る S字）
+      const snakeG = new THREE.Group();
+      const snakeBody = [];
+      for (let i = 0; i < 12; i++) {
+        const s = new THREE.Mesh(
+          new THREE.SphereGeometry(0.08, 8, 6),
+          new THREE.MeshStandardMaterial({ color: 0xe0c050, emissive: 0x8a6810, emissiveIntensity: 0.4 })
+        );
+        s.position.set(i * 0.18 - 1, 0.08, 0);
+        snakeG.add(s);
+        snakeBody.push(s);
+      }
+      snakeG.position.set(8, 0, 4);
+      scene.add(snakeG);
+
+      // 🦊 キツネのシルエット（小さく遠くに）
+      const fox = new THREE.Group();
+      const foxBody = new THREE.Mesh(
+        new THREE.SphereGeometry(0.25, 12, 8),
+        new THREE.MeshStandardMaterial({ color: 0xe87030, roughness: 0.55, emissive: 0x3a1004, emissiveIntensity: 0.2 })
+      );
+      foxBody.scale.set(1.6, 0.85, 1);
+      fox.add(foxBody);
+      const foxHead = new THREE.Mesh(
+        new THREE.SphereGeometry(0.16, 12, 8),
+        new THREE.MeshStandardMaterial({ color: 0xe87030, roughness: 0.55 })
+      );
+      foxHead.position.set(0.32, 0.08, 0);
+      foxHead.scale.set(1.1, 0.95, 0.95);
+      fox.add(foxHead);
+      // 鼻
+      const snout = new THREE.Mesh(
+        new THREE.ConeGeometry(0.06, 0.12, 8),
+        new THREE.MeshStandardMaterial({ color: 0x202020, roughness: 0.85 })
+      );
+      snout.position.set(0.5, 0.05, 0);
+      snout.rotation.z = -Math.PI / 2;
+      fox.add(snout);
+      // 耳
+      [-1, 1].forEach(side => {
+        const ear = new THREE.Mesh(
+          new THREE.ConeGeometry(0.06, 0.13, 8),
+          new THREE.MeshStandardMaterial({ color: 0xe87030, roughness: 0.55 })
+        );
+        ear.position.set(0.28, 0.22, side * 0.1);
+        fox.add(ear);
+      });
+      // 尻尾
+      const tail = new THREE.Mesh(
+        new THREE.ConeGeometry(0.1, 0.4, 12),
+        new THREE.MeshStandardMaterial({ color: 0xe87030, roughness: 0.55 })
+      );
+      tail.position.set(-0.35, 0.15, 0);
+      tail.rotation.z = -1.2;
+      fox.add(tail);
+      const tailTip = new THREE.Mesh(
+        new THREE.SphereGeometry(0.08, 10, 8),
+        new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.6 })
+      );
+      tailTip.position.set(-0.5, 0.3, 0);
+      fox.add(tailTip);
+      fox.position.set(-7, 0, 5);
+      fox.rotation.y = Math.PI * 0.7;
+      scene.add(fox);
+
+      // ✨ 砂漠の上の星空（特別に多く）
+      const desStars = new THREE.BufferGeometry();
+      const DS = 1500;
+      const dsp = new Float32Array(DS * 3);
+      for (let i = 0; i < DS; i++) {
+        const r = 50 + Math.random() * 80;
+        const th = Math.random() * Math.PI * 2;
+        const ph = Math.acos(Math.random() * 0.6 + 0.4); // 上半球メイン
+        dsp[i*3] = Math.sin(ph)*Math.cos(th)*r;
+        dsp[i*3+1] = Math.cos(ph)*r;
+        dsp[i*3+2] = Math.sin(ph)*Math.sin(th)*r;
+      }
+      desStars.setAttribute('position', new THREE.BufferAttribute(dsp, 3));
+      scene.add(new THREE.Points(desStars, new THREE.PointsMaterial({
+        color: 0xfff4c8, size: 0.6, transparent: true, opacity: 0.95, depthWrite: false, fog: false,
+      })));
+
+      // 🌙 大きな三日月
+      const moonC = document.createElement('canvas'); moonC.width = 256; moonC.height = 256;
+      const mg = moonC.getContext('2d');
+      mg.fillStyle = '#fff4c8';
+      mg.beginPath(); mg.arc(128, 128, 100, 0, Math.PI*2); mg.fill();
+      mg.globalCompositeOperation = 'destination-out';
+      mg.beginPath(); mg.arc(160, 110, 92, 0, Math.PI*2); mg.fill();
+      const moonTex = new THREE.CanvasTexture(moonC);
+      const moonSp = new THREE.Sprite(new THREE.SpriteMaterial({
+        map: moonTex, transparent: true, opacity: 0.95, depthWrite: false, fog: false,
+      }));
+      moonSp.scale.set(8, 8, 1);
+      moonSp.position.set(15, 14, -20);
+      scene.add(moonSp);
+      // 月の光（dirLight 補足）
+      const moonLight = new THREE.DirectionalLight(0xfff0d0, 0.6);
+      moonLight.position.set(15, 14, -20);
+      scene.add(moonLight);
+
+      // 🚀 不時着した飛行機（遠景にプロペラ機のシルエット）
+      const plane = new THREE.Group();
+      const fuselage = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.4, 0.4, 2.5, 16),
+        new THREE.MeshStandardMaterial({ color: 0xb8b8c0, roughness: 0.6, metalness: 0.3 })
+      );
+      fuselage.rotation.z = Math.PI / 2;
+      plane.add(fuselage);
+      // 翼
+      const wing = new THREE.Mesh(
+        new THREE.BoxGeometry(2.2, 0.08, 0.7),
+        new THREE.MeshStandardMaterial({ color: 0xa8a8b0, roughness: 0.6 })
+      );
+      wing.position.y = 0.0;
+      plane.add(wing);
+      // 尾翼
+      const tailF = new THREE.Mesh(
+        new THREE.BoxGeometry(0.5, 0.5, 0.05),
+        new THREE.MeshStandardMaterial({ color: 0xa8a8b0, roughness: 0.6 })
+      );
+      tailF.position.set(-1.2, 0.3, 0);
+      plane.add(tailF);
+      plane.position.set(-9, 0.6, -5);
+      plane.rotation.set(0, 0.5, 0.15); // 不時着の傾き
+      scene.add(plane);
+
+      // 🌟 「銀河の道」(うっすら光の帯)
+      const milkyWay = new THREE.Mesh(
+        new THREE.PlaneGeometry(120, 18),
+        new THREE.MeshBasicMaterial({
+          color: 0xc8b8ff, transparent: true, opacity: 0.18,
+          depthWrite: false, blending: THREE.AdditiveBlending, fog: false,
+        })
+      );
+      milkyWay.position.set(0, 25, -40);
+      milkyWay.rotation.z = 0.3;
+      scene.add(milkyWay);
+
+      // 王子様の特別補足光（薔薇周辺を温かく）
+      scene.add(new THREE.HemisphereLight(0xffd890, 0x3a2018, 0.4));
+
+      // 蛇のうねうねアニメ用に保存
+      scene.userData.princeWorld = { snakeBody, fox, plane, roseG };
     }
-    prince.position.set(0, 0.4, 6);
-    scene.add(prince);
 
     // === 登場人物カード（くるくる回る） ===
     const cards = [];
@@ -14954,12 +15242,10 @@
       cards.push(group);
     });
 
-    // カメラ（三人称、王子様の周り）
-    const camera = new THREE.PerspectiveCamera(60, W()/H(), 0.1, 200);
-    let yaw = 0, pitch = 0.18;
-    let dynCamDist = 4.5;
-    camera.position.set(0, 2.5, 6 + dynCamDist);
-    camera.lookAt(0, 1, 0);
+    // 一人称カメラ（美術館スタイル）
+    const camera = new THREE.PerspectiveCamera(70, W()/H(), 0.1, 200);
+    camera.position.set(0, 1.7, 5);
+    let yaw = 0, pitch = 0;
 
     // === 入力 ===
     const keys = { w:0, a:0, s:0, d:0 };
@@ -14981,22 +15267,18 @@
     window.addEventListener('keydown', onKD);
     window.addEventListener('keyup', onKU);
 
-    // ドラッグ視点
+    // ドラッグで見回す（lerp なし、美術館スタイル）
     let dragging = false, lx = 0, ly = 0;
     renderer.domElement.addEventListener('pointerdown', e => { dragging = true; lx = e.clientX; ly = e.clientY; });
     renderer.domElement.addEventListener('pointermove', e => {
       if (!dragging) return;
-      yaw -= (e.clientX - lx) * 0.0055;
-      pitch = Math.max(-0.4, Math.min(1.0, pitch + (e.clientY - ly) * 0.0040));
+      yaw -= (e.clientX - lx) * 0.004;
+      pitch = Math.max(-1.2, Math.min(1.2, pitch - (e.clientY - ly) * 0.004));
       lx = e.clientX; ly = e.clientY;
     });
     const stop = () => { dragging = false; };
     renderer.domElement.addEventListener('pointerup', stop);
     renderer.domElement.addEventListener('pointerleave', stop);
-    renderer.domElement.addEventListener('wheel', e => {
-      dynCamDist = Math.max(2.5, Math.min(15, dynCamDist + e.deltaY * 0.01));
-      e.preventDefault();
-    }, { passive: false });
 
     // モバイルスティック
     const stick = ov.querySelector('#bwStick');
@@ -15045,51 +15327,51 @@
       if (!running) return;
       frame++;
       const t = (performance.now() - t0) / 1000;
-      // 王子様移動
-      const speed = 0.10;
+      // 美術館スタイル歩行
+      const speed = 0.12;
       const fwd = (keys.w - keys.s) - stickDY;
       const strafe = (keys.d - keys.a) + stickDX;
       if (Math.hypot(fwd, strafe) > 0) {
         const nx = Math.sin(yaw), nz = -Math.cos(yaw);
         const sx = Math.cos(yaw), sz = Math.sin(yaw);
-        prince.position.x += (nx * fwd + sx * strafe) * speed;
-        prince.position.z += (nz * fwd + sz * strafe) * speed;
-        const d = Math.hypot(prince.position.x, prince.position.z);
+        camera.position.x += (nx * fwd + sx * strafe) * speed;
+        camera.position.z += (nz * fwd + sz * strafe) * speed;
+        const d = Math.hypot(camera.position.x, camera.position.z);
         if (d > 14) {
-          prince.position.x = prince.position.x / d * 14;
-          prince.position.z = prince.position.z / d * 14;
+          camera.position.x = camera.position.x / d * 14;
+          camera.position.z = camera.position.z / d * 14;
         }
-        const moveAngle = Math.atan2(nx * fwd + sx * strafe, nz * fwd + sz * strafe);
-        prince.rotation.y = moveAngle;
       }
-      // 王子様アイドル動作
-      prince.position.y = 0.4 + Math.sin(t * 1.5) * 0.04;
-      if (ava && ava.scarfTail) ava.scarfTail.rotation.z = 0.5 + Math.sin(t * 2.5) * 0.3;
-      if (ava && ava.scarfTail2) ava.scarfTail2.rotation.z = 0.7 + Math.sin(t * 2.5 + 0.3) * 0.3;
-      if (ava && ava.aura) ava.aura.material.opacity = 0.4 + Math.sin(t * 1.8) * 0.15;
+      // 視線（lerp なし）
+      camera.lookAt(
+        camera.position.x + Math.sin(yaw) * Math.cos(pitch) * 5,
+        camera.position.y + Math.sin(pitch) * 5,
+        camera.position.z - Math.cos(yaw) * Math.cos(pitch) * 5
+      );
 
-      // カード: 浮遊 + 近接で回転加速
+      // カード: 浮遊 + 近接で回転加速（カメラ基準）
       cards.forEach(g => {
         g.position.y = g.userData.baseY + Math.sin(t * 0.7 + g.userData.angle) * 0.3;
-        // プレイヤーとの距離
-        const dx = g.position.x - prince.position.x;
-        const dz = g.position.z - prince.position.z;
+        const dx = g.position.x - camera.position.x;
+        const dz = g.position.z - camera.position.z;
         const dist = Math.hypot(dx, dz);
-        // 近いほど回転速度UP
-        const targetSpin = dist < 4 ? (0.05 - dist * 0.008) : 0.005;
+        const targetSpin = dist < 4 ? (0.06 - dist * 0.01) : 0.005;
         g.userData.spinSpeed += (targetSpin - g.userData.spinSpeed) * 0.05;
         g.userData.cardMesh.rotation.y += g.userData.spinSpeed;
-        // 後光も光る
         g.userData.halo.material.opacity = dist < 3 ? 0.7 : 0.4;
       });
 
-      // 最寄りカード検出
+      // 最寄りカード検出（カメラ前方）
       let best = null, bestD = 4;
       cards.forEach(g => {
-        const dx = g.position.x - prince.position.x;
-        const dz = g.position.z - prince.position.z;
+        const dx = g.position.x - camera.position.x;
+        const dz = g.position.z - camera.position.z;
         const dist = Math.hypot(dx, dz);
-        if (dist < bestD) { best = g; bestD = dist; }
+        if (dist < bestD) {
+          const fx = Math.sin(yaw), fz = -Math.cos(yaw);
+          const dot = (dx/dist) * fx + (dz/dist) * fz;
+          if (dot > 0.2) { best = g; bestD = dist; }
+        }
       });
       if (best) {
         info.textContent = best.userData.ch.name + '　／　' + (best.userData.ch.quote || '');
@@ -15097,11 +15379,25 @@
         info.textContent = W_DATA.theme + '　／　近づくとカードが回ります';
       }
 
-      // 三人称オービット
-      camera.position.x = prince.position.x + Math.sin(yaw) * Math.cos(pitch) * dynCamDist;
-      camera.position.y = prince.position.y + 1.4 + Math.sin(pitch) * dynCamDist;
-      camera.position.z = prince.position.z + Math.cos(yaw) * Math.cos(pitch) * dynCamDist;
-      camera.lookAt(prince.position.x, prince.position.y + 1.0, prince.position.z);
+      // 🌹 星の王子様の世界の特別アニメ
+      const pw = scene.userData.princeWorld;
+      if (pw) {
+        // 蛇のうねうね（S字に動く）
+        if (pw.snakeBody) {
+          pw.snakeBody.forEach((s, i) => {
+            s.position.x = 8 - 1 + i * 0.18 + Math.sin(t * 0.8 + i * 0.5) * 0.12;
+            s.position.z = 4 + Math.sin(t * 1.2 + i * 0.4) * 0.4;
+          });
+        }
+        // 薔薇のゆらめき
+        if (pw.roseG) {
+          pw.roseG.rotation.z = Math.sin(t * 0.6) * 0.04;
+        }
+        // キツネがふわっと尻尾を振る（軽くY揺れ）
+        if (pw.fox) {
+          pw.fox.position.y = Math.sin(t * 1.5) * 0.04;
+        }
+      }
 
       renderer.render(scene, camera);
       requestAnimationFrame(animate);
@@ -15446,10 +15742,7 @@
 
       return { group: p, scarfTail, scarfTail2, aura, armL, armR, legL, legR };
     }
-    const princeAvatar = buildPrinceAvatar();
-    const prince = princeAvatar.group;
-    prince.position.set(0, 0.4, 5); // 中央少し前
-    scene.add(prince);
+    // 王子様アバターは削除 — 絵本の宇宙は一人称（美術館スタイル）
 
     // 星雲（背景に2つだけ — 軽量化）
     for (let i = 0; i < 2; i++) {
@@ -15593,13 +15886,10 @@
       books.push(g);
     });
 
-    // === 三人称カメラ（王子様を後ろ上から追う） ===
-    const camera = new THREE.PerspectiveCamera(60, W()/H(), 0.1, 300);
-    let yaw = 0, pitch = 0.15; // 少し上から見下ろし
-    const camDist = 4.5;
-    const camHeight = 2.2;
-    camera.position.set(0, camHeight, 5 + camDist);
-    camera.lookAt(0, 1, 0);
+    // === 一人称カメラ（美術館スタイルの歩行） ===
+    const camera = new THREE.PerspectiveCamera(70, W()/H(), 0.1, 300);
+    camera.position.set(0, 1.7, 6);
+    let yaw = 0, pitch = 0;
 
     // キー入力
     const keys = { w:0, a:0, s:0, d:0 };
@@ -15615,44 +15905,21 @@
     window.addEventListener('keydown', onKD);
     window.addEventListener('keyup', onKU);
 
-    // ドラッグでカメラを王子様の周りに回す（オービット）
+    // ドラッグで見回す（美術館スタイル — lerp なしダイレクト）
     let dragging = false, lastX = 0, lastY = 0;
     renderer.domElement.addEventListener('pointerdown', e => {
       dragging = true; lastX = e.clientX; lastY = e.clientY;
     });
     renderer.domElement.addEventListener('pointermove', e => {
       if (!dragging) return;
-      yaw -= (e.clientX - lastX) * 0.0055;
-      pitch = Math.max(-0.4, Math.min(1.0, pitch + (e.clientY - lastY) * 0.0040));
+      yaw -= (e.clientX - lastX) * 0.004;
+      pitch = Math.max(-1.2, Math.min(1.2, pitch - (e.clientY - lastY) * 0.004));
       lastX = e.clientX; lastY = e.clientY;
     });
     const stopDrag = () => { dragging = false; };
     renderer.domElement.addEventListener('pointerup', stopDrag);
     renderer.domElement.addEventListener('pointercancel', stopDrag);
     renderer.domElement.addEventListener('pointerleave', stopDrag);
-    // ピンチで距離調整
-    let pinchStart = 0, pinchInitDist = 0;
-    let dynamicCamDist = camDist;
-    renderer.domElement.addEventListener('wheel', e => {
-      dynamicCamDist = Math.max(2.5, Math.min(15, dynamicCamDist + e.deltaY * 0.01));
-      e.preventDefault();
-    }, { passive: false });
-    renderer.domElement.addEventListener('touchstart', e => {
-      if (e.touches.length === 2) {
-        const dx = e.touches[0].clientX - e.touches[1].clientX;
-        const dy = e.touches[0].clientY - e.touches[1].clientY;
-        pinchStart = Math.hypot(dx, dy);
-        pinchInitDist = dynamicCamDist;
-      }
-    }, { passive: true });
-    renderer.domElement.addEventListener('touchmove', e => {
-      if (e.touches.length === 2) {
-        const dx = e.touches[0].clientX - e.touches[1].clientX;
-        const dy = e.touches[0].clientY - e.touches[1].clientY;
-        const cur = Math.hypot(dx, dy);
-        if (pinchStart > 0) dynamicCamDist = Math.max(2.5, Math.min(15, pinchInitDist * (pinchStart / cur)));
-      }
-    }, { passive: true });
 
     // モバイル: 仮想スティック
     const stick = ov.querySelector('#ehStick');
@@ -15730,49 +15997,44 @@
     function animate() {
       if (!running) return;
       const t = (performance.now() - t0) / 1000;
-      // 王子様を移動（カメラ向き基準）
-      const speed = 0.10;
+      // 美術館スタイル歩行
+      const speed = 0.12;
       const fwd = (keys.w - keys.s) - stickDY;
       const strafe = (keys.d - keys.a) + stickDX;
       if (Math.hypot(fwd, strafe) > 0) {
         const nx = Math.sin(yaw), nz = -Math.cos(yaw);
         const sx = Math.cos(yaw), sz = Math.sin(yaw);
-        prince.position.x += (nx * fwd + sx * strafe) * speed;
-        prince.position.z += (nz * fwd + sz * strafe) * speed;
-        // 半径15を超えないように
-        const d = Math.hypot(prince.position.x, prince.position.z);
+        camera.position.x += (nx * fwd + sx * strafe) * speed;
+        camera.position.z += (nz * fwd + sz * strafe) * speed;
+        const d = Math.hypot(camera.position.x, camera.position.z);
         if (d > 15) {
-          prince.position.x = prince.position.x / d * 15;
-          prince.position.z = prince.position.z / d * 15;
+          camera.position.x = camera.position.x / d * 15;
+          camera.position.z = camera.position.z / d * 15;
         }
-        // 王子様の進行方向を向く（移動先のヨー）
-        const moveAngle = Math.atan2(nx * fwd + sx * strafe, nz * fwd + sz * strafe);
-        prince.rotation.y = moveAngle;
       }
-      // 王子様のアイドル動作
-      prince.position.y = 0.4 + Math.sin(t * 1.5) * 0.04; // 軽い浮遊
-      princeAvatar.scarfTail.rotation.z = 0.4 + Math.sin(t * 2.5) * 0.3; // マフラー
-      princeAvatar.aura.material.opacity = 0.5 + Math.sin(t * 2.0) * 0.15;
-
-      // カメラ: 王子様を中心とした三人称オービット
-      const cd = dynamicCamDist;
-      camera.position.x = prince.position.x + Math.sin(yaw) * Math.cos(pitch) * cd;
-      camera.position.y = prince.position.y + 1.2 + Math.sin(pitch) * cd;
-      camera.position.z = prince.position.z + Math.cos(yaw) * Math.cos(pitch) * cd;
-      camera.lookAt(prince.position.x, prince.position.y + 1.0, prince.position.z);
+      // 視線（lerp なし）
+      camera.lookAt(
+        camera.position.x + Math.sin(yaw) * Math.cos(pitch) * 5,
+        camera.position.y + Math.sin(pitch) * 5,
+        camera.position.z - Math.cos(yaw) * Math.cos(pitch) * 5
+      );
 
       // 本がふわふわ漂う
       books.forEach((g, i) => {
         g.position.y = g.userData.basePos.y + Math.sin(t * 0.5 + i) * 0.3;
         g.rotation.y = Math.sin(t * 0.3 + i * 0.7) * 0.3;
       });
-      // 最寄り本の検出（王子様基準・全方位）
-      let best = null, bestD = 3.5;
+      // 最寄り本の検出（カメラ基準・前方判定）
+      let best = null, bestD = 4;
       books.forEach(g => {
-        const dx = g.position.x - prince.position.x;
-        const dz = g.position.z - prince.position.z;
+        const dx = g.position.x - camera.position.x;
+        const dz = g.position.z - camera.position.z;
         const dist = Math.hypot(dx, dz);
-        if (dist < bestD) { best = g; bestD = dist; }
+        if (dist < bestD) {
+          const fx = Math.sin(yaw), fz = -Math.cos(yaw);
+          const dot = (dx/dist) * fx + (dz/dist) * fz;
+          if (dot > 0.3) { best = g; bestD = dist; }
+        }
       });
       if (best !== currentNear) {
         currentNear = best;
