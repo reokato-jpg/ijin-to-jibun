@@ -549,7 +549,6 @@
                 <div class="mtc-sub">クイズ・年表・関係図</div>
               </button>
             </div>
-            <div class="magic-topbook-subpills" id="magicTopbookSubpills"></div>
           </div>
         </div>
       `;
@@ -591,56 +590,69 @@
         });
       });
 
-      // カテゴリ選択 → サブピル展開
-      const subPillsHost = wrap.querySelector('#magicTopbookSubpills');
+      // カテゴリ選択 → ポップアップで選択
       const CATEGORY_SUB = {
-        cosmos: [
-          { deep: 'cosmos', label: '🌌 宇宙の誕生に入る', primary: true },
-        ],
-        myth: [
-          { deep: 'mythology', label: '✦ Genesis — はじまりの書', primary: true },
-          { deep: 'pantheon', label: '⛩ 神殿（神々を歩く）', primary: true },
-        ],
-        museum: [
-          { deep: 'museum', label: '🏛 美術館へ入る', primary: true },
-        ],
-        ijin: [
-          { deep: 'quiz', label: '🎓 偉人クイズ', primary: true },
-          { deep: 'timeline', label: '📅 年表モード' },
-          { deep: 'glossary', label: '📖 用語集' },
-          { deep: 'graph', label: '関係グラフ' },
-          { deep: 'simul', label: '同時代' },
-          { deep: 'map', label: '世界マップ' },
-          { deep: 'century', label: '世紀ごと' },
-          { deep: 'city', label: '都市群像' },
-          { deep: 'drift', label: '365日カレンダー' },
-        ],
+        cosmos: { title: '🌌 宇宙', sub: '万物の誕生を観る', items: [
+          { deep: 'cosmos', label: '宇宙の誕生に入る', desc: '惑星・星雲・ブラックホールを巡る', emoji: '🌌' },
+        ]},
+        myth: { title: '⛩ 神 話', sub: '神々と物語', items: [
+          { deep: 'pantheon', label: '神殿', desc: '空に浮かぶ神殿で神々と物語に触れる', emoji: '⛩' },
+          { deep: 'mythology', label: 'Genesis — はじまりの書', desc: '6つの神話を章ごとに読む', emoji: '✦' },
+        ]},
+        museum: { title: '🏛 美 術 館', sub: '名画を歩いて鑑賞', items: [
+          { deep: 'museum', label: '美術館へ入る', desc: '神話エリア・戦国エリアから選ぶ', emoji: '🏛' },
+        ]},
+        ijin: { title: '👤 偉 人', sub: '297人の生涯と関係', items: [
+          { deep: 'quiz', label: '偉人クイズ', desc: '5タイプの問題でテスト', emoji: '🎓' },
+          { deep: 'timeline', label: '年表モード', desc: '世紀ごとに偉人を縦に並べる', emoji: '📅' },
+          { deep: 'glossary', label: '用語集', desc: '思想・流派の用語を検索', emoji: '📖' },
+          { deep: 'graph', label: '関係グラフ', desc: '師弟・盟友・論敵のネットワーク', emoji: '🔗' },
+          { deep: 'simul', label: '同時代', desc: 'ある偉人と同時代の全員を表示', emoji: '🕰' },
+          { deep: 'map', label: '世界マップ', desc: '地球儀で偉人の出身地を見る', emoji: '🌍' },
+          { deep: 'century', label: '世紀ごと', desc: '紀元前から現代までの一覧', emoji: '📜' },
+          { deep: 'city', label: '都市群像', desc: '都市ごとの偉人クラスタ', emoji: '🏙' },
+          { deep: 'drift', label: '365日カレンダー', desc: '誕生日・命日を円環にプロット', emoji: '🗓' },
+        ]},
       };
-      let activeCat = null;
-      wrap.querySelectorAll('.magic-topbook-cat').forEach(catBtn => {
-        catBtn.addEventListener('click', () => {
-          const c = catBtn.dataset.cat;
-          if (activeCat === c) {
-            // 同じカテゴリ再クリック → 閉じる
-            subPillsHost.innerHTML = '';
-            subPillsHost.classList.remove('show');
-            wrap.querySelectorAll('.magic-topbook-cat').forEach(b => b.classList.remove('active'));
-            activeCat = null;
-            return;
-          }
-          activeCat = c;
-          wrap.querySelectorAll('.magic-topbook-cat').forEach(b => b.classList.toggle('active', b === catBtn));
-          subPillsHost.innerHTML = (CATEGORY_SUB[c] || []).map(s =>
-            `<button class="magic-topbook-pill ${s.primary ? 'is-primary' : ''}" data-deep="${s.deep}">${s.label}</button>`
-          ).join('');
-          subPillsHost.classList.add('show');
-          subPillsHost.querySelectorAll('[data-deep]').forEach(b => {
-            b.addEventListener('click', () => {
-              const fn = deepMap[b.dataset.deep];
-              if (fn) fn();
-            });
+      function showCategoryPopup(catKey) {
+        const cat = CATEGORY_SUB[catKey];
+        if (!cat) return;
+        const m = document.createElement('div');
+        m.className = 'magic-cat-popup';
+        m.innerHTML = `
+          <div class="mcp-card">
+            <button class="mcp-close">×</button>
+            <div class="mcp-title">${cat.title}</div>
+            <div class="mcp-sub">${cat.sub}</div>
+            <div class="mcp-grid">
+              ${cat.items.map(it => `
+                <button class="mcp-item" data-deep="${it.deep}">
+                  <span class="mcp-emoji">${it.emoji}</span>
+                  <span class="mcp-body">
+                    <span class="mcp-label">${it.label}</span>
+                    <span class="mcp-desc">${it.desc}</span>
+                  </span>
+                  <span class="mcp-arrow">›</span>
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        `;
+        document.body.appendChild(m);
+        requestAnimationFrame(() => m.classList.add('show'));
+        const close = () => { m.classList.remove('show'); setTimeout(() => m.remove(), 280); };
+        m.querySelector('.mcp-close').addEventListener('click', close);
+        m.addEventListener('click', e => { if (e.target === m) close(); });
+        m.querySelectorAll('[data-deep]').forEach(b => {
+          b.addEventListener('click', () => {
+            const fn = deepMap[b.dataset.deep];
+            close();
+            if (fn) setTimeout(fn, 280);
           });
         });
+      }
+      wrap.querySelectorAll('.magic-topbook-cat').forEach(catBtn => {
+        catBtn.addEventListener('click', () => showCategoryPopup(catBtn.dataset.cat));
       });
 
       // Three.js ミニシーン起動
