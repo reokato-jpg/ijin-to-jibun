@@ -10427,10 +10427,13 @@
       return t;
     })();
 
-    // === ホール構造：正多角形 ===
-    const N = Math.max(8, works.length); // 壁の数＝作品数
-    const radius = Math.max(12, N * 1.4);
-    const wallHeight = 6;
+    // === ホール構造：ゾーン別の形 ===
+    // 神話＝多角形（円形に近い）、戦国＝正方形に近い長方形
+    const N = isWa
+      ? Math.max(4, Math.ceil(works.length / 3) * 4) // 4の倍数、長方形ぽく
+      : Math.max(8, works.length);
+    const radius = Math.max(14, N * 1.5);
+    const wallHeight = isWa ? 7 : 6;
     const wallAngle = (Math.PI * 2) / N;
 
     // 床
@@ -10707,7 +10710,7 @@
       const nx = -Math.cos((a + nextA) / 2), nz = -Math.sin((a + nextA) / 2);
       const offset = 0.06;
       // 額縁（洋＝金色 / 和＝黒漆＋朱の内枠）
-      const frameW = Math.min(segLen * 0.75, 2.4);
+      const frameW = Math.min(segLen * 0.85, 3.6); // 旧2.4 → 3.6 でデカく
       const frameH = frameW * 1.3;
       const frameThick = isWa ? 0.18 : 0.14;
       const frameGeo = new THREE.BoxGeometry(frameW + frameThick*2, frameH + frameThick*2, 0.08);
@@ -10768,7 +10771,7 @@
         });
       };
       // スポットライト
-      const spot = new THREE.SpotLight(0xfff0c0, 1.2, 8, Math.PI / 5, 0.4, 1.5);
+      const spot = new THREE.SpotLight(0xfff0c0, 2.5, 12, Math.PI / 4.5, 0.35, 1.4);
       spot.position.set(mx + nx * 2.0, wallHeight - 0.5, mz + nz * 2.0);
       spot.target.position.set(mx + nx * 0.2, wallHeight / 2 + 0.3, mz + nz * 0.2);
       scene.add(spot); scene.add(spot.target);
@@ -11151,12 +11154,80 @@
       plinths = [];
       animatedTextures.length = 0;
       scene = new THREE.Scene();
-      scene.background = new THREE.Color(0x2a2050);
-      scene.fog = new THREE.FogExp2(0x2a2050, 0.012);
+      // 🌌 暗黒の宇宙、星空
+      scene.background = new THREE.Color(0x040218);
+      // フォグは弱めに（遠くの星まで見える）
+      scene.fog = new THREE.FogExp2(0x080422, 0.005);
 
-      // 環境光（明るめ）
-      scene.add(new THREE.AmbientLight(0x9080d0, 0.85));
-      const hemi = new THREE.HemisphereLight(0xc0a0ff, 0x402060, 0.9);
+      // 星空（Points）
+      const starGeo = new THREE.BufferGeometry();
+      const STARS = 2000;
+      const sp = new Float32Array(STARS * 3);
+      for (let i = 0; i < STARS; i++) {
+        const r = 80 + Math.random() * 120;
+        const th = Math.random() * Math.PI * 2;
+        const ph = Math.acos(2 * Math.random() - 1);
+        sp[i*3]   = Math.sin(ph) * Math.cos(th) * r;
+        sp[i*3+1] = Math.cos(ph) * r;
+        sp[i*3+2] = Math.sin(ph) * Math.sin(th) * r;
+      }
+      starGeo.setAttribute('position', new THREE.BufferAttribute(sp, 3));
+      scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({
+        color: 0xffffff, size: 0.4, sizeAttenuation: true,
+        transparent: true, opacity: 0.9, depthWrite: false, fog: false,
+      })));
+      // 月
+      const moon = new THREE.Mesh(
+        new THREE.SphereGeometry(4, 32, 24),
+        new THREE.MeshBasicMaterial({ color: 0xfff0d8, fog: false })
+      );
+      moon.position.set(40, 30, -60);
+      scene.add(moon);
+      const moonHalo = new THREE.Sprite(new THREE.SpriteMaterial({
+        map: (() => {
+          const c = document.createElement('canvas'); c.width = 256; c.height = 256;
+          const g = c.getContext('2d');
+          const grd = g.createRadialGradient(128, 128, 20, 128, 128, 128);
+          grd.addColorStop(0, 'rgba(255,240,210,0.6)');
+          grd.addColorStop(1, 'rgba(180,150,255,0)');
+          g.fillStyle = grd; g.fillRect(0, 0, 256, 256);
+          return new THREE.CanvasTexture(c);
+        })(),
+        transparent: true, opacity: 0.85, blending: THREE.AdditiveBlending,
+        depthWrite: false, fog: false,
+      }));
+      moonHalo.position.copy(moon.position);
+      moonHalo.scale.set(20, 20, 20);
+      scene.add(moonHalo);
+
+      // 神殿は空に浮かぶ → 床下に雲を浮かべる
+      const cloudTex = (() => {
+        const c = document.createElement('canvas'); c.width = 512; c.height = 256;
+        const g = c.getContext('2d');
+        for (let i = 0; i < 30; i++) {
+          const x = Math.random() * 512, y = 50 + Math.random() * 156;
+          const r = 60 + Math.random() * 100;
+          const grd = g.createRadialGradient(x, y, 0, x, y, r);
+          grd.addColorStop(0, 'rgba(220,200,255,0.55)');
+          grd.addColorStop(1, 'rgba(180,150,220,0)');
+          g.fillStyle = grd;
+          g.beginPath(); g.ellipse(x, y, r, r * 0.4, 0, 0, Math.PI*2); g.fill();
+        }
+        return new THREE.CanvasTexture(c);
+      })();
+      for (let k = 0; k < 4; k++) {
+        const cloud = new THREE.Mesh(
+          new THREE.PlaneGeometry(120, 60),
+          new THREE.MeshBasicMaterial({ map: cloudTex, transparent: true, opacity: 0.55, depthWrite: false, fog: false })
+        );
+        cloud.rotation.x = -Math.PI / 2;
+        cloud.position.set((Math.random() - 0.5) * 40, -8 - k * 3, (Math.random() - 0.5) * 40);
+        scene.add(cloud);
+      }
+
+      // 環境光（神殿内は明るく保つ）
+      scene.add(new THREE.AmbientLight(0x8070b8, 0.7));
+      const hemi = new THREE.HemisphereLight(0xc0a0ff, 0x180830, 0.7);
       scene.add(hemi);
 
       // 床（暗い大理石）
@@ -11185,7 +11256,7 @@
         return t;
       })();
       const floor = new THREE.Mesh(
-        new THREE.CircleGeometry(30, 48),
+        new THREE.CircleGeometry(20, 48),
         new THREE.MeshStandardMaterial({ map: floorTex, roughness: 0.3, metalness: 0.6, color: 0xffffff })
       );
       floor.rotation.x = -Math.PI / 2;
