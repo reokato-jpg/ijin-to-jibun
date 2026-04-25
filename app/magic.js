@@ -16451,6 +16451,252 @@
     sunFlare.scale.set(9, 9, 1);
     sunMesh.add(sunFlare);
 
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    // 🪐 cosmos3D — 自然のeden3Dと同レベルの近景3D（観客越しに見える宇宙）
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    const cosmos3D = new THREE.Group();
+    cosmos3D.position.y = 3.5; // 観客の頭より上
+    // ── 近景の大型惑星×2（左右の見せ場、高ディテール） ──
+    function makeShowcasePlanet(opt) {
+      const g = new THREE.Group();
+      // procedural texture（縞模様/雲）
+      const c = document.createElement('canvas'); c.width = 512; c.height = 256;
+      const gc = c.getContext('2d');
+      const grd = gc.createLinearGradient(0, 0, 0, 256);
+      grd.addColorStop(0, opt.poleColor || '#a08060');
+      grd.addColorStop(0.5, opt.eqColor || '#d8a868');
+      grd.addColorStop(1, opt.poleColor || '#a08060');
+      gc.fillStyle = grd; gc.fillRect(0, 0, 512, 256);
+      // 横縞（雲帯）
+      for (let i = 0; i < 14; i++) {
+        const y = Math.random() * 256;
+        const h = 8 + Math.random() * 22;
+        gc.fillStyle = `rgba(${Math.random()*60+40},${Math.random()*40+30},${Math.random()*30+20},${0.15+Math.random()*0.25})`;
+        gc.fillRect(0, y, 512, h);
+      }
+      // 嵐の渦
+      for (let i = 0; i < 4; i++) {
+        const cx = Math.random() * 512, cy = Math.random() * 256;
+        const r = 12 + Math.random() * 32;
+        const swGrd = gc.createRadialGradient(cx, cy, 0, cx, cy, r);
+        swGrd.addColorStop(0, `rgba(255,200,140,0.8)`);
+        swGrd.addColorStop(1, 'rgba(0,0,0,0)');
+        gc.fillStyle = swGrd; gc.beginPath(); gc.arc(cx, cy, r, 0, Math.PI*2); gc.fill();
+      }
+      const tex = new THREE.CanvasTexture(c);
+      const sphere = new THREE.Mesh(
+        new THREE.SphereGeometry(opt.r, 48, 32),
+        new THREE.MeshStandardMaterial({
+          map: tex, roughness: 0.85,
+          emissive: new THREE.Color(opt.emissive || 0x101820),
+          emissiveIntensity: 0.25,
+        })
+      );
+      g.add(sphere);
+      // 大気層（Fresnel薄ハロー）
+      const atmoMat = new THREE.ShaderMaterial({
+        uniforms: { uColor: { value: new THREE.Color(opt.atmosColor || 0x80b0ff) } },
+        vertexShader: `varying vec3 vN; varying vec3 vP;
+          void main() { vN = normalize(normalMatrix * normal);
+            vec4 mvP = modelViewMatrix * vec4(position, 1.0);
+            vP = -mvP.xyz; gl_Position = projectionMatrix * mvP; }`,
+        fragmentShader: `uniform vec3 uColor; varying vec3 vN; varying vec3 vP;
+          void main() { vec3 V = normalize(vP);
+            float f = pow(1.0 - max(0.0, dot(normalize(vN), V)), 2.6);
+            gl_FragColor = vec4(uColor * f * 1.2, f * 0.6); }`,
+        transparent: true, side: THREE.BackSide,
+        blending: THREE.AdditiveBlending, depthWrite: false,
+      });
+      const atmos = new THREE.Mesh(new THREE.SphereGeometry(opt.r * 1.10, 32, 24), atmoMat);
+      g.add(atmos);
+      // リング（任意）
+      if (opt.ring) {
+        const ringMat = new THREE.MeshStandardMaterial({
+          color: opt.ringColor || 0xc8a878, transparent: true, opacity: 0.85,
+          side: THREE.DoubleSide, roughness: 0.7,
+        });
+        const ring = new THREE.Mesh(
+          new THREE.RingGeometry(opt.r * 1.4, opt.r * 2.0, 64),
+          ringMat
+        );
+        ring.rotation.x = -Math.PI / 2.2;
+        g.add(ring);
+      }
+      g.userData.sphere = sphere;
+      return g;
+    }
+    // 近景惑星×3：地球風、火星風、土星風
+    const showcase1 = makeShowcasePlanet({
+      r: 2.4, poleColor: '#3a5288', eqColor: '#4a80c8',
+      emissive: 0x103048, atmosColor: 0x80c0ff,
+    });
+    showcase1.position.set(-12, 4, -28);
+    cosmos3D.add(showcase1);
+
+    const showcase2 = makeShowcasePlanet({
+      r: 1.9, poleColor: '#a04830', eqColor: '#d06848',
+      emissive: 0x381810, atmosColor: 0xff8060,
+    });
+    showcase2.position.set(14, 6, -24);
+    cosmos3D.add(showcase2);
+
+    const showcase3 = makeShowcasePlanet({
+      r: 2.8, poleColor: '#806040', eqColor: '#c0a070',
+      emissive: 0x281810, atmosColor: 0xe0c890,
+      ring: true, ringColor: 0xd8b890,
+    });
+    showcase3.position.set(0, 9, -32);
+    cosmos3D.add(showcase3);
+
+    // ── 衛星/宇宙ステーション（人工物） ──
+    const station = new THREE.Group();
+    // 中央モジュール（円柱）
+    const stationCore = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.45, 0.45, 1.6, 12),
+      new THREE.MeshStandardMaterial({ color: 0xc8c8d0, roughness: 0.4, metalness: 0.7, emissive: 0x202830, emissiveIntensity: 0.3 })
+    );
+    stationCore.rotation.z = Math.PI / 2;
+    station.add(stationCore);
+    // 太陽光パネル×2
+    const panelMat = new THREE.MeshStandardMaterial({ color: 0x102050, metalness: 0.9, roughness: 0.2, emissive: 0x080820, emissiveIntensity: 0.4 });
+    [-1.2, 1.2].forEach(sx => {
+      const panel = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.04, 0.7), panelMat);
+      panel.position.set(sx, 0, 0);
+      station.add(panel);
+      // パネルの格子（黒線で描画）
+      const grid = new THREE.Mesh(
+        new THREE.BoxGeometry(1.0, 0.05, 0.04),
+        new THREE.MeshStandardMaterial({ color: 0x000000 })
+      );
+      grid.position.set(sx, 0.025, 0); station.add(grid);
+      const grid2 = new THREE.Mesh(
+        new THREE.BoxGeometry(0.04, 0.05, 0.7),
+        new THREE.MeshStandardMaterial({ color: 0x000000 })
+      );
+      grid2.position.set(sx, 0.025, 0); station.add(grid2);
+    });
+    // アンテナ
+    const antenna = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.02, 0.04, 0.8, 6),
+      new THREE.MeshStandardMaterial({ color: 0xe0e0e0 })
+    );
+    antenna.position.set(0, 0.6, 0); station.add(antenna);
+    const dish = new THREE.Mesh(
+      new THREE.SphereGeometry(0.18, 16, 8, 0, Math.PI * 2, 0, Math.PI / 2),
+      new THREE.MeshStandardMaterial({ color: 0xe0e0e8, roughness: 0.5, metalness: 0.5 })
+    );
+    dish.position.set(0, 1.0, 0);
+    dish.rotation.x = -0.3; station.add(dish);
+    station.position.set(8, 8, -18);
+    cosmos3D.add(station);
+    cosmos3D.userData.station = station;
+
+    // ── 彗星（テール付き、ゆっくり横切る） ──
+    const comets = [];
+    for (let i = 0; i < 3; i++) {
+      const comet = new THREE.Group();
+      const head = new THREE.Mesh(
+        new THREE.SphereGeometry(0.20, 16, 12),
+        new THREE.MeshBasicMaterial({ color: 0xfff0c0 })
+      );
+      comet.add(head);
+      // 光輪
+      const halo = new THREE.Sprite(new THREE.SpriteMaterial({
+        map: flareTex, color: 0xfff0c0, transparent: true,
+        opacity: 0.5, blending: THREE.AdditiveBlending, depthWrite: false,
+      }));
+      halo.scale.set(2.0, 2.0, 1);
+      comet.add(halo);
+      // テール（CylinderGeometry を細く長く、グラデーション風）
+      const tail = new THREE.Mesh(
+        new THREE.ConeGeometry(0.15, 4.5, 8, 1, true),
+        new THREE.MeshBasicMaterial({
+          color: 0xc0d8ff, transparent: true, opacity: 0.55,
+          blending: THREE.AdditiveBlending, depthWrite: false,
+          side: THREE.DoubleSide,
+        })
+      );
+      tail.position.x = -2.25;
+      tail.rotation.z = Math.PI / 2;
+      comet.add(tail);
+      const startA = (i / 3) * Math.PI * 2;
+      const orbit = 26 + i * 1.2;
+      comet.userData = { angle: startA, orbit, speed: 0.0015 + i * 0.0005, baseY: 11 + i * 1.5 };
+      cosmos3D.add(comet);
+      comets.push(comet);
+    }
+    cosmos3D.userData.comets = comets;
+
+    // ── 宇宙飛行士（procedural、浮遊） ──
+    const astro = new THREE.Group();
+    const suitMat = new THREE.MeshStandardMaterial({ color: 0xf4f4f4, roughness: 0.55 });
+    const visorMat = new THREE.MeshStandardMaterial({
+      color: 0x101030, metalness: 0.95, roughness: 0.05,
+      emissive: 0x202050, emissiveIntensity: 0.4,
+    });
+    // 体
+    const torso = new THREE.Mesh(new THREE.CapsuleGeometry(0.32, 0.55, 4, 10), suitMat);
+    astro.add(torso);
+    // 頭（ヘルメット）
+    const helmet = new THREE.Mesh(new THREE.SphereGeometry(0.32, 18, 14), suitMat);
+    helmet.position.y = 0.65;
+    astro.add(helmet);
+    // バイザー
+    const visor = new THREE.Mesh(
+      new THREE.SphereGeometry(0.27, 18, 12, 0, Math.PI * 2, 0, Math.PI / 2.2),
+      visorMat
+    );
+    visor.position.y = 0.68;
+    visor.rotation.x = 0.25;
+    astro.add(visor);
+    // 腕×2
+    [-1, 1].forEach(sx => {
+      const arm = new THREE.Mesh(new THREE.CapsuleGeometry(0.10, 0.55, 4, 8), suitMat);
+      arm.position.set(sx * 0.36, 0.05, 0);
+      arm.rotation.z = sx * 0.4;
+      astro.add(arm);
+      // 手袋
+      const glove = new THREE.Mesh(new THREE.SphereGeometry(0.13, 12, 9), new THREE.MeshStandardMaterial({ color: 0xe0e0e8, roughness: 0.6 }));
+      glove.position.set(sx * 0.55, -0.20, 0);
+      astro.add(glove);
+    });
+    // 脚×2
+    [-1, 1].forEach(sx => {
+      const leg = new THREE.Mesh(new THREE.CapsuleGeometry(0.13, 0.6, 4, 8), suitMat);
+      leg.position.set(sx * 0.18, -0.55, 0);
+      astro.add(leg);
+      // ブーツ
+      const boot = new THREE.Mesh(new THREE.BoxGeometry(0.20, 0.10, 0.30), new THREE.MeshStandardMaterial({ color: 0x303040 }));
+      boot.position.set(sx * 0.18, -0.92, 0.05);
+      astro.add(boot);
+    });
+    // バックパック（生命維持装置）
+    const pack = new THREE.Mesh(
+      new THREE.BoxGeometry(0.35, 0.55, 0.20),
+      new THREE.MeshStandardMaterial({ color: 0xe0e0e0, roughness: 0.6 })
+    );
+    pack.position.set(0, 0.05, -0.30);
+    astro.add(pack);
+    astro.position.set(-5, 8, -15);
+    astro.rotation.y = -0.3;
+    cosmos3D.add(astro);
+    cosmos3D.userData.astro = astro;
+
+    // ── 環境光（cosmos用に軽く） ──
+    const cosmosAmbient = new THREE.AmbientLight(0x404060, 0.45);
+    cosmos3D.add(cosmosAmbient);
+    const cosmosSun = new THREE.PointLight(0xfff0d0, 1.6, 60, 1.6);
+    cosmosSun.position.set(15, 10, -10);
+    cosmos3D.add(cosmosSun);
+    const cosmosFill = new THREE.PointLight(0x4080ff, 0.5, 50, 1.8);
+    cosmosFill.position.set(-12, 5, 8);
+    cosmos3D.add(cosmosFill);
+
+    // planetGroup の子として配置 → 親が visible なら表示される（cosmosモードのみ）
+    planetGroup.add(cosmos3D);
+    planetGroup.userData.cosmos3D = cosmos3D;
+    planetGroup.userData.showcasePlanets = [showcase1, showcase2, showcase3];
+
     // ✦ プラネタリウム — 星座（球面に投影）
     const constellationGroup = new THREE.Group();
     constellationGroup.visible = false;
@@ -18439,6 +18685,40 @@
           }
           o.mesh.rotation.y += 0.005;
         });
+        // 🌌 cosmos3D 近景3Dの命を吹き込む
+        const c3 = scene.userData.planetGroup.userData.cosmos3D;
+        if (c3) {
+          // 近景惑星：ゆっくり自転
+          (scene.userData.planetGroup.userData.showcasePlanets || []).forEach((p, i) => {
+            if (p.userData.sphere) p.userData.sphere.rotation.y += 0.003 + i * 0.001;
+            // 上下にわずかにフロート
+            p.position.y += Math.sin(t * 0.3 + i * 1.5) * 0.003;
+          });
+          // 宇宙ステーション：ゆっくり回転＋漂う
+          if (c3.userData.station) {
+            c3.userData.station.rotation.y += 0.004;
+            c3.userData.station.position.y = 8 + Math.sin(t * 0.4) * 0.4;
+          }
+          // 彗星：軌道
+          (c3.userData.comets || []).forEach(comet => {
+            const u = comet.userData;
+            u.angle += u.speed;
+            comet.position.x = Math.cos(u.angle) * u.orbit;
+            comet.position.z = Math.sin(u.angle) * u.orbit;
+            comet.position.y = u.baseY + Math.sin(t * 0.5 + u.angle) * 0.6;
+            // 進行方向を向く（テールが後ろになるように）
+            comet.rotation.y = -u.angle - Math.PI / 2;
+          });
+          // 飛行士：宇宙遊泳（ゆっくり浮遊＋向き変化）
+          if (c3.userData.astro) {
+            const a = c3.userData.astro;
+            a.position.y = 8 + Math.sin(t * 0.35) * 0.5;
+            a.position.x = -5 + Math.cos(t * 0.2) * 1.2;
+            a.position.z = -15 + Math.sin(t * 0.18) * 0.8;
+            a.rotation.y = -0.3 + Math.sin(t * 0.2) * 0.4;
+            a.rotation.z = Math.sin(t * 0.15) * 0.15;
+          }
+        }
       }
       // ⛩ 神話アニメ（アクティブシーンのみ）
       if (scene.userData.mythGroup && scene.userData.mythGroup.visible && scene.userData.mythScenes) {
