@@ -15747,17 +15747,50 @@
       p.draw(g, w);
       const ptex = new THREE.CanvasTexture(c);
       if ('colorSpace' in ptex) ptex.colorSpace = THREE.SRGBColorSpace;
-      const sphere = new THREE.Mesh(
-        new THREE.SphereGeometry(p.r, 48, 32),
-        new THREE.MeshStandardMaterial({
-          map: ptex,
-          // テクスチャを emissiveMap にも設定（光が当たらなくても見える）
-          emissiveMap: ptex,
-          emissive: new THREE.Color(p.emissive || 0xffffff),
-          emissiveIntensity: p.emissive ? 1.0 : 0.35, // 太陽=満光、他=底光り
-          roughness: 0.85, metalness: 0.0,
-        })
-      );
+      // 太陽は MeshBasic + toneMapped:false で tone mapping を貫通させる（ATM風）
+      const sphere = p.emissive
+        ? new THREE.Mesh(
+            new THREE.SphereGeometry(p.r, 48, 32),
+            new THREE.MeshBasicMaterial({ map: ptex, toneMapped: false })
+          )
+        : new THREE.Mesh(
+            new THREE.SphereGeometry(p.r, 48, 32),
+            new THREE.MeshStandardMaterial({
+              map: ptex, emissiveMap: ptex,
+              emissive: new THREE.Color(0x404060),
+              emissiveIntensity: 0.25,
+              roughness: 0.85, metalness: 0.0,
+            })
+          );
+      // 大気フレネルシェル（地球・金星・木星・天王星に淡い光輪）
+      const ATMOS_PLANETS = { 地球: 0x6090ff, 金星: 0xffd060, 木星: 0xc8a878, 天王星: 0x80d8e0 };
+      if (ATMOS_PLANETS[p.name]) {
+        const atmoMat = new THREE.ShaderMaterial({
+          uniforms: { uColor: { value: new THREE.Color(ATMOS_PLANETS[p.name]) } },
+          vertexShader: `
+            varying vec3 vN; varying vec3 vP;
+            void main() {
+              vN = normalize(normalMatrix * normal);
+              vec4 mvP = modelViewMatrix * vec4(position, 1.0);
+              vP = -mvP.xyz;
+              gl_Position = projectionMatrix * mvP;
+            }
+          `,
+          fragmentShader: `
+            uniform vec3 uColor;
+            varying vec3 vN; varying vec3 vP;
+            void main() {
+              vec3 V = normalize(vP);
+              float f = pow(1.0 - max(0.0, dot(normalize(vN), V)), 2.6);
+              gl_FragColor = vec4(uColor * f * 1.4, f * 0.7);
+            }
+          `,
+          transparent: true, side: THREE.BackSide,
+          blending: THREE.AdditiveBlending, depthWrite: false,
+        });
+        const atmoShell = new THREE.Mesh(new THREE.SphereGeometry(p.r * 1.05, 32, 24), atmoMat);
+        sphere.add(atmoShell);
+      }
       // 大気のスプライト
       if (p.atmos) {
         const ac = document.createElement('canvas'); ac.width = 128; ac.height = 128;
@@ -15814,6 +15847,134 @@
     scene.add(planetGroup);
     scene.userData.planetGroup = planetGroup;
     scene.userData.orbiters = orbiters;
+
+    // ✨ 銀河スパイラル（Bruno Simon の Galaxy Generator スタイル）— 8万粒子
+    const galaxyParams = { count: 80000, radius: 35, branches: 4, spin: 1.2, randomness: 0.3, randomnessPower: 3, insideColor: 0xff6020, outsideColor: 0x4080ff };
+    const galaxyGeo = new THREE.BufferGeometry();
+    const galaxyPos = new Float32Array(galaxyParams.count * 3);
+    const galaxyCol = new Float32Array(galaxyParams.count * 3);
+    const galaxyScale = new Float32Array(galaxyParams.count);
+    const ic = new THREE.Color(galaxyParams.insideColor);
+    const oc = new THREE.Color(galaxyParams.outsideColor);
+    for (let i = 0; i < galaxyParams.count; i++) {
+      const radius = Math.random() * galaxyParams.radius;
+      const spinAngle = radius * galaxyParams.spin;
+      const branchAngle = ((i % galaxyParams.branches) / galaxyParams.branches) * Math.PI * 2;
+      const rx = Math.pow(Math.random(), galaxyParams.randomnessPower) * (Math.random() < 0.5 ? 1 : -1) * galaxyParams.randomness * radius * 0.3;
+      const ry = Math.pow(Math.random(), galaxyParams.randomnessPower) * (Math.random() < 0.5 ? 1 : -1) * galaxyParams.randomness * radius * 0.1;
+      const rz = Math.pow(Math.random(), galaxyParams.randomnessPower) * (Math.random() < 0.5 ? 1 : -1) * galaxyParams.randomness * radius * 0.3;
+      galaxyPos[i*3]   = Math.cos(branchAngle + spinAngle) * radius + rx;
+      galaxyPos[i*3+1] = ry;
+      galaxyPos[i*3+2] = Math.sin(branchAngle + spinAngle) * radius + rz;
+      const mixed = ic.clone().lerp(oc, radius / galaxyParams.radius);
+      galaxyCol[i*3]   = mixed.r;
+      galaxyCol[i*3+1] = mixed.g;
+      galaxyCol[i*3+2] = mixed.b;
+      galaxyScale[i] = Math.random();
+    }
+    galaxyGeo.setAttribute('position', new THREE.BufferAttribute(galaxyPos, 3));
+    galaxyGeo.setAttribute('color', new THREE.BufferAttribute(galaxyCol, 3));
+    galaxyGeo.setAttribute('aScale', new THREE.BufferAttribute(galaxyScale, 1));
+    const galaxyMat = new THREE.ShaderMaterial({
+      uniforms: { uTime: { value: 0 }, uSize: { value: 30 * renderer.getPixelRatio() } },
+      vertexShader: `
+        attribute float aScale;
+        varying vec3 vColor;
+        uniform float uTime;
+        uniform float uSize;
+        void main() {
+          vec4 modelPosition = modelMatrix * vec4(position, 1.0);
+          // ゆっくり中心軸で回転
+          float angle = atan(modelPosition.x, modelPosition.z);
+          float distanceToCenter = length(modelPosition.xz);
+          float angleOffset = (1.0 / (distanceToCenter + 0.01)) * uTime * 0.4;
+          angle += angleOffset;
+          modelPosition.x = cos(angle) * distanceToCenter;
+          modelPosition.z = sin(angle) * distanceToCenter;
+          vec4 viewPosition = viewMatrix * modelPosition;
+          vec4 projectionPosition = projectionMatrix * viewPosition;
+          gl_Position = projectionPosition;
+          gl_PointSize = uSize * aScale;
+          gl_PointSize *= (1.0 / -viewPosition.z);
+          vColor = color;
+        }
+      `,
+      fragmentShader: `
+        varying vec3 vColor;
+        void main() {
+          // 円形グラデで星らしく
+          float d = distance(gl_PointCoord, vec2(0.5));
+          float a = 0.05 / d - 0.1;
+          if (a <= 0.0) discard;
+          gl_FragColor = vec4(vColor, a);
+        }
+      `,
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+      vertexColors: true,
+    });
+    const galaxy = new THREE.Points(galaxyGeo, galaxyMat);
+    galaxy.position.y = 8;
+    galaxy.rotation.x = 0.15;
+    planetGroup.add(galaxy);
+    scene.userData.galaxy = galaxy;
+    scene.userData.galaxyMat = galaxyMat;
+
+    // 🪨 小惑星帯（火星と木星の間 r=24、200個 InstancedMesh）
+    const asteroidGeo = new THREE.IcosahedronGeometry(0.15, 0);
+    const asteroidMat = new THREE.MeshStandardMaterial({ color: 0x6a5848, roughness: 0.95, flatShading: true });
+    const asteroidCount = 200;
+    const asteroidMesh = new THREE.InstancedMesh(asteroidGeo, asteroidMat, asteroidCount);
+    const aDummy = new THREE.Object3D();
+    const asteroids = [];
+    for (let i = 0; i < asteroidCount; i++) {
+      const ang = Math.random() * Math.PI * 2;
+      const r = 23 + Math.random() * 2.5;
+      const y = (Math.random() - 0.5) * 0.6;
+      asteroids.push({ ang, r, y, speed: 0.05 + Math.random() * 0.03, scale: 0.5 + Math.random() * 1.2, rotSpeed: (Math.random() - 0.5) * 0.05 });
+    }
+    asteroids.forEach((a, i) => {
+      aDummy.position.set(Math.cos(a.ang) * a.r, 8 + a.y, Math.sin(a.ang) * a.r);
+      aDummy.rotation.set(Math.random()*6, Math.random()*6, Math.random()*6);
+      aDummy.scale.setScalar(a.scale);
+      aDummy.updateMatrix();
+      asteroidMesh.setMatrixAt(i, aDummy.matrix);
+    });
+    asteroidMesh.instanceMatrix.needsUpdate = true;
+    planetGroup.add(asteroidMesh);
+    scene.userData.asteroids = asteroids;
+    scene.userData.asteroidMesh = asteroidMesh;
+
+    // ✨ 太陽のレンズフレア（複数のSpriteを画面方向に配置）
+    const sunMesh = orbiters[0].mesh;
+    // 大きな後光
+    const flareTex = (() => {
+      const c = document.createElement('canvas'); c.width = 256; c.height = 256;
+      const g = c.getContext('2d');
+      const grd = g.createRadialGradient(128, 128, 0, 128, 128, 128);
+      grd.addColorStop(0, 'rgba(255,255,220,0.9)');
+      grd.addColorStop(0.2, 'rgba(255,200,80,0.5)');
+      grd.addColorStop(1, 'rgba(255,140,40,0)');
+      g.fillStyle = grd; g.fillRect(0, 0, 256, 256);
+      // 6条の光線
+      g.strokeStyle = 'rgba(255,240,180,0.4)';
+      g.lineWidth = 2;
+      for (let i = 0; i < 6; i++) {
+        const ang = (i / 6) * Math.PI * 2;
+        g.beginPath();
+        g.moveTo(128, 128);
+        g.lineTo(128 + Math.cos(ang) * 120, 128 + Math.sin(ang) * 120);
+        g.stroke();
+      }
+      return new THREE.CanvasTexture(c);
+    })();
+    const sunFlare = new THREE.Sprite(new THREE.SpriteMaterial({
+      map: flareTex, transparent: true, opacity: 0.7,
+      depthWrite: false, blending: THREE.AdditiveBlending,
+    }));
+    sunFlare.scale.set(18, 18, 1);
+    sunMesh.add(sunFlare);
 
     // ✦ プラネタリウム — 星座（球面に投影）
     const constellationGroup = new THREE.Group();
