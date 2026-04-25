@@ -8639,3 +8639,65 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
 @media (max-width: 640px) {
   .koh-mode-btn { padding: 6px 10px; font-size: 10px; }
 }
+
+/* 🎮 バーチャルパッド（首振り） */
+.koh-vpad {
+  position: absolute;
+  right: 22px; bottom: 80px;
+  width: 120px; height: 120px;
+  z-index: 30;
+  touch-action: none;
+  user-select: none;
+  cursor: pointer;
+  opacity: 0.42;
+  transition: opacity .25s;
+}
+.koh-vpad:hover, .koh-vpad:active { opacity: 0.85; }
+.koh-vpad-ring {
+  position: absolute; inset: 0;
+  border: 1.5px solid rgba(216,176,255,0.55);
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(40,28,80,0.25), rgba(10,5,25,0.15));
+  backdrop-filter: blur(6px);
+  box-shadow: 0 0 14px rgba(180,140,220,0.25), inset 0 0 12px rgba(180,140,220,0.18);
+}
+.koh-vpad-ring::before, .koh-vpad-ring::after {
+  content: ''; position: absolute;
+  background: rgba(216,176,255,0.35);
+}
+.koh-vpad-ring::before {
+  /* 横軸の薄い線 */
+  left: 12%; right: 12%; top: 50%; height: 1px;
+}
+.koh-vpad-ring::after {
+  /* 縦軸の薄い線 */
+  top: 12%; bottom: 12%; left: 50%; width: 1px;
+}
+.koh-vpad-knob {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255,232,180,0.85), rgba(180,140,220,0.4));
+  border: 1px solid rgba(255,216,144,0.6);
+  box-shadow: 0 0 14px rgba(255,216,144,0.35), inset 0 0 6px rgba(255,255,255,0.25);
+  pointer-events: none;
+  transition: box-shadow .15s;
+}
+.koh-vpad-label {
+  position: absolute;
+  bottom: -22px; left: 50%; transform: translateX(-50%);
+  font-family: 'Shippori Mincho', serif;
+  font-size: 11px; letter-spacing: 0.4em;
+  color: rgba(216,176,255,0.7);
+  pointer-events: none;
+}
+@media (max-width: 640px) {
+  .koh-vpad { width: 100px; height: 100px; right: 14px; bottom: 96px; }
+  .koh-vpad-knob { width: 30px; height: 30px; }
+}
+/* HUD のbottomパネルがパッドに被らないよう調整 */
+@media (max-width: 640px) {
+  .koh-hud-br { bottom: 220px; }
+}

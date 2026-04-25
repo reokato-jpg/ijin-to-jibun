@@ -14234,6 +14234,12 @@
         <button class="koh-mode-btn" data-mode="cosmos">🌌 宇宙</button>
         <button class="koh-mode-btn" data-mode="vr" id="kohVRBtn">🥽 VR</button>
       </div>
+      <!-- 🎮 バーチャルパッド（首振り）— 薄く、ドラッグでも触れない場所に -->
+      <div class="koh-vpad" id="kohVpad" aria-label="首を動かす">
+        <div class="koh-vpad-ring"></div>
+        <div class="koh-vpad-knob" id="kohVpadKnob"></div>
+        <div class="koh-vpad-label">首</div>
+      </div>
     `;
     document.body.appendChild(ov);
     requestAnimationFrame(() => ov.classList.add('open'));
@@ -14918,6 +14924,43 @@
     renderer.domElement.addEventListener('pointercancel', stop);
     renderer.domElement.addEventListener('pointerleave', stop);
 
+    // 🎮 バーチャルパッド（首振り操作）
+    const vpad = ov.querySelector('#kohVpad');
+    const vknob = ov.querySelector('#kohVpadKnob');
+    let vpadActive = false;
+    let vpadDX = 0, vpadDY = 0; // -1〜1 の正規化
+    const VPAD_MAX = 50; // 半径(px)
+    const vpadStart = (e) => {
+      e.preventDefault();
+      vpadActive = true;
+      const t = e.touches ? e.touches[0] : e;
+      vpad.dataset.cx = t.clientX;
+      vpad.dataset.cy = t.clientY;
+    };
+    const vpadMove = (e) => {
+      if (!vpadActive) return;
+      const t = e.touches ? e.touches[0] : e;
+      let dx = t.clientX - +vpad.dataset.cx;
+      let dy = t.clientY - +vpad.dataset.cy;
+      const d = Math.hypot(dx, dy);
+      if (d > VPAD_MAX) { dx = dx / d * VPAD_MAX; dy = dy / d * VPAD_MAX; }
+      vknob.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
+      vpadDX = dx / VPAD_MAX;
+      vpadDY = dy / VPAD_MAX;
+    };
+    const vpadEnd = () => {
+      vpadActive = false;
+      vknob.style.transform = 'translate(-50%, -50%)';
+      vpadDX = 0; vpadDY = 0;
+    };
+    vpad.addEventListener('touchstart', vpadStart, { passive: false });
+    vpad.addEventListener('touchmove', vpadMove, { passive: false });
+    vpad.addEventListener('touchend', vpadEnd);
+    vpad.addEventListener('touchcancel', vpadEnd);
+    vpad.addEventListener('mousedown', vpadStart);
+    window.addEventListener('mousemove', vpadMove);
+    window.addEventListener('mouseup', vpadEnd);
+
     let running = true;
     ov.querySelector('.museum3d-close').addEventListener('click', () => {
       running = false;
@@ -14995,6 +15038,13 @@
         myY + breath + bob,
         myZ + Math.cos(t * 0.4) * 0.005
       );
+      // 🎮 バーチャルパッド入力（パッドの傾きで yawT/pitchT が連続的に動く）
+      if (vpadActive && (vpadDX !== 0 || vpadDY !== 0)) {
+        // パッド最大時に 1秒で約 90度回るスピード
+        const PAD_SPEED = Math.PI * 0.5;
+        yawT   -= vpadDX * PAD_SPEED * dt;
+        pitchT  = Math.max(-PITCH_LIMIT, Math.min(PITCH_LIMIT, pitchT - vpadDY * PAD_SPEED * dt));
+      }
       // 🎯 Critically-damped spring（バター級スムーズ + 慣性）
       // 微分方程式: a = -ω²(x - target) - 2ζω·v   (ζ=1で臨界減衰)
       const omega = 14;          // 高い = 追従速い（バネが硬い）
