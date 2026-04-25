@@ -14053,7 +14053,7 @@
   // ============================================================
   const KOH_PASSWORD = 'kk8869';
   const KOH_MUSIC = [
-    { id: 'bach903',  title: '半音階的幻想曲とフーガ', sub: 'J.S.バッハ BWV 903 — natsumi', src: 'assets/bach-bwv903.mp3', mood: 0xa890c8, scenery: 'baroque' },
+    { id: 'bach903',  title: '半音階的幻想曲とフーガ', sub: 'J.S.バッハ BWV 903 — natsumi', src: 'assets/bach-bwv903.mp3', mood: 0xa890c8, scenery: 'baroque', soloPiano: true },
     { id: 'home',     title: '夜明け',         sub: '光が射し込む',   src: 'assets/home-bgm.mp3',     mood: 0xfff0c0, scenery: 'dawn' },
     { id: 'history',  title: '時の流れ',       sub: '歴史を巡る',     src: 'assets/history-bgm.mp3',  mood: 0xa080d0, scenery: 'flow' },
     { id: 'blog',     title: '静かな午後',     sub: '思索の時間',     src: 'assets/blog-bgm.mp3',     mood: 0x80c8e0, scenery: 'calm' },
@@ -14844,22 +14844,96 @@
       scene.add(g);
       return { group: g, head: person.userData.head, person };
     }
-    // 弦楽器（前列）
+    // 譜面台（共通関数）
+    function makeMusicStand(x, z, ang) {
+      const g = new THREE.Group();
+      const post = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.025, 0.04, 0.95, 6),
+        new THREE.MeshStandardMaterial({ color: 0x202020, metalness: 0.7, roughness: 0.4 })
+      );
+      post.position.y = 0.475;
+      g.add(post);
+      const board = new THREE.Mesh(
+        new THREE.PlaneGeometry(0.4, 0.3),
+        new THREE.MeshStandardMaterial({ color: 0xfdf4d8, side: THREE.DoubleSide, roughness: 0.8 })
+      );
+      board.position.set(0, 1.0, 0.05);
+      board.rotation.x = -0.5; // 譜面の傾斜
+      g.add(board);
+      // 楽譜の線（黒い5本線、上下に2セット）
+      const sheet = document.createElement('canvas'); sheet.width = 80; sheet.height = 60;
+      const sctx = sheet.getContext('2d');
+      sctx.fillStyle = '#fdf4d8'; sctx.fillRect(0,0,80,60);
+      sctx.strokeStyle = '#000'; sctx.lineWidth = 1;
+      [10, 16, 22, 28, 34].forEach(y => { sctx.beginPath(); sctx.moveTo(4, y); sctx.lineTo(76, y); sctx.stroke(); });
+      // 音符の点
+      sctx.fillStyle = '#000';
+      [12, 24, 32, 18, 26].forEach((y, i) => { sctx.beginPath(); sctx.arc(15+i*12, y, 2, 0, Math.PI*2); sctx.fill(); });
+      const sTex = new THREE.CanvasTexture(sheet);
+      board.material.map = sTex; board.material.needsUpdate = true;
+      g.position.set(x, 0, z);
+      g.rotation.y = ang;
+      return g;
+    }
+
+    // 🎻 オーケストラ（リアル配置: 弧形配列、譜面台付き）
     const orchestra = [];
+    // 第1バイオリン（左前、弧形 6人）
     for (let i = 0; i < 6; i++) {
-      const a = -Math.PI/4 + (i / 5) * (Math.PI/2);
-      orchestra.push(makePlayer(Math.sin(a) * 2.8, Math.cos(a) * 2.8 - 2.5, 0x2a2a3a, 'violin'));
+      const a = -Math.PI/3 + (i / 5) * (Math.PI/3);
+      const x = Math.sin(a) * 3.2 - 1.5, z = Math.cos(a) * 3.2 - 2;
+      const angToCenter = Math.atan2(-x, -z + 1.5);
+      orchestra.push(makePlayer(x, z, 0x14101a, 'violin'));
+      scene.add(makeMusicStand(x + Math.cos(angToCenter)*0.5, z + Math.sin(angToCenter)*0.5, angToCenter));
     }
-    // チェロ（後ろ列）
+    // 第2バイオリン（右前、弧形 5人）
+    for (let i = 0; i < 5; i++) {
+      const a = -Math.PI/4 + (i / 4) * (Math.PI/3);
+      const x = Math.sin(a) * 3.2 + 1.5, z = Math.cos(a) * 3.2 - 2;
+      orchestra.push(makePlayer(x, z, 0x14101a, 'violin'));
+    }
+    // ヴィオラ（中央後ろ、4人）
     for (let i = 0; i < 4; i++) {
-      const a = -Math.PI/3.5 + (i / 3) * (Math.PI/1.8);
-      orchestra.push(makePlayer(Math.sin(a) * 4.0, Math.cos(a) * 4.0 - 2.5, 0x3a2820, 'cello'));
+      const x = -1.5 + i, z = -3.5;
+      orchestra.push(makePlayer(x, z, 0x14101a, 'violin'));
     }
-    // フルート（横）
+    // チェロ（左後ろ、4人）
+    for (let i = 0; i < 4; i++) {
+      const a = -Math.PI/4 + (i / 3) * (Math.PI/3);
+      orchestra.push(makePlayer(Math.sin(a) * 4.5 - 2, Math.cos(a) * 4.5 - 3.5, 0x14101a, 'cello'));
+    }
+    // コントラバス（後列、3人立奏）
+    for (let i = 0; i < 3; i++) {
+      orchestra.push(makePlayer(-2 + i * 2, -5, 0x14101a, 'cello'));
+    }
+    // 木管（右後ろ）
+    for (let i = 0; i < 3; i++) {
+      orchestra.push(makePlayer(3 + i * 0.8, -3.5, 0x14101a, 'flute'));
+    }
+    // ホルン（後ろ）
     for (let i = 0; i < 2; i++) {
-      orchestra.push(makePlayer(i === 0 ? -3.5 : 3.5, -3, 0x4a3a2a, 'flute'));
+      orchestra.push(makePlayer(-1 + i * 2, -4.5, 0x14101a, 'flute'));
     }
     scene.userData.orchestra = orchestra;
+    // 🎹 Bach等のソロピアノ曲ではオーケストラと指揮者を非表示（ピアニストだけ）
+    if (config.music.soloPiano) {
+      orchestra.forEach(p => { if (p && p.group) p.group.visible = false; });
+      if (conductor) conductor.visible = false;
+      // ピアノを目立たせる中央配置 + ピアニスト追加
+      piano.position.set(0, 0.7, -1);
+      piano.rotation.y = 0.3;
+      // ピアニスト
+      const pianist = (typeof buildPerson === 'function') ? buildPerson({
+        bodyColor: 0x14101a, hairColor: 0x2a1810, skinColor: 0xf0d4b0,
+        sitting: true, instrument: 'piano',
+      }) : null;
+      if (pianist) {
+        pianist.position.set(0, 0.7, 0);
+        pianist.rotation.y = Math.PI; // 鍵盤側を向く
+        scene.add(pianist);
+        scene.userData.pianist = pianist;
+      }
+    }
 
     // ステージライト（複数の柔らかいダウンライト + 周囲光で自然に）
     const stageLight = new THREE.SpotLight(0xfff0d0, 2.5, 18, Math.PI/4, 0.7, 1.3);
@@ -15120,6 +15194,14 @@
         else stopMythCycle();
       });
     });
+
+    // 🔇 入場時にTOPの全BGMを停止（KOHの曲だけが聞こえる状態）
+    try {
+      ['homeBgm','searchBgm','historyBgm','routineBgm','blogBgm','favoritesBgm','squareBgm','bach903Bgm'].forEach(id => {
+        const a = document.getElementById(id);
+        if (a) { a.pause(); try { a.currentTime = 0; } catch {} }
+      });
+    } catch {}
 
     // 🎵 音楽再生 + 🔬 周波数解析（音に反応する世界）
     const audio = new Audio(config.music.src);
