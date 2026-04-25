@@ -11149,7 +11149,8 @@
     });
     renderer.domElement.addEventListener('pointermove', e => {
       if (!dragging) return;
-      yaw -= (e.clientX - lastX) * 0.0075;  // 感度UP（広く見渡せる）
+      // 原神方式：ドラッグ右→視線も右へ（FPSスタイル、yaw増）
+      yaw += (e.clientX - lastX) * 0.0075;
       pitch = Math.max(-1.45, Math.min(1.45, pitch - (e.clientY - lastY) * 0.0065));
       lastX = e.clientX; lastY = e.clientY;
     });
@@ -13489,7 +13490,8 @@
     renderer.domElement.addEventListener('pointerdown', e => { dragging = true; lastX = e.clientX; lastY = e.clientY; });
     renderer.domElement.addEventListener('pointermove', e => {
       if (!dragging) return;
-      yaw -= (e.clientX - lastX) * 0.0075;  // 感度UP
+      // 原神方式：ドラッグ右→視線も右へ
+      yaw += (e.clientX - lastX) * 0.0075;
       pitch = Math.max(-1.45, Math.min(1.45, pitch - (e.clientY - lastY) * 0.0065));
       lastX = e.clientX; lastY = e.clientY;
     });
