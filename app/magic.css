@@ -7503,6 +7503,19 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
 .magic-topbook-cat-myth { background: linear-gradient(135deg, rgba(70,30,110,0.7), rgba(30,10,60,0.85)); border-color: rgba(220,180,255,0.45); }
 .magic-topbook-cat-museum { background: linear-gradient(135deg, rgba(110,80,40,0.7), rgba(50,30,15,0.85)); border-color: rgba(220,190,130,0.45); }
 .magic-topbook-cat-ijin { background: linear-gradient(135deg, rgba(70,30,40,0.7), rgba(30,10,15,0.85)); border-color: rgba(255,180,180,0.45); }
+.magic-topbook-cat-library {
+  background: linear-gradient(135deg, rgba(80,55,15,0.85), rgba(35,18,5,0.92));
+  border-color: rgba(220,180,90,0.55);
+  position: relative;
+}
+.magic-topbook-cat-library::after {
+  content: 'NEW';
+  position: absolute; top: 8px; right: 10px;
+  font-size: 9px; letter-spacing: 1.5px;
+  background: linear-gradient(135deg, #f0c060, #a06010);
+  color: #1a0f04; padding: 2px 6px; border-radius: 4px;
+  font-weight: 700;
+}
 
 .magic-topbook-subpills {
   display: flex;
@@ -9027,3 +9040,159 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   .lib-title { font-size: 26px; letter-spacing: 8px; }
   .lib-results { grid-template-columns: 1fr; max-height: 38vh; }
 }
+
+/* ============================================================
+   🥽 AIグラスHUD (KOH 観客の半透過情報表示)
+============================================================ */
+.koh-ar-toggle {
+  position: fixed; top: 18px; right: 80px; z-index: 10010;
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(20,28,40,0.65); border: 1px solid rgba(140,200,255,0.4);
+  color: #c8e0ff; padding: 8px 14px; border-radius: 999px;
+  font-size: 12px; letter-spacing: 1.5px; cursor: pointer;
+  backdrop-filter: blur(8px);
+}
+.koh-ar-toggle.on { border-color: rgba(140,255,200,0.65); color: #b8ffe0; box-shadow: 0 0 12px rgba(80,200,160,0.35); }
+.kat-icon { font-size: 16px; }
+.kat-state { font-weight: 700; padding: 2px 8px; border-radius: 4px; background: rgba(140,180,220,0.25); font-size: 10px; }
+.koh-ar-toggle.on .kat-state { background: rgba(80,200,160,0.4); }
+
+.koh-ar-overlay {
+  position: fixed; inset: 0; pointer-events: none; z-index: 10005;
+  opacity: 0; transition: opacity 0.4s ease;
+}
+.koh-ar-overlay.on { opacity: 1; }
+
+/* HUD背景の枠装飾（眼鏡フレームの内側っぽさ） */
+.koh-ar-hud-bg { position: absolute; inset: 0; }
+.kah-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(120,200,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(120,200,255,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(circle at center, transparent 30%, black 80%);
+}
+.kah-corner {
+  position: absolute; width: 60px; height: 60px;
+  border: 2px solid rgba(140,220,255,0.5);
+}
+.kah-corner-tl { top: 12px; left: 12px; border-right: none; border-bottom: none; }
+.kah-corner-tr { top: 12px; right: 12px; border-left: none; border-bottom: none; }
+.kah-corner-bl { bottom: 12px; left: 12px; border-right: none; border-top: none; }
+.kah-corner-br { bottom: 12px; right: 12px; border-left: none; border-top: none; }
+
+/* 左の関係者情報パネル */
+.koh-ar-info-panel {
+  position: absolute; top: 90px; left: 24px;
+  width: 280px; max-width: 30vw;
+  display: flex; flex-direction: column; gap: 8px;
+  pointer-events: auto;
+}
+.kar-card {
+  background: rgba(15,25,38,0.55);
+  border: 1px solid rgba(140,200,255,0.35);
+  border-left: 3px solid #80c8ff;
+  backdrop-filter: blur(6px);
+  border-radius: 4px; padding: 10px 12px;
+  color: #d8e8f8;
+  font-family: 'Noto Sans JP', system-ui, sans-serif;
+  animation: karSlideIn 0.6s ease backwards;
+}
+.kar-card:nth-child(1) { animation-delay: 0.1s; }
+.kar-card:nth-child(2) { animation-delay: 0.25s; }
+.kar-card:nth-child(3) { animation-delay: 0.4s; }
+.kar-card:nth-child(4) { animation-delay: 0.55s; }
+.kar-card:nth-child(5) { animation-delay: 0.7s; }
+@keyframes karSlideIn {
+  from { opacity: 0; transform: translateX(-10px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.kar-tag { font-size: 10px; letter-spacing: 2px; color: #80c8ff; }
+.kar-name { font-size: 16px; font-weight: 700; color: #ffffff; margin-top: 4px; }
+.kar-meta { font-size: 11px; color: #a0c0e0; margin-top: 2px; }
+.kar-text { font-size: 12px; color: #c8d8e8; margin-top: 4px; line-height: 1.5; }
+.kar-chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+.kar-chip {
+  font-size: 10px; padding: 2px 8px; border-radius: 999px;
+  background: rgba(80,160,220,0.2); color: #c8e8ff;
+  border: 1px solid rgba(120,200,255,0.4);
+}
+.kar-comment { border-left-color: #80f8c0; }
+.kar-comment-text { font-size: 11px; color: #c8e8d8; line-height: 1.6; font-style: italic; }
+
+/* 右の広告 */
+.koh-ar-ads {
+  position: absolute; top: 90px; right: 24px;
+  width: 240px; max-width: 26vw;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.kar-ad {
+  background: linear-gradient(135deg, rgba(20,15,8,0.65), rgba(8,4,2,0.55));
+  border: 1px solid color-mix(in srgb, var(--acc) 50%, transparent);
+  border-right: 3px solid var(--acc);
+  backdrop-filter: blur(6px);
+  border-radius: 4px; padding: 10px 12px;
+  color: #f0e0c0;
+  animation: karAdSlideIn 0.7s ease backwards;
+}
+@keyframes karAdSlideIn {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.kar-ad-eyebrow { font-size: 9px; letter-spacing: 2px; color: var(--acc); opacity: 0.85; }
+.kar-ad-brand { font-size: 14px; font-weight: 700; margin-top: 4px; color: var(--acc); }
+.kar-ad-tag { font-size: 11px; color: #f8e8d0; margin-top: 4px; line-height: 1.4; }
+.kar-ad-sub { font-size: 10px; color: #c0a890; margin-top: 4px; opacity: 0.85; }
+
+@media (max-width: 640px) {
+  .koh-ar-toggle { right: 60px; padding: 6px 10px; font-size: 11px; }
+  .kat-label { display: none; }
+  .koh-ar-info-panel { width: 200px; max-width: 45vw; top: 60px; left: 12px; }
+  .koh-ar-ads { width: 180px; max-width: 42vw; top: 60px; right: 12px; }
+  .kah-corner { width: 32px; height: 32px; }
+}
+
+/* ============================================================
+   📺 KOH CM オーバーレイ（球体上映風）
+============================================================ */
+.koh-cm-overlay {
+  position: absolute; inset: 0; z-index: 10020;
+  background: radial-gradient(circle at 50% 40%, rgba(20,30,45,0.92), rgba(2,4,8,0.98));
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity 0.5s ease;
+  pointer-events: auto;
+}
+.koh-cm-overlay.show { opacity: 1; }
+.kcm-frame {
+  text-align: center; max-width: 600px; padding: 40px;
+  border: 1px solid rgba(220,180,90,0.4);
+  background: rgba(20,15,8,0.5);
+  backdrop-filter: blur(8px);
+  border-radius: 8px;
+  color: #f0e0c0;
+  font-family: 'Noto Serif JP', serif;
+  animation: kcmIntro 1.2s ease backwards;
+}
+@keyframes kcmIntro {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.kcm-eyebrow { font-size: 10px; letter-spacing: 4px; color: #a08868; }
+.kcm-brand { font-size: 32px; font-weight: 700; margin-top: 14px; letter-spacing: 4px; }
+.kcm-tag { font-size: 18px; margin-top: 10px; color: #f0d4a0; }
+.kcm-sub { font-size: 13px; margin-top: 8px; color: #c0a880; letter-spacing: 1.5px; }
+.kcm-hint { font-size: 12px; margin-top: 28px; color: #a08868; letter-spacing: 1.5px; }
+.kcm-count {
+  display: inline-block; min-width: 20px;
+  font-weight: 700; color: #ffe0a0; font-size: 16px;
+}
+.kcm-skip {
+  margin-top: 20px;
+  background: rgba(60,40,20,0.6); color: #d4b888;
+  border: 1px solid rgba(220,180,90,0.4);
+  padding: 8px 18px; border-radius: 999px;
+  font-size: 12px; letter-spacing: 1.5px; cursor: pointer;
+  font-family: inherit;
+}
+.kcm-skip:hover { background: rgba(80,55,28,0.8); color: #ffe0a0; }

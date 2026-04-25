@@ -14292,6 +14292,23 @@
       </div>
       <!-- ⛩ 神話シーン切替タイトルカード -->
       <div class="koh-myth-title" id="kohMythTitle"></div>
+      <!-- 🥽 AIグラスHUD — 関係者情報＋広告（半透過） -->
+      <button class="koh-ar-toggle" id="kohArToggle" aria-pressed="true">
+        <span class="kat-icon">🥽</span>
+        <span class="kat-label">AI Glass</span>
+        <span class="kat-state" id="kohArState">ON</span>
+      </button>
+      <div class="koh-ar-overlay" id="kohArOverlay">
+        <div class="koh-ar-hud-bg" aria-hidden="true">
+          <div class="kah-grid"></div>
+          <div class="kah-corner kah-corner-tl"></div>
+          <div class="kah-corner kah-corner-tr"></div>
+          <div class="kah-corner kah-corner-bl"></div>
+          <div class="kah-corner kah-corner-br"></div>
+        </div>
+        <div class="koh-ar-info-panel" id="kohArInfoPanel"></div>
+        <div class="koh-ar-ads" id="kohArAds"></div>
+      </div>
       <!-- 🎮 バーチャルパッド（首振り）— 薄く、ドラッグでも触れない場所に -->
       <div class="koh-vpad" id="kohVpad" aria-label="首を動かす">
         <div class="koh-vpad-ring"></div>
@@ -15270,29 +15287,28 @@
       }
     }
 
-    // ステージリム照明（観客側からステージへ斜めに差し込む光、6灯）
-    // 球体の映像に干渉しないよう距離・強度ともに控えめ
+    // ステージ円の縁を観客側から斜めに照らす光（8灯、各々が自分側の縁だけを照らす）
+    // 中央には光を集中させず、球体映像の邪魔をしない
     const rimLights = [];
-    for (let i = 0; i < 6; i++) {
-      const a = (i / 6) * Math.PI * 2 + Math.PI / 6;
-      const lx = Math.cos(a) * 8.5;  // ステージ縁(r=6)の少し外
-      const lz = Math.sin(a) * 8.5;
-      const sl = new THREE.SpotLight(0xffe0b0, 0.6, 12, Math.PI / 6, 0.5, 1.8);
-      sl.position.set(lx, 2.6, lz); // 低い位置（観客の目線高）
-      sl.target.position.set(0, 1.0, 0); // ステージ中央上を向く（斜め上向き）
+    const STAGE_RIM_R = 6;
+    for (let i = 0; i < 8; i++) {
+      const a = (i / 8) * Math.PI * 2 + Math.PI / 8;
+      // 光源：観客側 r=10、低い位置
+      const lx = Math.cos(a) * 10;
+      const lz = Math.sin(a) * 10;
+      // ターゲット：その方向のステージ縁（自分の真横にある縁の点）
+      const tx = Math.cos(a) * STAGE_RIM_R;
+      const tz = Math.sin(a) * STAGE_RIM_R;
+      const sl = new THREE.SpotLight(0xffd8a0, 0.45, 8, Math.PI / 8, 0.6, 2.2);
+      sl.position.set(lx, 2.2, lz);
+      sl.target.position.set(tx, 0.85, tz); // ステージ縁の高さに向ける
       scene.add(sl);
       scene.add(sl.target);
       rimLights.push(sl);
     }
-    // centerGlow は廃止（球体投影の邪魔になるため）— ダミーで音楽連動の参照保持
+    // centerGlow廃止（球体映像優先）— 音楽連動の参照のみ保持
     const centerGlow = { intensity: 0, position: { set: () => {} } };
-    // 観客席を照らす補助光（4灯、温かい）
-    for (let i = 0; i < 4; i++) {
-      const a = (i / 4) * Math.PI * 2;
-      const fill = new THREE.PointLight(0xffd8a0, 0.8, 25, 1.6);
-      fill.position.set(Math.cos(a) * 18, 5, Math.sin(a) * 18);
-      scene.add(fill);
-    }
+    // ⚠ 観客席の補助点光は廃止（中央集光の原因だった）— Ambient+Hemiで十分
 
     // 🎫 観客席（10列の同心円、1000席、InstancedMeshで高速化）
     const SEAT_PER_ROW = config.seatPerRow || [40, 56, 72, 88, 104, 120, 136, 144, 152, 88];
@@ -15574,15 +15590,61 @@
       } catch (e) { console.warn('audio analyser failed', e); }
     }
     audio.addEventListener('play', setupAudioAnalyser, { once: true });
-    audio.play().then(() => setupAudioAnalyser()).catch(() => {
-      kohToast('音楽の再生にタップが必要です');
-      const tapStart = () => {
-        audio.play().catch(() => {});
-        setupAudioAnalyser();
-        renderer.domElement.removeEventListener('click', tapStart);
-      };
-      renderer.domElement.addEventListener('click', tapStart, { once: true });
-    });
+    // ▶ Bach BWV 903 (natsumi) 限定: 球体に10秒CMを上映してから音楽スタート
+    const NEEDS_PREROLL = config.music.id === 'bwv903';
+    function startMusic() {
+      audio.play().then(() => setupAudioAnalyser()).catch(() => {
+        kohToast('音楽の再生にタップが必要です');
+        const tapStart = () => {
+          audio.play().catch(() => {});
+          setupAudioAnalyser();
+          renderer.domElement.removeEventListener('click', tapStart);
+        };
+        renderer.domElement.addEventListener('click', tapStart, { once: true });
+      });
+    }
+    if (NEEDS_PREROLL) {
+      // ランダム広告（球体上映用、テキストのみ）
+      const PREROLL_ADS = [
+        { brand: 'STEINWAY & SONS', tagline: '世界が選んだ、175年の音', accent: '#d4a050', sub: 'Hamburg・New York' },
+        { brand: 'SUNTORY HALL', tagline: 'クラシックを、もっとそばに', accent: '#a06010', sub: '東京・赤坂' },
+        { brand: 'NATSUMI Recital', tagline: 'Bach Solo Piano Tour 2026', accent: '#406880', sub: '6/8 Suntory Hall' },
+        { brand: 'KOH RECORDS', tagline: 'Bach 全集 完全版', accent: '#205088', sub: '32 Discs / Hi-Res' },
+        { brand: 'YAMAHA Premium Piano', tagline: '日本の職人技、世界の舞台へ', accent: '#a02828', sub: 'CFX Concert Grand' },
+        { brand: 'GENESIS BOOK', tagline: '神話を読む夜に', accent: '#604888', sub: 'はじまりの書 全6章' },
+      ];
+      const ad = PREROLL_ADS[Math.floor(Math.random() * PREROLL_ADS.length)];
+      const cm = document.createElement('div');
+      cm.className = 'koh-cm-overlay';
+      cm.innerHTML = `
+        <div class="kcm-frame">
+          <div class="kcm-eyebrow">A D V E R T I S E M E N T</div>
+          <div class="kcm-brand" style="color:${ad.accent}">${ad.brand}</div>
+          <div class="kcm-tag">${ad.tagline}</div>
+          <div class="kcm-sub">${ad.sub}</div>
+          <div class="kcm-hint">演奏開始まで <span class="kcm-count" id="kcmCount">10</span> 秒</div>
+          <button class="kcm-skip" id="kcmSkip">スキップ ▸</button>
+        </div>
+      `;
+      ov.appendChild(cm);
+      requestAnimationFrame(() => cm.classList.add('show'));
+      let count = 10;
+      const counter = setInterval(() => {
+        count--;
+        const el = cm.querySelector('#kcmCount');
+        if (el) el.textContent = count;
+        if (count <= 0) endCM();
+      }, 1000);
+      function endCM() {
+        clearInterval(counter);
+        cm.classList.remove('show');
+        setTimeout(() => cm.remove(), 600);
+        startMusic();
+      }
+      cm.querySelector('#kcmSkip').addEventListener('click', endCM);
+    } else {
+      startMusic();
+    }
 
     // === カメラ（席に固定、首回し — VRパッド級に滑らか） ===
     const camera = new THREE.PerspectiveCamera(70, W()/H(), 0.1, 200);
@@ -15615,6 +15677,99 @@
     renderer.domElement.addEventListener('pointerup', stop);
     renderer.domElement.addEventListener('pointercancel', stop);
     renderer.domElement.addEventListener('pointerleave', stop);
+
+    // 🥽 AIグラスHUD — 関係者情報＋広告
+    const arToggle = ov.querySelector('#kohArToggle');
+    const arOverlay = ov.querySelector('#kohArOverlay');
+    const arState = ov.querySelector('#kohArState');
+    const arInfo = ov.querySelector('#kohArInfoPanel');
+    const arAds = ov.querySelector('#kohArAds');
+    let arOn = (localStorage.getItem('kohArOn') ?? '1') === '1';
+    function applyAr() {
+      arOverlay.classList.toggle('on', arOn);
+      arState.textContent = arOn ? 'ON' : 'OFF';
+      arToggle.classList.toggle('on', arOn);
+      arToggle.setAttribute('aria-pressed', String(arOn));
+    }
+    arToggle.addEventListener('click', () => {
+      arOn = !arOn;
+      localStorage.setItem('kohArOn', arOn ? '1' : '0');
+      applyAr();
+    });
+    // 関係者情報を埋める（曲ごとにテキストを切替）
+    const KOH_AR_INFO = {
+      bwv903: {
+        composer: 'J.S. Bach (1685–1750)',
+        born: 'ドイツ・アイゼナハ',
+        related: ['ヘンデル', 'テレマン', 'モーツァルト', 'メンデルスゾーン'],
+        works: '半音階的幻想曲とフーガ ニ短調 BWV 903 / 1720年頃 / 独奏鍵盤楽器のための即興と厳格対位法の融合',
+        artist: 'natsumi （ピアノ独奏）',
+        comment: 'バッハが鍵盤楽器のために書いた最も即興的な作品。幻想曲は劇的なパッセージワーク、フーガは複雑な対位法。',
+      },
+    };
+    function renderArInfo(musicId) {
+      const info = KOH_AR_INFO[musicId] || {
+        composer: config.music.composer || '—',
+        born: '',
+        related: [],
+        works: config.music.title,
+        artist: config.music.sub,
+        comment: '関係者情報を読み込み中…',
+      };
+      arInfo.innerHTML = `
+        <div class="kar-card">
+          <div class="kar-row kar-row-head">
+            <span class="kar-tag">▸ COMPOSER</span>
+          </div>
+          <div class="kar-name">${info.composer}</div>
+          <div class="kar-meta">${info.born}</div>
+        </div>
+        <div class="kar-card">
+          <div class="kar-row kar-row-head"><span class="kar-tag">▸ WORKS</span></div>
+          <div class="kar-text">${info.works}</div>
+        </div>
+        <div class="kar-card">
+          <div class="kar-row kar-row-head"><span class="kar-tag">▸ ARTIST</span></div>
+          <div class="kar-text">${info.artist}</div>
+        </div>
+        ${info.related.length ? `<div class="kar-card">
+          <div class="kar-row kar-row-head"><span class="kar-tag">▸ RELATED</span></div>
+          <div class="kar-chips">${info.related.map(r => `<span class="kar-chip">${r}</span>`).join('')}</div>
+        </div>` : ''}
+        <div class="kar-card kar-comment">
+          <div class="kar-comment-text">${info.comment}</div>
+        </div>
+      `;
+    }
+    renderArInfo(config.music.id);
+    // 広告ストック（半透過で流れる）
+    const KOH_AR_ADS = [
+      { brand: 'STEINWAY & SONS', tagline: '— 175年の音 —', sub: '世界の演奏家が選ぶ', accent: '#d4a050' },
+      { brand: 'GENESIS BOOK Co.', tagline: '神話を読む夜', sub: 'はじまりの書 全6章', accent: '#a08060' },
+      { brand: 'IJIN COFFEE', tagline: '哲学者のブレンド', sub: 'カント・ニーチェ・サルトル', accent: '#8a4818' },
+      { brand: 'KOH RECORDS', tagline: 'バッハ全集 完全版', sum: '32枚組 ハイレゾ', accent: '#4080a8' },
+      { brand: 'SPHERE TICKETS', tagline: '次回公演', sub: '5/15 ベートーヴェン交響曲第9番', accent: '#a06080' },
+      { brand: 'LIBRO MUSEUM', tagline: '神話の名画展', sub: '〜6/30 上野', accent: '#604888' },
+      { brand: 'NATSUMI Solo Recital', tagline: 'バッハ・リサイタル', sub: '6/8 サントリーホール', accent: '#406060' },
+      { brand: 'PANTHEON CULT', tagline: '神々の書 PDF版', sub: '今だけ 50% OFF', accent: '#8050a0' },
+    ];
+    function renderArAds() {
+      // 上下にスクロールするアド3つを差し替えサイクル
+      const picks = [];
+      const pool = [...KOH_AR_ADS].sort(() => Math.random() - 0.5);
+      for (let i = 0; i < 3; i++) picks.push(pool[i % pool.length]);
+      arAds.innerHTML = picks.map((a, i) => `
+        <div class="kar-ad" style="--acc:${a.accent}; animation-delay: ${i * 0.6}s">
+          <div class="kar-ad-eyebrow">A D V E R T I S E M E N T</div>
+          <div class="kar-ad-brand">${a.brand}</div>
+          <div class="kar-ad-tag">${a.tagline}</div>
+          <div class="kar-ad-sub">${a.sub || ''}</div>
+        </div>
+      `).join('');
+    }
+    renderArAds();
+    const adInterval = setInterval(() => { if (arOn && arOverlay.isConnected) renderArAds(); }, 8000);
+    applyAr();
 
     // 🎮 バーチャルパッド（首振り操作）
     const vpad = ov.querySelector('#kohVpad');
