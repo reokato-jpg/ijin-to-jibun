@@ -14180,13 +14180,11 @@
     const stage = ov.querySelector('#kohStage');
     const W = () => stage.clientWidth || window.innerWidth;
     const H = () => stage.clientHeight || window.innerHeight;
-    const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
+    // 🌐 KOHは「夢」なので画質優先（antialias+高解像度）
+    const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
     renderer.shadowMap.enabled = false;
-    renderer.setPixelRatio(1);
-    const _RS = 0.7;
-    renderer.setSize(W() * _RS, H() * _RS, false);
-    renderer.domElement.style.width = '100%';
-    renderer.domElement.style.height = '100%';
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+    renderer.setSize(W(), H());
     if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.3;
     if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -14194,8 +14192,9 @@
 
     const scene = new THREE.Scene();
     const moodColor = new THREE.Color(config.music.mood);
-    scene.background = new THREE.Color(0x040218);
-    scene.fog = new THREE.FogExp2(0x080422, 0.012);
+    scene.background = new THREE.Color(0x020108);
+    // 放射フォグ — 距離に応じて減衰、球体感を強調
+    scene.fog = new THREE.FogExp2(0x040214, 0.018);
 
     // 🌐 巨大な内側球体（背景＋音楽の色）
     const sphereTex = (() => {
@@ -14218,6 +14217,65 @@
     });
     const dome = new THREE.Mesh(new THREE.SphereGeometry(40, 64, 32), sphereMat);
     scene.add(dome);
+
+    // 🌐 球体感の演出: 緯度リング（赤道+8本のラチチュード）
+    for (let i = 1; i < 8; i++) {
+      const phi = (i / 8) * Math.PI;
+      const r = 39 * Math.sin(phi);
+      const y = 39 * Math.cos(phi); // 上下に並ぶ
+      const ring = new THREE.Mesh(
+        new THREE.TorusGeometry(r, 0.12, 8, 96),
+        new THREE.MeshBasicMaterial({
+          color: 0x88aaff, transparent: true, opacity: 0.18,
+          depthWrite: false, blending: THREE.AdditiveBlending, fog: false,
+        })
+      );
+      ring.rotation.x = Math.PI / 2;
+      ring.position.y = y;
+      scene.add(ring);
+    }
+    // 経線（縦のライン、12本）
+    for (let i = 0; i < 12; i++) {
+      const a = (i / 12) * Math.PI * 2;
+      const meridianGeo = new THREE.BufferGeometry();
+      const segs = 32;
+      const verts = [];
+      for (let s = 0; s <= segs; s++) {
+        const phi = (s / segs) * Math.PI;
+        const r = 39 * Math.sin(phi);
+        const y = 39 * Math.cos(phi);
+        verts.push(Math.cos(a) * r, y, Math.sin(a) * r);
+      }
+      meridianGeo.setAttribute('position', new THREE.Float32BufferAttribute(verts, 3));
+      const meridian = new THREE.Line(meridianGeo, new THREE.LineBasicMaterial({
+        color: 0x6080c0, transparent: true, opacity: 0.15, fog: false,
+      }));
+      scene.add(meridian);
+    }
+    // 床（地平線の参照点 — 円形プレート）
+    const floorPlate = new THREE.Mesh(
+      new THREE.CircleGeometry(20, 64),
+      new THREE.MeshStandardMaterial({
+        color: 0x0a081a, roughness: 0.4, metalness: 0.5,
+      })
+    );
+    floorPlate.rotation.x = -Math.PI / 2;
+    floorPlate.position.y = -1.5;
+    scene.add(floorPlate);
+    // 床の同心円（光るリング）— 球体感+座席感
+    for (let i = 1; i <= 4; i++) {
+      const r = 6 + i * 3;
+      const ring = new THREE.Mesh(
+        new THREE.RingGeometry(r - 0.05, r + 0.05, 64),
+        new THREE.MeshBasicMaterial({
+          color: 0x80a0d0, transparent: true, opacity: 0.18,
+          depthWrite: false, side: THREE.DoubleSide, fog: false,
+        })
+      );
+      ring.rotation.x = -Math.PI / 2;
+      ring.position.y = -1.49;
+      scene.add(ring);
+    }
 
     // 中央ステージ（円形の高い台）
     const stageMat = new THREE.MeshStandardMaterial({ color: 0x4a3018, roughness: 0.5, metalness: 0.2 });
@@ -14311,55 +14369,200 @@
 
     // 🎻 オーケストラ（指揮者の後ろに配置、シルエット）
     const playerGeoChairs = []; // 椅子のメッシュ
-    function makePlayer(x, z, color = 0x2a2a3a, hasInstrument = 'violin') {
+    // === 👤 ヒューマノイド生成関数 ===
+    // (より人間らしい比率: 頭+首+肩+胴+腕+足)
+    function buildPerson(opts) {
+      const {
+        bodyColor = 0x2a2030, hairColor = 0x2a1810, skinColor = 0xf0d4b0,
+        sitting = true, instrument = null, isAudience = false, gender = null,
+      } = opts || {};
       const g = new THREE.Group();
-      const chair = new THREE.Mesh(
-        new THREE.BoxGeometry(0.4, 0.5, 0.4),
-        new THREE.MeshStandardMaterial({ color: 0x4a3018, roughness: 0.7 })
-      );
-      chair.position.y = 0.25;
-      g.add(chair);
-      const body = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.13, 0.18, 0.45, 10),
-        new THREE.MeshStandardMaterial({ color: color, roughness: 0.5 })
-      );
-      body.position.y = 0.72;
-      g.add(body);
+      // 頭（少し縦長の楕円）
       const head = new THREE.Mesh(
-        new THREE.SphereGeometry(0.1, 12, 8),
-        new THREE.MeshStandardMaterial({ color: 0xf0d8b0, roughness: 0.65 })
+        new THREE.SphereGeometry(0.12, 16, 12),
+        new THREE.MeshStandardMaterial({ color: skinColor, roughness: 0.6 })
       );
-      head.position.y = 1.05;
+      head.scale.set(0.95, 1.1, 0.95);
+      head.position.y = sitting ? 1.18 : 1.65;
       g.add(head);
-      // 楽器（簡易）
-      if (hasInstrument === 'violin') {
-        const violin = new THREE.Mesh(
-          new THREE.BoxGeometry(0.16, 0.04, 0.08),
-          new THREE.MeshStandardMaterial({ color: 0x6a3818, roughness: 0.5 })
-        );
-        violin.position.set(0.18, 0.95, 0);
-        violin.rotation.z = 0.5;
-        g.add(violin);
-      } else if (hasInstrument === 'cello') {
-        const cello = new THREE.Mesh(
-          new THREE.BoxGeometry(0.12, 0.45, 0.15),
-          new THREE.MeshStandardMaterial({ color: 0x8a4818, roughness: 0.5 })
-        );
-        cello.position.set(0.15, 0.82, 0.05);
-        g.add(cello);
-      } else if (hasInstrument === 'flute') {
-        const flute = new THREE.Mesh(
-          new THREE.CylinderGeometry(0.012, 0.012, 0.3, 6),
-          new THREE.MeshStandardMaterial({ color: 0xc8c8c8, metalness: 0.7 })
-        );
-        flute.position.set(0.12, 0.95, 0.08);
-        flute.rotation.z = 0.6;
-        g.add(flute);
+      // 髪（後頭部の半球）
+      const hair = new THREE.Mesh(
+        new THREE.SphereGeometry(0.13, 14, 10, 0, Math.PI * 2, 0, Math.PI * 0.7),
+        new THREE.MeshStandardMaterial({ color: hairColor, roughness: 0.55 })
+      );
+      hair.position.y = head.position.y + 0.025;
+      hair.position.z = -0.015;
+      g.add(hair);
+      // 首
+      const neck = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.045, 0.05, 0.1, 8),
+        new THREE.MeshStandardMaterial({ color: skinColor, roughness: 0.65 })
+      );
+      neck.position.y = head.position.y - 0.16;
+      g.add(neck);
+      // 肩（横に広がる、フォーマルな服）
+      const shoulders = new THREE.Mesh(
+        new THREE.BoxGeometry(0.42, 0.12, 0.26),
+        new THREE.MeshStandardMaterial({ color: bodyColor, roughness: 0.55 })
+      );
+      shoulders.position.y = head.position.y - 0.27;
+      g.add(shoulders);
+      // 上半身（テーパーのある胴）
+      const torso = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.18, 0.22, 0.42, 12),
+        new THREE.MeshStandardMaterial({ color: bodyColor, roughness: 0.55 })
+      );
+      torso.position.y = head.position.y - 0.55;
+      g.add(torso);
+      // 腕（前で組む or 楽器を持つ）
+      const armMat = new THREE.MeshStandardMaterial({ color: bodyColor, roughness: 0.55 });
+      const armL = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.045, 0.36, 8), armMat);
+      const armR = armL.clone();
+      if (sitting) {
+        // 膝の上で組む
+        armL.position.set(-0.13, head.position.y - 0.55, 0.12);
+        armL.rotation.x = -0.7; armL.rotation.z = 0.25;
+        armR.position.set(0.13, head.position.y - 0.55, 0.12);
+        armR.rotation.x = -0.7; armR.rotation.z = -0.25;
+      } else {
+        armL.position.set(-0.21, head.position.y - 0.55, 0);
+        armL.rotation.z = 0.2;
+        armR.position.set(0.21, head.position.y - 0.55, 0);
+        armR.rotation.z = -0.2;
       }
+      g.add(armL); g.add(armR);
+      // 太もも+ふくらはぎ（座っている）
+      const legMat = new THREE.MeshStandardMaterial({ color: 0x14101a, roughness: 0.7 });
+      const legL = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.07, 0.34, 8), legMat);
+      const legR = legL.clone();
+      if (sitting) {
+        // 太もも（前に伸びる）
+        legL.position.set(-0.08, head.position.y - 0.95, 0.2);
+        legL.rotation.x = Math.PI / 2;
+        legR.position.set(0.08, head.position.y - 0.95, 0.2);
+        legR.rotation.x = Math.PI / 2;
+        // ふくらはぎ（下に伸びる）
+        const calfL = legL.clone();
+        calfL.position.set(-0.08, head.position.y - 1.1, 0.34);
+        calfL.rotation.x = 0;
+        const calfR = legR.clone();
+        calfR.position.set(0.08, head.position.y - 1.1, 0.34);
+        calfR.rotation.x = 0;
+        g.add(calfL); g.add(calfR);
+      } else {
+        legL.position.set(-0.08, head.position.y - 0.95, 0);
+        legR.position.set(0.08, head.position.y - 0.95, 0);
+      }
+      g.add(legL); g.add(legR);
+
+      // 楽器
+      if (instrument === 'violin') {
+        // バイオリン（顎に当てて持つ）
+        const violin = new THREE.Mesh(
+          new THREE.BoxGeometry(0.22, 0.05, 0.09),
+          new THREE.MeshStandardMaterial({ color: 0x8a4818, roughness: 0.4, metalness: 0.1 })
+        );
+        violin.position.set(0.13, head.position.y - 0.15, 0.12);
+        violin.rotation.z = 0.4; violin.rotation.y = 0.3;
+        g.add(violin);
+        // 弓
+        const bow = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.005, 0.005, 0.55, 4),
+          new THREE.MeshStandardMaterial({ color: 0xa8a89c })
+        );
+        bow.position.set(0.28, head.position.y - 0.2, 0.08);
+        bow.rotation.z = 0.3;
+        g.add(bow);
+        // 腕の位置を調整（弓を持つ）
+        armR.rotation.x = -0.4; armR.rotation.z = -0.6;
+        armR.position.y = head.position.y - 0.4;
+      } else if (instrument === 'cello') {
+        // チェロ（脚の間に立てる）
+        const cello = new THREE.Mesh(
+          new THREE.BoxGeometry(0.22, 0.7, 0.18),
+          new THREE.MeshStandardMaterial({ color: 0x9a4a18, roughness: 0.45 })
+        );
+        cello.position.set(0.04, head.position.y - 0.55, 0.18);
+        cello.rotation.x = 0.15;
+        g.add(cello);
+        // 弓
+        const bow = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.005, 0.005, 0.45, 4),
+          new THREE.MeshStandardMaterial({ color: 0xa8a89c })
+        );
+        bow.position.set(0.28, head.position.y - 0.45, 0.18);
+        bow.rotation.z = 0.4;
+        g.add(bow);
+      } else if (instrument === 'flute') {
+        const flute = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.014, 0.014, 0.35, 8),
+          new THREE.MeshStandardMaterial({ color: 0xd0d0d4, metalness: 0.85, roughness: 0.2 })
+        );
+        flute.position.set(0.16, head.position.y - 0.05, 0.1);
+        flute.rotation.z = 0.5; flute.rotation.y = -0.2;
+        g.add(flute);
+      } else if (instrument === 'piano') {
+        // ピアノ用は腕を前に
+        armL.rotation.x = -1.2; armL.position.z = 0.18;
+        armR.rotation.x = -1.2; armR.position.z = 0.18;
+      }
+
+      // userData
+      g.userData.head = head;
+      g.userData.hair = hair;
+      g.userData.torso = torso;
+      g.userData.shoulders = shoulders;
+      return g;
+    }
+
+    // 椅子（クラシカルなコンサート椅子）
+    function buildConcertChair(color = 0x4a2818) {
+      const c = new THREE.Group();
+      // 座面
+      const seat = new THREE.Mesh(
+        new THREE.BoxGeometry(0.5, 0.08, 0.5),
+        new THREE.MeshStandardMaterial({ color: color, roughness: 0.6 })
+      );
+      seat.position.y = 0.42;
+      c.add(seat);
+      // 背もたれ
+      const back = new THREE.Mesh(
+        new THREE.BoxGeometry(0.5, 0.55, 0.06),
+        new THREE.MeshStandardMaterial({ color: color, roughness: 0.6 })
+      );
+      back.position.set(0, 0.74, -0.22);
+      c.add(back);
+      // 4本脚
+      const legMat = new THREE.MeshStandardMaterial({ color: color, roughness: 0.7 });
+      [[-0.2, -0.2], [0.2, -0.2], [-0.2, 0.2], [0.2, 0.2]].forEach(([x, z]) => {
+        const leg = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.025, 0.025, 0.42, 6),
+          legMat
+        );
+        leg.position.set(x, 0.21, z);
+        c.add(leg);
+      });
+      return c;
+    }
+
+    function makePlayer(x, z, color = 0x14101a, hasInstrument = 'violin') {
+      const g = new THREE.Group();
+      const chair = buildConcertChair(0x3a2010);
+      g.add(chair);
+      const skinTones = [0xf0d4b0, 0xe8c8a4, 0xddb890, 0xd4a878, 0xc89868];
+      const hairTones = [0x2a1810, 0x1a0a04, 0x4a2810, 0x6a4a30, 0x14080a];
+      const skin = skinTones[Math.floor(Math.random() * skinTones.length)];
+      const hair = hairTones[Math.floor(Math.random() * hairTones.length)];
+      const person = buildPerson({
+        bodyColor: 0x14101a, // 黒い演奏服
+        hairColor: hair, skinColor: skin,
+        sitting: true, instrument: hasInstrument,
+      });
+      g.add(person);
       g.position.set(x, 0, z);
       g.lookAt(0, 0.7, 0); // 指揮者を見る
       scene.add(g);
-      return { group: g, head };
+      return { group: g, head: person.userData.head, person };
     }
     // 弦楽器（前列）
     const orchestra = [];
@@ -14389,45 +14592,41 @@
     centerGlow.position.set(0, 8, 0);
     scene.add(centerGlow);
 
-    // 🎫 観客席（4列×12席のリング配置）
-    const SEAT_RING = [10, 12, 14, 16]; // 各列の半径
+    // 🎫 観客席（4列のリング配置 — リアルな人物）
+    const SEAT_RING = [10, 12, 14, 16];
     const SEATS_PER_ROW = config.cols;
-    const audience = [];
+    const audienceHeads = []; // 視聴中の微動アニメ用
+    const skinTones = [0xf0d4b0, 0xe8c8a4, 0xddb890, 0xd4a878, 0xc89868, 0xb88a5e];
+    const hairTones = [0x2a1810, 0x1a0a04, 0x4a2810, 0x6a4a30, 0x14080a, 0x8a6a4a, 0xc8a880];
+    const clothTones = [0x14101a, 0x2a1830, 0x1a2438, 0x301818, 0x14241a, 0x281418, 0x2a1018];
     for (let r = 0; r < SEAT_RING.length; r++) {
       const radius = SEAT_RING[r];
-      const seatCount = SEATS_PER_ROW + r * 4; // 後ろほど多い
+      const seatCount = SEATS_PER_ROW + r * 4;
       for (let c = 0; c < seatCount; c++) {
         const a = (c / seatCount) * Math.PI * 2;
         const x = Math.cos(a) * radius;
         const z = Math.sin(a) * radius;
-        // 段差（後ろほど高い）
-        const y = r * 0.35;
-        // 椅子
-        const chair = new THREE.Mesh(
-          new THREE.BoxGeometry(0.45, 0.55, 0.45),
-          new THREE.MeshStandardMaterial({ color: 0x4a2818, roughness: 0.7 })
-        );
-        chair.position.set(x, y + 0.3, z);
+        const y = r * 0.4; // 段差
+        // 座席
+        const chair = buildConcertChair(0x3a2010);
+        chair.position.set(x, y, z);
+        chair.lookAt(0, y, 0);
         scene.add(chair);
-        // 観客（座っている）
-        const audBody = new THREE.Mesh(
-          new THREE.CylinderGeometry(0.14, 0.18, 0.55, 8),
-          new THREE.MeshStandardMaterial({ color: 0x2a2030 + Math.random()*0x101010, roughness: 0.5 })
-        );
-        audBody.position.set(x, y + 0.85, z);
-        scene.add(audBody);
-        const audHead = new THREE.Mesh(
-          new THREE.SphereGeometry(0.1, 10, 8),
-          new THREE.MeshStandardMaterial({ color: 0xe8c890 + Math.random()*0x080808, roughness: 0.65 })
-        );
-        audHead.position.set(x, y + 1.2, z);
-        // 中央を向く
-        const dx = -x, dz = -z;
-        const ang = Math.atan2(dx, dz);
-        audBody.rotation.y = ang;
-        scene.add(audHead);
+        // 観客
+        const skin = skinTones[Math.floor(Math.random() * skinTones.length)];
+        const hair = hairTones[Math.floor(Math.random() * hairTones.length)];
+        const cloth = clothTones[Math.floor(Math.random() * clothTones.length)];
+        const person = buildPerson({
+          bodyColor: cloth, hairColor: hair, skinColor: skin,
+          sitting: true, isAudience: true,
+        });
+        person.position.set(x, y, z);
+        person.lookAt(0, y + 1.0, 0); // 中央を向く
+        scene.add(person);
+        audienceHeads.push(person.userData.head);
       }
     }
+    scene.userData.audienceHeads = audienceHeads;
 
     // 🪑 プレイヤー（あなた）の席位置
     const myRow = config.seat.r;
@@ -14453,22 +14652,29 @@
     // === カメラ（席に固定、首回しのみ） ===
     const camera = new THREE.PerspectiveCamera(70, W()/H(), 0.1, 200);
     camera.position.set(myX, myY, myZ);
-    // 中央のステージを見る
-    let yaw = Math.atan2(-myX, -myZ); // 中央方向
-    let pitch = -0.05;
-    camera.lookAt(0, 1.2, 0);
+    // 初期向き: 中央のステージを向く
+    const initYaw = Math.atan2(-myX, -myZ);
+    let yaw = initYaw, pitch = -0.05;
+    let yawT = initYaw, pitchT = -0.05;
+    const PITCH_LIMIT = 1.2;
+    const _euler = new THREE.Euler(0, 0, 0, 'YXZ');
 
-    // ドラッグで首回し（席は固定）
+    // ドラッグで首回し（席は固定、targetを更新→指数減衰でlerp）
     let dragging = false, lx = 0, ly = 0;
-    renderer.domElement.addEventListener('pointerdown', e => { dragging = true; lx = e.clientX; ly = e.clientY; });
+    renderer.domElement.addEventListener('pointerdown', e => {
+      dragging = true; lx = e.clientX; ly = e.clientY;
+      try { renderer.domElement.setPointerCapture(e.pointerId); } catch {}
+    });
     renderer.domElement.addEventListener('pointermove', e => {
       if (!dragging) return;
-      yaw -= (e.clientX - lx) * 0.005;
-      pitch = Math.max(-0.8, Math.min(0.8, pitch - (e.clientY - ly) * 0.004));
+      yawT   -= (e.clientX - lx) * 0.0030;
+      pitchT  = Math.max(-PITCH_LIMIT, Math.min(PITCH_LIMIT,
+                pitchT - (e.clientY - ly) * 0.0028));
       lx = e.clientX; ly = e.clientY;
-    });
+    }, { passive: true });
     const stop = () => { dragging = false; };
     renderer.domElement.addEventListener('pointerup', stop);
+    renderer.domElement.addEventListener('pointercancel', stop);
     renderer.domElement.addEventListener('pointerleave', stop);
 
     let running = true;
@@ -14513,36 +14719,58 @@
     scene.add(particles);
 
     const t0 = performance.now();
+    let lastT = t0;
+    const _q = new THREE.Quaternion();
     function animate() {
       if (!running) return;
-      const t = (performance.now() - t0) / 1000;
-      // カメラは席に固定、視線のみ
-      camera.position.set(myX, myY, myZ);
-      camera.lookAt(
-        myX + Math.sin(yaw) * Math.cos(pitch) * 5,
-        myY + Math.sin(pitch) * 5,
-        myZ - Math.cos(yaw) * Math.cos(pitch) * 5
+      const now = performance.now();
+      const dt = Math.min(0.05, (now - lastT) / 1000);
+      lastT = now;
+      const t = (now - t0) / 1000;
+
+      // 🪑 座っている感: 呼吸 + 微妙な体重移動
+      const breath = Math.sin(t * 1.6) * 0.012;
+      const bob = Math.sin(t * 0.85) * 0.005;
+      camera.position.set(
+        myX + Math.sin(t * 0.5) * 0.006,
+        myY + breath + bob,
+        myZ + Math.cos(t * 0.4) * 0.005
       );
-      // 指揮者の腕（タクト）が音楽に合わせて振る
+      // 緩やかな自然な微小ドリフト（target に小さく加算）
+      const idleDriftYaw   = Math.sin(t * 0.23) * 0.0008 + Math.sin(t * 0.37) * 0.0006;
+      const idleDriftPitch = Math.sin(t * 0.19) * 0.0005;
+
+      // 🎯 スムーズ: 指数減衰 lerp（dt 依存）
+      const k = 1 - Math.exp(-dt * 14);
+      yaw   += (yawT   + idleDriftYaw   - yaw)   * k;
+      pitch += (pitchT + idleDriftPitch - pitch) * k;
+      _euler.set(pitch, yaw, 0);
+      camera.quaternion.setFromEuler(_euler);
+
+      // 指揮者のタクト
       if (scene.userData.baton) {
         scene.userData.baton.rotation.z = 0.3 + Math.sin(t * 2.5) * 0.6;
       }
-      // オーケストラがほんの少し動く
+      // オーケストラの微動
       scene.userData.orchestra.forEach((p, i) => {
-        if (p.head) p.head.position.y = 1.05 + Math.sin(t * 1.2 + i * 0.5) * 0.03;
+        if (p.head) p.head.position.y = 1.18 + Math.sin(t * 1.2 + i * 0.5) * 0.02;
       });
-      // 中央光が脈動
+      // 観客の微動（呼吸）
+      if (scene.userData.audienceHeads) {
+        scene.userData.audienceHeads.forEach((h, i) => {
+          h.position.y += Math.sin(t * 1.5 + i * 0.3) * 0.0008 - (h.userData._lastBob || 0);
+          h.userData._lastBob = Math.sin(t * 1.5 + i * 0.3) * 0.0008;
+        });
+      }
       centerGlow.intensity = 1.0 + Math.sin(t * 1.4) * 0.3;
-      // パーティクルがゆっくり回る
       particles.rotation.y += 0.0008;
-      // 球体内の星もうっすら回る
       dome.rotation.y += 0.0003;
       renderer.render(scene, camera);
       requestAnimationFrame(animate);
     }
     animate();
     window.addEventListener('resize', () => {
-      renderer.setSize(W() * _RS, H() * _RS, false);
+      renderer.setSize(W(), H());
       camera.aspect = W()/H();
       camera.updateProjectionMatrix();
     });
