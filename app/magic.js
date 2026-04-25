@@ -14279,8 +14279,14 @@
       }
       return new THREE.CanvasTexture(c);
     })();
-    // 🌌 球体の内側シェーダー（モード+音楽連動）
-    const sphereMat = new THREE.ShaderMaterial({
+    // 🌌 球体の内側 — まず確実に映る MeshBasic、その後シェーダーを試す
+    let sphereMat = new THREE.MeshBasicMaterial({
+      map: sphereTex, side: THREE.BackSide, color: 0xffffff, fog: false,
+    });
+    // ShaderMaterialを安全に試す（失敗したら基本マテリアルのまま）
+    let _shaderMat = null;
+    try {
+      _shaderMat = new THREE.ShaderMaterial({
       uniforms: {
         uTime: { value: 0 },
         uMood: { value: new THREE.Color(config.music.mood) },
@@ -14388,6 +14394,11 @@
       side: THREE.BackSide,
       fog: false,
     });
+      // シェーダーが正常作成されたら採用
+      if (_shaderMat) sphereMat = _shaderMat;
+    } catch (e) {
+      console.warn('koh shader failed, falling back to basic', e);
+    }
     const dome = new THREE.Mesh(new THREE.SphereGeometry(40, 64, 32), sphereMat);
     scene.add(dome);
 
@@ -15365,24 +15376,9 @@
     scene.add(godRay);
 
     // ✨ Bloom ポストプロセス（光が滲む幻想的な見た目）
+    // 注: 一旦無効化して確実に renderer.render を使う（黒バグ対策）
     let composer = null;
-    try {
-      if (ADDONS.EffectComposer && ADDONS.RenderPass && ADDONS.UnrealBloomPass) {
-        composer = new ADDONS.EffectComposer(renderer);
-        composer.addPass(new ADDONS.RenderPass(scene, camera));
-        const bloom = new ADDONS.UnrealBloomPass(
-          new THREE.Vector2(W(), H()),
-          0.55, 0.55, 0.55
-        );
-        composer.addPass(bloom);
-        // OutputPass を使う場合は renderer の toneMapping を切る（二重tonemap防止）
-        if (ADDONS.OutputPass) {
-          composer.addPass(new ADDONS.OutputPass());
-        } else {
-          // OutputPass なしの場合、renderer 側で tone map させる
-        }
-      }
-    } catch (e) { console.warn('koh bloom', e); composer = null; }
+    let bloomEnabled = false; // 後で安定したら true に
 
     // 🎶 音楽連動の情景パーティクル
     const PARTC = 200;
@@ -15525,9 +15521,9 @@
       if (scene.userData.baton) {
         scene.userData.baton.rotation.z = 0.3 + Math.sin(t * (2 + bassS * 4)) * (0.5 + midS * 0.4);
       }
-      // 描画（Bloomあり/なし）
-      if (composer) composer.render();
-      else renderer.render(scene, camera);
+      // 描画（直接 renderer で確実に）
+      try { renderer.render(scene, camera); }
+      catch (e) { console.error('koh render error', e); running = false; }
       requestAnimationFrame(animate);
     }
     animate();
