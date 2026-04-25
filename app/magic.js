@@ -14053,6 +14053,7 @@
   // ============================================================
   const KOH_PASSWORD = 'kk8869';
   const KOH_MUSIC = [
+    { id: 'bach903',  title: '半音階的幻想曲とフーガ', sub: 'J.S.バッハ BWV 903 — natsumi', src: 'assets/bach-bwv903.mp3', mood: 0xa890c8, scenery: 'baroque' },
     { id: 'home',     title: '夜明け',         sub: '光が射し込む',   src: 'assets/home-bgm.mp3',     mood: 0xfff0c0, scenery: 'dawn' },
     { id: 'history',  title: '時の流れ',       sub: '歴史を巡る',     src: 'assets/history-bgm.mp3',  mood: 0xa080d0, scenery: 'flow' },
     { id: 'blog',     title: '静かな午後',     sub: '思索の時間',     src: 'assets/blog-bgm.mp3',     mood: 0x80c8e0, scenery: 'calm' },
