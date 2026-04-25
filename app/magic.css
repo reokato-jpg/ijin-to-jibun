@@ -3678,6 +3678,33 @@ html.lenis-smooth { scroll-behavior: auto; } /* CSS smoothと重複させない 
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+/* 🌌 宇宙の誕生中: モード/HUD系を全部隠す（'born' クラスが付くまで） */
+.cosmos-overlay:not(.born) .cosmos-modes-trigger,
+.cosmos-overlay:not(.born) .cosmos-modes-sheet,
+.cosmos-overlay:not(.born) .cosmos-time-ctrl,
+.cosmos-overlay:not(.born) .cosmos-zoom-ctrl,
+.cosmos-overlay:not(.born) .cosmos-rocket-toggle,
+.cosmos-overlay:not(.born) .cosmos-vehicle-pick,
+.cosmos-overlay:not(.born) .cosmos-planet-list,
+.cosmos-overlay:not(.born) .cosmos-truth-ticker {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden;
+  transition: opacity .8s;
+}
+.cosmos-overlay.born .cosmos-modes-trigger,
+.cosmos-overlay.born .cosmos-time-ctrl,
+.cosmos-overlay.born .cosmos-zoom-ctrl,
+.cosmos-overlay.born .cosmos-rocket-toggle,
+.cosmos-overlay.born .cosmos-vehicle-pick,
+.cosmos-overlay.born .cosmos-planet-list {
+  animation: cosmosControlsFadeIn 1.2s ease-out;
+}
+@keyframes cosmosControlsFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 .cosmos-zoom-ctrl {
   position: absolute;
   right: 14px;

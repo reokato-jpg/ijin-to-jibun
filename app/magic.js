@@ -5517,6 +5517,56 @@
         { t: '6. ガネーシャの誕生', body: 'シヴァが遠征中、妻パールヴァティーは自分の体の垢から息子を作り、浴室の番をさせた。戻ってきたシヴァは見知らぬ子に道を塞がれ、激怒して首を刎ねた。\n\n妻に怒られ、通りすがりの最初の動物の首を代わりにつけると約束し、それが象だった。\n\nこうして障害を取り除く神、ガネーシャは生まれた。' },
       ]
     },
+    noah: {
+      name: 'ノアの箱舟', emoji: '🚢', theme: 'flood', symbol: '🌈',
+      subtitle: '旧約聖書 — 大洪水と虹の契約',
+      palette: { bg1: '#1a3050', bg2: '#0a1830', accent: '#80c8ff' },
+      chapters: [
+        { t: '1. 神の嘆き',
+          body: '人の悪が地に増し、心の思いがいつも悪に傾くのを、主は地の上に見られた。\n\n主は人を造ったことを悔やみ、心を痛められた。「私は私が創った人を、地のおもてから消し去ろう」。\n\nしかし、ノアは主の前に恵みを得た。' },
+        { t: '2. 箱舟を造れ',
+          body: '神はノアに言われた。「あなたはゴフェルの木で箱舟を造りなさい。長さ三百キュビト、幅五十キュビト、高さ三十キュビト。\n\nすべての生き物のうち、雄と雌、二つずつを箱舟に連れて入りなさい。彼らは生きながらえる」。\n\nノアは神が命じられたとおりに、すべて行った。' },
+        { t: '3. 大洪水',
+          scene3D: 'noah',
+          body: '大いなる淵の源は、ことごとく裂け、天の窓が開かれた。雨は四十日四十夜、地に降り注いだ。\n\n水は地の上にみなぎり、すべての高い山々を覆った。地を歩くすべてのもの、すべての人は息絶えた。\n\nただ箱舟の中の者だけが、残された。' },
+        { t: '4. 鳩とオリーブの葉',
+          body: 'ノアは箱舟の窓を開け、鳩を放った。鳩は止まる場所を見つけられず、戻ってきた。\n\n七日後、再び放った。夕暮れ、鳩は口にオリーブの若葉をくわえて戻ってきた。\n\nノアは知った — 水は地から引いた、と。' },
+        { t: '5. 虹の契約',
+          body: '主は心の中で言われた。「もう二度と、人のゆえに地をのろうことはしない。\n\n地のあるかぎり、種まきと刈り入れ、寒さと暑さ、夏と冬、昼と夜は、休むことなく続く」。\n\n神は虹を雲の中に置き、永遠の契約のしるしとされた。' },
+      ]
+    },
+    atlantis: {
+      name: 'アトランティス', emoji: '🔱', theme: 'sunken', symbol: 'Ψ',
+      subtitle: 'プラトン — 海に沈んだ理想都市',
+      palette: { bg1: '#0a3a5a', bg2: '#031a30', accent: '#80e0ff' },
+      chapters: [
+        { t: '1. ヘラクレスの柱の向こう',
+          body: 'プラトンは『ティマイオス』と『クリティアス』に書いた。約九千年前、ヘラクレスの柱（ジブラルタル）の向こうに、リビアとアジアを合わせたよりも大きな島があった。\n\nその名は アトランティス。海神ポセイドンが、人間の女クレイトーとの間に儲けた十人の王子たちが治めていた。' },
+        { t: '2. ポセイドンの都',
+          body: '中央には海神を祀る黄金と象牙の神殿があった。三重の堀と二重の城壁が同心円に都を囲み、そこを船で行き来した。\n\n地下から温泉と冷泉が湧き、果樹園と神聖な森が広がった。彼らは強大な軍勢を持ち、地中海全土を支配しかけた。' },
+        { t: '3. 神々を忘れた者たち',
+          scene3D: 'atlantis',
+          body: 'はじめ、アトランティスの民は徳高く、神々を敬っていた。だが世代を重ねるごとに、神性は薄れ、人間の欲望が彼らを満たした。\n\nゼウスは、堕落した者たちを罰しようと神々を集めた。' },
+        { t: '4. 一日と一夜の災い',
+          body: '激しい地震と洪水が起こった。ただの一日と一夜のうちに、アトランティスは戦士たちもろとも、海に沈んだ。\n\n以来そこは、海の泥に阻まれ、誰一人渡ることのできぬ場所となった。\n\nプラトンの語ったその物語が、神話か歴史か — 二千四百年、人は問い続けている。' },
+      ]
+    },
+    elysion: {
+      name: 'エリュシオン', emoji: '🌾', theme: 'paradise', symbol: 'Ω',
+      subtitle: 'ギリシャ神話 — 英雄たちの楽園',
+      palette: { bg1: '#8a6020', bg2: '#3a2810', accent: '#ffe890' },
+      chapters: [
+        { t: '1. 死後の三つの行き先',
+          body: 'ギリシャ神話では、死者の魂は三つに分かれる。\n\n罪深き者は タルタロス へ落とされ、永遠に苦しむ。普通の魂は アスフォデルの野 を彷徨う。\n\nそして — 神々に愛された英雄、徳高き者は、エリュシオン へ迎えられる。' },
+        { t: '2. 永遠の春の野',
+          scene3D: 'elysion',
+          body: 'エリュシオンには冬がない。雪も嵐もない。穏やかなゼピュロス（西風）がいつも吹き、海原は遠く、苦しみは触れない。\n\n果実は枝にたわわに実り、川は清く流れる。英雄たちは思うままに歌い、踊り、語らう。\n\nピンダロスは歌った — 「金の花が地に咲き、海の樹々に光り、彼らはその花を手と冠に飾る」。' },
+        { t: '3. 忘却の川 レテ',
+          body: '楽園の入口に、レテ（忘却）の川が流れる。魂はその水を飲み、生前の苦しみと記憶を流す。\n\n軽くなった魂は、永遠の春の中を歩く。何も背負わず、誰も恨まず、ただ、在る。\n\nそれがエリュシオンの祝福だった。' },
+        { t: '4. 英雄たちの群像',
+          body: 'アキレウス、ヘラクレス、テセウス、ペルセウス。神々の血を引く者、人として神々しく生きた者。\n\n彼らはここで再会し、永遠の語らいを続ける。武勲を誇るためではない。すべては既に、為された。\n\nそして翼の馬ペガサスは、空を駆け、彼らに祝福をもたらす。' },
+      ]
+    },
   };
 
   // 旧データは参考に残す（星の王子様は宇宙モードへ移植）
@@ -5643,30 +5693,6 @@
           <span class="mmb-body">
             <span class="mmb-title">美 術 館</span>
             <span class="mmb-sub">神話を描いた名画を、ホールで鑑賞する</span>
-          </span>
-          <span class="mmb-arrow">›</span>
-        </button>
-        <button class="myth-museum-btn" id="mythNoahBtn" style="margin-top:10px;background:linear-gradient(135deg,#1a3050,#0a1830);">
-          <span class="mmb-icon">🚢</span>
-          <span class="mmb-body">
-            <span class="mmb-title">ノ ア の 箱 舟</span>
-            <span class="mmb-sub">大洪水と虹 — 3Dシーンで体験する</span>
-          </span>
-          <span class="mmb-arrow">›</span>
-        </button>
-        <button class="myth-museum-btn" id="mythAtlBtn" style="margin-top:10px;background:linear-gradient(135deg,#0a3a5a,#053848);">
-          <span class="mmb-icon">🔱</span>
-          <span class="mmb-body">
-            <span class="mmb-title">ア ト ラ ン テ ィ ス</span>
-            <span class="mmb-sub">海底に眠る、失われた古代都市</span>
-          </span>
-          <span class="mmb-arrow">›</span>
-        </button>
-        <button class="myth-museum-btn" id="mythElyBtn" style="margin-top:10px;background:linear-gradient(135deg,#8a6020,#c8a050);color:#fff;">
-          <span class="mmb-icon">🌾</span>
-          <span class="mmb-body">
-            <span class="mmb-title">エ リ ュ シ オ ン</span>
-            <span class="mmb-sub">英雄たちの楽園 — 黄金の野・忘却の川・ペガサス</span>
           </span>
           <span class="mmb-arrow">›</span>
         </button>
@@ -5824,6 +5850,9 @@
       const actions = [];
       if (c.scene3D === 'eden') actions.push(`<button class="tale-action tale-action-3d" data-act="eden3d">🌳 3Dで庭園に入る</button>`);
       if (c.scene3D === 'babel') actions.push(`<button class="tale-action tale-action-babel" data-act="babel3d">🏛 バベルの塔を登る</button>`);
+      if (c.scene3D === 'noah') actions.push(`<button class="tale-action tale-action-3d" data-act="noah3d">🚢 大洪水と虹を3Dで見る</button>`);
+      if (c.scene3D === 'atlantis') actions.push(`<button class="tale-action tale-action-3d" data-act="atl3d">🔱 海底のアトランティスへ潜る</button>`);
+      if (c.scene3D === 'elysion') actions.push(`<button class="tale-action tale-action-3d" data-act="ely3d">🌾 英雄の楽園へ</button>`);
       if (c.img) actions.push(`<button class="tale-action tale-action-gallery" data-act="museum" data-src="${c.img}" data-caption="${c.caption || ''}">🖼 美術館で見る</button>`);
       const actionHTML = actions.length ? `<div class="tale-actions">${actions.join('')}</div>` : '';
       const bodyHTML = artHTML + actionHTML + '<div class="tale-chapter-text">' + c.body.replace(/\n/g, '<br>') + '</div>';
@@ -5840,6 +5869,9 @@
         b.addEventListener('click', () => {
           if (b.dataset.act === 'eden3d') openEden3D();
           else if (b.dataset.act === 'babel3d') openBabel3D();
+          else if (b.dataset.act === 'noah3d') window.openNoahArk3D && window.openNoahArk3D();
+          else if (b.dataset.act === 'atl3d') window.openAtlantis3D && window.openAtlantis3D();
+          else if (b.dataset.act === 'ely3d') window.openElysion3D && window.openElysion3D();
           else if (b.dataset.act === 'museum') openMuseum(b.dataset.src, b.dataset.caption);
         });
       });
@@ -5849,12 +5881,6 @@
     });
     const mmBtn = ov.querySelector('#mythMuseumBtn');
     if (mmBtn) mmBtn.addEventListener('click', () => openMythMuseum());
-    const noahBtn = ov.querySelector('#mythNoahBtn');
-    if (noahBtn) noahBtn.addEventListener('click', () => window.openNoahArk3D && window.openNoahArk3D());
-    const atlBtn = ov.querySelector('#mythAtlBtn');
-    if (atlBtn) atlBtn.addEventListener('click', () => window.openAtlantis3D && window.openAtlantis3D());
-    const elyBtn = ov.querySelector('#mythElyBtn');
-    if (elyBtn) elyBtn.addEventListener('click', () => window.openElysion3D && window.openElysion3D());
     ov.querySelector('#taleBack').addEventListener('click', () => {
       reader.classList.remove('show');
       home.classList.add('show');
@@ -18087,6 +18113,8 @@
           hud.classList.add('show');
           hud.textContent = '🪐 惑星をタップ';
           setTimeout(() => hud.classList.remove('show'), 3500);
+          // 🌌 誕生完了 → モード/ボタン類を表示
+          ov.classList.add('born');
         }
       } else if (phase === 'universe') {
         universeTime += 0.016;
