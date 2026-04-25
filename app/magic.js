@@ -11446,7 +11446,7 @@
         const figure = new THREE.Mesh(new THREE.PlaneGeometry(1.8, 2.25), figMat);
         figure.position.y = 2.2;
         group.add(figure);
-        // 神 or ハブ：常に procedural canvas でアニメアバターを生成（信頼性優先）
+        // まず procedural canvas（フォールバック）を仕込んでおく
         const cv = document.createElement('canvas');
         cv.width = 384; cv.height = 480;
         const ctx = cv.getContext('2d');
@@ -11455,24 +11455,77 @@
         figMat.map = animTex;
         figMat.needsUpdate = true;
         const accentHex = '#' + item.accent.toString(16).padStart(6, '0');
-        animatedTextures.push({ ctx, tex: animTex, item, accent: accentHex });
-        // ラベル板（台座下に名前）
+        const animEntry = { ctx, tex: animTex, item, accent: accentHex };
+        animatedTextures.push(animEntry);
+        // 画像があるなら試みてロード成功したら写真ホログラム化
+        if (item.img) {
+          loadGodImage(item.img).then(tex => {
+            // ホログラム化：写真を accent 色で軽くシアン染め＋発光
+            const c2 = document.createElement('canvas');
+            const iw = tex.image.width, ih = tex.image.height;
+            const tgt = 384, tgtH = Math.round(tgt * (ih / iw));
+            c2.width = tgt; c2.height = Math.min(tgtH, 480);
+            const cx2 = c2.getContext('2d');
+            // 暗背景（ホログラム）
+            cx2.fillStyle = '#08051a'; cx2.fillRect(0, 0, c2.width, c2.height);
+            // 写真を中央フィット
+            const drawH = c2.height;
+            const drawW = drawH * (iw / ih);
+            cx2.drawImage(tex.image, (c2.width - drawW) / 2, 0, drawW, drawH);
+            // accent 色のオーバーレイ（ホログラムグロー）
+            cx2.globalCompositeOperation = 'overlay';
+            cx2.fillStyle = accentHex; cx2.globalAlpha = 0.22;
+            cx2.fillRect(0, 0, c2.width, c2.height);
+            // スキャンライン
+            cx2.globalCompositeOperation = 'source-over';
+            cx2.globalAlpha = 0.18;
+            cx2.fillStyle = accentHex;
+            for (let y = 0; y < c2.height; y += 4) cx2.fillRect(0, y, c2.width, 1);
+            cx2.globalAlpha = 1;
+            const photoTex = new THREE.CanvasTexture(c2);
+            if ('colorSpace' in photoTex) photoTex.colorSpace = THREE.SRGBColorSpace;
+            figMat.map = photoTex;
+            figMat.transparent = true;
+            figMat.opacity = 0.92;
+            figMat.needsUpdate = true;
+            // procedural アニメから外す
+            const idx = animatedTextures.indexOf(animEntry);
+            if (idx >= 0) animatedTextures.splice(idx, 1);
+          }).catch(() => {/* 画像なし → procedural のまま */});
+        }
+        // ラベル板（台座の前面に大きな名前 — ビルボード）
         const labelCanvas = document.createElement('canvas');
-        labelCanvas.width = 256; labelCanvas.height = 64;
+        labelCanvas.width = 512; labelCanvas.height = 160;
         const lg = labelCanvas.getContext('2d');
-        lg.fillStyle = 'rgba(20,15,30,0.9)'; lg.fillRect(0, 0, 256, 64);
-        lg.fillStyle = `#${item.accent.toString(16).padStart(6, '0')}`;
-        lg.font = 'bold 22px serif'; lg.textAlign = 'center';
-        lg.fillText(item.name, 128, 28);
-        lg.fillStyle = '#c8b8d8';
-        lg.font = '14px serif';
-        lg.fillText(item.sub, 128, 50);
+        // 名前の背景: 立派な銘板
+        const grd = lg.createLinearGradient(0, 0, 0, 160);
+        grd.addColorStop(0, '#2a1838'); grd.addColorStop(1, '#0a0418');
+        lg.fillStyle = grd; lg.fillRect(0, 0, 512, 160);
+        // 縁
+        const accentHex = `#${item.accent.toString(16).padStart(6, '0')}`;
+        lg.strokeStyle = accentHex; lg.lineWidth = 4;
+        lg.strokeRect(8, 8, 496, 144);
+        lg.lineWidth = 1; lg.strokeStyle = accentHex + 'aa';
+        lg.strokeRect(16, 16, 480, 128);
+        // 大きな名前
+        lg.fillStyle = accentHex;
+        lg.font = 'bold 48px "Shippori Mincho", serif';
+        lg.textAlign = 'center'; lg.textBaseline = 'middle';
+        lg.shadowColor = '#000'; lg.shadowBlur = 6;
+        lg.fillText(item.name, 256, 70);
+        // サブタイトル
+        lg.shadowBlur = 0;
+        lg.fillStyle = '#e8d8ff';
+        lg.font = '22px "Shippori Mincho", serif';
+        lg.fillText(item.sub, 256, 120);
         const labelTex = new THREE.CanvasTexture(labelCanvas);
+        if ('colorSpace' in labelTex) labelTex.colorSpace = THREE.SRGBColorSpace;
         const label = new THREE.Mesh(
-          new THREE.PlaneGeometry(1.6, 0.4),
-          new THREE.MeshBasicMaterial({ map: labelTex, transparent: true })
+          new THREE.PlaneGeometry(2.4, 0.75),
+          new THREE.MeshBasicMaterial({ map: labelTex, transparent: true, side: THREE.DoubleSide })
         );
         label.position.y = 0.55;
+        label.userData.isLabel = true; // animate でカメラ向きにする
         group.add(label);
 
         group.userData = { item, holo, ring, figure };
@@ -11830,12 +11883,17 @@
           a.tex.needsUpdate = true;
         });
       }
-      // ホログラム回転 + リング脈動
+      // ホログラム回転 + リング脈動 + ラベル ビルボード
       plinths.forEach(p => {
-        p.userData.figure.rotation.y = -Math.sin(yaw) * 0.0; // 常にカメラを向く
         p.userData.figure.lookAt(camera.position.x, p.userData.figure.getWorldPosition(new THREE.Vector3()).y, camera.position.z);
-        p.userData.holo.rotation.y += 0.005;
-        p.userData.ring.material.opacity = 0.4 + Math.sin(t * 2 + p.position.x) * 0.2;
+        if (p.userData.holo) p.userData.holo.rotation.y += 0.005;
+        if (p.userData.ring && p.userData.ring.material) p.userData.ring.material.opacity = 0.4 + Math.sin(t * 2 + p.position.x) * 0.2;
+        // ラベルもカメラ向き
+        p.children.forEach(ch => {
+          if (ch.userData && ch.userData.isLabel) {
+            ch.lookAt(camera.position.x, ch.getWorldPosition(new THREE.Vector3()).y, camera.position.z);
+          }
+        });
       });
       // 最寄りの台座を判定
       let best = null, bestD = 5;
