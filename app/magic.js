@@ -14080,20 +14080,35 @@
     return new Promise(resolve => {
       const ov = document.createElement('div');
       ov.className = 'koh-modal koh-select';
-      // 座席マップ: 4列×12席 = 48席
-      const SEAT_ROWS = 4, SEAT_COLS = 12;
-      let chosenSeat = { r: 1, c: 5 }; // デフォルト
+      // 座席: 10列の同心円、合計1000席（中央にステージ）
+      const SEAT_ROWS = 10;
+      const SEAT_PER_ROW = [40, 56, 72, 88, 104, 120, 136, 144, 152, 88]; // 内側少なめ→外側多い、合計1000
+      let chosenSeat = { r: 2, c: 30 };
       let chosenMusic = KOH_MUSIC[0];
+      // 円形SVGで座席表示
       function seatGrid() {
-        let html = '<div class="koh-seat-grid">';
+        const SVG_SIZE = 320;
+        const cx = SVG_SIZE / 2, cy = SVG_SIZE / 2;
+        const minR = 36, maxR = SVG_SIZE / 2 - 8;
+        let html = `<svg class="koh-seat-svg" viewBox="0 0 ${SVG_SIZE} ${SVG_SIZE}" width="${SVG_SIZE}" height="${SVG_SIZE}">`;
+        // 中央のステージ
+        html += `<circle cx="${cx}" cy="${cy}" r="22" fill="rgba(255,216,144,0.15)" stroke="#ffd890" stroke-width="1.5"/>`;
+        html += `<text x="${cx}" y="${cy + 4}" text-anchor="middle" font-size="11" fill="#ffd890" letter-spacing="2" font-family="serif">STAGE</text>`;
+        // 各列（リング）
         for (let r = 0; r < SEAT_ROWS; r++) {
-          html += '<div class="koh-seat-row">';
-          for (let c = 0; c < SEAT_COLS; c++) {
-            html += `<button class="koh-seat" data-r="${r}" data-c="${c}"></button>`;
+          const radius = minR + ((maxR - minR) / (SEAT_ROWS - 1)) * r;
+          const seatCount = SEAT_PER_ROW[r];
+          // リングの円（薄く）
+          html += `<circle cx="${cx}" cy="${cy}" r="${radius}" fill="none" stroke="rgba(180,140,220,0.12)" stroke-width="1"/>`;
+          for (let c = 0; c < seatCount; c++) {
+            const a = (c / seatCount) * Math.PI * 2 - Math.PI / 2;
+            const x = cx + Math.cos(a) * radius;
+            const y = cy + Math.sin(a) * radius;
+            html += `<circle class="koh-seat" cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="2.4" data-r="${r}" data-c="${c}"></circle>`;
           }
-          html += '</div>';
         }
-        html += '</div>';
+        html += `</svg>`;
+        html += `<div class="koh-seat-meta"><span id="kohSeatLabel">— 列 — 席</span></div>`;
         return html;
       }
       function musicCards() {
@@ -14130,12 +14145,14 @@
       `;
       document.body.appendChild(ov);
       requestAnimationFrame(() => ov.classList.add('show'));
-      // 座席選択
+      // 座席選択（SVG）
       const updateSeats = () => {
         ov.querySelectorAll('.koh-seat').forEach(el => {
           const r = +el.dataset.r, c = +el.dataset.c;
           el.classList.toggle('chosen', r === chosenSeat.r && c === chosenSeat.c);
         });
+        const label = ov.querySelector('#kohSeatLabel');
+        if (label) label.textContent = `第 ${chosenSeat.r + 1} 列 ／ ${chosenSeat.c + 1} 番席（全 1,000 席）`;
       };
       ov.querySelectorAll('.koh-seat').forEach(el => {
         el.addEventListener('click', () => {
@@ -14170,7 +14187,7 @@
       });
       ov.querySelector('#kohEnter').addEventListener('click', () => {
         const videoUrl = ov.querySelector('.koh-video-input').value.trim();
-        close({ seat: chosenSeat, music: chosenMusic, rows: SEAT_ROWS, cols: SEAT_COLS, videoUrl });
+        close({ seat: chosenSeat, music: chosenMusic, rows: SEAT_ROWS, seatPerRow: SEAT_PER_ROW, videoUrl });
       });
       ov.querySelector('#kohCancelSel').addEventListener('click', () => close(null));
     });
@@ -14179,6 +14196,7 @@
   async function buildKohSphere3D(config) {
     const THREE = window.THREE;
     if (window.THREE_READY) { try { await window.THREE_READY; } catch {} }
+    const ADDONS = window.THREE_ADDONS || {};
     const ov = document.createElement('div');
     ov.className = 'museum3d-overlay koh-overlay';
     ov.innerHTML = `
@@ -14228,8 +14246,67 @@
       }
       return new THREE.CanvasTexture(c);
     })();
-    const sphereMat = new THREE.MeshBasicMaterial({
-      map: sphereTex, side: THREE.BackSide, color: 0xffffff, fog: false,
+    // 🌌 球体の内側シェーダー（音楽の mood で色が変わる、星雲＋ノイズ）
+    const sphereMat = new THREE.ShaderMaterial({
+      uniforms: {
+        uTime: { value: 0 },
+        uMood: { value: new THREE.Color(config.music.mood) },
+        uMood2: { value: new THREE.Color(config.music.mood).multiplyScalar(0.4) },
+        uTex: { value: sphereTex },
+      },
+      vertexShader: `
+        varying vec3 vWorld;
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          vec4 wp = modelMatrix * vec4(position, 1.0);
+          vWorld = wp.xyz;
+          gl_Position = projectionMatrix * viewMatrix * wp;
+        }
+      `,
+      fragmentShader: `
+        uniform float uTime;
+        uniform vec3 uMood;
+        uniform vec3 uMood2;
+        uniform sampler2D uTex;
+        varying vec3 vWorld;
+        varying vec2 vUv;
+        // 簡易ハッシュノイズ
+        float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+        float noise(vec2 p) {
+          vec2 i = floor(p), f = fract(p);
+          float a = hash(i), b = hash(i + vec2(1.0,0)), c = hash(i + vec2(0,1.0)), d = hash(i + vec2(1.0,1.0));
+          vec2 u = f * f * (3.0 - 2.0 * f);
+          return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
+        }
+        // fBm
+        float fbm(vec2 p) {
+          float v = 0.0, amp = 0.5;
+          for (int i = 0; i < 5; i++) { v += noise(p) * amp; p *= 2.0; amp *= 0.5; }
+          return v;
+        }
+        void main() {
+          vec2 uv = vUv;
+          // 星空テクスチャ（背景）
+          vec3 stars = texture2D(uTex, uv).rgb;
+          // ゆっくり流れる星雲
+          float n = fbm(uv * 4.0 + vec2(uTime * 0.02, uTime * 0.01));
+          float n2 = fbm(uv * 9.0 - vec2(uTime * 0.04, 0.0));
+          // 帯状のオーロラ
+          float band = smoothstep(0.35, 0.55, n) * smoothstep(0.85, 0.45, n);
+          // 色: mood 色がメイン、深い色が陰影
+          vec3 nebula = mix(uMood2, uMood, band);
+          // ハイライト（明るい筋）
+          float bright = pow(n2, 3.0) * 1.5;
+          vec3 col = stars * 0.6 + nebula * 0.8 + uMood * bright * 0.4;
+          // 中央付近を暗く（地平線感）
+          float dist = abs(uv.y - 0.5) * 2.0;
+          col *= mix(0.7, 1.4, dist);
+          gl_FragColor = vec4(col, 1.0);
+        }
+      `,
+      side: THREE.BackSide,
+      fog: false,
     });
     const dome = new THREE.Mesh(new THREE.SphereGeometry(40, 64, 32), sphereMat);
     scene.add(dome);
@@ -14259,9 +14336,9 @@
       vTex.colorSpace = THREE.SRGBColorSpace;
       vTex.minFilter = THREE.LinearFilter;
       vTex.magFilter = THREE.LinearFilter;
-      // 球体の内側にだけ動画を貼る
-      sphereMat.map = vTex;
-      sphereMat.needsUpdate = true;
+      // 動画モードでは ShaderMaterial を MeshBasic に置き換え
+      const videoMat = new THREE.MeshBasicMaterial({ map: vTex, side: THREE.BackSide, fog: false });
+      dome.material = videoMat;
     }
 
     // 🌐 球体感の演出: 緯度リング（赤道+8本のラチチュード）
@@ -14638,51 +14715,119 @@
     centerGlow.position.set(0, 8, 0);
     scene.add(centerGlow);
 
-    // 🎫 観客席（4列のリング配置 — リアルな人物）
-    const SEAT_RING = [10, 12, 14, 16];
-    const SEATS_PER_ROW = config.cols;
-    const audienceHeads = []; // 視聴中の微動アニメ用
+    // 🎫 観客席（10列の同心円、1000席、InstancedMeshで高速化）
+    const SEAT_PER_ROW = config.seatPerRow || [40, 56, 72, 88, 104, 120, 136, 144, 152, 88];
+    const TOTAL_SEATS = SEAT_PER_ROW.reduce((a, b) => a + b, 0);
+    // 列の半径（中央のステージから外側へ）
+    const SEAT_RING = [];
+    {
+      const minR = 8, maxR = 28; // ホール半径
+      for (let r = 0; r < SEAT_PER_ROW.length; r++) {
+        const t = SEAT_PER_ROW.length > 1 ? r / (SEAT_PER_ROW.length - 1) : 0;
+        SEAT_RING.push(minR + (maxR - minR) * t);
+      }
+    }
+    // ===  Instanced Body + Head + Chair === （1ドローコール×3で全1000席）
+    const dummy = new THREE.Object3D();
+    // 椅子（座面+背もたれ統合）
+    const chairGeo = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+    const chairMat = new THREE.MeshStandardMaterial({ color: 0x3a2010, roughness: 0.7 });
+    const chairMesh = new THREE.InstancedMesh(chairGeo, chairMat, TOTAL_SEATS);
+    chairMesh.frustumCulled = false;
+    scene.add(chairMesh);
+    // 体（円柱）
+    const bodyGeo = new THREE.CylinderGeometry(0.16, 0.21, 0.55, 8);
+    const bodyMat = new THREE.MeshStandardMaterial({ vertexColors: false, roughness: 0.55 });
+    const bodyMesh = new THREE.InstancedMesh(bodyGeo, bodyMat, TOTAL_SEATS);
+    bodyMesh.frustumCulled = false;
+    scene.add(bodyMesh);
+    // 頭（球）
+    const headGeo = new THREE.SphereGeometry(0.12, 12, 10);
+    const headMat = new THREE.MeshStandardMaterial({ vertexColors: false, roughness: 0.6 });
+    const headMesh = new THREE.InstancedMesh(headGeo, headMat, TOTAL_SEATS);
+    headMesh.frustumCulled = false;
+    scene.add(headMesh);
+    // 髪（半球）
+    const hairGeo = new THREE.SphereGeometry(0.13, 12, 8, 0, Math.PI * 2, 0, Math.PI * 0.65);
+    const hairMat = new THREE.MeshStandardMaterial({ vertexColors: false, roughness: 0.55 });
+    const hairMesh = new THREE.InstancedMesh(hairGeo, hairMat, TOTAL_SEATS);
+    hairMesh.frustumCulled = false;
+    scene.add(hairMesh);
+
+    // 色のばらつき（vertexColors の代わりに instanceColor）
     const skinTones = [0xf0d4b0, 0xe8c8a4, 0xddb890, 0xd4a878, 0xc89868, 0xb88a5e];
     const hairTones = [0x2a1810, 0x1a0a04, 0x4a2810, 0x6a4a30, 0x14080a, 0x8a6a4a, 0xc8a880];
-    const clothTones = [0x14101a, 0x2a1830, 0x1a2438, 0x301818, 0x14241a, 0x281418, 0x2a1018];
-    for (let r = 0; r < SEAT_RING.length; r++) {
+    const clothTones = [0x14101a, 0x2a1830, 0x1a2438, 0x301818, 0x14241a, 0x281418, 0x2a1018, 0x1a142a];
+    chairMesh.instanceColor = new THREE.InstancedBufferAttribute(new Float32Array(TOTAL_SEATS * 3), 3);
+    bodyMesh.instanceColor = new THREE.InstancedBufferAttribute(new Float32Array(TOTAL_SEATS * 3), 3);
+    headMesh.instanceColor = new THREE.InstancedBufferAttribute(new Float32Array(TOTAL_SEATS * 3), 3);
+    hairMesh.instanceColor = new THREE.InstancedBufferAttribute(new Float32Array(TOTAL_SEATS * 3), 3);
+    const _color = new THREE.Color();
+
+    // 配置
+    let idx = 0;
+    const seatPositions = []; // 自分の席座標を見つけるため
+    for (let r = 0; r < SEAT_PER_ROW.length; r++) {
       const radius = SEAT_RING[r];
-      const seatCount = SEATS_PER_ROW + r * 4;
+      const seatCount = SEAT_PER_ROW[r];
+      const stepY = r * 0.45; // 段差（後ろほど高い）
       for (let c = 0; c < seatCount; c++) {
         const a = (c / seatCount) * Math.PI * 2;
         const x = Math.cos(a) * radius;
         const z = Math.sin(a) * radius;
-        const y = r * 0.4; // 段差
-        // 座席
-        const chair = buildConcertChair(0x3a2010);
-        chair.position.set(x, y, z);
-        chair.lookAt(0, y, 0);
-        scene.add(chair);
-        // 観客
-        const skin = skinTones[Math.floor(Math.random() * skinTones.length)];
-        const hair = hairTones[Math.floor(Math.random() * hairTones.length)];
-        const cloth = clothTones[Math.floor(Math.random() * clothTones.length)];
-        const person = buildPerson({
-          bodyColor: cloth, hairColor: hair, skinColor: skin,
-          sitting: true, isAudience: true,
-        });
-        person.position.set(x, y, z);
-        person.lookAt(0, y + 1.0, 0); // 中央を向く
-        scene.add(person);
-        audienceHeads.push(person.userData.head);
+        // 中央を向く（顔の方向）
+        const ang = Math.atan2(-x, -z);
+        // 椅子
+        dummy.position.set(x, stepY + 0.25, z);
+        dummy.rotation.set(0, ang, 0);
+        dummy.updateMatrix();
+        chairMesh.setMatrixAt(idx, dummy.matrix);
+        _color.set(0x3a2010 + ((Math.random() * 0x080404) | 0));
+        chairMesh.instanceColor.setXYZ(idx, _color.r, _color.g, _color.b);
+        // 体
+        dummy.position.set(x, stepY + 0.85, z);
+        dummy.rotation.set(0, ang, 0);
+        dummy.updateMatrix();
+        bodyMesh.setMatrixAt(idx, dummy.matrix);
+        _color.set(clothTones[Math.floor(Math.random() * clothTones.length)]);
+        bodyMesh.instanceColor.setXYZ(idx, _color.r, _color.g, _color.b);
+        // 頭
+        dummy.position.set(x, stepY + 1.25, z);
+        dummy.rotation.set(0, ang, 0);
+        dummy.scale.set(1, 1.1, 1);
+        dummy.updateMatrix();
+        dummy.scale.set(1, 1, 1);
+        headMesh.setMatrixAt(idx, dummy.matrix);
+        _color.set(skinTones[Math.floor(Math.random() * skinTones.length)]);
+        headMesh.instanceColor.setXYZ(idx, _color.r, _color.g, _color.b);
+        // 髪
+        dummy.position.set(x, stepY + 1.27, z);
+        dummy.rotation.set(0, ang, 0);
+        dummy.updateMatrix();
+        hairMesh.setMatrixAt(idx, dummy.matrix);
+        _color.set(hairTones[Math.floor(Math.random() * hairTones.length)]);
+        hairMesh.instanceColor.setXYZ(idx, _color.r, _color.g, _color.b);
+        seatPositions.push({ x, y: stepY, z, r, c });
+        idx++;
       }
     }
-    scene.userData.audienceHeads = audienceHeads;
+    chairMesh.instanceMatrix.needsUpdate = true;
+    bodyMesh.instanceMatrix.needsUpdate = true;
+    headMesh.instanceMatrix.needsUpdate = true;
+    hairMesh.instanceMatrix.needsUpdate = true;
+    chairMesh.instanceColor.needsUpdate = true;
+    bodyMesh.instanceColor.needsUpdate = true;
+    headMesh.instanceColor.needsUpdate = true;
+    hairMesh.instanceColor.needsUpdate = true;
 
     // 🪑 プレイヤー（あなた）の席位置
-    const myRow = config.seat.r;
-    const myCol = config.seat.c;
-    const myRadius = SEAT_RING[myRow] || 12;
-    const mySeatCount = SEATS_PER_ROW + myRow * 4;
+    const myRow = Math.min(config.seat.r, SEAT_PER_ROW.length - 1);
+    const myCol = config.seat.c % SEAT_PER_ROW[myRow];
+    const myRadius = SEAT_RING[myRow];
+    const mySeatCount = SEAT_PER_ROW[myRow];
     const myAngle = (myCol / mySeatCount) * Math.PI * 2;
-    // 球面上の自分の位置（少しステージ寄りにオフセット）
     const myX = Math.cos(myAngle) * (myRadius - 0.3);
-    const myY = myRow * 0.35 + 1.3; // 座高
+    const myY = myRow * 0.45 + 1.3; // 段差込みの座高
     const myZ = Math.sin(myAngle) * (myRadius - 0.3);
 
     // 環境光
@@ -14746,6 +14891,23 @@
       }, 500);
     });
 
+    // ✨ Bloom ポストプロセス（光が滲む幻想的な見た目）
+    let composer = null;
+    try {
+      if (ADDONS.EffectComposer && ADDONS.RenderPass && ADDONS.UnrealBloomPass) {
+        composer = new ADDONS.EffectComposer(renderer);
+        composer.addPass(new ADDONS.RenderPass(scene, camera));
+        const bloom = new ADDONS.UnrealBloomPass(
+          new THREE.Vector2(W(), H()),
+          0.85, // strength
+          0.6,  // radius
+          0.15  // threshold
+        );
+        composer.addPass(bloom);
+        if (ADDONS.OutputPass) composer.addPass(new ADDONS.OutputPass());
+      }
+    } catch (e) { console.warn('koh bloom', e); composer = null; }
+
     // 🎶 音楽連動の情景パーティクル
     const PARTC = 200;
     const pgeo = new THREE.BufferGeometry();
@@ -14784,17 +14946,20 @@
         myY + breath + bob,
         myZ + Math.cos(t * 0.4) * 0.005
       );
-      // 🎯 VRパッド級スムーズ: 入力をローパスフィルタ → 1:1 で適用
-      // 指数移動平均（強度0.35 = 雑音除去 + 即応性）
-      const lp = 1 - Math.exp(-dt * 25); // 25 = 高い追従性
+      // 🎯 VRパッド級スムーズ: 入力 → ローパス → 1:1 適用
+      const lp = 1 - Math.exp(-dt * 30);
       smoothDX += (pendingDX - smoothDX) * lp;
       smoothDY += (pendingDY - smoothDY) * lp;
       pendingDX = 0; pendingDY = 0;
-      // フレームごとに「平滑化されたデルタ」を消費（target なし、直接 yaw/pitch 更新）
-      yaw   -= smoothDX * 0.0028;
-      pitch -= smoothDY * 0.0026;
+      // 📱 感度: 画面幅をドラッグすると 180度（π）回る
+      const SCREEN_W = window.innerWidth || 360;
+      const SCREEN_H = window.innerHeight || 640;
+      const SENS_X = Math.PI / SCREEN_W;       // 1px = π/W rad
+      const SENS_Y = (Math.PI * 0.7) / SCREEN_H; // 縦は少し小さめ
+      yaw   -= smoothDX * SENS_X;
+      pitch -= smoothDY * SENS_Y;
       pitch = Math.max(-PITCH_LIMIT, Math.min(PITCH_LIMIT, pitch));
-      smoothDX *= 0.55; smoothDY *= 0.55; // 慣性減衰（指離した後も少し滑る）
+      smoothDX *= 0.55; smoothDY *= 0.55;
       // 自然な微小ドリフト（座ってる感）
       const idleDriftYaw   = Math.sin(t * 0.23) * 0.00015;
       const idleDriftPitch = Math.sin(t * 0.19) * 0.00010;
@@ -14811,22 +14976,21 @@
       scene.userData.orchestra.forEach((p, i) => {
         if (p.head) p.head.position.y = 1.18 + Math.sin(t * 1.2 + i * 0.5) * 0.02;
       });
-      // 観客の微動（呼吸）
-      if (scene.userData.audienceHeads) {
-        scene.userData.audienceHeads.forEach((h, i) => {
-          h.position.y += Math.sin(t * 1.5 + i * 0.3) * 0.0008 - (h.userData._lastBob || 0);
-          h.userData._lastBob = Math.sin(t * 1.5 + i * 0.3) * 0.0008;
-        });
-      }
+      // 観客の微動（呼吸）— InstancedMesh では省略（1000人だと毎フレ更新は重い）
       centerGlow.intensity = 1.0 + Math.sin(t * 1.4) * 0.3;
       particles.rotation.y += 0.0008;
       dome.rotation.y += 0.0003;
-      renderer.render(scene, camera);
+      // 球体内シェーダーの時間更新
+      if (sphereMat.uniforms && sphereMat.uniforms.uTime) sphereMat.uniforms.uTime.value = t;
+      // 描画（Bloomあり/なし）
+      if (composer) composer.render();
+      else renderer.render(scene, camera);
       requestAnimationFrame(animate);
     }
     animate();
     window.addEventListener('resize', () => {
       renderer.setSize(W(), H());
+      if (composer) composer.setSize(W(), H());
       camera.aspect = W()/H();
       camera.updateProjectionMatrix();
     });

@@ -8388,11 +8388,12 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   border-color: #b89cd0;
 }
 .koh-btn-primary:hover { background: linear-gradient(135deg, #8060c8, #5028a0); box-shadow: 0 6px 18px rgba(180,140,220,0.4); }
-/* 座席グリッド */
+/* 座席（円形SVG）— 1000席のホール */
 .koh-stage-label {
   font-size: 14px; letter-spacing: 0.4em;
   color: #ffd890;
-  margin: 10px 0 14px;
+  margin: 10px 0 6px;
+  display: none; /* 円形SVGには中央にSTAGE文字あり */
 }
 .koh-section-label {
   font-size: 14px; letter-spacing: 0.3em;
@@ -8400,29 +8401,30 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   margin: 26px 0 14px;
   text-align: left; padding-left: 8px;
 }
-.koh-seat-grid {
-  display: flex; flex-direction: column; gap: 5px;
-  align-items: center;
-  margin-bottom: 8px;
+.koh-seat-svg {
+  display: block; margin: 8px auto 4px;
+  max-width: 100%;
+  background: radial-gradient(circle at center, rgba(40,28,80,0.4), rgba(0,0,0,0.6));
+  border-radius: 50%;
 }
-.koh-seat-row {
-  display: flex; gap: 4px; justify-content: center;
-}
-.koh-seat {
-  width: 22px; height: 22px;
-  background: rgba(80,60,120,0.4);
-  border: 1px solid rgba(180,140,220,0.4);
-  border-radius: 4px;
+.koh-seat-svg .koh-seat {
+  fill: rgba(180,140,220,0.5);
   cursor: pointer;
-  transition: all .2s;
-  padding: 0;
+  transition: r .15s, fill .15s;
 }
-.koh-seat:hover { background: rgba(140,100,200,0.55); transform: scale(1.1); }
-.koh-seat.chosen {
-  background: linear-gradient(135deg, #ffd890, #c8a040);
-  border-color: #fff8e0;
-  box-shadow: 0 0 12px rgba(255,216,144,0.7);
-  transform: scale(1.15);
+.koh-seat-svg .koh-seat:hover { fill: #d8a0ff; r: 3.5; }
+.koh-seat-svg .koh-seat.chosen {
+  fill: #ffd890;
+  filter: drop-shadow(0 0 6px rgba(255,216,144,0.9));
+  r: 4;
+}
+.koh-seat-meta {
+  text-align: center;
+  font-family: 'Cormorant Garamond', 'Shippori Mincho', serif;
+  color: #c8a8e0;
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  margin: 4px 0 8px;
 }
 /* 音楽カード */
 .koh-music-list {
