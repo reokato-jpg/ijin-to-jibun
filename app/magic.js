@@ -5611,7 +5611,7 @@
     },
   };
 
-  async function openMythology() {
+  async function openMythology(autoTaleKey) {
     const ov = document.createElement('div');
     ov.className = 'tale-overlay';
     const ids = Object.keys(MYTH_STORIES);
@@ -5643,6 +5643,22 @@
           <span class="mmb-body">
             <span class="mmb-title">美 術 館</span>
             <span class="mmb-sub">神話を描いた名画を、ホールで鑑賞する</span>
+          </span>
+          <span class="mmb-arrow">›</span>
+        </button>
+        <button class="myth-museum-btn" id="mythNoahBtn" style="margin-top:10px;background:linear-gradient(135deg,#1a3050,#0a1830);">
+          <span class="mmb-icon">🚢</span>
+          <span class="mmb-body">
+            <span class="mmb-title">ノ ア の 箱 舟</span>
+            <span class="mmb-sub">大洪水と虹 — 3Dシーンで体験する</span>
+          </span>
+          <span class="mmb-arrow">›</span>
+        </button>
+        <button class="myth-museum-btn" id="mythAtlBtn" style="margin-top:10px;background:linear-gradient(135deg,#0a3a5a,#053848);">
+          <span class="mmb-icon">🔱</span>
+          <span class="mmb-body">
+            <span class="mmb-title">ア ト ラ ン テ ィ ス</span>
+            <span class="mmb-sub">海底に眠る、失われた古代都市</span>
           </span>
           <span class="mmb-arrow">›</span>
         </button>
@@ -5825,6 +5841,10 @@
     });
     const mmBtn = ov.querySelector('#mythMuseumBtn');
     if (mmBtn) mmBtn.addEventListener('click', () => openMythMuseum());
+    const noahBtn = ov.querySelector('#mythNoahBtn');
+    if (noahBtn) noahBtn.addEventListener('click', () => window.openNoahArk3D && window.openNoahArk3D());
+    const atlBtn = ov.querySelector('#mythAtlBtn');
+    if (atlBtn) atlBtn.addEventListener('click', () => window.openAtlantis3D && window.openAtlantis3D());
     ov.querySelector('#taleBack').addEventListener('click', () => {
       reader.classList.remove('show');
       home.classList.add('show');
@@ -5846,6 +5866,10 @@
     });
     // 初期: ホーム表示
     home.classList.add('show');
+    // 神殿などから talekey 指定で開かれた場合: 直接そのお話を開く
+    if (autoTaleKey && MYTH_STORIES[autoTaleKey]) {
+      setTimeout(() => openTale(autoTaleKey), 50);
+    }
   }
   window.openMythology = openMythology;
 
@@ -10420,7 +10444,7 @@
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.2));
     renderer.setSize(W(), H());
     if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.45; // 美術館もっと明るく
+    renderer.toneMappingExposure = 1.85; // 美術館もっと明るく（さらにUP）
     stage.appendChild(renderer.domElement);
     renderer.domElement.style.touchAction = 'none';
 
@@ -10640,10 +10664,15 @@
     }
     scene.add(chandelier);
 
-    // 環境光
-    scene.add(new THREE.AmbientLight(isWa ? 0x8a6038 : 0xc0a880, 1.0));
-    const hemi = new THREE.HemisphereLight(isWa ? 0xe8b860 : 0xf0d8a0, 0x4a3a28, 0.9);
+    // 環境光（美術館らしくしっかり明るく）
+    scene.add(new THREE.AmbientLight(isWa ? 0xb08858 : 0xe0c8a8, 1.6));
+    const hemi = new THREE.HemisphereLight(isWa ? 0xffd890 : 0xfff0c8, 0x6a5238, 1.4);
     scene.add(hemi);
+    // フィルライト（補助）
+    const fill1 = new THREE.DirectionalLight(0xfff0d8, 0.6);
+    fill1.position.set(8, 10, 8); scene.add(fill1);
+    const fill2 = new THREE.DirectionalLight(0xd8e8ff, 0.4);
+    fill2.position.set(-8, 8, -8); scene.add(fill2);
 
     // 和ホール: 壁の四隅に赤提灯を吊り下げる
     if (isWa) {
@@ -10874,6 +10903,114 @@
       scene.add(plaque);
     }
 
+    // === 🚪 入口・出口ゲート ===
+    // 入口は (radius, 0) 方向 → 大きなアーチ（鳥居 / マーブルポータル）
+    // 出口は (-radius, 0) 方向 → 「出口」表示。近づくと自動で閉じる
+    function buildPortal(label, dir, isExit) {
+      const g = new THREE.Group();
+      const cx = Math.cos(dir) * (radius + 0.3);
+      const cz = Math.sin(dir) * (radius + 0.3);
+      const portalH = wallHeight - 0.5;
+      const portalW = 3.4;
+      if (isWa) {
+        // 鳥居: 朱色の柱2本+笠木+貫
+        const colMat = new THREE.MeshStandardMaterial({ color: 0xc8351a, roughness: 0.55, emissive: 0x4a0808, emissiveIntensity: 0.15 });
+        for (const dx of [-1, 1]) {
+          const col = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.22, portalH, 14), colMat);
+          col.position.set(dx * portalW/2, portalH/2, 0);
+          g.add(col);
+        }
+        // 笠木
+        const kasagi = new THREE.Mesh(new THREE.BoxGeometry(portalW + 1.2, 0.3, 0.4), colMat);
+        kasagi.position.set(0, portalH - 0.05, 0);
+        g.add(kasagi);
+        // 島木
+        const shimagi = new THREE.Mesh(new THREE.BoxGeometry(portalW + 0.5, 0.18, 0.3), new THREE.MeshStandardMaterial({ color: 0x1a0a04, roughness: 0.7 }));
+        shimagi.position.set(0, portalH - 0.32, 0);
+        g.add(shimagi);
+        // 貫
+        const nuki = new THREE.Mesh(new THREE.BoxGeometry(portalW + 0.2, 0.14, 0.18), colMat);
+        nuki.position.set(0, portalH * 0.72, 0);
+        g.add(nuki);
+      } else {
+        // マーブルアーチ
+        const stoneMat = new THREE.MeshStandardMaterial({ color: 0xe8d8b8, roughness: 0.5, metalness: 0.05 });
+        for (const dx of [-1, 1]) {
+          const col = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.32, portalH, 18), stoneMat);
+          col.position.set(dx * portalW/2, portalH/2, 0);
+          g.add(col);
+          // 柱頭
+          const cap = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.22, 0.7), stoneMat);
+          cap.position.set(dx * portalW/2, portalH - 0.12, 0);
+          g.add(cap);
+        }
+        // 半円アーチ
+        const arch = new THREE.Mesh(new THREE.TorusGeometry(portalW/2 + 0.15, 0.22, 8, 24, Math.PI), stoneMat);
+        arch.position.set(0, portalH - 0.1, 0);
+        arch.rotation.z = 0;
+        g.add(arch);
+        // 楯石
+        const key = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.5, 0.45), new THREE.MeshStandardMaterial({ color: 0xc8a050, metalness: 0.8, roughness: 0.3 }));
+        key.position.set(0, portalH + 0.15, 0);
+        g.add(key);
+      }
+      // ラベル「入口」「出口」
+      const lc = document.createElement('canvas'); lc.width = 512; lc.height = 128;
+      const lg = lc.getContext('2d');
+      lg.fillStyle = isExit ? 'rgba(60,20,20,0.92)' : 'rgba(20,20,40,0.92)';
+      lg.fillRect(0, 0, 512, 128);
+      lg.strokeStyle = isExit ? '#ff8060' : '#c8a050';
+      lg.lineWidth = 4;
+      lg.strokeRect(4, 4, 504, 120);
+      lg.font = 'bold 64px serif';
+      lg.fillStyle = isExit ? '#ff9070' : '#ffd890';
+      lg.textAlign = 'center'; lg.textBaseline = 'middle';
+      lg.fillText(label, 256, 64);
+      const lt = new THREE.CanvasTexture(lc);
+      const lm = new THREE.MeshBasicMaterial({ map: lt, transparent: true });
+      const lp = new THREE.Mesh(new THREE.PlaneGeometry(2.0, 0.5), lm);
+      lp.position.set(0, portalH + 0.7, 0);
+      g.add(lp);
+      // 外の光（入口=日光、出口=夕焼け）
+      const outLight = new THREE.PointLight(isExit ? 0xff8050 : 0xffe8c0, 2.2, 14, 1.2);
+      outLight.position.set(0, portalH * 0.6, 0.3);
+      g.add(outLight);
+      // 外の景色（プレーン: 入口は星空 / 出口はオレンジの朝/夕）
+      const skyC = document.createElement('canvas'); skyC.width = 256; skyC.height = 256;
+      const sg = skyC.getContext('2d');
+      if (isExit) {
+        const grd = sg.createLinearGradient(0, 0, 0, 256);
+        grd.addColorStop(0, '#ff8a40'); grd.addColorStop(0.5, '#ffb070'); grd.addColorStop(1, '#ffe8b0');
+        sg.fillStyle = grd; sg.fillRect(0, 0, 256, 256);
+        // 太陽
+        sg.fillStyle = '#fffae0';
+        sg.beginPath(); sg.arc(128, 180, 30, 0, Math.PI*2); sg.fill();
+      } else {
+        const grd = sg.createLinearGradient(0, 0, 0, 256);
+        grd.addColorStop(0, '#0a0420'); grd.addColorStop(1, '#3a1a40');
+        sg.fillStyle = grd; sg.fillRect(0, 0, 256, 256);
+        sg.fillStyle = '#fff';
+        for (let i = 0; i < 60; i++) sg.fillRect(Math.random()*256, Math.random()*256, 1+Math.random()*1.5, 1+Math.random()*1.5);
+      }
+      const skyT = new THREE.CanvasTexture(skyC);
+      const skyP = new THREE.Mesh(new THREE.PlaneGeometry(portalW - 0.3, portalH - 0.5),
+        new THREE.MeshBasicMaterial({ map: skyT, side: THREE.DoubleSide }));
+      skyP.position.set(0, portalH/2 + 0.05, 0.05);
+      g.add(skyP);
+
+      g.position.set(cx, 0, cz);
+      g.lookAt(0, 0, 0);
+      g.rotateY(Math.PI); // 表が中心向き
+      scene.add(g);
+      return g;
+    }
+    const entrancePortal = buildPortal(isWa ? '入　口' : 'ENTRANCE', 0, false);
+    const exitPortal = buildPortal(isWa ? '出　口' : 'EXIT', Math.PI, true);
+    // 出口前のヒント
+    const exitX = Math.cos(Math.PI) * radius;
+    const exitZ = Math.sin(Math.PI) * radius;
+    let exitHintShown = false;
+
     // ★ URLをまとめて解決してから画像ロード開始
     resolveCommonsUrls(works.map(w => w.img)).then(resolved => {
       works.forEach(w => { w._resolvedImg = resolved.get(w.img) || w.img; });
@@ -11044,6 +11181,24 @@
       }
       // シャンデリアゆらぎ
       chandLight.intensity = 4.5 + Math.sin(Date.now() * 0.003) * 0.25;
+      // 🚪 出口接近検知 → ヒント or 自動退出
+      const distToExit = Math.hypot(camera.position.x - exitX, camera.position.z - exitZ);
+      if (distToExit < 3.0 && !exitHintShown) {
+        exitHintShown = true;
+        info.textContent = '🚪 もう一歩で 出口（美術館を出る）';
+        info.classList.add('show');
+        viewBtn.classList.remove('show');
+      }
+      if (distToExit < 1.6) {
+        // 美術館を出る
+        running = false;
+        ov.classList.remove('open');
+        setTimeout(() => ov.remove(), 500);
+        return;
+      }
+      if (distToExit > 4.0 && exitHintShown) {
+        exitHintShown = false;
+      }
       try {
         if (mComposer) mComposer.render();
         else renderer.render(scene, camera);
@@ -11491,58 +11646,206 @@
         scene.add(cloud);
       }
 
-      // 🌃 眼下の街（雲のさらに下に夜景）
-      // 街の地表
+      // 🌃 眼下の街（雲のさらに下に夜景）— リアル夜景バージョン
+      // 街の地表（深い藍 + 微かな道路グリッド）
+      const groundTex = (() => {
+        const c = document.createElement('canvas'); c.width = 1024; c.height = 1024;
+        const g = c.getContext('2d');
+        // ベース
+        const grd = g.createRadialGradient(512, 512, 100, 512, 512, 512);
+        grd.addColorStop(0, '#0a1028'); grd.addColorStop(0.7, '#040618'); grd.addColorStop(1, '#020308');
+        g.fillStyle = grd; g.fillRect(0, 0, 1024, 1024);
+        // 道路グリッド（夜の街灯っぽくほんのり光る）
+        g.strokeStyle = 'rgba(255,200,120,0.12)';
+        g.lineWidth = 1.5;
+        for (let i = 0; i <= 32; i++) {
+          g.beginPath(); g.moveTo(i * 32, 0); g.lineTo(i * 32, 1024); g.stroke();
+          g.beginPath(); g.moveTo(0, i * 32); g.lineTo(1024, i * 32); g.stroke();
+        }
+        // 大通り（主要道路）
+        g.strokeStyle = 'rgba(255,220,150,0.28)';
+        g.lineWidth = 4;
+        for (let i = 0; i < 4; i++) {
+          const p = 200 + i * 200;
+          g.beginPath(); g.moveTo(0, p); g.lineTo(1024, p); g.stroke();
+          g.beginPath(); g.moveTo(p, 0); g.lineTo(p, 1024); g.stroke();
+        }
+        // 街灯のドット
+        g.fillStyle = 'rgba(255,220,160,0.6)';
+        for (let i = 0; i < 600; i++) {
+          g.fillRect(Math.random()*1024, Math.random()*1024, 1.2, 1.2);
+        }
+        return new THREE.CanvasTexture(c);
+      })();
       const cityGround = new THREE.Mesh(
-        new THREE.CircleGeometry(180, 48),
-        new THREE.MeshBasicMaterial({ color: 0x080612, fog: false })
+        new THREE.CircleGeometry(200, 64),
+        new THREE.MeshBasicMaterial({ map: groundTex, fog: false })
       );
       cityGround.rotation.x = -Math.PI / 2;
       cityGround.position.y = -55;
       scene.add(cityGround);
 
-      // ビル群（InstancedMesh、200棟）
-      const bldGeo = new THREE.BoxGeometry(1, 1, 1);
-      const bldMat = new THREE.MeshBasicMaterial({ color: 0x0a0820, fog: false });
-      const BLD = 220;
-      const buildings = new THREE.InstancedMesh(bldGeo, bldMat, BLD);
+      // 🌊 港（片側に水面 — 月光が反射）
+      const harborTex = (() => {
+        const c = document.createElement('canvas'); c.width = 512; c.height = 512;
+        const g = c.getContext('2d');
+        const grd = g.createLinearGradient(0, 0, 0, 512);
+        grd.addColorStop(0, '#0a1830'); grd.addColorStop(1, '#02060e');
+        g.fillStyle = grd; g.fillRect(0, 0, 512, 512);
+        // 月の反射（縦の光の帯）
+        g.fillStyle = 'rgba(220,200,255,0.25)';
+        for (let i = 0; i < 30; i++) {
+          const y = 200 + i * 10;
+          g.fillRect(220, y, 80 + Math.sin(i)*30, 1.5);
+        }
+        // 漣
+        g.strokeStyle = 'rgba(180,200,255,0.15)'; g.lineWidth = 0.8;
+        for (let i = 0; i < 80; i++) {
+          g.beginPath();
+          g.moveTo(Math.random()*512, Math.random()*512);
+          g.lineTo(Math.random()*512, Math.random()*512);
+          g.stroke();
+        }
+        return new THREE.CanvasTexture(c);
+      })();
+      const harbor = new THREE.Mesh(
+        new THREE.PlaneGeometry(180, 100),
+        new THREE.MeshBasicMaterial({ map: harborTex, fog: false, transparent: true, opacity: 0.85 })
+      );
+      harbor.rotation.x = -Math.PI / 2;
+      harbor.position.set(140, -54.7, 0);
+      scene.add(harbor);
+
+      // 🏙 ビル群（複数ジオメトリ + 詳細）
+      const BLD_BOX = 180, BLD_CYL = 30, BLD_TOWER = 12;
+      const bldBoxGeo = new THREE.BoxGeometry(1, 1, 1);
+      const bldCylGeo = new THREE.CylinderGeometry(0.5, 0.5, 1, 12);
+      const bldMat = new THREE.MeshBasicMaterial({ color: 0x0a0a18, fog: false });
+      const buildingsBox = new THREE.InstancedMesh(bldBoxGeo, bldMat, BLD_BOX);
+      const buildingsCyl = new THREE.InstancedMesh(bldCylGeo, bldMat, BLD_CYL);
       const bdummy = new THREE.Object3D();
-      // 窓の発光用に別 InstancedMesh
+      // 窓の発光用 InstancedMesh
       const winGeo = new THREE.PlaneGeometry(0.85, 0.85);
-      const winMat = new THREE.MeshBasicMaterial({
-        color: 0xfff0a0, fog: false, transparent: true, opacity: 0.9,
-      });
-      const windows = new THREE.InstancedMesh(winGeo, winMat, BLD);
+      const winMat = new THREE.MeshBasicMaterial({ color: 0xffe8a0, fog: false, transparent: true, opacity: 0.85 });
+      const windows = new THREE.InstancedMesh(winGeo, winMat, BLD_BOX);
       const wdummy = new THREE.Object3D();
-      for (let i = 0; i < BLD; i++) {
-        // グリッド配置にややランダム
-        const a = (i / BLD) * Math.PI * 2 + Math.random() * 0.3;
-        const r = 30 + Math.random() * 130;
-        const x = Math.cos(a) * r + (Math.random() - 0.5) * 8;
-        const z = Math.sin(a) * r + (Math.random() - 0.5) * 8;
-        const w = 1.5 + Math.random() * 2.5;
-        const h = 4 + Math.random() * 16;
-        const d = 1.5 + Math.random() * 2.5;
+
+      function inHarbor(x, z) {
+        return x > 60 && Math.abs(z) < 50;
+      }
+
+      // 矩形ビル
+      for (let i = 0; i < BLD_BOX; i++) {
+        let x, z, tries = 0;
+        do {
+          const a = (i / BLD_BOX) * Math.PI * 2 + Math.random() * 0.5;
+          const r = 30 + Math.random() * 130;
+          x = Math.cos(a) * r + (Math.random() - 0.5) * 10;
+          z = Math.sin(a) * r + (Math.random() - 0.5) * 10;
+          tries++;
+        } while (inHarbor(x, z) && tries < 5);
+        const w = 1.5 + Math.random() * 2.8;
+        const h = 4 + Math.random() * 22;
+        const d = 1.5 + Math.random() * 2.8;
         bdummy.position.set(x, -55 + h / 2, z);
         bdummy.scale.set(w, h, d);
         bdummy.updateMatrix();
-        buildings.setMatrixAt(i, bdummy.matrix);
-        // 窓レイヤー（建物の正面を中心向きに）
-        const colors = [0xffec98, 0xf0d0a0, 0xc0d8ff, 0xffd060];
-        const col = new THREE.Color(colors[i % colors.length]);
+        buildingsBox.setMatrixAt(i, bdummy.matrix);
+        const winColors = [0xfff0a0, 0xffd070, 0xc8e0ff, 0xffe890, 0xf0d8b0];
+        const col = new THREE.Color(winColors[i % winColors.length]);
+        // ランダムに消灯（夜らしさ）
+        if (Math.random() < 0.18) col.multiplyScalar(0.0);
         windows.setColorAt(i, col);
         wdummy.position.set(x, -55 + h / 2, z);
         wdummy.lookAt(0, wdummy.position.y, 0);
-        // ビルサイズに合わせてスケール
         wdummy.scale.set(w * 0.95, h * 0.95, 1);
-        wdummy.translateZ(d / 2 + 0.01); // 正面に少しオフセット
+        wdummy.translateZ(d / 2 + 0.01);
         wdummy.updateMatrix();
         windows.setMatrixAt(i, wdummy.matrix);
       }
-      buildings.instanceMatrix.needsUpdate = true;
+      buildingsBox.instanceMatrix.needsUpdate = true;
       windows.instanceMatrix.needsUpdate = true;
       if (windows.instanceColor) windows.instanceColor.needsUpdate = true;
-      scene.add(buildings); scene.add(windows);
+      scene.add(buildingsBox); scene.add(windows);
+
+      // 円筒ビル（タワー風）
+      for (let i = 0; i < BLD_CYL; i++) {
+        let x, z, tries = 0;
+        do {
+          const a = Math.random() * Math.PI * 2;
+          const r = 35 + Math.random() * 110;
+          x = Math.cos(a) * r;
+          z = Math.sin(a) * r;
+          tries++;
+        } while (inHarbor(x, z) && tries < 5);
+        const rad = 1.0 + Math.random() * 1.6;
+        const h = 8 + Math.random() * 18;
+        bdummy.position.set(x, -55 + h / 2, z);
+        bdummy.scale.set(rad, h, rad);
+        bdummy.updateMatrix();
+        buildingsCyl.setMatrixAt(i, bdummy.matrix);
+      }
+      buildingsCyl.instanceMatrix.needsUpdate = true;
+      scene.add(buildingsCyl);
+
+      // 🗼 ランドマーク（高層タワー＋赤い航空灯）
+      for (let i = 0; i < BLD_TOWER; i++) {
+        const a = Math.random() * Math.PI * 2;
+        const r = 50 + Math.random() * 80;
+        const x = Math.cos(a) * r, z = Math.sin(a) * r;
+        if (inHarbor(x, z)) { i--; continue; }
+        const h = 28 + Math.random() * 16;
+        // 本体
+        const body = new THREE.Mesh(
+          new THREE.BoxGeometry(2.4, h, 2.4),
+          new THREE.MeshBasicMaterial({ color: 0x12122a, fog: false })
+        );
+        body.position.set(x, -55 + h/2, z);
+        scene.add(body);
+        // 窓
+        const wT = new THREE.Mesh(
+          new THREE.PlaneGeometry(2.2, h * 0.92),
+          new THREE.MeshBasicMaterial({ color: 0xffe890, fog: false, transparent: true, opacity: 0.85 })
+        );
+        wT.position.set(x, -55 + h/2, z);
+        wT.lookAt(0, wT.position.y, 0);
+        wT.translateZ(1.21);
+        scene.add(wT);
+        // アンテナ
+        const ant = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.05, 0.1, 4, 6),
+          new THREE.MeshBasicMaterial({ color: 0x303040, fog: false })
+        );
+        ant.position.set(x, -55 + h + 2, z);
+        scene.add(ant);
+        // 赤い航空灯
+        const beacon = new THREE.Mesh(
+          new THREE.SphereGeometry(0.18, 8, 6),
+          new THREE.MeshBasicMaterial({ color: 0xff2030, fog: false })
+        );
+        beacon.position.set(x, -55 + h + 4, z);
+        beacon.userData.isBeacon = true;
+        scene.add(beacon);
+      }
+
+      // 🌫 街全体に薄い光のカーペット（光害ヘイズ）
+      const hazeTex = (() => {
+        const c = document.createElement('canvas'); c.width = 256; c.height = 256;
+        const g = c.getContext('2d');
+        const grd = g.createRadialGradient(128, 128, 30, 128, 128, 128);
+        grd.addColorStop(0, 'rgba(255,200,140,0.35)');
+        grd.addColorStop(0.5, 'rgba(200,160,255,0.15)');
+        grd.addColorStop(1, 'rgba(80,60,120,0)');
+        g.fillStyle = grd; g.fillRect(0, 0, 256, 256);
+        return new THREE.CanvasTexture(c);
+      })();
+      const haze = new THREE.Mesh(
+        new THREE.CircleGeometry(180, 32),
+        new THREE.MeshBasicMaterial({ map: hazeTex, transparent: true, opacity: 0.6, depthWrite: false, fog: false, blending: THREE.AdditiveBlending })
+      );
+      haze.rotation.x = -Math.PI / 2;
+      haze.position.y = -45;
+      scene.add(haze);
 
       // 🚗 車のヘッドライト（Points で動く軌跡）
       // 同心円状の道路を周回するヘッドライト
@@ -11986,7 +12289,7 @@
         showGodModal(item, currentZone);
       } else if (item.type === 'tale') {
         // 神話を読む（既存 openMythology を呼んで該当章へ）
-        if (window.openMythology) window.openMythology();
+        if (window.openMythology) window.openMythology(item.talekey);
       }
     });
     backBtn.addEventListener('click', () => {
@@ -12000,13 +12303,12 @@
       const m = document.createElement('div');
       m.className = 'pantheon-modal';
       const accentHex = '#' + (god.accent || 0x9080d0).toString(16).padStart(6, '0');
-      const imgSrc = god.img
-        ? 'https://commons.wikimedia.org/wiki/' + god.img + '?width=600'
-        : '';
+      // プレースホルダSVG（即時表示）
+      const placeholderSVG = `data:image/svg+xml;utf8,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="240" height="320"><defs><linearGradient id="g" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#3a2050"/><stop offset="1" stop-color="#0a0418"/></linearGradient></defs><rect width="240" height="320" fill="url(#g)"/><text x="120" y="180" text-anchor="middle" fill="${accentHex}" font-size="72" font-family="serif">✦</text><text x="120" y="240" text-anchor="middle" fill="#fff" font-size="18" font-family="serif">${(god.name||'').slice(0,8)}</text></svg>`)}`;
       m.innerHTML = `
         <div class="pm-card">
           <button class="pm-close">×</button>
-          ${imgSrc ? `<img class="pm-img" src="${imgSrc}" alt="${god.name}" onerror="this.classList.add('failed');this.src='data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;240&quot; height=&quot;320&quot;><rect width=&quot;240&quot; height=&quot;320&quot; fill=&quot;%231a0a30&quot;/><text x=&quot;120&quot; y=&quot;180&quot; text-anchor=&quot;middle&quot; fill=&quot;${encodeURIComponent(accentHex)}&quot; font-size=&quot;72&quot; font-family=&quot;serif&quot;>✦</text></svg>'">` : ''}
+          <img class="pm-img" alt="${god.name}" src="${placeholderSVG}">
           <div class="pm-body">
             <div class="pm-sub">${god.sub || ''}</div>
             <div class="pm-name">${god.name || '神'}</div>
@@ -12020,6 +12322,21 @@
       const close = () => { m.classList.remove('show'); setTimeout(() => m.remove(), 300); };
       m.querySelector('.pm-close').addEventListener('click', close);
       m.addEventListener('click', e => { if (e.target === m) close(); });
+      // 🖼 Wikimedia API で正確なサムネイルURLを解決（CORS安全）
+      if (god.img) {
+        const imgEl = m.querySelector('.pm-img');
+        const filenameMatch = god.img.match(/Special:FilePath\/([^?]+)/);
+        if (filenameMatch) {
+          const filename = decodeURIComponent(filenameMatch[1]).replace(/_/g, ' ');
+          const api = `https://commons.wikimedia.org/w/api.php?action=query&format=json&prop=imageinfo&iiprop=url&iiurlwidth=600&titles=${encodeURIComponent('File:' + filename)}&origin=*`;
+          fetch(api).then(r => r.json()).then(d => {
+            const pages = d.query?.pages || {};
+            const p = Object.values(pages)[0];
+            const thumb = p?.imageinfo?.[0]?.thumburl;
+            if (thumb && imgEl) imgEl.src = thumb;
+          }).catch(() => {});
+        }
+      }
     }
 
     let running = true;
@@ -12213,6 +12530,13 @@
         }
         pa.needsUpdate = true;
       }
+      // 🚨 航空灯（赤beacon）の点滅
+      const beaconOn = Math.floor(t * 1.2) % 2 === 0;
+      scene.traverse(obj => {
+        if (obj.userData && obj.userData.isBeacon && obj.material) {
+          obj.material.color.setHex(beaconOn ? 0xff3040 : 0x401010);
+        }
+      });
       // ホログラム回転 + リング脈動 + ラベル ビルボード
       plinths.forEach(p => {
         p.userData.figure.lookAt(camera.position.x, p.userData.figure.getWorldPosition(new THREE.Vector3()).y, camera.position.z);
@@ -12264,6 +12588,520 @@
     });
   }
   window.openPantheon3D = openPantheon3D;
+
+  // ============================================================
+  // 🚢 ノアの箱舟 — 大洪水と虹の3Dシーン
+  // ============================================================
+  async function openNoahArk3D() {
+    if (!window.THREE) return;
+    const THREE = window.THREE;
+    if (window.THREE_READY) { try { await window.THREE_READY; } catch {} }
+    const ov = document.createElement('div');
+    ov.className = 'museum3d-overlay';
+    ov.innerHTML = `
+      <div class="museum3d-stage" id="noahStage"></div>
+      <button class="museum3d-close" aria-label="閉じる">×</button>
+      <div class="museum3d-title">ノ ア の 箱 舟</div>
+      <div class="museum3d-info show" id="noahInfo">大洪水。すべての高い山々が水に覆われた。</div>
+    `;
+    document.body.appendChild(ov);
+    requestAnimationFrame(() => ov.classList.add('open'));
+    const stage = ov.querySelector('#noahStage');
+    const info = ov.querySelector('#noahInfo');
+    const W = () => stage.clientWidth || window.innerWidth;
+    const H = () => stage.clientHeight || window.innerHeight;
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.2));
+    renderer.setSize(W(), H());
+    if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.2;
+    stage.appendChild(renderer.domElement);
+
+    const scene = new THREE.Scene();
+    // 灰色の嵐空 → 後で晴れる
+    scene.background = new THREE.Color(0x4a5060);
+    scene.fog = new THREE.FogExp2(0x6a7080, 0.012);
+
+    // 太陽（雲の合間にうっすら）
+    const sun = new THREE.DirectionalLight(0xfff0c0, 1.0);
+    sun.position.set(20, 30, 10);
+    scene.add(sun);
+    scene.add(new THREE.AmbientLight(0x6080a0, 0.7));
+    scene.add(new THREE.HemisphereLight(0xc8d8e8, 0x405060, 0.7));
+
+    // 水面（広大）
+    const seaTex = (() => {
+      const c = document.createElement('canvas'); c.width = 512; c.height = 512;
+      const g = c.getContext('2d');
+      const grd = g.createRadialGradient(256, 256, 50, 256, 256, 380);
+      grd.addColorStop(0, '#4a5870'); grd.addColorStop(1, '#1a2438');
+      g.fillStyle = grd; g.fillRect(0, 0, 512, 512);
+      g.strokeStyle = 'rgba(180,200,220,0.18)'; g.lineWidth = 1;
+      for (let i = 0; i < 200; i++) {
+        g.beginPath();
+        g.arc(Math.random()*512, Math.random()*512, 5+Math.random()*15, 0, Math.PI*2);
+        g.stroke();
+      }
+      return new THREE.CanvasTexture(c);
+    })();
+    const sea = new THREE.Mesh(
+      new THREE.PlaneGeometry(400, 400, 64, 64),
+      new THREE.MeshStandardMaterial({ map: seaTex, color: 0x405870, roughness: 0.3, metalness: 0.4 })
+    );
+    sea.rotation.x = -Math.PI / 2;
+    scene.add(sea);
+    const seaPos = sea.geometry.attributes.position;
+
+    // ⛵ 箱舟（木造の大きな箱型船）
+    const ark = new THREE.Group();
+    const hullMat = new THREE.MeshStandardMaterial({ color: 0x6a3818, roughness: 0.7 });
+    const hull = new THREE.Mesh(new THREE.BoxGeometry(8, 2.4, 3.6), hullMat);
+    hull.position.y = 0.6;
+    ark.add(hull);
+    // 船首/船尾を斜めにカットするため別の楔
+    const bow = new THREE.Mesh(new THREE.ConeGeometry(1.8, 2.5, 4), hullMat);
+    bow.rotation.z = Math.PI / 2;
+    bow.rotation.y = Math.PI / 4;
+    bow.position.set(4.8, 0.6, 0);
+    bow.scale.set(1, 1, 1.5);
+    ark.add(bow);
+    // 上の小屋
+    const cabin = new THREE.Mesh(
+      new THREE.BoxGeometry(6, 1.6, 2.8),
+      new THREE.MeshStandardMaterial({ color: 0x8a5028, roughness: 0.6 })
+    );
+    cabin.position.y = 2.6;
+    ark.add(cabin);
+    // 屋根（三角）
+    const roof = new THREE.Mesh(
+      new THREE.ConeGeometry(2.2, 1.0, 4),
+      new THREE.MeshStandardMaterial({ color: 0x4a2818, roughness: 0.8 })
+    );
+    roof.rotation.y = Math.PI / 4;
+    roof.scale.set(2.0, 1, 1.0);
+    roof.position.y = 3.9;
+    ark.add(roof);
+    // 窓（光る）
+    for (let i = -2; i <= 2; i++) {
+      const win = new THREE.Mesh(
+        new THREE.PlaneGeometry(0.4, 0.4),
+        new THREE.MeshBasicMaterial({ color: 0xffe890 })
+      );
+      win.position.set(i * 1.0, 2.6, 1.41);
+      ark.add(win);
+    }
+    scene.add(ark);
+
+    // 🐦 鳩（オリーブの枝を持って戻る）
+    const dove = new THREE.Group();
+    const doveBody = new THREE.Mesh(
+      new THREE.SphereGeometry(0.18, 12, 8),
+      new THREE.MeshStandardMaterial({ color: 0xf8f8ff, roughness: 0.4 })
+    );
+    doveBody.scale.set(1.4, 0.9, 0.9);
+    dove.add(doveBody);
+    const doveHead = new THREE.Mesh(
+      new THREE.SphereGeometry(0.1, 10, 8),
+      new THREE.MeshStandardMaterial({ color: 0xf8f8ff, roughness: 0.4 })
+    );
+    doveHead.position.set(0.22, 0.08, 0);
+    dove.add(doveHead);
+    // 翼（左右）
+    const wingMat = new THREE.MeshStandardMaterial({ color: 0xe8e8f0, roughness: 0.5, side: THREE.DoubleSide });
+    const wingL = new THREE.Mesh(new THREE.PlaneGeometry(0.4, 0.18), wingMat);
+    wingL.position.set(0, 0.05, 0.2); wingL.rotation.x = -0.4;
+    dove.add(wingL);
+    const wingR = wingL.clone();
+    wingR.position.z = -0.2; wingR.rotation.x = 0.4;
+    dove.add(wingR);
+    // オリーブの枝
+    const branch = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.012, 0.012, 0.3, 4),
+      new THREE.MeshStandardMaterial({ color: 0x4a5a20 })
+    );
+    branch.rotation.z = Math.PI / 2;
+    branch.position.set(0.4, 0.02, 0);
+    dove.add(branch);
+    [0.5, 0.55, 0.6].forEach((x, i) => {
+      const leaf = new THREE.Mesh(
+        new THREE.SphereGeometry(0.05, 6, 4),
+        new THREE.MeshStandardMaterial({ color: 0x6a8a30 })
+      );
+      leaf.scale.set(1.5, 0.5, 0.8);
+      leaf.position.set(x, i % 2 === 0 ? 0.06 : -0.06, 0);
+      dove.add(leaf);
+    });
+    dove.position.set(8, 5, 4);
+    scene.add(dove);
+
+    // 🌧 雨パーティクル
+    const RAIN = 800;
+    const rainGeo = new THREE.BufferGeometry();
+    const rainPos = new Float32Array(RAIN * 3);
+    for (let i = 0; i < RAIN; i++) {
+      rainPos[i*3] = (Math.random() - 0.5) * 80;
+      rainPos[i*3+1] = Math.random() * 30;
+      rainPos[i*3+2] = (Math.random() - 0.5) * 80;
+    }
+    rainGeo.setAttribute('position', new THREE.BufferAttribute(rainPos, 3));
+    const rain = new THREE.Points(rainGeo, new THREE.PointsMaterial({
+      color: 0xb0c0d8, size: 0.12, transparent: true, opacity: 0.6, fog: true,
+    }));
+    scene.add(rain);
+
+    // 🌈 虹（後半に出現）
+    const rainbow = new THREE.Group();
+    const COLS = ['#ff4040','#ff9020','#ffe040','#40c040','#40a0e8','#5060d0','#9040c0'];
+    COLS.forEach((c, i) => {
+      const r = 22 - i * 0.4;
+      const ring = new THREE.Mesh(
+        new THREE.TorusGeometry(r, 0.3, 6, 48, Math.PI),
+        new THREE.MeshBasicMaterial({ color: c, transparent: true, opacity: 0.55, fog: false })
+      );
+      ring.rotation.z = 0;
+      rainbow.add(ring);
+    });
+    rainbow.position.set(0, -2, -25);
+    rainbow.visible = false;
+    scene.add(rainbow);
+
+    // カメラ
+    const camera = new THREE.PerspectiveCamera(60, W()/H(), 0.1, 500);
+    camera.position.set(15, 5, 15);
+    camera.lookAt(0, 1, 0);
+
+    // 進行: 0-15s 嵐, 15-25s 鳩飛来, 25s+ 虹
+    const t0 = performance.now();
+    let running = true;
+    ov.querySelector('.museum3d-close').addEventListener('click', () => {
+      running = false;
+      ov.classList.remove('open');
+      setTimeout(() => ov.remove(), 500);
+    });
+    function animate() {
+      if (!running) return;
+      const t = (performance.now() - t0) / 1000;
+      // 波
+      for (let i = 0; i < seaPos.count; i++) {
+        const x = seaPos.getX(i), y = seaPos.getY(i);
+        seaPos.setZ(i, Math.sin(x * 0.15 + t * 0.8) * 0.4 + Math.cos(y * 0.2 + t * 0.6) * 0.3);
+      }
+      seaPos.needsUpdate = true;
+      sea.geometry.computeVertexNormals();
+      // 箱舟揺れ
+      ark.position.y = Math.sin(t * 0.5) * 0.3;
+      ark.rotation.z = Math.sin(t * 0.4) * 0.05;
+      ark.rotation.y = Math.cos(t * 0.3) * 0.04;
+      // 雨（落下＆ループ）
+      const rp = rain.geometry.attributes.position;
+      for (let i = 0; i < RAIN; i++) {
+        rp.array[i*3+1] -= 0.4;
+        if (rp.array[i*3+1] < 0) rp.array[i*3+1] = 25 + Math.random() * 5;
+      }
+      rp.needsUpdate = true;
+      // ステージ進行
+      if (t < 15) {
+        scene.background.lerp(new THREE.Color(0x3a4050), 0.005);
+        info.textContent = '雨は四十日四十夜降り続いた。';
+        rain.visible = true;
+        dove.visible = false;
+      } else if (t < 25) {
+        scene.background.lerp(new THREE.Color(0x6a8aa0), 0.01);
+        rain.material.opacity *= 0.95;
+        info.textContent = '鳩は、オリーブの若葉をくわえて戻ってきた。';
+        dove.visible = true;
+        // 鳩が箱舟に向かって飛ぶ
+        const dt = t - 15;
+        dove.position.set(8 - dt * 0.6, 5 - Math.sin(dt) * 0.5, 4 - dt * 0.3);
+        dove.rotation.y = Math.atan2(-0.6, -0.3) + Math.PI / 2;
+        // 翼ばたき
+        wingL.rotation.x = -0.4 + Math.sin(t * 12) * 0.6;
+        wingR.rotation.x = 0.4 - Math.sin(t * 12) * 0.6;
+      } else {
+        scene.background.lerp(new THREE.Color(0x80a8d0), 0.01);
+        rain.visible = false;
+        rainbow.visible = true;
+        info.textContent = '神は虹を雲の中に置き、もう滅ぼさないと約束した。';
+        // ゆっくりカメラを引いて虹を見せる
+        const dt = Math.min(1, (t - 25) / 8);
+        camera.position.x = 15 + dt * 5;
+        camera.position.y = 5 + dt * 3;
+        camera.lookAt(0, 4, -10);
+      }
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+    animate();
+    window.addEventListener('resize', () => {
+      renderer.setSize(W(), H());
+      camera.aspect = W()/H();
+      camera.updateProjectionMatrix();
+    });
+  }
+  window.openNoahArk3D = openNoahArk3D;
+
+  // ============================================================
+  // 🔱 アトランティス — 海底に沈んだ古代都市
+  // ============================================================
+  async function openAtlantis3D() {
+    if (!window.THREE) return;
+    const THREE = window.THREE;
+    if (window.THREE_READY) { try { await window.THREE_READY; } catch {} }
+    const ov = document.createElement('div');
+    ov.className = 'museum3d-overlay';
+    ov.innerHTML = `
+      <div class="museum3d-stage" id="atlStage"></div>
+      <button class="museum3d-close" aria-label="閉じる">×</button>
+      <div class="museum3d-title">ア ト ラ ン テ ィ ス</div>
+      <div class="museum3d-info show" id="atlInfo">海の底に眠る、失われた都市。</div>
+      <div class="museum3d-hint">ドラッグで見回す　／　ピンチでズーム</div>
+    `;
+    document.body.appendChild(ov);
+    requestAnimationFrame(() => ov.classList.add('open'));
+    const stage = ov.querySelector('#atlStage');
+    const W = () => stage.clientWidth || window.innerWidth;
+    const H = () => stage.clientHeight || window.innerHeight;
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.2));
+    renderer.setSize(W(), H());
+    if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.0;
+    stage.appendChild(renderer.domElement);
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0a3a5a);
+    scene.fog = new THREE.FogExp2(0x0a3a5a, 0.025);
+
+    // 海底の砂地
+    const sandTex = (() => {
+      const c = document.createElement('canvas'); c.width = 512; c.height = 512;
+      const g = c.getContext('2d');
+      g.fillStyle = '#3a5a78'; g.fillRect(0, 0, 512, 512);
+      for (let i = 0; i < 4000; i++) {
+        g.fillStyle = `rgba(${100+Math.random()*80},${130+Math.random()*60},${150+Math.random()*60},${0.3+Math.random()*0.5})`;
+        g.fillRect(Math.random()*512, Math.random()*512, 1+Math.random()*2, 1+Math.random()*2);
+      }
+      return new THREE.CanvasTexture(c);
+    })();
+    sandTex.wrapS = sandTex.wrapT = THREE.RepeatWrapping;
+    sandTex.repeat.set(8, 8);
+    const sand = new THREE.Mesh(
+      new THREE.PlaneGeometry(200, 200, 32, 32),
+      new THREE.MeshStandardMaterial({ map: sandTex, roughness: 0.95 })
+    );
+    sand.rotation.x = -Math.PI / 2;
+    // 起伏
+    const sandPos = sand.geometry.attributes.position;
+    for (let i = 0; i < sandPos.count; i++) {
+      sandPos.setZ(i, Math.sin(sandPos.getX(i) * 0.1) * 0.5 + Math.cos(sandPos.getY(i) * 0.15) * 0.4);
+    }
+    sand.geometry.computeVertexNormals();
+    scene.add(sand);
+
+    // 光（海面からのコースティクス）
+    scene.add(new THREE.AmbientLight(0x4080a0, 0.7));
+    const sunRay = new THREE.DirectionalLight(0xa0d8f0, 1.5);
+    sunRay.position.set(10, 30, 5);
+    scene.add(sunRay);
+
+    // 🏛 中央神殿（ポセイドン）
+    const temple = new THREE.Group();
+    // 段（基壇）
+    for (let i = 0; i < 3; i++) {
+      const step = new THREE.Mesh(
+        new THREE.BoxGeometry(14 - i*2, 0.5, 14 - i*2),
+        new THREE.MeshStandardMaterial({ color: 0xa0a8b0, roughness: 0.85 })
+      );
+      step.position.y = i * 0.5;
+      temple.add(step);
+    }
+    // 8柱の円柱（6本ファサード+2本サイド）
+    const colMat = new THREE.MeshStandardMaterial({ color: 0xc0c8d0, roughness: 0.7 });
+    const positions = [];
+    for (let i = 0; i < 8; i++) positions.push([-5 + (i%4)*3.3, 4, i < 4 ? -4 : 4]);
+    positions.push([-5, 4, 0], [5.6, 4, 0]);
+    positions.forEach(([x,y,z]) => {
+      const col = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.5, 7, 14), colMat);
+      col.position.set(x, y, z);
+      // 上下にキャピタル
+      const cap = new THREE.Mesh(new THREE.BoxGeometry(1.1, 0.3, 1.1), colMat);
+      cap.position.set(x, y + 3.5, z);
+      const base = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.3, 1.2), colMat);
+      base.position.set(x, y - 3.5, z);
+      temple.add(col); temple.add(cap); temple.add(base);
+    });
+    // 屋根（三角）
+    const pediment = new THREE.Mesh(
+      new THREE.ConeGeometry(8, 2.5, 4),
+      new THREE.MeshStandardMaterial({ color: 0xb0b8c0, roughness: 0.8 })
+    );
+    pediment.rotation.y = Math.PI / 4;
+    pediment.scale.set(1.8, 0.6, 0.7);
+    pediment.position.y = 9;
+    temple.add(pediment);
+    // 神殿全体を少し傾ける（沈んだ感）
+    temple.rotation.z = 0.08;
+    temple.rotation.x = -0.04;
+    temple.position.set(0, 0, 0);
+    scene.add(temple);
+
+    // 🔱 ポセイドンの三叉戟（中央に立つ）
+    const tridentMat = new THREE.MeshStandardMaterial({ color: 0xe0c870, metalness: 0.9, roughness: 0.3, emissive: 0x4a3a10, emissiveIntensity: 0.5 });
+    const shaft = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 6, 8), tridentMat);
+    shaft.position.set(0, 5, 0);
+    scene.add(shaft);
+    [-0.4, 0, 0.4].forEach(dx => {
+      const prong = new THREE.Mesh(new THREE.ConeGeometry(0.1, 1.2, 6), tridentMat);
+      prong.position.set(dx, 8.4, 0);
+      scene.add(prong);
+    });
+
+    // 周囲に倒れた柱（廃墟）
+    for (let i = 0; i < 12; i++) {
+      const a = (i / 12) * Math.PI * 2;
+      const r = 15 + Math.random() * 10;
+      const x = Math.cos(a) * r, z = Math.sin(a) * r;
+      const fallen = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.4, 0.45, 5 + Math.random() * 3, 12),
+        new THREE.MeshStandardMaterial({ color: 0x90a0a8, roughness: 0.85 })
+      );
+      fallen.position.set(x, 0.4, z);
+      fallen.rotation.z = Math.PI / 2 + (Math.random() - 0.5) * 0.4;
+      fallen.rotation.y = Math.random() * Math.PI;
+      scene.add(fallen);
+    }
+
+    // 🐠 魚の群れ（小さな三角の魚たち）
+    const FISH = 60;
+    const fishGeo = new THREE.ConeGeometry(0.15, 0.5, 4);
+    const fishMat = new THREE.MeshStandardMaterial({ color: 0xffd870, emissive: 0x4a3000, emissiveIntensity: 0.4 });
+    const fishMesh = new THREE.InstancedMesh(fishGeo, fishMat, FISH);
+    const fishData = [];
+    const fdummy = new THREE.Object3D();
+    for (let i = 0; i < FISH; i++) {
+      fishData.push({
+        a: Math.random() * Math.PI * 2,
+        r: 8 + Math.random() * 12,
+        y: 3 + Math.random() * 8,
+        speed: 0.3 + Math.random() * 0.4,
+        phase: Math.random() * Math.PI * 2,
+      });
+    }
+    scene.add(fishMesh);
+
+    // 海藻
+    for (let i = 0; i < 30; i++) {
+      const a = Math.random() * Math.PI * 2;
+      const r = 6 + Math.random() * 30;
+      const x = Math.cos(a) * r, z = Math.sin(a) * r;
+      const seaweed = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.04, 0.06, 2 + Math.random() * 2, 6),
+        new THREE.MeshStandardMaterial({ color: 0x40a050, roughness: 0.8 })
+      );
+      seaweed.position.set(x, 1.0, z);
+      scene.add(seaweed);
+    }
+
+    // 光の柱（コースティクス＝海面から差す光）
+    for (let i = 0; i < 6; i++) {
+      const beam = new THREE.Mesh(
+        new THREE.ConeGeometry(2, 25, 8, 1, true),
+        new THREE.MeshBasicMaterial({ color: 0x80c8ff, transparent: true, opacity: 0.08, side: THREE.DoubleSide, depthWrite: false, fog: false })
+      );
+      beam.position.set((Math.random() - 0.5) * 30, 12, (Math.random() - 0.5) * 30);
+      scene.add(beam);
+    }
+
+    // 気泡（空気のバブル）
+    const BUB = 100;
+    const bubGeo = new THREE.BufferGeometry();
+    const bubPos = new Float32Array(BUB * 3);
+    for (let i = 0; i < BUB; i++) {
+      bubPos[i*3] = (Math.random() - 0.5) * 60;
+      bubPos[i*3+1] = Math.random() * 20;
+      bubPos[i*3+2] = (Math.random() - 0.5) * 60;
+    }
+    bubGeo.setAttribute('position', new THREE.BufferAttribute(bubPos, 3));
+    const bubbles = new THREE.Points(bubGeo, new THREE.PointsMaterial({
+      color: 0xc0e0ff, size: 0.18, transparent: true, opacity: 0.7,
+    }));
+    scene.add(bubbles);
+
+    // カメラ + 視点
+    const camera = new THREE.PerspectiveCamera(70, W()/H(), 0.1, 200);
+    camera.position.set(20, 6, 20);
+    camera.lookAt(0, 4, 0);
+    let yaw = Math.PI / 4, pitch = -0.1, dist = 25;
+    let dragging = false, lx = 0, ly = 0;
+    renderer.domElement.addEventListener('pointerdown', e => { dragging = true; lx = e.clientX; ly = e.clientY; });
+    renderer.domElement.addEventListener('pointermove', e => {
+      if (!dragging) return;
+      yaw -= (e.clientX - lx) * 0.005;
+      pitch = Math.max(-1.0, Math.min(0.5, pitch - (e.clientY - ly) * 0.005));
+      lx = e.clientX; ly = e.clientY;
+    });
+    const stop = () => { dragging = false; };
+    renderer.domElement.addEventListener('pointerup', stop);
+    renderer.domElement.addEventListener('pointerleave', stop);
+    renderer.domElement.addEventListener('wheel', e => {
+      dist = Math.max(8, Math.min(60, dist + e.deltaY * 0.05));
+      e.preventDefault();
+    }, { passive: false });
+
+    let running = true;
+    ov.querySelector('.museum3d-close').addEventListener('click', () => {
+      running = false;
+      ov.classList.remove('open');
+      setTimeout(() => ov.remove(), 500);
+    });
+    const t0 = performance.now();
+    function animate() {
+      if (!running) return;
+      const t = (performance.now() - t0) / 1000;
+      // カメラ更新
+      camera.position.x = Math.cos(yaw) * Math.cos(pitch) * dist;
+      camera.position.z = Math.sin(yaw) * Math.cos(pitch) * dist;
+      camera.position.y = 5 + Math.sin(pitch) * dist * 0.7 + Math.sin(t * 0.4) * 0.2; // 上下に揺れる（水中感）
+      camera.lookAt(0, 4, 0);
+      // 魚の群れ
+      for (let i = 0; i < FISH; i++) {
+        const f = fishData[i];
+        f.a += 0.005 * f.speed;
+        const x = Math.cos(f.a) * f.r;
+        const z = Math.sin(f.a) * f.r;
+        const y = f.y + Math.sin(t * f.speed + f.phase) * 0.5;
+        fdummy.position.set(x, y, z);
+        fdummy.lookAt(Math.cos(f.a + 0.1) * f.r, y, Math.sin(f.a + 0.1) * f.r);
+        fdummy.rotation.x += Math.PI / 2;
+        fdummy.updateMatrix();
+        fishMesh.setMatrixAt(i, fdummy.matrix);
+      }
+      fishMesh.instanceMatrix.needsUpdate = true;
+      // 気泡が上昇
+      const bp = bubbles.geometry.attributes.position;
+      for (let i = 0; i < BUB; i++) {
+        bp.array[i*3+1] += 0.04;
+        bp.array[i*3] += Math.sin(t + i) * 0.005;
+        if (bp.array[i*3+1] > 22) {
+          bp.array[i*3+1] = 0;
+          bp.array[i*3] = (Math.random() - 0.5) * 60;
+          bp.array[i*3+2] = (Math.random() - 0.5) * 60;
+        }
+      }
+      bp.needsUpdate = true;
+      // 三叉戟がほのかに揺れる
+      shaft.rotation.z = Math.sin(t * 0.5) * 0.03;
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+    animate();
+    window.addEventListener('resize', () => {
+      renderer.setSize(W(), H());
+      camera.aspect = W()/H();
+      camera.updateProjectionMatrix();
+    });
+  }
+  window.openAtlantis3D = openAtlantis3D;
 
   // ============================================================
   // 📖 星の王子様 — 動くSVG絵本
@@ -12356,8 +13194,12 @@
             <path d="M -5 -8 L -7 8 L 7 8 L 5 -8 Z" fill="#3a6a90"/>
             <circle cx="0" cy="-15" r="7" fill="#f0c890"/>
             <path d="M -7 -20 Q -4 -25 0 -24 Q 4 -25 7 -20 Q 8 -16 6 -18 Q 0 -16 -6 -18 Q -8 -16 -7 -20 Z" fill="#ffd060"/>
-            <circle cx="-2.2" cy="-15" r="0.7" fill="#1a1a1a"/>
-            <circle cx="2.2" cy="-15" r="0.7" fill="#1a1a1a"/>
+            <ellipse cx="-2.2" cy="-15" rx="1.1" ry="1.3" fill="#fff"/>
+            <ellipse cx="2.2" cy="-15" rx="1.1" ry="1.3" fill="#fff"/>
+            <circle cx="-2.0" cy="-14.7" r="0.7" fill="#1a1a2a"/>
+            <circle cx="2.4" cy="-14.7" r="0.7" fill="#1a1a2a"/>
+            <circle cx="-1.7" cy="-15" r="0.2" fill="#fff"/>
+            <circle cx="2.7" cy="-15" r="0.2" fill="#fff"/>
             <path d="M -1.5 -12 Q 0 -11 1.5 -12" stroke="#8a5030" stroke-width="0.6" fill="none"/>
           </g>
         </g>
@@ -12382,8 +13224,12 @@
           <g><path d="M -8 -10 L -10 18 L 10 18 L 8 -10 Z" fill="#3a6a90"/>
           <circle cx="0" cy="-18" r="9" fill="#f0c890"/>
           <path d="M -10 -25 Q -5 -32 0 -30 Q 5 -32 10 -25 Q 11 -19 8 -22 Q 0 -19 -8 -22 Z" fill="#ffd060"/>
-          <circle cx="-3" cy="-18" r="0.9" fill="#1a1a1a"/>
-          <circle cx="3" cy="-18" r="0.9" fill="#1a1a1a"/>
+          <ellipse cx="-3" cy="-18" rx="1.4" ry="1.7" fill="#fff"/>
+          <ellipse cx="3" cy="-18" rx="1.4" ry="1.7" fill="#fff"/>
+          <circle cx="-2.7" cy="-17.7" r="0.9" fill="#1a1a2a"/>
+          <circle cx="3.3" cy="-17.7" r="0.9" fill="#1a1a2a"/>
+          <circle cx="-2.4" cy="-18.1" r="0.3" fill="#fff"/>
+          <circle cx="3.6" cy="-18.1" r="0.3" fill="#fff"/>
           <path d="M -2 -14 Q 0 -13 2 -14" stroke="#8a5030" stroke-width="0.8" fill="none"/>
           <path d="M -10 -8 L -2 -2 L 8 -10" stroke="#ffd060" stroke-width="2" fill="none"/></g>
         </g>
@@ -12406,8 +13252,12 @@
           <path d="M -10 -15 L -12 25 L 12 25 L 10 -15 Z" fill="#3a6a90"/>
           <circle cx="0" cy="-25" r="11" fill="#f0c890"/>
           <path d="M -12 -34 Q -8 -42 0 -40 Q 8 -42 12 -34 Q 14 -28 12 -30 Q 0 -27 -12 -30 Z" fill="#ffd060"/>
-          <circle cx="-4" cy="-24" r="1.1" fill="#1a1a1a"/>
-          <circle cx="4" cy="-24" r="1.1" fill="#1a1a1a"/>
+          <ellipse cx="-4" cy="-24" rx="1.7" ry="2.0" fill="#fff"/>
+          <ellipse cx="4" cy="-24" rx="1.7" ry="2.0" fill="#fff"/>
+          <circle cx="-3.6" cy="-23.7" r="1.1" fill="#1a1a2a"/>
+          <circle cx="4.4" cy="-23.7" r="1.1" fill="#1a1a2a"/>
+          <circle cx="-3.2" cy="-24.1" r="0.4" fill="#fff"/>
+          <circle cx="4.8" cy="-24.1" r="0.4" fill="#fff"/>
           <path d="M -3 -19 Q 0 -17 3 -19" stroke="#8a5030" stroke-width="0.9" fill="none"/>
           <!-- 黄色マフラー -->
           <path d="M -10 -15 Q 0 -10 10 -15 Q 14 -8 0 -6 Q -14 -8 -10 -15 Z" fill="#ffd060"/>
@@ -12465,8 +13315,12 @@
           <path d="M -8 -10 L -10 15 L 10 15 L 8 -10 Z" fill="#3a6a90"/>
           <circle cx="0" cy="-18" r="9" fill="#f0c890"/>
           <path d="M -10 -25 Q -5 -32 0 -30 Q 5 -32 10 -25 Z" fill="#ffd060"/>
-          <circle cx="-3" cy="-17" r="0.9" fill="#1a1a1a"/>
-          <circle cx="3" cy="-17" r="0.9" fill="#1a1a1a"/>
+          <ellipse cx="-3" cy="-17" rx="1.4" ry="1.7" fill="#fff"/>
+          <ellipse cx="3" cy="-17" rx="1.4" ry="1.7" fill="#fff"/>
+          <circle cx="-2.7" cy="-16.7" r="0.9" fill="#1a1a2a"/>
+          <circle cx="3.3" cy="-16.7" r="0.9" fill="#1a1a2a"/>
+          <circle cx="-2.4" cy="-17.1" r="0.3" fill="#fff"/>
+          <circle cx="3.6" cy="-17.1" r="0.3" fill="#fff"/>
           <path d="M -2 -13 Q 0 -12 2 -13" stroke="#8a5030" stroke-width="0.7" fill="none"/>
           <path d="M -8 -10 Q 0 -7 8 -10 Q 10 -5 0 -4 Q -10 -5 -8 -10 Z" fill="#ffd060"/>
         </g>
@@ -12554,8 +13408,11 @@
         <div class="lpbook-nav">
           <button class="lpbook-btn" id="lpPrev" ${idx === 0 ? 'disabled' : ''}>‹ 前のページ</button>
           <div class="lpbook-dots">${LITTLE_PRINCE_PAGES.map((_, i) => `<span class="lpbook-dot ${i === idx ? 'on' : ''}"></span>`).join('')}</div>
-          <button class="lpbook-btn" id="lpNext" ${idx === LITTLE_PRINCE_PAGES.length - 1 ? 'disabled' : ''}>${idx === LITTLE_PRINCE_PAGES.length - 1 ? 'おわり ★' : '次のページ ›'}</button>
+          <button class="lpbook-btn" id="lpNext">${idx === LITTLE_PRINCE_PAGES.length - 1 ? 'おわり ★' : '次のページ ›'}</button>
         </div>
+        ${idx === LITTLE_PRINCE_PAGES.length - 1 ? `
+          <button class="lpbook-btn lpbook-cosmos-btn" id="lpCosmos" style="margin-top:14px;background:linear-gradient(135deg,#3a2050,#1a0a30);color:#ffd0d8;border:1px solid rgba(255,180,180,0.4);">🌹 宇宙で王子様に会いに行く →</button>
+        ` : ''}
       `;
       ov.querySelector('.lpbook-close').addEventListener('click', () => {
         ov.classList.remove('open');
@@ -12571,6 +13428,23 @@
           setTimeout(() => ov.remove(), 400);
         }
       });
+      const cosmosBtn = ov.querySelector('#lpCosmos');
+      if (cosmosBtn) {
+        cosmosBtn.addEventListener('click', () => {
+          ov.classList.remove('open');
+          setTimeout(() => {
+            ov.remove();
+            // 宇宙を開いて王子様モードを起動
+            if (window.openCosmos) {
+              window.openCosmos();
+              setTimeout(() => {
+                const princeBtn = document.querySelector('[data-mode="prince"]');
+                if (princeBtn && !princeBtn.classList.contains('active')) princeBtn.click();
+              }, 800);
+            }
+          }, 400);
+        });
+      }
     }
     document.body.appendChild(ov);
     render();
