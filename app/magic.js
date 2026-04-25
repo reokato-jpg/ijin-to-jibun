@@ -16988,7 +16988,8 @@
       }
       return t;
     }
-    // 樹木80本を r=29.5〜38 にクラスタ配置
+    // 樹木80本を r=29.5〜38 にクラスタ配置（風揺れ用に refs 保持）
+    const swayTrees = [];
     {
       const treeCount = 80;
       for (let i = 0; i < treeCount; i++) {
@@ -17000,9 +17001,16 @@
         tree.rotation.y = Math.random() * Math.PI;
         const sc = 0.85 + Math.random() * 0.5;
         tree.scale.set(sc, sc, sc);
+        // 風で揺れる初期パラメータ
+        tree.userData.swayPhase = Math.random() * Math.PI * 2;
+        tree.userData.swayAmp = 0.025 + Math.random() * 0.03;
+        tree.userData.baseRotZ = 0;
+        tree.userData.baseRotX = 0;
         eden3D.add(tree);
+        swayTrees.push(tree);
       }
     }
+    eden3D.userData.swayTrees = swayTrees;
     // 野花（カラフル点）
     {
       const flGeo = new THREE.BufferGeometry();
@@ -17385,10 +17393,16 @@
         g.userData.phase = Math.random() * Math.PI * 2;
         g.userData.legH = spec.legH;
         g.userData.perched = !!spec.perched;
+        // 自由散歩用：初期ヘディング（接線方向）と速度ベクトル
+        g.userData.heading = a0 + Math.PI / 2 + (Math.random() - 0.5) * 0.6;
+        g.userData.headingTarget = g.userData.heading;
+        g.userData.headingNextChange = 0.5 + Math.random() * 2.5;
+        g.userData.headingTimer = 0;
         // 状態マシンの初期値
         g.userData.state = spec.perched ? 'idle' : 'walk';
         g.userData.stateDur = 2 + Math.random() * 3;
         g.userData.stateTime = 0;
+        g.userData.stateBlend = 1.0; // walk度：0=完全静止 1=完全歩行
         eden3D.add(g);
         walkAnimals.push(g);
       }
@@ -18304,42 +18318,92 @@
             }
           });
         }
-        // 低ポリ歩行3D動物 — 状態マシン（歩く/止まる/振り向く/草食む）
+        // 低ポリ歩行3D動物 — 自由散歩（heading-based）+ 群れ + 状態マシン
         if (ng.eden3D && ng.eden3D.userData.walkAnimals) {
-          ng.eden3D.userData.walkAnimals.forEach(a => {
+          const walkers = ng.eden3D.userData.walkAnimals;
+          walkers.forEach(a => {
             const u = a.userData;
             // 状態タイマー進行
             u.stateTime = (u.stateTime || 0) + dt;
-            // 状態の遷移（ランダム持続時間）
+            // 状態遷移
             if (u.stateTime > (u.stateDur || 0)) {
               const rnd = Math.random();
-              // 種別ごとの行動傾向
               const idleBias = u.species === 'rabbit' ? 0.55 : (u.species === 'lion' ? 0.40 : 0.30);
               if (u.state === 'walk') {
                 u.state = rnd < idleBias ? 'idle'
-                       : rnd < idleBias + 0.20 ? 'graze'   // 草食む
-                       : rnd < idleBias + 0.30 ? 'turn'    // 振り向く
+                       : rnd < idleBias + 0.20 ? 'graze'
                        : 'walk';
-              } else if (u.state === 'idle') {
-                u.state = rnd < 0.5 ? 'walk' : (rnd < 0.7 ? 'graze' : 'turn');
+              } else if (u.state === 'idle' || u.state === 'graze') {
+                u.state = rnd < 0.55 ? 'walk' : (rnd < 0.75 ? 'graze' : 'idle');
               } else { u.state = 'walk'; }
               u.stateTime = 0;
               u.stateDur = 1.6 + Math.random() * 3.5;
-              if (u.state === 'turn') u.turnTarget = u.angle + (Math.random() - 0.5) * Math.PI;
             }
-            // 状態に応じた動き（perched は移動しない）
-            const isMoving = (u.state === 'walk') && !u.perched;
+            // perched は強制 idle
             if (u.perched) u.state = 'idle';
-            if (isMoving) {
-              u.angle += u.speed * dt * 0.6;
-              a.position.x = Math.cos(u.angle) * u.radius;
-              a.position.z = Math.sin(u.angle) * u.radius;
-              a.rotation.y = -u.angle - Math.PI / 2;
-            } else if (u.state === 'turn') {
-              // ゆっくり目標角まで回転
-              const dir = (u.turnTarget - u.angle);
-              u.angle += dir * dt * 0.6;
-              a.rotation.y = -u.angle - Math.PI / 2;
+            // 状態ブレンド（クロスフェード：目標値へ滑らかに）
+            const wantWalk = (u.state === 'walk') ? 1.0 : 0.0;
+            u.stateBlend += (wantWalk - u.stateBlend) * Math.min(1, dt * 4);
+            const isMoving = u.stateBlend > 0.05 && !u.perched;
+
+            // ── ヘディング（蛇行） ──
+            if (!u.perched) {
+              u.headingTimer += dt;
+              if (u.headingTimer > u.headingNextChange) {
+                u.headingTimer = 0;
+                u.headingNextChange = 0.8 + Math.random() * 2.5;
+                // 新ヘディングは現在から ±60度
+                u.headingTarget = u.heading + (Math.random() - 0.5) * (Math.PI / 1.5);
+              }
+              // ── 群れ引力（同種で半径10以内に同種がいたら少しその方向へ） ──
+              let herdX = 0, herdZ = 0, herdN = 0;
+              walkers.forEach(b => {
+                if (b === a || b.userData.species !== u.species) return;
+                const ddx = b.position.x - a.position.x;
+                const ddz = b.position.z - a.position.z;
+                const dist = Math.hypot(ddx, ddz);
+                if (dist > 0.5 && dist < 10) {
+                  // 近すぎる(<2)場合は離れる、遠い場合は引き寄せる
+                  const w = dist < 2.5 ? -1 : (dist < 6 ? 0.3 : 0.6);
+                  herdX += (ddx / dist) * w;
+                  herdZ += (ddz / dist) * w;
+                  herdN++;
+                }
+              });
+              if (herdN > 0) {
+                const herdHeading = Math.atan2(herdZ, herdX);
+                // 群れ方向に headingTarget を 15% 寄せる
+                let dHerd = herdHeading - u.headingTarget;
+                while (dHerd > Math.PI) dHerd -= Math.PI * 2;
+                while (dHerd < -Math.PI) dHerd += Math.PI * 2;
+                u.headingTarget += dHerd * 0.15;
+              }
+              // ── ゾーン外に出そうなら中央へ向かわせる ──
+              const dist0 = Math.hypot(a.position.x, a.position.z);
+              if (dist0 > 38) {
+                const inwardHeading = Math.atan2(-a.position.z, -a.position.x);
+                u.headingTarget = inwardHeading + (Math.random() - 0.5) * 0.4;
+              } else if (dist0 < 29.5) {
+                const outwardHeading = Math.atan2(a.position.z, a.position.x);
+                u.headingTarget = outwardHeading + (Math.random() - 0.5) * 0.4;
+              }
+              // headingを target へスムーズに（角度ラップ対応）
+              let dh = u.headingTarget - u.heading;
+              while (dh > Math.PI) dh -= Math.PI * 2;
+              while (dh < -Math.PI) dh += Math.PI * 2;
+              u.heading += dh * Math.min(1, dt * 1.5);
+              // ── 移動 ──
+              if (isMoving) {
+                const v = u.speed * 12 * u.stateBlend; // m/s 換算
+                a.position.x += Math.cos(u.heading) * v * dt;
+                a.position.z += Math.sin(u.heading) * v * dt;
+              }
+              // 体の向きを heading に追従（背中が前を向く）
+              const targetYaw = -u.heading - Math.PI / 2;
+              let dyaw = targetYaw - a.rotation.y;
+              while (dyaw > Math.PI) dyaw -= Math.PI * 2;
+              while (dyaw < -Math.PI) dyaw += Math.PI * 2;
+              a.rotation.y += dyaw * Math.min(1, dt * 3);
             }
             // ウサギ：squash/stretch ジャンプ
             if (u.species === 'rabbit') {
@@ -18398,6 +18462,17 @@
                 u.eyes.forEach(eye => eye.scale.y = 1 - blink);
               }
             }
+          });
+        }
+        // 🌬 樹木が風で揺れる（風向はゆっくり変化）
+        if (ng.eden3D && ng.eden3D.userData.swayTrees) {
+          const windDir = Math.sin(t * 0.08) * 0.6;
+          const windPower = 0.7 + Math.sin(t * 0.3) * 0.3; // 0.4〜1.0
+          ng.eden3D.userData.swayTrees.forEach(tree => {
+            const u = tree.userData;
+            const swing = Math.sin(t * 1.6 + u.swayPhase) * u.swayAmp * windPower;
+            tree.rotation.z = u.baseRotZ + Math.cos(windDir) * swing;
+            tree.rotation.x = u.baseRotX + Math.sin(windDir) * swing;
           });
         }
       }
