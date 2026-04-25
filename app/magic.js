@@ -13519,7 +13519,7 @@
         // ringR=12 で台座が円形配置 → 入口は z=14 付近、奥（中心側）を見る
         camera.position.set(0, 1.6, 12); yaw = 0; // 神殿の前列柱間から、奥の主神を見る
       } else if (item.type === 'god') {
-        showGodModal(item, currentZone);
+        summonGod(item, currentZone); // 召喚演出 → モーダル
       } else if (item.type === 'tale') {
         if (window.openMythology) window.openMythology(item.talekey);
       } else if (item.type === 'memory') {
@@ -13541,6 +13541,49 @@
       buildScene('hub');
       camera.position.set(0, 1.6, 0); yaw = 0;
     });
+
+    // 🌟 召喚演出（グラブル風カットイン）→ その後 showGodModal
+    function summonGod(god, zoneKey) {
+      const accentHex = '#' + (god.accent || 0x9080d0).toString(16).padStart(6, '0');
+      const sm = document.createElement('div');
+      sm.className = 'god-summon';
+      sm.style.setProperty('--acc', accentHex);
+      sm.innerHTML = `
+        <div class="gs-flash"></div>
+        <div class="gs-circle">
+          <svg class="gs-circle-svg" viewBox="0 0 400 400">
+            <circle cx="200" cy="200" r="180" fill="none" stroke="${accentHex}" stroke-width="2" stroke-dasharray="6 4"/>
+            <circle cx="200" cy="200" r="150" fill="none" stroke="${accentHex}" stroke-width="1.5"/>
+            <circle cx="200" cy="200" r="120" fill="none" stroke="${accentHex}" stroke-width="1"/>
+            <g class="gs-pent" stroke="${accentHex}" stroke-width="2" fill="none">
+              ${[0,1,2,3,4].map(i => {
+                const a1 = (i/5)*Math.PI*2 - Math.PI/2;
+                const a2 = ((i+2)/5)*Math.PI*2 - Math.PI/2;
+                return `<line x1="${200+Math.cos(a1)*150}" y1="${200+Math.sin(a1)*150}" x2="${200+Math.cos(a2)*150}" y2="${200+Math.sin(a2)*150}"/>`;
+              }).join('')}
+            </g>
+            <text x="200" y="210" text-anchor="middle" font-size="72" fill="${accentHex}" font-family="serif">${PANTHEON_DATA[zoneKey]?.emoji || '✦'}</text>
+          </svg>
+        </div>
+        <div class="gs-particles">
+          ${Array.from({length: 24}).map((_, i) => `<div class="gs-particle" style="--i:${i};--acc:${accentHex}"></div>`).join('')}
+        </div>
+        <div class="gs-rays">
+          ${Array.from({length: 12}).map((_, i) => `<div class="gs-ray" style="--r:${i*30}deg;--acc:${accentHex}"></div>`).join('')}
+        </div>
+        <div class="gs-name-eyebrow">— S U M M O N —</div>
+        <div class="gs-name">${god.name}</div>
+        <div class="gs-sub">${god.sub || ''}</div>
+      `;
+      ov.appendChild(sm);
+      requestAnimationFrame(() => sm.classList.add('go'));
+      // 1.6秒後に通常モーダルへ
+      setTimeout(() => {
+        sm.classList.add('fade');
+        setTimeout(() => sm.remove(), 500);
+        showGodModal(god, zoneKey);
+      }, 1700);
+    }
 
     function showGodModal(god, zoneKey) {
       // god is the userData.item: { type:'god', name, sub, img, lore, accent }
@@ -15160,6 +15203,22 @@
       g.fillStyle = grd; g.fillRect(0, 0, 64, 64);
       return new THREE.CanvasTexture(c);
     })();
+    // ☀ 光柱テクスチャ（神々しい光・God Rays で共用、定義を先に）
+    const rayTex = (() => {
+      const c = document.createElement('canvas'); c.width = 128; c.height = 256;
+      const g = c.getContext('2d');
+      const grd = g.createLinearGradient(0, 0, 0, 256);
+      grd.addColorStop(0, 'rgba(255,238,180,0)');
+      grd.addColorStop(0.5, 'rgba(255,238,180,0.55)');
+      grd.addColorStop(1, 'rgba(255,238,180,0)');
+      g.fillStyle = grd;
+      g.fillRect(48, 0, 32, 256);
+      const grd2 = g.createRadialGradient(64, 128, 0, 64, 128, 64);
+      grd2.addColorStop(0, 'rgba(255,238,180,0.4)');
+      grd2.addColorStop(1, 'rgba(255,238,180,0)');
+      g.fillStyle = grd2; g.fillRect(0, 0, 128, 256);
+      return new THREE.CanvasTexture(c);
+    })();
 
     // 🪐 惑星（宇宙モードで表示）
     const planetGroup = new THREE.Group();
@@ -15353,22 +15412,6 @@
     scene.add(dust);
 
     // ☀ 偽 God Rays（ステージ上から差す光柱、Sprite + アディティブ）
-    const rayTex = (() => {
-      const c = document.createElement('canvas'); c.width = 128; c.height = 256;
-      const g = c.getContext('2d');
-      const grd = g.createLinearGradient(0, 0, 0, 256);
-      grd.addColorStop(0, 'rgba(255,238,180,0)');
-      grd.addColorStop(0.5, 'rgba(255,238,180,0.55)');
-      grd.addColorStop(1, 'rgba(255,238,180,0)');
-      g.fillStyle = grd;
-      // 中央に集中
-      g.fillRect(48, 0, 32, 256);
-      const grd2 = g.createRadialGradient(64, 128, 0, 64, 128, 64);
-      grd2.addColorStop(0, 'rgba(255,238,180,0.4)');
-      grd2.addColorStop(1, 'rgba(255,238,180,0)');
-      g.fillStyle = grd2; g.fillRect(0, 0, 128, 256);
-      return new THREE.CanvasTexture(c);
-    })();
     const godRay = new THREE.Sprite(new THREE.SpriteMaterial({
       map: rayTex, transparent: true, opacity: 0.55,
       depthWrite: false, blending: THREE.AdditiveBlending, fog: false,

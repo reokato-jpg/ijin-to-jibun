@@ -8555,6 +8555,159 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   letter-spacing: 0.05em;
 }
 
+/* 🌟 神様召喚演出（グラブル風カットイン） */
+.god-summon {
+  position: absolute; inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  overflow: hidden;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.0), rgba(0,0,0,0.7));
+  opacity: 0;
+  transition: opacity .35s;
+}
+.god-summon.go { opacity: 1; }
+.god-summon.fade { opacity: 0; }
+
+/* フラッシュ（白 → 透明） */
+.gs-flash {
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at center, var(--acc, #ffd890) 0%, rgba(255,255,255,0.4) 30%, transparent 60%);
+  opacity: 0;
+  animation: gsFlash 1.4s ease-out forwards;
+}
+@keyframes gsFlash {
+  0% { opacity: 0; transform: scale(0.5); }
+  10% { opacity: 1; transform: scale(1); }
+  30% { opacity: 0.7; }
+  100% { opacity: 0; transform: scale(2.2); }
+}
+
+/* 魔法陣 */
+.gs-circle {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 380px; height: 380px;
+  transform: translate(-50%, -50%) scale(0.2);
+  opacity: 0;
+  animation: gsCircle 1.6s cubic-bezier(.2,.9,.3,1.1) forwards;
+}
+.gs-circle-svg {
+  width: 100%; height: 100%;
+  filter: drop-shadow(0 0 18px var(--acc, #ffd890));
+}
+.gs-circle-svg .gs-pent {
+  transform-origin: 200px 200px;
+  animation: gsPentSpin 6s linear infinite;
+}
+@keyframes gsCircle {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.2) rotate(-180deg); }
+  40% { opacity: 1; transform: translate(-50%, -50%) scale(1.1) rotate(0deg); }
+  60% { transform: translate(-50%, -50%) scale(1) rotate(20deg); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(360deg); }
+}
+@keyframes gsPentSpin { to { transform: rotate(360deg); } }
+@media (max-width: 600px) {
+  .gs-circle { width: 280px; height: 280px; }
+}
+
+/* 粒子（24個、放射状に飛ぶ） */
+.gs-particles {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 0; height: 0;
+}
+.gs-particle {
+  position: absolute;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--acc, #ffd890);
+  box-shadow: 0 0 12px var(--acc, #ffd890);
+  opacity: 0;
+  animation: gsParticle 1.4s cubic-bezier(.4,.0,.2,1) forwards;
+  animation-delay: calc(var(--i) * 0.02s);
+  --angle: calc(var(--i) * 15deg);
+}
+@keyframes gsParticle {
+  0% { opacity: 0; transform: rotate(var(--angle)) translateX(0) scale(0.4); }
+  10% { opacity: 1; transform: rotate(var(--angle)) translateX(20px) scale(1); }
+  100% { opacity: 0; transform: rotate(var(--angle)) translateX(420px) scale(0.5); }
+}
+
+/* 放射光線 */
+.gs-rays {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 0; height: 0;
+  opacity: 0;
+  animation: gsRays 1.6s ease-out forwards;
+}
+@keyframes gsRays {
+  0% { opacity: 0; transform: rotate(0deg); }
+  30% { opacity: 0.8; }
+  100% { opacity: 0.3; transform: rotate(360deg); }
+}
+.gs-ray {
+  position: absolute;
+  top: -1px; left: 0;
+  width: 2px; height: 60vmax;
+  background: linear-gradient(to bottom, var(--acc, #ffd890), transparent);
+  transform: translate(-50%, 0) rotate(var(--r));
+  transform-origin: 0 0;
+  opacity: 0.6;
+}
+
+/* 名前のドラマチック表示 */
+.gs-name-eyebrow {
+  position: absolute;
+  top: 18%; left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px; letter-spacing: 0.6em;
+  color: var(--acc, #ffd890);
+  text-shadow: 0 0 12px var(--acc, #ffd890);
+  opacity: 0;
+  animation: gsNameEye 1.6s ease-out 0.2s forwards;
+}
+@keyframes gsNameEye {
+  0% { opacity: 0; letter-spacing: 1em; }
+  40% { opacity: 1; letter-spacing: 0.6em; }
+  100% { opacity: 1; }
+}
+.gs-name {
+  position: absolute;
+  bottom: 20%; left: 50%;
+  transform: translateX(-50%) scale(0.5);
+  font-family: 'Shippori Mincho', serif;
+  font-size: 64px; font-weight: 700;
+  letter-spacing: 0.2em;
+  color: #fff8e0;
+  text-shadow: 0 0 28px var(--acc, #ffd890), 0 0 50px var(--acc, #ffd890);
+  opacity: 0;
+  white-space: nowrap;
+  animation: gsName 1.4s cubic-bezier(.2,.9,.3,1.1) 0.4s forwards;
+}
+@keyframes gsName {
+  0% { opacity: 0; transform: translateX(-50%) scale(0.5) translateY(20px); filter: blur(12px); }
+  40% { opacity: 1; transform: translateX(-50%) scale(1.05) translateY(0); filter: blur(0); }
+  60% { transform: translateX(-50%) scale(1) translateY(0); }
+  100% { opacity: 1; transform: translateX(-50%) scale(1) translateY(0); filter: blur(0); }
+}
+.gs-sub {
+  position: absolute;
+  bottom: 14%; left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Cormorant Garamond', 'Shippori Mincho', serif;
+  font-size: 18px; letter-spacing: 0.3em;
+  color: rgba(255,248,224,0.85);
+  font-style: italic;
+  opacity: 0;
+  animation: gsNameEye 1.0s ease-out 0.9s forwards;
+}
+@media (max-width: 600px) {
+  .gs-name { font-size: 36px; bottom: 22%; }
+  .gs-sub { font-size: 13px; bottom: 16%; }
+}
+
 /* 🥽 AIグラス風 HUD */
 .koh-hud {
   position: absolute; inset: 0;
