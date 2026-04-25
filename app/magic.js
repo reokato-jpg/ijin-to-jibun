@@ -14712,14 +14712,64 @@
       head.scale.set(0.95, 1.1, 0.95);
       head.position.y = sitting ? 1.18 : 1.65;
       g.add(head);
+      g.userData.head = head;
+      // 顔のパーツ — リアル感の核心
+      const eyeWhiteMat = new THREE.MeshStandardMaterial({ color: 0xfafaf2, roughness: 0.3 });
+      const irisMat = new THREE.MeshStandardMaterial({ color: 0x3a2818, roughness: 0.4 });
+      const browMat = new THREE.MeshStandardMaterial({ color: hairColor, roughness: 0.7 });
+      const lipMat = new THREE.MeshStandardMaterial({ color: 0xb86858, roughness: 0.5 });
+      const skinDark = new THREE.MeshStandardMaterial({ color: skinColor, roughness: 0.6 });
+      // 目（白目＋黒目）
+      [-0.045, 0.045].forEach(ex => {
+        const eyeW = new THREE.Mesh(new THREE.SphereGeometry(0.018, 8, 6), eyeWhiteMat);
+        eyeW.position.set(ex, head.position.y + 0.01, 0.10);
+        eyeW.scale.set(1.2, 0.9, 0.6);
+        g.add(eyeW);
+        const iris = new THREE.Mesh(new THREE.SphereGeometry(0.010, 8, 6), irisMat);
+        iris.position.set(ex, head.position.y + 0.01, 0.115);
+        g.add(iris);
+      });
+      // 眉
+      [-0.045, 0.045].forEach(ex => {
+        const brow = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.008, 0.012), browMat);
+        brow.position.set(ex, head.position.y + 0.045, 0.105);
+        g.add(brow);
+      });
+      // 鼻
+      const nose = new THREE.Mesh(new THREE.ConeGeometry(0.018, 0.05, 4), skinDark);
+      nose.position.set(0, head.position.y - 0.015, 0.115);
+      nose.rotation.x = Math.PI / 2;
+      g.add(nose);
+      // 口
+      const mouth = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.008, 0.01), lipMat);
+      mouth.position.set(0, head.position.y - 0.06, 0.108);
+      g.add(mouth);
+      // 耳
+      [-0.10, 0.10].forEach(ex => {
+        const ear = new THREE.Mesh(new THREE.SphereGeometry(0.022, 6, 5), skinDark);
+        ear.position.set(ex, head.position.y - 0.005, -0.005);
+        ear.scale.set(0.5, 1.2, 0.8);
+        g.add(ear);
+      });
       // 髪（後頭部の半球）
       const hair = new THREE.Mesh(
-        new THREE.SphereGeometry(0.13, 14, 10, 0, Math.PI * 2, 0, Math.PI * 0.7),
+        new THREE.SphereGeometry(0.13, 16, 12, 0, Math.PI * 2, 0, Math.PI * 0.7),
         new THREE.MeshStandardMaterial({ color: hairColor, roughness: 0.55 })
       );
       hair.position.y = head.position.y + 0.025;
       hair.position.z = -0.015;
       g.add(hair);
+      // 前髪（額側）
+      if (Math.random() > 0.3) {
+        const bangs = new THREE.Mesh(
+          new THREE.SphereGeometry(0.115, 12, 8, 0, Math.PI * 2, 0, Math.PI * 0.45),
+          new THREE.MeshStandardMaterial({ color: hairColor, roughness: 0.55 })
+        );
+        bangs.position.y = head.position.y + 0.06;
+        bangs.position.z = 0.02;
+        bangs.rotation.x = -0.3;
+        g.add(bangs);
+      }
       // 首
       const neck = new THREE.Mesh(
         new THREE.CylinderGeometry(0.045, 0.05, 0.1, 8),
@@ -14758,6 +14808,18 @@
         armR.rotation.z = -0.2;
       }
       g.add(armL); g.add(armR);
+      // 手（球で簡易、シャツの袖から出る）
+      const handMat = new THREE.MeshStandardMaterial({ color: skinColor, roughness: 0.6 });
+      const handL = new THREE.Mesh(new THREE.SphereGeometry(0.045, 8, 6), handMat);
+      const handR = new THREE.Mesh(new THREE.SphereGeometry(0.045, 8, 6), handMat);
+      // 腕の先端に配置（簡易：腕の position から先方向に）
+      handL.position.copy(armL.position);
+      handL.position.z += sitting ? 0.18 : 0;
+      handL.position.y -= sitting ? 0.10 : 0.18;
+      handR.position.copy(armR.position);
+      handR.position.z += sitting ? 0.18 : 0;
+      handR.position.y -= sitting ? 0.10 : 0.18;
+      g.add(handL); g.add(handR);
       // 太もも+ふくらはぎ（座っている）
       const legMat = new THREE.MeshStandardMaterial({ color: 0x14101a, roughness: 0.7 });
       const legL = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.07, 0.34, 8), legMat);
@@ -15151,35 +15213,35 @@
       const a = -Math.PI/3 + (i / 5) * (Math.PI/3);
       const x = Math.sin(a) * 3.2 - 1.5, z = Math.cos(a) * 3.2 - 2;
       const angToCenter = Math.atan2(-x, -z + 1.5);
-      orchestra.push(makeSilhouettePlayer(x, z, 'violin'));
+      orchestra.push(makePlayer(x, z, 'violin'));
       scene.add(makeMusicStand(x + Math.cos(angToCenter)*0.5, z + Math.sin(angToCenter)*0.5, angToCenter));
     }
     // 第2バイオリン
     for (let i = 0; i < 5; i++) {
       const a = -Math.PI/4 + (i / 4) * (Math.PI/3);
       const x = Math.sin(a) * 3.2 + 1.5, z = Math.cos(a) * 3.2 - 2;
-      orchestra.push(makeSilhouettePlayer(x, z, 'violin'));
+      orchestra.push(makePlayer(x, z, 'violin'));
     }
     // ヴィオラ（中央後ろ）
     for (let i = 0; i < 4; i++) {
-      orchestra.push(makeSilhouettePlayer(-1.5 + i, -3.5, 'violin'));
+      orchestra.push(makePlayer(-1.5 + i, -3.5, 'violin'));
     }
     // チェロ
     for (let i = 0; i < 4; i++) {
       const a = -Math.PI/4 + (i / 3) * (Math.PI/3);
-      orchestra.push(makeSilhouettePlayer(Math.sin(a) * 4.5 - 2, Math.cos(a) * 4.5 - 3.5, 'cello'));
+      orchestra.push(makePlayer(Math.sin(a) * 4.5 - 2, Math.cos(a) * 4.5 - 3.5, 'cello'));
     }
     // コントラバス
     for (let i = 0; i < 3; i++) {
-      orchestra.push(makeSilhouettePlayer(-2 + i * 2, -5, 'cello'));
+      orchestra.push(makePlayer(-2 + i * 2, -5, 'cello'));
     }
     // 木管
     for (let i = 0; i < 3; i++) {
-      orchestra.push(makeSilhouettePlayer(3 + i * 0.8, -3.5, 'flute'));
+      orchestra.push(makePlayer(3 + i * 0.8, -3.5, 'flute'));
     }
     // ホルン
     for (let i = 0; i < 2; i++) {
-      orchestra.push(makeSilhouettePlayer(-1 + i * 2, -4.5, 'flute'));
+      orchestra.push(makePlayer(-1 + i * 2, -4.5, 'flute'));
     }
     scene.userData.orchestra = orchestra;
     // 🎹 Bach等のソロピアノ曲ではオーケストラと指揮者を非表示（ピアニストだけ）
@@ -16746,14 +16808,16 @@
       _euler.set(pitch, yaw, 0);
       camera.quaternion.setFromEuler(_euler);
 
-      // 指揮者のタクト（音楽連動版が下にある）
-      // オーケストラ シルエット ビルボード化（カメラ向きに自動回転）
+      // オーケストラ 3D奏者の演奏中の微動（呼吸＋音楽に合わせて体を揺らす）
       scene.userData.orchestra.forEach((p, i) => {
-        if (p.billboard) {
-          p.billboard.lookAt(camera.position.x, p.billboard.position.y, camera.position.z);
-          // 微妙な体の揺れ（演奏中らしさ）
-          p.billboard.position.y = 0.9 + Math.sin(t * 1.5 + i * 0.5) * 0.015;
-          p.billboard.rotation.z = Math.sin(t * 0.8 + i * 0.4) * 0.02;
+        if (p && p.person) {
+          // 上体の前後揺れ（演奏中らしさ）
+          p.person.rotation.x = Math.sin(t * 1.5 + i * 0.5) * 0.04 + bassS * 0.02;
+          p.person.rotation.z = Math.sin(t * 0.8 + i * 0.4) * 0.025;
+          // 頭の上下（楽器に集中している様子）
+          if (p.head) {
+            p.head.rotation.x = -0.15 + Math.sin(t * 1.2 + i * 0.3) * 0.05;
+          }
         }
       });
       // 観客の微動 — InstancedMesh では省略（1000人だと毎フレ更新は重い）
