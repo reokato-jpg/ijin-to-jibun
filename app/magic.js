@@ -14405,31 +14405,32 @@
             float band = smoothstep(0.45, 0.55, uv.y) * smoothstep(0.55, 0.45, uv.y);
             col += uMood * band * 0.5;
           }
-          // ━━━ 自然モード（朝/夕方の空、雲）━━━
+          // ━━━ 自然モード（夕方の柔らかい空、控えめに）━━━
           else if (uMode > 2.5 && uMode < 3.5) {
-            // 上は青空、下は地平線の暖色
-            vec3 skyTop = vec3(0.35, 0.55, 0.85);
-            vec3 skyHorizon = vec3(0.95, 0.65, 0.45);
-            col = mix(skyHorizon, skyTop, smoothstep(0.5, 0.85, uv.y));
-            // 雲（fBm）
+            vec3 skyTop = vec3(0.18, 0.30, 0.50);   // 落ち着いた青
+            vec3 skyHorizon = vec3(0.55, 0.40, 0.32); // 暗めの地平線
+            col = mix(skyHorizon, skyTop, smoothstep(0.4, 0.85, uv.y));
+            // 雲（控えめ）
             float cloud = fbm(uv * 5.0 + vec2(uTime * 0.025, 0.0));
-            cloud = smoothstep(0.45, 0.7, cloud);
-            col = mix(col, vec3(1.0, 0.98, 0.92), cloud * 0.7);
-            // 太陽
-            float sun = smoothstep(0.04, 0.0, distance(uv, vec2(0.7, 0.62)));
-            col += vec3(1.0, 0.95, 0.7) * sun * 1.5;
+            cloud = smoothstep(0.5, 0.75, cloud);
+            col = mix(col, vec3(0.55, 0.50, 0.45), cloud * 0.4);
+            // 月（太陽じゃなく月、優しい）
+            float moon = smoothstep(0.025, 0.0, distance(uv, vec2(0.72, 0.66)));
+            col += vec3(0.85, 0.85, 0.7) * moon * 0.5;
+            col *= 0.8;
           }
-          // ━━━ 神話モード（金色の天空 + 雲）━━━
+          // ━━━ 神話モード（深い夕焼け、神々しさは控えめに）━━━
           else if (uMode > 3.5) {
-            vec3 divineTop = vec3(0.8, 0.55, 0.2);
-            vec3 divineLow = vec3(0.5, 0.2, 0.3);
+            vec3 divineTop = vec3(0.30, 0.18, 0.12);   // 深い茶
+            vec3 divineLow = vec3(0.45, 0.20, 0.15);   // 鈍い赤褐色
             col = mix(divineLow, divineTop, smoothstep(0.3, 0.85, uv.y));
-            // 神々しい雲
+            // 神々雲（雲は薄め）
             float cloud = fbm(uv * 4.0 + vec2(uTime * 0.015, 0.0));
-            col = mix(col, vec3(1.0, 0.92, 0.7), cloud * 0.55);
-            // 光線
-            float ray = pow(max(0.0, sin(atan(uv.y - 0.5, uv.x - 0.5) * 8.0 + uTime * 0.3)), 8.0);
-            col += vec3(1.0, 0.85, 0.5) * ray * 0.3;
+            col = mix(col, vec3(0.55, 0.40, 0.25), cloud * 0.3);
+            // 光線（控えめ）
+            float ray = pow(max(0.0, sin(atan(uv.y - 0.5, uv.x - 0.5) * 6.0 + uTime * 0.2)), 12.0);
+            col += vec3(0.9, 0.7, 0.4) * ray * 0.12;
+            col *= 0.7;
           }
           gl_FragColor = vec4(col, 1.0);
         }
@@ -14841,12 +14842,20 @@
     }
     scene.userData.orchestra = orchestra;
 
-    // ステージライト（暖色のダウンライト）
-    const stageLight = new THREE.SpotLight(0xfff0c0, 4.5, 22, Math.PI/3.5, 0.5, 1.5);
-    stageLight.position.set(0, 14, 0);
-    stageLight.target.position.set(0, 0, 0);
+    // ステージライト（複数の柔らかいダウンライト + 周囲光で自然に）
+    const stageLight = new THREE.SpotLight(0xfff0d0, 2.5, 18, Math.PI/4, 0.7, 1.3);
+    stageLight.position.set(0, 12, 0);
+    stageLight.target.position.set(0, 0.5, 0);
     scene.add(stageLight);
     scene.add(stageLight.target);
+    // ステージ周囲の補助スポット（影を和らげる、3灯）
+    [[-3, 4], [3, 4], [0, -3]].forEach(([sx, sz]) => {
+      const fill = new THREE.SpotLight(0xfff0c0, 1.0, 12, Math.PI/3, 0.7, 1.5);
+      fill.position.set(sx, 8, sz);
+      fill.target.position.set(0, 0.5, 0);
+      scene.add(fill);
+      scene.add(fill.target);
+    });
     // 中央のシャンデリア光
     const centerGlow = new THREE.PointLight(moodColor, 1.2, 40, 1.5);
     centerGlow.position.set(0, 8, 0);
@@ -15026,6 +15035,7 @@
       if (scene.userData.planetGroup) scene.userData.planetGroup.visible = m.planets;
       if (scene.userData.natureGroup) scene.userData.natureGroup.visible = m.nature;
       if (scene.userData.mythGroup) scene.userData.mythGroup.visible = m.myth;
+      if (scene.userData.constellationGroup) scene.userData.constellationGroup.visible = (mode === 'planetarium');
       if (sphereMat.uniforms && sphereMat.uniforms.uMode) sphereMat.uniforms.uMode.value = m.uMode;
       const label = ov.querySelector('#kohModeLabel');
       if (label) label.textContent = m.label;
@@ -15285,13 +15295,71 @@
       }
       orbiters.push({
         mesh: sphere, dist: p.dist,
-        speed: p.dist > 0 ? (0.3 / Math.sqrt(p.dist)) : 0,
+        // 速度をかなりUP（観察可能に）— ケプラー的だが3倍速
+        speed: p.dist > 0 ? (0.9 / Math.sqrt(p.dist)) : 0,
         angle: Math.random() * Math.PI * 2,
       });
     });
     scene.add(planetGroup);
     scene.userData.planetGroup = planetGroup;
     scene.userData.orbiters = orbiters;
+
+    // ✦ プラネタリウム — 星座（球面に投影）
+    const constellationGroup = new THREE.Group();
+    constellationGroup.visible = false;
+    // 球面座標 (theta, phi) を 3D 位置に変換、半径38で球面ぎりぎり内側
+    function spherePos(theta, phi, r = 38) {
+      return [
+        Math.sin(phi) * Math.cos(theta) * r,
+        Math.cos(phi) * r,
+        Math.sin(phi) * Math.sin(theta) * r,
+      ];
+    }
+    // 星座データ: [name, [[theta, phi], ...]] で頂点を結ぶ
+    const constellations = [
+      { name: 'オリオン', color: 0xffd890, points: [
+        [0.0, 0.6], [0.15, 0.7], [0.3, 0.65],   // 肩のライン (リゲル/ベテル)
+        [0.18, 0.85], [0.22, 0.95], [0.26, 0.85],// 三ツ星 (中央)
+        [0.1, 1.05], [0.4, 1.05],                // 足
+      ]},
+      { name: '北斗七星', color: 0xc8e0ff, points: [
+        [3.0, 0.5], [3.1, 0.55], [3.2, 0.6], [3.3, 0.65],   // ひしゃくの椀
+        [3.4, 0.7], [3.5, 0.78], [3.6, 0.85],               // 柄
+      ]},
+      { name: 'カシオペア', color: 0xfff0c8, points: [
+        [4.4, 0.4], [4.5, 0.5], [4.6, 0.4], [4.7, 0.5], [4.8, 0.4],
+      ]},
+      { name: '夏の大三角', color: 0xc0d8ff, points: [
+        [1.5, 0.6], [1.7, 0.85], [1.9, 0.65], [1.5, 0.6],
+      ]},
+    ];
+    constellations.forEach(cn => {
+      // ライン
+      const verts = [];
+      cn.points.forEach(([th, ph]) => {
+        const [x, y, z] = spherePos(th, ph);
+        verts.push(x, y, z);
+      });
+      const lineGeo = new THREE.BufferGeometry();
+      lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(verts, 3));
+      const line = new THREE.Line(lineGeo, new THREE.LineBasicMaterial({
+        color: cn.color, transparent: true, opacity: 0.55,
+      }));
+      constellationGroup.add(line);
+      // 各頂点に明るい星
+      cn.points.forEach(([th, ph]) => {
+        const [x, y, z] = spherePos(th, ph);
+        const star = new THREE.Sprite(new THREE.SpriteMaterial({
+          map: dustTex, color: cn.color, transparent: true, opacity: 0.9,
+          depthWrite: false, blending: THREE.AdditiveBlending,
+        }));
+        star.scale.set(1.2, 1.2, 1);
+        star.position.set(x, y, z);
+        constellationGroup.add(star);
+      });
+    });
+    scene.add(constellationGroup);
+    scene.userData.constellationGroup = constellationGroup;
 
     // 🌳 自然モード（森＋川）
     const natureGroup = new THREE.Group();
@@ -15350,46 +15418,45 @@
     scene.add(natureGroup);
     scene.userData.natureGroup = natureGroup;
 
-    // ⛩ 神話モード（ギリシャ風遺跡＋光）
+    // ⛩ 神話モード（ギリシャ風遺跡＋光、コンパクトに球体内へ）
     const mythGroup = new THREE.Group();
     mythGroup.visible = false;
-    // 12本の遺跡柱（円形配置）
+    // 12本の遺跡柱（小さい半径・低い高さで球体に収める）
     for (let i = 0; i < 12; i++) {
       const a = (i / 12) * Math.PI * 2;
-      const r = 22;
+      const r = 14; // 22 → 14（観客席の内側）
       const x = Math.cos(a) * r, z = Math.sin(a) * r;
-      const colHeight = i % 4 === 0 ? 6 : 8 + Math.random() * 3;
+      const colHeight = i % 4 === 0 ? 4 : 5 + Math.random() * 1.5;
       const broken = i % 5 === 0;
       const col = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.55, 0.65, broken ? 4 : colHeight, 18),
-        new THREE.MeshStandardMaterial({ color: 0xe8e4d8, roughness: 0.6, metalness: 0.05 })
+        new THREE.CylinderGeometry(0.45, 0.55, broken ? 2.5 : colHeight, 18),
+        new THREE.MeshStandardMaterial({ color: 0xc0bcb0, roughness: 0.7, metalness: 0.05 })
       );
-      col.position.set(x, broken ? 2 : colHeight / 2, z);
+      col.position.set(x, broken ? 1.25 : colHeight / 2, z);
       mythGroup.add(col);
       if (!broken) {
-        // 柱頭
         const cap = new THREE.Mesh(
-          new THREE.BoxGeometry(1.4, 0.3, 1.4),
-          new THREE.MeshStandardMaterial({ color: 0xfff4d8, roughness: 0.5 })
+          new THREE.BoxGeometry(1.2, 0.25, 1.2),
+          new THREE.MeshStandardMaterial({ color: 0xd8d4c8, roughness: 0.6 })
         );
-        cap.position.set(x, colHeight + 0.15, z);
+        cap.position.set(x, colHeight + 0.13, z);
         mythGroup.add(cap);
       }
     }
     // 中央の祭壇
     const altar = new THREE.Mesh(
-      new THREE.BoxGeometry(3, 1.2, 3),
-      new THREE.MeshStandardMaterial({ color: 0xc8b890, roughness: 0.4, metalness: 0.15 })
+      new THREE.BoxGeometry(2.4, 1.0, 2.4),
+      new THREE.MeshStandardMaterial({ color: 0xa89880, roughness: 0.5, metalness: 0.1 })
     );
-    altar.position.y = 0.6;
+    altar.position.y = 0.5;
     mythGroup.add(altar);
-    // 神々しい光柱（中央から立ち上がる）
+    // 神々しい光柱（控えめに）
     const divineRay = new THREE.Sprite(new THREE.SpriteMaterial({
-      map: rayTex, color: 0xffe890, transparent: true, opacity: 0.7,
+      map: rayTex, color: 0xffd890, transparent: true, opacity: 0.45,
       depthWrite: false, blending: THREE.AdditiveBlending, fog: false,
     }));
-    divineRay.scale.set(6, 25, 1);
-    divineRay.position.set(0, 12, 0);
+    divineRay.scale.set(3, 10, 1);
+    divineRay.position.set(0, 6, 0);
     mythGroup.add(divineRay);
     scene.add(mythGroup);
     scene.userData.mythGroup = mythGroup;
@@ -15526,7 +15593,7 @@
       // 観客の微動 — InstancedMesh では省略（1000人だと毎フレ更新は重い）
       // 🎵 音楽連動: 中央光・ステージ光・Bloom強度
       centerGlow.intensity = 0.4 + bassS * 1.2 + midS * 0.4;
-      stageLight.intensity = 2.0 + bassS * 4.0 + midS * 1.5;
+      stageLight.intensity = 2.5 + bassS * 1.5 + midS * 0.8;
       if (composer && composer.passes) {
         composer.passes.forEach(p => {
           if (p.strength !== undefined) p.strength = 0.32 + bassS * 0.5 + trebS * 0.2;
