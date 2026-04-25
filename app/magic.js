@@ -548,6 +548,11 @@
                 <div class="mtc-name">偉 人</div>
                 <div class="mtc-sub">クイズ・年表・関係図</div>
               </button>
+              <button class="magic-topbook-cat magic-topbook-cat-ehon" data-cat="ehon">
+                <div class="mtc-emoji">📖</div>
+                <div class="mtc-name">絵 本</div>
+                <div class="mtc-sub">物語の世界に入る</div>
+              </button>
             </div>
           </div>
         </div>
@@ -582,6 +587,7 @@
         mythology: () => { try { openMythology(); } catch (e) { console.warn('mythology', e); } },
         museum:   () => { try { openMuseumHub(); } catch (e) { console.warn('museum', e); } },
         pantheon: () => { try { openPantheon3D(); } catch (e) { console.warn('pantheon', e); } },
+        littleprince: () => { try { openLittlePrinceBook(); } catch (e) { console.warn('lp', e); } },
       };
       wrap.querySelectorAll('[data-deep]').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -601,6 +607,9 @@
         ]},
         museum: { title: '🏛 美 術 館', sub: '名画を歩いて鑑賞', items: [
           { deep: 'museum', label: '美術館へ入る', desc: '神話エリア・戦国エリアから選ぶ', emoji: '🏛' },
+        ]},
+        ehon: { title: '📖 絵 本', sub: 'ページを開いて物語の世界へ', items: [
+          { deep: 'littleprince', label: '星の王子様', desc: 'サン=テグジュペリの絵本。動くSVGで全章を読む', emoji: '🌹' },
         ]},
         ijin: { title: '👤 偉 人', sub: '297人の生涯と関係', items: [
           { deep: 'quiz', label: '偉人クイズ', desc: '5タイプの問題でテスト', emoji: '🎓' },
@@ -12255,6 +12264,302 @@
     });
   }
   window.openPantheon3D = openPantheon3D;
+
+  // ============================================================
+  // 📖 星の王子様 — 動くSVG絵本
+  // ============================================================
+  const LITTLE_PRINCE_PAGES = [
+    {
+      title: '1. 帽子のような絵',
+      text: '6歳のとき、私は猛獣を呑み込んだボアの絵を描いた。大人たちはみんな「帽子の絵だ」と言った。私が中に象が入っていることを描いて見せても、彼らはそれを理解できなかった。',
+      svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg">
+        <defs><radialGradient id="lp1bg" cx="50%" cy="40%"><stop offset="0" stop-color="#3a2840"/><stop offset="1" stop-color="#0a0418"/></radialGradient></defs>
+        <rect width="400" height="360" fill="url(#lp1bg)"/>
+        ${Array.from({length:30}).map(()=>{const x=Math.random()*400,y=Math.random()*360,r=0.5+Math.random()*1.5,d=2+Math.random()*3;return `<circle cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" r="${r.toFixed(1)}" fill="#fff"><animate attributeName="opacity" values="0.3;1;0.3" dur="${d}s" repeatCount="indefinite"/></circle>`}).join('')}
+        <!-- 帽子のような絵（象を飲んだ蛇）-->
+        <ellipse cx="200" cy="220" rx="140" ry="30" fill="#7a4830" stroke="#a86040" stroke-width="2"/>
+        <path d="M 80 220 Q 90 150 140 150 Q 200 130 260 150 Q 310 150 320 220" fill="#7a4830" stroke="#a86040" stroke-width="2"/>
+        <!-- 中の象（薄く） -->
+        <g opacity="0.25"><animate attributeName="opacity" values="0.05;0.35;0.05" dur="4s" repeatCount="indefinite"/>
+          <ellipse cx="190" cy="195" rx="40" ry="20" fill="#c0a080"/>
+          <circle cx="160" cy="190" r="18" fill="#c0a080"/>
+          <line x1="145" y1="200" x2="135" y2="220" stroke="#c0a080" stroke-width="3"/>
+          <line x1="170" y1="215" x2="170" y2="235" stroke="#c0a080" stroke-width="4"/>
+          <line x1="200" y1="215" x2="200" y2="235" stroke="#c0a080" stroke-width="4"/>
+          <line x1="225" y1="215" x2="225" y2="235" stroke="#c0a080" stroke-width="4"/>
+        </g>
+        <text x="200" y="320" text-anchor="middle" fill="#a89878" font-size="14" font-style="italic" font-family="serif">— 中に象がいる —</text>
+      </svg>`,
+    },
+    {
+      title: '2. 砂漠での出会い',
+      text: 'サハラ砂漠に飛行機が不時着した。修理していると、突然小さな声がした。「ねえ、羊の絵を描いて」 — 振り向くと、不思議な小さな男の子が立っていた。',
+      svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="lp2bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a3050"/><stop offset="0.4" stop-color="#5a4060"/><stop offset="0.7" stop-color="#c08060"/><stop offset="1" stop-color="#e8a070"/></linearGradient></defs>
+        <rect width="400" height="360" fill="url(#lp2bg)"/>
+        <circle cx="320" cy="80" r="28" fill="#fff8c0" opacity="0.9"><animate attributeName="r" values="28;32;28" dur="3s" repeatCount="indefinite"/></circle>
+        <!-- 砂丘 -->
+        <path d="M 0 280 Q 100 250 200 280 Q 300 310 400 280 L 400 360 L 0 360 Z" fill="#c89060"/>
+        <path d="M 0 310 Q 150 290 280 310 Q 350 320 400 310 L 400 360 L 0 360 Z" fill="#a86840"/>
+        <!-- 飛行機（壊れた） -->
+        <g transform="translate(80,260)">
+          <rect x="-30" y="-8" width="60" height="16" fill="#c0c0c0"/>
+          <polygon points="-30,-2 -50,2 -30,6" fill="#a0a0a0"/>
+          <rect x="-10" y="-20" width="20" height="14" fill="#c0c0c0"/>
+          <line x1="20" y1="-8" x2="35" y2="-25" stroke="#3a2010" stroke-width="2"/>
+        </g>
+        <!-- 小さな王子 -->
+        <g transform="translate(280,250)"><animateTransform attributeName="transform" type="translate" values="280,250;280,245;280,250" dur="3s" repeatCount="indefinite"/>
+          <!-- マフラー -->
+          <path d="M -8 -20 Q 0 -10 8 -20 Q 12 0 -12 5 Z" fill="#ffd060"/>
+          <ellipse cx="20" cy="0" rx="3" ry="8" fill="#ffd060"><animate attributeName="cx" values="20;26;20" dur="2s" repeatCount="indefinite"/></ellipse>
+          <!-- 服 -->
+          <path d="M -10 -15 L -14 25 L 14 25 L 10 -15 Z" fill="#3a6a90"/>
+          <!-- 顔 -->
+          <circle cx="0" cy="-25" r="12" fill="#f0c890"/>
+          <!-- 髪 -->
+          <path d="M -12 -32 Q -8 -42 0 -40 Q 8 -42 12 -32 Q 14 -22 12 -28 Q 4 -25 -4 -28 Q -12 -25 -14 -32 Z" fill="#ffd060"/>
+          <!-- 目 -->
+          <circle cx="-4" cy="-25" r="1.5" fill="#000"/><circle cx="4" cy="-25" r="1.5" fill="#000"/>
+          <!-- 微笑み -->
+          <path d="M -3 -20 Q 0 -18 3 -20" stroke="#000" stroke-width="1" fill="none"/>
+        </g>
+      </svg>`,
+    },
+    {
+      title: '3. 王子の星 B-612',
+      text: '小さな王子は遠くの星から来た。その星は家ほどの大きさで、3つの火山と1本のバラがあった。バラは王子に「私は四つの棘を持つ。何も恐くない」と言った。王子はバラの世話を毎朝した。',
+      svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg">
+        <defs><radialGradient id="lp3bg" cx="50%" cy="50%"><stop offset="0" stop-color="#1a1840"/><stop offset="1" stop-color="#04020a"/></radialGradient></defs>
+        <rect width="400" height="360" fill="url(#lp3bg)"/>
+        ${Array.from({length:50}).map(()=>{const x=Math.random()*400,y=Math.random()*360,r=0.5+Math.random()*1.2,d=1.5+Math.random()*3;return `<circle cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" r="${r.toFixed(1)}" fill="#fff"><animate attributeName="opacity" values="0.2;1;0.2" dur="${d.toFixed(1)}s" repeatCount="indefinite"/></circle>`}).join('')}
+        <!-- 小惑星 B-612 -->
+        <g transform="translate(200,200)"><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="120s" repeatCount="indefinite"/>
+          <circle r="80" fill="#5a7a60"/>
+          <circle r="80" fill="url(#planetTex)" opacity="0.5"/>
+          <!-- 火山×3 -->
+          <polygon points="-50,-50 -42,-65 -34,-50" fill="#7a4030"/>
+          <polygon points="42,-30 50,-45 58,-30" fill="#7a4030"/>
+          <polygon points="-10,55 0,40 10,55" fill="#7a4030"/>
+          <!-- 火山の煙 -->
+          <ellipse cx="-42" cy="-72" rx="6" ry="3" fill="#a8a098" opacity="0.7"><animate attributeName="cy" values="-72;-85;-72" dur="3s" repeatCount="indefinite"/></ellipse>
+          <!-- バラ -->
+          <g transform="translate(0,-90)">
+            <line x1="0" y1="0" x2="0" y2="20" stroke="#3a6a48" stroke-width="2"/>
+            <ellipse cx="-6" cy="10" rx="4" ry="8" fill="#3a6a48" transform="rotate(-30 -6 10)"/>
+            <circle r="14" fill="#c01828"><animate attributeName="r" values="14;15;14" dur="2.5s" repeatCount="indefinite"/></circle>
+            <circle r="9" fill="#ff6080"/>
+            <circle r="4" fill="#ffb0c0"/>
+          </g>
+          <!-- 王子（星の上に立つ）-->
+          <g transform="translate(50,-65)">
+            <path d="M -5 -8 L -7 8 L 7 8 L 5 -8 Z" fill="#3a6a90"/>
+            <circle cx="0" cy="-15" r="7" fill="#f0c890"/>
+            <path d="M -7 -20 Q -4 -25 0 -24 Q 4 -25 7 -20 Q 8 -16 6 -18 Q 0 -16 -6 -18 Q -8 -16 -7 -20 Z" fill="#ffd060"/>
+          </g>
+        </g>
+      </svg>`,
+    },
+    {
+      title: '4. 旅立ち',
+      text: 'バラとの誤解で、王子は星を出ることにした。「お別れだね」とバラは言った。「私が悪かった。幸せになって」。王子は渡り鳥の群れに乗って7つの星を巡った。',
+      svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="lp4bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a1850"/><stop offset="1" stop-color="#080418"/></linearGradient></defs>
+        <rect width="400" height="360" fill="url(#lp4bg)"/>
+        ${Array.from({length:35}).map(()=>{const x=Math.random()*400,y=Math.random()*360;return `<circle cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" r="1" fill="#fff"><animate attributeName="opacity" values="0.3;1;0.3" dur="${(2+Math.random()*2).toFixed(1)}s" repeatCount="indefinite"/></circle>`}).join('')}
+        <!-- 小さな星（離れていく）-->
+        <circle cx="80" cy="280" r="35" fill="#5a7a60" opacity="0.7"><animate attributeName="cx" values="80;60;40" dur="6s" repeatCount="indefinite"/></circle>
+        <!-- 渡り鳥の群れに引かれた王子 -->
+        <g transform="translate(200,180)"><animateTransform attributeName="transform" type="translate" values="200,180;220,160;200,180" dur="4s" repeatCount="indefinite"/>
+          <!-- 鳥たち -->
+          ${Array.from({length:8}).map((_,i)=>{const x=-40+i*15,y=-50+(i%2)*8;return `<path d="M ${x-6} ${y} L ${x} ${y-3} L ${x+6} ${y}" stroke="#fff" stroke-width="1.5" fill="none"><animate attributeName="d" values="M ${x-6} ${y} L ${x} ${y-3} L ${x+6} ${y};M ${x-6} ${y+2} L ${x} ${y-5} L ${x+6} ${y+2};M ${x-6} ${y} L ${x} ${y-3} L ${x+6} ${y}" dur="0.5s" repeatCount="indefinite"/></path>`}).join('')}
+          <!-- 紐 -->
+          ${Array.from({length:8}).map((_,i)=>{const x=-40+i*15,y=-48+(i%2)*8;return `<line x1="${x}" y1="${y}" x2="0" y2="0" stroke="#a89060" stroke-width="0.5" opacity="0.5"/>`}).join('')}
+          <!-- 王子 -->
+          <g><path d="M -8 -10 L -10 18 L 10 18 L 8 -10 Z" fill="#3a6a90"/>
+          <circle cx="0" cy="-18" r="9" fill="#f0c890"/>
+          <path d="M -10 -25 Q -5 -32 0 -30 Q 5 -32 10 -25 Q 11 -19 8 -22 Q 0 -19 -8 -22 Z" fill="#ffd060"/>
+          <path d="M -10 -8 L -2 -2 L 8 -10" stroke="#ffd060" stroke-width="2" fill="none"/></g>
+        </g>
+      </svg>`,
+    },
+    {
+      title: '5. キツネとの出会い',
+      text: '地球で王子はキツネに出会った。「飼いならしてくれない？」 とキツネは言った。「飼いならすってどういうこと？」 「絆を結ぶってこと。お互いがお互いに必要になる」。キツネは別れに教えた — 「肝心なことは目に見えない」',
+      svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="lp5bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a3a60"/><stop offset="0.5" stop-color="#c06040"/><stop offset="1" stop-color="#f0a060"/></linearGradient></defs>
+        <rect width="400" height="360" fill="url(#lp5bg)"/>
+        <!-- 太陽 -->
+        <circle cx="320" cy="80" r="35" fill="#fff8d0"><animate attributeName="r" values="35;40;35" dur="4s" repeatCount="indefinite"/></circle>
+        <!-- 麦畑（キツネが見ると王子の髪を思い出す金色） -->
+        <g transform="translate(0,260)">
+          ${Array.from({length:80}).map((_,i)=>{const x=i*5,h=8+Math.random()*6;return `<line x1="${x}" y1="100" x2="${x}" y2="${100-h}" stroke="#d8a040" stroke-width="0.8"><animate attributeName="x2" values="${x};${x+1};${x}" dur="${(2+Math.random()).toFixed(1)}s" repeatCount="indefinite"/></line>`}).join('')}
+        </g>
+        <!-- 王子 -->
+        <g transform="translate(140,240)">
+          <path d="M -10 -15 L -12 25 L 12 25 L 10 -15 Z" fill="#3a6a90"/>
+          <circle cx="0" cy="-25" r="11" fill="#f0c890"/>
+          <path d="M -12 -34 Q -8 -42 0 -40 Q 8 -42 12 -34 Q 14 -28 12 -30 Q 0 -27 -12 -30 Z" fill="#ffd060"/>
+        </g>
+        <!-- キツネ -->
+        <g transform="translate(260,260)">
+          <!-- 体 -->
+          <ellipse cx="0" cy="0" rx="35" ry="18" fill="#d06030"/>
+          <!-- 頭 -->
+          <circle cx="-30" cy="-10" r="14" fill="#d06030"/>
+          <!-- 耳 -->
+          <polygon points="-38,-22 -34,-32 -28,-22" fill="#d06030"/>
+          <polygon points="-26,-22 -22,-32 -16,-22" fill="#d06030"/>
+          <!-- 目 -->
+          <circle cx="-32" cy="-12" r="1.5" fill="#000"/><circle cx="-26" cy="-12" r="1.5" fill="#000"/>
+          <!-- 鼻 -->
+          <circle cx="-42" cy="-8" r="2" fill="#000"/>
+          <!-- 尻尾（揺れる）-->
+          <path d="M 30 0 Q 50 -10 55 5 Q 50 8 35 5 Z" fill="#d06030"><animateTransform attributeName="transform" type="rotate" values="0 30 0;15 30 0;0 30 0;-10 30 0;0 30 0" dur="3s" repeatCount="indefinite"/></path>
+          <polygon points="50 -8 56 -2 50 4" fill="#fff"/>
+          <!-- 足 -->
+          <rect x="-20" y="14" width="4" height="8" fill="#3a1810"/>
+          <rect x="-5" y="14" width="4" height="8" fill="#3a1810"/>
+          <rect x="10" y="14" width="4" height="8" fill="#3a1810"/>
+          <rect x="20" y="14" width="4" height="8" fill="#3a1810"/>
+        </g>
+      </svg>`,
+    },
+    {
+      title: '6. 蛇と王子',
+      text: '砂漠で王子は黄色い蛇に出会った。「君は触れたものを土へ還せるんだね」「人間を6本の足で帰してあげるよ」。王子は星に帰る決意をした。',
+      svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="lp6bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a1838"/><stop offset="0.6" stop-color="#5a3018"/><stop offset="1" stop-color="#a86038"/></linearGradient></defs>
+        <rect width="400" height="360" fill="url(#lp6bg)"/>
+        <!-- 月 -->
+        <circle cx="320" cy="60" r="25" fill="#f0e8c0"/>
+        <circle cx="313" cy="55" r="3" fill="#d8c890"/>
+        <circle cx="324" cy="68" r="2" fill="#d8c890"/>
+        <!-- 星 -->
+        ${Array.from({length:30}).map(()=>{const x=Math.random()*400,y=Math.random()*200,d=2+Math.random()*2;return `<circle cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" r="0.8" fill="#fff"><animate attributeName="opacity" values="0.3;1;0.3" dur="${d.toFixed(1)}s" repeatCount="indefinite"/></circle>`}).join('')}
+        <!-- 砂漠 -->
+        <path d="M 0 280 Q 100 260 200 280 Q 300 300 400 280 L 400 360 L 0 360 Z" fill="#9a6038"/>
+        <!-- 蛇 -->
+        <g transform="translate(160,310)">
+          <path d="M 0 0 Q 30 -20 60 -10 Q 90 0 120 -10 Q 140 -15 150 -5" stroke="#c8a040" stroke-width="6" fill="none" stroke-linecap="round">
+            <animate attributeName="d" values="M 0 0 Q 30 -20 60 -10 Q 90 0 120 -10 Q 140 -15 150 -5;M 0 -2 Q 30 -25 60 -8 Q 90 5 120 -12 Q 140 -10 150 -5;M 0 0 Q 30 -20 60 -10 Q 90 0 120 -10 Q 140 -15 150 -5" dur="3s" repeatCount="indefinite"/>
+          </path>
+          <!-- 蛇の頭 -->
+          <ellipse cx="150" cy="-5" rx="8" ry="5" fill="#c8a040"/>
+          <circle cx="153" cy="-7" r="1.2" fill="#ff2020"/>
+          <line x1="158" y1="-5" x2="165" y2="-5" stroke="#ff3050" stroke-width="1.5"/>
+        </g>
+        <!-- 王子（蛇の方を見る） -->
+        <g transform="translate(120,290)">
+          <path d="M -8 -10 L -10 15 L 10 15 L 8 -10 Z" fill="#3a6a90"/>
+          <circle cx="0" cy="-18" r="9" fill="#f0c890"/>
+          <path d="M -10 -25 Q -5 -32 0 -30 Q 5 -32 10 -25 Z" fill="#ffd060"/>
+        </g>
+      </svg>`,
+    },
+    {
+      title: '7. 別れ',
+      text: '夜、王子は蛇に咬まれた。「重すぎて持って行けない」と王子は言った。「でも、君が空を見上げる時、星のどれかで僕が笑ってる。だから、星全部が君に笑いかけているように見える」。王子は崩れ落ちた。彼の星に帰った。',
+      svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg">
+        <defs><radialGradient id="lp7bg" cx="50%" cy="40%"><stop offset="0" stop-color="#3a2840"/><stop offset="1" stop-color="#04020a"/></radialGradient></defs>
+        <rect width="400" height="360" fill="url(#lp7bg)"/>
+        <!-- 笑う星々 -->
+        ${Array.from({length:60}).map((_,i)=>{const x=Math.random()*400,y=Math.random()*300,r=1+Math.random()*1.5,d=1.5+Math.random()*2;return `<circle cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" r="${r.toFixed(1)}" fill="#fff8e0"><animate attributeName="opacity" values="0.4;1;0.4" dur="${d.toFixed(1)}s" repeatCount="indefinite"/></circle>`}).join('')}
+        <!-- 大きな星（王子の星）-->
+        <g transform="translate(200,80)">
+          <circle r="22" fill="#fff8c0"><animate attributeName="r" values="22;28;22" dur="3s" repeatCount="indefinite"/></circle>
+          <circle r="14" fill="#fff"/>
+          <!-- 笑顔 -->
+          <circle cx="-5" cy="-2" r="1" fill="#000"/>
+          <circle cx="5" cy="-2" r="1" fill="#000"/>
+          <path d="M -5 4 Q 0 8 5 4" stroke="#000" stroke-width="1" fill="none"/>
+        </g>
+        <!-- 砂漠 -->
+        <path d="M 0 280 Q 100 270 200 285 Q 300 300 400 285 L 400 360 L 0 360 Z" fill="#5a3818"/>
+        <!-- 倒れた王子 -->
+        <g transform="translate(200,300)" opacity="0.85">
+          <ellipse cx="0" cy="0" rx="40" ry="6" fill="#3a6a90"/>
+          <ellipse cx="-30" cy="-3" r="9" rx="10" ry="8" fill="#f0c890"/>
+          <path d="M -38 -10 Q -34 -16 -28 -14 Q -22 -16 -18 -10 Z" fill="#ffd060"/>
+        </g>
+        <text x="200" y="340" text-anchor="middle" fill="#a89878" font-size="13" font-style="italic" font-family="serif">— 星が笑っている —</text>
+      </svg>`,
+    },
+    {
+      title: '8. 著者：サン=テグジュペリ',
+      text: 'アントワーヌ・ド・サン=テグジュペリ（1900-1944）。フランスの作家・飛行士。郵便機のパイロットを務めながら、空と人間を描き続けた。1944年、地中海上空で偵察飛行中に消息を絶った。『星の王子様』(1943) は世界で最も翻訳された本のひとつ。',
+      svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="lp8bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a5070"/><stop offset="0.6" stop-color="#7090a8"/><stop offset="1" stop-color="#a8c0d8"/></linearGradient></defs>
+        <rect width="400" height="360" fill="url(#lp8bg)"/>
+        <!-- 雲 -->
+        ${Array.from({length:6}).map((_,i)=>{const x=50+i*70,y=80+Math.random()*60,w=40+Math.random()*30;return `<ellipse cx="${x}" cy="${y}" rx="${w}" ry="12" fill="#fff" opacity="0.6"><animate attributeName="cx" values="${x};${x+20};${x}" dur="${(15+Math.random()*10).toFixed(0)}s" repeatCount="indefinite"/></ellipse>`}).join('')}
+        <!-- 飛行機 -->
+        <g transform="translate(200,200)"><animateTransform attributeName="transform" type="translate" values="200,200;205,195;200,200" dur="4s" repeatCount="indefinite"/>
+          <!-- 胴体 -->
+          <rect x="-50" y="-6" width="100" height="12" fill="#7a4830" rx="3"/>
+          <!-- コックピット -->
+          <ellipse cx="-15" cy="-12" rx="20" ry="8" fill="#c8d8e8"/>
+          <!-- 翼上 -->
+          <rect x="-30" y="-22" width="60" height="6" fill="#a06038"/>
+          <!-- 翼下 -->
+          <rect x="-30" y="6" width="60" height="6" fill="#a06038"/>
+          <!-- 翼の支柱 -->
+          <line x1="-25" y1="-22" x2="-25" y2="12" stroke="#3a1810" stroke-width="1.5"/>
+          <line x1="25" y1="-22" x2="25" y2="12" stroke="#3a1810" stroke-width="1.5"/>
+          <!-- 尾翼 -->
+          <polygon points="50,-6 65,-15 65,-3" fill="#7a4830"/>
+          <polygon points="50,6 65,3 65,15" fill="#7a4830"/>
+          <!-- プロペラ -->
+          <line x1="-50" y1="0" x2="-65" y2="-10" stroke="#3a1810" stroke-width="2"><animateTransform attributeName="transform" type="rotate" from="0 -50 0" to="360 -50 0" dur="0.1s" repeatCount="indefinite"/></line>
+          <line x1="-50" y1="0" x2="-65" y2="10" stroke="#3a1810" stroke-width="2"/>
+          <!-- 操縦士（小さく） -->
+          <circle cx="-15" cy="-15" r="3" fill="#f0c890"/>
+        </g>
+        <text x="200" y="340" text-anchor="middle" fill="#1a3050" font-size="14" font-style="italic" font-family="serif">— 1944, 地中海上空で消息を絶つ —</text>
+      </svg>`,
+    },
+  ];
+
+  function openLittlePrinceBook() {
+    let idx = 0;
+    const ov = document.createElement('div');
+    ov.className = 'lpbook-overlay';
+    function render() {
+      const p = LITTLE_PRINCE_PAGES[idx];
+      ov.innerHTML = `
+        <button class="lpbook-close" aria-label="閉じる">×</button>
+        <div class="lpbook-page">
+          <div class="lpbook-pageNo">${idx + 1} / ${LITTLE_PRINCE_PAGES.length}</div>
+          <div class="lpbook-art">${p.svg}</div>
+          <div class="lpbook-title">${p.title}</div>
+          <div class="lpbook-text">${p.text}</div>
+        </div>
+        <div class="lpbook-nav">
+          <button class="lpbook-btn" id="lpPrev" ${idx === 0 ? 'disabled' : ''}>‹ 前のページ</button>
+          <div class="lpbook-dots">${LITTLE_PRINCE_PAGES.map((_, i) => `<span class="lpbook-dot ${i === idx ? 'on' : ''}"></span>`).join('')}</div>
+          <button class="lpbook-btn" id="lpNext" ${idx === LITTLE_PRINCE_PAGES.length - 1 ? 'disabled' : ''}>${idx === LITTLE_PRINCE_PAGES.length - 1 ? 'おわり ★' : '次のページ ›'}</button>
+        </div>
+      `;
+      ov.querySelector('.lpbook-close').addEventListener('click', () => {
+        ov.classList.remove('open');
+        setTimeout(() => ov.remove(), 400);
+      });
+      ov.querySelector('#lpPrev').addEventListener('click', () => {
+        if (idx > 0) { idx--; render(); }
+      });
+      ov.querySelector('#lpNext').addEventListener('click', () => {
+        if (idx < LITTLE_PRINCE_PAGES.length - 1) { idx++; render(); }
+        else {
+          ov.classList.remove('open');
+          setTimeout(() => ov.remove(), 400);
+        }
+      });
+    }
+    document.body.appendChild(ov);
+    render();
+    requestAnimationFrame(() => ov.classList.add('open'));
+  }
+  window.openLittlePrinceBook = openLittlePrinceBook;
 
 
   // ============================================================

@@ -7753,3 +7753,95 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   .profile-header { padding: 28px 16px 22px !important; }
   .profile-header .profile-avatar { width: 100px !important; height: 100px !important; font-size: 44px; }
 }
+
+/* ===== 絵本：星の王子様 ===== */
+.magic-topbook-cat-ehon {
+  background: linear-gradient(135deg, rgba(110,60,90,0.7), rgba(60,30,50,0.85));
+  border-color: rgba(255,180,180,0.45);
+}
+
+.lpbook-overlay {
+  position: fixed; inset: 0; z-index: 19500;
+  background: linear-gradient(180deg, #1a0820 0%, #08020e 100%);
+  opacity: 0; pointer-events: none;
+  transition: opacity .5s;
+  display: flex; flex-direction: column;
+  font-family: 'Shippori Mincho', serif;
+}
+.lpbook-overlay.open { opacity: 1; pointer-events: auto; }
+.lpbook-close {
+  position: absolute; top: 16px; right: 16px; z-index: 10;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(20,10,30,0.78);
+  border: 1px solid rgba(255,200,200,0.4);
+  color: #f0e0e8; font-size: 22px; cursor: pointer;
+  backdrop-filter: blur(6px);
+}
+.lpbook-page {
+  flex: 1;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-start;
+  padding: 36px 22px 12px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.lpbook-pageNo {
+  font-size: 11px; letter-spacing: 0.3em;
+  color: rgba(220,180,180,0.55);
+  margin-bottom: 14px;
+}
+.lpbook-art {
+  width: min(520px, 92vw);
+  aspect-ratio: 400 / 360;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #04020a;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 50px rgba(180,80,140,0.15);
+  border: 1px solid rgba(220,180,200,0.22);
+  margin-bottom: 18px;
+}
+.lpbook-art svg { display: block; width: 100%; height: 100%; }
+.lpbook-title {
+  font-size: 22px; letter-spacing: 0.18em;
+  color: #ffe0c8; margin-bottom: 10px;
+  text-shadow: 0 2px 14px rgba(0,0,0,0.6);
+}
+.lpbook-text {
+  font-size: 14px; line-height: 2.0;
+  color: #e0d0d8;
+  letter-spacing: 0.04em;
+  max-width: 560px;
+  text-align: center;
+  padding: 0 8px;
+}
+.lpbook-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 22px 22px;
+  gap: 12px;
+  background: linear-gradient(180deg, transparent, rgba(0,0,0,0.4));
+}
+.lpbook-btn {
+  padding: 10px 22px;
+  background: rgba(60,30,50,0.6);
+  border: 1px solid rgba(255,180,180,0.4);
+  border-radius: 999px;
+  color: #ffe0c8;
+  font-family: inherit;
+  font-size: 13px; letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: filter .2s, transform .15s;
+}
+.lpbook-btn:hover:not(:disabled) { filter: brightness(1.2); transform: translateY(-1px); }
+.lpbook-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.lpbook-dots { display: flex; gap: 6px; }
+.lpbook-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(220,180,200,0.3);
+  transition: background .2s;
+}
+.lpbook-dot.on { background: #ffd0e0; box-shadow: 0 0 8px rgba(255,200,220,0.7); }
+@media (max-width: 600px) {
+  .lpbook-title { font-size: 18px; }
+  .lpbook-text { font-size: 13px; line-height: 1.85; }
+  .lpbook-btn { padding: 8px 14px; font-size: 11px; }
+}
