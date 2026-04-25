@@ -14688,7 +14688,7 @@
     baton.position.set(0.18, 0.65, 0.05);
     baton.rotation.z = 0.3;
     conductor.add(baton);
-    conductor.position.set(0, 0, -1.5);
+    conductor.position.set(0, 0.7, -1.5);
     conductor.rotation.y = Math.PI; // 観客側を向く
     scene.add(conductor);
     scene.userData.conductor = conductor;
@@ -15169,8 +15169,8 @@
         sitting: true, instrument: hasInstrument,
       });
       g.add(person);
-      g.position.set(x, 0, z);
-      g.lookAt(0, 0.7, 0); // 指揮者を見る
+      g.position.set(x, 0.7, z); // ステージ天面 y=0.7 に配置（下半身埋まり対策）
+      g.lookAt(0, 1.4, 0); // 指揮者を見る
       scene.add(g);
       return { group: g, head: person.userData.head, person };
     }
@@ -15202,11 +15202,12 @@
       const sTex = new THREE.CanvasTexture(sheet);
       board.material.map = sTex; board.material.needsUpdate = true;
       g.position.set(x, 0, z);
+      g.position.y = 0.7; // ステージ天面に配置
       g.rotation.y = ang;
       return g;
     }
 
-    // 🎻 オーケストラ（影絵スタイル — Canvas 2D シルエット）
+    // 🎻 オーケストラ（3D、buildPersonベース）
     const orchestra = [];
     // 第1バイオリン（左前、弧形 6人）+ 譜面台
     for (let i = 0; i < 6; i++) {
