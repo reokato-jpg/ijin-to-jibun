@@ -14825,133 +14825,219 @@
       return c;
     }
 
-    // 🎭 演奏者シルエット — Canvas で絵描き、Plane に貼り付けてビルボード
-    // 影絵スタイルで「楽団員らしさ」を演出（3Dプリミティブより遥かにクオリティ高い）
+    // 🎭 演奏者シルエット（リアル版・光に反応しない MeshBasic）
     function makeSilhouettePlayer(x, z, instrument = 'violin') {
-      const c = document.createElement('canvas'); c.width = 256; c.height = 384;
+      const c = document.createElement('canvas'); c.width = 320; c.height = 480;
       const g = c.getContext('2d');
-      // 透過背景
-      g.clearRect(0, 0, 256, 384);
-      // 演奏者本体を黒シルエットで描く
-      g.fillStyle = 'rgba(8,8,16,0.95)';
-      g.strokeStyle = 'rgba(8,8,16,1)';
-      g.lineWidth = 1;
-      // 共通: 頭
+      g.clearRect(0, 0, 320, 480);
+      // 後光（うっすら golden glow が縁に）
+      const haloGrd = g.createRadialGradient(160, 240, 80, 160, 240, 220);
+      haloGrd.addColorStop(0, 'rgba(255,220,150,0.0)');
+      haloGrd.addColorStop(0.7, 'rgba(255,200,120,0.05)');
+      haloGrd.addColorStop(1, 'rgba(255,180,100,0)');
+      g.fillStyle = haloGrd;
+      g.fillRect(0, 0, 320, 480);
+
+      const ink = 'rgba(6,6,14,0.96)';
+      g.fillStyle = ink; g.strokeStyle = ink;
+
+      // === 頭・髪・耳・鼻のラインも込み ===
+      // 髪（後頭部のドーム）
       g.beginPath();
-      g.arc(128, 70, 28, 0, Math.PI * 2);
+      g.ellipse(160, 80, 38, 42, 0, Math.PI * 0.95, Math.PI * 2.05);
       g.fill();
-      // 髪のシルエット（後頭部にちょっとボリューム）
+      // 顔の輪郭
       g.beginPath();
-      g.arc(128, 60, 30, Math.PI * 0.95, Math.PI * 2.05);
+      g.ellipse(160, 92, 32, 38, 0, 0, Math.PI * 2);
       g.fill();
-      // 首
-      g.fillRect(120, 95, 16, 14);
-      // 肩
+      // 耳のシルエット
       g.beginPath();
-      g.moveTo(80, 110);
-      g.bezierCurveTo(95, 105, 161, 105, 176, 110);
-      g.lineTo(168, 130); g.lineTo(88, 130); g.closePath();
+      g.ellipse(192, 95, 4, 8, 0, 0, Math.PI * 2);
       g.fill();
-      // 上半身（座っている演奏服）
+      // 首（細く）
       g.beginPath();
-      g.moveTo(85, 130);
-      g.bezierCurveTo(82, 200, 78, 250, 80, 290);
-      g.lineTo(176, 290);
-      g.bezierCurveTo(178, 250, 174, 200, 171, 130);
+      g.moveTo(146, 122); g.lineTo(174, 122);
+      g.bezierCurveTo(178, 138, 178, 142, 174, 148);
+      g.lineTo(146, 148);
+      g.bezierCurveTo(142, 142, 142, 138, 146, 122);
       g.closePath();
       g.fill();
-      // 太もも（座位、前に伸びる）
+      // 肩（自然なライン、襟付き）
       g.beginPath();
-      g.moveTo(75, 290);
-      g.bezierCurveTo(70, 320, 70, 350, 95, 360);
-      g.lineTo(135, 360);
-      g.lineTo(135, 290);
+      g.moveTo(85, 168);
+      g.bezierCurveTo(95, 150, 130, 142, 160, 142);
+      g.bezierCurveTo(190, 142, 225, 150, 235, 168);
+      g.lineTo(225, 175);
+      g.bezierCurveTo(195, 165, 190, 165, 160, 165);
+      g.bezierCurveTo(130, 165, 125, 165, 95, 175);
+      g.closePath();
+      g.fill();
+      // 燕尾服のラペル（白い襟ライン少し）
+      g.fillStyle = 'rgba(180,180,200,0.18)';
+      g.beginPath();
+      g.moveTo(140, 158); g.lineTo(155, 168); g.lineTo(165, 168); g.lineTo(180, 158);
+      g.closePath();
+      g.fill();
+      g.fillStyle = ink;
+      // 上半身（演奏服、テーパー）
+      g.beginPath();
+      g.moveTo(95, 175);
+      g.bezierCurveTo(88, 230, 82, 290, 85, 360);
+      g.lineTo(235, 360);
+      g.bezierCurveTo(238, 290, 232, 230, 225, 175);
+      g.closePath();
+      g.fill();
+      // 蝶ネクタイ（黒、すこし目立つ）
+      g.fillStyle = 'rgba(0,0,0,1)';
+      g.beginPath();
+      g.moveTo(154, 160); g.lineTo(166, 160); g.lineTo(168, 168); g.lineTo(152, 168);
+      g.closePath();
+      g.fill();
+      g.fillStyle = ink;
+      // 太もも（座位、横並び）
+      g.beginPath();
+      g.moveTo(80, 360);
+      g.bezierCurveTo(72, 400, 70, 440, 95, 455);
+      g.lineTo(155, 455);
+      g.bezierCurveTo(152, 425, 150, 380, 152, 360);
       g.closePath();
       g.fill();
       g.beginPath();
-      g.moveTo(125, 290);
-      g.lineTo(125, 360);
-      g.lineTo(165, 360);
-      g.bezierCurveTo(190, 350, 190, 320, 185, 290);
+      g.moveTo(168, 360);
+      g.bezierCurveTo(170, 380, 168, 425, 165, 455);
+      g.lineTo(225, 455);
+      g.bezierCurveTo(250, 440, 248, 400, 240, 360);
       g.closePath();
       g.fill();
-      // 楽器ごとの追加描画（白で輪郭、明るい色のハイライト）
+
+      // === 楽器 ===
       if (instrument === 'violin') {
-        // バイオリン本体（顎の下）
-        g.fillStyle = 'rgba(120,60,30,0.95)';
+        // 顎を少し横に向ける（バイオリン構え）
+        // 楽器（茶色、ハイライト付き）
+        const vio = g.createLinearGradient(190, 130, 240, 175);
+        vio.addColorStop(0, '#a86040'); vio.addColorStop(1, '#5a2810');
+        g.fillStyle = vio;
         g.beginPath();
-        g.ellipse(168, 120, 32, 14, -0.5, 0, Math.PI*2);
+        g.ellipse(228, 160, 38, 18, -0.5, 0, Math.PI * 2);
         g.fill();
-        g.fillStyle = 'rgba(8,8,16,0.95)';
-        // 弓
-        g.strokeStyle = 'rgba(180,180,180,0.85)';
-        g.lineWidth = 2;
+        // F字孔
+        g.fillStyle = 'rgba(0,0,0,0.9)';
+        g.fillRect(220, 152, 1.5, 6);
+        g.fillRect(232, 158, 1.5, 6);
+        // ネック
+        g.strokeStyle = '#3a1a08';
+        g.lineWidth = 4;
         g.beginPath();
-        g.moveTo(195, 95); g.lineTo(245, 80);
+        g.moveTo(208, 145); g.lineTo(192, 130);
         g.stroke();
-        // 腕（弓を持つ）
-        g.fillStyle = 'rgba(8,8,16,0.95)';
+        // 弓（金色寄り）
+        g.strokeStyle = 'rgba(220,200,160,0.9)';
+        g.lineWidth = 2.5;
         g.beginPath();
-        g.moveTo(168, 130); g.bezierCurveTo(200, 130, 230, 110, 240, 90);
-        g.lineTo(245, 95); g.bezierCurveTo(235, 120, 210, 145, 178, 145);
+        g.moveTo(238, 142); g.lineTo(295, 122);
+        g.stroke();
+        g.lineWidth = 1.5;
+        g.strokeStyle = 'rgba(140,120,90,0.7)';
+        g.beginPath();
+        g.moveTo(238, 142); g.lineTo(295, 122);
+        g.stroke();
+        // 弓を持つ腕
+        g.fillStyle = ink;
+        g.beginPath();
+        g.moveTo(225, 175); g.bezierCurveTo(255, 175, 285, 155, 295, 130);
+        g.lineTo(300, 135); g.bezierCurveTo(290, 165, 260, 195, 230, 195);
         g.closePath();
         g.fill();
       } else if (instrument === 'cello') {
-        // チェロ本体（脚の間に立てる、大きい）
-        g.fillStyle = 'rgba(140,70,30,0.95)';
+        // チェロ本体（脚の間、大型、グラデーション付き）
+        const ce = g.createRadialGradient(160, 290, 5, 160, 290, 80);
+        ce.addColorStop(0, '#c87850'); ce.addColorStop(0.5, '#9a4828'); ce.addColorStop(1, '#5a2010');
+        g.fillStyle = ce;
         g.beginPath();
-        g.ellipse(128, 230, 38, 70, 0, 0, Math.PI*2);
+        g.ellipse(160, 290, 50, 90, 0, 0, Math.PI * 2);
         g.fill();
-        // ネックと弦
-        g.strokeStyle = 'rgba(40,30,20,0.9)';
-        g.lineWidth = 4;
+        // ハイライト
+        g.fillStyle = 'rgba(255,200,140,0.18)';
         g.beginPath();
-        g.moveTo(128, 165); g.lineTo(128, 165 - 100);
-        g.stroke();
-        // F字孔（白い細線2本）
-        g.strokeStyle = 'rgba(0,0,0,1)';
-        g.lineWidth = 1.5;
+        g.ellipse(150, 270, 12, 30, -0.2, 0, Math.PI * 2);
+        g.fill();
+        // ネック
+        g.strokeStyle = '#3a1a08';
+        g.lineWidth = 5;
         g.beginPath();
-        g.moveTo(110, 215); g.lineTo(115, 235);
-        g.moveTo(141, 215); g.lineTo(146, 235);
+        g.moveTo(160, 200); g.lineTo(160, 130);
         g.stroke();
-        // 弓
-        g.strokeStyle = 'rgba(180,180,180,0.8)';
+        // 弦4本
+        g.strokeStyle = 'rgba(180,160,120,0.8)';
+        g.lineWidth = 0.6;
+        for (let s = -3; s <= 3; s += 2) {
+          g.beginPath();
+          g.moveTo(160 + s, 200); g.lineTo(160 + s, 130);
+          g.stroke();
+        }
+        // F字孔
+        g.fillStyle = 'rgba(0,0,0,0.85)';
+        g.beginPath();
+        g.moveTo(135, 270); g.bezierCurveTo(135, 280, 138, 295, 142, 305); g.lineTo(140, 305);
+        g.bezierCurveTo(136, 295, 133, 280, 133, 270); g.fill();
+        g.beginPath();
+        g.moveTo(180, 270); g.bezierCurveTo(180, 280, 183, 295, 187, 305); g.lineTo(185, 305);
+        g.bezierCurveTo(181, 295, 178, 280, 178, 270); g.fill();
+        // 弓（金色）
+        g.strokeStyle = 'rgba(220,200,160,0.9)';
         g.lineWidth = 2;
         g.beginPath();
-        g.moveTo(170, 200); g.lineTo(225, 215);
+        g.moveTo(220, 260); g.lineTo(290, 280);
         g.stroke();
+        // エンドピン
+        g.fillStyle = '#202020';
+        g.fillRect(159, 380, 2, 25);
       } else if (instrument === 'flute') {
-        // フルート（横向きに構える）
-        g.fillStyle = 'rgba(220,220,220,0.95)';
-        g.fillRect(135, 100, 70, 4);
-        // 唇
-        g.fillStyle = 'rgba(180,80,80,0.6)';
-        g.fillRect(150, 96, 10, 2);
+        // フルート（横向き、銀色のハイライト）
+        const fluteGrd = g.createLinearGradient(170, 130, 280, 130);
+        fluteGrd.addColorStop(0, '#a8a8b0'); fluteGrd.addColorStop(0.5, '#f0f0f4'); fluteGrd.addColorStop(1, '#a8a8b0');
+        g.fillStyle = fluteGrd;
+        g.fillRect(170, 128, 110, 6);
+        // キー（小さな円）
+        g.fillStyle = '#404040';
+        for (let kx = 200; kx <= 260; kx += 10) {
+          g.beginPath();
+          g.arc(kx, 132, 2, 0, Math.PI * 2);
+          g.fill();
+        }
+        // 唇付近
+        g.fillStyle = 'rgba(180,80,80,0.5)';
+        g.beginPath();
+        g.ellipse(178, 125, 5, 2, 0, 0, Math.PI * 2);
+        g.fill();
       } else if (instrument === 'piano') {
-        // 鍵盤の前で手を構える（手）
-        g.fillStyle = 'rgba(8,8,16,0.95)';
-        g.fillRect(85, 200, 30, 8);
-        g.fillRect(141, 200, 30, 8);
+        // 鍵盤の前で手を構える（手の影）
+        g.fillStyle = ink;
+        g.beginPath();
+        g.ellipse(105, 240, 22, 8, 0.2, 0, Math.PI * 2);
+        g.fill();
+        g.beginPath();
+        g.ellipse(215, 240, 22, 8, -0.2, 0, Math.PI * 2);
+        g.fill();
       }
 
       const tex = new THREE.CanvasTexture(c);
       if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace;
       tex.minFilter = THREE.LinearFilter;
+      // 🎯 MeshBasicMaterial ＝ 光の影響受けない（違和感解消の核心）
       const sil = new THREE.Mesh(
-        new THREE.PlaneGeometry(1.2, 1.8),
-        new THREE.MeshStandardMaterial({
+        new THREE.PlaneGeometry(1.4, 2.1),
+        new THREE.MeshBasicMaterial({
           map: tex, transparent: true, side: THREE.DoubleSide,
-          roughness: 0.7, alphaTest: 0.05,
+          alphaTest: 0.04, depthWrite: false,
         })
       );
-      sil.position.set(x, 0.9, z);
-      // ビルボード化: animate でカメラ向きに回転
+      sil.position.set(x, 1.05, z);
       sil.userData.isBillboard = true;
-      // 椅子（小さめのシルエット風）
+      // 椅子
       const chair = new THREE.Mesh(
         new THREE.BoxGeometry(0.55, 0.5, 0.5),
-        new THREE.MeshStandardMaterial({ color: 0x141014, roughness: 0.85 })
+        new THREE.MeshBasicMaterial({ color: 0x0a0a14 })
       );
       chair.position.set(x, 0.25, z);
       const grp = new THREE.Group();
@@ -15069,11 +15155,11 @@
       }
     }
 
-    // ステージライト（高い天井から自然に降り注ぐ、4方向の柔らかい光）
-    [[0, 6, 0, 1.6], [-4, 7, 4, 0.9], [4, 7, 4, 0.9], [0, 7, -5, 0.9]].forEach(([x, y, z, intensity]) => {
-      const sl = new THREE.SpotLight(0xfff0d0, intensity, 16, Math.PI/3.5, 0.85, 1.3);
-      sl.position.set(x, y * 2, z); // 高さを倍に（天井から）
-      sl.target.position.set(0, 0.5, 0);
+    // ステージライト（控えめ、ステージ床にだけ柔らかく）
+    [[0, 14, 0, 0.85], [-4, 14, 4, 0.45], [4, 14, 4, 0.45]].forEach(([x, y, z, intensity]) => {
+      const sl = new THREE.SpotLight(0xffe8c0, intensity, 14, Math.PI/4, 0.92, 1.6);
+      sl.position.set(x, y, z);
+      sl.target.position.set(x * 0.3, 0.5, z * 0.3);
       scene.add(sl);
       scene.add(sl.target);
     });
@@ -16349,8 +16435,9 @@
       map: rayTex, transparent: true, opacity: 0.55,
       depthWrite: false, blending: THREE.AdditiveBlending, fog: false,
     }));
-    godRay.scale.set(8, 14, 1);
-    godRay.position.set(0, 7, 0);
+    godRay.scale.set(5, 10, 1);
+    godRay.position.set(0, 6, 0);
+    godRay.material.opacity = 0.3;
     scene.add(godRay);
 
     // ✨ Bloom ポストプロセス
@@ -16470,9 +16557,9 @@
         });
       }
       // ☀ God ray の脈動
-      godRay.material.opacity = 0.4 + bassS * 0.5;
-      const rayS = 8 + bassS * 4;
-      godRay.scale.set(rayS, 14 + bassS * 4, 1);
+      godRay.material.opacity = 0.22 + bassS * 0.25;
+      const rayS = 5 + bassS * 2;
+      godRay.scale.set(rayS, 10 + bassS * 3, 1);
       // 🌫 ダスト: ゆっくり回転 + 中音で揺らぎ
       dust.rotation.y += 0.00015 + midS * 0.0008;
       // 🪐 惑星の公転（宇宙モード時のみ）
