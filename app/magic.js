@@ -14277,6 +14277,7 @@
         <button class="koh-mode-btn" data-mode="cosmos">🌌 宇宙</button>
         <button class="koh-mode-btn" data-mode="nature">🌳 自然</button>
         <button class="koh-mode-btn" data-mode="myth">⛩ 神話</button>
+        <button class="koh-mode-btn" data-mode="timeslip">⏳ タイムスリップ</button>
         <button class="koh-mode-btn" data-mode="vr" id="kohVRBtn">🥽 VR</button>
       </div>
       <!-- 🎮 バーチャルパッド（首振り）— 薄く、ドラッグでも触れない場所に -->
@@ -14418,6 +14419,21 @@
             float moon = smoothstep(0.025, 0.0, distance(uv, vec2(0.72, 0.66)));
             col += vec3(0.85, 0.85, 0.7) * moon * 0.5;
             col *= 0.8;
+          }
+          // ━━━ タイムスリップモード（古紙のセピア、文字の流れ）━━━
+          else if (uMode > 4.5) {
+            // セピア基調のグラデ
+            vec3 paperHi = vec3(0.85, 0.72, 0.45);
+            vec3 paperLo = vec3(0.45, 0.32, 0.22);
+            col = mix(paperLo, paperHi, smoothstep(0.0, 1.0, uv.y));
+            // インクの流れ（fBm）
+            float ink = fbm(uv * 8.0 + vec2(uTime * 0.04, 0.0));
+            ink = smoothstep(0.4, 0.7, ink);
+            col = mix(col, vec3(0.18, 0.10, 0.05), ink * 0.35);
+            // 古い文字の影
+            float lines = step(0.9, fract(uv.y * 50.0 + sin(uv.x * 40.0 + uTime * 0.3) * 0.5));
+            col = mix(col, vec3(0.25, 0.15, 0.08), lines * 0.2);
+            col *= 0.85;
           }
           // ━━━ 神話モード（深い夕焼け、神々しさは控えめに）━━━
           else if (uMode > 3.5) {
@@ -15022,6 +15038,7 @@
       cosmos:     { stageVisible: false, audienceVisible: false, uMode: 2.0, planets: true,  nature: false, myth: false, label: 'COSMOS', loc: '惑星の海' },
       nature:     { stageVisible: false, audienceVisible: false, uMode: 3.0, planets: false, nature: true,  myth: false, label: 'NATURE', loc: '森の囁き' },
       myth:       { stageVisible: false, audienceVisible: false, uMode: 4.0, planets: false, nature: false, myth: true,  label: 'MYTH', loc: '神々の遺跡' },
+      timeslip:   { stageVisible: false, audienceVisible: false, uMode: 5.0, planets: false, nature: false, myth: false, timeslip: true, label: 'TIME-SLIP', loc: '過去の偉人たち' },
     };
     let currentMode = 'concert';
     const stageGroups = [stagePlat, stageRim, stageBase, stageRim2, stageCircle, piano, conductor];
@@ -15036,6 +15053,7 @@
       if (scene.userData.natureGroup) scene.userData.natureGroup.visible = m.nature;
       if (scene.userData.mythGroup) scene.userData.mythGroup.visible = m.myth;
       if (scene.userData.constellationGroup) scene.userData.constellationGroup.visible = (mode === 'planetarium');
+      if (scene.userData.timeslipGroup) scene.userData.timeslipGroup.visible = (mode === 'timeslip');
       if (sphereMat.uniforms && sphereMat.uniforms.uMode) sphereMat.uniforms.uMode.value = m.uMode;
       const label = ov.querySelector('#kohModeLabel');
       if (label) label.textContent = m.label;
@@ -15230,41 +15248,195 @@
       return new THREE.CanvasTexture(c);
     })();
 
-    // 🪐 惑星（宇宙モードで表示）
+    // 🪐 惑星（宇宙モード・リアル質感）— 高解像度procedural texture
     const planetGroup = new THREE.Group();
     planetGroup.visible = false;
+    // 惑星別カスタム描画関数
+    function drawSun(g, w) {
+      const grd = g.createRadialGradient(w/2, w/2, w/8, w/2, w/2, w/2);
+      grd.addColorStop(0, '#ffffe0'); grd.addColorStop(0.4, '#ffe890');
+      grd.addColorStop(0.8, '#ff7030'); grd.addColorStop(1, '#a02010');
+      g.fillStyle = grd; g.fillRect(0, 0, w, w);
+      // 太陽表面の対流セル（granulation）
+      for (let i = 0; i < 600; i++) {
+        const cx = Math.random()*w, cy = Math.random()*w;
+        const r = 4 + Math.random()*8;
+        const grd2 = g.createRadialGradient(cx, cy, 0, cx, cy, r);
+        grd2.addColorStop(0, `rgba(255,255,200,${0.3+Math.random()*0.3})`);
+        grd2.addColorStop(1, 'rgba(255,180,80,0)');
+        g.fillStyle = grd2;
+        g.beginPath(); g.arc(cx, cy, r, 0, Math.PI*2); g.fill();
+      }
+    }
+    function drawEarth(g, w) {
+      // 海
+      const sea = g.createLinearGradient(0, 0, 0, w);
+      sea.addColorStop(0, '#4080c8'); sea.addColorStop(0.5, '#2860a0');
+      sea.addColorStop(1, '#1a4080');
+      g.fillStyle = sea; g.fillRect(0, 0, w, w);
+      // 大陸（緑+茶）— ランダム連続パッチ
+      for (let i = 0; i < 30; i++) {
+        const cx = Math.random()*w, cy = Math.random()*w;
+        let x = cx, y = cy;
+        g.fillStyle = i % 3 === 0 ? '#3a8050' : i % 3 === 1 ? '#5a9060' : '#7a7048';
+        g.beginPath();
+        for (let k = 0; k < 8; k++) {
+          x += (Math.random()-0.5)*30; y += (Math.random()-0.5)*30;
+          g.lineTo(x, y);
+        }
+        g.fill();
+      }
+      // 雲（白い渦）
+      g.globalAlpha = 0.6;
+      for (let i = 0; i < 8; i++) {
+        const cx = Math.random()*w, cy = Math.random()*w;
+        const grd = g.createRadialGradient(cx, cy, 0, cx, cy, 20+Math.random()*20);
+        grd.addColorStop(0, 'rgba(255,255,255,0.85)');
+        grd.addColorStop(1, 'rgba(255,255,255,0)');
+        g.fillStyle = grd;
+        g.beginPath(); g.arc(cx, cy, 30, 0, Math.PI*2); g.fill();
+      }
+      g.globalAlpha = 1;
+      // 極冠
+      const ice1 = g.createRadialGradient(w/2, 8, 0, w/2, 8, 30);
+      ice1.addColorStop(0, '#ffffff'); ice1.addColorStop(1, 'rgba(255,255,255,0)');
+      g.fillStyle = ice1; g.fillRect(0, 0, w, 25);
+      const ice2 = g.createRadialGradient(w/2, w-8, 0, w/2, w-8, 30);
+      ice2.addColorStop(0, '#ffffff'); ice2.addColorStop(1, 'rgba(255,255,255,0)');
+      g.fillStyle = ice2; g.fillRect(0, w-25, w, 25);
+    }
+    function drawMars(g, w) {
+      const grd = g.createRadialGradient(w/2, w/2, 0, w/2, w/2, w/2);
+      grd.addColorStop(0, '#e85020'); grd.addColorStop(1, '#8a3010');
+      g.fillStyle = grd; g.fillRect(0, 0, w, w);
+      // 暗い領域（マレ）
+      for (let i = 0; i < 12; i++) {
+        const cx = Math.random()*w, cy = Math.random()*w;
+        const r = 15 + Math.random()*30;
+        const grd2 = g.createRadialGradient(cx, cy, 0, cx, cy, r);
+        grd2.addColorStop(0, 'rgba(80,30,10,0.55)');
+        grd2.addColorStop(1, 'rgba(80,30,10,0)');
+        g.fillStyle = grd2;
+        g.beginPath(); g.arc(cx, cy, r, 0, Math.PI*2); g.fill();
+      }
+      // 極冠（白）
+      g.fillStyle = 'rgba(255,255,255,0.4)';
+      g.beginPath(); g.arc(w/2, 12, 18, 0, Math.PI*2); g.fill();
+    }
+    function drawJupiter(g, w) {
+      // 横縞（ベルト）
+      const colors = ['#e8c8a0','#a87858','#d8a878','#7a5838','#e8b890','#9a7050','#d8a878'];
+      const stripe = w / colors.length;
+      for (let i = 0; i < colors.length; i++) {
+        const grd = g.createLinearGradient(0, i*stripe, 0, (i+1)*stripe);
+        grd.addColorStop(0, colors[i]); grd.addColorStop(1, colors[(i+1)%colors.length]);
+        g.fillStyle = grd; g.fillRect(0, i*stripe, w, stripe + 1);
+      }
+      // 雲の歪み（横方向の流線）
+      for (let i = 0; i < 200; i++) {
+        const y = Math.random()*w;
+        g.strokeStyle = `rgba(${100+Math.random()*100},${70+Math.random()*60},${40+Math.random()*40},${0.2+Math.random()*0.3})`;
+        g.lineWidth = 1 + Math.random()*2;
+        g.beginPath();
+        g.moveTo(0, y);
+        for (let x = 0; x < w; x += 8) g.lineTo(x, y + Math.sin(x*0.05)*3);
+        g.stroke();
+      }
+      // 大赤斑
+      const grd = g.createRadialGradient(w*0.65, w*0.55, 0, w*0.65, w*0.55, 35);
+      grd.addColorStop(0, '#d84020'); grd.addColorStop(0.6, '#a83018');
+      grd.addColorStop(1, 'rgba(168,48,24,0)');
+      g.fillStyle = grd;
+      g.beginPath(); g.ellipse(w*0.65, w*0.55, 40, 22, 0, 0, Math.PI*2); g.fill();
+    }
+    function drawSaturn(g, w) {
+      const colors = ['#f0d8a0','#c8a070','#e8c890','#b88858','#e8c890','#a87850'];
+      const stripe = w / colors.length;
+      for (let i = 0; i < colors.length; i++) {
+        g.fillStyle = colors[i];
+        g.fillRect(0, i*stripe, w, stripe + 1);
+      }
+      // 細かい流線
+      for (let i = 0; i < 100; i++) {
+        g.strokeStyle = `rgba(${180+Math.random()*40},${130+Math.random()*40},${70+Math.random()*30},0.3)`;
+        g.beginPath();
+        const y = Math.random()*w;
+        g.moveTo(0, y); g.lineTo(w, y + Math.random()*4-2); g.stroke();
+      }
+    }
+    function drawIcePlanet(g, w) {
+      const grd = g.createRadialGradient(w/2, w/2, 0, w/2, w/2, w/2);
+      grd.addColorStop(0, '#b0e8f0'); grd.addColorStop(1, '#3068a0');
+      g.fillStyle = grd; g.fillRect(0, 0, w, w);
+      // メタンの薄い帯
+      for (let i = 0; i < 5; i++) {
+        const y = Math.random()*w;
+        g.strokeStyle = `rgba(180,220,240,${0.2+Math.random()*0.3})`;
+        g.lineWidth = 6 + Math.random()*8;
+        g.beginPath(); g.moveTo(0, y); g.lineTo(w, y); g.stroke();
+      }
+    }
+    function drawMoon(g, w) {
+      const grd = g.createRadialGradient(w/2, w/2, 0, w/2, w/2, w/2);
+      grd.addColorStop(0, '#f0f0e8'); grd.addColorStop(1, '#9090a0');
+      g.fillStyle = grd; g.fillRect(0, 0, w, w);
+      // クレーター
+      for (let i = 0; i < 60; i++) {
+        const cx = Math.random()*w, cy = Math.random()*w;
+        const r = 3 + Math.random()*10;
+        const grd2 = g.createRadialGradient(cx, cy, 0, cx, cy, r);
+        grd2.addColorStop(0, 'rgba(60,50,40,0.5)');
+        grd2.addColorStop(0.7, 'rgba(60,50,40,0.2)');
+        grd2.addColorStop(1, 'rgba(60,50,40,0)');
+        g.fillStyle = grd2;
+        g.beginPath(); g.arc(cx, cy, r, 0, Math.PI*2); g.fill();
+      }
+    }
     const planetData = [
-      { name:'太陽',     r: 3.5, dist: 0,  c1:'#ffe890', c2:'#ff8030', emissive: 0xff8030 },
-      { name:'地球',     r: 1.0, dist: 14, c1:'#4080d0', c2:'#308050', emissive: 0x000000 },
-      { name:'火星',     r: 0.8, dist: 18, c1:'#d04020', c2:'#8a3018', emissive: 0x000000 },
-      { name:'木星',     r: 2.4, dist: 24, c1:'#d8a878', c2:'#8a6048', emissive: 0x000000 },
-      { name:'土星',     r: 2.0, dist: 30, c1:'#e8c890', c2:'#a08050', emissive: 0x000000, ring: true },
-      { name:'天王星',   r: 1.5, dist: 35, c1:'#80d8e8', c2:'#4080a0', emissive: 0x000000 },
-      { name:'月',       r: 0.3, dist: 12, c1:'#e0e0e0', c2:'#909090', emissive: 0x000000 },
+      { name:'太陽',   r: 4.0, dist: 0,  emissive: 0xff8030, draw: drawSun, atmos: 0xff7020 },
+      { name:'水星',   r: 0.6, dist: 9,  draw: drawMoon },
+      { name:'金星',   r: 0.95,dist: 13, draw: (g,w) => { drawJupiter(g,w); g.fillStyle = 'rgba(220,180,100,0.55)'; g.fillRect(0,0,w,w); }, atmos: 0xe8c870 },
+      { name:'地球',   r: 1.0, dist: 17, draw: drawEarth, atmos: 0x80c8ff },
+      { name:'月',     r: 0.28,dist: 17, draw: drawMoon, moonOf: 'earth' },
+      { name:'火星',   r: 0.7, dist: 21, draw: drawMars },
+      { name:'木星',   r: 2.6, dist: 27, draw: drawJupiter },
+      { name:'土星',   r: 2.2, dist: 33, draw: drawSaturn, ring: true },
+      { name:'天王星', r: 1.6, dist: 38, draw: drawIcePlanet },
     ];
     const orbiters = [];
     planetData.forEach((p, i) => {
-      // 惑星表面テクスチャ
-      const ptex = (() => {
-        const c = document.createElement('canvas'); c.width = 256; c.height = 256;
-        const g = c.getContext('2d');
-        const grd = g.createRadialGradient(128, 128, 30, 128, 128, 128);
-        grd.addColorStop(0, p.c1); grd.addColorStop(1, p.c2);
-        g.fillStyle = grd; g.fillRect(0, 0, 256, 256);
-        // ノイズ
-        for (let n = 0; n < 800; n++) {
-          g.fillStyle = `rgba(0,0,0,${0.05 + Math.random() * 0.15})`;
-          g.fillRect(Math.random()*256, Math.random()*256, 2, 2);
-        }
-        return new THREE.CanvasTexture(c);
-      })();
+      const w = 512;
+      const c = document.createElement('canvas'); c.width = w; c.height = w;
+      const g = c.getContext('2d');
+      p.draw(g, w);
+      const ptex = new THREE.CanvasTexture(c);
+      if ('colorSpace' in ptex) ptex.colorSpace = THREE.SRGBColorSpace;
       const sphere = new THREE.Mesh(
-        new THREE.SphereGeometry(p.r, 32, 24),
+        new THREE.SphereGeometry(p.r, 48, 32),
         new THREE.MeshStandardMaterial({
-          map: ptex, roughness: 0.85,
-          emissive: new THREE.Color(p.emissive), emissiveIntensity: p.emissive ? 1.0 : 0,
+          map: ptex, roughness: 0.9, metalness: 0.0,
+          emissive: new THREE.Color(p.emissive || 0x000000),
+          emissiveIntensity: p.emissive ? 1.0 : 0,
         })
       );
+      // 大気のスプライト
+      if (p.atmos) {
+        const ac = document.createElement('canvas'); ac.width = 128; ac.height = 128;
+        const ag = ac.getContext('2d');
+        const grd = ag.createRadialGradient(64, 64, 30, 64, 64, 64);
+        const hex = '#' + p.atmos.toString(16).padStart(6, '0');
+        grd.addColorStop(0, hex + '00');
+        grd.addColorStop(0.6, hex + '60');
+        grd.addColorStop(0.85, hex + '20');
+        grd.addColorStop(1, hex + '00');
+        ag.fillStyle = grd; ag.fillRect(0, 0, 128, 128);
+        const atmos = new THREE.Sprite(new THREE.SpriteMaterial({
+          map: new THREE.CanvasTexture(ac), transparent: true,
+          depthWrite: false, blending: THREE.AdditiveBlending,
+        }));
+        atmos.scale.set(p.r * 2.6, p.r * 2.6, 1);
+        sphere.add(atmos);
+      }
       sphere.position.set(p.dist, 8, 0);
       planetGroup.add(sphere);
       // 軌道
@@ -15421,45 +15593,165 @@
     // ⛩ 神話モード（ギリシャ風遺跡＋光、コンパクトに球体内へ）
     const mythGroup = new THREE.Group();
     mythGroup.visible = false;
-    // 12本の遺跡柱（小さい半径・低い高さで球体に収める）
+    // 12本の遺跡柱（中央寄り・確実に球体内）
     for (let i = 0; i < 12; i++) {
       const a = (i / 12) * Math.PI * 2;
-      const r = 14; // 22 → 14（観客席の内側）
+      const r = 9; // 観客席（最内 r=8）の少し外側、ステージ周辺
       const x = Math.cos(a) * r, z = Math.sin(a) * r;
-      const colHeight = i % 4 === 0 ? 4 : 5 + Math.random() * 1.5;
+      const colHeight = i % 4 === 0 ? 3 : 3.5 + Math.random() * 1;
       const broken = i % 5 === 0;
       const col = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.45, 0.55, broken ? 2.5 : colHeight, 18),
-        new THREE.MeshStandardMaterial({ color: 0xc0bcb0, roughness: 0.7, metalness: 0.05 })
+        new THREE.CylinderGeometry(0.4, 0.5, broken ? 1.8 : colHeight, 16),
+        new THREE.MeshStandardMaterial({ color: 0xc0bcb0, roughness: 0.7 })
       );
-      col.position.set(x, broken ? 1.25 : colHeight / 2, z);
+      col.position.set(x, broken ? 0.9 : colHeight / 2, z);
       mythGroup.add(col);
       if (!broken) {
         const cap = new THREE.Mesh(
-          new THREE.BoxGeometry(1.2, 0.25, 1.2),
+          new THREE.BoxGeometry(1.0, 0.22, 1.0),
           new THREE.MeshStandardMaterial({ color: 0xd8d4c8, roughness: 0.6 })
         );
-        cap.position.set(x, colHeight + 0.13, z);
+        cap.position.set(x, colHeight + 0.11, z);
         mythGroup.add(cap);
       }
     }
-    // 中央の祭壇
+    // 中央の祭壇（小さめ）
     const altar = new THREE.Mesh(
-      new THREE.BoxGeometry(2.4, 1.0, 2.4),
-      new THREE.MeshStandardMaterial({ color: 0xa89880, roughness: 0.5, metalness: 0.1 })
+      new THREE.BoxGeometry(1.8, 0.8, 1.8),
+      new THREE.MeshStandardMaterial({ color: 0xa89880, roughness: 0.5 })
     );
-    altar.position.y = 0.5;
+    altar.position.y = 0.4;
     mythGroup.add(altar);
-    // 神々しい光柱（控えめに）
+    // 神々しい光柱（さらにコンパクト）
     const divineRay = new THREE.Sprite(new THREE.SpriteMaterial({
-      map: rayTex, color: 0xffd890, transparent: true, opacity: 0.45,
+      map: rayTex, color: 0xffd890, transparent: true, opacity: 0.4,
       depthWrite: false, blending: THREE.AdditiveBlending, fog: false,
     }));
-    divineRay.scale.set(3, 10, 1);
-    divineRay.position.set(0, 6, 0);
+    divineRay.scale.set(2, 6, 1);
+    divineRay.position.set(0, 3.5, 0);
     mythGroup.add(divineRay);
     scene.add(mythGroup);
     scene.userData.mythGroup = mythGroup;
+
+    // ⏳ 偉人タイムスリップモード — 過去の偉人たちの記憶
+    const timeslipGroup = new THREE.Group();
+    timeslipGroup.visible = false;
+    // 偉人シルエット（板にキャンバス描画、背景透過）
+    const ICONS = [
+      { emoji: '🎼', name: 'モーツァルト', year: '1756' },
+      { emoji: '🔭', name: 'ガリレオ', year: '1564' },
+      { emoji: '✏️', name: 'シェイクスピア', year: '1564' },
+      { emoji: '🎨', name: 'ダ・ヴィンチ', year: '1452' },
+      { emoji: '🧠', name: 'アインシュタイン', year: '1879' },
+      { emoji: '👑', name: 'ナポレオン', year: '1769' },
+      { emoji: '🪶', name: '紫式部', year: '978' },
+      { emoji: '⚔', name: '織田信長', year: '1534' },
+      { emoji: '🍎', name: 'ニュートン', year: '1643' },
+      { emoji: '☕', name: 'ベートーヴェン', year: '1770' },
+    ];
+    function makeFigureCard(icon, name, year, accent) {
+      const c = document.createElement('canvas'); c.width = 256; c.height = 384;
+      const g = c.getContext('2d');
+      // 古紙風の背景
+      const grd = g.createLinearGradient(0, 0, 0, 384);
+      grd.addColorStop(0, '#e8d8a8'); grd.addColorStop(1, '#c8a878');
+      g.fillStyle = grd; g.fillRect(0, 0, 256, 384);
+      // 古紙のシミ
+      for (let i = 0; i < 60; i++) {
+        g.fillStyle = `rgba(${100+Math.random()*60},${70+Math.random()*40},${30+Math.random()*30},${0.04+Math.random()*0.12})`;
+        const r = 4 + Math.random()*16;
+        g.beginPath(); g.arc(Math.random()*256, Math.random()*384, r, 0, Math.PI*2); g.fill();
+      }
+      // 縁
+      g.strokeStyle = '#5a3818'; g.lineWidth = 4;
+      g.strokeRect(8, 8, 240, 368);
+      g.lineWidth = 1;
+      g.strokeRect(16, 16, 224, 352);
+      // 大きな絵文字
+      g.font = '120px serif';
+      g.textAlign = 'center'; g.textBaseline = 'middle';
+      g.fillStyle = '#3a2010';
+      g.fillText(icon, 128, 160);
+      // 年
+      g.font = 'italic 22px "Cormorant Garamond", serif';
+      g.fillStyle = '#5a3818';
+      g.fillText('— ' + year + ' —', 128, 280);
+      // 名前
+      g.font = 'bold 26px "Shippori Mincho", serif';
+      g.fillStyle = '#1a0a04';
+      g.fillText(name, 128, 320);
+      return new THREE.CanvasTexture(c);
+    }
+    ICONS.forEach((icn, i) => {
+      const a = (i / ICONS.length) * Math.PI * 2;
+      const r = 14;
+      const x = Math.cos(a) * r, z = Math.sin(a) * r;
+      const tex = makeFigureCard(icn.emoji, icn.name, icn.year);
+      if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace;
+      const card = new THREE.Mesh(
+        new THREE.PlaneGeometry(2.2, 3.3),
+        new THREE.MeshStandardMaterial({ map: tex, transparent: true, side: THREE.DoubleSide, roughness: 0.85 })
+      );
+      card.position.set(x, 3 + Math.sin(i * 1.7) * 0.8, z);
+      card.lookAt(0, card.position.y, 0);
+      card.userData = { baseY: card.position.y, phase: i * 0.6 };
+      timeslipGroup.add(card);
+    });
+    // 浮遊する古文書（雪のように降る、AdditiveBlending）
+    const paperTex = (() => {
+      const c = document.createElement('canvas'); c.width = 64; c.height = 64;
+      const g = c.getContext('2d');
+      // 古紙の小さな破片
+      g.fillStyle = '#e8d8a8'; g.fillRect(8, 8, 48, 48);
+      g.strokeStyle = '#8a6038'; g.lineWidth = 1;
+      g.strokeRect(8, 8, 48, 48);
+      // 文字（線画）
+      g.beginPath();
+      for (let i = 0; i < 6; i++) {
+        const y = 14 + i * 6;
+        g.moveTo(12, y); g.lineTo(52 - Math.random() * 20, y);
+      }
+      g.stroke();
+      return new THREE.CanvasTexture(c);
+    })();
+    const PAPERS = 80;
+    const paperPos = new Float32Array(PAPERS * 3);
+    for (let i = 0; i < PAPERS; i++) {
+      paperPos[i*3]   = (Math.random() - 0.5) * 28;
+      paperPos[i*3+1] = Math.random() * 16;
+      paperPos[i*3+2] = (Math.random() - 0.5) * 28;
+    }
+    const paperGeo = new THREE.BufferGeometry();
+    paperGeo.setAttribute('position', new THREE.BufferAttribute(paperPos, 3));
+    const paperPoints = new THREE.Points(paperGeo, new THREE.PointsMaterial({
+      map: paperTex, size: 0.5, transparent: true, opacity: 0.8,
+      depthWrite: false, sizeAttenuation: true,
+    }));
+    timeslipGroup.add(paperPoints);
+    timeslipGroup.userData.papers = paperPoints;
+    // 中央の砂時計
+    const hourglass = new THREE.Group();
+    const hg1 = new THREE.Mesh(
+      new THREE.ConeGeometry(0.5, 0.7, 16, 1, true),
+      new THREE.MeshStandardMaterial({ color: 0xe8c890, roughness: 0.3, metalness: 0.4, side: THREE.DoubleSide, transparent: true, opacity: 0.7 })
+    );
+    hg1.position.y = 1.3;
+    hourglass.add(hg1);
+    const hg2 = hg1.clone(); hg2.rotation.z = Math.PI; hg2.position.y = 0.6;
+    hourglass.add(hg2);
+    // 上下の枠
+    [0.95, 1.65].forEach(y => {
+      const ring = new THREE.Mesh(
+        new THREE.TorusGeometry(0.5, 0.04, 8, 18),
+        new THREE.MeshStandardMaterial({ color: 0x8a6028, metalness: 0.85, roughness: 0.4 })
+      );
+      ring.rotation.x = Math.PI / 2; ring.position.y = y;
+      hourglass.add(ring);
+    });
+    timeslipGroup.add(hourglass);
+    timeslipGroup.userData.hourglass = hourglass;
+    scene.add(timeslipGroup);
+    scene.userData.timeslipGroup = timeslipGroup;
 
     // 🌫 浮遊する塵（光に照らされて見える、空気感の核心）
     const DUST_N = 600;
@@ -15614,6 +15906,29 @@
           }
           o.mesh.rotation.y += 0.005;
         });
+      }
+      // ⏳ タイムスリップ: カードが浮遊 + 紙が降る + 砂時計が回る
+      if (scene.userData.timeslipGroup && scene.userData.timeslipGroup.visible) {
+        scene.userData.timeslipGroup.children.forEach((c, i) => {
+          if (c.userData && c.userData.baseY !== undefined) {
+            c.position.y = c.userData.baseY + Math.sin(t * 0.6 + c.userData.phase) * 0.4;
+          }
+        });
+        // 砂時計が回る
+        if (scene.userData.timeslipGroup.userData.hourglass) {
+          scene.userData.timeslipGroup.userData.hourglass.rotation.y = t * 0.3;
+          scene.userData.timeslipGroup.userData.hourglass.position.y = 1 + Math.sin(t * 0.4) * 0.2;
+        }
+        // 古紙が降る
+        if (scene.userData.timeslipGroup.userData.papers) {
+          const pp = scene.userData.timeslipGroup.userData.papers.geometry.attributes.position;
+          for (let i = 0; i < pp.count; i++) {
+            pp.array[i*3+1] -= 0.02;
+            pp.array[i*3] += Math.sin(t * 0.5 + i) * 0.01;
+            if (pp.array[i*3+1] < -2) pp.array[i*3+1] = 16;
+          }
+          pp.needsUpdate = true;
+        }
       }
       // 🪲 自然モード: 蛍が漂う
       if (scene.userData.natureGroup && scene.userData.natureGroup.visible) {
