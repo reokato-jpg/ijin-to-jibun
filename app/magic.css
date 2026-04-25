@@ -8758,7 +8758,7 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   .khs-value { font-size: 11px; }
 }
 
-/* モード切替バー */
+/* モード切替バー — 横スクロール可能（多くのボタンに対応） */
 .koh-mode-bar {
   position: absolute; bottom: 14px; left: 50%;
   transform: translateX(-50%);
@@ -8769,9 +8769,13 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   padding: 6px;
   border-radius: 999px;
   border: 1px solid rgba(180,140,220,0.3);
+  max-width: calc(100vw - 24px);
+  overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
 }
+.koh-mode-bar::-webkit-scrollbar { display: none; } /* Safari/Chrome */
 .koh-mode-btn {
-  padding: 8px 16px;
+  padding: 8px 14px;
   background: transparent;
   border: 1px solid transparent;
   color: rgba(216,176,255,0.7);
@@ -8781,6 +8785,7 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   cursor: pointer;
   transition: all .25s;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 .koh-mode-btn:hover { background: rgba(80,60,140,0.4); color: #fff8e0; }
 .koh-mode-btn.active {
@@ -8790,7 +8795,11 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   box-shadow: 0 0 14px rgba(255,216,144,0.3);
 }
 @media (max-width: 640px) {
-  .koh-mode-btn { padding: 6px 10px; font-size: 10px; }
+  .koh-mode-bar { padding: 5px; gap: 4px; bottom: 10px; }
+  .koh-mode-btn { padding: 6px 10px; font-size: 10.5px; letter-spacing: 0.05em; }
+}
+@media (max-width: 420px) {
+  .koh-mode-btn { padding: 6px 8px; font-size: 10px; }
 }
 
 /* 🎮 バーチャルパッド（首振り） */
