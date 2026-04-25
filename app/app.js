@@ -2,6 +2,153 @@
 function ensureLazyCss(_name) { /* merged back into style.css */ }
 window.ensureLazyCss = ensureLazyCss;
 
+// ============================================================
+// 🕸 偉人 ⇆ 神話・神様・絵本 の関連マップ
+// ============================================================
+window.PERSON_CONNECTIONS = {
+  // ─ 神話と関わる偉人 ─
+  plato: {
+    myths: [{ key: 'greek', label: 'ギリシャ神話', emoji: '⚡', chapter: 8 }],
+    reason: '『ティマイオス』『クリティアス』でアトランティスを、『国家』でエリュシオン的世界観を語った'
+  },
+  dante: {
+    myths: [{ key: 'greek', label: 'ギリシャ神話（エリュシオン）', emoji: '🌾', chapter: 12 },
+            { key: 'genesis', label: '創世記', emoji: '✦' }],
+    reason: '『神曲』で天国・地獄・煉獄の三界を描き、ギリシャ・ローマ神話とキリスト教を融合した'
+  },
+  michelangelo: {
+    myths: [{ key: 'genesis', label: '創世記', emoji: '✦', chapter: 4 }],
+    reason: 'システィーナ礼拝堂《天地創造》《アダム創造》《楽園追放》を描いた'
+  },
+  caravaggio: {
+    myths: [{ key: 'greek', label: 'ギリシャ神話', emoji: '⚡' },
+            { key: 'genesis', label: '創世記', emoji: '✦' }],
+    reason: 'バロック期の聖書・神話絵画の巨匠。《ナルキッソス》《イサクの犠牲》など'
+  },
+  botticelli: {
+    myths: [{ key: 'greek', label: 'ギリシャ神話', emoji: '⚡' }],
+    reason: '《ヴィーナスの誕生》《プリマヴェーラ》などルネサンス期のギリシャ神話絵画の頂点'
+  },
+  shakespeare: {
+    myths: [{ key: 'greek', label: 'ギリシャ神話', emoji: '⚡' }],
+    reason: '『真夏の夜の夢』『ヴィーナスとアドニス』など神話的素材を多用'
+  },
+  wagner: {
+    myths: [{ key: 'norse', label: '北欧神話', emoji: '⚒' }],
+    reason: '楽劇『ニーベルングの指環』四部作で北欧神話を音楽化した'
+  },
+  nietzsche: {
+    myths: [{ key: 'greek', label: 'ギリシャ神話', emoji: '⚡' }],
+    reason: '『悲劇の誕生』でアポロン的・ディオニュソス的を提唱、神話の哲学的読解を確立'
+  },
+  freud: {
+    myths: [{ key: 'greek', label: 'ギリシャ神話', emoji: '⚡' }],
+    reason: 'エディプスコンプレックス・ナルシシズムなど精神分析の概念をギリシャ神話から取った'
+  },
+  carl_jung: {
+    myths: [
+      { key: 'greek', label: 'ギリシャ神話', emoji: '⚡' },
+      { key: 'norse', label: '北欧神話', emoji: '⚒' },
+      { key: 'egypt', label: 'エジプト神話', emoji: '☥' },
+      { key: 'hindu', label: 'ヒンドゥー神話', emoji: '🪷' },
+      { key: 'genesis', label: '創世記', emoji: '✦' },
+      { key: 'japan', label: '日本神話', emoji: '⛩' },
+    ],
+    reason: '集合的無意識・元型論で世界中の神話を統合的に研究。すべての神話の根源的構造を発見'
+  },
+  murasaki: {
+    myths: [{ key: 'japan', label: '日本神話', emoji: '⛩' }],
+    reason: '『源氏物語』で日本の神道的世界観・もののあわれを文学的に確立'
+  },
+
+  // ─ 絵本の作者 ─
+  saint_exupery: { books: ['prince'] },
+  lewis_carroll: { books: ['alice'] },
+  baum: { books: ['oz'] },
+  beatrix_potter: { books: ['peter'] },
+  collodi: { books: ['pinocchio'] },
+  miyazawa_kenji: { books: ['galaxy'] },
+  walt_disney: {
+    books: ['alice', 'pinocchio', 'peter'],
+    reason: 'これらの童話を映画化し、世界中に広めた'
+  },
+};
+// 逆引き: 絵本ID → 著者偉人ID
+window.BOOK_TO_AUTHOR = {
+  prince: 'saint_exupery',
+  alice: 'lewis_carroll',
+  oz: 'baum',
+  peter: 'beatrix_potter',
+  pinocchio: 'collodi',
+  galaxy: 'miyazawa_kenji',
+};
+
+// 関連セクション HTML を生成
+function renderRelatedSection(personId) {
+  const c = window.PERSON_CONNECTIONS[personId];
+  if (!c) return '';
+  const chips = [];
+  if (c.myths) c.myths.forEach(m => {
+    chips.push(`<button class="rel-chip rel-chip-myth" data-rel-myth="${m.key}"${m.chapter ? ` data-rel-chapter="${m.chapter}"` : ''}>
+      <span class="rc-icon">${m.emoji}</span><span class="rc-label">${m.label}</span></button>`);
+  });
+  if (c.books) c.books.forEach(bookId => {
+    const book = (window.EHON_BOOKS || []).find(b => b.id === bookId);
+    if (!book) return;
+    chips.push(`<button class="rel-chip rel-chip-book" data-rel-book="${bookId}">
+      <span class="rc-icon">${book.cover}</span><span class="rc-label">${book.title}</span></button>`);
+  });
+  if (c.gods) c.gods.forEach(g => {
+    chips.push(`<button class="rel-chip rel-chip-god" data-rel-god="${g}">
+      <span class="rc-icon">⛩</span><span class="rc-label">${g}</span></button>`);
+  });
+  if (chips.length === 0) return '';
+  return `
+    <div class="related-section">
+      <div class="related-head">
+        <span class="related-title">この人 と 関わる 世界</span>
+        <span class="related-sub">— Cross-realms —</span>
+      </div>
+      ${c.reason ? `<div class="related-reason">${c.reason}</div>` : ''}
+      <div class="related-chips">${chips.join('')}</div>
+      <div class="related-hint">タップで そこへ 飛ぶ</div>
+    </div>
+  `;
+}
+window.renderRelatedSection = renderRelatedSection;
+
+// 関連チップのクリック処理
+function bindRelatedHandlers(scope) {
+  scope.querySelectorAll('[data-rel-myth]').forEach(b => {
+    b.addEventListener('click', () => {
+      const k = b.dataset.relMyth;
+      if (window.openMythology) window.openMythology(k);
+    });
+  });
+  scope.querySelectorAll('[data-rel-book]').forEach(b => {
+    b.addEventListener('click', () => {
+      const id = b.dataset.relBook;
+      const book = (window.EHON_BOOKS || []).find(x => x.id === id);
+      if (!book) return;
+      if (book.open) book.open();
+      else if (window.openPictureBook) window.openPictureBook(book);
+    });
+  });
+  scope.querySelectorAll('[data-rel-god]').forEach(b => {
+    b.addEventListener('click', () => {
+      if (window.openGodsBook) window.openGodsBook();
+    });
+  });
+}
+window.bindRelatedHandlers = bindRelatedHandlers;
+
+// showPerson を全モジュールから呼べるよう公開（function 宣言なので hoisting で OK）
+window.addEventListener('DOMContentLoaded', () => {
+  if (typeof showPerson === 'function') window.showPerson = showPerson;
+});
+// 即時にも公開
+try { if (typeof showPerson === 'function') window.showPerson = showPerson; } catch {}
+
 // ====================== Amazon アフィリエイト設定 ======================
 // natsumi のAmazonアソシエイトIDをセット。全Amazonリンクに自動付与される。
 const AMAZON_TAG = 'natsumipiano-22';
@@ -7124,6 +7271,7 @@ async function showPerson(id) {
         })()}
       </div>
       <div class="profile-bio">${p.summary}</div>
+      ${(typeof renderRelatedSection === 'function') ? renderRelatedSection(p.id) : ''}
       ${p.lifeDigest ? `
         <details class="life-digest">
           <summary class="life-digest-summary">
@@ -7767,6 +7915,9 @@ async function showPerson(id) {
   `;
   const container = document.getElementById('personDetail');
   container.innerHTML = html;
+
+  // 🕸 関連チップ（神話・絵本・神様）にハンドラを束ねる
+  if (typeof bindRelatedHandlers === 'function') bindRelatedHandlers(container);
 
   // まずローカルの軌跡を即座に描画（Firestoreを待たずに自分の訪問を表示）
   try {

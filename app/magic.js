@@ -14540,11 +14540,39 @@
       year: 1943, color1: '#1a0a30', color2: '#3a2050', accent: '#ffd060',
       cover: '🌹', synopsis: '砂漠で出会った小さな王子の物語。',
       open: () => openLittlePrinceBook(),
+      world: {
+        bg: 0x1a0a30, fog: 0x2a1840, fogDensity: 0.012,
+        hdri: 'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/dikhololo_night_1k.hdr',
+        ambient: 0x6080a0, light: 0xfff0c0,
+        symbol: '🌹', theme: '小さな星と砂漠',
+        characters: [
+          { id:'rose', emoji:'🌹', name:'バラ', role:'たった一輪の', color:'#ff5070', quote:'私があなたにとって特別なのは、あなたが私に費やした時間のせいよ' },
+          { id:'fox', emoji:'🦊', name:'キツネ', role:'砂漠の友', color:'#ff9050', quote:'心で見なくちゃ、肝心なことは目に見えない' },
+          { id:'snake', emoji:'🐍', name:'ヘビ', role:'砂漠の影', color:'#404060', quote:'ぼくが触れたものは、いた場所に戻る' },
+          { id:'lamp', emoji:'🕯', name:'点灯夫', role:'第329惑星', color:'#f0c040', quote:'1分ごとに点け消す。私の星の自転は速いのだ' },
+          { id:'king', emoji:'👑', name:'王', role:'第325惑星', color:'#d04040', quote:'命じる相手がいなくても、命じよ' },
+          { id:'geographer', emoji:'📜', name:'地理学者', role:'第330惑星', color:'#8a6a4a', quote:'山も花も、はかないものは記録できない' },
+        ],
+      },
     },
     {
       id: 'alice', title: '不思議の国のアリス', author: 'ルイス・キャロル',
       year: 1865, color1: '#1a3020', color2: '#0a1810', accent: '#80e0a0',
       cover: '🐰', synopsis: '白いウサギを追いかけて、アリスは穴に落ちた。',
+      world: {
+        bg: 0x0a1810, fog: 0x1a3020, fogDensity: 0.018,
+        hdri: 'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/forest_slope_1k.hdr',
+        ambient: 0x80c0a0, light: 0xfff0c0,
+        symbol: '🐰', theme: '不思議の森',
+        characters: [
+          { id:'whiteRabbit', emoji:'🐰', name:'白うさぎ', role:'懐中時計', color:'#ffffff', quote:'大変、遅刻だ！' },
+          { id:'cheshire', emoji:'😼', name:'チェシャ猫', role:'消える微笑み', color:'#c060c0', quote:'結局のところ、私たちはみんな、ちょっと頭がおかしいのよ' },
+          { id:'hatter', emoji:'🎩', name:'帽子屋', role:'六時のお茶会', color:'#80a0c0', quote:'お誕生日でない日のお祝いをするわ' },
+          { id:'queen', emoji:'♥️', name:'ハートの女王', role:'首をはねよ！', color:'#e02040', quote:'まずは判決、裁判は後だ！' },
+          { id:'caterpillar', emoji:'🐛', name:'青いも虫', role:'キノコの上', color:'#4080c0', quote:'お前は、誰だ？' },
+          { id:'dormouse', emoji:'🐭', name:'ヤマネ', role:'お茶会の眠り猫', color:'#a08060', quote:'…眠りながら…糖蜜の井戸…' },
+        ],
+      },
       pages: [
         { title: '1. 退屈な午後', text: 'アリスは姉のそばで退屈していた。「絵も会話もない本に、なんの意味があるかしら」 — そのとき、白いウサギが懐中時計を見ながら走り過ぎた。「大変、遅刻だ！」',
           svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="al1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a8a4a"/><stop offset="1" stop-color="#1a3020"/></linearGradient></defs><rect width="400" height="360" fill="url(#al1)"/><ellipse cx="200" cy="320" rx="200" ry="40" fill="#3a5a30"/><g transform="translate(280,200)"><animateTransform attributeName="transform" type="translate" values="280,200;-50,200" dur="6s" repeatCount="indefinite"/><ellipse cx="0" cy="-12" rx="22" ry="16" fill="#fff"/><circle cx="0" cy="-32" r="11" fill="#fff"/><ellipse cx="-4" cy="-46" rx="3" ry="10" fill="#fff"/><ellipse cx="4" cy="-46" rx="3" ry="10" fill="#fff"/><circle cx="-3" cy="-32" r="1.4" fill="#e02040"/><circle cx="3" cy="-32" r="1.4" fill="#e02040"/><circle cx="0" cy="-29" r="1" fill="#ffa0a0"/><circle cx="14" cy="-10" r="6" fill="#ffd060" stroke="#8a6020" stroke-width="0.8"/><line x1="14" y1="-10" x2="14" y2="-13" stroke="#8a6020" stroke-width="1"/></g><g transform="translate(120,260)"><circle cx="0" cy="-10" r="14" fill="#ffd0a0"/><path d="M -14 -8 Q -16 -22 0 -24 Q 16 -22 14 -8 Z" fill="#ffe080"/><circle cx="-4" cy="-12" r="1.2" fill="#1a1a1a"/><circle cx="4" cy="-12" r="1.2" fill="#1a1a1a"/><path d="M 0 30 L -10 60 L 10 60 Z" fill="#80c0e0"/><path d="M -10 60 L -14 90 L 14 90 L 10 60 Z" fill="#fff"/></g></svg>` },
@@ -14562,6 +14590,20 @@
       id: 'oz', title: 'オズの魔法使い', author: 'L・フランク・ボーム',
       year: 1900, color1: '#1a4030', color2: '#0a2018', accent: '#80ffa0',
       cover: '🦁', synopsis: 'カンザスから竜巻に運ばれた少女ドロシーの旅。',
+      world: {
+        bg: 0x0a2018, fog: 0x1a4030, fogDensity: 0.012,
+        hdri: 'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/spruit_sunrise_1k.hdr',
+        ambient: 0x80c060, light: 0xffe890,
+        symbol: '🌪', theme: '黄色いレンガ道',
+        characters: [
+          { id:'dorothy', emoji:'👧', name:'ドロシー', role:'カンザスの少女', color:'#80c0e0', quote:'おうちが一番' },
+          { id:'scarecrow', emoji:'🌾', name:'カカシ', role:'脳が欲しい', color:'#e8c890', quote:'でも、もう少し考えてみよう' },
+          { id:'tinman', emoji:'🤖', name:'ブリキの木こり', role:'心が欲しい', color:'#a0c0c8', quote:'錆びるから、泣いてはいけない' },
+          { id:'lion', emoji:'🦁', name:'臆病ライオン', role:'勇気が欲しい', color:'#c89060', quote:'勇気とは、恐怖を感じないことではない' },
+          { id:'oz', emoji:'🧙', name:'魔法使いオズ', role:'幕の向こう', color:'#80ffa0', quote:'みんな、すでに持っているのだ' },
+          { id:'witch', emoji:'🧹', name:'西の悪い魔女', role:'緑の肌', color:'#40a040', quote:'あの娘の靴を、寄越せ！' },
+        ],
+      },
       pages: [
         { title: '1. 灰色のカンザス', text: 'すべてが灰色だった ─ 草原も家も、おばさんの顔も。だが小犬トトだけは違った。トトの瞳と鳴き声が、ドロシーの世界を色づかせていた。',
           svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="360" fill="#888"/><path d="M 0 280 L 400 280 L 400 360 L 0 360 Z" fill="#666"/><rect x="160" y="180" width="80" height="100" fill="#777" stroke="#444"/><polygon points="160,180 200,140 240,180" fill="#555"/><g transform="translate(150,260)"><circle cx="0" cy="0" r="14" fill="#a8a8a8"/><path d="M 0 14 L -10 35 L 10 35 Z" fill="#909090"/></g><g transform="translate(180,275)"><ellipse cx="0" cy="0" rx="10" ry="6" fill="#3a2810"/><circle cx="-6" cy="-3" r="3" fill="#3a2810"/><circle cx="-7" cy="-3" r="0.8" fill="#fff"/></g></svg>` },
@@ -14579,6 +14621,20 @@
       id: 'peter', title: 'ピーターラビット', author: 'ビアトリクス・ポター',
       year: 1902, color1: '#3a2818', color2: '#1a1208', accent: '#ffaa60',
       cover: '🐰', synopsis: 'いたずらな小ウサギの、危険な冒険。',
+      world: {
+        bg: 0x6a8a40, fog: 0x8aaa50, fogDensity: 0.010,
+        hdri: 'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/spruit_sunrise_1k.hdr',
+        ambient: 0xa8c060, light: 0xfff0c0,
+        symbol: '🥬', theme: 'マグレガーさんの畑',
+        characters: [
+          { id:'peter', emoji:'🐰', name:'ピーター', role:'青いコート', color:'#80522a', quote:'お畑には行ってはいけませんよ…' },
+          { id:'mama', emoji:'🐇', name:'お母さんウサギ', role:'四つの子', color:'#a86840', quote:'お父さんは、お畑で食べられたの' },
+          { id:'flopsy', emoji:'🐰', name:'フロプシー', role:'ピーターの姉', color:'#c89060', quote:'ベリーを摘みに行きましょう' },
+          { id:'mopsy', emoji:'🐇', name:'モプシー', role:'ピーターの姉', color:'#b87850', quote:'ピーターはどこ？' },
+          { id:'cottontail', emoji:'🐇', name:'カトンテール', role:'ピーターの妹', color:'#d8a070', quote:'お母さん、待って！' },
+          { id:'mcgregor', emoji:'👨‍🌾', name:'マグレガーさん', role:'畑の主', color:'#5a4030', quote:'泥棒め！' },
+        ],
+      },
       pages: [
         { title: '1. お母さんの忠告', text: 'お母さんウサギは言った。「お畑にだけは行ってはいけませんよ。お父さんはあそこで、マグレガーさんに食べられてしまったの」。だがピーターは ─ 真っ直ぐにお畑へ向かった。',
           svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="pr1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a8c8a0"/><stop offset="1" stop-color="#5a8050"/></linearGradient></defs><rect width="400" height="360" fill="url(#pr1)"/>${Array.from({length:30}).map(()=>{const x=Math.random()*400;const y=200+Math.random()*160;return `<line x1="${x}" y1="${y}" x2="${x}" y2="${y-8}" stroke="#3a6a30" stroke-width="0.7"/>`}).join('')}<g transform="translate(150,240)"><ellipse cx="0" cy="0" rx="30" ry="22" fill="#a86840"/><circle cx="0" cy="-20" r="14" fill="#a86840"/><ellipse cx="-7" cy="-36" rx="3" ry="14" fill="#a86840"/><ellipse cx="7" cy="-36" rx="3" ry="14" fill="#a86840"/><circle cx="-4" cy="-22" r="1.5" fill="#1a1a1a"/><circle cx="4" cy="-22" r="1.5" fill="#1a1a1a"/><path d="M 0 -16 L -2 -14 L 2 -14 Z" fill="#3a1a08"/></g><g transform="translate(260,250)"><ellipse cx="0" cy="0" rx="22" ry="16" fill="#80522a"/><circle cx="0" cy="-14" r="11" fill="#80522a"/><ellipse cx="-5" cy="-28" rx="2" ry="10" fill="#80522a"/><ellipse cx="5" cy="-28" rx="2" ry="10" fill="#80522a"/><circle cx="-3" cy="-16" r="1" fill="#1a1a1a"/><circle cx="3" cy="-16" r="1" fill="#1a1a1a"/></g></svg>` },
@@ -14596,6 +14652,20 @@
       id: 'pinocchio', title: 'ピノキオの冒険', author: 'カルロ・コッローディ',
       year: 1883, color1: '#3a2010', color2: '#1a0a04', accent: '#80c0ff',
       cover: '🪵', synopsis: '木でできた小さな人形が、心を学ぶまで。',
+      world: {
+        bg: 0x3a2010, fog: 0x4a2818, fogDensity: 0.012,
+        hdri: 'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/dikhololo_night_1k.hdr',
+        ambient: 0x6080a0, light: 0xfff0c0,
+        symbol: '🌟', theme: 'ジェペット爺の工房と海',
+        characters: [
+          { id:'pinocchio', emoji:'🪵', name:'ピノキオ', role:'操り人形', color:'#d8a060', quote:'本当の少年になりたい！' },
+          { id:'geppetto', emoji:'👴', name:'ジェペット爺', role:'木彫り職人', color:'#a87850', quote:'坊や、目を覚ましてくれ' },
+          { id:'cricket', emoji:'🦗', name:'ジミニー', role:'良心', color:'#40a060', quote:'良心の声に、耳を傾けたまえ' },
+          { id:'fairy', emoji:'🧚', name:'青い髪の妖精', role:'守護の魔法', color:'#80c0ff', quote:'嘘をついたね、ピノキオ' },
+          { id:'whale', emoji:'🐋', name:'クジラ', role:'モンストロ', color:'#3a4a60', quote:'…' },
+          { id:'fox', emoji:'🦊', name:'狐と猫', role:'怠け者の国へ', color:'#c08040', quote:'お金が木になる場所を教えよう' },
+        ],
+      },
       pages: [
         { title: '1. 喋る丸太', text: '大工のチェリーじいさんが斧を振り上げると、丸太が叫んだ。「やめておくれ、痛いよ！」。気味悪がってジェペット爺さんに譲ると、彼はそれで人形を彫り、ピノキオと名づけた。',
           svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="360" fill="#3a2010"/><rect x="0" y="280" width="400" height="80" fill="#2a1408"/><g transform="translate(150,200)"><rect x="-15" y="-5" width="30" height="60" fill="#a06030"/><circle cx="0" cy="-15" r="14" fill="#d8a060"/><circle cx="-4" cy="-18" r="1" fill="#1a1a1a"/><circle cx="4" cy="-18" r="1" fill="#1a1a1a"/><polygon points="0,-15 -2,-10 2,-10 10,-13" fill="#c08040"/><animateTransform attributeName="transform" type="translate" values="150,200;152,201;150,200" dur="2s" repeatCount="indefinite"/></g><g transform="translate(280,220)"><rect x="-10" y="-30" width="20" height="60" fill="#80522a"/><circle cx="0" cy="-50" r="22" fill="#e8c8a0"/><rect x="-22" y="-66" width="44" height="14" fill="#a8a8b0"/><line x1="-15" y1="-30" x2="-25" y2="-10" stroke="#80522a" stroke-width="6"/><line x1="15" y1="-30" x2="20" y2="-15" stroke="#80522a" stroke-width="6"/><circle cx="-5" cy="-52" r="1.5" fill="#1a1a1a"/><circle cx="5" cy="-52" r="1.5" fill="#1a1a1a"/></g></svg>` },
@@ -14613,6 +14683,20 @@
       id: 'galaxy', title: '銀河鉄道の夜', author: '宮沢賢治',
       year: 1934, color1: '#0a0a30', color2: '#040420', accent: '#ffe890',
       cover: '🚂', synopsis: '夜空を駆ける汽車。少年ジョバンニとカムパネルラの旅。',
+      world: {
+        bg: 0x040420, fog: 0x0a0a30, fogDensity: 0.008,
+        hdri: 'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/satara_night_1k.hdr',
+        ambient: 0x4060a0, light: 0xa0c0ff,
+        symbol: '🚂', theme: '銀河の岸辺',
+        characters: [
+          { id:'giovanni', emoji:'🧒', name:'ジョバンニ', role:'寂しい少年', color:'#a0c0ff', quote:'本当のさいわいって、なんだろう' },
+          { id:'campanella', emoji:'👦', name:'カムパネルラ', role:'親友', color:'#ffe890', quote:'どこまでも行こう、ジョバンニ' },
+          { id:'conductor', emoji:'🚂', name:'車掌', role:'銀河鉄道', color:'#3a4a5a', quote:'切符を拝見します' },
+          { id:'lighthouseKeeper', emoji:'🏔', name:'燈台守', role:'星座の番人', color:'#5a8aa0', quote:'リンゴは、こうして食べるんだよ' },
+          { id:'scorpio', emoji:'🦂', name:'蝎', role:'燃える星', color:'#ff5020', quote:'神よ、私の体を、人々の幸せのために' },
+          { id:'birdcatcher', emoji:'🐦', name:'鳥捕り', role:'銀河の鷺', color:'#80a060', quote:'白鳥を捕まえました、お一つどうです' },
+        ],
+      },
       pages: [
         { title: '1. 午後の授業', text: '先生は、天の川は何でできているか、と問うた。だがジョバンニは、答えられなかった。みんなが笑った ─ ザネリも、笑った。それでも、ジョバンニはカムパネルラの目だけを覚えていた。',
           svg: `<svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="360" fill="#3a2818"/><rect x="50" y="80" width="300" height="180" fill="#fff8e0" stroke="#3a2010"/><line x1="60" y1="100" x2="340" y2="100" stroke="#aaa"/><line x1="60" y1="120" x2="340" y2="120" stroke="#aaa"/>${Array.from({length:12}).map((_,i)=>{const x=70+(i%4)*70;const y=200+Math.floor(i/4)*30;return `<g transform="translate(${x},${y})"><circle cx="0" cy="0" r="6" fill="#d8a060"/><rect x="-3" y="6" width="6" height="14" fill="#5a3010"/></g>`}).join('')}<g transform="translate(80,290)"><circle cx="0" cy="0" r="10" fill="#d8a060"/><rect x="-4" y="10" width="8" height="20" fill="#3a2010"/><animate attributeName="opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite"/></g></svg>` },
@@ -14631,6 +14715,7 @@
     let idx = 0;
     const ov = document.createElement('div');
     ov.className = 'lpbook-overlay';
+    const authorId = (window.BOOK_TO_AUTHOR || {})[book.id];
     function render() {
       const p = book.pages[idx];
       ov.innerHTML = `
@@ -14646,6 +14731,7 @@
           <div class="lpbook-dots">${book.pages.map((_, i) => `<span class="lpbook-dot ${i === idx ? 'on' : ''}"></span>`).join('')}</div>
           <button class="lpbook-btn" id="lpNext">${idx === book.pages.length - 1 ? 'おわり ★' : '次のページ ›'}</button>
         </div>
+        ${authorId ? `<button class="lpbook-author-link" id="lpAuthor">📚 作者「${book.author}」を見る →</button>` : ''}
       `;
       ov.querySelector('.lpbook-close').addEventListener('click', () => {
         ov.classList.remove('open');
@@ -14656,6 +14742,17 @@
         if (idx < book.pages.length - 1) { idx++; render(); }
         else { ov.classList.remove('open'); setTimeout(() => ov.remove(), 400); }
       });
+      // 作者の偉人ページへジャンプ
+      const authorBtn = ov.querySelector('#lpAuthor');
+      if (authorBtn && authorId) {
+        authorBtn.addEventListener('click', () => {
+          ov.classList.remove('open');
+          setTimeout(() => {
+            ov.remove();
+            if (window.showPerson) window.showPerson(authorId);
+          }, 350);
+        });
+      }
     }
     document.body.appendChild(ov);
     render();
@@ -14663,6 +14760,360 @@
   }
   window.openPictureBook = openPictureBook;
   window.EHON_BOOKS = EHON_BOOKS;
+
+  // ============================================================
+  // 📚🌍 絵本ワールド — 各絵本のテーマ世界 (神殿と同じ感覚)
+  // ============================================================
+  async function openBookWorld3D(book) {
+    if (!window.THREE || !book.world) {
+      // world データがない本は普通のリーダーへフォールバック
+      if (book.open) book.open(); else openPictureBook(book);
+      return;
+    }
+    const THREE = window.THREE;
+    if (window.THREE_READY) { try { await window.THREE_READY; } catch {} }
+    const W_DATA = book.world;
+    const ov = document.createElement('div');
+    ov.className = 'museum3d-overlay book-world-overlay';
+    ov.innerHTML = `
+      <div class="museum3d-stage" id="bwStage"></div>
+      <button class="museum3d-close" aria-label="閉じる">×</button>
+      <div class="museum3d-title">${book.title}</div>
+      <div class="museum3d-info show" id="bwInfo">${W_DATA.theme}　／　近づくとカードが回ります</div>
+      <div class="museum3d-stick" id="bwStick"><div class="m3d-stick-knob" id="bwKnob"></div></div>
+      <button class="museum3d-view-btn" id="bwReadBtn" style="background:linear-gradient(135deg,#3a2050,#1a0a28);color:#fff;border:1px solid rgba(216,176,255,0.4);">📖 この絵本を読む</button>
+    `;
+    document.body.appendChild(ov);
+    requestAnimationFrame(() => ov.classList.add('open'));
+    const stage = ov.querySelector('#bwStage');
+    const info = ov.querySelector('#bwInfo');
+    const W = () => stage.clientWidth || window.innerWidth;
+    const H = () => stage.clientHeight || window.innerHeight;
+    const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
+    renderer.shadowMap.enabled = false;
+    renderer.setPixelRatio(1);
+    const _RS = 0.7;
+    renderer.setSize(W() * _RS, H() * _RS, false);
+    renderer.domElement.style.width = '100%';
+    renderer.domElement.style.height = '100%';
+    if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.3;
+    if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
+    stage.appendChild(renderer.domElement);
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(W_DATA.bg);
+    scene.fog = new THREE.FogExp2(W_DATA.fog, W_DATA.fogDensity);
+    if (W_DATA.hdri && typeof applyCinematicEnv === 'function') {
+      applyCinematicEnv(renderer, scene, W_DATA.hdri, { intensity: 0.7 });
+    }
+    // ライト
+    scene.add(new THREE.AmbientLight(W_DATA.ambient || 0x808080, 0.7));
+    const key = new THREE.DirectionalLight(W_DATA.light || 0xfff0d0, 1.6);
+    key.position.set(8, 12, 6); scene.add(key);
+    scene.add(new THREE.HemisphereLight(W_DATA.light || 0x88bbff, 0x223344, 0.5));
+
+    // 星空（うっすら）
+    const sgeo = new THREE.BufferGeometry();
+    const SC = 400;
+    const sp = new Float32Array(SC * 3);
+    for (let i = 0; i < SC; i++) {
+      const r = 50 + Math.random() * 60;
+      const th = Math.random() * Math.PI * 2;
+      const ph = Math.acos(2 * Math.random() - 1);
+      sp[i*3]   = Math.sin(ph)*Math.cos(th)*r;
+      sp[i*3+1] = Math.cos(ph)*r;
+      sp[i*3+2] = Math.sin(ph)*Math.sin(th)*r;
+    }
+    sgeo.setAttribute('position', new THREE.BufferAttribute(sp, 3));
+    scene.add(new THREE.Points(sgeo, new THREE.PointsMaterial({
+      color: 0xffffff, size: 0.4, transparent: true, opacity: 0.8, depthWrite: false, fog: false,
+    })));
+
+    // テーマ装飾: シンボル（中央上空にうっすら大きく）
+    const symC = document.createElement('canvas'); symC.width = 256; symC.height = 256;
+    const symG = symC.getContext('2d');
+    symG.font = '180px serif'; symG.textAlign = 'center'; symG.textBaseline = 'middle';
+    symG.fillStyle = 'rgba(255,255,255,0.18)';
+    symG.fillText(W_DATA.symbol || '★', 128, 144);
+    const symTex = new THREE.CanvasTexture(symC);
+    const symSprite = new THREE.Sprite(new THREE.SpriteMaterial({
+      map: symTex, transparent: true, opacity: 0.45, depthWrite: false, fog: false,
+    }));
+    symSprite.scale.set(20, 20, 1);
+    symSprite.position.set(0, 12, -25);
+    scene.add(symSprite);
+
+    // 🌹 王子様アバター（プレイヤー — どの絵本でも王子様で歩く）
+    const ava = (typeof buildPrinceAvatar === 'function') ? buildPrinceAvatar() : null;
+    let prince;
+    if (ava) {
+      prince = ava.group;
+    } else {
+      prince = new THREE.Group();
+      prince.add(new THREE.Mesh(
+        new THREE.SphereGeometry(0.3, 16, 12),
+        new THREE.MeshBasicMaterial({ color: 0xffe890 })
+      ));
+    }
+    prince.position.set(0, 0.4, 6);
+    scene.add(prince);
+
+    // === 登場人物カード（くるくる回る） ===
+    const cards = [];
+    const charList = W_DATA.characters || [];
+    charList.forEach((ch, i) => {
+      const angle = (i / charList.length) * Math.PI * 2;
+      const r = 7 + Math.random() * 1.5;
+      const y = 1.6 + Math.sin(i * 1.7) * 1.2;
+      // カード描画
+      const cc = document.createElement('canvas'); cc.width = 384; cc.height = 540;
+      const cg = cc.getContext('2d');
+      // 背景: 深い色 + アクセント縁
+      const grd = cg.createLinearGradient(0, 0, 0, 540);
+      grd.addColorStop(0, '#1a0a20'); grd.addColorStop(1, '#3a2050');
+      cg.fillStyle = grd; cg.fillRect(0, 0, 384, 540);
+      // ノイズ
+      for (let n = 0; n < 600; n++) {
+        cg.fillStyle = `rgba(255,255,255,${0.04+Math.random()*0.08})`;
+        cg.fillRect(Math.random()*384, Math.random()*540, 1, 1);
+      }
+      // 縁
+      cg.strokeStyle = ch.color; cg.lineWidth = 8;
+      cg.strokeRect(16, 16, 352, 508);
+      cg.lineWidth = 2;
+      cg.strokeRect(28, 28, 328, 484);
+      // 4隅装飾
+      [[28,28],[356,28],[28,512],[356,512]].forEach(([x,y]) => {
+        cg.fillStyle = ch.color;
+        cg.beginPath(); cg.arc(x, y, 6, 0, Math.PI*2); cg.fill();
+      });
+      // 上部「人物」ラベル
+      cg.font = 'italic 18px "Cormorant Garamond", serif';
+      cg.fillStyle = ch.color;
+      cg.textAlign = 'center';
+      cg.fillText('— Character —', 192, 70);
+      // 大きな絵文字
+      cg.font = '180px serif';
+      cg.fillStyle = ch.color;
+      cg.shadowColor = ch.color; cg.shadowBlur = 24;
+      cg.fillText(ch.emoji, 192, 240);
+      cg.shadowBlur = 0;
+      // 名前
+      cg.font = 'bold 38px "Shippori Mincho", serif';
+      cg.fillStyle = '#fff8e0';
+      cg.fillText(ch.name, 192, 340);
+      // 役割
+      cg.font = '22px "Shippori Mincho", serif';
+      cg.fillStyle = ch.color;
+      cg.fillText(ch.role || '', 192, 380);
+      // セパレーター
+      cg.strokeStyle = ch.color; cg.lineWidth = 1;
+      cg.beginPath(); cg.moveTo(80, 410); cg.lineTo(304, 410); cg.stroke();
+      // 名言
+      if (ch.quote) {
+        cg.font = 'italic 16px "Shippori Mincho", serif';
+        cg.fillStyle = '#e8d8ff';
+        // 折り返し
+        const words = ch.quote.split('');
+        const lineMax = 18;
+        for (let l = 0; l < 3; l++) {
+          const line = words.slice(l * lineMax, (l + 1) * lineMax).join('');
+          if (!line) break;
+          cg.fillText(line, 192, 440 + l * 24);
+        }
+      }
+      const cardTex = new THREE.CanvasTexture(cc);
+      if ('colorSpace' in cardTex) cardTex.colorSpace = THREE.SRGBColorSpace;
+      const cardMesh = new THREE.Mesh(
+        new THREE.PlaneGeometry(1.6, 2.25),
+        new THREE.MeshStandardMaterial({
+          map: cardTex, transparent: true,
+          roughness: 0.5, side: THREE.DoubleSide,
+          emissive: new THREE.Color(ch.color), emissiveIntensity: 0.15,
+        })
+      );
+      const group = new THREE.Group();
+      group.add(cardMesh);
+      // 後光
+      const haloC = document.createElement('canvas'); haloC.width = 128; haloC.height = 128;
+      const hg = haloC.getContext('2d');
+      const hgr = hg.createRadialGradient(64, 64, 0, 64, 64, 64);
+      hgr.addColorStop(0, ch.color + 'aa');
+      hgr.addColorStop(1, ch.color + '00');
+      hg.fillStyle = hgr; hg.fillRect(0, 0, 128, 128);
+      const halo = new THREE.Sprite(new THREE.SpriteMaterial({
+        map: new THREE.CanvasTexture(haloC), color: 0xffffff,
+        transparent: true, opacity: 0.4, depthWrite: false, blending: THREE.AdditiveBlending,
+      }));
+      halo.scale.set(4, 4, 1);
+      group.add(halo);
+      group.position.set(Math.cos(angle) * r, y, Math.sin(angle) * r);
+      group.userData = { ch, baseY: y, angle, cardMesh, halo, spinSpeed: 0.005 };
+      scene.add(group);
+      cards.push(group);
+    });
+
+    // カメラ（三人称、王子様の周り）
+    const camera = new THREE.PerspectiveCamera(60, W()/H(), 0.1, 200);
+    let yaw = 0, pitch = 0.18;
+    let dynCamDist = 4.5;
+    camera.position.set(0, 2.5, 6 + dynCamDist);
+    camera.lookAt(0, 1, 0);
+
+    // === 入力 ===
+    const keys = { w:0, a:0, s:0, d:0 };
+    const onKD = (e) => {
+      if (!ov.classList.contains('open')) return;
+      const k = e.key.toLowerCase();
+      if (k === 'w' || e.key === 'ArrowUp') keys.w = 1;
+      if (k === 's' || e.key === 'ArrowDown') keys.s = 1;
+      if (k === 'a' || e.key === 'ArrowLeft') keys.a = 1;
+      if (k === 'd' || e.key === 'ArrowRight') keys.d = 1;
+    };
+    const onKU = (e) => {
+      const k = e.key.toLowerCase();
+      if (k === 'w' || e.key === 'ArrowUp') keys.w = 0;
+      if (k === 's' || e.key === 'ArrowDown') keys.s = 0;
+      if (k === 'a' || e.key === 'ArrowLeft') keys.a = 0;
+      if (k === 'd' || e.key === 'ArrowRight') keys.d = 0;
+    };
+    window.addEventListener('keydown', onKD);
+    window.addEventListener('keyup', onKU);
+
+    // ドラッグ視点
+    let dragging = false, lx = 0, ly = 0;
+    renderer.domElement.addEventListener('pointerdown', e => { dragging = true; lx = e.clientX; ly = e.clientY; });
+    renderer.domElement.addEventListener('pointermove', e => {
+      if (!dragging) return;
+      yaw -= (e.clientX - lx) * 0.0055;
+      pitch = Math.max(-0.4, Math.min(1.0, pitch + (e.clientY - ly) * 0.0040));
+      lx = e.clientX; ly = e.clientY;
+    });
+    const stop = () => { dragging = false; };
+    renderer.domElement.addEventListener('pointerup', stop);
+    renderer.domElement.addEventListener('pointerleave', stop);
+    renderer.domElement.addEventListener('wheel', e => {
+      dynCamDist = Math.max(2.5, Math.min(15, dynCamDist + e.deltaY * 0.01));
+      e.preventDefault();
+    }, { passive: false });
+
+    // モバイルスティック
+    const stick = ov.querySelector('#bwStick');
+    const knob = ov.querySelector('#bwKnob');
+    let stickActive = false, stickDX = 0, stickDY = 0;
+    const stickStart = e => {
+      stickActive = true;
+      const t = e.touches ? e.touches[0] : e;
+      stick.dataset.cx = t.clientX; stick.dataset.cy = t.clientY;
+      e.preventDefault();
+    };
+    const stickMove = e => {
+      if (!stickActive) return;
+      const t = e.touches ? e.touches[0] : e;
+      let dx = t.clientX - +stick.dataset.cx, dy = t.clientY - +stick.dataset.cy;
+      const d = Math.hypot(dx, dy), MAX = 40;
+      if (d > MAX) { dx = dx/d*MAX; dy = dy/d*MAX; }
+      knob.style.transform = `translate(${dx}px, ${dy}px)`;
+      stickDX = dx / MAX; stickDY = dy / MAX;
+      e.preventDefault();
+    };
+    const stickEnd = () => { stickActive = false; knob.style.transform = 'translate(0,0)'; stickDX = stickDY = 0; };
+    stick.addEventListener('touchstart', stickStart, { passive: false });
+    stick.addEventListener('touchmove', stickMove, { passive: false });
+    stick.addEventListener('touchend', stickEnd);
+
+    // 「読む」ボタン
+    ov.querySelector('#bwReadBtn').addEventListener('click', () => {
+      // 絵本を開く
+      if (book.open) book.open();
+      else openPictureBook(book);
+    });
+
+    let running = true;
+    ov.querySelector('.museum3d-close').addEventListener('click', () => {
+      running = false;
+      window.removeEventListener('keydown', onKD);
+      window.removeEventListener('keyup', onKU);
+      ov.classList.remove('open');
+      setTimeout(() => ov.remove(), 500);
+    });
+
+    const t0 = performance.now();
+    let frame = 0;
+    function animate() {
+      if (!running) return;
+      frame++;
+      const t = (performance.now() - t0) / 1000;
+      // 王子様移動
+      const speed = 0.10;
+      const fwd = (keys.w - keys.s) - stickDY;
+      const strafe = (keys.d - keys.a) + stickDX;
+      if (Math.hypot(fwd, strafe) > 0) {
+        const nx = Math.sin(yaw), nz = -Math.cos(yaw);
+        const sx = Math.cos(yaw), sz = Math.sin(yaw);
+        prince.position.x += (nx * fwd + sx * strafe) * speed;
+        prince.position.z += (nz * fwd + sz * strafe) * speed;
+        const d = Math.hypot(prince.position.x, prince.position.z);
+        if (d > 14) {
+          prince.position.x = prince.position.x / d * 14;
+          prince.position.z = prince.position.z / d * 14;
+        }
+        const moveAngle = Math.atan2(nx * fwd + sx * strafe, nz * fwd + sz * strafe);
+        prince.rotation.y = moveAngle;
+      }
+      // 王子様アイドル動作
+      prince.position.y = 0.4 + Math.sin(t * 1.5) * 0.04;
+      if (ava && ava.scarfTail) ava.scarfTail.rotation.z = 0.5 + Math.sin(t * 2.5) * 0.3;
+      if (ava && ava.scarfTail2) ava.scarfTail2.rotation.z = 0.7 + Math.sin(t * 2.5 + 0.3) * 0.3;
+      if (ava && ava.aura) ava.aura.material.opacity = 0.4 + Math.sin(t * 1.8) * 0.15;
+
+      // カード: 浮遊 + 近接で回転加速
+      cards.forEach(g => {
+        g.position.y = g.userData.baseY + Math.sin(t * 0.7 + g.userData.angle) * 0.3;
+        // プレイヤーとの距離
+        const dx = g.position.x - prince.position.x;
+        const dz = g.position.z - prince.position.z;
+        const dist = Math.hypot(dx, dz);
+        // 近いほど回転速度UP
+        const targetSpin = dist < 4 ? (0.05 - dist * 0.008) : 0.005;
+        g.userData.spinSpeed += (targetSpin - g.userData.spinSpeed) * 0.05;
+        g.userData.cardMesh.rotation.y += g.userData.spinSpeed;
+        // 後光も光る
+        g.userData.halo.material.opacity = dist < 3 ? 0.7 : 0.4;
+      });
+
+      // 最寄りカード検出
+      let best = null, bestD = 4;
+      cards.forEach(g => {
+        const dx = g.position.x - prince.position.x;
+        const dz = g.position.z - prince.position.z;
+        const dist = Math.hypot(dx, dz);
+        if (dist < bestD) { best = g; bestD = dist; }
+      });
+      if (best) {
+        info.textContent = best.userData.ch.name + '　／　' + (best.userData.ch.quote || '');
+      } else {
+        info.textContent = W_DATA.theme + '　／　近づくとカードが回ります';
+      }
+
+      // 三人称オービット
+      camera.position.x = prince.position.x + Math.sin(yaw) * Math.cos(pitch) * dynCamDist;
+      camera.position.y = prince.position.y + 1.4 + Math.sin(pitch) * dynCamDist;
+      camera.position.z = prince.position.z + Math.cos(yaw) * Math.cos(pitch) * dynCamDist;
+      camera.lookAt(prince.position.x, prince.position.y + 1.0, prince.position.z);
+
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+    animate();
+    window.addEventListener('resize', () => {
+      renderer.setSize(W() * _RS, H() * _RS, false);
+      camera.aspect = W()/H();
+      camera.updateProjectionMatrix();
+    });
+  }
+  window.openBookWorld3D = openBookWorld3D;
 
   // ============================================================
   // 📚🌌 絵本の宇宙 — 浮かぶ絵本ハブ（Three.js）
@@ -14733,88 +15184,267 @@
     const fill = new THREE.HemisphereLight(0x88bbff, 0x223344, 0.55);
     scene.add(fill);
 
-    // 🌹 王子様アバター（プレイヤー）
+    // 🌹 星の王子様アバター（リアル版・絵本のイラストに忠実）
     function buildPrinceAvatar() {
       const p = new THREE.Group();
-      // 髪（金色のツンツン）
-      const hair = new THREE.Mesh(
-        new THREE.ConeGeometry(0.25, 0.32, 12),
-        new THREE.MeshStandardMaterial({ color: 0xffd860, roughness: 0.4, emissive: 0x6a4000, emissiveIntensity: 0.35 })
+      // === 顔（肌色のスフィア + キャンバスで顔を描く） ===
+      const faceCanvas = document.createElement('canvas');
+      faceCanvas.width = 256; faceCanvas.height = 256;
+      const fctx = faceCanvas.getContext('2d');
+      // 肌色背景
+      const skinGrd = fctx.createRadialGradient(128, 128, 30, 128, 128, 130);
+      skinGrd.addColorStop(0, '#ffe0c0'); skinGrd.addColorStop(1, '#e8b88a');
+      fctx.fillStyle = skinGrd; fctx.fillRect(0, 0, 256, 256);
+      // ほっぺた（淡い赤み）
+      fctx.fillStyle = 'rgba(255,140,140,0.35)';
+      fctx.beginPath(); fctx.arc(80, 145, 22, 0, Math.PI*2); fctx.fill();
+      fctx.beginPath(); fctx.arc(176, 145, 22, 0, Math.PI*2); fctx.fill();
+      // 目（白目）
+      fctx.fillStyle = '#ffffff';
+      fctx.beginPath(); fctx.ellipse(98, 118, 12, 14, 0, 0, Math.PI*2); fctx.fill();
+      fctx.beginPath(); fctx.ellipse(158, 118, 12, 14, 0, 0, Math.PI*2); fctx.fill();
+      // 黒目
+      fctx.fillStyle = '#1a1a2a';
+      fctx.beginPath(); fctx.arc(98, 119, 7, 0, Math.PI*2); fctx.fill();
+      fctx.beginPath(); fctx.arc(158, 119, 7, 0, Math.PI*2); fctx.fill();
+      // ハイライト（生きた目）
+      fctx.fillStyle = '#ffffff';
+      fctx.beginPath(); fctx.arc(101, 116, 2.5, 0, Math.PI*2); fctx.fill();
+      fctx.beginPath(); fctx.arc(161, 116, 2.5, 0, Math.PI*2); fctx.fill();
+      // まつげ
+      fctx.strokeStyle = '#3a2010'; fctx.lineWidth = 2; fctx.lineCap = 'round';
+      fctx.beginPath();
+      fctx.moveTo(86, 108); fctx.lineTo(82, 100);
+      fctx.moveTo(98, 104); fctx.lineTo(98, 96);
+      fctx.moveTo(110, 108); fctx.lineTo(114, 100);
+      fctx.moveTo(146, 108); fctx.lineTo(142, 100);
+      fctx.moveTo(158, 104); fctx.lineTo(158, 96);
+      fctx.moveTo(170, 108); fctx.lineTo(174, 100);
+      fctx.stroke();
+      // 眉
+      fctx.strokeStyle = '#7a4818'; fctx.lineWidth = 3.5;
+      fctx.beginPath();
+      fctx.moveTo(82, 92); fctx.quadraticCurveTo(98, 86, 114, 92);
+      fctx.moveTo(142, 92); fctx.quadraticCurveTo(158, 86, 174, 92);
+      fctx.stroke();
+      // 鼻
+      fctx.strokeStyle = '#c08070'; fctx.lineWidth = 2;
+      fctx.beginPath();
+      fctx.moveTo(128, 130); fctx.quadraticCurveTo(124, 150, 128, 158);
+      fctx.stroke();
+      // 口
+      fctx.strokeStyle = '#a04040'; fctx.lineWidth = 2.5; fctx.lineCap = 'round';
+      fctx.beginPath();
+      fctx.moveTo(112, 178); fctx.quadraticCurveTo(128, 188, 144, 178);
+      fctx.stroke();
+      // 唇のハイライト
+      fctx.strokeStyle = 'rgba(255,200,200,0.7)'; fctx.lineWidth = 1.2;
+      fctx.beginPath(); fctx.moveTo(118, 175); fctx.quadraticCurveTo(128, 180, 138, 175); fctx.stroke();
+      const faceTex = new THREE.CanvasTexture(faceCanvas);
+      if ('colorSpace' in faceTex) faceTex.colorSpace = THREE.SRGBColorSpace;
+      const head = new THREE.Mesh(
+        new THREE.SphereGeometry(0.22, 32, 24),
+        new THREE.MeshStandardMaterial({ map: faceTex, roughness: 0.55, metalness: 0.0 })
       );
-      hair.position.y = 0.95;
-      p.add(hair);
-      // 顔
-      const face = new THREE.Mesh(
-        new THREE.SphereGeometry(0.22, 18, 14),
-        new THREE.MeshStandardMaterial({ color: 0xf8d8b0, roughness: 0.6, emissive: 0x302018, emissiveIntensity: 0.2 })
+      head.position.y = 0.78;
+      p.add(head);
+
+      // === 髪（金色のツンツン: 多数のコーンで構成） ===
+      const hairMat = new THREE.MeshStandardMaterial({
+        color: 0xfdd95a, roughness: 0.4, metalness: 0.05,
+        emissive: 0x6a4800, emissiveIntensity: 0.35,
+      });
+      // 中央の山（最大）
+      const hairBack = new THREE.Mesh(new THREE.SphereGeometry(0.21, 24, 20, 0, Math.PI*2, 0, Math.PI*0.55), hairMat);
+      hairBack.position.y = 0.78;
+      hairBack.position.z = -0.02;
+      hairBack.rotation.x = -0.2;
+      p.add(hairBack);
+      // ツンツンの毛束（11本くらい、ランダムに）
+      const tuftCount = 11;
+      for (let i = 0; i < tuftCount; i++) {
+        const a = (i / tuftCount) * Math.PI * 2;
+        const lean = 0.15 + Math.random() * 0.15;
+        const len = 0.10 + Math.random() * 0.12;
+        const tuft = new THREE.Mesh(
+          new THREE.ConeGeometry(0.035, len, 6),
+          hairMat
+        );
+        tuft.position.set(
+          Math.cos(a) * 0.16,
+          0.93 + Math.random() * 0.05,
+          Math.sin(a) * 0.16 - 0.02
+        );
+        tuft.rotation.z = -Math.cos(a) * lean;
+        tuft.rotation.x = Math.sin(a) * lean;
+        p.add(tuft);
+      }
+
+      // === マフラー（黄色、首に巻く） ===
+      const scarfMat = new THREE.MeshStandardMaterial({
+        color: 0xffd84a, roughness: 0.65,
+        emissive: 0x5a3a00, emissiveIntensity: 0.18,
+      });
+      const scarfRing = new THREE.Mesh(
+        new THREE.TorusGeometry(0.18, 0.06, 12, 24),
+        scarfMat
       );
-      face.position.y = 0.7;
-      p.add(face);
-      // マフラー（黄色）
-      const scarf = new THREE.Mesh(
-        new THREE.TorusGeometry(0.24, 0.07, 10, 18),
-        new THREE.MeshStandardMaterial({ color: 0xffe040, roughness: 0.5, emissive: 0x5a3a00, emissiveIntensity: 0.3 })
-      );
-      scarf.position.y = 0.45;
-      scarf.rotation.x = Math.PI / 2;
-      p.add(scarf);
-      // マフラーの尻尾（風になびく）
-      const scarfTail = new THREE.Mesh(
-        new THREE.BoxGeometry(0.1, 0.4, 0.05),
-        new THREE.MeshStandardMaterial({ color: 0xffe040, roughness: 0.4, emissive: 0x5a3a00, emissiveIntensity: 0.3 })
-      );
-      scarfTail.position.set(0.15, 0.28, -0.16);
-      scarfTail.rotation.z = 0.4;
+      scarfRing.position.y = 0.55;
+      scarfRing.rotation.x = Math.PI / 2;
+      scarfRing.scale.set(1.2, 1, 0.85);
+      p.add(scarfRing);
+      // マフラーの2本のなびく尻尾（曲がった平面）
+      const tailGeo = new THREE.PlaneGeometry(0.14, 0.55, 1, 6);
+      const tailGeo2 = new THREE.PlaneGeometry(0.12, 0.42, 1, 5);
+      const scarfTail = new THREE.Mesh(tailGeo, new THREE.MeshStandardMaterial({
+        color: 0xffd84a, roughness: 0.65, side: THREE.DoubleSide,
+        emissive: 0x5a3a00, emissiveIntensity: 0.18,
+      }));
+      scarfTail.position.set(0.2, 0.36, -0.12);
+      scarfTail.rotation.set(0, 0.4, 0.5);
       p.add(scarfTail);
-      // 胴体（緑のロングコート）
-      const body = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.22, 0.32, 0.65, 16),
-        new THREE.MeshStandardMaterial({ color: 0x3a7a4a, roughness: 0.55, emissive: 0x0a1a12, emissiveIntensity: 0.18 })
+      const scarfTail2 = new THREE.Mesh(tailGeo2, scarfTail.material);
+      scarfTail2.position.set(0.16, 0.44, -0.08);
+      scarfTail2.rotation.set(0, 0.5, 0.7);
+      p.add(scarfTail2);
+
+      // === 胴体（緑のコート、テーパー＋装飾） ===
+      const coatMat = new THREE.MeshStandardMaterial({
+        color: 0x3a7848, roughness: 0.6, metalness: 0.05,
+        emissive: 0x0a1a10, emissiveIntensity: 0.15,
+      });
+      // 上半身（ベスト風）
+      const torso = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.22, 0.18, 0.4, 18),
+        coatMat
       );
-      body.position.y = 0.07;
-      p.add(body);
-      // 腕
-      [-1, 1].forEach(side => {
-        const arm = new THREE.Mesh(
-          new THREE.CylinderGeometry(0.055, 0.055, 0.45, 10),
-          new THREE.MeshStandardMaterial({ color: 0x3a7a4a, roughness: 0.55 })
+      torso.position.y = 0.32;
+      p.add(torso);
+      // ロングコート（ベルから下、円錐台）
+      const coatLower = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.22, 0.36, 0.38, 18),
+        coatMat
+      );
+      coatLower.position.y = 0.06;
+      p.add(coatLower);
+      // ベルト（金）
+      const belt = new THREE.Mesh(
+        new THREE.TorusGeometry(0.22, 0.025, 8, 18),
+        new THREE.MeshStandardMaterial({ color: 0xc8a040, roughness: 0.4, metalness: 0.85 })
+      );
+      belt.position.y = 0.13;
+      belt.rotation.x = Math.PI / 2;
+      belt.scale.set(1, 1, 0.85);
+      p.add(belt);
+      // 金ボタン（5つ）
+      for (let i = 0; i < 5; i++) {
+        const btn = new THREE.Mesh(
+          new THREE.SphereGeometry(0.018, 8, 6),
+          new THREE.MeshStandardMaterial({ color: 0xffd860, roughness: 0.3, metalness: 0.85, emissive: 0x4a3008, emissiveIntensity: 0.4 })
         );
-        arm.position.set(side * 0.25, 0.1, 0);
-        arm.rotation.z = side * 0.25;
-        p.add(arm);
-      });
-      // 足
-      [-1, 1].forEach(side => {
-        const leg = new THREE.Mesh(
-          new THREE.CylinderGeometry(0.075, 0.085, 0.35, 10),
-          new THREE.MeshStandardMaterial({ color: 0x5a3a20, roughness: 0.65 })
+        btn.position.set(0, 0.46 - i * 0.06, 0.21);
+        p.add(btn);
+      }
+      // コートの襟（折り返し）
+      const collar = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.21, 0.18, 0.07, 16, 1, true),
+        new THREE.MeshStandardMaterial({ color: 0x2a5a30, roughness: 0.6, side: THREE.DoubleSide })
+      );
+      collar.position.y = 0.5;
+      p.add(collar);
+
+      // === 腕（曲げ + 手首） ===
+      function makeArm(side) {
+        const arm = new THREE.Group();
+        const upper = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.05, 0.058, 0.28, 12),
+          coatMat
         );
-        leg.position.set(side * 0.1, -0.42, 0);
-        p.add(leg);
-      });
-      // 周囲のオーラ（魔法の光）
+        upper.position.y = -0.14;
+        arm.add(upper);
+        // 手（肌色の球）
+        const hand = new THREE.Mesh(
+          new THREE.SphereGeometry(0.05, 12, 10),
+          new THREE.MeshStandardMaterial({ color: 0xf8d8b0, roughness: 0.6 })
+        );
+        hand.position.y = -0.32;
+        hand.scale.set(1.0, 0.9, 1.0);
+        arm.add(hand);
+        // カフ（袖口）
+        const cuff = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.062, 0.062, 0.04, 12),
+          new THREE.MeshStandardMaterial({ color: 0x2a5a30, roughness: 0.55 })
+        );
+        cuff.position.y = -0.27;
+        arm.add(cuff);
+        arm.position.set(side * 0.24, 0.42, 0);
+        arm.rotation.z = side * 0.18;
+        return arm;
+      }
+      const armL = makeArm(-1);
+      const armR = makeArm(1);
+      p.add(armL); p.add(armR);
+
+      // === 足（細身、ブーツ付き） ===
+      function makeLeg(side) {
+        const leg = new THREE.Group();
+        // ふくらはぎ部分
+        const lowerLeg = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.06, 0.05, 0.32, 12),
+          new THREE.MeshStandardMaterial({ color: 0x4a7848, roughness: 0.7 })
+        );
+        lowerLeg.position.y = 0.0;
+        leg.add(lowerLeg);
+        // ブーツ
+        const boot = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.07, 0.08, 0.16, 12),
+          new THREE.MeshStandardMaterial({ color: 0x4a2810, roughness: 0.65, metalness: 0.1 })
+        );
+        boot.position.y = -0.24;
+        leg.add(boot);
+        // ブーツの先（少し前に出す）
+        const toe = new THREE.Mesh(
+          new THREE.SphereGeometry(0.085, 12, 10),
+          new THREE.MeshStandardMaterial({ color: 0x4a2810, roughness: 0.65 })
+        );
+        toe.position.set(0, -0.3, 0.05);
+        toe.scale.set(1, 0.5, 1.4);
+        leg.add(toe);
+        leg.position.set(side * 0.09, -0.15, 0);
+        return leg;
+      }
+      const legL = makeLeg(-1);
+      const legR = makeLeg(1);
+      p.add(legL); p.add(legR);
+
+      // === オーラ（魔法の光） ===
       const auraTex = (() => {
-        const c = document.createElement('canvas'); c.width = 128; c.height = 128;
+        const c = document.createElement('canvas'); c.width = 256; c.height = 256;
         const g = c.getContext('2d');
-        const grd = g.createRadialGradient(64, 64, 0, 64, 64, 64);
-        grd.addColorStop(0, 'rgba(255,232,180,0.6)');
-        grd.addColorStop(1, 'rgba(255,232,180,0)');
-        g.fillStyle = grd; g.fillRect(0, 0, 128, 128);
+        const grd = g.createRadialGradient(128, 128, 0, 128, 128, 128);
+        grd.addColorStop(0, 'rgba(255,232,180,0.55)');
+        grd.addColorStop(0.4, 'rgba(255,200,140,0.25)');
+        grd.addColorStop(1, 'rgba(180,140,80,0)');
+        g.fillStyle = grd; g.fillRect(0, 0, 256, 256);
         return new THREE.CanvasTexture(c);
       })();
       const aura = new THREE.Sprite(new THREE.SpriteMaterial({
         map: auraTex, color: 0xffffff,
-        transparent: true, opacity: 0.55,
+        transparent: true, opacity: 0.45,
         depthWrite: false, blending: THREE.AdditiveBlending,
       }));
-      aura.scale.set(2.5, 2.5, 1);
-      aura.position.y = 0.5;
+      aura.scale.set(3.0, 3.0, 1);
+      aura.position.y = 0.6;
       p.add(aura);
-      // 自己発光
-      const glow = new THREE.PointLight(0xffe890, 0.8, 5, 1.5);
+      // 自己発光（点光源）
+      const glow = new THREE.PointLight(0xffe890, 0.7, 5, 1.5);
       glow.position.y = 0.7;
       p.add(glow);
-      return { group: p, scarfTail, aura };
+
+      // 全体スケール（少し小さく可愛らしく）
+      p.scale.setScalar(1.1);
+
+      return { group: p, scarfTail, scarfTail2, aura, armL, armR, legL, legR };
     }
     const princeAvatar = buildPrinceAvatar();
     const prince = princeAvatar.group;
@@ -15062,7 +15692,9 @@
     viewBtn.addEventListener('click', () => {
       if (currentNear) {
         const book = currentNear.userData.book;
-        if (book.open) book.open();
+        // world データがあれば3Dワールドへ、なければ普通のリーダー
+        if (book.world && window.openBookWorld3D) window.openBookWorld3D(book);
+        else if (book.open) book.open();
         else openPictureBook(book);
       }
     });
@@ -15079,7 +15711,9 @@
       const hits = raycaster.intersectObjects(meshes, false);
       if (hits.length) {
         const book = hits[0].object.userData.book;
-        if (book.open) book.open();
+        // world データがあれば3Dワールドへ、なければ普通のリーダー
+        if (book.world && window.openBookWorld3D) window.openBookWorld3D(book);
+        else if (book.open) book.open();
         else openPictureBook(book);
       }
     });
