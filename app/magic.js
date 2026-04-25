@@ -19106,45 +19106,131 @@
       tex.repeat.set(4, 4);
       return tex;
     })();
-    // 広いホール 80×60、床
+    // 広いホール 80×60、3階建て（各階高 6m、天井 19）
     const HALL_W = 80, HALL_D = 60;
+    const FLOOR_H = 6.0;       // 1階高
+    const FLOOR_2_Y = 6.5;     // 2階フロア
+    const FLOOR_3_Y = 12.5;    // 3階フロア
+    const CEIL_Y = 19.0;
     const floor = new THREE.Mesh(
       new THREE.PlaneGeometry(HALL_W, HALL_D),
-      new THREE.MeshStandardMaterial({ map: floorTex, roughness: 0.65, metalness: 0.15, color: 0x6a5040 })
+      new THREE.MeshStandardMaterial({ map: floorTex, roughness: 0.65, metalness: 0.15, color: 0x7a6048 })
     );
     floor.rotation.x = -Math.PI/2;
     scene.add(floor);
-    // 天井（ヴォルテッド・ゴシック天井）
+    // 天井（ゴシック深緑）
     const ceiling = new THREE.Mesh(
       new THREE.PlaneGeometry(HALL_W, HALL_D),
       new THREE.MeshStandardMaterial({ color: 0x0e2a28, roughness: 0.85 })
     );
     ceiling.rotation.x = Math.PI/2;
-    ceiling.position.y = 14;
+    ceiling.position.y = CEIL_Y;
     scene.add(ceiling);
-    // 4枚の壁
-    const wallMat = new THREE.MeshStandardMaterial({ color: 0x281810, roughness: 0.85 });
-    const wN = new THREE.Mesh(new THREE.PlaneGeometry(HALL_W, 14), wallMat);
-    wN.position.set(0, 7, -HALL_D/2); scene.add(wN);
-    const wS = new THREE.Mesh(new THREE.PlaneGeometry(HALL_W, 14), wallMat);
-    wS.position.set(0, 7, HALL_D/2); wS.rotation.y = Math.PI; scene.add(wS);
-    const wE = new THREE.Mesh(new THREE.PlaneGeometry(HALL_D, 14), wallMat);
-    wE.position.set(HALL_W/2, 7, 0); wE.rotation.y = -Math.PI/2; scene.add(wE);
-    const wW = new THREE.Mesh(new THREE.PlaneGeometry(HALL_D, 14), wallMat);
-    wW.position.set(-HALL_W/2, 7, 0); wW.rotation.y = Math.PI/2; scene.add(wW);
+    // 4枚の壁（高くした）
+    const wallMat = new THREE.MeshStandardMaterial({ color: 0x382418, roughness: 0.85 });
+    const wN = new THREE.Mesh(new THREE.PlaneGeometry(HALL_W, CEIL_Y), wallMat);
+    wN.position.set(0, CEIL_Y/2, -HALL_D/2); scene.add(wN);
+    const wS = new THREE.Mesh(new THREE.PlaneGeometry(HALL_W, CEIL_Y), wallMat);
+    wS.position.set(0, CEIL_Y/2, HALL_D/2); wS.rotation.y = Math.PI; scene.add(wS);
+    const wE = new THREE.Mesh(new THREE.PlaneGeometry(HALL_D, CEIL_Y), wallMat);
+    wE.position.set(HALL_W/2, CEIL_Y/2, 0); wE.rotation.y = -Math.PI/2; scene.add(wE);
+    const wW = new THREE.Mesh(new THREE.PlaneGeometry(HALL_D, CEIL_Y), wallMat);
+    wW.position.set(-HALL_W/2, CEIL_Y/2, 0); wW.rotation.y = Math.PI/2; scene.add(wW);
+
+    // === 2階・3階のメザニンバルコニー（壁沿い、中央吹き抜け） ===
+    function buildMezzanine(y) {
+      const balconyDepth = 4.5; // 壁から中央への張り出し
+      const matBal = new THREE.MeshStandardMaterial({ color: 0x4a3018, roughness: 0.7 });
+      // 北バルコニー
+      const balN = new THREE.Mesh(new THREE.BoxGeometry(HALL_W - 2, 0.4, balconyDepth), matBal);
+      balN.position.set(0, y, -HALL_D/2 + balconyDepth/2 + 0.5); scene.add(balN);
+      // 南
+      const balS = new THREE.Mesh(new THREE.BoxGeometry(HALL_W - 2, 0.4, balconyDepth), matBal);
+      balS.position.set(0, y, HALL_D/2 - balconyDepth/2 - 0.5); scene.add(balS);
+      // 東
+      const balE = new THREE.Mesh(new THREE.BoxGeometry(balconyDepth, 0.4, HALL_D - 2 - balconyDepth*2), matBal);
+      balE.position.set(HALL_W/2 - balconyDepth/2 - 0.5, y, 0); scene.add(balE);
+      // 西
+      const balW = new THREE.Mesh(new THREE.BoxGeometry(balconyDepth, 0.4, HALL_D - 2 - balconyDepth*2), matBal);
+      balW.position.set(-HALL_W/2 + balconyDepth/2 + 0.5, y, 0); scene.add(balW);
+      // 金縁の手すり（4辺、中央側のエッジ）
+      const railMat = new THREE.MeshStandardMaterial({
+        color: 0xc8a040, metalness: 0.9, roughness: 0.25,
+        emissive: 0x4a3008, emissiveIntensity: 0.5,
+      });
+      // 北側の手すり
+      const railN = new THREE.Mesh(new THREE.BoxGeometry(HALL_W - 2, 1.0, 0.12), railMat);
+      railN.position.set(0, y + 0.7, -HALL_D/2 + balconyDepth + 0.5); scene.add(railN);
+      // 南側
+      const railS = new THREE.Mesh(new THREE.BoxGeometry(HALL_W - 2, 1.0, 0.12), railMat);
+      railS.position.set(0, y + 0.7, HALL_D/2 - balconyDepth - 0.5); scene.add(railS);
+      // 東側
+      const railE = new THREE.Mesh(new THREE.BoxGeometry(0.12, 1.0, HALL_D - 2 - balconyDepth*2), railMat);
+      railE.position.set(HALL_W/2 - balconyDepth - 0.5, y + 0.7, 0); scene.add(railE);
+      // 西側
+      const railW = new THREE.Mesh(new THREE.BoxGeometry(0.12, 1.0, HALL_D - 2 - balconyDepth*2), railMat);
+      railW.position.set(-HALL_W/2 + balconyDepth + 0.5, y + 0.7, 0); scene.add(railW);
+      // メザニン上にも壁棚を追加（細め）
+      buildShelf(0, -HALL_D/2 + 1.0, HALL_W - 6, 0, false, y);
+      buildShelf(0, HALL_D/2 - 1.0, HALL_W - 6, Math.PI, false, y);
+      buildShelf(-HALL_W/2 + 1.0, 0, HALL_D - 6 - balconyDepth*2 - 4, Math.PI/2, false, y);
+      buildShelf(HALL_W/2 - 1.0, 0, HALL_D - 6 - balconyDepth*2 - 4, -Math.PI/2, false, y);
+    }
+    // 階段（東側：1F→2F→3Fの直線階段、上り段差付き）
+    function buildStaircase(startX, startZ, endX, endZ, fromY, toY, steps = 18) {
+      const dx = (endX - startX) / steps;
+      const dz = (endZ - startZ) / steps;
+      const dy = (toY - fromY) / steps;
+      const matStep = new THREE.MeshStandardMaterial({ color: 0x4a2a18, roughness: 0.7 });
+      for (let i = 0; i < steps; i++) {
+        const sx = startX + dx * (i + 0.5);
+        const sz = startZ + dz * (i + 0.5);
+        const sy = fromY + dy * (i + 0.5);
+        const step = new THREE.Mesh(
+          new THREE.BoxGeometry(2.5, 0.18, Math.hypot(dx, dz) + 0.05),
+          matStep
+        );
+        step.position.set(sx, sy, sz);
+        step.rotation.y = Math.atan2(dx, dz);
+        scene.add(step);
+        // 縁の金トリム
+        const trim = new THREE.Mesh(
+          new THREE.BoxGeometry(2.6, 0.06, 0.08),
+          new THREE.MeshStandardMaterial({ color: 0xc8a040, metalness: 0.9, roughness: 0.3, emissive: 0x4a3008, emissiveIntensity: 0.5 })
+        );
+        trim.position.set(sx, sy + 0.10, sz + Math.cos(Math.atan2(dx, dz)) * (Math.hypot(dx, dz) / 2 - 0.04));
+        trim.rotation.y = Math.atan2(dx, dz);
+        scene.add(trim);
+      }
+      // 手すり（両側）
+      const stairLen = Math.hypot(endX - startX, endZ - startZ);
+      const railHeight = 1.0;
+      [-1.4, 1.4].forEach(side => {
+        const rail = new THREE.Mesh(
+          new THREE.BoxGeometry(0.1, 0.12, stairLen),
+          new THREE.MeshStandardMaterial({ color: 0xc8a040, metalness: 0.9, roughness: 0.3, emissive: 0x4a3008, emissiveIntensity: 0.5 })
+        );
+        const midX = (startX + endX) / 2 + side * Math.cos(Math.atan2(dx, dz));
+        const midZ = (startZ + endZ) / 2 - side * Math.sin(Math.atan2(dx, dz));
+        rail.position.set(midX, (fromY + toY) / 2 + railHeight, midZ);
+        rail.rotation.y = Math.atan2(dx, dz);
+        rail.rotation.x = Math.atan2(dy, Math.hypot(dx, dz));
+        scene.add(rail);
+      });
+    }
 
     // 本棚を作る共通関数（双面・5段、長さ可変）
     const SHELF_Y_LEVELS = [0.6, 2.2, 3.8, 5.4, 7.0]; // 5段、棚高9
     const BOOK_HEIGHT_AT = 1.4; // 各段の本の高さ
     const SHELF_DEPTH = 0.9;
     const bookMeshes = [];
-    function buildShelf(centerX, centerZ, length, rotationY, doubleSided = true) {
+    function buildShelf(centerX, centerZ, length, rotationY, doubleSided = true, yBase = 0) {
       // 棚本体
       const frame = new THREE.Mesh(
-        new THREE.BoxGeometry(length, 9, SHELF_DEPTH),
+        new THREE.BoxGeometry(length, 5.5, SHELF_DEPTH),
         new THREE.MeshStandardMaterial({ color: 0x2a1810, roughness: 0.7 })
       );
-      frame.position.set(centerX, 5.0, centerZ);
+      frame.position.set(centerX, yBase + 3.0, centerZ);
       frame.rotation.y = rotationY;
       scene.add(frame);
       // 棚板
@@ -19153,17 +19239,17 @@
           new THREE.BoxGeometry(length - 0.2, 0.08, SHELF_DEPTH + 0.05),
           new THREE.MeshStandardMaterial({ color: 0x4a2a18, roughness: 0.6 })
         );
-        board.position.set(centerX, y, centerZ);
+        board.position.set(centerX, yBase + y, centerZ);
         board.rotation.y = rotationY;
         scene.add(board);
       });
       // 金縁トリム（上下）
-      [9.4, 0.5].forEach(yy => {
+      [5.7, 0.4].forEach(yy => {
         const trim = new THREE.Mesh(
           new THREE.BoxGeometry(length + 0.1, 0.15, SHELF_DEPTH + 0.1),
           new THREE.MeshStandardMaterial({ color: 0xc8a040, metalness: 0.9, roughness: 0.25, emissive: 0x4a3008, emissiveIntensity: 0.5 })
         );
-        trim.position.set(centerX, yy, centerZ);
+        trim.position.set(centerX, yBase + yy, centerZ);
         trim.rotation.y = rotationY;
         scene.add(trim);
       });
@@ -19171,7 +19257,8 @@
       const sides = doubleSided ? [1, -1] : [1];
       const bookSide = SHELF_DEPTH / 2 + 0.21;
       sides.forEach(side => {
-        SHELF_Y_LEVELS.forEach(y => {
+        SHELF_Y_LEVELS.forEach(yLocal => {
+          const y = yBase + yLocal;
           const usableLen = length - 0.4;
           // 本のサイズはランダム → 並べきるだけ並べる
           let cursor = -usableLen / 2;
@@ -19209,22 +19296,111 @@
       });
     }
 
-    // 4枚の壁に大きな本棚を配置（壁面、双面じゃなく単面）
+    // 4枚の壁に大きな本棚を配置（1階）
     buildShelf(0, -HALL_D/2 + 0.6, HALL_W - 4, 0, false);            // 北壁
-    buildShelf(0, HALL_D/2 - 0.6, HALL_W - 4, Math.PI, false);        // 南壁
+    buildShelf(0, HALL_D/2 - 0.6, HALL_W - 4, Math.PI, false);        // 南壁（後でドアアーチで穴があく）
     buildShelf(-HALL_W/2 + 0.6, 0, HALL_D - 4, Math.PI/2, false);     // 西壁
     buildShelf(HALL_W/2 - 0.6, 0, HALL_D - 4, -Math.PI/2, false);     // 東壁
-    // 中央のアイル（双面棚×3列、4本ずつ）
+    // 中央のアイル（双面棚、4列）
     const aisleZPositions = [-18, -6, 6, 18];
-    const aisleSegmentX = [-26, -13, 0, 13, 26]; // 5本は配列、棚は4本
-    aisleZPositions.forEach((z, ri) => {
-      // 行の偶奇でアイルが揃わないように
+    aisleZPositions.forEach(z => {
       [[-22, 12], [-7, 12], [8, 12], [23, 12]].forEach(([cx, len]) => {
         if (Math.abs(cx) < HALL_W/2 - 5 && Math.abs(z) < HALL_D/2 - 5) {
-          buildShelf(cx, z, len, 0, true); // X軸方向、双面
+          buildShelf(cx, z, len, 0, true);
         }
       });
     });
+    // === 2階・3階のメザニン（壁棚も含む） ===
+    buildMezzanine(FLOOR_2_Y);
+    buildMezzanine(FLOOR_3_Y);
+    // 階段：1F→2F（東側、北寄り）
+    buildStaircase(HALL_W/2 - 7, -HALL_D/2 + 6, HALL_W/2 - 7, -HALL_D/2 + 14, 0, FLOOR_2_Y, 18);
+    // 階段：2F→3F（東側、南寄り）
+    buildStaircase(HALL_W/2 - 7, HALL_D/2 - 6, HALL_W/2 - 7, HALL_D/2 - 14, FLOOR_2_Y, FLOOR_3_Y, 18);
+
+    // === ゴシック入口アーチ（南壁中央の見せ場） ===
+    {
+      const archG = new THREE.Group();
+      // 大きなアーチフレーム
+      const archShape = new THREE.Shape();
+      archShape.moveTo(-3.5, 0);
+      archShape.lineTo(-3.5, 5);
+      archShape.absarc(0, 5, 3.5, Math.PI, 0, false);
+      archShape.lineTo(3.5, 0);
+      archShape.lineTo(-3.5, 0);
+      const archHole = new THREE.Path();
+      archHole.moveTo(-2.5, 0.05);
+      archHole.lineTo(-2.5, 5);
+      archHole.absarc(0, 5, 2.5, Math.PI, 0, false);
+      archHole.lineTo(2.5, 0.05);
+      archHole.lineTo(-2.5, 0.05);
+      archShape.holes.push(archHole);
+      const archGeo = new THREE.ExtrudeGeometry(archShape, { depth: 0.6, bevelEnabled: true, bevelThickness: 0.06, bevelSize: 0.04, bevelSegments: 2 });
+      const archMat = new THREE.MeshStandardMaterial({
+        color: 0x4a2818, roughness: 0.5, metalness: 0.2,
+      });
+      const arch = new THREE.Mesh(archGeo, archMat);
+      arch.position.set(0, 0, HALL_D/2 - 0.4);
+      arch.rotation.y = Math.PI;
+      archG.add(arch);
+      // ステンドグラス（アーチ内側、半月＋下の格子）
+      const glassMat = new THREE.MeshStandardMaterial({
+        color: 0xffe890, transparent: true, opacity: 0.8,
+        emissive: 0xffd060, emissiveIntensity: 0.85,
+        side: THREE.DoubleSide,
+      });
+      const glassPanel = new THREE.Mesh(
+        new THREE.PlaneGeometry(4.6, 7),
+        glassMat
+      );
+      glassPanel.position.set(0, 4.0, HALL_D/2 - 0.7);
+      glassPanel.rotation.y = Math.PI;
+      archG.add(glassPanel);
+      // 格子（縦横の鉛桟）
+      const leadMat = new THREE.MeshStandardMaterial({ color: 0x281408, roughness: 0.7 });
+      for (let i = -2; i <= 2; i++) {
+        const v = new THREE.Mesh(new THREE.BoxGeometry(0.08, 7, 0.05), leadMat);
+        v.position.set(i * 0.92, 4.0, HALL_D/2 - 0.65);
+        v.rotation.y = Math.PI;
+        archG.add(v);
+      }
+      for (let j = 1; j <= 5; j++) {
+        const h = new THREE.Mesh(new THREE.BoxGeometry(4.6, 0.08, 0.05), leadMat);
+        h.position.set(0, j * 1.2, HALL_D/2 - 0.65);
+        h.rotation.y = Math.PI;
+        archG.add(h);
+      }
+      // 入口の足元のドア（実体感）
+      const door = new THREE.Mesh(
+        new THREE.BoxGeometry(4.4, 4.0, 0.12),
+        new THREE.MeshStandardMaterial({ color: 0x2a1408, roughness: 0.85, metalness: 0.1 })
+      );
+      door.position.set(0, 2.0, HALL_D/2 - 0.55);
+      door.rotation.y = Math.PI;
+      archG.add(door);
+      // 金の取手
+      const handle = new THREE.Mesh(
+        new THREE.SphereGeometry(0.15, 12, 8),
+        new THREE.MeshStandardMaterial({ color: 0xffd060, metalness: 0.95, roughness: 0.2, emissive: 0x4a3008, emissiveIntensity: 0.6 })
+      );
+      handle.position.set(0.8, 1.8, HALL_D/2 - 0.45);
+      archG.add(handle);
+      // アーチ周りの彫刻（柱頭風の柱）
+      [-4.5, 4.5].forEach(cx => {
+        const col = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.5, 0.55, 11, 12),
+          new THREE.MeshStandardMaterial({ color: 0x3a2010, roughness: 0.7 })
+        );
+        col.position.set(cx, 5.5, HALL_D/2 - 0.6); archG.add(col);
+        // 柱頭
+        const cap = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.7, 0.55, 0.6, 12),
+          new THREE.MeshStandardMaterial({ color: 0xc8a040, metalness: 0.9, roughness: 0.3, emissive: 0x4a3008, emissiveIntensity: 0.5 })
+        );
+        cap.position.set(cx, 11.0, HALL_D/2 - 0.6); archG.add(cap);
+      });
+      scene.add(archG);
+    }
 
     // ── 閲覧机（4卓を主通路に並べる） ──
     const deskPositions = [[-12, 0], [-4, 0], [4, 0], [12, 0]];
@@ -19308,16 +19484,22 @@
       col.position.set(cx, 7.0, cz); scene.add(col);
     });
 
-    // ── 環境光・直接光 ──
-    scene.add(new THREE.AmbientLight(0xfff0d8, 0.42));
-    scene.add(new THREE.HemisphereLight(0xffe8c0, 0x281a14, 0.55));
-    // 主要スポット（複数、ホール全体を満遍なく）
-    [[-30, 10, -22], [30, 10, -22], [-30, 10, 22], [30, 10, 22],
-     [0, 10, -25], [0, 10, 25]].forEach(([x, y, z]) => {
-      const sl = new THREE.SpotLight(0xffe0a0, 0.9, 40, Math.PI / 3.5, 0.5, 1.6);
+    // ── 環境光・直接光（明るめに） ──
+    scene.add(new THREE.AmbientLight(0xfff0d8, 0.85));
+    scene.add(new THREE.HemisphereLight(0xffe8c0, 0x382820, 1.05));
+    // 主要スポット（複数、強め）
+    [[-30, 12, -22], [30, 12, -22], [-30, 12, 22], [30, 12, 22],
+     [0, 12, -25], [0, 12, 25], [-15, 13, 0], [15, 13, 0]].forEach(([x, y, z]) => {
+      const sl = new THREE.SpotLight(0xffe8b8, 1.6, 50, Math.PI / 3.0, 0.45, 1.4);
       sl.position.set(x, y, z);
-      sl.target.position.set(x * 0.3, 3, z * 0.3);
+      sl.target.position.set(x * 0.3, 4, z * 0.3);
       scene.add(sl); scene.add(sl.target);
+    });
+    // 各机のランプを追加で点光（机周りを暖かく）
+    deskPositions.forEach(([dx, dz]) => {
+      const fill = new THREE.PointLight(0xffd890, 0.7, 14, 1.4);
+      fill.position.set(dx, 4, dz);
+      scene.add(fill);
     });
 
     // ── 埃の浮遊（雰囲気）──
@@ -19422,31 +19604,40 @@
     lookPad.addEventListener('pointercancel', lookEnd);
     lookPad.addEventListener('pointerleave', lookEnd);
     const joyKnob = joy.querySelector('#libJoyKnob');
-    let joyActive = false, joyDX = 0, joyDY = 0;
+    let joyActive = false, joyDX = 0, joyDY = 0, joyPid = null;
     const JOY_R = 50;
+    const DEAD = 0.12; // デッドゾーン（小さな揺れを無視）
+    function joyReset() {
+      joyActive = false; joyDX = 0; joyDY = 0; joyPid = null;
+      joyKnob.style.transform = 'translate(-50%, -50%)';
+    }
     joy.addEventListener('pointerdown', e => {
       e.preventDefault(); e.stopPropagation();
-      joyActive = true;
+      joyActive = true; joyPid = e.pointerId;
+      try { joy.setPointerCapture(e.pointerId); } catch {}
     });
     joy.addEventListener('pointermove', e => {
-      if (!joyActive) return;
+      if (!joyActive || e.pointerId !== joyPid) return;
       e.preventDefault();
       const r = joy.getBoundingClientRect();
       const cx = r.left + r.width/2, cy = r.top + r.height/2;
       let dx = e.clientX - cx, dy = e.clientY - cy;
       const len = Math.hypot(dx, dy);
       if (len > JOY_R) { dx = dx/len*JOY_R; dy = dy/len*JOY_R; }
-      joyDX = dx / JOY_R; joyDY = dy / JOY_R;
+      let nx = dx / JOY_R, ny = dy / JOY_R;
+      // デッドゾーン適用
+      const nl = Math.hypot(nx, ny);
+      if (nl < DEAD) { nx = 0; ny = 0; }
+      else {
+        const k = (nl - DEAD) / (1 - DEAD) / nl;
+        nx *= k; ny *= k;
+      }
+      joyDX = nx; joyDY = ny;
       joyKnob.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
     });
-    joy.addEventListener('pointerup', () => {
-      joyActive = false; joyDX = 0; joyDY = 0;
-      joyKnob.style.transform = 'translate(-50%, -50%)';
-    });
-    joy.addEventListener('pointercancel', () => {
-      joyActive = false; joyDX = 0; joyDY = 0;
-      joyKnob.style.transform = 'translate(-50%, -50%)';
-    });
+    joy.addEventListener('pointerup', joyReset);
+    joy.addEventListener('pointercancel', joyReset);
+    joy.addEventListener('lostpointercapture', joyReset);
 
     // ── レイキャスト：本のクリック ──
     const raycaster = new THREE.Raycaster();
@@ -19606,7 +19797,30 @@
         camera.position.x = nx;
         camera.position.z = nz;
       }
-      camera.position.y = PLAYER_EYE + Math.sin(t * 4) * (ml > 0 ? 0.04 : 0); // 歩行時の僅かな上下
+      // フロアの高さを決定（階段／メザニンを判定）
+      let floorY = 0;
+      const px = camera.position.x, pz = camera.position.z;
+      // 階段1F→2F (x ≈ HALL_W/2-7, z: -HALL_D/2+6 → -HALL_D/2+14)
+      if (px > HALL_W/2 - 9 && pz > -HALL_D/2 + 5 && pz < -HALL_D/2 + 15) {
+        const t01 = Math.max(0, Math.min(1, (pz - (-HALL_D/2 + 6)) / 8));
+        floorY = FLOOR_2_Y * t01;
+      }
+      // 階段2F→3F (x ≈ HALL_W/2-7, z: HALL_D/2-14 → HALL_D/2-6)
+      else if (px > HALL_W/2 - 9 && pz > HALL_D/2 - 15 && pz < HALL_D/2 - 5) {
+        const t01 = Math.max(0, Math.min(1, (pz - (HALL_D/2 - 14)) / 8));
+        floorY = FLOOR_2_Y + (FLOOR_3_Y - FLOOR_2_Y) * t01;
+      }
+      // メザニン領域（壁沿い 4.5m 幅）
+      else if (Math.abs(px) > HALL_W/2 - 5 || Math.abs(pz) > HALL_D/2 - 5) {
+        // 現在の高さに最も近い階を選ぶ
+        const cy = camera.position.y - PLAYER_EYE;
+        if (cy > FLOOR_3_Y - 1.5) floorY = FLOOR_3_Y;
+        else if (cy > FLOOR_2_Y - 1.5) floorY = FLOOR_2_Y;
+        else floorY = 0;
+      }
+      // フロア間の段差を吸収（ジャンプではなく徐々に）
+      const targetY = floorY + PLAYER_EYE + Math.sin(t * 4) * (ml > 0 ? 0.04 : 0);
+      camera.position.y += (targetY - camera.position.y) * 0.18;
       // ハイライト本がふわっと浮く
       bookMeshes.forEach(m => {
         const target = (highlighted === m) ? m.userData.originalY + 0.08 : m.userData.originalY;
