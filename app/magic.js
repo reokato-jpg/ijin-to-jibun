@@ -8677,6 +8677,67 @@
       archArc.count = idx;
       archArc.instanceMatrix.needsUpdate = true;
       tower.add(archArc);
+
+      // 💡 灯のともる窓（一部の窓だけ emissive で光る、住んでる感）
+      const litMat = new THREE.MeshBasicMaterial({
+        color: 0xffd080, fog: false,
+      });
+      const litGeo = new THREE.BoxGeometry(archW * 0.85, archH * 0.85, archD * 0.5);
+      // 窓数の約20%を光らせる
+      const litCount = Math.ceil(idx * 0.2);
+      const lit = new THREE.InstancedMesh(litGeo, litMat, litCount);
+      const ld = new THREE.Object3D();
+      // ランダムに idx の中から litCount 個選ぶ
+      const picked = new Set();
+      let p = 0;
+      while (picked.size < litCount && p < 1000) {
+        picked.add(Math.floor(Math.random() * idx));
+        p++;
+      }
+      let li = 0;
+      stageMeshes.forEach((sm, si) => {
+        const perRing = Math.max(14, Math.floor(sm.r * 2.2));
+        for (let row = 0; row < 2; row++) {
+          const yOff = (row === 0 ? -1 : 1) * 0.75;
+          for (let k = 0; k < perRing; k++) {
+            const winIdx = (li); // 通し番号
+            li++;
+            if (!picked.has(winIdx - 1)) continue;
+            const ang = (k / perRing) * Math.PI * 2 + (si + row) * 0.2;
+            const px = Math.cos(ang) * (sm.r - 0.05); // ちょっと内側に
+            const pz = Math.sin(ang) * (sm.r - 0.05);
+            ld.position.set(px, sm.yTop - stageHeight * 0.5 + yOff, pz);
+            ld.lookAt(0, ld.position.y, 0);
+            ld.updateMatrix();
+            // 注：we're filling sequentially up to litCount
+          }
+        }
+      });
+      // 簡易にやり直し: 窓位置をもう一度走査して picked のみ追加
+      let writeIdx = 0;
+      let scanIdx = 0;
+      stageMeshes.forEach((sm, si) => {
+        const perRing = Math.max(14, Math.floor(sm.r * 2.2));
+        for (let row = 0; row < 2; row++) {
+          const yOff = (row === 0 ? -1 : 1) * 0.75;
+          for (let k = 0; k < perRing; k++) {
+            if (picked.has(scanIdx) && writeIdx < litCount) {
+              const ang = (k / perRing) * Math.PI * 2 + (si + row) * 0.2;
+              const px = Math.cos(ang) * (sm.r - 0.05);
+              const pz = Math.sin(ang) * (sm.r - 0.05);
+              ld.position.set(px, sm.yTop - stageHeight * 0.5 + yOff, pz);
+              ld.lookAt(0, ld.position.y, 0);
+              ld.updateMatrix();
+              lit.setMatrixAt(writeIdx, ld.matrix);
+              writeIdx++;
+            }
+            scanIdx++;
+          }
+        }
+      });
+      lit.count = writeIdx;
+      lit.instanceMatrix.needsUpdate = true;
+      tower.add(lit);
     }
 
     // 👥 小さな人影（螺旋スロープを登る豆粒） — InstancedMesh
@@ -8804,25 +8865,37 @@
     }
     scene.add(godRays);
 
-    // 🐦 空を飛ぶ鳥（LineのVシェイプ、10羽）
+    // 🐦 GLTF Stork（実3Dモデル）が塔を旋回
     const birds = [];
-    for (let i = 0; i < 6; i++) {
-      const bird = new THREE.Group();
-      const lineGeo = new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector3(-0.5, 0.15, 0),
-        new THREE.Vector3(0, 0, 0),
-        new THREE.Vector3(0.5, 0.15, 0),
-      ]);
-      const lineMat = new THREE.LineBasicMaterial({ color: 0x1a1208 });
-      const line = new THREE.Line(lineGeo, lineMat);
-      bird.add(line);
-      bird.userData.orbit = 60 + Math.random() * 40;
-      bird.userData.angle = Math.random() * Math.PI * 2;
-      bird.userData.speed = 0.003 + Math.random() * 0.003;
-      bird.userData.height = 35 + Math.random() * 25;
-      bird.userData.flapPhase = Math.random() * Math.PI * 2;
-      scene.add(bird);
-      birds.push(bird);
+    const babelMixers = [];
+    if (ADDONS.GLTFLoader) {
+      const loader = new ADDONS.GLTFLoader();
+      loader.load(
+        'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r159/examples/models/gltf/Stork.glb',
+        (gltf) => {
+          const cloneFn = (ADDONS.SkeletonUtils && ADDONS.SkeletonUtils.clone)
+            ? ADDONS.SkeletonUtils.clone : (o) => o.clone(true);
+          let src = null;
+          gltf.scene.traverse(o => { if (o.isSkinnedMesh && !src) src = o; });
+          if (!src) src = gltf.scene.children[0] || gltf.scene;
+          if (!src) return;
+          for (let i = 0; i < 5; i++) {
+            const stork = cloneFn(src);
+            stork.scale.set(0.04, 0.04, 0.04);
+            stork.userData.orbit = 55 + i * 10;
+            stork.userData.angle = (i / 5) * Math.PI * 2;
+            stork.userData.speed = 0.0025 + i * 0.0005;
+            stork.userData.height = 40 + i * 4;
+            stork.traverse(o => { if (o.isMesh) o.castShadow = true; });
+            scene.add(stork);
+            birds.push(stork);
+            const mix = new THREE.AnimationMixer(stork);
+            mix.clipAction(gltf.animations[0]).setDuration(0.7).play();
+            babelMixers.push(mix);
+          }
+        },
+        undefined, () => {}
+      );
     }
 
     // 💨 煙は torchLights が populated されてから作る（下で定義）
@@ -9542,19 +9615,16 @@
       camera.position.y = 10 + camTilt * 25;
       lookY += ((topY / 2) - lookY) * 0.02;
       camera.lookAt(0, lookY, 0);
-      // 🐦 鳥が飛ぶ
+      // 🐦 Stork が塔を旋回
       birds.forEach(b => {
         b.userData.angle += b.userData.speed;
-        b.userData.flapPhase += 0.25;
         b.position.x = Math.cos(b.userData.angle) * b.userData.orbit;
         b.position.z = Math.sin(b.userData.angle) * b.userData.orbit;
-        b.position.y = b.userData.height + Math.sin(b.userData.flapPhase * 0.5) * 1.5;
-        // 進行方向を向く
+        b.position.y = b.userData.height + Math.sin(b.userData.angle * 2) * 1.0;
         const next = b.userData.angle + 0.01;
         b.lookAt(Math.cos(next) * b.userData.orbit, b.position.y, Math.sin(next) * b.userData.orbit);
-        // 羽ばたきでYスケールが揺れる（V字開閉）
-        b.scale.y = 0.8 + Math.sin(b.userData.flapPhase) * 0.3;
       });
+      babelMixers.forEach(m => m.update(1/60));
       // 💨 松明の煙（上昇、ランダムリセット）
       if (smoke) {
         const sp = smoke.geometry.attributes.position;
