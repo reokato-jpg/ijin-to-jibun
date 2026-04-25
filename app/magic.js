@@ -14935,23 +14935,17 @@
       }
     }
 
-    // ステージライト（複数の柔らかいダウンライト + 周囲光で自然に）
-    const stageLight = new THREE.SpotLight(0xfff0d0, 2.5, 18, Math.PI/4, 0.7, 1.3);
-    stageLight.position.set(0, 12, 0);
-    stageLight.target.position.set(0, 0.5, 0);
-    scene.add(stageLight);
-    scene.add(stageLight.target);
-    // ステージ周囲の補助スポット（影を和らげる、3灯）
-    [[-3, 4], [3, 4], [0, -3]].forEach(([sx, sz]) => {
-      const fill = new THREE.SpotLight(0xfff0c0, 1.0, 12, Math.PI/3, 0.7, 1.5);
-      fill.position.set(sx, 8, sz);
-      fill.target.position.set(0, 0.5, 0);
-      scene.add(fill);
-      scene.add(fill.target);
+    // ステージライト（高い天井から自然に降り注ぐ、4方向の柔らかい光）
+    [[0, 6, 0, 1.6], [-4, 7, 4, 0.9], [4, 7, 4, 0.9], [0, 7, -5, 0.9]].forEach(([x, y, z, intensity]) => {
+      const sl = new THREE.SpotLight(0xfff0d0, intensity, 16, Math.PI/3.5, 0.85, 1.3);
+      sl.position.set(x, y * 2, z); // 高さを倍に（天井から）
+      sl.target.position.set(0, 0.5, 0);
+      scene.add(sl);
+      scene.add(sl.target);
     });
-    // 中央のシャンデリア光
-    const centerGlow = new THREE.PointLight(moodColor, 1.2, 40, 1.5);
-    centerGlow.position.set(0, 8, 0);
+    // 中央のシャンデリア光（高い位置に控えめに、観客にも届く色）
+    const centerGlow = new THREE.PointLight(moodColor, 0.55, 50, 1.4);
+    centerGlow.position.set(0, 18, 0); // 8 → 18（高く、不自然な近接光をなくす）
     scene.add(centerGlow);
     // 観客席を照らす補助光（4灯、温かい）
     for (let i = 0; i < 4; i++) {
@@ -15536,9 +15530,12 @@
       const sphere = new THREE.Mesh(
         new THREE.SphereGeometry(p.r, 48, 32),
         new THREE.MeshStandardMaterial({
-          map: ptex, roughness: 0.9, metalness: 0.0,
-          emissive: new THREE.Color(p.emissive || 0x000000),
-          emissiveIntensity: p.emissive ? 1.0 : 0,
+          map: ptex,
+          // テクスチャを emissiveMap にも設定（光が当たらなくても見える）
+          emissiveMap: ptex,
+          emissive: new THREE.Color(p.emissive || 0xffffff),
+          emissiveIntensity: p.emissive ? 1.0 : 0.35, // 太陽=満光、他=底光り
+          roughness: 0.85, metalness: 0.0,
         })
       );
       // 大気のスプライト
@@ -15582,9 +15579,9 @@
         ring.rotation.x = -Math.PI / 2 + 0.3;
         sphere.add(ring);
       }
-      // 太陽は自己発光
+      // 太陽は自己発光 + 周囲の惑星を強く照らす光源
       if (p.emissive) {
-        const sunLight = new THREE.PointLight(p.emissive, 1.5, 60, 1.4);
+        const sunLight = new THREE.PointLight(p.emissive, 4.0, 80, 1.2);
         sphere.add(sunLight);
       }
       orbiters.push({
@@ -15655,60 +15652,85 @@
     scene.add(constellationGroup);
     scene.userData.constellationGroup = constellationGroup;
 
-    // 🌳 自然モード（森＋川）
+    // 🌊 自然モード = 「海と空」（エデンと差別化）
     const natureGroup = new THREE.Group();
     natureGroup.visible = false;
-    // 木 16本（観客席の外側に）
-    for (let i = 0; i < 16; i++) {
-      const a = (i / 16) * Math.PI * 2;
-      const r = 30 + Math.random() * 6;
-      const x = Math.cos(a) * r, z = Math.sin(a) * r;
-      const tree = new THREE.Group();
-      // 幹
-      const trunk = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.3, 0.45, 4 + Math.random() * 2, 8),
-        new THREE.MeshStandardMaterial({ color: 0x4a3018, roughness: 0.85 })
-      );
-      trunk.position.y = 2;
-      tree.add(trunk);
-      // 葉（円錐+球を組み合わせ）
-      for (let l = 0; l < 3; l++) {
-        const leaf = new THREE.Mesh(
-          new THREE.SphereGeometry(1.4 - l * 0.2, 12, 8),
-          new THREE.MeshStandardMaterial({ color: 0x4a8030 + (Math.random() * 0x202020 | 0), roughness: 0.8 })
-        );
-        leaf.position.y = 4.5 + l * 0.8;
-        leaf.scale.y = 1.2;
-        tree.add(leaf);
-      }
-      tree.position.set(x, 0, z);
-      natureGroup.add(tree);
-    }
-    // 川（光る平面、リングで取り囲む）
-    const riverGeo = new THREE.RingGeometry(20, 23, 96);
-    const riverMat = new THREE.MeshStandardMaterial({
-      color: 0x4080c0, transparent: true, opacity: 0.65,
-      roughness: 0.1, metalness: 0.5,
-      emissive: 0x205070, emissiveIntensity: 0.4,
+    // 大海原（観客席の外、リング状の波打つ平面）
+    const oceanGeo = new THREE.RingGeometry(28, 60, 128, 16);
+    const oceanMat = new THREE.MeshStandardMaterial({
+      color: 0x1a4070, transparent: true, opacity: 0.85,
+      roughness: 0.15, metalness: 0.7,
+      emissive: 0x0a2840, emissiveIntensity: 0.3,
       side: THREE.DoubleSide,
     });
-    const river = new THREE.Mesh(riverGeo, riverMat);
-    river.rotation.x = -Math.PI / 2;
-    river.position.y = -1.4;
-    natureGroup.add(river);
-    // 蛍（金色の小さな光、20個）
-    for (let i = 0; i < 30; i++) {
-      const fly = new THREE.Sprite(new THREE.SpriteMaterial({
-        map: dustTex, color: 0xfff4a0, transparent: true, opacity: 0.85,
-        depthWrite: false, blending: THREE.AdditiveBlending,
-      }));
-      fly.scale.set(0.3, 0.3, 1);
-      const a = Math.random() * Math.PI * 2;
-      const r = 15 + Math.random() * 14;
-      fly.position.set(Math.cos(a) * r, 1 + Math.random() * 4, Math.sin(a) * r);
-      fly.userData = { ax: a, ar: r, ay: fly.position.y, phase: Math.random() * Math.PI * 2 };
-      natureGroup.add(fly);
+    const ocean = new THREE.Mesh(oceanGeo, oceanMat);
+    ocean.rotation.x = -Math.PI / 2;
+    ocean.position.y = -1.5;
+    natureGroup.add(ocean);
+    natureGroup.userData.ocean = ocean;
+    // 月（夜空の片側）
+    const natureMoon = new THREE.Mesh(
+      new THREE.SphereGeometry(2.5, 32, 24),
+      new THREE.MeshBasicMaterial({ color: 0xfff8e0, fog: false })
+    );
+    natureMoon.position.set(-22, 22, -28);
+    natureGroup.add(natureMoon);
+    const moonGlow = new THREE.PointLight(0xfff0c8, 1.2, 80, 1.3);
+    moonGlow.position.copy(natureMoon.position);
+    natureGroup.add(moonGlow);
+    // 🐬 イルカの群れ（5匹、海の上空をジャンプ）
+    const dolphins = [];
+    for (let i = 0; i < 5; i++) {
+      const d = new THREE.Mesh(
+        new THREE.SphereGeometry(0.5, 16, 10),
+        new THREE.MeshStandardMaterial({ color: 0x6080a0, roughness: 0.4, metalness: 0.3 })
+      );
+      d.scale.set(2.5, 1, 1);
+      d.userData = {
+        ax: (i / 5) * Math.PI * 2,
+        ar: 32 + Math.random() * 4,
+        speed: 0.15 + Math.random() * 0.1,
+        jumpPhase: Math.random() * Math.PI * 2,
+      };
+      natureGroup.add(d);
+      dolphins.push(d);
     }
+    natureGroup.userData.dolphins = dolphins;
+    // 🌊 海面のキラキラ（月光反射、500点）
+    const sparkleGeo = new THREE.BufferGeometry();
+    const SPARK = 500;
+    const sparkP = new Float32Array(SPARK * 3);
+    for (let i = 0; i < SPARK; i++) {
+      const a = Math.random() * Math.PI * 2;
+      const r = 28 + Math.random() * 30;
+      sparkP[i*3]   = Math.cos(a) * r;
+      sparkP[i*3+1] = -1.45 + Math.random() * 0.05;
+      sparkP[i*3+2] = Math.sin(a) * r;
+    }
+    sparkleGeo.setAttribute('position', new THREE.BufferAttribute(sparkP, 3));
+    const sparkles = new THREE.Points(sparkleGeo, new THREE.PointsMaterial({
+      map: dustTex, color: 0xfff8e0, size: 0.35, transparent: true, opacity: 0.7,
+      depthWrite: false, blending: THREE.AdditiveBlending, fog: false,
+    }));
+    natureGroup.add(sparkles);
+    natureGroup.userData.sparkles = sparkles;
+    // 🌌 天の川（上空のpoint cloud, 800星）
+    const skyGeo = new THREE.BufferGeometry();
+    const STARS_N = 800;
+    const skyP = new Float32Array(STARS_N * 3);
+    for (let i = 0; i < STARS_N; i++) {
+      const r = 38;
+      const th = Math.random() * Math.PI * 2;
+      const ph = Math.acos(Math.random() * 0.6 + 0.4); // 上半球メイン
+      skyP[i*3]   = Math.sin(ph) * Math.cos(th) * r;
+      skyP[i*3+1] = Math.cos(ph) * r;
+      skyP[i*3+2] = Math.sin(ph) * Math.sin(th) * r;
+    }
+    skyGeo.setAttribute('position', new THREE.BufferAttribute(skyP, 3));
+    const skyStars = new THREE.Points(skyGeo, new THREE.PointsMaterial({
+      color: 0xfff8e0, size: 0.4, transparent: true, opacity: 0.85, depthWrite: false, fog: false,
+    }));
+    natureGroup.add(skyStars);
     scene.add(natureGroup);
     scene.userData.natureGroup = natureGroup;
 
@@ -16302,7 +16324,7 @@
       // 観客の微動 — InstancedMesh では省略（1000人だと毎フレ更新は重い）
       // 🎵 音楽連動: 中央光・ステージ光・Bloom強度
       centerGlow.intensity = 0.4 + bassS * 1.2 + midS * 0.4;
-      stageLight.intensity = 2.5 + bassS * 1.5 + midS * 0.8;
+      // stageLight 連動は廃止（複数光源化のため省略）
       if (composer && composer.passes) {
         composer.passes.forEach(p => {
           if (p.strength !== undefined) p.strength = 0.32 + bassS * 0.5 + trebS * 0.2;
@@ -16440,18 +16462,25 @@
           pp.needsUpdate = true;
         }
       }
-      // 🪲 自然モード: 蛍が漂う
+      // 🌊 自然モード: 海＋イルカ＋キラキラ
       if (scene.userData.natureGroup && scene.userData.natureGroup.visible) {
-        scene.userData.natureGroup.children.forEach(o => {
-          if (o.userData && o.userData.ax !== undefined) {
-            // 蛍
-            o.userData.ax += 0.003;
-            o.position.x = Math.cos(o.userData.ax) * o.userData.ar;
-            o.position.z = Math.sin(o.userData.ax) * o.userData.ar;
-            o.position.y = o.userData.ay + Math.sin(t * 1.5 + o.userData.phase) * 0.6;
-            o.material.opacity = 0.6 + Math.sin(t * 2 + o.userData.phase) * 0.3;
-          }
+        const ng = scene.userData.natureGroup.userData;
+        // イルカのジャンプ（円周移動 + sin波で y が水面下〜上）
+        (ng.dolphins || []).forEach((d, i) => {
+          d.userData.ax += d.userData.speed * dt;
+          d.position.x = Math.cos(d.userData.ax) * d.userData.ar;
+          d.position.z = Math.sin(d.userData.ax) * d.userData.ar;
+          // ジャンプ
+          const jump = Math.sin(t * 1.2 + d.userData.jumpPhase);
+          d.position.y = -1.5 + Math.max(0, jump) * 3;
+          // 進行方向を向く
+          d.rotation.y = -d.userData.ax + Math.PI / 2;
+          d.rotation.z = -jump * 0.5; // ジャンプ時に体を傾ける
         });
+        // キラキラの opacity 揺らぎ
+        if (ng.sparkles && ng.sparkles.material) {
+          ng.sparkles.material.opacity = 0.5 + Math.sin(t * 2) * 0.3;
+        }
       }
       // パーティクル + ドーム
       particles.rotation.y += 0.0008 + bassS * 0.002;
