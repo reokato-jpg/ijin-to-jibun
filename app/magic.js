@@ -14409,19 +14409,66 @@
             float band = smoothstep(0.45, 0.55, uv.y) * smoothstep(0.55, 0.45, uv.y);
             col += uMood * band * 0.5;
           }
-          // ━━━ 自然モード（夕方の柔らかい空、控えめに）━━━
+          // ━━━ 自然モード（Vegas Sphere方式：球体内壁に大自然パノラマ投影）━━━
           else if (uMode > 2.5 && uMode < 3.5) {
-            vec3 skyTop = vec3(0.18, 0.30, 0.50);   // 落ち着いた青
-            vec3 skyHorizon = vec3(0.55, 0.40, 0.32); // 暗めの地平線
-            col = mix(skyHorizon, skyTop, smoothstep(0.4, 0.85, uv.y));
-            // 雲（控えめ）
-            float cloud = fbm(uv * 5.0 + vec2(uTime * 0.025, 0.0));
-            cloud = smoothstep(0.5, 0.75, cloud);
-            col = mix(col, vec3(0.55, 0.50, 0.45), cloud * 0.4);
-            // 月（太陽じゃなく月、優しい）
-            float moon = smoothstep(0.025, 0.0, distance(uv, vec2(0.72, 0.66)));
-            col += vec3(0.85, 0.85, 0.7) * moon * 0.5;
-            col *= 0.8;
+            // 空グラデ（地平線の暖色→中空の水色→真上の青）
+            vec3 skyZenith  = vec3(0.20, 0.45, 0.78);
+            vec3 skyMid     = vec3(0.55, 0.72, 0.92);
+            vec3 skyHorizon = vec3(0.95, 0.80, 0.62);
+            float h = smoothstep(0.50, 0.70, uv.y);
+            float h2 = smoothstep(0.70, 0.98, uv.y);
+            col = mix(skyHorizon, skyMid, h);
+            col = mix(col, skyZenith, h2);
+            // 太陽（高い位置、強い光）
+            vec2 sunPos = vec2(0.68, 0.85);
+            float sunDist = distance(uv, sunPos);
+            float sunCore = smoothstep(0.020, 0.0, sunDist);
+            float sunGlow = smoothstep(0.18, 0.0, sunDist);
+            col += vec3(1.0, 0.95, 0.8) * sunCore * 1.6;
+            col += vec3(1.0, 0.85, 0.55) * sunGlow * 0.40;
+            // 雲（流れる、2層）
+            float cloud1 = fbm(uv * 4.5 + vec2(uTime * 0.020, 0.0));
+            float cloud2 = fbm(uv * 8.0 - vec2(uTime * 0.035, uTime * 0.005));
+            float cloudMask = smoothstep(0.45, 0.78, cloud1) * smoothstep(0.30, 0.65, cloud2);
+            cloudMask *= smoothstep(0.62, 0.75, uv.y);
+            col = mix(col, vec3(1.0, 0.98, 0.95), cloudMask * 0.78);
+            // 奥の山並み（薄い青、雪冠付き）
+            float farMtn = sin(uv.x * 6.28 * 5.0) * 0.018 + sin(uv.x * 6.28 * 11.0 + 1.3) * 0.010 + sin(uv.x * 6.28 * 23.0 + 2.7) * 0.006;
+            float farLine = 0.55 + farMtn;
+            float farMask = step(uv.y, farLine);
+            vec3 farColor = mix(vec3(0.55, 0.62, 0.74), vec3(0.65, 0.70, 0.80), smoothstep(0.46, 0.55, uv.y));
+            float snow = smoothstep(farLine - 0.022, farLine, uv.y) * smoothstep(farLine + 0.005, farLine - 0.005, uv.y);
+            farColor = mix(farColor, vec3(0.95, 0.96, 1.0), snow * 0.9);
+            col = mix(col, farColor, farMask);
+            // 手前の山（濃い緑がかった）
+            float nearMtn = sin(uv.x * 6.28 * 3.0 + 0.5) * 0.028 + sin(uv.x * 6.28 * 7.0 + 2.1) * 0.018 + sin(uv.x * 6.28 * 17.0) * 0.008;
+            float nearLine = 0.46 + nearMtn;
+            float nearMask = step(uv.y, nearLine);
+            vec3 nearColor = vec3(0.20, 0.32, 0.22);
+            col = mix(col, nearColor, nearMask);
+            // 森の樹冠線（ノイズで起伏）
+            float treeNoise = fbm(vec2(uv.x * 28.0, uv.x * 5.0));
+            float treeLine = 0.40 + treeNoise * 0.020;
+            float treeMask = step(uv.y, treeLine);
+            vec3 forestColor = mix(vec3(0.10, 0.20, 0.10), vec3(0.18, 0.32, 0.16), fbm(uv * 18.0));
+            col = mix(col, forestColor, treeMask);
+            // 大地（草原）
+            float groundMask = step(uv.y, 0.34);
+            vec3 grass = mix(vec3(0.22, 0.40, 0.18), vec3(0.32, 0.52, 0.22), fbm(uv * 12.0 + vec2(uTime * 0.005, 0.0)));
+            grass += vec3(0.05, 0.08, 0.03) * sin(uv.x * 200.0 + fbm(uv * 30.0) * 8.0) * 0.5;
+            col = mix(col, grass, groundMask);
+            // 鳥のシルエット（V字編隊、空を横切る）
+            for (int i = 0; i < 3; i++) {
+              float fi = float(i);
+              vec2 birdPos = vec2(fract(uTime * 0.018 + fi * 0.27), 0.80 + sin(uTime * 0.3 + fi) * 0.04);
+              vec2 dB = uv - birdPos;
+              float vShape = abs(dB.y - abs(dB.x) * 0.4);
+              float bird = smoothstep(0.004, 0.0, vShape) * step(abs(dB.x), 0.012);
+              col = mix(col, vec3(0.05, 0.05, 0.08), bird * 0.85);
+            }
+            // 雲の光縁（太陽側）
+            col += vec3(1.0, 0.85, 0.6) * cloudMask * sunGlow * 0.35;
+            col *= 1.05;
           }
           // ━━━ タイムスリップモード（古紙のセピア、文字の流れ）━━━
           else if (uMode > 4.5) {
@@ -16113,624 +16160,6 @@
     }));
     natureGroup.add(skyStars);
 
-    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    // 🏔 自然モード 大地拡張 — 山・森・大地・動物12種（壮大さ重視）
-    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    // 大地（草原）— 観客席の外側 r=27〜58
-    {
-      const groundGeo = new THREE.RingGeometry(27, 58, 96, 8);
-      const groundMat = new THREE.MeshStandardMaterial({
-        color: 0x3a6028, roughness: 0.95, metalness: 0.0,
-        emissive: 0x0a1808, emissiveIntensity: 0.15,
-      });
-      const ground = new THREE.Mesh(groundGeo, groundMat);
-      ground.rotation.x = -Math.PI / 2;
-      ground.position.y = -1.45;
-      natureGroup.add(ground);
-
-      // 草の生え際（緑のpoint cloud、800点、地面に散りばめ）
-      const grassGeo = new THREE.BufferGeometry();
-      const GN = 1500;
-      const gp = new Float32Array(GN * 3);
-      const gc = new Float32Array(GN * 3);
-      for (let i = 0; i < GN; i++) {
-        const a = Math.random() * Math.PI * 2;
-        const r = 28 + Math.random() * 28;
-        gp[i*3]   = Math.cos(a) * r;
-        gp[i*3+1] = -1.4 + Math.random() * 0.2;
-        gp[i*3+2] = Math.sin(a) * r;
-        const sh = 0.35 + Math.random() * 0.25;
-        gc[i*3] = sh * 0.55; gc[i*3+1] = sh; gc[i*3+2] = sh * 0.4;
-      }
-      grassGeo.setAttribute('position', new THREE.BufferAttribute(gp, 3));
-      grassGeo.setAttribute('color', new THREE.BufferAttribute(gc, 3));
-      const grass = new THREE.Points(grassGeo, new THREE.PointsMaterial({
-        size: 0.5, vertexColors: true, transparent: true, opacity: 0.9,
-        depthWrite: false,
-      }));
-      natureGroup.add(grass);
-    }
-
-    // 山脈（遠景シルエット、12峰、r=52）
-    {
-      const mountainGroup = new THREE.Group();
-      const mtnCount = 14;
-      for (let i = 0; i < mtnCount; i++) {
-        const a = (i / mtnCount) * Math.PI * 2;
-        const r = 52 + (Math.random() - 0.5) * 4;
-        const h = 14 + Math.random() * 10;
-        const w = 10 + Math.random() * 6;
-        const m = new THREE.Mesh(
-          new THREE.ConeGeometry(w, h, 5),
-          new THREE.MeshStandardMaterial({
-            color: 0x3a4858, roughness: 0.95,
-            emissive: 0x101820, emissiveIntensity: 0.25,
-            flatShading: true,
-          })
-        );
-        m.position.set(Math.cos(a) * r, h / 2 - 1.5, Math.sin(a) * r);
-        m.rotation.y = Math.random() * Math.PI;
-        mountainGroup.add(m);
-        // 雪冠
-        if (h > 18) {
-          const snow = new THREE.Mesh(
-            new THREE.ConeGeometry(w * 0.35, h * 0.3, 5),
-            new THREE.MeshStandardMaterial({ color: 0xe8f0ff, roughness: 0.3, emissive: 0x405060, emissiveIntensity: 0.4 })
-          );
-          snow.position.set(Math.cos(a) * r, h - 1.5 - h * 0.15, Math.sin(a) * r);
-          snow.rotation.y = m.rotation.y;
-          mountainGroup.add(snow);
-        }
-      }
-      natureGroup.add(mountainGroup);
-    }
-
-    // 森（針葉樹+広葉樹120本、r=29〜48にランダム配置）
-    {
-      const forestGroup = new THREE.Group();
-      const treeCount = 120;
-      for (let i = 0; i < treeCount; i++) {
-        const a = Math.random() * Math.PI * 2;
-        const r = 29 + Math.random() * 19;
-        const tx = Math.cos(a) * r;
-        const tz = Math.sin(a) * r;
-        const isConifer = Math.random() < 0.55;
-        const tree = new THREE.Group();
-        const trunkH = 3 + Math.random() * 2;
-        const trunk = new THREE.Mesh(
-          new THREE.CylinderGeometry(0.18, 0.32, trunkH, 6),
-          new THREE.MeshStandardMaterial({ color: 0x4a3018, roughness: 0.9 })
-        );
-        trunk.position.y = trunkH / 2 - 1.5;
-        tree.add(trunk);
-        if (isConifer) {
-          // 針葉樹（円錐3段）
-          for (let s = 0; s < 3; s++) {
-            const cone = new THREE.Mesh(
-              new THREE.ConeGeometry(1.4 - s * 0.35, 2.0, 8),
-              new THREE.MeshStandardMaterial({
-                color: new THREE.Color().setHSL(0.32, 0.5, 0.22 + Math.random() * 0.06),
-                roughness: 0.85, flatShading: true,
-              })
-            );
-            cone.position.y = trunkH - 1.5 + s * 1.3;
-            tree.add(cone);
-          }
-        } else {
-          // 広葉樹（球状の葉）
-          const leafColor = new THREE.Color().setHSL(0.28 + Math.random() * 0.06, 0.55, 0.3 + Math.random() * 0.1);
-          for (let l = 0; l < 3; l++) {
-            const leaf = new THREE.Mesh(
-              new THREE.SphereGeometry(1.3 + Math.random() * 0.4, 10, 8),
-              new THREE.MeshStandardMaterial({ color: leafColor, roughness: 0.85 })
-            );
-            leaf.position.set(
-              (Math.random() - 0.5) * 1.4,
-              trunkH - 0.2 + l * 0.7,
-              (Math.random() - 0.5) * 1.4
-            );
-            tree.add(leaf);
-          }
-        }
-        tree.position.set(tx, 0, tz);
-        tree.rotation.y = Math.random() * Math.PI;
-        const sc = 0.85 + Math.random() * 0.5;
-        tree.scale.set(sc, sc, sc);
-        forestGroup.add(tree);
-      }
-      natureGroup.add(forestGroup);
-      natureGroup.userData.forestGroup = forestGroup;
-    }
-
-    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    // 🦒🐊🐰🦅🐘🐒🐻🦁🦤🕊🦉🦌  動物12種ファクトリ
-    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    const animals = []; // {group, type, params}
-    const MStd = (color, rough = 0.85) => new THREE.MeshStandardMaterial({ color, roughness: rough, flatShading: true });
-    function makeQuadruped(opt) {
-      // 四足動物の汎用ビルダー（脚×4、胴体、頭、尾）
-      const g = new THREE.Group();
-      const body = new THREE.Mesh(
-        new THREE.BoxGeometry(opt.bodyLen, opt.bodyH, opt.bodyW),
-        MStd(opt.bodyColor)
-      );
-      body.position.y = opt.legH;
-      g.add(body);
-      // 頭
-      const head = new THREE.Mesh(
-        new THREE.BoxGeometry(opt.headSize * 0.9, opt.headSize, opt.headSize * 0.85),
-        MStd(opt.headColor || opt.bodyColor)
-      );
-      head.position.set(opt.bodyLen / 2 + opt.neckLen * 0.5, opt.legH + opt.bodyH / 2 + opt.neckLen * 0.5, 0);
-      g.add(head);
-      g.userData.head = head;
-      // 首（必要時）
-      if (opt.neckLen > 0.3) {
-        const neck = new THREE.Mesh(
-          new THREE.CylinderGeometry(opt.headSize * 0.3, opt.bodyH * 0.4, opt.neckLen, 8),
-          MStd(opt.bodyColor)
-        );
-        neck.position.set(opt.bodyLen / 2 + opt.neckLen * 0.25, opt.legH + opt.bodyH / 2 + opt.neckLen * 0.25, 0);
-        neck.rotation.z = -Math.PI / 4;
-        g.add(neck);
-        g.userData.neck = neck;
-      }
-      // 尾
-      if (opt.tailLen > 0) {
-        const tail = new THREE.Mesh(
-          new THREE.CylinderGeometry(0.05, 0.08, opt.tailLen, 6),
-          MStd(opt.bodyColor)
-        );
-        tail.position.set(-opt.bodyLen / 2 - opt.tailLen * 0.3, opt.legH + opt.bodyH * 0.4, 0);
-        tail.rotation.z = Math.PI / 3;
-        g.add(tail);
-        g.userData.tail = tail;
-      }
-      // 脚×4
-      const legs = [];
-      const legPos = [
-        [opt.bodyLen * 0.35, opt.bodyW * 0.35],
-        [opt.bodyLen * 0.35, -opt.bodyW * 0.35],
-        [-opt.bodyLen * 0.35, opt.bodyW * 0.35],
-        [-opt.bodyLen * 0.35, -opt.bodyW * 0.35],
-      ];
-      legPos.forEach(([lx, lz]) => {
-        const leg = new THREE.Mesh(
-          new THREE.CylinderGeometry(opt.legR, opt.legR, opt.legH, 6),
-          MStd(opt.legColor || opt.bodyColor)
-        );
-        leg.position.set(lx, opt.legH / 2, lz);
-        g.add(leg);
-        legs.push(leg);
-      });
-      g.userData.legs = legs;
-      g.userData.legH = opt.legH;
-      return g;
-    }
-
-    // ── 🦒 キリン（3頭、r=32-40 のサバンナ風エリア） ──
-    for (let i = 0; i < 3; i++) {
-      const g = makeQuadruped({
-        bodyLen: 2.4, bodyH: 1.6, bodyW: 1.2,
-        legH: 3.2, legR: 0.18, neckLen: 4.5,
-        headSize: 0.6, tailLen: 1.0,
-        bodyColor: 0xe6c878, headColor: 0xd4a850,
-      });
-      // 斑模様（小さい四角を貼る）
-      for (let s = 0; s < 18; s++) {
-        const spot = new THREE.Mesh(
-          new THREE.BoxGeometry(0.3, 0.3, 0.05),
-          MStd(0x6a3818, 0.7)
-        );
-        spot.position.set(
-          (Math.random() - 0.5) * 2.2,
-          3.2 + Math.random() * 1.4,
-          0.62
-        );
-        spot.rotation.y = Math.random() * Math.PI;
-        g.add(spot);
-      }
-      // 角
-      const horn1 = new THREE.Mesh(new THREE.ConeGeometry(0.08, 0.4, 6), MStd(0x6a4828));
-      horn1.position.set(g.userData.head.position.x + 0.15, g.userData.head.position.y + 0.45, 0.1);
-      g.add(horn1);
-      const horn2 = horn1.clone(); horn2.position.z = -0.1; g.add(horn2);
-      g.userData.type = 'walk';
-      g.userData.species = 'giraffe';
-      g.userData.speed = 0.06 + Math.random() * 0.03;
-      g.userData.angle = (i / 3) * Math.PI * 2 + Math.random() * 0.5;
-      g.userData.radius = 36 + Math.random() * 4;
-      g.userData.phase = Math.random() * Math.PI * 2;
-      natureGroup.add(g);
-      animals.push(g);
-    }
-
-    // ── 🐊 ワニ（2匹、池の縁、ほぼ静止＋たまに尾を振る） ──
-    // 池を作る（small lake at r=44, angle ~ 0）
-    const lakePos = new THREE.Vector3(36, -1.45, 22);
-    {
-      const lakeGeo = new THREE.CircleGeometry(6, 32);
-      const lakeMat = new THREE.MeshStandardMaterial({
-        color: 0x1a3858, roughness: 0.15, metalness: 0.7,
-        emissive: 0x081828, emissiveIntensity: 0.4,
-        transparent: true, opacity: 0.9,
-      });
-      const lake = new THREE.Mesh(lakeGeo, lakeMat);
-      lake.rotation.x = -Math.PI / 2;
-      lake.position.copy(lakePos);
-      lake.position.y = -1.43;
-      natureGroup.add(lake);
-    }
-    for (let i = 0; i < 2; i++) {
-      const g = new THREE.Group();
-      const body = new THREE.Mesh(
-        new THREE.BoxGeometry(3.5, 0.5, 0.9),
-        MStd(0x3a5028)
-      );
-      body.position.y = 0.25;
-      g.add(body);
-      const head = new THREE.Mesh(
-        new THREE.BoxGeometry(1.0, 0.4, 0.7),
-        MStd(0x3a5028)
-      );
-      head.position.set(2.0, 0.3, 0);
-      g.add(head);
-      // 尾（先細り）
-      const tail = new THREE.Mesh(
-        new THREE.ConeGeometry(0.4, 1.6, 6),
-        MStd(0x3a5028)
-      );
-      tail.position.set(-2.4, 0.25, 0);
-      tail.rotation.z = Math.PI / 2;
-      g.add(tail);
-      g.userData.tail = tail;
-      // 短い脚×4
-      [[1, 0.5], [1, -0.5], [-1, 0.5], [-1, -0.5]].forEach(([lx, lz]) => {
-        const leg = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.3, 0.25), MStd(0x2a3818));
-        leg.position.set(lx, 0.15, lz);
-        g.add(leg);
-      });
-      g.position.set(lakePos.x + (i * 4 - 2), -1.2, lakePos.z + (i % 2 ? 4 : -3));
-      g.rotation.y = Math.random() * Math.PI * 2;
-      g.userData.type = 'idle_tail';
-      g.userData.species = 'crocodile';
-      g.userData.phase = Math.random() * Math.PI * 2;
-      natureGroup.add(g);
-      animals.push(g);
-    }
-
-    // ── 🐰 ウサギ（5匹、草原を跳ねる） ──
-    for (let i = 0; i < 5; i++) {
-      const g = new THREE.Group();
-      const body = new THREE.Mesh(new THREE.SphereGeometry(0.32, 12, 10), MStd(0xf0e8d8));
-      body.scale.set(1, 0.85, 1.3);
-      body.position.y = 0.32;
-      g.add(body);
-      const head = new THREE.Mesh(new THREE.SphereGeometry(0.22, 12, 10), MStd(0xf0e8d8));
-      head.position.set(0, 0.5, 0.32);
-      g.add(head);
-      // 耳×2
-      [-0.08, 0.08].forEach(ex => {
-        const ear = new THREE.Mesh(
-          new THREE.CylinderGeometry(0.04, 0.05, 0.32, 6),
-          MStd(0xf0e8d8)
-        );
-        ear.position.set(ex, 0.75, 0.32);
-        g.add(ear);
-      });
-      // 短い4本足
-      [[0.1, 0.2], [-0.1, 0.2], [0.12, -0.2], [-0.12, -0.2]].forEach(([lx, lz]) => {
-        const leg = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.18, 0.12), MStd(0xe0d8c8));
-        leg.position.set(lx, 0.09, lz);
-        g.add(leg);
-      });
-      // 尻尾（白い玉）
-      const tailb = new THREE.Mesh(new THREE.SphereGeometry(0.1, 8, 6), MStd(0xffffff));
-      tailb.position.set(0, 0.4, -0.4);
-      g.add(tailb);
-      g.userData.type = 'hop';
-      g.userData.species = 'rabbit';
-      g.userData.angle = Math.random() * Math.PI * 2;
-      g.userData.radius = 30 + Math.random() * 10;
-      g.userData.speed = 0.25 + Math.random() * 0.2;
-      g.userData.phase = Math.random() * Math.PI * 2;
-      natureGroup.add(g);
-      animals.push(g);
-    }
-
-    // ── 🦅 タカ（2羽、上空を旋回 y=18） ──
-    for (let i = 0; i < 2; i++) {
-      const g = new THREE.Group();
-      const body = new THREE.Mesh(new THREE.SphereGeometry(0.32, 10, 8), MStd(0x6a3818));
-      body.scale.set(1, 0.8, 1.6);
-      g.add(body);
-      // 翼×2
-      const wL = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.04, 0.5), MStd(0x4a2810));
-      wL.position.set(0.7, 0, 0); g.add(wL);
-      const wR = wL.clone(); wR.position.x = -0.7; g.add(wR);
-      g.userData.wL = wL; g.userData.wR = wR;
-      // 頭
-      const head = new THREE.Mesh(new THREE.SphereGeometry(0.18, 8, 6), MStd(0x4a2810));
-      head.position.set(0, 0.05, 0.45);
-      g.add(head);
-      // 尾
-      const tail = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.04, 0.4), MStd(0x4a2810));
-      tail.position.set(0, 0, -0.45);
-      g.add(tail);
-      g.userData.type = 'fly_circle';
-      g.userData.species = 'hawk';
-      g.userData.angle = i * Math.PI;
-      g.userData.radius = 22 + i * 3;
-      g.userData.altitude = 17 + Math.random() * 3;
-      g.userData.speed = 0.08;
-      natureGroup.add(g);
-      animals.push(g);
-    }
-
-    // ── 🐘 ゾウ（2頭、ゆっくり歩く） ──
-    for (let i = 0; i < 2; i++) {
-      const g = makeQuadruped({
-        bodyLen: 3.0, bodyH: 1.8, bodyW: 1.6,
-        legH: 1.6, legR: 0.32, neckLen: 0.4,
-        headSize: 1.1, tailLen: 0.6,
-        bodyColor: 0x808890,
-      });
-      // 鼻（trunk）
-      const trunk = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.18, 0.28, 1.6, 8),
-        MStd(0x70787e)
-      );
-      trunk.position.set(g.userData.head.position.x + 0.5, g.userData.head.position.y - 0.4, 0);
-      trunk.rotation.z = -Math.PI / 3;
-      g.add(trunk);
-      g.userData.trunk = trunk;
-      // 耳×2
-      [-0.7, 0.7].forEach(ez => {
-        const ear = new THREE.Mesh(
-          new THREE.PlaneGeometry(0.9, 1.2),
-          new THREE.MeshStandardMaterial({ color: 0x70787e, roughness: 0.85, side: THREE.DoubleSide, flatShading: true })
-        );
-        ear.position.set(g.userData.head.position.x - 0.3, g.userData.head.position.y, ez);
-        ear.rotation.y = Math.PI / 2;
-        g.add(ear);
-      });
-      // 牙
-      [-0.25, 0.25].forEach(tz => {
-        const tusk = new THREE.Mesh(new THREE.ConeGeometry(0.06, 0.4, 6), MStd(0xfff0d8));
-        tusk.position.set(g.userData.head.position.x + 0.4, g.userData.head.position.y - 0.2, tz);
-        tusk.rotation.z = -Math.PI / 2.3;
-        g.add(tusk);
-      });
-      g.userData.type = 'walk';
-      g.userData.species = 'elephant';
-      g.userData.speed = 0.025 + Math.random() * 0.01;
-      g.userData.angle = Math.PI * 0.5 + i * 0.7;
-      g.userData.radius = 38 + Math.random() * 3;
-      g.userData.phase = Math.random() * Math.PI * 2;
-      natureGroup.add(g);
-      animals.push(g);
-    }
-
-    // ── 🐒 サル（4匹、木の上に座って揺れる） ──
-    for (let i = 0; i < 4; i++) {
-      const g = new THREE.Group();
-      const body = new THREE.Mesh(new THREE.SphereGeometry(0.3, 10, 8), MStd(0x4a2818));
-      body.scale.set(1, 1.1, 0.85);
-      g.add(body);
-      const head = new THREE.Mesh(new THREE.SphereGeometry(0.22, 10, 8), MStd(0x6a3a20));
-      head.position.set(0, 0.42, 0);
-      g.add(head);
-      // 顔（薄色）
-      const face = new THREE.Mesh(new THREE.SphereGeometry(0.14, 8, 6), MStd(0xd8a878));
-      face.position.set(0, 0.4, 0.14);
-      g.add(face);
-      // 尾（長い）
-      const tail = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.06, 1.2, 6), MStd(0x4a2818));
-      tail.position.set(0, 0, -0.5);
-      tail.rotation.x = Math.PI / 3;
-      g.add(tail);
-      g.userData.tail = tail;
-      // 木の上に配置
-      const a = (i / 4) * Math.PI * 2 + 0.3;
-      const r = 32 + Math.random() * 6;
-      g.position.set(Math.cos(a) * r, 3.5 + Math.random() * 0.5, Math.sin(a) * r);
-      g.userData.type = 'perch_swing';
-      g.userData.species = 'monkey';
-      g.userData.phase = Math.random() * Math.PI * 2;
-      g.userData.baseY = g.position.y;
-      natureGroup.add(g);
-      animals.push(g);
-    }
-
-    // ── 🐻 クマ（2頭、森の縁を歩く） ──
-    for (let i = 0; i < 2; i++) {
-      const g = makeQuadruped({
-        bodyLen: 1.8, bodyH: 1.0, bodyW: 0.9,
-        legH: 0.8, legR: 0.18, neckLen: 0.2,
-        headSize: 0.55, tailLen: 0.2,
-        bodyColor: 0x3a2010,
-      });
-      // 耳×2
-      [-0.18, 0.18].forEach(ez => {
-        const ear = new THREE.Mesh(new THREE.SphereGeometry(0.08, 6, 5), MStd(0x2a1810));
-        ear.position.set(g.userData.head.position.x - 0.05, g.userData.head.position.y + 0.25, ez);
-        g.add(ear);
-      });
-      g.userData.type = 'walk';
-      g.userData.species = 'bear';
-      g.userData.speed = 0.04 + Math.random() * 0.02;
-      g.userData.angle = Math.PI + i * 0.6;
-      g.userData.radius = 33 + Math.random() * 4;
-      g.userData.phase = Math.random() * Math.PI * 2;
-      natureGroup.add(g);
-      animals.push(g);
-    }
-
-    // ── 🦁 ライオン（2頭、堂々と歩く） ──
-    for (let i = 0; i < 2; i++) {
-      const g = makeQuadruped({
-        bodyLen: 2.0, bodyH: 0.9, bodyW: 0.85,
-        legH: 0.9, legR: 0.16, neckLen: 0.3,
-        headSize: 0.55, tailLen: 1.2,
-        bodyColor: 0xc8a060,
-      });
-      // たてがみ（雄）
-      const mane = new THREE.Mesh(
-        new THREE.SphereGeometry(0.55, 12, 10),
-        MStd(0x6a4020, 0.95)
-      );
-      mane.position.copy(g.userData.head.position);
-      mane.position.x -= 0.15;
-      mane.scale.set(1.1, 1.0, 1.1);
-      g.add(mane);
-      // 尾の先（房）
-      const tuft = new THREE.Mesh(new THREE.SphereGeometry(0.1, 6, 5), MStd(0x6a4020));
-      tuft.position.set(-1.6 - 0.5, 0.9, 0);
-      g.add(tuft);
-      g.userData.type = 'walk';
-      g.userData.species = 'lion';
-      g.userData.speed = 0.05 + Math.random() * 0.02;
-      g.userData.angle = -Math.PI / 3 + i * 0.5;
-      g.userData.radius = 31 + Math.random() * 3;
-      g.userData.phase = Math.random() * Math.PI * 2;
-      natureGroup.add(g);
-      animals.push(g);
-    }
-
-    // ── 🦤 ダチョウ（3羽、長い足で走る） ──
-    for (let i = 0; i < 3; i++) {
-      const g = new THREE.Group();
-      // 細い体
-      const body = new THREE.Mesh(new THREE.SphereGeometry(0.5, 12, 10), MStd(0x202020));
-      body.scale.set(0.85, 1, 1.2);
-      body.position.y = 1.6;
-      g.add(body);
-      // 長い首
-      const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.12, 1.5, 6), MStd(0xe8d0a0));
-      neck.position.set(0.2, 2.4, 0);
-      neck.rotation.z = -Math.PI / 8;
-      g.add(neck);
-      // 頭
-      const head = new THREE.Mesh(new THREE.SphereGeometry(0.18, 10, 8), MStd(0xe8d0a0));
-      head.position.set(0.5, 3.0, 0);
-      g.add(head);
-      // くちばし
-      const beak = new THREE.Mesh(new THREE.ConeGeometry(0.07, 0.18, 6), MStd(0xa06030));
-      beak.position.set(0.7, 3.0, 0);
-      beak.rotation.z = -Math.PI / 2;
-      g.add(beak);
-      // 長い脚×2（鳥は二足）
-      const legs = [];
-      [-0.18, 0.18].forEach(lz => {
-        const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, 1.6, 6), MStd(0xb89878));
-        leg.position.set(0, 0.8, lz);
-        g.add(leg);
-        legs.push(leg);
-      });
-      g.userData.legs = legs;
-      g.userData.type = 'run_bipedal';
-      g.userData.species = 'ostrich';
-      g.userData.speed = 0.18 + Math.random() * 0.05;
-      g.userData.angle = i * 2.0;
-      g.userData.radius = 37 + Math.random() * 3;
-      g.userData.phase = Math.random() * Math.PI * 2;
-      natureGroup.add(g);
-      animals.push(g);
-    }
-
-    // ── 🕊 カモメ（6羽、低空を群れで飛ぶ y=8） ──
-    for (let i = 0; i < 6; i++) {
-      const g = new THREE.Group();
-      const body = new THREE.Mesh(new THREE.SphereGeometry(0.18, 8, 6), MStd(0xf8f8f8));
-      body.scale.set(1, 0.8, 1.5);
-      g.add(body);
-      const wL = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.03, 0.25), MStd(0xe0e0e0));
-      wL.position.set(0.4, 0, 0); g.add(wL);
-      const wR = wL.clone(); wR.position.x = -0.4; g.add(wR);
-      g.userData.wL = wL; g.userData.wR = wR;
-      g.userData.type = 'fly_circle';
-      g.userData.species = 'seagull';
-      g.userData.angle = (i / 6) * Math.PI * 2;
-      g.userData.radius = 26 + Math.random() * 4;
-      g.userData.altitude = 7 + Math.random() * 3;
-      g.userData.speed = 0.15 + Math.random() * 0.05;
-      natureGroup.add(g);
-      animals.push(g);
-    }
-
-    // ── 🦉 フクロウ（3羽、木の枝に止まり首だけ動かす） ──
-    for (let i = 0; i < 3; i++) {
-      const g = new THREE.Group();
-      const body = new THREE.Mesh(new THREE.SphereGeometry(0.32, 10, 8), MStd(0x7a5838));
-      body.scale.set(1, 1.15, 0.95);
-      g.add(body);
-      const head = new THREE.Mesh(new THREE.SphereGeometry(0.28, 10, 8), MStd(0x9a7848));
-      head.position.set(0, 0.42, 0);
-      g.add(head);
-      g.userData.head = head;
-      // 目（白＋黒）
-      [-0.1, 0.1].forEach(ex => {
-        const eye = new THREE.Mesh(new THREE.SphereGeometry(0.08, 8, 6), MStd(0xfff0c0, 0.4));
-        eye.position.set(ex, 0.42, 0.22);
-        g.add(eye);
-        const pupil = new THREE.Mesh(new THREE.SphereGeometry(0.04, 6, 5), MStd(0x000000, 0.3));
-        pupil.position.set(ex, 0.42, 0.28);
-        g.add(pupil);
-      });
-      // くちばし
-      const beak = new THREE.Mesh(new THREE.ConeGeometry(0.04, 0.1, 6), MStd(0xa06030));
-      beak.position.set(0, 0.34, 0.28);
-      beak.rotation.x = Math.PI / 2;
-      g.add(beak);
-      const a = (i / 3) * Math.PI * 2 + 1.2;
-      const r = 33 + Math.random() * 5;
-      g.position.set(Math.cos(a) * r, 4 + Math.random() * 0.6, Math.sin(a) * r);
-      g.userData.type = 'perch_owl';
-      g.userData.species = 'owl';
-      g.userData.phase = Math.random() * Math.PI * 2;
-      g.userData.baseRotY = g.rotation.y;
-      natureGroup.add(g);
-      animals.push(g);
-    }
-
-    // ── 🦌 シカ（4頭、優雅に歩く） ──
-    for (let i = 0; i < 4; i++) {
-      const g = makeQuadruped({
-        bodyLen: 1.6, bodyH: 0.7, bodyW: 0.6,
-        legH: 1.0, legR: 0.08, neckLen: 0.6,
-        headSize: 0.32, tailLen: 0.3,
-        bodyColor: 0xa07048,
-      });
-      // 角（雄のみ、半分）
-      if (i < 2) {
-        const antlerMat = MStd(0x4a3018, 0.95);
-        [-0.12, 0.12].forEach(az => {
-          const a1 = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.04, 0.5, 5), antlerMat);
-          a1.position.set(g.userData.head.position.x + 0.05, g.userData.head.position.y + 0.35, az);
-          a1.rotation.z = az > 0 ? -0.3 : 0.3;
-          g.add(a1);
-          const a2 = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.025, 0.3, 5), antlerMat);
-          a2.position.set(g.userData.head.position.x + 0.0, g.userData.head.position.y + 0.6, az * 1.5);
-          a2.rotation.z = az > 0 ? -0.7 : 0.7;
-          g.add(a2);
-        });
-      }
-      // 白い尻（小さい斑）
-      const rump = new THREE.Mesh(new THREE.SphereGeometry(0.12, 6, 5), MStd(0xfff8e8));
-      rump.position.set(-0.7, 1.05, 0);
-      g.add(rump);
-      g.userData.type = 'walk';
-      g.userData.species = 'deer';
-      g.userData.speed = 0.07 + Math.random() * 0.03;
-      g.userData.angle = i * 1.5;
-      g.userData.radius = 34 + Math.random() * 4;
-      g.userData.phase = Math.random() * Math.PI * 2;
-      natureGroup.add(g);
-      animals.push(g);
-    }
-
-    natureGroup.userData.animals = animals;
-
     scene.add(natureGroup);
     scene.userData.natureGroup = natureGroup;
 
@@ -17487,95 +16916,6 @@
         if (ng.sparkles && ng.sparkles.material) {
           ng.sparkles.material.opacity = 0.5 + Math.sin(t * 2) * 0.3;
         }
-        // 🦒🐊🐰🦅🐘🐒🐻🦁🦤🕊🦉🦌  動物たちの自然な動き
-        (ng.animals || []).forEach(a => {
-          const u = a.userData;
-          switch (u.type) {
-            case 'walk': {
-              // 円周をゆっくり歩行（半径ごとに方向）
-              u.angle += u.speed * dt * 0.5;
-              const x = Math.cos(u.angle) * u.radius;
-              const z = Math.sin(u.angle) * u.radius;
-              a.position.x = x;
-              a.position.z = z;
-              a.position.y = -1.45 + Math.sin(t * 2 + u.phase) * 0.04; // わずかな上下
-              // 進行方向（接線）を向く
-              a.rotation.y = -u.angle - Math.PI / 2;
-              // 脚の歩行アニメ（前後左右で逆位相）
-              if (u.legs) {
-                u.legs.forEach((leg, idx) => {
-                  const ph = (idx === 0 || idx === 3) ? 0 : Math.PI;
-                  leg.rotation.x = Math.sin(t * 4 + ph + u.phase) * 0.35;
-                });
-              }
-              // 頭の上下バウンス
-              if (u.head) u.head.rotation.x = Math.sin(t * 4 + u.phase) * 0.06;
-              // 尾の揺れ
-              if (u.tail) u.tail.rotation.x = Math.sin(t * 3 + u.phase) * 0.2;
-              // ゾウの鼻
-              if (u.trunk) u.trunk.rotation.z = -Math.PI / 3 + Math.sin(t * 1.5 + u.phase) * 0.15;
-              break;
-            }
-            case 'hop': {
-              // ウサギ：ぴょんぴょん跳ねる
-              u.angle += u.speed * dt * 0.6;
-              const x = Math.cos(u.angle) * u.radius;
-              const z = Math.sin(u.angle) * u.radius;
-              a.position.x = x;
-              a.position.z = z;
-              const hop = Math.max(0, Math.sin(t * 3 + u.phase));
-              a.position.y = -1.45 + hop * 0.4;
-              a.rotation.y = -u.angle - Math.PI / 2;
-              a.rotation.x = -hop * 0.15;
-              break;
-            }
-            case 'fly_circle': {
-              // タカ・カモメ：上空旋回＋翼ばたつき
-              u.angle += u.speed * dt;
-              a.position.x = Math.cos(u.angle) * u.radius;
-              a.position.z = Math.sin(u.angle) * u.radius;
-              a.position.y = u.altitude + Math.sin(t * 0.7 + u.angle) * 0.6;
-              a.rotation.y = -u.angle - Math.PI / 2;
-              a.rotation.z = Math.sin(t * 0.7 + u.angle) * 0.15; // バンク
-              const flap = Math.sin(t * (u.species === 'hawk' ? 4 : 6)) * 0.5;
-              if (u.wL) u.wL.rotation.z = flap;
-              if (u.wR) u.wR.rotation.z = -flap;
-              break;
-            }
-            case 'idle_tail': {
-              // ワニ：ほぼ静止＋たまに尾を振る
-              if (u.tail) u.tail.rotation.x = Math.sin(t * 0.5 + u.phase) * 0.4;
-              a.position.y = -1.4 + Math.sin(t * 0.3 + u.phase) * 0.02;
-              break;
-            }
-            case 'perch_swing': {
-              // サル：木の上で揺れる
-              a.position.y = u.baseY + Math.sin(t * 1.5 + u.phase) * 0.15;
-              a.rotation.z = Math.sin(t * 1.2 + u.phase) * 0.1;
-              if (u.tail) u.tail.rotation.z = Math.sin(t * 2 + u.phase) * 0.3;
-              break;
-            }
-            case 'run_bipedal': {
-              // ダチョウ：速く走る、長い首が前後に
-              u.angle += u.speed * dt;
-              a.position.x = Math.cos(u.angle) * u.radius;
-              a.position.z = Math.sin(u.angle) * u.radius;
-              a.position.y = -1.45 + Math.abs(Math.sin(t * 6 + u.phase)) * 0.15;
-              a.rotation.y = -u.angle - Math.PI / 2;
-              if (u.legs) {
-                u.legs[0].rotation.x = Math.sin(t * 8 + u.phase) * 0.6;
-                u.legs[1].rotation.x = Math.sin(t * 8 + u.phase + Math.PI) * 0.6;
-              }
-              break;
-            }
-            case 'perch_owl': {
-              // フクロウ：静止、首だけたまに回す
-              const turn = Math.sin(t * 0.4 + u.phase);
-              if (u.head) u.head.rotation.y = turn * 1.2; // 大きく首を回す
-              break;
-            }
-          }
-        });
       }
       // パーティクル + ドーム
       particles.rotation.y += 0.0008 + bassS * 0.002;
