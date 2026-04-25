@@ -558,6 +558,11 @@
                 <div class="mtc-name">K O H</div>
                 <div class="mtc-sub">球体音楽堂（合言葉あり）</div>
               </button>
+              <button class="magic-topbook-cat magic-topbook-cat-library" data-cat="library">
+                <div class="mtc-emoji">📚</div>
+                <div class="mtc-name">図 書 館</div>
+                <div class="mtc-sub">全分野の本を検索する</div>
+              </button>
             </div>
           </div>
         </div>
@@ -597,6 +602,7 @@
         ehonspace: () => { try { openEhonSpace3D(); } catch (e) { console.warn('ehonspace', e); } },
         lpworld: () => { try { openLittlePrinceWorld3D(); } catch (e) { console.warn('lpworld', e); } },
         koh: () => { try { openKohSphere(); } catch (e) { console.warn('koh', e); } },
+        library: () => { try { openLibrary(); } catch (e) { console.warn('library', e); } },
       };
       wrap.querySelectorAll('[data-deep]').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -624,6 +630,9 @@
         ]},
         koh: { title: '◎ K O H', sub: '世界最大の球体音楽堂', items: [
           { deep: 'koh', label: 'KOH に入る', desc: '合言葉のある秘密の音楽堂 — 座席を選び、音楽を聴く', emoji: '◎' },
+        ]},
+        library: { title: '📚 図 書 館', sub: '偉人・神話・神々・音楽の総合書庫', items: [
+          { deep: 'library', label: '図書館に入る', desc: 'ゴシック寺院風の本棚から検索 — クリックで本を開く', emoji: '📚' },
         ]},
         ijin: { title: '👤 偉 人', sub: '297人の生涯と関係', items: [
           { deep: 'quiz', label: '偉人クイズ', desc: '5タイプの問題でテスト', emoji: '🎓' },
@@ -16226,269 +16235,415 @@
 
     // 🦒🐘🦁  動物12種をドーム内壁に投影（Canvas詳細シルエット → Sprite billboard）
     function makeAnimalCanvas(species) {
-      const c = document.createElement('canvas'); c.width = 256; c.height = 256;
+      // 高解像度 512x512 ／ カラー付き写実シルエット
+      const c = document.createElement('canvas'); c.width = 512; c.height = 512;
       const g = c.getContext('2d');
-      g.clearRect(0, 0, 256, 256);
-      g.fillStyle = 'rgba(8,12,18,0.97)';
-      g.strokeStyle = 'rgba(8,12,18,0.97)'; g.lineWidth = 2;
-      // 共通：地面ライン下の影
+      g.clearRect(0, 0, 512, 512);
+      g.lineCap = 'round'; g.lineJoin = 'round';
+      // 種別ごとに色味を切り替え
+      const PAL = {
+        giraffe:  { body: '#d8a850', dark: '#8a5828', light: '#f0c878', accent: '#5a3818' },
+        elephant: { body: '#7a7e84', dark: '#3a3e44', light: '#a8acb2', accent: '#1a1c1e' },
+        lion:     { body: '#c89858', dark: '#6a4218', light: '#e8c080', accent: '#3a1808' },
+        deer:     { body: '#a87850', dark: '#5a3818', light: '#d8a878', accent: '#2a1808' },
+        bear:     { body: '#3a2010', dark: '#1a0a04', light: '#5a3018', accent: '#0a0402' },
+        rabbit:   { body: '#e8d8c0', dark: '#a89878', light: '#fff8e8', accent: '#2a1808' },
+        crocodile:{ body: '#3a5028', dark: '#1a2810', light: '#5a7038', accent: '#080a04' },
+        monkey:   { body: '#4a2818', dark: '#1a0808', light: '#a07050', accent: '#080404' },
+        owl:      { body: '#7a5838', dark: '#3a2818', light: '#a08858', accent: '#1a0a04' },
+        hawk:     { body: '#5a3818', dark: '#2a1808', light: '#a07840', accent: '#080404' },
+        seagull:  { body: '#f0f0f0', dark: '#404040', light: '#ffffff', accent: '#080808' },
+        ostrich:  { body: '#1a1a1a', dark: '#000000', light: '#403018', accent: '#000000' },
+      };
+      const pal = PAL[species] || PAL.deer;
+      g.fillStyle = pal.body;
+      g.strokeStyle = pal.dark; g.lineWidth = 4;
+      // 影
+      if (!['hawk','seagull','owl'].includes(species)) {
+        g.fillStyle = 'rgba(0,0,0,0.35)';
+        g.beginPath(); g.ellipse(256, 470, 140, 14, 0, 0, Math.PI*2); g.fill();
+      }
+      g.fillStyle = pal.body;
       const draw = {
         giraffe() {
-          // 体（横長）
-          g.beginPath(); g.ellipse(140, 165, 38, 24, 0, 0, Math.PI*2); g.fill();
-          // 長い首
+          g.fillStyle = pal.body;
+          g.beginPath(); g.ellipse(280, 320, 78, 50, 0, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.light;
+          g.beginPath(); g.ellipse(280, 340, 60, 28, 0, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.body;
           g.beginPath();
-          g.moveTo(165, 155); g.lineTo(195, 90);
-          g.lineTo(208, 88); g.lineTo(178, 158); g.closePath(); g.fill();
-          // 頭
-          g.beginPath(); g.ellipse(208, 75, 14, 9, -0.3, 0, Math.PI*2); g.fill();
+          g.moveTo(338, 280); g.lineTo(400, 130);
+          g.lineTo(430, 130); g.lineTo(360, 295); g.closePath(); g.fill();
+          // たてがみ
+          g.strokeStyle = pal.dark; g.lineWidth = 5;
+          for (let i = 0; i < 12; i++) {
+            const t = i / 12;
+            const x = 338 + (400-338)*t; const y = 280 + (130-280)*t;
+            g.beginPath(); g.moveTo(x, y); g.lineTo(x+6, y-10); g.stroke();
+          }
+          g.fillStyle = pal.body;
+          g.beginPath(); g.ellipse(420, 110, 28, 18, -0.3, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.light;
+          g.beginPath(); g.ellipse(443, 102, 10, 7, -0.3, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.body;
+          g.beginPath(); g.ellipse(412, 92, 10, 6, -0.3, 0, Math.PI*2); g.fill();
           // 角
-          g.fillRect(207, 60, 3, 10); g.fillRect(214, 62, 3, 10);
+          g.fillStyle = pal.dark;
+          g.fillRect(415, 80, 6, 22); g.fillRect(428, 84, 6, 22);
+          g.beginPath(); g.arc(418, 78, 5, 0, Math.PI*2); g.fill();
+          g.beginPath(); g.arc(431, 82, 5, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.accent;
+          g.beginPath(); g.arc(422, 105, 3, 0, Math.PI*2); g.fill();
           // 4本脚
-          g.fillRect(112, 188, 6, 50);
-          g.fillRect(132, 188, 6, 50);
-          g.fillRect(150, 188, 6, 50);
-          g.fillRect(168, 188, 6, 50);
-          // 尾
-          g.beginPath(); g.moveTo(102, 165); g.lineTo(86, 192); g.lineTo(94, 165); g.closePath(); g.fill();
-          // 斑模様（薄め茶色）
-          g.fillStyle = 'rgba(120,80,30,0.4)';
-          for (let i = 0; i < 10; i++) {
-            g.fillRect(110 + Math.random()*60, 150 + Math.random()*30, 8, 8);
+          g.fillStyle = pal.body;
+          [220, 260, 300, 338].forEach(lx => {
+            g.fillRect(lx-7, 360, 14, 100);
+            g.fillStyle = pal.dark; g.fillRect(lx-9, 455, 18, 8); g.fillStyle = pal.body;
+          });
+          g.strokeStyle = pal.dark; g.lineWidth = 5;
+          g.beginPath(); g.moveTo(202, 320); g.lineTo(170, 380); g.stroke();
+          g.fillStyle = pal.dark;
+          g.beginPath(); g.arc(170, 380, 8, 0, Math.PI*2); g.fill();
+          // 斑
+          g.fillStyle = pal.dark;
+          for (let i = 0; i < 24; i++) {
+            const sx = 215 + Math.random() * 130, sy = 280 + Math.random() * 80;
+            g.beginPath();
+            g.ellipse(sx, sy, 10 + Math.random()*6, 8 + Math.random()*5, Math.random()*Math.PI, 0, Math.PI*2); g.fill();
           }
         },
         elephant() {
-          // 大きな丸い体
-          g.beginPath(); g.ellipse(128, 165, 55, 40, 0, 0, Math.PI*2); g.fill();
-          // 頭
-          g.beginPath(); g.ellipse(180, 145, 28, 26, 0, 0, Math.PI*2); g.fill();
-          // 鼻（長くカーブ）
+          g.fillStyle = pal.body;
+          g.beginPath(); g.ellipse(240, 320, 110, 80, 0, 0, Math.PI*2); g.fill();
+          g.beginPath(); g.ellipse(360, 280, 60, 55, 0, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.dark;
+          g.beginPath(); g.ellipse(335, 240, 50, 65, -0.4, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.body;
+          g.beginPath(); g.ellipse(335, 245, 38, 50, -0.4, 0, Math.PI*2); g.fill();
           g.beginPath();
-          g.moveTo(200, 155); g.bezierCurveTo(230, 175, 235, 215, 215, 230);
-          g.lineTo(208, 225); g.bezierCurveTo(220, 210, 218, 185, 195, 168);
+          g.moveTo(400, 295); g.bezierCurveTo(470, 320, 480, 410, 440, 450);
+          g.lineTo(420, 440); g.bezierCurveTo(450, 405, 440, 350, 385, 312);
           g.closePath(); g.fill();
-          // 耳（大きい）
-          g.beginPath(); g.ellipse(165, 130, 22, 28, -0.3, 0, Math.PI*2); g.fill();
-          // 牙（白）
-          g.fillStyle = 'rgba(245,235,210,0.95)';
-          g.beginPath(); g.moveTo(195, 165); g.lineTo(205, 185); g.lineTo(200, 188); g.lineTo(190, 168); g.closePath(); g.fill();
-          g.fillStyle = 'rgba(8,12,18,0.97)';
-          // 4本太脚
-          g.fillRect(85, 200, 18, 38);
-          g.fillRect(110, 200, 18, 38);
-          g.fillRect(140, 200, 18, 38);
-          g.fillRect(165, 200, 18, 38);
-          // 尾
-          g.fillRect(72, 165, 4, 30);
+          g.strokeStyle = pal.dark; g.lineWidth = 2;
+          for (let i = 0; i < 8; i++) {
+            const t = i / 8, x = 405 + 60*t - t*t*15, y = 305 + 130*t;
+            g.beginPath(); g.moveTo(x, y); g.lineTo(x+15, y+5); g.stroke();
+          }
+          // 牙
+          g.fillStyle = '#f4ecd0';
+          g.beginPath();
+          g.moveTo(400, 320); g.bezierCurveTo(425, 360, 425, 380, 410, 385);
+          g.bezierCurveTo(400, 380, 388, 350, 385, 325); g.closePath(); g.fill();
+          g.beginPath();
+          g.moveTo(380, 320); g.bezierCurveTo(395, 360, 395, 375, 380, 380);
+          g.bezierCurveTo(370, 372, 360, 350, 362, 322); g.closePath(); g.fill();
+          g.fillStyle = pal.accent;
+          g.beginPath(); g.arc(355, 270, 4, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.body;
+          [160, 220, 280, 330].forEach(lx => {
+            g.fillRect(lx-22, 380, 44, 90);
+            g.fillStyle = pal.dark; g.fillRect(lx-24, 460, 48, 10); g.fillStyle = pal.body;
+          });
+          g.strokeStyle = pal.dark; g.lineWidth = 4;
+          g.beginPath(); g.moveTo(135, 320); g.lineTo(105, 380); g.stroke();
+          g.fillStyle = pal.dark;
+          g.beginPath(); g.arc(105, 380, 5, 0, Math.PI*2); g.fill();
         },
         lion() {
-          // 体
-          g.beginPath(); g.ellipse(135, 170, 42, 22, 0, 0, Math.PI*2); g.fill();
-          // 大きなたてがみ
-          g.beginPath(); g.ellipse(180, 150, 32, 32, 0, 0, Math.PI*2); g.fill();
-          // たてがみの毛束
-          g.fillStyle = 'rgba(70,40,15,0.85)';
-          for (let i = 0; i < 16; i++) {
-            const a = (i/16) * Math.PI * 2;
-            g.beginPath(); g.ellipse(180 + Math.cos(a)*32, 150 + Math.sin(a)*32, 6, 12, a, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.body;
+          g.beginPath(); g.ellipse(255, 330, 88, 46, 0, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.light;
+          g.beginPath(); g.ellipse(255, 350, 70, 22, 0, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.dark;
+          g.beginPath(); g.ellipse(360, 295, 78, 78, 0, 0, Math.PI*2); g.fill();
+          for (let i = 0; i < 24; i++) {
+            const a = (i/24) * Math.PI * 2;
+            g.beginPath();
+            g.ellipse(360 + Math.cos(a)*78, 295 + Math.sin(a)*78, 12, 22, a, 0, Math.PI*2); g.fill();
           }
-          g.fillStyle = 'rgba(8,12,18,0.97)';
-          // 顔（中央の濃い丸）
-          g.beginPath(); g.ellipse(190, 150, 16, 14, 0, 0, Math.PI*2); g.fill();
-          // 4本脚
-          g.fillRect(105, 188, 8, 40);
-          g.fillRect(125, 188, 8, 40);
-          g.fillRect(150, 188, 8, 40);
-          g.fillRect(170, 188, 8, 40);
-          // 尾（先に房）
-          g.beginPath(); g.moveTo(95, 165); g.lineTo(70, 195); g.lineTo(78, 165); g.closePath(); g.fill();
-          g.beginPath(); g.arc(70, 195, 6, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.body;
+          g.beginPath(); g.ellipse(380, 295, 32, 30, 0, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.accent;
+          g.beginPath(); g.ellipse(395, 305, 8, 6, 0, 0, Math.PI*2); g.fill();
+          g.fillStyle = '#fff8c0';
+          g.beginPath(); g.arc(372, 285, 6, 0, Math.PI*2); g.fill();
+          g.beginPath(); g.arc(388, 285, 6, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.accent;
+          g.beginPath(); g.arc(372, 286, 3, 0, Math.PI*2); g.fill();
+          g.beginPath(); g.arc(388, 286, 3, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.dark;
+          g.beginPath(); g.arc(345, 250, 10, 0, Math.PI*2); g.fill();
+          g.beginPath(); g.arc(372, 245, 10, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.body;
+          [200, 240, 270, 310].forEach(lx => {
+            g.fillRect(lx-10, 370, 20, 90);
+            g.fillStyle = pal.dark; g.fillRect(lx-12, 455, 24, 10); g.fillStyle = pal.body;
+          });
+          g.strokeStyle = pal.body; g.lineWidth = 8;
+          g.beginPath(); g.moveTo(170, 320); g.bezierCurveTo(120, 340, 90, 380, 100, 410); g.stroke();
+          g.fillStyle = pal.dark;
+          g.beginPath(); g.arc(100, 410, 14, 0, Math.PI*2); g.fill();
         },
         deer() {
-          // 体（細身）
-          g.beginPath(); g.ellipse(130, 170, 38, 18, 0, 0, Math.PI*2); g.fill();
-          // 首と頭
+          g.fillStyle = pal.body;
+          g.beginPath(); g.ellipse(260, 340, 76, 38, 0, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.light;
+          g.beginPath(); g.ellipse(260, 358, 60, 16, 0, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.body;
           g.beginPath();
-          g.moveTo(155, 160); g.lineTo(175, 125);
-          g.lineTo(185, 125); g.lineTo(168, 165); g.closePath(); g.fill();
-          g.beginPath(); g.ellipse(180, 115, 12, 9, 0, 0, Math.PI*2); g.fill();
-          // 角（枝分かれ）
+          g.moveTo(310, 318); g.lineTo(355, 240);
+          g.lineTo(380, 240); g.lineTo(335, 330); g.closePath(); g.fill();
+          g.beginPath(); g.ellipse(370, 218, 25, 18, 0, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.dark;
+          g.beginPath(); g.ellipse(390, 220, 6, 5, 0, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.accent;
+          g.beginPath(); g.arc(378, 213, 3, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.body;
+          g.beginPath(); g.ellipse(360, 198, 6, 12, -0.3, 0, Math.PI*2); g.fill();
+          g.beginPath(); g.ellipse(372, 196, 6, 12, 0.2, 0, Math.PI*2); g.fill();
+          // 角
+          g.strokeStyle = '#5a3818'; g.lineWidth = 5;
           g.beginPath();
-          g.moveTo(173, 105); g.lineTo(168, 75); g.moveTo(168, 75); g.lineTo(160, 80);
-          g.moveTo(168, 75); g.lineTo(170, 60); g.moveTo(170, 60); g.lineTo(180, 65);
-          g.lineWidth = 3; g.stroke();
-          g.beginPath();
-          g.moveTo(187, 105); g.lineTo(192, 75); g.moveTo(192, 75); g.lineTo(200, 80);
-          g.moveTo(192, 75); g.lineTo(190, 60); g.moveTo(190, 60); g.lineTo(180, 65);
+          g.moveTo(355, 200); g.lineTo(345, 165); g.lineTo(330, 158);
+          g.moveTo(345, 165); g.lineTo(348, 140); g.lineTo(335, 130);
+          g.moveTo(348, 140); g.lineTo(360, 120);
           g.stroke();
-          g.lineWidth = 2;
-          // 細い4本脚
-          g.fillRect(110, 188, 4, 50);
-          g.fillRect(125, 188, 4, 50);
-          g.fillRect(145, 188, 4, 50);
-          g.fillRect(160, 188, 4, 50);
-          // 尾（白い、小さい）
-          g.fillStyle = 'rgba(245,245,245,0.9)';
-          g.beginPath(); g.ellipse(95, 162, 5, 8, 0, 0, Math.PI*2); g.fill();
-          g.fillStyle = 'rgba(8,12,18,0.97)';
+          g.beginPath();
+          g.moveTo(372, 198); g.lineTo(383, 165); g.lineTo(398, 158);
+          g.moveTo(383, 165); g.lineTo(380, 140); g.lineTo(395, 130);
+          g.moveTo(380, 140); g.lineTo(370, 120);
+          g.stroke();
+          g.fillStyle = pal.body;
+          [200, 230, 285, 320].forEach(lx => {
+            g.fillRect(lx-5, 370, 10, 100);
+            g.fillStyle = pal.accent; g.fillRect(lx-6, 460, 12, 8); g.fillStyle = pal.body;
+          });
+          g.fillStyle = pal.light;
+          g.beginPath(); g.ellipse(180, 320, 12, 20, 0, 0, Math.PI*2); g.fill();
         },
         bear() {
-          // 大きな丸い体
-          g.beginPath(); g.ellipse(128, 175, 50, 35, 0, 0, Math.PI*2); g.fill();
-          // 頭
-          g.beginPath(); g.ellipse(175, 155, 24, 22, 0, 0, Math.PI*2); g.fill();
-          // 耳（小さい丸）
-          g.beginPath(); g.arc(162, 135, 7, 0, Math.PI*2); g.fill();
-          g.beginPath(); g.arc(188, 135, 7, 0, Math.PI*2); g.fill();
-          // 鼻先
-          g.beginPath(); g.ellipse(195, 155, 8, 6, 0, 0, Math.PI*2); g.fill();
-          // 4本脚（短く太い）
-          g.fillRect(85, 200, 16, 35);
-          g.fillRect(110, 200, 16, 35);
-          g.fillRect(140, 200, 16, 35);
-          g.fillRect(165, 200, 16, 35);
+          g.fillStyle = pal.body;
+          g.beginPath(); g.ellipse(240, 350, 100, 75, 0, 0, Math.PI*2); g.fill();
+          g.beginPath(); g.ellipse(355, 305, 50, 48, 0, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.dark;
+          g.beginPath(); g.ellipse(398, 320, 18, 14, 0, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.accent;
+          g.beginPath(); g.ellipse(405, 320, 8, 6, 0, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.body;
+          g.beginPath(); g.arc(322, 268, 16, 0, Math.PI*2); g.fill();
+          g.beginPath(); g.arc(380, 263, 16, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.dark;
+          g.beginPath(); g.arc(322, 268, 9, 0, Math.PI*2); g.fill();
+          g.beginPath(); g.arc(380, 263, 9, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.accent;
+          g.beginPath(); g.arc(345, 295, 4, 0, Math.PI*2); g.fill();
+          g.beginPath(); g.arc(378, 295, 4, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.body;
+          [165, 220, 275, 320].forEach(lx => {
+            g.fillRect(lx-18, 400, 36, 70);
+            g.fillStyle = pal.accent;
+            g.fillRect(lx-18, 460, 5, 10); g.fillRect(lx-7, 460, 5, 10); g.fillRect(lx+5, 460, 5, 10);
+            g.fillStyle = pal.body;
+          });
         },
         rabbit() {
-          // 体
-          g.beginPath(); g.ellipse(128, 178, 22, 18, 0, 0, Math.PI*2); g.fill();
-          // 頭
-          g.beginPath(); g.ellipse(150, 162, 14, 13, 0, 0, Math.PI*2); g.fill();
-          // 長い耳（2本）
-          g.beginPath(); g.ellipse(146, 135, 4, 18, -0.1, 0, Math.PI*2); g.fill();
-          g.beginPath(); g.ellipse(154, 135, 4, 18, 0.1, 0, Math.PI*2); g.fill();
-          // 短い4本足
-          g.fillRect(112, 192, 6, 14);
-          g.fillRect(122, 192, 6, 14);
-          g.fillRect(135, 192, 6, 14);
-          g.fillRect(143, 192, 6, 14);
-          // 白い尻尾
-          g.fillStyle = 'rgba(245,245,245,0.95)';
-          g.beginPath(); g.arc(108, 175, 6, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.body;
+          g.beginPath(); g.ellipse(256, 360, 50, 42, 0, 0, Math.PI*2); g.fill();
+          g.beginPath(); g.ellipse(300, 320, 32, 30, 0, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.light;
+          g.beginPath(); g.ellipse(310, 328, 14, 12, 0, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.body;
+          g.beginPath(); g.ellipse(290, 260, 10, 38, -0.15, 0, Math.PI*2); g.fill();
+          g.beginPath(); g.ellipse(310, 258, 10, 38, 0.1, 0, Math.PI*2); g.fill();
+          g.fillStyle = '#f0a8a0';
+          g.beginPath(); g.ellipse(290, 265, 4, 28, -0.15, 0, Math.PI*2); g.fill();
+          g.beginPath(); g.ellipse(310, 263, 4, 28, 0.1, 0, Math.PI*2); g.fill();
+          g.fillStyle = '#a82828';
+          g.beginPath(); g.arc(296, 320, 4, 0, Math.PI*2); g.fill();
+          g.beginPath(); g.arc(312, 318, 4, 0, Math.PI*2); g.fill();
+          g.fillStyle = '#e88080';
+          g.beginPath(); g.arc(316, 332, 3, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.body;
+          [220, 246, 270, 290].forEach(lx => g.fillRect(lx-7, 395, 14, 35));
+          g.beginPath(); g.ellipse(220, 410, 22, 14, 0.3, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.light;
+          g.beginPath(); g.arc(208, 350, 14, 0, Math.PI*2); g.fill();
         },
         crocodile() {
-          // 細長い体
-          g.beginPath(); g.ellipse(128, 195, 65, 12, 0, 0, Math.PI*2); g.fill();
-          // 頭（鋭い）
+          g.fillStyle = pal.body;
+          g.beginPath(); g.ellipse(256, 380, 130, 24, 0, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.dark;
+          g.beginPath(); g.ellipse(256, 372, 120, 14, 0, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.body;
           g.beginPath();
-          g.moveTo(190, 192); g.lineTo(225, 188); g.lineTo(228, 198); g.lineTo(192, 202); g.closePath(); g.fill();
-          // 尾（先細り）
-          g.beginPath();
-          g.moveTo(64, 195); g.lineTo(40, 188); g.lineTo(40, 200); g.lineTo(64, 200); g.closePath(); g.fill();
-          // 短い脚
-          g.fillRect(85, 205, 8, 14);
-          g.fillRect(105, 205, 8, 14);
-          g.fillRect(140, 205, 8, 14);
-          g.fillRect(160, 205, 8, 14);
-          // 鱗の凸凹（背中）
+          g.moveTo(380, 374); g.lineTo(450, 372); g.lineTo(458, 392); g.lineTo(380, 396);
+          g.closePath(); g.fill();
+          g.fillStyle = '#f0e8c0';
           for (let i = 0; i < 8; i++) {
-            g.beginPath(); g.arc(80 + i*15, 184, 4, 0, Math.PI); g.fill();
+            g.beginPath();
+            g.moveTo(390 + i*8, 384); g.lineTo(393 + i*8, 392); g.lineTo(396 + i*8, 384);
+            g.closePath(); g.fill();
+          }
+          g.fillStyle = pal.dark;
+          g.beginPath(); g.arc(395, 364, 6, 0, Math.PI*2); g.fill();
+          g.fillStyle = '#ffe060';
+          g.beginPath(); g.arc(395, 364, 4, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.accent;
+          g.beginPath(); g.ellipse(395, 364, 1.5, 4, 0, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.body;
+          g.beginPath();
+          g.moveTo(126, 380); g.lineTo(60, 372); g.lineTo(60, 392); g.lineTo(126, 388);
+          g.closePath(); g.fill();
+          [165, 215, 290, 340].forEach(lx => {
+            g.fillRect(lx-8, 405, 16, 28);
+            g.fillStyle = pal.accent;
+            for (let j = 0; j < 3; j++) g.fillRect(lx-8 + j*5, 430, 3, 6);
+            g.fillStyle = pal.body;
+          });
+          g.fillStyle = pal.dark;
+          for (let i = 0; i < 14; i++) {
+            g.beginPath(); g.arc(140 + i*18, 358, 7, 0, Math.PI); g.fill();
           }
         },
         monkey() {
-          // 体（小さい）
-          g.beginPath(); g.ellipse(128, 175, 18, 22, 0, 0, Math.PI*2); g.fill();
-          // 頭
-          g.beginPath(); g.ellipse(128, 145, 14, 14, 0, 0, Math.PI*2); g.fill();
-          // 顔（薄色）
-          g.fillStyle = 'rgba(180,140,90,0.85)';
-          g.beginPath(); g.ellipse(128, 148, 8, 9, 0, 0, Math.PI*2); g.fill();
-          g.fillStyle = 'rgba(8,12,18,0.97)';
-          // 耳
-          g.beginPath(); g.arc(115, 142, 4, 0, Math.PI*2); g.fill();
-          g.beginPath(); g.arc(141, 142, 4, 0, Math.PI*2); g.fill();
-          // 長い尾（カーブ）
-          g.lineWidth = 4;
+          g.fillStyle = pal.body;
+          g.beginPath(); g.ellipse(256, 350, 35, 45, 0, 0, Math.PI*2); g.fill();
+          g.beginPath(); g.ellipse(256, 285, 30, 30, 0, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.light;
+          g.beginPath(); g.ellipse(256, 295, 18, 20, 0, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.body;
+          g.beginPath(); g.ellipse(256, 275, 22, 12, 0, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.accent;
+          g.beginPath(); g.arc(248, 290, 3, 0, Math.PI*2); g.fill();
+          g.beginPath(); g.arc(264, 290, 3, 0, Math.PI*2); g.fill();
+          g.beginPath(); g.arc(256, 302, 1.5, 0, Math.PI*2); g.fill();
+          g.strokeStyle = pal.accent; g.lineWidth = 2;
+          g.beginPath(); g.moveTo(250, 308); g.lineTo(262, 308); g.stroke();
+          g.fillStyle = pal.body;
+          g.beginPath(); g.arc(228, 280, 8, 0, Math.PI*2); g.fill();
+          g.beginPath(); g.arc(284, 280, 8, 0, Math.PI*2); g.fill();
+          g.strokeStyle = pal.body; g.lineWidth = 8;
           g.beginPath();
-          g.moveTo(110, 188); g.bezierCurveTo(80, 210, 100, 240, 75, 220);
-          g.stroke();
-          g.lineWidth = 2;
-          // 短い手足
-          g.fillRect(112, 175, 6, 25);
-          g.fillRect(138, 175, 6, 25);
-          g.fillRect(118, 195, 6, 14);
-          g.fillRect(132, 195, 6, 14);
+          g.moveTo(225, 380); g.bezierCurveTo(150, 420, 200, 470, 130, 450); g.stroke();
+          g.fillStyle = pal.body;
+          g.fillRect(228, 330, 14, 50); g.fillRect(270, 330, 14, 50);
+          g.fillRect(238, 385, 12, 30); g.fillRect(262, 385, 12, 30);
         },
         owl() {
-          // 丸い体
-          g.beginPath(); g.ellipse(128, 165, 32, 38, 0, 0, Math.PI*2); g.fill();
-          // 頭（体と一体だが目立つ顔）
-          g.beginPath(); g.ellipse(128, 135, 28, 25, 0, 0, Math.PI*2); g.fill();
-          // 大きな目（2つ）
-          g.fillStyle = 'rgba(255,235,150,0.95)';
-          g.beginPath(); g.arc(118, 132, 8, 0, Math.PI*2); g.fill();
-          g.beginPath(); g.arc(138, 132, 8, 0, Math.PI*2); g.fill();
-          // 黒目
-          g.fillStyle = 'rgba(0,0,0,0.95)';
-          g.beginPath(); g.arc(118, 132, 4, 0, Math.PI*2); g.fill();
-          g.beginPath(); g.arc(138, 132, 4, 0, Math.PI*2); g.fill();
-          // くちばし
-          g.fillStyle = 'rgba(180,100,40,0.95)';
-          g.beginPath(); g.moveTo(128, 142); g.lineTo(124, 152); g.lineTo(132, 152); g.closePath(); g.fill();
-          g.fillStyle = 'rgba(8,12,18,0.97)';
-          // 翼の羽模様
-          for (let i = 0; i < 8; i++) {
-            g.beginPath(); g.ellipse(108 + (i%4)*12, 168 + (i>3?20:0), 5, 8, 0, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.body;
+          g.beginPath(); g.ellipse(256, 320, 70, 80, 0, 0, Math.PI*2); g.fill();
+          g.beginPath(); g.ellipse(256, 250, 60, 55, 0, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.light;
+          g.beginPath(); g.ellipse(256, 252, 48, 45, 0, 0, Math.PI*2); g.fill();
+          g.fillStyle = '#ffe060';
+          g.beginPath(); g.arc(232, 248, 18, 0, Math.PI*2); g.fill();
+          g.beginPath(); g.arc(280, 248, 18, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.accent;
+          g.beginPath(); g.arc(232, 248, 9, 0, Math.PI*2); g.fill();
+          g.beginPath(); g.arc(280, 248, 9, 0, Math.PI*2); g.fill();
+          g.fillStyle = '#ffffff';
+          g.beginPath(); g.arc(228, 244, 3, 0, Math.PI*2); g.fill();
+          g.beginPath(); g.arc(276, 244, 3, 0, Math.PI*2); g.fill();
+          g.fillStyle = '#c87830';
+          g.beginPath();
+          g.moveTo(256, 268); g.lineTo(248, 290); g.lineTo(264, 290); g.closePath(); g.fill();
+          g.fillStyle = pal.body;
+          g.beginPath();
+          g.moveTo(218, 200); g.lineTo(208, 175); g.lineTo(228, 195); g.closePath(); g.fill();
+          g.beginPath();
+          g.moveTo(294, 200); g.lineTo(304, 175); g.lineTo(284, 195); g.closePath(); g.fill();
+          g.fillStyle = pal.dark;
+          for (let row = 0; row < 4; row++) {
+            for (let col = 0; col < 6; col++) {
+              const sx = 200 + col*22 + (row%2)*11, sy = 320 + row*22;
+              g.beginPath(); g.ellipse(sx, sy, 8, 12, 0, 0, Math.PI); g.fill();
+            }
           }
         },
         hawk() {
-          // 翼を広げた姿（横長）
+          g.fillStyle = pal.body;
           g.beginPath();
-          g.moveTo(40, 130); g.bezierCurveTo(80, 110, 110, 122, 128, 130);
-          g.bezierCurveTo(146, 122, 176, 110, 216, 130);
-          g.bezierCurveTo(176, 145, 146, 155, 128, 142);
-          g.bezierCurveTo(110, 155, 80, 145, 40, 130);
+          g.moveTo(60, 240); g.bezierCurveTo(140, 200, 200, 230, 256, 250);
+          g.bezierCurveTo(312, 230, 372, 200, 452, 240);
+          g.bezierCurveTo(372, 280, 312, 295, 256, 280);
+          g.bezierCurveTo(200, 295, 140, 280, 60, 240);
           g.closePath(); g.fill();
-          // 体（中央）
-          g.beginPath(); g.ellipse(128, 138, 12, 22, 0, 0, Math.PI*2); g.fill();
-          // 頭
-          g.beginPath(); g.arc(128, 118, 9, 0, Math.PI*2); g.fill();
-          // 尾
-          g.beginPath();
-          g.moveTo(118, 156); g.lineTo(110, 175); g.lineTo(146, 175); g.lineTo(138, 156); g.closePath(); g.fill();
-          // 翼の羽（縞）
-          g.strokeStyle = 'rgba(140,80,30,0.7)'; g.lineWidth = 1;
-          for (let i = 0; i < 5; i++) {
-            g.beginPath(); g.moveTo(60 + i*10, 128); g.lineTo(50 + i*10, 138); g.stroke();
-            g.beginPath(); g.moveTo(160 + i*10, 128); g.lineTo(170 + i*10, 138); g.stroke();
+          g.fillStyle = pal.dark;
+          for (let i = 0; i < 8; i++) {
+            g.beginPath();
+            g.moveTo(70 + i*22, 244); g.lineTo(95 + i*22, 230);
+            g.lineTo(100 + i*22, 235); g.lineTo(75 + i*22, 250); g.closePath(); g.fill();
+            g.beginPath();
+            g.moveTo(310 + i*22, 244); g.lineTo(335 + i*22, 230);
+            g.lineTo(340 + i*22, 235); g.lineTo(315 + i*22, 250); g.closePath(); g.fill();
           }
-          g.strokeStyle = 'rgba(8,12,18,0.97)'; g.lineWidth = 2;
+          g.fillStyle = pal.body;
+          g.beginPath(); g.ellipse(256, 270, 22, 42, 0, 0, Math.PI*2); g.fill();
+          g.beginPath(); g.ellipse(256, 220, 20, 18, 0, 0, Math.PI*2); g.fill();
+          g.fillStyle = '#c87830';
+          g.beginPath();
+          g.moveTo(272, 222); g.lineTo(284, 226); g.lineTo(272, 232); g.closePath(); g.fill();
+          g.fillStyle = '#ffe060';
+          g.beginPath(); g.arc(264, 217, 5, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.accent;
+          g.beginPath(); g.arc(265, 217, 2.5, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.body;
+          g.beginPath();
+          g.moveTo(236, 308); g.lineTo(220, 350); g.lineTo(292, 350); g.lineTo(276, 308);
+          g.closePath(); g.fill();
+          g.fillStyle = pal.dark;
+          for (let i = 0; i < 4; i++) g.fillRect(225 + i*16, 320, 2, 25);
         },
         seagull() {
-          // 「M」字の翼（飛んでる姿）
-          g.lineWidth = 6;
+          g.strokeStyle = pal.body; g.lineWidth = 14;
           g.beginPath();
-          g.moveTo(40, 140); g.lineTo(85, 110); g.lineTo(128, 130);
-          g.lineTo(170, 110); g.lineTo(216, 140);
-          g.stroke();
-          g.lineWidth = 2;
-          // 体（小さい中央）
-          g.beginPath(); g.ellipse(128, 132, 7, 12, 0, 0, Math.PI*2); g.fill();
-          // 頭
-          g.beginPath(); g.arc(128, 122, 5, 0, Math.PI*2); g.fill();
+          g.moveTo(60, 270); g.lineTo(160, 200); g.lineTo(256, 248);
+          g.lineTo(352, 200); g.lineTo(452, 270); g.stroke();
+          g.strokeStyle = pal.dark; g.lineWidth = 4;
+          g.beginPath();
+          g.moveTo(60, 270); g.lineTo(160, 200); g.lineTo(170, 205);
+          g.moveTo(352, 200); g.lineTo(452, 270); g.stroke();
+          g.fillStyle = pal.body;
+          g.beginPath(); g.ellipse(256, 252, 16, 32, 0, 0, Math.PI*2); g.fill();
+          g.beginPath(); g.arc(256, 222, 14, 0, Math.PI*2); g.fill();
+          g.fillStyle = '#ffc830';
+          g.beginPath();
+          g.moveTo(270, 222); g.lineTo(286, 224); g.lineTo(270, 228); g.closePath(); g.fill();
+          g.fillStyle = pal.accent;
+          g.beginPath(); g.arc(262, 218, 3, 0, Math.PI*2); g.fill();
         },
         ostrich() {
-          // 大きな丸い体
-          g.beginPath(); g.ellipse(128, 175, 32, 28, 0, 0, Math.PI*2); g.fill();
-          // 長い首（カーブ）
-          g.lineWidth = 6;
+          g.fillStyle = pal.body;
+          g.beginPath(); g.ellipse(256, 320, 70, 60, 0, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.dark;
+          for (let i = 0; i < 18; i++) {
+            const a = Math.random() * Math.PI * 2, r = Math.random() * 60;
+            g.beginPath();
+            g.arc(256 + Math.cos(a)*r, 320 + Math.sin(a)*r * 0.7, 10, 0, Math.PI); g.fill();
+          }
+          g.strokeStyle = '#e0a888'; g.lineWidth = 14;
           g.beginPath();
-          g.moveTo(140, 155); g.bezierCurveTo(150, 130, 170, 110, 175, 80);
-          g.stroke();
-          g.lineWidth = 2;
-          // 頭
-          g.beginPath(); g.ellipse(178, 75, 8, 6, 0, 0, Math.PI*2); g.fill();
-          // くちばし
-          g.beginPath(); g.moveTo(184, 75); g.lineTo(192, 78); g.lineTo(184, 80); g.closePath(); g.fill();
-          // 長い2本脚
-          g.lineWidth = 5;
+          g.moveTo(286, 280); g.bezierCurveTo(320, 220, 350, 160, 360, 110); g.stroke();
+          g.fillStyle = '#e0a888';
+          g.beginPath(); g.ellipse(360, 100, 18, 14, 0, 0, Math.PI*2); g.fill();
+          g.fillStyle = '#ffffff';
+          g.beginPath(); g.arc(370, 96, 6, 0, Math.PI*2); g.fill();
+          g.fillStyle = pal.accent;
+          g.beginPath(); g.arc(371, 96, 3, 0, Math.PI*2); g.fill();
+          g.fillStyle = '#c87830';
           g.beginPath();
-          g.moveTo(118, 200); g.lineTo(112, 240);
-          g.moveTo(138, 200); g.lineTo(146, 240);
-          g.stroke();
-          g.lineWidth = 2;
-          // 羽の質感（点々）
-          for (let i = 0; i < 12; i++) {
-            g.beginPath(); g.arc(105 + Math.random()*45, 165 + Math.random()*25, 2, 0, Math.PI*2); g.fill();
+          g.moveTo(376, 96); g.lineTo(394, 100); g.lineTo(376, 106); g.closePath(); g.fill();
+          g.strokeStyle = '#d8b89a'; g.lineWidth = 12;
+          g.beginPath();
+          g.moveTo(232, 370); g.lineTo(216, 460);
+          g.moveTo(280, 370); g.lineTo(296, 460); g.stroke();
+          g.fillStyle = pal.dark;
+          g.fillRect(206, 458, 22, 8); g.fillRect(286, 458, 22, 8);
+          g.fillStyle = '#ffffff';
+          for (let i = 0; i < 5; i++) {
+            g.beginPath();
+            g.ellipse(180 + Math.random()*15, 290 + Math.random()*30, 7, 14, Math.random()*Math.PI, 0, Math.PI*2);
+            g.fill();
           }
         },
       };
@@ -16501,19 +16656,19 @@
 
     const ANIMAL_SPECS = [
       // 地上動物 — 地平線付近 y=-0.5〜2
-      { species: 'giraffe',   count: 2, y: 1.0,  scaleX: 4.5, scaleY: 4.5 },
-      { species: 'elephant',  count: 2, y: 0.5,  scaleX: 5.0, scaleY: 4.0 },
-      { species: 'lion',      count: 2, y: 0.3,  scaleX: 3.8, scaleY: 3.0 },
-      { species: 'deer',      count: 3, y: 0.6,  scaleX: 3.2, scaleY: 3.5 },
-      { species: 'bear',      count: 2, y: 0.4,  scaleX: 3.5, scaleY: 3.0 },
-      { species: 'rabbit',    count: 4, y: -0.3, scaleX: 1.8, scaleY: 1.8 },
-      { species: 'crocodile', count: 2, y: -0.5, scaleX: 4.0, scaleY: 1.5 },
-      { species: 'monkey',    count: 3, y: 3.5,  scaleX: 1.6, scaleY: 1.8 },
-      { species: 'ostrich',   count: 2, y: 1.5,  scaleX: 2.8, scaleY: 4.5 },
+      { species: 'giraffe',   count: 2, y: 4.0,  scaleX: 11.0, scaleY: 11.0 },
+      { species: 'elephant',  count: 2, y: 2.0,  scaleX: 12.0, scaleY: 9.5 },
+      { species: 'lion',      count: 2, y: 1.5,  scaleX: 9.5,  scaleY: 7.5 },
+      { species: 'deer',      count: 3, y: 2.5,  scaleX: 8.0,  scaleY: 8.5 },
+      { species: 'bear',      count: 2, y: 1.8,  scaleX: 9.0,  scaleY: 7.5 },
+      { species: 'rabbit',    count: 4, y: 0.5,  scaleX: 4.5,  scaleY: 4.5 },
+      { species: 'crocodile', count: 2, y: 0.0,  scaleX: 10.0, scaleY: 3.8 },
+      { species: 'monkey',    count: 3, y: 6.5,  scaleX: 4.0,  scaleY: 4.5 },
+      { species: 'ostrich',   count: 2, y: 4.5,  scaleX: 7.0,  scaleY: 11.0 },
       // 飛行 — 上空
-      { species: 'hawk',      count: 3, y: 12.0, scaleX: 3.0, scaleY: 1.8 },
-      { species: 'seagull',   count: 4, y: 8.0,  scaleX: 2.5, scaleY: 1.4 },
-      { species: 'owl',       count: 3, y: 5.0,  scaleX: 2.0, scaleY: 2.4 },
+      { species: 'hawk',      count: 3, y: 15.0, scaleX: 7.5, scaleY: 4.5 },
+      { species: 'seagull',   count: 4, y: 10.0, scaleX: 6.5, scaleY: 3.5 },
+      { species: 'owl',       count: 3, y: 8.0,  scaleX: 5.0, scaleY: 6.0 },
     ];
 
     const animalSprites = [];
@@ -18424,6 +18579,499 @@
     render();
   }
   window.openGodsBook = openGodsBook;
+
+  // ============================================================
+  // 📚 図書館 (Library) — 偉人・神話・神様・音楽の総合書庫
+  // ============================================================
+  async function openLibrary() {
+    // ── データ収集 ──
+    const people = (MAGIC._peopleBundle || []).map(p => ({
+      kind: 'person',
+      id: p.id, name: p.name || p.id,
+      sub: (p.birth ? p.birth + ' ' : '') + (p.role || p.field || ''),
+      tag: p.field || p.tags?.[0] || '偉人',
+      color: 0xc8a060, accent: '#d4b070',
+      placeholder: false,
+      action: () => { try { window.showPerson && window.showPerson(p.id); } catch {} },
+    }));
+    // 未来追加スロット（プレースホルダー、グレー）
+    for (let i = 0; i < 80; i++) {
+      people.push({
+        kind: 'person', id: '__future_' + i, name: '＿＿＿＿', sub: '未収録の偉人',
+        tag: '未来', color: 0x404a52, accent: '#5a6470', placeholder: true,
+        action: () => {},
+      });
+    }
+    const myths = Object.entries(MYTH_STORIES).map(([k, s]) => ({
+      kind: 'myth', id: k, name: s.name, sub: s.subtitle || '神話',
+      tag: '神話', color: 0xa84030, accent: '#d65040', placeholder: false,
+      action: () => { try { window.openMythology && window.openMythology(k); } catch {} },
+    }));
+    const gods = [];
+    Object.entries(PANTHEON_DATA).forEach(([key, m]) => {
+      m.gods.forEach((g, i) => {
+        gods.push({
+          kind: 'god', id: key + ':' + i, name: g.n, sub: m.name + ' / ' + (g.t || ''),
+          tag: m.name, color: 0x6040a8, accent: '#9080d0', placeholder: false,
+          action: () => { try { window.openGodsBook && window.openGodsBook(); } catch {} },
+        });
+      });
+    });
+    const musics = (typeof KOH_MUSIC !== 'undefined' ? KOH_MUSIC : []).map(m => ({
+      kind: 'music', id: m.id, name: m.title || m.id, sub: m.composer || m.artist || '楽曲',
+      tag: '音楽', color: 0x2080a8, accent: '#40b0d0', placeholder: false,
+      action: () => { try { window.openKohSphere && window.openKohSphere({ music: m.id }); } catch {} },
+    }));
+    const allBooks = [...people, ...myths, ...gods, ...musics];
+
+    // ── オーバーレイ DOM ──
+    const ov = document.createElement('div');
+    ov.className = 'library-overlay';
+    ov.innerHTML = `
+      <canvas id="libCanvas" class="lib-canvas"></canvas>
+      <div class="lib-ui">
+        <button class="lib-close" aria-label="閉じる">×</button>
+        <div class="lib-head">
+          <div class="lib-title">図 書 館</div>
+          <div class="lib-sub">— Bibliotheca · 偉人 神話 神々 音楽 —</div>
+        </div>
+        <div class="lib-search">
+          <input type="search" id="libSearch" placeholder="🔍 本を探す（名前・神話・分野…）" />
+          <div class="lib-tabs">
+            <button class="lib-tab active" data-kind="all">すべて</button>
+            <button class="lib-tab" data-kind="person">偉人</button>
+            <button class="lib-tab" data-kind="myth">神話</button>
+            <button class="lib-tab" data-kind="god">神々</button>
+            <button class="lib-tab" data-kind="music">音楽</button>
+          </div>
+        </div>
+        <div class="lib-results" id="libResults"></div>
+        <div class="lib-foot">
+          <span id="libCount">${allBooks.length}</span> 冊蔵書 ／ クリックして本を開く
+        </div>
+      </div>
+    `;
+    document.body.appendChild(ov);
+    requestAnimationFrame(() => ov.classList.add('open'));
+
+    const close = () => {
+      try { renderer.dispose(); } catch {}
+      ov.classList.remove('open');
+      setTimeout(() => ov.remove(), 400);
+    };
+    ov.querySelector('.lib-close').addEventListener('click', close);
+    ov.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+
+    // ── Three.js シーン構築 ──
+    const cv = ov.querySelector('#libCanvas');
+    const renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    const W = () => window.innerWidth;
+    const H = () => window.innerHeight;
+    renderer.setSize(W(), H());
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 0.95;
+    if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0a0810);
+    scene.fog = new THREE.FogExp2(0x0a0608, 0.022);
+
+    const camera = new THREE.PerspectiveCamera(58, W()/H(), 0.1, 200);
+    camera.position.set(0, 4, 18);
+    camera.lookAt(0, 4, 0);
+
+    // 床（大理石風）
+    const floorTex = (() => {
+      const c = document.createElement('canvas'); c.width = 512; c.height = 512;
+      const g = c.getContext('2d');
+      g.fillStyle = '#2a2018'; g.fillRect(0,0,512,512);
+      // タイル目地
+      g.strokeStyle = 'rgba(180,150,100,0.2)'; g.lineWidth = 2;
+      for (let i = 0; i <= 8; i++) {
+        g.beginPath(); g.moveTo(i*64, 0); g.lineTo(i*64, 512); g.stroke();
+        g.beginPath(); g.moveTo(0, i*64); g.lineTo(512, i*64); g.stroke();
+      }
+      // 大理石模様
+      g.fillStyle = 'rgba(220,200,160,0.04)';
+      for (let i = 0; i < 60; i++) {
+        g.beginPath(); g.arc(Math.random()*512, Math.random()*512, 30 + Math.random()*60, 0, Math.PI*2); g.fill();
+      }
+      const tex = new THREE.CanvasTexture(c);
+      tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+      tex.repeat.set(4, 4);
+      return tex;
+    })();
+    const floor = new THREE.Mesh(
+      new THREE.CircleGeometry(20, 64),
+      new THREE.MeshStandardMaterial({ map: floorTex, roughness: 0.6, metalness: 0.2, color: 0x6a5040 })
+    );
+    floor.rotation.x = -Math.PI/2;
+    scene.add(floor);
+
+    // 天井（ダークグリーン、ゴシック寺院風）
+    const ceiling = new THREE.Mesh(
+      new THREE.CircleGeometry(20, 32),
+      new THREE.MeshStandardMaterial({ color: 0x0e2a28, roughness: 0.85 })
+    );
+    ceiling.rotation.x = Math.PI/2;
+    ceiling.position.y = 14;
+    scene.add(ceiling);
+
+    // ── 本棚（円形に8面、各面に5段） ──
+    const SHELVES_PER_RING = 8;
+    const SHELF_RADIUS = 13;
+    const SHELF_RING_Y = [1.0, 3.0, 5.0, 7.5, 9.8]; // 5段
+    const BOOKS_PER_SHELF = Math.ceil(allBooks.length / (SHELVES_PER_RING * SHELF_RING_Y.length));
+    const bookMeshes = []; // 各本: { mesh, book, baseColor, baseEmissive }
+    let bi = 0;
+
+    for (let s = 0; s < SHELVES_PER_RING; s++) {
+      const a = (s / SHELVES_PER_RING) * Math.PI * 2;
+      const cx = Math.cos(a) * SHELF_RADIUS;
+      const cz = Math.sin(a) * SHELF_RADIUS;
+      const facing = a + Math.PI; // 中央を向く
+      // 本棚の枠（暗い木目）
+      const frameMat = new THREE.MeshStandardMaterial({ color: 0x2a1810, roughness: 0.7 });
+      const frame = new THREE.Mesh(new THREE.BoxGeometry(7.0, 11.5, 0.4), frameMat);
+      frame.position.set(cx, 6.0, cz);
+      frame.lookAt(0, 6.0, 0);
+      scene.add(frame);
+      // 各段の床板
+      SHELF_RING_Y.forEach(y => {
+        const board = new THREE.Mesh(
+          new THREE.BoxGeometry(6.6, 0.08, 0.45),
+          new THREE.MeshStandardMaterial({ color: 0x4a2a18, roughness: 0.6 })
+        );
+        board.position.set(cx, y - 0.85, cz);
+        board.lookAt(0, y - 0.85, 0);
+        scene.add(board);
+      });
+      // 金縁トリム（上下）
+      [11.6, 0.4].forEach(yy => {
+        const trim = new THREE.Mesh(
+          new THREE.BoxGeometry(6.8, 0.15, 0.5),
+          new THREE.MeshStandardMaterial({ color: 0xc8a040, metalness: 0.9, roughness: 0.25, emissive: 0x4a3008, emissiveIntensity: 0.6 })
+        );
+        trim.position.set(cx, yy, cz);
+        trim.lookAt(0, yy, 0);
+        scene.add(trim);
+      });
+      // 本を並べる
+      for (let row = 0; row < SHELF_RING_Y.length; row++) {
+        const y = SHELF_RING_Y[row];
+        for (let i = 0; i < BOOKS_PER_SHELF && bi < allBooks.length; i++, bi++) {
+          const book = allBooks[bi];
+          // 本の幅・色は種類によって変わる
+          const w = 0.12 + Math.random() * 0.05;
+          const h = 0.85 + Math.random() * 0.25;
+          const bookGeo = new THREE.BoxGeometry(w, h, 0.4);
+          const baseColor = new THREE.Color(book.color);
+          if (book.placeholder) baseColor.multiplyScalar(0.4);
+          const baseEmissive = new THREE.Color(book.color).multiplyScalar(book.placeholder ? 0.0 : 0.18);
+          const bookMat = new THREE.MeshStandardMaterial({
+            color: baseColor,
+            roughness: 0.5,
+            emissive: baseEmissive,
+            emissiveIntensity: 1.0,
+          });
+          const bMesh = new THREE.Mesh(bookGeo, bookMat);
+          // 棚に並べる位置: 棚の中心(cx,y,cz)から面の左右に展開
+          const localX = -2.8 + (i + 0.5) * (5.6 / BOOKS_PER_SHELF);
+          // 棚の向き（facing=中央方向）に対するローカル座標を world に
+          const tx = cx + Math.cos(facing + Math.PI/2) * localX;
+          const tz = cz + Math.sin(facing + Math.PI/2) * localX;
+          bMesh.position.set(tx, y - 0.4, tz);
+          bMesh.lookAt(0, y - 0.4, 0);
+          // 軽くランダムに前後ずらし
+          bMesh.position.x += (Math.random() - 0.5) * 0.02;
+          bMesh.position.z += (Math.random() - 0.5) * 0.02;
+          bMesh.userData = { book, baseColor, baseEmissive, originalY: bMesh.position.y };
+          scene.add(bMesh);
+          bookMeshes.push(bMesh);
+        }
+      }
+    }
+
+    // ── 中央の閲覧机 ──
+    const desk = new THREE.Mesh(
+      new THREE.CylinderGeometry(2.5, 2.8, 0.2, 32),
+      new THREE.MeshStandardMaterial({ color: 0x3a2010, roughness: 0.5, metalness: 0.2 })
+    );
+    desk.position.y = 1.0;
+    scene.add(desk);
+    // 緑の机布
+    const cloth = new THREE.Mesh(
+      new THREE.CylinderGeometry(2.2, 2.2, 0.02, 32),
+      new THREE.MeshStandardMaterial({ color: 0x1a4030, roughness: 0.85 })
+    );
+    cloth.position.y = 1.11;
+    scene.add(cloth);
+    // 卓上ランプ（緑笠＋金）
+    const lampStem = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.04, 0.06, 0.5, 8),
+      new THREE.MeshStandardMaterial({ color: 0xc8a040, metalness: 0.9, roughness: 0.3 })
+    );
+    lampStem.position.set(0, 1.45, 0);
+    scene.add(lampStem);
+    const lampShade = new THREE.Mesh(
+      new THREE.ConeGeometry(0.35, 0.35, 16, 1, true),
+      new THREE.MeshStandardMaterial({ color: 0x1a5030, roughness: 0.6, side: THREE.DoubleSide })
+    );
+    lampShade.position.set(0, 1.85, 0);
+    scene.add(lampShade);
+    const lampBulb = new THREE.PointLight(0xfff0c0, 1.4, 12, 1.4);
+    lampBulb.position.set(0, 1.75, 0);
+    scene.add(lampBulb);
+
+    // ── シャンデリア（中央上空、ゴシック風） ──
+    const chandelier = new THREE.Group();
+    const chandelierBase = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.6, 0.8, 0.3, 16),
+      new THREE.MeshStandardMaterial({ color: 0xc8a040, metalness: 0.95, roughness: 0.2, emissive: 0x4a3008, emissiveIntensity: 0.5 })
+    );
+    chandelier.add(chandelierBase);
+    // 6個のロウソク
+    for (let i = 0; i < 6; i++) {
+      const ang = (i / 6) * Math.PI * 2;
+      const arm = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.04, 0.04, 0.5, 6),
+        new THREE.MeshStandardMaterial({ color: 0xc8a040, metalness: 0.9, roughness: 0.3 })
+      );
+      arm.position.set(Math.cos(ang) * 0.7, 0, Math.sin(ang) * 0.7);
+      arm.rotation.z = -Math.PI / 2 + Math.cos(ang);
+      chandelier.add(arm);
+      const candle = new THREE.Mesh(
+        new THREE.SphereGeometry(0.1, 8, 6),
+        new THREE.MeshBasicMaterial({ color: 0xfff0c0 })
+      );
+      candle.position.set(Math.cos(ang) * 1.0, 0.1, Math.sin(ang) * 1.0);
+      chandelier.add(candle);
+      const cl = new THREE.PointLight(0xffd890, 0.6, 8, 1.6);
+      cl.position.copy(candle.position);
+      chandelier.add(cl);
+    }
+    chandelier.position.set(0, 9.5, 0);
+    scene.add(chandelier);
+
+    // ── アーチ装飾（柱）──
+    for (let i = 0; i < SHELVES_PER_RING; i++) {
+      const a = ((i + 0.5) / SHELVES_PER_RING) * Math.PI * 2;
+      const cx = Math.cos(a) * (SHELF_RADIUS - 0.5);
+      const cz = Math.sin(a) * (SHELF_RADIUS - 0.5);
+      const col = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.25, 0.3, 12, 12),
+        new THREE.MeshStandardMaterial({ color: 0x3a2818, roughness: 0.7 })
+      );
+      col.position.set(cx, 6.0, cz);
+      scene.add(col);
+    }
+
+    // ── 環境光・直接光 ──
+    scene.add(new THREE.AmbientLight(0xfff0d8, 0.32));
+    scene.add(new THREE.HemisphereLight(0xffe8c0, 0x281a14, 0.55));
+    // 4灯のスポット（隅から本棚を照らす）
+    [[12, 8, 12], [-12, 8, 12], [12, 8, -12], [-12, 8, -12]].forEach(([x, y, z]) => {
+      const sl = new THREE.SpotLight(0xffe0a0, 1.0, 30, Math.PI / 4, 0.5, 1.6);
+      sl.position.set(x, y, z);
+      sl.target.position.set(0, 4, 0);
+      scene.add(sl); scene.add(sl.target);
+    });
+
+    // ── 埃の浮遊（雰囲気）──
+    const dustGeo = new THREE.BufferGeometry();
+    const DCNT = 250;
+    const dp = new Float32Array(DCNT * 3);
+    for (let i = 0; i < DCNT; i++) {
+      dp[i*3]   = (Math.random() - 0.5) * 30;
+      dp[i*3+1] = Math.random() * 12;
+      dp[i*3+2] = (Math.random() - 0.5) * 30;
+    }
+    dustGeo.setAttribute('position', new THREE.BufferAttribute(dp, 3));
+    const dustTex = (() => {
+      const c = document.createElement('canvas'); c.width = 32; c.height = 32;
+      const g = c.getContext('2d');
+      const grd = g.createRadialGradient(16, 16, 0, 16, 16, 16);
+      grd.addColorStop(0, 'rgba(255,230,180,0.9)');
+      grd.addColorStop(1, 'rgba(255,230,180,0)');
+      g.fillStyle = grd; g.fillRect(0, 0, 32, 32);
+      return new THREE.CanvasTexture(c);
+    })();
+    const dust = new THREE.Points(dustGeo, new THREE.PointsMaterial({
+      map: dustTex, color: 0xffe0a0, size: 0.2, transparent: true,
+      opacity: 0.4, depthWrite: false, blending: THREE.AdditiveBlending,
+    }));
+    scene.add(dust);
+
+    // ── レイキャスト：本のクリック ──
+    const raycaster = new THREE.Raycaster();
+    const pointer = new THREE.Vector2();
+    let hovered = null;
+    function onPointerMove(e) {
+      const rect = cv.getBoundingClientRect();
+      pointer.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      pointer.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+    }
+    function pickBook() {
+      raycaster.setFromCamera(pointer, camera);
+      const hits = raycaster.intersectObjects(bookMeshes);
+      return hits[0] ? hits[0].object : null;
+    }
+    cv.addEventListener('pointermove', onPointerMove);
+    cv.addEventListener('click', () => {
+      const b = pickBook();
+      if (b && !b.userData.book.placeholder) {
+        // 演出：本が浮かんで開く前に少し光る
+        b.material.emissiveIntensity = 4.0;
+        setTimeout(() => {
+          b.userData.book.action();
+          close();
+        }, 350);
+      }
+    });
+
+    // ── カメラ自動回転＋検索フォーカス ──
+    let camAngle = 0;
+    let manualMode = false;
+    let dragStartX = 0;
+    let dragStartAngle = 0;
+    let isDragging = false;
+    cv.addEventListener('pointerdown', (e) => {
+      isDragging = true; manualMode = true;
+      dragStartX = e.clientX; dragStartAngle = camAngle;
+    });
+    window.addEventListener('pointerup', () => { isDragging = false; });
+    window.addEventListener('pointermove', (e) => {
+      if (isDragging) camAngle = dragStartAngle - (e.clientX - dragStartX) * 0.005;
+    });
+
+    // ── 検索ロジック ──
+    let curTab = 'all';
+    let curQuery = '';
+    let highlighted = null;
+    function applyFilter() {
+      const q = curQuery.trim().toLowerCase();
+      const matches = [];
+      bookMeshes.forEach(m => {
+        const b = m.userData.book;
+        const kindOK = curTab === 'all' || b.kind === curTab;
+        const textOK = !q || (b.name + ' ' + b.sub + ' ' + b.tag).toLowerCase().includes(q);
+        const ok = kindOK && textOK && !b.placeholder;
+        if (ok && q) {
+          matches.push(m);
+          m.material.emissive.setRGB(1.0, 0.85, 0.4);
+          m.material.emissiveIntensity = 1.5;
+        } else {
+          m.material.emissive.copy(m.userData.baseEmissive);
+          m.material.emissiveIntensity = q ? 0.05 : 1.0;
+        }
+      });
+      // 結果リスト更新
+      const resBox = ov.querySelector('#libResults');
+      if (q || curTab !== 'all') {
+        const list = bookMeshes
+          .filter(m => {
+            const b = m.userData.book;
+            return (curTab === 'all' || b.kind === curTab) &&
+              (!q || (b.name + ' ' + b.sub + ' ' + b.tag).toLowerCase().includes(q)) &&
+              !b.placeholder;
+          })
+          .slice(0, 30);
+        if (list.length === 0) {
+          resBox.innerHTML = '<div class="lib-empty">— 該当する本が見つかりません —</div>';
+        } else {
+          resBox.innerHTML = list.map(m => {
+            const b = m.userData.book;
+            const icon = b.kind === 'person' ? '🎓' : b.kind === 'myth' ? '📜' : b.kind === 'god' ? '⚡' : '🎵';
+            return `<button class="lib-result" data-bi="${bookMeshes.indexOf(m)}" style="--acc:${b.accent}">
+              <span class="lr-icon">${icon}</span>
+              <span class="lr-body"><span class="lr-name">${b.name}</span><span class="lr-sub">${b.sub || ''}</span></span>
+              <span class="lr-tag">${b.tag}</span>
+            </button>`;
+          }).join('');
+          resBox.querySelectorAll('.lib-result').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+              const idx = +el.dataset.bi;
+              highlighted = bookMeshes[idx];
+            });
+            el.addEventListener('click', () => {
+              const idx = +el.dataset.bi;
+              const m = bookMeshes[idx];
+              m.material.emissiveIntensity = 4.0;
+              setTimeout(() => {
+                m.userData.book.action();
+                close();
+              }, 350);
+            });
+          });
+        }
+      } else {
+        resBox.innerHTML = '<div class="lib-hint">📚 検索ボックスにキーワード、または分類タブを選んでください</div>';
+      }
+    }
+    ov.querySelector('#libSearch').addEventListener('input', e => {
+      curQuery = e.target.value;
+      applyFilter();
+    });
+    ov.querySelectorAll('.lib-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        ov.querySelectorAll('.lib-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        curTab = tab.dataset.kind;
+        applyFilter();
+      });
+    });
+    applyFilter();
+
+    // ── アニメーション ──
+    function tick(ts) {
+      if (!ov.isConnected) return;
+      const t = ts / 1000;
+      if (!manualMode) camAngle = t * 0.06;
+      camera.position.x = Math.sin(camAngle) * 11;
+      camera.position.z = Math.cos(camAngle) * 11;
+      camera.position.y = 4 + Math.sin(t * 0.4) * 0.3;
+      camera.lookAt(0, 4, 0);
+      // ハイライト本がふわっと浮く
+      bookMeshes.forEach(m => {
+        const target = (highlighted === m) ? m.userData.originalY + 0.08 : m.userData.originalY;
+        m.position.y += (target - m.position.y) * 0.15;
+      });
+      // ホバー
+      if (!isDragging) {
+        const h = pickBook();
+        if (h !== hovered) {
+          if (hovered) hovered.scale.set(1, 1, 1);
+          if (h && !h.userData.book.placeholder) {
+            h.scale.set(1.1, 1.1, 1.4);
+            cv.style.cursor = 'pointer';
+          } else {
+            cv.style.cursor = 'default';
+          }
+          hovered = h;
+        }
+      }
+      // シャンデリアわずかに揺れ
+      chandelier.rotation.y = Math.sin(t * 0.2) * 0.05;
+      // 埃ゆらゆら
+      const dpa = dust.geometry.attributes.position;
+      for (let i = 0; i < DCNT; i++) {
+        dpa.array[i*3+1] += 0.005;
+        if (dpa.array[i*3+1] > 12) dpa.array[i*3+1] = 0;
+      }
+      dpa.needsUpdate = true;
+      renderer.render(scene, camera);
+      requestAnimationFrame(tick);
+    }
+    tick(0);
+
+    window.addEventListener('resize', () => {
+      renderer.setSize(W(), H());
+      camera.aspect = W()/H();
+      camera.updateProjectionMatrix();
+    });
+  }
+  window.openLibrary = openLibrary;
 
   // ============================================================
   // 📖 星の王子様 — 動くSVG絵本
