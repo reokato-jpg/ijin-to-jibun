@@ -15001,7 +15001,6 @@
 
     // 🎵 音楽再生 + 🔬 周波数解析（音に反応する世界）
     const audio = new Audio(config.music.src);
-    audio.crossOrigin = 'anonymous';
     audio.loop = true;
     audio.volume = 0.7;
     let audioCtx = null, analyser = null, freqData = null;
@@ -15051,7 +15050,7 @@
     // === カメラ（席に固定、首回し — VRパッド級に滑らか） ===
     const camera = new THREE.PerspectiveCamera(70, W()/H(), 0.1, 200);
     camera.position.set(myX, myY, myZ);
-    const initYaw = Math.atan2(-myX, -myZ);
+    const initYaw = Math.atan2(myX, myZ); // 中央(0,0)を見る正しい式
     let yaw = initYaw, pitch = -0.05;
     const PITCH_LIMIT = 1.2;
     const _euler = new THREE.Euler(0, 0, 0, 'YXZ');
@@ -15373,12 +15372,15 @@
         composer.addPass(new ADDONS.RenderPass(scene, camera));
         const bloom = new ADDONS.UnrealBloomPass(
           new THREE.Vector2(W(), H()),
-          0.55, // strength
-          0.55, // radius
-          0.55  // threshold（中程度の明るさで滲む）
+          0.55, 0.55, 0.55
         );
         composer.addPass(bloom);
-        if (ADDONS.OutputPass) composer.addPass(new ADDONS.OutputPass());
+        // OutputPass を使う場合は renderer の toneMapping を切る（二重tonemap防止）
+        if (ADDONS.OutputPass) {
+          composer.addPass(new ADDONS.OutputPass());
+        } else {
+          // OutputPass なしの場合、renderer 側で tone map させる
+        }
       }
     } catch (e) { console.warn('koh bloom', e); composer = null; }
 
