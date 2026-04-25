@@ -11952,10 +11952,20 @@
       scene.userData.carData = carData;
       scene.userData.cars = cars;
 
-      // 環境光（神殿内は明るく保つ）
-      scene.add(new THREE.AmbientLight(0x8070b8, 0.7));
-      const hemi = new THREE.HemisphereLight(0xc0a0ff, 0x180830, 0.7);
+      // 環境光（神殿内は明るく保つ）+ HDRI 環境マップ
+      scene.add(new THREE.AmbientLight(0x8070b8, 0.9));
+      const hemi = new THREE.HemisphereLight(0xc0a0ff, 0x180830, 0.9);
       scene.add(hemi);
+      // 中央からの暖色 fill（本に光を当てる）
+      const fillCenter = new THREE.PointLight(0xffe890, 1.2, 30, 1.4);
+      fillCenter.position.set(0, 5, 0);
+      scene.add(fillCenter);
+      // 🎬 HDRI: 神々しい紫の星空
+      if (typeof applyCinematicEnv === 'function') {
+        applyCinematicEnv(renderer, scene,
+          'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/dikhololo_night_1k.hdr',
+          { intensity: 0.5 });
+      }
 
       // 床（暗い大理石）
       const floorTex = (() => {
@@ -12252,8 +12262,9 @@
               new THREE.MeshStandardMaterial({ color: 0x2a1810, roughness: 0.7 }),
             ]
           );
-          bookMesh.lookAt(0, group.position.y, 0);
           group.add(bookMesh);
+          // 表紙が中央(0,0)を向くように初期回転 — animate ループで微調整される
+          bookMesh.rotation.y = Math.atan2(-px, -pz);
           // 後光（accent色）
           const haloC = document.createElement('canvas'); haloC.width = 256; haloC.height = 256;
           const hc = haloC.getContext('2d');
