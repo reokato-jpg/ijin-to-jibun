@@ -17224,16 +17224,20 @@
       const nose = new THREE.Mesh(new THREE.SphereGeometry(headSize * 0.18, 10, 8), eyeMat);
       nose.position.set(headX + headSize * 0.85, headY - headSize * 0.1, 0);
       g.add(nose);
-      // 目（左右）
+      // 目（左右）— g.userData.eyes に格納（フクロウ等の瞬き用）
+      const eyes = [];
       [-1, 1].forEach(sz => {
         const eye = new THREE.Mesh(new THREE.SphereGeometry(headSize * 0.12, 10, 8), eyeMat);
         eye.position.set(headX + headSize * 0.30, headY + headSize * 0.20, sz * headSize * 0.35);
-        g.add(eye);
+        head.add(eye); // 頭にぶら下げて、頭の回転に連動
+        eye.position.set(headSize * 0.30, headSize * 0.20, sz * headSize * 0.35);
+        eyes.push(eye);
         // 白目ハイライト
         const hl = new THREE.Mesh(new THREE.SphereGeometry(headSize * 0.04, 6, 5), new THREE.MeshBasicMaterial({ color: 0xffffff }));
-        hl.position.set(headX + headSize * 0.40, headY + headSize * 0.24, sz * headSize * 0.36);
-        g.add(hl);
+        head.add(hl);
+        hl.position.set(headSize * 0.40, headSize * 0.24, sz * headSize * 0.36);
       });
+      g.userData.eyes = eyes;
       // 耳（小さいコーン or 球）
       [-1, 1].forEach(sz => {
         const ear = new THREE.Mesh(new THREE.ConeGeometry(headSize * 0.20, headSize * 0.45, 7), headMat);
@@ -17301,6 +17305,8 @@
       { species: 'deer', count: 3, bodyLen: 1.2, bodyH: 0.55, bodyW: 0.45, legH: 0.7, legR: 0.06, neckLen: 0.45, headSize: 0.25, tailLen: 0.2, bodyColor: 0xa07048, speed: 0.05 },
       { species: 'bear', count: 2, bodyLen: 1.3, bodyH: 0.75, bodyW: 0.65, legH: 0.55, legR: 0.13, neckLen: 0.15, headSize: 0.42, tailLen: 0.15, bodyColor: 0x3a2010, speed: 0.03 },
       { species: 'rabbit', count: 4, bodyLen: 0.4, bodyH: 0.3, bodyW: 0.3, legH: 0.18, legR: 0.05, neckLen: 0, headSize: 0.2, tailLen: 0.05, bodyColor: 0xf0e8d8, speed: 0.06 },
+      // フクロウ（枝に止まる、座標は y=4 の樹上に手動配置）
+      { species: 'owl', count: 3, bodyLen: 0.35, bodyH: 0.42, bodyW: 0.32, legH: 0.10, legR: 0.05, neckLen: 0, headSize: 0.28, tailLen: 0.05, bodyColor: 0x6a4828, perched: true, speed: 0 },
     ];
     let aphase = 0;
     ANIMAL_SET.forEach(spec => {
@@ -17337,28 +17343,120 @@
           mane.position.x -= 0.10;
           g.add(mane);
         }
-        // 配置
-        const a0 = (aphase++ / 18) * Math.PI * 2 + Math.random() * 0.3;
+        // フクロウ：くちばし＋大きな目
+        if (spec.species === 'owl' && g.userData.head) {
+          // 大きな金色の目に置き換え
+          if (g.userData.eyes) {
+            g.userData.eyes.forEach(eye => {
+              eye.material = new THREE.MeshStandardMaterial({ color: 0xffc830, roughness: 0.4, emissive: 0x4a3008, emissiveIntensity: 0.6 });
+              eye.scale.multiplyScalar(2.4);
+            });
+          }
+          // くちばし
+          const beak = new THREE.Mesh(
+            new THREE.ConeGeometry(0.04, 0.08, 6),
+            new THREE.MeshStandardMaterial({ color: 0xa06030, roughness: 0.5 })
+          );
+          beak.position.set(0.18, -0.02, 0);
+          beak.rotation.z = -Math.PI / 2;
+          g.userData.head.add(beak);
+        }
+        // 配置（フクロウは樹上、それ以外は地上）
+        const a0 = (aphase++ / 21) * Math.PI * 2 + Math.random() * 0.3;
         const r = 30.5 + Math.random() * 7.5;
-        g.position.set(Math.cos(a0) * r, -1.3, Math.sin(a0) * r);
+        if (spec.perched) {
+          g.position.set(Math.cos(a0) * r, 3.5 + Math.random() * 0.6, Math.sin(a0) * r);
+          // 枝（フクロウの足元）
+          const branch = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.06, 0.05, 0.9, 6),
+            new THREE.MeshStandardMaterial({ color: 0x3a2010, roughness: 0.85 })
+          );
+          branch.rotation.z = Math.PI / 2;
+          branch.position.copy(g.position);
+          branch.position.y -= 0.08;
+          eden3D.add(branch);
+        } else {
+          g.position.set(Math.cos(a0) * r, -1.3, Math.sin(a0) * r);
+        }
         g.userData.angle = a0;
         g.userData.radius = r;
         g.userData.speed = spec.speed;
         g.userData.species = spec.species;
         g.userData.phase = Math.random() * Math.PI * 2;
         g.userData.legH = spec.legH;
+        g.userData.perched = !!spec.perched;
+        // 状態マシンの初期値
+        g.userData.state = spec.perched ? 'idle' : 'walk';
+        g.userData.stateDur = 2 + Math.random() * 3;
+        g.userData.stateTime = 0;
         eden3D.add(g);
         walkAnimals.push(g);
       }
     });
     eden3D.userData.walkAnimals = walkAnimals;
 
-    // 既存のCanvasスプライトは鳥類のみ残す（地上動物は3Dに置き換え）
+    // 既存のCanvasスプライトは飛行鳥のみ残す（地上＋フクロウは3Dに置き換え）
     animalSprites.forEach(s => {
-      if (!['hawk', 'seagull', 'owl'].includes(s.userData.species)) {
+      if (!['hawk', 'seagull'].includes(s.userData.species)) {
         s.visible = false;
       }
     });
+
+    // 🌟 流れ星（時々空を横切る）
+    {
+      const SHOOTING_N = 6;
+      const shootingStars = [];
+      for (let i = 0; i < SHOOTING_N; i++) {
+        const tail = new THREE.Mesh(
+          new THREE.PlaneGeometry(2.5, 0.06),
+          new THREE.MeshBasicMaterial({
+            color: 0xffe890, transparent: true, opacity: 0,
+            depthWrite: false, blending: THREE.AdditiveBlending,
+            side: THREE.DoubleSide,
+          })
+        );
+        tail.userData = {
+          startT: -1, dur: 0,
+          // 出現位置・方向
+          fromX: 0, fromY: 0, fromZ: 0,
+          dx: 0, dy: 0, dz: 0,
+        };
+        natureGroup.add(tail);
+        shootingStars.push(tail);
+      }
+      natureGroup.userData.shootingStars = shootingStars;
+    }
+
+    // ✨ 蛍（地上を漂う発光粒子）
+    {
+      const FIRE_N = 60;
+      const fGeo = new THREE.BufferGeometry();
+      const fp = new Float32Array(FIRE_N * 3);
+      for (let i = 0; i < FIRE_N; i++) {
+        const a = Math.random() * Math.PI * 2;
+        const r = 30 + Math.random() * 9;
+        fp[i*3] = Math.cos(a) * r;
+        fp[i*3+1] = -1 + Math.random() * 4;
+        fp[i*3+2] = Math.sin(a) * r;
+      }
+      fGeo.setAttribute('position', new THREE.BufferAttribute(fp, 3));
+      const ftex = (() => {
+        const c = document.createElement('canvas'); c.width = 32; c.height = 32;
+        const g = c.getContext('2d');
+        const grd = g.createRadialGradient(16, 16, 0, 16, 16, 16);
+        grd.addColorStop(0, 'rgba(255,255,180,1)');
+        grd.addColorStop(0.4, 'rgba(255,220,120,0.6)');
+        grd.addColorStop(1, 'rgba(255,200,100,0)');
+        g.fillStyle = grd; g.fillRect(0, 0, 32, 32);
+        return new THREE.CanvasTexture(c);
+      })();
+      const fireflies = new THREE.Points(fGeo, new THREE.PointsMaterial({
+        map: ftex, color: 0xfff0a0, size: 0.6, transparent: true, opacity: 0.9,
+        depthWrite: false, blending: THREE.AdditiveBlending, fog: false,
+      }));
+      natureGroup.add(fireflies);
+      natureGroup.userData.fireflies = fireflies;
+    }
 
     scene.add(natureGroup);
     scene.userData.natureGroup = natureGroup;
@@ -18122,6 +18220,51 @@
         if (ng.sparkles && ng.sparkles.material) {
           ng.sparkles.material.opacity = 0.5 + Math.sin(t * 2) * 0.3;
         }
+        // 流れ星：たまに発生して 1.5秒で消える
+        if (ng.shootingStars) {
+          ng.shootingStars.forEach((star, i) => {
+            const u = star.userData;
+            if (u.startT < 0 || t - u.startT > u.dur) {
+              // 次の出現を予約（10〜25秒後）
+              if (Math.random() < 0.001) {
+                u.startT = t;
+                u.dur = 1.2 + Math.random() * 0.8;
+                const a = Math.random() * Math.PI * 2;
+                const r = 36;
+                u.fromX = Math.cos(a) * r;
+                u.fromY = 16 + Math.random() * 8;
+                u.fromZ = Math.sin(a) * r;
+                u.dx = (Math.random() - 0.5) * 18;
+                u.dy = -8 - Math.random() * 6;
+                u.dz = (Math.random() - 0.5) * 18;
+                star.material.opacity = 0;
+              } else {
+                star.material.opacity = 0;
+                return;
+              }
+            }
+            const k = (t - u.startT) / u.dur;
+            star.position.set(
+              u.fromX + u.dx * k,
+              u.fromY + u.dy * k,
+              u.fromZ + u.dz * k
+            );
+            star.material.opacity = Math.sin(k * Math.PI) * 0.95;
+            star.lookAt(u.fromX + u.dx * (k - 0.05), u.fromY + u.dy * (k - 0.05), u.fromZ + u.dz * (k - 0.05));
+          });
+        }
+        // 蛍：上下に漂う＋点滅
+        if (ng.fireflies) {
+          const pa = ng.fireflies.geometry.attributes.position;
+          for (let i = 0; i < pa.count; i++) {
+            pa.array[i*3+1] += Math.sin(t * 0.8 + i) * 0.005;
+            // 範囲を超えたら戻す
+            if (pa.array[i*3+1] > 4) pa.array[i*3+1] = -1;
+            if (pa.array[i*3+1] < -1.2) pa.array[i*3+1] = 4;
+          }
+          pa.needsUpdate = true;
+          ng.fireflies.material.opacity = 0.7 + Math.sin(t * 3) * 0.2;
+        }
         // 動物スプライト（鳥類のみ残存）：旋回＋羽ばたき風揺れ
         (ng.animalSprites || []).forEach(s => {
           if (!s.visible) return;
@@ -18161,38 +18304,100 @@
             }
           });
         }
-        // 低ポリ歩行3D動物
+        // 低ポリ歩行3D動物 — 状態マシン（歩く/止まる/振り向く/草食む）
         if (ng.eden3D && ng.eden3D.userData.walkAnimals) {
           ng.eden3D.userData.walkAnimals.forEach(a => {
             const u = a.userData;
-            // 円周ゆっくり歩行（種別速度）
-            u.angle += u.speed * dt * 0.6;
-            const x = Math.cos(u.angle) * u.radius;
-            const z = Math.sin(u.angle) * u.radius;
-            a.position.x = x;
-            a.position.z = z;
-            // ウサギは跳ねる、それ以外は微小バウンス
-            if (u.species === 'rabbit') {
-              const hop = Math.max(0, Math.sin(t * 4 + u.phase));
-              a.position.y = -1.3 + hop * 0.3;
-              a.rotation.x = -hop * 0.15;
-            } else {
-              a.position.y = -1.3 + Math.sin(t * 3 + u.phase) * 0.04;
+            // 状態タイマー進行
+            u.stateTime = (u.stateTime || 0) + dt;
+            // 状態の遷移（ランダム持続時間）
+            if (u.stateTime > (u.stateDur || 0)) {
+              const rnd = Math.random();
+              // 種別ごとの行動傾向
+              const idleBias = u.species === 'rabbit' ? 0.55 : (u.species === 'lion' ? 0.40 : 0.30);
+              if (u.state === 'walk') {
+                u.state = rnd < idleBias ? 'idle'
+                       : rnd < idleBias + 0.20 ? 'graze'   // 草食む
+                       : rnd < idleBias + 0.30 ? 'turn'    // 振り向く
+                       : 'walk';
+              } else if (u.state === 'idle') {
+                u.state = rnd < 0.5 ? 'walk' : (rnd < 0.7 ? 'graze' : 'turn');
+              } else { u.state = 'walk'; }
+              u.stateTime = 0;
+              u.stateDur = 1.6 + Math.random() * 3.5;
+              if (u.state === 'turn') u.turnTarget = u.angle + (Math.random() - 0.5) * Math.PI;
             }
-            a.rotation.y = -u.angle - Math.PI / 2;
-            // 脚の前後 sin 波（隣り合う脚は逆位相）
+            // 状態に応じた動き（perched は移動しない）
+            const isMoving = (u.state === 'walk') && !u.perched;
+            if (u.perched) u.state = 'idle';
+            if (isMoving) {
+              u.angle += u.speed * dt * 0.6;
+              a.position.x = Math.cos(u.angle) * u.radius;
+              a.position.z = Math.sin(u.angle) * u.radius;
+              a.rotation.y = -u.angle - Math.PI / 2;
+            } else if (u.state === 'turn') {
+              // ゆっくり目標角まで回転
+              const dir = (u.turnTarget - u.angle);
+              u.angle += dir * dt * 0.6;
+              a.rotation.y = -u.angle - Math.PI / 2;
+            }
+            // ウサギ：squash/stretch ジャンプ
+            if (u.species === 'rabbit') {
+              if (isMoving) {
+                const phase = t * 5 + u.phase;
+                const hop = Math.max(0, Math.sin(phase));
+                a.position.y = -1.3 + hop * 0.5;
+                // squash/stretch（カートゥーン跳躍）
+                a.scale.set(
+                  1 - hop * 0.15,                  // 横は縮む
+                  1 + hop * 0.30,                  // 縦は伸びる
+                  1 - hop * 0.15
+                );
+                a.rotation.x = -hop * 0.20;
+              } else {
+                // 静止時はぴくっと耳を動かす（scale復元）
+                a.scale.lerp(new THREE.Vector3(1,1,1), 0.2);
+                a.position.y = -1.3;
+                a.rotation.x = 0;
+              }
+            } else {
+              a.position.y = -1.3 + (isMoving ? Math.sin(t * 3 + u.phase) * 0.04 : 0);
+            }
+            // 脚アニメ（歩行中のみ）
             if (u.legs) {
+              const target = isMoving ? 0.55 : 0;
               u.legs.forEach((leg, idx) => {
                 const ph = (idx === 0 || idx === 3) ? 0 : Math.PI;
-                leg.rotation.x = Math.sin(t * 5 + ph + u.phase) * 0.45;
+                const desired = isMoving ? Math.sin(t * 6 + ph + u.phase) * 0.55 : 0;
+                leg.rotation.x += (desired - leg.rotation.x) * 0.25;
               });
             }
-            // 頭バウンス
-            if (u.head) u.head.rotation.x = Math.sin(t * 5 + u.phase) * 0.08;
-            // 尾揺れ
+            // 頭：歩行中はバウンス、草食時は俯く、振り向き時は回転
+            if (u.head) {
+              if (u.state === 'graze') {
+                u.head.rotation.x += (0.55 - u.head.rotation.x) * 0.15;
+              } else if (isMoving) {
+                u.head.rotation.x = Math.sin(t * 5 + u.phase) * 0.08;
+              } else {
+                // 立ち止まりは見回し
+                u.head.rotation.y = Math.sin(t * 0.4 + u.phase) * 0.7;
+                u.head.rotation.x += (0 - u.head.rotation.x) * 0.1;
+              }
+            }
+            // 尾揺れ（idleでも揺れる）
             if (u.tail) u.tail.rotation.x = Math.sin(t * 4 + u.phase) * 0.25;
             // ゾウの鼻
             if (u.trunk) u.trunk.rotation.z = -Math.PI / 3 + Math.sin(t * 2 + u.phase) * 0.18;
+            // フクロウ：首回転（座標は固定、頭だけぐるっと）
+            if (u.species === 'owl' && u.head) {
+              const turn = Math.sin(t * 0.35 + u.phase);
+              u.head.rotation.y = turn * 1.4;
+              // 瞬き：scale.y で目を一瞬閉じる
+              if (u.eyes) {
+                const blink = Math.max(0, Math.sin(t * 0.7 + u.phase * 3) * 12 - 11);
+                u.eyes.forEach(eye => eye.scale.y = 1 - blink);
+              }
+            }
           });
         }
       }
