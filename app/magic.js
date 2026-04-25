@@ -11147,6 +11147,180 @@
     },
   };
 
+  // 各神話のシンボル画（hub のタイル用）
+  function drawPantheonSymbol(ctx, W, H, cx, cy, t, key, accent) {
+    // 共通：背景グラデ
+    const bg = ctx.createLinearGradient(0, 0, 0, H);
+    bg.addColorStop(0, '#0a0418'); bg.addColorStop(0.5, accent + '40'); bg.addColorStop(1, '#0a0418');
+    ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+    // 共通：背景の星屑
+    for (let i = 0; i < 30; i++) {
+      const sx = (i * 137 % W);
+      const sy = (i * 89 % (H - 80));
+      ctx.fillStyle = '#ffffff' + (Math.floor(60 + Math.sin(t + i) * 60).toString(16).padStart(2, '0'));
+      ctx.fillRect(sx, sy, 1.5, 1.5);
+    }
+    ctx.save();
+    ctx.translate(cx, cy);
+
+    if (key === 'genesis') {
+      // 創世記：天地創造の光と闇 + 命の樹
+      // 光の球（神の眼）
+      const r = 80 + Math.sin(t * 0.6) * 6;
+      const grd = ctx.createRadialGradient(0, -30, 5, 0, -30, r);
+      grd.addColorStop(0, '#ffffff'); grd.addColorStop(0.3, '#fff8c0');
+      grd.addColorStop(0.7, accent + '99'); grd.addColorStop(1, accent + '00');
+      ctx.fillStyle = grd;
+      ctx.beginPath(); ctx.arc(0, -30, r, 0, Math.PI * 2); ctx.fill();
+      // 命の樹（シンプルなシルエット）
+      ctx.strokeStyle = '#3a2814'; ctx.lineWidth = 6;
+      ctx.beginPath(); ctx.moveTo(0, 50); ctx.lineTo(0, 130); ctx.stroke();
+      ctx.fillStyle = '#3a6a28';
+      ctx.beginPath(); ctx.arc(0, 50, 40, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#5a8a38';
+      ctx.beginPath(); ctx.arc(-20, 30, 25, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(20, 25, 28, 0, Math.PI * 2); ctx.fill();
+      // リンゴ
+      ctx.fillStyle = '#c01828';
+      [[-15,40],[12,55],[8,28]].forEach(([x,y]) => {
+        ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 2); ctx.fill();
+      });
+    } else if (key === 'greek') {
+      // ギリシャ：ゼウスの稲妻 + 神殿の柱
+      ctx.fillStyle = '#e0d8b0';
+      // 神殿の柱（3本）
+      [-60, 0, 60].forEach(x => {
+        ctx.fillRect(x - 8, -80, 16, 140);
+        ctx.fillRect(x - 14, -90, 28, 12);
+        ctx.fillRect(x - 14, 60, 28, 12);
+      });
+      // ペディメント
+      ctx.beginPath();
+      ctx.moveTo(-80, -90); ctx.lineTo(0, -120); ctx.lineTo(80, -90); ctx.closePath();
+      ctx.fill();
+      // 稲妻（ゼウス）
+      ctx.fillStyle = '#fff8c0';
+      ctx.shadowColor = accent; ctx.shadowBlur = 20;
+      ctx.beginPath();
+      ctx.moveTo(0, -100);
+      ctx.lineTo(-15, -40); ctx.lineTo(-5, -40);
+      ctx.lineTo(-20, 30); ctx.lineTo(0, -10); ctx.lineTo(-10, -10);
+      ctx.lineTo(10, -80); ctx.closePath();
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    } else if (key === 'japan') {
+      // 日本：鳥居 + 太陽 + 桜
+      // 太陽（赤い円）
+      const sun = 70 + Math.sin(t * 0.8) * 4;
+      const sg = ctx.createRadialGradient(0, -40, 0, 0, -40, sun);
+      sg.addColorStop(0, '#ffffff'); sg.addColorStop(0.5, '#ff8060'); sg.addColorStop(1, '#c02020');
+      ctx.fillStyle = sg;
+      ctx.beginPath(); ctx.arc(0, -40, sun, 0, Math.PI * 2); ctx.fill();
+      // 鳥居（朱色）
+      ctx.fillStyle = '#c02828';
+      ctx.fillRect(-70, 30, 140, 14); // 上の横木（笠木）
+      ctx.fillRect(-60, 50, 120, 8);  // 下の横木（貫）
+      ctx.fillRect(-60, 38, 12, 90); // 左柱
+      ctx.fillRect(48, 38, 12, 90);  // 右柱
+      ctx.fillStyle = '#1a0a08';
+      ctx.fillRect(-78, 24, 156, 6); // 笠木の上
+      // 桜の花びら（飛ぶ）
+      for (let i = 0; i < 6; i++) {
+        const px = (i * 60 + t * 30) % 320 - 160;
+        const py = -100 + (i * 40 + t * 20) % 200;
+        ctx.fillStyle = '#ffb0c8';
+        ctx.beginPath(); ctx.ellipse(px, py, 6, 4, t + i, 0, Math.PI * 2); ctx.fill();
+      }
+    } else if (key === 'norse') {
+      // 北欧：世界樹 Yggdrasil + ルーン
+      // 中央の世界樹
+      ctx.strokeStyle = '#5a3818'; ctx.lineWidth = 8;
+      ctx.beginPath(); ctx.moveTo(0, -100); ctx.lineTo(0, 130); ctx.stroke();
+      // 三つの大枝
+      ctx.lineWidth = 5;
+      [-1, 1].forEach(d => {
+        ctx.beginPath();
+        ctx.moveTo(0, -60); ctx.bezierCurveTo(d * 30, -80, d * 60, -100, d * 90, -120);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(0, -20); ctx.bezierCurveTo(d * 40, -30, d * 70, -40, d * 100, -60);
+        ctx.stroke();
+      });
+      // 葉（雲のかたまり）
+      ctx.fillStyle = '#3a6a48';
+      [[-90,-115,30],[90,-115,30],[-100,-55,28],[100,-55,28],[0,-110,40]].forEach(([x,y,r]) => {
+        ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+      });
+      // 雪片＋ルーン文字
+      ctx.font = 'bold 32px serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillStyle = accent;
+      ctx.shadowColor = accent; ctx.shadowBlur = 12;
+      ['ᚠ','ᚱ','ᛞ'].forEach((rune, i) => {
+        const a = i * Math.PI * 2 / 3 + t * 0.5;
+        ctx.fillText(rune, Math.cos(a) * 110, 30 + Math.sin(a) * 30);
+      });
+      ctx.shadowBlur = 0;
+    } else if (key === 'egypt') {
+      // エジプト：ピラミッド + ホルスの眼
+      // 太陽
+      ctx.fillStyle = '#ffd040';
+      ctx.shadowColor = '#ffa030'; ctx.shadowBlur = 20;
+      ctx.beginPath(); ctx.arc(80, -100, 25, 0, Math.PI * 2); ctx.fill();
+      ctx.shadowBlur = 0;
+      // 砂漠地平
+      ctx.fillStyle = '#c89060';
+      ctx.fillRect(-200, 100, 400, 80);
+      // ピラミッド
+      ctx.fillStyle = '#a86840';
+      ctx.beginPath();
+      ctx.moveTo(-120, 100); ctx.lineTo(-30, -30); ctx.lineTo(60, 100); ctx.closePath();
+      ctx.fill();
+      ctx.fillStyle = '#7a4828';
+      ctx.beginPath();
+      ctx.moveTo(-30, -30); ctx.lineTo(-30, 100); ctx.lineTo(60, 100); ctx.closePath();
+      ctx.fill();
+      // ホルスの眼（頂上に光る）
+      ctx.fillStyle = '#fff';
+      ctx.beginPath();
+      ctx.ellipse(-30, -10, 16, 10, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = accent;
+      ctx.beginPath();
+      ctx.arc(-30, -10, 5, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#000';
+      ctx.beginPath();
+      ctx.arc(-30, -10, 2, 0, Math.PI * 2); ctx.fill();
+    } else if (key === 'hindu') {
+      // ヒンドゥー：蓮 + オーム + 三主神
+      // 大蓮華
+      ctx.save();
+      ctx.rotate(t * 0.1);
+      for (let p = 0; p < 8; p++) {
+        ctx.save();
+        ctx.rotate((p / 8) * Math.PI * 2);
+        const lg = ctx.createLinearGradient(0, 0, 0, -100);
+        lg.addColorStop(0, '#ffb0c8'); lg.addColorStop(1, '#ff60a0');
+        ctx.fillStyle = lg;
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.bezierCurveTo(28, -30, 28, -90, 0, -110);
+        ctx.bezierCurveTo(-28, -90, -28, -30, 0, 0);
+        ctx.fill();
+        ctx.restore();
+      }
+      ctx.restore();
+      // オーム ॐ
+      ctx.font = 'bold 100px serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillStyle = '#fff';
+      ctx.shadowColor = accent; ctx.shadowBlur = 25;
+      ctx.fillText('ॐ', 0, -10);
+      ctx.shadowBlur = 0;
+    }
+    ctx.restore();
+  }
+
   async function openPantheon3D() {
     if (!window.THREE) return;
     const THREE = window.THREE;
@@ -11766,7 +11940,7 @@
         camera.position.y + Math.sin(pitch) * 5,
         camera.position.z - Math.cos(yaw) * Math.cos(pitch) * 5
       );
-      // 🎨 動くSVG/Canvas（神々のイラスト的アバター）
+      // 🎨 動くSVG/Canvas（神話別のシンボル / 神の顔）
       if (Math.floor(t * 60) % 3 === 0) {
         animatedTextures.forEach(a => {
           const ctx = a.ctx;
@@ -11775,6 +11949,23 @@
           // 背景: 神聖な放射グラデ
           const cy = 240;
           const cx = 192;
+          // ハブの神話タイル → 神話別シンボル画
+          if (a.item.type === 'pantheon') {
+            drawPantheonSymbol(ctx, W2, H2, cx, cy, t, a.item.key, a.accent);
+            // 名前プレート
+            ctx.fillStyle = 'rgba(20,10,30,0.88)';
+            ctx.fillRect(30, H2 - 70, W2 - 60, 50);
+            ctx.strokeStyle = a.accent; ctx.lineWidth = 2;
+            ctx.strokeRect(30, H2 - 70, W2 - 60, 50);
+            ctx.font = 'bold 28px "Shippori Mincho", serif';
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillStyle = a.accent;
+            ctx.shadowColor = '#000'; ctx.shadowBlur = 4;
+            ctx.fillText(a.item.name, cx, H2 - 45);
+            ctx.shadowBlur = 0;
+            a.tex.needsUpdate = true;
+            return; // 顔シルエット描画はスキップ
+          }
           const bg = ctx.createLinearGradient(0, 0, 0, H2);
           bg.addColorStop(0, '#0a0418');
           bg.addColorStop(0.5, a.accent + '40');
