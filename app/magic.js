@@ -14207,7 +14207,33 @@
         <div class="knp-title">${config.music.title}</div>
         <div class="knp-sub">${config.music.sub}</div>
       </div>
-      <div class="museum3d-info show" id="kohInfo">ドラッグで首を動かす（席は固定）</div>
+      <!-- 🥽 AIグラス風 HUD（説明書き） -->
+      <div class="koh-hud" id="kohHud">
+        <div class="koh-hud-section koh-hud-tl">
+          <div class="khs-label">L O C A T I O N</div>
+          <div class="khs-value" id="kohLocation">中央ホール</div>
+        </div>
+        <div class="koh-hud-section koh-hud-tr">
+          <div class="khs-label">M O O D</div>
+          <div class="khs-value">${config.music.title}</div>
+        </div>
+        <div class="koh-hud-section koh-hud-bl">
+          <div class="khs-label">S E A T</div>
+          <div class="khs-value">列${config.seat.r + 1}・${config.seat.c + 1}番</div>
+        </div>
+        <div class="koh-hud-section koh-hud-br">
+          <div class="khs-label">M O D E</div>
+          <div class="khs-value" id="kohModeLabel">CONCERT</div>
+        </div>
+        <div class="koh-hud-reticle" aria-hidden="true">⊙</div>
+      </div>
+      <!-- モード切替ボタン -->
+      <div class="koh-mode-bar">
+        <button class="koh-mode-btn active" data-mode="concert">🎼 演奏</button>
+        <button class="koh-mode-btn" data-mode="planetarium">✦ プラネタリウム</button>
+        <button class="koh-mode-btn" data-mode="cosmos">🌌 宇宙</button>
+        <button class="koh-mode-btn" data-mode="vr" id="kohVRBtn">🥽 VR</button>
+      </div>
     `;
     document.body.appendChild(ov);
     requestAnimationFrame(() => ov.classList.add('open'));
@@ -14220,15 +14246,14 @@
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     renderer.setSize(W(), H());
     if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.3;
+    renderer.toneMappingExposure = 0.85; // 抑える
     if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
     stage.appendChild(renderer.domElement);
 
     const scene = new THREE.Scene();
     const moodColor = new THREE.Color(config.music.mood);
-    scene.background = new THREE.Color(0x020108);
-    // 放射フォグ — 距離に応じて減衰、球体感を強調
-    scene.fog = new THREE.FogExp2(0x040214, 0.018);
+    scene.background = new THREE.Color(0x010108);
+    scene.fog = new THREE.FogExp2(0x020110, 0.022); // 少し濃くして暗い包まれる感
 
     // 🌐 巨大な内側球体（背景＋音楽の色）
     const sphereTex = (() => {
@@ -14246,13 +14271,14 @@
       }
       return new THREE.CanvasTexture(c);
     })();
-    // 🌌 球体の内側シェーダー（音楽の mood で色が変わる、星雲＋ノイズ）
+    // 🌌 球体の内側シェーダー（モード+音楽連動）
     const sphereMat = new THREE.ShaderMaterial({
       uniforms: {
         uTime: { value: 0 },
         uMood: { value: new THREE.Color(config.music.mood) },
         uMood2: { value: new THREE.Color(config.music.mood).multiplyScalar(0.4) },
         uTex: { value: sphereTex },
+        uMode: { value: 0.0 }, // 0=concert / 1=planetarium / 2=cosmos
       },
       vertexShader: `
         varying vec3 vWorld;
@@ -14266,6 +14292,7 @@
       `,
       fragmentShader: `
         uniform float uTime;
+        uniform float uMode;
         uniform vec3 uMood;
         uniform vec3 uMood2;
         uniform sampler2D uTex;
@@ -14298,10 +14325,30 @@
           vec3 nebula = mix(uMood2, uMood, band);
           // ハイライト（明るい筋）
           float bright = pow(n2, 3.0) * 1.5;
-          vec3 col = stars * 0.6 + nebula * 0.8 + uMood * bright * 0.4;
-          // 中央付近を暗く（地平線感）
+          vec3 col = stars * 0.45 + nebula * 0.35 + uMood * bright * 0.18;
           float dist = abs(uv.y - 0.5) * 2.0;
-          col *= mix(0.7, 1.4, dist);
+          col *= mix(0.5, 1.0, dist);
+          col *= 0.55;
+          // ━━━ プラネタリウムモード ━━━
+          if (uMode > 0.5 && uMode < 1.5) {
+            // 星空がはっきり、星座的な明るい点
+            col = stars * 1.2;
+            // 星雲は小さく薄く
+            col += nebula * 0.15 + uMood * bright * 0.1;
+            // 中央暗で空感
+            col *= mix(0.6, 1.1, dist);
+          }
+          // ━━━ 宇宙モード ━━━
+          else if (uMode > 1.5) {
+            // 暗い宇宙、星雲の渦、深い色
+            col = stars * 0.95;
+            float swirl = fbm(uv * 6.0 + vec2(uTime * 0.06, sin(uTime * 0.04)));
+            vec3 cosmos = mix(vec3(0.04, 0.02, 0.10), uMood, swirl);
+            col += cosmos * 0.45;
+            // 銀河の帯
+            float band = smoothstep(0.45, 0.55, uv.y) * smoothstep(0.55, 0.45, uv.y);
+            col += uMood * band * 0.5;
+          }
           gl_FragColor = vec4(col, 1.0);
         }
       `,
@@ -14341,64 +14388,17 @@
       dome.material = videoMat;
     }
 
-    // 🌐 球体感の演出: 緯度リング（赤道+8本のラチチュード）
-    for (let i = 1; i < 8; i++) {
-      const phi = (i / 8) * Math.PI;
-      const r = 39 * Math.sin(phi);
-      const y = 39 * Math.cos(phi); // 上下に並ぶ
-      const ring = new THREE.Mesh(
-        new THREE.TorusGeometry(r, 0.12, 8, 96),
-        new THREE.MeshBasicMaterial({
-          color: 0x88aaff, transparent: true, opacity: 0.18,
-          depthWrite: false, blending: THREE.AdditiveBlending, fog: false,
-        })
-      );
-      ring.rotation.x = Math.PI / 2;
-      ring.position.y = y;
-      scene.add(ring);
-    }
-    // 経線（縦のライン、12本）
-    for (let i = 0; i < 12; i++) {
-      const a = (i / 12) * Math.PI * 2;
-      const meridianGeo = new THREE.BufferGeometry();
-      const segs = 32;
-      const verts = [];
-      for (let s = 0; s <= segs; s++) {
-        const phi = (s / segs) * Math.PI;
-        const r = 39 * Math.sin(phi);
-        const y = 39 * Math.cos(phi);
-        verts.push(Math.cos(a) * r, y, Math.sin(a) * r);
-      }
-      meridianGeo.setAttribute('position', new THREE.Float32BufferAttribute(verts, 3));
-      const meridian = new THREE.Line(meridianGeo, new THREE.LineBasicMaterial({
-        color: 0x6080c0, transparent: true, opacity: 0.15, fog: false,
-      }));
-      scene.add(meridian);
-    }
-    // 床（地平線の参照点 — 円形プレート）
+    // 球体ワイヤーフレームは出さない（プレイヤーは球体「の中にいる」だけ）
+    // 床のみ控えめに（大理石風、地平線の参照）
     const floorPlate = new THREE.Mesh(
-      new THREE.CircleGeometry(20, 64),
+      new THREE.CircleGeometry(28, 64),
       new THREE.MeshStandardMaterial({
-        color: 0x0a081a, roughness: 0.4, metalness: 0.5,
+        color: 0x0a081a, roughness: 0.5, metalness: 0.4,
       })
     );
     floorPlate.rotation.x = -Math.PI / 2;
     floorPlate.position.y = -1.5;
     scene.add(floorPlate);
-    // 床の同心円（光るリング）— 球体感+座席感
-    for (let i = 1; i <= 4; i++) {
-      const r = 6 + i * 3;
-      const ring = new THREE.Mesh(
-        new THREE.RingGeometry(r - 0.05, r + 0.05, 64),
-        new THREE.MeshBasicMaterial({
-          color: 0x80a0d0, transparent: true, opacity: 0.18,
-          depthWrite: false, side: THREE.DoubleSide, fog: false,
-        })
-      );
-      ring.rotation.x = -Math.PI / 2;
-      ring.position.y = -1.49;
-      scene.add(ring);
-    }
 
     // 中央ステージ（円形の高い台）
     const stageMat = new THREE.MeshStandardMaterial({ color: 0x4a3018, roughness: 0.5, metalness: 0.2 });
@@ -14704,14 +14704,14 @@
     }
     scene.userData.orchestra = orchestra;
 
-    // ステージライト（暖色のダウンライト）
-    const stageLight = new THREE.SpotLight(0xfff0c0, 5, 18, Math.PI/4, 0.4, 1.5);
+    // ステージライト（暖色のダウンライト、控えめ）
+    const stageLight = new THREE.SpotLight(0xfff0c0, 2.0, 18, Math.PI/4, 0.5, 1.5);
     stageLight.position.set(0, 14, 0);
     stageLight.target.position.set(0, 0, 0);
     scene.add(stageLight);
     scene.add(stageLight.target);
     // 中央のシャンデリア光
-    const centerGlow = new THREE.PointLight(moodColor, 1.0, 30, 1.5);
+    const centerGlow = new THREE.PointLight(moodColor, 0.4, 30, 1.5);
     centerGlow.position.set(0, 8, 0);
     scene.add(centerGlow);
 
@@ -14830,9 +14830,55 @@
     const myY = myRow * 0.45 + 1.3; // 段差込みの座高
     const myZ = Math.sin(myAngle) * (myRadius - 0.3);
 
-    // 環境光
-    scene.add(new THREE.AmbientLight(0x4a4060, 0.5));
-    scene.add(new THREE.HemisphereLight(0x6080a0, 0x1a0a20, 0.4));
+    // 環境光（暗いコンサート会場）
+    scene.add(new THREE.AmbientLight(0x14101e, 0.5));
+    scene.add(new THREE.HemisphereLight(0x2a2840, 0x05030a, 0.3));
+
+    // 🎚 モード切替（演奏 / プラネタリウム / 宇宙 / VR）
+    const modes = {
+      concert: { stageVisible: true, audienceVisible: true, dome: 'shader' },
+      planetarium: { stageVisible: false, audienceVisible: true, dome: 'planetarium' },
+      cosmos: { stageVisible: false, audienceVisible: false, dome: 'cosmos' },
+    };
+    let currentMode = 'concert';
+    const stageGroups = [stagePlat, stageRim, piano, conductor];
+    function setMode(mode) {
+      if (!modes[mode]) return;
+      currentMode = mode;
+      const m = modes[mode];
+      stageGroups.forEach(o => { if (o) o.visible = m.stageVisible; });
+      orchestra.forEach(p => { if (p && p.group) p.group.visible = m.stageVisible; });
+      [chairMesh, bodyMesh, headMesh, hairMesh].forEach(im => { if (im) im.visible = m.audienceVisible; });
+      // dome シェーダーモード切替
+      if (sphereMat.uniforms && sphereMat.uniforms.uMode) {
+        sphereMat.uniforms.uMode.value = mode === 'planetarium' ? 1.0 : mode === 'cosmos' ? 2.0 : 0.0;
+      }
+      // モードラベル
+      const label = ov.querySelector('#kohModeLabel');
+      if (label) label.textContent = mode === 'concert' ? 'CONCERT' : mode === 'planetarium' ? 'PLANETARIUM' : 'COSMOS';
+      const loc = ov.querySelector('#kohLocation');
+      if (loc) loc.textContent = mode === 'concert' ? '中央ホール' : mode === 'planetarium' ? '星座のドーム' : '宇宙の只中';
+    }
+    ov.querySelectorAll('.koh-mode-btn').forEach(b => {
+      b.addEventListener('click', () => {
+        const m = b.dataset.mode;
+        if (m === 'vr') {
+          // VR起動
+          if (renderer.xr && navigator.xr) {
+            renderer.xr.enabled = true;
+            navigator.xr.requestSession('immersive-vr', { optionalFeatures: ['local-floor', 'bounded-floor'] })
+              .then(session => { renderer.xr.setSession(session); kohToast('VR モード開始'); })
+              .catch(() => kohToast('VR デバイスが見つかりません'));
+          } else {
+            kohToast('このブラウザは VR 非対応');
+          }
+          return;
+        }
+        ov.querySelectorAll('.koh-mode-btn').forEach(x => x.classList.remove('active'));
+        b.classList.add('active');
+        setMode(m);
+      });
+    });
 
     // 🎵 音楽再生
     const audio = new Audio(config.music.src);
@@ -14848,8 +14894,9 @@
     const PITCH_LIMIT = 1.2;
     const _euler = new THREE.Euler(0, 0, 0, 'YXZ');
 
-    // 入力デルタを蓄積 → 毎フレーム消費（高Hzマウス対応）
-    let pendingDX = 0, pendingDY = 0;
+    // 🎯 入力 = 「目標 yaw/pitch」を更新、毎フレーム滑らかに追従
+    let yawT = initYaw, pitchT = -0.05;
+    let yawV = 0, pitchV = 0; // 角速度（critically-damped spring）
     let dragging = false, lx = 0, ly = 0;
     renderer.domElement.addEventListener('pointerdown', e => {
       dragging = true; lx = e.clientX; ly = e.clientY;
@@ -14857,17 +14904,19 @@
     });
     renderer.domElement.addEventListener('pointermove', e => {
       if (!dragging) return;
-      // 蓄積するだけ（フレーム時に消費）— 高Hzマウスでも飛び散らない
-      pendingDX += (e.clientX - lx);
-      pendingDY += (e.clientY - ly);
+      // 画面幅 = 180度 の感度で「目標 yaw/pitch」を即更新
+      const SCREEN_W = window.innerWidth || 360;
+      const SCREEN_H = window.innerHeight || 640;
+      const SX = Math.PI / SCREEN_W;
+      const SY = (Math.PI * 0.7) / SCREEN_H;
+      yawT   -= (e.clientX - lx) * SX;
+      pitchT  = Math.max(-PITCH_LIMIT, Math.min(PITCH_LIMIT, pitchT - (e.clientY - ly) * SY));
       lx = e.clientX; ly = e.clientY;
     }, { passive: true });
     const stop = () => { dragging = false; };
     renderer.domElement.addEventListener('pointerup', stop);
     renderer.domElement.addEventListener('pointercancel', stop);
     renderer.domElement.addEventListener('pointerleave', stop);
-    // 入力デルタをローパスフィルタ（指数移動平均で雑音除去）
-    let smoothDX = 0, smoothDY = 0;
 
     let running = true;
     ov.querySelector('.museum3d-close').addEventListener('click', () => {
@@ -14899,9 +14948,9 @@
         composer.addPass(new ADDONS.RenderPass(scene, camera));
         const bloom = new ADDONS.UnrealBloomPass(
           new THREE.Vector2(W(), H()),
-          0.85, // strength
-          0.6,  // radius
-          0.15  // threshold
+          0.32, // strength（控えめに）
+          0.5,  // radius
+          0.78  // threshold（明るい部分だけ滲ませる）
         );
         composer.addPass(bloom);
         if (ADDONS.OutputPass) composer.addPass(new ADDONS.OutputPass());
@@ -14946,25 +14995,23 @@
         myY + breath + bob,
         myZ + Math.cos(t * 0.4) * 0.005
       );
-      // 🎯 VRパッド級スムーズ: 入力 → ローパス → 1:1 適用
-      const lp = 1 - Math.exp(-dt * 30);
-      smoothDX += (pendingDX - smoothDX) * lp;
-      smoothDY += (pendingDY - smoothDY) * lp;
-      pendingDX = 0; pendingDY = 0;
-      // 📱 感度: 画面幅をドラッグすると 180度（π）回る
-      const SCREEN_W = window.innerWidth || 360;
-      const SCREEN_H = window.innerHeight || 640;
-      const SENS_X = Math.PI / SCREEN_W;       // 1px = π/W rad
-      const SENS_Y = (Math.PI * 0.7) / SCREEN_H; // 縦は少し小さめ
-      yaw   -= smoothDX * SENS_X;
-      pitch -= smoothDY * SENS_Y;
+      // 🎯 Critically-damped spring（バター級スムーズ + 慣性）
+      // 微分方程式: a = -ω²(x - target) - 2ζω·v   (ζ=1で臨界減衰)
+      const omega = 14;          // 高い = 追従速い（バネが硬い）
+      const omega2 = omega * omega;
+      const damp = 2 * omega;    // 臨界減衰
+      // yaw
+      const ay = -omega2 * (yaw - yawT) - damp * yawV;
+      yawV += ay * dt;
+      yaw  += yawV * dt;
+      // pitch
+      const ap = -omega2 * (pitch - pitchT) - damp * pitchV;
+      pitchV += ap * dt;
+      pitch  += pitchV * dt;
       pitch = Math.max(-PITCH_LIMIT, Math.min(PITCH_LIMIT, pitch));
-      smoothDX *= 0.55; smoothDY *= 0.55;
       // 自然な微小ドリフト（座ってる感）
-      const idleDriftYaw   = Math.sin(t * 0.23) * 0.00015;
-      const idleDriftPitch = Math.sin(t * 0.19) * 0.00010;
-      yaw += idleDriftYaw;
-      pitch += idleDriftPitch;
+      yaw += Math.sin(t * 0.23) * 0.0001;
+      pitch += Math.sin(t * 0.19) * 0.00007;
       _euler.set(pitch, yaw, 0);
       camera.quaternion.setFromEuler(_euler);
 

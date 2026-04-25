@@ -8554,3 +8554,88 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   font-style: italic;
   letter-spacing: 0.05em;
 }
+
+/* 🥽 AIグラス風 HUD */
+.koh-hud {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  z-index: 25;
+  font-family: 'Cormorant Garamond', 'Shippori Mincho', serif;
+  color: rgba(216,176,255,0.85);
+  text-shadow: 0 0 8px rgba(180,140,220,0.6);
+  /* 全体に微かなビネット */
+}
+.koh-hud-section {
+  position: absolute;
+  background: linear-gradient(135deg, rgba(20,10,40,0.5), rgba(30,15,60,0.3));
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(180,140,220,0.3);
+  border-radius: 4px;
+  padding: 8px 14px;
+  min-width: 110px;
+  animation: kohHudFadeIn 1.2s ease-out;
+}
+@keyframes kohHudFadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.koh-hud-tl { top: 14px; left: 14px; }
+.koh-hud-tr { top: 14px; right: 14px; }
+.koh-hud-bl { bottom: 90px; left: 14px; }
+.koh-hud-br { bottom: 90px; right: 14px; }
+.khs-label {
+  font-size: 9px; letter-spacing: 0.4em;
+  color: rgba(180,140,220,0.7);
+  margin-bottom: 2px;
+}
+.khs-value {
+  font-size: 13px; letter-spacing: 0.1em;
+  color: #fff8e0;
+  font-family: 'Shippori Mincho', serif;
+}
+.koh-hud-reticle {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 10px; color: rgba(216,176,255,0.35);
+  letter-spacing: 0.5em;
+}
+@media (max-width: 640px) {
+  .koh-hud-section { min-width: 84px; padding: 5px 8px; }
+  .khs-label { font-size: 8px; letter-spacing: 0.3em; }
+  .khs-value { font-size: 11px; }
+}
+
+/* モード切替バー */
+.koh-mode-bar {
+  position: absolute; bottom: 14px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; gap: 6px;
+  z-index: 28;
+  background: rgba(10,5,25,0.5);
+  backdrop-filter: blur(8px);
+  padding: 6px;
+  border-radius: 999px;
+  border: 1px solid rgba(180,140,220,0.3);
+}
+.koh-mode-btn {
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: rgba(216,176,255,0.7);
+  font-family: 'Shippori Mincho', serif;
+  font-size: 12px; letter-spacing: 0.1em;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all .25s;
+  white-space: nowrap;
+}
+.koh-mode-btn:hover { background: rgba(80,60,140,0.4); color: #fff8e0; }
+.koh-mode-btn.active {
+  background: linear-gradient(135deg, #4a2880, #2a1450);
+  color: #ffd890;
+  border-color: rgba(255,216,144,0.5);
+  box-shadow: 0 0 14px rgba(255,216,144,0.3);
+}
+@media (max-width: 640px) {
+  .koh-mode-btn { padding: 6px 10px; font-size: 10px; }
+}
