@@ -11149,8 +11149,8 @@
     });
     renderer.domElement.addEventListener('pointermove', e => {
       if (!dragging) return;
-      yaw -= (e.clientX - lastX) * 0.004;
-      pitch = Math.max(-1.2, Math.min(1.2, pitch - (e.clientY - lastY) * 0.004));
+      yaw -= (e.clientX - lastX) * 0.0075;  // 感度UP（広く見渡せる）
+      pitch = Math.max(-1.45, Math.min(1.45, pitch - (e.clientY - lastY) * 0.0065));
       lastX = e.clientX; lastY = e.clientY;
     });
     const stopDrag = () => { dragging = false; dragStartId = null; };
@@ -11227,18 +11227,23 @@
     function animate() {
       if (!running) return;
       if (document.hidden) { requestAnimationFrame(animate); return; }
-      // 移動
-      const speed = 0.08;
+      // 🎮 移動（原神方式：カメラ実方向ベース、yaw 同期保証）
+      const speed = 0.10;
       const fwd = (keys.w - keys.s) - stickDY;
       const strafe = (keys.d - keys.a) + stickDX;
       const moveLen = Math.hypot(fwd, strafe);
       if (moveLen > 0) {
-        const nx = Math.sin(yaw), nz = -Math.cos(yaw);
-        const sx = Math.cos(yaw), sz = Math.sin(yaw);
-        let dx = (nx * fwd + sx * strafe) * speed;
-        let dz = (nz * fwd + sz * strafe) * speed;
-        camera.position.x += dx; camera.position.z += dz;
-        // 壁コリジョン（中心からの距離を制限）
+        // 正規化（斜め移動でも一定速度に）
+        const f = fwd / moveLen;
+        const s = strafe / moveLen;
+        // カメラの実 yaw から地面平面の前方/右方ベクトルを取得
+        const fx = Math.sin(yaw), fz = -Math.cos(yaw);   // forward (XZ)
+        const rx = Math.cos(yaw), rz = Math.sin(yaw);    // right (XZ)
+        const dx = (fx * f + rx * s) * speed;
+        const dz = (fz * f + rz * s) * speed;
+        camera.position.x += dx;
+        camera.position.z += dz;
+        // 壁コリジョン
         const d = Math.hypot(camera.position.x, camera.position.z);
         const maxD = radius - 1.5;
         if (d > maxD) {
@@ -13484,8 +13489,8 @@
     renderer.domElement.addEventListener('pointerdown', e => { dragging = true; lastX = e.clientX; lastY = e.clientY; });
     renderer.domElement.addEventListener('pointermove', e => {
       if (!dragging) return;
-      yaw -= (e.clientX - lastX) * 0.004;
-      pitch = Math.max(-1.2, Math.min(1.2, pitch - (e.clientY - lastY) * 0.004));
+      yaw -= (e.clientX - lastX) * 0.0075;  // 感度UP
+      pitch = Math.max(-1.45, Math.min(1.45, pitch - (e.clientY - lastY) * 0.0065));
       lastX = e.clientX; lastY = e.clientY;
     });
     renderer.domElement.addEventListener('pointerup', () => dragging = false);
@@ -13672,16 +13677,18 @@
       // ╚═══════════════════════════════════════════╝
       const soul = scene.userData.soul;
       if (soul) {
-        // 🌟 魂の移動: WASD/スティックで進む（カメラ向き基準）
-        const speed = 0.10;
+        // 🌟 魂の移動（原神方式：カメラ実方向ベース）
+        const speed = 0.13;
         const fwd = (keys.w - keys.s) - stickDY;
         const strafe = (keys.d - keys.a) + stickDX;
-        if (Math.hypot(fwd, strafe) > 0) {
-          const nx = Math.sin(yaw), nz = -Math.cos(yaw);
-          const sx = Math.cos(yaw), sz = Math.sin(yaw);
-          soul.position.x += (nx * fwd + sx * strafe) * speed;
-          soul.position.z += (nz * fwd + sz * strafe) * speed;
-          // 上下フリー（スペース未対応 → 高さは固定）
+        const moveLen = Math.hypot(fwd, strafe);
+        if (moveLen > 0) {
+          const f = fwd / moveLen;
+          const s = strafe / moveLen;
+          const fx = Math.sin(yaw), fz = -Math.cos(yaw);
+          const rx = Math.cos(yaw), rz = Math.sin(yaw);
+          soul.position.x += (fx * f + rx * s) * speed;
+          soul.position.z += (fz * f + rz * s) * speed;
         }
         // 半径22内に制限（本のリングは半径12）
         const sd = Math.hypot(soul.position.x, soul.position.z);
@@ -13744,15 +13751,18 @@
           soul.position.z - Math.cos(yaw) * Math.cos(pitch) * 5
         );
       } else {
-        // 旧来の歩行（神殿内ゾーン）
-        const speed = 0.08;
+        // 神殿内ゾーン歩行（原神方式：カメラ実方向ベース）
+        const speed = 0.10;
         const fwd = (keys.w - keys.s) - stickDY;
         const strafe = (keys.d - keys.a) + stickDX;
-        if (Math.hypot(fwd, strafe) > 0) {
-          const nx = Math.sin(yaw), nz = -Math.cos(yaw);
-          const sx = Math.cos(yaw), sz = Math.sin(yaw);
-          camera.position.x += (nx * fwd + sx * strafe) * speed;
-          camera.position.z += (nz * fwd + sz * strafe) * speed;
+        const moveLen = Math.hypot(fwd, strafe);
+        if (moveLen > 0) {
+          const f = fwd / moveLen;
+          const s = strafe / moveLen;
+          const fx = Math.sin(yaw), fz = -Math.cos(yaw);
+          const rx = Math.cos(yaw), rz = Math.sin(yaw);
+          camera.position.x += (fx * f + rx * s) * speed;
+          camera.position.z += (fz * f + rz * s) * speed;
           const d = Math.hypot(camera.position.x, camera.position.z);
           if (d > 18) {
             camera.position.x = camera.position.x / d * 18;
