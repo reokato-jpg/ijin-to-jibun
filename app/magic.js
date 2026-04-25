@@ -16224,6 +16224,324 @@
     }));
     natureGroup.add(skyStars);
 
+    // 🦒🐘🦁  動物12種をドーム内壁に投影（Canvas詳細シルエット → Sprite billboard）
+    function makeAnimalCanvas(species) {
+      const c = document.createElement('canvas'); c.width = 256; c.height = 256;
+      const g = c.getContext('2d');
+      g.clearRect(0, 0, 256, 256);
+      g.fillStyle = 'rgba(8,12,18,0.97)';
+      g.strokeStyle = 'rgba(8,12,18,0.97)'; g.lineWidth = 2;
+      // 共通：地面ライン下の影
+      const draw = {
+        giraffe() {
+          // 体（横長）
+          g.beginPath(); g.ellipse(140, 165, 38, 24, 0, 0, Math.PI*2); g.fill();
+          // 長い首
+          g.beginPath();
+          g.moveTo(165, 155); g.lineTo(195, 90);
+          g.lineTo(208, 88); g.lineTo(178, 158); g.closePath(); g.fill();
+          // 頭
+          g.beginPath(); g.ellipse(208, 75, 14, 9, -0.3, 0, Math.PI*2); g.fill();
+          // 角
+          g.fillRect(207, 60, 3, 10); g.fillRect(214, 62, 3, 10);
+          // 4本脚
+          g.fillRect(112, 188, 6, 50);
+          g.fillRect(132, 188, 6, 50);
+          g.fillRect(150, 188, 6, 50);
+          g.fillRect(168, 188, 6, 50);
+          // 尾
+          g.beginPath(); g.moveTo(102, 165); g.lineTo(86, 192); g.lineTo(94, 165); g.closePath(); g.fill();
+          // 斑模様（薄め茶色）
+          g.fillStyle = 'rgba(120,80,30,0.4)';
+          for (let i = 0; i < 10; i++) {
+            g.fillRect(110 + Math.random()*60, 150 + Math.random()*30, 8, 8);
+          }
+        },
+        elephant() {
+          // 大きな丸い体
+          g.beginPath(); g.ellipse(128, 165, 55, 40, 0, 0, Math.PI*2); g.fill();
+          // 頭
+          g.beginPath(); g.ellipse(180, 145, 28, 26, 0, 0, Math.PI*2); g.fill();
+          // 鼻（長くカーブ）
+          g.beginPath();
+          g.moveTo(200, 155); g.bezierCurveTo(230, 175, 235, 215, 215, 230);
+          g.lineTo(208, 225); g.bezierCurveTo(220, 210, 218, 185, 195, 168);
+          g.closePath(); g.fill();
+          // 耳（大きい）
+          g.beginPath(); g.ellipse(165, 130, 22, 28, -0.3, 0, Math.PI*2); g.fill();
+          // 牙（白）
+          g.fillStyle = 'rgba(245,235,210,0.95)';
+          g.beginPath(); g.moveTo(195, 165); g.lineTo(205, 185); g.lineTo(200, 188); g.lineTo(190, 168); g.closePath(); g.fill();
+          g.fillStyle = 'rgba(8,12,18,0.97)';
+          // 4本太脚
+          g.fillRect(85, 200, 18, 38);
+          g.fillRect(110, 200, 18, 38);
+          g.fillRect(140, 200, 18, 38);
+          g.fillRect(165, 200, 18, 38);
+          // 尾
+          g.fillRect(72, 165, 4, 30);
+        },
+        lion() {
+          // 体
+          g.beginPath(); g.ellipse(135, 170, 42, 22, 0, 0, Math.PI*2); g.fill();
+          // 大きなたてがみ
+          g.beginPath(); g.ellipse(180, 150, 32, 32, 0, 0, Math.PI*2); g.fill();
+          // たてがみの毛束
+          g.fillStyle = 'rgba(70,40,15,0.85)';
+          for (let i = 0; i < 16; i++) {
+            const a = (i/16) * Math.PI * 2;
+            g.beginPath(); g.ellipse(180 + Math.cos(a)*32, 150 + Math.sin(a)*32, 6, 12, a, 0, Math.PI*2); g.fill();
+          }
+          g.fillStyle = 'rgba(8,12,18,0.97)';
+          // 顔（中央の濃い丸）
+          g.beginPath(); g.ellipse(190, 150, 16, 14, 0, 0, Math.PI*2); g.fill();
+          // 4本脚
+          g.fillRect(105, 188, 8, 40);
+          g.fillRect(125, 188, 8, 40);
+          g.fillRect(150, 188, 8, 40);
+          g.fillRect(170, 188, 8, 40);
+          // 尾（先に房）
+          g.beginPath(); g.moveTo(95, 165); g.lineTo(70, 195); g.lineTo(78, 165); g.closePath(); g.fill();
+          g.beginPath(); g.arc(70, 195, 6, 0, Math.PI*2); g.fill();
+        },
+        deer() {
+          // 体（細身）
+          g.beginPath(); g.ellipse(130, 170, 38, 18, 0, 0, Math.PI*2); g.fill();
+          // 首と頭
+          g.beginPath();
+          g.moveTo(155, 160); g.lineTo(175, 125);
+          g.lineTo(185, 125); g.lineTo(168, 165); g.closePath(); g.fill();
+          g.beginPath(); g.ellipse(180, 115, 12, 9, 0, 0, Math.PI*2); g.fill();
+          // 角（枝分かれ）
+          g.beginPath();
+          g.moveTo(173, 105); g.lineTo(168, 75); g.moveTo(168, 75); g.lineTo(160, 80);
+          g.moveTo(168, 75); g.lineTo(170, 60); g.moveTo(170, 60); g.lineTo(180, 65);
+          g.lineWidth = 3; g.stroke();
+          g.beginPath();
+          g.moveTo(187, 105); g.lineTo(192, 75); g.moveTo(192, 75); g.lineTo(200, 80);
+          g.moveTo(192, 75); g.lineTo(190, 60); g.moveTo(190, 60); g.lineTo(180, 65);
+          g.stroke();
+          g.lineWidth = 2;
+          // 細い4本脚
+          g.fillRect(110, 188, 4, 50);
+          g.fillRect(125, 188, 4, 50);
+          g.fillRect(145, 188, 4, 50);
+          g.fillRect(160, 188, 4, 50);
+          // 尾（白い、小さい）
+          g.fillStyle = 'rgba(245,245,245,0.9)';
+          g.beginPath(); g.ellipse(95, 162, 5, 8, 0, 0, Math.PI*2); g.fill();
+          g.fillStyle = 'rgba(8,12,18,0.97)';
+        },
+        bear() {
+          // 大きな丸い体
+          g.beginPath(); g.ellipse(128, 175, 50, 35, 0, 0, Math.PI*2); g.fill();
+          // 頭
+          g.beginPath(); g.ellipse(175, 155, 24, 22, 0, 0, Math.PI*2); g.fill();
+          // 耳（小さい丸）
+          g.beginPath(); g.arc(162, 135, 7, 0, Math.PI*2); g.fill();
+          g.beginPath(); g.arc(188, 135, 7, 0, Math.PI*2); g.fill();
+          // 鼻先
+          g.beginPath(); g.ellipse(195, 155, 8, 6, 0, 0, Math.PI*2); g.fill();
+          // 4本脚（短く太い）
+          g.fillRect(85, 200, 16, 35);
+          g.fillRect(110, 200, 16, 35);
+          g.fillRect(140, 200, 16, 35);
+          g.fillRect(165, 200, 16, 35);
+        },
+        rabbit() {
+          // 体
+          g.beginPath(); g.ellipse(128, 178, 22, 18, 0, 0, Math.PI*2); g.fill();
+          // 頭
+          g.beginPath(); g.ellipse(150, 162, 14, 13, 0, 0, Math.PI*2); g.fill();
+          // 長い耳（2本）
+          g.beginPath(); g.ellipse(146, 135, 4, 18, -0.1, 0, Math.PI*2); g.fill();
+          g.beginPath(); g.ellipse(154, 135, 4, 18, 0.1, 0, Math.PI*2); g.fill();
+          // 短い4本足
+          g.fillRect(112, 192, 6, 14);
+          g.fillRect(122, 192, 6, 14);
+          g.fillRect(135, 192, 6, 14);
+          g.fillRect(143, 192, 6, 14);
+          // 白い尻尾
+          g.fillStyle = 'rgba(245,245,245,0.95)';
+          g.beginPath(); g.arc(108, 175, 6, 0, Math.PI*2); g.fill();
+        },
+        crocodile() {
+          // 細長い体
+          g.beginPath(); g.ellipse(128, 195, 65, 12, 0, 0, Math.PI*2); g.fill();
+          // 頭（鋭い）
+          g.beginPath();
+          g.moveTo(190, 192); g.lineTo(225, 188); g.lineTo(228, 198); g.lineTo(192, 202); g.closePath(); g.fill();
+          // 尾（先細り）
+          g.beginPath();
+          g.moveTo(64, 195); g.lineTo(40, 188); g.lineTo(40, 200); g.lineTo(64, 200); g.closePath(); g.fill();
+          // 短い脚
+          g.fillRect(85, 205, 8, 14);
+          g.fillRect(105, 205, 8, 14);
+          g.fillRect(140, 205, 8, 14);
+          g.fillRect(160, 205, 8, 14);
+          // 鱗の凸凹（背中）
+          for (let i = 0; i < 8; i++) {
+            g.beginPath(); g.arc(80 + i*15, 184, 4, 0, Math.PI); g.fill();
+          }
+        },
+        monkey() {
+          // 体（小さい）
+          g.beginPath(); g.ellipse(128, 175, 18, 22, 0, 0, Math.PI*2); g.fill();
+          // 頭
+          g.beginPath(); g.ellipse(128, 145, 14, 14, 0, 0, Math.PI*2); g.fill();
+          // 顔（薄色）
+          g.fillStyle = 'rgba(180,140,90,0.85)';
+          g.beginPath(); g.ellipse(128, 148, 8, 9, 0, 0, Math.PI*2); g.fill();
+          g.fillStyle = 'rgba(8,12,18,0.97)';
+          // 耳
+          g.beginPath(); g.arc(115, 142, 4, 0, Math.PI*2); g.fill();
+          g.beginPath(); g.arc(141, 142, 4, 0, Math.PI*2); g.fill();
+          // 長い尾（カーブ）
+          g.lineWidth = 4;
+          g.beginPath();
+          g.moveTo(110, 188); g.bezierCurveTo(80, 210, 100, 240, 75, 220);
+          g.stroke();
+          g.lineWidth = 2;
+          // 短い手足
+          g.fillRect(112, 175, 6, 25);
+          g.fillRect(138, 175, 6, 25);
+          g.fillRect(118, 195, 6, 14);
+          g.fillRect(132, 195, 6, 14);
+        },
+        owl() {
+          // 丸い体
+          g.beginPath(); g.ellipse(128, 165, 32, 38, 0, 0, Math.PI*2); g.fill();
+          // 頭（体と一体だが目立つ顔）
+          g.beginPath(); g.ellipse(128, 135, 28, 25, 0, 0, Math.PI*2); g.fill();
+          // 大きな目（2つ）
+          g.fillStyle = 'rgba(255,235,150,0.95)';
+          g.beginPath(); g.arc(118, 132, 8, 0, Math.PI*2); g.fill();
+          g.beginPath(); g.arc(138, 132, 8, 0, Math.PI*2); g.fill();
+          // 黒目
+          g.fillStyle = 'rgba(0,0,0,0.95)';
+          g.beginPath(); g.arc(118, 132, 4, 0, Math.PI*2); g.fill();
+          g.beginPath(); g.arc(138, 132, 4, 0, Math.PI*2); g.fill();
+          // くちばし
+          g.fillStyle = 'rgba(180,100,40,0.95)';
+          g.beginPath(); g.moveTo(128, 142); g.lineTo(124, 152); g.lineTo(132, 152); g.closePath(); g.fill();
+          g.fillStyle = 'rgba(8,12,18,0.97)';
+          // 翼の羽模様
+          for (let i = 0; i < 8; i++) {
+            g.beginPath(); g.ellipse(108 + (i%4)*12, 168 + (i>3?20:0), 5, 8, 0, 0, Math.PI*2); g.fill();
+          }
+        },
+        hawk() {
+          // 翼を広げた姿（横長）
+          g.beginPath();
+          g.moveTo(40, 130); g.bezierCurveTo(80, 110, 110, 122, 128, 130);
+          g.bezierCurveTo(146, 122, 176, 110, 216, 130);
+          g.bezierCurveTo(176, 145, 146, 155, 128, 142);
+          g.bezierCurveTo(110, 155, 80, 145, 40, 130);
+          g.closePath(); g.fill();
+          // 体（中央）
+          g.beginPath(); g.ellipse(128, 138, 12, 22, 0, 0, Math.PI*2); g.fill();
+          // 頭
+          g.beginPath(); g.arc(128, 118, 9, 0, Math.PI*2); g.fill();
+          // 尾
+          g.beginPath();
+          g.moveTo(118, 156); g.lineTo(110, 175); g.lineTo(146, 175); g.lineTo(138, 156); g.closePath(); g.fill();
+          // 翼の羽（縞）
+          g.strokeStyle = 'rgba(140,80,30,0.7)'; g.lineWidth = 1;
+          for (let i = 0; i < 5; i++) {
+            g.beginPath(); g.moveTo(60 + i*10, 128); g.lineTo(50 + i*10, 138); g.stroke();
+            g.beginPath(); g.moveTo(160 + i*10, 128); g.lineTo(170 + i*10, 138); g.stroke();
+          }
+          g.strokeStyle = 'rgba(8,12,18,0.97)'; g.lineWidth = 2;
+        },
+        seagull() {
+          // 「M」字の翼（飛んでる姿）
+          g.lineWidth = 6;
+          g.beginPath();
+          g.moveTo(40, 140); g.lineTo(85, 110); g.lineTo(128, 130);
+          g.lineTo(170, 110); g.lineTo(216, 140);
+          g.stroke();
+          g.lineWidth = 2;
+          // 体（小さい中央）
+          g.beginPath(); g.ellipse(128, 132, 7, 12, 0, 0, Math.PI*2); g.fill();
+          // 頭
+          g.beginPath(); g.arc(128, 122, 5, 0, Math.PI*2); g.fill();
+        },
+        ostrich() {
+          // 大きな丸い体
+          g.beginPath(); g.ellipse(128, 175, 32, 28, 0, 0, Math.PI*2); g.fill();
+          // 長い首（カーブ）
+          g.lineWidth = 6;
+          g.beginPath();
+          g.moveTo(140, 155); g.bezierCurveTo(150, 130, 170, 110, 175, 80);
+          g.stroke();
+          g.lineWidth = 2;
+          // 頭
+          g.beginPath(); g.ellipse(178, 75, 8, 6, 0, 0, Math.PI*2); g.fill();
+          // くちばし
+          g.beginPath(); g.moveTo(184, 75); g.lineTo(192, 78); g.lineTo(184, 80); g.closePath(); g.fill();
+          // 長い2本脚
+          g.lineWidth = 5;
+          g.beginPath();
+          g.moveTo(118, 200); g.lineTo(112, 240);
+          g.moveTo(138, 200); g.lineTo(146, 240);
+          g.stroke();
+          g.lineWidth = 2;
+          // 羽の質感（点々）
+          for (let i = 0; i < 12; i++) {
+            g.beginPath(); g.arc(105 + Math.random()*45, 165 + Math.random()*25, 2, 0, Math.PI*2); g.fill();
+          }
+        },
+      };
+      (draw[species] || draw.deer)();
+      const tex = new THREE.CanvasTexture(c);
+      if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace;
+      tex.minFilter = THREE.LinearFilter;
+      return tex;
+    }
+
+    const ANIMAL_SPECS = [
+      // 地上動物 — 地平線付近 y=-0.5〜2
+      { species: 'giraffe',   count: 2, y: 1.0,  scaleX: 4.5, scaleY: 4.5 },
+      { species: 'elephant',  count: 2, y: 0.5,  scaleX: 5.0, scaleY: 4.0 },
+      { species: 'lion',      count: 2, y: 0.3,  scaleX: 3.8, scaleY: 3.0 },
+      { species: 'deer',      count: 3, y: 0.6,  scaleX: 3.2, scaleY: 3.5 },
+      { species: 'bear',      count: 2, y: 0.4,  scaleX: 3.5, scaleY: 3.0 },
+      { species: 'rabbit',    count: 4, y: -0.3, scaleX: 1.8, scaleY: 1.8 },
+      { species: 'crocodile', count: 2, y: -0.5, scaleX: 4.0, scaleY: 1.5 },
+      { species: 'monkey',    count: 3, y: 3.5,  scaleX: 1.6, scaleY: 1.8 },
+      { species: 'ostrich',   count: 2, y: 1.5,  scaleX: 2.8, scaleY: 4.5 },
+      // 飛行 — 上空
+      { species: 'hawk',      count: 3, y: 12.0, scaleX: 3.0, scaleY: 1.8 },
+      { species: 'seagull',   count: 4, y: 8.0,  scaleX: 2.5, scaleY: 1.4 },
+      { species: 'owl',       count: 3, y: 5.0,  scaleX: 2.0, scaleY: 2.4 },
+    ];
+
+    const animalSprites = [];
+    let ai = 0;
+    ANIMAL_SPECS.forEach(spec => {
+      const tex = makeAnimalCanvas(spec.species);
+      for (let k = 0; k < spec.count; k++) {
+        // 全動物を球面に均等に分散（全体で約32体）
+        const angle = (ai / 32) * Math.PI * 2 + (Math.random() - 0.5) * 0.3;
+        ai++;
+        const r = 36 + (Math.random() - 0.5) * 1.5; // ドーム内側ぎりぎり
+        const sprite = new THREE.Sprite(new THREE.SpriteMaterial({
+          map: tex, transparent: true, alphaTest: 0.05,
+          depthWrite: false, fog: false,
+        }));
+        sprite.position.set(Math.cos(angle) * r, spec.y, Math.sin(angle) * r);
+        sprite.scale.set(spec.scaleX, spec.scaleY, 1);
+        sprite.userData = {
+          species: spec.species,
+          baseAngle: angle, radius: r, baseY: spec.y,
+          phase: Math.random() * Math.PI * 2,
+        };
+        natureGroup.add(sprite);
+        animalSprites.push(sprite);
+      }
+    });
+    natureGroup.userData.animalSprites = animalSprites;
+
     scene.add(natureGroup);
     scene.userData.natureGroup = natureGroup;
 
@@ -16986,6 +17304,21 @@
         if (ng.sparkles && ng.sparkles.material) {
           ng.sparkles.material.opacity = 0.5 + Math.sin(t * 2) * 0.3;
         }
+        // 動物スプライト：ドーム周回をゆっくり、種別ごとに速度を分ける
+        (ng.animalSprites || []).forEach(s => {
+          const u = s.userData;
+          let speed = 0.015;
+          let yWobble = Math.sin(t * 0.6 + u.phase) * 0.08;
+          if (u.species === 'hawk' || u.species === 'seagull') speed = 0.06;
+          else if (u.species === 'rabbit') { speed = 0.025; yWobble = Math.abs(Math.sin(t * 2 + u.phase)) * 0.6; }
+          else if (u.species === 'owl' || u.species === 'crocodile') speed = 0; // 静止
+          else if (u.species === 'ostrich') speed = 0.05;
+          else if (u.species === 'monkey') { speed = 0; yWobble = Math.sin(t * 1.5 + u.phase) * 0.3; }
+          const ang = u.baseAngle + t * speed;
+          s.position.x = Math.cos(ang) * u.radius;
+          s.position.z = Math.sin(ang) * u.radius;
+          s.position.y = u.baseY + yWobble;
+        });
       }
       // パーティクル + ドーム
       particles.rotation.y += 0.0008 + bassS * 0.002;
