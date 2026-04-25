@@ -5404,6 +5404,7 @@ function initPhoneMenu() {
   });
   // ── ミュージック（サイトで使われているBGM一覧） ──
   const MUSIC_TRACKS = [
+    { id: 'bach903Bgm',   title: '半音階的幻想曲とフーガ', desc: 'J.S.バッハ BWV 903 — natsumi 演奏' },
     { id: 'homeBgm',      title: 'ホーム',         desc: '本棚の扉を開く音楽' },
     { id: 'searchBgm',    title: '偉人検索',       desc: '探求の地図を辿る音楽' },
     { id: 'historyBgm',   title: '年表',           desc: '時代を旅する音楽' },
@@ -5445,7 +5446,7 @@ function initPhoneMenu() {
   }
   function musicPlayTrack(id) {
     // 他のBGMを止める
-    ['homeBgm','searchBgm','historyBgm','routineBgm','blogBgm','favoritesBgm','squareBgm'].forEach(x => {
+    ['homeBgm','searchBgm','historyBgm','routineBgm','blogBgm','favoritesBgm','squareBgm','bach903Bgm'].forEach(x => {
       const a = document.getElementById(x);
       if (a && x !== id) { a.pause(); a.currentTime = 0; }
     });

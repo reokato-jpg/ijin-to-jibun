@@ -72,9 +72,9 @@
 <!-- フォントは非ブロッキングで読み込み（print → all でフォールバック） -->
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet"></noscript>
-<link rel="stylesheet" href="dist/style.min.css?v=20260502DO">
-<link rel="stylesheet" href="dist/era-theme.min.css?v=20260502DO">
-<link rel="stylesheet" href="magic.css?v=20260502DO">
+<link rel="stylesheet" href="dist/style.min.css?v=20260502DP">
+<link rel="stylesheet" href="dist/era-theme.min.css?v=20260502DP">
+<link rel="stylesheet" href="magic.css?v=20260502DP">
 </head>
 <body>
   <header class="app-header">
@@ -826,6 +826,7 @@
   <audio id="favoritesBgm" src="assets/favorites-bgm.mp3" loop preload="none"></audio>
   <audio id="squareBgm" src="assets/square-bgm.mp3" loop preload="none"></audio>
   <audio id="historyBgm" src="assets/history-bgm.mp3" loop preload="none"></audio>
+  <audio id="bach903Bgm" src="assets/bach-bwv903.mp3" loop preload="none"></audio>
 
   <!-- ポータル遷移：偉人検索／年表へ入るときの没入アニメーション -->
   <div id="portalTransition" class="portal-transition" hidden>
@@ -881,10 +882,10 @@
   </div>
 
   <!-- minified bundles（dist/）と era-lore.min.js は年表画面を開いた時に遅延読み込み -->
-  <script src="dist/history-patterns.min.js?v=20260502DO" defer></script>
-  <script src="dist/app.min.js?v=20260502DO" defer></script>
-  <script src="auth.js?v=20260502DO" type="module"></script>
-  <script src="dist/ai-consult.min.js?v=20260502DO" defer></script>
+  <script src="dist/history-patterns.min.js?v=20260502DP" defer></script>
+  <script src="dist/app.min.js?v=20260502DP" defer></script>
+  <script src="auth.js?v=20260502DP" type="module"></script>
+  <script src="dist/ai-consult.min.js?v=20260502DP" defer></script>
 
   <!-- ============ Magic Layer（ピクチャ：3D本・Lenis・ViewTransitions等） ============ -->
   <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js" defer></script>
@@ -948,7 +949,7 @@
       window.dispatchEvent(new CustomEvent('three-ready'));
     });
   </script>
-  <script src="magic.js?v=20260502DO" defer></script>
+  <script src="magic.js?v=20260502DP" defer></script>
   <script>
     // Service Worker 登録（2回目以降のロードを爆速化）
     if ('serviceWorker' in navigator) {
