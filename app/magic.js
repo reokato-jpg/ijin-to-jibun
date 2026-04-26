@@ -573,6 +573,10 @@
                 <div class="mtc-name">原 子 と 原 資</div>
                 <div class="mtc-sub">最小単位の物質と経済</div>
               </button>
+              <button class="magic-topbook-cat magic-topbook-cat-elements" data-cat="elements">
+                <div class="mtc-name">元 素 と 人</div>
+                <div class="mtc-sub">周期表 → 偉人</div>
+              </button>
               <button class="magic-topbook-cat magic-topbook-cat-things" data-cat="things">
                 <div class="mtc-name">物 か ら 探 す</div>
                 <div class="mtc-sub">道具・発明・技術 → 偉人</div>
@@ -627,6 +631,7 @@
         library: () => { try { openLibrary(); } catch (e) { console.warn('library', e); } },
         ijinhub: () => { try { openIjinHub(); } catch (e) { console.warn('ijinhub', e); } },
         atomcapital: () => { try { openAtomCapital(); } catch (e) { console.warn('atomcapital', e); } },
+        elements: () => { try { openElementsPage(); } catch (e) { console.warn('elements', e); } },
         things: () => { try { openThingsPage(); } catch (e) { console.warn('things', e); } },
         business: () => { try { openBusinessPage(); } catch (e) { console.warn('business', e); } },
         humanitymap: () => { try { openHumanityMap(); } catch (e) { console.warn('humap', e); } },
@@ -23398,6 +23403,134 @@
     }
   }
   window.openAtomCapital = openAtomCapital;
+
+  // ============================================================
+  // ⚛ 元素 — 周期表に並ぶ物質たちと、それを発見した人
+  // ============================================================
+  const ELEMENTS_DATA = [
+    // 古代から知られる金属（先史〜紀元前）
+    { sym: 'Au', name: '金',     no: 79,  era: 'ancient', color: '#ffd860', desc: '腐蝕しない美しさ。古代エジプトのファラオから現代金融まで、人を魅了し続ける。',  ijins: ['newton'] },
+    { sym: 'Ag', name: '銀',     no: 47,  era: 'ancient', color: '#d8d8d8', desc: '月の金属。鏡・写真・抗菌・通貨。',                                        ijins: [] },
+    { sym: 'Cu', name: '銅',     no: 29,  era: 'ancient', color: '#c08858', desc: '青銅器時代を起こした金属。電気を最も流す道具。',                          ijins: [] },
+    { sym: 'Fe', name: '鉄',     no: 26,  era: 'ancient', color: '#a0a0a0', desc: '文明を支える骨。鉄器時代から産業革命へ。',                                ijins: [] },
+    { sym: 'Sn', name: '錫',     no: 50,  era: 'ancient', color: '#c8c8d0', desc: '銅と混ざって青銅をつくる。錫の鉱山が古代の戦争を変えた。',                ijins: [] },
+    { sym: 'Pb', name: '鉛',     no: 82,  era: 'ancient', color: '#5a6878', desc: 'ローマの水道管。重い、毒、それでも便利だった金属。',                      ijins: [] },
+    { sym: 'Hg', name: '水銀',   no: 80,  era: 'ancient', color: '#a8c0d8', desc: '常温で液体になる唯一の金属。錬金術師の夢、ニュートンを毒したかもしれない元素。', ijins: ['newton'] },
+    { sym: 'C',  name: '炭素',   no: 6,   era: 'ancient', color: '#3a3a3a', desc: '生命の骨組み、ダイヤモンドと黒鉛、CO₂。すべての有機物の主役。',          ijins: ['lavoisier'] },
+    { sym: 'S',  name: '硫黄',   no: 16,  era: 'ancient', color: '#e8d040', desc: '黄色く燃える非金属。火薬・ゴム・タンパク質に。',                          ijins: [] },
+    // 18世紀（化学革命）
+    { sym: 'O',  name: '酸素',   no: 8,   era: '18c',     color: '#80b0ff', desc: '燃焼の正体。プリーストリーが発見、ラヴォアジエが命名。生命の呼吸の元。', ijins: ['lavoisier'] },
+    { sym: 'H',  name: '水素',   no: 1,   era: '18c',     color: '#fff8c0', desc: '宇宙で最も軽く、最も多い元素。星の燃料、未来のエネルギー。',           ijins: ['lavoisier'] },
+    { sym: 'N',  name: '窒素',   no: 7,   era: '18c',     color: '#80c0e0', desc: '空気の8割を占める元素。タンパク質・DNAに必須。爆薬の原料でもある。',     ijins: ['lavoisier', 'nobel'] },
+    { sym: 'Cl', name: '塩素',   no: 17,  era: '18c',     color: '#80e080', desc: 'シェーレが発見した黄緑の毒ガス。塩・漂白・水道殺菌。',                  ijins: [] },
+    // 19世紀（電気化学・分光学）
+    { sym: 'Na', name: 'ナトリウム', no: 11, era: '19c',  color: '#e8a880', desc: 'デービーが電気分解で取り出した。海の塩、神経の信号。',                    ijins: [] },
+    { sym: 'K',  name: 'カリウム',   no: 19, era: '19c',  color: '#d890c0', desc: '同じくデービー発見。植物の生命線、心臓の鼓動の元素。',                    ijins: [] },
+    { sym: 'He', name: 'ヘリウム',   no: 2,  era: '19c',  color: '#ffd0d0', desc: '太陽光のスペクトルから先に見つかった元素。地上で発見されたのは後。',     ijins: [] },
+    // 20世紀（放射能・原子力）
+    { sym: 'Ra', name: 'ラジウム',   no: 88, era: '20c',  color: '#80ffc0', desc: 'マリ・キュリーがピッチブレンド数トンから取り出した。光る、危険、神秘。',  ijins: ['curie'] },
+    { sym: 'Po', name: 'ポロニウム', no: 84, era: '20c',  color: '#a080ff', desc: 'キュリー夫妻が祖国ポーランドにちなんで命名。',                            ijins: ['curie'] },
+    { sym: 'U',  name: 'ウラン',     no: 92, era: '20c',  color: '#80c080', desc: '原子力の燃料。E=mc²の現実化、マンハッタン計画の中心。',                  ijins: ['einstein', 'feynman', 'heisenberg'] },
+    { sym: 'Pu', name: 'プルトニウム', no: 94, era: '20c', color: '#c060c0', desc: '人工的に作られた元素。長崎型原爆の中身。',                                ijins: ['feynman', 'heisenberg'] },
+    // 半導体・現代
+    { sym: 'Si', name: 'ケイ素',     no: 14, era: 'modern', color: '#a0a0c0', desc: '岩石の主成分。半導体革命でコンピュータの心臓に。',                       ijins: ['steve_jobs'] },
+    { sym: 'Li', name: 'リチウム',   no: 3,  era: 'modern', color: '#e0e0a0', desc: '最も軽い金属。スマホ・EV・ノートPCのバッテリー。',                      ijins: ['steve_jobs'] },
+    { sym: 'P',  name: 'リン',       no: 15, era: 'ancient', color: '#ff8060', desc: '錬金術師ブラントが尿から発見。生命のATPの中心、肥料、武器。',           ijins: [] },
+  ];
+  const ERAS = {
+    ancient: { label: '古代から', color: '#806040' },
+    '18c':   { label: '18世紀（化学革命）', color: '#5070a0' },
+    '19c':   { label: '19世紀（電気化学）', color: '#7050a0' },
+    '20c':   { label: '20世紀（放射能・原子力）', color: '#a04060' },
+    modern:  { label: '現代（半導体・電池）', color: '#308080' },
+  };
+
+  function openElementsPage() {
+    const ov = document.createElement('div');
+    ov.className = 'concept-page-overlay theme-elements';
+    const eras = Object.keys(ERAS);
+    ov.innerHTML = `
+      <button class="cp-close" aria-label="閉じる">×</button>
+      <div class="cp-wrap">
+        <div class="cp-head">
+          <div class="cp-eyebrow">E L E M E N T S　×　P E O P L E</div>
+          <div class="cp-title">元 素 と 人</div>
+          <div class="cp-sub">
+            周期表に並ぶ100以上の元素。<br>
+            その一つひとつには、それを取り出し、命名し、<br>
+            あるいは生涯を捧げた人がいる。
+          </div>
+        </div>
+        ${eras.map(eraKey => {
+          const eraEl = ELEMENTS_DATA.filter(e => e.era === eraKey);
+          if (!eraEl.length) return '';
+          const era = ERAS[eraKey];
+          return `
+            <div class="el-era-section">
+              <div class="el-era-head" style="--era-color:${era.color}">
+                <span class="el-era-label">${era.label}</span>
+                <span class="el-era-count">${eraEl.length} 元素</span>
+              </div>
+              <div class="el-grid">
+                ${eraEl.map(el => `
+                  <div class="el-cell" style="--el-color:${el.color}" data-el="${el.sym}">
+                    <div class="el-no">${el.no}</div>
+                    <div class="el-sym">${el.sym}</div>
+                    <div class="el-name">${el.name}</div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `;
+        }).join('')}
+        <div class="el-detail" id="elDetail"></div>
+        <div class="cp-foot">元素は周期表に並ぶ。だがその先には、それを問うた人がいる。</div>
+      </div>
+    `;
+    document.body.appendChild(ov);
+    requestAnimationFrame(() => ov.classList.add('open'));
+    const close = () => { ov.classList.remove('open'); setTimeout(() => ov.remove(), 320); };
+    ov.querySelector('.cp-close').addEventListener('click', close);
+    function showDetail(el) {
+      const detailEl = ov.querySelector('#elDetail');
+      detailEl.innerHTML = `
+        <div class="el-detail-card" style="--el-color:${el.color}">
+          <div class="el-detail-head">
+            <span class="el-detail-no">${el.no}</span>
+            <span class="el-detail-sym">${el.sym}</span>
+            <span class="el-detail-name">${el.name}</span>
+          </div>
+          <div class="el-detail-desc">${el.desc}</div>
+          <div class="el-detail-ijins">
+            ${el.ijins.length === 0
+              ? '<span class="el-no-ijin">— 関連する偉人は今後追加予定 —</span>'
+              : el.ijins.map(id => `<button class="cnp-pill" data-id="${id}">${_resolveIjinName(id)}</button>`).join('')
+            }
+          </div>
+        </div>
+      `;
+      detailEl.classList.add('show');
+      _wireIjinPills(detailEl, close);
+    }
+    ov.querySelectorAll('.el-cell').forEach(cell => {
+      cell.addEventListener('click', () => {
+        const sym = cell.dataset.el;
+        const el = ELEMENTS_DATA.find(e => e.sym === sym);
+        if (el) {
+          ov.querySelectorAll('.el-cell').forEach(c => c.classList.remove('active'));
+          cell.classList.add('active');
+          showDetail(el);
+          // スクロール
+          const detail = ov.querySelector('#elDetail');
+          detail.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      });
+    });
+    // 初期表示：最初の元素
+    const firstCell = ov.querySelector('.el-cell');
+    if (firstCell) firstCell.click();
+  }
+  window.openElementsPage = openElementsPage;
 
   // ============================================================
   // 物 / ビジネス / 図書館C案 共通ヘルパー

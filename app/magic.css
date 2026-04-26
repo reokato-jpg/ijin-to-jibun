@@ -10180,3 +10180,136 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   transform: translateY(-1px);
   box-shadow: 0 3px 10px rgba(120,200,255,0.4);
 }
+
+/* ============================================================
+   ⚛ 元素 ページ — 周期表風グリッド
+============================================================ */
+.magic-topbook-cat-elements {
+  background: linear-gradient(135deg, rgba(60,40,80,0.85), rgba(20,15,40,0.92));
+  border-color: rgba(180,160,255,0.55);
+  position: relative;
+}
+.magic-topbook-cat-elements::after {
+  content: 'NEW';
+  position: absolute; top: 8px; right: 10px;
+  font-size: 9px; letter-spacing: 1.5px;
+  background: linear-gradient(135deg, #b890ff, #5040a0);
+  color: #1a0e2a; padding: 2px 6px; border-radius: 4px;
+  font-weight: 700;
+}
+
+.concept-page-overlay.theme-elements {
+  background: linear-gradient(170deg, #08081a, #1a1438 50%, #08081a);
+}
+
+/* 時代セクション */
+.el-era-section { margin-bottom: 28px; }
+.el-era-head {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--era-color, rgba(180,200,255,0.3));
+}
+.el-era-label {
+  font-size: 14px; letter-spacing: 4px;
+  color: #ffffff;
+  font-family: 'Noto Serif JP', serif;
+}
+.el-era-count {
+  font-size: 10px; letter-spacing: 1.5px;
+  color: var(--era-color, #a0b8d0);
+  margin-left: auto;
+  opacity: 0.85;
+}
+/* 周期表風グリッド */
+.el-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  gap: 6px;
+}
+.el-cell {
+  position: relative;
+  background: linear-gradient(140deg, color-mix(in srgb, var(--el-color) 32%, rgba(15,15,30,0.85)), rgba(8,8,16,0.95));
+  border: 1px solid color-mix(in srgb, var(--el-color) 50%, transparent);
+  border-radius: 4px;
+  padding: 8px 6px 10px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+.el-cell:hover {
+  background: linear-gradient(140deg, color-mix(in srgb, var(--el-color) 45%, rgba(15,15,30,0.85)), rgba(20,15,30,0.95));
+  border-color: var(--el-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--el-color) 40%, transparent);
+}
+.el-cell.active {
+  background: linear-gradient(140deg, var(--el-color), rgba(20,15,30,0.95));
+  border-color: var(--el-color);
+  box-shadow: 0 0 18px var(--el-color);
+}
+.el-no { font-size: 10px; color: rgba(255,255,255,0.6); letter-spacing: 0.5px; }
+.el-sym {
+  font-size: 26px; font-weight: 700;
+  color: #ffffff;
+  font-family: 'Cormorant Garamond', serif;
+  margin: 2px 0;
+  text-shadow: 0 0 8px var(--el-color);
+}
+.el-name { font-size: 11px; color: #f0f0f8; letter-spacing: 1px; }
+
+/* 詳細カード */
+.el-detail {
+  margin-top: 24px;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.el-detail.show { opacity: 1; }
+.el-detail-card {
+  background: linear-gradient(140deg, color-mix(in srgb, var(--el-color) 25%, rgba(15,15,30,0.85)), rgba(15,15,30,0.95));
+  border: 1px solid var(--el-color);
+  border-radius: 8px; padding: 24px;
+}
+.el-detail-head {
+  display: flex; align-items: baseline; gap: 16px;
+  border-bottom: 1px solid color-mix(in srgb, var(--el-color) 35%, transparent);
+  padding-bottom: 14px; margin-bottom: 14px;
+}
+.el-detail-no {
+  font-size: 14px; color: var(--el-color);
+  letter-spacing: 1px; opacity: 0.85;
+}
+.el-detail-sym {
+  font-size: 56px; font-weight: 700;
+  color: #ffffff;
+  font-family: 'Cormorant Garamond', serif;
+  text-shadow: 0 0 16px var(--el-color);
+}
+.el-detail-name {
+  font-size: 22px; color: #ffffff;
+  letter-spacing: 4px;
+  font-family: 'Noto Serif JP', serif;
+}
+.el-detail-desc {
+  font-size: 14px; color: #c8d8f0;
+  line-height: 1.85;
+  margin-bottom: 18px;
+}
+.el-detail-ijins {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  padding-top: 14px;
+  border-top: 1px solid color-mix(in srgb, var(--el-color) 25%, transparent);
+}
+.el-no-ijin {
+  font-size: 11px; color: #8090b0;
+  font-style: italic; opacity: 0.7;
+}
+@media (max-width: 640px) {
+  .el-grid { grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 4px; }
+  .el-cell { padding: 6px 4px 8px; }
+  .el-sym { font-size: 22px; }
+  .el-name { font-size: 9px; letter-spacing: 0.5px; }
+  .el-detail-sym { font-size: 44px; }
+  .el-detail-name { font-size: 18px; letter-spacing: 2px; }
+}
