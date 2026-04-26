@@ -1,12 +1,11 @@
-// Service Worker: 完全オフライン対応
-// - 起動時にコアアセット（HTML/CSS/JS/主要画像/BGM/データ）を先行キャッシュ
-// - 静的アセット: cache-first（オフライン耐性最優先）+ 裏で更新
-// - 偉人データ: cache-first で即返却、裏でネット再取得
-// - HTML: network-first（更新優先）→ 失敗時にキャッシュへフォールバック
-// - Firebase/Firestore: 素通し（認証や書き込みは素のネット通信）
-// - クロスオリジン画像（Wikipedia 等）: cache-first（一度見た肖像画はオフラインでも表示）
+// Service Worker: 自動更新対応
+// - HTML/JS/CSS: network-first（必ず最新を取りに行く、ネット切れ時のみキャッシュ）
+// - 偉人データ: cache-first SWR（即返却＋裏で更新）
+// - 画像/音声: stale-while-revalidate（即表示しつつ裏で更新）
+// - Firebase: 素通し
+// - 新版が来たら skip waiting → controllerchange でページ自動リロード
 
-const VERSION = 'v20260502ID';
+const VERSION = 'v20260502IE';
 const STATIC_CACHE = `ijin-static-${VERSION}`;
 const DATA_CACHE   = `ijin-data-${VERSION}`;
 const AUDIO_CACHE  = `ijin-audio-${VERSION}`;
@@ -149,27 +148,33 @@ self.addEventListener('fetch', (event) => {
 
   const sameOrigin = url.origin === self.location.origin;
 
-  // 同一オリジンのデータ：cache-first で即返却＋裏で更新（オフライン耐性最優先）
+  // 同一オリジンのデータ：cache-first SWR（即返却＋裏で更新）
   if (sameOrigin && isDataRequest(url)) {
     event.respondWith(cacheFirstSWR(req, DATA_CACHE));
     return;
   }
 
-  // 同一オリジンの音声：cache-first
+  // 同一オリジンの音声（容量大）：cache-first
   if (sameOrigin && isAudio(url)) {
     event.respondWith(cacheFirstSWR(req, AUDIO_CACHE));
     return;
   }
 
-  // 同一オリジンの静的アセット：cache-first
-  if (sameOrigin && isStaticAsset(url)) {
-    event.respondWith(cacheFirstSWR(req, STATIC_CACHE));
+  // 同一オリジンの画像：stale-while-revalidate（即表示＋裏で更新）
+  if (sameOrigin && isImage(url)) {
+    event.respondWith(cacheFirstSWR(req, IMAGE_CACHE));
     return;
   }
 
   // クロスオリジン画像（Wikipedia の肖像画など）：cache-first
   if (!sameOrigin && isImage(url)) {
     event.respondWith(cacheFirstSWR(req, IMAGE_CACHE));
+    return;
+  }
+
+  // 同一オリジンの JS/CSS/その他 静的アセット：network-first（最新優先、ネット切れ時のみキャッシュ）
+  if (sameOrigin && isStaticAsset(url)) {
+    event.respondWith(networkFirstFallback(req, STATIC_CACHE));
     return;
   }
 
@@ -207,5 +212,9 @@ self.addEventListener('message', (event) => {
   }
   if (data.type === 'MAGIC_CLEAR_CACHE') {
     caches.keys().then(keys => Promise.all(keys.map(k => caches.delete(k))));
+  }
+  // 自動更新：新SWを即座にアクティブ化
+  if (data.type === 'SKIP_WAITING' || data === 'SKIP_WAITING') {
+    self.skipWaiting();
   }
 });

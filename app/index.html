@@ -72,9 +72,9 @@
 <!-- フォントは非ブロッキングで読み込み（print → all でフォールバック） -->
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet"></noscript>
-<link rel="stylesheet" href="dist/style.min.css?v=20260502ID">
-<link rel="stylesheet" href="dist/era-theme.min.css?v=20260502ID">
-<link rel="stylesheet" href="magic.css?v=20260502ID">
+<link rel="stylesheet" href="dist/style.min.css?v=20260502IE">
+<link rel="stylesheet" href="dist/era-theme.min.css?v=20260502IE">
+<link rel="stylesheet" href="magic.css?v=20260502IE">
 </head>
 <body>
   <header class="app-header">
@@ -882,10 +882,10 @@
   </div>
 
   <!-- minified bundles（dist/）と era-lore.min.js は年表画面を開いた時に遅延読み込み -->
-  <script src="dist/history-patterns.min.js?v=20260502ID" defer></script>
-  <script src="dist/app.min.js?v=20260502ID" defer></script>
-  <script src="auth.js?v=20260502ID" type="module"></script>
-  <script src="dist/ai-consult.min.js?v=20260502ID" defer></script>
+  <script src="dist/history-patterns.min.js?v=20260502IE" defer></script>
+  <script src="dist/app.min.js?v=20260502IE" defer></script>
+  <script src="auth.js?v=20260502IE" type="module"></script>
+  <script src="dist/ai-consult.min.js?v=20260502IE" defer></script>
 
   <!-- ============ Magic Layer（ピクチャ：3D本・Lenis・ViewTransitions等） ============ -->
   <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js" defer></script>
@@ -949,12 +949,36 @@
       window.dispatchEvent(new CustomEvent('three-ready'));
     });
   </script>
-  <script src="magic.js?v=20260502ID" defer></script>
+  <script src="magic.js?v=20260502IE" defer></script>
   <script>
-    // Service Worker 登録（2回目以降のロードを爆速化）
+    // Service Worker 登録 ＋ 自動更新検知
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/app/sw.js').catch(() => {});
+      window.addEventListener('load', async () => {
+        try {
+          const reg = await navigator.serviceWorker.register('/app/sw.js');
+          // 1) 新バージョン検知時：installed になったら即 skip waiting で交代
+          reg.addEventListener('updatefound', () => {
+            const nw = reg.installing;
+            if (!nw) return;
+            nw.addEventListener('statechange', () => {
+              if (nw.state === 'installed' && navigator.serviceWorker.controller) {
+                // 既存ユーザに新版が届いた → 即アクティブ化
+                nw.postMessage({ type: 'SKIP_WAITING' });
+              }
+            });
+          });
+          // 2) controllerchange = 新SWが有効化された瞬間にページ自動リロード
+          let _reloaded = false;
+          navigator.serviceWorker.addEventListener('controllerchange', () => {
+            if (_reloaded) return;
+            _reloaded = true;
+            location.reload();
+          });
+          // 3) 1時間ごとに更新チェック（タブが開きっぱなしでも気づく）
+          setInterval(() => { try { reg.update(); } catch (e) {} }, 60 * 60 * 1000);
+          // 4) タブにフォーカスが戻った時にも更新チェック（軽め）
+          window.addEventListener('focus', () => { try { reg.update(); } catch (e) {} });
+        } catch (e) { /* SW失敗時は何もしない */ }
       });
     }
   </script>
