@@ -16109,7 +16109,7 @@
       timeslip:   { stageVisible: true,  audienceVisible: true,  uMode: 5.0, planets: false, nature: false, myth: false, timeslip: true, label: 'TIME-SLIP', loc: '過去の偉人たち' },
     };
     let currentMode = 'concert';
-    const stageGroups = [stagePlat, stageRim, stageBase, stageRim2, stageCircle, piano, conductor];
+    const stageGroups = [stagePlat, stageRim, stageBase, stageRim2, stageCircle, piano, conductor, floorPlate];
     function setMode(mode) {
       if (!modes[mode]) return;
       currentMode = mode;
@@ -16243,8 +16243,44 @@
           // ランダムで稲妻形のSVGを描く
           const w = Math.random() < 0.6;
           if (w) {
-            const sx = 30 + Math.random() * 40, mx = sx + (Math.random()*30 - 15);
-            flash.innerHTML = `<svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;"><polyline points="${sx},0 ${sx-3},20 ${mx},35 ${mx-4},55 ${mx+2},75 ${mx-6},100" stroke="#fff" stroke-width="0.6" fill="none" filter="drop-shadow(0 0 4px #fff)"/></svg>`;
+            // 本格的な稲妻：ジグザグ＋複数の枝＋強いグロー
+            const sx = 25 + Math.random() * 50;
+            const seg = (x, y, dx, dy, n) => {
+              const pts = [[x, y]];
+              for (let k = 0; k < n; k++) {
+                const lx = pts[pts.length-1][0] + (Math.random()-0.5)*dx;
+                const ly = pts[pts.length-1][1] + Math.abs(dy) * (0.6 + Math.random()*0.6);
+                pts.push([lx, ly]);
+              }
+              return 'M ' + pts.map(p => p.join(',')).join(' L ');
+            };
+            const main = seg(sx, 0, 12, 100, 8);
+            const branches = [];
+            // 主稲妻のいくつかの点から枝分かれ
+            const mainPts = main.replace('M ','').split(' L ').map(s => s.split(',').map(Number));
+            for (let b = 0; b < 3; b++) {
+              const start = mainPts[2 + Math.floor(Math.random()*4)];
+              const dir = Math.random() < 0.5 ? -1 : 1;
+              const sub = [];
+              let cx = start[0], cy = start[1];
+              for (let k = 0; k < 3+Math.floor(Math.random()*2); k++) {
+                cx += dir * (4 + Math.random()*8);
+                cy += 5 + Math.random()*8;
+                sub.push([cx, cy]);
+              }
+              branches.push('M ' + start.join(',') + ' L ' + sub.map(p => p.join(',')).join(' L '));
+            }
+            flash.innerHTML = `<svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;">
+              <defs>
+                <filter id="bllg" x="-30%" y="-30%" width="160%" height="160%">
+                  <feGaussianBlur stdDeviation="1.2" result="blur"/>
+                  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+              </defs>
+              <path d="${main}" stroke="#fff" stroke-width="1.4" fill="none" filter="url(#bllg)" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="${main}" stroke="#aac8ff" stroke-width="0.4" fill="none"/>
+              ${branches.map(b => `<path d="${b}" stroke="#fff" stroke-width="0.8" fill="none" filter="url(#bllg)" opacity="0.85" stroke-linecap="round"/>`).join('')}
+            </svg>`;
           }
           ov.appendChild(flash);
           // シーン環境光を一瞬上げる
