@@ -72,9 +72,9 @@
 <!-- フォントは非ブロッキングで読み込み（print → all でフォールバック） -->
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet"></noscript>
-<link rel="stylesheet" href="dist/style.min.css?v=20260502IU">
-<link rel="stylesheet" href="dist/era-theme.min.css?v=20260502IU">
-<link rel="stylesheet" href="magic.css?v=20260502IU">
+<link rel="stylesheet" href="dist/style.min.css?v=20260502IV">
+<link rel="stylesheet" href="dist/era-theme.min.css?v=20260502IV">
+<link rel="stylesheet" href="magic.css?v=20260502IV">
 </head>
 <body>
   <header class="app-header">
@@ -385,8 +385,8 @@
         </button>
       </div>
 
-      <!-- はじめての方へ（使い方ガイド） -->
-      <div class="home-block">
+      <!-- はじめての方へ（使い方ガイド） — 一旦非表示（ユーザー指示） -->
+      <div class="home-block" hidden style="display:none !important">
         <div class="home-block-label">はじめての方へ</div>
         <button class="howto-banner-btn" id="howtoOpenBtn" aria-label="サイトの使い方を見る">
           <img class="howto-banner-img" src="assets/howto-banner.jpg" alt="サイトの使い方 — 偉人と自分。">
@@ -882,10 +882,10 @@
   </div>
 
   <!-- minified bundles（dist/）と era-lore.min.js は年表画面を開いた時に遅延読み込み -->
-  <script src="dist/history-patterns.min.js?v=20260502IU" defer></script>
-  <script src="dist/app.min.js?v=20260502IU" defer></script>
-  <script src="auth.js?v=20260502IU" type="module"></script>
-  <script src="dist/ai-consult.min.js?v=20260502IU" defer></script>
+  <script src="dist/history-patterns.min.js?v=20260502IV" defer></script>
+  <script src="dist/app.min.js?v=20260502IV" defer></script>
+  <script src="auth.js?v=20260502IV" type="module"></script>
+  <script src="dist/ai-consult.min.js?v=20260502IV" defer></script>
 
   <!-- ============ Magic Layer（ピクチャ：3D本・Lenis・ViewTransitions等） ============ -->
   <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js" defer></script>
@@ -949,7 +949,7 @@
       window.dispatchEvent(new CustomEvent('three-ready'));
     });
   </script>
-  <script src="magic.js?v=20260502IU" defer></script>
+  <script src="magic.js?v=20260502IV" defer></script>
   <script>
     // Service Worker 登録 ＋ 自動更新検知
     if ('serviceWorker' in navigator) {
@@ -967,13 +967,27 @@
               }
             });
           });
-          // 2) controllerchange = 新SWが有効化された瞬間にページ自動リロード
+          // 2) controllerchange = 新SWが有効化された瞬間：3D シーン中なら待つ、ホームならリロード
           let _reloaded = false;
-          navigator.serviceWorker.addEventListener('controllerchange', () => {
+          const inOverlay = () => !!document.querySelector('.koh-overlay,.library-overlay,.museum3d-overlay,.cosmos-overlay,.pantheon-overlay,.lib-bookopen-overlay,.lp-world-overlay,.ehon-space-overlay');
+          const safeReload = () => {
             if (_reloaded) return;
+            if (inOverlay()) {
+              // 3D シーン中はリロードせず、終わるのを待つ（5秒ごとに再チェック）
+              setTimeout(safeReload, 5000);
+              return;
+            }
             _reloaded = true;
-            location.reload();
-          });
+            // 軽く通知してから0.8秒後にリロード（突然落ちたように見えないように）
+            try {
+              const t = document.createElement('div');
+              t.textContent = '🔄 新しいバージョンに更新中…';
+              t.style.cssText = 'position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#1a0e04;color:#ffe0a0;padding:10px 20px;border-radius:999px;border:1px solid #c8a040;z-index:99999;font-family:serif;letter-spacing:1px;font-size:13px;box-shadow:0 6px 20px rgba(0,0,0,0.5)';
+              document.body.appendChild(t);
+            } catch {}
+            setTimeout(() => location.reload(), 800);
+          };
+          navigator.serviceWorker.addEventListener('controllerchange', safeReload);
           // 3) 1時間ごとに更新チェック（タブが開きっぱなしでも気づく）
           setInterval(() => { try { reg.update(); } catch (e) {} }, 60 * 60 * 1000);
           // 4) タブにフォーカスが戻った時にも更新チェック（軽め）

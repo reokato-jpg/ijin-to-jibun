@@ -4858,6 +4858,9 @@ const IS_IOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 function initWelcomeIntro() {
   const intro = document.getElementById('welcomeIntro');
   if (!intro) return;
+  // 🚧 一旦無効化（ユーザー指示「はじめての方へはなくして」）
+  intro.remove();
+  return;
   // 一度見たウェルカムは表示しない（iOS含む全環境で、タブ遷移で再発しないように）
   const SEEN_KEY = 'ijin_welcome_intro_seen';
   if (localStorage.getItem(SEEN_KEY)) {
@@ -14258,9 +14261,10 @@ function initGuideCharaObserver() {
 
 // 各配置箇所にガイドキャラを配置
 function renderBookshelfGuides() {
-  // 1. 初回訪問時のみポップアップで挨拶（2回目以降は出さない）
+  // 🚧 初回ポップアップは一旦無効化（ユーザー指示）
   const HERO_KEY = 'ijin_guide_hero_seen';
-  if (!localStorage.getItem(HERO_KEY) && !document.querySelector('.guide-hello-modal')) {
+  localStorage.setItem(HERO_KEY, '1'); // 既に見た扱いにして以後出さない
+  if (false && !localStorage.getItem(HERO_KEY) && !document.querySelector('.guide-hello-modal')) {
     const modal = document.createElement('div');
     modal.className = 'guide-hello-modal';
     modal.innerHTML = `
