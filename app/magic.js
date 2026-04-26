@@ -634,7 +634,6 @@
         ]},
         ehon: { title: '📖 絵 本', sub: '宇宙に浮かぶ書斎', items: [
           { deep: 'ehonspace', label: '絵本の宇宙', desc: '星空に浮かぶ絵本をタップして読む', emoji: '📚' },
-          { deep: 'littleprince', label: '星の王子様（絵本）', desc: 'サン=テグジュペリの絵本（動くSVG全8章）', emoji: '🌹' },
         ]},
         koh: { title: '◎ K O H', sub: '世界最大の球体音楽堂', items: [
           { deep: 'koh', label: 'KOH に入る', desc: '合言葉のある秘密の音楽堂 — 座席を選び、音楽を聴く', emoji: '◎' },
@@ -12256,10 +12255,21 @@
       plinths = [];
       animatedTextures.length = 0;
       scene = new THREE.Scene();
-      // 🌌 暗黒の宇宙、星空
-      scene.background = new THREE.Color(0x040218);
-      // フォグは弱めに（遠くの星まで見える）
-      scene.fog = new THREE.FogExp2(0x080422, 0.005);
+      // 神話別の空・霧色（hub以外）
+      const ZONE_ATMOS = {
+        genesis:  { sky: 0x0a0612, fog: 0x140a1a, ambient: 0x9080c0, hemiTop: 0xd0a880, hemiBot: 0x1a0e08 }, // 黄昏の楽園
+        greek:    { sky: 0x0a1428, fog: 0x10182e, ambient: 0x90a8d0, hemiTop: 0xc8d8ff, hemiBot: 0x101424 }, // 蒼い神々の空
+        norse:    { sky: 0x081020, fog: 0x0a1424, ambient: 0x88a8d8, hemiTop: 0x80b0ff, hemiBot: 0x081428 }, // 北欧の冷たい空
+        japanese: { sky: 0x180a14, fog: 0x1a0c18, ambient: 0xb898d0, hemiTop: 0xff80a0, hemiBot: 0x140820 }, // 桜の夕空
+        china:    { sky: 0x180a08, fog: 0x1c0a08, ambient: 0xc09080, hemiTop: 0xffb060, hemiBot: 0x180806 }, // 朱の中華空
+        meso:     { sky: 0x140820, fog: 0x180a24, ambient: 0xa080d0, hemiTop: 0xc070ff, hemiBot: 0x14082a }, // メソ神秘紫
+        hub:      { sky: 0x040218, fog: 0x080422, ambient: 0x8070b8, hemiTop: 0xc0a0ff, hemiBot: 0x180830 },
+      };
+      const _atmos = ZONE_ATMOS[zone] || ZONE_ATMOS.hub;
+      scene.background = new THREE.Color(_atmos.sky);
+      scene.fog = new THREE.FogExp2(_atmos.fog, 0.005);
+      // 神話別ライト（神殿で適用）
+      scene.userData._zoneAtmos = _atmos;
 
       // 星空（Points）
       const starGeo = new THREE.BufferGeometry();
@@ -12625,8 +12635,8 @@
       scene.userData.cars = cars;
 
       // 環境光（神殿内は明るく保つ）+ HDRI 環境マップ
-      scene.add(new THREE.AmbientLight(0x8070b8, 0.9));
-      const hemi = new THREE.HemisphereLight(0xc0a0ff, 0x180830, 0.9);
+      scene.add(new THREE.AmbientLight(_atmos.ambient, 0.9));
+      const hemi = new THREE.HemisphereLight(_atmos.hemiTop, _atmos.hemiBot, 0.9);
       scene.add(hemi);
       // 中央からの暖色 fill（本に光を当てる）
       const fillCenter = new THREE.PointLight(0xffe890, 1.2, 30, 1.4);
