@@ -15713,6 +15713,13 @@
           if (mp[k]) mp[k].userData.fadeTarget = (i === idx) ? 1.0 : 0.0;
         });
       }
+      // 🔮 中央ステージの3Dホログラム召喚（神話モードのみ）
+      const holos = scene.userData.mythHolograms;
+      if (holos) {
+        order.forEach((k, i) => {
+          if (holos[k]) holos[k].visible = (i === idx);
+        });
+      }
       // 🎨 ドームムード色シフト
       const moods = scene.userData.mythMoods;
       if (moods && moods[order[idx]] && sphereMat.uniforms && sphereMat.uniforms.uMood) {
@@ -19014,38 +19021,229 @@
       im.src = url;
     }
 
-    // ── 各神話のスプライト（60°間隔の6アングル＝近似360°、Vegas Sphere風）──
+    // ── 各神話の名画は1枚だけ（前方の正面、観客の目線正面）──
     const mythSprites = {};
     ['eden', 'noah', 'atlantis', 'babel', 'elysion'].forEach(key => {
       const fallbackTex = makeMythCanvas(key);
       mythSprites[key] = [];
-      const sprites = [];
-      // 6アングルで60°ごとに同じ画像を配置 → どこを見ても画像が見える
-      for (let i = 0; i < 6; i++) {
-        const angle = (i / 6) * Math.PI * 2;
-        const sprite = new THREE.Sprite(new THREE.SpriteMaterial({
-          map: fallbackTex, transparent: true, opacity: 0,
-          depthWrite: false,
-          blending: THREE.NormalBlending,
-        }));
-        sprite.scale.set(28, 20, 1);  // 6枚なので少し小さめ＋重なり
-        const r = 38;
-        sprite.position.set(Math.cos(angle) * r, 8, Math.sin(angle) * r);
-        sprite.userData.fadeTarget = 0;
-        mythGroup.add(sprite);
-        mythSprites[key].push(sprite);
-        sprites.push(sprite);
-      }
+      const sprite = new THREE.Sprite(new THREE.SpriteMaterial({
+        map: fallbackTex, transparent: true, opacity: 0,
+        depthWrite: false,
+        blending: THREE.NormalBlending,
+      }));
+      sprite.scale.set(40, 28, 1);
+      sprite.position.set(0, 14, -38); // 正面上空、ドーム面ぎりぎり
+      sprite.userData.fadeTarget = 0;
+      mythGroup.add(sprite);
+      mythSprites[key].push(sprite);
       tryLoadMythPainting(MYTH_PAINTINGS[key], (tex, ar) => {
-        const w = 28, h = w / ar;
-        sprites.forEach(s => {
-          s.material.map = tex;
-          s.material.needsUpdate = true;
-          s.scale.set(w, h, 1);
-        });
+        const w = 40, h = w / ar;
+        sprite.material.map = tex;
+        sprite.material.needsUpdate = true;
+        sprite.scale.set(w, h, 1);
       });
       if (mythScenes[key]) mythScenes[key].group.visible = false;
     });
+
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    // 🔮 神話モード限定：中央ステージに3Dホログラム召喚
+    //    Eden=生命の樹 / Noah=方舟 / Atlantis=神殿 / Babel=塔 / Elysion=柱
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    function makeHologramMaterial(color) {
+      // ホログラム素材：シアン透過＋Fresnel発光＋スキャンライン
+      return new THREE.ShaderMaterial({
+        uniforms: {
+          uColor: { value: new THREE.Color(color) },
+          uTime: { value: 0 },
+        },
+        vertexShader: `
+          varying vec3 vN;
+          varying vec3 vP;
+          varying vec3 vWorld;
+          void main() {
+            vN = normalize(normalMatrix * normal);
+            vec4 mvP = modelViewMatrix * vec4(position, 1.0);
+            vP = -mvP.xyz;
+            vWorld = (modelMatrix * vec4(position, 1.0)).xyz;
+            gl_Position = projectionMatrix * mvP;
+          }
+        `,
+        fragmentShader: `
+          uniform vec3 uColor;
+          uniform float uTime;
+          varying vec3 vN;
+          varying vec3 vP;
+          varying vec3 vWorld;
+          void main() {
+            vec3 V = normalize(vP);
+            // Fresnel：縁ほど明るい
+            float fres = pow(1.0 - max(0.0, dot(normalize(vN), V)), 1.8);
+            // スキャンライン：垂直方向、時間で流れる
+            float scan = sin(vWorld.y * 12.0 - uTime * 3.0) * 0.5 + 0.5;
+            scan = pow(scan, 6.0);
+            // ベース発光
+            float base = 0.55 + fres * 0.85 + scan * 0.5;
+            // 微弱なちらつき
+            float flicker = 1.0 + sin(uTime * 18.0 + vWorld.x * 5.0) * 0.06;
+            vec3 col = uColor * base * flicker;
+            // 透明度：内部は透ける、縁は不透明
+            float alpha = 0.35 + fres * 0.55 + scan * 0.10;
+            gl_FragColor = vec4(col, alpha);
+          }
+        `,
+        transparent: true,
+        side: THREE.DoubleSide,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+      });
+    }
+    const HOLO_COLOR = 0x80f0ff; // 標準シアン
+    const mythHolograms = {};
+    // ── Eden 生命の樹 ──
+    {
+      const g = new THREE.Group();
+      const mat = makeHologramMaterial(0x80ffa0);
+      const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.55, 5, 14), mat);
+      trunk.position.y = 2.5; g.add(trunk);
+      // 葉クラスタ
+      for (let i = 0; i < 7; i++) {
+        const r = 1.0 + Math.random() * 0.8;
+        const leaf = new THREE.Mesh(new THREE.SphereGeometry(r, 16, 12), mat);
+        leaf.position.set((Math.random()-0.5) * 2.4, 5 + Math.random() * 2.5, (Math.random()-0.5) * 2.4);
+        g.add(leaf);
+      }
+      // りんご
+      const appleMat = makeHologramMaterial(0xff8090);
+      for (let i = 0; i < 5; i++) {
+        const a = new THREE.Mesh(new THREE.SphereGeometry(0.18, 12, 9), appleMat);
+        a.position.set((Math.random()-0.5)*2.4, 4.5 + Math.random()*2.2, (Math.random()-0.5)*2.4);
+        g.add(a);
+      }
+      // 蛇（巻く）
+      const sn = new THREE.Mesh(new THREE.TorusGeometry(0.6, 0.10, 8, 24, Math.PI * 1.4), makeHologramMaterial(0x60ff80));
+      sn.position.y = 3.0;
+      sn.rotation.x = Math.PI / 2;
+      g.add(sn);
+      g.visible = false;
+      g.userData.materials = [mat, appleMat, sn.material];
+      scene.add(g);
+      mythHolograms.eden = g;
+    }
+    // ── Noah 方舟 ──
+    {
+      const g = new THREE.Group();
+      const mat = makeHologramMaterial(0xa0d0ff);
+      // 船底（台形）
+      const hull = new THREE.Mesh(new THREE.BoxGeometry(5.5, 1.2, 2.0), mat);
+      hull.position.y = 1.5; g.add(hull);
+      const hullBow = new THREE.Mesh(new THREE.BoxGeometry(0.3, 1.0, 1.7), mat);
+      hullBow.position.set(2.9, 1.5, 0); g.add(hullBow);
+      // 船体上部
+      const body = new THREE.Mesh(new THREE.BoxGeometry(4.5, 1.5, 1.7), mat);
+      body.position.y = 2.85; g.add(body);
+      // 屋根
+      const roof = new THREE.Mesh(new THREE.ConeGeometry(2.6, 1.2, 4), mat);
+      roof.position.y = 4.2; roof.rotation.y = Math.PI / 4; g.add(roof);
+      // 窓
+      const winMat = makeHologramMaterial(0xffe890);
+      for (let i = -2; i <= 2; i++) {
+        const w = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.35, 0.05), winMat);
+        w.position.set(i * 0.85, 2.85, 0.88); g.add(w);
+      }
+      g.visible = false;
+      g.userData.materials = [mat, winMat];
+      scene.add(g);
+      mythHolograms.noah = g;
+    }
+    // ── Atlantis 神殿 ──
+    {
+      const g = new THREE.Group();
+      const mat = makeHologramMaterial(0x60c0ff);
+      // 基壇
+      const base = new THREE.Mesh(new THREE.BoxGeometry(7, 0.4, 5), mat);
+      base.position.y = 0.2; g.add(base);
+      // 柱×6（円柱）
+      for (let i = 0; i < 6; i++) {
+        const x = -2.5 + (i % 3) * 2.5;
+        const z = (i < 3) ? -1.8 : 1.8;
+        const col = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.32, 4.5, 16), mat);
+        col.position.set(x, 2.65, z); g.add(col);
+        // 柱頭
+        const cap = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.25, 0.8), mat);
+        cap.position.set(x, 5.0, z); g.add(cap);
+      }
+      // 屋根（三角ペディメント）
+      const ped = new THREE.Mesh(new THREE.BoxGeometry(7, 0.4, 5), mat);
+      ped.position.y = 5.3; g.add(ped);
+      const tri = new THREE.Mesh(new THREE.BoxGeometry(7, 1.2, 0.4), mat);
+      tri.position.set(0, 6.0, -1.8); g.add(tri);
+      const tri2 = tri.clone(); tri2.position.z = 1.8; g.add(tri2);
+      // 中央のクリスタル
+      const crysMat = makeHologramMaterial(0xc0ffff);
+      const crys = new THREE.Mesh(new THREE.OctahedronGeometry(0.7), crysMat);
+      crys.position.set(0, 3.2, 0); g.add(crys);
+      g.userData.crystal = crys;
+      g.visible = false;
+      g.userData.materials = [mat, crysMat];
+      scene.add(g);
+      mythHolograms.atlantis = g;
+    }
+    // ── Babel 塔（らせん多段）──
+    {
+      const g = new THREE.Group();
+      const mat = makeHologramMaterial(0xff80a0);
+      const tiers = 7;
+      for (let i = 0; i < tiers; i++) {
+        const r = 2.4 - i * 0.25;
+        const h = 0.7;
+        const tier = new THREE.Mesh(new THREE.CylinderGeometry(r, r * 1.05, h, 24), mat);
+        tier.position.y = 0.5 + i * h;
+        tier.rotation.y = i * 0.18;
+        g.add(tier);
+        // 縁の縦線（柱風）
+        for (let j = 0; j < 8; j++) {
+          const a = (j / 8) * Math.PI * 2 + i * 0.18;
+          const post = new THREE.Mesh(new THREE.BoxGeometry(0.06, h, 0.06), mat);
+          post.position.set(Math.cos(a) * r * 0.95, 0.5 + i * h, Math.sin(a) * r * 0.95);
+          g.add(post);
+        }
+      }
+      // 頂上の小塔
+      const top = new THREE.Mesh(new THREE.ConeGeometry(0.35, 0.9, 6), mat);
+      top.position.y = 5.4; g.add(top);
+      g.visible = false;
+      g.userData.materials = [mat];
+      scene.add(g);
+      mythHolograms.babel = g;
+    }
+    // ── Elysion 楽園の柱（4本＋光球）──
+    {
+      const g = new THREE.Group();
+      const mat = makeHologramMaterial(0xfff0a0);
+      for (let i = 0; i < 4; i++) {
+        const a = (i / 4) * Math.PI * 2;
+        const col = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.26, 4.2, 14), mat);
+        col.position.set(Math.cos(a) * 2.0, 2.4, Math.sin(a) * 2.0);
+        g.add(col);
+        // 柱頭
+        const cap = new THREE.Mesh(new THREE.SphereGeometry(0.32, 12, 9, 0, Math.PI*2, 0, Math.PI/2), mat);
+        cap.position.set(Math.cos(a) * 2.0, 4.55, Math.sin(a) * 2.0);
+        g.add(cap);
+      }
+      // 中央の光球
+      const orb = new THREE.Mesh(new THREE.SphereGeometry(0.55, 24, 16), makeHologramMaterial(0xffffff));
+      orb.position.y = 3.0; g.add(orb);
+      g.userData.orb = orb;
+      g.visible = false;
+      g.userData.materials = [mat, orb.material];
+      scene.add(g);
+      mythHolograms.elysion = g;
+    }
+    // 中央ステージに集約配置（ステージの中心、orchestraの間に）
+    Object.values(mythHolograms).forEach(holo => {
+      holo.position.set(0, 1.0, 0); // ステージ天面 y=0.7 + 余裕
+    });
+    scene.userData.mythHolograms = mythHolograms;
 
     // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
     // 🌸🌧🍂✨💧 神話別の粒子エフェクト（Vegas Sphereの空気感）
@@ -19574,6 +19772,31 @@
         if (scene.userData.mythMoodTarget && sphereMat.uniforms && sphereMat.uniforms.uMood) {
           const cur = sphereMat.uniforms.uMood.value;
           cur.lerp(scene.userData.mythMoodTarget, Math.min(1, dt * 0.8));
+        }
+        // 🔮 ホログラム：uTime更新＋全体ゆっくり自転＋特殊要素アニメ
+        const holos = scene.userData.mythHolograms;
+        if (holos) {
+          Object.entries(holos).forEach(([key, holo]) => {
+            if (!holo.visible) return;
+            holo.rotation.y += 0.004;
+            // 全マテリアルのuTime更新
+            if (holo.userData.materials) {
+              holo.userData.materials.forEach(m => {
+                if (m.uniforms && m.uniforms.uTime) m.uniforms.uTime.value = t;
+              });
+            }
+            // Atlantis のクリスタル：浮遊
+            if (key === 'atlantis' && holo.userData.crystal) {
+              holo.userData.crystal.position.y = 3.2 + Math.sin(t * 1.2) * 0.2;
+              holo.userData.crystal.rotation.y += 0.02;
+              holo.userData.crystal.rotation.x += 0.01;
+            }
+            // Elysion の光球：脈動
+            if (key === 'elysion' && holo.userData.orb) {
+              const sc = 1 + Math.sin(t * 1.6) * 0.12;
+              holo.userData.orb.scale.set(sc, sc, sc);
+            }
+          });
         }
       }
       // 🎬 神話スプライトフェード（Vegas Sphere方式）+ 大気エフェクト
