@@ -11491,8 +11491,52 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
 }
 /* KOH も横画面対応 */
 @media (orientation: landscape) and (max-height: 500px) {
-  .koh-ar-overlay .koh-ar-info-panel { font-size: 10px; max-width: 30vw; }
-  .koh-ar-overlay .koh-ar-ads { font-size: 10px; }
+  .koh-ar-overlay .koh-ar-info-panel { font-size: 10px; max-width: 30vw; top: 56px; left: 12px; }
+  .koh-ar-overlay .koh-ar-ads { font-size: 10px; max-width: 30vw; }
+  .koh-ar-toggle { top: 8px; right: 50px; padding: 6px 10px; font-size: 11px; }
+  .koh-vpad { width: 80px; height: 80px; right: 14px; bottom: 14px; }
+  .koh-modal-card { max-height: 92vh; padding: 16px 20px; }
+  .koh-music-list { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .koh-music-card { padding: 8px; font-size: 11px; }
+  #kohMythTitle { top: 60px; font-size: 16px; }
+  #kohMythNarration { font-size: 11px; padding: 6px 12px; }
+  .koh-myth-action { bottom: 12px; padding: 8px 16px; font-size: 12px; }
+}
+
+/* 宇宙(openCosmos) 横画面 */
+@media (orientation: landscape) and (max-height: 500px) {
+  .cosmos-overlay .cosmos-close { top: 8px; right: 8px; width: 36px; height: 36px; font-size: 18px; }
+  .cosmos-overlay .ijin-bridge-btn { top: 8px; right: 52px; padding: 5px 10px; font-size: 11px; }
+  .cosmos-overlay .cosmos-info-panel { width: min(40vw, 360px); right: 8px; top: 50%; transform: translateY(-50%); max-height: 86vh; }
+  .cosmos-overlay .cosmos-info-content { font-size: 11px; }
+  .cosmos-overlay .cosmos-zoom-ctrl { right: 8px; bottom: 8px; }
+  .cosmos-overlay .cosmos-rocket-toggle { left: 8px; bottom: 8px; padding: 6px 12px; font-size: 11px; }
+  .cosmos-overlay .cosmos-time-ctrl { gap: 4px; }
+  .cosmos-overlay .cosmos-modes-trigger { padding: 5px 10px; font-size: 10px; }
+  .cosmos-overlay .cosmos-tap { width: 90px; height: 32px; font-size: 12px; }
+  .cosmos-overlay .cosmos-conscious-label { font-size: 10px; top: 8px; left: 50%; transform: translateX(-50%); }
+}
+
+/* 美術館(museum3d / pantheon) 横画面 */
+@media (orientation: landscape) and (max-height: 500px) {
+  .museum3d-overlay .museum3d-close { top: 8px; right: 8px; width: 36px; height: 36px; font-size: 18px; }
+  .museum3d-overlay .museum3d-title { top: 8px; left: 16px; font-size: 14px; }
+  .museum3d-overlay .museum3d-info { font-size: 11px; padding: 8px 12px; bottom: 8px; }
+  .museum3d-overlay .museum3d-hint { bottom: 64px; font-size: 10px; padding: 4px 10px; }
+  .museum3d-overlay .museum3d-stick { width: 80px; height: 80px; left: 12px; bottom: 12px; }
+  .museum3d-overlay .museum3d-view-btn { right: 8px; bottom: 8px; padding: 6px 12px; font-size: 12px; }
+  .pantheon-overlay .pantheon-back-btn { top: 8px; left: 50%; transform: translateX(-50%); padding: 5px 12px; font-size: 11px; }
+}
+
+/* 図書館(library3d) 横画面 */
+@media (orientation: landscape) and (max-height: 500px) {
+  .lib3d-overlay .lib3d-close { top: 8px; right: 8px; width: 36px; height: 36px; font-size: 18px; }
+  .lib3d-overlay .lib3d-title { top: 8px; left: 16px; font-size: 13px; }
+  .lib3d-overlay .lib3d-info { font-size: 11px; padding: 8px 12px; }
+  .lib3d-overlay .lib3d-hint { bottom: 64px; font-size: 10px; }
+  .lib3d-overlay .lib3d-stick { width: 80px; height: 80px; left: 12px; bottom: 12px; }
+  .lib3d-overlay .lib3d-view-btn { right: 8px; bottom: 8px; padding: 6px 12px; font-size: 12px; }
+  .lib-results { max-height: 70vh; grid-template-columns: 1fr 1fr; }
 }
 
 /* ===== ビジネス図解ラボ（ロール+矢印） ===== */

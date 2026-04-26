@@ -12797,85 +12797,9 @@
         scene.add(makeColumn( T_W/2, z, T_H));
       }
 
-      // === エンタブラチュア（柱の上の梁）===
-      // フリーズ（横一周の太い梁）
-      const friezeMat = marbleMat;
-      const friezeFront = new THREE.Mesh(
-        new THREE.BoxGeometry(T_W + 1.4, 0.7, 0.7),
-        friezeMat
-      );
-      friezeFront.position.set(0, T_H + 0.55, T_D / 2);
-      scene.add(friezeFront);
-      const friezeBack = friezeFront.clone();
-      friezeBack.position.z = -T_D / 2;
-      scene.add(friezeBack);
-      const friezeLeft = new THREE.Mesh(
-        new THREE.BoxGeometry(0.7, 0.7, T_D + 1.4),
-        friezeMat
-      );
-      friezeLeft.position.set(-T_W / 2, T_H + 0.55, 0);
-      scene.add(friezeLeft);
-      const friezeRight = friezeLeft.clone();
-      friezeRight.position.x = T_W / 2;
-      scene.add(friezeRight);
-      // コーニス（フリーズの下の薄い帯）
-      const corniceFront = new THREE.Mesh(
-        new THREE.BoxGeometry(T_W + 2, 0.18, 0.85),
-        new THREE.MeshStandardMaterial({ color: 0xf0eee4, roughness: 0.4, metalness: 0.15 })
-      );
-      corniceFront.position.set(0, T_H + 1.0, T_D / 2);
-      scene.add(corniceFront);
-      const corniceBack = corniceFront.clone();
-      corniceBack.position.z = -T_D / 2;
-      scene.add(corniceBack);
-
-      // === 三角破風（ペディメント） — 前面と背面 ===
-      function makePediment(side) {
-        // 三角形の正面
-        const shape = new THREE.Shape();
-        const half = T_W / 2 + 1;
-        const peakH = 2.6;
-        shape.moveTo(-half, 0);
-        shape.lineTo(half, 0);
-        shape.lineTo(0, peakH);
-        shape.lineTo(-half, 0);
-        const pedGeo = new THREE.ExtrudeGeometry(shape, { depth: 0.4, bevelEnabled: false });
-        const ped = new THREE.Mesh(pedGeo, new THREE.MeshStandardMaterial({
-          color: 0xf8f6f0, roughness: 0.5, metalness: 0.1, side: THREE.DoubleSide,
-        }));
-        ped.position.set(0, T_H + 1.18, side * (T_D / 2 + 0.2));
-        scene.add(ped);
-      }
-      makePediment(1);
-      makePediment(-1);
-
-      // === 屋根（傾斜した2枚の平面、瓦感） ===
-      const roofMat = new THREE.MeshStandardMaterial({
-        color: 0xc8c0b0, roughness: 0.7, metalness: 0.05, side: THREE.DoubleSide,
-      });
-      // 屋根の傾斜板（前面側 / 背面側）
-      const roofW = Math.hypot(T_W / 2 + 1, 2.6);
-      // 前面の傾斜
-      const roofFront = new THREE.Mesh(
-        new THREE.PlaneGeometry(T_W + 2.2, T_D + 2.2),
-        roofMat
-      );
-      // 屋根を山形に分割せず、簡易に1枚で薄く（神殿として印象的）
-      // 代わりに2枚の傾斜板で山形を形成
-      const half_T_W = T_W / 2 + 1.1;
-      const peakH = 2.6;
-      const slope = Math.atan2(peakH, half_T_W);
-      const slopeLen = Math.hypot(half_T_W, peakH);
-      const roofL = new THREE.Mesh(new THREE.PlaneGeometry(slopeLen * 2, T_D + 2.2), roofMat);
-      roofL.position.set(-half_T_W / 2, T_H + 1.18 + peakH / 2, 0);
-      roofL.rotation.z = slope;
-      roofL.rotation.y = Math.PI / 2;
-      scene.add(roofL);
-      const roofR = roofL.clone();
-      roofR.position.set(half_T_W / 2, T_H + 1.18 + peakH / 2, 0);
-      roofR.rotation.z = -slope;
-      roofR.rotation.y = Math.PI / 2;
-      scene.add(roofR);
+      // 🔧 ユーザー要望：屋根・梁・破風を削除（オープンエア神殿に）
+      // 柱だけ残し、上は星空が見えるように
+      // (旧: フリーズ・コーニス・破風・屋根 — すべて削除)
 
       // === 🔥 灯火（DQ7風の燭台）— 廊下の左右に並べる ===
       const torchFlames = []; // animate で揺らす
