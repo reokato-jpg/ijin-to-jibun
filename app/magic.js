@@ -19772,6 +19772,7 @@
       const mesh = new THREE.Mesh(new THREE.PlaneGeometry(40, 28), mat);
       mesh.position.set(0, 14, -38);
       mesh.lookAt(0, 14, 0); // 中央を向く
+      mesh.visible = false; // 🔧 ユーザー要望：神話の壁画スプライトは出さない（中央ホログラムだけ）
       // userData は配列扱いと互換にする（既存の fadeTarget セットコードがそのまま使える）
       mesh.userData.fadeTarget = 0;
       // material.opacity を uOpacity で代替
