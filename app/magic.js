@@ -20008,29 +20008,97 @@
       scene.add(g);
       mythHolograms.eden = g;
     }
-    // ── Noah 方舟 ──
+    // ── Noah 方舟（リアル化：木目船体・甲板・舵・船首・デッキの動物・煙突） ──
     {
       const g = new THREE.Group();
-      const mat = makeHologramMaterial(0xa0d0ff);
-      // 船底（台形）
-      const hull = new THREE.Mesh(new THREE.BoxGeometry(5.5, 1.2, 2.0), mat);
-      hull.position.y = 1.5; g.add(hull);
-      const hullBow = new THREE.Mesh(new THREE.BoxGeometry(0.3, 1.0, 1.7), mat);
-      hullBow.position.set(2.9, 1.5, 0); g.add(hullBow);
-      // 船体上部
-      const body = new THREE.Mesh(new THREE.BoxGeometry(4.5, 1.5, 1.7), mat);
-      body.position.y = 2.85; g.add(body);
-      // 屋根
-      const roof = new THREE.Mesh(new THREE.ConeGeometry(2.6, 1.2, 4), mat);
-      roof.position.y = 4.2; roof.rotation.y = Math.PI / 4; g.add(roof);
-      // 窓
-      const winMat = makeHologramMaterial(0xffe890);
+      const woodMat = makeHologramMaterial(0xa88060); // 木目
+      const woodMatBright = makeHologramMaterialBright(0xc89060);
+      const winMat = makeHologramMaterialBright(0xffe890);
+      const animalMat = makeHologramMaterialBright(0xc8a878);
+      // 船底（曲面風：複数のBoxを段違いに）
+      // メインハル
+      const hull = new THREE.Mesh(new THREE.BoxGeometry(8.0, 1.4, 2.4), woodMat);
+      hull.position.y = 1.4; g.add(hull);
+      // 船首（とがり）
+      const bowL = new THREE.Mesh(new THREE.BoxGeometry(1.4, 1.0, 0.6), woodMat);
+      bowL.position.set(4.5, 1.4, 0.6); bowL.rotation.y = -0.3; g.add(bowL);
+      const bowR = new THREE.Mesh(new THREE.BoxGeometry(1.4, 1.0, 0.6), woodMat);
+      bowR.position.set(4.5, 1.4, -0.6); bowR.rotation.y = 0.3; g.add(bowR);
+      // 船尾（垂直）
+      const stern = new THREE.Mesh(new THREE.BoxGeometry(0.4, 1.6, 2.4), woodMatBright);
+      stern.position.set(-4.0, 1.6, 0); g.add(stern);
+      // 舵（船尾に縦長の板）
+      const rudder = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.9, 0.4), woodMatBright);
+      rudder.position.set(-4.3, 0.9, 0); g.add(rudder);
+      // 甲板（薄い天板）
+      const deck = new THREE.Mesh(new THREE.BoxGeometry(7.6, 0.1, 2.2), woodMatBright);
+      deck.position.y = 2.15; g.add(deck);
+      // 船体上部（小屋）
+      const cabin = new THREE.Mesh(new THREE.BoxGeometry(5.0, 1.6, 1.8), woodMat);
+      cabin.position.set(-0.4, 3.05, 0); g.add(cabin);
+      // 屋根（傾斜）
+      const roofMat2 = makeHologramMaterial(0x8a6040);
+      const roofL = new THREE.Mesh(new THREE.BoxGeometry(5.4, 0.1, 1.4), roofMatMake());
+      function roofMatMake() { return makeHologramMaterialBright(0x6a4838); }
+      const roofL2 = new THREE.Mesh(new THREE.BoxGeometry(5.4, 0.1, 1.4), roofMatMake());
+      roofL2.position.set(-0.4, 3.95, 0.55); roofL2.rotation.x = 0.3; g.add(roofL2);
+      const roofR = new THREE.Mesh(new THREE.BoxGeometry(5.4, 0.1, 1.4), roofMatMake());
+      roofR.position.set(-0.4, 3.95, -0.55); roofR.rotation.x = -0.3; g.add(roofR);
+      // 屋根の頂上 棟
+      const ridge = new THREE.Mesh(new THREE.BoxGeometry(5.4, 0.12, 0.12), roofMatMake());
+      ridge.position.set(-0.4, 4.15, 0); g.add(ridge);
+      // 煙突（蒸気が出てる）
+      const chim = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.22, 0.7, 10), woodMat);
+      chim.position.set(0.5, 4.25, 0); g.add(chim);
+      // 窓（明るい黄色、5枚）
       for (let i = -2; i <= 2; i++) {
-        const w = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.35, 0.05), winMat);
-        w.position.set(i * 0.85, 2.85, 0.88); g.add(w);
+        const w = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.4, 0.05), winMat);
+        w.position.set(i * 1.0 - 0.4, 3.1, 0.93); g.add(w);
       }
+      // 反対側の窓
+      for (let i = -2; i <= 2; i++) {
+        const w = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.4, 0.05), winMat);
+        w.position.set(i * 1.0 - 0.4, 3.1, -0.93); g.add(w);
+      }
+      // マスト（中央に）
+      const mast = new THREE.Mesh(new THREE.CylinderGeometry(0.10, 0.14, 4.5, 8), woodMat);
+      mast.position.set(-0.4, 5.5, 0); g.add(mast);
+      // 帆（マストに張る）
+      const sailMat = makeHologramMaterialBright(0xfff0d0);
+      const sail = new THREE.Mesh(new THREE.PlaneGeometry(2.4, 2.0), sailMat);
+      sail.position.set(-0.4, 6.2, 0); sail.rotation.y = Math.PI / 2; g.add(sail);
+      // 帆の横棒
+      const yard = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 2.6, 6), woodMat);
+      yard.position.set(-0.4, 7.2, 0); yard.rotation.z = Math.PI / 2; yard.rotation.y = Math.PI / 2; g.add(yard);
+      // 動物のシルエット（甲板に4体：象・キリン・馬・羊）
+      // 象
+      const eleBody = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.5, 0.35), animalMat);
+      eleBody.position.set(2.0, 2.45, 0.3); g.add(eleBody);
+      const eleHead = new THREE.Mesh(new THREE.SphereGeometry(0.18, 10, 8), animalMat);
+      eleHead.position.set(2.35, 2.55, 0.3); g.add(eleHead);
+      const eleTrunk = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.08, 0.4, 6), animalMat);
+      eleTrunk.position.set(2.55, 2.30, 0.3); eleTrunk.rotation.z = -Math.PI / 2.5; g.add(eleTrunk);
+      // キリン
+      const giraffeBody = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.4, 0.3), animalMat);
+      giraffeBody.position.set(0.8, 2.45, -0.3); g.add(giraffeBody);
+      const giraffeNeck = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.9, 0.18), animalMat);
+      giraffeNeck.position.set(1.05, 3.0, -0.3); g.add(giraffeNeck);
+      const giraffeHead = new THREE.Mesh(new THREE.SphereGeometry(0.13, 10, 8), animalMat);
+      giraffeHead.position.set(1.15, 3.5, -0.3); g.add(giraffeHead);
+      // 馬
+      const horseBody = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.35, 0.25), animalMat);
+      horseBody.position.set(-2.0, 2.42, 0.3); g.add(horseBody);
+      const horseHead = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.30, 0.18), animalMat);
+      horseHead.position.set(-1.7, 2.6, 0.3); g.add(horseHead);
+      // 羊（球状）
+      const sheepBody = new THREE.Mesh(new THREE.SphereGeometry(0.20, 12, 9), animalMat);
+      sheepBody.position.set(-2.6, 2.40, -0.3); g.add(sheepBody);
+      // 鳩（マスト上、白く光る）
+      const dove = new THREE.Mesh(new THREE.SphereGeometry(0.10, 10, 8), makeHologramMaterialBright(0xffffff));
+      dove.position.set(-0.4, 7.7, 0); g.add(dove);
+      g.userData.dove = dove;
       g.visible = false;
-      g.userData.materials = [mat, winMat];
+      g.userData.materials = [woodMat, woodMatBright, winMat, animalMat, sailMat];
       scene.add(g);
       mythHolograms.noah = g;
     }
@@ -20093,26 +20161,101 @@
       scene.add(g);
       mythHolograms.babel = g;
     }
-    // ── Elysion 楽園の柱（4本＋光球）──
+    // ── Elysion 楽園（リアル化：円形神殿＋8柱＋ドーム＋天使＋光球） ──
     {
       const g = new THREE.Group();
       const mat = makeHologramMaterial(0xfff0a0);
-      for (let i = 0; i < 4; i++) {
-        const a = (i / 4) * Math.PI * 2;
-        const col = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.26, 4.2, 14), mat);
-        col.position.set(Math.cos(a) * 2.0, 2.4, Math.sin(a) * 2.0);
-        g.add(col);
-        // 柱頭
-        const cap = new THREE.Mesh(new THREE.SphereGeometry(0.32, 12, 9, 0, Math.PI*2, 0, Math.PI/2), mat);
-        cap.position.set(Math.cos(a) * 2.0, 4.55, Math.sin(a) * 2.0);
-        g.add(cap);
+      const matBright = makeHologramMaterialBright(0xffe080);
+      const matAngel = makeHologramMaterialBright(0xffffff);
+      const matLeaf = makeHologramMaterial(0xa0e0a0);
+      // 円形プラットフォーム（古代ギリシア神殿のように）
+      const baseN = 24;
+      // 段差（3段の階段、円形）
+      for (let s = 0; s < 3; s++) {
+        const r1 = 3.0 + s * 0.18;
+        const r2 = 3.0 + s * 0.18 + 0.18;
+        const stepRing = new THREE.Mesh(new THREE.CylinderGeometry(r2, r2, 0.12, baseN), mat);
+        stepRing.position.y = 0.06 + s * 0.12;
+        g.add(stepRing);
       }
-      // 中央の光球
-      const orb = new THREE.Mesh(new THREE.SphereGeometry(0.55, 24, 16), makeHologramMaterial(0xffffff));
-      orb.position.y = 3.0; g.add(orb);
+      // 8本の円柱（コリント式風）
+      const COL_N = 8;
+      const COL_R = 2.6;
+      for (let i = 0; i < COL_N; i++) {
+        const a = (i / COL_N) * Math.PI * 2;
+        const x = Math.cos(a) * COL_R, z = Math.sin(a) * COL_R;
+        // 柱身（縦溝風に少し細め）
+        const col = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.26, 4.6, 14), matBright);
+        col.position.set(x, 2.65, z);
+        g.add(col);
+        // 柱頭（カピタル）
+        const capBase = new THREE.Mesh(new THREE.CylinderGeometry(0.34, 0.30, 0.18, 12), matBright);
+        capBase.position.set(x, 4.95, z); g.add(capBase);
+        const capTop = new THREE.Mesh(new THREE.BoxGeometry(0.65, 0.20, 0.65), matBright);
+        capTop.position.set(x, 5.13, z); g.add(capTop);
+        // 柱の脚（ベース）
+        const colFoot = new THREE.Mesh(new THREE.CylinderGeometry(0.30, 0.34, 0.20, 12), matBright);
+        colFoot.position.set(x, 0.35, z); g.add(colFoot);
+        // 葉飾り（柱頭、月桂樹）
+        const leaf = new THREE.Mesh(new THREE.SphereGeometry(0.35, 10, 8, 0, Math.PI*2, 0, Math.PI/2), matLeaf);
+        leaf.position.set(x, 5.05, z); leaf.scale.set(1, 0.4, 1); g.add(leaf);
+      }
+      // エンタブラチュア（柱の上の梁、円リング）
+      const epis = new THREE.Mesh(new THREE.TorusGeometry(COL_R, 0.20, 12, 32), matBright);
+      epis.position.y = 5.30; epis.rotation.x = Math.PI / 2; g.add(epis);
+      // ドーム屋根（半球、薄く半透明）
+      const dome = new THREE.Mesh(new THREE.SphereGeometry(COL_R * 1.05, 24, 14, 0, Math.PI*2, 0, Math.PI/2), mat);
+      dome.position.y = 5.5; g.add(dome);
+      // ドーム頂上のオーナメント（小さな尖塔）
+      const finialCol = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.18, 0.4, 8), matBright);
+      finialCol.position.y = 8.4; g.add(finialCol);
+      const finialOrb = new THREE.Mesh(new THREE.SphereGeometry(0.18, 12, 9), matAngel);
+      finialOrb.position.y = 8.7; g.add(finialOrb);
+      // 中央の光球（神々しい光）
+      const orb = new THREE.Mesh(new THREE.SphereGeometry(0.55, 24, 16), matAngel);
+      orb.position.y = 3.4; g.add(orb);
       g.userData.orb = orb;
+      // 天使×4（柱の間に配置、漂う）
+      const angels = [];
+      for (let i = 0; i < 4; i++) {
+        const a = (i / 4) * Math.PI * 2 + Math.PI / 8;
+        const ax = Math.cos(a) * 1.5;
+        const az = Math.sin(a) * 1.5;
+        const ang = new THREE.Group();
+        // 体
+        const ab = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.10, 0.55, 8), matAngel);
+        ab.position.y = 0; ang.add(ab);
+        // 頭
+        const ah = new THREE.Mesh(new THREE.SphereGeometry(0.13, 12, 9), matAngel);
+        ah.position.y = 0.40; ang.add(ah);
+        // 光輪（頭の上）
+        const halo = new THREE.Mesh(new THREE.TorusGeometry(0.13, 0.018, 8, 16), matBright);
+        halo.position.y = 0.55; halo.rotation.x = Math.PI / 2; ang.add(halo);
+        // 翼（左右）
+        const wL = new THREE.Mesh(new THREE.PlaneGeometry(0.45, 0.5), matAngel);
+        wL.position.set(-0.22, 0.10, 0); wL.rotation.y = -0.5; ang.add(wL);
+        const wR = wL.clone();
+        wR.position.set(0.22, 0.10, 0); wR.rotation.y = 0.5; ang.add(wR);
+        ang.position.set(ax, 2.5, az);
+        // 中心を向く
+        ang.lookAt(0, 2.5, 0);
+        g.add(ang);
+        angels.push({ obj: ang, baseY: 2.5, phase: Math.random() * Math.PI * 2 });
+      }
+      g.userData.angels = angels;
+      // 漂う光球（中央周辺、5個）
+      const orbs = [];
+      for (let i = 0; i < 5; i++) {
+        const lo = new THREE.Mesh(new THREE.SphereGeometry(0.10 + Math.random()*0.06, 10, 8), matAngel);
+        const r = 1.0 + Math.random() * 1.4;
+        const a = Math.random() * Math.PI * 2;
+        lo.position.set(Math.cos(a) * r, 2.0 + Math.random() * 2.5, Math.sin(a) * r);
+        g.add(lo);
+        orbs.push({ obj: lo, phase: Math.random() * Math.PI * 2, r, a });
+      }
+      g.userData.orbs2 = orbs;
       g.visible = false;
-      g.userData.materials = [mat, orb.material];
+      g.userData.materials = [mat, matBright, matAngel, matLeaf];
       scene.add(g);
       mythHolograms.elysion = g;
     }
