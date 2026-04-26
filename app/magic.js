@@ -24082,6 +24082,27 @@
   ];
 
   // ビジネスのピース（顔の代わりに絵文字アイコン）
+  // ビジネスSVGアイコン（24x24、line-icon style）
+  const BIZ_ICONS = {
+    user:     '<circle cx="12" cy="8" r="3.5"/><path d="M5 21c0-3.9 3.1-7 7-7s7 3.1 7 7"/>',
+    business: '<rect x="5" y="4" width="14" height="17" rx="0.5"/><path d="M9 8h.5M14 8h.5M9 12h.5M14 12h.5M9 16h.5M14 16h.5" stroke-width="2"/><rect x="10" y="17" width="4" height="4"/>',
+    partner:  '<circle cx="8" cy="12" r="3.5"/><circle cx="16" cy="12" r="3.5"/><path d="M11.5 12h1"/>',
+    shop:     '<path d="M3 9l2-5h14l2 5"/><path d="M3 9v12h18V9"/><rect x="9" y="13" width="6" height="8"/><path d="M3 9h18"/>',
+    group:    '<rect x="2" y="10" width="6" height="11"/><rect x="9" y="6" width="6" height="15"/><rect x="16" y="13" width="6" height="8"/>',
+    ad:       '<path d="M3 10v4l14 6V4z"/><path d="M19 9q2 3 0 6"/><path d="M3 14h3v4H3z"/>',
+    platform: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c-3 4-3 14 0 18M12 3c3 4 3 14 0 18"/>',
+    investor: '<rect x="3" y="7" width="18" height="13" rx="1"/><path d="M9 7V5h6v2"/><path d="M3 13h18"/>',
+    money: '<circle cx="12" cy="12" r="9"/><path d="M8 9l4 5 4-5M12 14v6M9 17h6" stroke-linecap="round"/>',
+    thing: '<path d="M12 3l9 4v10l-9 4-9-4V7z"/><path d="M3 7l9 4 9-4M12 11v10"/>',
+    info:  '<circle cx="12" cy="19" r="1.6" fill="currentColor"/><path d="M7 14a8 8 0 0110 0"/><path d="M3 10a14 14 0 0118 0"/>',
+  };
+  function bizIcon(id, size = 24) {
+    return `<svg class="biz-icon" viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${BIZ_ICONS[id] || ''}</svg>`;
+  }
+  function bizIconG(id, color = '#1a2540') {
+    return BIZ_ICONS[id] ? `<g fill="none" stroke="${color}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${BIZ_ICONS[id]}</g>` : '';
+  }
+
   // ロール（盤に置く人物・組織）
   const BIZ_ROLES = [
     { id:'user',     name:'利用者',         icon:'👤', color:'#80c0ff', desc:'お金や情報を払って価値を受け取る側。',           voice:'やぁ、ぼくは利用者！欲しいものにお金を払うよ 👤' },
@@ -24287,7 +24308,7 @@
       }).join('');
       const roleEls = diag.roles.map(rl => {
         const r = role2obj[rl]; const p = pos[rl];
-        return `<g><circle cx="${p.x}" cy="${p.y}" r="18" fill="${r.color}" stroke="rgba(0,0,0,0.3)"/><text x="${p.x}" y="${p.y+5}" text-anchor="middle" font-size="16">${r.icon}</text></g>`;
+        return `<g><circle cx="${p.x}" cy="${p.y}" r="20" fill="${r.color}" stroke="rgba(0,0,0,0.3)"/><g transform="translate(${p.x-9} ${p.y-9}) scale(0.75)">${bizIconG(rl, '#0f1828')}</g></g>`;
       }).join('');
       return `<svg class="biz-diag" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
         <defs>
@@ -24321,7 +24342,7 @@
             <div class="biz-flow-modes" id="bizFlowModes">
               ${BIZ_FLOWS.map((f, i) => `
                 <button class="biz-flow-btn${i===0?' active':''}" data-flow="${f.id}" style="--c:${f.color}" type="button">
-                  <span class="biz-flow-ic">${f.icon}</span>
+                  <span class="biz-flow-ic">${bizIcon(f.id, 18)}</span>
                   <span class="biz-flow-nm">${f.name}</span>
                 </button>
               `).join('')}
@@ -24331,7 +24352,7 @@
             <div class="el-lab2-palette biz-palette" id="bizPalette" data-mode="row">
               ${BIZ_ROLES.map(r => `
                 <button class="el-pal-item biz-pal-item biz-role-pal" data-id="${r.id}" style="--c:${r.color}" type="button">
-                  <span class="biz-pal-ic">${r.icon}</span>
+                  <span class="biz-pal-ic">${bizIcon(r.id, 22)}</span>
                   <span class="el-pal-name">${r.name}</span>
                 </button>
               `).join('')}
@@ -24343,7 +24364,7 @@
         <div class="biz-piece-zukan">
           ${BIZ_ROLES.map(r => `
             <div class="biz-piece-card biz-role-card" data-role="${r.id}" style="--c:${r.color}">
-              <div class="biz-piece-face">${r.icon}</div>
+              <div class="biz-piece-face">${bizIcon(r.id, 32)}</div>
               <div class="biz-piece-name">${r.name}</div>
               <div class="biz-piece-desc">${r.desc}</div>
             </div>
@@ -24354,7 +24375,7 @@
         <div class="biz-flow-zukan">
           ${BIZ_FLOWS.map(f => `
             <div class="biz-flow-card" style="--c:${f.color}">
-              <div class="biz-flow-card-ic">${f.icon}</div>
+              <div class="biz-flow-card-ic">${bizIcon(f.id, 24)}</div>
               <div class="biz-flow-card-name">${f.name}</div>
               <div class="biz-flow-card-desc">${f.desc}</div>
             </div>
@@ -24576,7 +24597,7 @@
       x = Math.max(0, Math.min(bd.clientWidth - NODE_R*2, x));
       y = Math.max(0, Math.min(bd.clientHeight - NODE_R*2, y));
       dom.style.left = x+'px'; dom.style.top = y+'px';
-      dom.innerHTML = `<span class="biz-role-ic">${r.icon}</span><span class="biz-role-name">${r.name}</span>`;
+      dom.innerHTML = `<span class="biz-role-ic">${bizIcon(r.id, 26)}</span><span class="biz-role-name">${r.name}</span>`;
       bd.appendChild(dom);
       sfx('place');
       const node = { id:nid, kind:'role', rid:id, x, y, dom };
@@ -24766,7 +24787,7 @@
       const showVoice = opts && opts.voice;
       const voice = (showVoice && r.voice) ? `<div class="el-bubble-voice">${r.voice}</div>` : '';
       const detail = `
-        <div class="el-bubble-title"><span class="el-bubble-sym" style="--c:${r.color}">${r.icon}</span> ${r.name}</div>
+        <div class="el-bubble-title"><span class="el-bubble-sym" style="--c:${r.color}">${bizIcon(r.id, 18)}</span> ${r.name}</div>
         <div class="el-bubble-desc">${r.desc}</div>
       `;
       const html = showVoice
@@ -24798,7 +24819,7 @@
         <div class="zk-modal-card" style="--c:${r.color}">
           <button class="zk-modal-x" type="button" aria-label="閉じる">×</button>
           <div class="zk-modal-head">
-            <div class="zk-modal-circle"><span class="zk-modal-sym" style="font-size:36px;transform:none">${r.icon}</span></div>
+            <div class="zk-modal-circle">${bizIcon(r.id, 44)}</div>
             <div class="zk-modal-info">
               <div class="zk-modal-name">${r.name}</div>
               <div class="zk-modal-tag">${r.desc}</div>

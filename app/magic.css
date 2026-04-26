@@ -10932,6 +10932,16 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   letter-spacing: 3px;
 }
 
+/* SVGアイコン共通 */
+.biz-icon { display: inline-block; vertical-align: middle; flex-shrink: 0; }
+.biz-role-pal .biz-icon { color: #0f1828; }
+.biz-role-node .biz-icon { color: #1a2540; }
+.biz-piece-face .biz-icon { color: #1a2540; }
+.zk-modal-circle .biz-icon { color: #1a2540; }
+.biz-flow-btn .biz-icon { color: currentColor; }
+.biz-flow-card-ic .biz-icon { color: #1a2540; }
+.el-bubble-sym .biz-icon { color: #0a0a0a; vertical-align: middle; }
+
 /* ===== ビジネス図解ラボ（ロール+矢印） ===== */
 .biz-toolbar {
   display: flex; gap: 8px;
