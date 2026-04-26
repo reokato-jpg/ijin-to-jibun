@@ -23727,7 +23727,65 @@
         setTimeout(() => boardSvg.innerHTML = '', 600);
       }, 380);
     }
+    function attachHandConnect(node) {
+      const SVG_NS = 'http://www.w3.org/2000/svg';
+      node.dom.querySelectorAll('.el-node-hand').forEach(hand => {
+        hand.addEventListener('pointerdown', e => {
+          if (node.kind !== 'el') return;
+          e.preventDefault(); e.stopPropagation();
+          try { hand.setPointerCapture(e.pointerId); } catch(_) {}
+          node.dom.classList.add('connecting');
+          const preview = document.createElementNS(SVG_NS, 'line');
+          preview.setAttribute('class', 'el-board-preview');
+          preview.setAttribute('stroke', '#ffe080');
+          preview.setAttribute('stroke-width', '3');
+          preview.setAttribute('stroke-dasharray', '6 4');
+          preview.setAttribute('stroke-linecap', 'round');
+          const sx = node.x + NODE_R, sy = node.y + NODE_R;
+          preview.setAttribute('x1', sx); preview.setAttribute('y1', sy);
+          preview.setAttribute('x2', sx); preview.setAttribute('y2', sy);
+          boardSvg.appendChild(preview);
+          let hovered = null;
+          const onMove = ev => {
+            const rect = board.getBoundingClientRect();
+            preview.setAttribute('x2', ev.clientX - rect.left);
+            preview.setAttribute('y2', ev.clientY - rect.top);
+            // ハイライト
+            const el = document.elementFromPoint(ev.clientX, ev.clientY);
+            const tgt = el && el.closest && bnodes.find(n => n.dom === el.closest('.el-node'));
+            if (hovered && hovered !== tgt) hovered.dom.classList.remove('hover-target');
+            if (tgt && tgt !== node && tgt.kind === 'el') {
+              tgt.dom.classList.add('hover-target');
+              hovered = tgt;
+            } else {
+              hovered = null;
+            }
+          };
+          const onUp = ev => {
+            hand.removeEventListener('pointermove', onMove);
+            hand.removeEventListener('pointerup', onUp);
+            hand.removeEventListener('pointercancel', onUp);
+            preview.remove();
+            node.dom.classList.remove('connecting');
+            if (hovered) hovered.dom.classList.remove('hover-target');
+            const el = document.elementFromPoint(ev.clientX, ev.clientY);
+            const tgt = el && el.closest && bnodes.find(n => n.dom === el.closest('.el-node'));
+            if (tgt && tgt !== node && tgt.kind === 'el') {
+              if (!selected.has(node.id)) { selected.add(node.id); node.dom.classList.add('sel'); }
+              if (!selected.has(tgt.id))  { selected.add(tgt.id);  tgt.dom.classList.add('sel'); }
+              playSfx('sel');
+              updateStatus();
+              checkSelectionMatch();
+            }
+          };
+          hand.addEventListener('pointermove', onMove);
+          hand.addEventListener('pointerup', onUp);
+          hand.addEventListener('pointercancel', onUp);
+        });
+      });
+    }
     function attachNodeHandlers(node) {
+      attachHandConnect(node);
       let downX, downY, moved=false, startLeft, startTop;
       node.dom.addEventListener('pointerdown', e => {
         e.preventDefault();
