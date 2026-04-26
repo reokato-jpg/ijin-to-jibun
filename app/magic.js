@@ -16105,7 +16105,7 @@
       planetarium:{ stageVisible: true,  audienceVisible: true,  uMode: 1.0, planets: false, nature: false, myth: false, label: 'PLANETARIUM', loc: '星座のドーム' },
       cosmos:     { stageVisible: true,  audienceVisible: true,  uMode: 2.0, planets: true,  nature: false, myth: false, label: 'COSMOS', loc: '惑星の海' },
       nature:     { stageVisible: true,  audienceVisible: true,  uMode: 3.0, planets: false, nature: true,  myth: false, label: 'NATURE', loc: '森の囁き' },
-      myth:       { stageVisible: false, audienceVisible: false, uMode: 4.0, planets: false, nature: false, myth: true,  label: 'MYTH', loc: '神話の幻視' },
+      myth:       { stageVisible: false, audienceVisible: true,  uMode: 4.0, planets: false, nature: false, myth: true,  label: 'MYTH', loc: '神話の幻視' },
       timeslip:   { stageVisible: true,  audienceVisible: true,  uMode: 5.0, planets: false, nature: false, myth: false, timeslip: true, label: 'TIME-SLIP', loc: '過去の偉人たち' },
     };
     let currentMode = 'concert';
@@ -16117,6 +16117,7 @@
       stageGroups.forEach(o => { if (o) o.visible = m.stageVisible; });
       orchestra.forEach(p => { if (p && p.group) p.group.visible = m.stageVisible; });
       musicStands.forEach(ms => { ms.visible = m.stageVisible; });
+      if (scene.userData.pianist) scene.userData.pianist.visible = m.stageVisible;
       [chairMesh, bodyMesh, headMesh, hairMesh, shoulderMesh, lapMesh].forEach(im => { if (im) im.visible = m.audienceVisible; });
       // 神話モード：ホログラム中央(0, 4.5, 0)を向くようカメラを自動旋回
       if (m.myth && typeof yawT !== 'undefined') {
