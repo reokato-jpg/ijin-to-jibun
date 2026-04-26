@@ -23727,8 +23727,9 @@
         const dx = e.clientX - dragX;
         const dy = e.clientY - dragY;
         if (Math.abs(dx) + Math.abs(dy) > 4) mouseDragged = true;
-        camYaw -= dx * 0.0035;
-        camPitch -= dy * 0.0030;
+        // 🎯 視線感度を約3倍にUP（指の動きにキビキビ追従）
+        camYaw -= dx * 0.012;
+        camPitch -= dy * 0.010;
         camPitch = Math.max(-1.0, Math.min(1.0, camPitch));
         dragX = e.clientX; dragY = e.clientY;
       }
@@ -24104,23 +24105,45 @@
         nx = Math.max(-HALL_W/2 + 1, Math.min(HALL_W/2 - 1, nx));
         nz = Math.max(-HALL_D/2 + 2, Math.min(HALL_D/2 - 2, nz));
         // 棚（4列のZ位置に対し +/- 1.0以内なら入れない）
+        // 🆘 既に内部にハマっているときは脱出を許可（押し戻し）
         for (const sz of aisleZPositions) {
-          if (Math.abs(nz - sz) < 1.0) {
-            // 棚の長さ範囲内なら戻す
+          const currentInZ = Math.abs(camera.position.z - sz) < 1.0;
+          const nextInZ    = Math.abs(nz - sz) < 1.0;
+          if (nextInZ && !currentInZ) {
             // 各セグメント中心: -22, -7, 8, 23, 長さ 12 → 半長 6
             for (const cx of [-22, -7, 8, 23]) {
               if (nx > cx - 6.5 && nx < cx + 6.5) {
-                nz = camera.position.z; // Z移動拒否
+                nz = camera.position.z; // Z移動拒否（侵入を防ぐ）
                 break;
               }
             }
+          } else if (nextInZ && currentInZ) {
+            // 既に内部 → 脱出方向（|nz-sz| が大きくなる方向）を優先して移動
+            // 現在より棚から離れる方向の移動はそのまま許可
+            // それ以上に深く入り込むなら止める
+            if (Math.abs(nz - sz) < Math.abs(camera.position.z - sz) - 0.001) {
+              // より浅くなっている → そのまま
+            } else {
+              // 同じ深さか深くなる → 棚の外へ自動的に押し出す
+              const escapeDir = (camera.position.z - sz) >= 0 ? 1 : -1;
+              nz = sz + escapeDir * 1.05;
+            }
           }
         }
-        // 机（複数、各机 x=±12,±4, z=0, 半幅 1.7）
+        // 机（複数、各机 x=±12,±4, z=0, 半幅 1.7）— 押し戻し付き
         for (const [dx, dz] of deskPositions) {
-          if (Math.abs(nx - dx) < 1.8 && Math.abs(nz - dz) < 1.2) {
-            // 机の手前で止まる
+          const curInDesk = Math.abs(camera.position.x - dx) < 1.8 && Math.abs(camera.position.z - dz) < 1.2;
+          const nextInDesk = Math.abs(nx - dx) < 1.8 && Math.abs(nz - dz) < 1.2;
+          if (nextInDesk && !curInDesk) {
             nx = camera.position.x; nz = camera.position.z;
+            break;
+          } else if (nextInDesk && curInDesk) {
+            // ハマっていたら最寄り境界へ押し出し
+            const ex = (camera.position.x - dx) >= 0 ? dx + 1.85 : dx - 1.85;
+            const ez = (camera.position.z - dz) >= 0 ? dz + 1.25 : dz - 1.25;
+            // どちらか近い方へ
+            if (Math.abs(camera.position.x - ex) < Math.abs(camera.position.z - ez)) nx = ex;
+            else nz = ez;
             break;
           }
         }
