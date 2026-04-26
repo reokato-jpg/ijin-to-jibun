@@ -16012,8 +16012,12 @@
     const myZ = Math.sin(myAngle) * (myRadius - 0.3);
 
     // 環境光（コンサート会場、見える明るさ）
-    scene.add(new THREE.AmbientLight(0x4a4068, 0.9));
-    scene.add(new THREE.HemisphereLight(0x6a6a90, 0x14081e, 0.7));
+    const kohAmbient = new THREE.AmbientLight(0x4a4068, 0.9);
+    const kohHemi = new THREE.HemisphereLight(0x6a6a90, 0x14081e, 0.7);
+    scene.add(kohAmbient);
+    scene.add(kohHemi);
+    scene.userData.kohAmbient = kohAmbient;
+    scene.userData.kohHemi = kohHemi;
 
     // 🎚 モード切替 — ステージとオーケストラは「全モードで」常時表示
     const modes = {
@@ -16033,6 +16037,9 @@
       stageGroups.forEach(o => { if (o) o.visible = m.stageVisible; });
       orchestra.forEach(p => { if (p && p.group) p.group.visible = m.stageVisible; });
       [chairMesh, bodyMesh, headMesh, hairMesh, shoulderMesh, lapMesh].forEach(im => { if (im) im.visible = m.audienceVisible; });
+      // 神話モード：環境光を大幅に絞って『神話の幻視』感を出す
+      if (kohAmbient) kohAmbient.intensity = m.myth ? 0.18 : 0.9;
+      if (kohHemi)    kohHemi.intensity    = m.myth ? 0.10 : 0.7;
       if (scene.userData.planetGroup) scene.userData.planetGroup.visible = m.planets;
       if (scene.userData.natureGroup) scene.userData.natureGroup.visible = m.nature;
       if (scene.userData.mythGroup) scene.userData.mythGroup.visible = m.myth;
@@ -16138,14 +16145,39 @@
       dark.className = 'koh-babel-dark';
       ov.appendChild(dark);
       requestAnimationFrame(() => dark.classList.add('on'));
-      // 2) 雷：白い閃光オーバーレイを連続で
-      const flashTimes = [200, 350, 600, 900, 1400, 2100];
-      flashTimes.forEach(ms => {
+      // 2) 雷：白い閃光オーバーレイ＋シーン全体を一瞬白く＋音を鳴らす（強烈に）
+      const flashTimes = [120, 220, 380, 520, 720, 980, 1300, 1700, 2150, 2680, 3200];
+      flashTimes.forEach((ms, idx) => {
         setTimeout(() => {
           const flash = document.createElement('div');
-          flash.className = 'koh-babel-flash';
+          flash.className = 'koh-babel-flash strong';
+          // ランダムで稲妻形のSVGを描く
+          const w = Math.random() < 0.6;
+          if (w) {
+            const sx = 30 + Math.random() * 40, mx = sx + (Math.random()*30 - 15);
+            flash.innerHTML = `<svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;"><polyline points="${sx},0 ${sx-3},20 ${mx},35 ${mx-4},55 ${mx+2},75 ${mx-6},100" stroke="#fff" stroke-width="0.6" fill="none" filter="drop-shadow(0 0 4px #fff)"/></svg>`;
+          }
           ov.appendChild(flash);
-          setTimeout(() => flash.remove(), 200);
+          // シーン環境光を一瞬上げる
+          if (kohAmbient) {
+            const orig = kohAmbient.intensity;
+            kohAmbient.intensity = 2.5;
+            setTimeout(() => { kohAmbient.intensity = orig; }, 90);
+          }
+          // 雷音
+          try {
+            const ac = new (window.AudioContext||window.webkitAudioContext)();
+            const o = ac.createOscillator(), g = ac.createGain();
+            o.type = 'sawtooth';
+            o.frequency.setValueAtTime(60 + Math.random()*40, ac.currentTime);
+            o.frequency.exponentialRampToValueAtTime(20, ac.currentTime+0.4);
+            g.gain.setValueAtTime(0, ac.currentTime);
+            g.gain.linearRampToValueAtTime(0.3, ac.currentTime+0.02);
+            g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime+0.5);
+            o.connect(g).connect(ac.destination);
+            o.start(); o.stop(ac.currentTime+0.55);
+          } catch(_) {}
+          setTimeout(() => flash.remove(), 240);
         }, ms);
       });
       // 3) 塔の崩壊：sprite scale.y を圧縮、ジッターも入れて揺れ感
