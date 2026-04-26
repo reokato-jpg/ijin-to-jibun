@@ -11685,7 +11685,7 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   .pantheon-overlay .pantheon-back-btn { top: 8px; left: 50%; transform: translateX(-50%); padding: 5px 12px; font-size: 11px; }
 }
 
-/* 図書館(library3d) 横画面 */
+/* 図書館(library3d) 横画面 — 旧クラス */
 @media (orientation: landscape) and (max-height: 500px) {
   .lib3d-overlay .lib3d-close { top: 8px; right: 8px; width: 36px; height: 36px; font-size: 18px; }
   .lib3d-overlay .lib3d-title { top: 8px; left: 16px; font-size: 13px; }
@@ -11694,6 +11694,44 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   .lib3d-overlay .lib3d-stick { width: 80px; height: 80px; left: 12px; bottom: 12px; }
   .lib3d-overlay .lib3d-view-btn { right: 8px; bottom: 8px; padding: 6px 12px; font-size: 12px; }
   .lib-results { max-height: 70vh; grid-template-columns: 1fr 1fr; }
+}
+
+/* 📚 新図書館 (.library-overlay) 横画面 */
+@media (orientation: landscape) and (max-height: 600px) {
+  .library-overlay .lib-close { top: 8px; right: 8px; width: 36px; height: 36px; font-size: 18px; }
+  .library-overlay .lib-search-fab { top: 8px; left: 50%; transform: translateX(-50%); padding: 6px 14px; font-size: 12px; }
+  .library-overlay .lib-head { top: 6px; left: 12px; }
+  .library-overlay .lib-title { font-size: 18px; letter-spacing: 4px; }
+  .library-overlay .lib-sub { font-size: 9px; letter-spacing: 1px; }
+  .library-overlay .lib-controls-hint { display: none; }
+  /* 検索パネル：全画面ではなく右側パネル */
+  .library-overlay .lib-search-panel {
+    width: min(380px, 50vw); height: 100vh;
+    top: 0; right: 0; left: auto; bottom: 0;
+    transform: translateX(100%);
+    border-left: 1px solid rgba(200,160,80,0.4);
+    border-radius: 0;
+    padding: 12px 14px 14px;
+  }
+  .library-overlay .lib-search-panel.open { transform: translateX(0); }
+  .library-overlay .lib-tabs { gap: 4px; }
+  .library-overlay .lib-tab { padding: 4px 9px; font-size: 11px; }
+  .library-overlay .lib-results { max-height: 60vh; grid-template-columns: 1fr; gap: 6px; }
+  .library-overlay .lib-result { padding: 6px; font-size: 11px; }
+  .library-overlay .lib-foot { font-size: 10px; }
+  /* ジョイスティック小さく */
+  .lib-joy { width: 84px; height: 84px; bottom: 14px; left: 14px; }
+  .lib-joy-knob { width: 32px; height: 32px; }
+  /* 棚モーダル：横画面用に上下マージン削減 */
+  .lib-shelf-modal .lib-shelf-card { max-height: 94vh; padding: 12px 14px; }
+  .lib-shelf-head { padding-bottom: 8px; margin-bottom: 8px; }
+  .lib-shelf-title { font-size: 14px; }
+  /* 棚3D：本のサイズを横画面に最適化 */
+  .ls3-books { padding: 8px; gap: 4px; min-height: 140px; }
+  .ls3-book, .ls3-empty { height: clamp(120px, 32vh, 200px); }
+  .ls3-spine-text { font-size: clamp(9px, 1.5vh, 12px); }
+  /* 近接ボタンの位置 */
+  .lib-shelf-btn { bottom: 16%; padding: 10px 22px; font-size: 14px; }
 }
 
 /* ===== ビジネス図解ラボ（ロール+矢印） ===== */
