@@ -19817,20 +19817,30 @@
     // ⏳ 偉人タイムスリップモード — 過去の偉人たちの記憶
     const timeslipGroup = new THREE.Group();
     timeslipGroup.visible = false;
-    // 偉人シルエット（板にキャンバス描画、背景透過）
-    const ICONS = [
-      { emoji: '🎼', name: 'モーツァルト', year: '1756' },
-      { emoji: '🔭', name: 'ガリレオ', year: '1564' },
-      { emoji: '✏️', name: 'シェイクスピア', year: '1564' },
-      { emoji: '🎨', name: 'ダ・ヴィンチ', year: '1452' },
-      { emoji: '🧠', name: 'アインシュタイン', year: '1879' },
-      { emoji: '👑', name: 'ナポレオン', year: '1769' },
-      { emoji: '🪶', name: '紫式部', year: '978' },
-      { emoji: '⚔', name: '織田信長', year: '1534' },
-      { emoji: '🍎', name: 'ニュートン', year: '1643' },
-      { emoji: '☕', name: 'ベートーヴェン', year: '1770' },
+    // 偉人カード（絵文字撤去、頭文字＋年＋名前のみ）— クリックで showPerson 遷移
+    const TIMESLIP_IJINS = [
+      { id: 'democritus',   name: 'デモクリトス',   year: '-460', initial: 'Δ' },
+      { id: 'plato',        name: 'プラトン',       year: '-427', initial: 'Π' },
+      { id: 'aristotle',    name: 'アリストテレス', year: '-384', initial: 'Α' },
+      { id: 'leonardo',     name: 'ダ・ヴィンチ',   year: '1452', initial: 'L' },
+      { id: 'shakespeare',  name: 'シェイクスピア', year: '1564', initial: 'W' },
+      { id: 'galileo',      name: 'ガリレオ',       year: '1564', initial: 'G' },
+      { id: 'newton',       name: 'ニュートン',     year: '1643', initial: 'N' },
+      { id: 'bach',         name: 'バッハ',         year: '1685', initial: 'B' },
+      { id: 'mozart',       name: 'モーツァルト',   year: '1756', initial: 'W' },
+      { id: 'beethoven',    name: 'ベートーヴェン', year: '1770', initial: 'L' },
+      { id: 'darwin',       name: 'ダーウィン',     year: '1809', initial: 'C' },
+      { id: 'lincoln',      name: 'リンカーン',     year: '1809', initial: 'A' },
+      { id: 'einstein',     name: 'アインシュタイン', year: '1879', initial: 'E' },
+      { id: 'curie',        name: 'キュリー',       year: '1867', initial: 'M' },
+      { id: 'gandhi',       name: 'ガンジー',       year: '1869', initial: 'M' },
+      { id: 'keynes',       name: 'ケインズ',       year: '1883', initial: 'J' },
+      { id: 'heisenberg',   name: 'ハイゼンベルク', year: '1901', initial: 'W' },
+      { id: 'feynman',      name: 'ファインマン',   year: '1918', initial: 'R' },
+      { id: 'mandela',      name: 'マンデラ',       year: '1918', initial: 'N' },
+      { id: 'steve_jobs',   name: 'スティーブ・ジョブズ', year: '1955', initial: 'S' },
     ];
-    function makeFigureCard(icon, name, year, accent) {
+    function makeFigureCard(initial, name, year) {
       const c = document.createElement('canvas'); c.width = 256; c.height = 384;
       const g = c.getContext('2d');
       // 古紙風の背景
@@ -19843,31 +19853,35 @@
         const r = 4 + Math.random()*16;
         g.beginPath(); g.arc(Math.random()*256, Math.random()*384, r, 0, Math.PI*2); g.fill();
       }
-      // 縁
+      // 縁（二重）
       g.strokeStyle = '#5a3818'; g.lineWidth = 4;
       g.strokeRect(8, 8, 240, 368);
       g.lineWidth = 1;
       g.strokeRect(16, 16, 224, 352);
-      // 大きな絵文字
-      g.font = '120px serif';
+      // 4隅装飾
+      g.fillStyle = '#8a6020';
+      [16, 232].forEach(x => [16, 352].forEach(y => g.fillRect(x, y, 8, 8)));
+      // イニシャル（大きく、装飾的）
+      g.font = 'bold 140px "Cormorant Garamond", serif';
       g.textAlign = 'center'; g.textBaseline = 'middle';
       g.fillStyle = '#3a2010';
-      g.fillText(icon, 128, 160);
+      g.fillText(initial, 128, 160);
       // 年
       g.font = 'italic 22px "Cormorant Garamond", serif';
       g.fillStyle = '#5a3818';
       g.fillText('— ' + year + ' —', 128, 280);
       // 名前
-      g.font = 'bold 26px "Shippori Mincho", serif';
+      g.font = 'bold 22px "Shippori Mincho", serif';
       g.fillStyle = '#1a0a04';
       g.fillText(name, 128, 320);
       return new THREE.CanvasTexture(c);
     }
-    ICONS.forEach((icn, i) => {
-      const a = (i / ICONS.length) * Math.PI * 2;
-      const r = 14;
+    const timeslipCards = [];
+    TIMESLIP_IJINS.forEach((p, i) => {
+      const a = (i / TIMESLIP_IJINS.length) * Math.PI * 2;
+      const r = 14 + (i % 2) * 1.5; // 内外の二重リング
       const x = Math.cos(a) * r, z = Math.sin(a) * r;
-      const tex = makeFigureCard(icn.emoji, icn.name, icn.year);
+      const tex = makeFigureCard(p.initial, p.name, p.year);
       if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace;
       const card = new THREE.Mesh(
         new THREE.PlaneGeometry(2.2, 3.3),
@@ -19875,9 +19889,11 @@
       );
       card.position.set(x, 3 + Math.sin(i * 1.7) * 0.8, z);
       card.lookAt(0, card.position.y, 0);
-      card.userData = { baseY: card.position.y, phase: i * 0.6 };
+      card.userData = { baseY: card.position.y, phase: i * 0.6, ijinId: p.id, name: p.name };
       timeslipGroup.add(card);
+      timeslipCards.push(card);
     });
+    timeslipGroup.userData.cards = timeslipCards;
     // 浮遊する古文書（雪のように降る、AdditiveBlending）
     const paperTex = (() => {
       const c = document.createElement('canvas'); c.width = 64; c.height = 64;
@@ -19933,6 +19949,55 @@
     timeslipGroup.userData.hourglass = hourglass;
     scene.add(timeslipGroup);
     scene.userData.timeslipGroup = timeslipGroup;
+
+    // 🎯 タイムスリップカードのクリック検出（raycaster）
+    {
+      const ray = new THREE.Raycaster();
+      const ndc = new THREE.Vector2();
+      let pointerDown = null;
+      stage.addEventListener('pointerdown', (e) => {
+        pointerDown = { x: e.clientX, y: e.clientY };
+      });
+      stage.addEventListener('pointerup', (e) => {
+        if (!pointerDown) return;
+        const dx = e.clientX - pointerDown.x;
+        const dy = e.clientY - pointerDown.y;
+        pointerDown = null;
+        // ドラッグ判定（5px以上動いたらクリック扱いしない）
+        if (Math.hypot(dx, dy) > 5) return;
+        // タイムスリップモード時のみカード判定
+        if (currentMode !== 'timeslip') return;
+        const cards = (scene.userData.timeslipGroup &&
+                      scene.userData.timeslipGroup.userData &&
+                      scene.userData.timeslipGroup.userData.cards) || [];
+        if (!cards.length) return;
+        const rect = stage.getBoundingClientRect();
+        ndc.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+        ndc.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+        ray.setFromCamera(ndc, camera);
+        const hits = ray.intersectObjects(cards, false);
+        if (hits[0]) {
+          const card = hits[0].object;
+          const id = card.userData.ijinId;
+          if (id) {
+            // カードをハイライト
+            card.scale.set(1.2, 1.2, 1.2);
+            setTimeout(() => {
+              card.scale.set(1, 1, 1);
+              if (window.showPerson) {
+                // KOH を閉じてプロフィールへ
+                ov.classList.remove('show');
+                setTimeout(() => {
+                  ov.remove();
+                  window.showPerson(id);
+                }, 320);
+              }
+            }, 300);
+          }
+        }
+      });
+      stage.addEventListener('pointercancel', () => { pointerDown = null; });
+    }
 
     // 🌫 浮遊する塵（光に照らされて見える、空気感の核心）
     const DUST_N = 600;
