@@ -14457,6 +14457,7 @@
       </div>
       <!-- ⛩ 神話シーン切替タイトルカード -->
       <div class="koh-myth-title" id="kohMythTitle"></div>
+      <div class="koh-myth-narration" id="kohMythNarration"></div>
       <button class="koh-myth-action" id="kohMythAction" style="display:none">⚡ 混乱を起こす</button>
       <!-- 🦒 動物ストーリー（自然モード時、たまに浮かぶ） -->
       <div class="koh-animal-story" id="kohAnimalStory"></div>
@@ -15698,6 +15699,29 @@
         actionBtn.disabled = false;
         actionBtn.classList.remove('triggered');
         actionBtn.textContent = '⚡ 混乱を起こす';
+      }
+      // 🌸 粒子エフェクト：当該神話のみフェードin、他はフェードout
+      const mp = scene.userData.mythGroup && scene.userData.mythGroup.userData.mythParticles;
+      if (mp) {
+        order.forEach((k, i) => {
+          if (mp[k]) mp[k].userData.fadeTarget = (i === idx) ? 1.0 : 0.0;
+        });
+      }
+      // 🎨 ドームムード色シフト
+      const moods = scene.userData.mythMoods;
+      if (moods && moods[order[idx]] && sphereMat.uniforms && sphereMat.uniforms.uMood) {
+        // ターゲット色を userData に保存（tickでlerpする）
+        scene.userData.mythMoodTarget = moods[order[idx]];
+      }
+      // 📜 ナレーション（4秒後にフェードin、20秒で消える）
+      const narrEl = ov.querySelector('#kohMythNarration');
+      if (narrEl) {
+        narrEl.classList.remove('show');
+        narrEl.textContent = scene.userData.mythNarrations[order[idx]] || '';
+        clearTimeout(scene.userData._narrTimer);
+        clearTimeout(scene.userData._narrFadeTimer);
+        scene.userData._narrTimer = setTimeout(() => narrEl.classList.add('show'), 4000);
+        scene.userData._narrFadeTimer = setTimeout(() => narrEl.classList.remove('show'), 24000);
       }
     }
     // 🌩 バベル崩壊アニメ
@@ -18984,29 +19008,30 @@
       im.src = url;
     }
 
-    // ── 各神話のスプライト（3つのアングルに同じシーンを配置：見回しても見える）──
+    // ── 各神話のスプライト（60°間隔の6アングル＝近似360°、Vegas Sphere風）──
     const mythSprites = {};
     ['eden', 'noah', 'atlantis', 'babel', 'elysion'].forEach(key => {
       const fallbackTex = makeMythCanvas(key);
       mythSprites[key] = [];
       const sprites = [];
-      [-Math.PI*0.5, Math.PI*0.6, -Math.PI*1.5].forEach(angle => {
+      // 6アングルで60°ごとに同じ画像を配置 → どこを見ても画像が見える
+      for (let i = 0; i < 6; i++) {
+        const angle = (i / 6) * Math.PI * 2;
         const sprite = new THREE.Sprite(new THREE.SpriteMaterial({
           map: fallbackTex, transparent: true, opacity: 0,
           depthWrite: false,
           blending: THREE.NormalBlending,
         }));
-        sprite.scale.set(36, 24, 1);
+        sprite.scale.set(28, 20, 1);  // 6枚なので少し小さめ＋重なり
         const r = 38;
         sprite.position.set(Math.cos(angle) * r, 8, Math.sin(angle) * r);
         sprite.userData.fadeTarget = 0;
         mythGroup.add(sprite);
         mythSprites[key].push(sprite);
         sprites.push(sprite);
-      });
-      // 名画ロード（成功時に全3アングルへ反映、AR比に合わせてスケール調整）
+      }
       tryLoadMythPainting(MYTH_PAINTINGS[key], (tex, ar) => {
-        const w = 36, h = w / ar;
+        const w = 28, h = w / ar;
         sprites.forEach(s => {
           s.material.map = tex;
           s.material.needsUpdate = true;
@@ -19015,6 +19040,113 @@
       });
       if (mythScenes[key]) mythScenes[key].group.visible = false;
     });
+
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    // 🌸🌧🍂✨💧 神話別の粒子エフェクト（Vegas Sphereの空気感）
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    function makeMythParticles(key, count, color, sizeMin, sizeMax) {
+      const geo = new THREE.BufferGeometry();
+      const pos = new Float32Array(count * 3);
+      const vel = new Float32Array(count * 3);
+      const seed = new Float32Array(count);
+      for (let i = 0; i < count; i++) {
+        const a = Math.random() * Math.PI * 2;
+        const r = 26 + Math.random() * 12;
+        pos[i*3] = Math.cos(a) * r;
+        pos[i*3+1] = Math.random() * 22;
+        pos[i*3+2] = Math.sin(a) * r;
+        vel[i*3] = (Math.random() - 0.5) * 0.4;
+        vel[i*3+1] = -1.0 - Math.random() * 0.6;
+        vel[i*3+2] = (Math.random() - 0.5) * 0.4;
+        seed[i] = Math.random();
+      }
+      geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+      // 種別ごとのテクスチャ
+      const tex = (() => {
+        const c = document.createElement('canvas'); c.width = 64; c.height = 64;
+        const g = c.getContext('2d');
+        if (key === 'eden') {
+          // 桃色の花びら（楕円）
+          g.fillStyle = 'rgba(255,180,200,0.95)';
+          g.beginPath(); g.ellipse(32, 32, 22, 14, 0.5, 0, Math.PI*2); g.fill();
+          g.fillStyle = 'rgba(255,140,180,0.6)';
+          g.beginPath(); g.ellipse(32, 32, 16, 8, 0.5, 0, Math.PI*2); g.fill();
+        } else if (key === 'noah') {
+          // 雨の縦線
+          const grd = g.createLinearGradient(32, 0, 32, 64);
+          grd.addColorStop(0, 'rgba(180,220,255,0)');
+          grd.addColorStop(0.5, 'rgba(220,240,255,0.95)');
+          grd.addColorStop(1, 'rgba(180,220,255,0)');
+          g.fillStyle = grd;
+          g.fillRect(28, 0, 8, 64);
+        } else if (key === 'babel') {
+          // 灰の粉（暗い）
+          const grd = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+          grd.addColorStop(0, 'rgba(80,60,50,0.85)');
+          grd.addColorStop(1, 'rgba(40,30,25,0)');
+          g.fillStyle = grd; g.fillRect(0, 0, 64, 64);
+        } else if (key === 'elysion') {
+          // 金色の光球
+          const grd = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+          grd.addColorStop(0, 'rgba(255,250,180,1)');
+          grd.addColorStop(0.4, 'rgba(255,220,140,0.7)');
+          grd.addColorStop(1, 'rgba(255,200,100,0)');
+          g.fillStyle = grd; g.fillRect(0, 0, 64, 64);
+        } else if (key === 'atlantis') {
+          // 泡（青白）
+          g.strokeStyle = 'rgba(220,240,255,0.85)';
+          g.lineWidth = 3;
+          g.beginPath(); g.arc(32, 32, 24, 0, Math.PI*2); g.stroke();
+          g.fillStyle = 'rgba(220,240,255,0.25)';
+          g.beginPath(); g.arc(32, 32, 22, 0, Math.PI*2); g.fill();
+          g.fillStyle = 'rgba(255,255,255,0.85)';
+          g.beginPath(); g.arc(24, 24, 4, 0, Math.PI*2); g.fill();
+        }
+        return new THREE.CanvasTexture(c);
+      })();
+      const mat = new THREE.PointsMaterial({
+        map: tex, color: color, size: sizeMax, transparent: true,
+        opacity: 0, depthWrite: false,
+        blending: key === 'babel' ? THREE.NormalBlending : THREE.AdditiveBlending,
+        fog: false,
+      });
+      const points = new THREE.Points(geo, mat);
+      points.userData = { key, vel, seed, fadeTarget: 0, sizeMin, sizeMax };
+      mythGroup.add(points);
+      return points;
+    }
+    const mythParticles = {
+      eden:    makeMythParticles('eden',    140, 0xffc0d0, 0.8, 1.4),
+      noah:    makeMythParticles('noah',    280, 0xc0d8ff, 0.6, 1.0),
+      babel:   makeMythParticles('babel',   220, 0x806858, 0.5, 1.0),
+      elysion: makeMythParticles('elysion', 100, 0xfff0c0, 1.2, 1.8),
+      atlantis:makeMythParticles('atlantis',120, 0xc0e8ff, 0.7, 1.4),
+    };
+    mythGroup.userData.mythParticles = mythParticles;
+
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    // 📜 神話ナレーション（構成作家、邪魔にならない位置で控えめに）
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    const MYTH_NARRATIONS = {
+      eden:     '光が差し込む朝、すべての名前が、まだ与えられたばかりだった。',
+      noah:     '雨は四十日続いた。鳩が枝を咥えて戻ったとき、世界はもう一度始まった。',
+      atlantis: '波の下に、忘れられた賢者の都市がある。光の柱は今も誰かを照らしている。',
+      babel:    '塔は天に届かなかった。代わりに、人は無数の言葉に分かれて散った。',
+      elysion:  '英雄たちが眠る草原。風が運ぶのは、まだ語られていない物語の続き。',
+    };
+    scene.userData.mythNarrations = MYTH_NARRATIONS;
+
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    // 🎨 神話別ドームムード色
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    const MYTH_MOODS = {
+      eden:    new THREE.Color(0xc8a040),  // 金緑
+      noah:    new THREE.Color(0x4a6a90),  // 雨青
+      atlantis:new THREE.Color(0x4080a0),  // 深海青
+      babel:   new THREE.Color(0xa04068),  // 赤紫
+      elysion: new THREE.Color(0xfff0a0),  // 金白
+    };
+    scene.userData.mythMoods = MYTH_MOODS;
 
     // 🌫 大気オーバーレイ：神話モード時、舞い上がる光粒子（リアリティUP）
     {
@@ -19380,6 +19512,62 @@
             a.rotation.y = -0.3 + Math.sin(t * 0.2) * 0.4;
             a.rotation.z = Math.sin(t * 0.15) * 0.15;
           }
+        }
+      }
+      // 🌸 神話別粒子エフェクト：種別アニメ＋フェード
+      if (scene.userData.mythGroup && scene.userData.mythGroup.visible) {
+        const mp = scene.userData.mythGroup.userData.mythParticles;
+        if (mp) {
+          Object.values(mp).forEach(pts => {
+            const u = pts.userData;
+            // フェード（dt*1.6 速度で目標opacity に補間）
+            const cur = pts.material.opacity;
+            pts.material.opacity = cur + (u.fadeTarget - cur) * Math.min(1, dt * 1.6);
+            // 表示中だけ位置更新（CPU節約）
+            if (pts.material.opacity > 0.05) {
+              const pa = pts.geometry.attributes.position;
+              for (let i = 0; i < pa.count; i++) {
+                if (u.key === 'eden') {
+                  // 花びら：ゆっくり下降＋横揺れ
+                  pa.array[i*3+1] -= 0.05 + Math.sin(t * 0.8 + u.seed[i]*9) * 0.02;
+                  pa.array[i*3]   += Math.sin(t * 1.2 + u.seed[i]*7) * 0.04;
+                  if (pa.array[i*3+1] < 0) pa.array[i*3+1] = 22;
+                } else if (u.key === 'noah') {
+                  // 雨：高速下降
+                  pa.array[i*3+1] -= 0.6;
+                  if (pa.array[i*3+1] < 0) {
+                    pa.array[i*3+1] = 22;
+                    const a = Math.random() * Math.PI * 2;
+                    const r = 26 + Math.random() * 12;
+                    pa.array[i*3] = Math.cos(a) * r;
+                    pa.array[i*3+2] = Math.sin(a) * r;
+                  }
+                } else if (u.key === 'babel') {
+                  // 灰：ふわふわ漂う、横風
+                  pa.array[i*3]   += Math.sin(t * 0.4 + u.seed[i]*5) * 0.05;
+                  pa.array[i*3+1] += Math.cos(t * 0.3 + u.seed[i]*6) * 0.02 - 0.02;
+                  if (pa.array[i*3+1] < 0) pa.array[i*3+1] = 22;
+                } else if (u.key === 'elysion') {
+                  // 光球：上昇＋呼吸
+                  pa.array[i*3+1] += 0.025 + Math.sin(t * 1.0 + u.seed[i]*8) * 0.015;
+                  pa.array[i*3]   += Math.sin(t * 0.5 + u.seed[i]*4) * 0.02;
+                  if (pa.array[i*3+1] > 22) pa.array[i*3+1] = 0;
+                } else if (u.key === 'atlantis') {
+                  // 泡：ゆっくり上昇＋ジグザグ
+                  pa.array[i*3+1] += 0.06;
+                  pa.array[i*3]   += Math.sin(t * 1.5 + u.seed[i]*9) * 0.03;
+                  pa.array[i*3+2] += Math.cos(t * 1.5 + u.seed[i]*9) * 0.03;
+                  if (pa.array[i*3+1] > 22) pa.array[i*3+1] = 0;
+                }
+              }
+              pa.needsUpdate = true;
+            }
+          });
+        }
+        // 🎨 ドームムード色を神話別ターゲットへ lerp
+        if (scene.userData.mythMoodTarget && sphereMat.uniforms && sphereMat.uniforms.uMood) {
+          const cur = sphereMat.uniforms.uMood.value;
+          cur.lerp(scene.userData.mythMoodTarget, Math.min(1, dt * 0.8));
         }
       }
       // 🎬 神話スプライトフェード（Vegas Sphere方式）+ 大気エフェクト
