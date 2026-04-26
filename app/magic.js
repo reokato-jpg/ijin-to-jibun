@@ -14759,13 +14759,6 @@
         <span class="kat-state" id="kohArState">ON</span>
       </button>
       <div class="koh-ar-overlay" id="kohArOverlay">
-        <div class="koh-ar-hud-bg" aria-hidden="true">
-          <div class="kah-grid"></div>
-          <div class="kah-corner kah-corner-tl"></div>
-          <div class="kah-corner kah-corner-tr"></div>
-          <div class="kah-corner kah-corner-bl"></div>
-          <div class="kah-corner kah-corner-br"></div>
-        </div>
         <div class="koh-ar-info-panel" id="kohArInfoPanel"></div>
         <div class="koh-ar-ads" id="kohArAds"></div>
       </div>
@@ -14999,6 +14992,13 @@
               col += vec3(1.0, 0.95, 0.7) * smoothstep(0.020, 0.0, sd) * 1.4;
               col += vec3(1.0, 0.85, 0.50) * smoothstep(0.18, 0.0, sd) * 0.40;
               col = mix(col, vec3(1.0, 0.96, 0.92), smoothstep(0.5, 0.78, cloud) * smoothstep(0.55, 0.7, uv.y) * 0.65);
+              // 🦋 飛ぶ鳥／蝶（V字シルエット、3羽）
+              for (int i = 0; i < 3; i++) {
+                float fi = float(i);
+                vec2 bp = vec2(fract(uTime * 0.05 + fi * 0.37), 0.55 + sin(uTime*0.4+fi*1.7)*0.06);
+                float wing = smoothstep(0.018, 0.0, abs(uv.y-bp.y) + abs(fract(uv.x*40.0+fi)-0.5)*0.04 + abs(uv.x-bp.x)*0.5);
+                col = mix(col, vec3(0.04, 0.10, 0.05), wing * 0.6);
+              }
             } else if (uMyth < 1.5) {
               // 🚢 Noah: 嵐の空と荒波
               vec3 sky = mix(vec3(0.20, 0.24, 0.36), vec3(0.10, 0.14, 0.22), horizon);
@@ -15036,6 +15036,16 @@
               }
               // 海底のシルエット（柱影）
               if (uv.y < 0.15) col = mix(col, vec3(0.0, 0.04, 0.08), 0.85);
+              // 🐟 泳ぐ魚（横方向に流れる、4匹）
+              for (int i = 0; i < 4; i++) {
+                float fi = float(i);
+                float fy = 0.25 + fi * 0.15 + sin(uTime*0.4+fi*1.3)*0.04;
+                float fx = fract(uTime * 0.06 + fi * 0.27);
+                vec2 fp = vec2(fx, fy);
+                float body = smoothstep(0.025, 0.0, abs(uv.y-fp.y)*1.6 + abs(uv.x-fp.x)*0.8);
+                float tail = smoothstep(0.012, 0.0, abs(uv.y-fp.y)*2.0 + (uv.x-fp.x+0.025)*1.5);
+                col = mix(col, vec3(0.15, 0.40, 0.55), (body+tail) * 0.85);
+              }
             } else if (uMyth < 3.5) {
               // 🗼 Babel: 紫赤の嵐空＋稲妻
               vec3 sky = mix(vec3(0.60, 0.20, 0.18), vec3(0.30, 0.10, 0.20), horizon);
@@ -19634,12 +19644,8 @@
       const flowerMat = makeHologramMaterial(0xff80c0);
       const grassMat = makeHologramMaterial(0xa0ffa0);
       const mats = [trunkMat, leafMat, fruitMat, snakeMat, flowerMat, grassMat];
-      // 浮島の地面（円盤）
-      const ground = new THREE.Mesh(
-        new THREE.CylinderGeometry(4.5, 3.8, 0.4, 32),
-        grassMat
-      );
-      ground.position.y = 0.2; g.add(ground);
+      // 浮島の地面（円盤）— ユーザー要望で削除
+      // (球体下部の『〇』として見えていたため非表示に)
       // 主幹（中央、高さ8m）
       const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.85, 8.5, 16), trunkMat);
       trunk.position.y = 4.45; g.add(trunk);
@@ -19770,9 +19776,7 @@
     {
       const g = new THREE.Group();
       const mat = makeHologramMaterial(0x60c0ff);
-      // 基壇
-      const base = new THREE.Mesh(new THREE.BoxGeometry(7, 0.4, 5), mat);
-      base.position.y = 0.2; g.add(base);
+      // 基壇は省略（球体下部に円が見える件）
       // 柱×6（円柱）
       for (let i = 0; i < 6; i++) {
         const x = -2.5 + (i % 3) * 2.5;
