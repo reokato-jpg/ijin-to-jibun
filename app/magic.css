@@ -10603,8 +10603,26 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   box-shadow: 0 2px 8px rgba(0,0,0,0.4), 0 0 8px var(--c);
   transition: transform 0.15s;
 }
-.el-pal-item:hover { transform: translateY(-2px); }
+.el-pal-item:hover { transform: translateY(-4px); animation-play-state: paused; }
 .el-pal-item:active { cursor: grabbing; }
+.el-pal-item { animation: elpalbob 2.6s ease-in-out infinite; }
+.el-pal-item:nth-child(3n) { animation-delay: -0.4s; animation-duration: 2.9s; }
+.el-pal-item:nth-child(3n+1) { animation-delay: -1.2s; animation-duration: 3.1s; }
+.el-pal-item:nth-child(5n) { animation-delay: -0.7s; animation-duration: 2.4s; }
+.el-pal-item:nth-child(7n) { animation-delay: -1.6s; animation-duration: 3.3s; }
+@keyframes elpalbob {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  25%      { transform: translateY(-2px) rotate(2deg); }
+  50%      { transform: translateY(-4px) rotate(-1deg); }
+  75%      { transform: translateY(-1px) rotate(3deg); }
+}
+.el-pal-item .el-face { animation: elpaleyes 3s ease-in-out infinite; }
+@keyframes elpaleyes {
+  0%, 90%, 100% { opacity: 1; transform: translate(-50%, 0) scaleY(1); }
+  92%, 95%      { opacity: 1; transform: translate(-50%, 0) scaleY(0.1); }
+}
+/* 周期表モードでは静止 */
+.el-lab2-palette[data-mode="table"] .el-pal-item { animation: none; }
 .el-pal-sym { font-size: 18px; font-weight: 800; text-shadow: 0 1px 0 rgba(255,255,255,0.3); }
 .el-pal-name { font-size: 9px; opacity: 0.85; margin-top: 1px; }
 .el-pal-ghost {

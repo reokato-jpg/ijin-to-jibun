@@ -23355,7 +23355,6 @@
               ${ELEMENTS_DATA.map(e => `
                 <button class="el-pal-item" data-sym="${e.sym}" data-period="${e.period}" data-group="${e.group}" style="--c:${e.color}; --pp:${e.period}; --pg:${e.group}" type="button">
                   <span class="el-pal-sym">${e.sym}</span>
-                  ${elFaceSvg(e.eyes)}
                   <span class="el-pal-name">${e.name}</span>
                 </button>
               `).join('')}
@@ -23369,7 +23368,6 @@
             <div class="el-cell" style="--el-color:${el.color}" data-el="${el.sym}">
               <div class="el-no">${el.no}</div>
               <div class="el-sym">${el.sym}</div>
-              ${elFaceSvg(el.eyes)}
               <div class="el-name">${el.name}</div>
               <div class="el-tag">${el.tag}</div>
             </div>
