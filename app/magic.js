@@ -29362,6 +29362,7 @@
           <button class="cosmos-boost-btn" id="cosmosBoost" aria-label="加速">BOOST</button>
           <button class="cosmos-brake-btn" id="cosmosBrake" aria-label="ブレーキ">BRAKE</button>
         </div>
+        <button class="cosmos-gyro-btn" id="cosmosGyroBtn" aria-label="ジャイロ操縦">📱 GYRO</button>
       </div>
       <div class="cosmos-info-panel" id="cosmosInfoPanel">
         <button class="cosmos-info-close" aria-label="閉じる">×</button>
@@ -32961,6 +32962,53 @@
     rocketCanvas.addEventListener('pointerup', rocketStopDrag);
     rocketCanvas.addEventListener('pointercancel', rocketStopDrag);
     rocketCanvas.addEventListener('pointerleave', rocketStopDrag);
+
+    // 📱 ジャイロ操縦（端末を傾けて旋回・上下：宇宙のロケット/モビルスーツのみ）
+    let gyroEnabled = false;
+    let gyroBaseBeta = null, gyroBaseGamma = null; // キャリブレーション基準
+    const gyroBtn = ov.querySelector('#cosmosGyroBtn');
+    function onDeviceOrientation(e) {
+      if (!rocketMode || !gyroEnabled) return;
+      // beta: 端末の前後傾き [-180,180]、gamma: 左右 [-90,90]
+      let beta = e.beta, gamma = e.gamma;
+      if (beta == null || gamma == null) return;
+      // 横画面ならbetaとgammaの役割が入れ替わる
+      const orient = (screen.orientation && screen.orientation.angle) || window.orientation || 0;
+      let pitchInput = beta, yawInput = gamma;
+      if (orient === 90)        { pitchInput = -gamma; yawInput =  beta; }
+      else if (orient === -90 || orient === 270) { pitchInput =  gamma; yawInput = -beta; }
+      // 初回キャリブレーション
+      if (gyroBaseBeta === null) { gyroBaseBeta = pitchInput; gyroBaseGamma = yawInput; return; }
+      const dPitch = pitchInput - gyroBaseBeta;
+      const dYaw   = yawInput   - gyroBaseGamma;
+      // デッドゾーン±5度、感度
+      const dz = 5, sens = 0.022;
+      const yawAdd   = (Math.abs(dYaw)   > dz ? -(dYaw   - Math.sign(dYaw)   * dz) : 0) * sens;
+      const pitchAdd = (Math.abs(dPitch) > dz ?  (dPitch - Math.sign(dPitch) * dz) : 0) * sens;
+      rocketYaw   += yawAdd;
+      rocketPitch += pitchAdd;
+      rocketPitch = Math.max(-1.3, Math.min(1.3, rocketPitch));
+    }
+    function setGyroEnabled(on) {
+      gyroEnabled = on;
+      gyroBaseBeta = gyroBaseGamma = null; // 次のイベントでキャリブレーション
+      gyroBtn.classList.toggle('active', on);
+      gyroBtn.textContent = on ? '📱 GYRO ON' : '📱 GYRO';
+      if (on) window.addEventListener('deviceorientation', onDeviceOrientation);
+      else    window.removeEventListener('deviceorientation', onDeviceOrientation);
+    }
+    gyroBtn.addEventListener('click', async () => {
+      if (gyroEnabled) { setGyroEnabled(false); return; }
+      // iOS 13+ は権限要求
+      const Need = window.DeviceOrientationEvent && typeof window.DeviceOrientationEvent.requestPermission === 'function';
+      if (Need) {
+        try {
+          const res = await window.DeviceOrientationEvent.requestPermission();
+          if (res !== 'granted') { alert('ジャイロが許可されませんでした'); return; }
+        } catch (err) { alert('ジャイロを有効にできません: ' + err.message); return; }
+      }
+      setGyroEnabled(true);
+    });
     let thrustHold = false;
     let brakeHold = false;
     let visitedPlanet = null; // 直近訪問した惑星（連続トリガー防止）
