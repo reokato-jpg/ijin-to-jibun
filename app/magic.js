@@ -24337,6 +24337,8 @@
             <span class="el-lab2-counter" id="bizBoardCounter">0 / ${BIZ_MODELS.length}</span>
             <button class="el-lab2-clear" id="bizBoardClear" type="button">🧹 クリア</button>
             <button class="el-lab2-clear biz-match-btn" id="bizMatchBtn" type="button" style="top:50px">🔍 モデル判定</button>
+            <button class="el-lab2-clear biz-copy-btn" id="bizCopyBtn" type="button" style="top:88px">📋 テキスト</button>
+            <button class="el-lab2-clear biz-save-btn" id="bizSaveBtn" type="button" style="top:126px">💾 マイモデルに保存</button>
           </div>
           <div class="biz-toolbar">
             <div class="biz-flow-modes" id="bizFlowModes">
@@ -24359,6 +24361,9 @@
             </div>
           </div>
         </div>
+
+        <div class="el-section-head"><span class="el-sec-label">マイモデル</span><span class="el-sec-sub">— あなたが作ったビジネスモデル —</span></div>
+        <div class="my-models-cont" id="myModelsCont"></div>
 
         <div class="el-section-head"><span class="el-sec-label">登場人物 図鑑</span><span class="el-sec-sub">— ${BIZ_ROLES.length}種 — タップで紹介 —</span></div>
         <div class="biz-piece-zukan">
@@ -24963,6 +24968,108 @@
     ov.querySelectorAll('.biz-svc-z-card').forEach(card => {
       card.addEventListener('click', () => openBizModelModal(card.dataset.model));
     });
+    // ===== マイモデル：自作モデルの保存・コピー・読込 =====
+    const MY_KEY = 'ijinjibun_my_biz_models_v1';
+    function getMyModels() { try { return JSON.parse(localStorage.getItem(MY_KEY) || '[]'); } catch(_) { return []; } }
+    function saveMyModels(arr) { try { localStorage.setItem(MY_KEY, JSON.stringify(arr)); } catch(_) {} }
+    function snapshotCurrent() {
+      const roleNodes = bnodes.filter(n => n.kind === 'role');
+      return {
+        roles: roleNodes.map(n => ({ rid: n.rid, x: Math.round(n.x), y: Math.round(n.y) })),
+        arrows: arrows.map(a => ({
+          fromIdx: roleNodes.indexOf(a.from),
+          toIdx: roleNodes.indexOf(a.to),
+          flow: a.flow,
+        })).filter(a => a.fromIdx >= 0 && a.toIdx >= 0),
+      };
+    }
+    function loadMyModel(m) {
+      clearBoard();
+      const newNodes = m.roles.map(r => spawnRole(r.rid, r.x, r.y));
+      m.arrows.forEach(a => {
+        const f = newNodes[a.fromIdx], t = newNodes[a.toIdx];
+        if (f && t) drawArrow(f, t, a.flow);
+      });
+      bd.scrollIntoView({ behavior:'smooth', block:'start' });
+    }
+    function bizToast(msg) {
+      const t = document.createElement('div');
+      t.className = 'biz-toast';
+      t.textContent = msg;
+      bd.appendChild(t);
+      requestAnimationFrame(() => t.classList.add('show'));
+      setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 280); }, 1800);
+    }
+    function copyTextDiagram() {
+      if (bnodes.filter(n => n.kind === 'role').length === 0) { bizToast('盤に何も置かれていません'); return; }
+      const lines = [];
+      lines.push('【自作ビジネスモデル】');
+      lines.push('登場人物：' + bnodes.filter(n => n.kind === 'role').map(n => role2obj[n.rid].name).join('、'));
+      if (arrows.length) {
+        lines.push('');
+        lines.push('流れ：');
+        arrows.forEach(a => {
+          const fr = role2obj[a.from.rid], to = role2obj[a.to.rid], fl = flow2obj[a.flow];
+          lines.push(`  ${fr.name} → ${to.name}（${fl.icon} ${fl.name}）`);
+        });
+      }
+      lines.push('');
+      lines.push('— 偉人と自分／ビジネス図解ラボ');
+      const text = lines.join('\n');
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(
+          () => bizToast('テキストをコピーしました 📋'),
+          () => prompt('コピーに失敗。手動でコピーしてください', text)
+        );
+      } else {
+        prompt('お使いのブラウザではコピーAPIが使えません。手動でコピーしてください', text);
+      }
+    }
+    function saveCurrentAsMyModel() {
+      if (bnodes.filter(n => n.kind === 'role').length === 0) { bizToast('盤に何も置かれていません'); return; }
+      const name = prompt('モデル名を付けてください\n例：「私の理想サブスク」「コーヒー店D2C」', '');
+      if (!name || !name.trim()) return;
+      const all = getMyModels();
+      all.unshift({ name: name.trim(), createdAt: Date.now(), ...snapshotCurrent() });
+      saveMyModels(all);
+      bizToast(`「${name.trim()}」を保存しました 💾`);
+      renderMyModels();
+    }
+    function renderMyModels() {
+      const cont = ov.querySelector('#myModelsCont');
+      if (!cont) return;
+      const all = getMyModels();
+      if (all.length === 0) {
+        cont.innerHTML = `<div class="my-empty">まだ保存されたモデルはありません。<br>盤で作ったら右の<b>『💾 マイモデルに保存』</b>ボタンで残せます。</div>`;
+        return;
+      }
+      cont.innerHTML = `<div class="my-models-grid">${all.map((m, i) => `
+        <div class="my-model-card">
+          <button class="my-model-x" data-del="${i}" type="button" aria-label="削除">×</button>
+          <div class="my-model-name">${m.name}</div>
+          <div class="my-model-meta">${m.roles.length}人 ／ ${m.arrows.length}本の流れ</div>
+          <div class="my-model-roles">${m.roles.map(r => `<span class="my-model-role-ic" style="--c:${(role2obj[r.rid]||{}).color||'#888'}">${bizIcon(r.rid, 16)}</span>`).join('')}</div>
+          <button class="my-model-load" data-load="${i}" type="button">📂 盤に開く</button>
+        </div>
+      `).join('')}</div>`;
+      cont.querySelectorAll('[data-load]').forEach(b => b.addEventListener('click', () => {
+        loadMyModel(all[+b.dataset.load]);
+        bizToast(`「${all[+b.dataset.load].name}」を読み込みました`);
+      }));
+      cont.querySelectorAll('[data-del]').forEach(x => x.addEventListener('click', e => {
+        e.stopPropagation();
+        const i = +x.dataset.del;
+        if (confirm(`「${all[i].name}」を削除しますか？`)) {
+          all.splice(i, 1);
+          saveMyModels(all);
+          renderMyModels();
+        }
+      }));
+    }
+    ov.querySelector('#bizCopyBtn').addEventListener('click', copyTextDiagram);
+    ov.querySelector('#bizSaveBtn').addEventListener('click', saveCurrentAsMyModel);
+    renderMyModels();
+
     ensureSvgDefs();
     updCounter();
     updBizStatus();
