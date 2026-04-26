@@ -10770,6 +10770,245 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   color: rgba(220,235,255,0.7);
 }
 
+/* ===== ビジネス図解ラボ（ロール+矢印） ===== */
+.biz-toolbar {
+  display: flex; gap: 8px;
+  padding: 8px 10px;
+  background: rgba(0,0,0,0.4);
+  border-top: 1px solid rgba(180,220,255,0.18);
+  border-bottom: 1px solid rgba(180,220,255,0.12);
+  flex-wrap: wrap; align-items: center;
+}
+.biz-flow-modes { display: flex; gap: 6px; flex-wrap: wrap; }
+.biz-flow-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 14px;
+  background: rgba(0,0,0,0.4);
+  border: 2px solid color-mix(in srgb, var(--c) 60%, transparent);
+  color: rgba(220,235,255,0.7);
+  border-radius: 100px;
+  font-size: 12px; letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.biz-flow-btn .biz-flow-ic { font-size: 14px; }
+.biz-flow-btn.active {
+  background: var(--c, #ffe080);
+  color: #1a1408;
+  font-weight: 700;
+  box-shadow: 0 0 14px var(--c);
+}
+.biz-flow-btn:hover { transform: translateY(-1px); }
+
+/* 役者ノード（人物） */
+.biz-role-node {
+  width: 76px; height: 76px;
+  border-radius: 16px;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--c) 90%, white 10%), var(--c));
+  color: #0a0a0a;
+  border: 2px solid rgba(0,0,0,0.25);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.5), 0 0 18px var(--c);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 4px;
+}
+.biz-role-node .biz-role-ic { font-size: 30px; line-height: 1; }
+.biz-role-node .biz-role-name { font-size: 11px; font-weight: 700; letter-spacing: 1px; margin-top: 2px; }
+.biz-role-node.arrow-from {
+  outline: 3px dashed #ffe080;
+  outline-offset: 3px;
+  animation: bizfrompulse 1.2s ease infinite;
+}
+@keyframes bizfrompulse {
+  0%, 100% { box-shadow: 0 4px 14px rgba(0,0,0,0.5), 0 0 24px #ffe080; }
+  50%      { box-shadow: 0 4px 14px rgba(0,0,0,0.5), 0 0 36px #fff; }
+}
+.biz-arrow-line { animation: bizarrowin 0.4s ease; }
+@keyframes bizarrowin {
+  0% { stroke-dashoffset: 30; opacity: 0; }
+  100% { stroke-dashoffset: 0; opacity: 1; }
+}
+
+.biz-match-btn { right: 12px !important; }
+
+/* 流れ図鑑カード */
+.biz-flow-zukan {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+  margin: 10px 0 24px;
+}
+.biz-flow-card {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 14px;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--c) 22%, rgba(20,30,50,0.7)), rgba(20,30,50,0.7));
+  border: 1px solid color-mix(in srgb, var(--c) 50%, transparent);
+  border-radius: 10px;
+}
+.biz-flow-card-ic {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--c);
+  color: #0a0a0a;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  flex: 0 0 auto;
+  box-shadow: 0 0 12px var(--c);
+}
+.biz-flow-card-name { font-size: 13px; color: #fff; letter-spacing: 1px; font-weight: 700; }
+.biz-flow-card-desc { font-size: 11px; color: rgba(220,235,255,0.7); }
+
+/* モデルカードに小型図解 */
+.biz-card-diag {
+  width: 100%;
+  background: rgba(0,0,0,0.3);
+  border-radius: 8px;
+  padding: 6px;
+  margin: 4px 0;
+}
+.biz-diag { width: 100%; height: auto; max-height: 140px; display: block; }
+
+/* ===== 元素図鑑モーダル ===== */
+.zk-modal {
+  position: fixed; inset: 0; z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s ease;
+}
+.zk-modal.open { opacity: 1; pointer-events: auto; }
+.zk-modal-backdrop {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(6px);
+  cursor: pointer;
+}
+.zk-modal-card {
+  position: relative;
+  width: min(560px, 92vw);
+  max-height: 86vh; overflow: auto;
+  padding: 20px 24px 26px;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--c) 18%, rgba(15,22,38,0.95)), rgba(8,14,26,0.97));
+  border: 1px solid color-mix(in srgb, var(--c) 50%, rgba(180,220,255,0.3));
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px color-mix(in srgb, var(--c) 30%, transparent);
+  transform: scale(0.94);
+  transition: transform 0.28s cubic-bezier(0.2,0.9,0.3,1.2);
+}
+.zk-modal.open .zk-modal-card { transform: scale(1); }
+.zk-modal-x {
+  position: absolute; top: 12px; right: 12px;
+  width: 36px; height: 36px;
+  background: rgba(0,0,0,0.5);
+  border: 1px solid rgba(180,220,255,0.3);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 20px; cursor: pointer;
+}
+.zk-modal-x:hover { background: rgba(255,80,80,0.4); }
+.zk-modal-head {
+  display: flex; gap: 16px; align-items: center;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(180,220,255,0.18);
+  margin-bottom: 14px;
+}
+.zk-modal-circle {
+  position: relative;
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: var(--c);
+  color: #0a0a0a;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.5), 0 0 24px var(--c);
+}
+.zk-modal-circle .el-face {
+  position: absolute; left: 50%; top: 14%;
+  transform: translateX(-50%); width: 50%; height: auto;
+}
+.zk-modal-sym { font-size: 28px; font-weight: 800; transform: translateY(8px); }
+.zk-modal-no { font-size: 11px; color: rgba(220,235,255,0.6); letter-spacing: 2px; }
+.zk-modal-name { font-size: 24px; letter-spacing: 4px; color: #fff; font-family: 'Noto Serif JP', serif; }
+.zk-modal-tag { font-size: 12px; color: rgba(220,235,255,0.7); letter-spacing: 2px; margin-top: 2px; }
+.zk-modal-voice {
+  font-size: 14px; line-height: 1.7;
+  color: #fff8c0;
+  font-family: 'Noto Serif JP', serif;
+  padding: 12px 14px;
+  background: rgba(255,248,192,0.06);
+  border-left: 3px solid #ffe080;
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 12px;
+}
+.zk-modal-desc {
+  font-size: 13px; line-height: 1.75;
+  color: rgba(230,240,255,0.9);
+  margin-bottom: 14px;
+}
+.zk-section-h {
+  font-size: 12px; letter-spacing: 3px;
+  color: #ffe080;
+  margin: 14px 0 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(255,224,128,0.25);
+}
+.zk-compounds { display: flex; flex-direction: column; gap: 10px; }
+.zk-compound {
+  padding: 10px 12px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(180,220,255,0.18);
+  border-radius: 8px;
+}
+.zk-c-formula { font-size: 14px; color: #ffe6a8; font-weight: 700; font-family: 'Helvetica Neue', sans-serif; margin-bottom: 2px; }
+.zk-c-name { color: #fff; font-size: 12px; margin-left: 6px; letter-spacing: 1px; }
+.zk-c-desc { font-size: 12px; line-height: 1.6; color: rgba(220,235,255,0.85); margin-bottom: 4px; }
+.zk-c-uses { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+.zk-ijins { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* 元素図鑑グリッドの円形顔（動く） */
+.el-cell-circle {
+  position: relative;
+  width: 56px; height: 56px;
+  margin: 6px auto 4px;
+  border-radius: 50%;
+  background: var(--el-color, #888);
+  color: #0a0a0a;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4), 0 0 12px var(--el-color);
+  animation: elcellbob 3s ease-in-out infinite;
+}
+.el-cell-circle .el-face {
+  position: absolute; left: 50%; top: 16%;
+  transform: translateX(-50%); width: 56%; height: auto;
+}
+.el-cell-sym { font-size: 18px; font-weight: 800; transform: translateY(6px); position: relative; z-index: 1; }
+.el-cell:nth-child(3n) .el-cell-circle { animation-delay: -0.5s; animation-duration: 3.3s; }
+.el-cell:nth-child(3n+1) .el-cell-circle { animation-delay: -1.4s; animation-duration: 2.7s; }
+.el-cell:nth-child(5n) .el-cell-circle { animation-delay: -0.8s; animation-duration: 3.5s; }
+@keyframes elcellbob {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50%      { transform: translateY(-3px) rotate(2deg); }
+}
+.el-cell:hover .el-cell-circle {
+  animation-play-state: paused;
+  transform: scale(1.06);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.5), 0 0 18px var(--el-color);
+}
+
+/* 大きい閉じるボタン */
+.el-bubble-x {
+  width: auto !important;
+  height: 22px !important;
+  padding: 1px 8px !important;
+  font-size: 11px !important;
+  letter-spacing: 1px !important;
+  line-height: 1 !important;
+  background: rgba(0,0,0,0.4) !important;
+  border: 1px solid rgba(180,220,255,0.3) !important;
+  border-radius: 100px !important;
+  color: rgba(220,235,255,0.85) !important;
+}
+.el-bubble-x:hover { background: rgba(255,80,80,0.35) !important; color: #fff !important; }
+
 /* ===== ビジネスラボ＆図鑑 ===== */
 .biz-lab .el-lab2-board {
   background:

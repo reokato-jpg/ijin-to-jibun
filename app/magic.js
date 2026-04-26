@@ -23367,7 +23367,10 @@
           ${ELEMENTS_DATA.map(el => `
             <div class="el-cell" style="--el-color:${el.color}" data-el="${el.sym}">
               <div class="el-no">${el.no}</div>
-              <div class="el-sym">${el.sym}</div>
+              <div class="el-cell-circle">
+                <span class="el-cell-sym">${el.sym}</span>
+                ${elFaceSvg(el.eyes)}
+              </div>
               <div class="el-name">${el.name}</div>
               <div class="el-tag">${el.tag}</div>
             </div>
@@ -23539,7 +23542,7 @@
       closeBubble();
       const b = document.createElement('div');
       b.className = 'el-bubble';
-      b.innerHTML = `<button class="el-bubble-x" type="button" aria-label="閉じる">×</button>${html}`;
+      b.innerHTML = `<button class="el-bubble-x" type="button" aria-label="閉じる">× 閉じる</button>${html}`;
       b.dataset.nodeId = String(node.id);
       board.appendChild(b);
       // 位置：ノード右上から出す。盤からはみ出たら反対側へ。
@@ -23586,7 +23589,60 @@
       cell.scrollIntoView({ behavior:'smooth', block:'center' });
       cell.classList.add('zukan-highlight');
       setTimeout(() => cell.classList.remove('zukan-highlight'), 2400);
-      cell.click();
+      // モーダルでフル詳細を開く
+      openZukanModal(sym);
+    }
+    function openZukanModal(sym) {
+      const el = sym2el[sym]; if (!el) return;
+      // この元素から作れる化合物
+      const usableCompounds = COMPOUNDS_DATA.filter(c => c.parts.includes(el.sym));
+      const partnersHtml = usableCompounds.length ? `
+        <div class="zk-section-h">🧪 この元素から作れるもの</div>
+        <div class="zk-compounds">
+          ${usableCompounds.map(c => `
+            <div class="zk-compound">
+              <div class="zk-c-formula">${c.formula} <span class="zk-c-name">${c.name}</span></div>
+              <div class="zk-c-desc">${c.desc}</div>
+              ${c.uses ? `<div class="zk-c-uses">${c.uses.map(u => `<span class="el-bubble-use">${u}</span>`).join('')}</div>` : ''}
+            </div>
+          `).join('')}
+        </div>
+      ` : '';
+      const ijinsHtml = el.ijins && el.ijins.length ? `
+        <div class="zk-section-h">👤 関わった偉人</div>
+        <div class="zk-ijins">${el.ijins.map(id => `<button class="cnp-pill" data-id="${id}">${_resolveIjinName(id)}</button>`).join('')}</div>
+      ` : '';
+      const modal = document.createElement('div');
+      modal.className = 'zk-modal';
+      modal.innerHTML = `
+        <div class="zk-modal-backdrop"></div>
+        <div class="zk-modal-card" style="--c:${el.color}">
+          <button class="zk-modal-x" type="button" aria-label="閉じる">×</button>
+          <div class="zk-modal-head">
+            <div class="zk-modal-circle">
+              <span class="zk-modal-sym">${el.sym}</span>
+              ${elFaceSvg(el.eyes)}
+            </div>
+            <div class="zk-modal-info">
+              <div class="zk-modal-no">No.${el.no}</div>
+              <div class="zk-modal-name">${el.name}</div>
+              <div class="zk-modal-tag">${el.tag}</div>
+            </div>
+          </div>
+          <div class="zk-modal-body">
+            <div class="zk-modal-voice">${el.voice || ''}</div>
+            <div class="zk-modal-desc">${el.desc}</div>
+            ${partnersHtml}
+            ${ijinsHtml}
+          </div>
+        </div>
+      `;
+      ov.appendChild(modal);
+      requestAnimationFrame(() => modal.classList.add('open'));
+      const closeMod = () => { modal.classList.remove('open'); setTimeout(() => modal.remove(), 280); };
+      modal.querySelector('.zk-modal-x').addEventListener('click', closeMod);
+      modal.querySelector('.zk-modal-backdrop').addEventListener('click', closeMod);
+      _wireIjinPills(modal, close);
     }
     function showElementInfo(el, node, opts) {
       const showVoice = opts && opts.voice;
@@ -23808,6 +23864,14 @@
       });
     });
     ov.querySelector('#elBoardClear').addEventListener('click', clearBoard);
+    // 盤の余白タップでフキダシ消す
+    board.addEventListener('click', (e) => {
+      if (e.target === board || e.target === boardSvg || e.target.classList.contains('el-lab2-empty')
+          || e.target.classList.contains('el-lab2-empty-1') || e.target.classList.contains('el-lab2-empty-2')
+          || e.target.classList.contains('el-lab2-help')) {
+        closeBubble();
+      }
+    });
     // 周期表 ⇄ シンプル切替
     const palTabs = ov.querySelector('#elPalTabs');
     palTabs.addEventListener('click', () => {
@@ -23821,12 +23885,7 @@
     ov.querySelectorAll('.el-cell').forEach(cell => {
       cell.addEventListener('click', () => {
         const sym = cell.dataset.el;
-        const el = sym2el[sym];
-        if (el) {
-          ov.querySelectorAll('.el-cell').forEach(c => c.classList.remove('active'));
-          cell.classList.add('active');
-          showDetail(el);
-        }
+        if (sym) openZukanModal(sym);
       });
     });
     // 化合物の元素ピル → その元素を表示
@@ -23926,6 +23985,25 @@
   ];
 
   // ビジネスのピース（顔の代わりに絵文字アイコン）
+  // ロール（盤に置く人物・組織）
+  const BIZ_ROLES = [
+    { id:'user',     name:'利用者',         icon:'👤', color:'#80c0ff', desc:'お金や情報を払って価値を受け取る側。',           voice:'やぁ、ぼくは利用者！欲しいものにお金を払うよ 👤' },
+    { id:'business', name:'事業者',         icon:'🏢', color:'#ffe080', desc:'価値を作って提供する主役。',                     voice:'私は事業者。価値を作って届けるのが仕事だ 🏢' },
+    { id:'partner',  name:'関係者',         icon:'🤝', color:'#80ffd0', desc:'事業者を助ける協力者・取引先。',                 voice:'関係者です 🤝 事業者と一緒に価値を作るよ' },
+    { id:'shop',     name:'販売店',         icon:'🏪', color:'#ffaa80', desc:'商品を最終的に届ける窓口。',                     voice:'販売店だよ 🏪 お客さんに直接届けるのが仕事' },
+    { id:'group',    name:'関係会社',       icon:'🏬', color:'#a0c0ff', desc:'同じグループの会社・子会社。',                   voice:'関係会社です 🏬 グループで連携して動いてる' },
+    { id:'ad',       name:'広告主',         icon:'📺', color:'#c080ff', desc:'広告を出してお金を払う側。',                     voice:'📺 広告主！広告でリーチを買う' },
+    { id:'platform', name:'プラットフォーマー', icon:'🌐', color:'#80e0e0', desc:'場を提供して両側から取引させる。',           voice:'🌐 プラットフォーマー。売り手と買い手を繋ぐ場を作る' },
+    { id:'investor', name:'投資家',         icon:'💼', color:'#ffd060', desc:'資金を出して将来のリターンを狙う。',             voice:'💼 投資家。資金を入れて将来のリターンを狙う' },
+  ];
+  // フロー（3色の矢印）
+  const BIZ_FLOWS = [
+    { id:'money', name:'お金の流れ',       icon:'💰', color:'#ffd060', desc:'代金・月額・手数料・配当など' },
+    { id:'thing', name:'モノ・サービスの流れ', icon:'📦', color:'#80c0ff', desc:'商品・サービス・コンテンツ' },
+    { id:'info',  name:'情報の流れ',       icon:'📡', color:'#c080ff', desc:'データ・広告・レビュー・フィードバック' },
+  ];
+
+  // (旧) BIZ_PIECES — 互換のため残す（使用箇所あり）
   const BIZ_PIECES = [
     { id:'product',     name:'商品',       icon:'🎁', color:'#ff9090', desc:'形のある物。作って売れる。',                     voice:'やぁ僕は商品！形があるからお店で売れるんだ 🎁' },
     { id:'service',     name:'サービス',   icon:'🛎️', color:'#80c0ff', desc:'形のない価値。体験や時間。',                     voice:'私はサービス。形はないけど、体験や時間を届けるの 🛎️' },
@@ -23968,15 +24046,71 @@
     { name:'クリエイター経済', parts:['ugc','community','subscription'], desc:'個人が直接ファンから定額で支援を受ける。', year:'2013〜', by:'Patreon',           ex:'Patreon、note、OnlyFans',        history:'2013年Patreon設立。Substack、note、YouTubeチャンネル会員などSNS時代のクリエイター直接支援モデル。',              ijins:[] },
   ];
 
+  // 各モデルの図解構造（ロール + 矢印）
+  const BIZ_MODEL_DIAGRAMS = {
+    '物販':           { roles:['user','business'],          arrows:[['user','business','money'],['business','user','thing']] },
+    'サブスク':       { roles:['user','business'],          arrows:[['user','business','money'],['business','user','thing'],['user','business','info']] },
+    'プラットフォーム': { roles:['user','platform','partner'], arrows:[['user','platform','money'],['partner','platform','thing'],['platform','user','thing'],['platform','partner','money']] },
+    'SNS':            { roles:['user','platform','ad'],     arrows:[['user','platform','info'],['platform','user','info'],['ad','platform','money'],['platform','ad','info']] },
+    'フリマ':         { roles:['user','platform','partner'], arrows:[['partner','platform','thing'],['user','platform','money'],['platform','user','thing'],['platform','partner','money']] },
+    'SaaS':           { roles:['user','business'],          arrows:[['user','business','money'],['business','user','thing'],['user','business','info']] },
+    '広告モデル':     { roles:['user','business','ad'],     arrows:[['business','user','thing'],['ad','business','money'],['business','ad','info']] },
+    'フリーミアム':   { roles:['user','business'],          arrows:[['business','user','thing'],['user','business','money']] },
+    'オンライン教育': { roles:['user','business'],          arrows:[['user','business','money'],['business','user','thing']] },
+    'アプリ販売':     { roles:['user','platform','partner'], arrows:[['user','platform','money'],['partner','platform','thing'],['platform','user','thing'],['platform','partner','money']] },
+    'フランチャイズ': { roles:['business','partner','user'], arrows:[['business','partner','info'],['partner','business','money'],['partner','user','thing'],['user','partner','money']] },
+    'D2C':            { roles:['user','business'],          arrows:[['user','business','money'],['business','user','thing'],['user','business','info']] },
+    'キャラクターIP': { roles:['business','partner','user'], arrows:[['business','partner','info'],['partner','business','money'],['partner','user','thing'],['user','partner','money']] },
+    'シェアオフィス': { roles:['user','business'],          arrows:[['user','business','money'],['business','user','thing']] },
+    'ターゲティング広告': { roles:['user','business','ad'], arrows:[['business','user','thing'],['user','business','info'],['ad','business','money'],['business','ad','info']] },
+    'レンタル':       { roles:['user','business'],          arrows:[['user','business','money'],['business','user','thing']] },
+    'AI×教育':        { roles:['user','business'],          arrows:[['user','business','money'],['business','user','thing'],['user','business','info']] },
+    'クリエイター経済': { roles:['user','partner','platform'], arrows:[['partner','platform','thing'],['user','partner','money'],['partner','user','thing'],['platform','partner','money']] },
+  };
+
   function openBusinessPage() {
     const ov = document.createElement('div');
     ov.className = 'concept-page-overlay theme-business';
+    const role2obj = Object.fromEntries(BIZ_ROLES.map(r => [r.id, r]));
+    const flow2obj = Object.fromEntries(BIZ_FLOWS.map(f => [f.id, f]));
     const piece2obj = Object.fromEntries(BIZ_PIECES.map(p => [p.id, p]));
     function partsHtml(parts) {
       return parts.map(id => {
         const p = piece2obj[id]; if (!p) return '';
-        return `<button class="biz-part" data-id="${id}" style="--c:${p.color}"><span class="biz-part-ic">${p.icon}</span><span class="biz-part-nm">${p.name}</span></button>`;
+        return `<span class="biz-part" data-id="${id}" style="--c:${p.color}"><span class="biz-part-ic">${p.icon}</span><span class="biz-part-nm">${p.name}</span></span>`;
       }).join('<span class="biz-plus">+</span>');
+    }
+    // 静的な小型図解SVG
+    function diagramSvg(diag, w=240, h=140) {
+      if (!diag) return '';
+      const cx=w/2, cy=h/2, R=42;
+      const pos = {};
+      diag.roles.forEach((rl, i) => {
+        const ang = -Math.PI/2 + (i/diag.roles.length)*2*Math.PI;
+        pos[rl] = { x: cx + Math.cos(ang)*R, y: cy + Math.sin(ang)*R };
+      });
+      const arrLines = diag.arrows.map((a, i) => {
+        const fr = pos[a[0]], to = pos[a[1]];
+        if (!fr || !to) return '';
+        const fl = flow2obj[a[2]];
+        const c = fl ? fl.color : '#888';
+        // 双方向の矢印が交差しないよう、indexで少しずらす
+        const dx=to.x-fr.x, dy=to.y-fr.y; const len=Math.hypot(dx,dy)||1;
+        const nx=-dy/len, ny=dx/len; const off=(i%2===0?5:-5);
+        const x1=fr.x+nx*off, y1=fr.y+ny*off;
+        const x2=to.x+nx*off, y2=to.y+ny*off;
+        return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="2" marker-end="url(#mDiag${a[2]})" opacity="0.85"/>`;
+      }).join('');
+      const roleEls = diag.roles.map(rl => {
+        const r = role2obj[rl]; const p = pos[rl];
+        return `<g><circle cx="${p.x}" cy="${p.y}" r="18" fill="${r.color}" stroke="rgba(0,0,0,0.3)"/><text x="${p.x}" y="${p.y+5}" text-anchor="middle" font-size="16">${r.icon}</text></g>`;
+      }).join('');
+      return `<svg class="biz-diag" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          ${BIZ_FLOWS.map(f => `<marker id="mDiag${f.id}" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><polygon points="0,0 6,3 0,6" fill="${f.color}"/></marker>`).join('')}
+        </defs>
+        ${arrLines}${roleEls}
+      </svg>`;
     }
     ov.innerHTML = `
       <button class="cp-close" aria-label="閉じる">×</button>
@@ -23988,52 +24122,76 @@
 
         <div class="el-lab2 biz-lab">
           <div class="el-lab2-board" id="bizBoard">
-            <svg class="el-lab2-svg" id="bizBoardSvg" preserveAspectRatio="none"></svg>
-            <div class="el-lab2-help" id="bizBoardHelp">💡 ① 下のバーからピースを盤に置く　② 盤上のピースを順にタップ → 線で繋がってビジネスモデルが誕生</div>
+            <svg class="el-lab2-svg" id="bizBoardSvg"></svg>
+            <div class="el-lab2-help" id="bizBoardHelp">💡 ① 下のバーから人物を盤に置く　② 矢印タイプを選ぶ　③ 人物Aをタップ → 人物Bをタップ → 矢印が引かれる</div>
             <div class="el-lab2-status" id="bizBoardStatus" hidden></div>
             <div class="el-lab2-empty">
-              <div class="el-lab2-empty-1">💼 ビジネスラボ</div>
-              <div class="el-lab2-empty-2">下のバーからピースをここにドラッグ／タップでつないでビジネスモデルを作ろう</div>
+              <div class="el-lab2-empty-1">💼 ビジネス図解ラボ</div>
+              <div class="el-lab2-empty-2">人物（利用者・事業者・関係者…）を置いて、お金・モノ・情報の流れを矢印で描こう</div>
             </div>
             <span class="el-lab2-counter" id="bizBoardCounter">0 / ${BIZ_MODELS.length}</span>
             <button class="el-lab2-clear" id="bizBoardClear" type="button">🧹 クリア</button>
+            <button class="el-lab2-clear biz-match-btn" id="bizMatchBtn" type="button" style="top:50px">🔍 モデル判定</button>
+          </div>
+          <div class="biz-toolbar">
+            <div class="biz-flow-modes" id="bizFlowModes">
+              ${BIZ_FLOWS.map((f, i) => `
+                <button class="biz-flow-btn${i===0?' active':''}" data-flow="${f.id}" style="--c:${f.color}" type="button">
+                  <span class="biz-flow-ic">${f.icon}</span>
+                  <span class="biz-flow-nm">${f.name}</span>
+                </button>
+              `).join('')}
+            </div>
           </div>
           <div class="el-lab2-palette-wrap">
             <div class="el-lab2-palette biz-palette" id="bizPalette" data-mode="row">
-              ${BIZ_PIECES.map(p => `
-                <button class="el-pal-item biz-pal-item" data-id="${p.id}" style="--c:${p.color}" type="button">
-                  <span class="biz-pal-ic">${p.icon}</span>
-                  <span class="el-pal-name">${p.name}</span>
+              ${BIZ_ROLES.map(r => `
+                <button class="el-pal-item biz-pal-item biz-role-pal" data-id="${r.id}" style="--c:${r.color}" type="button">
+                  <span class="biz-pal-ic">${r.icon}</span>
+                  <span class="el-pal-name">${r.name}</span>
                 </button>
               `).join('')}
             </div>
           </div>
         </div>
 
-        <div class="el-section-head"><span class="el-sec-label">ピース図鑑</span><span class="el-sec-sub">— ${BIZ_PIECES.length}種 — タップで紹介 —</span></div>
+        <div class="el-section-head"><span class="el-sec-label">登場人物 図鑑</span><span class="el-sec-sub">— ${BIZ_ROLES.length}種 — タップで紹介 —</span></div>
         <div class="biz-piece-zukan">
-          ${BIZ_PIECES.map(p => `
-            <div class="biz-piece-card" data-piece="${p.id}" style="--c:${p.color}">
-              <div class="biz-piece-face">${p.icon}</div>
-              <div class="biz-piece-name">${p.name}</div>
-              <div class="biz-piece-desc">${p.desc}</div>
+          ${BIZ_ROLES.map(r => `
+            <div class="biz-piece-card biz-role-card" data-role="${r.id}" style="--c:${r.color}">
+              <div class="biz-piece-face">${r.icon}</div>
+              <div class="biz-piece-name">${r.name}</div>
+              <div class="biz-piece-desc">${r.desc}</div>
             </div>
           `).join('')}
         </div>
 
-        <div class="el-section-head"><span class="el-sec-label">ビジネスモデル図鑑</span><span class="el-sec-sub">— ${BIZ_MODELS.length}種 — 組み合わせと歴史 —</span></div>
+        <div class="el-section-head"><span class="el-sec-label">流れの種類</span><span class="el-sec-sub">— 矢印は3色 —</span></div>
+        <div class="biz-flow-zukan">
+          ${BIZ_FLOWS.map(f => `
+            <div class="biz-flow-card" style="--c:${f.color}">
+              <div class="biz-flow-card-ic">${f.icon}</div>
+              <div class="biz-flow-card-name">${f.name}</div>
+              <div class="biz-flow-card-desc">${f.desc}</div>
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="el-section-head"><span class="el-sec-label">ビジネスモデル図鑑</span><span class="el-sec-sub">— ${BIZ_MODELS.length}種 — 図解と歴史 —</span></div>
         <div class="biz-zukan">
-          ${BIZ_MODELS.map(m => `
+          ${BIZ_MODELS.map(m => {
+            const diag = BIZ_MODEL_DIAGRAMS[m.name];
+            return `
             <div class="biz-card" data-model="${m.name}">
               <div class="biz-card-name">${m.name}</div>
-              <div class="biz-card-eq">${partsHtml(m.parts)}</div>
+              ${diag ? `<div class="biz-card-diag">${diagramSvg(diag)}</div>` : `<div class="biz-card-eq">${partsHtml(m.parts)}</div>`}
               <div class="biz-card-desc">${m.desc}</div>
               <div class="biz-card-meta"><span class="biz-card-year">${m.year}</span> <span class="biz-card-by">${m.by}</span></div>
               <div class="biz-card-ex">例：${m.ex}</div>
               <div class="biz-card-hist">${m.history}</div>
               ${m.ijins && m.ijins.length ? `<div class="biz-card-ijins">${m.ijins.map(id => `<button class="cnp-pill" data-id="${id}">${_resolveIjinName(id)}</button>`).join('')}</div>` : ''}
             </div>
-          `).join('')}
+          `;}).join('')}
         </div>
 
         <div class="el-section-head"><span class="el-sec-label">関連する偉人・概念</span></div>
@@ -24065,15 +24223,45 @@
     const bdEmpty = ov.querySelector('.biz-lab .el-lab2-empty');
     const bdCounter = ov.querySelector('#bizBoardCounter');
     const palette = ov.querySelector('#bizPalette');
+    const flowModes = ov.querySelector('#bizFlowModes');
     const NODE_R = 36;
     let nextId = 1;
     let bnodes = [];
-    const selected = new Set();
+    let arrows = []; // {id, from:node, to:node, flow, lineEl, hitEl}
+    let arrowFrom = null;
+    let currentFlow = 'money';
     const found = new Set();
     let bubble = null;
+    const SVG_NS = 'http://www.w3.org/2000/svg';
+    // 矢印用のマーカー定義
+    function ensureSvgDefs() {
+      if (bdSvg.querySelector('defs')) return;
+      const defs = document.createElementNS(SVG_NS, 'defs');
+      BIZ_FLOWS.forEach(f => {
+        const m = document.createElementNS(SVG_NS, 'marker');
+        m.setAttribute('id', `mArr-${f.id}`);
+        m.setAttribute('markerWidth', '8'); m.setAttribute('markerHeight', '8');
+        m.setAttribute('refX', '7'); m.setAttribute('refY', '4');
+        m.setAttribute('orient', 'auto');
+        const p = document.createElementNS(SVG_NS, 'polygon');
+        p.setAttribute('points', '0,0 8,4 0,8');
+        p.setAttribute('fill', f.color);
+        m.appendChild(p); defs.appendChild(m);
+      });
+      bdSvg.appendChild(defs);
+    }
     function setEqual(a,b){ if (a.size!==b.size) return false; for (const x of a) if (!b.has(x)) return false; return true; }
     function updCounter(){ bdCounter.textContent = `${found.size} / ${BIZ_MODELS.length}`; }
-    function clearBoard(){ bnodes.forEach(n=>n.dom.remove()); bnodes=[]; selected.clear(); bdSvg.innerHTML=''; bdEmpty.style.display=''; closeBubble(); sfx('clear'); }
+    function clearBoard(){
+      bnodes.forEach(n=>n.dom.remove());
+      bnodes=[];
+      arrows.forEach(a=>{a.lineEl.remove(); if (a.hitEl) a.hitEl.remove();});
+      arrows=[];
+      arrowFrom=null;
+      bdSvg.innerHTML=''; ensureSvgDefs();
+      bdEmpty.style.display='';
+      closeBubble(); sfx('clear'); updBizStatus();
+    }
     function closeBubble(){ if (bubble){ bubble.remove(); bubble=null; } }
     function showBubble(node, html){
       closeBubble();
@@ -24163,113 +24351,165 @@
         btn.addEventListener('click', () => { closeBubble(); scrollToModelZukan(btn.dataset.model); });
       });
     }
-    function spawnPiece(id, x, y){
-      const p = piece2obj[id]; if (!p) return null;
+    function spawnRole(id, x, y){
+      const r = role2obj[id]; if (!r) return null;
       const nid = nextId++;
       const dom = document.createElement('div');
-      dom.className = 'el-node biz-node biz-node-piece';
-      dom.style.setProperty('--c', p.color);
+      dom.className = 'el-node biz-node biz-role-node';
+      dom.style.setProperty('--c', r.color);
       x = Math.max(0, Math.min(bd.clientWidth - NODE_R*2, x));
       y = Math.max(0, Math.min(bd.clientHeight - NODE_R*2, y));
       dom.style.left = x+'px'; dom.style.top = y+'px';
-      dom.innerHTML = `<span class="el-node-hand el-node-hand-l"></span><span class="el-node-hand el-node-hand-r"></span><span class="biz-node-ic">${p.icon}</span><span class="el-node-name">${p.name}</span>`;
+      dom.innerHTML = `<span class="biz-role-ic">${r.icon}</span><span class="biz-role-name">${r.name}</span>`;
       bd.appendChild(dom);
       sfx('place');
-      const node = { id:nid, kind:'piece', pid:id, x, y, dom };
+      const node = { id:nid, kind:'role', rid:id, x, y, dom };
       bnodes.push(node);
-      attach(node);
+      attachRole(node);
       bdEmpty.style.display='none';
-      setTimeout(() => showPieceBubble(node, p, { voice: true }), 80);
+      setTimeout(() => showRoleBubble(node, r, { voice: true }), 80);
       return node;
     }
-    function spawnModel(m, x, y){
-      const nid = nextId++;
-      const dom = document.createElement('div');
-      dom.className = 'el-node biz-node biz-node-model';
-      x = Math.max(0, Math.min(bd.clientWidth - NODE_R*2, x));
-      y = Math.max(0, Math.min(bd.clientHeight - NODE_R*2, y));
-      dom.style.left = x+'px'; dom.style.top = y+'px';
-      dom.innerHTML = `<span class="el-node-hand el-node-hand-l"></span><span class="el-node-hand el-node-hand-r"></span><span class="biz-node-mic">💼</span><span class="biz-node-mname">${m.name}</span>`;
-      bd.appendChild(dom);
-      sfx('synth');
-      const node = { id:nid, kind:'model', name:m.name, x, y, dom };
-      bnodes.push(node);
-      attach(node);
-      return node;
+    function arrowEndpoints(from, to) {
+      const cx1 = from.x + NODE_R, cy1 = from.y + NODE_R;
+      const cx2 = to.x + NODE_R,   cy2 = to.y + NODE_R;
+      const dx = cx2 - cx1, dy = cy2 - cy1;
+      const len = Math.hypot(dx, dy) || 1;
+      const ux = dx/len, uy = dy/len;
+      // 矢印の先がノードの中心ではなく外周に当たるよう
+      return {
+        x1: cx1 + ux * (NODE_R+2),
+        y1: cy1 + uy * (NODE_R+2),
+        x2: cx2 - ux * (NODE_R+8),
+        y2: cy2 - uy * (NODE_R+8),
+      };
     }
-    function checkMatch(){
-      const sel = bnodes.filter(n => selected.has(n.id) && n.kind==='piece');
-      if (sel.length < 2) return;
-      const pids = new Set(sel.map(n=>n.pid));
-      const m = BIZ_MODELS.find(mm => setEqual(new Set(mm.parts), pids));
-      if (m) synth(sel, m);
-    }
-    function synth(selNodes, m){
-      const cx = selNodes.reduce((s,n)=>s+n.x,0)/selNodes.length;
-      const cy = selNodes.reduce((s,n)=>s+n.y,0)/selNodes.length;
-      selNodes.forEach(n=>{
-        const ln = document.createElementNS('http://www.w3.org/2000/svg','line');
-        ln.setAttribute('x1', n.x+NODE_R); ln.setAttribute('y1', n.y+NODE_R);
-        ln.setAttribute('x2', cx+NODE_R); ln.setAttribute('y2', cy+NODE_R);
-        ln.setAttribute('class','el-board-line'); bdSvg.appendChild(ln);
-        requestAnimationFrame(()=>ln.classList.add('in'));
+    function refreshArrowsFor(node) {
+      arrows.forEach(a => {
+        if (a.from === node || a.to === node) {
+          const p = arrowEndpoints(a.from, a.to);
+          a.lineEl.setAttribute('x1', p.x1); a.lineEl.setAttribute('y1', p.y1);
+          a.lineEl.setAttribute('x2', p.x2); a.lineEl.setAttribute('y2', p.y2);
+          if (a.hitEl) {
+            a.hitEl.setAttribute('x1', p.x1); a.hitEl.setAttribute('y1', p.y1);
+            a.hitEl.setAttribute('x2', p.x2); a.hitEl.setAttribute('y2', p.y2);
+          }
+        }
       });
-      const cIds = new Set(selNodes.map(n=>n.id));
-      setTimeout(()=>{
-        selNodes.forEach(n=>{ n.dom.classList.add('consumed'); setTimeout(()=>n.dom.remove(),380); });
-        bnodes = bnodes.filter(n=>!cIds.has(n.id));
-        selected.clear();
-        updBizStatus();
-        const isNew = !found.has(m.name);
-        found.add(m.name); updCounter();
-        const newNode = spawnModel(m, cx, cy);
-        showModelBubble(newNode, m, isNew);
-        // 図鑑カードもハイライト
-        const card = ov.querySelector(`.biz-card[data-model="${m.name}"]`);
-        if (card) { card.classList.add('discovered'); }
-        setTimeout(()=>bdSvg.innerHTML='',600);
-      }, 380);
+    }
+    function drawArrow(fromNode, toNode, flow) {
+      // 重複チェック（同じfrom-to-flow）
+      if (arrows.some(a => a.from===fromNode && a.to===toNode && a.flow===flow)) return;
+      const fl = flow2obj[flow]; if (!fl) return;
+      const p = arrowEndpoints(fromNode, toNode);
+      const ln = document.createElementNS(SVG_NS, 'line');
+      ln.setAttribute('x1', p.x1); ln.setAttribute('y1', p.y1);
+      ln.setAttribute('x2', p.x2); ln.setAttribute('y2', p.y2);
+      ln.setAttribute('stroke', fl.color);
+      ln.setAttribute('stroke-width', '3');
+      ln.setAttribute('marker-end', `url(#mArr-${flow})`);
+      ln.classList.add('biz-arrow-line');
+      bdSvg.appendChild(ln);
+      // クリック判定用の透明太線
+      const hit = document.createElementNS(SVG_NS, 'line');
+      hit.setAttribute('x1', p.x1); hit.setAttribute('y1', p.y1);
+      hit.setAttribute('x2', p.x2); hit.setAttribute('y2', p.y2);
+      hit.setAttribute('stroke', 'transparent');
+      hit.setAttribute('stroke-width', '14');
+      hit.style.cursor = 'pointer';
+      bdSvg.appendChild(hit);
+      const arr = { id: nextId++, from:fromNode, to:toNode, flow, lineEl:ln, hitEl:hit };
+      arrows.push(arr);
+      hit.addEventListener('click', () => {
+        if (confirm(`${fl.icon} ${fl.name}（${role2obj[fromNode.rid].name} → ${role2obj[toNode.rid].name}）を削除しますか？`)) {
+          ln.remove(); hit.remove();
+          arrows = arrows.filter(a => a !== arr);
+          updBizStatus();
+        }
+      });
+      sfx('place');
+    }
+    function clearArrowFrom() {
+      if (arrowFrom) { arrowFrom.dom.classList.remove('arrow-from'); arrowFrom = null; }
     }
     function removeNode(node){
-      selected.delete(node.id);
+      // この人物に繋がる矢印もすべて削除
+      arrows = arrows.filter(a => {
+        if (a.from === node || a.to === node) { a.lineEl.remove(); if (a.hitEl) a.hitEl.remove(); return false; }
+        return true;
+      });
       bnodes = bnodes.filter(n=>n.id!==node.id);
+      if (arrowFrom === node) arrowFrom = null;
       node.dom.classList.add('consumed');
       setTimeout(()=>node.dom.remove(),380);
       if (bubble && bubble.dataset.nid==String(node.id)) closeBubble();
       if (bnodes.length===0) bdEmpty.style.display='';
       sfx('clear');
+      updBizStatus();
     }
     const bizStatus = ov.querySelector('#bizBoardStatus');
     function updBizStatus() {
-      const selPids = bnodes.filter(n => selected.has(n.id) && n.kind === 'piece').map(n => n.pid);
-      if (selPids.length === 0) { bizStatus.hidden = true; return; }
-      bizStatus.hidden = false;
-      const selSet = new Set(selPids);
-      const target = BIZ_MODELS.find(m => {
-        const ps = new Set(m.parts);
-        if (ps.size <= selSet.size) return false;
-        for (const x of selSet) if (!ps.has(x)) return false;
-        return true;
-      });
-      const hint = target
-        ? `あと <b>${target.parts.filter(p=>!selSet.has(p)).map(p=>{const o=piece2obj[p];return `${o.icon}${o.name}`;}).join('・')}</b> で → ${target.name}`
-        : (selPids.length >= 2 ? '組み合わせをチェック…' : 'もう1つピースをタップして繋げる');
-      bizStatus.innerHTML = `<span class="lbs-l">選択中：${selPids.map(id=>{const o=piece2obj[id];return `<b style="background:${o.color};color:#0a0a0a">${o.icon}${o.name}</b>`;}).join('')}</span><span class="lbs-r">${hint}</span>`;
+      if (arrowFrom) {
+        const r = role2obj[arrowFrom.rid];
+        const f = flow2obj[currentFlow];
+        bizStatus.hidden = false;
+        bizStatus.innerHTML = `<span class="lbs-l">📍 ${r.icon} <b style="background:${r.color};color:#0a0a0a">${r.name}</b> から</span><span class="lbs-r">→ 別の人物をタップ → <b style="background:${f.color};color:#0a0a0a">${f.icon} ${f.name}</b>の矢印が引かれる</span>`;
+      } else {
+        bizStatus.hidden = (bnodes.length === 0);
+        if (!bizStatus.hidden) {
+          const f = flow2obj[currentFlow];
+          bizStatus.innerHTML = `<span class="lbs-l">人物：${bnodes.length}名／矢印：${arrows.length}本</span><span class="lbs-r">現在のモード：<b style="background:${f.color};color:#0a0a0a">${f.icon} ${f.name}</b></span>`;
+        }
+      }
     }
     function tap(node){
-      if (node.kind==='model') {
-        const m = BIZ_MODELS.find(x => x.name===node.name);
-        if (m) showModelBubble(node, m, false);
+      const r = role2obj[node.rid];
+      if (!arrowFrom) {
+        arrowFrom = node;
+        node.dom.classList.add('arrow-from');
+        sfx('sel');
+      } else if (arrowFrom === node) {
+        clearArrowFrom();
+        showRoleBubble(node, r);
+      } else {
+        drawArrow(arrowFrom, node, currentFlow);
+        clearArrowFrom();
+      }
+      updBizStatus();
+    }
+    function checkModelMatch() {
+      const curRoles = new Set(bnodes.map(n => n.rid));
+      const curArrowKeys = new Set(arrows.map(a => `${a.from.rid}-${a.to.rid}-${a.flow}`));
+      const hits = [];
+      for (const m of BIZ_MODELS) {
+        const d = BIZ_MODEL_DIAGRAMS[m.name]; if (!d) continue;
+        const reqRoles = new Set(d.roles);
+        let ok = true;
+        for (const x of reqRoles) if (!curRoles.has(x)) { ok=false; break; }
+        if (!ok) continue;
+        for (const a of d.arrows) {
+          if (!curArrowKeys.has(`${a[0]}-${a[1]}-${a[2]}`)) { ok=false; break; }
+        }
+        if (ok) hits.push(m);
+      }
+      if (hits.length === 0) {
+        alert('まだどのビジネスモデルとも一致しないみたい…\n登場人物と矢印（お金・モノ・情報）を組み合わせて作ってみよう。');
         return;
       }
-      const p = piece2obj[node.pid];
-      showPieceBubble(node, p);
-      if (selected.has(node.id)) { selected.delete(node.id); node.dom.classList.remove('sel'); }
-      else { selected.add(node.id); node.dom.classList.add('sel'); sfx('sel'); }
-      updBizStatus();
-      checkMatch();
+      // ベストマッチ：必要矢印数が最多のもの
+      const m = hits.sort((a,b) => (BIZ_MODEL_DIAGRAMS[b.name].arrows.length - BIZ_MODEL_DIAGRAMS[a.name].arrows.length))[0];
+      const isNew = !found.has(m.name);
+      found.add(m.name); updCounter();
+      const card = ov.querySelector(`.biz-card[data-model="${m.name}"]`);
+      if (card) card.classList.add('discovered');
+      // 真ん中あたりにモデル名フキダシ
+      const cx = bnodes.reduce((s,n)=>s+n.x, 0) / bnodes.length;
+      const cy = bnodes.reduce((s,n)=>s+n.y, 0) / bnodes.length;
+      sfx('synth');
+      const fakeNode = { id: 0, x: cx, y: cy };
+      showModelBubble(fakeNode, m, isNew);
     }
-    function attach(node){
+    function attachRole(node){
       let dx0,dy0,sl,st,mv=false;
       node.dom.addEventListener('pointerdown', e=>{
         e.preventDefault(); e.stopPropagation();
@@ -24285,6 +24525,7 @@
           node.x = Math.max(0, Math.min(bd.clientWidth-NODE_R*2, sl+dx));
           node.y = Math.max(0, Math.min(bd.clientHeight-NODE_R*2, st+dy));
           node.dom.style.left=node.x+'px'; node.dom.style.top=node.y+'px';
+          refreshArrowsFor(node);
           const r=palette.getBoundingClientRect();
           const over = e.clientY>=r.top && e.clientY<=r.bottom && e.clientX>=r.left && e.clientX<=r.right;
           palette.classList.toggle('drop-target', over);
@@ -24302,16 +24543,33 @@
       });
       node.dom.addEventListener('pointercancel', ()=>{ node.dom.classList.remove('drag','dropping'); dx0=null; });
     }
+    function showRoleBubble(node, r, opts) {
+      const showVoice = opts && opts.voice;
+      const voice = (showVoice && r.voice) ? `<div class="el-bubble-voice">${r.voice}</div>` : '';
+      const detail = `
+        <div class="el-bubble-title"><span class="el-bubble-sym" style="--c:${r.color}">${r.icon}</span> ${r.name}</div>
+        <div class="el-bubble-desc">${r.desc}</div>
+      `;
+      const html = showVoice
+        ? `${voice}<button class="el-bubble-more" type="button">＋ 詳しく見る</button><div class="el-bubble-detail" hidden>${detail}</div>`
+        : detail;
+      showBubble(node, html);
+      const moreBtn = bubble && bubble.querySelector('.el-bubble-more');
+      if (moreBtn) moreBtn.addEventListener('click', () => {
+        const det = bubble.querySelector('.el-bubble-detail');
+        if (det) { det.hidden = false; moreBtn.remove(); }
+      });
+    }
     palette.querySelectorAll('.biz-pal-item').forEach(item=>{
       item.addEventListener('pointerdown', e=>{
         e.preventDefault();
-        const id = item.dataset.id; const p = piece2obj[id]; if (!p) return;
+        const id = item.dataset.id; const r = role2obj[id]; if (!r) return;
         try { item.setPointerCapture(e.pointerId); } catch(_){}
         let dragged=false;
         const ghost = document.createElement('div');
         ghost.className='el-pal-ghost';
-        ghost.style.setProperty('--c', p.color);
-        ghost.textContent = p.icon;
+        ghost.style.setProperty('--c', r.color);
+        ghost.textContent = r.icon;
         document.body.appendChild(ghost);
         const place = ev=>{ ghost.style.left=(ev.clientX-24)+'px'; ghost.style.top=(ev.clientY-24)+'px'; };
         place(e);
@@ -24321,13 +24579,13 @@
           item.removeEventListener('pointerup', onUp);
           item.removeEventListener('pointercancel', onUp);
           ghost.remove();
-          const r = bd.getBoundingClientRect();
-          const inside = ev.clientX>=r.left&&ev.clientX<=r.right&&ev.clientY>=r.top&&ev.clientY<=r.bottom;
-          if (inside) spawnPiece(id, ev.clientX-r.left-NODE_R, ev.clientY-r.top-NODE_R);
+          const rect = bd.getBoundingClientRect();
+          const inside = ev.clientX>=rect.left&&ev.clientX<=rect.right&&ev.clientY>=rect.top&&ev.clientY<=rect.bottom;
+          if (inside) spawnRole(id, ev.clientX-rect.left-NODE_R, ev.clientY-rect.top-NODE_R);
           else if (!dragged) {
             const x = 30 + Math.random()*(bd.clientWidth-90);
             const y = 30 + Math.random()*(bd.clientHeight-90);
-            spawnPiece(id, x, y);
+            spawnRole(id, x, y);
           }
         };
         item.addEventListener('pointermove', onMove);
@@ -24335,18 +24593,30 @@
         item.addEventListener('pointercancel', onUp);
       });
     });
+    // フローモード切替
+    flowModes.querySelectorAll('.biz-flow-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        flowModes.querySelectorAll('.biz-flow-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFlow = btn.dataset.flow;
+        updBizStatus();
+      });
+    });
     ov.querySelector('#bizBoardClear').addEventListener('click', clearBoard);
-    // 図鑑カードからもピースを盤に投下できる
-    ov.querySelectorAll('.biz-piece-card').forEach(card => {
+    ov.querySelector('#bizMatchBtn').addEventListener('click', checkModelMatch);
+    // 役者図鑑からもタップで盤に投下
+    ov.querySelectorAll('.biz-role-card').forEach(card => {
       card.addEventListener('click', () => {
-        const id = card.dataset.piece;
+        const id = card.dataset.role;
         const x = 30 + Math.random() * (bd.clientWidth - 90);
         const y = 30 + Math.random() * (bd.clientHeight - 90);
-        spawnPiece(id, x, y);
+        spawnRole(id, x, y);
         bd.scrollIntoView({ behavior:'smooth', block:'start' });
       });
     });
+    ensureSvgDefs();
     updCounter();
+    updBizStatus();
     _wireIjinPills(ov, close);
   }
   window.openBusinessPage = openBusinessPage;
