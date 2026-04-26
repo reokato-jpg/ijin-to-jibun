@@ -13976,14 +13976,16 @@
         currentZone = item.key;
         buildScene(item.key);
         // 🚪 入口（南側）から神殿に入った視点で配置
-        // ringR=12 で台座が円形配置 → 入口は z=14 付近、奥（中心側）を見る
-        camera.position.set(0, 1.6, 12); yaw = 0; // 神殿の前列柱間から、奥の主神を見る
+        // memory orbs が z=11 にあるので、間合いを取って z=18 から
+        camera.position.set(0, 1.6, 18); yaw = 0;
       } else if (item.type === 'god') {
         summonGod(item, currentZone); // 召喚演出 → モーダル
       } else if (item.type === 'tale') {
         if (window.openMythology) window.openMythology(item.talekey);
       } else if (item.type === 'memory') {
         // 🔮 神様の記憶: フラッシュ → 関連3Dシーンへ
+        // 戻ってきた時に再トリガーしないよう、入口位置に戻す
+        camera.position.set(0, 1.6, 18); yaw = 0;
         const memG = currentNear;
         const flash = document.createElement('div');
         flash.style.cssText = 'position:fixed;inset:0;background:#fff;opacity:0;z-index:25000;pointer-events:none;transition:opacity 0.5s';
@@ -14476,8 +14478,8 @@
           setTimeout(() => {
             currentZone = it.key;
             try { buildScene(it.key); } catch (e) { console.warn('buildScene failed', e); }
-            // 🚪 入口から神殿に入った視点
-            camera.position.set(0, 1.6, 12); yaw = 0; // 神殿の前列柱間から、奥の主神を見る
+            // 🚪 入口から神殿に入った視点（memory orbs から離れた位置）
+            camera.position.set(0, 1.6, 18); yaw = 0;
             flash.style.opacity = '0';
             setTimeout(() => flash.remove(), 500);
           }, 450);
