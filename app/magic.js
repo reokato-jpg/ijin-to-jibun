@@ -23965,10 +23965,25 @@
   // ============================================================
   // 物 / ビジネス / 図書館C案 共通ヘルパー
   // ============================================================
+  // バンドル未ロード時のための日本語名フォールバック（ハードコードのIDが英語表示にならないように）
+  const IJIN_JP_FALLBACK = {
+    lavoisier:'アントワーヌ・ラヴォアジエ', mendeleev:'ドミトリ・メンデレーエフ',
+    nobel:'アルフレッド・ノーベル', einstein:'アルベルト・アインシュタイン',
+    feynman:'リチャード・ファインマン', heisenberg:'ヴェルナー・ハイゼンベルク',
+    curie:'マリ・キュリー', newton:'アイザック・ニュートン',
+    darwin:'チャールズ・ダーウィン', mendel:'グレゴール・メンデル',
+    steve_jobs:'スティーブ・ジョブズ', walt_disney:'ウォルト・ディズニー',
+    shibusawa_eiichi:'渋沢栄一', adam_smith:'アダム・スミス',
+    keynes:'ジョン・メイナード・ケインズ', heisenberg_w:'ハイゼンベルク',
+    democritus:'デモクリトス', edison:'トーマス・エジソン',
+    tesla:'ニコラ・テスラ', marx:'カール・マルクス',
+    shakespeare:'ウィリアム・シェイクスピア',
+  };
   function _resolveIjinName(id) {
     const all = (window.MAGIC && (window.MAGIC._peopleBundle || window.MAGIC._peopleLite)) || [];
     const p = all.find(x => x.id === id);
-    return p ? p.name : id;
+    if (p && p.name) return p.name;
+    return IJIN_JP_FALLBACK[id] || id;
   }
   function _ijinPillsHtml(ids) {
     return ids.map(id => `<button class="cnp-pill" data-id="${id}">${_resolveIjinName(id)}</button>`).join('');
