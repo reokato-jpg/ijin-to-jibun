@@ -14979,25 +14979,26 @@
             float horizon = smoothstep(0.30, 0.55, uv.y);
             // 0=Eden / 1=Noah / 2=Atlantis / 3=Babel / 4=Elysion
             if (uMyth < 0.5) {
-              // 🌳 Eden: 緑の森と金の太陽
-              vec3 sky = mix(vec3(0.60, 0.40, 0.22), vec3(0.85, 0.75, 0.45), horizon);
-              col = mix(vec3(0.10, 0.30, 0.12), sky, smoothstep(0.32, 0.45, uv.y));
-              // 樹冠線（地平線下）
+              // 🌳 Eden: 黄昏の森（落ち着いたトーン）
+              vec3 sky = mix(vec3(0.18, 0.12, 0.08), vec3(0.30, 0.22, 0.14), horizon);
+              col = mix(vec3(0.04, 0.10, 0.05), sky, smoothstep(0.32, 0.45, uv.y));
+              // 樹冠線（地平線下、もっと暗い）
               float treeNoise = fbm(vec2(uv.x * 22.0, uv.x * 4.0));
               float treeLine = 0.36 + treeNoise * 0.024;
-              if (uv.y < treeLine) col = mix(col, vec3(0.06, 0.20, 0.08), 0.85);
-              // 金の太陽（朝陽）
-              vec2 sunP = vec2(0.72, 0.78);
+              if (uv.y < treeLine) col = mix(col, vec3(0.02, 0.06, 0.03), 0.92);
+              // 控えめな夕陽（小さく、ぼんやり）
+              vec2 sunP = vec2(0.72, 0.65);
               float sd = distance(uv, sunP);
-              col += vec3(1.0, 0.95, 0.7) * smoothstep(0.020, 0.0, sd) * 1.4;
-              col += vec3(1.0, 0.85, 0.50) * smoothstep(0.18, 0.0, sd) * 0.40;
-              col = mix(col, vec3(1.0, 0.96, 0.92), smoothstep(0.5, 0.78, cloud) * smoothstep(0.55, 0.7, uv.y) * 0.65);
-              // 🦋 飛ぶ鳥／蝶（V字シルエット、3羽）
+              col += vec3(0.55, 0.42, 0.28) * smoothstep(0.014, 0.0, sd) * 0.55;
+              col += vec3(0.50, 0.36, 0.22) * smoothstep(0.10, 0.0, sd) * 0.15;
+              // 雲は控えめ
+              col = mix(col, vec3(0.30, 0.26, 0.22), smoothstep(0.55, 0.78, cloud) * smoothstep(0.55, 0.7, uv.y) * 0.25);
+              // 🦋 飛ぶ鳥（V字シルエット、3羽、薄く）
               for (int i = 0; i < 3; i++) {
                 float fi = float(i);
                 vec2 bp = vec2(fract(uTime * 0.05 + fi * 0.37), 0.55 + sin(uTime*0.4+fi*1.7)*0.06);
                 float wing = smoothstep(0.018, 0.0, abs(uv.y-bp.y) + abs(fract(uv.x*40.0+fi)-0.5)*0.04 + abs(uv.x-bp.x)*0.5);
-                col = mix(col, vec3(0.04, 0.10, 0.05), wing * 0.6);
+                col = mix(col, vec3(0.02, 0.05, 0.03), wing * 0.7);
               }
             } else if (uMyth < 1.5) {
               // 🚢 Noah: 嵐の空と荒波
