@@ -24469,6 +24469,43 @@
     const bdCounter = ov.querySelector('#bizBoardCounter');
     const palette = ov.querySelector('#bizPalette');
     const flowModes = ov.querySelector('#bizFlowModes');
+    // ホワイトボード化：盤の中身をスケール可能なキャンバスでラップ
+    const boardCanvas = document.createElement('div');
+    boardCanvas.className = 'biz-board-canvas';
+    bd.insertBefore(boardCanvas, bdSvg);
+    boardCanvas.appendChild(bdSvg);
+    let zoom = 1;
+    function applyZoom() {
+      boardCanvas.style.transform = `scale(${zoom})`;
+      const z = ov.querySelector('#bizZoomLabel');
+      if (z) z.textContent = `${Math.round(zoom*100)}%`;
+    }
+    // ズームボタンを盤に追加
+    const zoomCtl = document.createElement('div');
+    zoomCtl.className = 'biz-zoom-ctl';
+    zoomCtl.innerHTML = `
+      <button class="biz-zoom-b" data-z="-" type="button" aria-label="縮小">−</button>
+      <span class="biz-zoom-label" id="bizZoomLabel">100%</span>
+      <button class="biz-zoom-b" data-z="+" type="button" aria-label="拡大">＋</button>
+      <button class="biz-zoom-b" data-z="0" type="button" aria-label="リセット">⎌</button>
+    `;
+    bd.appendChild(zoomCtl);
+    zoomCtl.addEventListener('click', e => {
+      const b = e.target.closest('.biz-zoom-b'); if (!b) return;
+      const t = b.dataset.z;
+      if (t === '+') zoom = Math.min(2, +(zoom + 0.2).toFixed(2));
+      else if (t === '-') zoom = Math.max(0.5, +(zoom - 0.2).toFixed(2));
+      else if (t === '0') zoom = 1;
+      applyZoom();
+      sfx('sel');
+    });
+    // ホイールでもズーム（PC）
+    bd.addEventListener('wheel', e => {
+      if (!e.ctrlKey && !e.metaKey) return;
+      e.preventDefault();
+      zoom = Math.max(0.5, Math.min(2, +(zoom + (e.deltaY < 0 ? 0.1 : -0.1)).toFixed(2)));
+      applyZoom();
+    }, { passive: false });
     const NODE_R = 36;
     let nextId = 1;
     let bnodes = [];
@@ -24616,11 +24653,11 @@
       const dom = document.createElement('div');
       dom.className = 'el-node biz-node biz-role-node';
       dom.style.setProperty('--c', r.color);
-      x = Math.max(0, Math.min(bd.clientWidth - NODE_R*2, x));
-      y = Math.max(0, Math.min(bd.clientHeight - NODE_R*2, y));
+      x = Math.max(0, Math.min(bd.clientWidth/zoom - 64, x));
+      y = Math.max(0, Math.min(bd.clientHeight/zoom - 50, y));
       dom.style.left = x+'px'; dom.style.top = y+'px';
-      dom.innerHTML = `<span class="biz-role-ic">${bizIcon(r.id, 26)}</span><span class="biz-role-name">${r.name}</span>`;
-      bd.appendChild(dom);
+      dom.innerHTML = `<span class="biz-role-ic">${bizIcon(r.id, 22)}</span><span class="biz-role-name">${r.name}</span>`;
+      boardCanvas.appendChild(dom);
       sfx('place');
       const node = { id:nid, kind:'role', rid:id, x, y, dom };
       bnodes.push(node);
@@ -24787,14 +24824,13 @@
       });
       node.dom.addEventListener('pointermove', e=>{
         if (dx0==null) return;
-        const dx=e.clientX-dx0, dy=e.clientY-dy0;
+        const dx=(e.clientX-dx0)/zoom, dy=(e.clientY-dy0)/zoom;
         if (!mv && Math.abs(dx)+Math.abs(dy) > 6) mv=true;
         if (mv) {
-          node.x = Math.max(0, Math.min(bd.clientWidth-NODE_R*2, sl+dx));
-          node.y = Math.max(0, Math.min(bd.clientHeight-NODE_R*2, st+dy));
+          node.x = Math.max(0, Math.min(bd.clientWidth/zoom-64, sl+dx));
+          node.y = Math.max(0, Math.min(bd.clientHeight/zoom-50, st+dy));
           node.dom.style.left=node.x+'px'; node.dom.style.top=node.y+'px';
           refreshArrowsFor(node);
-          // 盤の外にドラッグ → 削除候補。エッジから10px以上はみ出たら反応
           const bdRect = bd.getBoundingClientRect();
           const out = e.clientY > bdRect.bottom + 10 || e.clientY < bdRect.top - 10
                    || e.clientX > bdRect.right + 10 || e.clientX < bdRect.left - 10;
@@ -24920,6 +24956,7 @@
           </div>
           <div class="zk-modal-body">
             <div class="zk-modal-desc">${m.desc}</div>
+            <button class="zk-place-btn" data-act="loadmodel">🎯 このモデルを盤に開く</button>
             ${diag ? `<div class="zk-section-h">📐 図解</div><div class="biz-card-diag" style="background:rgba(0,0,0,0.4);padding:10px">${diagramSvg(diag, 280, 180)}</div>` : ''}
             ${exHtml}
             ${svcsHtml}
@@ -24934,6 +24971,8 @@
       const closeMod = () => { modal.classList.remove('open'); setTimeout(() => modal.remove(), 280); };
       modal.querySelector('.zk-modal-x').addEventListener('click', closeMod);
       modal.querySelector('.zk-modal-backdrop').addEventListener('click', closeMod);
+      const loadBtn = modal.querySelector('[data-act="loadmodel"]');
+      if (loadBtn) loadBtn.addEventListener('click', () => { closeMod(); loadModelDiagram(name); });
       _wireIjinPills(modal, close);
     }
     palette.querySelectorAll('.biz-pal-item').forEach(item=>{
@@ -24957,10 +24996,10 @@
           ghost.remove();
           const rect = bd.getBoundingClientRect();
           const inside = ev.clientX>=rect.left&&ev.clientX<=rect.right&&ev.clientY>=rect.top&&ev.clientY<=rect.bottom;
-          if (inside) spawnRole(id, ev.clientX-rect.left-NODE_R, ev.clientY-rect.top-NODE_R);
+          if (inside) spawnRole(id, (ev.clientX-rect.left)/zoom-32, (ev.clientY-rect.top)/zoom-25);
           else if (!dragged) {
-            const x = 30 + Math.random()*(bd.clientWidth-90);
-            const y = 30 + Math.random()*(bd.clientHeight-90);
+            const x = 30 + Math.random()*(bd.clientWidth/zoom-90);
+            const y = 30 + Math.random()*(bd.clientHeight/zoom-90);
             spawnRole(id, x, y);
           }
         };
@@ -25030,7 +25069,8 @@
       ov.querySelectorAll('.biz-svc-fav').forEach(btn => {
         const isFav = favs.has(btn.dataset.fav);
         btn.classList.toggle('on', isFav);
-        btn.textContent = isFav ? '♥' : '♡';
+        btn.textContent = isFav ? '✓' : '+';
+        btn.title = isFav ? '一覧から外す' : '一覧に追加';
       });
       // お気に入りセクション再描画
       const sec = ov.querySelector('#bizSvcFavSection');
@@ -25042,11 +25082,11 @@
         });
       });
       sec.innerHTML = `
-        <div class="biz-svc-fav-h">⭐ お気に入り（${favSvcs.length}）</div>
+        <div class="biz-svc-fav-h">+ マイ一覧（${favSvcs.length}）</div>
         <div class="biz-svc-cat-list">
           ${favSvcs.map(({s, modelName}) => `
             <div class="biz-svc-z-card biz-svc-fav-card" data-svc-name="${s.name}" data-model="${modelName}">
-              <button class="biz-svc-fav on" data-fav="${s.name}" type="button">♥</button>
+              <button class="biz-svc-fav on" data-fav="${s.name}" type="button">✓</button>
               <div class="biz-svc-z-emoji">${s.emoji}</div>
               <div class="biz-svc-z-body">
                 <div class="biz-svc-z-name">${s.name}<span class="biz-svc-z-flag">${s.country}</span></div>
@@ -25057,21 +25097,20 @@
           `).join('')}
         </div>
       `;
-      // 再ハンドル
       sec.querySelectorAll('.biz-svc-fav').forEach(b => {
         b.addEventListener('click', e => { e.stopPropagation(); toggleFav(b.dataset.fav); });
       });
       sec.querySelectorAll('.biz-svc-z-card').forEach(card => {
         card.addEventListener('click', e => {
           if (e.target.closest('.biz-svc-fav')) return;
-          openBizSvcModal(card.dataset.svcName, card.dataset.model);
+          openBizModelModal(card.dataset.model);
         });
       });
     }
     function toggleFav(name) {
       const favs = getFavs();
-      if (favs.has(name)) favs.delete(name);
-      else { favs.add(name); bizToast('⭐ お気に入りに追加'); }
+      if (favs.has(name)) { favs.delete(name); bizToast('一覧から外しました'); }
+      else { favs.add(name); bizToast('+ 一覧に追加しました'); }
       saveFavs(favs);
       refreshFavStars();
     }
@@ -25123,7 +25162,7 @@
     ov.querySelectorAll('.biz-svc-z-card').forEach(card => {
       card.addEventListener('click', e => {
         if (e.target.closest('.biz-svc-fav')) return;
-        openBizSvcModal(card.dataset.svcName, card.dataset.model);
+        openBizModelModal(card.dataset.model);
       });
     });
     ov.querySelectorAll('.biz-svc-fav').forEach(btn => {
