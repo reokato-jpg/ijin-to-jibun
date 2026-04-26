@@ -10052,3 +10052,63 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   .cp-sub { font-size: 12px; }
   .cp-list { grid-template-columns: 1fr; }
 }
+
+/* ============================================================
+   ARグラスモザイク対策（v5）
+============================================================ */
+/* WebGL の上に半透明テキストが乗ると、低解像度時に「モザイク」に
+   見えることがある。GPUレイヤー強制＋text-shadow 軽量化で軽減 */
+.koh-ar-overlay,
+.koh-ar-overlay * {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform: translateZ(0);   /* GPU合成レイヤーに強制昇格 */
+  backface-visibility: hidden;
+}
+/* text-shadow を軽くする（多重シャドウのアーティファクト軽減） */
+.koh-hud-section .khs-label,
+.koh-hud-section .khs-value,
+.koh-now-playing,
+.kar-card *,
+.kar-ad-text,
+.kar-ad-tag {
+  text-shadow: 0 0 4px rgba(0,0,0,0.65) !important;
+}
+/* 背景画像系を念のため全削除（mosaic源の最有力候補） */
+.koh-ar-overlay,
+.koh-ar-hud-bg,
+.kah-grid,
+.koh-hud-section,
+.koh-now-playing,
+.kar-card,
+.kar-ad {
+  background-image: none !important;
+}
+/* ad の border を 1px → サブピクセル安全な定数に */
+.kar-ad {
+  border-width: 1px !important;
+  outline: 1px solid transparent;  /* anti-aliasing アシスト */
+}
+
+/* ============================================================
+   🎬 神話シーン遷移ドラマ
+============================================================ */
+.koh-myth-transition {
+  position: fixed; inset: 0; z-index: 9990;
+  background: radial-gradient(circle at 50% 40%, rgba(40,15,40,0.0), rgba(0,0,0,0.0));
+  pointer-events: none;
+  transition: background 0.5s ease;
+}
+.koh-myth-transition.on {
+  background: radial-gradient(circle at 50% 40%, rgba(40,20,40,0.95), rgba(0,0,0,1.0));
+}
+.koh-myth-flash {
+  position: absolute; inset: 0;
+  background: rgba(255,255,255,0.92);
+  animation: kmft-flash 0.22s ease-out forwards;
+}
+@keyframes kmft-flash {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  100% { opacity: 0; }
+}

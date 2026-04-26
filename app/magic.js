@@ -10541,6 +10541,71 @@
       (zone.works || []).forEach(w => works.push(w));
     }
     if (!works.length) { alert('このエリアには作品がありません'); return; }
+    // 📺 美術館にも広告を絵画として紛れ込ませる（PR、4枚に1枚程度）
+    const MUSEUM_ADS = [
+      { img: null, brand: 'STEINWAY & SONS', tagline: '世界の演奏家が選ぶ', sub: 'Hamburg・New York', accent: '#d4a050' },
+      { img: null, brand: 'YAMAHA Premium Piano', tagline: 'CFX Concert Grand', sub: '日本の職人技', accent: '#a02828' },
+      { img: null, brand: 'IJIN COFFEE', tagline: '哲学者のブレンド', sub: 'カント・ニーチェ・サルトル', accent: '#8a4818' },
+      { img: null, brand: 'GENESIS BOOK', tagline: '神話を読む夜に', sub: 'はじまりの書 全6章', accent: '#604888' },
+      { img: null, brand: 'KOH RECORDS', tagline: 'バッハ全集 完全版', sub: '32枚組ハイレゾ', accent: '#205088' },
+      { img: null, brand: 'natsumi｜YouTube', tagline: 'バッハBWV903を弾いた人', sub: '@natsumi-piano', accent: '#406880', url: 'https://www.youtube.com/@natsumi-piano' },
+      { img: null, brand: 'natsumi｜note', tagline: 'ピアノ・読書・日々の言葉', sub: 'note.com/natsumi_by_piano', accent: '#5060a0', url: 'https://note.com/natsumi_by_piano' },
+    ];
+    // PRをworks配列に挿入（4作品ごとに1枚）
+    {
+      const merged = [];
+      let adIdx = 0;
+      works.forEach((w, i) => {
+        merged.push(w);
+        if ((i + 1) % 4 === 0 && adIdx < MUSEUM_ADS.length) {
+          const ad = MUSEUM_ADS[adIdx++];
+          // 広告canvas生成（額縁内に表示）
+          const c = document.createElement('canvas'); c.width = 512; c.height = 640;
+          const g = c.getContext('2d');
+          // 背景：アクセント色のグラデ
+          const grd = g.createLinearGradient(0, 0, 0, 640);
+          grd.addColorStop(0, ad.accent);
+          grd.addColorStop(0.5, '#1a1a20');
+          grd.addColorStop(1, ad.accent);
+          g.fillStyle = grd; g.fillRect(0, 0, 512, 640);
+          // 内側パネル
+          g.fillStyle = 'rgba(0,0,0,0.4)';
+          g.fillRect(40, 40, 432, 560);
+          g.strokeStyle = ad.accent; g.lineWidth = 4;
+          g.strokeRect(40, 40, 432, 560);
+          // PRバッジ
+          g.fillStyle = ad.accent;
+          g.fillRect(70, 80, 60, 30);
+          g.fillStyle = '#1a1a1a'; g.font = 'bold 16px sans-serif';
+          g.textAlign = 'center'; g.fillText('PR', 100, 100);
+          // ブランド
+          g.fillStyle = '#ffffff'; g.font = 'bold 30px serif'; g.textAlign = 'center';
+          g.fillText(ad.brand, 256, 280);
+          // タグライン
+          g.fillStyle = ad.accent; g.font = '20px serif';
+          g.fillText(ad.tagline, 256, 340);
+          // サブ
+          g.fillStyle = '#c0c0c0'; g.font = '14px serif';
+          g.fillText(ad.sub, 256, 380);
+          // 装飾枠（額縁風の角飾り）
+          g.strokeStyle = ad.accent; g.lineWidth = 2;
+          [40, 472].forEach(x => [40, 600].forEach(y => {
+            g.strokeRect(x - 6, y - 6, 12, 12);
+          }));
+          const dataUrl = c.toDataURL();
+          merged.push({
+            img: dataUrl,
+            caption: ad.tagline,
+            origin: 'PR',
+            chapterTitle: ad.brand,
+            isAd: true,
+            adUrl: ad.url || null,
+          });
+        }
+      });
+      works.length = 0;
+      merged.forEach(w => works.push(w));
+    }
     const ov = document.createElement('div');
     ov.className = 'museum3d-overlay museum3d-zone-' + zoneKey;
     ov.innerHTML = `
@@ -15924,13 +15989,39 @@
       const actionBtn = ov.querySelector('#kohMythAction');
       if (actionBtn) actionBtn.addEventListener('click', triggerBabelChaos);
     }, 100);
+    // 🎬 神話遷移ドラマ：黒幕→稲妻×3→次のシーン（1.6秒の演出）
+    function transitionMythScene(nextIdx) {
+      const dark = document.createElement('div');
+      dark.className = 'koh-myth-transition';
+      ov.appendChild(dark);
+      requestAnimationFrame(() => dark.classList.add('on'));
+      // 稲妻×3
+      [180, 380, 720].forEach(ms => {
+        setTimeout(() => {
+          const flash = document.createElement('div');
+          flash.className = 'koh-myth-flash';
+          dark.appendChild(flash);
+          setTimeout(() => flash.remove(), 220);
+        }, ms);
+      });
+      // 暗幕がピークの 1.0秒地点でシーン切替
+      setTimeout(() => {
+        scene.userData.mythIndex = nextIdx;
+        showMythSceneAt(nextIdx);
+      }, 1000);
+      // 1.6秒で暗幕フェードアウト
+      setTimeout(() => {
+        dark.classList.remove('on');
+        setTimeout(() => dark.remove(), 600);
+      }, 1600);
+    }
     function startMythCycle() {
       if (mythTimer) clearInterval(mythTimer);
       showMythSceneAt(scene.userData.mythIndex);
       mythTimer = setInterval(() => {
-        scene.userData.mythIndex = (scene.userData.mythIndex + 1) % scene.userData.mythOrder.length;
-        showMythSceneAt(scene.userData.mythIndex);
-      }, 28000); // 28秒ごと
+        const nextIdx = (scene.userData.mythIndex + 1) % scene.userData.mythOrder.length;
+        transitionMythScene(nextIdx);
+      }, 28000);
     }
     function stopMythCycle() {
       if (mythTimer) { clearInterval(mythTimer); mythTimer = null; }
@@ -17819,7 +17910,10 @@
         }
       }, undefined, (e) => console.warn('koh horse', e));
       // 🦊 キツネ（idle / walk アニメ付き、よく動く）
+      // Fox.glb は r159 examples の Fox/glTF-Binary/ サブフォルダ。
+      // ロード成否を console に明示してデバッグ可能に
       gltfLoader.load(baseUrl + 'Fox/glTF-Binary/Fox.glb', (gltf) => {
+        console.log('[KOH] Fox.glb loaded successfully', gltf.animations?.length, 'animations');
         let source = gltf.scene;
         const foxCount = LOW_PERF ? 2 : 3;
         for (let k = 0; k < foxCount; k++) {
@@ -17840,6 +17934,7 @@
       }, undefined, (e) => console.warn('koh fox', e));
       // 🦢 コウノトリ（飛翔）
       gltfLoader.load(baseUrl + 'Stork.glb', (gltf) => {
+        console.log('[KOH] Stork.glb loaded successfully', gltf.animations?.length, 'animations');
         let source = null;
         gltf.scene.traverse(o => { if (o.isSkinnedMesh && !source) source = o; });
         if (!source) source = gltf.scene.children[0] || gltf.scene;
