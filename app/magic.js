@@ -23940,6 +23940,27 @@
       const next = cur === 'row' ? 'table' : 'row';
       palette.dataset.mode = next;
       palTabs.querySelector('span').textContent = next === 'table' ? 'シンプル' : '周期表';
+      // 周期表モードに切り替えた最初の1回だけ説明を出す
+      if (next === 'table' && !ov.dataset.shownPtIntro) {
+        ov.dataset.shownPtIntro = '1';
+        const intro = document.createElement('div');
+        intro.className = 'pt-intro-toast';
+        intro.innerHTML = `
+          <div class="pt-intro-h">📖 周期表とは？</div>
+          <div class="pt-intro-b">
+            元素を「軽い順」に並べて、性質が似ているもの同士を縦に揃えた表。<br>
+            <b>横の行＝周期</b>（電子の階層／第1周期＝H,He…）、<br>
+            <b>縦の列＝族</b>（性質が似ている／一番右は不活性、一番左はアルカリ金属）。<br>
+            1869年、メンデレーエフが「未発見の元素まで予言した」のが大事件だった。
+          </div>
+          <button class="pt-intro-x" type="button">わかった ✓</button>
+        `;
+        ov.appendChild(intro);
+        requestAnimationFrame(() => intro.classList.add('show'));
+        const closeIntro = () => { intro.classList.remove('show'); setTimeout(() => intro.remove(), 280); };
+        intro.querySelector('.pt-intro-x').addEventListener('click', closeIntro);
+        setTimeout(closeIntro, 14000);
+      }
     });
     updateCounter();
 
@@ -24895,14 +24916,14 @@
         item.addEventListener('pointercancel', onUp);
       });
     });
-    // フローモード切替
-    flowModes.querySelectorAll('.biz-flow-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        flowModes.querySelectorAll('.biz-flow-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentFlow = btn.dataset.flow;
-        updBizStatus();
-      });
+    // フローモード切替（イベント委譲で確実に効かせる）
+    flowModes.addEventListener('click', e => {
+      const btn = e.target.closest('.biz-flow-btn');
+      if (!btn || !flowModes.contains(btn)) return;
+      flowModes.querySelectorAll('.biz-flow-btn').forEach(b => b.classList.toggle('active', b === btn));
+      currentFlow = btn.dataset.flow;
+      updBizStatus();
+      sfx('sel');
     });
     ov.querySelector('#bizBoardClear').addEventListener('click', clearBoard);
     ov.querySelector('#bizMatchBtn').addEventListener('click', checkModelMatch);
