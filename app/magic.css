@@ -11464,9 +11464,23 @@ html body #personDetail {
   color: #1a1a1f !important;
 }
 
-/* カバー：完全削除（SNS風シンプル化） */
-#personDetail .profile-cover,
-#personDetail .profile-cover-typo {
+/* カバー：シンプルクリーム帯（小さめ、覆い被せない） */
+#personDetail .profile-cover {
+  display: block !important;
+  height: 60px !important;
+  margin: 0 -18px !important;
+  overflow: visible !important;
+  background: linear-gradient(180deg, #fff5e0, #f5e8c8) !important;
+  border-radius: 0 !important;
+}
+#personDetail .profile-cover::after { display: none !important; }
+#personDetail .profile-cover-typo { padding: 0 !important; }
+#personDetail .profile-cover-frame,
+#personDetail .profile-cover-orn-top,
+#personDetail .profile-cover-orn-bot,
+#personDetail .profile-cover-name,
+#personDetail .profile-cover-name-en,
+#personDetail .profile-cover-dates {
   display: none !important;
 }
 
