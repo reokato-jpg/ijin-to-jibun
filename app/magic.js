@@ -23267,23 +23267,23 @@
   ];
   // 化合物カード — A + B = C 方式で覚えやすく
   const COMPOUNDS_DATA = [
-    { formula: 'H₂O',     name: '水',         parts: ['H', 'O'],         desc: '命の溶媒。地球の青さ、人体の60%。',                           ijins: ['lavoisier'] },
-    { formula: 'O₂',      name: '酸素',       parts: ['O', 'O'],         desc: '呼吸の元素。植物が光合成で作る。',                            ijins: ['lavoisier'] },
-    { formula: 'CO₂',     name: '二酸化炭素', parts: ['C', 'O'],         desc: '吐く息。植物の食料。気候変動の主役。',                        ijins: ['lavoisier'] },
-    { formula: 'NaCl',    name: '食塩',       parts: ['Na', 'Cl'],       desc: '海の塩、食卓の塩。生命の電解質。',                            ijins: [] },
-    { formula: 'NH₃',     name: 'アンモニア', parts: ['N', 'H'],         desc: '刺激臭。肥料の母、世界人口を支える化合物。',                  ijins: [] },
-    { formula: 'CH₄',     name: 'メタン',     parts: ['C', 'H'],         desc: 'ガスコンロの炎。最もシンプルな炭化水素。',                    ijins: [] },
-    { formula: 'C₆H₁₂O₆', name: 'ブドウ糖',   parts: ['C', 'H', 'O'],    desc: '甘いエネルギー。生命の燃料。',                                ijins: [] },
-    { formula: 'C₂H₅OH',  name: 'エタノール', parts: ['C', 'H', 'O'],    desc: 'お酒の中身。医薬品の溶媒。',                                  ijins: [] },
-    { formula: 'Fe₂O₃',   name: '鉄錆',       parts: ['Fe', 'O'],        desc: '赤さび。文明が朽ちる音、しかし新しい鉄に戻れる。',            ijins: [] },
-    { formula: 'CaCO₃',   name: '石灰岩',     parts: ['Ca', 'C', 'O'],   desc: '貝殻、サンゴ、白亜の大地。地球の炭素貯蔵庫。',                ijins: [] },
-    { formula: 'SiO₂',    name: '石英・ガラス', parts: ['Si', 'O'],      desc: '砂の主成分、水晶、ガラス、レンズ。',                          ijins: [] },
-    { formula: 'H₂SO₄',   name: '硫酸',       parts: ['H', 'S', 'O'],    desc: 'バッテリーの中身。工業の血液。',                              ijins: [] },
-    { formula: 'HCl',     name: '塩酸',       parts: ['H', 'Cl'],        desc: '胃酸の正体。化学の万能酸。',                                  ijins: [] },
-    { formula: 'Al₂O₃',   name: 'アルミナ',   parts: ['Al', 'O'],        desc: 'ボーキサイトの主成分。アルミ製品の出発点。',                  ijins: [] },
-    { formula: 'NaOH',    name: '苛性ソーダ', parts: ['Na', 'O', 'H'],   desc: '石鹸を作る強アルカリ。',                                      ijins: [] },
-    { formula: 'CaO',     name: '生石灰',     parts: ['Ca', 'O'],        desc: '建築・農業に。水で消すと熱を放つ。',                          ijins: [] },
-    { formula: 'DNA',     name: '遺伝子',     parts: ['C', 'H', 'N', 'O', 'P'], desc: '生命の言葉。アデニン・グアニン・シトシン・チミンの長い鎖。', ijins: ['darwin', 'mendel'] },
+    { formula: 'H₂O',     name: '水',         parts: ['H', 'O'],         desc: '命の溶媒。地球の青さ、人体の60%。',                           year: '1783', by: 'ラヴォアジエ', history: '古代から最も身近な物質だったが、1783年にラヴォアジエが水素と酸素から水を合成し『水は元素ではなく化合物』だと証明した。', ijins: ['lavoisier'] },
+    { formula: 'O₂',      name: '酸素',       parts: ['O', 'O'],         desc: '呼吸の元素。植物が光合成で作る。',                            year: '1774', by: 'プリーストリー／ラヴォアジエ', history: '1774年プリーストリーが酸化水銀から取り出し、ラヴォアジエが1777年に「酸素」と命名。フロギストン説が崩れた瞬間。', ijins: ['lavoisier'] },
+    { formula: 'CO₂',     name: '二酸化炭素', parts: ['C', 'O'],         desc: '吐く息。植物の食料。気候変動の主役。',                        year: '1754', by: 'ヘルモント／ブラック', history: '17世紀にヘルモントが「森のガス」と呼び、1754年ブラックが石灰石から取り出して定量的に研究。気候問題の主役へ。', ijins: ['lavoisier'] },
+    { formula: 'NaCl',    name: '食塩',       parts: ['Na', 'Cl'],       desc: '海の塩、食卓の塩。生命の電解質。',                            year: '太古', by: '人類', history: '人類最古の調味料・防腐剤。古代ローマ兵の給料(salary)はsal=塩から。1807年デービーが電気分解でナトリウムを取り出した。', ijins: [] },
+    { formula: 'NH₃',     name: 'アンモニア', parts: ['N', 'H'],         desc: '刺激臭。肥料の母、世界人口を支える化合物。',                  year: '1909', by: 'ハーバー・ボッシュ', history: '1774年プリーストリーが単離。1909年ハーバーが空気の窒素から合成、ボッシュが工業化。20世紀の人口爆発を支えた化学。', ijins: [] },
+    { formula: 'CH₄',     name: 'メタン',     parts: ['C', 'H'],         desc: 'ガスコンロの炎。最もシンプルな炭化水素。',                    year: '1776', by: 'ヴォルタ', history: '1776年ヴォルタがマッジョーレ湖の沼から立ち上るガスを採取し『燃える空気』として研究。今は天然ガスの主成分。', ijins: [] },
+    { formula: 'C₆H₁₂O₆', name: 'ブドウ糖',   parts: ['C', 'H', 'O'],    desc: '甘いエネルギー。生命の燃料。',                                year: '1891', by: 'フィッシャー', history: '1792年ローヴィッツがブドウから結晶化。1891年エミール・フィッシャーが立体構造を決定し、糖化学の基礎を築いた。', ijins: [] },
+    { formula: 'C₂H₅OH',  name: 'エタノール', parts: ['C', 'H', 'O'],    desc: 'お酒の中身。医薬品の溶媒。',                                  year: '9世紀', by: 'ジャービル等のイスラム錬金術師', history: '醸造は新石器時代から。9世紀イスラム錬金術師たちが蒸留技術で純度を高めた。alcohol(アルコール)はアラビア語起源。', ijins: [] },
+    { formula: 'Fe₂O₃',   name: '鉄錆',       parts: ['Fe', 'O'],        desc: '赤さび。文明が朽ちる音、しかし新しい鉄に戻れる。',            year: '太古', by: '自然', history: 'ベンガラ顔料として旧石器時代の洞窟壁画から使われている。古代の赤い大地・赤い顔料はだいたいこれ。', ijins: [] },
+    { formula: 'CaCO₃',   name: '石灰岩',     parts: ['Ca', 'C', 'O'],   desc: '貝殻、サンゴ、白亜の大地。地球の炭素貯蔵庫。',                year: '太古', by: '生物', history: '海の生物が殻として作り、海底に積もって石灰岩・大理石になった。エジプトのピラミッドもこの石。', ijins: [] },
+    { formula: 'SiO₂',    name: '石英・ガラス', parts: ['Si', 'O'],      desc: '砂の主成分、水晶、ガラス、レンズ。',                          year: '紀元前3000', by: 'メソポタミア／エジプト', history: '紀元前3000年頃にガラスが作られ、ローマで透明な窓ガラスへ。今は半導体ウエハ・光ファイバとして文明の根幹。', ijins: [] },
+    { formula: 'H₂SO₄',   name: '硫酸',       parts: ['H', 'S', 'O'],    desc: 'バッテリーの中身。工業の血液。',                              year: '17世紀', by: 'グラウバー', history: '8世紀イスラムのジャービルが言及、17世紀ヨハン・グラウバーが量産法を確立。「ある国の硫酸生産量はその国の工業力を表す」と言われた。', ijins: [] },
+    { formula: 'HCl',     name: '塩酸',       parts: ['H', 'Cl'],        desc: '胃酸の正体。化学の万能酸。',                                  year: '1810', by: 'デービー', history: '中世錬金術師たちが「塩の精」として知っていた。1810年デービーが水素と塩素からなることを確定し、組成が確立した。', ijins: [] },
+    { formula: 'Al₂O₃',   name: 'アルミナ',   parts: ['Al', 'O'],        desc: 'ボーキサイトの主成分。アルミ製品の出発点。',                  year: '1827', by: 'ヴェーラー', history: '1827年ヴェーラーがアルミナからアルミニウム金属を単離。それまでアルミは金より高価で、ナポレオン3世は来賓にだけアルミの食器を出した。', ijins: [] },
+    { formula: 'NaOH',    name: '苛性ソーダ', parts: ['Na', 'O', 'H'],   desc: '石鹸を作る強アルカリ。',                                      year: '1807', by: 'デービー', history: '古代から灰汁として鹸化(石鹸作り)に使われた。1807年デービーが電気分解で純粋なナトリウムを取り出し、組成が解明された。', ijins: [] },
+    { formula: 'CaO',     name: '生石灰',     parts: ['Ca', 'O'],        desc: '建築・農業に。水で消すと熱を放つ。',                          year: '太古', by: '人類', history: '紀元前7000年の中東でモルタル・漆喰として使われた。ローマのコンクリートもこれ。水と反応して大量の熱を放出する。', ijins: [] },
+    { formula: 'DNA',     name: '遺伝子',     parts: ['C', 'H', 'N', 'O', 'P'], desc: '生命の言葉。アデニン・グアニン・シトシン・チミンの長い鎖。', year: '1953', by: 'ワトソン・クリック', history: '1869年ミーシャーが膿の中から発見、当初は注目されず。1953年ワトソン・クリックが二重らせん構造を解明、ロザリンド・フランクリンのX線写真が決定打となった。', ijins: ['darwin', 'mendel'] },
   ];
   // 反応カード — これとこれが合わさるとこうなる
   const REACTIONS_DATA = [
@@ -23319,12 +23319,25 @@
           </div>
         </div>
 
-        <div class="el-lab">
-          <div class="el-lab-head">⚗️ ラボ — 元素をクリックして組み合わせよう</div>
-          <div class="el-lab-mix" id="elLabMix"><span class="el-lab-empty">↓ 下の元素表から好きなものをクリック</span></div>
-          <div class="el-lab-result" id="elLabResult"></div>
-          <div class="el-lab-hint" id="elLabHint"></div>
-          <button class="el-lab-clear" id="elLabClear" type="button">🧹 クリア</button>
+        <div class="el-lab2">
+          <div class="el-lab2-head">⚗️ 化学ラボ — 元素を盤に置いて、タップでつないで化合物を生み出そう</div>
+          <div class="el-lab2-board" id="elBoard">
+            <svg class="el-lab2-svg" id="elBoardSvg" preserveAspectRatio="none"></svg>
+            <div class="el-lab2-empty">↓ 下のバーから元素を盤にドラッグ／元素どうしをタップで結合</div>
+          </div>
+          <div class="el-lab2-info" id="elBoardInfo"></div>
+          <div class="el-lab2-actions">
+            <button class="el-lab2-clear" id="elBoardClear" type="button">🧹 盤をクリア</button>
+            <span class="el-lab2-counter" id="elBoardCounter">発見した化合物：0 / ${COMPOUNDS_DATA.length}</span>
+          </div>
+          <div class="el-lab2-palette" id="elPalette">
+            ${ELEMENTS_DATA.map(e => `
+              <button class="el-pal-item" data-sym="${e.sym}" style="--c:${e.color}" type="button">
+                <span class="el-pal-sym">${e.sym}</span>
+                <span class="el-pal-name">${e.name}</span>
+              </button>
+            `).join('')}
+          </div>
         </div>
 
         <div class="el-section-head"><span class="el-sec-label">元 素</span><span class="el-sec-sub">— 覚えておくと世界が読める ${ELEMENTS_DATA.length} 種 —</span></div>
@@ -23391,81 +23404,233 @@
       detailEl.classList.add('show');
       _wireIjinPills(detailEl, close);
     }
-    // ===== ラボ：元素を足して化合物を生み出す =====
-    const labMix = []; // 追加順（重複OK、表示用）
-    const labMixEl = ov.querySelector('#elLabMix');
-    const labResultEl = ov.querySelector('#elLabResult');
-    const labHintEl = ov.querySelector('#elLabHint');
-    const discovered = new Set(); // 発見済みformula
-    function setEqual(a, b) {
-      if (a.size !== b.size) return false;
-      for (const x of a) if (!b.has(x)) return false;
-      return true;
+    // ===== 視覚的ラボ：盤に置いて、タップでつないで化合物を生む =====
+    const board = ov.querySelector('#elBoard');
+    const boardSvg = ov.querySelector('#elBoardSvg');
+    const boardInfo = ov.querySelector('#elBoardInfo');
+    const boardCounter = ov.querySelector('#elBoardCounter');
+    const palette = ov.querySelector('#elPalette');
+    const boardEmpty = ov.querySelector('.el-lab2-empty');
+    const NODE_R = 36;
+    let nextId = 1;
+    let bnodes = [];
+    const selected = new Set();
+    const discovered = new Set();
+    function setEqual(a, b) { if (a.size !== b.size) return false; for (const x of a) if (!b.has(x)) return false; return true; }
+    function setSubset(a, b) { for (const x of a) if (!b.has(x)) return false; return true; }
+    function updateCounter() {
+      boardCounter.textContent = `発見した化合物：${discovered.size} / ${COMPOUNDS_DATA.length}`;
     }
-    function addToLab(sym) {
-      const el = sym2el[sym]; if (!el) return;
-      labMix.push(sym);
-      renderLab(sym);
+    function clearBoard() {
+      bnodes.forEach(n => n.dom.remove());
+      bnodes = [];
+      selected.clear();
+      boardSvg.innerHTML = '';
+      boardInfo.innerHTML = '';
+      boardEmpty.style.display = '';
     }
-    function clearLab() {
-      labMix.length = 0;
-      renderLab(null);
+    function spawnElementNode(sym, x, y) {
+      const el = sym2el[sym]; if (!el) return null;
+      const id = nextId++;
+      const dom = document.createElement('div');
+      dom.className = 'el-node el-node-elem';
+      dom.style.setProperty('--c', el.color);
+      x = Math.max(0, Math.min(board.clientWidth - NODE_R*2, x));
+      y = Math.max(0, Math.min(board.clientHeight - NODE_R*2, y));
+      dom.style.left = x + 'px';
+      dom.style.top = y + 'px';
+      dom.innerHTML = `<span class="el-node-sym">${sym}</span><span class="el-node-name">${el.name}</span>`;
+      board.appendChild(dom);
+      const node = { id, kind: 'el', sym, x, y, dom };
+      bnodes.push(node);
+      attachNodeHandlers(node);
+      boardEmpty.style.display = 'none';
+      return node;
     }
-    function renderLab(justAdded) {
-      // 投入された元素タイル
-      if (labMix.length === 0) {
-        labMixEl.innerHTML = '<span class="el-lab-empty">↓ 下の元素表から好きなものをクリック</span>';
-      } else {
-        labMixEl.innerHTML = labMix.map((s, i) => {
-          const el = sym2el[s];
-          const c = el ? el.color : '#888';
-          const pop = (s === justAdded && i === labMix.length - 1) ? ' pop' : '';
-          return `<span class="el-lab-tile${pop}" style="--c:${c}">${s}</span>`;
-        }).join('<span class="el-lab-plus">+</span>');
-      }
-      // マッチ判定：投入された元素集合 == 化合物の必要元素集合
-      const mixSet = new Set(labMix);
-      const exact = COMPOUNDS_DATA.find(c => setEqual(new Set(c.parts), mixSet));
-      if (exact) {
-        const isNew = !discovered.has(exact.formula);
-        discovered.add(exact.formula);
-        labResultEl.innerHTML = `
-          <div class="el-lab-card${isNew ? ' new' : ''}">
-            <div class="el-lab-arrow">→</div>
-            <div class="el-lab-formula">${exact.formula}</div>
-            <div class="el-lab-cname">${exact.name}${isNew ? ' <span class="el-lab-badge">NEW!</span>' : ''}</div>
-            <div class="el-lab-cdesc">${exact.desc}</div>
-            ${exact.ijins.length ? `<div class="el-lab-cijins">${exact.ijins.map(id => `<button class="cnp-pill" data-id="${id}">${_resolveIjinName(id)}</button>`).join('')}</div>` : ''}
+    function spawnCompoundNode(c, x, y) {
+      const id = nextId++;
+      const dom = document.createElement('div');
+      dom.className = 'el-node el-node-cmp';
+      x = Math.max(0, Math.min(board.clientWidth - NODE_R*2, x));
+      y = Math.max(0, Math.min(board.clientHeight - NODE_R*2, y));
+      dom.style.left = x + 'px';
+      dom.style.top = y + 'px';
+      dom.innerHTML = `<span class="el-node-formula">${c.formula}</span><span class="el-node-name">${c.name}</span>`;
+      board.appendChild(dom);
+      const node = { id, kind: 'cmp', formula: c.formula, name: c.name, x, y, dom };
+      bnodes.push(node);
+      attachNodeHandlers(node);
+    }
+    function showCompoundInfo(c, isNew) {
+      boardInfo.innerHTML = `
+        <div class="el-bi-card${isNew ? ' new' : ''}">
+          <div class="el-bi-head">
+            <span class="el-bi-formula">${c.formula}</span>
+            <span class="el-bi-name">${c.name}${isNew ? ' <span class="el-bi-badge">NEW!</span>' : ''}</span>
           </div>
-        `;
-        _wireIjinPills(labResultEl, close);
-      } else if (labMix.length > 0) {
-        labResultEl.innerHTML = '<div class="el-lab-card pending">合成中…もう少し元素を足してみよう</div>';
-      } else {
-        labResultEl.innerHTML = '';
-      }
-      // ヒント：あと1元素で作れる化合物
-      if (labMix.length > 0) {
-        const hints = COMPOUNDS_DATA.filter(c => {
-          const cs = new Set(c.parts);
-          if (cs.size <= mixSet.size) return false;
-          for (const m of mixSet) if (!cs.has(m)) return false;
-          return cs.size - mixSet.size <= 2;
-        }).slice(0, 4);
-        if (hints.length) {
-          labHintEl.innerHTML = '💡 ヒント：' + hints.map(h => {
-            const need = h.parts.filter(p => !mixSet.has(p));
-            return `<span class="el-lab-hint-item">あと <b>${need.join('・')}</b> で → ${h.name}（${h.formula}）</span>`;
-          }).join('');
-        } else {
-          labHintEl.innerHTML = '';
-        }
-      } else {
-        labHintEl.innerHTML = '例：H と O をクリック → 水（H₂O）／C と O をクリック → 二酸化炭素（CO₂）';
+          <div class="el-bi-desc">${c.desc}</div>
+          <div class="el-bi-history">
+            <span class="el-bi-year">${c.year || '—'}</span>
+            <span class="el-bi-by">${c.by || ''}</span>
+            <span class="el-bi-story">${c.history || ''}</span>
+          </div>
+          ${c.ijins && c.ijins.length ? `<div class="el-bi-ijins">${c.ijins.map(id => `<button class="cnp-pill" data-id="${id}">${_resolveIjinName(id)}</button>`).join('')}</div>` : ''}
+        </div>
+      `;
+      _wireIjinPills(boardInfo, close);
+    }
+    function showElementInfo(el) {
+      boardInfo.innerHTML = `
+        <div class="el-bi-card el-bi-card-elem" style="--c:${el.color}">
+          <div class="el-bi-head">
+            <span class="el-bi-formula">${el.sym}</span>
+            <span class="el-bi-name">${el.name} <span class="el-bi-no">No.${el.no}</span></span>
+          </div>
+          <div class="el-bi-tag">${el.tag}</div>
+          <div class="el-bi-desc">${el.desc}</div>
+          ${el.ijins && el.ijins.length ? `<div class="el-bi-ijins">${el.ijins.map(id => `<button class="cnp-pill" data-id="${id}">${_resolveIjinName(id)}</button>`).join('')}</div>` : ''}
+        </div>
+      `;
+      _wireIjinPills(boardInfo, close);
+    }
+    function checkSelectionMatch() {
+      const sel = bnodes.filter(n => selected.has(n.id) && n.kind === 'el');
+      if (sel.length < 2) return;
+      const symSet = new Set(sel.map(n => n.sym));
+      // 完全一致する化合物を探す
+      const match = COMPOUNDS_DATA.find(c => setEqual(new Set(c.parts), symSet));
+      if (match) {
+        synthesize(sel, match);
       }
     }
-    ov.querySelector('#elLabClear').addEventListener('click', clearLab);
-    renderLab(null);
+    function synthesize(selNodes, compound) {
+      const cx = selNodes.reduce((s,n) => s+n.x, 0) / selNodes.length;
+      const cy = selNodes.reduce((s,n) => s+n.y, 0) / selNodes.length;
+      // 線アニメーション
+      selNodes.forEach(n => {
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', n.x + NODE_R);
+        line.setAttribute('y1', n.y + NODE_R);
+        line.setAttribute('x2', cx + NODE_R);
+        line.setAttribute('y2', cy + NODE_R);
+        line.setAttribute('class', 'el-board-line');
+        boardSvg.appendChild(line);
+        requestAnimationFrame(() => line.classList.add('in'));
+      });
+      const consumeIds = new Set(selNodes.map(n => n.id));
+      setTimeout(() => {
+        selNodes.forEach(n => {
+          n.dom.classList.add('consumed');
+          setTimeout(() => n.dom.remove(), 380);
+        });
+        bnodes = bnodes.filter(n => !consumeIds.has(n.id));
+        selected.clear();
+        const isNew = !discovered.has(compound.formula);
+        discovered.add(compound.formula);
+        updateCounter();
+        spawnCompoundNode(compound, cx, cy);
+        showCompoundInfo(compound, isNew);
+        setTimeout(() => boardSvg.innerHTML = '', 600);
+      }, 380);
+    }
+    function attachNodeHandlers(node) {
+      let downX, downY, moved=false, startLeft, startTop;
+      node.dom.addEventListener('pointerdown', e => {
+        e.preventDefault();
+        e.stopPropagation();
+        try { node.dom.setPointerCapture(e.pointerId); } catch(_) {}
+        downX = e.clientX; downY = e.clientY;
+        moved = false;
+        startLeft = node.x; startTop = node.y;
+        node.dom.classList.add('drag');
+      });
+      node.dom.addEventListener('pointermove', e => {
+        if (downX == null) return;
+        const dx = e.clientX - downX, dy = e.clientY - downY;
+        if (!moved && Math.abs(dx) + Math.abs(dy) > 6) moved = true;
+        if (moved) {
+          node.x = Math.max(0, Math.min(board.clientWidth - NODE_R*2, startLeft + dx));
+          node.y = Math.max(0, Math.min(board.clientHeight - NODE_R*2, startTop + dy));
+          node.dom.style.left = node.x + 'px';
+          node.dom.style.top = node.y + 'px';
+        }
+      });
+      node.dom.addEventListener('pointerup', e => {
+        try { node.dom.releasePointerCapture(e.pointerId); } catch(_) {}
+        node.dom.classList.remove('drag');
+        downX = null;
+        if (!moved) handleNodeTap(node);
+      });
+      node.dom.addEventListener('pointercancel', e => {
+        node.dom.classList.remove('drag');
+        downX = null;
+      });
+    }
+    function handleNodeTap(node) {
+      if (node.kind === 'cmp') {
+        const c = COMPOUNDS_DATA.find(cc => cc.formula === node.formula);
+        if (c) showCompoundInfo(c, false);
+        return;
+      }
+      // element node
+      const el = sym2el[node.sym];
+      showElementInfo(el);
+      if (selected.has(node.id)) {
+        selected.delete(node.id);
+        node.dom.classList.remove('sel');
+      } else {
+        selected.add(node.id);
+        node.dom.classList.add('sel');
+      }
+      checkSelectionMatch();
+    }
+    // パレット → 盤面ドラッグ＋クリック投下
+    palette.querySelectorAll('.el-pal-item').forEach(item => {
+      let dragged = false;
+      item.addEventListener('pointerdown', e => {
+        e.preventDefault();
+        const sym = item.dataset.sym;
+        const el = sym2el[sym]; if (!el) return;
+        try { item.setPointerCapture(e.pointerId); } catch(_) {}
+        dragged = false;
+        const ghost = document.createElement('div');
+        ghost.className = 'el-pal-ghost';
+        ghost.style.setProperty('--c', el.color);
+        ghost.textContent = sym;
+        document.body.appendChild(ghost);
+        const place = ev => {
+          ghost.style.left = (ev.clientX - 24) + 'px';
+          ghost.style.top = (ev.clientY - 24) + 'px';
+        };
+        place(e);
+        const onMove = ev => {
+          if (!dragged && (Math.abs(ev.clientX - e.clientX) + Math.abs(ev.clientY - e.clientY) > 4)) dragged = true;
+          place(ev);
+        };
+        const onUp = ev => {
+          item.removeEventListener('pointermove', onMove);
+          item.removeEventListener('pointerup', onUp);
+          item.removeEventListener('pointercancel', onUp);
+          ghost.remove();
+          const rect = board.getBoundingClientRect();
+          const inside = ev.clientX >= rect.left && ev.clientX <= rect.right
+                      && ev.clientY >= rect.top  && ev.clientY <= rect.bottom;
+          if (inside) {
+            spawnElementNode(sym, ev.clientX - rect.left - NODE_R, ev.clientY - rect.top - NODE_R);
+          } else if (!dragged) {
+            // タップだけ → ランダム位置に投下
+            const x = 30 + Math.random() * (board.clientWidth - 90);
+            const y = 30 + Math.random() * (board.clientHeight - 90);
+            spawnElementNode(sym, x, y);
+          }
+        };
+        item.addEventListener('pointermove', onMove);
+        item.addEventListener('pointerup', onUp);
+        item.addEventListener('pointercancel', onUp);
+      });
+    });
+    ov.querySelector('#elBoardClear').addEventListener('click', clearBoard);
+    updateCounter();
 
     ov.querySelectorAll('.el-cell').forEach(cell => {
       cell.addEventListener('click', () => {
@@ -23475,7 +23640,6 @@
           ov.querySelectorAll('.el-cell').forEach(c => c.classList.remove('active'));
           cell.classList.add('active');
           showDetail(el);
-          addToLab(sym);
         }
       });
     });
