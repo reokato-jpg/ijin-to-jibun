@@ -24947,6 +24947,11 @@
       if (!btn || !flowModes.contains(btn)) return;
       flowModes.querySelectorAll('.biz-flow-btn').forEach(b => b.classList.toggle('active', b === btn));
       currentFlow = btn.dataset.flow;
+      const fl = flow2obj[currentFlow];
+      // ヘルプバーを今のモード強調に置き換える
+      const help = ov.querySelector('#bizBoardHelp');
+      if (help) help.innerHTML = `🎯 <b style="color:${fl.color}">${fl.icon} ${fl.name}</b> モード — 次は人物Aをタップ → 人物Bをタップで矢印が引かれます`;
+      bizToast(`次に引く矢印：${fl.icon} ${fl.name}`);
       updBizStatus();
       sfx('sel');
     });
