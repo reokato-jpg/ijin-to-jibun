@@ -24350,38 +24350,40 @@
     ov.innerHTML = `
       <button class="cp-close" aria-label="閉じる">×</button>
       <div class="cp-wrap cp-wrap-lab">
-        <div class="cp-head cp-head-mini">
-          <div class="cp-title">ビジネスラボ</div>
-          <div class="cp-sub-mini">下のバーから引っ張って、組み合わせてみよう</div>
+        <div class="biz-lab-title-row">
+          <span class="biz-lab-title">ビジネスラボ</span>
+          <span class="biz-lab-sub">下から人物を盤に置く → 矢印を選ぶ → 人物2人をタップで結ぶ</span>
         </div>
 
         <div class="el-lab2 biz-lab">
+          <!-- すべての操作を集約したトップツールバー -->
+          <div class="biz-toptools">
+            <div class="biz-tt-flows" id="bizFlowModes">
+              ${BIZ_FLOWS.map((f, i) => `
+                <button class="biz-tt-pill biz-flow-btn${i===0?' active':''}" data-flow="${f.id}" style="--c:${f.color}" type="button" title="${f.name}">
+                  <span class="biz-tt-pill-ic">${bizIcon(f.id, 16)}</span>
+                  <span class="biz-tt-pill-nm">${f.name.replace('の流れ','')}</span>
+                </button>
+              `).join('')}
+              <button class="biz-tt-pill biz-bidir-btn" id="bizBidirBtn" type="button" title="両方向矢印">
+                <span class="biz-tt-pill-ic">⇄</span>
+              </button>
+            </div>
+            <div class="biz-tt-actions">
+              <button class="biz-tt-icon" id="bizMatchBtn" type="button" title="モデル判定">🔍</button>
+              <button class="biz-tt-icon" id="bizShareBtn" type="button" title="共有・書き出し">📤</button>
+              <button class="biz-tt-icon" id="bizBoardClear" type="button" title="クリア">🧹</button>
+            </div>
+          </div>
+
           <div class="el-lab2-board" id="bizBoard">
             <svg class="el-lab2-svg" id="bizBoardSvg"></svg>
-            <div class="el-lab2-help" id="bizBoardHelp">💡 ① 下のバーから人物を盤に置く　② 矢印タイプを選ぶ　③ 人物Aをタップ → 人物Bをタップ → 矢印が引かれる</div>
+            <div class="el-lab2-help" id="bizBoardHelp">💡 矢印タイプを選んで → 人物Aをタップ → 人物Bをタップ。盤の余白をドラッグで移動。</div>
             <div class="el-lab2-status" id="bizBoardStatus" hidden></div>
             <div class="el-lab2-empty">
-              <div class="el-lab2-empty-1">💼 ビジネス図解ラボ</div>
               <div class="el-lab2-empty-2">人物（利用者・事業者・関係者…）を置いて、お金・モノ・情報の流れを矢印で描こう</div>
             </div>
             <span class="el-lab2-counter" id="bizBoardCounter">0 / ${BIZ_MODELS.length}</span>
-            <button class="el-lab2-clear" id="bizBoardClear" type="button">🧹 クリア</button>
-            <button class="el-lab2-clear biz-match-btn" id="bizMatchBtn" type="button" style="top:50px">🔍 モデル判定</button>
-            <button class="el-lab2-clear biz-share-btn" id="bizShareBtn" type="button" style="top:88px">📤 共有・書き出し</button>
-          </div>
-          <div class="biz-toolbar">
-            <div class="biz-flow-modes" id="bizFlowModes">
-              ${BIZ_FLOWS.map((f, i) => `
-                <button class="biz-flow-btn${i===0?' active':''}" data-flow="${f.id}" style="--c:${f.color}" type="button">
-                  <span class="biz-flow-ic">${bizIcon(f.id, 18)}</span>
-                  <span class="biz-flow-nm">${f.name}</span>
-                </button>
-              `).join('')}
-              <button class="biz-flow-btn biz-bidir-btn" id="bizBidirBtn" type="button" title="両方向矢印">
-                <span class="biz-flow-ic">⇄</span>
-                <span class="biz-flow-nm">両方向</span>
-              </button>
-            </div>
           </div>
           <div class="el-lab2-palette-wrap">
             <div class="el-lab2-palette biz-palette" id="bizPalette" data-mode="row">
@@ -24504,12 +24506,35 @@
     boardCanvas.className = 'biz-board-canvas';
     bd.insertBefore(boardCanvas, bdSvg);
     boardCanvas.appendChild(bdSvg);
-    let zoom = 1;
+    let zoom = 1, panX = 0, panY = 0;
     function applyZoom() {
-      boardCanvas.style.transform = `scale(${zoom})`;
+      boardCanvas.style.transform = `translate(${panX}px, ${panY}px) scale(${zoom})`;
       const z = ov.querySelector('#bizZoomLabel');
       if (z) z.textContent = `${Math.round(zoom*100)}%`;
     }
+    // 盤の余白をドラッグで移動（ホワイトボードのパン）
+    let panStart = null;
+    bd.addEventListener('pointerdown', e => {
+      // ノード・UI要素の上では発火させない
+      if (e.target.closest('.el-node') || e.target.closest('.biz-zoom-ctl')
+          || e.target.closest('.el-lab2-clear') || e.target.closest('.el-lab2-counter')
+          || e.target.closest('.el-lab2-help') || e.target.closest('.el-lab2-status')) return;
+      panStart = { x: e.clientX, y: e.clientY, px: panX, py: panY };
+      bd.classList.add('panning');
+      try { bd.setPointerCapture(e.pointerId); } catch(_) {}
+    });
+    bd.addEventListener('pointermove', e => {
+      if (!panStart) return;
+      panX = panStart.px + (e.clientX - panStart.x);
+      panY = panStart.py + (e.clientY - panStart.y);
+      applyZoom();
+    });
+    bd.addEventListener('pointerup', e => {
+      panStart = null;
+      bd.classList.remove('panning');
+      try { bd.releasePointerCapture(e.pointerId); } catch(_) {}
+    });
+    bd.addEventListener('pointercancel', () => { panStart = null; bd.classList.remove('panning'); });
     // ズームボタンを盤に追加
     const zoomCtl = document.createElement('div');
     zoomCtl.className = 'biz-zoom-ctl';
@@ -25026,7 +25051,7 @@
           ghost.remove();
           const rect = bd.getBoundingClientRect();
           const inside = ev.clientX>=rect.left&&ev.clientX<=rect.right&&ev.clientY>=rect.top&&ev.clientY<=rect.bottom;
-          if (inside) spawnRole(id, (ev.clientX-rect.left)/zoom-32, (ev.clientY-rect.top)/zoom-25);
+          if (inside) spawnRole(id, (ev.clientX-rect.left-panX)/zoom-32, (ev.clientY-rect.top-panY)/zoom-25);
           else if (!dragged) {
             const x = 30 + Math.random()*(bd.clientWidth/zoom-90);
             const y = 30 + Math.random()*(bd.clientHeight/zoom-90);
