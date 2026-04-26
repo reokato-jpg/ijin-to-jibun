@@ -23242,29 +23242,50 @@
   // ============================================================
   // 主要な16元素（覚えやすい・身近）
   const ELEMENTS_DATA = [
-    { sym: 'H',  name: '水素',     no: 1,  color: '#fff8c0', tag: '宇宙の8割',   desc: '最も軽く、最も多い元素。星の燃料。',                        ijins: ['lavoisier'] },
-    { sym: 'He', name: 'ヘリウム', no: 2,  color: '#ffd0d0', tag: '風船・太陽',  desc: '太陽の光から先に発見された元素。',                           ijins: [] },
-    { sym: 'C',  name: '炭素',     no: 6,  color: '#3a3a3a', tag: '生命の柱',    desc: '鉛筆の黒、ダイヤモンドの輝き。すべての有機物の主役。',       ijins: ['lavoisier'] },
-    { sym: 'N',  name: '窒素',     no: 7,  color: '#80c0e0', tag: '空気の8割',   desc: '大気の主役。タンパク質・DNA・肥料・爆薬の元素。',           ijins: ['lavoisier', 'nobel'] },
-    { sym: 'O',  name: '酸素',     no: 8,  color: '#80b0ff', tag: '呼吸',        desc: '生命の呼吸の元素。燃焼の正体。プリーストリーが発見。',       ijins: ['lavoisier'] },
-    { sym: 'Na', name: 'ナトリウム', no: 11, color: '#e8a880', tag: '塩の半分',   desc: '塩の片割れ。神経の信号にも使われる。',                       ijins: [] },
-    { sym: 'Mg', name: 'マグネシウム', no: 12, color: '#a8e0a0', tag: '葉緑素', desc: '葉が緑なのはこの原子のおかげ。植物の心臓。',                   ijins: [] },
-    { sym: 'Al', name: 'アルミ',     no: 13, color: '#d8d8e0', tag: '軽い金属',  desc: '軽く錆びにくい。1円玉、缶、飛行機。',                         ijins: [] },
-    { sym: 'Si', name: 'ケイ素',     no: 14, color: '#a0a0c0', tag: '砂・半導体', desc: '砂の主成分。コンピュータの心臓。',                            ijins: ['steve_jobs'] },
-    { sym: 'P',  name: 'リン',       no: 15, color: '#ff8060', tag: 'DNA・骨',   desc: '生命のATPと骨の主役。錬金術師ブラントが尿から発見。',         ijins: [] },
-    { sym: 'S',  name: '硫黄',       no: 16, color: '#e8d040', tag: '火山・卵',  desc: '火山の黄色、ゆで卵の匂い、火薬の三本柱の一つ。',              ijins: [] },
-    { sym: 'Cl', name: '塩素',       no: 17, color: '#80e080', tag: '塩のもう半分', desc: '黄緑色の毒ガス。塩・漂白・水道の殺菌。',                    ijins: [] },
-    { sym: 'Ca', name: 'カルシウム', no: 20, color: '#f0e8d0', tag: '骨・歯',    desc: '牛乳に含まれる。骨と歯と貝殻の主成分。',                       ijins: [] },
-    { sym: 'Fe', name: '鉄',         no: 26, color: '#a0a0a0', tag: '血と剣',    desc: '血のヘムを作り、文明を支える金属。',                          ijins: [] },
-    { sym: 'Cu', name: '銅',         no: 29, color: '#c08858', tag: '電線・10円', desc: '青銅器時代の主役。電気を最も流す金属。',                      ijins: [] },
-    { sym: 'Ag', name: '銀',         no: 47, color: '#d8d8d8', tag: '鏡・銀器',  desc: '月の金属。鏡・写真・抗菌・通貨。',                            ijins: [] },
-    { sym: 'Au', name: '金',         no: 79, color: '#ffd860', tag: '永遠の金',  desc: '腐蝕しない美しさ。古代から現代まで人を魅了する。',            ijins: ['newton'] },
-    { sym: 'Hg', name: '水銀',       no: 80, color: '#a8c0d8', tag: '液体金属',  desc: '常温で液体になる唯一の金属。錬金術師の夢、ニュートンを毒したかも。', ijins: ['newton'] },
-    { sym: 'Pb', name: '鉛',         no: 82, color: '#5a6878', tag: 'ローマの水道', desc: '重く、毒、それでも便利だった古代の万能金属。',                ijins: [] },
-    { sym: 'U',  name: 'ウラン',     no: 92, color: '#80c080', tag: '原子力',    desc: 'E=mc²の現実化。原発と原爆の心臓。',                            ijins: ['einstein', 'feynman', 'heisenberg'] },
-    { sym: 'Ra', name: 'ラジウム',   no: 88, color: '#80ffc0', tag: '光る毒',   desc: 'マリ・キュリーが取り出した光る元素。',                        ijins: ['curie'] },
-    { sym: 'Po', name: 'ポロニウム', no: 84, color: '#a080ff', tag: '祖国の名',  desc: 'キュリー夫妻が祖国ポーランドにちなんで命名。',                ijins: ['curie'] },
+    { sym: 'H',  name: '水素',     no: 1,  color: '#fff8c0', tag: '宇宙の8割',   desc: '最も軽く、最も多い元素。星の燃料。',                        ijins: ['lavoisier'], period:1, group:1,  eyes:'happy' },
+    { sym: 'He', name: 'ヘリウム', no: 2,  color: '#ffd0d0', tag: '風船・太陽',  desc: '太陽の光から先に発見された元素。',                           ijins: [],            period:1, group:18, eyes:'sleepy' },
+    { sym: 'C',  name: '炭素',     no: 6,  color: '#3a3a3a', tag: '生命の柱',    desc: '鉛筆の黒、ダイヤモンドの輝き。すべての有機物の主役。',       ijins: ['lavoisier'], period:2, group:14, eyes:'serious' },
+    { sym: 'N',  name: '窒素',     no: 7,  color: '#80c0e0', tag: '空気の8割',   desc: '大気の主役。タンパク質・DNA・肥料・爆薬の元素。',           ijins: ['lavoisier', 'nobel'], period:2, group:15, eyes:'wide' },
+    { sym: 'O',  name: '酸素',     no: 8,  color: '#80b0ff', tag: '呼吸',        desc: '生命の呼吸の元素。燃焼の正体。プリーストリーが発見。',       ijins: ['lavoisier'], period:2, group:16, eyes:'spark' },
+    { sym: 'Na', name: 'ナトリウム', no: 11, color: '#e8a880', tag: '塩の半分',   desc: '塩の片割れ。神経の信号にも使われる。',                       ijins: [], period:3, group:1,  eyes:'cute' },
+    { sym: 'Mg', name: 'マグネシウム', no: 12, color: '#a8e0a0', tag: '葉緑素', desc: '葉が緑なのはこの原子のおかげ。植物の心臓。',                   ijins: [], period:3, group:2,  eyes:'happy' },
+    { sym: 'Al', name: 'アルミ',     no: 13, color: '#d8d8e0', tag: '軽い金属',  desc: '軽く錆びにくい。1円玉、缶、飛行機。',                         ijins: [], period:3, group:13, eyes:'round' },
+    { sym: 'Si', name: 'ケイ素',     no: 14, color: '#a0a0c0', tag: '砂・半導体', desc: '砂の主成分。コンピュータの心臓。',                            ijins: ['steve_jobs'], period:3, group:14, eyes:'square' },
+    { sym: 'P',  name: 'リン',       no: 15, color: '#ff8060', tag: 'DNA・骨',   desc: '生命のATPと骨の主役。錬金術師ブラントが尿から発見。',         ijins: [], period:3, group:15, eyes:'glow' },
+    { sym: 'S',  name: '硫黄',       no: 16, color: '#e8d040', tag: '火山・卵',  desc: '火山の黄色、ゆで卵の匂い、火薬の三本柱の一つ。',              ijins: [], period:3, group:16, eyes:'angry' },
+    { sym: 'Cl', name: '塩素',       no: 17, color: '#80e080', tag: '塩のもう半分', desc: '黄緑色の毒ガス。塩・漂白・水道の殺菌。',                    ijins: [], period:3, group:17, eyes:'cross' },
+    { sym: 'Ca', name: 'カルシウム', no: 20, color: '#f0e8d0', tag: '骨・歯',    desc: '牛乳に含まれる。骨と歯と貝殻の主成分。',                       ijins: [], period:4, group:2,  eyes:'round' },
+    { sym: 'Fe', name: '鉄',         no: 26, color: '#a0a0a0', tag: '血と剣',    desc: '血のヘムを作り、文明を支える金属。',                          ijins: [], period:4, group:8,  eyes:'serious' },
+    { sym: 'Cu', name: '銅',         no: 29, color: '#c08858', tag: '電線・10円', desc: '青銅器時代の主役。電気を最も流す金属。',                      ijins: [], period:4, group:11, eyes:'wink' },
+    { sym: 'Ag', name: '銀',         no: 47, color: '#d8d8d8', tag: '鏡・銀器',  desc: '月の金属。鏡・写真・抗菌・通貨。',                            ijins: [], period:5, group:11, eyes:'oval' },
+    { sym: 'Au', name: '金',         no: 79, color: '#ffd860', tag: '永遠の金',  desc: '腐蝕しない美しさ。古代から現代まで人を魅了する。',            ijins: ['newton'], period:6, group:11, eyes:'star' },
+    { sym: 'Hg', name: '水銀',       no: 80, color: '#a8c0d8', tag: '液体金属',  desc: '常温で液体になる唯一の金属。錬金術師の夢、ニュートンを毒したかも。', ijins: ['newton'], period:6, group:12, eyes:'sleepy' },
+    { sym: 'Pb', name: '鉛',         no: 82, color: '#5a6878', tag: 'ローマの水道', desc: '重く、毒、それでも便利だった古代の万能金属。',                ijins: [], period:6, group:14, eyes:'tired' },
+    { sym: 'U',  name: 'ウラン',     no: 92, color: '#80c080', tag: '原子力',    desc: 'E=mc²の現実化。原発と原爆の心臓。',                            ijins: ['einstein', 'feynman', 'heisenberg'], period:9, group:6, eyes:'angry' },
+    { sym: 'Ra', name: 'ラジウム',   no: 88, color: '#80ffc0', tag: '光る毒',   desc: 'マリ・キュリーが取り出した光る元素。',                        ijins: ['curie'], period:7, group:2, eyes:'glow' },
+    { sym: 'Po', name: 'ポロニウム', no: 84, color: '#a080ff', tag: '祖国の名',  desc: 'キュリー夫妻が祖国ポーランドにちなんで命名。',                ijins: ['curie'], period:6, group:16, eyes:'spark' },
   ];
+  // 元素の目（顔）を描くSVG
+  function elFaceSvg(eyes) {
+    const map = {
+      round:   '<circle cx="6" cy="7" r="2.4" fill="#111"/><circle cx="16" cy="7" r="2.4" fill="#111"/>',
+      oval:    '<ellipse cx="6" cy="7" rx="1.5" ry="2.6" fill="#111"/><ellipse cx="16" cy="7" rx="1.5" ry="2.6" fill="#111"/>',
+      sleepy:  '<path d="M3,7 Q6,10 9,7" stroke="#111" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M13,7 Q16,10 19,7" stroke="#111" stroke-width="1.6" fill="none" stroke-linecap="round"/>',
+      star:    '<text x="6" y="10" font-size="7" text-anchor="middle" fill="#111">✦</text><text x="16" y="10" font-size="7" text-anchor="middle" fill="#111">✦</text>',
+      happy:   '<path d="M3,8 Q6,4 9,8" stroke="#111" stroke-width="1.7" fill="none" stroke-linecap="round"/><path d="M13,8 Q16,4 19,8" stroke="#111" stroke-width="1.7" fill="none" stroke-linecap="round"/>',
+      angry:   '<path d="M3,5 L9,8" stroke="#111" stroke-width="1.7" stroke-linecap="round"/><path d="M13,8 L19,5" stroke="#111" stroke-width="1.7" stroke-linecap="round"/><circle cx="6" cy="8" r="1.4" fill="#111"/><circle cx="16" cy="8" r="1.4" fill="#111"/>',
+      wide:    '<circle cx="6" cy="7" r="3" fill="#fff" stroke="#111" stroke-width="0.7"/><circle cx="6" cy="7" r="1.4" fill="#111"/><circle cx="16" cy="7" r="3" fill="#fff" stroke="#111" stroke-width="0.7"/><circle cx="16" cy="7" r="1.4" fill="#111"/>',
+      wink:    '<circle cx="6" cy="7" r="2.4" fill="#111"/><path d="M13,7 Q16,10 19,7" stroke="#111" stroke-width="1.6" fill="none" stroke-linecap="round"/>',
+      spark:   '<text x="6" y="11" font-size="9" text-anchor="middle" fill="#fff" stroke="#111" stroke-width="0.5">✧</text><text x="16" y="11" font-size="9" text-anchor="middle" fill="#fff" stroke="#111" stroke-width="0.5">✧</text>',
+      serious: '<rect x="3" y="6" width="6" height="2" rx="1" fill="#111"/><rect x="13" y="6" width="6" height="2" rx="1" fill="#111"/>',
+      cute:    '<path d="M4,4 q2,-2 4,0 q-2,5 -4,0z" fill="#111"/><path d="M14,4 q2,-2 4,0 q-2,5 -4,0z" fill="#111"/>',
+      cross:   '<text x="6" y="10" font-size="8" text-anchor="middle" fill="#111" font-weight="800">×</text><text x="16" y="10" font-size="8" text-anchor="middle" fill="#111" font-weight="800">×</text>',
+      glow:    '<circle cx="6" cy="7" r="2.6" fill="#fff"/><circle cx="6" cy="7" r="1" fill="#111"/><circle cx="16" cy="7" r="2.6" fill="#fff"/><circle cx="16" cy="7" r="1" fill="#111"/>',
+      square:  '<rect x="3.5" y="4.5" width="5" height="5" fill="#111"/><rect x="13.5" y="4.5" width="5" height="5" fill="#111"/>',
+      tired:   '<path d="M3,8 L9,6" stroke="#111" stroke-width="1.7" stroke-linecap="round"/><path d="M13,6 L19,8" stroke="#111" stroke-width="1.7" stroke-linecap="round"/>',
+    };
+    return `<svg class="el-face" viewBox="0 0 22 14" aria-hidden="true">${map[eyes] || map.round}</svg>`;
+  }
   // 化合物カード — A + B = C 方式で覚えやすく
   const COMPOUNDS_DATA = [
     { formula: 'H₂O',     name: '水',         parts: ['H', 'O'],         desc: '命の溶媒。地球の青さ、人体の60%。',                           year: '1783', by: 'ラヴォアジエ', history: '古代から最も身近な物質だったが、1783年にラヴォアジエが水素と酸素から水を合成し『水は元素ではなく化合物』だと証明した。', ijins: ['lavoisier'] },
@@ -23320,23 +23341,27 @@
         </div>
 
         <div class="el-lab2">
-          <div class="el-lab2-head">⚗️ 化学ラボ — 元素を盤に置いて、タップでつないで化合物を生み出そう</div>
           <div class="el-lab2-board" id="elBoard">
             <svg class="el-lab2-svg" id="elBoardSvg" preserveAspectRatio="none"></svg>
-            <div class="el-lab2-empty">↓ 下のバーから元素を盤にドラッグ／元素どうしをタップで結合</div>
+            <div class="el-lab2-empty">
+              <div class="el-lab2-empty-1">⚗️ 化学ラボ</div>
+              <div class="el-lab2-empty-2">下のバーから元素をここにドラッグ／タップでつないで化合物を生み出そう</div>
+            </div>
+            <span class="el-lab2-counter" id="elBoardCounter">0 / ${COMPOUNDS_DATA.length}</span>
+            <button class="el-lab2-clear" id="elBoardClear" type="button">🧹 クリア</button>
           </div>
           <div class="el-lab2-info" id="elBoardInfo"></div>
-          <div class="el-lab2-actions">
-            <button class="el-lab2-clear" id="elBoardClear" type="button">🧹 盤をクリア</button>
-            <span class="el-lab2-counter" id="elBoardCounter">発見した化合物：0 / ${COMPOUNDS_DATA.length}</span>
-          </div>
-          <div class="el-lab2-palette" id="elPalette">
-            ${ELEMENTS_DATA.map(e => `
-              <button class="el-pal-item" data-sym="${e.sym}" style="--c:${e.color}" type="button">
-                <span class="el-pal-sym">${e.sym}</span>
-                <span class="el-pal-name">${e.name}</span>
-              </button>
-            `).join('')}
+          <div class="el-lab2-palette-wrap">
+            <button class="el-lab2-tabs" id="elPalTabs" data-mode="row" type="button" title="周期表で見る"><span>周期表</span></button>
+            <div class="el-lab2-palette" id="elPalette" data-mode="row">
+              ${ELEMENTS_DATA.map(e => `
+                <button class="el-pal-item" data-sym="${e.sym}" data-period="${e.period}" data-group="${e.group}" style="--c:${e.color}; --pp:${e.period}; --pg:${e.group}" type="button">
+                  <span class="el-pal-sym">${e.sym}</span>
+                  ${elFaceSvg(e.eyes)}
+                  <span class="el-pal-name">${e.name}</span>
+                </button>
+              `).join('')}
+            </div>
           </div>
         </div>
 
@@ -23346,6 +23371,7 @@
             <div class="el-cell" style="--el-color:${el.color}" data-el="${el.sym}">
               <div class="el-no">${el.no}</div>
               <div class="el-sym">${el.sym}</div>
+              ${elFaceSvg(el.eyes)}
               <div class="el-name">${el.name}</div>
               <div class="el-tag">${el.tag}</div>
             </div>
@@ -23405,6 +23431,38 @@
       _wireIjinPills(detailEl, close);
     }
     // ===== 視覚的ラボ：盤に置いて、タップでつないで化合物を生む =====
+    // WebAudio効果音
+    let _ac = null;
+    function ac() {
+      if (!_ac) {
+        try { _ac = new (window.AudioContext || window.webkitAudioContext)(); } catch(_) { return null; }
+      }
+      if (_ac.state === 'suspended') { try { _ac.resume(); } catch(_) {} }
+      return _ac;
+    }
+    function tone(freq, dur, type='sine', gain=0.12, slide=0) {
+      const c = ac(); if (!c) return;
+      const o = c.createOscillator();
+      const g = c.createGain();
+      o.type = type;
+      o.frequency.setValueAtTime(freq, c.currentTime);
+      if (slide) o.frequency.exponentialRampToValueAtTime(Math.max(40, freq + slide), c.currentTime + dur);
+      g.gain.setValueAtTime(0, c.currentTime);
+      g.gain.linearRampToValueAtTime(gain, c.currentTime + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + dur);
+      o.connect(g).connect(c.destination);
+      o.start(); o.stop(c.currentTime + dur + 0.02);
+    }
+    function playSfx(kind) {
+      if (kind === 'place')   tone(440, 0.12, 'triangle', 0.10, 240);
+      else if (kind === 'sel') tone(660, 0.08, 'sine', 0.07);
+      else if (kind === 'synth') {
+        // 上昇アルペジオ（C-E-G-C）で「生まれた！」
+        const notes = [523.25, 659.25, 783.99, 1046.5];
+        notes.forEach((f, i) => setTimeout(() => tone(f, 0.18, 'triangle', 0.13), i * 70));
+      }
+      else if (kind === 'clear') tone(220, 0.18, 'sawtooth', 0.05, -120);
+    }
     const board = ov.querySelector('#elBoard');
     const boardSvg = ov.querySelector('#elBoardSvg');
     const boardInfo = ov.querySelector('#elBoardInfo');
@@ -23428,6 +23486,7 @@
       boardSvg.innerHTML = '';
       boardInfo.innerHTML = '';
       boardEmpty.style.display = '';
+      playSfx('clear');
     }
     function spawnElementNode(sym, x, y) {
       const el = sym2el[sym]; if (!el) return null;
@@ -23439,8 +23498,15 @@
       y = Math.max(0, Math.min(board.clientHeight - NODE_R*2, y));
       dom.style.left = x + 'px';
       dom.style.top = y + 'px';
-      dom.innerHTML = `<span class="el-node-sym">${sym}</span><span class="el-node-name">${el.name}</span>`;
+      dom.innerHTML = `
+        <span class="el-node-hand el-node-hand-l"></span>
+        <span class="el-node-hand el-node-hand-r"></span>
+        <span class="el-node-sym">${sym}</span>
+        ${elFaceSvg(el.eyes)}
+        <span class="el-node-name">${el.name}</span>
+      `;
       board.appendChild(dom);
+      playSfx('place');
       const node = { id, kind: 'el', sym, x, y, dom };
       bnodes.push(node);
       attachNodeHandlers(node);
@@ -23455,8 +23521,14 @@
       y = Math.max(0, Math.min(board.clientHeight - NODE_R*2, y));
       dom.style.left = x + 'px';
       dom.style.top = y + 'px';
-      dom.innerHTML = `<span class="el-node-formula">${c.formula}</span><span class="el-node-name">${c.name}</span>`;
+      dom.innerHTML = `
+        <span class="el-node-hand el-node-hand-l"></span>
+        <span class="el-node-hand el-node-hand-r"></span>
+        <span class="el-node-formula">${c.formula}</span>
+        <span class="el-node-name">${c.name}</span>
+      `;
       board.appendChild(dom);
+      playSfx('synth');
       const node = { id, kind: 'cmp', formula: c.formula, name: c.name, x, y, dom };
       bnodes.push(node);
       attachNodeHandlers(node);
@@ -23581,6 +23653,7 @@
       } else {
         selected.add(node.id);
         node.dom.classList.add('sel');
+        playSfx('sel');
       }
       checkSelectionMatch();
     }
@@ -23630,6 +23703,14 @@
       });
     });
     ov.querySelector('#elBoardClear').addEventListener('click', clearBoard);
+    // 周期表 ⇄ シンプル切替
+    const palTabs = ov.querySelector('#elPalTabs');
+    palTabs.addEventListener('click', () => {
+      const cur = palette.dataset.mode;
+      const next = cur === 'row' ? 'table' : 'row';
+      palette.dataset.mode = next;
+      palTabs.querySelector('span').textContent = next === 'table' ? 'シンプル' : '周期表';
+    });
     updateCounter();
 
     ov.querySelectorAll('.el-cell').forEach(cell => {
