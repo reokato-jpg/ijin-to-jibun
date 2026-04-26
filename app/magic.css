@@ -11501,15 +11501,20 @@ body #view-person { background: #ffffff !important; min-height: 100vh; }
   color: rgba(74,40,14,0.6) !important;
 }
 
-/* ヘッダー・アバター */
-#personDetail .profile-header { padding: 0 16px 14px !important; position: relative !important; z-index: 2 !important; background: #fafafa !important; }
+/* ヘッダー・アバター — カバーと重ねず、独立配置に */
+#personDetail .profile-header {
+  padding: 16px 16px 14px !important;
+  position: relative !important;
+  z-index: 2 !important;
+  background: #ffffff !important;
+}
 #personDetail .profile-cover { overflow: visible !important; z-index: 1 !important; }
 #personDetail .profile-cover-typo { overflow: visible !important; }
 #personDetail .profile-avatar {
-  width: 96px !important; height: 96px !important;
-  border: 4px solid #ffffff !important;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.04) !important;
-  margin-top: -50px !important;
+  width: 88px !important; height: 88px !important;
+  border: 3px solid #ffffff !important;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.04) !important;
+  margin-top: 0 !important;
   background-color: #f0e8d8 !important;
   position: relative !important;
   z-index: 5 !important;
