@@ -6351,6 +6351,52 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   color: #f0e0ff;
   font-style: italic;
 }
+/* 惑星情報の追加ブロック（元素・偉人） */
+.cosmos-info-block {
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: rgba(120,180,255,0.08);
+  border: 1px solid rgba(120,180,255,0.3);
+  border-radius: 8px;
+}
+.cib-head {
+  font-size: 11px; letter-spacing: 3px;
+  color: #b8e0ff;
+  margin-bottom: 6px;
+}
+.cib-text {
+  font-size: 12px; line-height: 1.65;
+  color: #f0f6ff;
+  margin-bottom: 8px;
+}
+.cib-chips {
+  display: flex; flex-wrap: wrap; gap: 5px;
+  margin-bottom: 8px;
+}
+.cib-chips .koh-pl-elchip {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 28px; height: 28px; padding: 0 7px;
+  background: var(--c, #888);
+  color: #0a0a0a;
+  border-radius: 5px;
+  font-weight: 800; font-size: 12px;
+  font-family: 'Helvetica Neue', sans-serif;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+.cib-pills { display: flex; flex-wrap: wrap; gap: 5px; }
+.cib-cta {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  background: rgba(255,224,128,0.15);
+  border: 1px solid #ffe080;
+  color: #ffe080;
+  border-radius: 6px;
+  font-size: 12px; letter-spacing: 1px; font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.cib-cta:hover { background: rgba(255,224,128,0.3); color: #fff; }
 .cosmos-info-cta {
   display: block;
   width: 100%;

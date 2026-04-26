@@ -32446,6 +32446,29 @@
       if (!p.facts) return;
       const infoEl = ov.querySelector('#cosmosInfoContent');
       const panel = ov.querySelector('#cosmosInfoPanel');
+      // 元素組成と関わった偉人（cosmos→元素／cosmos→偉人 接続）
+      const PLANET_EXTRAS = {
+        '太陽':       { elements:['H','He','O','C','Fe'],            composition:'H 74% / He 24% / O・C・Fe 微量', ijins:['copernicus','galileo'] },
+        '水星':       { elements:['Fe','Si','O'],                    composition:'鉄の核 70% / ケイ酸塩マントル', ijins:[] },
+        '金星':       { elements:['C','O','S','H','Si'],             composition:'CO₂ 96% / 硫酸雲 / ケイ酸塩地殻', ijins:[] },
+        '地球':       { elements:['Fe','O','Si','Mg','S','Al','Ca'], composition:'Fe 32% / O 30% / Si 15% / Mg 14% / S 3%', ijins:['darwin','kepler','newton','einstein'] },
+        '月':         { elements:['O','Si','Fe','Ca','Al','Mg'],     composition:'O 43% / Si 21% / Fe 10% / Ca 9% / Al 7%', ijins:['galileo','newton'] },
+        '火星':       { elements:['Fe','O','Si','C','Mg'],           composition:'Fe₂O₃(鉄錆)で赤い表面 / 薄いCO₂大気', ijins:[] },
+        '木星':       { elements:['H','He','C','N'],                 composition:'H 90% / He 10% / メタン・アンモニア', ijins:['galileo'] },
+        '土星':       { elements:['H','He'],                         composition:'H 96% / He 3% / 氷と岩のリング', ijins:[] },
+        '天王星':     { elements:['H','He','C','O'],                 composition:'H 83% / He 15% / メタン 2%(青く見える要因)', ijins:['herschel'] },
+        '海王星':     { elements:['H','He','C','O'],                 composition:'H 80% / He 19% / メタン1%', ijins:[] },
+        'ブラックホール': { elements:[],                              composition:'時空が無限に曲がる重力の井戸（質量400万太陽）', ijins:['einstein','hawking'] },
+      };
+      const ex = PLANET_EXTRAS[p.name] || { elements:[], ijins:[] };
+      const elemChips = (window._renderElementChips || (() => ''))(ex.elements);
+      const ijinPillsHtml = (window.MAGIC && window.MAGIC._peopleBundle)
+        ? ex.ijins.map(id => {
+            const person = window.MAGIC._peopleBundle.find(x => x.id === id);
+            const name = person ? person.name : id;
+            return `<button class="cnp-pill" data-id="${id}">${name}</button>`;
+          }).join('')
+        : ex.ijins.map(id => `<button class="cnp-pill" data-id="${id}">${id}</button>`).join('');
       infoEl.innerHTML = `
         <div class="cosmos-info-name">🚀 到着: ${p.jname}</div>
         <div class="cosmos-info-sub">${p.isBlackHole ? 'BLACK HOLE · いて座A*' : p.name === '地球' ? 'EARTH · 偉人が生まれた星' : p.name.toUpperCase()}</div>
@@ -32458,9 +32481,40 @@
           <dt>NASA</dt><dd>${p.facts.nasa}</dd>
         </dl>
         <div class="cosmos-info-trivia">${p.facts.trivia}</div>
+        ${ex.elements.length ? `
+          <div class="cosmos-info-block">
+            <div class="cib-head">⚛ 元素組成</div>
+            <div class="cib-text">${ex.composition || ''}</div>
+            <div class="cib-chips">${elemChips}</div>
+            <button class="cib-cta" data-cta="elements" data-elements='${ex.elements.join(',')}' data-title="${p.jname}を作る元素">⚗️ この元素で化学ラボを開く</button>
+          </div>
+        ` : ex.composition ? `<div class="cosmos-info-block"><div class="cib-head">⚛ 状態</div><div class="cib-text">${ex.composition}</div></div>` : ''}
+        ${ex.ijins.length ? `
+          <div class="cosmos-info-block">
+            <div class="cib-head">👤 関わった偉人</div>
+            <div class="cib-pills">${ijinPillsHtml}</div>
+          </div>
+        ` : ''}
         ${buildSymbolBlock(p.name)}
         ${p.isEarth ? `<button class="cosmos-info-cta" id="cosmosInfoCta">🌍 地球儀で偉人を見る</button>` : ''}
       `;
+      // 元素ラボへの遷移
+      const elemBtn = infoEl.querySelector('[data-cta="elements"]');
+      if (elemBtn) {
+        elemBtn.addEventListener('click', () => {
+          const syms = (elemBtn.dataset.elements || '').split(',').filter(Boolean);
+          const ttl = elemBtn.dataset.title || '元素';
+          try { openElementsPage({ initialElements: syms, title: ttl }); } catch(e) { console.warn('open elements lab', e); }
+        });
+      }
+      // 偉人ピル
+      infoEl.querySelectorAll('.cnp-pill').forEach(p => {
+        p.addEventListener('click', () => {
+          const id = p.dataset.id;
+          if (typeof openIjinProfile === 'function') openIjinProfile(id);
+          else if (typeof openPersonModal === 'function') openPersonModal(id);
+        });
+      });
       panel.classList.add('show');
       const cta = infoEl.querySelector('#cosmosInfoCta');
       if (cta) {
