@@ -14979,117 +14979,180 @@
             float horizon = smoothstep(0.30, 0.55, uv.y);
             // 0=Eden / 1=Noah / 2=Atlantis / 3=Babel / 4=Elysion
             if (uMyth < 0.5) {
-              // 🌳 Eden: 黄昏の森（落ち着いたトーン）
-              vec3 sky = mix(vec3(0.18, 0.12, 0.08), vec3(0.30, 0.22, 0.14), horizon);
-              col = mix(vec3(0.04, 0.10, 0.05), sky, smoothstep(0.32, 0.45, uv.y));
-              // 樹冠線（地平線下、もっと暗い）
-              float treeNoise = fbm(vec2(uv.x * 22.0, uv.x * 4.0));
-              float treeLine = 0.36 + treeNoise * 0.024;
-              if (uv.y < treeLine) col = mix(col, vec3(0.02, 0.06, 0.03), 0.92);
-              // 控えめな夕陽（小さく、ぼんやり）
-              vec2 sunP = vec2(0.72, 0.65);
-              float sd = distance(uv, sunP);
-              col += vec3(0.55, 0.42, 0.28) * smoothstep(0.014, 0.0, sd) * 0.55;
-              col += vec3(0.50, 0.36, 0.22) * smoothstep(0.10, 0.0, sd) * 0.15;
-              // 雲は控えめ
-              col = mix(col, vec3(0.30, 0.26, 0.22), smoothstep(0.55, 0.78, cloud) * smoothstep(0.55, 0.7, uv.y) * 0.25);
-              // 🦋 飛ぶ鳥（V字シルエット、3羽、薄く）
-              for (int i = 0; i < 3; i++) {
-                float fi = float(i);
-                vec2 bp = vec2(fract(uTime * 0.05 + fi * 0.37), 0.55 + sin(uTime*0.4+fi*1.7)*0.06);
-                float wing = smoothstep(0.018, 0.0, abs(uv.y-bp.y) + abs(fract(uv.x*40.0+fi)-0.5)*0.04 + abs(uv.x-bp.x)*0.5);
-                col = mix(col, vec3(0.02, 0.05, 0.03), wing * 0.7);
-              }
-            } else if (uMyth < 1.5) {
-              // 🚢 Noah: 嵐の空（暗く落ち着いた色）
-              vec3 sky = mix(vec3(0.08, 0.10, 0.16), vec3(0.04, 0.06, 0.10), horizon);
-              col = mix(vec3(0.02, 0.06, 0.12), sky, smoothstep(0.32, 0.55, uv.y));
-              // 雷雲
-              col = mix(col, vec3(0.01, 0.02, 0.04), smoothstep(0.45, 0.75, cloud) * 0.9);
-              // 雷の閃光（控えめに）
-              float lightning = step(0.985, fract(sin(floor(uTime * 0.7) * 12.9898) * 43758.5453));
-              col += vec3(0.45, 0.50, 0.55) * lightning * smoothstep(0.55, 0.75, uv.y) * 0.55;
-              // 海面（波、暗く）
-              if (uv.y < 0.30) {
-                float wave = sin(uv.x * 30.0 + uTime * 1.2) * 0.5 + sin(uv.x * 14.0 - uTime * 0.8) * 0.5;
-                col = mix(vec3(0.02, 0.05, 0.10), vec3(0.04, 0.08, 0.14), wave * 0.5 + 0.5);
-              }
-              // 虹（控えめ）
-              float rArc = distance(uv, vec2(0.3, 0.30));
-              float ringW = smoothstep(0.32, 0.30, rArc) - smoothstep(0.30, 0.28, rArc);
-              col += vec3(0.20, 0.14, 0.22) * ringW * 0.25;
-              // 🕊 飛ぶ鳩（1羽だけ、ゆっくり横切る）
-              vec2 dovP = vec2(fract(uTime * 0.04), 0.6 + sin(uTime*0.3)*0.04);
-              float dove = smoothstep(0.025, 0.0, abs(uv.y-dovP.y) + abs(uv.x-dovP.x)*0.5);
-              col = mix(col, vec3(0.85, 0.85, 0.9), dove * 0.6);
-            } else if (uMyth < 2.5) {
-              // 🏛 Atlantis: 深海ブルー＋光線
-              col = mix(vec3(0.02, 0.10, 0.20), vec3(0.04, 0.20, 0.36), uv.y);
-              // 上から差し込む光線×6
-              for (int i = 0; i < 6; i++) {
-                float fi = float(i);
-                float bx = fract(fi * 0.17 + sin(uTime * 0.1 + fi) * 0.04);
-                float dist = abs(uv.x - bx);
-                float beam = smoothstep(0.05, 0.0, dist) * smoothstep(1.0, 0.3, uv.y);
-                col += vec3(0.6, 0.85, 1.0) * beam * 0.55;
-              }
-              // 泡（小さい点）
-              for (int i = 0; i < 8; i++) {
-                float fi = float(i);
-                vec2 bp = vec2(fract(fi * 0.13 + sin(uTime * 0.4 + fi) * 0.03), fract(uTime * 0.07 + fi * 0.27));
-                col += vec3(0.8, 0.95, 1.0) * smoothstep(0.012, 0.0, distance(uv, bp)) * 0.85;
-              }
-              // 海底のシルエット（柱影）
-              if (uv.y < 0.15) col = mix(col, vec3(0.0, 0.04, 0.08), 0.85);
-              // 🐟 泳ぐ魚（横方向に流れる、4匹）
+              // 🌳 Eden: 静かな夜の森。背景は暗く、生き物だけ薄く漂う
+              col = mix(vec3(0.02, 0.04, 0.02), vec3(0.05, 0.08, 0.05), uv.y);
+              // 弱い月光
+              col += vec3(0.18, 0.18, 0.14) * smoothstep(0.06, 0.0, distance(uv, vec2(0.72, 0.78))) * 0.5;
+              // 🦋 蝶（4羽、ふわふわ）
               for (int i = 0; i < 4; i++) {
                 float fi = float(i);
-                float fy = 0.25 + fi * 0.15 + sin(uTime*0.4+fi*1.3)*0.04;
-                float fx = fract(uTime * 0.06 + fi * 0.27);
+                vec2 bp = vec2(fract(uTime * 0.04 + fi * 0.27), 0.35 + sin(uTime*0.5+fi*1.3)*0.10 + fi*0.12);
+                float wing = smoothstep(0.014, 0.0, abs(uv.y-bp.y) + abs(fract(uv.x*30.0+uTime*4.0+fi)-0.5)*0.05 + abs(uv.x-bp.x)*0.4);
+                col += vec3(0.22, 0.16, 0.30) * wing * 0.55;
+              }
+              // 🦌 鹿のシルエット（2頭、地平線下を歩く）
+              for (int i = 0; i < 2; i++) {
+                float fi = float(i);
+                float dx = fract(uTime * 0.012 + fi * 0.5);
+                vec2 dp = vec2(dx, 0.18 + fi*0.04);
+                float body = smoothstep(0.030, 0.0, abs(uv.y-dp.y)*1.4 + abs(uv.x-dp.x)*0.7);
+                float head = smoothstep(0.012, 0.0, abs(uv.y-(dp.y+0.022))*1.5 + abs(uv.x-(dp.x+0.025))*1.0);
+                col = mix(col, vec3(0.06, 0.05, 0.03), (body+head) * 0.85);
+              }
+              // 🐦 飛ぶ鳥（5羽、空を横切る）
+              for (int i = 0; i < 5; i++) {
+                float fi = float(i);
+                vec2 bp = vec2(fract(uTime * 0.06 + fi * 0.21), 0.62 + sin(uTime*0.3+fi*1.7)*0.05);
+                float bird = smoothstep(0.014, 0.0, abs(uv.y-bp.y) + abs(fract(uv.x*40.0+fi)-0.5)*0.04 + abs(uv.x-bp.x)*0.5);
+                col = mix(col, vec3(0.04, 0.05, 0.06), bird * 0.7);
+              }
+              // 🌟 蛍（小さい光の点、漂う）
+              for (int i = 0; i < 8; i++) {
+                float fi = float(i);
+                vec2 fp = vec2(fract(fi * 0.13 + sin(uTime*0.4+fi)*0.04),
+                               0.25 + fract(uTime*0.06 + fi*0.11) * 0.5);
+                col += vec3(0.6, 0.8, 0.4) * smoothstep(0.008, 0.0, distance(uv, fp)) * (0.5 + sin(uTime*4.0+fi)*0.3);
+              }
+            } else if (uMyth < 1.5) {
+              // 🚢 Noah: 嵐後の海。暗く、鳩と方舟のシルエット
+              col = mix(vec3(0.02, 0.03, 0.05), vec3(0.04, 0.05, 0.08), uv.y);
+              // 控えめな雷の閃光
+              float lightning = step(0.985, fract(sin(floor(uTime * 0.7) * 12.9898) * 43758.5453));
+              col += vec3(0.30, 0.32, 0.36) * lightning * smoothstep(0.55, 0.75, uv.y) * 0.45;
+              // 🕊 鳩2羽
+              for (int i = 0; i < 2; i++) {
+                float fi = float(i);
+                vec2 dp = vec2(fract(uTime * 0.045 + fi * 0.45), 0.62 + sin(uTime*0.3+fi)*0.05);
+                float dove = smoothstep(0.020, 0.0, abs(uv.y-dp.y) + abs(uv.x-dp.x)*0.5);
+                col = mix(col, vec3(0.80, 0.82, 0.88), dove * 0.65);
+              }
+              // 🌧 雨粒（縦に流れる）
+              for (int i = 0; i < 6; i++) {
+                float fi = float(i);
+                vec2 rp = vec2(fract(fi * 0.17 + sin(uTime*0.1+fi)*0.02),
+                               1.0 - fract(uTime*0.5 + fi*0.13));
+                col += vec3(0.50, 0.55, 0.65) * smoothstep(0.005, 0.0, abs(uv.x-rp.x) + abs(uv.y-rp.y)*0.3) * 0.45;
+              }
+              // 🚢 方舟のシルエット（地平線に小さく）
+              vec2 ap = vec2(0.5, 0.18);
+              float ark = smoothstep(0.060, 0.0, abs(uv.y-ap.y)*1.8 + abs(uv.x-ap.x)*0.6);
+              col = mix(col, vec3(0.18, 0.14, 0.10), ark * 0.85);
+              // 海面の波（暗い）
+              if (uv.y < 0.16) {
+                float wave = sin(uv.x * 30.0 + uTime * 1.2) * 0.4 + sin(uv.x * 14.0 - uTime * 0.8) * 0.4;
+                col = mix(vec3(0.01, 0.02, 0.04), vec3(0.03, 0.05, 0.08), wave * 0.5 + 0.5);
+              }
+            } else if (uMyth < 2.5) {
+              // 🏛 Atlantis: 深海。背景はほぼ黒で生き物だけ漂う
+              col = mix(vec3(0.01, 0.03, 0.08), vec3(0.02, 0.06, 0.12), uv.y);
+              // 上から差し込む弱い光線×4
+              for (int i = 0; i < 4; i++) {
+                float fi = float(i);
+                float bx = fract(fi * 0.27 + sin(uTime * 0.1 + fi) * 0.04);
+                float dist = abs(uv.x - bx);
+                float beam = smoothstep(0.04, 0.0, dist) * smoothstep(1.0, 0.4, uv.y);
+                col += vec3(0.20, 0.30, 0.40) * beam * 0.55;
+              }
+              // 🐟 泳ぐ魚×8匹（深海の群れ）
+              for (int i = 0; i < 8; i++) {
+                float fi = float(i);
+                float fy = 0.18 + fi * 0.085 + sin(uTime*0.4+fi*1.3)*0.04;
+                float fx = fract(uTime * 0.05 + fi * 0.13);
                 vec2 fp = vec2(fx, fy);
-                float body = smoothstep(0.025, 0.0, abs(uv.y-fp.y)*1.6 + abs(uv.x-fp.x)*0.8);
-                float tail = smoothstep(0.012, 0.0, abs(uv.y-fp.y)*2.0 + (uv.x-fp.x+0.025)*1.5);
-                col = mix(col, vec3(0.15, 0.40, 0.55), (body+tail) * 0.85);
+                float body = smoothstep(0.022, 0.0, abs(uv.y-fp.y)*1.6 + abs(uv.x-fp.x)*0.8);
+                float tail = smoothstep(0.011, 0.0, abs(uv.y-fp.y)*2.0 + (uv.x-fp.x+0.022)*1.5);
+                col = mix(col, vec3(0.30, 0.55, 0.70), (body+tail) * 0.80);
+              }
+              // 🐙 タコ（左下、ふわふわ）
+              vec2 op = vec2(0.18, 0.28 + sin(uTime*0.6)*0.04);
+              float octBody = smoothstep(0.045, 0.0, distance(uv, op));
+              col = mix(col, vec3(0.55, 0.30, 0.45), octBody * 0.75);
+              // 触手（4本）
+              for (int i = 0; i < 4; i++) {
+                float fi = float(i);
+                float ay = op.y - 0.04 - fi*0.018;
+                float ax = op.x + sin(uTime*1.5+fi*1.2+ay*30.0)*0.02 + (fi-1.5)*0.012;
+                col = mix(col, vec3(0.45, 0.25, 0.38), smoothstep(0.008, 0.0, distance(uv, vec2(ax, ay))) * 0.7);
+              }
+              // 🪼 クラゲ（2匹、上下にぷかぷか）
+              for (int i = 0; i < 2; i++) {
+                float fi = float(i);
+                vec2 jp = vec2(0.30 + fi*0.40, 0.55 + sin(uTime*0.4+fi*2.0)*0.06);
+                float dome = smoothstep(0.030, 0.0, distance(uv, jp));
+                col += vec3(0.6, 0.5, 0.9) * dome * 0.45;
+                // 触手糸
+                for (int j = 0; j < 3; j++) {
+                  float jj = float(j);
+                  float ty = jp.y - 0.025 - jj*0.012;
+                  col += vec3(0.4, 0.3, 0.7) * smoothstep(0.005, 0.0, abs(uv.x-jp.x-(jj-1.0)*0.014) + abs(uv.y-ty)*0.3) * 0.4;
+                }
+              }
+              // 泡
+              for (int i = 0; i < 10; i++) {
+                float fi = float(i);
+                vec2 bp = vec2(fract(fi * 0.13 + sin(uTime * 0.4 + fi) * 0.03), fract(uTime * 0.07 + fi * 0.27));
+                col += vec3(0.5, 0.7, 0.9) * smoothstep(0.008, 0.0, distance(uv, bp)) * 0.6;
               }
             } else if (uMyth < 3.5) {
-              // 🗼 Babel: 紫赤の嵐空＋稲妻
-              vec3 sky = mix(vec3(0.60, 0.20, 0.18), vec3(0.30, 0.10, 0.20), horizon);
-              col = mix(vec3(0.40, 0.18, 0.10), sky, smoothstep(0.30, 0.60, uv.y));
-              // 雷雲
-              col = mix(col, vec3(0.10, 0.06, 0.10), smoothstep(0.5, 0.8, cloud) * 0.85);
-              // 稲妻×複数
-              for (int i = 0; i < 3; i++) {
+              // 🗼 Babel: 嵐の空。背景は暗く、人々と稲妻
+              col = mix(vec3(0.06, 0.03, 0.04), vec3(0.10, 0.04, 0.06), uv.y);
+              // 強烈な稲妻×複数
+              for (int i = 0; i < 4; i++) {
                 float fi = float(i);
                 float lx = fract(fi * 0.31 + floor(uTime * 0.4 + fi) * 0.13);
                 float branch = abs(uv.x - lx - sin(uv.y * 30.0 + fi) * 0.025);
-                float bolt = smoothstep(0.006, 0.0, branch) * smoothstep(0.3, 0.95, uv.y);
-                float trig = step(0.7, fract(sin(floor(uTime * 1.2 + fi) * 89.7)));
-                col += vec3(1.0, 0.95, 0.85) * bolt * trig * 0.9;
+                float bolt = smoothstep(0.005, 0.0, branch) * smoothstep(0.3, 0.95, uv.y);
+                float trig = step(0.6, fract(sin(floor(uTime * 1.2 + fi) * 89.7)));
+                col += vec3(0.95, 0.85, 1.0) * bolt * trig * 1.1;
               }
+              // 👤 塔を登る人々のシルエット（5人）
+              for (int i = 0; i < 5; i++) {
+                float fi = float(i);
+                float py = 0.18 + fi * 0.07 + sin(uTime*1.2+fi*1.7)*0.005;
+                float px = 0.5 + sin(uTime*0.4+fi)*0.04;
+                vec2 pp = vec2(px, py);
+                float body = smoothstep(0.012, 0.0, abs(uv.y-pp.y)*1.6 + abs(uv.x-pp.x)*1.2);
+                float head = smoothstep(0.005, 0.0, distance(uv, vec2(pp.x, pp.y+0.012)));
+                col = mix(col, vec3(0.05, 0.02, 0.03), (body+head) * 0.95);
+              }
+              // 🦅 鷲（1羽、嵐の中を飛ぶ）
+              vec2 ep = vec2(fract(uTime*0.08), 0.7 + sin(uTime*0.6)*0.08);
+              float wing = smoothstep(0.022, 0.0, abs(uv.y-ep.y) + abs(fract(uv.x*15.0+uTime*2.0)-0.5)*0.06 + abs(uv.x-ep.x)*0.4);
+              col = mix(col, vec3(0.10, 0.05, 0.06), wing * 0.85);
               // 大地（暗い）
-              if (uv.y < 0.20) col = mix(col, vec3(0.20, 0.08, 0.06), 0.9);
+              if (uv.y < 0.15) col = mix(col, vec3(0.05, 0.02, 0.02), 0.95);
             } else {
-              // ✨ Elysion: 金白の天空＋光線
-              vec3 sky = mix(vec3(0.95, 0.88, 0.65), vec3(0.55, 0.62, 0.72), horizon);
-              col = mix(vec3(0.85, 0.78, 0.55), sky, smoothstep(0.40, 0.85, uv.y));
-              // 神々しい光線（中央上空から放射）
+              // ✨ Elysion: 楽園の空。深い藍に光球と天使
+              col = mix(vec3(0.06, 0.05, 0.10), vec3(0.10, 0.08, 0.18), uv.y);
+              // 神々しい光線（中央上空から放射、控えめ）
               vec2 srcP = vec2(0.5, 0.78);
               vec2 d = uv - srcP;
               float ang = atan(d.y, d.x);
-              float ray = pow(max(0.0, sin(ang * 12.0 + uTime * 0.2)), 8.0);
-              col += vec3(1.0, 0.95, 0.75) * ray * 0.55;
-              // 中央の太陽光球
+              float ray = pow(max(0.0, sin(ang * 12.0 + uTime * 0.2)), 10.0);
+              col += vec3(0.50, 0.45, 0.30) * ray * 0.50;
+              // 中央の柔らかな光球
               float sd = distance(uv, srcP);
-              col += vec3(1.0, 0.95, 0.75) * smoothstep(0.10, 0.0, sd) * 0.85;
-              // 漂う光球（複数）
-              for (int i = 0; i < 6; i++) {
+              col += vec3(0.65, 0.55, 0.40) * smoothstep(0.08, 0.0, sd) * 0.6;
+              // 👼 天使のシルエット（4人、漂う）
+              for (int i = 0; i < 4; i++) {
+                float fi = float(i);
+                vec2 ap = vec2(0.20 + fi*0.20 + sin(uTime*0.3+fi)*0.03,
+                               0.45 + sin(uTime*0.4+fi*1.7)*0.06);
+                // 頭
+                float head = smoothstep(0.008, 0.0, distance(uv, vec2(ap.x, ap.y+0.020)));
+                // 体
+                float body = smoothstep(0.015, 0.0, abs(uv.y-ap.y)*2.0 + abs(uv.x-ap.x)*1.0);
+                // 翼（左右に広がる）
+                float wing = smoothstep(0.030, 0.0, abs(uv.y-ap.y-0.005)*3.0 + max(0.0, abs(uv.x-ap.x)-0.012)*1.2);
+                col += vec3(0.85, 0.78, 0.60) * (head + body + wing*0.6) * 0.5;
+              }
+              // 漂う光球（複数、控えめ）
+              for (int i = 0; i < 8; i++) {
                 float fi = float(i);
                 vec2 op = vec2(fract(fi * 0.17 + sin(uTime * 0.3 + fi) * 0.05),
-                               0.3 + fract(uTime * 0.05 + fi * 0.13) * 0.4);
-                col += vec3(1.0, 0.96, 0.70) * smoothstep(0.020, 0.0, distance(uv, op)) * 0.9;
+                               0.3 + fract(uTime * 0.04 + fi * 0.13) * 0.5);
+                col += vec3(0.70, 0.65, 0.45) * smoothstep(0.014, 0.0, distance(uv, op)) * 0.65;
               }
-              // 草原（金の麦）
-              if (uv.y < 0.32) col = mix(col, vec3(0.55, 0.42, 0.20), 0.85);
             }
             col *= 0.95;
           }
