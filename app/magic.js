@@ -568,11 +568,6 @@
                 <div class="mtc-name">人 と は</div>
                 <div class="mtc-sub">何から偉人を探す？</div>
               </button>
-              <button class="magic-topbook-cat magic-topbook-cat-atom" data-cat="atomcapital">
-                <div class="mtc-emoji">⚛</div>
-                <div class="mtc-name">原 子 と 原 資</div>
-                <div class="mtc-sub">最小単位の物質と経済</div>
-              </button>
               <button class="magic-topbook-cat magic-topbook-cat-elements" data-cat="elements">
                 <div class="mtc-name">元 素 と 人</div>
                 <div class="mtc-sub">周期表 → 偉人</div>
@@ -630,7 +625,6 @@
         koh: () => { try { openKohSphere(); } catch (e) { console.warn('koh', e); } },
         library: () => { try { openLibrary(); } catch (e) { console.warn('library', e); } },
         ijinhub: () => { try { openIjinHub(); } catch (e) { console.warn('ijinhub', e); } },
-        atomcapital: () => { try { openAtomCapital(); } catch (e) { console.warn('atomcapital', e); } },
         elements: () => { try { openElementsPage(); } catch (e) { console.warn('elements', e); } },
         things: () => { try { openThingsPage(); } catch (e) { console.warn('things', e); } },
         business: () => { try { openBusinessPage(); } catch (e) { console.warn('business', e); } },
@@ -23247,162 +23241,6 @@
       }, 150);
     } catch (err) { console.warn('ijin-bridge', err); }
   });
-
-  // ============================================================
-  // ⚛💰 「原子と原資」 — Atoms × Capital
-  //   物質の最小単位と経済の最小単位は、構造が驚くほど似ている
-  //   どちらも分割不能と思われ、相互作用で世界を作り、不確定性を持つ
-  // ============================================================
-  const ATOM_CAPITAL_CROSSINGS = [
-    {
-      atom: '連鎖反応',
-      atomDesc: 'ウランの中性子1個が2個を生み、2個が4個を、4個が8個を…',
-      capital: '複利',
-      capitalDesc: '元本に利子がつき、その利子にも利子がつく。アインシュタインが「世界の8番目の不思議」と呼んだ。',
-      ijins: ['einstein', 'feynman', 'keynes'],
-      sym: '✕',
-    },
-    {
-      atom: '不確定性',
-      atomDesc: '位置を測れば運動量が、運動量を測れば位置が、ぼやける。',
-      capital: '市場リスク',
-      capitalDesc: '価格を予測しようとすればするほど、市場は予測を裏切る。',
-      ijins: ['heisenberg', 'keynes'],
-      sym: '?',
-    },
-    {
-      atom: '化学結合',
-      atomDesc: '電子の共有・授受で原子は分子になり、世界が形を持つ。',
-      capital: '取引',
-      capitalDesc: '価値の交換で個人は社会となり、経済が形を持つ。アダム・スミスはこれを『見えざる手』と呼んだ。',
-      ijins: ['adam_smith', 'curie'],
-      sym: '⇆',
-    },
-    {
-      atom: '核分裂',
-      atomDesc: '不可分（atomos）とされた原子が、分割可能だと判明した瞬間。',
-      capital: '株式分割・分散投資',
-      capitalDesc: '不可分とされた事業が分割され、リスクが拡散される金融工学。',
-      ijins: ['einstein', 'heisenberg', 'nobel'],
-      sym: '⚡',
-    },
-    {
-      atom: '見えない力',
-      atomDesc: '電子も電場も光子も、肉眼では見えない。だが世界を動かす。',
-      capital: '信用貨幣',
-      capitalDesc: '金本位制を離れた現代の貨幣は『信用』という見えないものに支えられている。',
-      ijins: ['faraday', 'tesla', 'keynes'],
-      sym: '👁',
-    },
-    {
-      atom: '原子論の起源',
-      atomDesc: '紀元前5世紀、デモクリトスは『万物は原子と空虚から成る』と直観した。',
-      capital: '見えざる手',
-      capitalDesc: '紀元18世紀、アダム・スミスは『各人の利己が公益を生む』と直観した。両者ともに、無数の最小単位の自律的相互作用が秩序を生む、と看破。',
-      ijins: ['democritus', 'adam_smith'],
-      sym: '✦',
-    },
-    {
-      atom: '原爆',
-      atomDesc: 'E = mc²。微小な質量が桁外れのエネルギーに変換される。',
-      capital: 'マンハッタン計画予算',
-      capitalDesc: '当時の米軍年間予算の1/3に匹敵する$2億（現在の約$30億）が投入された。原子力という物理的力と国家経済力の融合。',
-      ijins: ['einstein', 'feynman', 'heisenberg', 'nobel'],
-      sym: '☢',
-    },
-  ];
-  window.ATOM_CAPITAL_CROSSINGS = ATOM_CAPITAL_CROSSINGS;
-
-  function openAtomCapital() {
-    const ov = document.createElement('div');
-    ov.className = 'atom-capital-overlay';
-    ov.innerHTML = `
-      <button class="ac-close" aria-label="閉じる">×</button>
-      <div class="ac-bg-particles" aria-hidden="true"></div>
-      <div class="ac-wrap">
-        <div class="ac-head">
-          <div class="ac-eyebrow">A T O M S　×　C A P I T A L</div>
-          <div class="ac-title">原 子　と　原 資</div>
-          <div class="ac-sub">
-            物質の最小単位と、経済の最小単位は、<br>
-            驚くほど同じ構造を持っている。<br>
-            どちらも、無数の小さなものの相互作用で、世界が出来ている。
-          </div>
-        </div>
-        <div class="ac-split">
-          <div class="ac-side ac-side-atom">
-            <div class="acs-label">⚛ A T O M</div>
-            <div class="acs-tag">物質の最小単位</div>
-          </div>
-          <div class="ac-vs">×</div>
-          <div class="ac-side ac-side-capital">
-            <div class="acs-label">💰 C A P I T A L</div>
-            <div class="acs-tag">経済の最小単位</div>
-          </div>
-        </div>
-        <div class="ac-crossings" id="acCrossings">
-          ${ATOM_CAPITAL_CROSSINGS.map((c, i) => `
-            <div class="ac-cross" data-i="${i}">
-              <div class="acc-pair">
-                <div class="acc-atom">
-                  <div class="acc-side-label">原子</div>
-                  <div class="acc-concept">${c.atom}</div>
-                  <div class="acc-desc">${c.atomDesc}</div>
-                </div>
-                <div class="acc-sym">${c.sym}</div>
-                <div class="acc-capital">
-                  <div class="acc-side-label">原資</div>
-                  <div class="acc-concept">${c.capital}</div>
-                  <div class="acc-desc">${c.capitalDesc}</div>
-                </div>
-              </div>
-              <div class="acc-ijins">
-                ${c.ijins.map(id => `<button class="acc-pill" data-id="${id}">→ ${id}</button>`).join('')}
-              </div>
-            </div>
-          `).join('')}
-        </div>
-        <div class="ac-foot">
-          世界を動かす最小単位は、原子であり、原資であり、最後はそれを問うた人 = 偉人へ。
-        </div>
-      </div>
-    `;
-    document.body.appendChild(ov);
-    requestAnimationFrame(() => ov.classList.add('open'));
-    const close = () => {
-      ov.classList.remove('open');
-      setTimeout(() => ov.remove(), 350);
-    };
-    ov.querySelector('.ac-close').addEventListener('click', close);
-    // 偉人ピル：実名解決＋クリック遷移
-    if (window.MAGIC && (window.MAGIC._peopleBundle || window.MAGIC._peopleLite)) {
-      const all = window.MAGIC._peopleBundle || window.MAGIC._peopleLite;
-      ov.querySelectorAll('.acc-pill').forEach(pill => {
-        const id = pill.dataset.id;
-        const p = all.find(x => x.id === id);
-        if (p) pill.textContent = `→ ${p.name}`;
-      });
-    }
-    ov.querySelectorAll('.acc-pill').forEach(pill => {
-      pill.addEventListener('click', () => {
-        const id = pill.dataset.id;
-        close();
-        if (window.showPerson) setTimeout(() => window.showPerson(id), 300);
-      });
-    });
-    // 背景の粒子（CSS animation）
-    const bg = ov.querySelector('.ac-bg-particles');
-    for (let i = 0; i < 30; i++) {
-      const p = document.createElement('div');
-      p.className = 'acbp-dot';
-      p.style.left = Math.random() * 100 + '%';
-      p.style.top = Math.random() * 100 + '%';
-      p.style.animationDelay = Math.random() * 8 + 's';
-      p.style.animationDuration = (8 + Math.random() * 12) + 's';
-      bg.appendChild(p);
-    }
-  }
-  window.openAtomCapital = openAtomCapital;
 
   // ============================================================
   // ⚛ 元素 — 周期表に並ぶ物質たちと、それを発見した人
