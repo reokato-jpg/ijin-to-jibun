@@ -11249,6 +11249,85 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
 .el-lab2-board.panning .biz-board-canvas { transition: none !important; }
 .el-lab2-board.panning .el-node { pointer-events: none; }
 
+/* 惑星クリックで出る元素組成ポップアップ（cosmosモード） */
+.koh-planet-popup {
+  position: fixed;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%) scale(0.92);
+  z-index: 9998;
+  width: min(360px, 88vw);
+  padding: 22px 24px 18px;
+  background: linear-gradient(160deg, rgba(20,30,50,0.96), rgba(8,14,26,0.97));
+  border: 1px solid rgba(180,220,255,0.45);
+  border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.6), 0 0 32px rgba(120,180,255,0.25);
+  color: #f0f6ff;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.32s cubic-bezier(0.2,0.9,0.3,1.2), opacity 0.28s;
+}
+.koh-planet-popup.open { transform: translate(-50%, -50%) scale(1); opacity: 1; pointer-events: auto; }
+.koh-pl-x {
+  position: absolute; top: 8px; right: 8px;
+  width: 30px; height: 30px;
+  background: rgba(0,0,0,0.5);
+  border: 1px solid rgba(180,220,255,0.3);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 18px; cursor: pointer;
+  line-height: 1;
+}
+.koh-pl-name {
+  font-size: 18px; letter-spacing: 4px;
+  color: #fff;
+  font-family: 'Noto Serif JP', serif;
+  margin-bottom: 8px;
+}
+.koh-pl-comp {
+  font-size: 11px; color: rgba(220,235,255,0.7);
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+.koh-pl-elems {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-bottom: 12px;
+  padding: 10px;
+  background: rgba(0,0,0,0.3);
+  border-radius: 8px;
+}
+.koh-pl-elchip {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 32px; height: 32px; padding: 0 8px;
+  background: var(--c, #888);
+  color: #0a0a0a;
+  border-radius: 6px;
+  font-weight: 800; font-size: 13px;
+  font-family: 'Helvetica Neue', sans-serif;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.5), 0 0 8px var(--c);
+}
+.koh-pl-story {
+  font-size: 12px; line-height: 1.65;
+  color: rgba(220,235,255,0.8);
+  padding: 8px 10px;
+  border-left: 3px solid rgba(180,220,255,0.4);
+  background: rgba(255,255,255,0.04);
+  border-radius: 0 6px 6px 0;
+  margin-bottom: 12px;
+}
+.koh-pl-go {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background: rgba(255,224,128,0.18);
+  border: 1px solid #ffe080;
+  color: #ffe080;
+  border-radius: 8px;
+  font-size: 13px; letter-spacing: 2px; font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.koh-pl-go:hover { background: rgba(255,224,128,0.35); color: #fff; }
+
 /* 広告スロット（汎用、PRラベル付き、軽め） */
 .aff-slot { margin: 18px 0 24px; }
 .aff-slot .aff-inline-wrap { display: block; }

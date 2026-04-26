@@ -16514,6 +16514,63 @@
     renderer.domElement.addEventListener('pointercancel', stop);
     renderer.domElement.addEventListener('pointerleave', stop);
 
+    // 🪐 cosmosモード：惑星クリック → 元素組成ポップアップ
+    const _ray = new THREE.Raycaster();
+    const _ndc = new THREE.Vector2();
+    let _clickStart = null;
+    renderer.domElement.addEventListener('pointerdown', e => {
+      if (currentMode !== 'cosmos') return;
+      _clickStart = { x: e.clientX, y: e.clientY, t: performance.now() };
+    }, true);
+    renderer.domElement.addEventListener('pointerup', e => {
+      if (currentMode !== 'cosmos' || !_clickStart) { _clickStart = null; return; }
+      const dt = performance.now() - _clickStart.t;
+      const dx = Math.abs(e.clientX - _clickStart.x);
+      const dy = Math.abs(e.clientY - _clickStart.y);
+      _clickStart = null;
+      // ドラッグはタップ判定しない（首振りと区別）
+      if (dt > 350 || dx > 6 || dy > 6) return;
+      const rect = renderer.domElement.getBoundingClientRect();
+      _ndc.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      _ndc.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      _ray.setFromCamera(_ndc, camera);
+      const hits = _ray.intersectObjects(planetGroup.children, true);
+      const hit = hits.find(h => {
+        let o = h.object;
+        while (o) { if (o.userData && o.userData.planetData) return true; o = o.parent; }
+        return false;
+      });
+      if (!hit) return;
+      let p = null, o = hit.object;
+      while (o) { if (o.userData && o.userData.planetData) { p = o.userData.planetData; break; } o = o.parent; }
+      if (!p || !p.elements) return;
+      showPlanetCompositionPopup(p);
+    }, true);
+    function showPlanetCompositionPopup(p) {
+      // 既存があれば消す
+      const existing = ov.querySelector('.koh-planet-popup');
+      if (existing) existing.remove();
+      const pop = document.createElement('div');
+      pop.className = 'koh-planet-popup';
+      const chips = (window._renderElementChips || (() => ''))(p.elements);
+      pop.innerHTML = `
+        <button class="koh-pl-x" type="button" aria-label="閉じる">×</button>
+        <div class="koh-pl-name">🪐 ${p.name}</div>
+        <div class="koh-pl-comp">${p.composition || ''}</div>
+        <div class="koh-pl-elems">${chips}</div>
+        ${p.story ? `<div class="koh-pl-story">${p.story}</div>` : ''}
+        <button class="koh-pl-go" type="button">⚗️ この元素で化学ラボを開く</button>
+      `;
+      ov.appendChild(pop);
+      requestAnimationFrame(() => pop.classList.add('open'));
+      const close = () => { pop.classList.remove('open'); setTimeout(() => pop.remove(), 240); };
+      pop.querySelector('.koh-pl-x').addEventListener('click', close);
+      pop.querySelector('.koh-pl-go').addEventListener('click', () => {
+        close();
+        try { openElementsPage({ initialElements: p.elements, title: `${p.name} を作る元素` }); } catch (e) { console.warn('open elements lab', e); }
+      });
+    }
+
     // 🥽 AIグラスHUD — 関係者情報＋広告
     const arToggle = ov.querySelector('#kohArToggle');
     const arOverlay = ov.querySelector('#kohArOverlay');
@@ -16863,15 +16920,33 @@
       }
     }
     const planetData = [
-      { name:'太陽',   r: 4.0, dist: 0,  emissive: 0xff8030, draw: drawSun, atmos: 0xff7020 },
-      { name:'水星',   r: 0.6, dist: 9,  draw: drawMoon },
-      { name:'金星',   r: 0.95,dist: 13, draw: (g,w) => { drawJupiter(g,w); g.fillStyle = 'rgba(220,180,100,0.55)'; g.fillRect(0,0,w,w); }, atmos: 0xe8c870 },
-      { name:'地球',   r: 1.0, dist: 17, draw: drawEarth, atmos: 0x80c8ff },
-      { name:'月',     r: 0.28,dist: 17, draw: drawMoon, moonOf: 'earth' },
-      { name:'火星',   r: 0.7, dist: 21, draw: drawMars },
-      { name:'木星',   r: 2.6, dist: 27, draw: drawJupiter },
-      { name:'土星',   r: 2.2, dist: 33, draw: drawSaturn, ring: true },
-      { name:'天王星', r: 1.6, dist: 38, draw: drawIcePlanet },
+      { name:'太陽',   r: 4.0, dist: 0,  emissive: 0xff8030, draw: drawSun, atmos: 0xff7020,
+        composition: 'H 74% / He 24% / O・C・Fe 微量', elements:['H','He','O','C','Fe'],
+        story:'核融合で水素をヘリウムに変えながら光と熱を作っている。地球の生命はすべて太陽光に依存。' },
+      { name:'水星',   r: 0.6, dist: 9,  draw: drawMoon,
+        composition: '鉄の核 70% / ケイ酸塩マントル', elements:['Fe','Si','O'],
+        story:'太陽系で最も小さく、密度2位。巨大な鉄のコアを持つ重い惑星。' },
+      { name:'金星',   r: 0.95,dist: 13, draw: (g,w) => { drawJupiter(g,w); g.fillStyle = 'rgba(220,180,100,0.55)'; g.fillRect(0,0,w,w); }, atmos: 0xe8c870,
+        composition: '大気=二酸化炭素 96% / 硫酸の雲 / 地殻はケイ酸塩', elements:['C','O','S','H','Si'],
+        story:'地表は460℃、気圧は地球の92倍。硫酸の雲が空を覆う、温室効果の極限例。' },
+      { name:'地球',   r: 1.0, dist: 17, draw: drawEarth, atmos: 0x80c8ff,
+        composition: '鉄32% / 酸素30% / ケイ素15% / マグネシウム14% / 硫黄3%', elements:['Fe','O','Si','Mg','S','Al','Ca','Ni'],
+        story:'唯一生命を持つ惑星。鉄のコア、酸素を含む大気、液体の水。すべての元素が反応し続ける場所。' },
+      { name:'月',     r: 0.28,dist: 17, draw: drawMoon, moonOf: 'earth',
+        composition: '酸素43% / ケイ素21% / 鉄10% / カルシウム9% / アルミ7%', elements:['O','Si','Fe','Ca','Al','Mg'],
+        story:'地球が出来て間もない頃、火星サイズの天体衝突で生まれたとされる。地球と組成がよく似ている。' },
+      { name:'火星',   r: 0.7, dist: 21, draw: drawMars,
+        composition: '鉄サビ(Fe₂O₃)で赤い表面 / ケイ酸塩 / 大気は薄いCO₂', elements:['Fe','O','Si','C','Mg'],
+        story:'表面の赤さは酸化鉄(鉄錆)。かつて液体の水があった証拠が残っている。生命の痕跡を探す対象。' },
+      { name:'木星',   r: 2.6, dist: 27, draw: drawJupiter,
+        composition: '水素 90% / ヘリウム 10% / 微量にメタン・アンモニア', elements:['H','He','C','N'],
+        story:'太陽系最大のガス惑星。地球の318倍の質量。小さな太陽になりかけた天体。' },
+      { name:'土星',   r: 2.2, dist: 33, draw: drawSaturn, ring: true,
+        composition: '水素 96% / ヘリウム 3% / 氷と岩のリング', elements:['H','He'],
+        story:'美しいリングは氷と岩の粒子。比重は0.69、もし巨大な海があれば浮かぶほど軽い。' },
+      { name:'天王星', r: 1.6, dist: 38, draw: drawIcePlanet,
+        composition: '水素 83% / ヘリウム 15% / メタン 2%(青く見える要因)', elements:['H','He','C','O'],
+        story:'横倒しに自転する変わり者。メタンが赤を吸収するので、青緑色に見える。' },
     ];
     const orbiters = [];
     planetData.forEach((p, i) => {
@@ -16944,6 +17019,7 @@
         sphere.add(atmos);
       }
       sphere.position.set(p.dist, 8, 0);
+      sphere.userData.planetData = p;
       planetGroup.add(sphere);
       // 軌道
       if (p.dist > 0) {
@@ -23432,7 +23508,9 @@
     { eq: 'CaCO₃ → CaO + CO₂',       name: '石灰石を焼く',        desc: '貝殻を熱すると、生石灰と二酸化炭素に分かれる。セメントの原点。' },
     { eq: 'N₂ + 3H₂ → 2NH₃',         name: 'ハーバー・ボッシュ法', desc: '空気と水素から肥料を作る。20世紀の人口爆発を支えた化学。' },
   ];
-  function openElementsPage() {
+  function openElementsPage(opts) {
+    const initialElements = (opts && Array.isArray(opts.initialElements)) ? opts.initialElements : null;
+    const initialTitle = opts && opts.title ? opts.title : null;
     const ov = document.createElement('div');
     ov.className = 'concept-page-overlay theme-elements';
     const sym2el = Object.fromEntries(ELEMENTS_DATA.map(e => [e.sym, e]));
@@ -24041,6 +24119,27 @@
       });
     });
     ov.querySelector('#elBoardClear').addEventListener('click', clearBoard);
+    // 初期元素を盤に円形配置（cosmos→ラボ連携用）
+    if (initialElements && initialElements.length) {
+      requestAnimationFrame(() => {
+        const cx = board.clientWidth / 2;
+        const cy = board.clientHeight / 2;
+        const R = Math.min(cx, cy) * 0.55;
+        initialElements.forEach((sym, i) => {
+          if (!sym2el[sym]) return;
+          const ang = -Math.PI/2 + (i / initialElements.length) * 2 * Math.PI;
+          const x = cx + Math.cos(ang) * R - NODE_R;
+          const y = cy + Math.sin(ang) * R - NODE_R;
+          spawnElementNode(sym, x, y);
+        });
+        if (initialTitle) {
+          const head = ov.querySelector('.cp-head-mini .cp-title');
+          if (head) head.textContent = initialTitle;
+          const sub = ov.querySelector('.cp-head-mini .cp-sub-mini');
+          if (sub) sub.innerHTML = `この天体を作る元素を盤に置きました。組み合わせて化合物を作ろう。`;
+        }
+      });
+    }
     // クイックナビ：スムーズスクロール
     ov.querySelectorAll('.bzqn').forEach(a => {
       a.addEventListener('click', e => {
@@ -24111,6 +24210,15 @@
     _wireIjinPills(ov, close);
   }
   window.openElementsPage = openElementsPage;
+  // 元素アバター（円形小ボタン用）
+  window._renderElementChips = function(syms) {
+    const sym2el = Object.fromEntries(ELEMENTS_DATA.map(e => [e.sym, e]));
+    return syms.map(s => {
+      const el = sym2el[s];
+      if (!el) return '';
+      return `<span class="koh-pl-elchip" style="--c:${el.color}" title="${el.name}">${s}</span>`;
+    }).join('');
+  };
 
   // ============================================================
   // 物 / ビジネス / 図書館C案 共通ヘルパー
