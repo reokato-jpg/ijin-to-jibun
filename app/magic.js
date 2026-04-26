@@ -563,6 +563,11 @@
                 <div class="mtc-name">図 書 館</div>
                 <div class="mtc-sub">全分野の本を検索する</div>
               </button>
+              <button class="magic-topbook-cat magic-topbook-cat-ijinhub" data-cat="ijinhub">
+                <div class="mtc-emoji">🌐</div>
+                <div class="mtc-name">人 と は</div>
+                <div class="mtc-sub">何から偉人を探す？</div>
+              </button>
             </div>
           </div>
         </div>
@@ -603,6 +608,7 @@
         lpworld: () => { try { openLittlePrinceWorld3D(); } catch (e) { console.warn('lpworld', e); } },
         koh: () => { try { openKohSphere(); } catch (e) { console.warn('koh', e); } },
         library: () => { try { openLibrary(); } catch (e) { console.warn('library', e); } },
+        ijinhub: () => { try { openIjinHub(); } catch (e) { console.warn('ijinhub', e); } },
       };
       wrap.querySelectorAll('[data-deep]').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -21983,6 +21989,234 @@
     });
   }
   window.openLibrary = openLibrary;
+
+  // ============================================================
+  // 🌐 偉人ハブ — 「何から偉人を探す？」ゲートウェイ
+  //   宇宙・神話・美術・音楽・物・ビジネス → 全て最終的に偉人へ収束する
+  //   AI時代に「人とは何か」を学ぶ場所
+  // ============================================================
+  const HUMANITY_TAGS = {
+    truth_seeker:    { name: '真理を求めた人',     emoji: '🔬', desc: 'わからないことに向き合い続けた' },
+    justice:         { name: '正義を貫いた人',     emoji: '⚖',  desc: '不正に黙らなかった' },
+    beauty_from_pain:{ name: '困難から美を生んだ人', emoji: '🎼', desc: '苦しみを創造に変えた' },
+    dialogue:        { name: '対話の人',           emoji: '💬', desc: '違う者と語り合うことを諦めなかった' },
+    pacifist:        { name: '平和を選んだ人',     emoji: '🕊', desc: '武力よりも対話を選んだ' },
+    pioneer:         { name: '前人未踏に挑んだ人', emoji: '🚀', desc: '誰も歩いていない道を切り開いた' },
+    empathy:         { name: '弱者に寄り添った人', emoji: '🤝', desc: '声を奪われた人の声になった' },
+    rebel:           { name: '体制に立ち向かった人', emoji: '✊', desc: '時代に逆らう勇気を持った' },
+  };
+  // 代表偉人 → タグID（既存IDのみ、徐々に拡張予定）
+  const HUMANITY_OF = {
+    newton: ['truth_seeker', 'pioneer'],
+    einstein: ['truth_seeker', 'pacifist', 'pioneer'],
+    galileo: ['truth_seeker', 'rebel'],
+    copernicus: ['truth_seeker', 'pioneer'],
+    darwin: ['truth_seeker', 'pioneer'],
+    hubble: ['truth_seeker', 'pioneer'],
+    hawking: ['truth_seeker', 'beauty_from_pain'],
+    mendel: ['truth_seeker', 'pioneer'],
+    curie: ['truth_seeker', 'pioneer', 'rebel'],
+    tesla: ['truth_seeker', 'pioneer'],
+    faraday: ['truth_seeker'],
+    aristotle: ['truth_seeker', 'dialogue'],
+    socrates: ['truth_seeker', 'dialogue', 'rebel'],
+    plato: ['truth_seeker', 'dialogue'],
+    spinoza: ['truth_seeker', 'rebel'],
+    kant: ['truth_seeker', 'dialogue'],
+    nietzsche: ['truth_seeker', 'rebel'],
+    wittgenstein: ['truth_seeker'],
+    sartre: ['truth_seeker', 'rebel'],
+    de_beauvoir: ['truth_seeker', 'rebel', 'empathy'],
+    beauvoir: ['truth_seeker', 'rebel', 'empathy'],
+    russell: ['truth_seeker', 'pacifist', 'rebel'],
+    bertrand_russell: ['truth_seeker', 'pacifist', 'rebel'],
+    confucius: ['dialogue', 'justice'],
+    buddha: ['dialogue', 'empathy', 'pacifist'],
+    jesus: ['dialogue', 'empathy', 'pacifist'],
+    gandhi: ['pacifist', 'justice', 'dialogue', 'rebel'],
+    lincoln: ['justice', 'dialogue'],
+    mandela: ['justice', 'pacifist', 'beauty_from_pain'],
+    mother_teresa: ['empathy', 'pacifist'],
+    anne_frank: ['beauty_from_pain', 'empathy'],
+    bach: ['beauty_from_pain', 'beauty_from_pain'],
+    beethoven: ['beauty_from_pain', 'pioneer'],
+    mozart: ['beauty_from_pain', 'pioneer'],
+    chopin: ['beauty_from_pain'],
+    michelangelo: ['beauty_from_pain', 'pioneer'],
+    botticelli: ['beauty_from_pain'],
+    monet: ['beauty_from_pain', 'pioneer'],
+    cezanne: ['beauty_from_pain', 'pioneer'],
+    picasso: ['beauty_from_pain', 'pioneer'],
+    raphael: ['beauty_from_pain'],
+    salvador_dali: ['beauty_from_pain', 'rebel'],
+    shakespeare: ['beauty_from_pain', 'truth_seeker'],
+    tolstoy: ['truth_seeker', 'empathy'],
+    dostoevsky: ['truth_seeker', 'empathy', 'beauty_from_pain'],
+    kafka: ['beauty_from_pain', 'truth_seeker'],
+    orwell: ['truth_seeker', 'rebel', 'justice'],
+    freud: ['pioneer', 'truth_seeker'],
+    carl_jung: ['truth_seeker', 'pioneer'],
+    edison: ['pioneer', 'truth_seeker'],
+    steve_jobs: ['pioneer', 'beauty_from_pain'],
+    marx: ['truth_seeker', 'rebel', 'justice'],
+  };
+  // 概念 → 偉人 マッピング
+  const CONCEPT_BRIDGES = {
+    cosmos: {
+      title: '🌌 宇宙から偉人へ',
+      sub: '星と数式の向こう側、それを問うた人がいる',
+      bridges: [
+        { concept: '重力',         desc: '万有引力から相対性理論へ',     ijins: ['newton', 'einstein'] },
+        { concept: '太陽中心説',   desc: '世界観を反転させた革命',        ijins: ['copernicus', 'galileo'] },
+        { concept: '宇宙の膨張',   desc: '銀河は遠ざかる、宇宙には始まりがある', ijins: ['hubble', 'einstein'] },
+        { concept: 'ブラックホール', desc: '時空の極限、戻れない場所',     ijins: ['hawking', 'einstein'] },
+        { concept: '電磁気と光',   desc: '電気と磁気と光は同じもの',       ijins: ['faraday', 'tesla'] },
+      ],
+    },
+    myth: {
+      title: '⛩ 神話から偉人へ',
+      sub: '人類が世界を理解しようとした最初の物語',
+      bridges: [
+        { concept: 'アトランティス', desc: '滅びた賢者の都を語った哲学者', ijins: ['plato'] },
+        { concept: '神話の構造',     desc: '世界中の神話に共通する型',     ijins: ['carl_jung'] },
+        { concept: '無意識の象徴',   desc: '神話は心の地図',               ijins: ['freud', 'carl_jung'] },
+        { concept: '東洋の智慧',     desc: '神話と倫理が一つだった時代',   ijins: ['confucius', 'buddha'] },
+      ],
+    },
+    art: {
+      title: '🏛 美術から偉人へ',
+      sub: '描いた線の数だけ、その人の生き方がある',
+      bridges: [
+        { concept: 'ルネサンスの人',   desc: '万能人の理想',               ijins: ['michelangelo', 'raphael', 'botticelli'] },
+        { concept: '印象派の革命',     desc: '光そのものを描く',           ijins: ['monet', 'cezanne'] },
+        { concept: '20世紀の破壊と再生', desc: '形と意味を解体する',       ijins: ['picasso', 'salvador_dali'] },
+      ],
+    },
+    music: {
+      title: '🎵 音楽から偉人へ',
+      sub: '時間を支配した者たち',
+      bridges: [
+        { concept: 'バロックの数学的対位法', desc: '音は数式である',       ijins: ['bach'] },
+        { concept: '古典派の構造美',         desc: '完璧なバランスの追求', ijins: ['mozart'] },
+        { concept: 'ロマン派の魂',           desc: '音楽は心の叫び',       ijins: ['beethoven', 'chopin'] },
+      ],
+    },
+    thing: {
+      title: '⚛ 物から偉人へ',
+      sub: '原子から都市まで、形の起源を辿る',
+      bridges: [
+        { concept: '進化と多様性',       desc: '生命の形は時間の彫刻',     ijins: ['darwin', 'mendel'] },
+        { concept: '電気と発明',         desc: '人類の生活を作り変えた',   ijins: ['edison', 'tesla', 'faraday'] },
+        { concept: '個人の道具',         desc: 'パーソナル・コンピュータ', ijins: ['steve_jobs'] },
+        { concept: '原子の挙動',         desc: '見えないものを記述する',   ijins: ['einstein', 'curie'] },
+      ],
+    },
+    business: {
+      title: '💼 ビジネスから偉人へ',
+      sub: '富とは何か、組織とは何か',
+      bridges: [
+        { concept: '資本主義の批判',     desc: '富の偏りはどこから生まれるか', ijins: ['marx'] },
+        { concept: '革新と起業',         desc: 'ゼロから1を作る',             ijins: ['edison', 'steve_jobs'] },
+      ],
+    },
+    humanity: {
+      title: '🤝 人間性から偉人へ',
+      sub: 'AI時代に、人は何を伝えるべきか',
+      bridges: Object.entries(HUMANITY_TAGS).map(([k, v]) => ({
+        concept: `${v.emoji} ${v.name}`,
+        desc: v.desc,
+        humanityTag: k,
+        ijins: Object.entries(HUMANITY_OF).filter(([_, tags]) => tags.includes(k)).map(([id]) => id),
+      })),
+    },
+  };
+  window.HUMANITY_TAGS = HUMANITY_TAGS;
+  window.HUMANITY_OF = HUMANITY_OF;
+  window.CONCEPT_BRIDGES = CONCEPT_BRIDGES;
+
+  function openIjinHub() {
+    const ov = document.createElement('div');
+    ov.className = 'ijin-hub-overlay';
+    const cats = Object.keys(CONCEPT_BRIDGES);
+    ov.innerHTML = `
+      <button class="ijin-hub-close" aria-label="閉じる">×</button>
+      <div class="ijin-hub-wrap">
+        <div class="ijin-hub-head">
+          <div class="ihh-eyebrow">G A T E W A Y　T O　 H U M A N I T Y</div>
+          <div class="ihh-title">人 と は 何 か</div>
+          <div class="ihh-sub">
+            すべての知識は、結局のところ「ある人」の問いから始まった。<br>
+            宇宙も、神話も、音楽も、絵も、その先には人がいる。<br>
+            AI が答えを返す時代、人は問いを残す者であり続けたい。
+          </div>
+        </div>
+        <div class="ijin-hub-cats">
+          ${cats.map(k => {
+            const c = CONCEPT_BRIDGES[k];
+            return `<button class="ijin-hub-cat" data-cat="${k}">
+              <div class="ihc-title">${c.title}</div>
+              <div class="ihc-sub">${c.sub}</div>
+              <div class="ihc-count">${c.bridges.length} の入口</div>
+            </button>`;
+          }).join('')}
+        </div>
+        <div class="ijin-hub-bridges" id="ijinHubBridges"></div>
+      </div>
+    `;
+    document.body.appendChild(ov);
+    requestAnimationFrame(() => ov.classList.add('open'));
+    const close = () => { ov.classList.remove('open'); setTimeout(() => ov.remove(), 350); };
+    ov.querySelector('.ijin-hub-close').addEventListener('click', close);
+
+    const bridgesBox = ov.querySelector('#ijinHubBridges');
+    function showCat(catKey) {
+      const c = CONCEPT_BRIDGES[catKey];
+      if (!c) return;
+      bridgesBox.innerHTML = `
+        <div class="ihb-head">${c.title}</div>
+        <div class="ihb-list">
+          ${c.bridges.map(b => `
+            <div class="ihb-item">
+              <div class="ihb-concept">${b.concept}</div>
+              <div class="ihb-desc">${b.desc}</div>
+              <div class="ihb-ijins">
+                ${b.ijins.map(id => `<button class="ihb-ijin-pill" data-id="${id}">→ ${id}</button>`).join('')}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+      bridgesBox.classList.add('show');
+      // 偉人プレビュー：実名解決（people-bundle / lite から）
+      if (typeof window.MAGIC !== 'undefined' && (window.MAGIC._peopleBundle || window.MAGIC._peopleLite)) {
+        const all = window.MAGIC._peopleBundle || window.MAGIC._peopleLite;
+        bridgesBox.querySelectorAll('.ihb-ijin-pill').forEach(pill => {
+          const id = pill.dataset.id;
+          const p = all.find(x => x.id === id);
+          if (p) pill.textContent = `→ ${p.name}`;
+        });
+      }
+      // クリック → showPerson
+      bridgesBox.querySelectorAll('.ihb-ijin-pill').forEach(pill => {
+        pill.addEventListener('click', () => {
+          const id = pill.dataset.id;
+          close();
+          if (window.showPerson) setTimeout(() => window.showPerson(id), 300);
+        });
+      });
+    }
+    ov.querySelectorAll('.ijin-hub-cat').forEach(btn => {
+      btn.addEventListener('click', () => {
+        ov.querySelectorAll('.ijin-hub-cat').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        showCat(btn.dataset.cat);
+      });
+    });
+    // 初期表示：宇宙
+    const firstBtn = ov.querySelector('[data-cat="cosmos"]');
+    if (firstBtn) firstBtn.click();
+  }
+  window.openIjinHub = openIjinHub;
 
   // ============================================================
   // 📖 星の王子様 — 動くSVG絵本
