@@ -23875,17 +23875,109 @@
     { name: '言葉のブランド', desc: '物語が経済を動かす',                         ijins: ['shakespeare'] },
   ];
 
+  // ビジネスのピース（顔の代わりに絵文字アイコン）
+  const BIZ_PIECES = [
+    { id:'product',     name:'商品',       icon:'🎁', color:'#ff9090' },
+    { id:'service',     name:'サービス',   icon:'🛎️', color:'#80c0ff' },
+    { id:'subscription',name:'月額',       icon:'📅', color:'#a0e0a0' },
+    { id:'oneshot',     name:'売り切り',   icon:'🛒', color:'#ffd060' },
+    { id:'free',        name:'無料',       icon:'🆓', color:'#80e0e0' },
+    { id:'ads',         name:'広告',       icon:'📺', color:'#c080ff' },
+    { id:'commission',  name:'手数料',     icon:'💰', color:'#ffaa40' },
+    { id:'matching',    name:'マッチング', icon:'🤝', color:'#80ffd0' },
+    { id:'place',       name:'場所',       icon:'🏢', color:'#a0a0c0' },
+    { id:'data',        name:'データ',     icon:'📊', color:'#80b0ff' },
+    { id:'ai',          name:'AI',         icon:'🤖', color:'#d8d8e0' },
+    { id:'community',   name:'コミュニティ', icon:'👥', color:'#ffa0c0' },
+    { id:'education',   name:'教育',       icon:'🎓', color:'#ffe080' },
+    { id:'used',        name:'中古',       icon:'♻️', color:'#a0d0a0' },
+    { id:'ugc',         name:'ユーザー投稿', icon:'✍️', color:'#ffc0ff' },
+    { id:'rental',      name:'レンタル',   icon:'🔄', color:'#c0c080' },
+    { id:'download',    name:'DL',         icon:'📥', color:'#a0c0ff' },
+    { id:'license',     name:'ライセンス', icon:'📜', color:'#e0c080' },
+  ];
+  // ビジネスモデル図鑑：ピースの組合せ → 名前付きモデル
+  const BIZ_MODELS = [
+    { name:'物販',        parts:['product','oneshot'], desc:'商品を作って売り切る、最も基本のモデル。',                year:'紀元前〜', by:'交易の起源',           ex:'任天堂、ユニクロ、Apple(ハード)', history:'紀元前から続く形。産業革命で大量生産・大量販売へ。',                                                              ijins:['shibusawa_eiichi'] },
+    { name:'サブスク',    parts:['service','subscription'], desc:'毎月の定額で使い続けてもらう。所有から利用へ。',     year:'1999〜',  by:'Salesforce / Netflix', ex:'Netflix、Spotify、Adobe',          history:'1999年Salesforceが企業ソフトを月額化、2011年Netflixの動画配信で一般化。「所有から利用へ」の象徴。',                ijins:[] },
+    { name:'プラットフォーム', parts:['matching','commission'], desc:'売り手と買い手をつなぎ、取引ごとに手数料を取る。', year:'2008〜', by:'Airbnb / Uber',      ex:'Uber、Airbnb、メルカリ',          history:'2008年Airbnb、2009年Uber。スマホ普及で爆発した「両面市場」モデル。',                                              ijins:[] },
+    { name:'SNS',         parts:['ugc','ads','free'], desc:'ユーザーが無料で投稿、広告主から稼ぐ。',                  year:'2004〜',  by:'Facebook / YouTube',  ex:'Facebook、YouTube、X、Instagram', history:'2004年Facebook、2005年YouTube。ユーザーが無料でコンテンツを作り、限界費用ゼロで成長。',                          ijins:[] },
+    { name:'フリマ',      parts:['used','matching','commission'], desc:'個人どうしの中古売買を仲介し手数料を取る。',   year:'1995〜',  by:'eBay / メルカリ',     ex:'メルカリ、eBay、Yahoo!オークション', history:'1995年eBay、2013年メルカリ。捨てられていた価値を循環させる仕組み。',                                            ijins:[] },
+    { name:'SaaS',        parts:['ai','data','subscription'], desc:'クラウドのソフトを月額で。データで進化する。',     year:'2000〜',  by:'Salesforce',          ex:'OpenAI、Salesforce、Notion',     history:'2000年Salesforce「No Software」を旗印に。2020年代AIを組み込み再加速。',                                          ijins:['steve_jobs'] },
+    { name:'広告モデル',  parts:['free','ads'], desc:'使う人は無料、広告主から課金する。',                            year:'1833〜',  by:'New York Sun / Google', ex:'Google検索、テレビ、新聞',        history:'1833年NY Sunが新聞で初導入。ラジオ・テレビ・2000年代Googleで世界最大の収益源に。',                              ijins:[] },
+    { name:'フリーミアム', parts:['free','subscription'], desc:'基本は無料、上位機能だけ月額課金。',                  year:'2006〜',  by:'Fred Wilson命名',     ex:'Spotify、Dropbox、Slack',        history:'2006年VC Fred Wilsonが「freemium」と命名。Dropbox・Slackで定石化、無料を入口にする戦略。',                       ijins:[] },
+    { name:'オンライン教育', parts:['education','subscription'], desc:'学びを月額や定額で提供。',                    year:'2012〜',  by:'Coursera / Udemy',    ex:'Udemy、Duolingo、Coursera',      history:'2012年Coursera・edX設立でMOOCブーム。スマホ前提の語学・スキル系サブスクが定着。',                              ijins:[] },
+    { name:'アプリ販売',  parts:['download','oneshot'], desc:'ダウンロード商品を売り切る。',                          year:'2008〜',  by:'Apple App Store',     ex:'App Store、Steam',                history:'2008年App Store開始。1人開発者でも世界市場へアクセス可能になった転換点。',                                       ijins:['steve_jobs'] },
+    { name:'フランチャイズ', parts:['license','commission'], desc:'商標とノウハウを貸し、加盟店から手数料を得る。',   year:'1955〜',  by:'Ray Kroc / McDonald\'s', ex:'McDonald\'s、セブン-イレブン',  history:'1955年Ray KrocがMcDonald\'sを多店舗化、マニュアルとブランドを貸し出す型を確立。',                              ijins:[] },
+    { name:'D2C',         parts:['product','community'], desc:'中間業者を抜き、ブランドが直接顧客と繋がる。',          year:'2010s',   by:'Warby Parker / Glossier', ex:'Glossier、Allbirds、BASE FOOD', history:'2010年代SNSで個人ブランドが大手と戦えるように。Warby Parker(2010)、Glossier(2014)が代表。',                       ijins:[] },
+    { name:'キャラクターIP', parts:['license','product'], desc:'キャラクターIPを商品・コンテンツに展開する。',         year:'1928〜',  by:'Walt Disney',         ex:'Disney、サンリオ、ポケモン',    history:'1928年ミッキー誕生、1955年Disneyland。グッズ・映像・テーマパークで長期収益化する型を作った。',                  ijins:['walt_disney'] },
+    { name:'シェアオフィス', parts:['place','rental'], desc:'場所を時間単位で貸す現代型の不動産。',                   year:'2010〜',  by:'WeWork',              ex:'WeWork、リージャス',             history:'2010年WeWork設立。フリーランス・スタートアップの増加と共に世界規模に。',                                          ijins:[] },
+    { name:'ターゲティング広告', parts:['data','ads'], desc:'個人の行動データから興味に合う広告を出す。',            year:'2000〜',  by:'Google AdWords',      ex:'Meta広告、Google広告',           history:'2000年Google AdWords、2007年Facebook広告。データの精度向上で広告単価が劇的に上昇。',                              ijins:[] },
+    { name:'レンタル',    parts:['product','rental'], desc:'所有せず一定期間借りる。',                                year:'古代〜',  by:'人類',                ex:'TSUTAYA、レンタカー、カーシェア', history:'古代の道具貸しから現代のカーシェアまで。「所有しない」が共通点。',                                              ijins:[] },
+    { name:'AI×教育',     parts:['ai','education','subscription'], desc:'AIが個別最適に学習を案内する。',              year:'2020〜',  by:'Khan Academy / Duolingo', ex:'Khanmigo、Duolingo Max',     history:'2023年OpenAI×Khan Academy「Khanmigo」、Duolingo MaxがGPT-4を組込。教育×AIの初期世代。',                          ijins:[] },
+    { name:'クリエイター経済', parts:['ugc','community','subscription'], desc:'個人が直接ファンから定額で支援を受ける。', year:'2013〜', by:'Patreon',           ex:'Patreon、note、OnlyFans',        history:'2013年Patreon設立。Substack、note、YouTubeチャンネル会員などSNS時代のクリエイター直接支援モデル。',              ijins:[] },
+  ];
+
   function openBusinessPage() {
     const ov = document.createElement('div');
     ov.className = 'concept-page-overlay theme-business';
+    const piece2obj = Object.fromEntries(BIZ_PIECES.map(p => [p.id, p]));
+    function partsHtml(parts) {
+      return parts.map(id => {
+        const p = piece2obj[id]; if (!p) return '';
+        return `<button class="biz-part" data-id="${id}" style="--c:${p.color}"><span class="biz-part-ic">${p.icon}</span><span class="biz-part-nm">${p.name}</span></button>`;
+      }).join('<span class="biz-plus">+</span>');
+    }
     ov.innerHTML = `
       <button class="cp-close" aria-label="閉じる">×</button>
       <div class="cp-wrap">
         <div class="cp-head">
-          <div class="cp-eyebrow">B U S I N E S S → P E O P L E</div>
-          <div class="cp-title">ビジネスから探す</div>
-          <div class="cp-sub">富とは何か、組織とは何か。<br>経済も結局、人が何かを信じることで動いている。</div>
+          <div class="cp-eyebrow">B U S I N E S S</div>
+          <div class="cp-title">ビジネス</div>
+          <div class="cp-sub">
+            ビジネスは「ピースの組み合わせ」でできている。<br>
+            商品＋月額、無料＋広告、マッチング＋手数料……。組合せが新しいモデルを生む。
+          </div>
         </div>
+
+        <div class="el-lab2 biz-lab">
+          <div class="el-lab2-board" id="bizBoard">
+            <svg class="el-lab2-svg" id="bizBoardSvg" preserveAspectRatio="none"></svg>
+            <div class="el-lab2-empty">
+              <div class="el-lab2-empty-1">💼 ビジネスラボ</div>
+              <div class="el-lab2-empty-2">下のバーからピースをここにドラッグ／タップでつないでビジネスモデルを作ろう</div>
+            </div>
+            <span class="el-lab2-counter" id="bizBoardCounter">0 / ${BIZ_MODELS.length}</span>
+            <button class="el-lab2-clear" id="bizBoardClear" type="button">🧹 クリア</button>
+          </div>
+          <div class="el-lab2-palette-wrap">
+            <div class="el-lab2-palette biz-palette" id="bizPalette" data-mode="row">
+              ${BIZ_PIECES.map(p => `
+                <button class="el-pal-item biz-pal-item" data-id="${p.id}" style="--c:${p.color}" type="button">
+                  <span class="biz-pal-ic">${p.icon}</span>
+                  <span class="el-pal-name">${p.name}</span>
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+
+        <div class="el-section-head"><span class="el-sec-label">ビジネスモデル図鑑</span><span class="el-sec-sub">— ${BIZ_MODELS.length}種 — 組み合わせと歴史 —</span></div>
+        <div class="biz-zukan">
+          ${BIZ_MODELS.map(m => `
+            <div class="biz-card" data-model="${m.name}">
+              <div class="biz-card-name">${m.name}</div>
+              <div class="biz-card-eq">${partsHtml(m.parts)}</div>
+              <div class="biz-card-desc">${m.desc}</div>
+              <div class="biz-card-meta"><span class="biz-card-year">${m.year}</span> <span class="biz-card-by">${m.by}</span></div>
+              <div class="biz-card-ex">例：${m.ex}</div>
+              <div class="biz-card-hist">${m.history}</div>
+              ${m.ijins && m.ijins.length ? `<div class="biz-card-ijins">${m.ijins.map(id => `<button class="cnp-pill" data-id="${id}">${_resolveIjinName(id)}</button>`).join('')}</div>` : ''}
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="el-section-head"><span class="el-sec-label">関連する偉人・概念</span></div>
         <div class="cp-list">
           ${BUSINESS_BRIDGES.map(b => `
             <div class="cp-card">
@@ -23895,12 +23987,245 @@
             </div>
           `).join('')}
         </div>
+        <div class="cp-foot">どんな会社も、結局はピースの組み合わせ。</div>
       </div>
     `;
     document.body.appendChild(ov);
     requestAnimationFrame(() => ov.classList.add('open'));
     const close = () => { ov.classList.remove('open'); setTimeout(() => ov.remove(), 320); };
     ov.querySelector('.cp-close').addEventListener('click', close);
+
+    // ===== ビジネスラボ：ピースを盤に置いてモデル合成 =====
+    let _ac = null;
+    function ac() { if (!_ac) { try { _ac = new (window.AudioContext||window.webkitAudioContext)(); } catch(_){return null;} } if (_ac.state==='suspended') { try { _ac.resume(); } catch(_){} } return _ac; }
+    function tone(f, d, t='sine', g=0.12, sl=0) { const c = ac(); if (!c) return; const o = c.createOscillator(); const gn = c.createGain(); o.type=t; o.frequency.setValueAtTime(f,c.currentTime); if (sl) o.frequency.exponentialRampToValueAtTime(Math.max(40,f+sl),c.currentTime+d); gn.gain.setValueAtTime(0,c.currentTime); gn.gain.linearRampToValueAtTime(g,c.currentTime+0.01); gn.gain.exponentialRampToValueAtTime(0.0001,c.currentTime+d); o.connect(gn).connect(c.destination); o.start(); o.stop(c.currentTime+d+0.02); }
+    function sfx(k) { if (k==='place') tone(380,0.12,'triangle',0.10,200); else if (k==='sel') tone(560,0.08,'sine',0.07); else if (k==='synth') { [392, 523.25, 659.25, 880].forEach((f,i)=>setTimeout(()=>tone(f,0.18,'triangle',0.13),i*70)); } else if (k==='clear') tone(220,0.18,'sawtooth',0.05,-120); }
+
+    const bd = ov.querySelector('#bizBoard');
+    const bdSvg = ov.querySelector('#bizBoardSvg');
+    const bdEmpty = ov.querySelector('.biz-lab .el-lab2-empty');
+    const bdCounter = ov.querySelector('#bizBoardCounter');
+    const palette = ov.querySelector('#bizPalette');
+    const NODE_R = 36;
+    let nextId = 1;
+    let bnodes = [];
+    const selected = new Set();
+    const found = new Set();
+    let bubble = null;
+    function setEqual(a,b){ if (a.size!==b.size) return false; for (const x of a) if (!b.has(x)) return false; return true; }
+    function updCounter(){ bdCounter.textContent = `${found.size} / ${BIZ_MODELS.length}`; }
+    function clearBoard(){ bnodes.forEach(n=>n.dom.remove()); bnodes=[]; selected.clear(); bdSvg.innerHTML=''; bdEmpty.style.display=''; closeBubble(); sfx('clear'); }
+    function closeBubble(){ if (bubble){ bubble.remove(); bubble=null; } }
+    function showBubble(node, html){
+      closeBubble();
+      const b = document.createElement('div');
+      b.className = 'el-bubble';
+      b.innerHTML = `<button class="el-bubble-x" type="button" aria-label="閉じる">×</button>${html}`;
+      bd.appendChild(b);
+      requestAnimationFrame(()=>{
+        const bw=b.offsetWidth, bh=b.offsetHeight;
+        const W=bd.clientWidth, H=bd.clientHeight;
+        let lx = node.x + NODE_R*2 + 8;
+        let ty = node.y - 8;
+        if (lx + bw > W - 4) lx = node.x - bw - 8;
+        if (lx < 4) lx = Math.max(4, Math.min(W-bw-4, node.x + NODE_R - bw/2));
+        if (ty + bh > H - 4) ty = H - bh - 4;
+        if (ty < 4) ty = node.y + NODE_R*2 + 8;
+        b.style.left = lx+'px'; b.style.top = ty+'px';
+      });
+      b.querySelector('.el-bubble-x').addEventListener('click', closeBubble);
+      _wireIjinPills(b, close);
+      bubble = b;
+    }
+    function showPieceBubble(node, p){
+      // 合うピース: このピースを含むモデル
+      const partners = BIZ_MODELS.filter(m => m.parts.includes(p.id)).slice(0, 4);
+      const hint = partners.length ? `
+        <div class="el-bubble-hint-h">🤝 これと組合せると</div>
+        <div class="el-bubble-hints">
+          ${partners.map(m=>{
+            const others = m.parts.filter(x => x !== p.id);
+            return `<div class="el-bubble-hint">＋ ${others.map(x=>{const o=piece2obj[x];return `<b style="background:${o.color};color:#0a0a0a">${o.icon}${o.name}</b>`;}).join(' ')} → ${m.name}</div>`;
+          }).join('')}
+        </div>
+      ` : '';
+      const html = `
+        <div class="el-bubble-title"><span class="el-bubble-sym" style="--c:${p.color}">${p.icon}</span> ${p.name}</div>
+        <div class="el-bubble-desc">ビジネスを作るピースの一つ。組み合わせ次第で違うモデルになる。</div>
+        ${hint}
+      `;
+      showBubble(node, html);
+    }
+    function showModelBubble(node, m, isNew){
+      const html = `
+        <div class="el-bubble-title">💼 ${m.name}${isNew?' <span class="el-bubble-badge">NEW!</span>':''}</div>
+        <div class="el-bubble-desc">${m.desc}</div>
+        <div class="el-bubble-history">
+          <div class="el-bubble-meta">
+            <span class="el-bubble-year">${m.year}</span>
+            <span class="el-bubble-by">${m.by}</span>
+          </div>
+          <div class="el-bubble-story">${m.history}</div>
+          <div class="el-bubble-ex">例：${m.ex}</div>
+        </div>
+        ${m.ijins && m.ijins.length ? `<div class="el-bi-ijins">${m.ijins.map(id => `<button class="cnp-pill" data-id="${id}">${_resolveIjinName(id)}</button>`).join('')}</div>` : ''}
+      `;
+      showBubble(node, html);
+    }
+    function spawnPiece(id, x, y){
+      const p = piece2obj[id]; if (!p) return null;
+      const nid = nextId++;
+      const dom = document.createElement('div');
+      dom.className = 'el-node biz-node biz-node-piece';
+      dom.style.setProperty('--c', p.color);
+      x = Math.max(0, Math.min(bd.clientWidth - NODE_R*2, x));
+      y = Math.max(0, Math.min(bd.clientHeight - NODE_R*2, y));
+      dom.style.left = x+'px'; dom.style.top = y+'px';
+      dom.innerHTML = `<span class="el-node-hand el-node-hand-l"></span><span class="el-node-hand el-node-hand-r"></span><span class="biz-node-ic">${p.icon}</span><span class="el-node-name">${p.name}</span>`;
+      bd.appendChild(dom);
+      sfx('place');
+      const node = { id:nid, kind:'piece', pid:id, x, y, dom };
+      bnodes.push(node);
+      attach(node);
+      bdEmpty.style.display='none';
+      return node;
+    }
+    function spawnModel(m, x, y){
+      const nid = nextId++;
+      const dom = document.createElement('div');
+      dom.className = 'el-node biz-node biz-node-model';
+      x = Math.max(0, Math.min(bd.clientWidth - NODE_R*2, x));
+      y = Math.max(0, Math.min(bd.clientHeight - NODE_R*2, y));
+      dom.style.left = x+'px'; dom.style.top = y+'px';
+      dom.innerHTML = `<span class="el-node-hand el-node-hand-l"></span><span class="el-node-hand el-node-hand-r"></span><span class="biz-node-mic">💼</span><span class="biz-node-mname">${m.name}</span>`;
+      bd.appendChild(dom);
+      sfx('synth');
+      const node = { id:nid, kind:'model', name:m.name, x, y, dom };
+      bnodes.push(node);
+      attach(node);
+      return node;
+    }
+    function checkMatch(){
+      const sel = bnodes.filter(n => selected.has(n.id) && n.kind==='piece');
+      if (sel.length < 2) return;
+      const pids = new Set(sel.map(n=>n.pid));
+      const m = BIZ_MODELS.find(mm => setEqual(new Set(mm.parts), pids));
+      if (m) synth(sel, m);
+    }
+    function synth(selNodes, m){
+      const cx = selNodes.reduce((s,n)=>s+n.x,0)/selNodes.length;
+      const cy = selNodes.reduce((s,n)=>s+n.y,0)/selNodes.length;
+      selNodes.forEach(n=>{
+        const ln = document.createElementNS('http://www.w3.org/2000/svg','line');
+        ln.setAttribute('x1', n.x+NODE_R); ln.setAttribute('y1', n.y+NODE_R);
+        ln.setAttribute('x2', cx+NODE_R); ln.setAttribute('y2', cy+NODE_R);
+        ln.setAttribute('class','el-board-line'); bdSvg.appendChild(ln);
+        requestAnimationFrame(()=>ln.classList.add('in'));
+      });
+      const cIds = new Set(selNodes.map(n=>n.id));
+      setTimeout(()=>{
+        selNodes.forEach(n=>{ n.dom.classList.add('consumed'); setTimeout(()=>n.dom.remove(),380); });
+        bnodes = bnodes.filter(n=>!cIds.has(n.id));
+        selected.clear();
+        const isNew = !found.has(m.name);
+        found.add(m.name); updCounter();
+        const newNode = spawnModel(m, cx, cy);
+        showModelBubble(newNode, m, isNew);
+        // 図鑑カードもハイライト
+        const card = ov.querySelector(`.biz-card[data-model="${m.name}"]`);
+        if (card) { card.classList.add('discovered'); }
+        setTimeout(()=>bdSvg.innerHTML='',600);
+      }, 380);
+    }
+    function removeNode(node){
+      selected.delete(node.id);
+      bnodes = bnodes.filter(n=>n.id!==node.id);
+      node.dom.classList.add('consumed');
+      setTimeout(()=>node.dom.remove(),380);
+      if (bubble && bubble.dataset.nid==String(node.id)) closeBubble();
+      if (bnodes.length===0) bdEmpty.style.display='';
+      sfx('clear');
+    }
+    function tap(node){
+      if (node.kind==='model') {
+        const m = BIZ_MODELS.find(x => x.name===node.name);
+        if (m) showModelBubble(node, m, false);
+        return;
+      }
+      const p = piece2obj[node.pid];
+      showPieceBubble(node, p);
+      if (selected.has(node.id)) { selected.delete(node.id); node.dom.classList.remove('sel'); }
+      else { selected.add(node.id); node.dom.classList.add('sel'); sfx('sel'); }
+      checkMatch();
+    }
+    function attach(node){
+      let dx0,dy0,sl,st,mv=false;
+      node.dom.addEventListener('pointerdown', e=>{
+        e.preventDefault(); e.stopPropagation();
+        try { node.dom.setPointerCapture(e.pointerId); } catch(_){}
+        dx0=e.clientX; dy0=e.clientY; sl=node.x; st=node.y; mv=false;
+        node.dom.classList.add('drag');
+      });
+      node.dom.addEventListener('pointermove', e=>{
+        if (dx0==null) return;
+        const dx=e.clientX-dx0, dy=e.clientY-dy0;
+        if (!mv && Math.abs(dx)+Math.abs(dy) > 6) mv=true;
+        if (mv) {
+          node.x = Math.max(0, Math.min(bd.clientWidth-NODE_R*2, sl+dx));
+          node.y = Math.max(0, Math.min(bd.clientHeight-NODE_R*2, st+dy));
+          node.dom.style.left=node.x+'px'; node.dom.style.top=node.y+'px';
+          const r=palette.getBoundingClientRect();
+          const over = e.clientY>=r.top && e.clientY<=r.bottom && e.clientX>=r.left && e.clientX<=r.right;
+          palette.classList.toggle('drop-target', over);
+          node.dom.classList.toggle('dropping', over);
+        }
+      });
+      node.dom.addEventListener('pointerup', e=>{
+        try { node.dom.releasePointerCapture(e.pointerId); } catch(_){}
+        node.dom.classList.remove('drag','dropping');
+        palette.classList.remove('drop-target');
+        dx0=null;
+        if (!mv) { tap(node); return; }
+        const r=palette.getBoundingClientRect();
+        if (e.clientY>=r.top && e.clientY<=r.bottom && e.clientX>=r.left && e.clientX<=r.right) removeNode(node);
+      });
+      node.dom.addEventListener('pointercancel', ()=>{ node.dom.classList.remove('drag','dropping'); dx0=null; });
+    }
+    palette.querySelectorAll('.biz-pal-item').forEach(item=>{
+      item.addEventListener('pointerdown', e=>{
+        e.preventDefault();
+        const id = item.dataset.id; const p = piece2obj[id]; if (!p) return;
+        try { item.setPointerCapture(e.pointerId); } catch(_){}
+        let dragged=false;
+        const ghost = document.createElement('div');
+        ghost.className='el-pal-ghost';
+        ghost.style.setProperty('--c', p.color);
+        ghost.textContent = p.icon;
+        document.body.appendChild(ghost);
+        const place = ev=>{ ghost.style.left=(ev.clientX-24)+'px'; ghost.style.top=(ev.clientY-24)+'px'; };
+        place(e);
+        const onMove = ev=>{ if (!dragged && (Math.abs(ev.clientX-e.clientX)+Math.abs(ev.clientY-e.clientY)>4)) dragged=true; place(ev); };
+        const onUp = ev=>{
+          item.removeEventListener('pointermove', onMove);
+          item.removeEventListener('pointerup', onUp);
+          item.removeEventListener('pointercancel', onUp);
+          ghost.remove();
+          const r = bd.getBoundingClientRect();
+          const inside = ev.clientX>=r.left&&ev.clientX<=r.right&&ev.clientY>=r.top&&ev.clientY<=r.bottom;
+          if (inside) spawnPiece(id, ev.clientX-r.left-NODE_R, ev.clientY-r.top-NODE_R);
+          else if (!dragged) {
+            const x = 30 + Math.random()*(bd.clientWidth-90);
+            const y = 30 + Math.random()*(bd.clientHeight-90);
+            spawnPiece(id, x, y);
+          }
+        };
+        item.addEventListener('pointermove', onMove);
+        item.addEventListener('pointerup', onUp);
+        item.addEventListener('pointercancel', onUp);
+      });
+    });
+    ov.querySelector('#bizBoardClear').addEventListener('click', clearBoard);
+    updCounter();
     _wireIjinPills(ov, close);
   }
   window.openBusinessPage = openBusinessPage;
