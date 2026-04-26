@@ -5770,6 +5770,7 @@
     }).join('');
     ov.innerHTML = `
       <button class="tale-close" aria-label="閉じる">×</button>
+      <button class="ijin-bridge-btn" data-bridge="myth">→ 神話の偉人</button>
       <div class="tale-home" id="taleHome">
         <div class="tale-stars" aria-hidden="true"></div>
         <div class="tale-home-head">
@@ -10611,6 +10612,7 @@
     ov.innerHTML = `
       <div class="museum3d-stage" id="m3dStage"></div>
       <button class="museum3d-close" aria-label="閉じる">×</button>
+      <button class="ijin-bridge-btn" data-bridge="art">→ 美術の偉人</button>
       <div class="museum3d-title">${zone.name.replace('エリア', '')} 美 術 館</div>
       <div class="museum3d-info" id="m3dInfo"></div>
       <div class="museum3d-reticle">·</div>
@@ -15844,6 +15846,12 @@
         showMythSceneAt(scene.userData.mythIndex);
       } else if (scene.userData.mythScenes) {
         scene.userData.mythOrder.forEach(k => scene.userData.mythScenes[k].group.visible = false);
+        // 🔧 ホログラムは scene 直下なので明示的に全部隠す（神話以外の時）
+        if (scene.userData.mythHolograms) {
+          Object.values(scene.userData.mythHolograms).forEach(h => { h.visible = false; });
+        }
+        // 環境音も止める（神話以外）
+        if (scene.userData.stopMythAmbient) scene.userData.stopMythAmbient();
       }
       if (sphereMat.uniforms && sphereMat.uniforms.uMode) sphereMat.uniforms.uMode.value = m.uMode;
       const label = ov.querySelector('#kohModeLabel');
@@ -22869,6 +22877,21 @@
     if (firstBtn) firstBtn.click();
   }
   window.openIjinHub = openIjinHub;
+  // 既存3D画面の「→偉人」ショートカット：data-bridge を持つボタンに自動ハンドラ
+  document.addEventListener('click', e => {
+    const btn = e.target && e.target.closest && e.target.closest('.ijin-bridge-btn');
+    if (!btn) return;
+    e.preventDefault(); e.stopPropagation();
+    const cat = btn.dataset.bridge || 'cosmos';
+    // ハブを開いて、目的のカテゴリを自動選択する
+    try {
+      openIjinHub();
+      setTimeout(() => {
+        const target = document.querySelector(`.ijin-hub-cat[data-cat="${cat}"]`);
+        if (target) target.click();
+      }, 150);
+    } catch (err) { console.warn('ijin-bridge', err); }
+  });
 
   // ============================================================
   // ⚛💰 「原子と原資」 — Atoms × Capital
@@ -25684,6 +25707,7 @@
     if (autoMode) ov.dataset.autoMode = autoMode;
     ov.innerHTML = `
       <button class="cosmos-close" aria-label="閉じる">×</button>
+      <button class="ijin-bridge-btn" data-bridge="cosmos">→ 宇宙の偉人</button>
       <div class="cosmos-stage" id="cosmosStage"></div>
       <div class="cosmos-noise" id="cosmosNoise"></div>
       <canvas class="cosmos-conscious-canvas" id="cosmosConsciousCanvas"></canvas>

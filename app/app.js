@@ -102,7 +102,23 @@ function renderRelatedSection(personId) {
     chips.push(`<button class="rel-chip rel-chip-god" data-rel-god="${g}">
       <span class="rc-icon">⛩</span><span class="rc-label">${g}</span></button>`);
   });
-  if (chips.length === 0) return '';
+  // 🤝 人間性タグ（HUMANITY_OF / HUMANITY_TAGS）
+  let humanityChips = '';
+  if (window.HUMANITY_OF && window.HUMANITY_TAGS) {
+    const tags = window.HUMANITY_OF[personId] || [];
+    if (tags.length > 0) {
+      humanityChips = tags.map(t => {
+        const meta = window.HUMANITY_TAGS[t];
+        if (!meta) return '';
+        return `<span class="rel-chip rel-chip-humanity" title="${meta.desc}">
+          <span class="rc-icon">${meta.emoji}</span><span class="rc-label">${meta.name}</span></span>`;
+      }).join('');
+    }
+  }
+  // 🌐 偉人ハブへの逆リンク
+  const hubBtn = `<button class="rel-chip rel-chip-hub" data-rel-hub="1">
+    <span class="rc-icon">→</span><span class="rc-label">人 と は 何 か（ハブ）</span></button>`;
+  if (chips.length === 0 && !humanityChips) return '';
   return `
     <div class="related-section">
       <div class="related-head">
@@ -111,6 +127,8 @@ function renderRelatedSection(personId) {
       </div>
       ${c.reason ? `<div class="related-reason">${c.reason}</div>` : ''}
       <div class="related-chips">${chips.join('')}</div>
+      ${humanityChips ? `<div class="related-humanity-row"><span class="related-humanity-label">人 間 性</span><div class="related-chips">${humanityChips}</div></div>` : ''}
+      <div class="related-hub"><div class="related-chips">${hubBtn}</div></div>
       <div class="related-hint">タップで そこへ 飛ぶ</div>
     </div>
   `;
@@ -139,6 +157,13 @@ function bindRelatedHandlers(scope) {
       if (window.openGodsBook) window.openGodsBook();
     });
   });
+  // 「→ 人とは何か（ハブ）」ボタン
+  scope.querySelectorAll('[data-rel-hub]').forEach(b => {
+    b.addEventListener('click', () => {
+      if (window.openIjinHub) window.openIjinHub();
+    });
+  });
+  // 人間性タグはホバーで desc を出すだけ（クリックなし、暫定）
 }
 window.bindRelatedHandlers = bindRelatedHandlers;
 
