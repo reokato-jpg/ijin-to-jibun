@@ -2,6 +2,98 @@
 function ensureLazyCss(_name) { /* merged back into style.css */ }
 window.ensureLazyCss = ensureLazyCss;
 
+// 🔗 統一共有メニュー：LINE / X / Facebook / コピー / ネイティブ
+// 各種「共有」ボタンから window.magicShare({ title, text?, url, file? }) で呼ぶ
+window.magicShare = function magicShare(opts = {}) {
+  const title = opts.title || '偉人と自分。';
+  const text = opts.text || '';
+  const url = opts.url || location.href;
+  const file = opts.file || null;
+  const eText = encodeURIComponent(text || title);
+  const eUrl = encodeURIComponent(url);
+  const eTitle = encodeURIComponent(title);
+  const canNative = !!navigator.share;
+
+  // 既に開いているメニューがあれば閉じる
+  document.querySelector('.magic-share-menu')?.remove();
+
+  const menu = document.createElement('div');
+  menu.className = 'magic-share-menu';
+  menu.innerHTML = `
+    <div class="ms-bk"></div>
+    <div class="ms-card" role="dialog" aria-label="共有">
+      <div class="ms-h">${title.length > 32 ? title.slice(0, 32) + '…' : title}</div>
+      <div class="ms-sub">どこにシェアする？</div>
+      <div class="ms-list">
+        <button class="ms-link ms-line" data-act="line">
+          <span class="ms-ico" aria-hidden="true">L</span>
+          <span class="ms-lbl">LINE で送る</span>
+        </button>
+        <button class="ms-link ms-x" data-act="x">
+          <span class="ms-ico" aria-hidden="true">𝕏</span>
+          <span class="ms-lbl">X (Twitter) で投稿</span>
+        </button>
+        <button class="ms-link ms-fb" data-act="fb">
+          <span class="ms-ico" aria-hidden="true">f</span>
+          <span class="ms-lbl">Facebook で共有</span>
+        </button>
+        <button class="ms-link ms-copy" data-act="copy">
+          <span class="ms-ico" aria-hidden="true">⎘</span>
+          <span class="ms-lbl">リンクをコピー</span>
+        </button>
+        ${canNative ? `<button class="ms-link ms-native" data-act="native">
+          <span class="ms-ico" aria-hidden="true">📤</span>
+          <span class="ms-lbl">他のアプリで共有…</span>
+        </button>` : ''}
+      </div>
+      <button class="ms-cancel" data-act="cancel">キャンセル</button>
+    </div>
+  `;
+  document.body.appendChild(menu);
+  requestAnimationFrame(() => menu.classList.add('open'));
+
+  const closeMenu = () => {
+    menu.classList.remove('open');
+    setTimeout(() => menu.remove(), 220);
+  };
+  const toast = (msg) => {
+    const t = document.createElement('div');
+    t.className = 'magic-share-toast';
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 1800);
+  };
+
+  menu.querySelector('.ms-bk').addEventListener('click', closeMenu);
+  menu.querySelector('.ms-cancel').addEventListener('click', closeMenu);
+  menu.querySelectorAll('.ms-link').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const act = btn.dataset.act;
+      try {
+        if (act === 'line') {
+          // LINE は本文中にURLを含める
+          window.open(`https://line.me/R/msg/text/?${eText}%20${eUrl}`, '_blank', 'noopener');
+        } else if (act === 'x') {
+          window.open(`https://twitter.com/intent/tweet?text=${eText}&url=${eUrl}`, '_blank', 'noopener');
+        } else if (act === 'fb') {
+          window.open(`https://www.facebook.com/sharer/sharer.php?u=${eUrl}`, '_blank', 'noopener');
+        } else if (act === 'copy') {
+          if (navigator.clipboard) {
+            await navigator.clipboard.writeText(url);
+            toast('リンクをコピーしました');
+          } else {
+            prompt('このURLをコピーしてください', url);
+          }
+        } else if (act === 'native' && canNative) {
+          const payload = file ? { title, text, url, files: [file] } : { title, text, url };
+          try { await navigator.share(payload); } catch (e) { /* ユーザーがキャンセル */ }
+        }
+      } catch {}
+      closeMenu();
+    });
+  });
+};
+
 // ============================================================
 // 🕸 偉人 ⇆ 神話・神様・絵本 の関連マップ
 // ============================================================
@@ -2194,7 +2286,7 @@ function openShareMyProfileModal() {
             <button class="share-copy" data-copy="#shareMyUrl">コピー</button>
           </div>
         </div>
-        ${navigator.share ? `<button class="share-native" id="shareNativeBtn">📤 共有する</button>` : ''}
+        <button class="share-native" id="shareNativeBtn">📤 SNSで共有（LINE・X・Facebook…）</button>
       ` : `
         <div class="users-dir-empty">無料会員登録後にシェアIDが発行されます。（0円・メールのみ）</div>
       `}
@@ -2215,7 +2307,7 @@ function openShareMyProfileModal() {
     });
   });
   modal.querySelector('#shareNativeBtn')?.addEventListener('click', () => {
-    navigator.share({ title: '偉人と自分。 マイプロフィール', url }).catch(() => {});
+    window.magicShare({ title: '偉人と自分。 マイプロフィール', text: '偉人と自分。 マイプロフィール', url });
   });
 }
 window.openShareMyProfileModal = openShareMyProfileModal;
@@ -8471,16 +8563,7 @@ async function showPerson(id) {
       const person = DATA.people.find(x => x.id === pid);
       const url = `${location.origin}${location.pathname}?person=${encodeURIComponent(pid)}`;
       const title = `${person?.name || '偉人'} — 偉人と自分。`;
-      try {
-        if (navigator.share) {
-          await navigator.share({ title, url });
-        } else if (navigator.clipboard) {
-          await navigator.clipboard.writeText(url);
-          alert('リンクをコピーしました！\n' + url);
-        } else {
-          prompt('このURLをコピーしてください:', url);
-        }
-      } catch {}
+      window.magicShare({ title, text: title, url });
     });
   }
 
@@ -10816,13 +10899,10 @@ function showThemePage(themeId) {
       if (pid) setTimeout(() => showPerson(pid), 100);
     });
   });
-  modal.querySelector('[data-theme-share]')?.addEventListener('click', async () => {
+  modal.querySelector('[data-theme-share]')?.addEventListener('click', () => {
     const shareUrl = `${location.origin}${location.pathname}?theme=${themeId}`;
     const shareText = `${def.emoji} #${def.name} まとめ — 偉人と自分。`;
-    try {
-      if (navigator.share) await navigator.share({ title: shareText, url: shareUrl });
-      else { await navigator.clipboard.writeText(shareUrl); alert('URLをコピーしました'); }
-    } catch {}
+    window.magicShare({ title: shareText, text: shareText, url: shareUrl });
   });
 }
 function closeThemePage() {
@@ -11515,20 +11595,11 @@ function openEraModal(catId, eraId) {
   };
   modal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', close));
   // 🔗 シェアボタン
-  modal.querySelector('[data-era-share-btn]')?.addEventListener('click', async (e) => {
+  modal.querySelector('[data-era-share-btn]')?.addEventListener('click', (e) => {
     e.stopPropagation();
     const url = `${location.origin}${location.pathname}?era=${encodeURIComponent(eraId)}&cat=${encodeURIComponent(catId)}`;
     const title = `${era.name} — 偉人と自分。`;
-    try {
-      if (navigator.share) {
-        await navigator.share({ title, url });
-      } else if (navigator.clipboard) {
-        await navigator.clipboard.writeText(url);
-        alert('リンクをコピーしました！\n' + url);
-      } else {
-        prompt('このURLをコピーしてください:', url);
-      }
-    } catch {}
+    window.magicShare({ title, text: title, url });
   });
   modal.querySelectorAll('[data-jump-person]').forEach(el => {
     el.addEventListener('click', () => {
