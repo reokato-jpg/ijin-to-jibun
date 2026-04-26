@@ -23660,29 +23660,22 @@
         </div>
       ` : '';
       const voiceHtml = (showVoice && el.voice) ? `<div class="el-bubble-voice">${el.voice}</div>` : '';
-      const fullHtml = `
-        <div class="el-bubble-title"><span class="el-bubble-sym" style="--c:${el.color}">${el.sym}</span> ${el.name} <span class="el-bubble-no">No.${el.no}</span></div>
-        <div class="el-bubble-tag">${el.tag}</div>
-        <div class="el-bubble-desc">${el.desc}</div>
-        ${hintHtml}
-        ${el.ijins && el.ijins.length ? `<div class="el-bi-ijins">${el.ijins.map(id => `<button class="cnp-pill" data-id="${id}">${_resolveIjinName(id)}</button>`).join('')}</div>` : ''}
-        <button class="el-bubble-zukan-btn" data-sym="${el.sym}" type="button">📖 図鑑で詳しく見る</button>
-      `;
+      // 詳しく見るは直接モーダルへ。インライン展開は廃止。
       const html = showVoice
-        ? `${voiceHtml}<button class="el-bubble-more" type="button">＋ 詳しく見る</button><div class="el-bubble-detail" hidden>${fullHtml}</div>`
-        : fullHtml;
+        ? `${voiceHtml}<button class="el-bubble-zukan-btn" data-sym="${el.sym}" type="button">📖 詳しく見る</button>`
+        : `
+          <div class="el-bubble-title"><span class="el-bubble-sym" style="--c:${el.color}">${el.sym}</span> ${el.name} <span class="el-bubble-no">No.${el.no}</span></div>
+          <div class="el-bubble-tag">${el.tag}</div>
+          <div class="el-bubble-desc">${el.desc}</div>
+          ${hintHtml}
+          ${el.ijins && el.ijins.length ? `<div class="el-bi-ijins">${el.ijins.map(id => `<button class="cnp-pill" data-id="${id}">${_resolveIjinName(id)}</button>`).join('')}</div>` : ''}
+          <button class="el-bubble-zukan-btn" data-sym="${el.sym}" type="button">📖 図鑑で詳しく見る</button>
+        `;
       if (!node) return;
       showBubble(node, html);
-      const moreBtn = bubbleEl && bubbleEl.querySelector('.el-bubble-more');
-      if (moreBtn) {
-        moreBtn.addEventListener('click', () => {
-          const det = bubbleEl.querySelector('.el-bubble-detail');
-          if (det) { det.hidden = false; moreBtn.remove(); }
-        });
-      }
       if (bubbleEl) {
         bubbleEl.querySelectorAll('.el-bubble-zukan-btn').forEach(btn => {
-          btn.addEventListener('click', () => { closeBubble(); scrollToZukan(btn.dataset.sym); });
+          btn.addEventListener('click', () => { closeBubble(); openZukanModal(btn.dataset.sym); });
         });
       }
     }
@@ -24407,7 +24400,7 @@
                   ${svcs.map(s => `
                     <div class="biz-svc-z-card" data-svc-name="${s.name}" data-model="${m.name}">
                       <button class="biz-svc-fav" data-fav="${s.name}" type="button" aria-label="お気に入り">♡</button>
-                      <div class="biz-svc-z-emoji">${s.emoji}</div>
+                      <div class="biz-svc-z-emoji">${svcAvatar(s, m.name)}</div>
                       <div class="biz-svc-z-body">
                         <div class="biz-svc-z-name">${s.name}<span class="biz-svc-z-flag">${s.country}</span></div>
                         <div class="biz-svc-z-founder">${s.founder}</div>
@@ -24621,7 +24614,7 @@
         <div class="biz-svc-list">
           ${svcs.slice(0,3).map(s => `
             <div class="biz-svc-mini">
-              <span class="biz-svc-emoji">${s.emoji}</span>
+              ${svcAvatar(s, m.name)}
               <span class="biz-svc-name">${s.name}</span>
               <span class="biz-svc-meta">${s.country} ${s.founder}</span>
             </div>
@@ -24926,7 +24919,7 @@
           ${svcs.map(s => `
             <div class="biz-svc-card">
               <div class="biz-svc-card-head">
-                <span class="biz-svc-emoji-lg">${s.emoji}</span>
+                ${svcAvatar(s, name, 'lg')}
                 <span class="biz-svc-card-name">${s.name}</span>
                 <span class="biz-svc-card-flag">${s.country}</span>
               </div>
@@ -25046,6 +25039,18 @@
     const FAV_KEY = 'ijinjibun_biz_svc_favs_v1';
     function getFavs() { try { return new Set(JSON.parse(localStorage.getItem(FAV_KEY) || '[]')); } catch(_) { return new Set(); } }
     function saveFavs(s) { try { localStorage.setItem(FAV_KEY, JSON.stringify([...s])); } catch(_) {} }
+    // サービスのアバター（絵文字なし。社名の頭文字＋モデル色）
+    function svcLetter(name) {
+      // 英字優先、なければ最初の1文字
+      const en = name.match(/[A-Za-z]/);
+      return (en ? en[0] : name.charAt(0)).toUpperCase();
+    }
+    function svcAvatar(s, modelName, sizeClass='') {
+      const m = BIZ_MODELS.find(x => x.name === modelName);
+      // モデル色のフォールバック
+      const c = '#4a8fcf';
+      return `<span class="biz-svc-letter ${sizeClass}" style="--c:${c}">${svcLetter(s.name)}</span>`;
+    }
     function loadModelDiagram(modelName) {
       const d = BIZ_MODEL_DIAGRAMS[modelName];
       if (!d) { bizToast('このモデルの図解データはありません'); return; }
@@ -25087,7 +25092,7 @@
           ${favSvcs.map(({s, modelName}) => `
             <div class="biz-svc-z-card biz-svc-fav-card" data-svc-name="${s.name}" data-model="${modelName}">
               <button class="biz-svc-fav on" data-fav="${s.name}" type="button">✓</button>
-              <div class="biz-svc-z-emoji">${s.emoji}</div>
+              <div class="biz-svc-z-emoji">${svcAvatar(s, modelName)}</div>
               <div class="biz-svc-z-body">
                 <div class="biz-svc-z-name">${s.name}<span class="biz-svc-z-flag">${s.country}</span></div>
                 <div class="biz-svc-z-founder">${s.founder}</div>
