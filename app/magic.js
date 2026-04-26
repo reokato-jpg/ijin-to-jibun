@@ -23129,14 +23129,17 @@
       g.fillText('— Era Zone —', 256, 158);
       const tex = new THREE.CanvasTexture(cv);
       if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace;
-      const sign = new THREE.Mesh(
-        new THREE.PlaneGeometry(4.0, 1.5),
-        new THREE.MeshBasicMaterial({ map: tex, transparent: true, side: THREE.DoubleSide, fog: false })
-      );
-      sign.position.set(x, y, z);
-      // 看板は中央を向く
-      sign.lookAt(0, y, 0);
-      scene.add(sign);
+      // 表裏どちら側から見ても正しく読めるよう2枚を背中合わせに配置
+      const geo = new THREE.PlaneGeometry(4.0, 1.5);
+      const mat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, side: THREE.FrontSide, fog: false });
+      const front = new THREE.Mesh(geo, mat);
+      const back = new THREE.Mesh(geo, mat);
+      back.rotation.y = Math.PI; // 反対側もテキスト正面で見える
+      const grp = new THREE.Group();
+      grp.add(front); grp.add(back);
+      grp.position.set(x, y, z);
+      grp.lookAt(0, y, 0);
+      scene.add(grp);
     }
     // 各時代ゾーンに看板（高さ y=8、入口側を向く）
     buildEraSign('古 代', 0, 8, -HALL_D/2 + 1.5);
