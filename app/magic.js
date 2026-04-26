@@ -15673,8 +15673,15 @@
     function showMythSceneAt(idx) {
       const order = scene.userData.mythOrder;
       const ms = scene.userData.mythScenes;
+      const sp = scene.userData.mythSprites;
+      // 3D シーンは全て非表示（Vegas Sphere方式）
+      order.forEach(k => { if (ms[k]) ms[k].group.visible = false; });
+      // スプライトのフェード目標を設定
       order.forEach((k, i) => {
-        ms[k].group.visible = (i === idx);
+        if (sp && sp[k]) {
+          const target = (i === idx) ? 1.0 : 0.0;
+          sp[k].forEach(s => { s.userData.fadeTarget = target; });
+        }
       });
       const cur = ms[order[idx]];
       const tEl = ov.querySelector('#kohMythTitle');
@@ -18470,9 +18477,397 @@
     elysG.visible = false;
     mythScenes.elysion = { group: elysG, name: 'エリュシオン', sub: 'ELYSIUM' };
 
+    // 🎬 Vegas Sphere 神話投影：3Dシーンは隠して、ドーム面に大画像タブローを描く
+    function makeMythCanvas(key) {
+      const W = 1536, H = 1024;
+      const c = document.createElement('canvas'); c.width = W; c.height = H;
+      const g = c.getContext('2d');
+      g.lineCap = 'round'; g.lineJoin = 'round';
+      const draw = {
+        eden() {
+          // 空グラデ（朝焼け→金）
+          const sky = g.createLinearGradient(0, 0, 0, H);
+          sky.addColorStop(0, '#f8c890'); sky.addColorStop(0.5, '#e8a868'); sky.addColorStop(1, '#a06038');
+          g.fillStyle = sky; g.fillRect(0, 0, W, H);
+          // 太陽
+          const sunGrd = g.createRadialGradient(W*0.78, H*0.25, 0, W*0.78, H*0.25, 200);
+          sunGrd.addColorStop(0, 'rgba(255,250,200,1)');
+          sunGrd.addColorStop(0.3, 'rgba(255,220,150,0.7)');
+          sunGrd.addColorStop(1, 'rgba(255,180,100,0)');
+          g.fillStyle = sunGrd; g.fillRect(0, 0, W, H);
+          // 遠景の山々（薄紫）
+          g.fillStyle = '#705890';
+          g.beginPath(); g.moveTo(0, H*0.55);
+          for (let x = 0; x <= W; x += 80) g.lineTo(x, H*0.55 - Math.sin(x*0.01)*40 - Math.random()*20);
+          g.lineTo(W, H); g.lineTo(0, H); g.closePath(); g.fill();
+          // 大地（緑）
+          g.fillStyle = '#3a6028';
+          g.fillRect(0, H*0.62, W, H*0.38);
+          // 草地のテクスチャ（縦線）
+          g.strokeStyle = 'rgba(80,140,60,0.4)';
+          for (let i = 0; i < 200; i++) {
+            const x = Math.random()*W, y = H*0.62 + Math.random()*H*0.38;
+            g.beginPath(); g.moveTo(x, y); g.lineTo(x+2, y-12); g.stroke();
+          }
+          // 中央の生命の樹
+          const tx = W * 0.5, ty = H * 0.62;
+          g.fillStyle = '#3a2010';
+          g.fillRect(tx - 32, ty - 280, 64, 280);
+          // 木目
+          g.strokeStyle = 'rgba(80,40,15,0.6)'; g.lineWidth = 2;
+          for (let i = 0; i < 5; i++) {
+            g.beginPath(); g.moveTo(tx - 30 + i*14, ty - 280); g.lineTo(tx - 28 + i*14, ty); g.stroke();
+          }
+          // 葉のクラスタ（複数の緑円）
+          const leafCenters = [
+            [tx, ty-340, 200], [tx-150, ty-300, 130], [tx+150, ty-310, 140],
+            [tx-80, ty-440, 110], [tx+90, ty-430, 120], [tx, ty-480, 90],
+          ];
+          leafCenters.forEach(([cx, cy, r]) => {
+            const grd = g.createRadialGradient(cx-r*0.3, cy-r*0.3, 0, cx, cy, r);
+            grd.addColorStop(0, '#7ab050');
+            grd.addColorStop(0.7, '#3a7028');
+            grd.addColorStop(1, '#1a4818');
+            g.fillStyle = grd;
+            g.beginPath(); g.arc(cx, cy, r, 0, Math.PI*2); g.fill();
+          });
+          // 金のりんご
+          for (let i = 0; i < 14; i++) {
+            const cx = tx + (Math.random()-0.5)*340;
+            const cy = ty - 280 - Math.random()*230;
+            const ag = g.createRadialGradient(cx-3, cy-3, 0, cx, cy, 14);
+            ag.addColorStop(0, '#fff080'); ag.addColorStop(0.5, '#e8b830'); ag.addColorStop(1, '#a06010');
+            g.fillStyle = ag;
+            g.beginPath(); g.arc(cx, cy, 12, 0, Math.PI*2); g.fill();
+          }
+          // 蛇（幹に巻き付く）
+          g.strokeStyle = '#3a6028'; g.lineWidth = 14;
+          g.beginPath();
+          g.moveTo(tx - 36, ty - 80);
+          g.bezierCurveTo(tx + 50, ty - 100, tx - 20, ty - 160, tx + 36, ty - 200);
+          g.bezierCurveTo(tx - 30, ty - 240, tx + 40, ty - 280, tx - 32, ty - 300);
+          g.stroke();
+          // 蛇の頭
+          g.fillStyle = '#5a8038';
+          g.beginPath(); g.ellipse(tx - 38, ty - 310, 22, 14, -0.3, 0, Math.PI*2); g.fill();
+          // 蛇の目
+          g.fillStyle = '#ffe040';
+          g.beginPath(); g.arc(tx - 50, ty - 312, 4, 0, Math.PI*2); g.fill();
+          // タイトル
+          g.fillStyle = 'rgba(255,255,255,0.95)'; g.font = 'bold 64px serif'; g.textAlign = 'center';
+          g.fillText('エ デ ン の 園', W/2, 100);
+          g.font = '24px serif'; g.fillStyle = 'rgba(255,255,255,0.7)';
+          g.fillText('GARDEN OF EDEN', W/2, 140);
+        },
+        noah() {
+          // 嵐の空
+          const sky = g.createLinearGradient(0, 0, 0, H);
+          sky.addColorStop(0, '#2a3050'); sky.addColorStop(0.5, '#404868'); sky.addColorStop(1, '#5a6a90');
+          g.fillStyle = sky; g.fillRect(0, 0, W, H);
+          // 雷雲（黒い塊）
+          for (let i = 0; i < 8; i++) {
+            const cx = Math.random()*W, cy = Math.random()*H*0.4;
+            const r = 80 + Math.random()*120;
+            const cg = g.createRadialGradient(cx, cy, 0, cx, cy, r);
+            cg.addColorStop(0, 'rgba(40,40,60,0.85)'); cg.addColorStop(1, 'rgba(40,40,60,0)');
+            g.fillStyle = cg; g.beginPath(); g.arc(cx, cy, r, 0, Math.PI*2); g.fill();
+          }
+          // 雷
+          g.strokeStyle = '#fff8c0'; g.lineWidth = 4;
+          g.beginPath();
+          g.moveTo(W*0.2, 50);
+          g.lineTo(W*0.18, 180); g.lineTo(W*0.22, 200); g.lineTo(W*0.16, 320);
+          g.stroke();
+          g.lineWidth = 1.5;
+          // 海（暗い波）
+          const sea = g.createLinearGradient(0, H*0.55, 0, H);
+          sea.addColorStop(0, '#1a4060'); sea.addColorStop(1, '#082030');
+          g.fillStyle = sea; g.fillRect(0, H*0.55, W, H*0.45);
+          // 波
+          g.strokeStyle = 'rgba(180,200,220,0.4)'; g.lineWidth = 2;
+          for (let y = H*0.6; y < H; y += 30) {
+            g.beginPath();
+            for (let x = 0; x <= W; x += 20) {
+              const wy = y + Math.sin(x*0.02 + y*0.01)*8;
+              if (x === 0) g.moveTo(x, wy); else g.lineTo(x, wy);
+            }
+            g.stroke();
+          }
+          // 方舟（中央、大きく）
+          const ax = W*0.5, ay = H*0.62;
+          // 船底
+          g.fillStyle = '#6a3818';
+          g.beginPath();
+          g.moveTo(ax - 280, ay);
+          g.lineTo(ax - 220, ay + 80);
+          g.lineTo(ax + 220, ay + 80);
+          g.lineTo(ax + 280, ay);
+          g.closePath(); g.fill();
+          // 船体上部
+          g.fillStyle = '#8a5028';
+          g.fillRect(ax - 240, ay - 100, 480, 100);
+          // 屋根
+          g.fillStyle = '#a06030';
+          g.beginPath();
+          g.moveTo(ax - 250, ay - 100);
+          g.lineTo(ax, ay - 180);
+          g.lineTo(ax + 250, ay - 100);
+          g.closePath(); g.fill();
+          // 窓（明かり）
+          g.fillStyle = '#ffe890';
+          for (let i = 0; i < 6; i++) g.fillRect(ax - 220 + i*78, ay - 70, 30, 30);
+          // 虹（上空、ストーリー転換の象徴）
+          const rainbow = ['#ff4040', '#ff8030', '#ffd040', '#40c040', '#4080ff', '#8040c0'];
+          rainbow.forEach((color, i) => {
+            g.strokeStyle = color; g.lineWidth = 16;
+            g.beginPath(); g.arc(W/2, H*0.65, 380 + i*16, Math.PI*1.1, Math.PI*1.9); g.stroke();
+          });
+          // 鳩（オリーブの枝）
+          g.fillStyle = '#ffffff';
+          g.beginPath(); g.ellipse(ax + 200, ay - 220, 18, 10, 0.3, 0, Math.PI*2); g.fill();
+          // タイトル
+          g.fillStyle = 'rgba(255,255,255,0.95)'; g.font = 'bold 64px serif'; g.textAlign = 'center';
+          g.fillText('ノ ア の 方 舟', W/2, 100);
+          g.font = '24px serif'; g.fillStyle = 'rgba(255,255,255,0.7)';
+          g.fillText("NOAH'S ARK", W/2, 140);
+        },
+        atlantis() {
+          // 深海ブルー
+          const sea = g.createLinearGradient(0, 0, 0, H);
+          sea.addColorStop(0, '#08284a'); sea.addColorStop(0.5, '#1a4870'); sea.addColorStop(1, '#082040');
+          g.fillStyle = sea; g.fillRect(0, 0, W, H);
+          // 上から差し込む光線
+          for (let i = 0; i < 6; i++) {
+            const x = W * (0.2 + i*0.12);
+            const lg = g.createLinearGradient(x, 0, x + 80, H);
+            lg.addColorStop(0, 'rgba(180,220,255,0.6)');
+            lg.addColorStop(1, 'rgba(180,220,255,0)');
+            g.fillStyle = lg;
+            g.beginPath();
+            g.moveTo(x - 40, 0); g.lineTo(x + 40, 0);
+            g.lineTo(x + 120, H); g.lineTo(x - 120, H); g.closePath();
+            g.fill();
+          }
+          // 海底（暗い）
+          g.fillStyle = '#03101a';
+          g.fillRect(0, H*0.78, W, H*0.22);
+          // 沈んだ大理石の柱（複数）
+          const cols = [
+            [W*0.20, H*0.78, 280],
+            [W*0.32, H*0.78, 260],
+            [W*0.50, H*0.78, 320],
+            [W*0.65, H*0.78, 240],
+            [W*0.80, H*0.78, 280],
+          ];
+          cols.forEach(([cx, by, h]) => {
+            // 柱身（白大理石）
+            const cg2 = g.createLinearGradient(cx - 30, 0, cx + 30, 0);
+            cg2.addColorStop(0, '#506880'); cg2.addColorStop(0.5, '#a8c0d0'); cg2.addColorStop(1, '#506880');
+            g.fillStyle = cg2;
+            g.fillRect(cx - 30, by - h, 60, h);
+            // 柱頭（丸い）
+            g.fillStyle = '#c0d0e0';
+            g.beginPath(); g.arc(cx, by - h - 8, 38, Math.PI, 0); g.fill();
+            // 苔（緑）
+            g.fillStyle = 'rgba(80,140,80,0.4)';
+            g.fillRect(cx - 30, by - h*0.3, 60, h*0.3);
+          });
+          // 中央の発光クリスタル（大）
+          const crysX = W*0.5, crysY = H*0.45;
+          const crysG = g.createRadialGradient(crysX, crysY, 0, crysX, crysY, 200);
+          crysG.addColorStop(0, 'rgba(180,240,255,1)');
+          crysG.addColorStop(0.4, 'rgba(80,180,220,0.7)');
+          crysG.addColorStop(1, 'rgba(40,100,140,0)');
+          g.fillStyle = crysG;
+          g.beginPath(); g.arc(crysX, crysY, 200, 0, Math.PI*2); g.fill();
+          // クリスタル本体（菱形）
+          g.fillStyle = '#a0e0ff';
+          g.beginPath();
+          g.moveTo(crysX, crysY - 80);
+          g.lineTo(crysX + 40, crysY);
+          g.lineTo(crysX, crysY + 80);
+          g.lineTo(crysX - 40, crysY); g.closePath();
+          g.fill();
+          // 魚（複数、シルエット）
+          for (let i = 0; i < 12; i++) {
+            const fx = Math.random()*W, fy = H*0.2 + Math.random()*H*0.5;
+            g.fillStyle = `rgba(180,200,220,${0.4 + Math.random()*0.4})`;
+            g.beginPath();
+            g.ellipse(fx, fy, 18, 8, 0, 0, Math.PI*2); g.fill();
+            g.beginPath();
+            g.moveTo(fx + 18, fy); g.lineTo(fx + 28, fy - 6); g.lineTo(fx + 28, fy + 6); g.closePath();
+            g.fill();
+          }
+          // 泡
+          g.fillStyle = 'rgba(255,255,255,0.4)';
+          for (let i = 0; i < 50; i++) {
+            g.beginPath(); g.arc(Math.random()*W, Math.random()*H, 1+Math.random()*4, 0, Math.PI*2); g.fill();
+          }
+          // タイトル
+          g.fillStyle = 'rgba(255,255,255,0.95)'; g.font = 'bold 64px serif'; g.textAlign = 'center';
+          g.fillText('ア ト ラ ン テ ィ ス', W/2, 100);
+          g.font = '24px serif'; g.fillStyle = 'rgba(180,220,255,0.8)';
+          g.fillText('ATLANTIS', W/2, 140);
+        },
+        babel() {
+          // 嵐の空（オレンジ→紫）
+          const sky = g.createLinearGradient(0, 0, 0, H);
+          sky.addColorStop(0, '#3a1830'); sky.addColorStop(0.4, '#7a3018'); sky.addColorStop(1, '#a05828');
+          g.fillStyle = sky; g.fillRect(0, 0, W, H);
+          // 雷雲
+          for (let i = 0; i < 10; i++) {
+            const cx = Math.random()*W, cy = Math.random()*H*0.3;
+            const r = 80 + Math.random()*150;
+            const cg = g.createRadialGradient(cx, cy, 0, cx, cy, r);
+            cg.addColorStop(0, 'rgba(40,20,40,0.7)'); cg.addColorStop(1, 'rgba(40,20,40,0)');
+            g.fillStyle = cg; g.beginPath(); g.arc(cx, cy, r, 0, Math.PI*2); g.fill();
+          }
+          // 複数の雷
+          g.strokeStyle = '#fff8c0'; g.lineWidth = 5;
+          [W*0.15, W*0.85].forEach(lx => {
+            g.beginPath();
+            g.moveTo(lx, 50);
+            g.lineTo(lx - 20, 180); g.lineTo(lx + 25, 220); g.lineTo(lx - 15, 380);
+            g.stroke();
+          });
+          // 大地
+          g.fillStyle = '#4a2818';
+          g.fillRect(0, H*0.85, W, H*0.15);
+          // 塔（中央、らせん階段状に積み上がる）
+          const tx = W*0.5;
+          const tiers = 7;
+          const baseY = H*0.85;
+          for (let i = 0; i < tiers; i++) {
+            const tw = (tiers - i) * 50 + 80;
+            const ty = baseY - i * 90 - 90;
+            // 各層
+            const tg = g.createLinearGradient(tx - tw, 0, tx + tw, 0);
+            tg.addColorStop(0, '#8a5028'); tg.addColorStop(0.5, '#c08858'); tg.addColorStop(1, '#8a5028');
+            g.fillStyle = tg;
+            g.fillRect(tx - tw, ty, tw*2, 90);
+            // らせん階段の影
+            g.fillStyle = 'rgba(0,0,0,0.3)';
+            g.fillRect(tx - tw, ty + 75, tw*2, 15);
+            // 窓（金色の点）
+            g.fillStyle = '#ffd040';
+            for (let w = 0; w < tw / 30; w++) {
+              g.fillRect(tx - tw + 30 + w*40, ty + 30, 8, 14);
+            }
+            // 上端ライン（明色）
+            g.fillStyle = '#e8b870';
+            g.fillRect(tx - tw, ty, tw*2, 4);
+          }
+          // 飛び散る人々（小さなシルエット）
+          for (let i = 0; i < 12; i++) {
+            const fx = tx + (Math.random() - 0.5) * 600;
+            const fy = baseY - 50 - Math.random()*350;
+            g.fillStyle = '#1a0a04';
+            g.beginPath();
+            g.arc(fx, fy, 4, 0, Math.PI*2); g.fill();  // 頭
+            g.fillRect(fx - 3, fy + 3, 6, 12); // 体
+          }
+          // タイトル
+          g.fillStyle = 'rgba(255,255,255,0.95)'; g.font = 'bold 64px serif'; g.textAlign = 'center';
+          g.fillText('バ ベ ル の 塔', W/2, 100);
+          g.font = '24px serif'; g.fillStyle = 'rgba(255,200,150,0.8)';
+          g.fillText('TOWER OF BABEL', W/2, 140);
+        },
+        elysion() {
+          // 天上の空（金白→水色）
+          const sky = g.createLinearGradient(0, 0, 0, H);
+          sky.addColorStop(0, '#fff8e0'); sky.addColorStop(0.4, '#e8d8b0'); sky.addColorStop(1, '#a8c8d8');
+          g.fillStyle = sky; g.fillRect(0, 0, W, H);
+          // 神々しい光線（中央上空から放射）
+          for (let i = 0; i < 12; i++) {
+            const ang = -Math.PI/2 + (i/12)*Math.PI - Math.PI/2;
+            const lg = g.createLinearGradient(W/2, H*0.2, W/2 + Math.cos(ang)*W, H*0.2 + Math.sin(ang)*H);
+            lg.addColorStop(0, 'rgba(255,240,180,0.7)');
+            lg.addColorStop(1, 'rgba(255,240,180,0)');
+            g.fillStyle = lg;
+            g.beginPath();
+            g.moveTo(W/2, H*0.2);
+            g.lineTo(W/2 + Math.cos(ang - 0.04)*W*1.5, H*0.2 + Math.sin(ang - 0.04)*H*1.5);
+            g.lineTo(W/2 + Math.cos(ang + 0.04)*W*1.5, H*0.2 + Math.sin(ang + 0.04)*H*1.5);
+            g.closePath(); g.fill();
+          }
+          // 中央の太陽光球
+          const sunG = g.createRadialGradient(W/2, H*0.2, 0, W/2, H*0.2, 250);
+          sunG.addColorStop(0, 'rgba(255,255,220,1)');
+          sunG.addColorStop(0.4, 'rgba(255,220,150,0.6)');
+          sunG.addColorStop(1, 'rgba(255,200,120,0)');
+          g.fillStyle = sunG;
+          g.beginPath(); g.arc(W/2, H*0.2, 250, 0, Math.PI*2); g.fill();
+          // 草原（金色の麦畑）
+          const meadow = g.createLinearGradient(0, H*0.65, 0, H);
+          meadow.addColorStop(0, '#c8a040'); meadow.addColorStop(1, '#806020');
+          g.fillStyle = meadow; g.fillRect(0, H*0.65, W, H*0.35);
+          // 大理石の柱（左右、廃墟の様式）
+          [[W*0.15, H*0.7], [W*0.85, H*0.7]].forEach(([cx, by]) => {
+            const h = 320;
+            const cg = g.createLinearGradient(cx - 30, 0, cx + 30, 0);
+            cg.addColorStop(0, '#a0a0a0'); cg.addColorStop(0.5, '#f0f0f0'); cg.addColorStop(1, '#a0a0a0');
+            g.fillStyle = cg;
+            g.fillRect(cx - 25, by - h, 50, h);
+            g.fillStyle = '#f8f8f8';
+            g.fillRect(cx - 35, by - h - 8, 70, 12);
+          });
+          // 漂う魂（光球、複数）
+          for (let i = 0; i < 18; i++) {
+            const fx = Math.random()*W;
+            const fy = H*0.3 + Math.random()*H*0.4;
+            const fg = g.createRadialGradient(fx, fy, 0, fx, fy, 25);
+            fg.addColorStop(0, 'rgba(255,255,200,0.9)');
+            fg.addColorStop(1, 'rgba(255,255,200,0)');
+            g.fillStyle = fg;
+            g.beginPath(); g.arc(fx, fy, 25, 0, Math.PI*2); g.fill();
+          }
+          // 花（小さな赤・白）
+          for (let i = 0; i < 60; i++) {
+            const fx = Math.random()*W, fy = H*0.7 + Math.random()*H*0.3;
+            g.fillStyle = Math.random() > 0.5 ? '#ff80a0' : '#ffffff';
+            g.beginPath(); g.arc(fx, fy, 4, 0, Math.PI*2); g.fill();
+          }
+          // タイトル
+          g.fillStyle = 'rgba(80,40,20,0.95)'; g.font = 'bold 64px serif'; g.textAlign = 'center';
+          g.fillText('エ リ ュ シ オ ン', W/2, 100);
+          g.font = '24px serif'; g.fillStyle = 'rgba(120,80,40,0.8)';
+          g.fillText('ELYSIUM', W/2, 140);
+        },
+      };
+      (draw[key] || draw.eden)();
+      const tex = new THREE.CanvasTexture(c);
+      if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace;
+      tex.minFilter = THREE.LinearFilter;
+      return tex;
+    }
+    // ── 各神話のスプライト（3つのアングルに同じシーンを配置：見回しても見える）──
+    const mythSprites = {};
+    ['eden', 'noah', 'atlantis', 'babel', 'elysion'].forEach(key => {
+      const tex = makeMythCanvas(key);
+      mythSprites[key] = [];
+      // 3つのアングル（前 / 左後 / 右後）に同じ画像を配置
+      [-Math.PI*0.5, Math.PI*0.6, -Math.PI*1.5].forEach(angle => {
+        const sprite = new THREE.Sprite(new THREE.SpriteMaterial({
+          map: tex, transparent: true, opacity: 0,
+          depthWrite: false,
+          blending: THREE.NormalBlending,
+        }));
+        sprite.scale.set(36, 24, 1); // ドーム面に大きく
+        const r = 38;
+        sprite.position.set(Math.cos(angle) * r, 8, Math.sin(angle) * r);
+        sprite.userData.fadeTarget = 0;
+        sprite.userData.fadeTimer = 0;
+        mythGroup.add(sprite);
+        mythSprites[key].push(sprite);
+      });
+      // 既存の3Dシーンは透明化（mythGroup の子なのでvisibleで隠す）
+      if (mythScenes[key]) mythScenes[key].group.visible = false;
+    });
+
     scene.add(mythGroup);
     scene.userData.mythGroup = mythGroup;
     scene.userData.mythScenes = mythScenes;
+    scene.userData.mythSprites = mythSprites;
     scene.userData.mythOrder = ['eden', 'noah', 'atlantis', 'babel', 'elysion'];
     scene.userData.mythIndex = 0;
 
@@ -18804,8 +19199,23 @@
           }
         }
       }
-      // ⛩ 神話アニメ（アクティブシーンのみ）
-      if (scene.userData.mythGroup && scene.userData.mythGroup.visible && scene.userData.mythScenes) {
+      // 🎬 神話スプライトフェード（Vegas Sphere方式）
+      if (scene.userData.mythGroup && scene.userData.mythGroup.visible && scene.userData.mythSprites) {
+        const sp = scene.userData.mythSprites;
+        Object.values(sp).forEach(arr => {
+          arr.forEach(s => {
+            const target = s.userData.fadeTarget;
+            const cur = s.material.opacity;
+            const next = cur + (target - cur) * Math.min(1, dt * 1.6);
+            s.material.opacity = next;
+            // 微妙な浮遊感
+            const phase = (s.userData.phase || (s.userData.phase = Math.random() * Math.PI * 2));
+            s.position.y = 8 + Math.sin(t * 0.3 + phase) * 0.3;
+          });
+        });
+      }
+      // ⛩ 神話アニメ（アクティブシーンのみ）— 3Dは無効化されているがコード残置
+      if (scene.userData.mythGroup && scene.userData.mythGroup.visible && scene.userData.mythScenes && false) {
         const ms = scene.userData.mythScenes;
         // 🌳 エデン: 蝶＋鳥
         if (ms.eden.group.visible) {
