@@ -688,21 +688,36 @@
         m.querySelector('.mcp-close').addEventListener('click', close);
         m.addEventListener('click', e => { if (e.target === m) close(); });
         m.querySelectorAll('[data-deep]').forEach(b => {
-          b.addEventListener('click', () => {
+          b.addEventListener('click', (ev) => {
+            ev.preventDefault();
+            ev.stopPropagation();
             const fn = deepMap[b.dataset.deep];
             close();
-            if (fn) setTimeout(fn, 280);
+            if (fn) {
+              setTimeout(() => { try { fn(); } catch (err) { console.warn('popup deep open fail', b.dataset.deep, err); } }, 280);
+            } else {
+              console.warn('popup: no handler for', b.dataset.deep);
+            }
           });
         });
       }
       wrap.querySelectorAll('.magic-topbook-cat').forEach(catBtn => {
-        catBtn.addEventListener('click', () => {
+        catBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
           const cat = catBtn.dataset.cat;
-          // CATEGORY_SUB に登録されていればポップアップ、無ければ直接 deep を起動
-          if (CATEGORY_SUB[cat]) {
+          const subInfo = CATEGORY_SUB[cat];
+          // 🔧 1項目のみのカテゴリはポップアップを挟まず直接起動（バグ・タップ事故対策）
+          if (subInfo && subInfo.items && subInfo.items.length === 1) {
+            const it = subInfo.items[0];
+            const fn = deepMap[it.deep];
+            if (fn) { try { fn(); } catch (err) { console.warn('cat single-item open fail', cat, err); } }
+            return;
+          }
+          if (subInfo) {
             showCategoryPopup(cat);
           } else if (deepMap[cat]) {
-            deepMap[cat]();
+            try { deepMap[cat](); } catch (err) { console.warn('cat direct open fail', cat, err); }
           }
         });
       });
@@ -11445,16 +11460,72 @@
       function buildStair(cx0, cz0, dirX, dirZ, yStart, yEnd) {
         const steps = STAIR_STEPS;
         const rise = (yEnd - yStart) / steps;
+        const stairLen = steps * stepRun;
+        const stairAngle = Math.atan2(dirZ, dirX);
+        const STAIR_W = 2.0;
+        // 段板＋蹴上げ（普通の階段）
         for (let s = 0; s < steps; s++) {
-          const step = new THREE.Mesh(
-            new THREE.BoxGeometry(2.0, 0.18, 0.55),
-            new THREE.MeshStandardMaterial({ map: floorTex, roughness: 0.6, color: 0xd0b890 })
+          // 蹴上げ（縦の板）
+          const riser = new THREE.Mesh(
+            new THREE.BoxGeometry(STAIR_W, rise, 0.04),
+            new THREE.MeshStandardMaterial({ color: 0x8a6840, roughness: 0.7 })
           );
-          const sx = cx0 + dirX * (s * stepRun + 0.3);
-          const sz = cz0 + dirZ * (s * stepRun + 0.3);
-          step.position.set(sx, yStart + rise * (s + 0.5), sz);
-          step.rotation.y = Math.atan2(dirZ, dirX);
+          const rx = cx0 + dirX * (s * stepRun);
+          const rz = cz0 + dirZ * (s * stepRun);
+          riser.position.set(rx, yStart + rise * s + rise / 2, rz);
+          riser.rotation.y = stairAngle;
+          scene.add(riser);
+          // 踏み板（水平）
+          const step = new THREE.Mesh(
+            new THREE.BoxGeometry(STAIR_W, 0.06, stepRun + 0.05),
+            new THREE.MeshStandardMaterial({ map: floorTex, roughness: 0.55, color: 0xd0b890 })
+          );
+          const sx = cx0 + dirX * (s * stepRun + stepRun / 2);
+          const sz = cz0 + dirZ * (s * stepRun + stepRun / 2);
+          step.position.set(sx, yStart + rise * (s + 1) - 0.03, sz);
+          step.rotation.y = stairAngle;
           scene.add(step);
+        }
+        // 🛡 手すり（左右）— 斜めバー＋柵柱
+        const handrailMat = new THREE.MeshStandardMaterial({ color: 0xc8a040, metalness: 0.85, roughness: 0.25, emissive: 0x4a3008, emissiveIntensity: 0.4 });
+        const railPostMat = new THREE.MeshStandardMaterial({ color: 0x8a6020, metalness: 0.5, roughness: 0.4 });
+        const RAIL_HEIGHT = 1.0; // 段板からの高さ
+        // 手すりの方向（傾斜）
+        const railLen = Math.hypot(stairLen, yEnd - yStart);
+        const railAngle = Math.atan2(yEnd - yStart, stairLen);
+        // 接線（左右オフセット用）
+        const tx = -dirZ, tz = dirX;
+        for (const sign of [-1, 1]) {
+          // 上の手すりバー（斜め）
+          const bar = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.04, 0.04, railLen, 10),
+            handrailMat
+          );
+          // 中央位置
+          const midAlong = stairLen / 2;
+          const mx = cx0 + dirX * midAlong + tx * sign * (STAIR_W / 2 - 0.05);
+          const my = yStart + (yEnd - yStart) / 2 + RAIL_HEIGHT;
+          const mz = cz0 + dirZ * midAlong + tz * sign * (STAIR_W / 2 - 0.05);
+          bar.position.set(mx, my, mz);
+          // 円柱は Y方向。傾斜方向に向ける
+          bar.rotation.z = -Math.PI / 2; // X方向に倒す
+          bar.rotation.y = -stairAngle;
+          bar.rotation.x = -railAngle;
+          scene.add(bar);
+          // 柵柱（4本）
+          for (let p = 0; p < 5; p++) {
+            const t01 = p / 4;
+            const along = stairLen * t01;
+            const yPost = yStart + (yEnd - yStart) * t01;
+            const px = cx0 + dirX * along + tx * sign * (STAIR_W / 2 - 0.05);
+            const pz = cz0 + dirZ * along + tz * sign * (STAIR_W / 2 - 0.05);
+            const post = new THREE.Mesh(
+              new THREE.CylinderGeometry(0.025, 0.025, RAIL_HEIGHT, 8),
+              railPostMat
+            );
+            post.position.set(px, yPost + RAIL_HEIGHT / 2, pz);
+            scene.add(post);
+          }
         }
         mezzanineCols.push({ cx: cx0, cz: cz0, dirX, dirZ, yStart, yEnd, steps });
       }
@@ -11772,37 +11843,39 @@
     renderer.domElement.addEventListener('pointerup', stopDrag);
     renderer.domElement.addEventListener('pointercancel', stopDrag);
     renderer.domElement.addEventListener('pointerleave', stopDrag);
-    // モバイル: スティック
+    // モバイル: スティック — こどもパーク方式（pointerEvents + setPointerCapture + ベース中心基準）
     const stick = ov.querySelector('#m3dStick');
     const knob = ov.querySelector('#m3dKnob');
-    let stickActive = false, stickDX = 0, stickDY = 0;
-    const stickStart = e => {
-      stickActive = true;
-      const t = e.touches ? e.touches[0] : e;
-      stick.dataset.cx = t.clientX; stick.dataset.cy = t.clientY;
-      stickDX = stickDY = 0; e.preventDefault();
-    };
-    const stickMove = e => {
-      if (!stickActive) return;
-      const t = e.touches ? e.touches[0] : e;
-      const cx = +stick.dataset.cx, cy = +stick.dataset.cy;
-      let dx = t.clientX - cx, dy = t.clientY - cy;
+    let stickActive = false, stickDX = 0, stickDY = 0, stickPid = null;
+    const STICK_RADIUS = 44;
+    const stickFromEvent = (e) => {
+      const r = stick.getBoundingClientRect();
+      const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+      let dx = e.clientX - cx, dy = e.clientY - cy;
       const d = Math.hypot(dx, dy);
-      const MAX = 40;
-      if (d > MAX) { dx = dx/d*MAX; dy = dy/d*MAX; }
+      if (d > STICK_RADIUS) { dx = dx / d * STICK_RADIUS; dy = dy / d * STICK_RADIUS; }
       knob.style.transform = `translate(${dx}px, ${dy}px)`;
-      stickDX = dx / MAX; stickDY = dy / MAX;
+      stickDX = dx / STICK_RADIUS; stickDY = dy / STICK_RADIUS;
+    };
+    stick.addEventListener('pointerdown', (e) => {
+      stickActive = true; stickPid = e.pointerId;
+      try { stick.setPointerCapture(e.pointerId); } catch {}
+      stickFromEvent(e);
       e.preventDefault();
+    });
+    stick.addEventListener('pointermove', (e) => {
+      if (!stickActive || e.pointerId !== stickPid) return;
+      stickFromEvent(e);
+      e.preventDefault();
+    });
+    const stickRelease = (e) => {
+      if (e.pointerId !== stickPid) return;
+      stickActive = false; stickPid = null;
+      knob.style.transform = 'translate(0,0)';
+      stickDX = stickDY = 0;
     };
-    const stickEnd = () => {
-      stickActive = false; knob.style.transform = 'translate(0,0)'; stickDX = stickDY = 0;
-    };
-    stick.addEventListener('touchstart', stickStart, { passive: false });
-    stick.addEventListener('touchmove', stickMove, { passive: false });
-    stick.addEventListener('touchend', stickEnd);
-    stick.addEventListener('mousedown', stickStart);
-    window.addEventListener('mousemove', stickMove);
-    window.addEventListener('mouseup', stickEnd);
+    stick.addEventListener('pointerup', stickRelease);
+    stick.addEventListener('pointercancel', stickRelease);
 
     // 閉じる
     let running = true;
@@ -23627,36 +23700,45 @@
         dragX = e.clientX; dragY = e.clientY;
       }
     });
-    // 🕹 仮想ジョイスティック — 美術館と完全に同じ実装をコピペ
+    // 🕹 仮想ジョイスティック — こどもパーク方式（pointer events + setPointerCapture + ベース中心基準）
     const joy = document.createElement('div');
     joy.className = 'lib-joy';
     joy.innerHTML = '<div class="lib-joy-knob" id="libJoyKnob"></div>';
     ov.appendChild(joy);
     const joyKnob = joy.querySelector('#libJoyKnob');
-    let joyActive = false, joyDX = 0, joyDY = 0;
-    const stickStart = e => {
-      joyActive = true;
-      const t = e.touches ? e.touches[0] : e;
-      joy.dataset.cx = t.clientX; joy.dataset.cy = t.clientY;
-      joyDX = joyDY = 0; e.preventDefault();
-    };
-    const stickMove = e => {
-      if (!joyActive) return;
-      const t = e.touches ? e.touches[0] : e;
-      const cx = +joy.dataset.cx, cy = +joy.dataset.cy;
-      let dx = t.clientX - cx, dy = t.clientY - cy;
+    let joyActive = false, joyDX = 0, joyDY = 0, joyPid = null;
+    const JOY_RADIUS = 44;
+    const joyMoveFromEvent = (e) => {
+      const r = joy.getBoundingClientRect();
+      const cx = r.left + r.width / 2;
+      const cy = r.top + r.height / 2;
+      let dx = e.clientX - cx, dy = e.clientY - cy;
       const d = Math.hypot(dx, dy);
-      const MAX = 40;
-      if (d > MAX) { dx = dx/d*MAX; dy = dy/d*MAX; }
+      if (d > JOY_RADIUS) { dx = dx / d * JOY_RADIUS; dy = dy / d * JOY_RADIUS; }
       joyKnob.style.transform = `translate(${dx}px, ${dy}px)`;
-      joyDX = dx / MAX; joyDY = dy / MAX;
+      joyDX = dx / JOY_RADIUS; joyDY = dy / JOY_RADIUS;
+    };
+    joy.addEventListener('pointerdown', (e) => {
+      joyActive = true; joyPid = e.pointerId;
+      try { joy.setPointerCapture(e.pointerId); } catch {}
+      joyMoveFromEvent(e);
       e.preventDefault();
+    });
+    joy.addEventListener('pointermove', (e) => {
+      if (!joyActive || e.pointerId !== joyPid) return;
+      joyMoveFromEvent(e);
+      e.preventDefault();
+    });
+    const joyRelease = (e) => {
+      if (e.pointerId !== joyPid) return;
+      joyActive = false; joyPid = null;
+      joyKnob.style.transform = 'translate(0,0)';
+      joyDX = joyDY = 0;
     };
-    const stickEnd = () => {
-      joyActive = false; joyKnob.style.transform = 'translate(0,0)'; joyDX = joyDY = 0;
-    };
-    joy.addEventListener('touchstart', stickStart, { passive: false });
-    joy.addEventListener('touchmove', stickMove, { passive: false });
+    joy.addEventListener('pointerup', joyRelease);
+    joy.addEventListener('pointercancel', joyRelease);
+    // 旧コード互換用のスタブ（既存の touch listener 登録部分を無害化）
+    const stickStart = () => {}, stickMove = () => {}, stickEnd = () => {};
     joy.addEventListener('touchend', stickEnd);
     joy.addEventListener('mousedown', stickStart);
     window.addEventListener('mousemove', stickMove);
