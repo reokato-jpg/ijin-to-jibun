@@ -9645,8 +9645,8 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   animation: kbf-flash 0.24s ease-out forwards;
 }
 .koh-babel-flash.strong {
-  background: radial-gradient(ellipse at 50% 30%, rgba(255,255,255,1), rgba(220,230,255,0.92) 40%, rgba(140,160,220,0.65) 80%);
-  animation: kbf-flash-strong 0.28s ease-out forwards;
+  background: radial-gradient(ellipse at 50% 30%, rgba(255,250,220,0.95), rgba(255,200,80,0.88) 40%, rgba(180,120,40,0.60) 80%);
+  animation: kbf-flash-strong 0.32s ease-out forwards;
 }
 @keyframes kbf-flash {
   0% { opacity: 0; }

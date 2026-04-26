@@ -15094,33 +15094,35 @@
                 col += vec3(0.5, 0.7, 0.9) * smoothstep(0.008, 0.0, distance(uv, bp)) * 0.6;
               }
             } else if (uMyth < 3.5) {
-              // 🗼 Babel: 嵐の空。背景は暗く、人々と稲妻
-              col = mix(vec3(0.06, 0.03, 0.04), vec3(0.10, 0.04, 0.06), uv.y);
-              // 強烈な稲妻×複数
-              for (int i = 0; i < 4; i++) {
-                float fi = float(i);
-                float lx = fract(fi * 0.31 + floor(uTime * 0.4 + fi) * 0.13);
-                float branch = abs(uv.x - lx - sin(uv.y * 30.0 + fi) * 0.025);
-                float bolt = smoothstep(0.005, 0.0, branch) * smoothstep(0.3, 0.95, uv.y);
-                float trig = step(0.6, fract(sin(floor(uTime * 1.2 + fi) * 89.7)));
-                col += vec3(0.95, 0.85, 1.0) * bolt * trig * 1.1;
-              }
-              // 👤 塔を登る人々のシルエット（5人）
+              // 🗼 Babel: 平和な夕暮れの古代都市（混乱前）
+              col = mix(vec3(0.18, 0.10, 0.08), vec3(0.25, 0.18, 0.14), uv.y);
+              // 暖かい夕陽
+              vec2 sunP2 = vec2(0.78, 0.62);
+              col += vec3(0.65, 0.45, 0.25) * smoothstep(0.020, 0.0, distance(uv, sunP2)) * 0.85;
+              col += vec3(0.55, 0.35, 0.20) * smoothstep(0.16, 0.0, distance(uv, sunP2)) * 0.30;
+              // 👤 塔を登る人々のシルエット（平和に建設中、ゆっくり）
               for (int i = 0; i < 5; i++) {
                 float fi = float(i);
-                float py = 0.18 + fi * 0.07 + sin(uTime*1.2+fi*1.7)*0.005;
-                float px = 0.5 + sin(uTime*0.4+fi)*0.04;
+                float py = 0.18 + fi * 0.07 + sin(uTime*0.8+fi*1.7)*0.003;
+                float px = 0.5 + sin(uTime*0.2+fi)*0.025;
                 vec2 pp = vec2(px, py);
                 float body = smoothstep(0.012, 0.0, abs(uv.y-pp.y)*1.6 + abs(uv.x-pp.x)*1.2);
                 float head = smoothstep(0.005, 0.0, distance(uv, vec2(pp.x, pp.y+0.012)));
-                col = mix(col, vec3(0.05, 0.02, 0.03), (body+head) * 0.95);
+                col = mix(col, vec3(0.05, 0.02, 0.03), (body+head) * 0.85);
               }
-              // 🦅 鷲（1羽、嵐の中を飛ぶ）
-              vec2 ep = vec2(fract(uTime*0.08), 0.7 + sin(uTime*0.6)*0.08);
-              float wing = smoothstep(0.022, 0.0, abs(uv.y-ep.y) + abs(fract(uv.x*15.0+uTime*2.0)-0.5)*0.06 + abs(uv.x-ep.x)*0.4);
-              col = mix(col, vec3(0.10, 0.05, 0.06), wing * 0.85);
-              // 大地（暗い）
-              if (uv.y < 0.15) col = mix(col, vec3(0.05, 0.02, 0.02), 0.95);
+              // 🦅 鷲（1羽、空をゆったり）
+              vec2 ep = vec2(fract(uTime*0.04), 0.72 + sin(uTime*0.4)*0.05);
+              float wing = smoothstep(0.022, 0.0, abs(uv.y-ep.y) + abs(fract(uv.x*15.0+uTime*1.0)-0.5)*0.06 + abs(uv.x-ep.x)*0.4);
+              col = mix(col, vec3(0.10, 0.05, 0.06), wing * 0.7);
+              // 鳥の群れ（小さな点、漂う）
+              for (int i = 0; i < 4; i++) {
+                float fi = float(i);
+                vec2 bp = vec2(fract(uTime*0.05 + fi*0.27), 0.55 + sin(uTime*0.4+fi*1.7)*0.04);
+                float b = smoothstep(0.006, 0.0, distance(uv, bp));
+                col = mix(col, vec3(0.08, 0.05, 0.04), b * 0.6);
+              }
+              // 砂漠の大地
+              if (uv.y < 0.18) col = mix(col, vec3(0.18, 0.10, 0.06), 0.85);
             } else {
               // ✨ Elysion: 楽園の空。深い藍に光球と天使
               col = mix(vec3(0.06, 0.05, 0.10), vec3(0.10, 0.08, 0.18), uv.y);
@@ -16109,12 +16111,18 @@
       timeslip:   { stageVisible: true,  audienceVisible: true,  uMode: 5.0, planets: false, nature: false, myth: false, timeslip: true, label: 'TIME-SLIP', loc: '過去の偉人たち' },
     };
     let currentMode = 'concert';
-    const stageGroups = [stagePlat, stageRim, stageBase, stageRim2, stageCircle, piano, conductor, floorPlate];
+    // ステージ床部分（神話でも残す＝ホログラムの土台）
+    const stagePlatformGroups = [stagePlat, stageRim, stageBase, stageRim2, stageCircle];
+    // ステージ上の演奏要素（神話で消す）
+    const stagePerformerGroups = [piano, conductor, floorPlate];
+    const stageGroups = [...stagePlatformGroups, ...stagePerformerGroups];
     function setMode(mode) {
       if (!modes[mode]) return;
       currentMode = mode;
       const m = modes[mode];
-      stageGroups.forEach(o => { if (o) o.visible = m.stageVisible; });
+      // ステージの床は神話モードでも残す（ホログラムの土台）
+      stagePlatformGroups.forEach(o => { if (o) o.visible = m.stageVisible || m.myth; });
+      stagePerformerGroups.forEach(o => { if (o) o.visible = m.stageVisible; });
       orchestra.forEach(p => { if (p && p.group) p.group.visible = m.stageVisible; });
       musicStands.forEach(ms => { ms.visible = m.stageVisible; });
       if (scene.userData.pianist) scene.userData.pianist.visible = m.stageVisible;
@@ -16244,43 +16252,73 @@
           // ランダムで稲妻形のSVGを描く
           const w = Math.random() < 0.6;
           if (w) {
-            // 本格的な稲妻：ジグザグ＋複数の枝＋強いグロー
+            // 本格的な稲妻：金色グロー＋ジグザグ＋多分岐（添付画像参考）
             const sx = 25 + Math.random() * 50;
             const seg = (x, y, dx, dy, n) => {
               const pts = [[x, y]];
               for (let k = 0; k < n; k++) {
                 const lx = pts[pts.length-1][0] + (Math.random()-0.5)*dx;
-                const ly = pts[pts.length-1][1] + Math.abs(dy) * (0.6 + Math.random()*0.6);
+                const ly = pts[pts.length-1][1] + Math.abs(dy) * (0.5 + Math.random()*0.7);
                 pts.push([lx, ly]);
               }
               return 'M ' + pts.map(p => p.join(',')).join(' L ');
             };
-            const main = seg(sx, 0, 12, 100, 8);
+            const main = seg(sx, 0, 14, 100, 12);
             const branches = [];
-            // 主稲妻のいくつかの点から枝分かれ
             const mainPts = main.replace('M ','').split(' L ').map(s => s.split(',').map(Number));
-            for (let b = 0; b < 3; b++) {
-              const start = mainPts[2 + Math.floor(Math.random()*4)];
+            // 主稲妻に複数の大きな分岐
+            for (let b = 0; b < 6; b++) {
+              const start = mainPts[2 + Math.floor(Math.random()*8)];
               const dir = Math.random() < 0.5 ? -1 : 1;
               const sub = [];
               let cx = start[0], cy = start[1];
-              for (let k = 0; k < 3+Math.floor(Math.random()*2); k++) {
-                cx += dir * (4 + Math.random()*8);
-                cy += 5 + Math.random()*8;
+              for (let k = 0; k < 4+Math.floor(Math.random()*4); k++) {
+                cx += dir * (3 + Math.random()*10);
+                cy += 4 + Math.random()*10;
                 sub.push([cx, cy]);
               }
-              branches.push('M ' + start.join(',') + ' L ' + sub.map(p => p.join(',')).join(' L '));
+              branches.push({path:'M ' + start.join(',') + ' L ' + sub.map(p => p.join(',')).join(' L '), w: 0.5+Math.random()*0.6});
+              // 二次分岐（さらに小枝）
+              if (Math.random() < 0.6 && sub.length > 2) {
+                const sub2start = sub[Math.floor(sub.length/2)];
+                const sub2 = [];
+                let dx2 = (Math.random()<0.5?-1:1) * (3+Math.random()*5);
+                let cx2 = sub2start[0], cy2 = sub2start[1];
+                for (let k = 0; k < 2+Math.floor(Math.random()*3); k++) {
+                  cx2 += dx2 + (Math.random()-0.5)*4;
+                  cy2 += 3 + Math.random()*5;
+                  sub2.push([cx2, cy2]);
+                }
+                branches.push({path:'M ' + sub2start.join(',') + ' L ' + sub2.map(p => p.join(',')).join(' L '), w: 0.3+Math.random()*0.3});
+              }
             }
             flash.innerHTML = `<svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;">
               <defs>
-                <filter id="bllg" x="-30%" y="-30%" width="160%" height="160%">
-                  <feGaussianBlur stdDeviation="1.2" result="blur"/>
-                  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                <filter id="bllg" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="2.0" result="blur1"/>
+                  <feGaussianBlur stdDeviation="0.8" result="blur2"/>
+                  <feMerge>
+                    <feMergeNode in="blur1"/>
+                    <feMergeNode in="blur2"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+                <filter id="bllg2" x="-100%" y="-100%" width="300%" height="300%">
+                  <feGaussianBlur stdDeviation="4.0" result="b"/>
+                  <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
                 </filter>
               </defs>
-              <path d="${main}" stroke="#fff" stroke-width="1.4" fill="none" filter="url(#bllg)" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="${main}" stroke="#aac8ff" stroke-width="0.4" fill="none"/>
-              ${branches.map(b => `<path d="${b}" stroke="#fff" stroke-width="0.8" fill="none" filter="url(#bllg)" opacity="0.85" stroke-linecap="round"/>`).join('')}
+              <!-- 外側の大きな金色グロー -->
+              <path d="${main}" stroke="#ffb040" stroke-width="3.0" fill="none" filter="url(#bllg2)" opacity="0.55" stroke-linecap="round" stroke-linejoin="round"/>
+              <!-- 中間の発光 -->
+              <path d="${main}" stroke="#ffd860" stroke-width="1.6" fill="none" filter="url(#bllg)" stroke-linecap="round" stroke-linejoin="round"/>
+              <!-- 芯の白 -->
+              <path d="${main}" stroke="#ffffe0" stroke-width="0.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              ${branches.map(b => `
+                <path d="${b.path}" stroke="#ffb040" stroke-width="${b.w*2.0}" fill="none" filter="url(#bllg2)" opacity="0.45" stroke-linecap="round"/>
+                <path d="${b.path}" stroke="#ffd860" stroke-width="${b.w*1.0}" fill="none" filter="url(#bllg)" opacity="0.85" stroke-linecap="round"/>
+                <path d="${b.path}" stroke="#fff8e0" stroke-width="${b.w*0.35}" fill="none" stroke-linecap="round"/>
+              `).join('')}
             </svg>`;
           }
           ov.appendChild(flash);
@@ -19812,7 +19850,9 @@
     // 🔮 神話モード限定：中央ステージに3Dホログラム召喚
     //    Eden=生命の樹 / Noah=方舟 / Atlantis=神殿 / Babel=塔 / Elysion=柱
     // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    function makeHologramMaterial(color) {
+    // 強調表示用ホログラム（リンゴ・蛇など要素を分かりやすくしたい時）
+    function makeHologramMaterialBright(color) { return makeHologramMaterial(color, true); }
+    function makeHologramMaterial(color, bright) {
       // ホログラム素材：シアン透過＋Fresnel発光＋スキャンライン
       return new THREE.ShaderMaterial({
         uniforms: {
@@ -19844,13 +19884,13 @@
             // スキャンライン：垂直方向、時間で流れる
             float scan = sin(vWorld.y * 12.0 - uTime * 3.0) * 0.5 + 0.5;
             scan = pow(scan, 6.0);
-            // ベース発光（控えめに）
-            float base = 0.25 + fres * 0.45 + scan * 0.20;
+            // ベース発光（控えめに / 強調 で分岐）
+            float base = ${bright ? '0.65 + fres * 0.65 + scan * 0.35' : '0.25 + fres * 0.45 + scan * 0.20'};
             // 微弱なちらつき
             float flicker = 1.0 + sin(uTime * 18.0 + vWorld.x * 5.0) * 0.04;
             vec3 col = uColor * base * flicker;
-            // 透明度：内部は透ける、縁は不透明（薄め）
-            float alpha = 0.18 + fres * 0.35 + scan * 0.05;
+            // 透明度
+            float alpha = ${bright ? '0.55 + fres * 0.45 + scan * 0.10' : '0.18 + fres * 0.35 + scan * 0.05'};
             gl_FragColor = vec4(col, alpha);
           }
         `,
@@ -19867,8 +19907,8 @@
       const g = new THREE.Group();
       const trunkMat = makeHologramMaterial(0x60c878);
       const leafMat = makeHologramMaterial(0x80ffa0);
-      const fruitMat = makeHologramMaterial(0xff8060);
-      const snakeMat = makeHologramMaterial(0x40ff60);
+      const fruitMat = makeHologramMaterialBright(0xff4030); // 林檎は強調（赤く明確に）
+      const snakeMat = makeHologramMaterialBright(0xffe040); // 蛇も強調（黄金色で目立たせる）
       const flowerMat = makeHologramMaterial(0xff80c0);
       const grassMat = makeHologramMaterial(0xa0ffa0);
       const mats = [trunkMat, leafMat, fruitMat, snakeMat, flowerMat, grassMat];
@@ -24806,8 +24846,9 @@
     // 盤の余白をドラッグで移動（ホワイトボードのパン）
     let panStart = null;
     bd.addEventListener('pointerdown', e => {
-      // ノード・UI要素の上では発火させない
-      if (e.target.closest('.el-node') || e.target.closest('.biz-zoom-ctl')
+      // ノード・吹き出し・UI要素の上では発火させない
+      if (e.target.closest('.el-node') || e.target.closest('.el-bubble')
+          || e.target.closest('.biz-zoom-ctl') || e.target.closest('.biz-toast')
           || e.target.closest('.el-lab2-clear') || e.target.closest('.el-lab2-counter')
           || e.target.closest('.el-lab2-help') || e.target.closest('.el-lab2-status')) return;
       panStart = { x: e.clientX, y: e.clientY, px: panX, py: panY };
