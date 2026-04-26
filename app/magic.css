@@ -9123,7 +9123,19 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
 .koh-ar-overlay.on { opacity: 1; }
 
 /* AIグラスHUD：モザイク完全廃止（旧grid/cornerはもう描画しない） */
-.koh-ar-hud-bg, .kah-grid, .kah-corner { display: none !important; background: none !important; border: none !important; }
+.koh-ar-hud-bg, .kah-grid, .kah-corner,
+.koh-ar-overlay > .koh-ar-hud-bg,
+.koh-ar-overlay [class*="grid"],
+.koh-ar-overlay [class*="kah"] {
+  display: none !important;
+  background: none !important;
+  background-image: none !important;
+  border: none !important;
+  mask-image: none !important;
+  -webkit-mask-image: none !important;
+}
+/* 万一どこかに残っている mosaic っぽい背景パターンも消す */
+.koh-ar-overlay { background: transparent !important; background-image: none !important; }
 
 /* 左の関係者情報パネル */
 .koh-ar-info-panel {
@@ -11278,6 +11290,17 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
 .el-lab2-board.panning { cursor: grabbing; }
 .el-lab2-board.panning .biz-board-canvas { transition: none !important; }
 .el-lab2-board.panning .el-node { pointer-events: none; }
+
+/* AIグラスHUD：神話情報カード */
+.kar-myth {
+  border-left: 2px solid #d8a060 !important;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.kar-myth.show { opacity: 1; transform: translateY(0); }
+.kar-myth .kar-tag { color: #d8a060 !important; }
+.kar-myth .kar-name { font-size: 14px; letter-spacing: 2px; }
 
 /* AIグラスHUD：COSMOS分析カード（惑星タップで挿入される） */
 .kar-cosmos {

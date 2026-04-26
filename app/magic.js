@@ -15042,6 +15042,22 @@
                 float wave = sin(uv.x * 30.0 + uTime * 1.2) * 0.4 + sin(uv.x * 14.0 - uTime * 0.8) * 0.4;
                 col = mix(vec3(0.01, 0.02, 0.04), vec3(0.03, 0.05, 0.08), wave * 0.5 + 0.5);
               }
+              // 🌊 荒れる海をもっと表現：白波のクレスト・大波のうねり
+              if (uv.y < 0.32) {
+                float swell = sin(uv.x * 6.0 + uTime * 0.6) * sin(uv.x * 11.0 - uTime * 0.4);
+                float foam = smoothstep(0.55, 0.85, swell);
+                col = mix(col, vec3(0.20, 0.28, 0.35), foam * 0.55);
+                // 大きな波のシルエット（複数）
+                for (int i = 0; i < 3; i++) {
+                  float fi = float(i);
+                  float wx = fract(uTime * 0.06 + fi * 0.31);
+                  float wy = 0.10 + fi * 0.05 + sin(uTime*0.5+fi)*0.02;
+                  float wave2 = smoothstep(0.040, 0.0, abs(uv.y-wy)*1.4 + abs(uv.x-wx)*0.15);
+                  col = mix(col, vec3(0.04, 0.08, 0.14), wave2 * 0.7);
+                  // 波のクレスト（白）
+                  col = mix(col, vec3(0.40, 0.50, 0.55), wave2 * smoothstep(0.030, 0.025, abs(uv.y-wy)*1.4 + abs(uv.x-wx)*0.15));
+                }
+              }
             } else if (uMyth < 2.5) {
               // 🏛 Atlantis: 深海。背景はほぼ黒で生き物だけ漂う
               col = mix(vec3(0.01, 0.03, 0.08), vec3(0.02, 0.06, 0.12), uv.y);
@@ -16211,6 +16227,33 @@
       }
       // 🔊 神話別 環境音を切り替え（前のものを止めて新しいものを鳴らす）
       if (scene.userData.startMythAmbient) scene.userData.startMythAmbient(order[idx]);
+      // 🥽 AIグラス ON 中は HUD に神話情報カードを差し込む（KOH演出を邪魔しない）
+      if (ov.classList.contains('koh-ar-on')) {
+        const infoEl = ov.querySelector('#kohArInfoPanel');
+        if (infoEl) {
+          infoEl.querySelectorAll('.kar-myth').forEach(c => c.remove());
+          const MYTH_INFO = {
+            eden:    { title:'エデンの園',     era:'創世記 第2-3章',          gist:'命の木と善悪を知る木。蛇に唆された人間が知恵の実を食べ、楽園を追放される物語。' },
+            noah:    { title:'ノアの方舟',     era:'創世記 第6-9章',          gist:'神は地の悪を見て大洪水で滅ぼし、ノアと家族・動物の番だけが方舟で生き延びる。鳩がオリーブ枝を持ち戻る。' },
+            atlantis:{ title:'アトランティス', era:'プラトン『ティマイオス』', gist:'ヘラクレスの柱の彼方にあった巨大な島国。徳を失った民を罰として神は一日一夜で海に沈めた。' },
+            babel:   { title:'バベルの塔',     era:'創世記 第11章',           gist:'人々が天に届く塔を築こうとし、神は言葉を乱して建設を中断させた。世界に多言語が生まれた起源神話。' },
+            elysion: { title:'エリュシオン',   era:'ホメロス『オデュッセイア』', gist:'徳のある英雄が死後に行く楽園。永遠の春・西風が吹き・労苦のない、ギリシア神話の最高の地。' },
+          };
+          const info = MYTH_INFO[order[idx]];
+          if (info) {
+            const card = document.createElement('div');
+            card.className = 'kar-card kar-myth';
+            card.innerHTML = `
+              <div class="kar-row kar-row-head"><span class="kar-tag">▸ MYTH</span></div>
+              <div class="kar-name">${info.title}</div>
+              <div class="kar-meta">${info.era}</div>
+              <div class="kar-text">${info.gist}</div>
+            `;
+            infoEl.insertBefore(card, infoEl.firstChild);
+            requestAnimationFrame(() => card.classList.add('show'));
+          }
+        }
+      }
       // 🎨 ドームムード色シフト
       const moods = scene.userData.mythMoods;
       if (moods && moods[order[idx]] && sphereMat.uniforms && sphereMat.uniforms.uMood) {
