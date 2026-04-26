@@ -24412,10 +24412,19 @@
           </div>
         </div>
 
-        <div class="el-section-head"><span class="el-sec-label">マイモデル</span><span class="el-sec-sub">— あなたが作ったビジネスモデル —</span></div>
+        <div class="biz-quicknav">
+          <a class="bzqn" href="#bzMyModels">💾 マイモデル</a>
+          <a class="bzqn" href="#bzRoles">👥 登場人物</a>
+          <a class="bzqn" href="#bzFlows">↔︎ 流れ</a>
+          <a class="bzqn" href="#bzServices">🏢 サービス</a>
+          <a class="bzqn" href="#bzModels">💼 モデル</a>
+          <a class="bzqn" href="#bzIjins">📚 偉人</a>
+        </div>
+
+        <div class="el-section-head" id="bzMyModels"><span class="el-sec-label">マイモデル</span><span class="el-sec-sub">— あなたが作ったビジネスモデル —</span></div>
         <div class="my-models-cont" id="myModelsCont"></div>
 
-        <div class="el-section-head"><span class="el-sec-label">登場人物 図鑑</span><span class="el-sec-sub">— ${BIZ_ROLES.length}種 — タップで紹介 —</span></div>
+        <div class="el-section-head" id="bzRoles"><span class="el-sec-label">登場人物 図鑑</span><span class="el-sec-sub">— ${BIZ_ROLES.length}種 — タップで紹介 —</span></div>
         <div class="biz-piece-zukan">
           ${BIZ_ROLES.map(r => `
             <div class="biz-piece-card biz-role-card" data-role="${r.id}" style="--c:${r.color}">
@@ -24426,7 +24435,7 @@
           `).join('')}
         </div>
 
-        <div class="el-section-head"><span class="el-sec-label">流れの種類</span><span class="el-sec-sub">— 矢印は3色 —</span></div>
+        <div class="el-section-head" id="bzFlows"><span class="el-sec-label">流れの種類</span><span class="el-sec-sub">— 矢印は3色 —</span></div>
         <div class="biz-flow-zukan">
           ${BIZ_FLOWS.map(f => `
             <div class="biz-flow-card" style="--c:${f.color}">
@@ -24437,7 +24446,7 @@
           `).join('')}
         </div>
 
-        <div class="el-section-head"><span class="el-sec-label">サービス図鑑</span><span class="el-sec-sub">— 実在企業・サービス約50件 — モデル別 —</span></div>
+        <div class="el-section-head" id="bzServices"><span class="el-sec-label">サービス図鑑</span><span class="el-sec-sub">— 実在企業・サービス約50件 — モデル別 —</span></div>
         <div class="biz-svc-fav-section" id="bizSvcFavSection"></div>
         <div class="biz-svc-cats" id="bizSvcCats">
           ${BIZ_MODELS.map(m => {
@@ -24469,7 +24478,7 @@
         </div>
         <div class="biz-svc-disclaimer" style="max-width:520px;margin:0 auto 24px">※ 創業者は事実情報のみ。深いプロフィールは「偉人」（既に亡くなった方）に限定しています。</div>
 
-        <div class="el-section-head"><span class="el-sec-label">ビジネスモデル図鑑</span><span class="el-sec-sub">— ${BIZ_MODELS.length}種 — 図解と歴史 —</span></div>
+        <div class="el-section-head" id="bzModels"><span class="el-sec-label">ビジネスモデル図鑑</span><span class="el-sec-sub">— ${BIZ_MODELS.length}種 — 図解と歴史 —</span></div>
         <div class="biz-zukan">
           ${BIZ_MODELS.map(m => {
             const diag = BIZ_MODEL_DIAGRAMS[m.name];
@@ -24486,7 +24495,7 @@
           `;}).join('')}
         </div>
 
-        <div class="el-section-head"><span class="el-sec-label">関連する偉人・概念</span></div>
+        <div class="el-section-head" id="bzIjins"><span class="el-sec-label">関連する偉人・概念</span></div>
         <div class="cp-list">
           ${BUSINESS_BRIDGES.map(b => `
             <div class="cp-card">
@@ -25535,6 +25544,28 @@
     updCounter();
     updBizStatus();
     _wireIjinPills(ov, close);
+    // クイックナビ：スムーズスクロール
+    ov.querySelectorAll('.bzqn').forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        const tgt = ov.querySelector(a.getAttribute('href'));
+        if (tgt) tgt.scrollIntoView({ behavior:'smooth', block:'start' });
+      });
+    });
+    // Escape キーで開いているモーダルを閉じる
+    const _escHandler = e => {
+      if (e.key === 'Escape') {
+        const m = ov.querySelector('.zk-modal.open');
+        if (m) {
+          m.classList.remove('open');
+          setTimeout(() => m.remove(), 280);
+        }
+      }
+    };
+    document.addEventListener('keydown', _escHandler);
+    // overlay close 時に解除
+    const origClose = close;
+    const _closeOrig = origClose;
   }
   window.openBusinessPage = openBusinessPage;
 
