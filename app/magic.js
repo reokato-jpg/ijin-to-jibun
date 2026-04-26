@@ -19444,29 +19444,105 @@
       im.src = url;
     }
 
-    // ── 各神話の名画は1枚だけ（前方の正面、観客の目線正面）──
+    // ── 各神話の名画は1枚だけ（生きたシェーダで動的演出）──
+    // Sprite → Mesh + ShaderMaterial に置換：
+    //   - UVをFBMノイズで時間揺らぎ（雲・水の流れ）
+    //   - 明るい部分のスペキュラ・パルス（光の脈動）
+    //   - 微小なブラー的色拡散
+    //   - ヴィネット強調で枠を絵画らしく
+    const livingPaintingFrag = `
+      precision mediump float;
+      uniform sampler2D uMap;
+      uniform float uTime;
+      uniform float uOpacity;
+      uniform vec2 uResolution;
+      varying vec2 vUv;
+      // simple noise
+      float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+      float noise(vec2 p) {
+        vec2 i = floor(p), f = fract(p);
+        float a = hash(i), b = hash(i + vec2(1,0));
+        float c = hash(i + vec2(0,1)), d = hash(i + vec2(1,1));
+        vec2 u = f * f * (3.0 - 2.0 * f);
+        return mix(mix(a, b, u.x), mix(c, d, u.x), u.y);
+      }
+      float fbm(vec2 p) {
+        float v = 0.0, a = 0.5;
+        for (int i = 0; i < 4; i++) { v += a * noise(p); p *= 2.0; a *= 0.5; }
+        return v;
+      }
+      void main() {
+        // UV を時間で僅かに揺らす（雲が流れる感じ）
+        vec2 uv = vUv;
+        float n1 = fbm(uv * 3.0 + vec2(uTime * 0.04, uTime * 0.02));
+        float n2 = fbm(uv * 6.0 - vec2(uTime * 0.025, 0.0));
+        vec2 disp = vec2(n1 - 0.5, n2 - 0.5) * 0.008;
+        vec3 col = texture2D(uMap, uv + disp).rgb;
+        // 明るい部分のパルス（光の脈動）
+        float lum = dot(col, vec3(0.299, 0.587, 0.114));
+        float pulse = (sin(uTime * 0.8) * 0.5 + 0.5) * 0.20;
+        col += vec3(lum * pulse);
+        // ヴィネット（額縁感）
+        vec2 d = uv - 0.5;
+        float vig = smoothstep(0.78, 0.45, length(d));
+        col *= mix(0.65, 1.0, vig);
+        // 浮遊感の僅かな彩度調整
+        float shimmer = sin(uTime * 1.4 + uv.y * 12.0) * 0.04 + 1.0;
+        col *= shimmer;
+        gl_FragColor = vec4(col, uOpacity);
+      }
+    `;
+    const livingPaintingVert = `
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `;
     const mythSprites = {};
     ['eden', 'noah', 'atlantis', 'babel', 'elysion'].forEach(key => {
       const fallbackTex = makeMythCanvas(key);
       mythSprites[key] = [];
-      const sprite = new THREE.Sprite(new THREE.SpriteMaterial({
-        map: fallbackTex, transparent: true, opacity: 0,
+      const mat = new THREE.ShaderMaterial({
+        uniforms: {
+          uMap: { value: fallbackTex },
+          uTime: { value: 0 },
+          uOpacity: { value: 0 },
+          uResolution: { value: new THREE.Vector2(40, 28) },
+        },
+        vertexShader: livingPaintingVert,
+        fragmentShader: livingPaintingFrag,
+        transparent: true,
         depthWrite: false,
-        blending: THREE.NormalBlending,
-      }));
-      sprite.scale.set(40, 28, 1);
-      sprite.position.set(0, 14, -38); // 正面上空、ドーム面ぎりぎり
-      sprite.userData.fadeTarget = 0;
-      mythGroup.add(sprite);
-      mythSprites[key].push(sprite);
+        side: THREE.DoubleSide,
+      });
+      const mesh = new THREE.Mesh(new THREE.PlaneGeometry(40, 28), mat);
+      mesh.position.set(0, 14, -38);
+      mesh.lookAt(0, 14, 0); // 中央を向く
+      // userData は配列扱いと互換にする（既存の fadeTarget セットコードがそのまま使える）
+      mesh.userData.fadeTarget = 0;
+      // material.opacity を uOpacity で代替
+      Object.defineProperty(mesh.material, 'opacity', {
+        get() { return this.uniforms.uOpacity.value; },
+        set(v) { this.uniforms.uOpacity.value = v; },
+        configurable: true,
+      });
+      mythGroup.add(mesh);
+      mythSprites[key].push(mesh);
       tryLoadMythPainting(MYTH_PAINTINGS[key], (tex, ar) => {
         const w = 40, h = w / ar;
-        sprite.material.map = tex;
-        sprite.material.needsUpdate = true;
-        sprite.scale.set(w, h, 1);
+        mat.uniforms.uMap.value = tex;
+        mesh.geometry.dispose();
+        mesh.geometry = new THREE.PlaneGeometry(w, h);
+        mat.uniforms.uResolution.value = new THREE.Vector2(w, h);
+        mesh.lookAt(0, mesh.position.y, 0);
       });
       if (mythScenes[key]) mythScenes[key].group.visible = false;
     });
+    // tick で uTime を更新するため、materials を保管
+    scene.userData.mythPaintingMaterials = ['eden','noah','atlantis','babel','elysion']
+      .flatMap(k => mythSprites[k] || [])
+      .map(m => m.material);
 
     // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
     // 🔮 神話モード限定：中央ステージに3Dホログラム召喚
@@ -20914,6 +20990,12 @@
       dome.rotation.y += 0.0003;
       // シェーダー uniform 更新
       if (sphereMat.uniforms && sphereMat.uniforms.uTime) sphereMat.uniforms.uTime.value = t;
+      // 生きた絵画シェーダの uTime 更新
+      if (scene.userData.mythPaintingMaterials) {
+        scene.userData.mythPaintingMaterials.forEach(m => {
+          if (m.uniforms && m.uniforms.uTime) m.uniforms.uTime.value = t;
+        });
+      }
       if (sphereMat.uniforms && sphereMat.uniforms.uBass) sphereMat.uniforms.uBass.value = bassS;
       if (sphereMat.uniforms && sphereMat.uniforms.uTreb) sphereMat.uniforms.uTreb.value = trebS;
       // 指揮者のタクト: 音楽に合わせてダイナミックに
