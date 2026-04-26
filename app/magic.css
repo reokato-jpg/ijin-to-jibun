@@ -11249,6 +11249,26 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
 .el-lab2-board.panning .biz-board-canvas { transition: none !important; }
 .el-lab2-board.panning .el-node { pointer-events: none; }
 
+/* 携帯横画面：ビジネスラボのレイアウト最適化 */
+@media (orientation: landscape) and (max-height: 600px) {
+  .concept-page-overlay.theme-business .el-lab2 { margin: 6px 0 8px; }
+  .concept-page-overlay.theme-business .el-lab2-board { height: 50vh; min-height: 240px; }
+  .concept-page-overlay.theme-business .el-lab2-help { font-size: 10px; padding: 4px 10px; top: 6px; }
+  .concept-page-overlay.theme-business .biz-toptools { padding: 4px 8px; }
+  .concept-page-overlay.theme-business .biz-tt-pill { padding: 4px 9px; font-size: 10px; }
+  .concept-page-overlay.theme-business .biz-tt-icon { width: 28px; height: 26px; font-size: 12px; }
+  .concept-page-overlay.theme-business .biz-pal-item { width: 56px; height: 50px; }
+  .concept-page-overlay.theme-business .biz-pal-item .el-pal-name { font-size: 9px; }
+  .concept-page-overlay.theme-business .biz-zoom-ctl { padding: 2px; }
+  .concept-page-overlay.theme-business .biz-zoom-b { width: 24px; height: 24px; font-size: 13px; }
+  .concept-page-overlay.theme-business .biz-lab-title-row { display: none; }
+}
+/* KOH も横画面対応 */
+@media (orientation: landscape) and (max-height: 500px) {
+  .koh-ar-overlay .koh-ar-info-panel { font-size: 10px; max-width: 30vw; }
+  .koh-ar-overlay .koh-ar-ads { font-size: 10px; }
+}
+
 /* ===== ビジネス図解ラボ（ロール+矢印） ===== */
 .biz-toolbar {
   display: flex; gap: 8px;

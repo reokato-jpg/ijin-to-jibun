@@ -15001,23 +15001,27 @@
                 col = mix(col, vec3(0.02, 0.05, 0.03), wing * 0.7);
               }
             } else if (uMyth < 1.5) {
-              // 🚢 Noah: 嵐の空と荒波
-              vec3 sky = mix(vec3(0.20, 0.24, 0.36), vec3(0.10, 0.14, 0.22), horizon);
-              col = mix(vec3(0.06, 0.16, 0.28), sky, smoothstep(0.32, 0.55, uv.y));
-              // 雷雲（暗い塊）
-              col = mix(col, vec3(0.04, 0.06, 0.10), smoothstep(0.45, 0.75, cloud) * 0.85);
-              // 雷の閃光（時々）
+              // 🚢 Noah: 嵐の空（暗く落ち着いた色）
+              vec3 sky = mix(vec3(0.08, 0.10, 0.16), vec3(0.04, 0.06, 0.10), horizon);
+              col = mix(vec3(0.02, 0.06, 0.12), sky, smoothstep(0.32, 0.55, uv.y));
+              // 雷雲
+              col = mix(col, vec3(0.01, 0.02, 0.04), smoothstep(0.45, 0.75, cloud) * 0.9);
+              // 雷の閃光（控えめに）
               float lightning = step(0.985, fract(sin(floor(uTime * 0.7) * 12.9898) * 43758.5453));
-              col += vec3(1.0, 1.0, 0.9) * lightning * smoothstep(0.55, 0.75, uv.y) * 0.85;
-              // 海面（波）
+              col += vec3(0.45, 0.50, 0.55) * lightning * smoothstep(0.55, 0.75, uv.y) * 0.55;
+              // 海面（波、暗く）
               if (uv.y < 0.30) {
                 float wave = sin(uv.x * 30.0 + uTime * 1.2) * 0.5 + sin(uv.x * 14.0 - uTime * 0.8) * 0.5;
-                col = mix(vec3(0.04, 0.10, 0.18), vec3(0.10, 0.20, 0.30), wave * 0.5 + 0.5);
+                col = mix(vec3(0.02, 0.05, 0.10), vec3(0.04, 0.08, 0.14), wave * 0.5 + 0.5);
               }
-              // 虹（東側）
+              // 虹（控えめ）
               float rArc = distance(uv, vec2(0.3, 0.30));
               float ringW = smoothstep(0.32, 0.30, rArc) - smoothstep(0.30, 0.28, rArc);
-              col += vec3(0.7, 0.4, 0.6) * ringW * 0.5;
+              col += vec3(0.20, 0.14, 0.22) * ringW * 0.25;
+              // 🕊 飛ぶ鳩（1羽だけ、ゆっくり横切る）
+              vec2 dovP = vec2(fract(uTime * 0.04), 0.6 + sin(uTime*0.3)*0.04);
+              float dove = smoothstep(0.025, 0.0, abs(uv.y-dovP.y) + abs(uv.x-dovP.x)*0.5);
+              col = mix(col, vec3(0.85, 0.85, 0.9), dove * 0.6);
             } else if (uMyth < 2.5) {
               // 🏛 Atlantis: 深海ブルー＋光線
               col = mix(vec3(0.02, 0.10, 0.20), vec3(0.04, 0.20, 0.36), uv.y);
@@ -15800,13 +15804,15 @@
 
     // 🎻 オーケストラ（3D、buildPersonベース）
     const orchestra = [];
+    const musicStands = [];
     // 第1バイオリン（左前、弧形 6人）+ 譜面台
     for (let i = 0; i < 6; i++) {
       const a = -Math.PI/3 + (i / 5) * (Math.PI/3);
       const x = Math.sin(a) * 3.2 - 1.5, z = Math.cos(a) * 3.2 - 2;
       const angToCenter = Math.atan2(-x, -z + 1.5);
       orchestra.push(makePlayer(x, z, 'violin'));
-      scene.add(makeMusicStand(x + Math.cos(angToCenter)*0.5, z + Math.sin(angToCenter)*0.5, angToCenter));
+      const ms = makeMusicStand(x + Math.cos(angToCenter)*0.5, z + Math.sin(angToCenter)*0.5, angToCenter);
+      scene.add(ms); musicStands.push(ms);
     }
     // 第2バイオリン
     for (let i = 0; i < 5; i++) {
@@ -16047,6 +16053,7 @@
       const m = modes[mode];
       stageGroups.forEach(o => { if (o) o.visible = m.stageVisible; });
       orchestra.forEach(p => { if (p && p.group) p.group.visible = m.stageVisible; });
+      musicStands.forEach(ms => { ms.visible = m.stageVisible; });
       [chairMesh, bodyMesh, headMesh, hairMesh, shoulderMesh, lapMesh].forEach(im => { if (im) im.visible = m.audienceVisible; });
       // 神話モード：環境光を大幅に絞って『神話の幻視』感を出す
       if (kohAmbient) kohAmbient.intensity = m.myth ? 0.18 : 0.9;
@@ -19617,13 +19624,13 @@
             // スキャンライン：垂直方向、時間で流れる
             float scan = sin(vWorld.y * 12.0 - uTime * 3.0) * 0.5 + 0.5;
             scan = pow(scan, 6.0);
-            // ベース発光
-            float base = 0.55 + fres * 0.85 + scan * 0.5;
+            // ベース発光（控えめに）
+            float base = 0.25 + fres * 0.45 + scan * 0.20;
             // 微弱なちらつき
-            float flicker = 1.0 + sin(uTime * 18.0 + vWorld.x * 5.0) * 0.06;
+            float flicker = 1.0 + sin(uTime * 18.0 + vWorld.x * 5.0) * 0.04;
             vec3 col = uColor * base * flicker;
-            // 透明度：内部は透ける、縁は不透明
-            float alpha = 0.35 + fres * 0.55 + scan * 0.10;
+            // 透明度：内部は透ける、縁は不透明（薄め）
+            float alpha = 0.18 + fres * 0.35 + scan * 0.05;
             gl_FragColor = vec4(col, alpha);
           }
         `,
