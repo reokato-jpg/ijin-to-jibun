@@ -22974,8 +22974,10 @@
 
     // ── Three.js シーン構築 ──
     const cv = ov.querySelector('#libCanvas');
-    const renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    // モバイルでは antialias を切ってピクセルレシオも控えめに（重さ対策）
+    const _isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent || '');
+    const renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: !_isMobile, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, _isMobile ? 1.0 : 1.4));
     const W = () => window.innerWidth;
     const H = () => window.innerHeight;
     renderer.setSize(W(), H());
@@ -23135,51 +23137,44 @@
     const bookMeshes = [];
     const shelves = []; // 棚ごとのメタデータ：proximity 検出に使う
 
-    // 📕 本の背表紙テクスチャを生成（タイトル＋帯）
+    // 📕 本の背表紙テクスチャを生成（タイトル＋帯）— 軽量化（解像度半分）
     const _bookTexCache = new Map();
     function makeBookSpineTexture(book) {
       const key = `${book.kind}_${book.id}_${book.color}_${book.placeholder ? 'p' : ''}`;
       if (_bookTexCache.has(key)) return _bookTexCache.get(key);
       const cv = document.createElement('canvas');
-      cv.width = 128; cv.height = 512; // 縦長スパイン
+      cv.width = 64; cv.height = 256; // 半分に縮小（軽量化）
       const g = cv.getContext('2d');
       const baseColor = '#' + (new THREE.Color(book.color).getHexString());
-      // 背表紙の縦グラデーション（革装っぽく）
-      const grad = g.createLinearGradient(0, 0, 128, 0);
+      const grad = g.createLinearGradient(0, 0, 64, 0);
       grad.addColorStop(0,   shadeColor(baseColor, -30));
       grad.addColorStop(0.4, baseColor);
       grad.addColorStop(0.6, baseColor);
       grad.addColorStop(1,   shadeColor(baseColor, -45));
-      g.fillStyle = grad; g.fillRect(0, 0, 128, 512);
-      // 上下の帯（金縁）
+      g.fillStyle = grad; g.fillRect(0, 0, 64, 256);
       g.fillStyle = book.placeholder ? '#3a3a3a' : '#d4b070';
-      g.fillRect(0, 28, 128, 4);
-      g.fillRect(0, 480, 128, 4);
-      // 中央のラベル枠
+      g.fillRect(0, 14, 64, 2);
+      g.fillRect(0, 240, 64, 2);
       g.fillStyle = book.placeholder ? '#1a1a1a' : shadeColor(baseColor, -55);
-      g.fillRect(10, 80, 108, 360);
+      g.fillRect(5, 40, 54, 180);
       g.strokeStyle = book.placeholder ? '#2a2a2a' : '#d4b070';
-      g.lineWidth = 1.5;
-      g.strokeRect(10, 80, 108, 360);
-      // タイトル（縦書き：90度回転して描画）
+      g.lineWidth = 1; g.strokeRect(5, 40, 54, 180);
       g.save();
-      g.translate(64, 260);
+      g.translate(32, 130);
       g.rotate(-Math.PI / 2);
       g.fillStyle = book.placeholder ? '#444' : '#fff8e0';
-      g.font = 'bold 32px "Shippori Mincho", "Hiragino Mincho ProN", serif';
+      g.font = 'bold 18px "Shippori Mincho", "Hiragino Mincho ProN", serif';
       g.textAlign = 'center'; g.textBaseline = 'middle';
-      const title = (book.name || '').slice(0, 14);
-      g.fillText(title, 0, 0);
-      // サブ
+      g.fillText((book.name || '').slice(0, 14), 0, 0);
       if (book.sub) {
-        g.font = '16px "Shippori Mincho", serif';
+        g.font = '10px "Shippori Mincho", serif';
         g.fillStyle = book.placeholder ? '#333' : '#d4b070';
-        g.fillText(String(book.sub).slice(0, 18), 0, 28);
+        g.fillText(String(book.sub).slice(0, 18), 0, 16);
       }
       g.restore();
       const tex = new THREE.CanvasTexture(cv);
       if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace;
-      tex.anisotropy = 4;
+      tex.anisotropy = 1;
       _bookTexCache.set(key, tex);
       return tex;
     }
@@ -23241,22 +23236,15 @@
             const baseColor = new THREE.Color(book.color);
             if (book.placeholder) baseColor.multiplyScalar(0.4);
             const baseEmissive = new THREE.Color(book.color).multiplyScalar(book.placeholder ? 0.0 : (book.isAd ? 0.45 : 0.10));
-            // 本のマテリアル：背表紙(+x面)だけタイトル付き、他面は同色革
-            const sideColor = baseColor.clone().multiplyScalar(0.85);
-            const flatMat = () => new THREE.MeshStandardMaterial({ color: sideColor, roughness: 0.7, emissive: baseEmissive, emissiveIntensity: 0.6 });
+            // 軽量化：6面マテリアル配列ではなく単一マテリアル（背表紙テクスチャを全面に使う）
+            // 本は棚に密集して並ぶので側面・上下は見えない → 同テクスチャでも違和感なし
             const spineTex = book.placeholder ? null : makeBookSpineTexture(book);
-            const spineMat = new THREE.MeshStandardMaterial({
-              color: 0xffffff, roughness: 0.45, map: spineTex,
+            const bookMat = new THREE.MeshStandardMaterial({
+              color: book.placeholder ? baseColor : 0xffffff,
+              roughness: 0.55, map: spineTex,
               emissive: baseEmissive, emissiveIntensity: 0.6,
             });
-            // BoxGeometry の面順：[+x, -x, +y, -y, +z, -z]
-            // 棚に向けるとき、双面の +side が外向き → +z 面が外向き
-            const mats = [
-              flatMat(), flatMat(), flatMat(), flatMat(),
-              side > 0 ? spineMat : flatMat(),
-              side < 0 ? spineMat : flatMat(),
-            ];
-            const bMesh = new THREE.Mesh(bookGeo, mats);
+            const bMesh = new THREE.Mesh(bookGeo, bookMat);
             // ローカル位置：棚の長さ方向に cursor、奥行きに bookSide*side
             const lx = cursor;
             const lz = bookSide * side;
@@ -23541,24 +23529,29 @@
     // ── 環境光・直接光（さらに明るく：1.5倍）──
     scene.add(new THREE.AmbientLight(0xfff4dc, 1.45));
     scene.add(new THREE.HemisphereLight(0xfff0d0, 0x4a3828, 1.6));
-    // 主要スポット（複数、強め）
-    [[-30, 12, -22], [30, 12, -22], [-30, 12, 22], [30, 12, 22],
-     [0, 12, -25], [0, 12, 25], [-15, 13, 0], [15, 13, 0]].forEach(([x, y, z]) => {
+    // 主要スポット（モバイルは半減）
+    const _spotPositions = _isMobile
+      ? [[-30, 12, -22], [30, 12, 22], [-15, 13, 0], [15, 13, 0]]
+      : [[-30, 12, -22], [30, 12, -22], [-30, 12, 22], [30, 12, 22],
+         [0, 12, -25], [0, 12, 25], [-15, 13, 0], [15, 13, 0]];
+    _spotPositions.forEach(([x, y, z]) => {
       const sl = new THREE.SpotLight(0xfff0c8, 2.4, 60, Math.PI / 3.0, 0.45, 1.3);
       sl.position.set(x, y, z);
       sl.target.position.set(x * 0.3, 4, z * 0.3);
       scene.add(sl); scene.add(sl.target);
     });
-    // 各机のランプを追加で点光（机周りを暖かく）
-    deskPositions.forEach(([dx, dz]) => {
-      const fill = new THREE.PointLight(0xffd890, 0.7, 14, 1.4);
-      fill.position.set(dx, 4, dz);
-      scene.add(fill);
-    });
+    // 各机のランプ（モバイルでは省略）
+    if (!_isMobile) {
+      deskPositions.forEach(([dx, dz]) => {
+        const fill = new THREE.PointLight(0xffd890, 0.7, 14, 1.4);
+        fill.position.set(dx, 4, dz);
+        scene.add(fill);
+      });
+    }
 
     // ── 埃の浮遊（雰囲気）──
     const dustGeo = new THREE.BufferGeometry();
-    const DCNT = 250;
+    const DCNT = _isMobile ? 80 : 180; // 軽量化：モバイルは1/3、PCも約3割減
     const dp = new Float32Array(DCNT * 3);
     for (let i = 0; i < DCNT; i++) {
       dp[i*3]   = (Math.random() - 0.5) * 30;
@@ -23682,11 +23675,21 @@
         }
       }
     }
+    // 軽量化：プレイヤー周辺の本のみをピック対象に絞る（毎フレーム900冊→せいぜい数十冊）
     function pickBook() {
-      // 中央レチクル方向をピック（一人称用）
       pointer.x = 0; pointer.y = 0;
       raycaster.setFromCamera(pointer, camera);
-      const hits = raycaster.intersectObjects(bookMeshes);
+      const px = camera.position.x, py = camera.position.y, pz = camera.position.z;
+      const nearby = [];
+      const RANGE_SQ = 9; // 3m以内
+      for (let i = 0; i < bookMeshes.length; i++) {
+        const m = bookMeshes[i];
+        const dx = m.position.x - px;
+        const dz = m.position.z - pz;
+        const dy = m.position.y - py;
+        if (dx*dx + dz*dz + dy*dy < RANGE_SQ) nearby.push(m);
+      }
+      const hits = raycaster.intersectObjects(nearby);
       return hits[0] ? hits[0].object : null;
     }
 
@@ -24021,16 +24024,21 @@
       // フロア間の段差を吸収（ジャンプではなく徐々に）
       const targetY = floorY + PLAYER_EYE + Math.sin(t * 4) * (ml > 0 ? 0.04 : 0);
       camera.position.y += (targetY - camera.position.y) * 0.18;
-      // ハイライト本がふわっと浮く
-      bookMeshes.forEach(m => {
-        const target = (highlighted === m) ? m.userData.originalY + 0.08 : m.userData.originalY;
+      // ハイライト本がふわっと浮く（軽量化：highlightedがある時だけ更新）
+      if (highlighted) {
+        const m = highlighted;
+        const target = m.userData.originalY + 0.08;
         m.position.y += (target - m.position.y) * 0.15;
-      });
-      // ホバー（中央レチクル方向、ドラッグ中以外）
-      if (!dragging) {
+      }
+      // ホバー（中央レチクル方向、ドラッグ中以外）— 軽量化：3フレームに1回
+      if (!dragging && (ts & 3) === 0) {
         const h = pickBook();
         if (h !== hovered) {
-          if (hovered) hovered.scale.set(1, 1, 1);
+          if (hovered) {
+            hovered.scale.set(1, 1, 1);
+            // 前回のホバー本のYを戻す
+            hovered.position.y = hovered.userData.originalY;
+          }
           if (h && !h.userData.book.placeholder) {
             h.scale.set(1.1, 1.1, 1.4);
             cv.style.cursor = 'pointer';
