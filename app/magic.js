@@ -10617,9 +10617,17 @@
         <div class="m3d-stick-knob" id="m3dKnob"></div>
       </div>
       <button class="museum3d-view-btn" id="m3dViewBtn">🖼 この絵を見る</button>
+      <div class="museum3d-aff" id="m3dAff"></div>
     `;
     document.body.appendChild(ov);
     requestAnimationFrame(() => ov.classList.add('open'));
+    // 美術カテゴリのアフィリエイト挿入（自然な PR、画集・名画関連）
+    if (window.MAGIC && window.MAGIC.renderAffiliate) {
+      try {
+        const affEl = ov.querySelector('#m3dAff');
+        window.MAGIC.renderAffiliate('place', affEl, 1, 0);
+      } catch (e) {}
+    }
 
     const stage = ov.querySelector('#m3dStage');
     const info = ov.querySelector('#m3dInfo');
@@ -16663,6 +16671,8 @@
     // 🥽 AIグラスHUD — 関係者情報＋広告
     const arToggle = ov.querySelector('#kohArToggle');
     const arOverlay = ov.querySelector('#kohArOverlay');
+    // 🚫 万一どこかに残っている古いキャッシュHTMLからモザイク要素を物理削除
+    arOverlay.querySelectorAll('.koh-ar-hud-bg, .kah-grid, .kah-corner, [class*="kah-"]').forEach(el => el.remove());
     const arState = ov.querySelector('#kohArState');
     const arInfo = ov.querySelector('#kohArInfoPanel');
     const arAds = ov.querySelector('#kohArAds');
@@ -29903,23 +29913,29 @@
       const _ray = new THREE.Raycaster();
       const _ndc = new THREE.Vector2();
       let _tapStart = null;
-      renderer.domElement.addEventListener('pointerdown', e => {
+      // overlay レベルでバインド（renderer.domElementだとUIに食われやすい）
+      ov.addEventListener('pointerdown', e => {
+        // UIボタン上ではタップ判定しない
+        if (e.target.closest('button, .cosmos-info-panel, .cpl-body, .cosmos-time-ctrl, .cosmos-modes-sheet, .cosmos-zoom-ctrl, .cosmos-vehicle-pick, .cosmos-rocket-ui, .cosmos-conscious-label')) return;
         _tapStart = { x: e.clientX, y: e.clientY, t: performance.now() };
-      }, true);
-      renderer.domElement.addEventListener('pointerup', e => {
+      });
+      ov.addEventListener('pointerup', e => {
         if (!_tapStart) return;
         const dt = performance.now() - _tapStart.t;
         const dx = Math.abs(e.clientX - _tapStart.x);
         const dy = Math.abs(e.clientY - _tapStart.y);
         _tapStart = null;
         // ドラッグはタップ判定しない
-        if (dt > 350 || dx > 8 || dy > 8) return;
+        if (dt > 380 || dx > 10 || dy > 10) return;
         const rect = renderer.domElement.getBoundingClientRect();
         _ndc.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
         _ndc.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
         _ray.setFromCamera(_ndc, camera);
-        // 全惑星 + 太陽の中から最寄りをタップ判定
-        const allTargets = [{ mesh: sun, planet: { name: '太陽', jname: '太陽', isSun: true, facts: sun.userData.facts || {} } }, ...planetMeshes];
+        // 太陽 + 全惑星
+        const allTargets = [];
+        if (sun && sun.userData && sun.userData.facts) allTargets.push({ mesh: sun, planet: sun.userData });
+        planetMeshes.forEach(pm => allTargets.push(pm));
+        if (!allTargets.length) return;
         // ヒット
         const meshList = allTargets.map(t => t.mesh);
         let hits = _ray.intersectObjects(meshList, true);
@@ -29935,10 +29951,10 @@
             if (hit) break;
           }
         }
-        // 当たらなくても角度で擬似ヒット（小さい惑星対応）
+        // 当たらなくても角度で擬似ヒット（広めに 4° 以内）
         if (!hit) {
           const tmp = new THREE.Vector3();
-          let best = null, bestAng = 0.045;
+          let best = null, bestAng = 0.07;
           allTargets.forEach(t => {
             t.mesh.getWorldPosition(tmp);
             const dir = tmp.clone().sub(camera.position).normalize();
@@ -29951,7 +29967,7 @@
         if (typeof showPlanetInfo === 'function') {
           try { showPlanetInfo(hit); } catch (err) { console.warn('planet info', err); }
         }
-      }, true);
+      });
     }
 
     // ============================================================
