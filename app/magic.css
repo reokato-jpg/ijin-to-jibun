@@ -11035,6 +11035,45 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
 }
 .zk-bizm-item:hover { background: rgba(80,160,255,0.3); color: #fff; }
 
+/* 実在サービス（現代の起業家は事実情報のみ。偉人プロフとは分離） */
+.biz-svc-list { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
+.biz-svc-mini {
+  display: flex; gap: 6px; align-items: baseline;
+  padding: 4px 8px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 6px;
+  font-size: 11px; line-height: 1.4;
+}
+.biz-svc-emoji { font-size: 14px; }
+.biz-svc-mini .biz-svc-name { color: #fff; font-weight: 700; }
+.biz-svc-mini .biz-svc-meta { color: rgba(220,235,255,0.65); font-size: 10px; }
+
+.biz-svc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.biz-svc-card {
+  padding: 10px 12px;
+  background: rgba(80,160,255,0.06);
+  border: 1px solid rgba(120,180,255,0.25);
+  border-radius: 8px;
+}
+.biz-svc-card-head { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+.biz-svc-emoji-lg { font-size: 22px; }
+.biz-svc-card-name { font-size: 13px; font-weight: 700; color: #fff; flex: 1; }
+.biz-svc-card-flag { font-size: 14px; }
+.biz-svc-card-founder { font-size: 11px; color: rgba(220,235,255,0.75); margin-bottom: 2px; }
+.biz-svc-card-note { font-size: 11px; color: rgba(220,235,255,0.55); line-height: 1.5; font-style: italic; }
+.biz-svc-disclaimer {
+  font-size: 10px; color: rgba(220,235,255,0.5);
+  padding: 6px 8px; margin-top: 4px;
+  background: rgba(0,0,0,0.25);
+  border-radius: 6px;
+  line-height: 1.5;
+}
+
 /* biz-card クリッカブル */
 .biz-card { cursor: pointer; transition: transform 0.18s, border-color 0.18s; }
 .biz-card:hover { transform: translateY(-2px); border-color: rgba(255,216,96,0.5); }

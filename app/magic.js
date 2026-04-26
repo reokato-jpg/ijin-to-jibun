@@ -24049,6 +24049,93 @@
     { name:'クリエイター経済', parts:['ugc','community','subscription'], desc:'個人が直接ファンから定額で支援を受ける。', year:'2013〜', by:'Patreon',           ex:'Patreon、note、OnlyFans',        history:'2013年Patreon設立。Substack、note、YouTubeチャンネル会員などSNS時代のクリエイター直接支援モデル。',              ijins:[] },
   ];
 
+  // 各モデルで実在するサービス／企業（創業者は事実情報のみ。偉人プロフィールとは分離）
+  const BIZ_MODEL_SERVICES = {
+    '物販': [
+      { emoji:'🎮', name:'任天堂',         founder:'山内房治郎（1889 創業）',     country:'🇯🇵', note:'トランプ→玩具→ゲーム機' },
+      { emoji:'👕', name:'ユニクロ',       founder:'柳井正（1984 業態確立）',      country:'🇯🇵', note:'SPAで自社製造販売' },
+      { emoji:'📱', name:'Apple ハード',   founder:'スティーブ・ジョブズ／ウォズニアック（1976）', country:'🇺🇸', note:'iPhone・Mac の物販' },
+    ],
+    'サブスク': [
+      { emoji:'🎬', name:'Netflix',        founder:'リード・ヘイスティングス（1997）', country:'🇺🇸', note:'DVD郵送→動画配信へ' },
+      { emoji:'🎵', name:'Spotify',        founder:'ダニエル・エク（2006）',       country:'🇸🇪', note:'音楽サブスクの代表' },
+      { emoji:'🎨', name:'Adobe CC',       founder:'Adobe（2012年に移行）',         country:'🇺🇸', note:'パッケージ売り→月額へ' },
+    ],
+    'プラットフォーム': [
+      { emoji:'🚗', name:'Uber',           founder:'トラヴィス・カラニック／ギャレット・キャンプ（2009）', country:'🇺🇸', note:'運転手と乗客を直接マッチング' },
+      { emoji:'🏠', name:'Airbnb',         founder:'ブライアン・チェスキー（2008）', country:'🇺🇸', note:'空き部屋オーナーと旅行者をマッチング' },
+      { emoji:'🛍️', name:'メルカリ',       founder:'山田進太郎（2013）',           country:'🇯🇵', note:'CtoCフリマアプリ' },
+    ],
+    'SNS': [
+      { emoji:'📘', name:'Facebook',       founder:'マーク・ザッカーバーグ（2004）', country:'🇺🇸', note:'実名SNSの先駆け' },
+      { emoji:'📺', name:'YouTube',        founder:'チャド・ハーリー（2005）',     country:'🇺🇸', note:'動画UGC、Googleが買収' },
+      { emoji:'📷', name:'Instagram',      founder:'ケヴィン・シストロム（2010）',  country:'🇺🇸', note:'写真SNS、Metaが買収' },
+    ],
+    'フリマ': [
+      { emoji:'🛍️', name:'メルカリ',       founder:'山田進太郎（2013）',           country:'🇯🇵', note:'スマホフリマで国民的アプリへ' },
+      { emoji:'🏷️', name:'eBay',          founder:'ピエール・オミダイア（1995）', country:'🇺🇸', note:'世界初のCtoCオークション' },
+      { emoji:'🇯🇵', name:'Yahoo!オークション', founder:'ヤフー（1999）',          country:'🇯🇵', note:'PC時代のオークション王者' },
+    ],
+    'SaaS': [
+      { emoji:'☁️', name:'Salesforce',     founder:'マーク・ベニオフ（1999）',     country:'🇺🇸', note:'No Software を旗印に' },
+      { emoji:'🤖', name:'OpenAI',         founder:'サム・アルトマン他（2015）',    country:'🇺🇸', note:'ChatGPT、API課金モデル' },
+      { emoji:'📝', name:'Notion',         founder:'アイヴァン・ジャオ（2013）',    country:'🇺🇸', note:'ドキュメント＋DBのSaaS' },
+    ],
+    '広告モデル': [
+      { emoji:'🔍', name:'Google検索',     founder:'ラリー・ペイジ／セルゲイ・ブリン（1998）', country:'🇺🇸', note:'AdWords で世界最大の広告会社へ' },
+      { emoji:'📺', name:'民放テレビ',     founder:'各国（1950s〜）',              country:'🌍', note:'番組無料、広告主課金' },
+    ],
+    'フリーミアム': [
+      { emoji:'📦', name:'Dropbox',        founder:'ドリュー・ヒューストン（2007）', country:'🇺🇸', note:'無料2GB→有料拡張' },
+      { emoji:'💬', name:'Slack',          founder:'スチュアート・バターフィールド（2013）', country:'🇺🇸', note:'無料履歴制限→有料無制限' },
+      { emoji:'🎵', name:'Spotify Free',   founder:'同上',                          country:'🇸🇪', note:'広告付き無料→有料Premium' },
+    ],
+    'オンライン教育': [
+      { emoji:'🦉', name:'Duolingo',       founder:'ルイス・フォン・アーン（2011）', country:'🇺🇸', note:'ゲーム化された語学学習' },
+      { emoji:'🎓', name:'Coursera',       founder:'アンドリュー・ング／ダフニー・コラー（2012）', country:'🇺🇸', note:'スタンフォード発、世界MOOC' },
+      { emoji:'📚', name:'Udemy',          founder:'エレン・バリ（2010）',         country:'🇺🇸', note:'講師がコースを作って販売' },
+    ],
+    'アプリ販売': [
+      { emoji:'📱', name:'App Store',      founder:'Apple（2008 開始）',           country:'🇺🇸', note:'スマホアプリ流通の基盤' },
+      { emoji:'🎮', name:'Steam',          founder:'Valve／ゲイブ・ニューウェル（2003）', country:'🇺🇸', note:'PCゲームの世界最大ストア' },
+    ],
+    'フランチャイズ': [
+      { emoji:'🍔', name:"McDonald's",     founder:'レイ・クロック（1955 多店舗化）', country:'🇺🇸', note:'マニュアル化したFCの教科書' },
+      { emoji:'🏪', name:'セブン-イレブン', founder:'鈴木敏文（1973 日本展開）',     country:'🇯🇵', note:'POSと物流で日本独自進化' },
+    ],
+    'D2C': [
+      { emoji:'💄', name:'Glossier',       founder:'エミリー・ワイス（2014）',     country:'🇺🇸', note:'美容ブログ→自社ブランド' },
+      { emoji:'👟', name:'Allbirds',       founder:'ティム・ブラウン（2014）',     country:'🇳🇿', note:'ウール素材のサステナブル靴' },
+      { emoji:'🍱', name:'BASE FOOD',      founder:'橋本舜（2016）',                country:'🇯🇵', note:'完全栄養食をD2Cで' },
+    ],
+    'キャラクターIP': [
+      { emoji:'🐭', name:'ディズニー',      founder:'ウォルト・ディズニー（1928 ミッキー）', country:'🇺🇸', note:'映画・テーマパーク・グッズへ拡大' },
+      { emoji:'🎀', name:'サンリオ',       founder:'辻信太郎（1960）',             country:'🇯🇵', note:'ハローキティ、ライセンスで稼ぐ' },
+      { emoji:'⚡', name:'ポケモン',        founder:'ゲームフリーク／田尻智（1996）', country:'🇯🇵', note:'ゲーム→アニメ→グッズの大型IP' },
+    ],
+    'シェアオフィス': [
+      { emoji:'🏢', name:'WeWork',         founder:'アダム・ニューマン（2010）',   country:'🇺🇸', note:'スタートアップ向け空間' },
+      { emoji:'🪑', name:'リージャス',     founder:'マーク・ディクソン（1989）',   country:'🇧🇪', note:'シェアオフィスの古参' },
+    ],
+    'ターゲティング広告': [
+      { emoji:'🔍', name:'Google広告',     founder:'同上（2000 AdWords）',         country:'🇺🇸', note:'検索意図への広告配信' },
+      { emoji:'📘', name:'Meta広告',       founder:'Facebook（2007）',             country:'🇺🇸', note:'プロフィールデータで精密ターゲティング' },
+    ],
+    'レンタル': [
+      { emoji:'🎞️', name:'TSUTAYA',        founder:'増田宗昭（1983）',             country:'🇯🇵', note:'CD・DVDレンタルの代名詞' },
+      { emoji:'🚙', name:'タイムズカーシェア', founder:'パーク24（2009）',         country:'🇯🇵', note:'分単位のカーシェア' },
+    ],
+    'AI×教育': [
+      { emoji:'🦉', name:'Duolingo Max',   founder:'同上（2023）',                 country:'🇺🇸', note:'GPT-4 を組み込んだAI解説機能' },
+      { emoji:'🎓', name:'Khanmigo',       founder:'カーン・アカデミー／OpenAI（2023）', country:'🇺🇸', note:'AIチューターによる個別最適' },
+    ],
+    'クリエイター経済': [
+      { emoji:'🎨', name:'Patreon',        founder:'ジャック・コンテ（2013）',     country:'🇺🇸', note:'クリエイター直接支援の元祖' },
+      { emoji:'📝', name:'note',           founder:'加藤貞顕（2014）',             country:'🇯🇵', note:'文章・有料コンテンツ販売' },
+      { emoji:'📨', name:'Substack',       founder:'クリス・ベスト（2017）',       country:'🇺🇸', note:'メールマガジン×サブスク' },
+    ],
+  };
+
   // 各モデルの図解構造（ロール + 矢印）
   const BIZ_MODEL_DIAGRAMS = {
     '物販':           { roles:['user','business'],          arrows:[['user','business','money'],['business','user','thing']] },
@@ -24335,11 +24422,23 @@
       });
     }
     function showModelBubble(node, m, isNew){
+      const svcs = BIZ_MODEL_SERVICES[m.name] || [];
+      const svcHtml = svcs.length ? `
+        <div class="el-bubble-uses-h">📡 同じモデルの実在サービス</div>
+        <div class="biz-svc-list">
+          ${svcs.slice(0,3).map(s => `
+            <div class="biz-svc-mini">
+              <span class="biz-svc-emoji">${s.emoji}</span>
+              <span class="biz-svc-name">${s.name}</span>
+              <span class="biz-svc-meta">${s.country} ${s.founder}</span>
+            </div>
+          `).join('')}
+        </div>
+      ` : '';
       const html = `
         <div class="el-bubble-title">💼 ${m.name}${isNew?' <span class="el-bubble-badge">NEW!</span>':''}</div>
         <div class="el-bubble-desc">${m.desc}</div>
-        <div class="el-bubble-uses-h">✨ 例えばこんなビジネス</div>
-        <div class="el-bubble-uses">${m.ex.split('、').map(e => `<span class="el-bubble-use">${e.trim()}</span>`).join('')}</div>
+        ${svcHtml}
         <div class="el-bubble-history">
           <div class="el-bubble-meta">
             <span class="el-bubble-year">${m.year}</span>
@@ -24617,6 +24716,24 @@
       const diag = BIZ_MODEL_DIAGRAMS[name];
       const exHtml = m.ex ? `<div class="zk-section-h">✨ 例えばこんなビジネス</div>
         <div class="zk-c-uses">${m.ex.split('、').map(e => `<span class="el-bubble-use">${e.trim()}</span>`).join('')}</div>` : '';
+      const svcs = BIZ_MODEL_SERVICES[name] || [];
+      const svcsHtml = svcs.length ? `
+        <div class="zk-section-h">📡 同じモデルの実在サービス</div>
+        <div class="biz-svc-grid">
+          ${svcs.map(s => `
+            <div class="biz-svc-card">
+              <div class="biz-svc-card-head">
+                <span class="biz-svc-emoji-lg">${s.emoji}</span>
+                <span class="biz-svc-card-name">${s.name}</span>
+                <span class="biz-svc-card-flag">${s.country}</span>
+              </div>
+              <div class="biz-svc-card-founder">${s.founder}</div>
+              ${s.note ? `<div class="biz-svc-card-note">${s.note}</div>` : ''}
+            </div>
+          `).join('')}
+        </div>
+        <div class="biz-svc-disclaimer">※ 創業者は事実情報のみ。深いプロフィールは「偉人」（既に亡くなった方）に限定しています。</div>
+      ` : '';
       const ijinsHtml = m.ijins && m.ijins.length ? `
         <div class="zk-section-h">👤 関わった偉人</div>
         <div class="zk-ijins">${m.ijins.map(id => `<button class="cnp-pill" data-id="${id}">${_resolveIjinName(id)}</button>`).join('')}</div>
@@ -24638,6 +24755,7 @@
             <div class="zk-modal-desc">${m.desc}</div>
             ${diag ? `<div class="zk-section-h">📐 図解</div><div class="biz-card-diag" style="background:rgba(0,0,0,0.4);padding:10px">${diagramSvg(diag, 280, 180)}</div>` : ''}
             ${exHtml}
+            ${svcsHtml}
             <div class="zk-section-h">📜 歴史</div>
             <div class="zk-modal-desc" style="line-height:1.8">${m.history}</div>
             ${ijinsHtml}
