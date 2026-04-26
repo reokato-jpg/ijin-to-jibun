@@ -23507,7 +23507,9 @@
       board.appendChild(dom);
       playSfx('place');
       const node = { id, kind: 'el', sym, x, y, dom };
-      setTimeout(() => showElementInfo(el, node, { voice: true }), 80);
+      const firstTime = !voicedSyms.has(sym);
+      voicedSyms.add(sym);
+      if (firstTime) setTimeout(() => showElementInfo(el, node, { voice: true }), 80);
       bnodes.push(node);
       attachNodeHandlers(node);
       boardEmpty.style.display = 'none';
@@ -23535,6 +23537,7 @@
       return node;
     }
     let bubbleEl = null;
+    const voicedSyms = new Set();
     function closeBubble() {
       if (bubbleEl) { bubbleEl.remove(); bubbleEl = null; }
     }
@@ -24231,6 +24234,7 @@
     let arrowFrom = null;
     let currentFlow = 'money';
     const found = new Set();
+    const voicedRoles = new Set();
     let bubble = null;
     const SVG_NS = 'http://www.w3.org/2000/svg';
     // 矢印用のマーカー定義
@@ -24367,7 +24371,9 @@
       bnodes.push(node);
       attachRole(node);
       bdEmpty.style.display='none';
-      setTimeout(() => showRoleBubble(node, r, { voice: true }), 80);
+      const firstTime = !voicedRoles.has(id);
+      voicedRoles.add(id);
+      if (firstTime) setTimeout(() => showRoleBubble(node, r, { voice: true }), 80);
       return node;
     }
     function arrowEndpoints(from, to) {
@@ -24560,6 +24566,91 @@
         if (det) { det.hidden = false; moreBtn.remove(); }
       });
     }
+    function openBizRoleModal(id) {
+      const r = role2obj[id]; if (!r) return;
+      const used = BIZ_MODELS.filter(m => {
+        const d = BIZ_MODEL_DIAGRAMS[m.name];
+        return d && d.roles.includes(id);
+      });
+      const usedHtml = used.length ? `
+        <div class="zk-section-h">💼 この人物が登場するモデル</div>
+        <div class="zk-bizm-list">
+          ${used.map(m => `<button class="zk-bizm-item" data-model="${m.name}">${m.name}</button>`).join('')}
+        </div>
+      ` : '';
+      const modal = document.createElement('div');
+      modal.className = 'zk-modal';
+      modal.innerHTML = `
+        <div class="zk-modal-backdrop"></div>
+        <div class="zk-modal-card" style="--c:${r.color}">
+          <button class="zk-modal-x" type="button" aria-label="閉じる">×</button>
+          <div class="zk-modal-head">
+            <div class="zk-modal-circle"><span class="zk-modal-sym" style="font-size:36px;transform:none">${r.icon}</span></div>
+            <div class="zk-modal-info">
+              <div class="zk-modal-name">${r.name}</div>
+              <div class="zk-modal-tag">${r.desc}</div>
+            </div>
+          </div>
+          <div class="zk-modal-body">
+            <div class="zk-modal-voice">${r.voice || ''}</div>
+            <button class="zk-place-btn" type="button">⚗️ 盤に置く</button>
+            ${usedHtml}
+          </div>
+        </div>
+      `;
+      ov.appendChild(modal);
+      requestAnimationFrame(() => modal.classList.add('open'));
+      const closeMod = () => { modal.classList.remove('open'); setTimeout(() => modal.remove(), 280); };
+      modal.querySelector('.zk-modal-x').addEventListener('click', closeMod);
+      modal.querySelector('.zk-modal-backdrop').addEventListener('click', closeMod);
+      modal.querySelector('.zk-place-btn').addEventListener('click', () => {
+        const x = 30 + Math.random() * (bd.clientWidth - 90);
+        const y = 30 + Math.random() * (bd.clientHeight - 90);
+        spawnRole(id, x, y); closeMod(); bd.scrollIntoView({behavior:'smooth', block:'start'});
+      });
+      modal.querySelectorAll('.zk-bizm-item').forEach(b => {
+        b.addEventListener('click', () => { closeMod(); openBizModelModal(b.dataset.model); });
+      });
+    }
+    function openBizModelModal(name) {
+      const m = BIZ_MODELS.find(x => x.name === name); if (!m) return;
+      const diag = BIZ_MODEL_DIAGRAMS[name];
+      const exHtml = m.ex ? `<div class="zk-section-h">✨ 例えばこんなビジネス</div>
+        <div class="zk-c-uses">${m.ex.split('、').map(e => `<span class="el-bubble-use">${e.trim()}</span>`).join('')}</div>` : '';
+      const ijinsHtml = m.ijins && m.ijins.length ? `
+        <div class="zk-section-h">👤 関わった偉人</div>
+        <div class="zk-ijins">${m.ijins.map(id => `<button class="cnp-pill" data-id="${id}">${_resolveIjinName(id)}</button>`).join('')}</div>
+      ` : '';
+      const modal = document.createElement('div');
+      modal.className = 'zk-modal';
+      modal.innerHTML = `
+        <div class="zk-modal-backdrop"></div>
+        <div class="zk-modal-card" style="--c:#ffd860">
+          <button class="zk-modal-x" type="button" aria-label="閉じる">×</button>
+          <div class="zk-modal-head">
+            <div class="zk-modal-circle"><span class="zk-modal-sym" style="font-size:36px;transform:none">💼</span></div>
+            <div class="zk-modal-info">
+              <div class="zk-modal-name">${m.name}</div>
+              <div class="zk-modal-tag">${m.year} ／ ${m.by}</div>
+            </div>
+          </div>
+          <div class="zk-modal-body">
+            <div class="zk-modal-desc">${m.desc}</div>
+            ${diag ? `<div class="zk-section-h">📐 図解</div><div class="biz-card-diag" style="background:rgba(0,0,0,0.4);padding:10px">${diagramSvg(diag, 280, 180)}</div>` : ''}
+            ${exHtml}
+            <div class="zk-section-h">📜 歴史</div>
+            <div class="zk-modal-desc" style="line-height:1.8">${m.history}</div>
+            ${ijinsHtml}
+          </div>
+        </div>
+      `;
+      ov.appendChild(modal);
+      requestAnimationFrame(() => modal.classList.add('open'));
+      const closeMod = () => { modal.classList.remove('open'); setTimeout(() => modal.remove(), 280); };
+      modal.querySelector('.zk-modal-x').addEventListener('click', closeMod);
+      modal.querySelector('.zk-modal-backdrop').addEventListener('click', closeMod);
+      _wireIjinPills(modal, close);
+    }
     palette.querySelectorAll('.biz-pal-item').forEach(item=>{
       item.addEventListener('pointerdown', e=>{
         e.preventDefault();
@@ -24604,14 +24695,15 @@
     });
     ov.querySelector('#bizBoardClear').addEventListener('click', clearBoard);
     ov.querySelector('#bizMatchBtn').addEventListener('click', checkModelMatch);
-    // 役者図鑑からもタップで盤に投下
+    // 役者図鑑カード → モーダル
     ov.querySelectorAll('.biz-role-card').forEach(card => {
-      card.addEventListener('click', () => {
-        const id = card.dataset.role;
-        const x = 30 + Math.random() * (bd.clientWidth - 90);
-        const y = 30 + Math.random() * (bd.clientHeight - 90);
-        spawnRole(id, x, y);
-        bd.scrollIntoView({ behavior:'smooth', block:'start' });
+      card.addEventListener('click', () => openBizRoleModal(card.dataset.role));
+    });
+    // モデル図鑑カード → モーダル
+    ov.querySelectorAll('.biz-card').forEach(card => {
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('.cnp-pill')) return;
+        openBizModelModal(card.dataset.model);
       });
     });
     ensureSvgDefs();
