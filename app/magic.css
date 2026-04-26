@@ -11439,6 +11439,12 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
 }
 .koh-pl-go:hover { background: rgba(255,224,128,0.35); color: #fff; }
 
+/* OTTOCAST PR を完全非表示（ユーザー要望） */
+.travel-hero-banner.ottocast-banner,
+.ottocast-banner,
+.ottocast-store-row,
+.ottocast-store { display: none !important; }
+
 /* 美術館の広告スロット（左下、半透明） */
 .museum3d-aff {
   position: fixed; left: 16px; bottom: 16px;

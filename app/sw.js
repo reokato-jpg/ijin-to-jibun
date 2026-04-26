@@ -6,7 +6,7 @@
 // - Firebase/Firestore: 素通し（認証や書き込みは素のネット通信）
 // - クロスオリジン画像（Wikipedia 等）: cache-first（一度見た肖像画はオフラインでも表示）
 
-const VERSION = 'v20260502HQ';
+const VERSION = 'v20260502HR';
 const STATIC_CACHE = `ijin-static-${VERSION}`;
 const DATA_CACHE   = `ijin-data-${VERSION}`;
 const AUDIO_CACHE  = `ijin-audio-${VERSION}`;
