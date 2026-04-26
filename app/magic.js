@@ -14457,6 +14457,7 @@
       </div>
       <!-- ⛩ 神話シーン切替タイトルカード -->
       <div class="koh-myth-title" id="kohMythTitle"></div>
+      <button class="koh-myth-action" id="kohMythAction" style="display:none">⚡ 混乱を起こす</button>
       <!-- 🦒 動物ストーリー（自然モード時、たまに浮かぶ） -->
       <div class="koh-animal-story" id="kohAnimalStory"></div>
       <!-- 🥽 AIグラスHUD — 関係者情報＋広告（半透過） -->
@@ -15690,7 +15691,88 @@
         tEl.classList.remove('show');
         requestAnimationFrame(() => tEl.classList.add('show'));
       }
+      // バベルだけ「混乱を起こす」ボタン表示
+      const actionBtn = ov.querySelector('#kohMythAction');
+      if (actionBtn) {
+        actionBtn.style.display = (order[idx] === 'babel') ? 'block' : 'none';
+        actionBtn.disabled = false;
+        actionBtn.classList.remove('triggered');
+        actionBtn.textContent = '⚡ 混乱を起こす';
+      }
     }
+    // 🌩 バベル崩壊アニメ
+    function triggerBabelChaos() {
+      const sp = scene.userData.mythSprites;
+      if (!sp || !sp.babel) return;
+      const actionBtn = ov.querySelector('#kohMythAction');
+      if (actionBtn) {
+        actionBtn.disabled = true;
+        actionBtn.classList.add('triggered');
+        actionBtn.textContent = '⚡ 神の怒り...';
+      }
+      // 1) 暗幕：黒いオーバーレイを瞬時に出して曇る効果
+      const dark = document.createElement('div');
+      dark.className = 'koh-babel-dark';
+      ov.appendChild(dark);
+      requestAnimationFrame(() => dark.classList.add('on'));
+      // 2) 雷：白い閃光オーバーレイを連続で
+      const flashTimes = [200, 350, 600, 900, 1400, 2100];
+      flashTimes.forEach(ms => {
+        setTimeout(() => {
+          const flash = document.createElement('div');
+          flash.className = 'koh-babel-flash';
+          ov.appendChild(flash);
+          setTimeout(() => flash.remove(), 200);
+        }, ms);
+      });
+      // 3) 塔の崩壊：sprite scale.y を圧縮、ジッターも入れて揺れ感
+      const startTime = performance.now();
+      const dur = 3500;
+      function step(now) {
+        const t = Math.min(1, (now - startTime) / dur);
+        const ease = t * t * (3 - 2 * t); // smoothstep
+        sp.babel.forEach(s => {
+          // 縦方向に縮む（崩壊）
+          s.scale.y = s.userData._origY ? s.userData._origY * (1 - ease * 0.6) : 24 * (1 - ease * 0.6);
+          // 横方向にやや拡張（瓦礫風）
+          s.scale.x = s.userData._origX ? s.userData._origX * (1 + ease * 0.15) : 36 * (1 + ease * 0.15);
+          // ジッター（地震風）
+          s.position.y = 8 + Math.sin(now * 0.04) * (1 - ease) * 0.6;
+        });
+        if (t < 1) requestAnimationFrame(step);
+        else {
+          // 4) 復元（少し待って次のシーンサイクルへ）
+          setTimeout(() => {
+            sp.babel.forEach(s => {
+              if (s.userData._origY === undefined) {
+                s.userData._origY = 24;
+                s.userData._origX = 36;
+              }
+              s.scale.set(s.userData._origX, s.userData._origY, 1);
+              s.position.y = 8;
+            });
+            dark.classList.remove('on');
+            setTimeout(() => dark.remove(), 600);
+            if (actionBtn) {
+              actionBtn.disabled = false;
+              actionBtn.classList.remove('triggered');
+              actionBtn.textContent = '⚡ 混乱を起こす';
+            }
+          }, 1500);
+        }
+      }
+      // origスケール記録
+      sp.babel.forEach(s => {
+        s.userData._origX = s.scale.x;
+        s.userData._origY = s.scale.y;
+      });
+      requestAnimationFrame(step);
+    }
+    // ボタン取付け（一度だけ）
+    setTimeout(() => {
+      const actionBtn = ov.querySelector('#kohMythAction');
+      if (actionBtn) actionBtn.addEventListener('click', triggerBabelChaos);
+    }, 100);
     function startMythCycle() {
       if (mythTimer) clearInterval(mythTimer);
       showMythSceneAt(scene.userData.mythIndex);
@@ -18757,14 +18839,47 @@
             g.fillStyle = '#e8b870';
             g.fillRect(tx - tw, ty, tw*2, 4);
           }
-          // 飛び散る人々（小さなシルエット）
-          for (let i = 0; i < 12; i++) {
-            const fx = tx + (Math.random() - 0.5) * 600;
-            const fy = baseY - 50 - Math.random()*350;
-            g.fillStyle = '#1a0a04';
+          // 鷲（1羽、空に大きく舞う）— ユーザー要望
+          {
+            const ex = tx + 320, ey = baseY - 480;
+            g.fillStyle = '#0a0408';
+            // 体
             g.beginPath();
-            g.arc(fx, fy, 4, 0, Math.PI*2); g.fill();  // 頭
-            g.fillRect(fx - 3, fy + 3, 6, 12); // 体
+            g.ellipse(ex, ey, 20, 10, 0.1, 0, Math.PI*2); g.fill();
+            // 翼（大きく広げる）
+            g.beginPath();
+            g.moveTo(ex - 15, ey - 2);
+            g.bezierCurveTo(ex - 80, ey - 35, ex - 130, ey - 30, ex - 150, ey - 8);
+            g.bezierCurveTo(ex - 130, ey - 4, ex - 80, ey - 8, ex - 15, ey + 6);
+            g.closePath(); g.fill();
+            g.beginPath();
+            g.moveTo(ex + 15, ey - 2);
+            g.bezierCurveTo(ex + 80, ey - 35, ex + 130, ey - 30, ex + 150, ey - 8);
+            g.bezierCurveTo(ex + 130, ey - 4, ex + 80, ey - 8, ex + 15, ey + 6);
+            g.closePath(); g.fill();
+            // 頭
+            g.beginPath();
+            g.arc(ex - 4, ey - 8, 7, 0, Math.PI*2); g.fill();
+            // くちばし
+            g.fillStyle = '#a06030';
+            g.beginPath();
+            g.moveTo(ex - 9, ey - 10); g.lineTo(ex - 18, ey - 7); g.lineTo(ex - 10, ey - 5); g.closePath(); g.fill();
+            // 尾
+            g.fillStyle = '#0a0408';
+            g.beginPath();
+            g.moveTo(ex + 18, ey + 4); g.lineTo(ex + 35, ey + 14); g.lineTo(ex + 18, ey + 10); g.closePath(); g.fill();
+            // 翼の縁の風切り羽（スジ）
+            g.strokeStyle = 'rgba(40,20,30,0.7)'; g.lineWidth = 2;
+            for (let s = 0; s < 5; s++) {
+              g.beginPath();
+              g.moveTo(ex - 30 - s*22, ey - 12 - s*4);
+              g.lineTo(ex - 35 - s*22, ey - 4 - s*4);
+              g.stroke();
+              g.beginPath();
+              g.moveTo(ex + 30 + s*22, ey - 12 - s*4);
+              g.lineTo(ex + 35 + s*22, ey - 4 - s*4);
+              g.stroke();
+            }
           }
           // タイトル
           g.fillStyle = 'rgba(255,255,255,0.95)'; g.font = 'bold 64px serif'; g.textAlign = 'center';
