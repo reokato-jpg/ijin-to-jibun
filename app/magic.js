@@ -18840,29 +18840,97 @@
       tex.minFilter = THREE.LinearFilter;
       return tex;
     }
+    // 🖼 リアル名画（Wikimedia Commons）— 失敗したら procedural canvas フォールバック
+    const MYTH_PAINTINGS = {
+      // ルカス・クラナッハ「アダムとイヴ」(1526)
+      eden: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Lucas_Cranach_the_Elder_-_Adam_and_Eve-Paradise_-_Kunsthistorisches_Museum_-_Detail_Tree_of_Knowledge.jpg/1280px-Lucas_Cranach_the_Elder_-_Adam_and_Eve-Paradise_-_Kunsthistorisches_Museum_-_Detail_Tree_of_Knowledge.jpg',
+      // エドワード・ヒックス「ノアの方舟」(1846) または ヤン・ブリューゲル「方舟へ向かう動物たち」
+      noah: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Edward_Hicks_-_Noah%27s_Ark.jpg/1280px-Edward_Hicks_-_Noah%27s_Ark.jpg',
+      // ピーテル・ブリューゲル「バベルの塔」(1563)
+      babel: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Pieter_Bruegel_the_Elder_-_The_Tower_of_Babel_%28Vienna%29_-_Google_Art_Project.jpg/1280px-Pieter_Bruegel_the_Elder_-_The_Tower_of_Babel_%28Vienna%29_-_Google_Art_Project.jpg',
+      // カルロス・シュヴァーベ「楽園の風景」 / アルノルト・ベックリン「死の島」風 — 楽園系
+      elysion: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Arnold_B%C3%B6cklin_-_Die_Toteninsel_III_%28Alte_Nationalgalerie%2C_Berlin%29.jpg/1280px-Arnold_B%C3%B6cklin_-_Die_Toteninsel_III_%28Alte_Nationalgalerie%2C_Berlin%29.jpg',
+      // アトランティスは古典名画なし → procedural canvas のまま
+    };
+    function tryLoadMythPainting(url, applyToMaterial) {
+      if (!url) return;
+      const im = new Image();
+      im.crossOrigin = 'anonymous';
+      im.onload = () => {
+        try {
+          const tex = new THREE.Texture(im);
+          if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace;
+          tex.minFilter = THREE.LinearFilter;
+          tex.needsUpdate = true;
+          applyToMaterial(tex, im.width / im.height);
+        } catch (e) { /* keep fallback */ }
+      };
+      im.onerror = () => { /* keep procedural canvas */ };
+      im.src = url;
+    }
+
     // ── 各神話のスプライト（3つのアングルに同じシーンを配置：見回しても見える）──
     const mythSprites = {};
     ['eden', 'noah', 'atlantis', 'babel', 'elysion'].forEach(key => {
-      const tex = makeMythCanvas(key);
+      const fallbackTex = makeMythCanvas(key);
       mythSprites[key] = [];
-      // 3つのアングル（前 / 左後 / 右後）に同じ画像を配置
+      const sprites = [];
       [-Math.PI*0.5, Math.PI*0.6, -Math.PI*1.5].forEach(angle => {
         const sprite = new THREE.Sprite(new THREE.SpriteMaterial({
-          map: tex, transparent: true, opacity: 0,
+          map: fallbackTex, transparent: true, opacity: 0,
           depthWrite: false,
           blending: THREE.NormalBlending,
         }));
-        sprite.scale.set(36, 24, 1); // ドーム面に大きく
+        sprite.scale.set(36, 24, 1);
         const r = 38;
         sprite.position.set(Math.cos(angle) * r, 8, Math.sin(angle) * r);
         sprite.userData.fadeTarget = 0;
-        sprite.userData.fadeTimer = 0;
         mythGroup.add(sprite);
         mythSprites[key].push(sprite);
+        sprites.push(sprite);
       });
-      // 既存の3Dシーンは透明化（mythGroup の子なのでvisibleで隠す）
+      // 名画ロード（成功時に全3アングルへ反映、AR比に合わせてスケール調整）
+      tryLoadMythPainting(MYTH_PAINTINGS[key], (tex, ar) => {
+        const w = 36, h = w / ar;
+        sprites.forEach(s => {
+          s.material.map = tex;
+          s.material.needsUpdate = true;
+          s.scale.set(w, h, 1);
+        });
+      });
       if (mythScenes[key]) mythScenes[key].group.visible = false;
     });
+
+    // 🌫 大気オーバーレイ：神話モード時、舞い上がる光粒子（リアリティUP）
+    {
+      const mistGeo = new THREE.BufferGeometry();
+      const MIST_N = 120;
+      const mp = new Float32Array(MIST_N * 3);
+      for (let i = 0; i < MIST_N; i++) {
+        const a = Math.random() * Math.PI * 2;
+        const r = 28 + Math.random() * 10;
+        mp[i*3] = Math.cos(a) * r;
+        mp[i*3+1] = Math.random() * 18;
+        mp[i*3+2] = Math.sin(a) * r;
+      }
+      mistGeo.setAttribute('position', new THREE.BufferAttribute(mp, 3));
+      const mistTex = (() => {
+        const c = document.createElement('canvas'); c.width = 64; c.height = 64;
+        const g = c.getContext('2d');
+        const grd = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+        grd.addColorStop(0, 'rgba(255,240,200,1)');
+        grd.addColorStop(0.5, 'rgba(255,220,160,0.5)');
+        grd.addColorStop(1, 'rgba(255,200,120,0)');
+        g.fillStyle = grd; g.fillRect(0, 0, 64, 64);
+        return new THREE.CanvasTexture(c);
+      })();
+      const mist = new THREE.Points(mistGeo, new THREE.PointsMaterial({
+        map: mistTex, color: 0xfff0c8, size: 1.4, transparent: true,
+        opacity: 0.55, depthWrite: false, blending: THREE.AdditiveBlending, fog: false,
+      }));
+      mythGroup.add(mist);
+      mythGroup.userData.mist = mist;
+    }
 
     scene.add(mythGroup);
     scene.userData.mythGroup = mythGroup;
@@ -19199,7 +19267,7 @@
           }
         }
       }
-      // 🎬 神話スプライトフェード（Vegas Sphere方式）
+      // 🎬 神話スプライトフェード（Vegas Sphere方式）+ 大気エフェクト
       if (scene.userData.mythGroup && scene.userData.mythGroup.visible && scene.userData.mythSprites) {
         const sp = scene.userData.mythSprites;
         Object.values(sp).forEach(arr => {
@@ -19208,11 +19276,22 @@
             const cur = s.material.opacity;
             const next = cur + (target - cur) * Math.min(1, dt * 1.6);
             s.material.opacity = next;
-            // 微妙な浮遊感
             const phase = (s.userData.phase || (s.userData.phase = Math.random() * Math.PI * 2));
             s.position.y = 8 + Math.sin(t * 0.3 + phase) * 0.3;
           });
         });
+        // 大気の光粒子：ゆっくり上昇
+        const mist = scene.userData.mythGroup.userData.mist;
+        if (mist) {
+          const pa = mist.geometry.attributes.position;
+          for (let i = 0; i < pa.count; i++) {
+            pa.array[i*3+1] += 0.012;
+            pa.array[i*3] += Math.sin(t * 0.3 + i * 0.7) * 0.005;
+            if (pa.array[i*3+1] > 18) pa.array[i*3+1] = 0;
+          }
+          pa.needsUpdate = true;
+          mist.material.opacity = 0.45 + Math.sin(t * 0.4) * 0.15;
+        }
       }
       // ⛩ 神話アニメ（アクティブシーンのみ）— 3Dは無効化されているがコード残置
       if (scene.userData.mythGroup && scene.userData.mythGroup.visible && scene.userData.mythScenes && false) {
