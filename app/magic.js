@@ -23336,10 +23336,10 @@
       if (ml > 0) {
         moveX /= ml; moveZ /= ml;
         const speed = PLAYER_SPEED * (keys.shift ? RUN_MUL : 1) * dt;
-        // カメラ向きで前進方向を決定（Y回転のみ）
+        // カメラ向きで前進方向を決定（Y回転のみ）— 横移動の符号を修正
         const cosY = Math.cos(camYaw), sinY = Math.sin(camYaw);
-        const wx = moveX * cosY - moveZ * sinY;
-        const wz = moveX * sinY + moveZ * cosY;
+        const wx = moveX * cosY + moveZ * sinY;
+        const wz = -moveX * sinY + moveZ * cosY;
         // 衝突回避：ホール境界 + 本棚を避ける（本棚は X 方向長 12 で Z 軸位置 -18,-6,6,18）
         let nx = camera.position.x + wx * speed;
         let nz = camera.position.z + wz * speed;
