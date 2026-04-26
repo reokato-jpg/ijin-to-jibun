@@ -29973,6 +29973,64 @@
     });
 
     // ============================================================
+    // 🪐 惑星タップ → 詳細パネル（元素・偉人・歴史）
+    // ============================================================
+    {
+      const _ray = new THREE.Raycaster();
+      const _ndc = new THREE.Vector2();
+      let _tapStart = null;
+      renderer.domElement.addEventListener('pointerdown', e => {
+        _tapStart = { x: e.clientX, y: e.clientY, t: performance.now() };
+      }, true);
+      renderer.domElement.addEventListener('pointerup', e => {
+        if (!_tapStart) return;
+        const dt = performance.now() - _tapStart.t;
+        const dx = Math.abs(e.clientX - _tapStart.x);
+        const dy = Math.abs(e.clientY - _tapStart.y);
+        _tapStart = null;
+        // ドラッグはタップ判定しない
+        if (dt > 350 || dx > 8 || dy > 8) return;
+        const rect = renderer.domElement.getBoundingClientRect();
+        _ndc.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+        _ndc.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+        _ray.setFromCamera(_ndc, camera);
+        // 全惑星 + 太陽の中から最寄りをタップ判定
+        const allTargets = [{ mesh: sun, planet: { name: '太陽', jname: '太陽', isSun: true, facts: sun.userData.facts || {} } }, ...planetMeshes];
+        // ヒット
+        const meshList = allTargets.map(t => t.mesh);
+        let hits = _ray.intersectObjects(meshList, true);
+        let hit = null;
+        if (hits.length) {
+          for (const h of hits) {
+            let o = h.object;
+            while (o) {
+              const found = allTargets.find(t => t.mesh === o);
+              if (found) { hit = found; break; }
+              o = o.parent;
+            }
+            if (hit) break;
+          }
+        }
+        // 当たらなくても角度で擬似ヒット（小さい惑星対応）
+        if (!hit) {
+          const tmp = new THREE.Vector3();
+          let best = null, bestAng = 0.045;
+          allTargets.forEach(t => {
+            t.mesh.getWorldPosition(tmp);
+            const dir = tmp.clone().sub(camera.position).normalize();
+            const a = dir.angleTo(_ray.ray.direction);
+            if (a < bestAng) { bestAng = a; best = t; }
+          });
+          if (best) hit = best;
+        }
+        if (!hit) return;
+        if (typeof showPlanetInfo === 'function') {
+          try { showPlanetInfo(hit); } catch (err) { console.warn('planet info', err); }
+        }
+      }, true);
+    }
+
+    // ============================================================
     // 🌍 大気フレネル・リム発光 + 昼夜境界シャドウシェル
     // ============================================================
     const ATM_COLOR = {
