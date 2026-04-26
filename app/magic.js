@@ -23242,28 +23242,28 @@
   // ============================================================
   // 主要な16元素（覚えやすい・身近）
   const ELEMENTS_DATA = [
-    { sym: 'H',  name: '水素',     no: 1,  color: '#fff8c0', tag: '宇宙の8割',   desc: '最も軽く、最も多い元素。星の燃料。',                        ijins: ['lavoisier'], period:1, group:1,  eyes:'happy' },
-    { sym: 'He', name: 'ヘリウム', no: 2,  color: '#ffd0d0', tag: '風船・太陽',  desc: '太陽の光から先に発見された元素。',                           ijins: [],            period:1, group:18, eyes:'sleepy' },
-    { sym: 'C',  name: '炭素',     no: 6,  color: '#3a3a3a', tag: '生命の柱',    desc: '鉛筆の黒、ダイヤモンドの輝き。すべての有機物の主役。',       ijins: ['lavoisier'], period:2, group:14, eyes:'serious' },
-    { sym: 'N',  name: '窒素',     no: 7,  color: '#80c0e0', tag: '空気の8割',   desc: '大気の主役。タンパク質・DNA・肥料・爆薬の元素。',           ijins: ['lavoisier', 'nobel'], period:2, group:15, eyes:'wide' },
-    { sym: 'O',  name: '酸素',     no: 8,  color: '#80b0ff', tag: '呼吸',        desc: '生命の呼吸の元素。燃焼の正体。プリーストリーが発見。',       ijins: ['lavoisier'], period:2, group:16, eyes:'spark' },
-    { sym: 'Na', name: 'ナトリウム', no: 11, color: '#e8a880', tag: '塩の半分',   desc: '塩の片割れ。神経の信号にも使われる。',                       ijins: [], period:3, group:1,  eyes:'cute' },
-    { sym: 'Mg', name: 'マグネシウム', no: 12, color: '#a8e0a0', tag: '葉緑素', desc: '葉が緑なのはこの原子のおかげ。植物の心臓。',                   ijins: [], period:3, group:2,  eyes:'happy' },
-    { sym: 'Al', name: 'アルミ',     no: 13, color: '#d8d8e0', tag: '軽い金属',  desc: '軽く錆びにくい。1円玉、缶、飛行機。',                         ijins: [], period:3, group:13, eyes:'round' },
-    { sym: 'Si', name: 'ケイ素',     no: 14, color: '#a0a0c0', tag: '砂・半導体', desc: '砂の主成分。コンピュータの心臓。',                            ijins: ['steve_jobs'], period:3, group:14, eyes:'square' },
-    { sym: 'P',  name: 'リン',       no: 15, color: '#ff8060', tag: 'DNA・骨',   desc: '生命のATPと骨の主役。錬金術師ブラントが尿から発見。',         ijins: [], period:3, group:15, eyes:'glow' },
-    { sym: 'S',  name: '硫黄',       no: 16, color: '#e8d040', tag: '火山・卵',  desc: '火山の黄色、ゆで卵の匂い、火薬の三本柱の一つ。',              ijins: [], period:3, group:16, eyes:'angry' },
-    { sym: 'Cl', name: '塩素',       no: 17, color: '#80e080', tag: '塩のもう半分', desc: '黄緑色の毒ガス。塩・漂白・水道の殺菌。',                    ijins: [], period:3, group:17, eyes:'cross' },
-    { sym: 'Ca', name: 'カルシウム', no: 20, color: '#f0e8d0', tag: '骨・歯',    desc: '牛乳に含まれる。骨と歯と貝殻の主成分。',                       ijins: [], period:4, group:2,  eyes:'round' },
-    { sym: 'Fe', name: '鉄',         no: 26, color: '#a0a0a0', tag: '血と剣',    desc: '血のヘムを作り、文明を支える金属。',                          ijins: [], period:4, group:8,  eyes:'serious' },
-    { sym: 'Cu', name: '銅',         no: 29, color: '#c08858', tag: '電線・10円', desc: '青銅器時代の主役。電気を最も流す金属。',                      ijins: [], period:4, group:11, eyes:'wink' },
-    { sym: 'Ag', name: '銀',         no: 47, color: '#d8d8d8', tag: '鏡・銀器',  desc: '月の金属。鏡・写真・抗菌・通貨。',                            ijins: [], period:5, group:11, eyes:'oval' },
-    { sym: 'Au', name: '金',         no: 79, color: '#ffd860', tag: '永遠の金',  desc: '腐蝕しない美しさ。古代から現代まで人を魅了する。',            ijins: ['newton'], period:6, group:11, eyes:'star' },
-    { sym: 'Hg', name: '水銀',       no: 80, color: '#a8c0d8', tag: '液体金属',  desc: '常温で液体になる唯一の金属。錬金術師の夢、ニュートンを毒したかも。', ijins: ['newton'], period:6, group:12, eyes:'sleepy' },
-    { sym: 'Pb', name: '鉛',         no: 82, color: '#5a6878', tag: 'ローマの水道', desc: '重く、毒、それでも便利だった古代の万能金属。',                ijins: [], period:6, group:14, eyes:'tired' },
-    { sym: 'U',  name: 'ウラン',     no: 92, color: '#80c080', tag: '原子力',    desc: 'E=mc²の現実化。原発と原爆の心臓。',                            ijins: ['einstein', 'feynman', 'heisenberg'], period:9, group:6, eyes:'angry' },
-    { sym: 'Ra', name: 'ラジウム',   no: 88, color: '#80ffc0', tag: '光る毒',   desc: 'マリ・キュリーが取り出した光る元素。',                        ijins: ['curie'], period:7, group:2, eyes:'glow' },
-    { sym: 'Po', name: 'ポロニウム', no: 84, color: '#a080ff', tag: '祖国の名',  desc: 'キュリー夫妻が祖国ポーランドにちなんで命名。',                ijins: ['curie'], period:6, group:16, eyes:'spark' },
+    { sym: 'H',  name: '水素',     no: 1,  color: '#fff8c0', tag: '宇宙の8割',   desc: '最も軽く、最も多い元素。星の燃料。',                        ijins: ['lavoisier'], period:1, group:1,  eyes:'happy',   voice:'やぁ、僕は水素！宇宙で一番軽くて、星の燃料なんだ ✨' },
+    { sym: 'He', name: 'ヘリウム', no: 2,  color: '#ffd0d0', tag: '風船・太陽',  desc: '太陽の光から先に発見された元素。',                           ijins: [],            period:1, group:18, eyes:'sleepy', voice:'…ぼくはヘリウム…眠いけど、風船を浮かせるのは僕だよ 💤' },
+    { sym: 'C',  name: '炭素',     no: 6,  color: '#3a3a3a', tag: '生命の柱',    desc: '鉛筆の黒、ダイヤモンドの輝き。すべての有機物の主役。',       ijins: ['lavoisier'], period:2, group:14, eyes:'serious', voice:'私は炭素。鉛筆もダイヤも私からできている。生命の柱だ。' },
+    { sym: 'N',  name: '窒素',     no: 7,  color: '#80c0e0', tag: '空気の8割',   desc: '大気の主役。タンパク質・DNA・肥料・爆薬の元素。',           ijins: ['lavoisier', 'nobel'], period:2, group:15, eyes:'wide',  voice:'オレは窒素！空気の8割はオレ、肥料も爆薬もオレから生まれる！' },
+    { sym: 'O',  name: '酸素',     no: 8,  color: '#80b0ff', tag: '呼吸',        desc: '生命の呼吸の元素。燃焼の正体。プリーストリーが発見。',       ijins: ['lavoisier'], period:2, group:16, eyes:'spark',  voice:'わたしは酸素 ✨ 呼吸も燃焼も、わたしがいないと始まらないの' },
+    { sym: 'Na', name: 'ナトリウム', no: 11, color: '#e8a880', tag: '塩の半分',   desc: '塩の片割れ。神経の信号にも使われる。',                       ijins: [], period:3, group:1,  eyes:'cute',    voice:'ぼくナトリウム！塩のはんぶん、神経のしんごうにもなるよ' },
+    { sym: 'Mg', name: 'マグネシウム', no: 12, color: '#a8e0a0', tag: '葉緑素', desc: '葉が緑なのはこの原子のおかげ。植物の心臓。',                   ijins: [], period:3, group:2,  eyes:'happy',   voice:'私はマグネシウム！葉っぱが緑なのは私のおかげだよ 🌿' },
+    { sym: 'Al', name: 'アルミ',     no: 13, color: '#d8d8e0', tag: '軽い金属',  desc: '軽く錆びにくい。1円玉、缶、飛行機。',                         ijins: [], period:3, group:13, eyes:'round',   voice:'アルミです。軽くて錆びない、缶も飛行機もぼくの仕事です' },
+    { sym: 'Si', name: 'ケイ素',     no: 14, color: '#a0a0c0', tag: '砂・半導体', desc: '砂の主成分。コンピュータの心臓。',                            ijins: ['steve_jobs'], period:3, group:14, eyes:'square', voice:'ボクはケイ素。砂の主成分、コンピュータの心臓でもあるんだ' },
+    { sym: 'P',  name: 'リン',       no: 15, color: '#ff8060', tag: 'DNA・骨',   desc: '生命のATPと骨の主役。錬金術師ブラントが尿から発見。',         ijins: [], period:3, group:15, eyes:'glow',    voice:'ピカッ！僕はリンだよ。ATPも骨も、夜光も僕の仕事 ✨' },
+    { sym: 'S',  name: '硫黄',       no: 16, color: '#e8d040', tag: '火山・卵',  desc: '火山の黄色、ゆで卵の匂い、火薬の三本柱の一つ。',              ijins: [], period:3, group:16, eyes:'angry',   voice:'硫黄じゃ！火山の黄色、ゆで卵の匂い、火薬の三本柱の一つ！' },
+    { sym: 'Cl', name: '塩素',       no: 17, color: '#80e080', tag: '塩のもう半分', desc: '黄緑色の毒ガス。塩・漂白・水道の殺菌。',                    ijins: [], period:3, group:17, eyes:'cross',   voice:'×塩素…毒ガス…でも水道の殺菌で命を救っているよ' },
+    { sym: 'Ca', name: 'カルシウム', no: 20, color: '#f0e8d0', tag: '骨・歯',    desc: '牛乳に含まれる。骨と歯と貝殻の主成分。',                       ijins: [], period:4, group:2,  eyes:'round',   voice:'カルシウム！骨と歯と貝殻、生命を支える堅い味方' },
+    { sym: 'Fe', name: '鉄',         no: 26, color: '#a0a0a0', tag: '血と剣',    desc: '血のヘムを作り、文明を支える金属。',                          ijins: [], period:4, group:8,  eyes:'serious', voice:'鉄だ。血のヘムを作り、文明の剣を作る。' },
+    { sym: 'Cu', name: '銅',         no: 29, color: '#c08858', tag: '電線・10円', desc: '青銅器時代の主役。電気を最も流す金属。',                      ijins: [], period:4, group:11, eyes:'wink',   voice:'銅だよ ;) 電気を最も流す、青銅器時代の主役だった！' },
+    { sym: 'Ag', name: '銀',         no: 47, color: '#d8d8d8', tag: '鏡・銀器',  desc: '月の金属。鏡・写真・抗菌・通貨。',                            ijins: [], period:5, group:11, eyes:'oval',    voice:'銀よ。月の金属、鏡や写真、抗菌にも使われるの' },
+    { sym: 'Au', name: '金',         no: 79, color: '#ffd860', tag: '永遠の金',  desc: '腐蝕しない美しさ。古代から現代まで人を魅了する。',            ijins: ['newton'], period:6, group:11, eyes:'star',  voice:'✦ 私が金です。古代から永遠に変わらず、人を魅了する元素 ✦' },
+    { sym: 'Hg', name: '水銀',       no: 80, color: '#a8c0d8', tag: '液体金属',  desc: '常温で液体になる唯一の金属。錬金術師の夢、ニュートンを毒したかも。', ijins: ['newton'], period:6, group:12, eyes:'sleepy', voice:'…ぼくは水銀…常温で液体になる唯一の金属…ねむい…' },
+    { sym: 'Pb', name: '鉛',         no: 82, color: '#5a6878', tag: 'ローマの水道', desc: '重く、毒、それでも便利だった古代の万能金属。',                ijins: [], period:6, group:14, eyes:'tired',   voice:'鉛…重くて毒…でも古代から便利だったんだ…はぁ…' },
+    { sym: 'U',  name: 'ウラン',     no: 92, color: '#80c080', tag: '原子力',    desc: 'E=mc²の現実化。原発と原爆の心臓。',                            ijins: ['einstein', 'feynman', 'heisenberg'], period:9, group:6, eyes:'angry', voice:'ウランだ！E=mc²の現実、原発も原爆もオレが心臓だ！' },
+    { sym: 'Ra', name: 'ラジウム',   no: 88, color: '#80ffc0', tag: '光る毒',   desc: 'マリ・キュリーが取り出した光る元素。',                        ijins: ['curie'], period:7, group:2, eyes:'glow',    voice:'ラジウム ✨ 私が光るのは放射線、キュリー夫人が見つけてくれたの' },
+    { sym: 'Po', name: 'ポロニウム', no: 84, color: '#a080ff', tag: '祖国の名',  desc: 'キュリー夫妻が祖国ポーランドにちなんで命名。',                ijins: ['curie'], period:6, group:16, eyes:'spark', voice:'ポロニウム ✦ ポーランドにちなんで名付けられた、祖国の元素' },
   ];
   // 元素の目（顔）を描くSVG
   function elFaceSvg(eyes) {
@@ -23288,23 +23288,23 @@
   }
   // 化合物カード — A + B = C 方式で覚えやすく
   const COMPOUNDS_DATA = [
-    { formula: 'H₂O',     name: '水',         parts: ['H', 'O'],         desc: '命の溶媒。地球の青さ、人体の60%。',                           year: '1783', by: 'ラヴォアジエ', history: '古代から最も身近な物質だったが、1783年にラヴォアジエが水素と酸素から水を合成し『水は元素ではなく化合物』だと証明した。', ijins: ['lavoisier'] },
-    { formula: 'O₂',      name: '酸素',       parts: ['O', 'O'],         desc: '呼吸の元素。植物が光合成で作る。',                            year: '1774', by: 'プリーストリー／ラヴォアジエ', history: '1774年プリーストリーが酸化水銀から取り出し、ラヴォアジエが1777年に「酸素」と命名。フロギストン説が崩れた瞬間。', ijins: ['lavoisier'] },
-    { formula: 'CO₂',     name: '二酸化炭素', parts: ['C', 'O'],         desc: '吐く息。植物の食料。気候変動の主役。',                        year: '1754', by: 'ヘルモント／ブラック', history: '17世紀にヘルモントが「森のガス」と呼び、1754年ブラックが石灰石から取り出して定量的に研究。気候問題の主役へ。', ijins: ['lavoisier'] },
-    { formula: 'NaCl',    name: '食塩',       parts: ['Na', 'Cl'],       desc: '海の塩、食卓の塩。生命の電解質。',                            year: '太古', by: '人類', history: '人類最古の調味料・防腐剤。古代ローマ兵の給料(salary)はsal=塩から。1807年デービーが電気分解でナトリウムを取り出した。', ijins: [] },
-    { formula: 'NH₃',     name: 'アンモニア', parts: ['N', 'H'],         desc: '刺激臭。肥料の母、世界人口を支える化合物。',                  year: '1909', by: 'ハーバー・ボッシュ', history: '1774年プリーストリーが単離。1909年ハーバーが空気の窒素から合成、ボッシュが工業化。20世紀の人口爆発を支えた化学。', ijins: [] },
-    { formula: 'CH₄',     name: 'メタン',     parts: ['C', 'H'],         desc: 'ガスコンロの炎。最もシンプルな炭化水素。',                    year: '1776', by: 'ヴォルタ', history: '1776年ヴォルタがマッジョーレ湖の沼から立ち上るガスを採取し『燃える空気』として研究。今は天然ガスの主成分。', ijins: [] },
-    { formula: 'C₆H₁₂O₆', name: 'ブドウ糖',   parts: ['C', 'H', 'O'],    desc: '甘いエネルギー。生命の燃料。',                                year: '1891', by: 'フィッシャー', history: '1792年ローヴィッツがブドウから結晶化。1891年エミール・フィッシャーが立体構造を決定し、糖化学の基礎を築いた。', ijins: [] },
-    { formula: 'C₂H₅OH',  name: 'エタノール', parts: ['C', 'H', 'O'],    desc: 'お酒の中身。医薬品の溶媒。',                                  year: '9世紀', by: 'ジャービル等のイスラム錬金術師', history: '醸造は新石器時代から。9世紀イスラム錬金術師たちが蒸留技術で純度を高めた。alcohol(アルコール)はアラビア語起源。', ijins: [] },
-    { formula: 'Fe₂O₃',   name: '鉄錆',       parts: ['Fe', 'O'],        desc: '赤さび。文明が朽ちる音、しかし新しい鉄に戻れる。',            year: '太古', by: '自然', history: 'ベンガラ顔料として旧石器時代の洞窟壁画から使われている。古代の赤い大地・赤い顔料はだいたいこれ。', ijins: [] },
-    { formula: 'CaCO₃',   name: '石灰岩',     parts: ['Ca', 'C', 'O'],   desc: '貝殻、サンゴ、白亜の大地。地球の炭素貯蔵庫。',                year: '太古', by: '生物', history: '海の生物が殻として作り、海底に積もって石灰岩・大理石になった。エジプトのピラミッドもこの石。', ijins: [] },
-    { formula: 'SiO₂',    name: '石英・ガラス', parts: ['Si', 'O'],      desc: '砂の主成分、水晶、ガラス、レンズ。',                          year: '紀元前3000', by: 'メソポタミア／エジプト', history: '紀元前3000年頃にガラスが作られ、ローマで透明な窓ガラスへ。今は半導体ウエハ・光ファイバとして文明の根幹。', ijins: [] },
-    { formula: 'H₂SO₄',   name: '硫酸',       parts: ['H', 'S', 'O'],    desc: 'バッテリーの中身。工業の血液。',                              year: '17世紀', by: 'グラウバー', history: '8世紀イスラムのジャービルが言及、17世紀ヨハン・グラウバーが量産法を確立。「ある国の硫酸生産量はその国の工業力を表す」と言われた。', ijins: [] },
-    { formula: 'HCl',     name: '塩酸',       parts: ['H', 'Cl'],        desc: '胃酸の正体。化学の万能酸。',                                  year: '1810', by: 'デービー', history: '中世錬金術師たちが「塩の精」として知っていた。1810年デービーが水素と塩素からなることを確定し、組成が確立した。', ijins: [] },
-    { formula: 'Al₂O₃',   name: 'アルミナ',   parts: ['Al', 'O'],        desc: 'ボーキサイトの主成分。アルミ製品の出発点。',                  year: '1827', by: 'ヴェーラー', history: '1827年ヴェーラーがアルミナからアルミニウム金属を単離。それまでアルミは金より高価で、ナポレオン3世は来賓にだけアルミの食器を出した。', ijins: [] },
-    { formula: 'NaOH',    name: '苛性ソーダ', parts: ['Na', 'O', 'H'],   desc: '石鹸を作る強アルカリ。',                                      year: '1807', by: 'デービー', history: '古代から灰汁として鹸化(石鹸作り)に使われた。1807年デービーが電気分解で純粋なナトリウムを取り出し、組成が解明された。', ijins: [] },
-    { formula: 'CaO',     name: '生石灰',     parts: ['Ca', 'O'],        desc: '建築・農業に。水で消すと熱を放つ。',                          year: '太古', by: '人類', history: '紀元前7000年の中東でモルタル・漆喰として使われた。ローマのコンクリートもこれ。水と反応して大量の熱を放出する。', ijins: [] },
-    { formula: 'DNA',     name: '遺伝子',     parts: ['C', 'H', 'N', 'O', 'P'], desc: '生命の言葉。アデニン・グアニン・シトシン・チミンの長い鎖。', year: '1953', by: 'ワトソン・クリック', history: '1869年ミーシャーが膿の中から発見、当初は注目されず。1953年ワトソン・クリックが二重らせん構造を解明、ロザリンド・フランクリンのX線写真が決定打となった。', ijins: ['darwin', 'mendel'] },
+    { formula: 'H₂O',     name: '水',         parts: ['H', 'O'],         desc: '命の溶媒。地球の青さ、人体の60%。',                           year: '1783', by: 'ラヴォアジエ', history: '古代から最も身近な物質だったが、1783年にラヴォアジエが水素と酸素から水を合成し『水は元素ではなく化合物』だと証明した。', uses:['💧 飲料水','🍳 料理','🧊 冷却・冷凍','⚡ 水力発電','🧪 工業の溶媒'], ijins: ['lavoisier'] },
+    { formula: 'O₂',      name: '酸素',       parts: ['O', 'O'],         desc: '呼吸の元素。植物が光合成で作る。',                            year: '1774', by: 'プリーストリー／ラヴォアジエ', history: '1774年プリーストリーが酸化水銀から取り出し、ラヴォアジエが1777年に「酸素」と命名。フロギストン説が崩れた瞬間。', uses:['🫁 呼吸','🔥 燃焼','🏥 医療(酸素吸入)','🚀 ロケット燃料','🔧 溶接'], ijins: ['lavoisier'] },
+    { formula: 'CO₂',     name: '二酸化炭素', parts: ['C', 'O'],         desc: '吐く息。植物の食料。気候変動の主役。',                        year: '1754', by: 'ヘルモント／ブラック', history: '17世紀にヘルモントが「森のガス」と呼び、1754年ブラックが石灰石から取り出して定量的に研究。気候問題の主役へ。', uses:['🥤 炭酸飲料','🧯 消火器','🧊 ドライアイス','🌳 光合成の材料'], ijins: ['lavoisier'] },
+    { formula: 'NaCl',    name: '食塩',       parts: ['Na', 'Cl'],       desc: '海の塩、食卓の塩。生命の電解質。',                            year: '太古', by: '人類', history: '人類最古の調味料・防腐剤。古代ローマ兵の給料(salary)はsal=塩から。1807年デービーが電気分解でナトリウムを取り出した。', uses:['🍳 調味料','🥩 防腐','❄️ 融雪','🧪 塩素・ナトリウムの原料'], ijins: [] },
+    { formula: 'NH₃',     name: 'アンモニア', parts: ['N', 'H'],         desc: '刺激臭。肥料の母、世界人口を支える化合物。',                  year: '1909', by: 'ハーバー・ボッシュ', history: '1774年プリーストリーが単離。1909年ハーバーが空気の窒素から合成、ボッシュが工業化。20世紀の人口爆発を支えた化学。', uses:['🌾 肥料(食料を支える)','🧊 冷媒','🧪 硝酸・尿素の原料','🧼 洗剤'], ijins: [] },
+    { formula: 'CH₄',     name: 'メタン',     parts: ['C', 'H'],         desc: 'ガスコンロの炎。最もシンプルな炭化水素。',                    year: '1776', by: 'ヴォルタ', history: '1776年ヴォルタがマッジョーレ湖の沼から立ち上るガスを採取し『燃える空気』として研究。今は天然ガスの主成分。', uses:['🔥 都市ガス','🍳 ガスコンロ','⚡ 火力発電','🧪 化学工業原料'], ijins: [] },
+    { formula: 'C₆H₁₂O₆', name: 'ブドウ糖',   parts: ['C', 'H', 'O'],    desc: '甘いエネルギー。生命の燃料。',                                year: '1891', by: 'フィッシャー', history: '1792年ローヴィッツがブドウから結晶化。1891年エミール・フィッシャーが立体構造を決定し、糖化学の基礎を築いた。', uses:['🍞 パン・お菓子','🍇 甘味料','🍶 発酵(酒・パン)','💉 点滴'], ijins: [] },
+    { formula: 'C₂H₅OH',  name: 'エタノール', parts: ['C', 'H', 'O'],    desc: 'お酒の中身。医薬品の溶媒。',                                  year: '9世紀', by: 'ジャービル等のイスラム錬金術師', history: '醸造は新石器時代から。9世紀イスラム錬金術師たちが蒸留技術で純度を高めた。alcohol(アルコール)はアラビア語起源。', uses:['🍷 お酒','🧴 消毒液','⛽ バイオ燃料','🧪 工業溶媒'], ijins: [] },
+    { formula: 'Fe₂O₃',   name: '鉄錆',       parts: ['Fe', 'O'],        desc: '赤さび。文明が朽ちる音、しかし新しい鉄に戻れる。',            year: '太古', by: '自然', history: 'ベンガラ顔料として旧石器時代の洞窟壁画から使われている。古代の赤い大地・赤い顔料はだいたいこれ。', uses:['🎨 ベンガラ顔料','🪨 製鉄の原料','🔥 テルミット反応','🧲 磁性体'], ijins: [] },
+    { formula: 'CaCO₃',   name: '石灰岩',     parts: ['Ca', 'C', 'O'],   desc: '貝殻、サンゴ、白亜の大地。地球の炭素貯蔵庫。',                year: '太古', by: '生物', history: '海の生物が殻として作り、海底に積もって石灰岩・大理石になった。エジプトのピラミッドもこの石。', uses:['🏛 大理石・建材','🧱 セメント','📝 チョーク','💊 カルシウム錠剤'], ijins: [] },
+    { formula: 'SiO₂',    name: '石英・ガラス', parts: ['Si', 'O'],      desc: '砂の主成分、水晶、ガラス、レンズ。',                          year: '紀元前3000', by: 'メソポタミア／エジプト', history: '紀元前3000年頃にガラスが作られ、ローマで透明な窓ガラスへ。今は半導体ウエハ・光ファイバとして文明の根幹。', uses:['🪟 窓ガラス・容器','🔭 レンズ','💻 半導体ウエハ','📡 光ファイバ'], ijins: [] },
+    { formula: 'H₂SO₄',   name: '硫酸',       parts: ['H', 'S', 'O'],    desc: 'バッテリーの中身。工業の血液。',                              year: '17世紀', by: 'グラウバー', history: '8世紀イスラムのジャービルが言及、17世紀ヨハン・グラウバーが量産法を確立。「ある国の硫酸生産量はその国の工業力を表す」と言われた。', uses:['🔋 自動車バッテリー','🌾 肥料製造','🧪 化学工業の万能酸','🧴 洗浄剤'], ijins: [] },
+    { formula: 'HCl',     name: '塩酸',       parts: ['H', 'Cl'],        desc: '胃酸の正体。化学の万能酸。',                                  year: '1810', by: 'デービー', history: '中世錬金術師たちが「塩の精」として知っていた。1810年デービーが水素と塩素からなることを確定し、組成が確立した。', uses:['🍔 胃酸(消化)','🧪 塩化ビニル原料','🧼 金属洗浄','💊 医薬品合成'], ijins: [] },
+    { formula: 'Al₂O₃',   name: 'アルミナ',   parts: ['Al', 'O'],        desc: 'ボーキサイトの主成分。アルミ製品の出発点。',                  year: '1827', by: 'ヴェーラー', history: '1827年ヴェーラーがアルミナからアルミニウム金属を単離。それまでアルミは金より高価で、ナポレオン3世は来賓にだけアルミの食器を出した。', uses:['🧱 セラミックス','✨ 研磨剤','🥫 アルミ製錬の原料','💎 ルビー・サファイア'], ijins: [] },
+    { formula: 'NaOH',    name: '苛性ソーダ', parts: ['Na', 'O', 'H'],   desc: '石鹸を作る強アルカリ。',                                      year: '1807', by: 'デービー', history: '古代から灰汁として鹸化(石鹸作り)に使われた。1807年デービーが電気分解で純粋なナトリウムを取り出し、組成が解明された。', uses:['🧼 石鹸','📄 紙パルプ','🚿 排水管洗浄','🧪 化学工業'], ijins: [] },
+    { formula: 'CaO',     name: '生石灰',     parts: ['Ca', 'O'],        desc: '建築・農業に。水で消すと熱を放つ。',                          year: '太古', by: '人類', history: '紀元前7000年の中東でモルタル・漆喰として使われた。ローマのコンクリートもこれ。水と反応して大量の熱を放出する。', uses:['🏛 漆喰・モルタル','🪨 製鉄','🌾 土壌改良','🍱 弁当の発熱剤'], ijins: [] },
+    { formula: 'DNA',     name: '遺伝子',     parts: ['C', 'H', 'N', 'O', 'P'], desc: '生命の言葉。アデニン・グアニン・シトシン・チミンの長い鎖。', year: '1953', by: 'ワトソン・クリック', history: '1869年ミーシャーが膿の中から発見、当初は注目されず。1953年ワトソン・クリックが二重らせん構造を解明、ロザリンド・フランクリンのX線写真が決定打となった。', uses:['🧬 遺伝の伝達','🧫 PCR・遺伝子検査','💊 遺伝子治療','🌽 遺伝子組換作物'], ijins: ['darwin', 'mendel'] },
   ];
   // 反応カード — これとこれが合わさるとこうなる
   const REACTIONS_DATA = [
@@ -23330,14 +23330,10 @@
     }
     ov.innerHTML = `
       <button class="cp-close" aria-label="閉じる">×</button>
-      <div class="cp-wrap">
-        <div class="cp-head">
-          <div class="cp-eyebrow">E L E M E N T S</div>
-          <div class="cp-title">元 素</div>
-          <div class="cp-sub">
-            身近な物のほとんどは、たった20種類くらいの元素でできている。<br>
-            「H ＋ O ＝ H₂O（水）」みたいに、組み合わせで世界は作られる。
-          </div>
+      <div class="cp-wrap cp-wrap-lab">
+        <div class="cp-head cp-head-mini">
+          <div class="cp-title">元 素 ラ ボ</div>
+          <div class="cp-sub-mini">下のバーから引っ張って、組み合わせて遊ぼう</div>
         </div>
 
         <div class="el-lab2">
@@ -23365,7 +23361,7 @@
           </div>
         </div>
 
-        <div class="el-section-head"><span class="el-sec-label">元 素</span><span class="el-sec-sub">— 覚えておくと世界が読める ${ELEMENTS_DATA.length} 種 —</span></div>
+        <div class="el-section-head"><span class="el-sec-label">元 素 図 鑑</span><span class="el-sec-sub">— ${ELEMENTS_DATA.length}種 — 顔をクリックで詳しく —</span></div>
         <div class="el-grid">
           ${ELEMENTS_DATA.map(el => `
             <div class="el-cell" style="--el-color:${el.color}" data-el="${el.sym}">
@@ -23508,6 +23504,7 @@
       board.appendChild(dom);
       playSfx('place');
       const node = { id, kind: 'el', sym, x, y, dom };
+      setTimeout(() => showElementInfo(el, node, { voice: true }), 80);
       bnodes.push(node);
       attachNodeHandlers(node);
       boardEmpty.style.display = 'none';
@@ -23564,9 +23561,14 @@
       bubbleEl = b;
     }
     function showCompoundInfo(c, isNew, node) {
+      const usesHtml = c.uses && c.uses.length ? `
+        <div class="el-bubble-uses-h">✨ こんなものに使われる</div>
+        <div class="el-bubble-uses">${c.uses.map(u => `<span class="el-bubble-use">${u}</span>`).join('')}</div>
+      ` : '';
       const html = `
         <div class="el-bubble-title"><span class="el-bubble-formula">${c.formula}</span> ${c.name}${isNew ? ' <span class="el-bubble-badge">NEW!</span>' : ''}</div>
         <div class="el-bubble-desc">${c.desc}</div>
+        ${usesHtml}
         <div class="el-bubble-history">
           <div class="el-bubble-meta">
             <span class="el-bubble-year">${c.year || '—'}</span>
@@ -23578,8 +23580,16 @@
       `;
       if (node) showBubble(node, html);
     }
-    function showElementInfo(el, node) {
-      // 合う元素ヒント：この元素を含む化合物を最大4つ
+    function scrollToZukan(sym) {
+      const cell = ov.querySelector(`.el-cell[data-el="${sym}"]`);
+      if (!cell) return;
+      cell.scrollIntoView({ behavior:'smooth', block:'center' });
+      cell.classList.add('zukan-highlight');
+      setTimeout(() => cell.classList.remove('zukan-highlight'), 2400);
+      cell.click();
+    }
+    function showElementInfo(el, node, opts) {
+      const showVoice = opts && opts.voice;
       const partners = COMPOUNDS_DATA.filter(c => c.parts.includes(el.sym)).slice(0, 4);
       const hintHtml = partners.length ? `
         <div class="el-bubble-hint-h">🤝 合う元素</div>
@@ -23590,14 +23600,32 @@
           }).join('')}
         </div>
       ` : '';
-      const html = `
+      const voiceHtml = (showVoice && el.voice) ? `<div class="el-bubble-voice">${el.voice}</div>` : '';
+      const fullHtml = `
         <div class="el-bubble-title"><span class="el-bubble-sym" style="--c:${el.color}">${el.sym}</span> ${el.name} <span class="el-bubble-no">No.${el.no}</span></div>
         <div class="el-bubble-tag">${el.tag}</div>
         <div class="el-bubble-desc">${el.desc}</div>
         ${hintHtml}
         ${el.ijins && el.ijins.length ? `<div class="el-bi-ijins">${el.ijins.map(id => `<button class="cnp-pill" data-id="${id}">${_resolveIjinName(id)}</button>`).join('')}</div>` : ''}
+        <button class="el-bubble-zukan-btn" data-sym="${el.sym}" type="button">📖 図鑑で詳しく見る</button>
       `;
-      if (node) showBubble(node, html);
+      const html = showVoice
+        ? `${voiceHtml}<button class="el-bubble-more" type="button">＋ 詳しく見る</button><div class="el-bubble-detail" hidden>${fullHtml}</div>`
+        : fullHtml;
+      if (!node) return;
+      showBubble(node, html);
+      const moreBtn = bubbleEl && bubbleEl.querySelector('.el-bubble-more');
+      if (moreBtn) {
+        moreBtn.addEventListener('click', () => {
+          const det = bubbleEl.querySelector('.el-bubble-detail');
+          if (det) { det.hidden = false; moreBtn.remove(); }
+        });
+      }
+      if (bubbleEl) {
+        bubbleEl.querySelectorAll('.el-bubble-zukan-btn').forEach(btn => {
+          btn.addEventListener('click', () => { closeBubble(); scrollToZukan(btn.dataset.sym); });
+        });
+      }
     }
     function checkSelectionMatch() {
       const sel = bnodes.filter(n => selected.has(n.id) && n.kind === 'el');
@@ -23877,24 +23905,24 @@
 
   // ビジネスのピース（顔の代わりに絵文字アイコン）
   const BIZ_PIECES = [
-    { id:'product',     name:'商品',       icon:'🎁', color:'#ff9090' },
-    { id:'service',     name:'サービス',   icon:'🛎️', color:'#80c0ff' },
-    { id:'subscription',name:'月額',       icon:'📅', color:'#a0e0a0' },
-    { id:'oneshot',     name:'売り切り',   icon:'🛒', color:'#ffd060' },
-    { id:'free',        name:'無料',       icon:'🆓', color:'#80e0e0' },
-    { id:'ads',         name:'広告',       icon:'📺', color:'#c080ff' },
-    { id:'commission',  name:'手数料',     icon:'💰', color:'#ffaa40' },
-    { id:'matching',    name:'マッチング', icon:'🤝', color:'#80ffd0' },
-    { id:'place',       name:'場所',       icon:'🏢', color:'#a0a0c0' },
-    { id:'data',        name:'データ',     icon:'📊', color:'#80b0ff' },
-    { id:'ai',          name:'AI',         icon:'🤖', color:'#d8d8e0' },
-    { id:'community',   name:'コミュニティ', icon:'👥', color:'#ffa0c0' },
-    { id:'education',   name:'教育',       icon:'🎓', color:'#ffe080' },
-    { id:'used',        name:'中古',       icon:'♻️', color:'#a0d0a0' },
-    { id:'ugc',         name:'ユーザー投稿', icon:'✍️', color:'#ffc0ff' },
-    { id:'rental',      name:'レンタル',   icon:'🔄', color:'#c0c080' },
-    { id:'download',    name:'DL',         icon:'📥', color:'#a0c0ff' },
-    { id:'license',     name:'ライセンス', icon:'📜', color:'#e0c080' },
+    { id:'product',     name:'商品',       icon:'🎁', color:'#ff9090', desc:'形のある物。作って売れる。',                     voice:'やぁ僕は商品！形があるからお店で売れるんだ 🎁' },
+    { id:'service',     name:'サービス',   icon:'🛎️', color:'#80c0ff', desc:'形のない価値。体験や時間。',                     voice:'私はサービス。形はないけど、体験や時間を届けるの 🛎️' },
+    { id:'subscription',name:'月額',       icon:'📅', color:'#a0e0a0', desc:'毎月の定額で使い続けてもらう。',                 voice:'月額です！毎月ちょっとずつ、ずっと使ってもらえる 📅' },
+    { id:'oneshot',     name:'売り切り',   icon:'🛒', color:'#ffd060', desc:'一度の支払いで完結する。',                       voice:'売り切り！一回ぽんとお金もらって、はい終了 🛒' },
+    { id:'free',        name:'無料',       icon:'🆓', color:'#80e0e0', desc:'お金を取らない。広告か上位課金が裏にある。',     voice:'ぼく無料！…でも僕の裏には誰かが払ってる仕組みがある 🆓' },
+    { id:'ads',         name:'広告',       icon:'📺', color:'#c080ff', desc:'広告主から課金、利用者は無料。',                 voice:'広告です。利用者ではなく広告主からお金をいただく 📺' },
+    { id:'commission',  name:'手数料',     icon:'💰', color:'#ffaa40', desc:'仲介・取引のたびに少し取る。',                   voice:'💰 手数料！取引ごとに少しずつ、塵も積もれば山となる' },
+    { id:'matching',    name:'マッチング', icon:'🤝', color:'#80ffd0', desc:'売り手と買い手を出会わせる。',                   voice:'マッチング 🤝 ぼくは出会いを作るのが仕事だよ' },
+    { id:'place',       name:'場所',       icon:'🏢', color:'#a0a0c0', desc:'物理空間を提供する。',                           voice:'場所です 🏢 オフィス、店舗、不動産…空間を提供する' },
+    { id:'data',        name:'データ',     icon:'📊', color:'#80b0ff', desc:'情報の蓄積。21世紀の石油。',                     voice:'データだよ 📊 21世紀の石油、私を持つ者が勝つ' },
+    { id:'ai',          name:'AI',         icon:'🤖', color:'#d8d8e0', desc:'機械学習で自動化・予測。',                       voice:'🤖 AIです。データを食べて、賢くなって、自動でやる' },
+    { id:'community',   name:'コミュニティ', icon:'👥', color:'#ffa0c0', desc:'同じ価値観の人が集まる場。',                   voice:'コミュニティ 👥 同じ熱量の人が集まると、ブランドが生まれる' },
+    { id:'education',   name:'教育',       icon:'🎓', color:'#ffe080', desc:'人を育てる、スキルを伝える。',                   voice:'教育です 🎓 人が成長すると、お金じゃない価値も生まれる' },
+    { id:'used',        name:'中古',       icon:'♻️', color:'#a0d0a0', desc:'一度使われた物を再循環させる。',                 voice:'♻️ 中古！捨てるはずだったものに、もう一度命を' },
+    { id:'ugc',         name:'ユーザー投稿', icon:'✍️', color:'#ffc0ff', desc:'みんなが作って、みんなが見る。',               voice:'✍️ ユーザー投稿。みんなが作って、コンテンツが無限に増える' },
+    { id:'rental',      name:'レンタル',   icon:'🔄', color:'#c0c080', desc:'所有せず一定期間借りる。',                       voice:'🔄 レンタル！持つほどではないけど、ちょっと使いたい時に' },
+    { id:'download',    name:'DL',         icon:'📥', color:'#a0c0ff', desc:'デジタルで届ける、在庫ゼロ。',                   voice:'DLでーす 📥 在庫ゼロ、一瞬で世界中に届く' },
+    { id:'license',     name:'ライセンス', icon:'📜', color:'#e0c080', desc:'権利を貸し、使ってもらう。',                     voice:'📜 ライセンス。権利を貸し出して、使うたびに収入' },
   ];
   // ビジネスモデル図鑑：ピースの組合せ → 名前付きモデル
   const BIZ_MODELS = [
@@ -23930,14 +23958,10 @@
     }
     ov.innerHTML = `
       <button class="cp-close" aria-label="閉じる">×</button>
-      <div class="cp-wrap">
-        <div class="cp-head">
-          <div class="cp-eyebrow">B U S I N E S S</div>
-          <div class="cp-title">ビジネス</div>
-          <div class="cp-sub">
-            ビジネスは「ピースの組み合わせ」でできている。<br>
-            商品＋月額、無料＋広告、マッチング＋手数料……。組合せが新しいモデルを生む。
-          </div>
+      <div class="cp-wrap cp-wrap-lab">
+        <div class="cp-head cp-head-mini">
+          <div class="cp-title">ビジネスラボ</div>
+          <div class="cp-sub-mini">下のバーから引っ張って、組み合わせてみよう</div>
         </div>
 
         <div class="el-lab2 biz-lab">
@@ -23960,6 +23984,17 @@
               `).join('')}
             </div>
           </div>
+        </div>
+
+        <div class="el-section-head"><span class="el-sec-label">ピース図鑑</span><span class="el-sec-sub">— ${BIZ_PIECES.length}種 — タップで紹介 —</span></div>
+        <div class="biz-piece-zukan">
+          ${BIZ_PIECES.map(p => `
+            <div class="biz-piece-card" data-piece="${p.id}" style="--c:${p.color}">
+              <div class="biz-piece-face">${p.icon}</div>
+              <div class="biz-piece-name">${p.name}</div>
+              <div class="biz-piece-desc">${p.desc}</div>
+            </div>
+          `).join('')}
         </div>
 
         <div class="el-section-head"><span class="el-sec-label">ビジネスモデル図鑑</span><span class="el-sec-sub">— ${BIZ_MODELS.length}種 — 組み合わせと歴史 —</span></div>
@@ -24037,8 +24072,22 @@
       _wireIjinPills(b, close);
       bubble = b;
     }
-    function showPieceBubble(node, p){
-      // 合うピース: このピースを含むモデル
+    function scrollToBizZukan(id) {
+      const card = ov.querySelector(`.biz-piece-card[data-piece="${id}"]`);
+      if (!card) return;
+      card.scrollIntoView({ behavior:'smooth', block:'center' });
+      card.classList.add('zukan-highlight');
+      setTimeout(() => card.classList.remove('zukan-highlight'), 2400);
+    }
+    function scrollToModelZukan(name) {
+      const card = ov.querySelector(`.biz-card[data-model="${CSS.escape(name)}"]`);
+      if (!card) return;
+      card.scrollIntoView({ behavior:'smooth', block:'center' });
+      card.classList.add('zukan-highlight');
+      setTimeout(() => card.classList.remove('zukan-highlight'), 2400);
+    }
+    function showPieceBubble(node, p, opts){
+      const showVoice = opts && opts.voice;
       const partners = BIZ_MODELS.filter(m => m.parts.includes(p.id)).slice(0, 4);
       const hint = partners.length ? `
         <div class="el-bubble-hint-h">🤝 これと組合せると</div>
@@ -24049,28 +24098,46 @@
           }).join('')}
         </div>
       ` : '';
-      const html = `
+      const voice = (showVoice && p.voice) ? `<div class="el-bubble-voice">${p.voice}</div>` : '';
+      const detail = `
         <div class="el-bubble-title"><span class="el-bubble-sym" style="--c:${p.color}">${p.icon}</span> ${p.name}</div>
-        <div class="el-bubble-desc">ビジネスを作るピースの一つ。組み合わせ次第で違うモデルになる。</div>
+        <div class="el-bubble-desc">${p.desc || 'ビジネスを作るピースの一つ。組み合わせ次第で違うモデルになる。'}</div>
         ${hint}
+        <button class="el-bubble-zukan-btn" data-pid="${p.id}" type="button">📖 図鑑で詳しく見る</button>
       `;
+      const html = showVoice
+        ? `${voice}<button class="el-bubble-more" type="button">＋ 詳しく見る</button><div class="el-bubble-detail" hidden>${detail}</div>`
+        : detail;
       showBubble(node, html);
+      const moreBtn = bubble && bubble.querySelector('.el-bubble-more');
+      if (moreBtn) moreBtn.addEventListener('click', () => {
+        const det = bubble.querySelector('.el-bubble-detail');
+        if (det) { det.hidden = false; moreBtn.remove(); }
+      });
+      if (bubble) bubble.querySelectorAll('.el-bubble-zukan-btn').forEach(btn => {
+        btn.addEventListener('click', () => { closeBubble(); scrollToBizZukan(btn.dataset.pid); });
+      });
     }
     function showModelBubble(node, m, isNew){
       const html = `
         <div class="el-bubble-title">💼 ${m.name}${isNew?' <span class="el-bubble-badge">NEW!</span>':''}</div>
         <div class="el-bubble-desc">${m.desc}</div>
+        <div class="el-bubble-uses-h">✨ 例えばこんなビジネス</div>
+        <div class="el-bubble-uses">${m.ex.split('、').map(e => `<span class="el-bubble-use">${e.trim()}</span>`).join('')}</div>
         <div class="el-bubble-history">
           <div class="el-bubble-meta">
             <span class="el-bubble-year">${m.year}</span>
             <span class="el-bubble-by">${m.by}</span>
           </div>
           <div class="el-bubble-story">${m.history}</div>
-          <div class="el-bubble-ex">例：${m.ex}</div>
         </div>
         ${m.ijins && m.ijins.length ? `<div class="el-bi-ijins">${m.ijins.map(id => `<button class="cnp-pill" data-id="${id}">${_resolveIjinName(id)}</button>`).join('')}</div>` : ''}
+        <button class="el-bubble-zukan-btn" data-model="${m.name}" type="button">📖 図鑑カードへ</button>
       `;
       showBubble(node, html);
+      if (bubble) bubble.querySelectorAll('.el-bubble-zukan-btn').forEach(btn => {
+        btn.addEventListener('click', () => { closeBubble(); scrollToModelZukan(btn.dataset.model); });
+      });
     }
     function spawnPiece(id, x, y){
       const p = piece2obj[id]; if (!p) return null;
@@ -24088,6 +24155,7 @@
       bnodes.push(node);
       attach(node);
       bdEmpty.style.display='none';
+      setTimeout(() => showPieceBubble(node, p, { voice: true }), 80);
       return node;
     }
     function spawnModel(m, x, y){
@@ -24225,6 +24293,16 @@
       });
     });
     ov.querySelector('#bizBoardClear').addEventListener('click', clearBoard);
+    // 図鑑カードからもピースを盤に投下できる
+    ov.querySelectorAll('.biz-piece-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const id = card.dataset.piece;
+        const x = 30 + Math.random() * (bd.clientWidth - 90);
+        const y = 30 + Math.random() * (bd.clientHeight - 90);
+        spawnPiece(id, x, y);
+        bd.scrollIntoView({ behavior:'smooth', block:'start' });
+      });
+    });
     updCounter();
     _wireIjinPills(ov, close);
   }

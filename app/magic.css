@@ -10574,6 +10574,133 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   .el-pal-item { width: 50px; height: 54px; }
 }
 
+/* ===== コンパクトヘッダ（ラボ即表示）＋共通 ===== */
+.cp-wrap-lab { padding-top: 18px !important; }
+.cp-head-mini {
+  margin-bottom: 12px !important;
+  padding: 0 !important;
+  text-align: center;
+}
+.cp-head-mini .cp-title {
+  font-size: 22px !important;
+  letter-spacing: 6px !important;
+  margin-bottom: 4px !important;
+}
+.cp-sub-mini {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: rgba(220,235,255,0.55);
+}
+
+/* 元素／ピースの自己紹介ボイス */
+.el-bubble-voice {
+  font-size: 13px; line-height: 1.65;
+  color: #fff8c0;
+  font-family: 'Noto Serif JP', serif;
+  padding: 6px 0 8px;
+  margin-right: 18px;
+}
+.el-bubble-more {
+  display: inline-block;
+  padding: 4px 12px;
+  background: rgba(255,224,128,0.15);
+  border: 1px solid rgba(255,224,128,0.4);
+  color: #ffe080;
+  border-radius: 100px;
+  font-size: 11px; letter-spacing: 2px;
+  cursor: pointer;
+}
+.el-bubble-more:hover {
+  background: rgba(255,224,128,0.3);
+}
+.el-bubble-detail { margin-top: 10px; padding-top: 10px; border-top: 1px dashed rgba(180,220,255,0.2); }
+.el-bubble-zukan-btn {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  padding: 6px 10px;
+  background: rgba(80,160,255,0.15);
+  border: 1px solid rgba(120,180,255,0.4);
+  color: #b8e0ff;
+  border-radius: 8px;
+  font-size: 11px; letter-spacing: 2px;
+  cursor: pointer;
+}
+.el-bubble-zukan-btn:hover { background: rgba(80,160,255,0.3); color: #fff; }
+
+/* 「✨ こんなものに使われる」 */
+.el-bubble-uses-h {
+  font-size: 11px; letter-spacing: 2px;
+  color: #ffd860;
+  margin: 8px 0 4px;
+}
+.el-bubble-uses {
+  display: flex; flex-wrap: wrap; gap: 4px;
+  margin-bottom: 6px;
+}
+.el-bubble-use {
+  display: inline-block;
+  padding: 2px 8px;
+  background: rgba(255,216,96,0.12);
+  border: 1px solid rgba(255,216,96,0.3);
+  color: #ffe6a8;
+  border-radius: 100px;
+  font-size: 11px;
+}
+
+/* 図鑑ハイライト */
+.el-cell.zukan-highlight, .biz-piece-card.zukan-highlight, .biz-card.zukan-highlight {
+  outline: 3px solid #ffe080;
+  outline-offset: 2px;
+  animation: zkpulse 1.2s ease infinite;
+}
+@keyframes zkpulse {
+  0%, 100% { box-shadow: 0 0 14px rgba(255,224,128,0.5); }
+  50%      { box-shadow: 0 0 28px rgba(255,224,128,0.85); }
+}
+
+/* ピース図鑑（顔つきカード） */
+.biz-piece-zukan {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+  margin: 10px 0 24px;
+}
+.biz-piece-card {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 14px 10px 10px;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--c) 25%, rgba(20,30,50,0.7)), rgba(20,30,50,0.7));
+  border: 1px solid color-mix(in srgb, var(--c) 50%, transparent);
+  border-radius: 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.18s, box-shadow 0.18s;
+}
+.biz-piece-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4), 0 0 18px var(--c);
+}
+.biz-piece-face {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: var(--c);
+  color: #0a0a0a;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px;
+  margin-bottom: 6px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.4), 0 0 14px var(--c);
+}
+.biz-piece-name {
+  font-size: 14px; letter-spacing: 2px;
+  color: #fff;
+  margin-bottom: 2px;
+  font-family: 'Noto Serif JP', serif;
+}
+.biz-piece-desc {
+  font-size: 11px; line-height: 1.5;
+  color: rgba(220,235,255,0.7);
+}
+
 /* ===== ビジネスラボ＆図鑑 ===== */
 .biz-lab .el-lab2-board {
   background:
