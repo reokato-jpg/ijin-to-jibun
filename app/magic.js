@@ -23186,19 +23186,44 @@
         trim.rotation.y = Math.atan2(dx, dz);
         scene.add(trim);
       }
-      // 手すり（両側）
+      // 🛡 手すり＋側壁（両側、落下防止）
       const stairLen = Math.hypot(endX - startX, endZ - startZ);
       const railHeight = 1.0;
+      const yawAng = Math.atan2(dx, dz);
+      const pitchAng = Math.atan2(dy, Math.hypot(dx, dz));
+      const goldRailMat = new THREE.MeshStandardMaterial({ color: 0xc8a040, metalness: 0.9, roughness: 0.3, emissive: 0x4a3008, emissiveIntensity: 0.5 });
+      const wallMat2 = new THREE.MeshStandardMaterial({ color: 0x3a2618, roughness: 0.8 });
       [-1.4, 1.4].forEach(side => {
+        // 中央位置（傾斜方向）
+        const midX = (startX + endX) / 2 + side * Math.cos(yawAng);
+        const midZ = (startZ + endZ) / 2 - side * Math.sin(yawAng);
+        const midY = (fromY + toY) / 2;
+        // 側壁（パラペット）— 落下防止の本体
+        const sideWall = new THREE.Mesh(
+          new THREE.BoxGeometry(0.18, 0.85, stairLen),
+          wallMat2
+        );
+        sideWall.position.set(midX, midY + 0.45, midZ);
+        sideWall.rotation.y = yawAng;
+        sideWall.rotation.x = pitchAng;
+        scene.add(sideWall);
+        // 側壁の上の金トリム
+        const wallTrim = new THREE.Mesh(
+          new THREE.BoxGeometry(0.22, 0.06, stairLen),
+          goldRailMat
+        );
+        wallTrim.position.set(midX, midY + 0.88, midZ);
+        wallTrim.rotation.y = yawAng;
+        wallTrim.rotation.x = pitchAng;
+        scene.add(wallTrim);
+        // 上の手すりバー（つかむ用）
         const rail = new THREE.Mesh(
           new THREE.BoxGeometry(0.1, 0.12, stairLen),
-          new THREE.MeshStandardMaterial({ color: 0xc8a040, metalness: 0.9, roughness: 0.3, emissive: 0x4a3008, emissiveIntensity: 0.5 })
+          goldRailMat
         );
-        const midX = (startX + endX) / 2 + side * Math.cos(Math.atan2(dx, dz));
-        const midZ = (startZ + endZ) / 2 - side * Math.sin(Math.atan2(dx, dz));
-        rail.position.set(midX, (fromY + toY) / 2 + railHeight, midZ);
-        rail.rotation.y = Math.atan2(dx, dz);
-        rail.rotation.x = Math.atan2(dy, Math.hypot(dx, dz));
+        rail.position.set(midX, midY + railHeight, midZ);
+        rail.rotation.y = yawAng;
+        rail.rotation.x = pitchAng;
         scene.add(rail);
       });
     }
@@ -23262,6 +23287,7 @@
     function buildShelf(centerX, centerZ, length, rotationY, doubleSided = true, yBase = 0, pool = null) {
       const bookPool = pool || allBooks;
       const shelfBooks = []; // この棚に並んだ本の参照（モーダル用）
+      // 🪶 モバイルは本を約半分に間引く（描画コール激減）— モーダル用配列には残ったものだけ入る
       // 棚本体
       const frame = new THREE.Mesh(
         new THREE.BoxGeometry(length, 5.5, SHELF_DEPTH),
@@ -23299,8 +23325,15 @@
           const usableLen = length - 0.4;
           // 本のサイズはランダム → 並べきるだけ並べる
           let cursor = -usableLen / 2;
+          let _shelfBookIdx = 0;
           while (cursor < usableLen / 2 - 0.2 && bookPool.length > 0) {
             const book = bookPool.shift();
+            // 🪶 モバイル：偶数番だけ生成（メッシュ数を約半分に）
+            if (_isMobile && (_shelfBookIdx++ & 1)) {
+              // スキップしたが代わりに小さい余白を入れる
+              cursor += 0.18;
+              continue;
+            }
             const w = 0.14 + Math.random() * 0.06;
             const h = 1.05 + Math.random() * 0.25;
             cursor += w / 2;
