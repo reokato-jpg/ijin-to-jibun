@@ -15899,6 +15899,8 @@
       if (sphereMat.uniforms && sphereMat.uniforms.uMyth) {
         sphereMat.uniforms.uMyth.value = idx;
       }
+      // 🔊 神話別 環境音を切り替え（前のものを止めて新しいものを鳴らす）
+      if (scene.userData.startMythAmbient) scene.userData.startMythAmbient(order[idx]);
       // 🎨 ドームムード色シフト
       const moods = scene.userData.mythMoods;
       if (moods && moods[order[idx]] && sphereMat.uniforms && sphereMat.uniforms.uMood) {
@@ -16027,6 +16029,7 @@
       if (mythTimer) { clearInterval(mythTimer); mythTimer = null; }
       const tEl = ov.querySelector('#kohMythTitle');
       if (tEl) tEl.classList.remove('show');
+      if (scene.userData.stopMythAmbient) scene.userData.stopMythAmbient();
     }
     ov.querySelectorAll('.koh-mode-btn').forEach(b => {
       b.addEventListener('click', () => {
@@ -19308,33 +19311,119 @@
     }
     const HOLO_COLOR = 0x80f0ff; // 標準シアン
     const mythHolograms = {};
-    // ── Eden 生命の樹 ──
+    // ── Eden 生命の樹（神殿のEden3D相当の高品質版）──
     {
       const g = new THREE.Group();
-      const mat = makeHologramMaterial(0x80ffa0);
-      const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.55, 5, 14), mat);
-      trunk.position.y = 2.5; g.add(trunk);
-      // 葉クラスタ
-      for (let i = 0; i < 7; i++) {
-        const r = 1.0 + Math.random() * 0.8;
-        const leaf = new THREE.Mesh(new THREE.SphereGeometry(r, 16, 12), mat);
-        leaf.position.set((Math.random()-0.5) * 2.4, 5 + Math.random() * 2.5, (Math.random()-0.5) * 2.4);
+      const trunkMat = makeHologramMaterial(0x60c878);
+      const leafMat = makeHologramMaterial(0x80ffa0);
+      const fruitMat = makeHologramMaterial(0xff8060);
+      const snakeMat = makeHologramMaterial(0x40ff60);
+      const flowerMat = makeHologramMaterial(0xff80c0);
+      const grassMat = makeHologramMaterial(0xa0ffa0);
+      const mats = [trunkMat, leafMat, fruitMat, snakeMat, flowerMat, grassMat];
+      // 浮島の地面（円盤）
+      const ground = new THREE.Mesh(
+        new THREE.CylinderGeometry(4.5, 3.8, 0.4, 32),
+        grassMat
+      );
+      ground.position.y = 0.2; g.add(ground);
+      // 主幹（中央、高さ8m）
+      const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.85, 8.5, 16), trunkMat);
+      trunk.position.y = 4.45; g.add(trunk);
+      // 主枝×4（左右上下に伸びる）
+      for (let i = 0; i < 4; i++) {
+        const ang = (i / 4) * Math.PI * 2;
+        const branch = new THREE.Mesh(new THREE.CylinderGeometry(0.10, 0.30, 2.6, 10), trunkMat);
+        const bx = Math.cos(ang) * 1.4, bz = Math.sin(ang) * 1.4;
+        branch.position.set(bx, 6.5, bz);
+        branch.rotation.z = -Math.cos(ang) * 0.7;
+        branch.rotation.x = Math.sin(ang) * 0.7;
+        g.add(branch);
+        // 小枝×3（各主枝の先）
+        for (let j = 0; j < 3; j++) {
+          const sub = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.10, 1.2, 6), trunkMat);
+          const sang = ang + (j - 1) * 0.4;
+          sub.position.set(bx + Math.cos(sang) * 1.0, 7.0 + j * 0.3, bz + Math.sin(sang) * 1.0);
+          sub.rotation.z = -Math.cos(sang) * 0.5;
+          g.add(sub);
+        }
+      }
+      // 葉のクラスタ（多層、24個）
+      for (let i = 0; i < 24; i++) {
+        const r = 0.7 + Math.random() * 1.0;
+        const ang = Math.random() * Math.PI * 2;
+        const rad = 1.0 + Math.random() * 2.5;
+        const y = 6.5 + Math.random() * 3.5;
+        const leaf = new THREE.Mesh(new THREE.SphereGeometry(r, 12, 9), leafMat);
+        leaf.position.set(Math.cos(ang) * rad, y, Math.sin(ang) * rad);
         g.add(leaf);
       }
-      // りんご
-      const appleMat = makeHologramMaterial(0xff8090);
-      for (let i = 0; i < 5; i++) {
-        const a = new THREE.Mesh(new THREE.SphereGeometry(0.18, 12, 9), appleMat);
-        a.position.set((Math.random()-0.5)*2.4, 4.5 + Math.random()*2.2, (Math.random()-0.5)*2.4);
-        g.add(a);
+      // 樹冠頂部の大葉
+      const topLeaf = new THREE.Mesh(new THREE.SphereGeometry(2.0, 16, 12), leafMat);
+      topLeaf.position.y = 9.5; g.add(topLeaf);
+      // りんご（金色）— 茎付き、12個
+      for (let i = 0; i < 12; i++) {
+        const ang = Math.random() * Math.PI * 2;
+        const rad = 1.2 + Math.random() * 2.0;
+        const y = 7 + Math.random() * 2.5;
+        const fx = Math.cos(ang) * rad, fz = Math.sin(ang) * rad;
+        const apple = new THREE.Mesh(new THREE.SphereGeometry(0.28, 14, 10), fruitMat);
+        apple.position.set(fx, y, fz); g.add(apple);
+        // 茎
+        const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.04, 0.20, 5), trunkMat);
+        stem.position.set(fx, y + 0.20, fz); g.add(stem);
       }
-      // 蛇（巻く）
-      const sn = new THREE.Mesh(new THREE.TorusGeometry(0.6, 0.10, 8, 24, Math.PI * 1.4), makeHologramMaterial(0x60ff80));
-      sn.position.y = 3.0;
-      sn.rotation.x = Math.PI / 2;
-      g.add(sn);
+      // 蛇（幹に螺旋状に巻く、TubeGeometry でリアルに）
+      {
+        const points = [];
+        for (let t = 0; t <= 1; t += 0.05) {
+          const angle = t * Math.PI * 4; // 2周
+          const yv = 1 + t * 6.5; // 下→上
+          const r = 0.65;
+          points.push(new THREE.Vector3(Math.cos(angle) * r, yv, Math.sin(angle) * r));
+        }
+        const curve = new THREE.CatmullRomCurve3(points);
+        const tube = new THREE.Mesh(
+          new THREE.TubeGeometry(curve, 64, 0.15, 8, false),
+          snakeMat
+        );
+        g.add(tube);
+        // 蛇の頭（先端の球）
+        const head = new THREE.Mesh(new THREE.SphereGeometry(0.30, 14, 10), snakeMat);
+        const last = points[points.length - 1];
+        head.position.copy(last);
+        head.scale.set(1.2, 0.85, 0.85);
+        g.add(head);
+        // 黒い目（普通のmaterial）
+        const eye1 = new THREE.Mesh(new THREE.SphereGeometry(0.05, 8, 6), new THREE.MeshBasicMaterial({ color: 0xffe040 }));
+        eye1.position.set(last.x + 0.18, last.y + 0.10, last.z + 0.10);
+        g.add(eye1);
+      }
+      // 周囲の花（地面に8本）
+      for (let i = 0; i < 12; i++) {
+        const ang = (i / 12) * Math.PI * 2;
+        const fx = Math.cos(ang) * 3.5;
+        const fz = Math.sin(ang) * 3.5;
+        // 茎
+        const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.05, 0.7, 5), trunkMat);
+        stem.position.set(fx, 0.75, fz); g.add(stem);
+        // 花びら
+        const flower = new THREE.Mesh(new THREE.SphereGeometry(0.18, 8, 6), flowerMat);
+        flower.position.set(fx, 1.15, fz); g.add(flower);
+      }
+      // 蝶（ホログラム、複数）— sprite-like flat plane
+      for (let i = 0; i < 5; i++) {
+        const ang = Math.random() * Math.PI * 2;
+        const rad = 2 + Math.random() * 2;
+        const y = 4 + Math.random() * 4;
+        const wing = new THREE.Mesh(new THREE.PlaneGeometry(0.5, 0.3), flowerMat);
+        wing.position.set(Math.cos(ang) * rad, y, Math.sin(ang) * rad);
+        g.add(wing);
+        if (!g.userData.butterflies) g.userData.butterflies = [];
+        g.userData.butterflies.push({ obj: wing, ang0: ang, rad, baseY: y, phase: Math.random() * Math.PI * 2 });
+      }
       g.visible = false;
-      g.userData.materials = [mat, appleMat, sn.material];
+      g.userData.materials = mats;
       scene.add(g);
       mythHolograms.eden = g;
     }
@@ -19448,9 +19537,12 @@
       scene.add(g);
       mythHolograms.elysion = g;
     }
-    // 中央ステージに集約配置（ステージの中心、orchestraの間に）
-    Object.values(mythHolograms).forEach(holo => {
-      holo.position.set(0, 1.0, 0); // ステージ天面 y=0.7 + 余裕
+    // 中央ステージに集約配置＋スケール（観客から見える大きさに調整）
+    Object.entries(mythHolograms).forEach(([key, holo]) => {
+      holo.position.set(0, 1.0, 0);
+      // 各ホログラムを 1.5〜2.0倍に拡大（観客席からも明瞭に見える）
+      const scale = key === 'eden' ? 1.4 : key === 'babel' ? 1.6 : 1.7;
+      holo.scale.set(scale, scale, scale);
     });
     scene.userData.mythHolograms = mythHolograms;
 
@@ -19540,6 +19632,121 @@
     // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
     // 📜 神話ナレーション（構成作家、邪魔にならない位置で控えめに）
     // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    // 🔊 神話別の環境音（WebAudio procedural、音楽と被らない控えめボリューム）
+    let mythAmbientCtx = null;
+    let mythAmbientNodes = null;
+    function stopMythAmbient() {
+      if (mythAmbientNodes) {
+        try {
+          mythAmbientNodes.forEach(n => {
+            if (n.stop) try { n.stop(0); } catch {}
+            if (n.disconnect) try { n.disconnect(); } catch {}
+          });
+        } catch {}
+        mythAmbientNodes = null;
+      }
+    }
+    function startMythAmbient(key) {
+      stopMythAmbient();
+      try {
+        if (!mythAmbientCtx) mythAmbientCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+        const ctx = mythAmbientCtx;
+        const masterGain = ctx.createGain();
+        masterGain.gain.setValueAtTime(0, ctx.currentTime);
+        masterGain.gain.linearRampToValueAtTime(0.08, ctx.currentTime + 1.2); // ボリューム控えめ
+        masterGain.connect(ctx.destination);
+        const nodes = [masterGain];
+        // ホワイトノイズ生成（4秒分のループ）
+        const sr = ctx.sampleRate;
+        const noiseBuf = ctx.createBuffer(1, sr * 4, sr);
+        const nd = noiseBuf.getChannelData(0);
+        for (let i = 0; i < nd.length; i++) nd[i] = Math.random() * 2 - 1;
+        if (key === 'eden') {
+          // 静かな風＋鳥の囀り風（高音オシレータ）
+          const noise = ctx.createBufferSource(); noise.buffer = noiseBuf; noise.loop = true;
+          const filter = ctx.createBiquadFilter();
+          filter.type = 'bandpass'; filter.frequency.value = 800; filter.Q.value = 0.6;
+          noise.connect(filter); filter.connect(masterGain);
+          noise.start(); nodes.push(noise, filter);
+          // 鳥の高音シマー（オシレータ）
+          const osc = ctx.createOscillator(); osc.type = 'sine'; osc.frequency.value = 1800;
+          const oscGain = ctx.createGain(); oscGain.gain.value = 0.0008;
+          // LFO で周波数を揺らす
+          const lfo = ctx.createOscillator(); lfo.frequency.value = 0.3;
+          const lfoGain = ctx.createGain(); lfoGain.gain.value = 800;
+          lfo.connect(lfoGain); lfoGain.connect(osc.frequency);
+          osc.connect(oscGain); oscGain.connect(masterGain);
+          osc.start(); lfo.start(); nodes.push(osc, oscGain, lfo, lfoGain);
+        } else if (key === 'noah') {
+          // 雨音＋遠雷
+          const noise = ctx.createBufferSource(); noise.buffer = noiseBuf; noise.loop = true;
+          const filter = ctx.createBiquadFilter();
+          filter.type = 'lowpass'; filter.frequency.value = 4000;
+          noise.connect(filter); filter.connect(masterGain);
+          noise.start(); nodes.push(noise, filter);
+          // 遠雷（低音、たまに鳴る）
+          const thunder = ctx.createOscillator(); thunder.type = 'sawtooth'; thunder.frequency.value = 60;
+          const thunderGain = ctx.createGain(); thunderGain.gain.value = 0;
+          thunder.connect(thunderGain); thunderGain.connect(masterGain);
+          thunder.start();
+          // 雷ゲートを定期的に開ける
+          const thunderTimer = setInterval(() => {
+            const now = ctx.currentTime;
+            thunderGain.gain.setValueAtTime(0, now);
+            thunderGain.gain.linearRampToValueAtTime(0.3, now + 0.05);
+            thunderGain.gain.exponentialRampToValueAtTime(0.001, now + 1.5);
+          }, 8000 + Math.random() * 6000);
+          nodes.push(thunder, thunderGain, { stop: () => clearInterval(thunderTimer), disconnect: () => {} });
+        } else if (key === 'atlantis') {
+          // 深海の低音うねり＋泡音
+          const osc = ctx.createOscillator(); osc.type = 'sine'; osc.frequency.value = 60;
+          const oscGain = ctx.createGain(); oscGain.gain.value = 0.04;
+          const lfo = ctx.createOscillator(); lfo.frequency.value = 0.12;
+          const lfoGain = ctx.createGain(); lfoGain.gain.value = 18;
+          lfo.connect(lfoGain); lfoGain.connect(osc.frequency);
+          osc.connect(oscGain); oscGain.connect(masterGain);
+          osc.start(); lfo.start();
+          // 泡（高音の短いポップ）
+          const noise = ctx.createBufferSource(); noise.buffer = noiseBuf; noise.loop = true;
+          const filter = ctx.createBiquadFilter();
+          filter.type = 'highpass'; filter.frequency.value = 2000;
+          const noiseGain = ctx.createGain(); noiseGain.gain.value = 0.012;
+          noise.connect(filter); filter.connect(noiseGain); noiseGain.connect(masterGain);
+          noise.start();
+          nodes.push(osc, oscGain, lfo, lfoGain, noise, filter, noiseGain);
+        } else if (key === 'babel') {
+          // 風の唸り（中域フィルタノイズ）＋低音うねり
+          const noise = ctx.createBufferSource(); noise.buffer = noiseBuf; noise.loop = true;
+          const filter = ctx.createBiquadFilter();
+          filter.type = 'bandpass'; filter.frequency.value = 300; filter.Q.value = 1.2;
+          noise.connect(filter); filter.connect(masterGain);
+          noise.start();
+          // 低音ドローン
+          const drone = ctx.createOscillator(); drone.type = 'sawtooth'; drone.frequency.value = 80;
+          const droneGain = ctx.createGain(); droneGain.gain.value = 0.03;
+          drone.connect(droneGain); droneGain.connect(masterGain);
+          drone.start();
+          nodes.push(noise, filter, drone, droneGain);
+        } else if (key === 'elysion') {
+          // 鈴・ベルの倍音（複数オシレータ）
+          [523.25, 659.26, 783.99, 1046.5].forEach((freq, i) => {
+            const osc = ctx.createOscillator(); osc.type = 'sine'; osc.frequency.value = freq;
+            const g2 = ctx.createGain(); g2.gain.value = 0.005;
+            // ゆるい LFO で振幅変調
+            const amLfo = ctx.createOscillator(); amLfo.frequency.value = 0.15 + i * 0.05;
+            const amLfoGain = ctx.createGain(); amLfoGain.gain.value = 0.005;
+            amLfo.connect(amLfoGain); amLfoGain.connect(g2.gain);
+            osc.connect(g2); g2.connect(masterGain);
+            osc.start(); amLfo.start();
+            nodes.push(osc, g2, amLfo, amLfoGain);
+          });
+        }
+        mythAmbientNodes = nodes;
+      } catch (e) { console.warn('myth ambient', e); }
+    }
+    scene.userData.startMythAmbient = startMythAmbient;
+    scene.userData.stopMythAmbient = stopMythAmbient;
+
     const MYTH_NARRATIONS = {
       eden:     '光が差し込む朝、すべての名前が、まだ与えられたばかりだった。',
       noah:     '雨は四十日続いた。鳩が枝を咥えて戻ったとき、世界はもう一度始まった。',
@@ -20004,6 +20211,19 @@
             if (key === 'elysion' && holo.userData.orb) {
               const sc = 1 + Math.sin(t * 1.6) * 0.12;
               holo.userData.orb.scale.set(sc, sc, sc);
+            }
+            // Eden の蝶：枝の周りを飛ぶ
+            if (key === 'eden' && holo.userData.butterflies) {
+              holo.userData.butterflies.forEach(b => {
+                const a = b.ang0 + t * 0.5;
+                b.obj.position.set(
+                  Math.cos(a) * b.rad,
+                  b.baseY + Math.sin(t * 1.5 + b.phase) * 0.5,
+                  Math.sin(a) * b.rad
+                );
+                b.obj.rotation.y = -a;
+                b.obj.rotation.z = Math.sin(t * 4 + b.phase) * 0.5;
+              });
             }
           });
         }
