@@ -23339,6 +23339,8 @@
         <div class="el-lab2">
           <div class="el-lab2-board" id="elBoard">
             <svg class="el-lab2-svg" id="elBoardSvg" preserveAspectRatio="none"></svg>
+            <div class="el-lab2-help" id="elBoardHelp">💡 ① 下のバーから元素を盤に置く　② 盤上の元素を順にタップ → 線で繋がって化合物が誕生</div>
+            <div class="el-lab2-status" id="elBoardStatus" hidden></div>
             <div class="el-lab2-empty">
               <div class="el-lab2-empty-1">⚗️ 化学ラボ</div>
               <div class="el-lab2-empty-2">下のバーから元素をここにドラッグ／タップでつないで化合物を生み出そう</div>
@@ -23659,6 +23661,7 @@
         });
         bnodes = bnodes.filter(n => !consumeIds.has(n.id));
         selected.clear();
+        updateStatus();
         const isNew = !discovered.has(compound.formula);
         discovered.add(compound.formula);
         updateCounter();
@@ -23713,6 +23716,26 @@
         downX = null;
       });
     }
+    const boardStatus = ov.querySelector('#elBoardStatus');
+    function updateStatus() {
+      const selSyms = bnodes.filter(n => selected.has(n.id) && n.kind === 'el').map(n => n.sym);
+      if (selSyms.length === 0) {
+        boardStatus.hidden = true;
+        return;
+      }
+      boardStatus.hidden = false;
+      const selSet = new Set(selSyms);
+      const target = COMPOUNDS_DATA.find(c => {
+        const cs = new Set(c.parts);
+        if (cs.size <= selSet.size) return false;
+        for (const m of selSet) if (!cs.has(m)) return false;
+        return true;
+      });
+      const hint = target
+        ? `あと <b>${target.parts.filter(p=>!selSet.has(p)).join('・')}</b> で → ${target.name}（${target.formula}）`
+        : (selSyms.length >= 2 ? '組み合わせをチェック…' : 'もう1つ元素をタップして繋げる');
+      boardStatus.innerHTML = `<span class="lbs-l">選択中：${selSyms.map(s=>`<b style="background:${(sym2el[s]||{}).color};color:#0a0a0a">${s}</b>`).join('')}</span><span class="lbs-r">${hint}</span>`;
+    }
     function handleNodeTap(node) {
       if (node.kind === 'cmp') {
         const c = COMPOUNDS_DATA.find(cc => cc.formula === node.formula);
@@ -23729,6 +23752,7 @@
         node.dom.classList.add('sel');
         playSfx('sel');
       }
+      updateStatus();
       checkSelectionMatch();
     }
     function removeNode(node) {
@@ -23967,6 +23991,8 @@
         <div class="el-lab2 biz-lab">
           <div class="el-lab2-board" id="bizBoard">
             <svg class="el-lab2-svg" id="bizBoardSvg" preserveAspectRatio="none"></svg>
+            <div class="el-lab2-help" id="bizBoardHelp">💡 ① 下のバーからピースを盤に置く　② 盤上のピースを順にタップ → 線で繋がってビジネスモデルが誕生</div>
+            <div class="el-lab2-status" id="bizBoardStatus" hidden></div>
             <div class="el-lab2-empty">
               <div class="el-lab2-empty-1">💼 ビジネスラボ</div>
               <div class="el-lab2-empty-2">下のバーからピースをここにドラッグ／タップでつないでビジネスモデルを作ろう</div>
@@ -24195,6 +24221,7 @@
         selNodes.forEach(n=>{ n.dom.classList.add('consumed'); setTimeout(()=>n.dom.remove(),380); });
         bnodes = bnodes.filter(n=>!cIds.has(n.id));
         selected.clear();
+        updBizStatus();
         const isNew = !found.has(m.name);
         found.add(m.name); updCounter();
         const newNode = spawnModel(m, cx, cy);
@@ -24214,6 +24241,23 @@
       if (bnodes.length===0) bdEmpty.style.display='';
       sfx('clear');
     }
+    const bizStatus = ov.querySelector('#bizBoardStatus');
+    function updBizStatus() {
+      const selPids = bnodes.filter(n => selected.has(n.id) && n.kind === 'piece').map(n => n.pid);
+      if (selPids.length === 0) { bizStatus.hidden = true; return; }
+      bizStatus.hidden = false;
+      const selSet = new Set(selPids);
+      const target = BIZ_MODELS.find(m => {
+        const ps = new Set(m.parts);
+        if (ps.size <= selSet.size) return false;
+        for (const x of selSet) if (!ps.has(x)) return false;
+        return true;
+      });
+      const hint = target
+        ? `あと <b>${target.parts.filter(p=>!selSet.has(p)).map(p=>{const o=piece2obj[p];return `${o.icon}${o.name}`;}).join('・')}</b> で → ${target.name}`
+        : (selPids.length >= 2 ? '組み合わせをチェック…' : 'もう1つピースをタップして繋げる');
+      bizStatus.innerHTML = `<span class="lbs-l">選択中：${selPids.map(id=>{const o=piece2obj[id];return `<b style="background:${o.color};color:#0a0a0a">${o.icon}${o.name}</b>`;}).join('')}</span><span class="lbs-r">${hint}</span>`;
+    }
     function tap(node){
       if (node.kind==='model') {
         const m = BIZ_MODELS.find(x => x.name===node.name);
@@ -24224,6 +24268,7 @@
       showPieceBubble(node, p);
       if (selected.has(node.id)) { selected.delete(node.id); node.dom.classList.remove('sel'); }
       else { selected.add(node.id); node.dom.classList.add('sel'); sfx('sel'); }
+      updBizStatus();
       checkMatch();
     }
     function attach(node){
