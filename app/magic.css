@@ -11443,26 +11443,31 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
    ║ 偉人プロフィール：プロデザインに刷新（SNS風モダン白基調）║
    ╚══════════════════════════════════════════════════════════╝ */
 /* 全ての親まで白を強制 */
-#view-person,
-#view-person.view,
-#view-person.active,
-#view-person #personDetail,
-#personDetail,
-.view#personDetail {
-  background: #fafafa !important;
+html body #view-person,
+html body #view-person.view,
+html body #view-person.active,
+html body #view-person #personDetail,
+html body #personDetail,
+html body .view#personDetail {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
   color: #1a1a1f !important;
 }
 .concept-page-overlay #personDetail,
 .cosmos-overlay #personDetail,
 .museum3d-overlay #personDetail,
 .pantheon-overlay #personDetail {
-  background: #fafafa !important;
+  background: #ffffff !important;
   color: #1a1a1f !important;
 }
-/* personDetail 内のすべての子要素もデフォルト色を上書き */
-#personDetail * { color: inherit; }
-/* ヘッダーとカバーの間の余計な背景をクリア */
-#personDetail .profile-header { background: #fafafa !important; }
+/* 全ての .view は白で塗る（dark image が透けないよう） */
+body #view-person { background: #ffffff !important; min-height: 100vh; }
+/* personDetail のすべての直接子要素にも白基調を強制（タイポカバー除く） */
+#personDetail > *:not(.profile-cover):not(.profile-cover-typo) { background: #ffffff !important; }
+#personDetail .profile-header,
+#personDetail .profile-header > * { background: #ffffff !important; }
+#personDetail .profile-header .profile-action-btns,
+#personDetail .profile-header .profile-names { background: transparent !important; }
 
 /* カバー：ワイン赤→クリーム/ゴールドのソフトグラデに */
 #personDetail .profile-cover-typo {
