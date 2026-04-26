@@ -563,26 +563,9 @@
                 <div class="mtc-name">図 書 館</div>
                 <div class="mtc-sub">全分野の本を検索する</div>
               </button>
-              <button class="magic-topbook-cat magic-topbook-cat-ijinhub" data-cat="ijinhub">
-                <div class="mtc-emoji">🌐</div>
-                <div class="mtc-name">人 と は</div>
-                <div class="mtc-sub">何から偉人を探す？</div>
-              </button>
-              <button class="magic-topbook-cat magic-topbook-cat-elements" data-cat="elements">
-                <div class="mtc-name">元 素 と 人</div>
-                <div class="mtc-sub">周期表 → 偉人</div>
-              </button>
-              <button class="magic-topbook-cat magic-topbook-cat-things" data-cat="things">
-                <div class="mtc-name">物 か ら 探 す</div>
-                <div class="mtc-sub">道具・発明・技術 → 偉人</div>
-              </button>
-              <button class="magic-topbook-cat magic-topbook-cat-business" data-cat="business">
-                <div class="mtc-name">ビジネスから探す</div>
-                <div class="mtc-sub">経済・組織・起業 → 偉人</div>
-              </button>
-              <button class="magic-topbook-cat magic-topbook-cat-humap" data-cat="humanitymap">
-                <div class="mtc-name">人間性の地図</div>
-                <div class="mtc-sub">8つの輝きで偉人を並べる</div>
+              <button class="magic-topbook-cat magic-topbook-cat-concept" data-cat="concept">
+                <div class="mtc-name">概 念</div>
+                <div class="mtc-sub">元素・物・ビジネスから辿る</div>
               </button>
             </div>
           </div>
@@ -628,7 +611,6 @@
         elements: () => { try { openElementsPage(); } catch (e) { console.warn('elements', e); } },
         things: () => { try { openThingsPage(); } catch (e) { console.warn('things', e); } },
         business: () => { try { openBusinessPage(); } catch (e) { console.warn('business', e); } },
-        humanitymap: () => { try { openHumanityMap(); } catch (e) { console.warn('humap', e); } },
       };
       wrap.querySelectorAll('[data-deep]').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -659,6 +641,11 @@
         ]},
         library: { title: '📚 図 書 館', sub: '偉人・神話・神々・音楽の総合書庫', items: [
           { deep: 'library', label: '図書館に入る', desc: 'ゴシック寺院風の本棚から検索 — クリックで本を開く', emoji: '📚' },
+        ]},
+        concept: { title: '概 念', sub: '物質・道具・経済から偉人を辿る', items: [
+          { deep: 'elements', label: '元 素', desc: '周期表に並ぶすべての元素', emoji: '⚛' },
+          { deep: 'things', label: '物 か ら', desc: '道具・発明・技術から', emoji: '🔧' },
+          { deep: 'business', label: 'ビ ジ ネ ス か ら', desc: '経済・組織・起業から', emoji: '💼' },
         ]},
         ijin: { title: '👤 偉 人', sub: '297人の生涯と関係', items: [
           { deep: 'quiz', label: '偉人クイズ', desc: '5タイプの問題でテスト', emoji: '🎓' },
@@ -710,7 +697,15 @@
         });
       }
       wrap.querySelectorAll('.magic-topbook-cat').forEach(catBtn => {
-        catBtn.addEventListener('click', () => showCategoryPopup(catBtn.dataset.cat));
+        catBtn.addEventListener('click', () => {
+          const cat = catBtn.dataset.cat;
+          // CATEGORY_SUB に登録されていればポップアップ、無ければ直接 deep を起動
+          if (CATEGORY_SUB[cat]) {
+            showCategoryPopup(cat);
+          } else if (deepMap[cat]) {
+            deepMap[cat]();
+          }
+        });
       });
 
       // Three.js ミニシーン起動
@@ -23243,86 +23238,127 @@
   });
 
   // ============================================================
-  // ⚛ 元素 — 周期表に並ぶ物質たちと、それを発見した人
+  // ⚛ 元素 — 「H + O = H₂O」方式で覚えやすく
   // ============================================================
+  // 主要な16元素（覚えやすい・身近）
   const ELEMENTS_DATA = [
-    // 古代から知られる金属（先史〜紀元前）
-    { sym: 'Au', name: '金',     no: 79,  era: 'ancient', color: '#ffd860', desc: '腐蝕しない美しさ。古代エジプトのファラオから現代金融まで、人を魅了し続ける。',  ijins: ['newton'] },
-    { sym: 'Ag', name: '銀',     no: 47,  era: 'ancient', color: '#d8d8d8', desc: '月の金属。鏡・写真・抗菌・通貨。',                                        ijins: [] },
-    { sym: 'Cu', name: '銅',     no: 29,  era: 'ancient', color: '#c08858', desc: '青銅器時代を起こした金属。電気を最も流す道具。',                          ijins: [] },
-    { sym: 'Fe', name: '鉄',     no: 26,  era: 'ancient', color: '#a0a0a0', desc: '文明を支える骨。鉄器時代から産業革命へ。',                                ijins: [] },
-    { sym: 'Sn', name: '錫',     no: 50,  era: 'ancient', color: '#c8c8d0', desc: '銅と混ざって青銅をつくる。錫の鉱山が古代の戦争を変えた。',                ijins: [] },
-    { sym: 'Pb', name: '鉛',     no: 82,  era: 'ancient', color: '#5a6878', desc: 'ローマの水道管。重い、毒、それでも便利だった金属。',                      ijins: [] },
-    { sym: 'Hg', name: '水銀',   no: 80,  era: 'ancient', color: '#a8c0d8', desc: '常温で液体になる唯一の金属。錬金術師の夢、ニュートンを毒したかもしれない元素。', ijins: ['newton'] },
-    { sym: 'C',  name: '炭素',   no: 6,   era: 'ancient', color: '#3a3a3a', desc: '生命の骨組み、ダイヤモンドと黒鉛、CO₂。すべての有機物の主役。',          ijins: ['lavoisier'] },
-    { sym: 'S',  name: '硫黄',   no: 16,  era: 'ancient', color: '#e8d040', desc: '黄色く燃える非金属。火薬・ゴム・タンパク質に。',                          ijins: [] },
-    // 18世紀（化学革命）
-    { sym: 'O',  name: '酸素',   no: 8,   era: '18c',     color: '#80b0ff', desc: '燃焼の正体。プリーストリーが発見、ラヴォアジエが命名。生命の呼吸の元。', ijins: ['lavoisier'] },
-    { sym: 'H',  name: '水素',   no: 1,   era: '18c',     color: '#fff8c0', desc: '宇宙で最も軽く、最も多い元素。星の燃料、未来のエネルギー。',           ijins: ['lavoisier'] },
-    { sym: 'N',  name: '窒素',   no: 7,   era: '18c',     color: '#80c0e0', desc: '空気の8割を占める元素。タンパク質・DNAに必須。爆薬の原料でもある。',     ijins: ['lavoisier', 'nobel'] },
-    { sym: 'Cl', name: '塩素',   no: 17,  era: '18c',     color: '#80e080', desc: 'シェーレが発見した黄緑の毒ガス。塩・漂白・水道殺菌。',                  ijins: [] },
-    // 19世紀（電気化学・分光学）
-    { sym: 'Na', name: 'ナトリウム', no: 11, era: '19c',  color: '#e8a880', desc: 'デービーが電気分解で取り出した。海の塩、神経の信号。',                    ijins: [] },
-    { sym: 'K',  name: 'カリウム',   no: 19, era: '19c',  color: '#d890c0', desc: '同じくデービー発見。植物の生命線、心臓の鼓動の元素。',                    ijins: [] },
-    { sym: 'He', name: 'ヘリウム',   no: 2,  era: '19c',  color: '#ffd0d0', desc: '太陽光のスペクトルから先に見つかった元素。地上で発見されたのは後。',     ijins: [] },
-    // 20世紀（放射能・原子力）
-    { sym: 'Ra', name: 'ラジウム',   no: 88, era: '20c',  color: '#80ffc0', desc: 'マリ・キュリーがピッチブレンド数トンから取り出した。光る、危険、神秘。',  ijins: ['curie'] },
-    { sym: 'Po', name: 'ポロニウム', no: 84, era: '20c',  color: '#a080ff', desc: 'キュリー夫妻が祖国ポーランドにちなんで命名。',                            ijins: ['curie'] },
-    { sym: 'U',  name: 'ウラン',     no: 92, era: '20c',  color: '#80c080', desc: '原子力の燃料。E=mc²の現実化、マンハッタン計画の中心。',                  ijins: ['einstein', 'feynman', 'heisenberg'] },
-    { sym: 'Pu', name: 'プルトニウム', no: 94, era: '20c', color: '#c060c0', desc: '人工的に作られた元素。長崎型原爆の中身。',                                ijins: ['feynman', 'heisenberg'] },
-    // 半導体・現代
-    { sym: 'Si', name: 'ケイ素',     no: 14, era: 'modern', color: '#a0a0c0', desc: '岩石の主成分。半導体革命でコンピュータの心臓に。',                       ijins: ['steve_jobs'] },
-    { sym: 'Li', name: 'リチウム',   no: 3,  era: 'modern', color: '#e0e0a0', desc: '最も軽い金属。スマホ・EV・ノートPCのバッテリー。',                      ijins: ['steve_jobs'] },
-    { sym: 'P',  name: 'リン',       no: 15, era: 'ancient', color: '#ff8060', desc: '錬金術師ブラントが尿から発見。生命のATPの中心、肥料、武器。',           ijins: [] },
+    { sym: 'H',  name: '水素',     no: 1,  color: '#fff8c0', tag: '宇宙の8割',   desc: '最も軽く、最も多い元素。星の燃料。',                        ijins: ['lavoisier'] },
+    { sym: 'He', name: 'ヘリウム', no: 2,  color: '#ffd0d0', tag: '風船・太陽',  desc: '太陽の光から先に発見された元素。',                           ijins: [] },
+    { sym: 'C',  name: '炭素',     no: 6,  color: '#3a3a3a', tag: '生命の柱',    desc: '鉛筆の黒、ダイヤモンドの輝き。すべての有機物の主役。',       ijins: ['lavoisier'] },
+    { sym: 'N',  name: '窒素',     no: 7,  color: '#80c0e0', tag: '空気の8割',   desc: '大気の主役。タンパク質・DNA・肥料・爆薬の元素。',           ijins: ['lavoisier', 'nobel'] },
+    { sym: 'O',  name: '酸素',     no: 8,  color: '#80b0ff', tag: '呼吸',        desc: '生命の呼吸の元素。燃焼の正体。プリーストリーが発見。',       ijins: ['lavoisier'] },
+    { sym: 'Na', name: 'ナトリウム', no: 11, color: '#e8a880', tag: '塩の半分',   desc: '塩の片割れ。神経の信号にも使われる。',                       ijins: [] },
+    { sym: 'Mg', name: 'マグネシウム', no: 12, color: '#a8e0a0', tag: '葉緑素', desc: '葉が緑なのはこの原子のおかげ。植物の心臓。',                   ijins: [] },
+    { sym: 'Al', name: 'アルミ',     no: 13, color: '#d8d8e0', tag: '軽い金属',  desc: '軽く錆びにくい。1円玉、缶、飛行機。',                         ijins: [] },
+    { sym: 'Si', name: 'ケイ素',     no: 14, color: '#a0a0c0', tag: '砂・半導体', desc: '砂の主成分。コンピュータの心臓。',                            ijins: ['steve_jobs'] },
+    { sym: 'P',  name: 'リン',       no: 15, color: '#ff8060', tag: 'DNA・骨',   desc: '生命のATPと骨の主役。錬金術師ブラントが尿から発見。',         ijins: [] },
+    { sym: 'S',  name: '硫黄',       no: 16, color: '#e8d040', tag: '火山・卵',  desc: '火山の黄色、ゆで卵の匂い、火薬の三本柱の一つ。',              ijins: [] },
+    { sym: 'Cl', name: '塩素',       no: 17, color: '#80e080', tag: '塩のもう半分', desc: '黄緑色の毒ガス。塩・漂白・水道の殺菌。',                    ijins: [] },
+    { sym: 'Ca', name: 'カルシウム', no: 20, color: '#f0e8d0', tag: '骨・歯',    desc: '牛乳に含まれる。骨と歯と貝殻の主成分。',                       ijins: [] },
+    { sym: 'Fe', name: '鉄',         no: 26, color: '#a0a0a0', tag: '血と剣',    desc: '血のヘムを作り、文明を支える金属。',                          ijins: [] },
+    { sym: 'Cu', name: '銅',         no: 29, color: '#c08858', tag: '電線・10円', desc: '青銅器時代の主役。電気を最も流す金属。',                      ijins: [] },
+    { sym: 'Ag', name: '銀',         no: 47, color: '#d8d8d8', tag: '鏡・銀器',  desc: '月の金属。鏡・写真・抗菌・通貨。',                            ijins: [] },
+    { sym: 'Au', name: '金',         no: 79, color: '#ffd860', tag: '永遠の金',  desc: '腐蝕しない美しさ。古代から現代まで人を魅了する。',            ijins: ['newton'] },
+    { sym: 'Hg', name: '水銀',       no: 80, color: '#a8c0d8', tag: '液体金属',  desc: '常温で液体になる唯一の金属。錬金術師の夢、ニュートンを毒したかも。', ijins: ['newton'] },
+    { sym: 'Pb', name: '鉛',         no: 82, color: '#5a6878', tag: 'ローマの水道', desc: '重く、毒、それでも便利だった古代の万能金属。',                ijins: [] },
+    { sym: 'U',  name: 'ウラン',     no: 92, color: '#80c080', tag: '原子力',    desc: 'E=mc²の現実化。原発と原爆の心臓。',                            ijins: ['einstein', 'feynman', 'heisenberg'] },
+    { sym: 'Ra', name: 'ラジウム',   no: 88, color: '#80ffc0', tag: '光る毒',   desc: 'マリ・キュリーが取り出した光る元素。',                        ijins: ['curie'] },
+    { sym: 'Po', name: 'ポロニウム', no: 84, color: '#a080ff', tag: '祖国の名',  desc: 'キュリー夫妻が祖国ポーランドにちなんで命名。',                ijins: ['curie'] },
   ];
-  const ERAS = {
-    ancient: { label: '古代から', color: '#806040' },
-    '18c':   { label: '18世紀（化学革命）', color: '#5070a0' },
-    '19c':   { label: '19世紀（電気化学）', color: '#7050a0' },
-    '20c':   { label: '20世紀（放射能・原子力）', color: '#a04060' },
-    modern:  { label: '現代（半導体・電池）', color: '#308080' },
-  };
-
+  // 化合物カード — A + B = C 方式で覚えやすく
+  const COMPOUNDS_DATA = [
+    { formula: 'H₂O',     name: '水',         parts: ['H', 'O'],         desc: '命の溶媒。地球の青さ、人体の60%。',                           ijins: ['lavoisier'] },
+    { formula: 'O₂',      name: '酸素',       parts: ['O', 'O'],         desc: '呼吸の元素。植物が光合成で作る。',                            ijins: ['lavoisier'] },
+    { formula: 'CO₂',     name: '二酸化炭素', parts: ['C', 'O'],         desc: '吐く息。植物の食料。気候変動の主役。',                        ijins: ['lavoisier'] },
+    { formula: 'NaCl',    name: '食塩',       parts: ['Na', 'Cl'],       desc: '海の塩、食卓の塩。生命の電解質。',                            ijins: [] },
+    { formula: 'NH₃',     name: 'アンモニア', parts: ['N', 'H'],         desc: '刺激臭。肥料の母、世界人口を支える化合物。',                  ijins: [] },
+    { formula: 'CH₄',     name: 'メタン',     parts: ['C', 'H'],         desc: 'ガスコンロの炎。最もシンプルな炭化水素。',                    ijins: [] },
+    { formula: 'C₆H₁₂O₆', name: 'ブドウ糖',   parts: ['C', 'H', 'O'],    desc: '甘いエネルギー。生命の燃料。',                                ijins: [] },
+    { formula: 'C₂H₅OH',  name: 'エタノール', parts: ['C', 'H', 'O'],    desc: 'お酒の中身。医薬品の溶媒。',                                  ijins: [] },
+    { formula: 'Fe₂O₃',   name: '鉄錆',       parts: ['Fe', 'O'],        desc: '赤さび。文明が朽ちる音、しかし新しい鉄に戻れる。',            ijins: [] },
+    { formula: 'CaCO₃',   name: '石灰岩',     parts: ['Ca', 'C', 'O'],   desc: '貝殻、サンゴ、白亜の大地。地球の炭素貯蔵庫。',                ijins: [] },
+    { formula: 'SiO₂',    name: '石英・ガラス', parts: ['Si', 'O'],      desc: '砂の主成分、水晶、ガラス、レンズ。',                          ijins: [] },
+    { formula: 'H₂SO₄',   name: '硫酸',       parts: ['H', 'S', 'O'],    desc: 'バッテリーの中身。工業の血液。',                              ijins: [] },
+    { formula: 'HCl',     name: '塩酸',       parts: ['H', 'Cl'],        desc: '胃酸の正体。化学の万能酸。',                                  ijins: [] },
+    { formula: 'Al₂O₃',   name: 'アルミナ',   parts: ['Al', 'O'],        desc: 'ボーキサイトの主成分。アルミ製品の出発点。',                  ijins: [] },
+    { formula: 'NaOH',    name: '苛性ソーダ', parts: ['Na', 'O', 'H'],   desc: '石鹸を作る強アルカリ。',                                      ijins: [] },
+    { formula: 'CaO',     name: '生石灰',     parts: ['Ca', 'O'],        desc: '建築・農業に。水で消すと熱を放つ。',                          ijins: [] },
+    { formula: 'DNA',     name: '遺伝子',     parts: ['C', 'H', 'N', 'O', 'P'], desc: '生命の言葉。アデニン・グアニン・シトシン・チミンの長い鎖。', ijins: ['darwin', 'mendel'] },
+  ];
+  // 反応カード — これとこれが合わさるとこうなる
+  const REACTIONS_DATA = [
+    { eq: '2H₂ + O₂ → 2H₂O',         name: '水素が燃える',        desc: '宇宙で最も軽い気体が、最も命に必要な液体になる。' },
+    { eq: '4Fe + 3O₂ → 2Fe₂O₃',      name: '鉄が錆びる',          desc: '空気と時間が、文明の硬さを赤い粉に変える。' },
+    { eq: 'CH₄ + 2O₂ → CO₂ + 2H₂O',  name: 'ガスが燃える',        desc: 'ガスコンロで起きる毎日の化学反応。' },
+    { eq: '6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂', name: '光合成',          desc: '植物が光を糖に変える。地球の酸素はここから。' },
+    { eq: 'C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O + エネルギー', name: '呼吸（光合成の逆）', desc: '糖を分解してエネルギーを得る。すべての動物が毎秒やっている。' },
+    { eq: 'NaOH + HCl → NaCl + H₂O', name: '中和',                desc: 'アルカリと酸が出会うと、塩と水になる。中和反応の基本。' },
+    { eq: 'CaCO₃ → CaO + CO₂',       name: '石灰石を焼く',        desc: '貝殻を熱すると、生石灰と二酸化炭素に分かれる。セメントの原点。' },
+    { eq: 'N₂ + 3H₂ → 2NH₃',         name: 'ハーバー・ボッシュ法', desc: '空気と水素から肥料を作る。20世紀の人口爆発を支えた化学。' },
+  ];
   function openElementsPage() {
     const ov = document.createElement('div');
     ov.className = 'concept-page-overlay theme-elements';
-    const eras = Object.keys(ERAS);
+    const sym2el = Object.fromEntries(ELEMENTS_DATA.map(e => [e.sym, e]));
+    function partsHtml(parts) {
+      return parts.map(p => {
+        const el = sym2el[p];
+        const c = el ? el.color : '#888';
+        return `<button class="el-part" data-sym="${p}" style="--c:${c}">${p}</button>`;
+      }).join('<span class="el-plus">+</span>');
+    }
     ov.innerHTML = `
       <button class="cp-close" aria-label="閉じる">×</button>
       <div class="cp-wrap">
         <div class="cp-head">
-          <div class="cp-eyebrow">E L E M E N T S　×　P E O P L E</div>
-          <div class="cp-title">元 素 と 人</div>
+          <div class="cp-eyebrow">E L E M E N T S</div>
+          <div class="cp-title">元 素</div>
           <div class="cp-sub">
-            周期表に並ぶ100以上の元素。<br>
-            その一つひとつには、それを取り出し、命名し、<br>
-            あるいは生涯を捧げた人がいる。
+            身近な物のほとんどは、たった20種類くらいの元素でできている。<br>
+            「H ＋ O ＝ H₂O（水）」みたいに、組み合わせで世界は作られる。
           </div>
         </div>
-        ${eras.map(eraKey => {
-          const eraEl = ELEMENTS_DATA.filter(e => e.era === eraKey);
-          if (!eraEl.length) return '';
-          const era = ERAS[eraKey];
-          return `
-            <div class="el-era-section">
-              <div class="el-era-head" style="--era-color:${era.color}">
-                <span class="el-era-label">${era.label}</span>
-                <span class="el-era-count">${eraEl.length} 元素</span>
-              </div>
-              <div class="el-grid">
-                ${eraEl.map(el => `
-                  <div class="el-cell" style="--el-color:${el.color}" data-el="${el.sym}">
-                    <div class="el-no">${el.no}</div>
-                    <div class="el-sym">${el.sym}</div>
-                    <div class="el-name">${el.name}</div>
-                  </div>
-                `).join('')}
-              </div>
+
+        <div class="el-section-head"><span class="el-sec-label">元 素</span><span class="el-sec-sub">— 覚えておくと世界が読める ${ELEMENTS_DATA.length} 種 —</span></div>
+        <div class="el-grid">
+          ${ELEMENTS_DATA.map(el => `
+            <div class="el-cell" style="--el-color:${el.color}" data-el="${el.sym}">
+              <div class="el-no">${el.no}</div>
+              <div class="el-sym">${el.sym}</div>
+              <div class="el-name">${el.name}</div>
+              <div class="el-tag">${el.tag}</div>
             </div>
-          `;
-        }).join('')}
+          `).join('')}
+        </div>
         <div class="el-detail" id="elDetail"></div>
-        <div class="cp-foot">元素は周期表に並ぶ。だがその先には、それを問うた人がいる。</div>
+
+        <div class="el-section-head el-section-head-cmp"><span class="el-sec-label">化 合 物</span><span class="el-sec-sub">— 元素を足すと、こうなる —</span></div>
+        <div class="el-compound-grid">
+          ${COMPOUNDS_DATA.map(c => `
+            <div class="el-compound">
+              <div class="el-cmp-equation">
+                <span class="el-cmp-parts">${partsHtml(c.parts)}</span>
+                <span class="el-cmp-arrow">→</span>
+                <span class="el-cmp-formula">${c.formula}</span>
+              </div>
+              <div class="el-cmp-name">${c.name}</div>
+              <div class="el-cmp-desc">${c.desc}</div>
+              ${c.ijins.length ? `<div class="el-cmp-ijins">${c.ijins.map(id => `<button class="cnp-pill" data-id="${id}">${_resolveIjinName(id)}</button>`).join('')}</div>` : ''}
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="el-section-head"><span class="el-sec-label">反 応</span><span class="el-sec-sub">— これとこれが合わさるとこうなる —</span></div>
+        <div class="el-reaction-grid">
+          ${REACTIONS_DATA.map(r => `
+            <div class="el-reaction">
+              <div class="el-rx-eq">${r.eq}</div>
+              <div class="el-rx-name">${r.name}</div>
+              <div class="el-rx-desc">${r.desc}</div>
+            </div>
+          `).join('')}
+        </div>
+        <div class="cp-foot">世界はこの組み合わせで出来ている。</div>
       </div>
     `;
     document.body.appendChild(ov);
@@ -23338,13 +23374,10 @@
             <span class="el-detail-sym">${el.sym}</span>
             <span class="el-detail-name">${el.name}</span>
           </div>
+          <div class="el-detail-tag">${el.tag}</div>
           <div class="el-detail-desc">${el.desc}</div>
-          <div class="el-detail-ijins">
-            ${el.ijins.length === 0
-              ? '<span class="el-no-ijin">— 関連する偉人は今後追加予定 —</span>'
-              : el.ijins.map(id => `<button class="cnp-pill" data-id="${id}">${_resolveIjinName(id)}</button>`).join('')
-            }
-          </div>
+          ${el.ijins.length === 0 ? '' :
+            `<div class="el-detail-ijins">${el.ijins.map(id => `<button class="cnp-pill" data-id="${id}">${_resolveIjinName(id)}</button>`).join('')}</div>`}
         </div>
       `;
       detailEl.classList.add('show');
@@ -23353,20 +23386,25 @@
     ov.querySelectorAll('.el-cell').forEach(cell => {
       cell.addEventListener('click', () => {
         const sym = cell.dataset.el;
-        const el = ELEMENTS_DATA.find(e => e.sym === sym);
+        const el = sym2el[sym];
         if (el) {
           ov.querySelectorAll('.el-cell').forEach(c => c.classList.remove('active'));
           cell.classList.add('active');
           showDetail(el);
-          // スクロール
-          const detail = ov.querySelector('#elDetail');
-          detail.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          ov.querySelector('#elDetail').scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
       });
     });
-    // 初期表示：最初の元素
-    const firstCell = ov.querySelector('.el-cell');
-    if (firstCell) firstCell.click();
+    // 化合物の元素ピル → その元素を表示
+    ov.querySelectorAll('.el-part').forEach(p => {
+      p.addEventListener('click', e => {
+        e.stopPropagation();
+        const sym = p.dataset.sym;
+        const cell = ov.querySelector(`.el-cell[data-el="${sym}"]`);
+        if (cell) cell.click();
+      });
+    });
+    _wireIjinPills(ov, close);
   }
   window.openElementsPage = openElementsPage;
 
@@ -23482,54 +23520,6 @@
     _wireIjinPills(ov, close);
   }
   window.openBusinessPage = openBusinessPage;
-
-  // ============================================================
-  // 🤝 図書館C案 — 「人間性の地図」
-  //   8つの人間性タグごとに偉人をグループ表示
-  // ============================================================
-  function openHumanityMap() {
-    const tags = window.HUMANITY_TAGS || {};
-    const of = window.HUMANITY_OF || {};
-    if (!Object.keys(tags).length) return;
-    const groups = Object.keys(tags).map(tagId => ({
-      tagId,
-      tag: tags[tagId],
-      ijins: Object.entries(of).filter(([_, ts]) => ts.includes(tagId)).map(([id]) => id),
-    })).filter(g => g.ijins.length > 0);
-
-    const ov = document.createElement('div');
-    ov.className = 'concept-page-overlay theme-humanity';
-    ov.innerHTML = `
-      <button class="cp-close" aria-label="閉じる">×</button>
-      <div class="cp-wrap">
-        <div class="cp-head">
-          <div class="cp-eyebrow">H U M A N I T Y　M A P</div>
-          <div class="cp-title">人 間 性 の 地 図</div>
-          <div class="cp-sub">
-            人を「タグ」で括るのは無理がある。<br>
-            それでも一つの側面として、似た輝きを持った人を並べてみる。<br>
-            AIに代えられない部分が、ここに集まる。
-          </div>
-        </div>
-        <div class="cp-list cp-list-humanity">
-          ${groups.map(g => `
-            <div class="cp-card">
-              <div class="cp-name">${g.tag.name}</div>
-              <div class="cp-desc">${g.tag.desc}</div>
-              <div class="cp-pills">${_ijinPillsHtml(g.ijins)}</div>
-            </div>
-          `).join('')}
-        </div>
-        <div class="cp-foot">タグは人物の一側面に過ぎない。複数の輝きを併せ持つ人もいる。</div>
-      </div>
-    `;
-    document.body.appendChild(ov);
-    requestAnimationFrame(() => ov.classList.add('open'));
-    const close = () => { ov.classList.remove('open'); setTimeout(() => ov.remove(), 320); };
-    ov.querySelector('.cp-close').addEventListener('click', close);
-    _wireIjinPills(ov, close);
-  }
-  window.openHumanityMap = openHumanityMap;
 
   // ============================================================
   // 📖 星の王子様 — 動くSVG絵本

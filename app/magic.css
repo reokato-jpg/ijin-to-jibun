@@ -10129,3 +10129,162 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   .el-detail-sym { font-size: 44px; }
   .el-detail-name { font-size: 18px; letter-spacing: 2px; }
 }
+
+/* ============================================================
+   ⚛ 元素ページ v2: 化合物カード（H + O = H₂O 方式）
+============================================================ */
+.el-section-head {
+  display: flex; align-items: baseline; gap: 14px;
+  margin: 36px 0 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(180,200,255,0.25);
+}
+.el-sec-label {
+  font-size: 22px; letter-spacing: 8px;
+  color: #ffffff;
+  font-family: 'Noto Serif JP', serif;
+}
+.el-sec-sub {
+  font-size: 11px; letter-spacing: 1.5px;
+  color: #a0b8d0; opacity: 0.85;
+}
+
+.el-tag {
+  font-size: 9px; color: rgba(255,255,255,0.7);
+  letter-spacing: 1px; margin-top: 4px;
+  font-family: 'Noto Serif JP', serif;
+}
+
+/* 化合物カードグリッド */
+.el-compound-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+}
+.el-compound {
+  background: rgba(15,15,30,0.7);
+  border-left: 3px solid rgba(180,200,255,0.55);
+  border-radius: 6px;
+  padding: 18px 20px;
+  transition: all 0.25s ease;
+}
+.el-compound:hover {
+  background: rgba(25,25,45,0.85);
+  border-left-color: #80c8ff;
+  transform: translateY(-2px);
+}
+.el-cmp-equation {
+  display: flex; align-items: center; gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  font-family: 'Cormorant Garamond', serif;
+}
+.el-cmp-parts { display: inline-flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.el-part {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: linear-gradient(140deg, color-mix(in srgb, var(--c, #888) 35%, rgba(15,15,30,0.85)), rgba(8,8,16,0.95));
+  border: 1px solid color-mix(in srgb, var(--c, #888) 60%, transparent);
+  color: #ffffff;
+  width: 36px; height: 36px;
+  border-radius: 4px;
+  font-size: 16px; font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  text-shadow: 0 0 6px var(--c, #888);
+  font-family: 'Cormorant Garamond', serif;
+}
+.el-part:hover {
+  background: linear-gradient(140deg, var(--c, #888), rgba(15,15,30,0.85));
+  transform: scale(1.08);
+  box-shadow: 0 0 12px var(--c, #888);
+}
+.el-plus {
+  color: #c0d0e8; font-size: 18px;
+  font-weight: 300; padding: 0 4px;
+}
+.el-cmp-arrow {
+  color: #80c8ff; font-size: 22px;
+  margin: 0 8px;
+}
+.el-cmp-formula {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px; font-weight: 700;
+  color: #ffe0a0;
+  text-shadow: 0 0 12px rgba(255,200,80,0.4);
+  letter-spacing: 1px;
+}
+.el-cmp-name {
+  font-size: 16px; color: #ffffff;
+  letter-spacing: 2px;
+  margin-top: 4px;
+  font-family: 'Noto Serif JP', serif;
+}
+.el-cmp-desc {
+  font-size: 12px; color: #b8c8e0;
+  line-height: 1.7; margin-top: 6px;
+}
+.el-cmp-ijins {
+  display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(180,200,255,0.15);
+}
+
+/* 反応グリッド */
+.el-reaction-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 12px;
+}
+.el-reaction {
+  background: linear-gradient(140deg, rgba(40,30,60,0.55), rgba(15,12,28,0.85));
+  border: 1px solid rgba(180,160,255,0.35);
+  border-radius: 6px;
+  padding: 16px 18px;
+}
+.el-rx-eq {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px; font-weight: 700;
+  color: #d0c0ff;
+  letter-spacing: 1px;
+  text-align: center;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(180,160,255,0.25);
+  margin-bottom: 10px;
+}
+.el-rx-name {
+  font-size: 14px; color: #ffe0a0;
+  letter-spacing: 2px;
+  font-family: 'Noto Serif JP', serif;
+}
+.el-rx-desc {
+  font-size: 12px; color: #b8c8e0;
+  line-height: 1.7; margin-top: 4px;
+}
+
+.el-detail-tag {
+  font-size: 11px; color: var(--el-color);
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+  opacity: 0.85;
+}
+
+/* 「概念」マスターカテゴリ */
+.magic-topbook-cat-concept {
+  background: linear-gradient(135deg, rgba(60,40,80,0.85), rgba(20,15,40,0.92));
+  border-color: rgba(180,160,255,0.55);
+  position: relative;
+}
+.magic-topbook-cat-concept::after {
+  content: 'NEW';
+  position: absolute; top: 8px; right: 10px;
+  font-size: 9px; letter-spacing: 1.5px;
+  background: linear-gradient(135deg, #b890ff, #5040a0);
+  color: #1a0e2a; padding: 2px 6px; border-radius: 4px;
+  font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  .el-cmp-formula { font-size: 18px; }
+  .el-rx-eq { font-size: 14px; letter-spacing: 0; }
+  .el-part { width: 30px; height: 30px; font-size: 13px; }
+}
