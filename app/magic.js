@@ -16571,15 +16571,25 @@
       _ndc.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       _ndc.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
       _ray.setFromCamera(_ndc, camera);
-      const hits = _ray.intersectObjects(planetGroup.children, true);
-      const hit = hits.find(h => {
-        let o = h.object;
-        while (o) { if (o.userData && o.userData.planetData) return true; o = o.parent; }
-        return false;
-      });
-      if (!hit) return;
-      let p = null, o = hit.object;
-      while (o) { if (o.userData && o.userData.planetData) { p = o.userData.planetData; break; } o = o.parent; }
+      // 通常レイキャスト
+      let hits = _ray.intersectObjects(planetGroup.children, true);
+      // 親をたどって planetData を探す
+      const findP = h => { let o = h.object; while (o) { if (o.userData && o.userData.planetData) return o.userData.planetData; o = o.parent; } return null; };
+      let p = null;
+      for (const h of hits) { p = findP(h); if (p) break; }
+      // 当たらなかった場合：最も近いプラネット中心への角度で擬似ヒット（小さい惑星でも反応）
+      if (!p) {
+        const tmpV = new THREE.Vector3();
+        let best = null, bestAng = 0.04; // 約2.3度
+        planetGroup.traverse(o => {
+          if (!o.userData || !o.userData.planetData) return;
+          o.getWorldPosition(tmpV);
+          const dir = tmpV.clone().sub(camera.position).normalize();
+          const a = dir.angleTo(_ray.ray.direction);
+          if (a < bestAng) { bestAng = a; best = o.userData.planetData; }
+        });
+        if (best) p = best;
+      }
       if (!p || !p.elements) return;
       showPlanetCompositionPopup(p);
     }, true);
@@ -17028,9 +17038,9 @@
             new THREE.SphereGeometry(p.r, 48, 32),
             new THREE.MeshStandardMaterial({
               map: ptex, emissiveMap: ptex,
-              emissive: new THREE.Color(0x404060),
-              emissiveIntensity: 0.25,
-              roughness: 0.85, metalness: 0.0,
+              emissive: new THREE.Color(0x808088),
+              emissiveIntensity: 0.55, // 0.25→0.55 で明るく
+              roughness: 0.7, metalness: 0.05,
             })
           );
       // 大気フレネルシェル（地球・金星・木星・天王星に淡い光輪）

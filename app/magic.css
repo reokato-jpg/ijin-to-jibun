@@ -9122,24 +9122,8 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
 }
 .koh-ar-overlay.on { opacity: 1; }
 
-/* HUD背景の枠装飾（眼鏡フレームの内側っぽさ） */
-.koh-ar-hud-bg { position: absolute; inset: 0; }
-.kah-grid {
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(120,200,255,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(120,200,255,0.04) 1px, transparent 1px);
-  background-size: 40px 40px;
-  mask-image: radial-gradient(circle at center, transparent 30%, black 80%);
-}
-.kah-corner {
-  position: absolute; width: 60px; height: 60px;
-  border: 2px solid rgba(140,220,255,0.5);
-}
-.kah-corner-tl { top: 12px; left: 12px; border-right: none; border-bottom: none; }
-.kah-corner-tr { top: 12px; right: 12px; border-left: none; border-bottom: none; }
-.kah-corner-bl { bottom: 12px; left: 12px; border-right: none; border-top: none; }
-.kah-corner-br { bottom: 12px; right: 12px; border-left: none; border-top: none; }
+/* AIグラスHUD：モザイク完全廃止（旧grid/cornerはもう描画しない） */
+.koh-ar-hud-bg, .kah-grid, .kah-corner { display: none !important; background: none !important; border: none !important; }
 
 /* 左の関係者情報パネル */
 .koh-ar-info-panel {
