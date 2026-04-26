@@ -2,6 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://ijin-to-jibun.com/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
   <url><loc>https://ijin-to-jibun.com/app/</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://ijin-to-jibun.com/app/p/adam_smith.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ijin-to-jibun.com/app/p/akutagawa.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ijin-to-jibun.com/app/p/andy_warhol.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ijin-to-jibun.com/app/p/anne_boleyn.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
@@ -51,6 +52,7 @@
   <url><loc>https://ijin-to-jibun.com/app/p/de_beauvoir.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ijin-to-jibun.com/app/p/de_kooning.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ijin-to-jibun.com/app/p/debussy.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ijin-to-jibun.com/app/p/democritus.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ijin-to-jibun.com/app/p/descartes.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ijin-to-jibun.com/app/p/dickens.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ijin-to-jibun.com/app/p/dickinson.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
@@ -92,6 +94,7 @@
   <url><loc>https://ijin-to-jibun.com/app/p/haydn.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ijin-to-jibun.com/app/p/hegel.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ijin-to-jibun.com/app/p/heidegger.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ijin-to-jibun.com/app/p/heisenberg.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ijin-to-jibun.com/app/p/hemingway.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ijin-to-jibun.com/app/p/herschel.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ijin-to-jibun.com/app/p/higuchi_ichiyo.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
@@ -125,6 +128,7 @@
   <url><loc>https://ijin-to-jibun.com/app/p/kawabata_yasunari.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ijin-to-jibun.com/app/p/kazunomiya.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ijin-to-jibun.com/app/p/kepler.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ijin-to-jibun.com/app/p/keynes.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ijin-to-jibun.com/app/p/kido_takayoshi.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ijin-to-jibun.com/app/p/kierkegaard.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ijin-to-jibun.com/app/p/klimt.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
@@ -181,6 +185,7 @@
   <url><loc>https://ijin-to-jibun.com/app/p/nightingale.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ijin-to-jibun.com/app/p/niijima_yae.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ijin-to-jibun.com/app/p/nishida.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ijin-to-jibun.com/app/p/nobel.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ijin-to-jibun.com/app/p/noguchi_hideyo.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ijin-to-jibun.com/app/p/oda_nobunaga.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ijin-to-jibun.com/app/p/oichi.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
