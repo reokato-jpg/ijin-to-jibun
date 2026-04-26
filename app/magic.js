@@ -23084,10 +23084,11 @@
       [6]:   '近世',
       [18]:  '近代',
     };
-    // 壁のゾーン
+    // 壁のゾーン（南壁は近代/現代の2分割で5時代×2ゾーン構成）
     const WALL_ZONES = [
       { x: 0,             z: -HALL_D/2 + 0.6, len: HALL_W - 4, rot: 0,         era: '古代', side: '北' },
-      { x: 0,             z:  HALL_D/2 - 0.6, len: HALL_W - 4, rot: Math.PI,   era: '現代', side: '南' },
+      { x: -HALL_W/4 - 0.5, z: HALL_D/2 - 0.6, len: HALL_W/2 - 3, rot: Math.PI, era: '近代', side: '南西' },
+      { x:  HALL_W/4 + 0.5, z: HALL_D/2 - 0.6, len: HALL_W/2 - 3, rot: Math.PI, era: '現代', side: '南東' },
       { x: -HALL_W/2+0.6, z: 0,                len: HALL_D - 4, rot: Math.PI/2, era: '中世', side: '西' },
       { x:  HALL_W/2-0.6, z: 0,                len: HALL_D - 4, rot: -Math.PI/2,era: '近世', side: '東' },
     ];
@@ -23145,7 +23146,8 @@
     buildEraSign('古 代', 0, 8, -HALL_D/2 + 1.5);
     buildEraSign('中 世', -HALL_W/2 + 1.5, 8, 0);
     buildEraSign('近 世',  HALL_W/2 - 1.5, 8, 0);
-    buildEraSign('近 代', 0, 8, HALL_D/2 - 1.5);
+    buildEraSign('近 代', -HALL_W/4 - 0.5, 8, HALL_D/2 - 1.5);
+    buildEraSign('現 代',  HALL_W/4 + 0.5, 8, HALL_D/2 - 1.5);
     // 中央アイル列にも小さな時代看板（y=6で見やすく）
     aisleZPositions.forEach(z => {
       const era = ZONE_BY_AISLE_Z[z];
@@ -23465,7 +23467,7 @@
         if (!b.userData.book.placeholder) {
           const mats = Array.isArray(b.material) ? b.material : [b.material];
           mats.forEach(mt => { mt.emissiveIntensity = 4.0; });
-          setTimeout(() => { b.userData.book.action(); close(); }, 350);
+          playBookOpenAnim(b.userData.book, () => { b.userData.book.action(); close(); });
         }
       }
     }
@@ -23552,10 +23554,10 @@
               const m = bookMeshes[idx];
               const mats2 = Array.isArray(m.material) ? m.material : [m.material];
               mats2.forEach(mt => { mt.emissiveIntensity = 4.0; });
-              setTimeout(() => {
+              playBookOpenAnim(m.userData.book, () => {
                 m.userData.book.action();
                 close();
-              }, 350);
+              });
             });
           });
         }
@@ -23600,7 +23602,15 @@
     }
     let shelfPage = 0;
     const SHELF_PAGE_SIZE = 24; // 8冊×3段
+    let shelfAllItems = []; // フィルタ前の全冊
     let shelfPageItems = [];
+    let shelfFilter = 'all';
+    function applyShelfFilter() {
+      shelfPageItems = shelfFilter === 'all'
+        ? shelfAllItems
+        : shelfAllItems.filter(b => b.userData.book.kind === shelfFilter);
+      shelfPage = 0;
+    }
     function renderShelfPage() {
       const start = shelfPage * SHELF_PAGE_SIZE;
       const pageItems = shelfPageItems.slice(start, start + SHELF_PAGE_SIZE);
@@ -23626,7 +23636,21 @@
         }
         return `<div class="ls3-row"><div class="ls3-board"></div><div class="ls3-books">${cells.join('')}</div></div>`;
       };
+      // 棚に並ぶ各kindの数を集計（フィルタチップに表示）
+      const kindCounts = {};
+      shelfAllItems.forEach(b => {
+        const k = b.userData.book.kind;
+        kindCounts[k] = (kindCounts[k] || 0) + 1;
+      });
+      const labels = { person: '偉人', work: '作品', myth: '神話', god: '神々', music: '音楽', element: '元素', ad: '広告' };
+      const filterChips = ['all', ...Object.keys(kindCounts).sort((a, b) => kindCounts[b] - kindCounts[a])]
+        .map(k => {
+          const lbl = k === 'all' ? `すべて（${shelfAllItems.length}）` : `${labels[k] || k}（${kindCounts[k]}）`;
+          const cls = `ls3-chip ${shelfFilter === k ? 'active' : ''} ls3-chip-${k}`;
+          return `<button class="${cls}" data-k="${k}">${lbl}</button>`;
+        }).join('');
       shelfGrid.innerHTML = `
+        <div class="ls3-filter-row">${filterChips}</div>
         <div class="ls3-shelf">
           ${renderRow(rows[0])}
           ${renderRow(rows[1])}
@@ -23640,13 +23664,19 @@
           <button class="ls3-page-btn" id="ls3Next" ${shelfPage >= totalPages - 1 ? 'disabled' : ''}>次 ▶</button>
         </div>
       `;
+      shelfGrid.querySelectorAll('.ls3-chip').forEach(c => {
+        c.addEventListener('click', () => {
+          shelfFilter = c.dataset.k;
+          applyShelfFilter();
+          renderShelfPage();
+        });
+      });
       shelfGrid.querySelectorAll('.ls3-book').forEach(el => {
         el.addEventListener('click', () => {
           const gi = +el.dataset.gi;
           const bk = shelfPageItems[gi].userData.book;
           shelfModal.hidden = true;
-          try { bk.action(); } catch {}
-          setTimeout(() => close(), 250);
+          playBookOpenAnim(bk, () => { try { bk.action(); } catch {} close(); });
         });
       });
       const prev = shelfGrid.querySelector('#ls3Prev');
@@ -23657,10 +23687,43 @@
     function escapeHtml(s) {
       return String(s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
     }
+    // 📖 本を開くアニメ：カバーが回転して見開きになる
+    function playBookOpenAnim(book, onDone) {
+      const bo = document.createElement('div');
+      bo.className = 'lib-bookopen-overlay';
+      bo.innerHTML = `
+        <div class="bo-book" style="--acc:${book.accent || '#c8a040'}">
+          <div class="bo-page bo-page-l">
+            <div class="bo-page-title">${escapeHtml(book.name)}</div>
+            <div class="bo-page-sub">${escapeHtml(book.sub || '')}</div>
+            <div class="bo-page-divider"></div>
+            <div class="bo-page-tag">— ${escapeHtml(book.tag || '')} —</div>
+          </div>
+          <div class="bo-page bo-page-r">
+            <div class="bo-page-loading">本を開いています…</div>
+          </div>
+          <div class="bo-cover bo-cover-back"></div>
+          <div class="bo-cover bo-cover-front">
+            <div class="bo-cover-band-top"></div>
+            <div class="bo-cover-title">${escapeHtml(book.name)}</div>
+            <div class="bo-cover-sub">${escapeHtml(book.sub || '')}</div>
+            <div class="bo-cover-band-bottom"></div>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(bo);
+      requestAnimationFrame(() => bo.classList.add('open'));
+      setTimeout(() => {
+        bo.classList.add('fade');
+        setTimeout(() => bo.remove(), 350);
+        try { onDone && onDone(); } catch {}
+      }, 1100);
+    }
     function openShelfModal(s) {
       shelfTitleEl.textContent = describeShelf(s);
-      shelfPageItems = s.books.filter(b => !b.userData.book.placeholder);
-      shelfPage = 0;
+      shelfAllItems = s.books.filter(b => !b.userData.book.placeholder);
+      shelfFilter = 'all';
+      applyShelfFilter();
       renderShelfPage();
       shelfModal.hidden = false;
     }
