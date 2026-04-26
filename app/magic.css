@@ -11249,6 +11249,11 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
 .el-lab2-board.panning .biz-board-canvas { transition: none !important; }
 .el-lab2-board.panning .el-node { pointer-events: none; }
 
+/* 広告スロット（汎用、PRラベル付き、軽め） */
+.aff-slot { margin: 18px 0 24px; }
+.aff-slot .aff-inline-wrap { display: block; }
+.aff-slot:empty { display: none; }
+
 /* クイックナビ：固定タブで各セクションへ飛ぶ */
 .biz-quicknav {
   position: sticky; top: 0;

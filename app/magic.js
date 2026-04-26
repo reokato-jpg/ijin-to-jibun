@@ -23387,8 +23387,14 @@
           <div class="cp-title">元 素 ラ ボ</div>
           <div class="cp-sub-mini">下のバーから引っ張って、組み合わせて遊ぼう</div>
         </div>
+        <div class="biz-quicknav">
+          <a class="bzqn" href="#elLabSec">⚗️ ラボ</a>
+          <a class="bzqn" href="#elZukan">📖 元素図鑑</a>
+          <a class="bzqn" href="#elCompounds">💧 化合物</a>
+          <a class="bzqn" href="#elReactions">🔥 反応</a>
+        </div>
 
-        <div class="el-lab2">
+        <div class="el-lab2" id="elLabSec">
           <div class="el-lab2-board" id="elBoard">
             <svg class="el-lab2-svg" id="elBoardSvg" preserveAspectRatio="none"></svg>
             <div class="el-lab2-help" id="elBoardHelp">💡 ① 下のバーから元素を盤に置く　② 盤上の元素を順にタップ → 線で繋がって化合物が誕生</div>
@@ -23414,7 +23420,7 @@
           </div>
         </div>
 
-        <div class="el-section-head"><span class="el-sec-label">元 素 図 鑑</span><span class="el-sec-sub">— ${ELEMENTS_DATA.length}種 — 顔をクリックで詳しく —</span></div>
+        <div class="el-section-head" id="elZukan"><span class="el-sec-label">元 素 図 鑑</span><span class="el-sec-sub">— ${ELEMENTS_DATA.length}種 — 顔をクリックで詳しく —</span></div>
         <div class="el-grid">
           ${ELEMENTS_DATA.map(el => `
             <div class="el-cell" style="--el-color:${el.color}" data-el="${el.sym}">
@@ -23430,7 +23436,8 @@
         </div>
         <div class="el-detail" id="elDetail"></div>
 
-        <div class="el-section-head el-section-head-cmp"><span class="el-sec-label">化 合 物</span><span class="el-sec-sub">— 元素を足すと、こうなる —</span></div>
+        <div class="aff-slot" id="elAff1"></div>
+        <div class="el-section-head el-section-head-cmp" id="elCompounds"><span class="el-sec-label">化 合 物</span><span class="el-sec-sub">— 元素を足すと、こうなる —</span></div>
         <div class="el-compound-grid">
           ${COMPOUNDS_DATA.map(c => `
             <div class="el-compound">
@@ -23446,7 +23453,7 @@
           `).join('')}
         </div>
 
-        <div class="el-section-head"><span class="el-sec-label">反 応</span><span class="el-sec-sub">— これとこれが合わさるとこうなる —</span></div>
+        <div class="el-section-head" id="elReactions"><span class="el-sec-label">反 応</span><span class="el-sec-sub">— これとこれが合わさるとこうなる —</span></div>
         <div class="el-reaction-grid">
           ${REACTIONS_DATA.map(r => `
             <div class="el-reaction">
@@ -23456,6 +23463,7 @@
             </div>
           `).join('')}
         </div>
+        <div class="aff-slot" id="elAff2"></div>
         <div class="cp-foot">世界はこの組み合わせで出来ている。</div>
       </div>
     `;
@@ -23970,6 +23978,19 @@
       });
     });
     ov.querySelector('#elBoardClear').addEventListener('click', clearBoard);
+    // クイックナビ：スムーズスクロール
+    ov.querySelectorAll('.bzqn').forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        const tgt = ov.querySelector(a.getAttribute('href'));
+        if (tgt) tgt.scrollIntoView({ behavior:'smooth', block:'start' });
+      });
+    });
+    // 広告挿入
+    if (window.MAGIC && window.MAGIC.renderAffiliate) {
+      window.MAGIC.renderAffiliate('learning-end', ov.querySelector('#elAff1'), 1, 0);
+      window.MAGIC.renderAffiliate('home-study', ov.querySelector('#elAff2'), 1, 1);
+    }
     // 盤の余白タップでフキダシ消す
     board.addEventListener('click', (e) => {
       if (e.target === board || e.target === boardSvg || e.target.classList.contains('el-lab2-empty')
@@ -24446,6 +24467,7 @@
           `).join('')}
         </div>
 
+        <div class="aff-slot" id="bzAff1"></div>
         <div class="el-section-head" id="bzServices"><span class="el-sec-label">サービス図鑑</span><span class="el-sec-sub">— 実在企業・サービス約50件 — モデル別 —</span></div>
         <div class="biz-svc-fav-section" id="bizSvcFavSection"></div>
         <div class="biz-svc-cats" id="bizSvcCats">
@@ -24505,6 +24527,7 @@
             </div>
           `).join('')}
         </div>
+        <div class="aff-slot" id="bzAff2"></div>
         <div class="cp-foot">どんな会社も、結局はピースの組み合わせ。</div>
       </div>
     `;
@@ -25552,6 +25575,11 @@
         if (tgt) tgt.scrollIntoView({ behavior:'smooth', block:'start' });
       });
     });
+    // 広告挿入
+    if (window.MAGIC && window.MAGIC.renderAffiliate) {
+      window.MAGIC.renderAffiliate('home-study', ov.querySelector('#bzAff1'), 1, 0);
+      window.MAGIC.renderAffiliate('learning-end', ov.querySelector('#bzAff2'), 1, 1);
+    }
     // Escape キーで開いているモーダルを閉じる
     const _escHandler = e => {
       if (e.key === 'Escape') {
