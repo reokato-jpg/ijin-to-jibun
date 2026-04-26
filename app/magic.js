@@ -16582,29 +16582,54 @@
       if (!p || !p.elements) return;
       showPlanetCompositionPopup(p);
     }, true);
+    // 原子核のSVG（デジタル風）
+    function nucleusSvg(sym, color) {
+      return `<svg viewBox="0 0 60 60" class="kar-nuc" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="30" cy="30" rx="26" ry="9" fill="none" stroke="${color}" stroke-width="0.7" opacity="0.6"/>
+        <ellipse cx="30" cy="30" rx="9" ry="26" fill="none" stroke="${color}" stroke-width="0.7" opacity="0.6" transform="rotate(45 30 30)"/>
+        <ellipse cx="30" cy="30" rx="26" ry="9" fill="none" stroke="${color}" stroke-width="0.5" opacity="0.45" transform="rotate(-45 30 30)"/>
+        <circle cx="30" cy="30" r="9" fill="${color}" opacity="0.85"/>
+        <text x="30" y="33" text-anchor="middle" font-size="9" font-weight="800" fill="#0a0a0a" font-family="Helvetica, sans-serif">${sym}</text>
+        <circle cx="56" cy="30" r="1.2" fill="${color}"/>
+        <circle cx="30" cy="56" r="1.2" fill="${color}" transform="rotate(45 30 30)"/>
+        <circle cx="56" cy="30" r="1.2" fill="${color}" transform="rotate(-45 30 30)"/>
+      </svg>`;
+    }
     function showPlanetCompositionPopup(p) {
-      // 既存があれば消す
-      const existing = ov.querySelector('.koh-planet-popup');
-      if (existing) existing.remove();
-      const pop = document.createElement('div');
-      pop.className = 'koh-planet-popup';
-      const chips = (window._renderElementChips || (() => ''))(p.elements);
-      pop.innerHTML = `
-        <button class="koh-pl-x" type="button" aria-label="閉じる">×</button>
-        <div class="koh-pl-name">🪐 ${p.name}</div>
-        <div class="koh-pl-comp">${p.composition || ''}</div>
-        <div class="koh-pl-elems">${chips}</div>
-        ${p.story ? `<div class="koh-pl-story">${p.story}</div>` : ''}
-        <button class="koh-pl-go" type="button">⚗️ この元素で化学ラボを開く</button>
+      // KOH内ではAR OFF時に小ヒントだけ、AR ON時にHUDに情報を流す
+      const isArOn = ov.classList.contains('koh-ar-on');
+      if (!isArOn) {
+        // 軽いヒントを画面下に短く表示
+        const hint = document.createElement('div');
+        hint.className = 'koh-ar-hint';
+        hint.innerHTML = `🪐 <b>${p.name}</b> — 右上のAIグラスをONにすると元素情報が見えます`;
+        ov.appendChild(hint);
+        requestAnimationFrame(() => hint.classList.add('show'));
+        setTimeout(() => { hint.classList.remove('show'); setTimeout(() => hint.remove(), 400); }, 3500);
+        return;
+      }
+      // AR ON: 情報パネル先頭に COSMOS 分析カードとして挿入
+      const infoEl = ov.querySelector('#kohArInfoPanel');
+      if (!infoEl) return;
+      // 既存の COSMOS カード掃除
+      infoEl.querySelectorAll('.kar-cosmos').forEach(c => c.remove());
+      const sym2el = Object.fromEntries(ELEMENTS_DATA.map(e => [e.sym, e]));
+      const nuclei = (p.elements || []).map(s => {
+        const el = sym2el[s];
+        return el ? nucleusSvg(s, el.color) : '';
+      }).join('');
+      const card = document.createElement('div');
+      card.className = 'kar-card kar-cosmos';
+      card.innerHTML = `
+        <div class="kar-row kar-row-head"><span class="kar-tag">▸ COSMOS</span><span class="kar-cosmos-pn">🪐 ${p.name}</span></div>
+        <div class="kar-cosmos-comp">${p.composition || ''}</div>
+        <div class="kar-cosmos-nuclei">${nuclei}</div>
+        ${p.story ? `<div class="kar-cosmos-story">${p.story}</div>` : ''}
       `;
-      ov.appendChild(pop);
-      requestAnimationFrame(() => pop.classList.add('open'));
-      const close = () => { pop.classList.remove('open'); setTimeout(() => pop.remove(), 240); };
-      pop.querySelector('.koh-pl-x').addEventListener('click', close);
-      pop.querySelector('.koh-pl-go').addEventListener('click', () => {
-        close();
-        try { openElementsPage({ initialElements: p.elements, title: `${p.name} を作る元素` }); } catch (e) { console.warn('open elements lab', e); }
-      });
+      infoEl.insertBefore(card, infoEl.firstChild);
+      requestAnimationFrame(() => card.classList.add('show'));
+      // 16秒で消える
+      setTimeout(() => { card.classList.add('fade'); setTimeout(() => card.remove(), 600); }, 16000);
     }
 
     // 🥽 AIグラスHUD — 関係者情報＋広告

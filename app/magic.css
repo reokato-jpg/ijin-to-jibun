@@ -11249,6 +11249,64 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
 .el-lab2-board.panning .biz-board-canvas { transition: none !important; }
 .el-lab2-board.panning .el-node { pointer-events: none; }
 
+/* AIグラスHUD：COSMOS分析カード（惑星タップで挿入される） */
+.kar-cosmos {
+  border-left: 2px solid #80c0ff !important;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.kar-cosmos.show { opacity: 1; transform: translateY(0); }
+.kar-cosmos.fade { opacity: 0; transform: translateY(-6px); }
+.kar-cosmos .kar-cosmos-pn {
+  margin-left: 8px;
+  font-size: 12px; letter-spacing: 1px;
+  color: #fff;
+}
+.kar-cosmos-comp {
+  font-size: 10px; line-height: 1.5;
+  color: rgba(220,235,255,0.85);
+  margin-top: 4px;
+  letter-spacing: 0.5px;
+}
+.kar-cosmos-nuclei {
+  display: flex; flex-wrap: wrap; gap: 4px;
+  margin: 6px 0 4px;
+}
+.kar-nuc {
+  width: 32px; height: 32px;
+  filter: drop-shadow(0 0 4px rgba(120,180,255,0.5));
+}
+.kar-cosmos-story {
+  font-size: 10px; line-height: 1.55;
+  color: rgba(220,235,255,0.7);
+  font-style: italic;
+  padding-top: 4px;
+  border-top: 1px dashed rgba(180,220,255,0.18);
+}
+
+/* AR OFF時のヒント */
+.koh-ar-hint {
+  position: fixed;
+  left: 50%; bottom: 84px;
+  transform: translate(-50%, 12px);
+  z-index: 9990;
+  padding: 8px 16px;
+  background: rgba(15,24,40,0.92);
+  border: 1px solid rgba(120,180,255,0.5);
+  color: #b8e0ff;
+  border-radius: 100px;
+  font-size: 12px; letter-spacing: 1px;
+  opacity: 0;
+  transition: transform 0.3s, opacity 0.3s;
+  pointer-events: none;
+  backdrop-filter: blur(4px);
+  max-width: 90vw;
+  text-align: center;
+}
+.koh-ar-hint.show { transform: translate(-50%, 0); opacity: 1; }
+.koh-ar-hint b { color: #ffe080; }
+
 /* 惑星クリックで出る元素組成ポップアップ（cosmosモード） */
 .koh-planet-popup {
   position: fixed;
