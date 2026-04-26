@@ -10139,6 +10139,161 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   padding-bottom: 10px;
   border-bottom: 1px solid rgba(180,200,255,0.25);
 }
+
+/* ===== ラボ：元素を組み合わせる ===== */
+.el-lab {
+  position: relative;
+  margin: 28px 0 20px;
+  padding: 22px 22px 18px;
+  border: 1px solid rgba(180,220,255,0.3);
+  border-radius: 14px;
+  background: linear-gradient(160deg, rgba(20,40,60,0.55), rgba(8,16,28,0.7));
+  box-shadow: 0 0 24px rgba(80,180,255,0.08) inset;
+}
+.el-lab-head {
+  font-size: 16px; letter-spacing: 3px;
+  color: #d8ecff; margin-bottom: 14px;
+  font-family: 'Noto Serif JP', serif;
+}
+.el-lab-mix {
+  min-height: 56px;
+  display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+  padding: 12px 14px;
+  background: rgba(0,0,0,0.35);
+  border: 1px dashed rgba(180,220,255,0.25);
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+.el-lab-empty {
+  color: rgba(200,220,255,0.45);
+  font-size: 13px; letter-spacing: 2px;
+}
+.el-lab-tile {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 44px; height: 44px; padding: 0 10px;
+  border-radius: 10px;
+  background: var(--c, #888);
+  color: #0a0a0a;
+  font-weight: 800; font-size: 18px;
+  font-family: 'Helvetica Neue', sans-serif;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.4), 0 0 12px var(--c);
+  text-shadow: 0 1px 0 rgba(255,255,255,0.4);
+}
+.el-lab-tile.pop {
+  animation: ellabpop 0.5s ease;
+}
+@keyframes ellabpop {
+  0%   { transform: scale(0.3); opacity: 0; }
+  60%  { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); }
+}
+.el-lab-plus {
+  color: rgba(200,220,255,0.6);
+  font-size: 18px; font-weight: 700;
+}
+.el-lab-result { min-height: 0; }
+.el-lab-card {
+  display: grid;
+  grid-template-columns: 28px auto 1fr;
+  grid-template-rows: auto auto;
+  gap: 4px 12px;
+  align-items: center;
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(40,80,120,0.5), rgba(20,30,50,0.6));
+  border: 1px solid rgba(180,220,255,0.35);
+  margin-bottom: 8px;
+  animation: ellabreveal 0.55s cubic-bezier(0.2,0.9,0.3,1.2);
+}
+.el-lab-card.new {
+  border-color: #ffe080;
+  box-shadow: 0 0 24px rgba(255,220,120,0.4);
+}
+.el-lab-card.pending {
+  display: block;
+  text-align: center;
+  background: rgba(0,0,0,0.25);
+  border-style: dashed;
+  border-color: rgba(180,220,255,0.18);
+  color: rgba(200,220,255,0.55);
+  font-size: 13px; letter-spacing: 3px;
+  animation: none;
+}
+@keyframes ellabreveal {
+  0%   { transform: translateY(8px) scale(0.96); opacity: 0; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+.el-lab-arrow {
+  grid-row: 1 / span 2;
+  font-size: 26px;
+  color: #b8e0ff;
+  text-align: center;
+}
+.el-lab-formula {
+  font-size: 22px; font-weight: 700;
+  color: #ffe6a8;
+  font-family: 'Helvetica Neue', sans-serif;
+  letter-spacing: 1px;
+}
+.el-lab-cname {
+  font-size: 16px;
+  color: #ffffff;
+  letter-spacing: 2px;
+}
+.el-lab-badge {
+  display: inline-block;
+  padding: 2px 8px; margin-left: 6px;
+  font-size: 11px; letter-spacing: 1px;
+  background: #ffd860; color: #1a1408;
+  border-radius: 100px;
+  font-weight: 800;
+  animation: ellabbadge 1.2s ease infinite;
+}
+@keyframes ellabbadge {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.08); }
+}
+.el-lab-cdesc {
+  grid-column: 2 / -1;
+  font-size: 13px; line-height: 1.7;
+  color: rgba(220,235,255,0.85);
+}
+.el-lab-cijins {
+  grid-column: 2 / -1;
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-top: 4px;
+}
+.el-lab-hint {
+  display: flex; flex-wrap: wrap; gap: 12px 18px;
+  margin-top: 8px;
+  font-size: 12px; line-height: 1.6;
+  color: rgba(200,220,255,0.65);
+}
+.el-lab-hint-item b {
+  color: #ffe080; font-weight: 700;
+}
+.el-lab-clear {
+  position: absolute; top: 14px; right: 14px;
+  padding: 6px 12px;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(180,220,255,0.3);
+  color: #d8ecff;
+  border-radius: 8px;
+  font-size: 12px; letter-spacing: 2px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.el-lab-clear:hover {
+  background: rgba(60,100,140,0.5);
+}
+@media (max-width: 600px) {
+  .el-lab { padding: 16px 14px 14px; }
+  .el-lab-clear { top: 10px; right: 10px; font-size: 11px; padding: 4px 9px; }
+  .el-lab-tile { min-width: 38px; height: 38px; font-size: 15px; }
+  .el-lab-card { grid-template-columns: 22px auto 1fr; padding: 12px 14px; }
+  .el-lab-formula { font-size: 18px; }
+}
+
 .el-sec-label {
   font-size: 22px; letter-spacing: 8px;
   color: #ffffff;

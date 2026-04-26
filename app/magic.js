@@ -23319,6 +23319,14 @@
           </div>
         </div>
 
+        <div class="el-lab">
+          <div class="el-lab-head">⚗️ ラボ — 元素をクリックして組み合わせよう</div>
+          <div class="el-lab-mix" id="elLabMix"><span class="el-lab-empty">↓ 下の元素表から好きなものをクリック</span></div>
+          <div class="el-lab-result" id="elLabResult"></div>
+          <div class="el-lab-hint" id="elLabHint"></div>
+          <button class="el-lab-clear" id="elLabClear" type="button">🧹 クリア</button>
+        </div>
+
         <div class="el-section-head"><span class="el-sec-label">元 素</span><span class="el-sec-sub">— 覚えておくと世界が読める ${ELEMENTS_DATA.length} 種 —</span></div>
         <div class="el-grid">
           ${ELEMENTS_DATA.map(el => `
@@ -23383,6 +23391,82 @@
       detailEl.classList.add('show');
       _wireIjinPills(detailEl, close);
     }
+    // ===== ラボ：元素を足して化合物を生み出す =====
+    const labMix = []; // 追加順（重複OK、表示用）
+    const labMixEl = ov.querySelector('#elLabMix');
+    const labResultEl = ov.querySelector('#elLabResult');
+    const labHintEl = ov.querySelector('#elLabHint');
+    const discovered = new Set(); // 発見済みformula
+    function setEqual(a, b) {
+      if (a.size !== b.size) return false;
+      for (const x of a) if (!b.has(x)) return false;
+      return true;
+    }
+    function addToLab(sym) {
+      const el = sym2el[sym]; if (!el) return;
+      labMix.push(sym);
+      renderLab(sym);
+    }
+    function clearLab() {
+      labMix.length = 0;
+      renderLab(null);
+    }
+    function renderLab(justAdded) {
+      // 投入された元素タイル
+      if (labMix.length === 0) {
+        labMixEl.innerHTML = '<span class="el-lab-empty">↓ 下の元素表から好きなものをクリック</span>';
+      } else {
+        labMixEl.innerHTML = labMix.map((s, i) => {
+          const el = sym2el[s];
+          const c = el ? el.color : '#888';
+          const pop = (s === justAdded && i === labMix.length - 1) ? ' pop' : '';
+          return `<span class="el-lab-tile${pop}" style="--c:${c}">${s}</span>`;
+        }).join('<span class="el-lab-plus">+</span>');
+      }
+      // マッチ判定：投入された元素集合 == 化合物の必要元素集合
+      const mixSet = new Set(labMix);
+      const exact = COMPOUNDS_DATA.find(c => setEqual(new Set(c.parts), mixSet));
+      if (exact) {
+        const isNew = !discovered.has(exact.formula);
+        discovered.add(exact.formula);
+        labResultEl.innerHTML = `
+          <div class="el-lab-card${isNew ? ' new' : ''}">
+            <div class="el-lab-arrow">→</div>
+            <div class="el-lab-formula">${exact.formula}</div>
+            <div class="el-lab-cname">${exact.name}${isNew ? ' <span class="el-lab-badge">NEW!</span>' : ''}</div>
+            <div class="el-lab-cdesc">${exact.desc}</div>
+            ${exact.ijins.length ? `<div class="el-lab-cijins">${exact.ijins.map(id => `<button class="cnp-pill" data-id="${id}">${_resolveIjinName(id)}</button>`).join('')}</div>` : ''}
+          </div>
+        `;
+        _wireIjinPills(labResultEl, close);
+      } else if (labMix.length > 0) {
+        labResultEl.innerHTML = '<div class="el-lab-card pending">合成中…もう少し元素を足してみよう</div>';
+      } else {
+        labResultEl.innerHTML = '';
+      }
+      // ヒント：あと1元素で作れる化合物
+      if (labMix.length > 0) {
+        const hints = COMPOUNDS_DATA.filter(c => {
+          const cs = new Set(c.parts);
+          if (cs.size <= mixSet.size) return false;
+          for (const m of mixSet) if (!cs.has(m)) return false;
+          return cs.size - mixSet.size <= 2;
+        }).slice(0, 4);
+        if (hints.length) {
+          labHintEl.innerHTML = '💡 ヒント：' + hints.map(h => {
+            const need = h.parts.filter(p => !mixSet.has(p));
+            return `<span class="el-lab-hint-item">あと <b>${need.join('・')}</b> で → ${h.name}（${h.formula}）</span>`;
+          }).join('');
+        } else {
+          labHintEl.innerHTML = '';
+        }
+      } else {
+        labHintEl.innerHTML = '例：H と O をクリック → 水（H₂O）／C と O をクリック → 二酸化炭素（CO₂）';
+      }
+    }
+    ov.querySelector('#elLabClear').addEventListener('click', clearLab);
+    renderLab(null);
+
     ov.querySelectorAll('.el-cell').forEach(cell => {
       cell.addEventListener('click', () => {
         const sym = cell.dataset.el;
@@ -23391,7 +23475,7 @@
           ov.querySelectorAll('.el-cell').forEach(c => c.classList.remove('active'));
           cell.classList.add('active');
           showDetail(el);
-          ov.querySelector('#elDetail').scrollIntoView({ behavior: 'smooth', block: 'center' });
+          addToLab(sym);
         }
       });
     });
