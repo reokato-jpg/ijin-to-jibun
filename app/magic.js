@@ -23595,27 +23595,70 @@
       const eraGuess = s.books.find(b => b.userData.book.era)?.userData.book.era;
       return (eraGuess ? `［${eraGuess}］ ` : '') + (parts.join(' ／ ') || '空きスロット');
     }
-    function openShelfModal(s) {
-      shelfTitleEl.textContent = describeShelf(s);
-      const items = s.books.filter(b => !b.userData.book.placeholder);
-      shelfGrid.innerHTML = items.map((b, i) => {
-        const bk = b.userData.book;
-        const kindCls = `lsg-${bk.kind}`;
-        return `<button class="lib-shelf-item ${kindCls}" data-i="${i}" style="--acc:${bk.accent}">
-          <div class="lsi-spine"></div>
-          <div class="lsi-title">${bk.name}</div>
-          <div class="lsi-sub">${bk.sub || ''}</div>
-        </button>`;
-      }).join('') || '<div class="lib-empty">— 本がありません —</div>';
-      shelfGrid.querySelectorAll('.lib-shelf-item').forEach(el => {
+    let shelfPage = 0;
+    const SHELF_PAGE_SIZE = 24; // 8冊×3段
+    let shelfPageItems = [];
+    function renderShelfPage() {
+      const start = shelfPage * SHELF_PAGE_SIZE;
+      const pageItems = shelfPageItems.slice(start, start + SHELF_PAGE_SIZE);
+      const totalPages = Math.max(1, Math.ceil(shelfPageItems.length / SHELF_PAGE_SIZE));
+      // 3段に分割（8冊ずつ）
+      const rows = [[], [], []];
+      pageItems.forEach((b, i) => { rows[Math.floor(i / 8)].push({ b, gi: start + i }); });
+      // 空きスロットも木目で埋める
+      const renderRow = (row) => {
+        const cells = [];
+        for (let i = 0; i < 8; i++) {
+          if (row[i]) {
+            const { b, gi } = row[i];
+            const bk = b.userData.book;
+            const kindCls = `lsg-${bk.kind}`;
+            cells.push(`<button class="ls3-book ${kindCls}" data-gi="${gi}" style="--acc:${bk.accent}">
+              <span class="ls3-spine-text">${escapeHtml(bk.name)}</span>
+              <span class="ls3-spine-sub">${escapeHtml((bk.sub || '').slice(0, 20))}</span>
+            </button>`);
+          } else {
+            cells.push('<span class="ls3-empty"></span>');
+          }
+        }
+        return `<div class="ls3-row"><div class="ls3-board"></div><div class="ls3-books">${cells.join('')}</div></div>`;
+      };
+      shelfGrid.innerHTML = `
+        <div class="ls3-shelf">
+          ${renderRow(rows[0])}
+          ${renderRow(rows[1])}
+          ${renderRow(rows[2])}
+          <div class="ls3-board ls3-bottom"></div>
+        </div>
+        ${shelfPageItems.length === 0 ? '<div class="lib-empty">— 本がありません —</div>' : ''}
+        <div class="ls3-pager">
+          <button class="ls3-page-btn" id="ls3Prev" ${shelfPage === 0 ? 'disabled' : ''}>◀ 前</button>
+          <span class="ls3-page-info">${shelfPage + 1} / ${totalPages}</span>
+          <button class="ls3-page-btn" id="ls3Next" ${shelfPage >= totalPages - 1 ? 'disabled' : ''}>次 ▶</button>
+        </div>
+      `;
+      shelfGrid.querySelectorAll('.ls3-book').forEach(el => {
         el.addEventListener('click', () => {
-          const idx = +el.dataset.i;
-          const bk = items[idx].userData.book;
+          const gi = +el.dataset.gi;
+          const bk = shelfPageItems[gi].userData.book;
           shelfModal.hidden = true;
           try { bk.action(); } catch {}
           setTimeout(() => close(), 250);
         });
       });
+      const prev = shelfGrid.querySelector('#ls3Prev');
+      const next = shelfGrid.querySelector('#ls3Next');
+      if (prev) prev.addEventListener('click', () => { if (shelfPage > 0) { shelfPage--; renderShelfPage(); } });
+      if (next) next.addEventListener('click', () => { shelfPage++; renderShelfPage(); });
+    }
+    function escapeHtml(s) {
+      return String(s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+    function openShelfModal(s) {
+      shelfTitleEl.textContent = describeShelf(s);
+      shelfPageItems = s.books.filter(b => !b.userData.book.placeholder);
+      shelfPage = 0;
+      renderShelfPage();
       shelfModal.hidden = false;
     }
     shelfBtn.addEventListener('click', () => { if (nearestShelf) openShelfModal(nearestShelf); });
