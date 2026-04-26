@@ -10350,14 +10350,15 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
 .el-face {
   position: absolute;
   width: 44%; height: auto;
-  left: 50%; top: 30%;
+  left: 50%; top: 12%;
   transform: translate(-50%, 0);
   pointer-events: none;
   z-index: 2;
 }
-.el-node-elem .el-node-sym { position: relative; z-index: 1; transform: translateY(8px); }
-.el-cell .el-face { top: 48%; width: 52%; }
-.el-pal-item .el-face { top: 40%; width: 52%; }
+.el-node-elem .el-node-sym { position: relative; z-index: 1; transform: translateY(11px); }
+.el-cell .el-face { top: 26%; width: 50%; }
+.el-pal-item .el-face { top: 14%; width: 48%; }
+.el-pal-item .el-pal-sym { transform: translateY(8px); }
 .el-node-hand {
   position: absolute;
   width: 12px; height: 12px;
@@ -10375,6 +10376,114 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
 @keyframes elhandwave {
   0%, 100% { transform: translateY(0) rotate(0); }
   50%      { transform: translateY(-3px) rotate(8deg); }
+}
+
+/* 吹き出し（盤上のノードにくっつく説明） */
+.el-bubble {
+  position: absolute;
+  z-index: 20;
+  max-width: 280px; min-width: 200px;
+  padding: 10px 14px 10px 12px;
+  background: rgba(20,30,50,0.94);
+  border: 1px solid rgba(180,220,255,0.4);
+  border-radius: 10px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.5);
+  color: #f0f6ff;
+  font-size: 12px; line-height: 1.6;
+  backdrop-filter: blur(6px);
+  animation: elbubblepop 0.3s cubic-bezier(0.2,0.9,0.3,1.4);
+}
+@keyframes elbubblepop {
+  0% { transform: scale(0.85); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.el-bubble-x {
+  position: absolute; top: 4px; right: 6px;
+  background: transparent; border: none;
+  color: rgba(220,235,255,0.6);
+  font-size: 16px; cursor: pointer;
+  width: 22px; height: 22px;
+  line-height: 1;
+}
+.el-bubble-x:hover { color: #fff; }
+.el-bubble-title {
+  font-size: 14px; letter-spacing: 1px;
+  color: #fff;
+  margin-right: 18px; margin-bottom: 4px;
+  font-family: 'Noto Serif JP', serif;
+}
+.el-bubble-sym, .el-bubble-formula {
+  display: inline-block;
+  padding: 1px 8px; margin-right: 4px;
+  background: var(--c, #ffe080);
+  color: #1a1408;
+  border-radius: 6px;
+  font-weight: 800;
+  font-family: 'Helvetica Neue', sans-serif;
+}
+.el-bubble-formula { background: linear-gradient(135deg, #ffe080, #ffb060); }
+.el-bubble-no { font-size: 10px; color: rgba(200,220,255,0.5); margin-left: 4px; }
+.el-bubble-tag {
+  font-size: 11px; letter-spacing: 2px;
+  color: rgba(220,235,255,0.65);
+  margin-bottom: 4px;
+}
+.el-bubble-desc {
+  font-size: 12px; line-height: 1.65;
+  color: rgba(230,240,255,0.9);
+  margin-bottom: 6px;
+}
+.el-bubble-hint-h {
+  font-size: 11px; letter-spacing: 2px;
+  color: #ffe080;
+  margin: 6px 0 2px;
+}
+.el-bubble-hints {
+  display: flex; flex-direction: column; gap: 2px;
+  font-size: 11px;
+  color: rgba(220,235,255,0.85);
+}
+.el-bubble-hint b {
+  display: inline-block;
+  padding: 0 6px; margin: 0 1px;
+  background: var(--c, #888);
+  color: #0a0a0a;
+  border-radius: 4px;
+  font-weight: 800;
+}
+.el-bubble-history {
+  margin-top: 6px;
+  padding: 8px 10px;
+  border-left: 3px solid #ffe080;
+  background: rgba(0,0,0,0.3);
+  border-radius: 0 6px 6px 0;
+}
+.el-bubble-meta {
+  display: flex; gap: 8px; align-items: baseline;
+  margin-bottom: 3px;
+}
+.el-bubble-year { color: #ffe080; font-weight: 700; font-family: 'Helvetica Neue', sans-serif; }
+.el-bubble-by { color: #b8e0ff; font-size: 11px; }
+.el-bubble-story { font-size: 11px; line-height: 1.6; color: rgba(220,235,255,0.78); }
+.el-bubble-badge {
+  display: inline-block;
+  padding: 1px 7px; margin-left: 4px;
+  font-size: 10px; letter-spacing: 1px;
+  background: #ffd860; color: #1a1408;
+  border-radius: 100px;
+  font-weight: 800;
+}
+
+/* パレットへドロップで削除 */
+.el-lab2-palette.drop-target {
+  background: rgba(255,80,80,0.15);
+  outline: 2px dashed rgba(255,120,120,0.8);
+  outline-offset: -4px;
+}
+.el-node.dropping {
+  opacity: 0.5;
+  transform: scale(0.85);
+  filter: saturate(0.4);
 }
 
 /* パレット切替タブ（周期表 ⇄ シンプル） */

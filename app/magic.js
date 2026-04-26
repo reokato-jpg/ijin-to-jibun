@@ -23532,38 +23532,72 @@
       const node = { id, kind: 'cmp', formula: c.formula, name: c.name, x, y, dom };
       bnodes.push(node);
       attachNodeHandlers(node);
+      return node;
     }
-    function showCompoundInfo(c, isNew) {
-      boardInfo.innerHTML = `
-        <div class="el-bi-card${isNew ? ' new' : ''}">
-          <div class="el-bi-head">
-            <span class="el-bi-formula">${c.formula}</span>
-            <span class="el-bi-name">${c.name}${isNew ? ' <span class="el-bi-badge">NEW!</span>' : ''}</span>
-          </div>
-          <div class="el-bi-desc">${c.desc}</div>
-          <div class="el-bi-history">
-            <span class="el-bi-year">${c.year || '—'}</span>
-            <span class="el-bi-by">${c.by || ''}</span>
-            <span class="el-bi-story">${c.history || ''}</span>
-          </div>
-          ${c.ijins && c.ijins.length ? `<div class="el-bi-ijins">${c.ijins.map(id => `<button class="cnp-pill" data-id="${id}">${_resolveIjinName(id)}</button>`).join('')}</div>` : ''}
-        </div>
-      `;
-      _wireIjinPills(boardInfo, close);
+    let bubbleEl = null;
+    function closeBubble() {
+      if (bubbleEl) { bubbleEl.remove(); bubbleEl = null; }
     }
-    function showElementInfo(el) {
-      boardInfo.innerHTML = `
-        <div class="el-bi-card el-bi-card-elem" style="--c:${el.color}">
-          <div class="el-bi-head">
-            <span class="el-bi-formula">${el.sym}</span>
-            <span class="el-bi-name">${el.name} <span class="el-bi-no">No.${el.no}</span></span>
+    function showBubble(node, html) {
+      closeBubble();
+      const b = document.createElement('div');
+      b.className = 'el-bubble';
+      b.innerHTML = `<button class="el-bubble-x" type="button" aria-label="閉じる">×</button>${html}`;
+      b.dataset.nodeId = String(node.id);
+      board.appendChild(b);
+      // 位置：ノード右上から出す。盤からはみ出たら反対側へ。
+      const place = () => {
+        const bw = b.offsetWidth, bh = b.offsetHeight;
+        const bdW = board.clientWidth, bdH = board.clientHeight;
+        let lx = node.x + NODE_R*2 + 8;
+        let ty = node.y - 8;
+        if (lx + bw > bdW - 4) lx = node.x - bw - 8;        // 右に出ない→左
+        if (lx < 4) lx = Math.max(4, Math.min(bdW - bw - 4, node.x + NODE_R - bw/2));
+        if (ty + bh > bdH - 4) ty = bdH - bh - 4;
+        if (ty < 4) ty = node.y + NODE_R*2 + 8;
+        b.style.left = lx + 'px';
+        b.style.top = ty + 'px';
+      };
+      requestAnimationFrame(place);
+      b.querySelector('.el-bubble-x').addEventListener('click', closeBubble);
+      _wireIjinPills(b, close);
+      bubbleEl = b;
+    }
+    function showCompoundInfo(c, isNew, node) {
+      const html = `
+        <div class="el-bubble-title"><span class="el-bubble-formula">${c.formula}</span> ${c.name}${isNew ? ' <span class="el-bubble-badge">NEW!</span>' : ''}</div>
+        <div class="el-bubble-desc">${c.desc}</div>
+        <div class="el-bubble-history">
+          <div class="el-bubble-meta">
+            <span class="el-bubble-year">${c.year || '—'}</span>
+            <span class="el-bubble-by">${c.by || ''}</span>
           </div>
-          <div class="el-bi-tag">${el.tag}</div>
-          <div class="el-bi-desc">${el.desc}</div>
-          ${el.ijins && el.ijins.length ? `<div class="el-bi-ijins">${el.ijins.map(id => `<button class="cnp-pill" data-id="${id}">${_resolveIjinName(id)}</button>`).join('')}</div>` : ''}
+          <div class="el-bubble-story">${c.history || ''}</div>
         </div>
+        ${c.ijins && c.ijins.length ? `<div class="el-bi-ijins">${c.ijins.map(id => `<button class="cnp-pill" data-id="${id}">${_resolveIjinName(id)}</button>`).join('')}</div>` : ''}
       `;
-      _wireIjinPills(boardInfo, close);
+      if (node) showBubble(node, html);
+    }
+    function showElementInfo(el, node) {
+      // 合う元素ヒント：この元素を含む化合物を最大4つ
+      const partners = COMPOUNDS_DATA.filter(c => c.parts.includes(el.sym)).slice(0, 4);
+      const hintHtml = partners.length ? `
+        <div class="el-bubble-hint-h">🤝 合う元素</div>
+        <div class="el-bubble-hints">
+          ${partners.map(c => {
+            const others = c.parts.filter(p => p !== el.sym);
+            return `<div class="el-bubble-hint">＋ ${others.map(p => `<b style="color:${(sym2el[p]||{}).color || '#ffe080'}">${p}</b>`).join('・')} → ${c.name}（${c.formula}）</div>`;
+          }).join('')}
+        </div>
+      ` : '';
+      const html = `
+        <div class="el-bubble-title"><span class="el-bubble-sym" style="--c:${el.color}">${el.sym}</span> ${el.name} <span class="el-bubble-no">No.${el.no}</span></div>
+        <div class="el-bubble-tag">${el.tag}</div>
+        <div class="el-bubble-desc">${el.desc}</div>
+        ${hintHtml}
+        ${el.ijins && el.ijins.length ? `<div class="el-bi-ijins">${el.ijins.map(id => `<button class="cnp-pill" data-id="${id}">${_resolveIjinName(id)}</button>`).join('')}</div>` : ''}
+      `;
+      if (node) showBubble(node, html);
     }
     function checkSelectionMatch() {
       const sel = bnodes.filter(n => selected.has(n.id) && n.kind === 'el');
@@ -23600,8 +23634,8 @@
         const isNew = !discovered.has(compound.formula);
         discovered.add(compound.formula);
         updateCounter();
-        spawnCompoundNode(compound, cx, cy);
-        showCompoundInfo(compound, isNew);
+        const newCmpNode = spawnCompoundNode(compound, cx, cy);
+        showCompoundInfo(compound, isNew, newCmpNode);
         setTimeout(() => boardSvg.innerHTML = '', 600);
       }, 380);
     }
@@ -23625,13 +23659,26 @@
           node.y = Math.max(0, Math.min(board.clientHeight - NODE_R*2, startTop + dy));
           node.dom.style.left = node.x + 'px';
           node.dom.style.top = node.y + 'px';
+          // パレットの上にいるか？
+          const palRect = palette.getBoundingClientRect();
+          const overPal = e.clientY >= palRect.top && e.clientY <= palRect.bottom
+                       && e.clientX >= palRect.left && e.clientX <= palRect.right;
+          palette.classList.toggle('drop-target', overPal);
+          node.dom.classList.toggle('dropping', overPal);
         }
       });
       node.dom.addEventListener('pointerup', e => {
         try { node.dom.releasePointerCapture(e.pointerId); } catch(_) {}
         node.dom.classList.remove('drag');
+        node.dom.classList.remove('dropping');
+        palette.classList.remove('drop-target');
         downX = null;
-        if (!moved) handleNodeTap(node);
+        if (!moved) { handleNodeTap(node); return; }
+        // パレット領域でドロップ → ノード削除
+        const palRect = palette.getBoundingClientRect();
+        const overPal = e.clientY >= palRect.top && e.clientY <= palRect.bottom
+                     && e.clientX >= palRect.left && e.clientX <= palRect.right;
+        if (overPal) removeNode(node);
       });
       node.dom.addEventListener('pointercancel', e => {
         node.dom.classList.remove('drag');
@@ -23641,12 +23688,11 @@
     function handleNodeTap(node) {
       if (node.kind === 'cmp') {
         const c = COMPOUNDS_DATA.find(cc => cc.formula === node.formula);
-        if (c) showCompoundInfo(c, false);
+        if (c) showCompoundInfo(c, false, node);
         return;
       }
-      // element node
       const el = sym2el[node.sym];
-      showElementInfo(el);
+      showElementInfo(el, node);
       if (selected.has(node.id)) {
         selected.delete(node.id);
         node.dom.classList.remove('sel');
@@ -23656,6 +23702,15 @@
         playSfx('sel');
       }
       checkSelectionMatch();
+    }
+    function removeNode(node) {
+      selected.delete(node.id);
+      bnodes = bnodes.filter(n => n.id !== node.id);
+      node.dom.classList.add('consumed');
+      setTimeout(() => node.dom.remove(), 380);
+      if (bubbleEl && bubbleEl.dataset.nodeId == String(node.id)) closeBubble();
+      if (bnodes.length === 0) boardEmpty.style.display = '';
+      playSfx('clear');
     }
     // パレット → 盤面ドラッグ＋クリック投下
     palette.querySelectorAll('.el-pal-item').forEach(item => {
