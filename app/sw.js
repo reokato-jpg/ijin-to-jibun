@@ -5,7 +5,7 @@
 // - Firebase: 素通し
 // - 新版が来たら skip waiting → controllerchange でページ自動リロード
 
-const VERSION = 'v20260502IE';
+const VERSION = 'v20260502IF';
 const STATIC_CACHE = `ijin-static-${VERSION}`;
 const DATA_CACHE   = `ijin-data-${VERSION}`;
 const AUDIO_CACHE  = `ijin-audio-${VERSION}`;

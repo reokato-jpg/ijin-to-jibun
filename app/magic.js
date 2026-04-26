@@ -22602,7 +22602,6 @@
         },
       });
     }
-    const allBooks = shuffle([...people, ...myths, ...gods, ...musics, ...ads]);
     function shuffle(arr) {
       const a = [...arr];
       for (let i = a.length - 1; i > 0; i--) {
@@ -22611,6 +22610,33 @@
       }
       return a;
     }
+    // 🏛 時代ゾーン分け：偉人を時代別にクラスタリング
+    function getEra(birth) {
+      if (typeof birth !== 'number') return '近代';
+      if (birth < 500) return '古代';
+      if (birth < 1500) return '中世';
+      if (birth < 1800) return '近世';
+      if (birth < 1945) return '近代';
+      return '現代';
+    }
+    // 偉人にera/country属性を付与
+    const peopleBundle = MAGIC._peopleBundle || [];
+    const _personById = Object.fromEntries(peopleBundle.map(p => [p.id, p]));
+    people.forEach(p => {
+      const src = _personById[p.id];
+      p.era = src ? getEra(src.birth) : '近代';
+      p.country = src ? (src.country || '') : '';
+    });
+    const ERAS = ['古代', '中世', '近世', '近代', '現代'];
+    const peopleByEra = Object.fromEntries(ERAS.map(e => [e, []]));
+    people.forEach(p => {
+      if (peopleByEra[p.era]) peopleByEra[p.era].push(p);
+      else peopleByEra['近代'].push(p);
+    });
+    ERAS.forEach(e => { peopleByEra[e] = shuffle(peopleByEra[e]); });
+    // 偉人以外（神話/神々/音楽/広告）は混ぜて余り棚に
+    const otherBooks = shuffle([...myths, ...gods, ...musics, ...ads]);
+    const allBooks = [...people, ...myths, ...gods, ...musics, ...ads]; // 検索用全冊
 
     // ── オーバーレイ DOM ──
     const ov = document.createElement('div');
@@ -22634,6 +22660,19 @@
               <button class="lib-tab" data-kind="myth">神話</button>
               <button class="lib-tab" data-kind="god">神々</button>
               <button class="lib-tab" data-kind="music">音楽</button>
+            </div>
+            <div class="lib-filter-row">
+              <select id="libEra" class="lib-filter">
+                <option value="">📅 時代（すべて）</option>
+                <option value="古代">古代（〜500）</option>
+                <option value="中世">中世（500-1500）</option>
+                <option value="近世">近世（1500-1800）</option>
+                <option value="近代">近代（1800-1945）</option>
+                <option value="現代">現代（1945〜）</option>
+              </select>
+              <select id="libCountry" class="lib-filter">
+                <option value="">🌍 国（すべて）</option>
+              </select>
             </div>
           </div>
           <div class="lib-results" id="libResults"></div>
@@ -22773,11 +22812,11 @@
       // 西側
       const railW = new THREE.Mesh(new THREE.BoxGeometry(0.12, 1.0, HALL_D - 2 - balconyDepth*2), railMat);
       railW.position.set(-HALL_W/2 + balconyDepth + 0.5, y + 0.7, 0); scene.add(railW);
-      // メザニン上にも壁棚を追加（細め）
-      buildShelf(0, -HALL_D/2 + 1.0, HALL_W - 6, 0, false, y);
-      buildShelf(0, HALL_D/2 - 1.0, HALL_W - 6, Math.PI, false, y);
-      buildShelf(-HALL_W/2 + 1.0, 0, HALL_D - 6 - balconyDepth*2 - 4, Math.PI/2, false, y);
-      buildShelf(HALL_W/2 - 1.0, 0, HALL_D - 6 - balconyDepth*2 - 4, -Math.PI/2, false, y);
+      // メザニン上にも壁棚を追加（細め）— 神話・神々・音楽・広告を配置
+      buildShelf(0, -HALL_D/2 + 1.0, HALL_W - 6, 0, false, y, otherBooks);
+      buildShelf(0, HALL_D/2 - 1.0, HALL_W - 6, Math.PI, false, y, otherBooks);
+      buildShelf(-HALL_W/2 + 1.0, 0, HALL_D - 6 - balconyDepth*2 - 4, Math.PI/2, false, y, otherBooks);
+      buildShelf(HALL_W/2 - 1.0, 0, HALL_D - 6 - balconyDepth*2 - 4, -Math.PI/2, false, y, otherBooks);
     }
     // 階段（東側：1F→2F→3Fの直線階段、上り段差付き）
     function buildStaircase(startX, startZ, endX, endZ, fromY, toY, steps = 18) {
@@ -22827,7 +22866,8 @@
     const BOOK_HEIGHT_AT = 1.4; // 各段の本の高さ
     const SHELF_DEPTH = 0.9;
     const bookMeshes = [];
-    function buildShelf(centerX, centerZ, length, rotationY, doubleSided = true, yBase = 0) {
+    function buildShelf(centerX, centerZ, length, rotationY, doubleSided = true, yBase = 0, pool = null) {
+      const bookPool = pool || allBooks;
       // 棚本体
       const frame = new THREE.Mesh(
         new THREE.BoxGeometry(length, 5.5, SHELF_DEPTH),
@@ -22865,8 +22905,8 @@
           const usableLen = length - 0.4;
           // 本のサイズはランダム → 並べきるだけ並べる
           let cursor = -usableLen / 2;
-          while (cursor < usableLen / 2 - 0.2 && allBooks.length > 0) {
-            const book = allBooks.shift();
+          while (cursor < usableLen / 2 - 0.2 && bookPool.length > 0) {
+            const book = bookPool.shift();
             const w = 0.14 + Math.random() * 0.06;
             const h = 1.05 + Math.random() * 0.25;
             cursor += w / 2;
@@ -22899,19 +22939,79 @@
       });
     }
 
-    // 4枚の壁に大きな本棚を配置（1階）
-    buildShelf(0, -HALL_D/2 + 0.6, HALL_W - 4, 0, false);            // 北壁
-    buildShelf(0, HALL_D/2 - 0.6, HALL_W - 4, Math.PI, false);        // 南壁（後でドアアーチで穴があく）
-    buildShelf(-HALL_W/2 + 0.6, 0, HALL_D - 4, Math.PI/2, false);     // 西壁
-    buildShelf(HALL_W/2 - 0.6, 0, HALL_D - 4, -Math.PI/2, false);     // 東壁
-    // 中央のアイル（双面棚、4列）
+    // 🏛 時代ゾーン配置：奥(z=-)が古代、手前(z=+)が現代
+    // 中央4列の本棚を5時代に対応（4列+南壁=5ゾーン）
+    // 北壁(z=-奥) → 古代、西壁(x=-) → 中世、東壁(x=+) → 近世、南壁(z=+手前) → 近代
     const aisleZPositions = [-18, -6, 6, 18];
+    const ZONE_BY_AISLE_Z = {
+      [-18]: '古代',
+      [-6]:  '中世',
+      [6]:   '近世',
+      [18]:  '近代',
+    };
+    // 壁のゾーン
+    const WALL_ZONES = [
+      { x: 0,             z: -HALL_D/2 + 0.6, len: HALL_W - 4, rot: 0,         era: '古代', side: '北' },
+      { x: 0,             z:  HALL_D/2 - 0.6, len: HALL_W - 4, rot: Math.PI,   era: '現代', side: '南' },
+      { x: -HALL_W/2+0.6, z: 0,                len: HALL_D - 4, rot: Math.PI/2, era: '中世', side: '西' },
+      { x:  HALL_W/2-0.6, z: 0,                len: HALL_D - 4, rot: -Math.PI/2,era: '近世', side: '東' },
+    ];
+    WALL_ZONES.forEach(w => {
+      buildShelf(w.x, w.z, w.len, w.rot, false, 0, peopleByEra[w.era]);
+    });
+    // 中央アイル（双面棚、4列）— 各列は対応する時代の偉人をさらに収める
     aisleZPositions.forEach(z => {
+      const zoneEra = ZONE_BY_AISLE_Z[z] || null;
+      const pool = zoneEra ? peopleByEra[zoneEra] : otherBooks;
       [[-22, 12], [-7, 12], [8, 12], [23, 12]].forEach(([cx, len]) => {
         if (Math.abs(cx) < HALL_W/2 - 5 && Math.abs(z) < HALL_D/2 - 5) {
-          buildShelf(cx, z, len, 0, true);
+          buildShelf(cx, z, len, 0, true, 0, pool);
         }
       });
+    });
+    // 🪧 各時代ゾーンの看板（床上に浮かぶサイン）
+    function buildEraSign(label, x, y, z, color = 0xc8a040) {
+      const cv = document.createElement('canvas');
+      cv.width = 512; cv.height = 192;
+      const g = cv.getContext('2d');
+      g.fillStyle = 'rgba(20,12,6,0.92)';
+      g.fillRect(0, 0, 512, 192);
+      g.strokeStyle = '#c8a040';
+      g.lineWidth = 4;
+      g.strokeRect(8, 8, 496, 176);
+      g.lineWidth = 1.5;
+      g.strokeRect(18, 18, 476, 156);
+      g.fillStyle = '#f0d896';
+      g.font = 'bold 96px "Shippori Mincho", serif';
+      g.textAlign = 'center';
+      g.textBaseline = 'middle';
+      g.shadowColor = '#c8a040';
+      g.shadowBlur = 16;
+      g.fillText(label, 256, 96);
+      g.shadowBlur = 0;
+      g.font = '20px "Cormorant Garamond", serif';
+      g.fillStyle = '#a89060';
+      g.fillText('— Era Zone —', 256, 158);
+      const tex = new THREE.CanvasTexture(cv);
+      if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace;
+      const sign = new THREE.Mesh(
+        new THREE.PlaneGeometry(4.0, 1.5),
+        new THREE.MeshBasicMaterial({ map: tex, transparent: true, side: THREE.DoubleSide, fog: false })
+      );
+      sign.position.set(x, y, z);
+      // 看板は中央を向く
+      sign.lookAt(0, y, 0);
+      scene.add(sign);
+    }
+    // 各時代ゾーンに看板（高さ y=8、入口側を向く）
+    buildEraSign('古 代', 0, 8, -HALL_D/2 + 1.5);
+    buildEraSign('中 世', -HALL_W/2 + 1.5, 8, 0);
+    buildEraSign('近 世',  HALL_W/2 - 1.5, 8, 0);
+    buildEraSign('近 代', 0, 8, HALL_D/2 - 1.5);
+    // 中央アイル列にも小さな時代看板（y=6で見やすく）
+    aisleZPositions.forEach(z => {
+      const era = ZONE_BY_AISLE_Z[z];
+      if (era) buildEraSign(era, 0, 6.5, z + 0.5);
     });
     // === 2階・3階のメザニン（壁棚も含む） ===
     buildMezzanine(FLOOR_2_Y);
@@ -23241,7 +23341,25 @@
     // ── 検索ロジック ──
     let curTab = 'all';
     let curQuery = '';
+    let curEra = '';
+    let curCountry = '';
     let highlighted = null;
+    // 国セレクトを populate
+    (function populateCountries() {
+      const sel = ov.querySelector('#libCountry');
+      if (!sel) return;
+      const counts = {};
+      people.forEach(p => {
+        if (p.placeholder || !p.country) return;
+        counts[p.country] = (counts[p.country] || 0) + 1;
+      });
+      const list = Object.keys(counts).sort((a, b) => counts[b] - counts[a]);
+      list.forEach(c => {
+        const o = document.createElement('option');
+        o.value = c; o.textContent = `${c}（${counts[c]}）`;
+        sel.appendChild(o);
+      });
+    })();
     function applyFilter() {
       const q = curQuery.trim().toLowerCase();
       const matches = [];
@@ -23249,7 +23367,9 @@
         const b = m.userData.book;
         const kindOK = curTab === 'all' || b.kind === curTab;
         const textOK = !q || (b.name + ' ' + b.sub + ' ' + b.tag).toLowerCase().includes(q);
-        const ok = kindOK && textOK && !b.placeholder;
+        const eraOK = !curEra || (b.kind === 'person' && b.era === curEra);
+        const countryOK = !curCountry || (b.kind === 'person' && b.country === curCountry);
+        const ok = kindOK && textOK && eraOK && countryOK && !b.placeholder;
         if (ok && q) {
           matches.push(m);
           m.material.emissive.setRGB(1.0, 0.85, 0.4);
@@ -23261,12 +23381,14 @@
       });
       // 結果リスト更新
       const resBox = ov.querySelector('#libResults');
-      if (q || curTab !== 'all') {
+      if (q || curTab !== 'all' || curEra || curCountry) {
         const list = bookMeshes
           .filter(m => {
             const b = m.userData.book;
             return (curTab === 'all' || b.kind === curTab) &&
               (!q || (b.name + ' ' + b.sub + ' ' + b.tag).toLowerCase().includes(q)) &&
+              (!curEra || (b.kind === 'person' && b.era === curEra)) &&
+              (!curCountry || (b.kind === 'person' && b.country === curCountry)) &&
               !b.placeholder;
           })
           .slice(0, 30);
@@ -23314,6 +23436,8 @@
         applyFilter();
       });
     });
+    ov.querySelector('#libEra').addEventListener('change', e => { curEra = e.target.value; applyFilter(); });
+    ov.querySelector('#libCountry').addEventListener('change', e => { curCountry = e.target.value; applyFilter(); });
     applyFilter();
 
     // ── アニメーション ──

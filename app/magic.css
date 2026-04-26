@@ -8859,6 +8859,22 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   background: linear-gradient(140deg, #c8a040, #8a6020);
   color: #1a0e04; border-color: #ffe0a0;
 }
+.lib-filter-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+.lib-filter {
+  flex: 1 1 160px; min-width: 140px;
+  background: rgba(40,28,16,0.85); color: #ffe0a0;
+  border: 1px solid rgba(200,160,80,0.35);
+  border-radius: 8px; padding: 7px 10px;
+  font-size: 13px; font-family: inherit; cursor: pointer;
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, #c8a040 50%), linear-gradient(135deg, #c8a040 50%, transparent 50%);
+  background-position: calc(100% - 14px) center, calc(100% - 8px) center;
+  background-size: 6px 6px, 6px 6px; background-repeat: no-repeat;
+  padding-right: 28px;
+}
+.lib-filter:hover { border-color: #ffe0a0; }
+.lib-filter:focus { outline: none; border-color: #ffe0a0; box-shadow: 0 0 0 2px rgba(255,224,160,0.2); }
+.lib-filter option { background: #1a0e04; color: #ffe0a0; }
 .lib-results {
   max-width: 800px; margin: 0 auto;
   width: 100%;
