@@ -10771,6 +10771,15 @@
     const radius = Math.max(14, N * 1.5);
     const wallHeight = isWa ? 7 : 6;
     const wallAngle = (Math.PI * 2) / N;
+    // 🏛 メザニン構造：1Fに加えて、2F/3Fバルコニーで違う作品を見せる
+    const HAS_MEZZANINE = works.length >= 6; // 作品が少ない時は1Fだけで十分
+    const HALL_FULL_HEIGHT = HAS_MEZZANINE ? wallHeight * 3 : wallHeight;
+    const TIER_Y = [
+      wallHeight / 2 + 0.3,                  // 1F 絵の中心 Y
+      wallHeight + wallHeight / 2 + 0.3,     // 2F
+      wallHeight * 2 + wallHeight / 2 + 0.3, // 3F
+    ];
+    const TIER_FLOOR_Y = [0, wallHeight, wallHeight * 2]; // 各階の床高さ
 
     // 床
     const floorGeo = new THREE.CircleGeometry(radius + 2, N);
@@ -10832,7 +10841,7 @@
     })();
     const ceiling = new THREE.Mesh(ceilGeo, new THREE.MeshStandardMaterial({ map: ceilTex, roughness: 0.9, side: THREE.DoubleSide }));
     ceiling.rotation.x = Math.PI / 2;
-    ceiling.position.y = wallHeight;
+    ceiling.position.y = HALL_FULL_HEIGHT;
     scene.add(ceiling);
 
     // 照明（洋＝シャンデリア / 和＝中央に釣り灯籠 + 周囲の赤提灯）
@@ -11160,11 +11169,25 @@
       const isDoor = doorwayIndices.has(i);
       // 壁面（ドアウェイの場所はスキップ、代わりにアーチ枠だけ）
       if (!isDoor) {
+        // 1F壁
         const wallGeo = new THREE.PlaneGeometry(segLen, wallHeight);
         const wall = new THREE.Mesh(wallGeo, new THREE.MeshStandardMaterial({ map: wallTex, roughness: 0.85 }));
         wall.position.set(mx, wallHeight / 2, mz);
         wall.lookAt(0, wallHeight / 2, 0);
         scene.add(wall);
+        // 2F/3F壁（メザニン分の上部壁を追加）
+        if (HAS_MEZZANINE) {
+          for (let tier = 1; tier < 3; tier++) {
+            const wU = new THREE.Mesh(
+              new THREE.PlaneGeometry(segLen, wallHeight),
+              new THREE.MeshStandardMaterial({ map: wallTex, roughness: 0.85 })
+            );
+            const wYU = TIER_FLOOR_Y[tier] + wallHeight / 2;
+            wU.position.set(mx, wYU, mz);
+            wU.lookAt(0, wYU, 0);
+            scene.add(wU);
+          }
+        }
       } else {
         // アーチ枠（門柱2本＋上部梁）でドアウェイ感を演出
         const archMat = new THREE.MeshStandardMaterial({ color: 0xc89868, roughness: 0.55, metalness: 0.2, emissive: 0x4a3008, emissiveIntensity: 0.35 });
@@ -11221,6 +11244,67 @@
       frame.position.set(mx + nx * offset, wallHeight / 2 + 0.3, mz + nz * offset);
       frame.lookAt(0, wallHeight / 2 + 0.3, 0);
       scene.add(frame);
+      // 🏛 2F/3F の追加絵画（同じ壁の異なる高さに、別の作品）
+      if (HAS_MEZZANINE) {
+        const tierStride = Math.max(1, Math.ceil(works.length / 3));
+        for (let tier = 1; tier < 3; tier++) {
+          const w2 = works[(i + tier * tierStride) % works.length];
+          if (!w2) continue;
+          const yT = TIER_Y[tier];
+          const f2 = new THREE.Mesh(frameGeo.clone(), frameMat.clone());
+          f2.position.set(mx + nx * offset, yT, mz + nz * offset);
+          f2.lookAt(0, yT, 0);
+          scene.add(f2);
+          const ph2 = (() => {
+            const c = document.createElement('canvas'); c.width = 64; c.height = 80;
+            const g = c.getContext('2d');
+            g.fillStyle = '#3a2a18'; g.fillRect(0,0,64,80);
+            g.fillStyle = '#c8a050'; g.font = '28px serif'; g.textAlign = 'center';
+            g.fillText(w2.emoji || '?', 32, 44);
+            return new THREE.CanvasTexture(c);
+          })();
+          const cm2 = new THREE.MeshStandardMaterial({ map: ph2, roughness: 0.6 });
+          const cv2 = new THREE.Mesh(new THREE.PlaneGeometry(frameW, frameH), cm2);
+          cv2.position.set(mx + nx * (offset + 0.05), yT, mz + nz * (offset + 0.05));
+          cv2.lookAt(0, yT, 0);
+          scene.add(cv2);
+          cv2.userData.work = w2;
+          cv2.userData.wallMid = { x: mx, z: mz };
+          cv2.userData.tier = tier;
+          paintings.push(cv2);
+          cv2.userData.load = () => {
+            const src = w2._resolvedImg || w2.img;
+            loadArtTexture(src).then(tex => {
+              const img = tex.image;
+              const ar = img.width / img.height;
+              const planeAR = frameW / frameH;
+              let sx = 1, sy = 1;
+              if (ar > planeAR) sy = planeAR / ar; else sx = ar / planeAR;
+              cv2.scale.set(sx, sy, 1);
+              cm2.map = tex; cm2.needsUpdate = true;
+            }).catch(() => {});
+          };
+          // スポット
+          const sp2 = new THREE.SpotLight(0xfff0c0, 2.0, 12, Math.PI / 4.5, 0.4, 1.4);
+          sp2.position.set(mx + nx * 2.0, yT + frameH / 2 + 0.6, mz + nz * 2.0);
+          sp2.target.position.set(mx + nx * 0.2, yT, mz + nz * 0.2);
+          scene.add(sp2); scene.add(sp2.target);
+          // プラーク
+          const pc2 = document.createElement('canvas'); pc2.width = 256; pc2.height = 64;
+          const pg2 = pc2.getContext('2d');
+          pg2.fillStyle = '#2a1e14'; pg2.fillRect(0,0,256,64);
+          pg2.fillStyle = '#c8a050'; pg2.font = 'bold 14px serif'; pg2.textAlign = 'center';
+          pg2.fillText(`${w2.origin || ''} — ${w2.chapterTitle || ''}`.slice(0, 28), 128, 22);
+          pg2.font = '11px serif'; pg2.fillStyle = '#e8d8a8';
+          pg2.fillText((w2.caption || '').slice(0, 32), 128, 42);
+          pg2.strokeStyle = '#c8a050'; pg2.lineWidth = 2; pg2.strokeRect(1,1,254,62);
+          const pT2 = new THREE.CanvasTexture(pc2);
+          const pl2 = new THREE.Mesh(new THREE.PlaneGeometry(0.9, 0.22), new THREE.MeshBasicMaterial({ map: pT2 }));
+          pl2.position.set(mx + nx * (offset + 0.1), yT - frameH / 2 - 0.25, mz + nz * (offset + 0.1));
+          pl2.lookAt(0, pl2.position.y, 0);
+          scene.add(pl2);
+        }
+      }
       // キャンバス（プレースホルダー → ロードで差し替え）
       const phTex = (() => {
         const c = document.createElement('canvas'); c.width = 64; c.height = 80;
@@ -11290,6 +11374,98 @@
       plaque.position.set(mx + nx * (offset + 0.1), wallHeight / 2 + 0.3 - frameH/2 - 0.25, mz + nz * (offset + 0.1));
       plaque.lookAt(0, plaque.position.y, 0);
       scene.add(plaque);
+    }
+
+    // === 🏛 メザニンバルコニー（2F/3F）+ 階段 ===
+    const mezzanineCols = []; // 階段の中心 X,Z（移動判定用）
+    if (HAS_MEZZANINE) {
+      const innerR = radius * 0.55; // 中央吹き抜けの内径
+      const outerR = radius - 0.5;  // 外周（壁の手前）
+      // 各階のドーナツ床
+      for (let tier = 1; tier <= 2; tier++) {
+        const yF = TIER_FLOOR_Y[tier];
+        const ringShape = new THREE.Shape();
+        ringShape.absarc(0, 0, outerR, 0, Math.PI * 2, false);
+        const hole = new THREE.Path();
+        hole.absarc(0, 0, innerR, 0, Math.PI * 2, true);
+        ringShape.holes.push(hole);
+        const ringGeo = new THREE.ExtrudeGeometry(ringShape, { depth: 0.25, bevelEnabled: false, curveSegments: N });
+        const ring = new THREE.Mesh(
+          ringGeo,
+          new THREE.MeshStandardMaterial({ map: floorTex, roughness: 0.5, color: 0xe8d8b0 })
+        );
+        ring.rotation.x = -Math.PI / 2;
+        ring.position.y = yF;
+        scene.add(ring);
+        // 内側手すり（金の柵）
+        const railGeo = new THREE.CylinderGeometry(innerR, innerR, 1.0, Math.max(32, N * 2), 1, true);
+        const rail = new THREE.Mesh(
+          railGeo,
+          new THREE.MeshStandardMaterial({ color: 0xc8a040, metalness: 0.7, roughness: 0.4, side: THREE.DoubleSide, emissive: 0x4a3008, emissiveIntensity: 0.3 })
+        );
+        rail.position.y = yF + 0.5;
+        scene.add(rail);
+        // 上下の縁取り
+        for (const dy of [0, 1.0]) {
+          const edge = new THREE.Mesh(
+            new THREE.TorusGeometry(innerR, 0.05, 8, Math.max(32, N * 2)),
+            new THREE.MeshStandardMaterial({ color: 0xffd060, metalness: 0.9, roughness: 0.2, emissive: 0x6a4818, emissiveIntensity: 0.5 })
+          );
+          edge.rotation.x = Math.PI / 2;
+          edge.position.y = yF + dy;
+          scene.add(edge);
+        }
+        // フロアラベル看板（中央の吹き抜けに浮かぶ）
+        const labelCv = document.createElement('canvas');
+        labelCv.width = 256; labelCv.height = 96;
+        const lg = labelCv.getContext('2d');
+        lg.fillStyle = 'rgba(20,12,6,0.85)'; lg.fillRect(0,0,256,96);
+        lg.strokeStyle = '#c8a040'; lg.lineWidth = 3; lg.strokeRect(6,6,244,84);
+        lg.fillStyle = '#f0d896'; lg.font = 'bold 32px "Shippori Mincho", serif';
+        lg.textAlign = 'center'; lg.textBaseline = 'middle';
+        lg.fillText(tier === 1 ? '2 F' : '3 F', 128, 38);
+        lg.fillStyle = '#a89060'; lg.font = '14px "Cormorant Garamond", serif';
+        lg.fillText(tier === 1 ? '— Special Collection —' : '— Bonus Gallery —', 128, 70);
+        const labTex = new THREE.CanvasTexture(labelCv);
+        if ('colorSpace' in labTex) labTex.colorSpace = THREE.SRGBColorSpace;
+        const labMesh = new THREE.Mesh(
+          new THREE.PlaneGeometry(2.4, 0.9),
+          new THREE.MeshBasicMaterial({ map: labTex, transparent: true, side: THREE.DoubleSide, fog: false })
+        );
+        labMesh.position.set(0, yF + 1.6, 0);
+        scene.add(labMesh);
+      }
+      // 階段（直線ステップ：中央付近の所定角度から）
+      // 1F→2F、2F→3F、各 12 段
+      const STAIR_STEPS = 12;
+      const stepRise = wallHeight / STAIR_STEPS;
+      const stepRun = 0.5;
+      const stairAngle1 = -Math.PI / 4;       // 1F→2F の階段方向
+      const stairAngle2 = Math.PI * 3 / 4;    // 2F→3F の階段方向
+      function buildStair(cx0, cz0, dirX, dirZ, yStart, yEnd) {
+        const steps = STAIR_STEPS;
+        const rise = (yEnd - yStart) / steps;
+        for (let s = 0; s < steps; s++) {
+          const step = new THREE.Mesh(
+            new THREE.BoxGeometry(2.0, 0.18, 0.55),
+            new THREE.MeshStandardMaterial({ map: floorTex, roughness: 0.6, color: 0xd0b890 })
+          );
+          const sx = cx0 + dirX * (s * stepRun + 0.3);
+          const sz = cz0 + dirZ * (s * stepRun + 0.3);
+          step.position.set(sx, yStart + rise * (s + 0.5), sz);
+          step.rotation.y = Math.atan2(dirZ, dirX);
+          scene.add(step);
+        }
+        mezzanineCols.push({ cx: cx0, cz: cz0, dirX, dirZ, yStart, yEnd, steps });
+      }
+      const sx1 = innerR * Math.cos(stairAngle1);
+      const sz1 = innerR * Math.sin(stairAngle1);
+      const dx1 = -Math.cos(stairAngle1), dz1 = -Math.sin(stairAngle1);
+      buildStair(sx1, sz1, dx1, dz1, 0, wallHeight);
+      const sx2 = innerR * Math.cos(stairAngle2);
+      const sz2 = innerR * Math.sin(stairAngle2);
+      const dx2 = -Math.cos(stairAngle2), dz2 = -Math.sin(stairAngle2);
+      buildStair(sx2, sz2, dx2, dz2, wallHeight, wallHeight * 2);
     }
 
     // === 🏛 アルコーブ部屋（4方向、どうぶつの森風の小部屋）===
@@ -11559,6 +11735,7 @@
     // === カメラ ===
     const camera = new THREE.PerspectiveCamera(70, W()/H(), 0.1, 200);
     camera.position.set(0, 1.7, 0);
+    let currentMuseumFloor = 0; // 0=1F, 1=2F, 2=3F
     let yaw = 0, pitch = 0;
 
     // === 入力 ===
@@ -11705,6 +11882,40 @@
           if (!inAlcove) {
             camera.position.x = camera.position.x / d * maxD;
             camera.position.z = camera.position.z / d * maxD;
+          }
+        }
+      }
+      // 🏛 メザニン高さ：階段で徐々に上昇、フロアでは現在階を維持
+      if (HAS_MEZZANINE) {
+        const innerR = radius * 0.55;
+        const px2 = camera.position.x, pz2 = camera.position.z;
+        // 階段判定
+        let onStair = false, stairY = null;
+        for (const st of mezzanineCols) {
+          const dxR = px2 - st.cx, dzR = pz2 - st.cz;
+          const along = dxR * st.dirX + dzR * st.dirZ;
+          const perp  = dxR * (-st.dirZ) + dzR * st.dirX;
+          const stairLen = st.steps * 0.5;
+          if (along > -0.2 && along < stairLen + 0.2 && Math.abs(perp) < 1.2) {
+            onStair = true;
+            const t01 = Math.max(0, Math.min(1, along / stairLen));
+            stairY = st.yStart + (st.yEnd - st.yStart) * t01;
+            // 階段の上端／下端でフロア更新
+            if (t01 > 0.85) currentMuseumFloor = Math.round(st.yEnd / wallHeight);
+            else if (t01 < 0.15) currentMuseumFloor = Math.round(st.yStart / wallHeight);
+          }
+        }
+        const targetEyeY = onStair
+          ? stairY + 1.7
+          : currentMuseumFloor * wallHeight + 1.7;
+        camera.position.y += (targetEyeY - camera.position.y) * 0.20;
+        // メザニン上では中央吹き抜けに落ちないように制限
+        if (currentMuseumFloor > 0 && !onStair) {
+          const dC = Math.hypot(px2, pz2);
+          if (dC < innerR + 0.4) {
+            const k = (innerR + 0.4) / Math.max(dC, 0.01);
+            camera.position.x = px2 * k;
+            camera.position.z = pz2 * k;
           }
         }
       }
