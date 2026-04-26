@@ -11015,9 +11015,74 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
 }
 .biz-toast.show { transform: translate(-50%, 0); opacity: 1; }
 
-/* コピー・保存ボタン色分け */
-.biz-copy-btn { border-color: rgba(120,180,255,0.5) !important; color: #b8e0ff !important; }
-.biz-save-btn { border-color: rgba(255,216,96,0.5) !important; color: #ffe080 !important; }
+/* 共有・書き出しボタン色分け */
+.biz-share-btn { border-color: rgba(120,180,255,0.5) !important; color: #b8e0ff !important; }
+
+/* 共有シート */
+.biz-share-menu {
+  position: fixed; inset: 0; z-index: 10000;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+.biz-share-menu.open { opacity: 1; pointer-events: auto; }
+.biz-share-bk { position: absolute; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(6px); cursor: pointer; }
+.biz-share-card {
+  position: relative;
+  width: min(400px, 92vw);
+  padding: 22px 22px 16px;
+  background: linear-gradient(160deg, #1a2540, #0f1828);
+  border: 1px solid rgba(120,160,210,0.3);
+  border-radius: 14px;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+  display: flex; flex-direction: column; gap: 8px;
+}
+.biz-share-h {
+  font-size: 16px; letter-spacing: 4px;
+  color: #e8edf5;
+  font-family: 'Helvetica Neue','Noto Sans JP', sans-serif;
+  font-weight: 300;
+  margin-bottom: 8px;
+  text-align: center;
+}
+.biz-share-note {
+  font-size: 11px; line-height: 1.6;
+  color: rgba(220,235,255,0.55);
+  text-align: center;
+  margin-bottom: 4px;
+  padding: 6px 10px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 6px;
+}
+.biz-share-link {
+  display: block;
+  padding: 11px 16px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(180,220,255,0.25);
+  color: #e8edf5;
+  border-radius: 8px;
+  font-size: 13px; letter-spacing: 1px;
+  text-align: left;
+  cursor: pointer;
+  font-family: 'Helvetica Neue','Noto Sans JP', sans-serif;
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s, transform 0.15s;
+}
+.biz-share-link:hover { background: rgba(120,180,255,0.15); border-color: #4a8fcf; transform: translateY(-1px); }
+.biz-share-link.x:hover { border-color: #fff; }
+.biz-share-link.line:hover { border-color: #00b900; background: rgba(0,185,0,0.15); }
+.biz-share-link.fb:hover { border-color: #1877f2; background: rgba(24,119,242,0.15); }
+.biz-share-cancel {
+  margin-top: 6px;
+  padding: 8px;
+  background: transparent;
+  border: none;
+  color: rgba(220,235,255,0.55);
+  cursor: pointer;
+  font-size: 12px; letter-spacing: 2px;
+}
+.biz-share-cancel:hover { color: #fff; }
 
 /* SVGアイコン共通 */
 .biz-icon { display: inline-block; vertical-align: middle; flex-shrink: 0; }

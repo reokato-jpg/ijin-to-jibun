@@ -24337,8 +24337,7 @@
             <span class="el-lab2-counter" id="bizBoardCounter">0 / ${BIZ_MODELS.length}</span>
             <button class="el-lab2-clear" id="bizBoardClear" type="button">🧹 クリア</button>
             <button class="el-lab2-clear biz-match-btn" id="bizMatchBtn" type="button" style="top:50px">🔍 モデル判定</button>
-            <button class="el-lab2-clear biz-copy-btn" id="bizCopyBtn" type="button" style="top:88px">📋 テキスト</button>
-            <button class="el-lab2-clear biz-save-btn" id="bizSaveBtn" type="button" style="top:126px">💾 マイモデルに保存</button>
+            <button class="el-lab2-clear biz-share-btn" id="bizShareBtn" type="button" style="top:88px">📤 共有・書き出し</button>
           </div>
           <div class="biz-toolbar">
             <div class="biz-flow-modes" id="bizFlowModes">
@@ -25066,8 +25065,183 @@
         }
       }));
     }
-    ov.querySelector('#bizCopyBtn').addEventListener('click', copyTextDiagram);
-    ov.querySelector('#bizSaveBtn').addEventListener('click', saveCurrentAsMyModel);
+    // SVG書き出し（PNG保存・SNS共有用）
+    function buildExportSvg(title) {
+      const roleNodes = bnodes.filter(n => n.kind === 'role');
+      if (roleNodes.length === 0) return null;
+      let minX=Infinity, minY=Infinity, maxX=-Infinity, maxY=-Infinity;
+      roleNodes.forEach(n => {
+        minX = Math.min(minX, n.x); minY = Math.min(minY, n.y);
+        maxX = Math.max(maxX, n.x + 84); maxY = Math.max(maxY, n.y + 64);
+      });
+      const padX = 60, padTop = 80, padBottom = 80;
+      const w = Math.round(maxX - minX + padX*2);
+      const h = Math.round(maxY - minY + padTop + padBottom);
+      const offX = -minX + padX, offY = -minY + padTop;
+      const arrowsSvg = arrows.map(a => {
+        const fx = a.from.x + 42 + offX, fy = a.from.y + 32 + offY;
+        const tx = a.to.x + 42 + offX, ty = a.to.y + 32 + offY;
+        const dx = tx-fx, dy = ty-fy, len = Math.hypot(dx,dy)||1;
+        const ux = dx/len, uy = dy/len;
+        const x1 = fx + ux*48, y1 = fy + uy*38;
+        const x2 = tx - ux*52, y2 = ty - uy*42;
+        const fl = flow2obj[a.flow];
+        return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${fl.color}" stroke-width="3" marker-end="url(#mE-${a.flow})"/>`;
+      }).join('');
+      const rolesSvg = roleNodes.map(n => {
+        const r = role2obj[n.rid];
+        const x = n.x + offX, y = n.y + offY;
+        return `<g>
+          <rect x="${x}" y="${y}" width="84" height="64" rx="8" fill="#f5f7fa" stroke="${r.color}" stroke-width="2"/>
+          <rect x="${x}" y="${y}" width="84" height="6" rx="6" ry="6" fill="${r.color}"/>
+          <g transform="translate(${x+30} ${y+18})">${bizIconG(n.rid, '#1a2540')}</g>
+          <text x="${x+42}" y="${y+56}" text-anchor="middle" font-size="11" font-weight="700" fill="#1a2540" font-family="'Helvetica Neue', sans-serif">${r.name}</text>
+        </g>`;
+      }).join('');
+      const defs = BIZ_FLOWS.map(f => `<marker id="mE-${f.id}" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><polygon points="0,0 10,5 0,10" fill="${f.color}"/></marker>`).join('');
+      const legend = `<g transform="translate(${padX} ${h-50})">
+        ${BIZ_FLOWS.map((f,i) => `
+          <g transform="translate(${i*170} 0)">
+            <line x1="0" y1="0" x2="22" y2="0" stroke="${f.color}" stroke-width="3" marker-end="url(#mE-${f.id})"/>
+            <text x="32" y="4" font-size="11" fill="rgba(232,237,245,0.7)" font-family="'Helvetica Neue', sans-serif">${f.name}</text>
+          </g>
+        `).join('')}
+      </g>`;
+      return `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}">
+  <defs>${defs}</defs>
+  <rect width="${w}" height="${h}" fill="#0f1828"/>
+  <g stroke="rgba(120,160,210,0.08)" stroke-width="1">
+    ${Array.from({length: Math.ceil(w/40)}, (_,i) => `<line x1="${i*40}" y1="0" x2="${i*40}" y2="${h}"/>`).join('')}
+    ${Array.from({length: Math.ceil(h/40)}, (_,i) => `<line x1="0" y1="${i*40}" x2="${w}" y2="${i*40}"/>`).join('')}
+  </g>
+  <text x="${w/2}" y="38" text-anchor="middle" font-size="20" font-weight="300" letter-spacing="6" fill="#e8edf5" font-family="'Helvetica Neue', sans-serif">${title || '自作ビジネスモデル'}</text>
+  ${arrowsSvg}
+  ${rolesSvg}
+  ${legend}
+  <text x="${w-12}" y="${h-12}" text-anchor="end" font-size="10" fill="rgba(232,237,245,0.4)" font-family="'Helvetica Neue', sans-serif">— 偉人と自分／ビジネス図解ラボ</text>
+</svg>`;
+    }
+    async function svgToPngBlob(svgStr) {
+      const blob = new Blob([svgStr], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      try {
+        const img = new Image();
+        await new Promise((res, rej) => { img.onload = res; img.onerror = rej; img.src = url; });
+        const m = svgStr.match(/width="(\d+)"\s+height="(\d+)"/);
+        const w = +m[1], h = +m[2];
+        const canvas = document.createElement('canvas');
+        canvas.width = w*2; canvas.height = h*2;
+        const ctx = canvas.getContext('2d');
+        ctx.scale(2, 2);
+        ctx.drawImage(img, 0, 0);
+        return await new Promise(res => canvas.toBlob(res, 'image/png'));
+      } finally {
+        URL.revokeObjectURL(url);
+      }
+    }
+    async function downloadAsPng() {
+      const svg = buildExportSvg();
+      if (!svg) { bizToast('盤に何も置かれていません'); return; }
+      const png = await svgToPngBlob(svg);
+      if (!png) { bizToast('画像生成に失敗しました'); return; }
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(png);
+      a.download = `bizmodel-${Date.now()}.png`;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+      bizToast('画像を保存しました 📷');
+    }
+    async function copyImageToClipboard() {
+      if (!navigator.clipboard || !window.ClipboardItem) { bizToast('このブラウザは画像コピー非対応'); return; }
+      const svg = buildExportSvg();
+      if (!svg) { bizToast('盤に何も置かれていません'); return; }
+      const png = await svgToPngBlob(svg);
+      if (!png) { bizToast('画像生成に失敗'); return; }
+      try {
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': png })]);
+        bizToast('画像をコピーしました 📋');
+      } catch (e) { bizToast('画像コピー失敗：保存からどうぞ'); }
+    }
+    async function shareNative() {
+      const svg = buildExportSvg();
+      if (!svg) { bizToast('盤に何も置かれていません'); return; }
+      const png = await svgToPngBlob(svg);
+      if (!png) { bizToast('画像生成に失敗'); return; }
+      const file = new File([png], 'bizmodel.png', { type: 'image/png' });
+      const text = `自作ビジネスモデル — 偉人と自分／ビジネス図解ラボ\n${location.origin}`;
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({ files: [file], title: '私のビジネスモデル', text });
+          bizToast('共有しました 🚀');
+        } catch (e) {/* user cancelled */}
+      } else if (navigator.share) {
+        try { await navigator.share({ title: '私のビジネスモデル', text }); }
+        catch (e) {}
+      } else {
+        showSnsLinks();
+      }
+    }
+    function showSnsLinks() {
+      const text = encodeURIComponent('自作ビジネスモデルを作りました — 偉人と自分／ビジネス図解ラボ');
+      const url = encodeURIComponent(location.origin);
+      const menu = document.createElement('div');
+      menu.className = 'biz-share-menu';
+      menu.innerHTML = `
+        <div class="biz-share-bk"></div>
+        <div class="biz-share-card">
+          <div class="biz-share-h">SNSで共有</div>
+          <div class="biz-share-note">画像は別途「📷 PNG保存」でダウンロードして手動添付してください</div>
+          <a class="biz-share-link x" href="https://twitter.com/intent/tweet?text=${text}&url=${url}" target="_blank" rel="noopener">𝕏 / Twitter で投稿</a>
+          <a class="biz-share-link line" href="https://line.me/R/msg/text/?${text}%20${url}" target="_blank" rel="noopener">LINE で送る</a>
+          <a class="biz-share-link fb" href="https://www.facebook.com/sharer/sharer.php?u=${url}" target="_blank" rel="noopener">Facebook で共有</a>
+          <button class="biz-share-cancel" type="button">キャンセル</button>
+        </div>
+      `;
+      ov.appendChild(menu);
+      requestAnimationFrame(() => menu.classList.add('open'));
+      const closeM = () => { menu.classList.remove('open'); setTimeout(() => menu.remove(), 220); };
+      menu.querySelector('.biz-share-bk').addEventListener('click', closeM);
+      menu.querySelector('.biz-share-cancel').addEventListener('click', closeM);
+    }
+    function showShareSheet() {
+      const roleCount = bnodes.filter(n => n.kind === 'role').length;
+      if (roleCount === 0) { bizToast('盤に何も置かれていません'); return; }
+      const sheet = document.createElement('div');
+      sheet.className = 'biz-share-menu';
+      const canImg = !!(navigator.clipboard && window.ClipboardItem);
+      const canShare = !!navigator.share;
+      sheet.innerHTML = `
+        <div class="biz-share-bk"></div>
+        <div class="biz-share-card">
+          <div class="biz-share-h">📤 共有・書き出し</div>
+          <button class="biz-share-link" data-act="png">📷 PNG画像で保存（端末にダウンロード）</button>
+          ${canImg ? '<button class="biz-share-link" data-act="imgcopy">📋 画像をクリップボードにコピー</button>' : ''}
+          <button class="biz-share-link" data-act="text">📝 テキストでコピー</button>
+          ${canShare ? '<button class="biz-share-link" data-act="native">🚀 共有メニューを開く（SNS・LINE等）</button>' : '<button class="biz-share-link" data-act="sns">🚀 SNSリンクで共有</button>'}
+          <button class="biz-share-link" data-act="save">💾 マイモデルに保存</button>
+          <button class="biz-share-cancel" type="button">キャンセル</button>
+        </div>
+      `;
+      ov.appendChild(sheet);
+      requestAnimationFrame(() => sheet.classList.add('open'));
+      const closeM = () => { sheet.classList.remove('open'); setTimeout(() => sheet.remove(), 220); };
+      sheet.querySelector('.biz-share-bk').addEventListener('click', closeM);
+      sheet.querySelector('.biz-share-cancel').addEventListener('click', closeM);
+      sheet.querySelectorAll('[data-act]').forEach(b => {
+        b.addEventListener('click', async () => {
+          closeM();
+          const act = b.dataset.act;
+          if (act === 'png') await downloadAsPng();
+          else if (act === 'imgcopy') await copyImageToClipboard();
+          else if (act === 'text') copyTextDiagram();
+          else if (act === 'native') await shareNative();
+          else if (act === 'sns') showSnsLinks();
+          else if (act === 'save') saveCurrentAsMyModel();
+        });
+      });
+    }
+    ov.querySelector('#bizShareBtn').addEventListener('click', showShareSheet);
     renderMyModels();
 
     ensureSvgDefs();
