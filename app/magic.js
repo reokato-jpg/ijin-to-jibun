@@ -11136,6 +11136,13 @@
         }
       });
     }
+    // 多室化：4方向（N方向中の N/4 ステップ）にドアウェイを作る
+    const doorwayIndices = new Set();
+    if (!isWa && N >= 8) {
+      const step = Math.floor(N / 4);
+      for (let d = 0; d < 4; d++) doorwayIndices.add(d * step);
+    }
+    const alcovePortals = []; // {a: angle, mx, mz} 後の collision 用
     for (let i = 0; i < N; i++) {
       const a = i * wallAngle;
       const nextA = (i + 1) * wallAngle;
@@ -11144,12 +11151,40 @@
       const x2 = Math.cos(nextA) * radius, z2 = Math.sin(nextA) * radius;
       const mx = (x1 + x2) / 2, mz = (z1 + z2) / 2;
       const segLen = Math.hypot(x2 - x1, z2 - z1);
-      // 壁面
-      const wallGeo = new THREE.PlaneGeometry(segLen, wallHeight);
-      const wall = new THREE.Mesh(wallGeo, new THREE.MeshStandardMaterial({ map: wallTex, roughness: 0.85 }));
-      wall.position.set(mx, wallHeight / 2, mz);
-      wall.lookAt(0, wallHeight / 2, 0);
-      scene.add(wall);
+      const isDoor = doorwayIndices.has(i);
+      // 壁面（ドアウェイの場所はスキップ、代わりにアーチ枠だけ）
+      if (!isDoor) {
+        const wallGeo = new THREE.PlaneGeometry(segLen, wallHeight);
+        const wall = new THREE.Mesh(wallGeo, new THREE.MeshStandardMaterial({ map: wallTex, roughness: 0.85 }));
+        wall.position.set(mx, wallHeight / 2, mz);
+        wall.lookAt(0, wallHeight / 2, 0);
+        scene.add(wall);
+      } else {
+        // アーチ枠（門柱2本＋上部梁）でドアウェイ感を演出
+        const archMat = new THREE.MeshStandardMaterial({ color: 0xc89868, roughness: 0.55, metalness: 0.2, emissive: 0x4a3008, emissiveIntensity: 0.35 });
+        const ny = -Math.cos((a + nextA) / 2), nz0 = -Math.sin((a + nextA) / 2);
+        // 左門柱
+        const post1 = new THREE.Mesh(new THREE.BoxGeometry(0.18, wallHeight, 0.18), archMat);
+        post1.position.set(x1, wallHeight / 2, z1);
+        scene.add(post1);
+        const post2 = new THREE.Mesh(new THREE.BoxGeometry(0.18, wallHeight, 0.18), archMat);
+        post2.position.set(x2, wallHeight / 2, z2);
+        scene.add(post2);
+        // 上部梁
+        const lintel = new THREE.Mesh(new THREE.BoxGeometry(segLen + 0.4, 0.4, 0.18), archMat);
+        lintel.position.set(mx, wallHeight - 0.2, mz);
+        lintel.lookAt(0, wallHeight - 0.2, 0);
+        scene.add(lintel);
+        // ドアの上に半円アーチ装飾（細い枠）
+        const ringGeo = new THREE.TorusGeometry(segLen * 0.45, 0.06, 8, 32, Math.PI);
+        const ring = new THREE.Mesh(ringGeo, archMat);
+        ring.position.set(mx, wallHeight - 0.5, mz);
+        ring.lookAt(0, wallHeight - 0.5, 0);
+        ring.rotateX(-Math.PI / 2); // 半円が上向きに
+        scene.add(ring);
+        // 後の collision 判定用にゾーン記録
+        alcovePortals.push({ angle: (a + nextA) / 2, mx, mz, segLen });
+      }
       // 巾木
       const baseMat = new THREE.MeshStandardMaterial({ color: 0x3a2a18, roughness: 0.6 });
       const base = new THREE.Mesh(new THREE.BoxGeometry(segLen, 0.4, 0.08), baseMat);
@@ -11161,6 +11196,8 @@
       scene.add(cornice);
 
       // 絵（この壁にある作品）
+      // ドアウェイ位置には絵を出さない
+      if (isDoor) continue;
       const work = works[i % works.length];
       if (!work) continue;
       // 中心から内側に少し出す（壁から浮かせる）
@@ -11248,6 +11285,153 @@
       plaque.lookAt(0, plaque.position.y, 0);
       scene.add(plaque);
     }
+
+    // === 🏛 アルコーブ部屋（4方向、どうぶつの森風の小部屋）===
+    const alcoveZones = []; // 衝突判定用：{cx, cz, w, d}
+    if (!isWa && alcovePortals.length === 4) {
+      // 各ドアウェイ位置から外側に延びる小部屋
+      const ALCOVE_DEPTH = 8;   // 外側方向への奥行き
+      const ALCOVE_WIDTH = 6.5;
+      const ALCOVE_HEIGHT = wallHeight;
+      alcovePortals.forEach((portal, idx) => {
+        // ドアウェイの中央から外側へのベクトル
+        const angle = portal.angle;
+        const cx = portal.mx + Math.cos(angle) * (ALCOVE_DEPTH / 2);
+        const cz = portal.mz + Math.sin(angle) * (ALCOVE_DEPTH / 2);
+        // 小部屋の床（暖色クリーム木目をローカル生成）
+        const floorAlcove = new THREE.Mesh(
+          new THREE.PlaneGeometry(ALCOVE_WIDTH, ALCOVE_DEPTH),
+          new THREE.MeshStandardMaterial({ map: floorTex, roughness: 0.7, color: 0xe0c890 })
+        );
+        floorAlcove.rotation.x = -Math.PI / 2;
+        floorAlcove.position.set(cx, 0.001, cz);
+        floorAlcove.rotation.z = -angle - Math.PI / 2;
+        scene.add(floorAlcove);
+        // 天井（明るいクリーム）
+        const ceilAlcove = new THREE.Mesh(
+          new THREE.PlaneGeometry(ALCOVE_WIDTH, ALCOVE_DEPTH),
+          new THREE.MeshStandardMaterial({ color: 0xfdf2dc, roughness: 0.85, side: THREE.DoubleSide })
+        );
+        ceilAlcove.rotation.x = Math.PI / 2;
+        ceilAlcove.position.set(cx, ALCOVE_HEIGHT, cz);
+        ceilAlcove.rotation.z = angle + Math.PI / 2;
+        scene.add(ceilAlcove);
+        // 3面の壁（背後＋左右）
+        const wallMatA = new THREE.MeshStandardMaterial({ map: wallTex, roughness: 0.85 });
+        // 後壁（一番外側）
+        const backWall = new THREE.Mesh(new THREE.PlaneGeometry(ALCOVE_WIDTH, ALCOVE_HEIGHT), wallMatA);
+        const bx = portal.mx + Math.cos(angle) * ALCOVE_DEPTH;
+        const bz = portal.mz + Math.sin(angle) * ALCOVE_DEPTH;
+        backWall.position.set(bx, ALCOVE_HEIGHT / 2, bz);
+        backWall.lookAt(portal.mx, ALCOVE_HEIGHT / 2, portal.mz);
+        scene.add(backWall);
+        // 左右の壁（ドアウェイの両端から外側へ）
+        // 接線方向（壁のラインに沿った方向）
+        const tx = Math.sin(angle), tz = -Math.cos(angle); // 接線
+        // 左壁（angle に対して左側）
+        const leftStart = { x: portal.mx + tx * ALCOVE_WIDTH / 2, z: portal.mz + tz * ALCOVE_WIDTH / 2 };
+        const leftEnd   = { x: bx + tx * ALCOVE_WIDTH / 2,         z: bz + tz * ALCOVE_WIDTH / 2 };
+        const leftMid = { x: (leftStart.x + leftEnd.x) / 2, z: (leftStart.z + leftEnd.z) / 2 };
+        const leftWall = new THREE.Mesh(new THREE.PlaneGeometry(ALCOVE_DEPTH, ALCOVE_HEIGHT), wallMatA);
+        leftWall.position.set(leftMid.x, ALCOVE_HEIGHT / 2, leftMid.z);
+        // 内側を向くように
+        leftWall.lookAt(leftMid.x - tx, ALCOVE_HEIGHT / 2, leftMid.z - tz);
+        scene.add(leftWall);
+        // 右壁
+        const rightStart = { x: portal.mx - tx * ALCOVE_WIDTH / 2, z: portal.mz - tz * ALCOVE_WIDTH / 2 };
+        const rightEnd   = { x: bx - tx * ALCOVE_WIDTH / 2,         z: bz - tz * ALCOVE_WIDTH / 2 };
+        const rightMid = { x: (rightStart.x + rightEnd.x) / 2, z: (rightStart.z + rightEnd.z) / 2 };
+        const rightWall = new THREE.Mesh(new THREE.PlaneGeometry(ALCOVE_DEPTH, ALCOVE_HEIGHT), wallMatA);
+        rightWall.position.set(rightMid.x, ALCOVE_HEIGHT / 2, rightMid.z);
+        rightWall.lookAt(rightMid.x + tx, ALCOVE_HEIGHT / 2, rightMid.z + tz);
+        scene.add(rightWall);
+        // 後壁に追加の絵画（あれば）
+        const extraWork = works[(idx * 7) % works.length];
+        if (extraWork) {
+          // 額縁
+          const fW = 2.6, fH = 3.2;
+          const frame = new THREE.Mesh(
+            new THREE.BoxGeometry(fW + 0.3, fH + 0.3, 0.08),
+            new THREE.MeshStandardMaterial({ color: 0xc8a050, metalness: 0.8, roughness: 0.35 })
+          );
+          frame.position.set(bx - Math.cos(angle) * 0.05, ALCOVE_HEIGHT / 2, bz - Math.sin(angle) * 0.05);
+          frame.lookAt(portal.mx, ALCOVE_HEIGHT / 2, portal.mz);
+          scene.add(frame);
+          // キャンバス（実画像 or PR広告）
+          const canvasGeo = new THREE.PlaneGeometry(fW, fH);
+          const canvasMat2 = new THREE.MeshStandardMaterial({ roughness: 0.6 });
+          const canvasMesh2 = new THREE.Mesh(canvasGeo, canvasMat2);
+          canvasMesh2.position.set(bx - Math.cos(angle) * 0.10, ALCOVE_HEIGHT / 2, bz - Math.sin(angle) * 0.10);
+          canvasMesh2.lookAt(portal.mx, ALCOVE_HEIGHT / 2, portal.mz);
+          scene.add(canvasMesh2);
+          canvasMesh2.userData.work = extraWork;
+          // 既存のロード関数があれば後でテクスチャ差し替え
+          if (extraWork.img) {
+            const im = new Image();
+            im.crossOrigin = 'anonymous';
+            im.onload = () => {
+              const tex = new THREE.Texture(im);
+              if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace;
+              tex.needsUpdate = true;
+              canvasMat2.map = tex; canvasMat2.needsUpdate = true;
+            };
+            im.src = extraWork.img;
+          }
+          paintings.push(canvasMesh2);
+          // スポットライト
+          const sp = new THREE.SpotLight(0xfff0c0, 2.0, 10, Math.PI / 4.5, 0.4, 1.4);
+          sp.position.set(cx, ALCOVE_HEIGHT - 0.6, cz);
+          sp.target.position.set(bx, ALCOVE_HEIGHT / 2, bz);
+          scene.add(sp); scene.add(sp.target);
+        }
+        // どうぶつの森風デコレーション：観葉植物2つ＋ベンチ1つ
+        for (let p = 0; p < 2; p++) {
+          const px = leftStart.x + (leftEnd.x - leftStart.x) * (0.3 + p * 0.4);
+          const pz = leftStart.z + (leftEnd.z - leftStart.z) * (0.3 + p * 0.4);
+          const pot = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.3, 0.4, 0.5, 12),
+            new THREE.MeshStandardMaterial({ color: 0xc06030, roughness: 0.85 })
+          );
+          pot.position.set(px, 0.25, pz);
+          scene.add(pot);
+          // 葉
+          for (let l = 0; l < 4; l++) {
+            const leaf = new THREE.Mesh(
+              new THREE.SphereGeometry(0.30 + Math.random() * 0.12, 10, 8),
+              new THREE.MeshStandardMaterial({ color: new THREE.Color().setHSL(0.31, 0.55, 0.32), roughness: 0.85, flatShading: true })
+            );
+            leaf.position.set(px + (Math.random()-0.5)*0.4, 0.65 + Math.random() * 0.5, pz + (Math.random()-0.5)*0.4);
+            scene.add(leaf);
+          }
+        }
+        // ベンチ（中央）
+        const bench = new THREE.Group();
+        const seat = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.10, 0.42), new THREE.MeshStandardMaterial({ color: 0xc88858, roughness: 0.65 }));
+        seat.position.y = 0.45; bench.add(seat);
+        const back = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.5, 0.06), new THREE.MeshStandardMaterial({ color: 0xb87848, roughness: 0.7 }));
+        back.position.set(0, 0.78, -0.2); bench.add(back);
+        bench.position.set(cx, 0, cz);
+        bench.rotation.y = -angle - Math.PI / 2;
+        scene.add(bench);
+        // アルコーブの暖かい光（PointLight）
+        const al = new THREE.PointLight(0xffe0a0, 0.85, 18, 1.4);
+        al.position.set(cx, ALCOVE_HEIGHT - 1.0, cz);
+        scene.add(al);
+        // 衝突判定ゾーン記録（player が rotunda 外へ出てもこの長方形内なら許可）
+        // 矩形の4頂点：portal の両端 + bx,bz の両端
+        alcoveZones.push({
+          // 中心
+          cx, cz,
+          // ドア側端2点・後壁側端2点（多角形クランプ用）
+          p0: leftStart,
+          p1: leftEnd,
+          p2: rightEnd,
+          p3: rightStart,
+        });
+      });
+    }
+    // collision 判定で使えるよう scene にも保存
+    scene.userData.alcoveZones = alcoveZones;
 
     // === 🚪 入口・出口ゲート ===
     // 入口は (radius, 0) 方向 → 大きなアーチ（鳥居 / マーブルポータル）
@@ -11491,12 +11675,31 @@
         const dz = (fz * f + rz * s) * speed;
         camera.position.x += dx;
         camera.position.z += dz;
-        // 壁コリジョン
+        // 壁コリジョン（rotunda半径外でもアルコーブ内なら許可）
         const d = Math.hypot(camera.position.x, camera.position.z);
         const maxD = radius - 1.5;
         if (d > maxD) {
-          camera.position.x = camera.position.x / d * maxD;
-          camera.position.z = camera.position.z / d * maxD;
+          // アルコーブゾーン内かチェック
+          const zones = scene.userData.alcoveZones || [];
+          let inAlcove = false;
+          for (const z of zones) {
+            // 多角形 (p0,p1,p2,p3) の内側にいるか判定（含めて少しマージン）
+            const px = camera.position.x, pz = camera.position.z;
+            // 4辺それぞれの符号を見る（凸多角形なので全部同じ符号なら内側）
+            const sign = (a, b, c) => (b.x - a.x) * (c.z - a.z) - (b.z - a.z) * (c.x - a.x);
+            const p = { x: px, z: pz };
+            const s1 = sign(z.p0, z.p1, p);
+            const s2 = sign(z.p1, z.p2, p);
+            const s3 = sign(z.p2, z.p3, p);
+            const s4 = sign(z.p3, z.p0, p);
+            const allPos = s1 >= -0.5 && s2 >= -0.5 && s3 >= -0.5 && s4 >= -0.5;
+            const allNeg = s1 <=  0.5 && s2 <=  0.5 && s3 <=  0.5 && s4 <=  0.5;
+            if (allPos || allNeg) { inAlcove = true; break; }
+          }
+          if (!inAlcove) {
+            camera.position.x = camera.position.x / d * maxD;
+            camera.position.z = camera.position.z / d * maxD;
+          }
         }
       }
       // カメラ向き（yaw, pitch）
