@@ -22976,13 +22976,13 @@
     const cv = ov.querySelector('#libCanvas');
     // モバイルでは antialias を切ってピクセルレシオも控えめに（重さ対策）
     const _isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent || '');
-    const renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: !_isMobile, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, _isMobile ? 1.0 : 1.4));
+    const renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: !_isMobile, alpha: true, powerPreference: 'high-performance' });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, _isMobile ? 0.85 : 1.4));
     const W = () => window.innerWidth;
     const H = () => window.innerHeight;
     renderer.setSize(W(), H());
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.25;
+    renderer.toneMapping = _isMobile ? THREE.NoToneMapping : THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = _isMobile ? 1.0 : 1.25;
     if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
 
     const scene = new THREE.Scene();
@@ -23236,14 +23236,20 @@
             const baseColor = new THREE.Color(book.color);
             if (book.placeholder) baseColor.multiplyScalar(0.4);
             const baseEmissive = new THREE.Color(book.color).multiplyScalar(book.placeholder ? 0.0 : (book.isAd ? 0.45 : 0.10));
-            // 軽量化：6面マテリアル配列ではなく単一マテリアル（背表紙テクスチャを全面に使う）
-            // 本は棚に密集して並ぶので側面・上下は見えない → 同テクスチャでも違和感なし
-            const spineTex = book.placeholder ? null : makeBookSpineTexture(book);
-            const bookMat = new THREE.MeshStandardMaterial({
-              color: book.placeholder ? baseColor : 0xffffff,
-              roughness: 0.55, map: spineTex,
-              emissive: baseEmissive, emissiveIntensity: 0.6,
-            });
+            // 🪶 軽量化：モバイルは MeshBasicMaterial（ライティング計算ゼロ）+ タイトル省略
+            // 単一マテリアル（背表紙テクスチャを全面に使う）— 本は棚に密集なので側面は見えない
+            let bookMat;
+            if (_isMobile) {
+              // 単色だけ（ライティング無視で速い）
+              bookMat = new THREE.MeshBasicMaterial({ color: baseColor });
+            } else {
+              const spineTex = book.placeholder ? null : makeBookSpineTexture(book);
+              bookMat = new THREE.MeshStandardMaterial({
+                color: book.placeholder ? baseColor : 0xffffff,
+                roughness: 0.55, map: spineTex,
+                emissive: baseEmissive, emissiveIntensity: 0.6,
+              });
+            }
             const bMesh = new THREE.Mesh(bookGeo, bookMat);
             // ローカル位置：棚の長さ方向に cursor、奥行きに bookSide*side
             const lx = cursor;
@@ -23670,7 +23676,7 @@
         const b = hits[0].object;
         if (!b.userData.book.placeholder) {
           const mats = Array.isArray(b.material) ? b.material : [b.material];
-          mats.forEach(mt => { mt.emissiveIntensity = 4.0; });
+          mats.forEach(mt => { if (mt.emissive) mt.emissiveIntensity = 4.0; else mt.color.setRGB(1.5, 1.3, 0.6); });
           playBookOpenAnim(b.userData.book, () => { b.userData.book.action(); close(); });
         }
       }
@@ -23728,9 +23734,15 @@
         const mats = Array.isArray(m.material) ? m.material : [m.material];
         if (ok && q) {
           matches.push(m);
-          mats.forEach(mt => { mt.emissive.setRGB(1.0, 0.85, 0.4); mt.emissiveIntensity = 1.5; });
+          mats.forEach(mt => {
+            if (mt.emissive) { mt.emissive.setRGB(1.0, 0.85, 0.4); mt.emissiveIntensity = 1.5; }
+            else { mt.color.setRGB(1.0, 0.85, 0.4); }
+          });
         } else {
-          mats.forEach(mt => { mt.emissive.copy(m.userData.baseEmissive); mt.emissiveIntensity = q ? 0.1 : 0.6; });
+          mats.forEach(mt => {
+            if (mt.emissive) { mt.emissive.copy(m.userData.baseEmissive); mt.emissiveIntensity = q ? 0.1 : 0.6; }
+            else { mt.color.copy(m.userData.baseColor); }
+          });
         }
       });
       // 結果リスト更新
@@ -23767,7 +23779,7 @@
               const idx = +el.dataset.bi;
               const m = bookMeshes[idx];
               const mats2 = Array.isArray(m.material) ? m.material : [m.material];
-              mats2.forEach(mt => { mt.emissiveIntensity = 4.0; });
+              mats2.forEach(mt => { if (mt.emissive) mt.emissiveIntensity = 4.0; else mt.color.setRGB(1.5, 1.3, 0.6); });
               playBookOpenAnim(m.userData.book, () => {
                 m.userData.book.action();
                 close();
