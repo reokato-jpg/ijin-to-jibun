@@ -32679,14 +32679,57 @@
       });
 
       // ===== ⚡ エナジーライン（胴・脚・腕のアクセント発光） =====
-      // 胸のトリニティ発光ライン
+      // 胸のトリニティ発光ライン（パルス対象）
       const chestEnergy = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.006, 0.005), energyMat);
       chestEnergy.position.set(0, 0.24, 0.116);
       mechaGroup.add(chestEnergy);
-      // 腰コアを金から熱いシアンに
-      const coreGlow = new THREE.Mesh(new THREE.SphereGeometry(0.018, 12, 12), energyHot);
+      // 腰コア（パルス対象）
+      const coreGlow = new THREE.Mesh(new THREE.SphereGeometry(0.022, 16, 12), energyHot);
       coreGlow.position.set(0, 0.14, 0.125);
       mechaGroup.add(coreGlow);
+      // 🌟 コア周囲のハロー（薄い透明球 + 加算合成）
+      const coreHalo = new THREE.Mesh(
+        new THREE.SphereGeometry(0.05, 16, 12),
+        new THREE.MeshBasicMaterial({ color: 0x80ffd0, transparent: true, opacity: 0.35, blending: THREE.AdditiveBlending, depthWrite: false })
+      );
+      coreHalo.position.copy(coreGlow.position);
+      mechaGroup.add(coreHalo);
+
+      // 💡 頭部のサイクラム（前面のV字フィン下にPointLight）— 環境を緑で照らす
+      const headLight = new THREE.PointLight(0x60ffa0, 1.2, 1.6, 1.6);
+      headLight.position.set(0, 0.5, 0.16);
+      mechaGroup.add(headLight);
+      // 👁 目の大きめハロー（加算スプライトで光感UP）
+      const eyeHaloTex = (() => {
+        const c = document.createElement('canvas'); c.width = 64; c.height = 64;
+        const g = c.getContext('2d');
+        const grd = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+        grd.addColorStop(0, 'rgba(160,255,200,1)');
+        grd.addColorStop(0.4, 'rgba(80,255,160,0.5)');
+        grd.addColorStop(1, 'rgba(0,0,0,0)');
+        g.fillStyle = grd; g.fillRect(0, 0, 64, 64);
+        return new THREE.CanvasTexture(c);
+      })();
+      const eyeHalos = [];
+      [-1, 1].forEach(side => {
+        const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: eyeHaloTex, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0.7 }));
+        sp.scale.set(0.045, 0.045, 1);
+        sp.position.set(side * 0.025, 0.464, 0.082);
+        mechaGroup.add(sp);
+        eyeHalos.push(sp);
+      });
+      // 🔥 ショルダースラスター（追加バーニア）
+      const shoulderThrusters = [];
+      [-1, 1].forEach(side => {
+        const t1 = new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.03, 0.06, 10), darkMat);
+        t1.rotation.x = Math.PI / 2;
+        t1.position.set(side * 0.34, 0.32, -0.08);
+        mechaGroup.add(t1);
+        const ring = new THREE.Mesh(new THREE.TorusGeometry(0.022, 0.005, 6, 12), new THREE.MeshBasicMaterial({ color: 0x60a8ff }));
+        ring.position.set(side * 0.34, 0.32, -0.115);
+        mechaGroup.add(ring);
+        shoulderThrusters.push({ ring, side });
+      });
 
       // ===== 🎒 バックパック（スリム・中央） =====
       const backpack = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.22, 0.08), deepBlue);
@@ -32779,6 +32822,12 @@
         legL: legPivots.legL.hip, kneeL: legPivots.legL.knee,
         legR: legPivots.legR.hip, kneeR: legPivots.legR.knee,
         beamWings: beamWings,
+        // ✨ パルス対象（tickでアニメーション）
+        chestEnergy: chestEnergy,
+        coreGlow: coreGlow,
+        coreHalo: coreHalo,
+        eyeHalos: eyeHalos,
+        headLight: headLight,
       };
       mechaGroup.userData.restPose = {
         wingL_y: wingPivots.wingL.rotation.y,
@@ -33210,6 +33259,26 @@
         // 🫁 全身ブリージング（スケール微脈動）
         const breath = 1 + Math.sin(t * 0.9) * 0.008;
         activeVehicle.scale.setScalar(0.75 * breath);
+        // ✨ MECHAエナジーパルス：コア＋ハロー＋目＋ヘッドライト
+        const pulse = 0.7 + 0.3 * Math.sin(t * 2.4);
+        const boostBoost = boostActive ? 1.6 : 1.0;
+        if (parts.coreGlow) {
+          parts.coreGlow.scale.setScalar(0.9 + pulse * 0.25);
+        }
+        if (parts.coreHalo) {
+          parts.coreHalo.material.opacity = (0.25 + pulse * 0.25) * boostBoost;
+          parts.coreHalo.scale.setScalar(1 + pulse * 0.4 * boostBoost);
+        }
+        if (parts.eyeHalos) {
+          const eo = (0.55 + pulse * 0.25) * boostBoost;
+          parts.eyeHalos.forEach(s => { s.material.opacity = eo; });
+        }
+        if (parts.headLight) {
+          parts.headLight.intensity = (0.9 + pulse * 0.6) * boostBoost;
+        }
+        if (parts.chestEnergy) {
+          parts.chestEnergy.material.color.setHSL(0.5 + Math.sin(t * 1.5) * 0.04, 1, 0.65);
+        }
       }
       // 噴射炎とエンジン光
       const flames = activeVehicle.userData.flames;
