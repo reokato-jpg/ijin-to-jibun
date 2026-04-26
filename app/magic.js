@@ -24347,6 +24347,10 @@
                   <span class="biz-flow-nm">${f.name}</span>
                 </button>
               `).join('')}
+              <button class="biz-flow-btn biz-bidir-btn" id="bizBidirBtn" type="button" title="両方向矢印">
+                <span class="biz-flow-ic">⇄</span>
+                <span class="biz-flow-nm">両方向</span>
+              </button>
             </div>
           </div>
           <div class="el-lab2-palette-wrap">
@@ -24386,21 +24390,34 @@
           `).join('')}
         </div>
 
-        <div class="el-section-head"><span class="el-sec-label">サービス図鑑</span><span class="el-sec-sub">— 実在企業・サービス約50件 — タップでモデル参照 —</span></div>
-        <div class="biz-svc-zukan">
+        <div class="el-section-head"><span class="el-sec-label">サービス図鑑</span><span class="el-sec-sub">— 実在企業・サービス約50件 — モデル別 —</span></div>
+        <div class="biz-svc-fav-section" id="bizSvcFavSection"></div>
+        <div class="biz-svc-cats" id="bizSvcCats">
           ${BIZ_MODELS.map(m => {
             const svcs = BIZ_MODEL_SERVICES[m.name] || [];
-            return svcs.map(s => `
-              <div class="biz-svc-z-card" data-model="${m.name}">
-                <div class="biz-svc-z-emoji">${s.emoji}</div>
-                <div class="biz-svc-z-body">
-                  <div class="biz-svc-z-name">${s.name}<span class="biz-svc-z-flag">${s.country}</span></div>
-                  <div class="biz-svc-z-founder">${s.founder}</div>
-                  ${s.note ? `<div class="biz-svc-z-note">${s.note}</div>` : ''}
-                  <div class="biz-svc-z-tag">${m.name}</div>
+            if (svcs.length === 0) return '';
+            return `
+              <div class="biz-svc-cat" data-model="${m.name}">
+                <div class="biz-svc-cat-h">
+                  <span class="biz-svc-cat-name">${m.name}</span>
+                  <span class="biz-svc-cat-meta">${svcs.length}社</span>
+                  <button class="biz-svc-cat-load" data-model-load="${m.name}" type="button">📂 このモデルを盤に開く</button>
+                </div>
+                <div class="biz-svc-cat-list">
+                  ${svcs.map(s => `
+                    <div class="biz-svc-z-card" data-svc-name="${s.name}" data-model="${m.name}">
+                      <button class="biz-svc-fav" data-fav="${s.name}" type="button" aria-label="お気に入り">♡</button>
+                      <div class="biz-svc-z-emoji">${s.emoji}</div>
+                      <div class="biz-svc-z-body">
+                        <div class="biz-svc-z-name">${s.name}<span class="biz-svc-z-flag">${s.country}</span></div>
+                        <div class="biz-svc-z-founder">${s.founder}</div>
+                        ${s.note ? `<div class="biz-svc-z-note">${s.note}</div>` : ''}
+                      </div>
+                    </div>
+                  `).join('')}
                 </div>
               </div>
-            `).join('');
+            `;
           }).join('')}
         </div>
         <div class="biz-svc-disclaimer" style="max-width:520px;margin:0 auto 24px">※ 創業者は事実情報のみ。深いプロフィールは「偉人」（既に亡くなった方）に限定しています。</div>
@@ -24461,19 +24478,20 @@
     const found = new Set();
     const voicedRoles = new Set();
     let bubble = null;
+    let bidirMode = false;
     const SVG_NS = 'http://www.w3.org/2000/svg';
-    // 矢印用のマーカー定義
+    // 矢印用のマーカー定義（先端を小型化＋orient="auto-start-reverse"で両端共用）
     function ensureSvgDefs() {
       if (bdSvg.querySelector('defs')) return;
       const defs = document.createElementNS(SVG_NS, 'defs');
       BIZ_FLOWS.forEach(f => {
         const m = document.createElementNS(SVG_NS, 'marker');
         m.setAttribute('id', `mArr-${f.id}`);
-        m.setAttribute('markerWidth', '8'); m.setAttribute('markerHeight', '8');
-        m.setAttribute('refX', '7'); m.setAttribute('refY', '4');
-        m.setAttribute('orient', 'auto');
+        m.setAttribute('markerWidth', '5'); m.setAttribute('markerHeight', '5');
+        m.setAttribute('refX', '4'); m.setAttribute('refY', '2.5');
+        m.setAttribute('orient', 'auto-start-reverse');
         const p = document.createElementNS(SVG_NS, 'polygon');
-        p.setAttribute('points', '0,0 8,4 0,8');
+        p.setAttribute('points', '0,0 5,2.5 0,5');
         p.setAttribute('fill', f.color);
         m.appendChild(p); defs.appendChild(m);
       });
@@ -24614,17 +24632,19 @@
       return node;
     }
     function arrowEndpoints(from, to) {
-      const cx1 = from.x + NODE_R, cy1 = from.y + NODE_R;
-      const cx2 = to.x + NODE_R,   cy2 = to.y + NODE_R;
+      const w1 = from.dom.offsetWidth || NODE_R*2, h1 = from.dom.offsetHeight || NODE_R*2;
+      const w2 = to.dom.offsetWidth || NODE_R*2,   h2 = to.dom.offsetHeight || NODE_R*2;
+      const cx1 = from.x + w1/2, cy1 = from.y + h1/2;
+      const cx2 = to.x + w2/2,   cy2 = to.y + h2/2;
       const dx = cx2 - cx1, dy = cy2 - cy1;
       const len = Math.hypot(dx, dy) || 1;
       const ux = dx/len, uy = dy/len;
-      // 矢印の先がノードの中心ではなく外周に当たるよう
+      const r1 = Math.min(w1, h1)/2, r2 = Math.min(w2, h2)/2;
       return {
-        x1: cx1 + ux * (NODE_R+2),
-        y1: cy1 + uy * (NODE_R+2),
-        x2: cx2 - ux * (NODE_R+8),
-        y2: cy2 - uy * (NODE_R+8),
+        x1: cx1 + ux * (r1+2),
+        y1: cy1 + uy * (r1+2),
+        x2: cx2 - ux * (r2+6),
+        y2: cy2 - uy * (r2+6),
       };
     }
     function refreshArrowsFor(node) {
@@ -24640,9 +24660,16 @@
         }
       });
     }
-    function drawArrow(fromNode, toNode, flow) {
+    function drawArrow(fromNode, toNode, flow, bidir) {
       // 重複チェック（同じfrom-to-flow）
       if (arrows.some(a => a.from===fromNode && a.to===toNode && a.flow===flow)) return;
+      // 反対向きが同じflowで存在 → それを両方向に昇格
+      const reverse = arrows.find(a => a.from===toNode && a.to===fromNode && a.flow===flow);
+      if (reverse) {
+        reverse.bidir = true;
+        reverse.lineEl.setAttribute('marker-start', `url(#mArr-${flow})`);
+        return;
+      }
       const fl = flow2obj[flow]; if (!fl) return;
       const p = arrowEndpoints(fromNode, toNode);
       const ln = document.createElementNS(SVG_NS, 'line');
@@ -24651,6 +24678,7 @@
       ln.setAttribute('stroke', fl.color);
       ln.setAttribute('stroke-width', '3');
       ln.setAttribute('marker-end', `url(#mArr-${flow})`);
+      if (bidir) ln.setAttribute('marker-start', `url(#mArr-${flow})`);
       ln.classList.add('biz-arrow-line');
       bdSvg.appendChild(ln);
       // クリック判定用の透明太線
@@ -24661,7 +24689,7 @@
       hit.setAttribute('stroke-width', '14');
       hit.style.cursor = 'pointer';
       bdSvg.appendChild(hit);
-      const arr = { id: nextId++, from:fromNode, to:toNode, flow, lineEl:ln, hitEl:hit };
+      const arr = { id: nextId++, from:fromNode, to:toNode, flow, bidir: !!bidir, lineEl:ln, hitEl:hit };
       arrows.push(arr);
       hit.addEventListener('click', () => {
         if (confirm(`${fl.icon} ${fl.name}（${role2obj[fromNode.rid].name} → ${role2obj[toNode.rid].name}）を削除しますか？`)) {
@@ -24712,7 +24740,7 @@
         clearArrowFrom();
         showRoleBubble(node, r);
       } else {
-        drawArrow(arrowFrom, node, currentFlow);
+        drawArrow(arrowFrom, node, currentFlow, bidirMode);
         clearArrowFrom();
       }
       updBizStatus();
@@ -24945,13 +24973,20 @@
     flowModes.addEventListener('click', e => {
       const btn = e.target.closest('.biz-flow-btn');
       if (!btn || !flowModes.contains(btn)) return;
-      flowModes.querySelectorAll('.biz-flow-btn').forEach(b => b.classList.toggle('active', b === btn));
+      // 両方向トグルは独立
+      if (btn.classList.contains('biz-bidir-btn')) {
+        bidirMode = !bidirMode;
+        btn.classList.toggle('active', bidirMode);
+        bizToast(bidirMode ? '⇄ 両方向モード ON' : '⇄ 片方向に戻しました');
+        sfx('sel');
+        return;
+      }
+      flowModes.querySelectorAll('.biz-flow-btn:not(.biz-bidir-btn)').forEach(b => b.classList.toggle('active', b === btn));
       currentFlow = btn.dataset.flow;
       const fl = flow2obj[currentFlow];
-      // ヘルプバーを今のモード強調に置き換える
       const help = ov.querySelector('#bizBoardHelp');
-      if (help) help.innerHTML = `🎯 <b style="color:${fl.color}">${fl.icon} ${fl.name}</b> モード — 次は人物Aをタップ → 人物Bをタップで矢印が引かれます`;
-      bizToast(`次に引く矢印：${fl.icon} ${fl.name}`);
+      if (help) help.innerHTML = `🎯 <b style="color:${fl.color}">${fl.icon} ${fl.name}</b>${bidirMode?'⇄':''} モード — 次は人物Aをタップ → 人物Bをタップで矢印が引かれます`;
+      bizToast(`次に引く矢印：${fl.icon} ${fl.name}${bidirMode?' ⇄ 両方向':''}`);
       updBizStatus();
       sfx('sel');
     });
@@ -24968,10 +25003,136 @@
         openBizModelModal(card.dataset.model);
       });
     });
-    // サービス図鑑カード → そのモデルのモーダル
+    // ===== サービス図鑑：お気に入り＋モデルを盤に開く =====
+    const FAV_KEY = 'ijinjibun_biz_svc_favs_v1';
+    function getFavs() { try { return new Set(JSON.parse(localStorage.getItem(FAV_KEY) || '[]')); } catch(_) { return new Set(); } }
+    function saveFavs(s) { try { localStorage.setItem(FAV_KEY, JSON.stringify([...s])); } catch(_) {} }
+    function loadModelDiagram(modelName) {
+      const d = BIZ_MODEL_DIAGRAMS[modelName];
+      if (!d) { bizToast('このモデルの図解データはありません'); return; }
+      clearBoard();
+      const cx = bd.clientWidth / 2, cy = bd.clientHeight / 2;
+      const R = Math.min(cx, cy) * 0.55;
+      const placedNodes = d.roles.map((rl, i) => {
+        const ang = -Math.PI/2 + (i / d.roles.length) * 2 * Math.PI;
+        return spawnRole(rl, cx + Math.cos(ang)*R - NODE_R, cy + Math.sin(ang)*R - NODE_R);
+      });
+      d.arrows.forEach(a => {
+        const fromNode = placedNodes.find(n => n && n.rid === a[0]);
+        const toNode = placedNodes.find(n => n && n.rid === a[1]);
+        if (fromNode && toNode) drawArrow(fromNode, toNode, a[2]);
+      });
+      bd.scrollIntoView({ behavior:'smooth', block:'start' });
+      bizToast(`「${modelName}」を盤に展開しました 🎯`);
+    }
+    function refreshFavStars() {
+      const favs = getFavs();
+      ov.querySelectorAll('.biz-svc-fav').forEach(btn => {
+        const isFav = favs.has(btn.dataset.fav);
+        btn.classList.toggle('on', isFav);
+        btn.textContent = isFav ? '♥' : '♡';
+      });
+      // お気に入りセクション再描画
+      const sec = ov.querySelector('#bizSvcFavSection');
+      if (favs.size === 0) { sec.innerHTML = ''; return; }
+      const favSvcs = [];
+      BIZ_MODELS.forEach(m => {
+        (BIZ_MODEL_SERVICES[m.name] || []).forEach(s => {
+          if (favs.has(s.name)) favSvcs.push({s, modelName: m.name});
+        });
+      });
+      sec.innerHTML = `
+        <div class="biz-svc-fav-h">⭐ お気に入り（${favSvcs.length}）</div>
+        <div class="biz-svc-cat-list">
+          ${favSvcs.map(({s, modelName}) => `
+            <div class="biz-svc-z-card biz-svc-fav-card" data-svc-name="${s.name}" data-model="${modelName}">
+              <button class="biz-svc-fav on" data-fav="${s.name}" type="button">♥</button>
+              <div class="biz-svc-z-emoji">${s.emoji}</div>
+              <div class="biz-svc-z-body">
+                <div class="biz-svc-z-name">${s.name}<span class="biz-svc-z-flag">${s.country}</span></div>
+                <div class="biz-svc-z-founder">${s.founder}</div>
+                <div class="biz-svc-z-tag">${modelName}</div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+      // 再ハンドル
+      sec.querySelectorAll('.biz-svc-fav').forEach(b => {
+        b.addEventListener('click', e => { e.stopPropagation(); toggleFav(b.dataset.fav); });
+      });
+      sec.querySelectorAll('.biz-svc-z-card').forEach(card => {
+        card.addEventListener('click', e => {
+          if (e.target.closest('.biz-svc-fav')) return;
+          openBizSvcModal(card.dataset.svcName, card.dataset.model);
+        });
+      });
+    }
+    function toggleFav(name) {
+      const favs = getFavs();
+      if (favs.has(name)) favs.delete(name);
+      else { favs.add(name); bizToast('⭐ お気に入りに追加'); }
+      saveFavs(favs);
+      refreshFavStars();
+    }
+    function openBizSvcModal(svcName, modelName) {
+      const svcs = BIZ_MODEL_SERVICES[modelName] || [];
+      const s = svcs.find(x => x.name === svcName);
+      const m = BIZ_MODELS.find(x => x.name === modelName);
+      if (!s || !m) return;
+      const isFav = getFavs().has(s.name);
+      const modal = document.createElement('div');
+      modal.className = 'zk-modal';
+      modal.innerHTML = `
+        <div class="zk-modal-backdrop"></div>
+        <div class="zk-modal-card" style="--c:#4a8fcf">
+          <button class="zk-modal-x" type="button" aria-label="閉じる">×</button>
+          <div class="zk-modal-head">
+            <div class="zk-modal-circle" style="background:#f0f4fa;animation:none;"><span style="font-size:36px">${s.emoji}</span></div>
+            <div class="zk-modal-info">
+              <div class="zk-modal-name">${s.name} <span class="zk-modal-no">${s.country}</span></div>
+              <div class="zk-modal-tag">${s.founder}</div>
+            </div>
+          </div>
+          <div class="zk-modal-body">
+            ${s.note ? `<div class="zk-modal-desc">${s.note}</div>` : ''}
+            <div class="zk-section-h">💼 ビジネスモデル</div>
+            <div class="biz-svc-modal-model">
+              <div class="biz-svc-modal-model-name">${m.name}</div>
+              <div class="biz-svc-modal-model-desc">${m.desc}</div>
+            </div>
+            <button class="zk-place-btn" data-act="load">🎯 このモデルを盤に開く</button>
+            <button class="zk-place-btn" data-act="fav" style="background:rgba(255,80,120,0.15);border-color:#ff5078;color:#ff5078">${isFav?'♥ お気に入りから外す':'♡ お気に入りに追加'}</button>
+            <button class="zk-place-btn" data-act="model" style="background:rgba(120,180,255,0.15);border-color:#80c0ff;color:#80c0ff">📖 ${m.name}の詳細を見る</button>
+            <div class="biz-svc-disclaimer">※ 創業者情報は事実のみ。深いプロフィールは「偉人」（亡くなった方）に限定しています。</div>
+          </div>
+        </div>
+      `;
+      ov.appendChild(modal);
+      requestAnimationFrame(() => modal.classList.add('open'));
+      const closeMod = () => { modal.classList.remove('open'); setTimeout(() => modal.remove(), 280); };
+      modal.querySelector('.zk-modal-x').addEventListener('click', closeMod);
+      modal.querySelector('.zk-modal-backdrop').addEventListener('click', closeMod);
+      modal.querySelectorAll('[data-act]').forEach(b => b.addEventListener('click', () => {
+        const act = b.dataset.act;
+        if (act === 'load') { loadModelDiagram(modelName); closeMod(); }
+        else if (act === 'fav') { toggleFav(s.name); closeMod(); }
+        else if (act === 'model') { closeMod(); openBizModelModal(modelName); }
+      }));
+    }
     ov.querySelectorAll('.biz-svc-z-card').forEach(card => {
-      card.addEventListener('click', () => openBizModelModal(card.dataset.model));
+      card.addEventListener('click', e => {
+        if (e.target.closest('.biz-svc-fav')) return;
+        openBizSvcModal(card.dataset.svcName, card.dataset.model);
+      });
     });
+    ov.querySelectorAll('.biz-svc-fav').forEach(btn => {
+      btn.addEventListener('click', e => { e.stopPropagation(); toggleFav(btn.dataset.fav); });
+    });
+    ov.querySelectorAll('[data-model-load]').forEach(btn => {
+      btn.addEventListener('click', e => { e.stopPropagation(); loadModelDiagram(btn.dataset.modelLoad); });
+    });
+    refreshFavStars();
     // ===== マイモデル：自作モデルの保存・コピー・読込 =====
     const MY_KEY = 'ijinjibun_my_biz_models_v1';
     function getMyModels() { try { return JSON.parse(localStorage.getItem(MY_KEY) || '[]'); } catch(_) { return []; } }
