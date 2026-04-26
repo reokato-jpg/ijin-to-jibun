@@ -10910,15 +10910,20 @@
     }
     scene.add(chandelier);
 
-    // 環境光（どうぶつの森風：明るく暖かく、広く均一）
-    scene.add(new THREE.AmbientLight(isWa ? 0xb08858 : 0xfff0d4, isWa ? 1.6 : 2.0));
-    const hemi = new THREE.HemisphereLight(isWa ? 0xffd890 : 0xfff8e0, isWa ? 0x6a5238 : 0xc89868, isWa ? 1.4 : 1.8);
+    // 環境光（さらに明るく：ユーザー要望「美術館暗い」→ 大幅UP）
+    scene.add(new THREE.AmbientLight(isWa ? 0xb88c5c : 0xfff8e8, isWa ? 2.4 : 3.0));
+    const hemi = new THREE.HemisphereLight(isWa ? 0xffe0a8 : 0xfff8e8, isWa ? 0x806040 : 0xd8b890, isWa ? 2.0 : 2.6);
     scene.add(hemi);
-    // フィルライト（補助、暖色寄せ）
-    const fill1 = new THREE.DirectionalLight(0xfff0d8, isWa ? 0.6 : 0.85);
+    // フィルライト（補助、暖色寄せ）強化
+    const fill1 = new THREE.DirectionalLight(0xfff4e0, isWa ? 1.0 : 1.4);
     fill1.position.set(8, 10, 8); scene.add(fill1);
-    const fill2 = new THREE.DirectionalLight(isWa ? 0xd8e8ff : 0xfff8e0, isWa ? 0.4 : 0.55);
+    const fill2 = new THREE.DirectionalLight(isWa ? 0xe8efff : 0xfff8e8, isWa ? 0.7 : 0.9);
     fill2.position.set(-8, 8, -8); scene.add(fill2);
+    // トップライト追加（中央上から白色光、絵画を照らす）
+    const topLight = new THREE.DirectionalLight(0xffffff, isWa ? 0.6 : 0.85);
+    topLight.position.set(0, 14, 0); scene.add(topLight);
+    // toneMapping exposure もUP
+    renderer.toneMappingExposure = isWa ? 1.95 : 2.25;
 
     // 🌿 どうぶつの森風デコレーション（洋ホールのみ：観葉植物・ベンチ）
     if (!isWa) {
