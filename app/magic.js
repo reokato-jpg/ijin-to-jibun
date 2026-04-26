@@ -14455,7 +14455,7 @@
           <div class="khs-label">M O D E</div>
           <div class="khs-value" id="kohModeLabel">CONCERT</div>
         </div>
-        <div class="koh-hud-reticle koh-ar-only" aria-hidden="true">⊙</div>
+        <!-- レチクル削除：視点と一緒に動く〇は廃止 -->
       </div>
       <!-- モード切替ボタン -->
       <div class="koh-mode-bar">
@@ -14556,6 +14556,7 @@
         uMood2: { value: new THREE.Color(config.music.mood).multiplyScalar(0.4) },
         uTex: { value: sphereTex },
         uMode: { value: 0.0 },
+        uMyth: { value: 0.0 },
         uBass: { value: 0.0 },   // 0-1 の低音強度
         uTreb: { value: 0.0 },   // 0-1 の高音強度
       },
@@ -14572,6 +14573,7 @@
       fragmentShader: `
         uniform float uTime;
         uniform float uMode;
+        uniform float uMyth;
         uniform vec3 uMood;
         uniform vec3 uMood2;
         uniform sampler2D uTex;
@@ -14697,18 +14699,105 @@
             col = mix(col, vec3(0.25, 0.15, 0.08), lines * 0.2);
             col *= 0.85;
           }
-          // ━━━ 神話モード（深い夕焼け、神々しさは控えめに）━━━
-          else if (uMode > 3.5) {
-            vec3 divineTop = vec3(0.30, 0.18, 0.12);   // 深い茶
-            vec3 divineLow = vec3(0.45, 0.20, 0.15);   // 鈍い赤褐色
-            col = mix(divineLow, divineTop, smoothstep(0.3, 0.85, uv.y));
-            // 神々雲（雲は薄め）
-            float cloud = fbm(uv * 4.0 + vec2(uTime * 0.015, 0.0));
-            col = mix(col, vec3(0.55, 0.40, 0.25), cloud * 0.3);
-            // 光線（控えめ）
-            float ray = pow(max(0.0, sin(atan(uv.y - 0.5, uv.x - 0.5) * 6.0 + uTime * 0.2)), 12.0);
-            col += vec3(0.9, 0.7, 0.4) * ray * 0.12;
-            col *= 0.7;
+          // ━━━ 神話モード ─ uMyth で5シーン分岐、球体全体を世界観で塗る ━━━
+          else if (uMode > 3.5 && uMode < 4.5) {
+            // 共通：fbm 雲・光線は各シーンで使い回す
+            float cloud = fbm(uv * 4.0 + vec2(uTime * 0.020, 0.0));
+            float cloud2 = fbm(uv * 7.0 - vec2(uTime * 0.04, uTime * 0.01));
+            float horizon = smoothstep(0.30, 0.55, uv.y);
+            // 0=Eden / 1=Noah / 2=Atlantis / 3=Babel / 4=Elysion
+            if (uMyth < 0.5) {
+              // 🌳 Eden: 緑の森と金の太陽
+              vec3 sky = mix(vec3(0.60, 0.40, 0.22), vec3(0.85, 0.75, 0.45), horizon);
+              col = mix(vec3(0.10, 0.30, 0.12), sky, smoothstep(0.32, 0.45, uv.y));
+              // 樹冠線（地平線下）
+              float treeNoise = fbm(vec2(uv.x * 22.0, uv.x * 4.0));
+              float treeLine = 0.36 + treeNoise * 0.024;
+              if (uv.y < treeLine) col = mix(col, vec3(0.06, 0.20, 0.08), 0.85);
+              // 金の太陽（朝陽）
+              vec2 sunP = vec2(0.72, 0.78);
+              float sd = distance(uv, sunP);
+              col += vec3(1.0, 0.95, 0.7) * smoothstep(0.020, 0.0, sd) * 1.4;
+              col += vec3(1.0, 0.85, 0.50) * smoothstep(0.18, 0.0, sd) * 0.40;
+              col = mix(col, vec3(1.0, 0.96, 0.92), smoothstep(0.5, 0.78, cloud) * smoothstep(0.55, 0.7, uv.y) * 0.65);
+            } else if (uMyth < 1.5) {
+              // 🚢 Noah: 嵐の空と荒波
+              vec3 sky = mix(vec3(0.20, 0.24, 0.36), vec3(0.10, 0.14, 0.22), horizon);
+              col = mix(vec3(0.06, 0.16, 0.28), sky, smoothstep(0.32, 0.55, uv.y));
+              // 雷雲（暗い塊）
+              col = mix(col, vec3(0.04, 0.06, 0.10), smoothstep(0.45, 0.75, cloud) * 0.85);
+              // 雷の閃光（時々）
+              float lightning = step(0.985, fract(sin(floor(uTime * 0.7) * 12.9898) * 43758.5453));
+              col += vec3(1.0, 1.0, 0.9) * lightning * smoothstep(0.55, 0.75, uv.y) * 0.85;
+              // 海面（波）
+              if (uv.y < 0.30) {
+                float wave = sin(uv.x * 30.0 + uTime * 1.2) * 0.5 + sin(uv.x * 14.0 - uTime * 0.8) * 0.5;
+                col = mix(vec3(0.04, 0.10, 0.18), vec3(0.10, 0.20, 0.30), wave * 0.5 + 0.5);
+              }
+              // 虹（東側）
+              float rArc = distance(uv, vec2(0.3, 0.30));
+              float ringW = smoothstep(0.32, 0.30, rArc) - smoothstep(0.30, 0.28, rArc);
+              col += vec3(0.7, 0.4, 0.6) * ringW * 0.5;
+            } else if (uMyth < 2.5) {
+              // 🏛 Atlantis: 深海ブルー＋光線
+              col = mix(vec3(0.02, 0.10, 0.20), vec3(0.04, 0.20, 0.36), uv.y);
+              // 上から差し込む光線×6
+              for (int i = 0; i < 6; i++) {
+                float fi = float(i);
+                float bx = fract(fi * 0.17 + sin(uTime * 0.1 + fi) * 0.04);
+                float dist = abs(uv.x - bx);
+                float beam = smoothstep(0.05, 0.0, dist) * smoothstep(1.0, 0.3, uv.y);
+                col += vec3(0.6, 0.85, 1.0) * beam * 0.55;
+              }
+              // 泡（小さい点）
+              for (int i = 0; i < 8; i++) {
+                float fi = float(i);
+                vec2 bp = vec2(fract(fi * 0.13 + sin(uTime * 0.4 + fi) * 0.03), fract(uTime * 0.07 + fi * 0.27));
+                col += vec3(0.8, 0.95, 1.0) * smoothstep(0.012, 0.0, distance(uv, bp)) * 0.85;
+              }
+              // 海底のシルエット（柱影）
+              if (uv.y < 0.15) col = mix(col, vec3(0.0, 0.04, 0.08), 0.85);
+            } else if (uMyth < 3.5) {
+              // 🗼 Babel: 紫赤の嵐空＋稲妻
+              vec3 sky = mix(vec3(0.60, 0.20, 0.18), vec3(0.30, 0.10, 0.20), horizon);
+              col = mix(vec3(0.40, 0.18, 0.10), sky, smoothstep(0.30, 0.60, uv.y));
+              // 雷雲
+              col = mix(col, vec3(0.10, 0.06, 0.10), smoothstep(0.5, 0.8, cloud) * 0.85);
+              // 稲妻×複数
+              for (int i = 0; i < 3; i++) {
+                float fi = float(i);
+                float lx = fract(fi * 0.31 + floor(uTime * 0.4 + fi) * 0.13);
+                float branch = abs(uv.x - lx - sin(uv.y * 30.0 + fi) * 0.025);
+                float bolt = smoothstep(0.006, 0.0, branch) * smoothstep(0.3, 0.95, uv.y);
+                float trig = step(0.7, fract(sin(floor(uTime * 1.2 + fi) * 89.7)));
+                col += vec3(1.0, 0.95, 0.85) * bolt * trig * 0.9;
+              }
+              // 大地（暗い）
+              if (uv.y < 0.20) col = mix(col, vec3(0.20, 0.08, 0.06), 0.9);
+            } else {
+              // ✨ Elysion: 金白の天空＋光線
+              vec3 sky = mix(vec3(0.95, 0.88, 0.65), vec3(0.55, 0.62, 0.72), horizon);
+              col = mix(vec3(0.85, 0.78, 0.55), sky, smoothstep(0.40, 0.85, uv.y));
+              // 神々しい光線（中央上空から放射）
+              vec2 srcP = vec2(0.5, 0.78);
+              vec2 d = uv - srcP;
+              float ang = atan(d.y, d.x);
+              float ray = pow(max(0.0, sin(ang * 12.0 + uTime * 0.2)), 8.0);
+              col += vec3(1.0, 0.95, 0.75) * ray * 0.55;
+              // 中央の太陽光球
+              float sd = distance(uv, srcP);
+              col += vec3(1.0, 0.95, 0.75) * smoothstep(0.10, 0.0, sd) * 0.85;
+              // 漂う光球（複数）
+              for (int i = 0; i < 6; i++) {
+                float fi = float(i);
+                vec2 op = vec2(fract(fi * 0.17 + sin(uTime * 0.3 + fi) * 0.05),
+                               0.3 + fract(uTime * 0.05 + fi * 0.13) * 0.4);
+                col += vec3(1.0, 0.96, 0.70) * smoothstep(0.020, 0.0, distance(uv, op)) * 0.9;
+              }
+              // 草原（金の麦）
+              if (uv.y < 0.32) col = mix(col, vec3(0.55, 0.42, 0.20), 0.85);
+            }
+            col *= 0.95;
           }
           gl_FragColor = vec4(col, 1.0);
         }
@@ -15653,7 +15742,7 @@
       planetarium:{ stageVisible: true,  audienceVisible: true,  uMode: 1.0, planets: false, nature: false, myth: false, label: 'PLANETARIUM', loc: '星座のドーム' },
       cosmos:     { stageVisible: true,  audienceVisible: true,  uMode: 2.0, planets: true,  nature: false, myth: false, label: 'COSMOS', loc: '惑星の海' },
       nature:     { stageVisible: true,  audienceVisible: true,  uMode: 3.0, planets: false, nature: true,  myth: false, label: 'NATURE', loc: '森の囁き' },
-      myth:       { stageVisible: true,  audienceVisible: true,  uMode: 4.0, planets: false, nature: false, myth: true,  label: 'MYTH', loc: '神話の幻視' },
+      myth:       { stageVisible: false, audienceVisible: false, uMode: 4.0, planets: false, nature: false, myth: true,  label: 'MYTH', loc: '神話の幻視' },
       timeslip:   { stageVisible: true,  audienceVisible: true,  uMode: 5.0, planets: false, nature: false, myth: false, timeslip: true, label: 'TIME-SLIP', loc: '過去の偉人たち' },
     };
     let currentMode = 'concert';
@@ -15725,6 +15814,10 @@
         order.forEach((k, i) => {
           if (holos[k]) holos[k].visible = (i === idx);
         });
+      }
+      // 🌐 ドームシェーダにも神話インデックスを伝えて球体全体を世界観で塗る
+      if (sphereMat.uniforms && sphereMat.uniforms.uMyth) {
+        sphereMat.uniforms.uMyth.value = idx;
       }
       // 🎨 ドームムード色シフト
       const moods = scene.userData.mythMoods;
