@@ -10773,11 +10773,13 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
 /* ===== ビジネス図解ラボ（ロール+矢印） ===== */
 .biz-toolbar {
   display: flex; gap: 8px;
-  padding: 8px 10px;
-  background: rgba(0,0,0,0.4);
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.04);
   border-top: 1px solid rgba(180,220,255,0.18);
   border-bottom: 1px solid rgba(180,220,255,0.12);
   flex-wrap: wrap; align-items: center;
+  position: relative;
+  z-index: 10;
 }
 .biz-flow-modes { display: flex; gap: 6px; flex-wrap: wrap; }
 .biz-flow-btn {
@@ -10800,19 +10802,26 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
 }
 .biz-flow-btn:hover { transform: translateY(-1px); }
 
-/* 役者ノード（人物） */
+/* 役者ノード（人物） — フォーマル寄り */
 .biz-role-node {
-  width: 76px; height: 76px;
-  border-radius: 16px;
-  background: linear-gradient(160deg, color-mix(in srgb, var(--c) 90%, white 10%), var(--c));
-  color: #0a0a0a;
-  border: 2px solid rgba(0,0,0,0.25);
-  box-shadow: 0 4px 14px rgba(0,0,0,0.5), 0 0 18px var(--c);
+  width: 84px; height: 64px;
+  border-radius: 8px;
+  background: #f5f7fa;
+  color: #1a2540;
+  border: 2px solid color-mix(in srgb, var(--c) 70%, #555);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.35);
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   padding: 4px;
+  animation: none !important;
 }
-.biz-role-node .biz-role-ic { font-size: 30px; line-height: 1; }
-.biz-role-node .biz-role-name { font-size: 11px; font-weight: 700; letter-spacing: 1px; margin-top: 2px; }
+.biz-role-node::before {
+  content: '';
+  position: absolute; left: 0; top: 0; right: 0; height: 6px;
+  background: var(--c);
+  border-radius: 6px 6px 0 0;
+}
+.biz-role-node .biz-role-ic { font-size: 22px; line-height: 1; }
+.biz-role-node .biz-role-name { font-size: 11px; font-weight: 700; letter-spacing: 1px; margin-top: 2px; color: #1a2540; }
 .biz-role-node.arrow-from {
   outline: 3px dashed #ffe080;
   outline-offset: 3px;
@@ -11079,6 +11088,60 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
 .biz-card:hover { transform: translateY(-2px); border-color: rgba(255,216,96,0.5); }
 .biz-role-card { cursor: pointer; }
 
+/* ビジネス側はキャラ動かさず、フォーマル感 */
+.biz-palette .biz-pal-item { animation: none !important; }
+.biz-palette .biz-pal-item:nth-child(n) { animation: none !important; }
+
+/* サービス図鑑（実在企業を一覧） */
+.biz-svc-zukan {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+  margin: 10px 0 16px;
+}
+.biz-svc-z-card {
+  display: flex; gap: 10px;
+  padding: 12px;
+  background: #f7f9fc;
+  color: #1a2540;
+  border: 1px solid #d0d7e2;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+}
+.biz-svc-z-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+  border-color: #4a8fcf;
+}
+.biz-svc-z-emoji {
+  flex: 0 0 auto;
+  width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  background: #e8eef5;
+  border-radius: 6px;
+}
+.biz-svc-z-body { flex: 1; min-width: 0; }
+.biz-svc-z-name {
+  font-size: 14px; font-weight: 700;
+  color: #1a2540;
+  display: flex; align-items: center; gap: 6px;
+  margin-bottom: 2px;
+}
+.biz-svc-z-flag { font-size: 14px; font-weight: 400; }
+.biz-svc-z-founder { font-size: 11px; color: #4a5570; margin-bottom: 3px; }
+.biz-svc-z-note { font-size: 11px; color: #6b7388; line-height: 1.5; margin-bottom: 4px; font-style: italic; }
+.biz-svc-z-tag {
+  display: inline-block;
+  padding: 2px 8px;
+  background: #4a8fcf;
+  color: #fff;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 1px;
+  border-radius: 100px;
+}
+
 /* ===== ビジネスラボ＆図鑑 ===== */
 .biz-lab .el-lab2-board {
   background:
@@ -11113,17 +11176,20 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
 }
 .biz-card {
   padding: 14px 16px;
-  border-radius: 12px;
-  background: linear-gradient(160deg, rgba(40,30,20,0.6), rgba(20,16,12,0.7));
-  border: 1px solid rgba(255,200,120,0.25);
+  border-radius: 8px;
+  background: #f7f9fc;
+  color: #1a2540;
+  border: 1px solid #d0d7e2;
   display: flex; flex-direction: column; gap: 8px;
   transition: border-color 0.2s, box-shadow 0.2s;
+  border-top: 4px solid #4a8fcf;
 }
 .biz-card.discovered {
-  border-color: #ffd860;
-  box-shadow: 0 0 18px rgba(255,216,96,0.3);
+  border-color: #ffb030;
+  border-top-color: #ffb030;
+  box-shadow: 0 0 14px rgba(255,176,48,0.25);
 }
-.biz-card-name { font-size: 16px; letter-spacing: 2px; color: #ffe080; font-family: 'Noto Serif JP', serif; }
+.biz-card-name { font-size: 16px; letter-spacing: 2px; color: #1a2540; font-family: 'Noto Serif JP', serif; font-weight: 700; }
 .biz-card-eq { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
 .biz-part {
   display: inline-flex; align-items: center; gap: 4px;
@@ -11134,17 +11200,17 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
 }
 .biz-part-ic { font-size: 14px; }
 .biz-plus { color: rgba(255,220,160,0.7); font-weight: 700; }
-.biz-card-desc { font-size: 13px; line-height: 1.65; color: rgba(240,235,225,0.9); }
+.biz-card-desc { font-size: 13px; line-height: 1.65; color: #1a2540; }
 .biz-card-meta { display: flex; gap: 10px; font-size: 11px; }
-.biz-card-year { color: #ffe080; font-family: 'Helvetica Neue', sans-serif; font-weight: 700; }
-.biz-card-by { color: #ffb070; }
-.biz-card-ex { font-size: 12px; color: rgba(220,235,255,0.75); }
+.biz-card-year { color: #2c5d9b; font-family: 'Helvetica Neue', sans-serif; font-weight: 700; }
+.biz-card-by { color: #4a5570; }
+.biz-card-ex { font-size: 12px; color: #4a5570; }
 .biz-card-hist {
   font-size: 12px; line-height: 1.6;
-  color: rgba(220,235,255,0.7);
+  color: #4a5570;
   padding: 8px 10px;
-  border-left: 3px solid #ffe080;
-  background: rgba(0,0,0,0.25);
+  border-left: 3px solid #4a8fcf;
+  background: #eef3f9;
   border-radius: 0 6px 6px 0;
 }
 .biz-card-ijins { display: flex; flex-wrap: wrap; gap: 6px; }

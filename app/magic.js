@@ -24267,6 +24267,25 @@
           `).join('')}
         </div>
 
+        <div class="el-section-head"><span class="el-sec-label">サービス図鑑</span><span class="el-sec-sub">— 実在企業・サービス約50件 — タップでモデル参照 —</span></div>
+        <div class="biz-svc-zukan">
+          ${BIZ_MODELS.map(m => {
+            const svcs = BIZ_MODEL_SERVICES[m.name] || [];
+            return svcs.map(s => `
+              <div class="biz-svc-z-card" data-model="${m.name}">
+                <div class="biz-svc-z-emoji">${s.emoji}</div>
+                <div class="biz-svc-z-body">
+                  <div class="biz-svc-z-name">${s.name}<span class="biz-svc-z-flag">${s.country}</span></div>
+                  <div class="biz-svc-z-founder">${s.founder}</div>
+                  ${s.note ? `<div class="biz-svc-z-note">${s.note}</div>` : ''}
+                  <div class="biz-svc-z-tag">${m.name}</div>
+                </div>
+              </div>
+            `).join('');
+          }).join('')}
+        </div>
+        <div class="biz-svc-disclaimer" style="max-width:520px;margin:0 auto 24px">※ 創業者は事実情報のみ。深いプロフィールは「偉人」（既に亡くなった方）に限定しています。</div>
+
         <div class="el-section-head"><span class="el-sec-label">ビジネスモデル図鑑</span><span class="el-sec-sub">— ${BIZ_MODELS.length}種 — 図解と歴史 —</span></div>
         <div class="biz-zukan">
           ${BIZ_MODELS.map(m => {
@@ -24554,17 +24573,14 @@
     }
     const bizStatus = ov.querySelector('#bizBoardStatus');
     function updBizStatus() {
+      // 矢印の出発点が選ばれているときだけ表示。それ以外は非表示。
       if (arrowFrom) {
         const r = role2obj[arrowFrom.rid];
         const f = flow2obj[currentFlow];
         bizStatus.hidden = false;
         bizStatus.innerHTML = `<span class="lbs-l">📍 ${r.icon} <b style="background:${r.color};color:#0a0a0a">${r.name}</b> から</span><span class="lbs-r">→ 別の人物をタップ → <b style="background:${f.color};color:#0a0a0a">${f.icon} ${f.name}</b>の矢印が引かれる</span>`;
       } else {
-        bizStatus.hidden = (bnodes.length === 0);
-        if (!bizStatus.hidden) {
-          const f = flow2obj[currentFlow];
-          bizStatus.innerHTML = `<span class="lbs-l">人物：${bnodes.length}名／矢印：${arrows.length}本</span><span class="lbs-r">現在のモード：<b style="background:${f.color};color:#0a0a0a">${f.icon} ${f.name}</b></span>`;
-        }
+        bizStatus.hidden = true;
       }
     }
     function tap(node){
@@ -24631,10 +24647,12 @@
           node.y = Math.max(0, Math.min(bd.clientHeight-NODE_R*2, st+dy));
           node.dom.style.left=node.x+'px'; node.dom.style.top=node.y+'px';
           refreshArrowsFor(node);
-          const r=palette.getBoundingClientRect();
-          const over = e.clientY>=r.top && e.clientY<=r.bottom && e.clientX>=r.left && e.clientX<=r.right;
-          palette.classList.toggle('drop-target', over);
-          node.dom.classList.toggle('dropping', over);
+          // 盤の外にドラッグ → 削除候補。エッジから10px以上はみ出たら反応
+          const bdRect = bd.getBoundingClientRect();
+          const out = e.clientY > bdRect.bottom + 10 || e.clientY < bdRect.top - 10
+                   || e.clientX > bdRect.right + 10 || e.clientX < bdRect.left - 10;
+          palette.classList.toggle('drop-target', out);
+          node.dom.classList.toggle('dropping', out);
         }
       });
       node.dom.addEventListener('pointerup', e=>{
@@ -24643,8 +24661,10 @@
         palette.classList.remove('drop-target');
         dx0=null;
         if (!mv) { tap(node); return; }
-        const r=palette.getBoundingClientRect();
-        if (e.clientY>=r.top && e.clientY<=r.bottom && e.clientX>=r.left && e.clientX<=r.right) removeNode(node);
+        const bdRect = bd.getBoundingClientRect();
+        const out = e.clientY > bdRect.bottom + 10 || e.clientY < bdRect.top - 10
+                 || e.clientX > bdRect.right + 10 || e.clientX < bdRect.left - 10;
+        if (out) removeNode(node);
       });
       node.dom.addEventListener('pointercancel', ()=>{ node.dom.classList.remove('drag','dropping'); dx0=null; });
     }
@@ -24823,6 +24843,10 @@
         if (e.target.closest('.cnp-pill')) return;
         openBizModelModal(card.dataset.model);
       });
+    });
+    // サービス図鑑カード → そのモデルのモーダル
+    ov.querySelectorAll('.biz-svc-z-card').forEach(card => {
+      card.addEventListener('click', () => openBizModelModal(card.dataset.model));
     });
     ensureSvgDefs();
     updCounter();
