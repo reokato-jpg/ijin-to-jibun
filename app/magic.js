@@ -16055,6 +16055,14 @@
       orchestra.forEach(p => { if (p && p.group) p.group.visible = m.stageVisible; });
       musicStands.forEach(ms => { ms.visible = m.stageVisible; });
       [chairMesh, bodyMesh, headMesh, hairMesh, shoulderMesh, lapMesh].forEach(im => { if (im) im.visible = m.audienceVisible; });
+      // 神話モード：ホログラム中央(0, 4.5, 0)を向くようカメラを自動旋回
+      if (m.myth && typeof yawT !== 'undefined') {
+        const dist = Math.max(0.01, Math.sqrt(myX*myX + myZ*myZ));
+        // initYaw と同じ式で水平方向を中央へ
+        yawT = Math.atan2(myX, myZ);
+        // 高さ 4.5 を見上げる
+        pitchT = Math.atan2(4.5 - myY, dist);
+      }
       // 神話モード：環境光を大幅に絞って『神話の幻視』感を出す
       if (kohAmbient) kohAmbient.intensity = m.myth ? 0.18 : 0.9;
       if (kohHemi)    kohHemi.intensity    = m.myth ? 0.10 : 0.7;
