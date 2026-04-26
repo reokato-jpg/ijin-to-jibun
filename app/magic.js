@@ -22573,6 +22573,12 @@
       tag: '音楽', color: 0x2080a8, accent: '#40b0d0', placeholder: false,
       action: () => { try { window.openKohSphere && window.openKohSphere({ music: m.id }); } catch {} },
     }));
+    // 🧪 元素本（118まで拡張は重いので登録済み元素のみ。元素は緑系で統一）
+    const elements = (typeof ELEMENTS_DATA !== 'undefined' ? ELEMENTS_DATA : []).map(el => ({
+      kind: 'element', id: 'el_' + el.sym, name: `${el.sym}・${el.name}`, sub: `№${el.no} — ${el.tag || ''}`,
+      tag: '元素', color: 0x40a868, accent: '#60d088', placeholder: false,
+      action: () => { try { window.openElementsPage && window.openElementsPage({ initialElements: [el.sym] }); } catch {} },
+    }));
     // 📺 広告本（本棚に混ぜる）
     const LIB_ADS = [
       { brand: 'STEINWAY & SONS', tag: '175年の音', accent: '#d4a050', color: 0xd4a050 },
@@ -22619,13 +22625,14 @@
       if (birth < 1945) return '近代';
       return '現代';
     }
-    // 偉人にera/country属性を付与
+    // 偉人にera/country/birth属性を付与
     const peopleBundle = MAGIC._peopleBundle || [];
     const _personById = Object.fromEntries(peopleBundle.map(p => [p.id, p]));
     people.forEach(p => {
       const src = _personById[p.id];
       p.era = src ? getEra(src.birth) : '近代';
       p.country = src ? (src.country || '') : '';
+      p.birth = src ? (typeof src.birth === 'number' ? src.birth : 9999) : 9999;
     });
     const ERAS = ['古代', '中世', '近世', '近代', '現代'];
     const peopleByEra = Object.fromEntries(ERAS.map(e => [e, []]));
@@ -22633,10 +22640,16 @@
       if (peopleByEra[p.era]) peopleByEra[p.era].push(p);
       else peopleByEra['近代'].push(p);
     });
-    ERAS.forEach(e => { peopleByEra[e] = shuffle(peopleByEra[e]); });
+    // 🕰 各ゾーン内を生年順（古い→新しい）にソート。プレースホルダーは末尾。
+    ERAS.forEach(e => {
+      peopleByEra[e].sort((a, b) => {
+        if (a.placeholder !== b.placeholder) return a.placeholder ? 1 : -1;
+        return (a.birth || 9999) - (b.birth || 9999);
+      });
+    });
     // 偉人以外（神話/神々/音楽/広告）は混ぜて余り棚に
-    const otherBooks = shuffle([...myths, ...gods, ...musics, ...ads]);
-    const allBooks = [...people, ...myths, ...gods, ...musics, ...ads]; // 検索用全冊
+    const otherBooks = shuffle([...myths, ...gods, ...musics, ...elements, ...ads]);
+    const allBooks = [...people, ...myths, ...gods, ...musics, ...elements, ...ads]; // 検索用全冊
 
     // ── オーバーレイ DOM ──
     const ov = document.createElement('div');
@@ -22660,6 +22673,7 @@
               <button class="lib-tab" data-kind="myth">神話</button>
               <button class="lib-tab" data-kind="god">神々</button>
               <button class="lib-tab" data-kind="music">音楽</button>
+              <button class="lib-tab" data-kind="element">元素</button>
             </div>
             <div class="lib-filter-row">
               <select id="libEra" class="lib-filter">
@@ -22679,6 +22693,16 @@
           <div class="lib-foot">
             <span id="libCount">${allBooks.length}</span> 冊蔵書 ／ 中央のレチクルで本を見て、クリック
           </div>
+        </div>
+      </div>
+      <button class="lib-shelf-btn" id="libShelfBtn" hidden>📖 この棚を開く</button>
+      <div class="lib-shelf-modal" id="libShelfModal" hidden>
+        <div class="lib-shelf-card">
+          <div class="lib-shelf-head">
+            <span class="lib-shelf-title" id="libShelfTitle">この棚</span>
+            <button class="lib-shelf-close" id="libShelfClose" aria-label="閉じる">×</button>
+          </div>
+          <div class="lib-shelf-grid" id="libShelfGrid"></div>
         </div>
       </div>
       <div class="lib-controls-hint">W A S D：歩く ／ Shift：早歩き ／ ドラッグ：視線</div>
@@ -22713,7 +22737,7 @@
     const H = () => window.innerHeight;
     renderer.setSize(W(), H());
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 0.95;
+    renderer.toneMappingExposure = 1.25;
     if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
 
     const scene = new THREE.Scene();
@@ -22866,8 +22890,67 @@
     const BOOK_HEIGHT_AT = 1.4; // 各段の本の高さ
     const SHELF_DEPTH = 0.9;
     const bookMeshes = [];
+    const shelves = []; // 棚ごとのメタデータ：proximity 検出に使う
+
+    // 📕 本の背表紙テクスチャを生成（タイトル＋帯）
+    const _bookTexCache = new Map();
+    function makeBookSpineTexture(book) {
+      const key = `${book.kind}_${book.id}_${book.color}_${book.placeholder ? 'p' : ''}`;
+      if (_bookTexCache.has(key)) return _bookTexCache.get(key);
+      const cv = document.createElement('canvas');
+      cv.width = 128; cv.height = 512; // 縦長スパイン
+      const g = cv.getContext('2d');
+      const baseColor = '#' + (new THREE.Color(book.color).getHexString());
+      // 背表紙の縦グラデーション（革装っぽく）
+      const grad = g.createLinearGradient(0, 0, 128, 0);
+      grad.addColorStop(0,   shadeColor(baseColor, -30));
+      grad.addColorStop(0.4, baseColor);
+      grad.addColorStop(0.6, baseColor);
+      grad.addColorStop(1,   shadeColor(baseColor, -45));
+      g.fillStyle = grad; g.fillRect(0, 0, 128, 512);
+      // 上下の帯（金縁）
+      g.fillStyle = book.placeholder ? '#3a3a3a' : '#d4b070';
+      g.fillRect(0, 28, 128, 4);
+      g.fillRect(0, 480, 128, 4);
+      // 中央のラベル枠
+      g.fillStyle = book.placeholder ? '#1a1a1a' : shadeColor(baseColor, -55);
+      g.fillRect(10, 80, 108, 360);
+      g.strokeStyle = book.placeholder ? '#2a2a2a' : '#d4b070';
+      g.lineWidth = 1.5;
+      g.strokeRect(10, 80, 108, 360);
+      // タイトル（縦書き：90度回転して描画）
+      g.save();
+      g.translate(64, 260);
+      g.rotate(-Math.PI / 2);
+      g.fillStyle = book.placeholder ? '#444' : '#fff8e0';
+      g.font = 'bold 32px "Shippori Mincho", "Hiragino Mincho ProN", serif';
+      g.textAlign = 'center'; g.textBaseline = 'middle';
+      const title = (book.name || '').slice(0, 14);
+      g.fillText(title, 0, 0);
+      // サブ
+      if (book.sub) {
+        g.font = '16px "Shippori Mincho", serif';
+        g.fillStyle = book.placeholder ? '#333' : '#d4b070';
+        g.fillText(String(book.sub).slice(0, 18), 0, 28);
+      }
+      g.restore();
+      const tex = new THREE.CanvasTexture(cv);
+      if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace;
+      tex.anisotropy = 4;
+      _bookTexCache.set(key, tex);
+      return tex;
+    }
+    function shadeColor(hex, percent) {
+      const c = new THREE.Color(hex);
+      const f = 1 + percent / 100;
+      c.r = Math.max(0, Math.min(1, c.r * f));
+      c.g = Math.max(0, Math.min(1, c.g * f));
+      c.b = Math.max(0, Math.min(1, c.b * f));
+      return '#' + c.getHexString();
+    }
     function buildShelf(centerX, centerZ, length, rotationY, doubleSided = true, yBase = 0, pool = null) {
       const bookPool = pool || allBooks;
+      const shelfBooks = []; // この棚に並んだ本の参照（モーダル用）
       // 棚本体
       const frame = new THREE.Mesh(
         new THREE.BoxGeometry(length, 5.5, SHELF_DEPTH),
@@ -22914,12 +22997,23 @@
             const bookGeo = new THREE.BoxGeometry(w, h, 0.5);
             const baseColor = new THREE.Color(book.color);
             if (book.placeholder) baseColor.multiplyScalar(0.4);
-            const baseEmissive = new THREE.Color(book.color).multiplyScalar(book.placeholder ? 0.0 : (book.isAd ? 0.45 : 0.18));
-            const bookMat = new THREE.MeshStandardMaterial({
-              color: baseColor, roughness: 0.5,
-              emissive: baseEmissive, emissiveIntensity: 1.0,
+            const baseEmissive = new THREE.Color(book.color).multiplyScalar(book.placeholder ? 0.0 : (book.isAd ? 0.45 : 0.10));
+            // 本のマテリアル：背表紙(+x面)だけタイトル付き、他面は同色革
+            const sideColor = baseColor.clone().multiplyScalar(0.85);
+            const flatMat = () => new THREE.MeshStandardMaterial({ color: sideColor, roughness: 0.7, emissive: baseEmissive, emissiveIntensity: 0.6 });
+            const spineTex = book.placeholder ? null : makeBookSpineTexture(book);
+            const spineMat = new THREE.MeshStandardMaterial({
+              color: 0xffffff, roughness: 0.45, map: spineTex,
+              emissive: baseEmissive, emissiveIntensity: 0.6,
             });
-            const bMesh = new THREE.Mesh(bookGeo, bookMat);
+            // BoxGeometry の面順：[+x, -x, +y, -y, +z, -z]
+            // 棚に向けるとき、双面の +side が外向き → +z 面が外向き
+            const mats = [
+              flatMat(), flatMat(), flatMat(), flatMat(),
+              side > 0 ? spineMat : flatMat(),
+              side < 0 ? spineMat : flatMat(),
+            ];
+            const bMesh = new THREE.Mesh(bookGeo, mats);
             // ローカル位置：棚の長さ方向に cursor、奥行きに bookSide*side
             const lx = cursor;
             const lz = bookSide * side;
@@ -22933,9 +23027,18 @@
             bMesh.userData = { book, baseColor, baseEmissive, originalY: bMesh.position.y };
             scene.add(bMesh);
             bookMeshes.push(bMesh);
+            shelfBooks.push(bMesh);
             cursor += w / 2 + 0.005;
           }
         });
+      });
+      // 棚メタデータ登録（proximityチェック用）
+      shelves.push({
+        id: shelves.length,
+        x: centerX, z: centerZ, len: length,
+        rot: rotationY, yBase,
+        doubleSided,
+        books: shelfBooks,
       });
     }
 
@@ -23187,13 +23290,13 @@
       col.position.set(cx, 7.0, cz); scene.add(col);
     });
 
-    // ── 環境光・直接光（明るめに） ──
-    scene.add(new THREE.AmbientLight(0xfff0d8, 0.85));
-    scene.add(new THREE.HemisphereLight(0xffe8c0, 0x382820, 1.05));
+    // ── 環境光・直接光（さらに明るく：1.5倍）──
+    scene.add(new THREE.AmbientLight(0xfff4dc, 1.45));
+    scene.add(new THREE.HemisphereLight(0xfff0d0, 0x4a3828, 1.6));
     // 主要スポット（複数、強め）
     [[-30, 12, -22], [30, 12, -22], [-30, 12, 22], [30, 12, 22],
      [0, 12, -25], [0, 12, 25], [-15, 13, 0], [15, 13, 0]].forEach(([x, y, z]) => {
-      const sl = new THREE.SpotLight(0xffe8b8, 1.6, 50, Math.PI / 3.0, 0.45, 1.4);
+      const sl = new THREE.SpotLight(0xfff0c8, 2.4, 60, Math.PI / 3.0, 0.45, 1.3);
       sl.position.set(x, y, z);
       sl.target.position.set(x * 0.3, 4, z * 0.3);
       scene.add(sl); scene.add(sl.target);
@@ -23325,7 +23428,8 @@
       if (hits[0]) {
         const b = hits[0].object;
         if (!b.userData.book.placeholder) {
-          b.material.emissiveIntensity = 4.0;
+          const mats = Array.isArray(b.material) ? b.material : [b.material];
+          mats.forEach(mt => { mt.emissiveIntensity = 4.0; });
           setTimeout(() => { b.userData.book.action(); close(); }, 350);
         }
       }
@@ -23370,13 +23474,12 @@
         const eraOK = !curEra || (b.kind === 'person' && b.era === curEra);
         const countryOK = !curCountry || (b.kind === 'person' && b.country === curCountry);
         const ok = kindOK && textOK && eraOK && countryOK && !b.placeholder;
+        const mats = Array.isArray(m.material) ? m.material : [m.material];
         if (ok && q) {
           matches.push(m);
-          m.material.emissive.setRGB(1.0, 0.85, 0.4);
-          m.material.emissiveIntensity = 1.5;
+          mats.forEach(mt => { mt.emissive.setRGB(1.0, 0.85, 0.4); mt.emissiveIntensity = 1.5; });
         } else {
-          m.material.emissive.copy(m.userData.baseEmissive);
-          m.material.emissiveIntensity = q ? 0.05 : 1.0;
+          mats.forEach(mt => { mt.emissive.copy(m.userData.baseEmissive); mt.emissiveIntensity = q ? 0.1 : 0.6; });
         }
       });
       // 結果リスト更新
@@ -23412,7 +23515,8 @@
             el.addEventListener('click', () => {
               const idx = +el.dataset.bi;
               const m = bookMeshes[idx];
-              m.material.emissiveIntensity = 4.0;
+              const mats2 = Array.isArray(m.material) ? m.material : [m.material];
+              mats2.forEach(mt => { mt.emissiveIntensity = 4.0; });
               setTimeout(() => {
                 m.userData.book.action();
                 close();
@@ -23440,8 +23544,55 @@
     ov.querySelector('#libCountry').addEventListener('change', e => { curCountry = e.target.value; applyFilter(); });
     applyFilter();
 
+    // ── 棚モーダル：近接ボタン ──
+    const shelfBtn = ov.querySelector('#libShelfBtn');
+    const shelfModal = ov.querySelector('#libShelfModal');
+    const shelfTitleEl = ov.querySelector('#libShelfTitle');
+    const shelfGrid = ov.querySelector('#libShelfGrid');
+    let nearestShelf = null;
+    function describeShelf(s) {
+      // 棚に並んでる本のkindを集計してラベル化
+      const counts = {};
+      s.books.forEach(b => {
+        const k = b.userData.book.kind;
+        if (!b.userData.book.placeholder) counts[k] = (counts[k] || 0) + 1;
+      });
+      const labels = { person: '偉人', myth: '神話', god: '神々', music: '音楽', element: '元素', ad: '広告' };
+      const parts = Object.entries(counts).sort((a, b) => b[1] - a[1]).map(([k, n]) => `${labels[k] || k}×${n}`);
+      // 偉人ゾーンなら時代も推定
+      const eraGuess = s.books.find(b => b.userData.book.era)?.userData.book.era;
+      return (eraGuess ? `［${eraGuess}］ ` : '') + (parts.join(' ／ ') || '空きスロット');
+    }
+    function openShelfModal(s) {
+      shelfTitleEl.textContent = describeShelf(s);
+      const items = s.books.filter(b => !b.userData.book.placeholder);
+      shelfGrid.innerHTML = items.map((b, i) => {
+        const bk = b.userData.book;
+        const kindCls = `lsg-${bk.kind}`;
+        return `<button class="lib-shelf-item ${kindCls}" data-i="${i}" style="--acc:${bk.accent}">
+          <div class="lsi-spine"></div>
+          <div class="lsi-title">${bk.name}</div>
+          <div class="lsi-sub">${bk.sub || ''}</div>
+        </button>`;
+      }).join('') || '<div class="lib-empty">— 本がありません —</div>';
+      shelfGrid.querySelectorAll('.lib-shelf-item').forEach(el => {
+        el.addEventListener('click', () => {
+          const idx = +el.dataset.i;
+          const bk = items[idx].userData.book;
+          shelfModal.hidden = true;
+          try { bk.action(); } catch {}
+          setTimeout(() => close(), 250);
+        });
+      });
+      shelfModal.hidden = false;
+    }
+    shelfBtn.addEventListener('click', () => { if (nearestShelf) openShelfModal(nearestShelf); });
+    ov.querySelector('#libShelfClose').addEventListener('click', () => { shelfModal.hidden = true; });
+    shelfModal.addEventListener('click', e => { if (e.target === shelfModal) shelfModal.hidden = true; });
+
     // ── アニメーション ──
     let prevTs = 0;
+    let lastProximityCheck = 0;
     function tick(ts) {
       if (!ov.isConnected) return;
       const t = ts / 1000;
@@ -23535,6 +23686,34 @@
             cv.style.cursor = 'default';
           }
           hovered = h;
+        }
+      }
+      // 棚の近接チェック（5フレームに1回でOK）
+      if (ts - lastProximityCheck > 100) {
+        lastProximityCheck = ts;
+        const cy = camera.position.y - PLAYER_EYE;
+        let bestS = null, bestD = Infinity;
+        for (const s of shelves) {
+          // 階の一致：yBase が現在の床高さに近い
+          if (Math.abs(s.yBase - cy) > 2.0) continue;
+          const dx = camera.position.x - s.x, dz = camera.position.z - s.z;
+          // 棚の長さ方向と垂直方向に分解
+          const cosR = Math.cos(s.rot), sinR = Math.sin(s.rot);
+          const localX = dx * cosR - dz * sinR; // 長さ方向
+          const localZ = dx * sinR + dz * cosR; // 奥行き方向（前後）
+          const halfLen = s.len / 2;
+          if (Math.abs(localX) > halfLen + 1) continue;
+          const dist = Math.abs(localZ);
+          if (dist < 3.5 && dist < bestD) { bestD = dist; bestS = s; }
+        }
+        if (bestS !== nearestShelf) {
+          nearestShelf = bestS;
+          if (nearestShelf) {
+            shelfBtn.textContent = `📖 ${describeShelf(nearestShelf)}`;
+            shelfBtn.hidden = false;
+          } else {
+            shelfBtn.hidden = true;
+          }
         }
       }
       // シャンデリアわずかに揺れ
