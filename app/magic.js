@@ -22573,6 +22573,32 @@
       tag: '音楽', color: 0x2080a8, accent: '#40b0d0', placeholder: false,
       action: () => { try { window.openKohSphere && window.openKohSphere({ music: m.id }); } catch {} },
     }));
+    // 📜 偉人の代表作を1冊ずつ本に（works配列から）— 偉人と同じ時代ゾーンに並ぶ
+    const works = [];
+    (MAGIC._peopleBundle || []).forEach(p => {
+      if (!Array.isArray(p.works)) return;
+      p.works.forEach((w, i) => {
+        const title = (typeof w === 'string') ? w : (w.title || '');
+        if (!title) return;
+        const year = (typeof w === 'object' && w.year) ? w.year : null;
+        const type = (typeof w === 'object' && w.type) ? w.type : '';
+        // 著者と同じ時代に置きたいので birth は親に合わせる
+        works.push({
+          kind: 'work',
+          id: `work_${p.id}_${i}`,
+          name: title.length > 18 ? title.slice(0, 17) + '…' : title,
+          sub: `${year ? year + ' ' : ''}${type ? type + ' ' : ''}/ ${p.name}`,
+          tag: '作品',
+          color: 0xa07840, accent: '#c89860',
+          placeholder: false,
+          authorId: p.id,
+          birth: typeof p.birth === 'number' ? p.birth + 0.5 : 9999,
+          country: p.country || '',
+          era: getEra(p.birth),
+          action: () => { try { window.showPerson && window.showPerson(p.id); } catch {} },
+        });
+      });
+    });
     // 🧪 元素本（118まで拡張は重いので登録済み元素のみ。元素は緑系で統一）
     const elements = (typeof ELEMENTS_DATA !== 'undefined' ? ELEMENTS_DATA : []).map(el => ({
       kind: 'element', id: 'el_' + el.sym, name: `${el.sym}・${el.name}`, sub: `№${el.no} — ${el.tag || ''}`,
@@ -22640,6 +22666,11 @@
       if (peopleByEra[p.era]) peopleByEra[p.era].push(p);
       else peopleByEra['近代'].push(p);
     });
+    // 📚 作品本も同じ時代ゾーンに追加（著者の直後に並ぶよう birth+0.5 で挿入）
+    works.forEach(w => {
+      if (peopleByEra[w.era]) peopleByEra[w.era].push(w);
+      else peopleByEra['近代'].push(w);
+    });
     // 🕰 各ゾーン内を生年順（古い→新しい）にソート。プレースホルダーは末尾。
     ERAS.forEach(e => {
       peopleByEra[e].sort((a, b) => {
@@ -22649,7 +22680,7 @@
     });
     // 偉人以外（神話/神々/音楽/広告）は混ぜて余り棚に
     const otherBooks = shuffle([...myths, ...gods, ...musics, ...elements, ...ads]);
-    const allBooks = [...people, ...myths, ...gods, ...musics, ...elements, ...ads]; // 検索用全冊
+    const allBooks = [...people, ...works, ...myths, ...gods, ...musics, ...elements, ...ads]; // 検索用全冊
 
     // ── オーバーレイ DOM ──
     const ov = document.createElement('div');
@@ -22670,6 +22701,7 @@
             <div class="lib-tabs">
               <button class="lib-tab active" data-kind="all">すべて</button>
               <button class="lib-tab" data-kind="person">偉人</button>
+              <button class="lib-tab" data-kind="work">作品</button>
               <button class="lib-tab" data-kind="myth">神話</button>
               <button class="lib-tab" data-kind="god">神々</button>
               <button class="lib-tab" data-kind="music">音楽</button>
@@ -23471,8 +23503,8 @@
         const b = m.userData.book;
         const kindOK = curTab === 'all' || b.kind === curTab;
         const textOK = !q || (b.name + ' ' + b.sub + ' ' + b.tag).toLowerCase().includes(q);
-        const eraOK = !curEra || (b.kind === 'person' && b.era === curEra);
-        const countryOK = !curCountry || (b.kind === 'person' && b.country === curCountry);
+        const eraOK = !curEra || ((b.kind === 'person' || b.kind === 'work') && b.era === curEra);
+        const countryOK = !curCountry || ((b.kind === 'person' || b.kind === 'work') && b.country === curCountry);
         const ok = kindOK && textOK && eraOK && countryOK && !b.placeholder;
         const mats = Array.isArray(m.material) ? m.material : [m.material];
         if (ok && q) {
@@ -23490,8 +23522,8 @@
             const b = m.userData.book;
             return (curTab === 'all' || b.kind === curTab) &&
               (!q || (b.name + ' ' + b.sub + ' ' + b.tag).toLowerCase().includes(q)) &&
-              (!curEra || (b.kind === 'person' && b.era === curEra)) &&
-              (!curCountry || (b.kind === 'person' && b.country === curCountry)) &&
+              (!curEra || ((b.kind === 'person' || b.kind === 'work') && b.era === curEra)) &&
+              (!curCountry || ((b.kind === 'person' || b.kind === 'work') && b.country === curCountry)) &&
               !b.placeholder;
           })
           .slice(0, 30);
@@ -23500,7 +23532,7 @@
         } else {
           resBox.innerHTML = list.map(m => {
             const b = m.userData.book;
-            const icon = b.kind === 'person' ? '🎓' : b.kind === 'myth' ? '📜' : b.kind === 'god' ? '⚡' : '🎵';
+            const icon = b.kind === 'person' ? '🎓' : b.kind === 'work' ? '📖' : b.kind === 'myth' ? '📜' : b.kind === 'god' ? '⚡' : b.kind === 'element' ? '🧪' : b.kind === 'music' ? '🎵' : '📚';
             return `<button class="lib-result" data-bi="${bookMeshes.indexOf(m)}" style="--acc:${b.accent}">
               <span class="lr-icon">${icon}</span>
               <span class="lr-body"><span class="lr-name">${b.name}</span><span class="lr-sub">${b.sub || ''}</span></span>
@@ -23557,7 +23589,7 @@
         const k = b.userData.book.kind;
         if (!b.userData.book.placeholder) counts[k] = (counts[k] || 0) + 1;
       });
-      const labels = { person: '偉人', myth: '神話', god: '神々', music: '音楽', element: '元素', ad: '広告' };
+      const labels = { person: '偉人', work: '作品', myth: '神話', god: '神々', music: '音楽', element: '元素', ad: '広告' };
       const parts = Object.entries(counts).sort((a, b) => b[1] - a[1]).map(([k, n]) => `${labels[k] || k}×${n}`);
       // 偉人ゾーンなら時代も推定
       const eraGuess = s.books.find(b => b.userData.book.era)?.userData.book.era;
