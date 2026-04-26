@@ -573,6 +573,18 @@
                 <div class="mtc-name">原 子 と 原 資</div>
                 <div class="mtc-sub">最小単位の物質と経済</div>
               </button>
+              <button class="magic-topbook-cat magic-topbook-cat-things" data-cat="things">
+                <div class="mtc-name">物 か ら 探 す</div>
+                <div class="mtc-sub">道具・発明・技術 → 偉人</div>
+              </button>
+              <button class="magic-topbook-cat magic-topbook-cat-business" data-cat="business">
+                <div class="mtc-name">ビジネスから探す</div>
+                <div class="mtc-sub">経済・組織・起業 → 偉人</div>
+              </button>
+              <button class="magic-topbook-cat magic-topbook-cat-humap" data-cat="humanitymap">
+                <div class="mtc-name">人間性の地図</div>
+                <div class="mtc-sub">8つの輝きで偉人を並べる</div>
+              </button>
             </div>
           </div>
         </div>
@@ -615,6 +627,9 @@
         library: () => { try { openLibrary(); } catch (e) { console.warn('library', e); } },
         ijinhub: () => { try { openIjinHub(); } catch (e) { console.warn('ijinhub', e); } },
         atomcapital: () => { try { openAtomCapital(); } catch (e) { console.warn('atomcapital', e); } },
+        things: () => { try { openThingsPage(); } catch (e) { console.warn('things', e); } },
+        business: () => { try { openBusinessPage(); } catch (e) { console.warn('business', e); } },
+        humanitymap: () => { try { openHumanityMap(); } catch (e) { console.warn('humap', e); } },
       };
       wrap.querySelectorAll('[data-deep]').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -14459,13 +14474,13 @@
       </div>
       <!-- モード切替ボタン -->
       <div class="koh-mode-bar">
-        <button class="koh-mode-btn active" data-mode="concert">🎼 演奏</button>
-        <button class="koh-mode-btn" data-mode="planetarium">✦ プラネタリウム</button>
-        <button class="koh-mode-btn" data-mode="cosmos">🌌 宇宙</button>
-        <button class="koh-mode-btn" data-mode="nature">🌳 自然</button>
-        <button class="koh-mode-btn" data-mode="myth">⛩ 神話</button>
-        <button class="koh-mode-btn" data-mode="timeslip">⏳ タイムスリップ</button>
-        <button class="koh-mode-btn" data-mode="vr" id="kohVRBtn">🥽 VR</button>
+        <button class="koh-mode-btn active" data-mode="concert">演 奏</button>
+        <button class="koh-mode-btn" data-mode="planetarium">プラネタリウム</button>
+        <button class="koh-mode-btn" data-mode="cosmos">宇 宙</button>
+        <button class="koh-mode-btn" data-mode="nature">自 然</button>
+        <button class="koh-mode-btn" data-mode="myth">神 話</button>
+        <button class="koh-mode-btn" data-mode="timeslip">タイムスリップ</button>
+        <button class="koh-mode-btn" data-mode="vr" id="kohVRBtn">V R</button>
       </div>
       <!-- ⛩ 神話シーン切替タイトルカード -->
       <div class="koh-myth-title" id="kohMythTitle"></div>
@@ -22695,6 +22710,167 @@
     }
   }
   window.openAtomCapital = openAtomCapital;
+
+  // ============================================================
+  // 物 / ビジネス / 図書館C案 共通ヘルパー
+  // ============================================================
+  function _resolveIjinName(id) {
+    const all = (window.MAGIC && (window.MAGIC._peopleBundle || window.MAGIC._peopleLite)) || [];
+    const p = all.find(x => x.id === id);
+    return p ? p.name : id;
+  }
+  function _ijinPillsHtml(ids) {
+    return ids.map(id => `<button class="cnp-pill" data-id="${id}">${_resolveIjinName(id)}</button>`).join('');
+  }
+  function _wireIjinPills(root, onPick) {
+    root.querySelectorAll('.cnp-pill').forEach(p => {
+      p.addEventListener('click', () => {
+        const id = p.dataset.id;
+        if (onPick) onPick();
+        if (window.showPerson) setTimeout(() => window.showPerson(id), 280);
+      });
+    });
+  }
+
+  // ============================================================
+  // 🔧 「物から探す」 — 道具・発明・物体から偉人へ
+  // ============================================================
+  const THING_BRIDGES = [
+    { name: '望遠鏡',         desc: '夜空を覗き、世界の見方を変えた道具',        ijins: ['galileo', 'newton'] },
+    { name: '微積分',         desc: '変化そのものを記述する数学の発明',           ijins: ['newton'] },
+    { name: '電気と磁気',     desc: '見えない力で世界を動かす技術',               ijins: ['faraday', 'tesla', 'edison'] },
+    { name: '蒸気と動力',     desc: '産業革命を駆動した動力源',                   ijins: ['edison'] },
+    { name: '進化論',         desc: '生物の形は時間が彫った彫刻',                 ijins: ['darwin', 'mendel'] },
+    { name: '遺伝子',         desc: '形質を伝える最小の言語',                     ijins: ['mendel', 'darwin'] },
+    { name: '量子',           desc: '粒子であり波、観測で姿を変える',             ijins: ['einstein', 'heisenberg', 'feynman'] },
+    { name: '原子',           desc: '万物の最小単位、不可分から分割可能へ',       ijins: ['democritus', 'einstein', 'feynman'] },
+    { name: 'ダイナマイト',   desc: '爆破力を制御し、土木と戦争を変えた',         ijins: ['nobel'] },
+    { name: 'パーソナル機器', desc: '個人が世界と繋がる道具',                     ijins: ['steve_jobs', 'edison'] },
+    { name: '言葉と文字',     desc: '人類が時間を超えて伝える最大の道具',         ijins: ['shakespeare', 'tolstoy'] },
+    { name: '楽器',           desc: '時間を音で構造化する道具',                   ijins: ['bach', 'beethoven', 'mozart'] },
+  ];
+
+  function openThingsPage() {
+    const ov = document.createElement('div');
+    ov.className = 'concept-page-overlay theme-things';
+    ov.innerHTML = `
+      <button class="cp-close" aria-label="閉じる">×</button>
+      <div class="cp-wrap">
+        <div class="cp-head">
+          <div class="cp-eyebrow">T H I N G S → P E O P L E</div>
+          <div class="cp-title">物 か ら 探 す</div>
+          <div class="cp-sub">道具・発明・物体は、それを生んだ人がいる。<br>形あるものの先に、形を考えた人がいる。</div>
+        </div>
+        <div class="cp-list">
+          ${THING_BRIDGES.map(b => `
+            <div class="cp-card">
+              <div class="cp-name">${b.name}</div>
+              <div class="cp-desc">${b.desc}</div>
+              <div class="cp-pills">${_ijinPillsHtml(b.ijins)}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+    document.body.appendChild(ov);
+    requestAnimationFrame(() => ov.classList.add('open'));
+    const close = () => { ov.classList.remove('open'); setTimeout(() => ov.remove(), 320); };
+    ov.querySelector('.cp-close').addEventListener('click', close);
+    _wireIjinPills(ov, close);
+  }
+  window.openThingsPage = openThingsPage;
+
+  // ============================================================
+  // 💼 「ビジネスから探す」 — 経済・組織・起業
+  // ============================================================
+  const BUSINESS_BRIDGES = [
+    { name: '見えざる手',     desc: '個人の利己が社会の公益を生む仕組み',         ijins: ['adam_smith'] },
+    { name: '資本主義の批判', desc: '富の偏りはどこから生まれるか',               ijins: ['marx'] },
+    { name: 'マクロ経済学',   desc: '不況時の財政出動、戦後経済秩序の設計',       ijins: ['keynes'] },
+    { name: '革新と起業',     desc: 'ゼロから1を作る人間性',                       ijins: ['edison', 'steve_jobs', 'tesla'] },
+    { name: '金融と投機',     desc: '貨幣そのものの不確定性と勝負する',           ijins: ['keynes'] },
+    { name: '産業と化学',     desc: '物理的発見を経済力に変える',                 ijins: ['nobel', 'curie'] },
+    { name: '計画と分業',     desc: '人を動員して大きな問題に挑む（Manhattan級）',ijins: ['einstein', 'feynman', 'heisenberg'] },
+    { name: '言葉のブランド', desc: '物語が経済を動かす',                         ijins: ['shakespeare'] },
+  ];
+
+  function openBusinessPage() {
+    const ov = document.createElement('div');
+    ov.className = 'concept-page-overlay theme-business';
+    ov.innerHTML = `
+      <button class="cp-close" aria-label="閉じる">×</button>
+      <div class="cp-wrap">
+        <div class="cp-head">
+          <div class="cp-eyebrow">B U S I N E S S → P E O P L E</div>
+          <div class="cp-title">ビジネスから探す</div>
+          <div class="cp-sub">富とは何か、組織とは何か。<br>経済も結局、人が何かを信じることで動いている。</div>
+        </div>
+        <div class="cp-list">
+          ${BUSINESS_BRIDGES.map(b => `
+            <div class="cp-card">
+              <div class="cp-name">${b.name}</div>
+              <div class="cp-desc">${b.desc}</div>
+              <div class="cp-pills">${_ijinPillsHtml(b.ijins)}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+    document.body.appendChild(ov);
+    requestAnimationFrame(() => ov.classList.add('open'));
+    const close = () => { ov.classList.remove('open'); setTimeout(() => ov.remove(), 320); };
+    ov.querySelector('.cp-close').addEventListener('click', close);
+    _wireIjinPills(ov, close);
+  }
+  window.openBusinessPage = openBusinessPage;
+
+  // ============================================================
+  // 🤝 図書館C案 — 「人間性の地図」
+  //   8つの人間性タグごとに偉人をグループ表示
+  // ============================================================
+  function openHumanityMap() {
+    const tags = window.HUMANITY_TAGS || {};
+    const of = window.HUMANITY_OF || {};
+    if (!Object.keys(tags).length) return;
+    const groups = Object.keys(tags).map(tagId => ({
+      tagId,
+      tag: tags[tagId],
+      ijins: Object.entries(of).filter(([_, ts]) => ts.includes(tagId)).map(([id]) => id),
+    })).filter(g => g.ijins.length > 0);
+
+    const ov = document.createElement('div');
+    ov.className = 'concept-page-overlay theme-humanity';
+    ov.innerHTML = `
+      <button class="cp-close" aria-label="閉じる">×</button>
+      <div class="cp-wrap">
+        <div class="cp-head">
+          <div class="cp-eyebrow">H U M A N I T Y　M A P</div>
+          <div class="cp-title">人 間 性 の 地 図</div>
+          <div class="cp-sub">
+            人を「タグ」で括るのは無理がある。<br>
+            それでも一つの側面として、似た輝きを持った人を並べてみる。<br>
+            AIに代えられない部分が、ここに集まる。
+          </div>
+        </div>
+        <div class="cp-list cp-list-humanity">
+          ${groups.map(g => `
+            <div class="cp-card">
+              <div class="cp-name">${g.tag.name}</div>
+              <div class="cp-desc">${g.tag.desc}</div>
+              <div class="cp-pills">${_ijinPillsHtml(g.ijins)}</div>
+            </div>
+          `).join('')}
+        </div>
+        <div class="cp-foot">タグは人物の一側面に過ぎない。複数の輝きを併せ持つ人もいる。</div>
+      </div>
+    `;
+    document.body.appendChild(ov);
+    requestAnimationFrame(() => ov.classList.add('open'));
+    const close = () => { ov.classList.remove('open'); setTimeout(() => ov.remove(), 320); };
+    ov.querySelector('.cp-close').addEventListener('click', close);
+    _wireIjinPills(ov, close);
+  }
+  window.openHumanityMap = openHumanityMap;
 
   // ============================================================
   // 📖 星の王子様 — 動くSVG絵本
