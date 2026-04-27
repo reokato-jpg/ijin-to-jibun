@@ -23040,6 +23040,14 @@
       </div>
       <div class="lib-controls-hint lib-hint-pc">W A S D：歩く ／ Shift：早歩き ／ ドラッグ：視線</div>
       <div class="lib-controls-hint lib-hint-mobile">左：歩く ／ 右：視線 ／ ⚡：走る ／ 📖：本を開く</div>
+      <div class="lib-intro" id="libIntro" aria-hidden="true">
+        <div class="lib-intro-stats" id="libIntroStats">
+          <div class="lib-intro-line lib-intro-l1"><span class="lib-intro-num" id="libIntroBooks">0</span><span class="lib-intro-unit">冊蔵書</span></div>
+          <div class="lib-intro-line lib-intro-l2"><span class="lib-intro-num" id="libIntroEras">0</span><span class="lib-intro-unit">時代</span></div>
+          <div class="lib-intro-line lib-intro-l3"><span class="lib-intro-num" id="libIntroCountries">0</span><span class="lib-intro-unit">カ国</span></div>
+        </div>
+        <button class="lib-intro-skip" id="libIntroSkip" aria-label="演出をスキップ">スキップ ›</button>
+      </div>
     `;
     // role=dialog + aria-modal でモーダル明示、tabindex で focus 可能化（Esc キーボード操作対応）
     ov.setAttribute('role', 'dialog');
@@ -23541,44 +23549,106 @@
       buildShelf(HALL_W/2 - 1.0, 0, HALL_D - 6 - balconyDepth*2 - 4, -Math.PI/2, false, y, otherBooks);
     }
     // 階段（東側：1F→2F→3Fの直線階段、上り段差付き）
-    function buildStaircase(startX, startZ, endX, endZ, fromY, toY, steps = 18) {
+    // 木目テクスチャ（階段段板用）— openLibrary 1 回につき 1 回生成して全階段で共有
+    const stairWoodTex = (() => {
+      const c = document.createElement('canvas'); c.width = 256; c.height = 256;
+      const g = c.getContext('2d');
+      // ベース（暖色木材）
+      g.fillStyle = '#3a2010'; g.fillRect(0, 0, 256, 256);
+      // 木目線（縦の縞、揺らぎ付き）
+      for (let i = 0; i < 28; i++) {
+        const r = 30 + Math.floor(Math.random() * 40);
+        const gr = 18 + Math.floor(Math.random() * 22);
+        const b = 6 + Math.floor(Math.random() * 14);
+        g.strokeStyle = `rgba(${r},${gr},${b},${0.4 + Math.random() * 0.35})`;
+        g.lineWidth = 0.6 + Math.random() * 1.4;
+        g.beginPath();
+        const sy = Math.random() * 256;
+        g.moveTo(0, sy);
+        for (let x = 0; x < 256; x += 12) {
+          g.lineTo(x, sy + Math.sin(x * 0.04 + i) * 6 + (Math.random() - 0.5) * 2.5);
+        }
+        g.stroke();
+      }
+      // 節（ノット）
+      for (let i = 0; i < 5; i++) {
+        g.fillStyle = `rgba(${10 + Math.random() * 12},${6 + Math.random() * 8},${2 + Math.random() * 6},0.5)`;
+        const cx = Math.random() * 256, cy = Math.random() * 256;
+        const rd = 3 + Math.random() * 5;
+        g.beginPath(); g.arc(cx, cy, rd, 0, Math.PI * 2); g.fill();
+        g.strokeStyle = 'rgba(80,55,30,0.3)';
+        g.lineWidth = 0.6;
+        g.beginPath(); g.arc(cx, cy, rd + 1.5, 0, Math.PI * 2); g.stroke();
+      }
+      // 上面ハイライト（光が当たる側）
+      g.fillStyle = 'rgba(140,95,55,0.08)';
+      g.fillRect(0, 0, 256, 50);
+      const tex = new THREE.CanvasTexture(c);
+      tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+      tex.repeat.set(2, 1);
+      if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace;
+      return tex;
+    })();
+
+    // 🪜 階段の建築：踏み面に木目、蹴上げ（rise）に暗い面、両側にバラスタ、入口・出口にニュエルポスト、階段下に支柱
+    function buildStaircase(startX, startZ, endX, endZ, fromY, toY, steps = 22, stairWidth = 3.0) {
       const dx = (endX - startX) / steps;
       const dz = (endZ - startZ) / steps;
       const dy = (toY - fromY) / steps;
-      const matStep = new THREE.MeshStandardMaterial({ color: 0x4a2a18, roughness: 0.7 });
+      const stepDepth = Math.hypot(dx, dz) + 0.05;
+      const matStep = new THREE.MeshStandardMaterial({
+        map: stairWoodTex, color: 0xb08868, roughness: 0.62, metalness: 0.04,
+      });
+      const matRise = new THREE.MeshStandardMaterial({ color: 0x281408, roughness: 0.88 });
+      const trimMat = new THREE.MeshStandardMaterial({
+        color: 0xc8a040, metalness: 0.9, roughness: 0.3, emissive: 0x4a3008, emissiveIntensity: 0.5,
+      });
+      const stepRotY = Math.atan2(dx, dz);
       for (let i = 0; i < steps; i++) {
         const sx = startX + dx * (i + 0.5);
         const sz = startZ + dz * (i + 0.5);
         const sy = fromY + dy * (i + 0.5);
-        const step = new THREE.Mesh(
-          new THREE.BoxGeometry(2.5, 0.18, Math.hypot(dx, dz) + 0.05),
-          matStep
-        );
+        // 段板（踏み面）
+        const step = new THREE.Mesh(new THREE.BoxGeometry(stairWidth, 0.18, stepDepth), matStep);
         step.position.set(sx, sy, sz);
-        step.rotation.y = Math.atan2(dx, dz);
+        step.rotation.y = stepRotY;
         scene.add(step);
-        // 縁の金トリム
-        const trim = new THREE.Mesh(
-          new THREE.BoxGeometry(2.6, 0.06, 0.08),
-          new THREE.MeshStandardMaterial({ color: 0xc8a040, metalness: 0.9, roughness: 0.3, emissive: 0x4a3008, emissiveIntensity: 0.5 })
-        );
-        trim.position.set(sx, sy + 0.10, sz + Math.cos(Math.atan2(dx, dz)) * (Math.hypot(dx, dz) / 2 - 0.04));
-        trim.rotation.y = Math.atan2(dx, dz);
+        // 蹴上げ（rise）— 段の前面の縦板
+        if (Math.abs(dy) > 0.02) {
+          const rise = new THREE.Mesh(
+            new THREE.BoxGeometry(stairWidth, Math.abs(dy) + 0.02, 0.05),
+            matRise
+          );
+          // 段の手前下：sy - dy/2 に配置（次段の足元との間）
+          const aheadX = -Math.sin(stepRotY) * (stepDepth / 2 - 0.04);
+          const aheadZ = -Math.cos(stepRotY) * (stepDepth / 2 - 0.04);
+          rise.position.set(sx + aheadX, sy - dy / 2 - 0.01, sz + aheadZ);
+          rise.rotation.y = stepRotY;
+          scene.add(rise);
+        }
+        // 縁の金トリム（段の前縁）
+        const trim = new THREE.Mesh(new THREE.BoxGeometry(stairWidth + 0.08, 0.06, 0.08), trimMat);
+        const trimAheadX = -Math.sin(stepRotY) * (stepDepth / 2 - 0.04);
+        const trimAheadZ = -Math.cos(stepRotY) * (stepDepth / 2 - 0.04);
+        trim.position.set(sx + trimAheadX, sy + 0.10, sz + trimAheadZ);
+        trim.rotation.y = stepRotY;
         scene.add(trim);
       }
-      // 🛡 手すり＋側壁（行列ベース：階段の傾斜に沿って正確に整列）
-      const goldRailMat = new THREE.MeshStandardMaterial({ color: 0xc8a040, metalness: 0.9, roughness: 0.3, emissive: 0x4a3008, emissiveIntensity: 0.5 });
+      // 🛡 手すり＋側壁（傾斜行列）
       const wallMat2 = new THREE.MeshStandardMaterial({ color: 0x3a2618, roughness: 0.8 });
       const woodMat2 = new THREE.MeshStandardMaterial({ color: 0x6a4828, roughness: 0.7 });
+      const balusterMat = new THREE.MeshStandardMaterial({ color: 0x8a6028, metalness: 0.4, roughness: 0.5 });
       const lengthVec3 = new THREE.Vector3(endX - startX, toY - fromY, endZ - startZ);
       const lengthLen3 = lengthVec3.length();
-      const lengthAxis = lengthVec3.clone().normalize();          // Z=length
-      const sideAxis = new THREE.Vector3(-((endZ - startZ) / Math.hypot(endX - startX, endZ - startZ)),
-                                          0,
-                                          (endX - startX) / Math.hypot(endX - startX, endZ - startZ));
+      const lengthAxis = lengthVec3.clone().normalize();
+      const sideAxis = new THREE.Vector3(
+        -((endZ - startZ) / Math.hypot(endX - startX, endZ - startZ)),
+        0,
+        (endX - startX) / Math.hypot(endX - startX, endZ - startZ)
+      );
       const localUp = new THREE.Vector3().crossVectors(sideAxis, lengthAxis).normalize();
       const stairCenter = new THREE.Vector3((startX + endX) / 2, (fromY + toY) / 2, (startZ + endZ) / 2);
-      const SIDE_OFFSET2 = 1.45;
+      const SIDE_OFFSET2 = stairWidth / 2 + 0.18;
       function placeOnStair(mesh, sideSign, upDist) {
         const m = new THREE.Matrix4().makeBasis(sideAxis, localUp, lengthAxis);
         const pos = stairCenter.clone()
@@ -23589,34 +23659,94 @@
         mesh.matrix.copy(m);
       }
       [-1, 1].forEach(sideSign => {
-        // 側壁（パラペット）— 階段に沿って傾斜
+        // 側壁（低めの石パラペット）
         const wall = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.85, lengthLen3), wallMat2);
         placeOnStair(wall, sideSign, 0.45); scene.add(wall);
         // 上の手すり（木）
-        const handrail = new THREE.Mesh(new THREE.BoxGeometry(0.20, 0.10, lengthLen3), woodMat2);
-        placeOnStair(handrail, sideSign, 0.95); scene.add(handrail);
+        const handrail = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.10, lengthLen3), woodMat2);
+        placeOnStair(handrail, sideSign, 0.98); scene.add(handrail);
         // 金縁トリム
-        const trim = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.05, lengthLen3), goldRailMat);
-        placeOnStair(trim, sideSign, 1.03); scene.add(trim);
-        // 柵柱（vertical balusters）— 5本、ワールドY軸の縦
-        for (let p = 0; p < 5; p++) {
-          const t01 = p / 4;
+        const trimRail = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.05, lengthLen3), trimMat);
+        placeOnStair(trimRail, sideSign, 1.06); scene.add(trimRail);
+        // 🪶 バラスタ（垂直支柱）— 段に対して 2 段おきに 1 本（22段なら 11 本）
+        const balusterCount = Math.max(8, Math.floor(steps / 2));
+        for (let p = 0; p < balusterCount; p++) {
+          const t01 = (p + 0.5) / balusterCount;
           const along = lengthAxis.clone().multiplyScalar(lengthLen3 * (t01 - 0.5));
           const sideOff = sideAxis.clone().multiplyScalar(sideSign * SIDE_OFFSET2);
           const baseOnStair = stairCenter.clone().add(along).add(sideOff);
-          // baseOnStairは段板表面、ここから真上にlocalUp 0.85m
-          const baseTop = baseOnStair.clone().add(localUp.clone().multiplyScalar(0.85));
+          const baseTop = baseOnStair.clone().add(localUp.clone().multiplyScalar(0.95));
           const post = new THREE.Mesh(
-            new THREE.CylinderGeometry(0.025, 0.025, 0.85, 8),
-            new THREE.MeshStandardMaterial({ color: 0x8a6020, metalness: 0.5, roughness: 0.4 })
+            new THREE.CylinderGeometry(0.038, 0.038, 0.95, 8),
+            balusterMat
           );
-          // 柱は世界Y軸縦に立つ：位置を baseOnStair と baseTop の中間、Y軸縦
-          post.position.set((baseOnStair.x + baseTop.x) / 2, (baseOnStair.y + baseTop.y) / 2, (baseOnStair.z + baseTop.z) / 2);
-          // 柱は localUp に沿って回転（垂直に近い）
+          post.position.set(
+            (baseOnStair.x + baseTop.x) / 2,
+            (baseOnStair.y + baseTop.y) / 2,
+            (baseOnStair.z + baseTop.z) / 2
+          );
           post.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), localUp);
           scene.add(post);
         }
       });
+      // 🏛 ニュエルポスト（階段の入口・出口に大きな柱、両側 = 計4本）
+      const newelMat = new THREE.MeshStandardMaterial({ color: 0x3a2010, roughness: 0.6 });
+      const newelCapMat = new THREE.MeshStandardMaterial({
+        color: 0xc8a040, metalness: 0.9, roughness: 0.3, emissive: 0x4a3008, emissiveIntensity: 0.5,
+      });
+      const newelHeight = 1.5;
+      [
+        { x: startX, y: fromY, z: startZ },
+        { x: endX,   y: toY,   z: endZ   },
+      ].forEach(pos => {
+        [-1, 1].forEach(sideSign => {
+          const nx0 = pos.x + sideAxis.x * sideSign * SIDE_OFFSET2;
+          const nz0 = pos.z + sideAxis.z * sideSign * SIDE_OFFSET2;
+          // 太い柱本体
+          const newelPost = new THREE.Mesh(
+            new THREE.BoxGeometry(0.32, newelHeight, 0.32),
+            newelMat
+          );
+          newelPost.position.set(nx0, pos.y + newelHeight / 2 + 0.1, nz0);
+          scene.add(newelPost);
+          // 上の球（金）
+          const ball = new THREE.Mesh(new THREE.SphereGeometry(0.18, 16, 12), newelCapMat);
+          ball.position.set(nx0, pos.y + newelHeight + 0.27, nz0);
+          scene.add(ball);
+          // ベース台座（金）
+          const baseBlock = new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.2, 0.46), newelCapMat);
+          baseBlock.position.set(nx0, pos.y + 0.1, nz0);
+          scene.add(baseBlock);
+        });
+      });
+      // 階段下のスペース埋め（1F フロア＝fromY が 0 のときのみ）
+      if (fromY < 0.5) {
+        const underColMat = new THREE.MeshStandardMaterial({ color: 0x382418, roughness: 0.85 });
+        const midX = (startX + endX) / 2;
+        const midZ = (startZ + endZ) / 2;
+        const underH = toY - 0.4;
+        // 中央の太い石柱
+        const underCol = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.45, 0.55, underH, 16),
+          underColMat
+        );
+        underCol.position.set(midX, underH / 2, midZ);
+        scene.add(underCol);
+        // 装飾ベース（金）
+        const underBase = new THREE.Mesh(
+          new THREE.BoxGeometry(1.3, 0.4, 1.3),
+          newelCapMat
+        );
+        underBase.position.set(midX, 0.2, midZ);
+        scene.add(underBase);
+        // 上部の柱頭（金）
+        const underCap = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.7, 0.55, 0.4, 16),
+          newelCapMat
+        );
+        underCap.position.set(midX, underH - 0.2, midZ);
+        scene.add(underCap);
+      }
     }
 
     // 本棚を作る共通関数（双面・5段、長さ可変）
@@ -23935,10 +24065,10 @@
     // === 2階・3階のメザニン（壁棚も含む） ===
     buildMezzanine(FLOOR_2_Y);
     buildMezzanine(FLOOR_3_Y);
-    // 階段：1F→2F（東側、北寄り）
-    buildStaircase(HALL_W/2 - 7, -HALL_D/2 + 6, HALL_W/2 - 7, -HALL_D/2 + 14, 0, FLOOR_2_Y, 18);
-    // 階段：2F→3F（東側、南寄り）
-    buildStaircase(HALL_W/2 - 7, HALL_D/2 - 6, HALL_W/2 - 7, HALL_D/2 - 14, FLOOR_2_Y, FLOOR_3_Y, 18);
+    // 階段：1F→2F（東側、北寄り）— x=37 で東バルコニー（35〜39.5）の上に直結、長さ 11m / 22段で緩やか
+    buildStaircase(HALL_W/2 - 3, -HALL_D/2 + 5, HALL_W/2 - 3, -HALL_D/2 + 16, 0, FLOOR_2_Y, 22, 3.0);
+    // 階段：2F→3F（東側、南寄り）— 同様に東バルコニー直結
+    buildStaircase(HALL_W/2 - 3, HALL_D/2 - 5, HALL_W/2 - 3, HALL_D/2 - 16, FLOOR_2_Y, FLOOR_3_Y, 22, 3.0);
 
     // === ゴシック入口アーチ（南壁中央の見せ場） ===
     {
@@ -24211,6 +24341,120 @@
       scene.add(dust2);
     }
 
+    // ── ✨ 中央アトリウムに浮遊する本（ハリポタ感）──
+    // 棚から数冊「飛び出した」かのような演出。クリックで自分の元へ寄ってくる
+    const floatingBooks = []; // { mesh, book, baseY, speed, phase, glowSprite }
+    {
+      const FLT_CNT = _isMobile ? 6 : 12;
+      // 実本（placeholder 除外）からランダム抽選
+      const realPeople = people.filter(p => !p.placeholder);
+      const shuffled = realPeople.slice().sort(() => Math.random() - 0.5).slice(0, FLT_CNT);
+      // 発光スプライトのテクスチャ（共通）
+      const glowTex = (() => {
+        const c2 = document.createElement('canvas'); c2.width = 64; c2.height = 64;
+        const g2 = c2.getContext('2d');
+        const grd = g2.createRadialGradient(32, 32, 2, 32, 32, 30);
+        grd.addColorStop(0, 'rgba(255,230,170,0.85)');
+        grd.addColorStop(0.4, 'rgba(255,200,120,0.35)');
+        grd.addColorStop(1, 'rgba(255,200,120,0)');
+        g2.fillStyle = grd; g2.fillRect(0, 0, 64, 64);
+        const t = new THREE.CanvasTexture(c2);
+        if ('colorSpace' in t) t.colorSpace = THREE.SRGBColorSpace;
+        return t;
+      })();
+      shuffled.forEach((book, i) => {
+        // 配置：中央アトリウム（柱と棚を避ける円柱領域）
+        // 中央 12m 半径 / 高さ 4-9m / 中央アイル列 (-22,-7,8,23) と柱(±18,±10)を避ける
+        let x, z;
+        let attempts = 0;
+        do {
+          const ang = Math.random() * Math.PI * 2;
+          const r = 4 + Math.random() * 7;
+          x = Math.cos(ang) * r;
+          z = Math.sin(ang) * r;
+          attempts++;
+        } while (attempts < 20 && (
+          // 棚アイルとの干渉
+          (Math.abs(z + 18) < 1.6 && Math.abs(x) < 28) ||
+          (Math.abs(z + 6)  < 1.6 && Math.abs(x) < 28) ||
+          (Math.abs(z - 6)  < 1.6 && Math.abs(x) < 28) ||
+          (Math.abs(z - 18) < 1.6 && Math.abs(x) < 28)
+        ));
+        const y = 4.5 + Math.random() * 4.5;
+        // 本の見た目（背表紙テクスチャを使う）
+        const bookGeo = new THREE.BoxGeometry(0.36, 1.5, 0.24);
+        const baseColor = new THREE.Color(book.color);
+        const mat = _isMobile
+          ? new THREE.MeshBasicMaterial({ color: baseColor })
+          : new THREE.MeshStandardMaterial({
+              color: 0xffffff, roughness: 0.5,
+              map: makeBookSpineTexture(book),
+              emissive: new THREE.Color(book.color).multiplyScalar(0.3),
+              emissiveIntensity: 0.7,
+            });
+        const mesh = new THREE.Mesh(bookGeo, mat);
+        mesh.position.set(x, y, z);
+        mesh.rotation.set(
+          (Math.random() - 0.5) * 0.5,
+          Math.random() * Math.PI * 2,
+          (Math.random() - 0.5) * 0.4
+        );
+        mesh.userData = { book, baseColor, baseEmissive: new THREE.Color(book.color).multiplyScalar(0.3), originalY: y, isFloatingBook: true };
+        scene.add(mesh);
+        bookMeshes.push(mesh); // 既存のクリック検出に乗せる
+        // 下に淡い発光スプライト（魔法感）
+        let glowSprite = null;
+        if (!_isMobile) {
+          glowSprite = new THREE.Sprite(new THREE.SpriteMaterial({
+            map: glowTex, color: 0xffd890,
+            transparent: true, opacity: 0.55,
+            blending: THREE.AdditiveBlending, depthWrite: false, fog: false,
+          }));
+          glowSprite.scale.set(2.0, 2.0, 1);
+          glowSprite.position.set(x, y, z);
+          scene.add(glowSprite);
+        }
+        floatingBooks.push({
+          mesh, book, baseY: y,
+          speed: 0.4 + Math.random() * 0.6,
+          phase: Math.random() * Math.PI * 2,
+          spinY: 0.05 + Math.random() * 0.15,
+          driftR: 0.3 + Math.random() * 0.6,
+          baseX: x, baseZ: z,
+          glow: glowSprite,
+          // クリックされて寄ってくる中：targetT は 0..1（1で目の前）
+          attractT: 0,
+          attracting: false,
+        });
+      });
+    }
+
+    // ── 📜 ページ粒子（PC のみ。たまにページが舞う）──
+    const pageParticles = [];
+    let _pageSpawnTimer = 0;
+    const _pageEnabled = !_isMobile && floatingBooks.length > 0;
+    const _pageTex = _pageEnabled ? (() => {
+      const c2 = document.createElement('canvas'); c2.width = 32; c2.height = 40;
+      const g2 = c2.getContext('2d');
+      g2.fillStyle = 'rgba(248,238,210,0.95)';
+      g2.fillRect(2, 2, 28, 36);
+      g2.strokeStyle = 'rgba(80,60,30,0.55)';
+      g2.lineWidth = 0.8;
+      for (let i = 0; i < 6; i++) {
+        g2.beginPath();
+        g2.moveTo(5, 8 + i * 5);
+        g2.lineTo(25 + Math.random() * 2, 8 + i * 5);
+        g2.stroke();
+      }
+      // 紙のエッジ陰影
+      g2.strokeStyle = 'rgba(160,130,80,0.5)';
+      g2.lineWidth = 1.2;
+      g2.strokeRect(2, 2, 28, 36);
+      const t = new THREE.CanvasTexture(c2);
+      if ('colorSpace' in t) t.colorSpace = THREE.SRGBColorSpace;
+      return t;
+    })() : null;
+
     // ── 一人称コントロール（WASD移動 + ドラッグで視点回転） ──
     // _physShift = 物理 Shift キー、runHeld = 仮想ボタン。どちらかが true なら shift 扱い。
     const keys = { w: false, a: false, s: false, d: false, shift: false, _physShift: false };
@@ -24407,6 +24651,12 @@
     function openBookAtReticle() {
       const m = pickBook();
       if (m && !m.userData.book.placeholder) {
+        // 浮遊本がレチクルに入っていた場合も同じく寄せる演出
+        if (m.userData.isFloatingBook) {
+          const f = floatingBooks.find(x => x.mesh === m);
+          if (f && !f.attracting) { f.attracting = true; f.attractT = 0; }
+          return;
+        }
         const mats = Array.isArray(m.material) ? m.material : [m.material];
         mats.forEach(mt => {
           if (mt.emissive) mt.emissiveIntensity = 4.0;
@@ -24453,6 +24703,9 @@
     const pointer = new THREE.Vector2();
     let hovered = null;
     function tryPickBook(e) {
+      // 🎬 intro 中はクリックで本を開かせない（演出を壊さないため）
+      const _intro = ov.querySelector('#libIntro');
+      if (_intro && _intro.classList.contains('active')) return;
       const rect = cv.getBoundingClientRect();
       pointer.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       pointer.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
@@ -24461,6 +24714,17 @@
       if (hits[0]) {
         const b = hits[0].object;
         if (!b.userData.book.placeholder) {
+          // ✨ 浮遊本：まずプレイヤーに寄せる演出 → 寄り切ったら開く
+          if (b.userData.isFloatingBook) {
+            const f = floatingBooks.find(x => x.mesh === b);
+            if (f && !f.attracting) {
+              f.attracting = true; f.attractT = 0;
+              // 着地時のターゲット = カメラ前 1.2m
+              const mats = Array.isArray(b.material) ? b.material : [b.material];
+              mats.forEach(mt => { if (mt.emissive) mt.emissiveIntensity = 2.5; });
+            }
+            return;
+          }
           const mats = Array.isArray(b.material) ? b.material : [b.material];
           mats.forEach(mt => { if (mt.emissive) mt.emissiveIntensity = 4.0; else mt.color.setRGB(1.5, 1.3, 0.6); });
           playBookOpenAnim(b.userData.book, () => { b.userData.book.action(); close(); });
@@ -24760,8 +25024,9 @@
     const _reduceMotion = (() => {
       try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch { return false; }
     })();
-    // 視線パッド最大入力時の角速度（rad/s）— reduce-motion なら半減
-    const LOOK_SPEED = _reduceMotion ? 1.0 : 1.8; // 約 103°/s（既存 koh-vpad より速め、酔いにくい範囲）
+    // 視線パッド最大入力時の角速度（rad/s）— reduce-motion なら更に低減
+    // 1.4 ≒ 80°/s（一般的なFPSコントローラー感度の中下位、酔いにくい）
+    const LOOK_SPEED = _reduceMotion ? 0.9 : 1.4;
     const PITCH_LIMIT = 1.0;
     function tick(ts) {
       if (!ov.isConnected) return;
@@ -24828,17 +25093,25 @@
           }
         } else {
           // 🏛 2F/3F：メザニン中央吹き抜けへの落下防止
+          // バルコニー実床範囲: z=±(HALL_D/2 - balconyDepth - 0.5)〜壁、x も同様
+          // 手すり (z=±25) のさらに外側で止めて、手すり越え踏み外しを防ぐ。
+          // -0.5 = 手すり位置、-0.8 = 内側に踏み込ませて操作余裕（旧）→ 落下バグ。新実装は手すりぴったり。
           const balconyDepth = 4.5;
-          const innerN = -HALL_D/2 + balconyDepth + 0.8;
-          const innerS =  HALL_D/2 - balconyDepth - 0.8;
-          const innerW = -HALL_W/2 + balconyDepth + 0.8;
-          const innerE =  HALL_W/2 - balconyDepth - 0.8;
+          const innerN = -HALL_D/2 + balconyDepth - 0.5;
+          const innerS =  HALL_D/2 - balconyDepth + 0.5;
+          const innerW = -HALL_W/2 + balconyDepth - 0.5;
+          const innerE =  HALL_W/2 - balconyDepth + 0.5;
           // メザニン上の有効領域 = 4辺のいずれかの帯
           const onN = nz <= innerN;
           const onS = nz >= innerS;
           const onW = nx <= innerW;
           const onE = nx >= innerE;
-          if (!(onN || onS || onW || onE)) {
+          // 🪜 階段領域も有効（階段の途中／出入口で動けなくなる・落下するバグ修正）
+          // 階段は東側 (x > HALL_W/2 - 6 = 34)、北寄り (z: -25 to -14) と南寄り (z: 14 to 25)
+          // バッファ ±0.5m 込みで踏み外しを防止
+          const onStair1to2 = nx > HALL_W/2 - 6 && nz > -HALL_D/2 + 4 && nz < -HALL_D/2 + 17;
+          const onStair2to3 = nx > HALL_W/2 - 6 && nz > HALL_D/2 - 17 && nz < HALL_D/2 - 4;
+          if (!(onN || onS || onW || onE || onStair1to2 || onStair2to3)) {
             // 中央吹き抜けに踏み込んだ → 直前位置に戻す（自然な押し戻し）
             nx = camera.position.x;
             nz = camera.position.z;
@@ -24866,27 +25139,63 @@
       }
       // フロアの高さを決定（階段／メザニンを判定）
       let floorY = 0;
+      let onStairs = false;
       const px = camera.position.x, pz = camera.position.z;
-      // 階段1F→2F (x ≈ HALL_W/2-7, z: -HALL_D/2+6 → -HALL_D/2+14)
-      if (px > HALL_W/2 - 9 && pz > -HALL_D/2 + 5 && pz < -HALL_D/2 + 15) {
-        const t01 = Math.max(0, Math.min(1, (pz - (-HALL_D/2 + 6)) / 8));
-        floorY = FLOOR_2_Y * t01;
+      const cy = camera.position.y - PLAYER_EYE;
+      // 階段の物理範囲（中心 x=37, 幅 3m + 0.5m バッファ → x: 35〜39）
+      // STAIR_GUARD = 1.6m: 現在の高さ cy が階段補間値の近く（±1.6m）の時のみ階段判定。
+      // 階段の上端には 2m の「踊り場」を設けて、2F バルコニーから踏み込んでも即下がらない。
+      const STAIR_GUARD = 1.6;
+      const inStairXRange = px > HALL_W/2 - 5 && px < HALL_W/2 - 1;
+      // 階段1F→2F (z: -25 → -14、上端踊り場 z: -16〜-14 = 2F維持、補間 z: -25〜-16 = 9m)
+      if (inStairXRange && pz > -HALL_D/2 + 4 && pz < -HALL_D/2 + 17) {
+        let stairY;
+        if (pz >= -HALL_D/2 + 14) {
+          // 踊り場（z: -16〜-14） — 2F バルコニーと同じ高さ
+          stairY = FLOOR_2_Y;
+        } else if (pz <= -HALL_D/2 + 5) {
+          // 1F 側のバッファ（z: -26〜-25） — 1F と同じ高さ
+          stairY = 0;
+        } else {
+          const t01 = Math.max(0, Math.min(1, (pz - (-HALL_D/2 + 5)) / 9));
+          stairY = FLOOR_2_Y * t01;
+        }
+        if (Math.abs(cy - stairY) < STAIR_GUARD) {
+          floorY = stairY;
+          onStairs = true;
+        }
       }
-      // 階段2F→3F (x ≈ HALL_W/2-7, z: HALL_D/2-14 → HALL_D/2-6)
-      else if (px > HALL_W/2 - 9 && pz > HALL_D/2 - 15 && pz < HALL_D/2 - 5) {
-        const t01 = Math.max(0, Math.min(1, (pz - (HALL_D/2 - 14)) / 8));
-        floorY = FLOOR_2_Y + (FLOOR_3_Y - FLOOR_2_Y) * t01;
+      // 階段2F→3F (z: 25 → 14、下端踊り場 z: 14〜16 = 3F維持、上端踊り場 z: 23〜25 = 2F、補間 9m)
+      if (!onStairs && inStairXRange && pz > HALL_D/2 - 17 && pz < HALL_D/2 - 4) {
+        let stairY;
+        if (pz >= HALL_D/2 - 7) {
+          // 2F 側の踊り場（z: 23〜25）
+          stairY = FLOOR_2_Y;
+        } else if (pz <= HALL_D/2 - 14) {
+          // 3F 側の踊り場（z: 14〜16）
+          stairY = FLOOR_3_Y;
+        } else {
+          const t01 = Math.max(0, Math.min(1, ((HALL_D/2 - 7) - pz) / 9));
+          stairY = FLOOR_2_Y + (FLOOR_3_Y - FLOOR_2_Y) * t01;
+        }
+        if (Math.abs(cy - stairY) < STAIR_GUARD) {
+          floorY = stairY;
+          onStairs = true;
+        }
       }
-      // メザニン領域（壁沿い 4.5m 幅）
-      else if (Math.abs(px) > HALL_W/2 - 5 || Math.abs(pz) > HALL_D/2 - 5) {
-        // 現在の高さに最も近い階を選ぶ
-        const cy = camera.position.y - PLAYER_EYE;
-        if (cy > FLOOR_3_Y - 1.5) floorY = FLOOR_3_Y;
-        else if (cy > FLOOR_2_Y - 1.5) floorY = FLOOR_2_Y;
-        else floorY = 0;
+      if (!onStairs) {
+        // メザニン領域（壁沿い 4.5m 幅 + 0.5m バッファ）
+        if (Math.abs(px) > HALL_W/2 - 5 || Math.abs(pz) > HALL_D/2 - 5) {
+          // 現在の高さに最も近い階を選ぶ
+          if (cy > FLOOR_3_Y - 1.5) floorY = FLOOR_3_Y;
+          else if (cy > FLOOR_2_Y - 1.5) floorY = FLOOR_2_Y;
+          else floorY = 0;
+        }
       }
       // フロア間の段差を吸収（ジャンプではなく徐々に）
-      const targetY = floorY + PLAYER_EYE + Math.sin(t * 4) * (ml > 0 ? 0.04 : 0);
+      // 歩行揺れ（headbob）：移動時のみ振幅を抑えて 4cm → 1.5cm。reduce-motion なら無効
+      const headbob = (_reduceMotion || ml === 0) ? 0 : Math.sin(t * 4) * 0.015;
+      const targetY = floorY + PLAYER_EYE + headbob;
       camera.position.y += (targetY - camera.position.y) * 0.18;
       // ハイライト本がふわっと浮く（軽量化：highlightedがある時だけ更新）
       if (highlighted) {
@@ -25023,10 +25332,225 @@
         }
         dpa2.needsUpdate = true;
       }
+      // ✨ 浮遊本＋ページ粒子の更新
+      updateFloatingBooks(t, dt);
+      updatePageParticles(t, dt);
       renderer.render(scene, camera);
       requestAnimationFrame(tick);
     }
-    tick(0);
+
+    // ── ✨ 浮遊本の毎フレーム更新（通常時 + intro 中の両方から呼ぶ）──
+    function updateFloatingBooks(t, dt) {
+      for (let i = 0; i < floatingBooks.length; i++) {
+        const f = floatingBooks[i];
+        if (f.attracting) {
+          // プレイヤーに寄ってくる：0..1 を ~0.7s でフィル → 1 で本を開く
+          f.attractT = Math.min(1, f.attractT + dt / 0.7);
+          // カメラ前方 1.0m 上方少し下
+          const fwd = new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion);
+          const tx = camera.position.x + fwd.x * 1.0;
+          const ty = camera.position.y - 0.05 + fwd.y * 1.0;
+          const tz = camera.position.z + fwd.z * 1.0;
+          // easeOutQuad
+          const e = 1 - (1 - f.attractT) * (1 - f.attractT);
+          f.mesh.position.x += (tx - f.mesh.position.x) * (0.15 + 0.6 * e);
+          f.mesh.position.y += (ty - f.mesh.position.y) * (0.15 + 0.6 * e);
+          f.mesh.position.z += (tz - f.mesh.position.z) * (0.15 + 0.6 * e);
+          // くるりと正面を向く
+          f.mesh.rotation.y += (camYaw - f.mesh.rotation.y) * 0.1;
+          f.mesh.rotation.x *= 0.85;
+          f.mesh.rotation.z *= 0.85;
+          if (f.glow) {
+            f.glow.position.copy(f.mesh.position);
+            f.glow.material.opacity = 0.55 + 0.4 * Math.sin(t * 6);
+          }
+          if (f.attractT >= 1) {
+            // 開く演出
+            const mesh = f.mesh, book = f.book;
+            f.attracting = false;
+            // 配列から除去（再クリック防止）
+            floatingBooks.splice(i, 1);
+            i--;
+            const idx = bookMeshes.indexOf(mesh);
+            if (idx >= 0) bookMeshes.splice(idx, 1);
+            if (f.glow) { try { scene.remove(f.glow); f.glow.material.dispose(); } catch {} }
+            try {
+              playBookOpenAnim(book, () => { book.action(); close(); });
+            } catch (e) {
+              console.warn('[floating book open]', e);
+              try { book.action(); close(); } catch {}
+            }
+            continue;
+          }
+        } else {
+          // 通常浮遊：bobbing + ゆっくり旋回 + 自転
+          const ph = f.phase + t * f.speed;
+          f.mesh.position.y = f.baseY + Math.sin(ph) * 0.35;
+          f.mesh.position.x = f.baseX + Math.cos(ph * 0.6) * f.driftR * 0.4;
+          f.mesh.position.z = f.baseZ + Math.sin(ph * 0.7) * f.driftR * 0.4;
+          f.mesh.rotation.y += f.spinY * dt;
+          f.mesh.rotation.x = Math.sin(ph * 0.4) * 0.12;
+          if (f.glow) {
+            f.glow.position.copy(f.mesh.position);
+          }
+        }
+      }
+    }
+
+    // ── 📜 ページ粒子の毎フレーム更新（PC のみ）──
+    function updatePageParticles(t, dt) {
+      if (!_pageEnabled) return;
+      // たまにスポーン（平均 2.5s に 1 回、最大 12 個まで）
+      _pageSpawnTimer += dt;
+      if (_pageSpawnTimer > 2.5 && pageParticles.length < 12 && floatingBooks.length > 0) {
+        _pageSpawnTimer = 0;
+        const src = floatingBooks[Math.floor(Math.random() * floatingBooks.length)];
+        if (src && src.mesh) {
+          const sprMat = new THREE.SpriteMaterial({
+            map: _pageTex, transparent: true, opacity: 0.95,
+            depthWrite: false, fog: false,
+          });
+          const spr = new THREE.Sprite(sprMat);
+          const s = 0.45 + Math.random() * 0.25;
+          spr.scale.set(s * 0.8, s, 1);
+          spr.position.set(
+            src.mesh.position.x + (Math.random() - 0.5) * 0.4,
+            src.mesh.position.y + (Math.random() - 0.5) * 0.4,
+            src.mesh.position.z + (Math.random() - 0.5) * 0.4
+          );
+          scene.add(spr);
+          pageParticles.push({
+            sprite: spr,
+            vx: (Math.random() - 0.5) * 0.6,
+            vy: 0.3 + Math.random() * 0.4,
+            vz: (Math.random() - 0.5) * 0.6,
+            life: 0,
+            ttl: 3.5 + Math.random() * 1.5,
+            spin: (Math.random() - 0.5) * 1.4,
+          });
+        }
+      }
+      // 既存粒子を更新
+      for (let i = pageParticles.length - 1; i >= 0; i--) {
+        const p = pageParticles[i];
+        p.life += dt;
+        const k = p.life / p.ttl;
+        if (k >= 1) {
+          try { scene.remove(p.sprite); p.sprite.material.dispose(); } catch {}
+          pageParticles.splice(i, 1);
+          continue;
+        }
+        // ふわふわ：横方向に揺れながら上に流れる
+        p.sprite.position.x += (p.vx + Math.sin(t * 1.3 + i * 0.4) * 0.4) * dt;
+        p.sprite.position.y += p.vy * dt;
+        p.sprite.position.z += (p.vz + Math.cos(t * 1.1 + i * 0.5) * 0.4) * dt;
+        p.sprite.material.rotation += p.spin * dt;
+        // 0..0.15 でフェードイン、0.7..1 でフェードアウト
+        const fadeIn = Math.min(1, k / 0.15);
+        const fadeOut = Math.min(1, (1 - k) / 0.30);
+        p.sprite.material.opacity = 0.95 * Math.min(fadeIn, fadeOut);
+      }
+    }
+
+    // ── 🎬 シネマティック intro 設定 ──
+    const introEl = ov.querySelector('#libIntro');
+    const INTRO_DUR = _reduceMotion ? 0.4 : 2.5; // reduce-motion ならほぼ即座
+    let introActive = !_reduceMotion;
+    let introT = 0;
+    // 統計値計算
+    const realPeopleCount = people.filter(p => !p.placeholder).length;
+    const erasUsed = ERAS.filter(e => peopleByEra[e] && peopleByEra[e].some(p => !p.placeholder)).length;
+    const countriesUsed = new Set(people.filter(p => !p.placeholder && p.country).map(p => p.country)).size;
+    // 数字カウントアップ用にターゲット保存
+    if (introEl) {
+      const bookEl = introEl.querySelector('#libIntroBooks');
+      const eraEl  = introEl.querySelector('#libIntroEras');
+      const couEl  = introEl.querySelector('#libIntroCountries');
+      const target = { books: realPeopleCount || allBooks.length, eras: erasUsed || ERAS.length, countries: countriesUsed };
+      // 各テロップが見え始めた瞬間からカウントアップ（CSS の遅延に揃える）
+      const anim = (el, finalVal, delayMs, dur) => {
+        if (!el) return;
+        setTimeout(() => {
+          const start = performance.now();
+          const step = (now) => {
+            const u = Math.min(1, (now - start) / dur);
+            const eased = 1 - Math.pow(1 - u, 3);
+            el.textContent = String(Math.floor(finalVal * eased));
+            if (u < 1) requestAnimationFrame(step);
+            else el.textContent = String(finalVal);
+          };
+          requestAnimationFrame(step);
+        }, delayMs);
+      };
+      if (introActive) {
+        // CSS の遅延（0.15 / 0.55 / 0.95）と揃える
+        anim(bookEl, target.books,     150, 800);
+        anim(eraEl,  target.eras,      550, 700);
+        anim(couEl,  target.countries, 950, 700);
+        // 表示開始
+        requestAnimationFrame(() => introEl.classList.add('active'));
+        introEl.setAttribute('aria-hidden', 'false');
+      } else {
+        introEl.remove();
+      }
+      // スキップボタン
+      const skipBtn = introEl ? introEl.querySelector('#libIntroSkip') : null;
+      if (skipBtn) {
+        skipBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          introT = INTRO_DUR; // 次フレームで終了
+        }, { signal: _libSig });
+      }
+    }
+
+    // ── 通常 tick の前に intro 用ラッパで包む（既存 tick を introTick で wrap）──
+    const _origTick = tick;
+    function introTick(ts) {
+      if (!ov.isConnected) return;
+      if (!introActive) return _origTick(ts);
+      const t = ts / 1000;
+      const dt = Math.min(0.05, (ts - prevTs) / 1000 || 0.016); prevTs = ts;
+      introT += dt;
+      const k = Math.min(1, introT / INTRO_DUR);
+      // 2 段階パス: 0..0.55 で上昇＋見上げ、0.55..1 で目線へ着地
+      let yKey, pitchKey, zKey;
+      if (k < 0.55) {
+        const u = k / 0.55;
+        const eu = u * u * (3 - 2 * u); // smoothstep
+        yKey = 1.7 + (6.0 - 1.7) * eu;
+        pitchKey = 0 + 0.45 * eu;
+        zKey = 28 + (23.0 - 28) * eu;
+      } else {
+        const u = (k - 0.55) / 0.45;
+        const eu = u * u * (3 - 2 * u);
+        yKey = 6.0 + (PLAYER_EYE - 6.0) * eu;
+        pitchKey = 0.45 + (0.04 - 0.45) * eu;
+        zKey = 23.0 + (24.5 - 23.0) * eu;
+      }
+      camera.position.set(0, yKey, zKey);
+      camYaw = 0;
+      camPitch = pitchKey;
+      camEuler.set(camPitch, camYaw, 0, 'YXZ');
+      camera.quaternion.setFromEuler(camEuler);
+      // 浮遊本は intro 中も動く（演出として豪華に）
+      try { updateFloatingBooks(t, dt); } catch {}
+      try { updatePageParticles(t, dt); } catch {}
+      // intro 終了
+      if (k >= 1) {
+        introActive = false;
+        if (introEl) {
+          introEl.classList.remove('active');
+          introEl.classList.add('fading');
+          setTimeout(() => { try { introEl.remove(); } catch {} }, 700);
+        }
+        // プレイヤー位置を整える
+        camera.position.set(0, PLAYER_EYE, 24.5);
+        camPitch = 0.04;
+      }
+      try { renderer.render(scene, camera); } catch {}
+      requestAnimationFrame(introTick);
+    }
+    introTick(0);
 
     window.addEventListener('resize', () => {
       renderer.setSize(W(), H());

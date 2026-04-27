@@ -9694,6 +9694,68 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   .lib-run-btn { display: flex; }
 }
 
+/* 🎬 シネマティック入場演出（最初の 2.5s で全景＋スタッツテロップ） */
+.lib-intro {
+  position: fixed; inset: 0;
+  z-index: 10020;
+  pointer-events: none; /* スキップボタン以外はクリック透過 */
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column;
+  background: radial-gradient(ellipse at center, rgba(10,6,2,0) 0%, rgba(10,6,2,0.55) 100%);
+  opacity: 0; transition: opacity 0.6s ease;
+  font-family: 'Noto Serif JP', serif;
+}
+.lib-intro.active { opacity: 1; }
+.lib-intro.fading { opacity: 0; pointer-events: none; }
+.lib-intro-stats {
+  display: flex; flex-direction: column; gap: 18px;
+  align-items: center;
+  text-shadow: 0 4px 24px rgba(0,0,0,0.85), 0 0 40px rgba(220,180,90,0.25);
+}
+.lib-intro-line {
+  display: flex; align-items: baseline; gap: 14px;
+  color: #ffe8b8;
+  opacity: 0; transform: translateY(14px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.lib-intro.active .lib-intro-l1 { opacity: 1; transform: none; transition-delay: 0.15s; }
+.lib-intro.active .lib-intro-l2 { opacity: 1; transform: none; transition-delay: 0.55s; }
+.lib-intro.active .lib-intro-l3 { opacity: 1; transform: none; transition-delay: 0.95s; }
+.lib-intro-num {
+  font-size: clamp(40px, 8vw, 88px);
+  font-weight: 700;
+  letter-spacing: 4px;
+  background: linear-gradient(180deg, #fff4d0 0%, #d8a850 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-variant-numeric: tabular-nums;
+}
+.lib-intro-unit {
+  font-size: clamp(13px, 1.6vw, 20px);
+  color: #d4b888;
+  letter-spacing: 6px;
+  margin-left: 2px;
+}
+.lib-intro-skip {
+  position: absolute; bottom: 32px; right: 32px;
+  pointer-events: auto;
+  background: rgba(20,12,4,0.78);
+  color: #d4b888;
+  border: 1px solid rgba(220,180,90,0.4);
+  padding: 9px 18px; border-radius: 999px;
+  font-size: 12px; letter-spacing: 3px; cursor: pointer;
+  font-family: inherit;
+  backdrop-filter: blur(6px);
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.lib-intro-skip:hover { background: rgba(60,40,16,0.9); color: #ffe0a0; transform: translateY(-1px); }
+@media (pointer: coarse), (max-width: 900px) {
+  .lib-intro-skip { bottom: 18px; right: 18px; padding: 11px 18px; font-size: 13px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lib-intro, .lib-intro-line { transition-duration: 0.2s; }
+}
+
 /* 📚 検索パネル開閉（デフォルト閉、FABで開く） */
 .lib-search-fab {
   position: fixed; top: 20px; left: 50%;
