@@ -4660,6 +4660,15 @@
         <span class="aff-tag">PR</span></a>
         <img border="0" width="1" height="1" src="https://www14.a8.net/0.gif?a8mat=4B1SPY+9TNI42+32PK+HVV0H" alt="" style="position:absolute;opacity:0">`
     },
+    {
+      id: 'posiwill', ctx: ['business','routines','quiz-end','home-discovery','person-business','beginner','timeline'],
+      mood: '偉人の生き方を読んで自分の軸を考えた瞬間 → プロのキャリアコーチに相談したくなる',
+      html: `<a class="aff-inline" href="https://px.a8.net/svt/ejp?a8mat=4B1SPX+D0K5V6+5H76+64C3L" rel="noopener sponsored nofollow" target="_blank">
+        <span class="aff-icon">🧭</span>
+        <span class="aff-text"><b>自分の軸を見つける</b> — POSIWILL CAREER 無料カウンセリング</span>
+        <span class="aff-tag">PR</span></a>
+        <img border="0" width="1" height="1" src="https://www17.a8.net/0.gif?a8mat=4B1SPX+D0K5V6+5H76+64C3L" alt="" style="position:absolute;opacity:0">`
+    },
   ];
   // 指定文脈に合う広告をランダム選択（日替わりシード）
   MAGIC.pickAffiliates = function(ctx, count = 1, salt = 0) {
