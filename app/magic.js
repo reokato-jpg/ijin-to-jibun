@@ -24362,9 +24362,61 @@
         if ('colorSpace' in t) t.colorSpace = THREE.SRGBColorSpace;
         return t;
       })();
+      // 浮遊本用：小さなカバー/ページのプロシージャルテクスチャを毎回生成（書ごとに色違い）
+      const _makeFltCover = (book) => {
+        const c = document.createElement('canvas'); c.width = 128; c.height = 192;
+        const g = c.getContext('2d');
+        const base = new THREE.Color(book.color);
+        // ベース色（やや暗め）
+        const r=Math.floor(base.r*180), gg=Math.floor(base.g*180), bb=Math.floor(base.b*180);
+        g.fillStyle = `rgb(${r},${gg},${bb})`; g.fillRect(0,0,128,192);
+        // 革テクスチャ風のグラデと縁
+        const grd = g.createRadialGradient(64,96,8,64,96,140);
+        grd.addColorStop(0, `rgba(255,230,180,0.18)`);
+        grd.addColorStop(1, `rgba(0,0,0,0.35)`);
+        g.fillStyle = grd; g.fillRect(0,0,128,192);
+        // 金色の枠（ゴシック装飾）
+        g.strokeStyle = '#c8a040';
+        g.lineWidth = 3;
+        g.strokeRect(6, 8, 116, 176);
+        g.lineWidth = 1;
+        g.strokeRect(11, 13, 106, 166);
+        // 中央メダリオン
+        const mg = g.createRadialGradient(64, 96, 0, 64, 96, 32);
+        mg.addColorStop(0, 'rgba(220,180,80,0.95)');
+        mg.addColorStop(0.6, 'rgba(160,120,40,0.55)');
+        mg.addColorStop(1, 'rgba(160,120,40,0)');
+        g.fillStyle = mg;
+        g.beginPath(); g.arc(64, 96, 30, 0, Math.PI * 2); g.fill();
+        // 中央に小さな「本」アイコン文字（書名風）
+        g.fillStyle = '#fff4c8';
+        g.font = 'bold 14px serif';
+        g.textAlign = 'center'; g.textBaseline = 'middle';
+        g.fillText('✦', 64, 96);
+        const tex = new THREE.CanvasTexture(c);
+        if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace;
+        return tex;
+      };
+      const _makeFltPages = (() => {
+        // 全ての本で共通（クリーム色＋細い水平線）
+        const c = document.createElement('canvas'); c.width = 64; c.height = 64;
+        const g = c.getContext('2d');
+        const grd = g.createLinearGradient(0,0,64,0);
+        grd.addColorStop(0, '#f4ead0');
+        grd.addColorStop(0.5, '#e8dcb8');
+        grd.addColorStop(1, '#d8caa0');
+        g.fillStyle = grd; g.fillRect(0,0,64,64);
+        g.strokeStyle = 'rgba(120,90,40,0.35)';
+        g.lineWidth = 0.4;
+        for (let i = 0; i < 64; i += 1.5) {
+          g.beginPath(); g.moveTo(0, i); g.lineTo(64, i); g.stroke();
+        }
+        const tex = new THREE.CanvasTexture(c);
+        if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace;
+        return tex;
+      })();
       shuffled.forEach((book, i) => {
         // 配置：中央アトリウム（柱と棚を避ける円柱領域）
-        // 中央 12m 半径 / 高さ 4-9m / 中央アイル列 (-22,-7,8,23) と柱(±18,±10)を避ける
         let x, z;
         let attempts = 0;
         do {
@@ -24374,32 +24426,58 @@
           z = Math.sin(ang) * r;
           attempts++;
         } while (attempts < 20 && (
-          // 棚アイルとの干渉
           (Math.abs(z + 18) < 1.6 && Math.abs(x) < 28) ||
           (Math.abs(z + 6)  < 1.6 && Math.abs(x) < 28) ||
           (Math.abs(z - 6)  < 1.6 && Math.abs(x) < 28) ||
           (Math.abs(z - 18) < 1.6 && Math.abs(x) < 28)
         ));
         const y = 4.5 + Math.random() * 4.5;
-        // 本の見た目（背表紙テクスチャを使う）
-        const bookGeo = new THREE.BoxGeometry(0.36, 1.5, 0.24);
+        // 本らしい比率：表紙幅 0.62 × 高さ 0.88 × 厚み（背表紙）0.20
+        const bookGeo = new THREE.BoxGeometry(0.20, 0.88, 0.62);
         const baseColor = new THREE.Color(book.color);
-        const mat = _isMobile
-          ? new THREE.MeshBasicMaterial({ color: baseColor })
-          : new THREE.MeshStandardMaterial({
-              color: 0xffffff, roughness: 0.5,
-              map: makeBookSpineTexture(book),
-              emissive: new THREE.Color(book.color).multiplyScalar(0.3),
-              emissiveIntensity: 0.7,
-            });
-        const mesh = new THREE.Mesh(bookGeo, mat);
+        const baseEmissive = new THREE.Color(book.color).multiplyScalar(0.25);
+        // 6 面マテリアル：左面=背表紙、前後=表紙/裏表紙、上下と右=ページ小口
+        let mats;
+        if (_isMobile) {
+          // モバイル軽量：MeshBasic 単色（背表紙テクスチャは省略）
+          const baseM = new THREE.MeshBasicMaterial({ color: baseColor });
+          mats = baseM; // 全面同じだがサイズで本に見える
+        } else {
+          const spineTex = makeBookSpineTexture(book);
+          const coverTex = _makeFltCover(book);
+          const pagesM = new THREE.MeshStandardMaterial({
+            map: _makeFltPages, roughness: 0.95, metalness: 0.0,
+          });
+          const spineM = new THREE.MeshStandardMaterial({
+            map: spineTex, roughness: 0.6, metalness: 0.05,
+            emissive: baseEmissive, emissiveIntensity: 0.5,
+          });
+          const coverM = new THREE.MeshStandardMaterial({
+            map: coverTex, roughness: 0.55, metalness: 0.1,
+            emissive: baseEmissive, emissiveIntensity: 0.4,
+          });
+          // BoxGeometry のマテリアル順: +x, -x, +y, -y, +z, -z
+          // 幅=0.20(x), 高さ=0.88(y), 表紙幅=0.62(z) → -x:背表紙, +x:小口, +y/-y:小口, +z:表紙, -z:裏表紙
+          mats = [
+            pagesM,                                   // +x 前小口
+            spineM,                                   // -x 背表紙
+            pagesM,                                   // +y 上小口
+            pagesM,                                   // -y 下小口
+            coverM,                                   // +z 表紙
+            new THREE.MeshStandardMaterial({          // -z 裏表紙（少し暗め）
+              map: coverTex, roughness: 0.65, metalness: 0.05,
+              emissive: baseEmissive, emissiveIntensity: 0.25, color: 0xc8c8c8,
+            }),
+          ];
+        }
+        const mesh = new THREE.Mesh(bookGeo, mats);
         mesh.position.set(x, y, z);
         mesh.rotation.set(
-          (Math.random() - 0.5) * 0.5,
+          (Math.random() - 0.5) * 0.4,
           Math.random() * Math.PI * 2,
-          (Math.random() - 0.5) * 0.4
+          (Math.random() - 0.5) * 0.3
         );
-        mesh.userData = { book, baseColor, baseEmissive: new THREE.Color(book.color).multiplyScalar(0.3), originalY: y, isFloatingBook: true };
+        mesh.userData = { book, baseColor, baseEmissive, originalY: y, isFloatingBook: true };
         scene.add(mesh);
         bookMeshes.push(mesh); // 既存のクリック検出に乗せる
         // 下に淡い発光スプライト（魔法感）
