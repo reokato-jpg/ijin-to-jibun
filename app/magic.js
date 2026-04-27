@@ -23745,13 +23745,14 @@
         dragX = e.clientX; dragY = e.clientY;
       }
     });
-    // 🕹 仮想ジョイスティック — こどもパーク方式（pointer events + setPointerCapture + ベース中心基準）
+    // 🕹 仮想ジョイスティック — document level pointerEvents（多指・edge swipe・blur に強い）
     const joy = document.createElement('div');
     joy.className = 'lib-joy';
     joy.innerHTML = '<div class="lib-joy-knob" id="libJoyKnob"></div>';
     ov.appendChild(joy);
     const joyKnob = joy.querySelector('#libJoyKnob');
     let joyActive = false, joyDX = 0, joyDY = 0, joyPid = null;
+    let _joyLastMove = 0;
     const JOY_RADIUS = 44;
     const joyMoveFromEvent = (e) => {
       const r = joy.getBoundingClientRect();
@@ -23762,32 +23763,39 @@
       if (d > JOY_RADIUS) { dx = dx / d * JOY_RADIUS; dy = dy / d * JOY_RADIUS; }
       joyKnob.style.transform = `translate(${dx}px, ${dy}px)`;
       joyDX = dx / JOY_RADIUS; joyDY = dy / JOY_RADIUS;
+      _joyLastMove = performance.now();
     };
-    joy.addEventListener('pointerdown', (e) => {
-      joyActive = true; joyPid = e.pointerId;
-      try { joy.setPointerCapture(e.pointerId); } catch {}
-      joyMoveFromEvent(e);
-      e.preventDefault();
-    });
-    joy.addEventListener('pointermove', (e) => {
-      if (!joyActive || e.pointerId !== joyPid) return;
-      joyMoveFromEvent(e);
-      e.preventDefault();
-    });
-    const joyRelease = (e) => {
-      if (e.pointerId !== joyPid) return;
+    const joyReleaseAll = () => {
       joyActive = false; joyPid = null;
       joyKnob.style.transform = 'translate(0,0)';
       joyDX = joyDY = 0;
     };
-    joy.addEventListener('pointerup', joyRelease);
-    joy.addEventListener('pointercancel', joyRelease);
-    // 旧コード互換用のスタブ（既存の touch listener 登録部分を無害化）
-    const stickStart = () => {}, stickMove = () => {}, stickEnd = () => {};
-    joy.addEventListener('touchend', stickEnd);
-    joy.addEventListener('mousedown', stickStart);
-    window.addEventListener('mousemove', stickMove);
-    window.addEventListener('mouseup', stickEnd);
+    joy.addEventListener('pointerdown', (e) => {
+      // 既に別のpointerが捕まえている場合は無視（指の取り違え防止）
+      if (joyActive && joyPid !== null) return;
+      joyActive = true; joyPid = e.pointerId;
+      joyMoveFromEvent(e);
+      e.preventDefault();
+      e.stopPropagation();
+    });
+    // document level：指が joy 外に出ても追従、画面外イベントも捕捉
+    document.addEventListener('pointermove', (e) => {
+      if (!joyActive || e.pointerId !== joyPid) return;
+      joyMoveFromEvent(e);
+    });
+    document.addEventListener('pointerup', (e) => {
+      if (e.pointerId === joyPid) joyReleaseAll();
+    });
+    document.addEventListener('pointercancel', (e) => {
+      if (e.pointerId === joyPid) joyReleaseAll();
+    });
+    // 安全装置：window blur / visibility 変更でリセット（フォーカス外で stuck 防止）
+    window.addEventListener('blur', joyReleaseAll);
+    document.addEventListener('visibilitychange', () => { if (document.hidden) joyReleaseAll(); });
+    // タイムアウト：300ms 何も来なければリリース扱い（迷子のpointer対策）
+    setInterval(() => {
+      if (joyActive && performance.now() - _joyLastMove > 600) joyReleaseAll();
+    }, 250);
 
     // ── レイキャスト：本のクリック ──
     const raycaster = new THREE.Raycaster();
@@ -24115,36 +24123,52 @@
         // 壁
         nx = Math.max(-HALL_W/2 + 1, Math.min(HALL_W/2 - 1, nx));
         nz = Math.max(-HALL_D/2 + 2, Math.min(HALL_D/2 - 2, nz));
-        // 棚衝突：深くなる移動だけブロック、浅くなる/離れる移動は通す（テレポートしない）
-        for (const sz of aisleZPositions) {
-          const distNew = Math.abs(nz - sz);
-          const distCur = Math.abs(camera.position.z - sz);
-          // 棚の長さ範囲内（X方向）にいるかチェック
-          let inXRange = false;
-          for (const cx of [-22, -7, 8, 23]) {
-            if (nx > cx - 6.5 && nx < cx + 6.5) { inXRange = true; break; }
-          }
-          if (inXRange && distNew < 1.0 && distNew < distCur) {
-            // 棚に近づく方向の移動はブロック
-            nz = camera.position.z;
-          }
-        }
-        // 机衝突：同じく「深くなる移動だけブロック」
-        for (const [dx, dz] of deskPositions) {
-          const inXNew = Math.abs(nx - dx) < 1.8;
-          const inZNew = Math.abs(nz - dz) < 1.2;
-          const inXCur = Math.abs(camera.position.x - dx) < 1.8;
-          const inZCur = Math.abs(camera.position.z - dz) < 1.2;
-          if (inXNew && inZNew) {
-            // 既に内部にいたら離れる方向だけ許可
-            if (inXCur && inZCur) {
-              if (Math.abs(nx - dx) < Math.abs(camera.position.x - dx)) nx = camera.position.x;
-              if (Math.abs(nz - dz) < Math.abs(camera.position.z - dz)) nz = camera.position.z;
-            } else {
-              // 外から侵入を防ぐ
-              nx = camera.position.x; nz = camera.position.z;
+        // 🏛 1F のみ：中央アイル棚と机の衝突
+        const eyeY = camera.position.y - PLAYER_EYE;
+        const isOn1F = eyeY < FLOOR_2_Y - 1.5;
+        if (isOn1F) {
+          for (const sz of aisleZPositions) {
+            const distNew = Math.abs(nz - sz);
+            const distCur = Math.abs(camera.position.z - sz);
+            let inXRange = false;
+            for (const cx of [-22, -7, 8, 23]) {
+              if (nx > cx - 6.5 && nx < cx + 6.5) { inXRange = true; break; }
             }
-            break;
+            if (inXRange && distNew < 1.0 && distNew < distCur) {
+              nz = camera.position.z;
+            }
+          }
+          for (const [dx, dz] of deskPositions) {
+            const inXNew = Math.abs(nx - dx) < 1.8;
+            const inZNew = Math.abs(nz - dz) < 1.2;
+            const inXCur = Math.abs(camera.position.x - dx) < 1.8;
+            const inZCur = Math.abs(camera.position.z - dz) < 1.2;
+            if (inXNew && inZNew) {
+              if (inXCur && inZCur) {
+                if (Math.abs(nx - dx) < Math.abs(camera.position.x - dx)) nx = camera.position.x;
+                if (Math.abs(nz - dz) < Math.abs(camera.position.z - dz)) nz = camera.position.z;
+              } else {
+                nx = camera.position.x; nz = camera.position.z;
+              }
+              break;
+            }
+          }
+        } else {
+          // 🏛 2F/3F：メザニン中央吹き抜けへの落下防止
+          const balconyDepth = 4.5;
+          const innerN = -HALL_D/2 + balconyDepth + 0.8;
+          const innerS =  HALL_D/2 - balconyDepth - 0.8;
+          const innerW = -HALL_W/2 + balconyDepth + 0.8;
+          const innerE =  HALL_W/2 - balconyDepth - 0.8;
+          // メザニン上の有効領域 = 4辺のいずれかの帯
+          const onN = nz <= innerN;
+          const onS = nz >= innerS;
+          const onW = nx <= innerW;
+          const onE = nx >= innerE;
+          if (!(onN || onS || onW || onE)) {
+            // 中央吹き抜けに踏み込んだ → 直前位置に戻す（自然な押し戻し）
+            nx = camera.position.x;
+            nz = camera.position.z;
           }
         }
         camera.position.x = nx;
