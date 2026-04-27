@@ -23186,45 +23186,56 @@
         trim.rotation.y = Math.atan2(dx, dz);
         scene.add(trim);
       }
-      // 🛡 手すり＋側壁（両側、落下防止）
-      const stairLen = Math.hypot(endX - startX, endZ - startZ);
-      const railHeight = 1.0;
-      const yawAng = Math.atan2(dx, dz);
-      const pitchAng = Math.atan2(dy, Math.hypot(dx, dz));
+      // 🛡 手すり＋側壁（行列ベース：階段の傾斜に沿って正確に整列）
       const goldRailMat = new THREE.MeshStandardMaterial({ color: 0xc8a040, metalness: 0.9, roughness: 0.3, emissive: 0x4a3008, emissiveIntensity: 0.5 });
       const wallMat2 = new THREE.MeshStandardMaterial({ color: 0x3a2618, roughness: 0.8 });
-      [-1.4, 1.4].forEach(side => {
-        // 中央位置（傾斜方向）
-        const midX = (startX + endX) / 2 + side * Math.cos(yawAng);
-        const midZ = (startZ + endZ) / 2 - side * Math.sin(yawAng);
-        const midY = (fromY + toY) / 2;
-        // 側壁（パラペット）— 落下防止の本体
-        const sideWall = new THREE.Mesh(
-          new THREE.BoxGeometry(0.18, 0.85, stairLen),
-          wallMat2
-        );
-        sideWall.position.set(midX, midY + 0.45, midZ);
-        sideWall.rotation.y = yawAng;
-        sideWall.rotation.x = pitchAng;
-        scene.add(sideWall);
-        // 側壁の上の金トリム
-        const wallTrim = new THREE.Mesh(
-          new THREE.BoxGeometry(0.22, 0.06, stairLen),
-          goldRailMat
-        );
-        wallTrim.position.set(midX, midY + 0.88, midZ);
-        wallTrim.rotation.y = yawAng;
-        wallTrim.rotation.x = pitchAng;
-        scene.add(wallTrim);
-        // 上の手すりバー（つかむ用）
-        const rail = new THREE.Mesh(
-          new THREE.BoxGeometry(0.1, 0.12, stairLen),
-          goldRailMat
-        );
-        rail.position.set(midX, midY + railHeight, midZ);
-        rail.rotation.y = yawAng;
-        rail.rotation.x = pitchAng;
-        scene.add(rail);
+      const woodMat2 = new THREE.MeshStandardMaterial({ color: 0x6a4828, roughness: 0.7 });
+      const lengthVec3 = new THREE.Vector3(endX - startX, toY - fromY, endZ - startZ);
+      const lengthLen3 = lengthVec3.length();
+      const lengthAxis = lengthVec3.clone().normalize();          // Z=length
+      const sideAxis = new THREE.Vector3(-((endZ - startZ) / Math.hypot(endX - startX, endZ - startZ)),
+                                          0,
+                                          (endX - startX) / Math.hypot(endX - startX, endZ - startZ));
+      const localUp = new THREE.Vector3().crossVectors(sideAxis, lengthAxis).normalize();
+      const stairCenter = new THREE.Vector3((startX + endX) / 2, (fromY + toY) / 2, (startZ + endZ) / 2);
+      const SIDE_OFFSET2 = 1.45;
+      function placeOnStair(mesh, sideSign, upDist) {
+        const m = new THREE.Matrix4().makeBasis(sideAxis, localUp, lengthAxis);
+        const pos = stairCenter.clone()
+          .add(sideAxis.clone().multiplyScalar(sideSign * SIDE_OFFSET2))
+          .add(localUp.clone().multiplyScalar(upDist));
+        m.setPosition(pos);
+        mesh.matrixAutoUpdate = false;
+        mesh.matrix.copy(m);
+      }
+      [-1, 1].forEach(sideSign => {
+        // 側壁（パラペット）— 階段に沿って傾斜
+        const wall = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.85, lengthLen3), wallMat2);
+        placeOnStair(wall, sideSign, 0.45); scene.add(wall);
+        // 上の手すり（木）
+        const handrail = new THREE.Mesh(new THREE.BoxGeometry(0.20, 0.10, lengthLen3), woodMat2);
+        placeOnStair(handrail, sideSign, 0.95); scene.add(handrail);
+        // 金縁トリム
+        const trim = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.05, lengthLen3), goldRailMat);
+        placeOnStair(trim, sideSign, 1.03); scene.add(trim);
+        // 柵柱（vertical balusters）— 5本、ワールドY軸の縦
+        for (let p = 0; p < 5; p++) {
+          const t01 = p / 4;
+          const along = lengthAxis.clone().multiplyScalar(lengthLen3 * (t01 - 0.5));
+          const sideOff = sideAxis.clone().multiplyScalar(sideSign * SIDE_OFFSET2);
+          const baseOnStair = stairCenter.clone().add(along).add(sideOff);
+          // baseOnStairは段板表面、ここから真上にlocalUp 0.85m
+          const baseTop = baseOnStair.clone().add(localUp.clone().multiplyScalar(0.85));
+          const post = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.025, 0.025, 0.85, 8),
+            new THREE.MeshStandardMaterial({ color: 0x8a6020, metalness: 0.5, roughness: 0.4 })
+          );
+          // 柱は世界Y軸縦に立つ：位置を baseOnStair と baseTop の中間、Y軸縦
+          post.position.set((baseOnStair.x + baseTop.x) / 2, (baseOnStair.y + baseTop.y) / 2, (baseOnStair.z + baseTop.z) / 2);
+          // 柱は localUp に沿って回転（垂直に近い）
+          post.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), localUp);
+          scene.add(post);
+        }
       });
     }
 
@@ -24104,46 +24115,35 @@
         // 壁
         nx = Math.max(-HALL_W/2 + 1, Math.min(HALL_W/2 - 1, nx));
         nz = Math.max(-HALL_D/2 + 2, Math.min(HALL_D/2 - 2, nz));
-        // 棚（4列のZ位置に対し +/- 1.0以内なら入れない）
-        // 🆘 既に内部にハマっているときは脱出を許可（押し戻し）
+        // 棚衝突：深くなる移動だけブロック、浅くなる/離れる移動は通す（テレポートしない）
         for (const sz of aisleZPositions) {
-          const currentInZ = Math.abs(camera.position.z - sz) < 1.0;
-          const nextInZ    = Math.abs(nz - sz) < 1.0;
-          if (nextInZ && !currentInZ) {
-            // 各セグメント中心: -22, -7, 8, 23, 長さ 12 → 半長 6
-            for (const cx of [-22, -7, 8, 23]) {
-              if (nx > cx - 6.5 && nx < cx + 6.5) {
-                nz = camera.position.z; // Z移動拒否（侵入を防ぐ）
-                break;
-              }
-            }
-          } else if (nextInZ && currentInZ) {
-            // 既に内部 → 脱出方向（|nz-sz| が大きくなる方向）を優先して移動
-            // 現在より棚から離れる方向の移動はそのまま許可
-            // それ以上に深く入り込むなら止める
-            if (Math.abs(nz - sz) < Math.abs(camera.position.z - sz) - 0.001) {
-              // より浅くなっている → そのまま
-            } else {
-              // 同じ深さか深くなる → 棚の外へ自動的に押し出す
-              const escapeDir = (camera.position.z - sz) >= 0 ? 1 : -1;
-              nz = sz + escapeDir * 1.05;
-            }
+          const distNew = Math.abs(nz - sz);
+          const distCur = Math.abs(camera.position.z - sz);
+          // 棚の長さ範囲内（X方向）にいるかチェック
+          let inXRange = false;
+          for (const cx of [-22, -7, 8, 23]) {
+            if (nx > cx - 6.5 && nx < cx + 6.5) { inXRange = true; break; }
+          }
+          if (inXRange && distNew < 1.0 && distNew < distCur) {
+            // 棚に近づく方向の移動はブロック
+            nz = camera.position.z;
           }
         }
-        // 机（複数、各机 x=±12,±4, z=0, 半幅 1.7）— 押し戻し付き
+        // 机衝突：同じく「深くなる移動だけブロック」
         for (const [dx, dz] of deskPositions) {
-          const curInDesk = Math.abs(camera.position.x - dx) < 1.8 && Math.abs(camera.position.z - dz) < 1.2;
-          const nextInDesk = Math.abs(nx - dx) < 1.8 && Math.abs(nz - dz) < 1.2;
-          if (nextInDesk && !curInDesk) {
-            nx = camera.position.x; nz = camera.position.z;
-            break;
-          } else if (nextInDesk && curInDesk) {
-            // ハマっていたら最寄り境界へ押し出し
-            const ex = (camera.position.x - dx) >= 0 ? dx + 1.85 : dx - 1.85;
-            const ez = (camera.position.z - dz) >= 0 ? dz + 1.25 : dz - 1.25;
-            // どちらか近い方へ
-            if (Math.abs(camera.position.x - ex) < Math.abs(camera.position.z - ez)) nx = ex;
-            else nz = ez;
+          const inXNew = Math.abs(nx - dx) < 1.8;
+          const inZNew = Math.abs(nz - dz) < 1.2;
+          const inXCur = Math.abs(camera.position.x - dx) < 1.8;
+          const inZCur = Math.abs(camera.position.z - dz) < 1.2;
+          if (inXNew && inZNew) {
+            // 既に内部にいたら離れる方向だけ許可
+            if (inXCur && inZCur) {
+              if (Math.abs(nx - dx) < Math.abs(camera.position.x - dx)) nx = camera.position.x;
+              if (Math.abs(nz - dz) < Math.abs(camera.position.z - dz)) nz = camera.position.z;
+            } else {
+              // 外から侵入を防ぐ
+              nx = camera.position.x; nz = camera.position.z;
+            }
             break;
           }
         }
