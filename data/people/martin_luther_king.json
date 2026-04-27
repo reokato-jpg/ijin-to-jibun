@@ -1,0 +1,262 @@
+{
+  "id": "martin_luther_king",
+  "name": "マーティン・ルーサー・キング・ジュニア",
+  "nameEn": "Martin Luther King Jr.",
+  "birth": 1929,
+  "death": 1968,
+  "country": "アメリカ",
+  "field": "牧師・公民権運動指導者",
+  "summary": "アラバマ州モンゴメリーのバスボイコットから全米を揺るがす公民権運動を非暴力で導いたバプテスト派牧師。「I Have a Dream」演説と公民権法成立を実現し、1964年にノーベル平和賞。1968年メンフィスで暗殺。",
+  "wikiTitle": "マーティン・ルーサー・キング・ジュニア",
+  "events": [
+    {
+      "year": 1929,
+      "age": 0,
+      "title": "アトランタで生まれる",
+      "detail": "父も牧師。バプテスト教会の家庭。",
+      "tags": []
+    },
+    {
+      "year": 1948,
+      "age": 19,
+      "title": "モアハウス大学卒業",
+      "detail": "黒人初の大統領を志したが、父の影響で牧師の道へ。",
+      "tags": []
+    },
+    {
+      "year": 1955,
+      "age": 26,
+      "title": "ボストン大学で神学博士",
+      "detail": "ガンジーの非暴力思想に深く傾倒した時期。",
+      "tags": []
+    },
+    {
+      "year": 1955,
+      "age": 26,
+      "title": "モンゴメリー・バスボイコット指導",
+      "detail": "ローザ・パークスがバスで席を譲らず逮捕された事件を契機に、381日のボイコット運動を組織。最高裁がバスの人種隔離を違憲と判断。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1957,
+      "age": 28,
+      "title": "南部キリスト教指導者会議（SCLC）設立",
+      "detail": "公民権運動の中核組織を結成。「非暴力こそ最も強い武器」を理念に。",
+      "tags": []
+    },
+    {
+      "year": 1963,
+      "age": 34,
+      "title": "バーミングハム監獄からの手紙",
+      "detail": "獄中から「正義への怠慢は不正義に加担すること」と書いた手紙。世界中で読まれる名文。",
+      "tags": [
+        "isolation"
+      ]
+    },
+    {
+      "year": 1963,
+      "age": 34,
+      "title": "ワシントン大行進・I Have a Dream演説",
+      "detail": "リンカーン記念堂前で25万人を前に演説。「私には夢がある — 私の4人の子供たちが、肌の色ではなく人格で評価される国に住む日が来る夢が」。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1964,
+      "age": 35,
+      "title": "公民権法成立 / ノーベル平和賞",
+      "detail": "ジョンソン大統領が公民権法に署名。同年、史上最年少（当時）のノーベル平和賞受賞者に。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1965,
+      "age": 36,
+      "title": "セルマ大行進",
+      "detail": "投票権獲得を求めアラバマ州セルマからモンゴメリーまで88kmを行進。これを受け投票権法成立。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1967,
+      "age": 38,
+      "title": "ベトナム戦争反対演説",
+      "detail": "「公民権運動に集中しろ」と批判されるなか、ニューヨークのリバーサイド教会で反戦を表明。FBIの監視はますます厳しくなった。",
+      "tags": [
+        "self_denial"
+      ]
+    },
+    {
+      "year": 1968,
+      "age": 39,
+      "title": "メンフィスで暗殺",
+      "detail": "清掃労働者ストライキ支援のため訪問していたモーテルのバルコニーで、ジェームズ・アール・レイに撃たれて死去。前夜の演説『私は山頂に登った』が遺言となった。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "I have a dream that my four little children will one day live in a nation where they will not be judged by the color of their skin but by the content of their character.",
+      "source": "I Have a Dream 演説 1963"
+    },
+    {
+      "text": "私には夢がある — 私の4人の子供たちが、肌の色ではなく人格で評価される国に住む日が来る夢が。",
+      "source": "I Have a Dream 演説 1963"
+    },
+    {
+      "text": "Darkness cannot drive out darkness; only light can do that. Hate cannot drive out hate; only love can do that.",
+      "source": "Strength to Love 1963"
+    },
+    {
+      "text": "闇は闇を追い払えない。光だけがそれをできる。憎しみは憎しみを追い払えない。愛だけがそれをできる。",
+      "source": "Strength to Love 1963"
+    },
+    {
+      "text": "Injustice anywhere is a threat to justice everywhere.",
+      "source": "バーミングハム監獄からの手紙 1963"
+    },
+    {
+      "text": "どこかで起こる不正義は、あらゆる場所の正義への脅威である。",
+      "source": "バーミングハム監獄からの手紙 1963"
+    },
+    {
+      "text": "Our lives begin to end the day we become silent about things that matter.",
+      "source": "演説"
+    },
+    {
+      "text": "本当に大切なことについて沈黙し始めた日、私たちの人生は終わり始める。",
+      "source": "演説"
+    },
+    {
+      "text": "The arc of the moral universe is long, but it bends toward justice.",
+      "source": "演説"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/martin_luther_king.webp",
+  "books": [
+    {
+      "title": "私には夢がある M・L・キング説教・講演集",
+      "author": "マーティン・ルーサー・キング",
+      "description": "代表的な演説・説教を集成。"
+    },
+    {
+      "title": "汝の敵を愛せよ",
+      "author": "マーティン・ルーサー・キング",
+      "description": "Strength to Love 邦訳。非暴力哲学の核心。"
+    },
+    {
+      "title": "黒人はなぜ待てないか",
+      "author": "マーティン・ルーサー・キング",
+      "description": "バーミングハム監獄からの手紙を含む論考集。"
+    }
+  ],
+  "media": [
+    {
+      "title": "セルマ",
+      "year": 2014,
+      "type": "movie",
+      "country": "アメリカ",
+      "director": "エイヴァ・デュヴァーネイ",
+      "cast": "デヴィッド・オイェロウォ",
+      "description": "セルマ大行進を描いた伝記映画。"
+    }
+  ],
+  "works": [],
+  "birthMonth": 1,
+  "birthDay": 15,
+  "deathMonth": 4,
+  "deathDay": 4,
+  "lifeDigest": "アメリカの公民権運動指導者。ガンジーに学んだ非暴力直接行動を武器に、バスボイコット・ワシントン大行進・セルマ行進を指導し、公民権法・投票権法を実現。1968年メンフィスで暗殺。誕生日（1月の第3月曜日）は連邦祝日。",
+  "traits": {
+    "foods": [
+      "フライドチキン",
+      "ピーチパイ"
+    ],
+    "hobbies": [
+      "ジャズ鑑賞",
+      "ビリヤード"
+    ],
+    "personality": "雄弁・忍耐・恐怖を内側に抱えながら表に出さない。FBI による監視・脅迫・盗聴の中で活動を続けた。",
+    "likes": [
+      "ガンジー",
+      "ヘンリー・D・ソロー",
+      "リンカーン"
+    ],
+    "dislikes": [
+      "暴力",
+      "沈黙する穏健派"
+    ]
+  },
+  "relations": [
+    {
+      "id": "gandhi",
+      "name": "マハトマ・ガンジー",
+      "relation": "思想的師",
+      "note": "直接会ってはいないが、非暴力思想を全面的に受け継いだ。"
+    },
+    {
+      "name": "ローザ・パークス",
+      "relation": "公民権運動の同志",
+      "note": "彼女の逮捕がモンゴメリー・バスボイコットの引き金。"
+    },
+    {
+      "name": "マルコムX",
+      "relation": "対照的な同時代人",
+      "note": "暴力も辞さない姿勢で対立したが、晩年は近づいた。"
+    },
+    {
+      "name": "リンドン・B・ジョンソン大統領",
+      "relation": "公民権法の協力者"
+    },
+    {
+      "name": "コレッタ・スコット・キング",
+      "relation": "妻",
+      "note": "暗殺後も公民権運動を継続。"
+    }
+  ],
+  "innerConflicts": [
+    {
+      "title": "暗殺の予感と FBI の監視",
+      "period": "1956〜1968",
+      "body": "自宅爆破未遂・刺傷事件（1958）・無数の脅迫状を受け、FBI 長官フーヴァーによる盗聴・スキャンダル工作にさらされ続けた。「私は長く生きないだろう」と妻に何度も語った。死の前夜の演説『私は山頂に登った』には、自分が約束の地（人種平等）に辿り着けないという覚悟が滲む。"
+    },
+    {
+      "title": "ベトナム戦争反対で運動内部から孤立",
+      "period": "1967〜1968",
+      "body": "公民権運動を支持してきたジョンソン大統領と公然と決別する反戦演説を行い、運動内部からも「公民権に集中せよ」と批判された。彼にとって正義は分けられないものだった。「黒人が殺人者として戦地に送られ、ベトナム人が殺される。これを見過ごせない」。"
+    }
+  ],
+  "turningPoints": [
+    {
+      "year": 1955,
+      "title": "モンゴメリーで381日のバスボイコット",
+      "body": "26歳の若き牧師がスポット的にスポークスマンを引き受けたら、381日続く全米注目の運動になった。最高裁判決でバスの人種隔離が違憲となり、彼は公民権運動の顔となる。"
+    },
+    {
+      "year": 1963,
+      "title": "I Have a Dream — 25万人を動かした即興演説",
+      "body": "原稿を準備していたが、途中でゴスペル歌手マヘリア・ジャクソンの「あなたの夢を語って！」の声に応え即興で語り出した。「私には夢がある」のフレーズは原稿になかった。"
+    }
+  ],
+  "unknownStories": [
+    {
+      "title": "ノーベル賞金54000ドルを全額運動に寄付",
+      "body": "1964年のノーベル平和賞賞金を、公民権運動の各団体に分配。自身は車も家も質素なまま生涯を終えた。妻コレッタは「夫は私的所有を増やすことに興味がなかった」と回想。"
+    },
+    {
+      "title": "獄中で書いた手紙が紙ナプキンと新聞の余白",
+      "body": "バーミングハム監獄では筆記用具を取り上げられたため、看守の目を盗んで新聞の余白・トイレットペーパー・紙ナプキンに少しずつ手紙を書き、弁護士が密かに持ち出した。これが歴史的名文「バーミングハム監獄からの手紙」になった。"
+    }
+  ],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Martin_Luther_King%2C_Jr..jpg?width=500"
+}
