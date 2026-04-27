@@ -25454,7 +25454,7 @@
 
     // ── 🎬 シネマティック intro 設定 ──
     const introEl = ov.querySelector('#libIntro');
-    const INTRO_DUR = _reduceMotion ? 0.4 : 2.5; // reduce-motion ならほぼ即座
+    const INTRO_DUR = _reduceMotion ? 0.4 : 2.4; // reduce-motion ならほぼ即座
     let introActive = !_reduceMotion;
     let introT = 0;
     // 統計値計算
@@ -25512,20 +25512,21 @@
       const dt = Math.min(0.05, (ts - prevTs) / 1000 || 0.016); prevTs = ts;
       introT += dt;
       const k = Math.min(1, introT / INTRO_DUR);
-      // 2 段階パス: 0..0.55 で上昇＋見上げ、0.55..1 で目線へ着地
-      let yKey, pitchKey, zKey;
-      if (k < 0.55) {
-        const u = k / 0.55;
+      // 演出パス：カメラの高さは終始 PLAYER_EYE（落下感ゼロ）
+      // 0..0.5  ピッチを 0 → 0.50（天井を見上げて巨大さを実感）+ ゆっくり前進
+      // 0.5..1  ピッチを 0.50 → 0.05（自然に視線を戻す）+ さらに少し前進
+      let yKey = PLAYER_EYE;
+      let pitchKey, zKey;
+      if (k < 0.5) {
+        const u = k / 0.5;
         const eu = u * u * (3 - 2 * u); // smoothstep
-        yKey = 1.7 + (6.0 - 1.7) * eu;
-        pitchKey = 0 + 0.45 * eu;
-        zKey = 28 + (23.0 - 28) * eu;
+        pitchKey = 0 + 0.50 * eu;
+        zKey = 28 + (25.5 - 28) * eu;
       } else {
-        const u = (k - 0.55) / 0.45;
+        const u = (k - 0.5) / 0.5;
         const eu = u * u * (3 - 2 * u);
-        yKey = 6.0 + (PLAYER_EYE - 6.0) * eu;
-        pitchKey = 0.45 + (0.04 - 0.45) * eu;
-        zKey = 23.0 + (24.5 - 23.0) * eu;
+        pitchKey = 0.50 + (0.05 - 0.50) * eu;
+        zKey = 25.5 + (24.5 - 25.5) * eu;
       }
       camera.position.set(0, yKey, zKey);
       camYaw = 0;
@@ -25543,9 +25544,9 @@
           introEl.classList.add('fading');
           setTimeout(() => { try { introEl.remove(); } catch {} }, 700);
         }
-        // プレイヤー位置を整える
+        // プレイヤー位置を整える（高さは既に PLAYER_EYE のまま）
         camera.position.set(0, PLAYER_EYE, 24.5);
-        camPitch = 0.04;
+        camPitch = 0.05;
       }
       try { renderer.render(scene, camera); } catch {}
       requestAnimationFrame(introTick);
