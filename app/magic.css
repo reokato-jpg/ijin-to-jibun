@@ -9419,29 +9419,56 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   pointer-events: auto;
   touch-action: none;
 }
-/* 右下：視線回転エリア（透明、ドラッグで視点） */
+/* 右下：視線パッド（モバイル用、両親指操作）— JS が --lkx/--lky で knob 位置を制御 */
 .lib-look {
   position: fixed; bottom: 24px; right: 24px;
   width: 130px; height: 130px;
   border-radius: 50%;
-  background: rgba(20,12,4,0.30);
-  border: 2px dashed rgba(120,200,255,0.35);
+  background: rgba(20,12,4,0.36);
+  border: 2px dashed rgba(120,200,255,0.4);
   backdrop-filter: blur(6px);
   z-index: 10010;
   pointer-events: auto;
   touch-action: none;
   display: flex; align-items: center; justify-content: center;
   color: rgba(140,200,255,0.55);
-  font-size: 11px; letter-spacing: 1.5px;
+  font-size: 10px; letter-spacing: 2px;
   user-select: none;
+  --lkx: 0px; --lky: 0px;
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 .lib-look::before {
+  /* 視線アイコン（中央背景） */
   content: '👁'; position: absolute;
-  font-size: 20px; opacity: 0.5;
+  font-size: 20px; opacity: 0.4;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
 }
+.lib-look::after {
+  /* 動く knob（JS が --lkx/--lky を更新）— 暖色基調に統一 */
+  content: '';
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 44px; height: 44px;
+  margin-left: -22px; margin-top: -22px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, rgba(255,236,200,0.92), rgba(160,120,70,0.7));
+  border: 1px solid rgba(255,224,160,0.55);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.45), inset 0 1px 2px rgba(255,255,255,0.3);
+  transform: translate(var(--lkx), var(--lky));
+  pointer-events: none;
+  transition: transform 0.08s ease-out;
+}
+.lib-look.active {
+  background: rgba(20,40,60,0.55);
+  border-color: rgba(180,220,255,0.7);
+}
+.lib-look.active::before { opacity: 0.15; }
+.lib-look.active::after { transition: none; }
 .lib-look-label {
-  position: absolute; bottom: 18px;
-  font-size: 9px;
+  position: absolute; bottom: 14px;
+  font-size: 9px; opacity: 0.7;
+  pointer-events: none;
 }
 .lib-joy-knob {
   position: absolute; left: 50%; top: 50%;
@@ -9452,6 +9479,150 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   border: 1px solid rgba(255,224,160,0.6);
   box-shadow: 0 4px 8px rgba(0,0,0,0.5);
   pointer-events: none;
+}
+
+/* 🏛 入口に戻るボタン（右上、close の左） */
+.lib-home-btn {
+  position: fixed; top: 22px; right: 76px;
+  z-index: 10011;
+  background: rgba(20,12,4,0.82);
+  border: 1px solid rgba(220,180,90,0.5);
+  color: #ffe0a0;
+  padding: 8px 14px; border-radius: 999px;
+  font-size: 12px; letter-spacing: 0.18em;
+  min-height: 36px; cursor: pointer;
+  font-family: 'Shippori Mincho', 'Noto Serif JP', serif;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.4);
+  transition: all 0.2s ease;
+}
+.lib-home-btn:hover {
+  background: rgba(60,40,16,0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(0,0,0,0.5);
+}
+.lib-home-btn:active { transform: translateY(0); }
+
+/* 🔇 ミュートボタン（home の左） — ambient drone を停止/再開 */
+.lib-mute-btn {
+  position: fixed; top: 22px; right: 168px;
+  z-index: 10011;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: rgba(20,12,4,0.82);
+  border: 1px solid rgba(220,180,90,0.5);
+  color: #ffe0a0;
+  font-size: 14px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Shippori Mincho', 'Noto Serif JP', serif;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.4);
+  transition: all 0.2s ease;
+}
+.lib-mute-btn:hover { background: rgba(60,40,16,0.9); }
+.lib-mute-btn.muted { color: #a08060; opacity: 0.7; }
+
+/* 📍 現在地表示（中央上、検索 FAB の下） */
+.lib-loc {
+  position: fixed; top: 64px; left: 50%; transform: translateX(-50%);
+  z-index: 10009;
+  background: rgba(20,12,4,0.78);
+  border: 1px solid rgba(220,180,90,0.4);
+  color: #ffe0a0;
+  padding: 4px 14px;
+  border-radius: 999px;
+  font-size: 11px; letter-spacing: 0.22em;
+  font-family: 'Shippori Mincho', 'Noto Serif JP', serif;
+  backdrop-filter: blur(6px);
+  display: flex; align-items: baseline; gap: 10px;
+  pointer-events: none;
+  user-select: none;
+  transition: opacity 0.3s;
+}
+.lib-loc-floor {
+  font-weight: 700;
+  font-size: 14px;
+  color: #fff0c0;
+  letter-spacing: 0.12em;
+}
+.lib-loc-area {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  opacity: 0.85;
+}
+
+/* ⚡ 走るボタン（モバイル用、視線パッドの上＝右親指で押せる位置） */
+.lib-run-btn {
+  position: fixed; bottom: 184px; right: 24px;
+  z-index: 10010;
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: rgba(20,12,4,0.55);
+  border: 2px solid rgba(220,180,90,0.5);
+  color: #ffe0a0;
+  font-size: 22px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.45);
+  pointer-events: auto;
+  touch-action: none;
+  user-select: none;
+  transition: all 0.12s ease;
+}
+.lib-run-btn:hover { background: rgba(60,40,16,0.7); }
+.lib-run-btn.active {
+  background: rgba(220,180,90,0.85);
+  color: #2a1808;
+  border-color: #ffe0a0;
+  box-shadow: 0 0 16px rgba(255,200,120,0.5), 0 3px 10px rgba(0,0,0,0.45);
+  transform: scale(0.97);
+}
+.lib-run-btn:focus-visible {
+  outline: 2px solid #ffe0a0;
+  outline-offset: 2px;
+}
+
+/* 📖 開くボタン（中央レチクルが本に当たっている時のみ表示） */
+.lib-open-btn {
+  position: fixed;
+  bottom: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10011;
+  max-width: min(60vw, 280px);
+  background: rgba(50,28,10,0.85);
+  border: 2px solid #c8a040;
+  color: #ffe0a0;
+  padding: 12px 22px;
+  border-radius: 999px;
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  font-family: 'Shippori Mincho', 'Noto Serif JP', serif;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.55), 0 0 24px rgba(220,180,90,0.28);
+  pointer-events: auto;
+  display: flex; align-items: center; gap: 6px;
+  animation: libOpenBtnPulse 2.4s ease-in-out 3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lib-open-btn[hidden] { display: none !important; }
+.lib-open-btn:hover {
+  background: linear-gradient(180deg, rgba(100,55,16,0.97), rgba(50,25,6,0.97));
+  border-color: #ffe0a0;
+  transform: translateX(-50%) translateY(-2px);
+}
+.lib-open-btn:active { transform: translateX(-50%) translateY(0); }
+.lib-open-btn-name {
+  color: #fff0c0;
+  font-weight: 600;
+}
+@keyframes libOpenBtnPulse {
+  0%, 100% { box-shadow: 0 4px 16px rgba(0,0,0,0.55), 0 0 24px rgba(220,180,90,0.25); }
+  50% { box-shadow: 0 4px 16px rgba(0,0,0,0.55), 0 0 32px rgba(220,180,90,0.5); }
 }
 .library-overlay::before {
   /* 中央レチクル（クリック対象） */
@@ -9489,9 +9660,9 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   100% { opacity: 0; transform: translate(-50%, -60%); }
 }
 
-/* 操作ヒント */
+/* 操作ヒント（PC / モバイル切替） */
 .lib-controls-hint {
-  position: fixed; bottom: 24px; left: 24px;
+  position: fixed; bottom: 24px;
   background: rgba(20,12,4,0.55);
   color: #d4b888; padding: 8px 14px;
   border: 1px solid rgba(220,180,90,0.3);
@@ -9499,8 +9670,28 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   letter-spacing: 1.5px;
   pointer-events: none; z-index: 10009;
 }
-@media (max-width: 640px) {
-  .lib-controls-hint { display: none; }
+.lib-hint-pc { left: 50%; transform: translateX(-50%); bottom: 14px; }
+.lib-hint-mobile {
+  display: none;
+  left: 50%; transform: translateX(-50%);
+  bottom: 6px;
+  font-size: 10px;
+  letter-spacing: 1.2px;
+  padding: 5px 10px;
+  background: rgba(20,12,4,0.7);
+  white-space: nowrap;
+}
+@media (pointer: coarse), (max-width: 900px) {
+  .lib-hint-pc { display: none; }
+  .lib-hint-mobile { display: block; }
+}
+
+/* 🕹 モバイル UI（joy / look / run）はタッチ環境のみ表示 */
+.lib-joy, .lib-look, .lib-run-btn { display: none; }
+@media (pointer: coarse), (max-width: 900px) {
+  .lib-joy { display: block; }
+  .lib-look { display: flex; }
+  .lib-run-btn { display: flex; }
 }
 
 /* 📚 検索パネル開閉（デフォルト閉、FABで開く） */
@@ -9721,8 +9912,7 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   text-shadow: 0 0 8px rgba(120,200,232,0.55) !important;
 }
 
-/* 視線パッド廃止（ドラッグ視点のみ） */
-.lib-look { display: none !important; }
+/* 視線パッド：display 制御は 9661 行のメインルールで行う（ここはレガシー削除済み） */
 
 /* ============================================================
    🦒 動物ストーリーオーバーレイ（自然モード時、構成作家の一行）
@@ -11753,6 +11943,18 @@ blockquote { margin: 6px 0; padding: 8px 12px; border-left: 3px solid #c0a060; b
   /* ジョイスティック小さく */
   .lib-joy { width: 84px; height: 84px; bottom: 14px; left: 14px; }
   .lib-joy-knob { width: 32px; height: 32px; }
+  /* 視線パッド・走るボタン・入口ボタン・現在地・開くボタン 横画面調整 */
+  .library-overlay .lib-look { width: 96px; height: 96px; bottom: 14px; right: 14px; }
+  .library-overlay .lib-look::after { width: 36px; height: 36px; margin-left: -18px; margin-top: -18px; }
+  .library-overlay .lib-look-label { font-size: 8px; bottom: 10px; }
+  /* 走るボタンは視線パッドの左横（横画面でも被らない位置） */
+  .library-overlay .lib-run-btn { width: 44px; height: 44px; bottom: 14px; right: 116px; left: auto; font-size: 14px; border-width: 1px; }
+  .library-overlay .lib-home-btn { top: 6px; right: 50px; padding: 5px 11px; font-size: 11px; letter-spacing: 0.14em; min-height: 28px; }
+  .library-overlay .lib-mute-btn { top: 6px; right: 130px; width: 28px; height: 28px; font-size: 12px; }
+  .library-overlay .lib-loc { top: 38px; padding: 3px 12px; font-size: 10px; letter-spacing: 0.16em; gap: 8px; }
+  .library-overlay .lib-loc-floor { font-size: 12px; }
+  .library-overlay .lib-loc-area { font-size: 10px; }
+  .library-overlay .lib-open-btn { bottom: 30%; padding: 8px 16px; font-size: 12px; letter-spacing: 0.12em; }
   /* 棚モーダル：横画面用に上下マージン削減 */
   .lib-shelf-modal .lib-shelf-card { max-height: 94vh; padding: 12px 14px; }
   .lib-shelf-head { padding-bottom: 8px; margin-bottom: 8px; }

@@ -22980,9 +22980,12 @@
     ov.className = 'library-overlay';
     ov.innerHTML = `
       <canvas id="libCanvas" class="lib-canvas"></canvas>
+      <div class="lib-loc" id="libLoc" role="status" aria-live="polite" aria-atomic="true" aria-label="現在地"><span class="lib-loc-floor">1F</span><span class="lib-loc-area">入口</span></div>
       <div class="lib-ui">
         <button class="lib-close" aria-label="閉じる">×</button>
         <button class="lib-search-fab" id="libSearchFab" aria-label="検索パネル">🔍 検索</button>
+        <button class="lib-home-btn" id="libHomeBtn" aria-label="入口に戻る" title="入口に戻る">🏛 入口</button>
+        <button class="lib-mute-btn" id="libMuteBtn" aria-label="環境音をミュート" aria-pressed="false" title="環境音をミュート">🔊</button>
         <div class="lib-head" id="libHead">
           <div class="lib-title">図 書 館</div>
           <div class="lib-sub">— Bibliotheca · 偉人 神話 神々 音楽 —</div>
@@ -23021,6 +23024,11 @@
         </div>
       </div>
       <button class="lib-shelf-btn" id="libShelfBtn" hidden>📖 この棚を開く</button>
+      <button class="lib-open-btn" id="libOpenBtn" hidden aria-label="本を開く">📖 開く</button>
+      <button class="lib-run-btn" id="libRunBtn" aria-label="走る" aria-pressed="false" title="走る">⚡</button>
+      <div class="lib-look" id="libLook" aria-label="視線パッド">
+        <span class="lib-look-label">視 線</span>
+      </div>
       <div class="lib-shelf-modal" id="libShelfModal" hidden>
         <div class="lib-shelf-card">
           <div class="lib-shelf-head">
@@ -23030,18 +23038,58 @@
           <div class="lib-shelf-grid" id="libShelfGrid"></div>
         </div>
       </div>
-      <div class="lib-controls-hint">W A S D：歩く ／ Shift：早歩き ／ ドラッグ：視線</div>
+      <div class="lib-controls-hint lib-hint-pc">W A S D：歩く ／ Shift：早歩き ／ ドラッグ：視線</div>
+      <div class="lib-controls-hint lib-hint-mobile">左：歩く ／ 右：視線 ／ ⚡：走る ／ 📖：本を開く</div>
     `;
+    // role=dialog + aria-modal でモーダル明示、tabindex で focus 可能化（Esc キーボード操作対応）
+    ov.setAttribute('role', 'dialog');
+    ov.setAttribute('aria-modal', 'true');
+    ov.setAttribute('aria-label', '図書館（一人称ビュー）');
+    ov.setAttribute('tabindex', '-1');
     document.body.appendChild(ov);
     requestAnimationFrame(() => ov.classList.add('open'));
+    setTimeout(() => { try { ov.focus(); } catch {} }, 50);
+
+    // 全イベントリスナーを一括管理（close() で abort することで removeEventListener 漏れ防止）
+    const _libAC = new AbortController();
+    const _libSig = _libAC.signal;
+    let _joyTimer = null, _lookTimer = null;
+    let _libAmbientRef = null;
 
     const close = () => {
+      try { _libAC.abort(); } catch {}
+      try { if (_joyTimer) clearInterval(_joyTimer); } catch {}
+      try { if (_lookTimer) clearInterval(_lookTimer); } catch {}
+      try { if (_libAmbientRef && _libAmbientRef.stop) _libAmbientRef.stop(); } catch {}
+      try {
+        scene.traverse(o => {
+          if (o.geometry && o.geometry.dispose) {
+            try { o.geometry.dispose(); } catch {}
+          }
+          if (o.material) {
+            const mats = Array.isArray(o.material) ? o.material : [o.material];
+            mats.forEach(m => {
+              try {
+                if (m.map && m.map.dispose) m.map.dispose();
+                if (m.emissiveMap && m.emissiveMap.dispose) m.emissiveMap.dispose();
+                if (m.normalMap && m.normalMap.dispose) m.normalMap.dispose();
+                if (m.dispose) m.dispose();
+              } catch {}
+            });
+          }
+        });
+      } catch {}
       try { renderer.dispose(); } catch {}
       ov.classList.remove('open');
-      setTimeout(() => ov.remove(), 400);
+      setTimeout(() => { try { ov.remove(); } catch {} }, 400);
     };
-    ov.querySelector('.lib-close').addEventListener('click', close);
-    ov.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+    ov.querySelector('.lib-close').addEventListener('click', close, { signal: _libSig });
+    document.addEventListener('keydown', e => {
+      if (!ov.isConnected) return;
+      const tgt = e.target;
+      if (tgt && (tgt.tagName === 'INPUT' || tgt.tagName === 'TEXTAREA')) return;
+      if (e.key === 'Escape') close();
+    }, { signal: _libSig });
     // 検索パネルの開閉
     const sPanel = ov.querySelector('#libSearchPanel');
     const sFab = ov.querySelector('#libSearchFab');
@@ -23067,6 +23115,68 @@
     renderer.toneMappingExposure = _isMobile ? 1.0 : 1.25;
     if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
 
+    // 🎵 ambient drone（WebAudio で生成、外部アセット不要・著作権問題なし）
+    const libAmbient = (() => {
+      let ctx = null, started = false, mainGain = null, lp = null, oscs = [];
+      const start = () => {
+        if (started) return;
+        try {
+          const Ctor = window.AudioContext || window.webkitAudioContext;
+          if (!Ctor) return;
+          ctx = new Ctor();
+          mainGain = ctx.createGain();
+          mainGain.gain.value = 0; // フェードイン
+          lp = ctx.createBiquadFilter();
+          lp.type = 'lowpass';
+          lp.frequency.value = 420;
+          lp.Q.value = 0.7;
+          mainGain.connect(lp);
+          lp.connect(ctx.destination);
+          // 3 つの低周波 sine：基音 + 5度 + オクターブ低（重なって drone 感）
+          [{ f: 75, g: 0.45 }, { f: 112, g: 0.30 }, { f: 150, g: 0.20 }].forEach(({ f, g }) => {
+            const osc = ctx.createOscillator();
+            osc.type = 'sine';
+            osc.frequency.value = f;
+            const og = ctx.createGain();
+            og.gain.value = g;
+            osc.connect(og); og.connect(mainGain);
+            // 微妙な揺らぎ用 LFO（オシレーター毎に位相差）
+            const lfo = ctx.createOscillator();
+            lfo.type = 'sine';
+            lfo.frequency.value = 0.07 + Math.random() * 0.05;
+            const lfoG = ctx.createGain();
+            lfoG.gain.value = 0.6;
+            lfo.connect(lfoG); lfoG.connect(osc.frequency);
+            osc.start(); lfo.start();
+            oscs.push(osc, lfo);
+          });
+          // ゆっくりフェードイン（4秒で 0.045 まで）
+          mainGain.gain.linearRampToValueAtTime(0.045, ctx.currentTime + 4);
+          started = true;
+        } catch (e) { console.warn('[lib-ambient] start failed', e); }
+      };
+      const stop = () => {
+        if (!started || !ctx) return;
+        try {
+          mainGain.gain.cancelScheduledValues(ctx.currentTime);
+          mainGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.4);
+          setTimeout(() => {
+            try { oscs.forEach(o => { try { o.stop(); } catch {} }); } catch {}
+            try { ctx.close(); } catch {}
+          }, 500);
+          started = false;
+        } catch {}
+      };
+      return { start, stop };
+    })();
+    _libAmbientRef = libAmbient; // close() から参照される
+    // 最初のユーザー操作（autoplay 制限対策）でフェードイン開始
+    // capture phase で受けることで、視線パッドの stopPropagation を回避
+    const _ambStart = () => libAmbient.start();
+    ov.addEventListener('pointerdown', _ambStart, { once: true, capture: true, signal: _libSig });
+    ov.addEventListener('keydown', _ambStart, { once: true, capture: true, signal: _libSig });
+    ov.addEventListener('touchstart', _ambStart, { once: true, passive: true, capture: true, signal: _libSig });
+
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x0a0810);
     scene.fog = new THREE.FogExp2(0x0a0608, 0.022);
@@ -23083,20 +23193,52 @@
       const c = document.createElement('canvas'); c.width = 512; c.height = 512;
       const g = c.getContext('2d');
       g.fillStyle = '#2a2018'; g.fillRect(0,0,512,512);
-      // タイル目地
-      g.strokeStyle = 'rgba(180,150,100,0.2)'; g.lineWidth = 2;
+      // 大理石ベース：濃淡グラデで奥行き
+      const baseGrd = g.createRadialGradient(256, 256, 40, 256, 256, 360);
+      baseGrd.addColorStop(0, 'rgba(160,128,90,0.10)');
+      baseGrd.addColorStop(1, 'rgba(40,28,16,0.0)');
+      g.fillStyle = baseGrd; g.fillRect(0,0,512,512);
+      // 大理石の流れ模様（曲線ストローク）
+      g.strokeStyle = 'rgba(220,200,160,0.08)';
+      g.lineWidth = 1.2;
+      for (let i = 0; i < 18; i++) {
+        g.beginPath();
+        const sx = Math.random() * 512, sy = Math.random() * 512;
+        g.moveTo(sx, sy);
+        for (let k = 0; k < 6; k++) {
+          g.lineTo(sx + (Math.random() - 0.5) * 220, sy + (Math.random() - 0.5) * 220);
+        }
+        g.stroke();
+      }
+      // タイル目地（4×4 の主目地）
+      g.strokeStyle = 'rgba(180,150,100,0.32)'; g.lineWidth = 2.5;
+      for (let i = 0; i <= 4; i++) {
+        g.beginPath(); g.moveTo(i*128, 0); g.lineTo(i*128, 512); g.stroke();
+        g.beginPath(); g.moveTo(0, i*128); g.lineTo(512, i*128); g.stroke();
+      }
+      // 細かいサブ目地（タイル内の繋ぎ目）
+      g.strokeStyle = 'rgba(180,150,100,0.14)'; g.lineWidth = 1;
       for (let i = 0; i <= 8; i++) {
+        if (i % 2 === 0) continue; // 主目地以外
         g.beginPath(); g.moveTo(i*64, 0); g.lineTo(i*64, 512); g.stroke();
         g.beginPath(); g.moveTo(0, i*64); g.lineTo(512, i*64); g.stroke();
       }
-      // 大理石模様
-      g.fillStyle = 'rgba(220,200,160,0.04)';
-      for (let i = 0; i < 60; i++) {
-        g.beginPath(); g.arc(Math.random()*512, Math.random()*512, 30 + Math.random()*60, 0, Math.PI*2); g.fill();
+      // 大理石の班点
+      g.fillStyle = 'rgba(220,200,160,0.05)';
+      for (let i = 0; i < 80; i++) {
+        g.beginPath(); g.arc(Math.random()*512, Math.random()*512, 20 + Math.random()*50, 0, Math.PI*2); g.fill();
+      }
+      // タイル中央の小さな光沢点
+      g.fillStyle = 'rgba(255,228,180,0.12)';
+      for (let i = 0; i < 16; i++) {
+        const cx = (i % 4) * 128 + 64, cy = Math.floor(i / 4) * 128 + 64;
+        g.beginPath(); g.arc(cx, cy, 4, 0, Math.PI*2); g.fill();
       }
       const tex = new THREE.CanvasTexture(c);
       tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
-      tex.repeat.set(4, 4);
+      // 1 タイル ≒ 8m → HALL 80×60 で 10×7.5 リピート（旧 4×4 = 20m タイルから細目化）
+      tex.repeat.set(10, 8);
+      if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace;
       return tex;
     })();
     // 広いホール 80×60、3階建て（各階高 6m、天井 19）
@@ -23111,10 +23253,76 @@
     );
     floor.rotation.x = -Math.PI/2;
     scene.add(floor);
-    // 天井（ゴシック深緑）
+    // 天井（ゴシック深緑）— リブヴォールト風テクスチャ付き
+    const ceilTex = (() => {
+      const c = document.createElement('canvas'); c.width = 512; c.height = 512;
+      const g = c.getContext('2d');
+      // ベース：暗い深緑
+      g.fillStyle = '#0e2a28'; g.fillRect(0, 0, 512, 512);
+      // 弱いノイズ斑点（風化感）
+      g.fillStyle = 'rgba(180,200,160,0.025)';
+      for (let i = 0; i < 200; i++) {
+        g.beginPath(); g.arc(Math.random()*512, Math.random()*512, 1 + Math.random()*2.5, 0, Math.PI*2); g.fill();
+      }
+      // リブ（肋骨梁）— X 字型に交差する太い金線（中央のキーストーンへ集束）
+      const ribStrokes = [
+        [0, 0, 256, 256], [512, 0, 256, 256], [0, 512, 256, 256], [512, 512, 256, 256],
+        [256, 0, 256, 256], [0, 256, 256, 256], [256, 512, 256, 256], [512, 256, 256, 256],
+      ];
+      g.lineCap = 'round';
+      // 影側
+      g.strokeStyle = 'rgba(8,16,16,0.7)';
+      g.lineWidth = 18;
+      ribStrokes.forEach(([x1, y1, x2, y2]) => {
+        g.beginPath(); g.moveTo(x1, y1); g.lineTo(x2, y2); g.stroke();
+      });
+      // 金リブ
+      g.strokeStyle = 'rgba(200,160,64,0.85)';
+      g.lineWidth = 10;
+      ribStrokes.forEach(([x1, y1, x2, y2]) => {
+        g.beginPath(); g.moveTo(x1, y1); g.lineTo(x2, y2); g.stroke();
+      });
+      // ハイライト（リブの上面）
+      g.strokeStyle = 'rgba(255,224,160,0.55)';
+      g.lineWidth = 3;
+      ribStrokes.forEach(([x1, y1, x2, y2]) => {
+        g.beginPath(); g.moveTo(x1, y1); g.lineTo(x2, y2); g.stroke();
+      });
+      // キーストーン（中央の宝石風）
+      const kg = g.createRadialGradient(256, 256, 4, 256, 256, 36);
+      kg.addColorStop(0, '#ffe0a0');
+      kg.addColorStop(0.4, '#c8a040');
+      kg.addColorStop(1, '#4a3008');
+      g.fillStyle = kg;
+      g.beginPath(); g.arc(256, 256, 36, 0, Math.PI*2); g.fill();
+      // キーストーンの輪郭
+      g.strokeStyle = '#241408';
+      g.lineWidth = 2;
+      g.stroke();
+      // 4 隅にも小さなロゼッタ
+      [[0, 0], [512, 0], [0, 512], [512, 512]].forEach(([cx, cy]) => {
+        const rg = g.createRadialGradient(cx, cy, 2, cx, cy, 28);
+        rg.addColorStop(0, '#ffe0a0');
+        rg.addColorStop(1, '#4a3008');
+        g.fillStyle = rg;
+        g.beginPath(); g.arc(cx, cy, 28, 0, Math.PI*2); g.fill();
+      });
+      const tex = new THREE.CanvasTexture(c);
+      tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+      // 1 タイル ≒ 12m → HALL 80×60 で 6.7×5 リピート
+      tex.repeat.set(7, 5);
+      if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace;
+      return tex;
+    })();
     const ceiling = new THREE.Mesh(
       new THREE.PlaneGeometry(HALL_W, HALL_D),
-      new THREE.MeshStandardMaterial({ color: 0x0e2a28, roughness: 0.85 })
+      new THREE.MeshStandardMaterial({
+        map: ceilTex,
+        color: 0xffffff,
+        roughness: 0.78,
+        emissive: 0x081818,
+        emissiveIntensity: 0.45,
+      })
     );
     ceiling.rotation.x = Math.PI/2;
     ceiling.position.y = CEIL_Y;
@@ -23129,6 +23337,169 @@
     wE.position.set(HALL_W/2, CEIL_Y/2, 0); wE.rotation.y = -Math.PI/2; scene.add(wE);
     const wW = new THREE.Mesh(new THREE.PlaneGeometry(HALL_D, CEIL_Y), wallMat);
     wW.position.set(-HALL_W/2, CEIL_Y/2, 0); wW.rotation.y = Math.PI/2; scene.add(wW);
+
+    // === 🌈 ゴシック窓（北・東・西壁）— 南壁は既存の入口アーチが使う ===
+    // 各壁にアーチ窓 N 個。窓自体はステンドグラスのテクスチャ Plane + 暖色 SpotLight で god-ray 風。
+    function makeStainedGlassTexture(palette) {
+      const cv = document.createElement('canvas'); cv.width = 256; cv.height = 384;
+      const g = cv.getContext('2d');
+      // 背景：縦長アーチ型に切り抜くため、まず黒で埋める
+      g.fillStyle = 'rgba(8,4,2,1)';
+      g.fillRect(0, 0, 256, 384);
+      // アーチ形のクリッピング
+      g.save();
+      g.beginPath();
+      g.moveTo(20, 380);
+      g.lineTo(20, 140);
+      g.arc(128, 140, 108, Math.PI, 0, false);
+      g.lineTo(236, 380);
+      g.closePath();
+      g.clip();
+      // ステンドグラス：色付き矩形＋三角形パターン
+      const tiles = 8, tileH = 48;
+      for (let row = 0; row < tiles; row++) {
+        for (let col = 0; col < 6; col++) {
+          const cx = 30 + col * 36, cy = 30 + row * tileH;
+          g.fillStyle = palette[(row * 6 + col) % palette.length];
+          g.beginPath();
+          g.arc(cx, cy + tileH / 2, 22, 0, Math.PI * 2);
+          g.fill();
+        }
+      }
+      // 中央メダリオン
+      const mg = g.createRadialGradient(128, 140, 8, 128, 140, 80);
+      mg.addColorStop(0, '#ffe0a0');
+      mg.addColorStop(0.4, palette[0]);
+      mg.addColorStop(1, palette[1]);
+      g.fillStyle = mg;
+      g.beginPath(); g.arc(128, 140, 78, 0, Math.PI * 2); g.fill();
+      // 八方の花弁
+      g.fillStyle = palette[2];
+      for (let i = 0; i < 8; i++) {
+        const ang = (i / 8) * Math.PI * 2;
+        const px = 128 + Math.cos(ang) * 56, py = 140 + Math.sin(ang) * 56;
+        g.beginPath(); g.arc(px, py, 16, 0, Math.PI * 2); g.fill();
+      }
+      g.restore();
+      // 鉛桟（縦横の格子）
+      g.strokeStyle = 'rgba(20,12,4,0.95)';
+      g.lineWidth = 3;
+      for (let x = 60; x < 240; x += 36) {
+        g.beginPath(); g.moveTo(x, 30); g.lineTo(x, 380); g.stroke();
+      }
+      for (let y = 60; y < 380; y += 48) {
+        g.beginPath(); g.moveTo(20, y); g.lineTo(236, y); g.stroke();
+      }
+      // アーチ枠の外側
+      g.strokeStyle = '#241408';
+      g.lineWidth = 5;
+      g.beginPath();
+      g.moveTo(20, 380);
+      g.lineTo(20, 140);
+      g.arc(128, 140, 108, Math.PI, 0, false);
+      g.lineTo(236, 380);
+      g.stroke();
+      const tex = new THREE.CanvasTexture(cv);
+      if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace;
+      return tex;
+    }
+    // 3 種のパレット（北＝青系、東＝紫赤系、西＝緑金系）
+    const STAINED_PALETTES = {
+      north: ['#3068a8', '#2050a0', '#80a8d0', '#c84830', '#806090'],
+      east:  ['#a04860', '#806090', '#c8a040', '#3068a8', '#2050a0'],
+      west:  ['#388860', '#a08040', '#c8a040', '#3068a8', '#806090'],
+    };
+    const stainedTexCache = {
+      north: makeStainedGlassTexture(STAINED_PALETTES.north),
+      east:  makeStainedGlassTexture(STAINED_PALETTES.east),
+      west:  makeStainedGlassTexture(STAINED_PALETTES.west),
+    };
+    // 各壁に窓 N 個を等間隔配置。spotlight は内側に向かって god-ray 風
+    function placeWindow(wallSide, paletteKey, count, wallSpan, axisSign) {
+      const tex = stainedTexCache[paletteKey];
+      const winW = 4.0, winH = 6.0;
+      // 各階に 1 段ずつ（1F:y=4, 2F:y=10, 3F:y=15 のうち空いている高さに）
+      const winYs = [4.0, 10.5, 15.5]; // 1F・2F・3F 上部
+      const step = wallSpan / (count + 1);
+      for (let i = 1; i <= count; i++) {
+        const along = -wallSpan / 2 + step * i;
+        winYs.forEach(winY => {
+          if (winY + winH / 2 > CEIL_Y - 0.5) return; // 天井を超える窓は省略
+          // 窓 Plane（壁の少し内側に配置して z-fighting 回避）
+          const winMat = new THREE.MeshStandardMaterial({
+            map: tex, transparent: true, opacity: 0.92,
+            emissive: 0xffffff, emissiveMap: tex, emissiveIntensity: 0.85,
+            side: THREE.DoubleSide, alphaTest: 0.05, fog: false,
+          });
+          const win = new THREE.Mesh(new THREE.PlaneGeometry(winW, winH), winMat);
+          // wallSide: 'north' (z=-HALL_D/2), 'east' (x=HALL_W/2), 'west' (x=-HALL_W/2)
+          if (wallSide === 'north') {
+            win.position.set(along, winY, -HALL_D/2 + 0.1);
+            // rotation default: facing +z, OK
+          } else if (wallSide === 'east') {
+            win.position.set(HALL_W/2 - 0.1, winY, along);
+            win.rotation.y = -Math.PI / 2;
+          } else if (wallSide === 'west') {
+            win.position.set(-HALL_W/2 + 0.1, winY, along);
+            win.rotation.y = Math.PI / 2;
+          }
+          scene.add(win);
+          // 🌙 月光ハロー：窓の少し内側に additive で柔らかい光輪を置き、夜の窓越しの光感を強化
+          if (!_isMobile) {
+            const haloGeo = new THREE.PlaneGeometry(winW * 1.6, winH * 1.5);
+            const haloCanvas = (() => {
+              const c2 = document.createElement('canvas'); c2.width = 64; c2.height = 96;
+              const g2 = c2.getContext('2d');
+              const grd = g2.createRadialGradient(32, 48, 4, 32, 48, 44);
+              grd.addColorStop(0, 'rgba(255,230,180,0.55)');
+              grd.addColorStop(0.4, 'rgba(255,210,140,0.20)');
+              grd.addColorStop(1, 'rgba(255,210,140,0)');
+              g2.fillStyle = grd; g2.fillRect(0, 0, 64, 96);
+              const t2 = new THREE.CanvasTexture(c2);
+              if ('colorSpace' in t2) t2.colorSpace = THREE.SRGBColorSpace;
+              return t2;
+            })();
+            const haloMat = new THREE.MeshBasicMaterial({
+              map: haloCanvas, transparent: true, opacity: 0.85,
+              blending: THREE.AdditiveBlending, depthWrite: false, fog: false,
+            });
+            const halo = new THREE.Mesh(haloGeo, haloMat);
+            const off = 0.35; // 窓よりわずかに内側
+            if (wallSide === 'north') {
+              halo.position.set(along, winY, -HALL_D/2 + off);
+            } else if (wallSide === 'east') {
+              halo.position.set(HALL_W/2 - off, winY, along);
+              halo.rotation.y = -Math.PI / 2;
+            } else if (wallSide === 'west') {
+              halo.position.set(-HALL_W/2 + off, winY, along);
+              halo.rotation.y = Math.PI / 2;
+            }
+            scene.add(halo);
+          }
+        });
+      }
+      // god-ray 風 SpotLight（モバイルは強度を抑える、本数も _isMobile で半減）
+      const spotCount = _isMobile ? Math.max(1, Math.floor(count / 2)) : count;
+      const spotStep = wallSpan / (spotCount + 1);
+      for (let i = 1; i <= spotCount; i++) {
+        const along = -wallSpan / 2 + spotStep * i;
+        const sl = new THREE.SpotLight(0xffd080, _isMobile ? 1.6 : 2.6, 35, Math.PI / 5, 0.55, 1.4);
+        if (wallSide === 'north') {
+          sl.position.set(along, 11, -HALL_D/2 + 1.2);
+          sl.target.position.set(along * 0.6, 0, 0);
+        } else if (wallSide === 'east') {
+          sl.position.set(HALL_W/2 - 1.2, 11, along);
+          sl.target.position.set(0, 0, along * 0.6);
+        } else if (wallSide === 'west') {
+          sl.position.set(-HALL_W/2 + 1.2, 11, along);
+          sl.target.position.set(0, 0, along * 0.6);
+        }
+        scene.add(sl); scene.add(sl.target);
+      }
+    }
+    placeWindow('north', 'north', 5, HALL_W - 8, -1);
+    placeWindow('east',  'east',  4, HALL_D - 8, -1);
+    placeWindow('west',  'west',  4, HALL_D - 8,  1);
 
     // === 2階・3階のメザニンバルコニー（壁沿い、中央吹き抜け） ===
     function buildMezzanine(y) {
@@ -23304,23 +23675,100 @@
       c.b = Math.max(0, Math.min(1, c.b * f));
       return '#' + c.getHexString();
     }
+    // 🪵 木目プロシージャルテクスチャ（共通・1度だけ生成してキャッシュ）— 本棚の質感を底上げ
+    const _woodTexCache = {};
+    function makeWoodTexture(baseHex, dark = '#1a0e06', light = '#5a3818') {
+      const key = baseHex + dark + light;
+      if (_woodTexCache[key]) return _woodTexCache[key];
+      const cv2 = document.createElement('canvas');
+      cv2.width = 256; cv2.height = 256;
+      const g = cv2.getContext('2d');
+      g.fillStyle = baseHex; g.fillRect(0, 0, 256, 256);
+      // 縦方向の木目縞（指数的密度で自然に）
+      for (let i = 0; i < 38; i++) {
+        const x = Math.random() * 256;
+        const w = 0.6 + Math.random() * 2.4;
+        const alpha = 0.10 + Math.random() * 0.28;
+        g.strokeStyle = `rgba(0,0,0,${alpha.toFixed(3)})`;
+        g.lineWidth = w;
+        g.beginPath();
+        // やや揺らぎを入れた縦線
+        let py = 0; let px = x;
+        g.moveTo(px, py);
+        while (py < 256) {
+          py += 12 + Math.random() * 10;
+          px += (Math.random() - 0.5) * 1.6;
+          g.lineTo(px, py);
+        }
+        g.stroke();
+      }
+      // ハイライト縞（少なめ）
+      for (let i = 0; i < 14; i++) {
+        const x = Math.random() * 256;
+        g.strokeStyle = `rgba(255,220,170,${(0.06 + Math.random() * 0.10).toFixed(3)})`;
+        g.lineWidth = 0.6 + Math.random() * 1.4;
+        g.beginPath();
+        let py = 0; let px = x;
+        g.moveTo(px, py);
+        while (py < 256) {
+          py += 16 + Math.random() * 14;
+          px += (Math.random() - 0.5) * 1.2;
+          g.lineTo(px, py);
+        }
+        g.stroke();
+      }
+      // 節（knot）数個
+      for (let i = 0; i < 3; i++) {
+        const kx = 20 + Math.random() * 220;
+        const ky = 20 + Math.random() * 220;
+        const kr = 4 + Math.random() * 7;
+        const kg = g.createRadialGradient(kx, ky, 0, kx, ky, kr * 2.2);
+        kg.addColorStop(0, dark);
+        kg.addColorStop(0.5, 'rgba(20,10,4,0.45)');
+        kg.addColorStop(1, 'rgba(20,10,4,0)');
+        g.fillStyle = kg;
+        g.beginPath(); g.arc(kx, ky, kr * 2.2, 0, Math.PI * 2); g.fill();
+      }
+      // 全体に微細ノイズ
+      const img = g.getImageData(0, 0, 256, 256);
+      for (let i = 0; i < img.data.length; i += 4) {
+        const n = (Math.random() - 0.5) * 18;
+        img.data[i]   = Math.max(0, Math.min(255, img.data[i]   + n));
+        img.data[i+1] = Math.max(0, Math.min(255, img.data[i+1] + n));
+        img.data[i+2] = Math.max(0, Math.min(255, img.data[i+2] + n));
+      }
+      g.putImageData(img, 0, 0);
+      const tex = new THREE.CanvasTexture(cv2);
+      tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+      if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace;
+      _woodTexCache[key] = tex;
+      return tex;
+    }
+    // 共有マテリアル（フレーム / 棚板）— 全棚で再利用してドローコール削減
+    const _shelfFrameTex = makeWoodTexture('#2a1810', '#0e0604', '#5a3818');
+    const _shelfBoardTex = makeWoodTexture('#4a2a18', '#1a0e06', '#7a4828');
+    const _shelfFrameMat = new THREE.MeshStandardMaterial({
+      map: _shelfFrameTex, color: 0xb8a890, roughness: 0.78, metalness: 0.04,
+    });
+    const _shelfBoardMat = new THREE.MeshStandardMaterial({
+      map: _shelfBoardTex, color: 0xc8b090, roughness: 0.62, metalness: 0.05,
+    });
+
     function buildShelf(centerX, centerZ, length, rotationY, doubleSided = true, yBase = 0, pool = null) {
       const bookPool = pool || allBooks;
       const shelfBooks = []; // この棚に並んだ本の参照（モーダル用）
       // 🪶 モバイルは本を約半分に間引く（描画コール激減）— モーダル用配列には残ったものだけ入る
-      // 棚本体
-      const frame = new THREE.Mesh(
-        new THREE.BoxGeometry(length, 5.5, SHELF_DEPTH),
-        new THREE.MeshStandardMaterial({ color: 0x2a1810, roughness: 0.7 })
-      );
+      // 棚本体（木目テクスチャ）— 棚の長さに応じて UV リピート
+      const frameGeo = new THREE.BoxGeometry(length, 5.5, SHELF_DEPTH);
+      const frame = new THREE.Mesh(frameGeo, _shelfFrameMat);
       frame.position.set(centerX, yBase + 3.0, centerZ);
       frame.rotation.y = rotationY;
       scene.add(frame);
-      // 棚板
+      // 棚板（木目テクスチャ）
       SHELF_Y_LEVELS.forEach(y => {
         const board = new THREE.Mesh(
           new THREE.BoxGeometry(length - 0.2, 0.08, SHELF_DEPTH + 0.05),
-          new THREE.MeshStandardMaterial({ color: 0x4a2a18, roughness: 0.6 })
+          _shelfBoardMat
         );
         board.position.set(centerX, yBase + y, centerZ);
         board.rotation.y = rotationY;
@@ -23643,9 +24091,15 @@
     }
     chandelier.position.set(0, 11, 0);
     scene.add(chandelier);
-    // 副シャンデリア（4基、ホール各部に）
+    // 副シャンデリア（4基、ホール各部に）— PointLight は clone せず emissive で代替
+    // （6灯 × 4基 = 24 PointLight 増殖を防止。MeshStandardMaterial の forward shader は
+    //  ライト数だけシェーダ uniform 配列が増えるため、副シャンデリアは「光って見える」だけにする）
     [[-22, 11, -16], [22, 11, -16], [-22, 11, 16], [22, 11, 16]].forEach(([px, py, pz]) => {
       const c2 = chandelier.clone();
+      // clone で複製された PointLight を全て削除
+      const lightsToRemove = [];
+      c2.traverse(o => { if (o.isPointLight || o.isLight) lightsToRemove.push(o); });
+      lightsToRemove.forEach(l => l.parent && l.parent.remove(l));
       c2.position.set(px, py, pz);
       scene.add(c2);
     });
@@ -23656,6 +24110,36 @@
      [-HALL_W/2 + 1.5, HALL_D/2 - 1.5], [HALL_W/2 - 1.5, HALL_D/2 - 1.5]].forEach(([cx, cz]) => {
       const col = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.6, 14, 12), colMat);
       col.position.set(cx, 7.0, cz); scene.add(col);
+    });
+    // 🏛 中央列の追加柱（メザニン吹き抜けを囲むように 6 本、本棚アイル列の間に配置）
+    // X = -16 と +16 で 1F〜3F を貫通する太柱、本棚通路 [-22,-7,8,23] の間の隙間に配置
+    // Z は中央吹き抜け側の 4 ポジション（-12, 0, 12 をベースに各列 2 本）
+    const interiorColPositions = [
+      [-16, -12], [-16,  0], [-16, 12],
+      [ 16, -12], [ 16,  0], [ 16, 12],
+    ];
+    const colCapMat = new THREE.MeshStandardMaterial({
+      color: 0xc8a040, metalness: 0.85, roughness: 0.3, emissive: 0x4a3008, emissiveIntensity: 0.45,
+    });
+    const colBaseMat = new THREE.MeshStandardMaterial({ color: 0x281408, roughness: 0.85 });
+    // 衝突判定用の柱配列（tick の衝突回避で参照）
+    const interiorColliders = interiorColPositions.map(([cx, cz]) => ({ x: cx, z: cz, r: 0.62 }));
+    interiorColPositions.forEach(([cx, cz]) => {
+      // 柱本体（1F→3F天井下まで貫通、わずかにテーパー）
+      const col = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.7, CEIL_Y - 0.6, 16), colMat);
+      col.position.set(cx, (CEIL_Y - 0.6) / 2, cz);
+      scene.add(col);
+      // 柱頭（金）
+      const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.85, 0.6, 0.55, 16), colCapMat);
+      cap.position.set(cx, CEIL_Y - 0.85, cz); scene.add(cap);
+      // 柱基（重厚な石）
+      const base = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.5, 1.5), colBaseMat);
+      base.position.set(cx, 0.25, cz); scene.add(base);
+      // 各階の高さに細い装飾リング
+      [FLOOR_2_Y - 0.2, FLOOR_3_Y - 0.2].forEach(ringY => {
+        const ring = new THREE.Mesh(new THREE.CylinderGeometry(0.7, 0.7, 0.12, 16), colCapMat);
+        ring.position.set(cx, ringY, cz); scene.add(ring);
+      });
     });
 
     // ── 環境光・直接光（さらに明るく：1.5倍）──
@@ -23681,33 +24165,55 @@
       });
     }
 
-    // ── 埃の浮遊（雰囲気）──
+    // ── 埃の浮遊（雰囲気）— 2層構成で光のシャフトの中を漂う粒子感を強化 ──
     const dustGeo = new THREE.BufferGeometry();
-    const DCNT = _isMobile ? 80 : 180; // 軽量化：モバイルは1/3、PCも約3割減
+    const DCNT = _isMobile ? 100 : 240; // PC は約 1.3 倍に増量
     const dp = new Float32Array(DCNT * 3);
+    const dv = new Float32Array(DCNT); // 個体ごとの上昇速度（揺らぎ用）
     for (let i = 0; i < DCNT; i++) {
       dp[i*3]   = (Math.random() - 0.5) * 30;
       dp[i*3+1] = Math.random() * 12;
       dp[i*3+2] = (Math.random() - 0.5) * 30;
+      dv[i] = 0.003 + Math.random() * 0.008;
     }
     dustGeo.setAttribute('position', new THREE.BufferAttribute(dp, 3));
     const dustTex = (() => {
       const c = document.createElement('canvas'); c.width = 32; c.height = 32;
       const g = c.getContext('2d');
       const grd = g.createRadialGradient(16, 16, 0, 16, 16, 16);
-      grd.addColorStop(0, 'rgba(255,230,180,0.9)');
+      grd.addColorStop(0, 'rgba(255,230,180,0.95)');
+      grd.addColorStop(0.4, 'rgba(255,220,160,0.5)');
       grd.addColorStop(1, 'rgba(255,230,180,0)');
       g.fillStyle = grd; g.fillRect(0, 0, 32, 32);
       return new THREE.CanvasTexture(c);
     })();
     const dust = new THREE.Points(dustGeo, new THREE.PointsMaterial({
-      map: dustTex, color: 0xffe0a0, size: 0.2, transparent: true,
-      opacity: 0.4, depthWrite: false, blending: THREE.AdditiveBlending,
+      map: dustTex, color: 0xffe0a0, size: 0.18, transparent: true,
+      opacity: 0.5, depthWrite: false, blending: THREE.AdditiveBlending,
     }));
     scene.add(dust);
+    // 第二層：大きめの soft mote（PC のみ。少数だが奥行き感を作る）
+    let dust2 = null;
+    if (!_isMobile) {
+      const D2CNT = 50;
+      const dustGeo2 = new THREE.BufferGeometry();
+      const dp2 = new Float32Array(D2CNT * 3);
+      for (let i = 0; i < D2CNT; i++) {
+        dp2[i*3]   = (Math.random() - 0.5) * 36;
+        dp2[i*3+1] = Math.random() * 14;
+        dp2[i*3+2] = (Math.random() - 0.5) * 36;
+      }
+      dustGeo2.setAttribute('position', new THREE.BufferAttribute(dp2, 3));
+      dust2 = new THREE.Points(dustGeo2, new THREE.PointsMaterial({
+        map: dustTex, color: 0xffd890, size: 0.55, transparent: true,
+        opacity: 0.18, depthWrite: false, blending: THREE.AdditiveBlending,
+      }));
+      scene.add(dust2);
+    }
 
     // ── 一人称コントロール（WASD移動 + ドラッグで視点回転） ──
-    const keys = { w: false, a: false, s: false, d: false, shift: false };
+    // _physShift = 物理 Shift キー、runHeld = 仮想ボタン。どちらかが true なら shift 扱い。
+    const keys = { w: false, a: false, s: false, d: false, shift: false, _physShift: false };
     const PLAYER_SPEED = 5.5; // m/s
     const RUN_MUL = 1.8;
     document.addEventListener('keydown', e => {
@@ -23719,40 +24225,54 @@
       if (k === 's' || k === 'arrowdown') keys.s = true;
       if (k === 'a' || k === 'arrowleft') keys.a = true;
       if (k === 'd' || k === 'arrowright') keys.d = true;
-      if (k === 'shift') keys.shift = true;
-    });
+      if (k === 'shift') { keys._physShift = true; keys.shift = true; }
+    }, { signal: _libSig });
     document.addEventListener('keyup', e => {
       const k = e.key.toLowerCase();
       if (k === 'w' || k === 'arrowup') keys.w = false;
       if (k === 's' || k === 'arrowdown') keys.s = false;
       if (k === 'a' || k === 'arrowleft') keys.a = false;
       if (k === 'd' || k === 'arrowright') keys.d = false;
-      if (k === 'shift') keys.shift = false;
-    });
-    // ドラッグで視点
+      // 仮想ボタンが押されてる間は shift を保持
+      if (k === 'shift') {
+        keys._physShift = false;
+        if (!keys._runHeld) keys.shift = false;
+      }
+    }, { signal: _libSig });
+    // 視点ドラッグ — pointerId 単位で隔離（ジョイスティック / 視線パッドとの多指干渉防止）
+    // 旧実装は window で pointermove を聴き、pid をフィルタしないため、
+    // 別の指（joy/look）が動くと dragX が他指の座標で書き換わり視線が暴れていた。
     let dragging = false;
     let dragX = 0, dragY = 0;
-    let mouseDown = false, mouseDragged = false;
+    let mouseDragged = false;
+    let dragPid = null;
     cv.addEventListener('pointerdown', e => {
-      dragging = true; mouseDown = true; mouseDragged = false;
+      if (dragging) return; // 既に別の指が掴んでいる
+      dragging = true; mouseDragged = false;
+      dragPid = e.pointerId;
+      dragX = e.clientX; dragY = e.clientY;
+      try { cv.setPointerCapture(e.pointerId); } catch {}
+    });
+    cv.addEventListener('pointermove', e => {
+      if (!dragging || e.pointerId !== dragPid) return;
+      const dx = e.clientX - dragX;
+      const dy = e.clientY - dragY;
+      if (Math.abs(dx) + Math.abs(dy) > 4) mouseDragged = true;
+      camYaw -= dx * 0.012;
+      camPitch -= dy * 0.010;
+      camPitch = Math.max(-1.0, Math.min(1.0, camPitch));
       dragX = e.clientX; dragY = e.clientY;
     });
-    window.addEventListener('pointerup', e => {
-      // ドラッグでなくクリックなら本拾い
-      if (mouseDown && !mouseDragged) tryPickBook(e);
-      dragging = false; mouseDown = false;
-    });
-    window.addEventListener('pointermove', e => {
-      if (dragging) {
-        const dx = e.clientX - dragX;
-        const dy = e.clientY - dragY;
-        if (Math.abs(dx) + Math.abs(dy) > 4) mouseDragged = true;
-        // 🎯 視線感度を約3倍にUP（指の動きにキビキビ追従）
-        camYaw -= dx * 0.012;
-        camPitch -= dy * 0.010;
-        camPitch = Math.max(-1.0, Math.min(1.0, camPitch));
-        dragX = e.clientX; dragY = e.clientY;
-      }
+    const endDrag = (e, doPick) => {
+      if (e.pointerId !== dragPid) return;
+      if (doPick && !mouseDragged) tryPickBook(e);
+      dragging = false; dragPid = null;
+      try { cv.releasePointerCapture(e.pointerId); } catch {}
+    };
+    cv.addEventListener('pointerup', e => endDrag(e, true));
+    cv.addEventListener('pointercancel', e => endDrag(e, false));
+    cv.addEventListener('lostpointercapture', e => {
+      if (e.pointerId === dragPid) { dragging = false; dragPid = null; }
     });
     // 🕹 仮想ジョイスティック — document level pointerEvents（多指・edge swipe・blur に強い）
     const joy = document.createElement('div');
@@ -23791,20 +24311,142 @@
     document.addEventListener('pointermove', (e) => {
       if (!joyActive || e.pointerId !== joyPid) return;
       joyMoveFromEvent(e);
-    });
+    }, { signal: _libSig });
     document.addEventListener('pointerup', (e) => {
       if (e.pointerId === joyPid) joyReleaseAll();
-    });
+    }, { signal: _libSig });
     document.addEventListener('pointercancel', (e) => {
       if (e.pointerId === joyPid) joyReleaseAll();
-    });
+    }, { signal: _libSig });
     // 安全装置：window blur / visibility 変更でリセット（フォーカス外で stuck 防止）
-    window.addEventListener('blur', joyReleaseAll);
-    document.addEventListener('visibilitychange', () => { if (document.hidden) joyReleaseAll(); });
+    window.addEventListener('blur', joyReleaseAll, { signal: _libSig });
+    document.addEventListener('visibilitychange', () => { if (document.hidden) joyReleaseAll(); }, { signal: _libSig });
     // タイムアウト：300ms 何も来なければリリース扱い（迷子のpointer対策）
-    setInterval(() => {
+    _joyTimer = setInterval(() => {
       if (joyActive && performance.now() - _joyLastMove > 600) joyReleaseAll();
     }, 250);
+
+    // 👁 視線パッド（右下）— 既存の cv ドラッグ視線とは独立、モバイル両親指操作用
+    const lookPad = ov.querySelector('#libLook');
+    let lookActive = false, lookDX = 0, lookDY = 0, lookPid = null;
+    let _lookLastMove = 0;
+    const LOOK_RADIUS = 60;
+    const lookMoveFromEvent = (e) => {
+      const r = lookPad.getBoundingClientRect();
+      const cx = r.left + r.width / 2;
+      const cy = r.top + r.height / 2;
+      let dx = e.clientX - cx, dy = e.clientY - cy;
+      const d = Math.hypot(dx, dy);
+      if (d > LOOK_RADIUS) { dx = dx / d * LOOK_RADIUS; dy = dy / d * LOOK_RADIUS; }
+      lookPad.style.setProperty('--lkx', dx + 'px');
+      lookPad.style.setProperty('--lky', dy + 'px');
+      lookDX = dx / LOOK_RADIUS; lookDY = dy / LOOK_RADIUS;
+      _lookLastMove = performance.now();
+    };
+    const lookReleaseAll = () => {
+      lookActive = false; lookPid = null;
+      lookPad.style.setProperty('--lkx', '0px');
+      lookPad.style.setProperty('--lky', '0px');
+      lookDX = lookDY = 0;
+    };
+    lookPad.addEventListener('pointerdown', (e) => {
+      if (lookActive && lookPid !== null) return;
+      lookActive = true; lookPid = e.pointerId;
+      lookPad.classList.add('active');
+      lookMoveFromEvent(e);
+      e.preventDefault(); e.stopPropagation();
+    }, { signal: _libSig });
+    document.addEventListener('pointermove', (e) => {
+      if (!lookActive || e.pointerId !== lookPid) return;
+      lookMoveFromEvent(e);
+    }, { signal: _libSig });
+    document.addEventListener('pointerup', (e) => {
+      if (e.pointerId === lookPid) { lookReleaseAll(); lookPad.classList.remove('active'); }
+    }, { signal: _libSig });
+    document.addEventListener('pointercancel', (e) => {
+      if (e.pointerId === lookPid) { lookReleaseAll(); lookPad.classList.remove('active'); }
+    }, { signal: _libSig });
+    window.addEventListener('blur', () => { lookReleaseAll(); lookPad.classList.remove('active'); }, { signal: _libSig });
+    _lookTimer = setInterval(() => {
+      if (lookActive && performance.now() - _lookLastMove > 600) {
+        lookReleaseAll(); lookPad.classList.remove('active');
+      }
+    }, 250);
+
+    // ⚡ 走るボタン（モバイル用 Shift 相当）— PC でも使える、Space/Enter キーボード対応
+    const runBtn = ov.querySelector('#libRunBtn');
+    keys._runHeld = false; // 仮想ボタン押下中フラグ（keydown/keyup から参照）
+    const runStart = (e) => {
+      keys._runHeld = true; keys.shift = true;
+      runBtn.classList.add('active');
+      runBtn.setAttribute('aria-pressed', 'true');
+      if (e) e.preventDefault();
+    };
+    const runEnd = () => {
+      keys._runHeld = false;
+      keys.shift = !!keys._physShift;
+      runBtn.classList.remove('active');
+      runBtn.setAttribute('aria-pressed', 'false');
+    };
+    runBtn.addEventListener('pointerdown', runStart, { signal: _libSig });
+    runBtn.addEventListener('pointerup', runEnd, { signal: _libSig });
+    runBtn.addEventListener('pointercancel', runEnd, { signal: _libSig });
+    runBtn.addEventListener('pointerleave', () => {
+      if (keys._runHeld) runEnd();
+    }, { signal: _libSig });
+    runBtn.addEventListener('keydown', (e) => {
+      if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); runStart(); }
+    }, { signal: _libSig });
+    runBtn.addEventListener('keyup', (e) => {
+      if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); runEnd(); }
+    }, { signal: _libSig });
+    window.addEventListener('blur', runEnd, { signal: _libSig });
+
+    // 📖 開くボタン（中央レチクルに本が入っている時のみ表示）
+    const openBtn = ov.querySelector('#libOpenBtn');
+    function openBookAtReticle() {
+      const m = pickBook();
+      if (m && !m.userData.book.placeholder) {
+        const mats = Array.isArray(m.material) ? m.material : [m.material];
+        mats.forEach(mt => {
+          if (mt.emissive) mt.emissiveIntensity = 4.0;
+          else mt.color.setRGB(1.5, 1.3, 0.6);
+        });
+        playBookOpenAnim(m.userData.book, () => { m.userData.book.action(); close(); });
+      }
+    }
+    openBtn.addEventListener('click', (e) => { e.stopPropagation(); openBookAtReticle(); }, { signal: _libSig });
+
+    // 🏛 入口に戻るボタン
+    const homeBtn = ov.querySelector('#libHomeBtn');
+    homeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      camera.position.set(0, PLAYER_EYE, 28);
+      camYaw = 0; camPitch = 0;
+      // 棚モーダル閉じる
+      try { ov.querySelector('#libShelfModal').hidden = true; } catch {}
+    }, { signal: _libSig });
+
+    // 🔇 ミュートボタン（環境音 ambient drone を停止/再開）
+    const muteBtn = ov.querySelector('#libMuteBtn');
+    let _muted = false;
+    muteBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      _muted = !_muted;
+      if (_muted) {
+        try { libAmbient.stop(); } catch {}
+        muteBtn.textContent = '🔇';
+        muteBtn.classList.add('muted');
+        muteBtn.setAttribute('aria-pressed', 'true');
+        muteBtn.setAttribute('aria-label', '環境音をオン');
+      } else {
+        try { libAmbient.start(); } catch {}
+        muteBtn.textContent = '🔊';
+        muteBtn.classList.remove('muted');
+        muteBtn.setAttribute('aria-pressed', 'false');
+        muteBtn.setAttribute('aria-label', '環境音をミュート');
+      }
+    }, { signal: _libSig });
 
     // ── レイキャスト：本のクリック ──
     const raycaster = new THREE.Raycaster();
@@ -24104,10 +24746,32 @@
     // ── アニメーション ──
     let prevTs = 0;
     let lastProximityCheck = 0;
+    // 現在地表示のヒステリシス用：前回ラベルを保持し、境界 ±0.5m を越えてから切替
+    let _locLastFloor = '1F';
+    let _locLastArea = '入口';
+    // 開くボタンの debounce タイマー
+    let _openBtnShowTimer = null;
+    let _openBtnHideTimer = null;
+    _libSig.addEventListener('abort', () => {
+      if (_openBtnShowTimer) clearTimeout(_openBtnShowTimer);
+      if (_openBtnHideTimer) clearTimeout(_openBtnHideTimer);
+    });
+    // prefers-reduced-motion: 視線・シーンアニメ低減
+    const _reduceMotion = (() => {
+      try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch { return false; }
+    })();
+    // 視線パッド最大入力時の角速度（rad/s）— reduce-motion なら半減
+    const LOOK_SPEED = _reduceMotion ? 1.0 : 1.8; // 約 103°/s（既存 koh-vpad より速め、酔いにくい範囲）
+    const PITCH_LIMIT = 1.0;
     function tick(ts) {
       if (!ov.isConnected) return;
       const t = ts / 1000;
       const dt = Math.min(0.05, (ts - prevTs) / 1000 || 0.016); prevTs = ts;
+      // 👁 視線パッド入力を加算（モバイル両親指操作）
+      if (lookActive && (lookDX !== 0 || lookDY !== 0)) {
+        camYaw -= lookDX * LOOK_SPEED * dt;
+        camPitch = Math.max(-PITCH_LIMIT, Math.min(PITCH_LIMIT, camPitch - lookDY * LOOK_SPEED * dt));
+      }
       // カメラ向き適用
       camEuler.set(camPitch, camYaw, 0, 'YXZ');
       camera.quaternion.setFromEuler(camEuler);
@@ -24180,6 +24844,23 @@
             nz = camera.position.z;
           }
         }
+        // 🏛 柱の衝突回避（全階共通、表面に沿って押し出し＝貼り付き防止）
+        const PLAYER_R = 0.5;
+        for (const c of interiorColliders) {
+          const ddx = nx - c.x;
+          const ddz = nz - c.z;
+          const dd = Math.sqrt(ddx*ddx + ddz*ddz);
+          const minD = c.r + PLAYER_R;
+          if (dd < minD) {
+            if (dd > 0.001) {
+              nx = c.x + (ddx / dd) * minD;
+              nz = c.z + (ddz / dd) * minD;
+            } else {
+              nx = camera.position.x;
+              nz = camera.position.z;
+            }
+          }
+        }
         camera.position.x = nx;
         camera.position.z = nz;
       }
@@ -24219,14 +24900,29 @@
         if (h !== hovered) {
           if (hovered) {
             hovered.scale.set(1, 1, 1);
-            // 前回のホバー本のYを戻す
             hovered.position.y = hovered.userData.originalY;
           }
+          // open ボタン debounce: 200ms 同じ本に当たり続けたら表示、外れたら 100ms で消す
+          if (_openBtnShowTimer) { clearTimeout(_openBtnShowTimer); _openBtnShowTimer = null; }
+          if (_openBtnHideTimer) { clearTimeout(_openBtnHideTimer); _openBtnHideTimer = null; }
           if (h && !h.userData.book.placeholder) {
             h.scale.set(1.1, 1.1, 1.4);
             cv.style.cursor = 'pointer';
+            const bk = h.userData.book;
+            const icon = bk.kind === 'person' ? '🎓' : bk.kind === 'work' ? '📖' : bk.kind === 'myth' ? '📜' : bk.kind === 'god' ? '⚡' : bk.kind === 'element' ? '🧪' : bk.kind === 'music' ? '🎵' : '📚';
+            openBtn.innerHTML = `${icon} <span class="lib-open-btn-name">${escapeHtml((bk.name || '').slice(0, 14))}</span> を開く`;
+            _openBtnShowTimer = setTimeout(() => {
+              _openBtnShowTimer = null;
+              if (hovered === h && !_libSig.aborted) openBtn.hidden = false;
+            }, 200);
           } else {
             cv.style.cursor = 'default';
+            if (!openBtn.hidden) {
+              _openBtnHideTimer = setTimeout(() => {
+                _openBtnHideTimer = null;
+                openBtn.hidden = true;
+              }, 100);
+            }
           }
           hovered = h;
         }
@@ -24258,16 +24954,75 @@
             shelfBtn.hidden = true;
           }
         }
+        // 📍 現在地表示の更新（階 + おおまかな方角）
+        // ヒステリシス: 前回ラベルを保持し、境界を ±0.5m 越えてから切替（aria-live 連発防止）
+        const _cyForLoc = camera.position.y - PLAYER_EYE;
+        // 階判定（既存の境界 ±0.5m バッファ込み）
+        let floorLabel = _locLastFloor;
+        if (_cyForLoc > FLOOR_3_Y - 1.0) floorLabel = '3F';
+        else if (_cyForLoc < FLOOR_3_Y - 2.0 && _cyForLoc > FLOOR_2_Y - 1.0) floorLabel = '2F';
+        else if (_cyForLoc < FLOOR_2_Y - 2.0) floorLabel = '1F';
+        // エリア判定：境界 ±0.5m のヒステリシス
+        const ax = camera.position.x, az = camera.position.z;
+        const HYS = 0.5;
+        let areaLabel = _locLastArea;
+        // 入口判定（1F のみ）
+        if (floorLabel === '1F') {
+          const inEntrance = az > (HALL_D/2 - 6 + (_locLastArea === '入口' ? -HYS : HYS)) && Math.abs(ax) < (8 + (_locLastArea === '入口' ? HYS : -HYS));
+          if (inEntrance) {
+            areaLabel = '入口';
+          } else if (_locLastArea === '入口') {
+            // 入口を出た直後は再計算
+            const ns0 = az < -HALL_D/4 ? '北' : az > HALL_D/4 ? '南' : '';
+            const ew0 = ax < -HALL_W/4 ? '西' : ax > HALL_W/4 ? '東' : '';
+            areaLabel = (ns0 + ew0) || '中央';
+          }
+        }
+        if (areaLabel !== '入口') {
+          // 南北判定（境界 -HALL_D/4, HALL_D/4 の周りに ±HYS バッファ）
+          const wasN = _locLastArea.includes('北');
+          const wasS = _locLastArea.includes('南');
+          const nsBoundEnter = wasN ? -HALL_D/4 + HYS : -HALL_D/4 - HYS;
+          const nsBoundExit  = wasS ?  HALL_D/4 - HYS :  HALL_D/4 + HYS;
+          const ns = az < nsBoundEnter ? '北' : az > nsBoundExit ? '南' : '';
+          // 東西判定
+          const wasW = _locLastArea.includes('西');
+          const wasE = _locLastArea.includes('東');
+          const ewBoundEnter = wasW ? -HALL_W/4 + HYS : -HALL_W/4 - HYS;
+          const ewBoundExit  = wasE ?  HALL_W/4 - HYS :  HALL_W/4 + HYS;
+          const ew = ax < ewBoundEnter ? '西' : ax > ewBoundExit ? '東' : '';
+          areaLabel = (ns + ew) || '中央';
+        }
+        // floorLabel/areaLabel が前回と異なる場合のみ DOM 更新（aria-live 抑制）
+        if (floorLabel !== _locLastFloor || areaLabel !== _locLastArea) {
+          _locLastFloor = floorLabel;
+          _locLastArea = areaLabel;
+          const locFloorEl = ov.querySelector('.lib-loc-floor');
+          const locAreaEl = ov.querySelector('.lib-loc-area');
+          if (locFloorEl) locFloorEl.textContent = floorLabel;
+          if (locAreaEl) locAreaEl.textContent = areaLabel;
+        }
       }
       // シャンデリアわずかに揺れ
       chandelier.rotation.y = Math.sin(t * 0.2) * 0.05;
-      // 埃ゆらゆら
+      // 埃ゆらゆら（個体ごとに速度違い + 横方向の微風）
       const dpa = dust.geometry.attributes.position;
       for (let i = 0; i < DCNT; i++) {
-        dpa.array[i*3+1] += 0.005;
+        dpa.array[i*3]   += Math.sin(t * 0.4 + i * 0.13) * 0.0015; // 横揺れ
+        dpa.array[i*3+1] += dv[i];
+        dpa.array[i*3+2] += Math.cos(t * 0.3 + i * 0.17) * 0.0012;
         if (dpa.array[i*3+1] > 12) dpa.array[i*3+1] = 0;
       }
       dpa.needsUpdate = true;
+      if (dust2) {
+        const dpa2 = dust2.geometry.attributes.position;
+        const N2 = dpa2.array.length / 3;
+        for (let i = 0; i < N2; i++) {
+          dpa2.array[i*3+1] += 0.004;
+          if (dpa2.array[i*3+1] > 14) dpa2.array[i*3+1] = 0;
+        }
+        dpa2.needsUpdate = true;
+      }
       renderer.render(scene, camera);
       requestAnimationFrame(tick);
     }
@@ -24277,7 +25032,7 @@
       renderer.setSize(W(), H());
       camera.aspect = W()/H();
       camera.updateProjectionMatrix();
-    });
+    }, { signal: _libSig });
   }
   window.openLibrary = openLibrary;
 
