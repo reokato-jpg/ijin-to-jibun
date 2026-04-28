@@ -598,6 +598,11 @@
                 <div class="mtc-name">図 書 館</div>
                 <div class="mtc-sub">全分野の本を検索する</div>
               </button>
+              <button class="magic-topbook-cat magic-topbook-cat-amusement" data-cat="amusement">
+                <div class="mtc-emoji">🎡</div>
+                <div class="mtc-name">遊 園 地</div>
+                <div class="mtc-sub">観覧車・ただ眺める空間</div>
+              </button>
               <button class="magic-topbook-cat magic-topbook-cat-concept" data-cat="concept">
                 <div class="mtc-name">概 念</div>
                 <div class="mtc-sub">元素・物・ビジネスから辿る</div>
@@ -642,6 +647,7 @@
         lpworld: () => { try { openLittlePrinceWorld3D(); } catch (e) { console.warn('lpworld', e); } },
         koh: () => { try { openKohSphere(); } catch (e) { console.warn('koh', e); } },
         library: () => { try { openLibrary(); } catch (e) { console.warn('library', e); } },
+        ferris: () => { try { openFerrisWheel(); } catch (e) { console.warn('ferris', e); } },
         ijinhub: () => { try { openIjinHub(); } catch (e) { console.warn('ijinhub', e); } },
         elements: () => { try { openElementsPage(); } catch (e) { console.warn('elements', e); } },
         things: () => { try { openThingsPage(); } catch (e) { console.warn('things', e); } },
@@ -675,6 +681,9 @@
         ]},
         library: { title: '📚 図 書 館', sub: '偉人・神話・神々・音楽の総合書庫', items: [
           { deep: 'library', label: '図書館に入る', desc: 'ゴシック寺院風の本棚から検索 — クリックで本を開く', emoji: '📚' },
+        ]},
+        amusement: { title: '🎡 遊 園 地', sub: 'ただ眺める・ただ乗る空間', items: [
+          { deep: 'ferris', label: '観覧車に乗る', desc: '夕景の中をゆっくり1周（約90秒、ドラッグで見回す）', emoji: '🎡' },
         ]},
         concept: { title: '概 念', sub: '物質・道具・経済から偉人を辿る', items: [
           { deep: 'elements', label: '元 素', desc: '周期表に並ぶすべての元素', emoji: '⚛' },
@@ -25843,6 +25852,479 @@
     }, { signal: _libSig });
   }
   window.openLibrary = openLibrary;
+
+  // ============================================================
+  // 🎡 観覧車（遊園地・第一弾）— ゴンドラ視点で眺めるだけのリラックス空間
+  //   ゲーム要素なし。ただ高くなる、ただ景色が回る、ただ座って眺める。
+  // ============================================================
+  async function openFerrisWheel() {
+    if (!window.THREE) return;
+    const ov = document.createElement('div');
+    ov.className = 'ferris-overlay';
+    ov.innerHTML = `
+      <button class="ferris-close lib-close" aria-label="閉じる">×</button>
+      <canvas id="ferrisCanvas"></canvas>
+      <div class="ferris-info" id="ferrisInfo">
+        <div class="ferris-info-title">観 覧 車</div>
+        <div class="ferris-info-sub">ゆっくり一周します（約 90 秒）</div>
+      </div>
+      <div class="ferris-look" id="ferrisLook" aria-label="視線パッド">
+        <span class="ferris-look-label">視 線</span>
+      </div>
+      <div class="ferris-hint">ドラッグ：見回す ／ 自動で回転します</div>
+    `;
+    ov.setAttribute('role', 'dialog');
+    ov.setAttribute('aria-modal', 'true');
+    ov.setAttribute('aria-label', '観覧車');
+    ov.setAttribute('tabindex', '-1');
+    document.body.appendChild(ov);
+    requestAnimationFrame(() => ov.classList.add('open'));
+    setTimeout(() => { try { ov.focus(); } catch {} }, 50);
+
+    const _AC = new AbortController();
+    const _sig = _AC.signal;
+    const _isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent || '');
+
+    const close = () => {
+      try { _AC.abort(); } catch {}
+      try { if (_ambient && _ambient.stop) _ambient.stop(); } catch {}
+      try {
+        scene.traverse(o => {
+          if (o.geometry && o.geometry.dispose) { try { o.geometry.dispose(); } catch {} }
+          if (o.material) {
+            const ms = Array.isArray(o.material) ? o.material : [o.material];
+            ms.forEach(m => {
+              try {
+                if (m.map && m.map.dispose) m.map.dispose();
+                if (m.dispose) m.dispose();
+              } catch {}
+            });
+          }
+        });
+      } catch {}
+      try { renderer.dispose(); } catch {}
+      ov.classList.remove('open');
+      setTimeout(() => { try { ov.remove(); } catch {} }, 350);
+    };
+    ov.querySelector('.ferris-close').addEventListener('click', close, { signal: _sig });
+    document.addEventListener('keydown', e => {
+      if (!ov.isConnected) return;
+      if (e.key === 'Escape') close();
+    }, { signal: _sig });
+
+    // ── 環境ドローン（風＋遠くのざわめき）──
+    const _ambient = (() => {
+      let ctx = null, started = false, mainGain = null, oscs = [];
+      const start = () => {
+        if (started) return;
+        try {
+          const Ctor = window.AudioContext || window.webkitAudioContext;
+          if (!Ctor) return;
+          ctx = new Ctor();
+          mainGain = ctx.createGain();
+          mainGain.gain.value = 0;
+          mainGain.connect(ctx.destination);
+          // 静かなドローン（風の低周波 + 高めのささやき）
+          [{ f: 90, g: 0.20 }, { f: 165, g: 0.12 }, { f: 240, g: 0.06 }].forEach(({ f, g }) => {
+            const osc = ctx.createOscillator();
+            osc.type = 'sine';
+            osc.frequency.value = f;
+            const og = ctx.createGain(); og.gain.value = g;
+            osc.connect(og); og.connect(mainGain);
+            const lfo = ctx.createOscillator();
+            lfo.type = 'sine';
+            lfo.frequency.value = 0.05 + Math.random() * 0.04;
+            const lfoG = ctx.createGain(); lfoG.gain.value = 0.5;
+            lfo.connect(lfoG); lfoG.connect(osc.frequency);
+            osc.start(); lfo.start();
+            oscs.push(osc, lfo);
+          });
+          mainGain.gain.linearRampToValueAtTime(0.04, ctx.currentTime + 4);
+          started = true;
+        } catch (e) { console.warn('[ferris ambient] start failed', e); }
+      };
+      const stop = () => {
+        if (!started || !ctx) return;
+        try {
+          mainGain.gain.cancelScheduledValues(ctx.currentTime);
+          mainGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.4);
+          setTimeout(() => {
+            try { oscs.forEach(o => { try { o.stop(); } catch {} }); } catch {}
+            try { ctx.close(); } catch {}
+          }, 500);
+          started = false;
+        } catch {}
+      };
+      return { start, stop };
+    })();
+    const _ambStart = () => _ambient.start();
+    ov.addEventListener('pointerdown', _ambStart, { once: true, capture: true, signal: _sig });
+    ov.addEventListener('keydown', _ambStart, { once: true, capture: true, signal: _sig });
+    ov.addEventListener('touchstart', _ambStart, { once: true, passive: true, capture: true, signal: _sig });
+
+    // ── 3D シーン構築 ──
+    const cv = ov.querySelector('#ferrisCanvas');
+    const renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: !_isMobile, alpha: false, powerPreference: 'high-performance' });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, _isMobile ? 0.85 : 1.4));
+    const W = () => window.innerWidth;
+    const H = () => window.innerHeight;
+    renderer.setSize(W(), H());
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.15;
+    if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+    const scene = new THREE.Scene();
+    // 夕景の空：上は薄紫、下は橙色
+    {
+      const skyCanvas = document.createElement('canvas');
+      skyCanvas.width = 16; skyCanvas.height = 256;
+      const g = skyCanvas.getContext('2d');
+      const grad = g.createLinearGradient(0, 0, 0, 256);
+      grad.addColorStop(0,    '#1a1530'); // 高空：紺紫
+      grad.addColorStop(0.35, '#4a2848');
+      grad.addColorStop(0.65, '#c8584a'); // 中空：夕焼けの濃い橙赤
+      grad.addColorStop(0.85, '#f0a868'); // 地平線手前：薄橙
+      grad.addColorStop(1,    '#f8d8a0'); // 地平線：クリーム
+      g.fillStyle = grad; g.fillRect(0, 0, 16, 256);
+      const skyTex = new THREE.CanvasTexture(skyCanvas);
+      if ('colorSpace' in skyTex) skyTex.colorSpace = THREE.SRGBColorSpace;
+      const skyDome = new THREE.Mesh(
+        new THREE.SphereGeometry(500, 32, 24),
+        new THREE.MeshBasicMaterial({ map: skyTex, side: THREE.BackSide, fog: false, depthWrite: false })
+      );
+      scene.add(skyDome);
+    }
+    scene.fog = new THREE.Fog(0xc88060, 80, 600);
+
+    const camera = new THREE.PerspectiveCamera(72, W()/H(), 0.1, 1000);
+
+    // ── 地面と遠景 ──
+    {
+      // 地面（草色のフィールド、簡素）
+      const groundCanvas = document.createElement('canvas');
+      groundCanvas.width = 256; groundCanvas.height = 256;
+      const g = groundCanvas.getContext('2d');
+      g.fillStyle = '#3a5028'; g.fillRect(0, 0, 256, 256);
+      g.fillStyle = 'rgba(20,30,12,0.18)';
+      for (let i = 0; i < 200; i++) {
+        g.beginPath(); g.arc(Math.random()*256, Math.random()*256, 1 + Math.random()*3, 0, Math.PI*2); g.fill();
+      }
+      g.fillStyle = 'rgba(180,200,120,0.10)';
+      for (let i = 0; i < 80; i++) {
+        g.beginPath(); g.arc(Math.random()*256, Math.random()*256, 2 + Math.random()*4, 0, Math.PI*2); g.fill();
+      }
+      const groundTex = new THREE.CanvasTexture(groundCanvas);
+      groundTex.wrapS = groundTex.wrapT = THREE.RepeatWrapping;
+      groundTex.repeat.set(40, 40);
+      if ('colorSpace' in groundTex) groundTex.colorSpace = THREE.SRGBColorSpace;
+      const ground = new THREE.Mesh(
+        new THREE.PlaneGeometry(800, 800),
+        new THREE.MeshStandardMaterial({ map: groundTex, roughness: 0.95, color: 0x6a8050 })
+      );
+      ground.rotation.x = -Math.PI / 2;
+      ground.position.y = 0;
+      scene.add(ground);
+      // 遠景の街シルエット（カードに描画）
+      const cityCanvas = document.createElement('canvas');
+      cityCanvas.width = 1024; cityCanvas.height = 128;
+      const cg = cityCanvas.getContext('2d');
+      cg.fillStyle = 'rgba(0,0,0,0)'; cg.fillRect(0, 0, 1024, 128);
+      cg.fillStyle = '#1a0e1c';
+      let x = 0;
+      while (x < 1024) {
+        const w = 12 + Math.random() * 36;
+        const h = 30 + Math.random() * 70;
+        cg.fillRect(x, 128 - h, w, h);
+        // 建物の窓（小さな黄点）
+        if (Math.random() < 0.5) {
+          cg.fillStyle = 'rgba(255,200,120,0.55)';
+          for (let r = 0; r < Math.floor(h/12); r++) {
+            for (let c = 0; c < Math.floor(w/8); c++) {
+              if (Math.random() < 0.35) cg.fillRect(x + 2 + c*8, 128 - h + 4 + r*12, 3, 5);
+            }
+          }
+          cg.fillStyle = '#1a0e1c';
+        }
+        x += w + 1 + Math.random() * 4;
+      }
+      const cityTex = new THREE.CanvasTexture(cityCanvas);
+      if ('colorSpace' in cityTex) cityTex.colorSpace = THREE.SRGBColorSpace;
+      const cityMat = new THREE.MeshBasicMaterial({ map: cityTex, transparent: true, fog: false, depthWrite: false });
+      // 4方向に街を貼る
+      [0, Math.PI / 2, Math.PI, -Math.PI / 2].forEach(rot => {
+        const wall = new THREE.Mesh(new THREE.PlaneGeometry(420, 60), cityMat);
+        const r = 220;
+        wall.position.set(Math.sin(rot) * r, 30, Math.cos(rot) * r);
+        wall.rotation.y = rot + Math.PI;
+        scene.add(wall);
+      });
+    }
+
+    // ── 観覧車 ──
+    const wheelGroup = new THREE.Group();
+    const cabins = []; // { group, angle0 } — angle0 は車輪上での初期角度
+    const WHEEL_R = 22;
+    const CABIN_COUNT = 12;
+    const TOWER_BASE_Y = 0;
+    const HUB_Y = WHEEL_R + 4; // 観覧車中心の高さ（車輪が地面ぎりぎり〜上空 48m）
+    {
+      // ── タワー支柱（A 字型、両側）──
+      const towerMat = new THREE.MeshStandardMaterial({ color: 0xd8d4c8, roughness: 0.6, metalness: 0.4 });
+      const towerSide = 5; // ハブから左右に 5m 離す
+      [-towerSide, towerSide].forEach(sx => {
+        // 内側脚（ハブ寄り）
+        const legA = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.5, HUB_Y, 12), towerMat);
+        legA.position.set(sx * 0.4, HUB_Y / 2, 0);
+        scene.add(legA);
+        // 外側脚（外向き）
+        const legB = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.5, HUB_Y, 12), towerMat);
+        legB.position.set(sx * 1.4, HUB_Y / 2, 0);
+        legB.rotation.z = -Math.sign(sx) * 0.18;
+        scene.add(legB);
+        // 横ブレース（X 字）
+        for (let lvl of [0.25, 0.55, 0.85]) {
+          const br = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, Math.abs(sx) * 1.0, 8), towerMat);
+          br.position.set(sx * 0.9, HUB_Y * lvl, 0);
+          br.rotation.z = Math.PI / 2;
+          scene.add(br);
+        }
+      });
+      // ハブを繋ぐ大梁（左右の塔間）
+      const beam = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, towerSide * 2.6, 12), towerMat);
+      beam.position.set(0, HUB_Y - 0.5, 0);
+      beam.rotation.z = Math.PI / 2;
+      scene.add(beam);
+
+      // ── 中心ハブ ──
+      const hubMat = new THREE.MeshStandardMaterial({ color: 0xc8a040, metalness: 0.85, roughness: 0.3, emissive: 0x4a3008, emissiveIntensity: 0.4 });
+      const hub = new THREE.Mesh(new THREE.CylinderGeometry(1.5, 1.5, 1.6, 24), hubMat);
+      hub.rotation.x = Math.PI / 2;
+      hub.position.set(0, HUB_Y, 0);
+      wheelGroup.add(hub);
+
+      // ── 外周リング（2 重） ──
+      const rimMat = new THREE.MeshStandardMaterial({ color: 0xe0dcd0, roughness: 0.5, metalness: 0.5 });
+      [WHEEL_R, WHEEL_R - 0.4].forEach(r => {
+        const ring = new THREE.Mesh(new THREE.TorusGeometry(r, 0.15, 8, 64), rimMat);
+        ring.rotation.x = 0; // XY 平面 → Z 軸回転で観覧車として回る
+        ring.position.set(0, 0, 0);
+        wheelGroup.add(ring);
+      });
+      // ── スポーク（CABIN_COUNT 本）──
+      const spokeMat = new THREE.MeshStandardMaterial({ color: 0xd0ccc0, roughness: 0.5, metalness: 0.4 });
+      for (let i = 0; i < CABIN_COUNT; i++) {
+        const ang = (i / CABIN_COUNT) * Math.PI * 2;
+        const sp = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, WHEEL_R, 8), spokeMat);
+        sp.position.set(Math.cos(ang) * WHEEL_R / 2, Math.sin(ang) * WHEEL_R / 2, 0);
+        sp.rotation.z = ang - Math.PI / 2;
+        wheelGroup.add(sp);
+      }
+
+      // ── ゴンドラ（キャビン）×CABIN_COUNT ──
+      const cabinPalette = [0xff8a60, 0xffd060, 0x60c8d0, 0x8060d0, 0xff6a90, 0xffe0b8, 0x90c870, 0xa0a8ff];
+      for (let i = 0; i < CABIN_COUNT; i++) {
+        const ang = (i / CABIN_COUNT) * Math.PI * 2;
+        const cabinG = new THREE.Group();
+        // キャビン本体（カラフルな箱型）
+        const col = cabinPalette[i % cabinPalette.length];
+        const body = new THREE.Mesh(
+          new THREE.BoxGeometry(2.4, 1.8, 2.4),
+          new THREE.MeshStandardMaterial({ color: col, roughness: 0.4, metalness: 0.2, emissive: col, emissiveIntensity: 0.05 })
+        );
+        body.position.y = -1.2; // キャビンの取り付け点（屋根）
+        cabinG.add(body);
+        // 屋根（白）
+        const roof = new THREE.Mesh(
+          new THREE.ConeGeometry(1.7, 0.6, 8),
+          new THREE.MeshStandardMaterial({ color: 0xfff0d0, roughness: 0.3 })
+        );
+        roof.position.y = -0.0;
+        cabinG.add(roof);
+        // 窓（透明な大きな帯）
+        const winMat = new THREE.MeshStandardMaterial({
+          color: 0x88c8e8, transparent: true, opacity: 0.55,
+          metalness: 0.6, roughness: 0.15, emissive: 0x88c8e8, emissiveIntensity: 0.12,
+        });
+        const winF = new THREE.Mesh(new THREE.PlaneGeometry(2.0, 1.0), winMat);
+        winF.position.set(0, -1.2, 1.21); cabinG.add(winF);
+        const winB = new THREE.Mesh(new THREE.PlaneGeometry(2.0, 1.0), winMat);
+        winB.position.set(0, -1.2, -1.21); winB.rotation.y = Math.PI; cabinG.add(winB);
+        const winL = new THREE.Mesh(new THREE.PlaneGeometry(2.0, 1.0), winMat);
+        winL.position.set(-1.21, -1.2, 0); winL.rotation.y = -Math.PI / 2; cabinG.add(winL);
+        const winR = new THREE.Mesh(new THREE.PlaneGeometry(2.0, 1.0), winMat);
+        winR.position.set(1.21, -1.2, 0); winR.rotation.y = Math.PI / 2; cabinG.add(winR);
+        // 下部の取り付けボルト
+        const bolt = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.4, 8), spokeMat);
+        bolt.position.y = 0.2;
+        cabinG.add(bolt);
+        // ライト（夜にうっすら点く感じ用）
+        const lamp = new THREE.PointLight(col, 0.55, 14, 1.5);
+        lamp.position.set(0, -1.2, 0);
+        cabinG.add(lamp);
+        // 配置：車輪上の位置 = (cos*WHEEL_R, sin*WHEEL_R, 0)
+        cabinG.position.set(Math.cos(ang) * WHEEL_R, Math.sin(ang) * WHEEL_R, 0);
+        wheelGroup.add(cabinG);
+        cabins.push({ group: cabinG, angle0: ang });
+      }
+
+      // 観覧車を Z 軸回転（XY 平面で回す）→ 立てて配置するため、ハブ位置 (0, HUB_Y, 0) に。
+      wheelGroup.position.set(0, HUB_Y, 0);
+      scene.add(wheelGroup);
+    }
+
+    // ── 装飾：足元の広場・ベンチ・遠くの木 ──
+    {
+      // 観覧車の足元の広場（円形のタイル）
+      const plazaTex = (() => {
+        const c = document.createElement('canvas'); c.width = 256; c.height = 256;
+        const g = c.getContext('2d');
+        g.fillStyle = '#9a8868'; g.fillRect(0, 0, 256, 256);
+        g.strokeStyle = 'rgba(80,60,40,0.4)'; g.lineWidth = 2;
+        for (let i = 0; i <= 4; i++) {
+          g.beginPath(); g.moveTo(i*64, 0); g.lineTo(i*64, 256); g.stroke();
+          g.beginPath(); g.moveTo(0, i*64); g.lineTo(256, i*64); g.stroke();
+        }
+        const t = new THREE.CanvasTexture(c);
+        t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(8, 8);
+        if ('colorSpace' in t) t.colorSpace = THREE.SRGBColorSpace;
+        return t;
+      })();
+      const plaza = new THREE.Mesh(
+        new THREE.CircleGeometry(28, 64),
+        new THREE.MeshStandardMaterial({ map: plazaTex, roughness: 0.85 })
+      );
+      plaza.rotation.x = -Math.PI / 2;
+      plaza.position.y = 0.02;
+      scene.add(plaza);
+      // 周辺に低木（緑のドーム）
+      const treeMat = new THREE.MeshStandardMaterial({ color: 0x3a7038, roughness: 0.85 });
+      for (let i = 0; i < 30; i++) {
+        const ang = Math.random() * Math.PI * 2;
+        const r = 35 + Math.random() * 80;
+        const tree = new THREE.Mesh(new THREE.SphereGeometry(2 + Math.random() * 2, 8, 6), treeMat);
+        tree.position.set(Math.cos(ang) * r, 1.5 + Math.random(), Math.sin(ang) * r);
+        scene.add(tree);
+      }
+    }
+
+    // ── ライティング ──
+    scene.add(new THREE.AmbientLight(0xfff0d0, 0.6));
+    scene.add(new THREE.HemisphereLight(0xfff4dc, 0x4a3828, 0.65));
+    const sun = new THREE.DirectionalLight(0xffd49a, 1.7);
+    sun.position.set(-80, 60, 60);
+    scene.add(sun);
+    const rim = new THREE.DirectionalLight(0xa898d8, 0.4);
+    rim.position.set(40, 30, -60);
+    scene.add(rim);
+
+    // ── 視点制御：プレイヤーは特定のキャビン内、首だけ回せる ──
+    const PLAYER_CABIN_INDEX = 0; // 開始時に最下部のキャビン（angle0=0）
+    let camYaw = 0, camPitch = 0;
+    const camEuler = new THREE.Euler(0, 0, 0, 'YXZ');
+
+    // ドラッグで視線
+    let dragging = false, dragX = 0, dragY = 0, dragPid = null;
+    cv.addEventListener('pointerdown', e => {
+      if (dragging) return;
+      dragging = true; dragPid = e.pointerId;
+      dragX = e.clientX; dragY = e.clientY;
+      try { cv.setPointerCapture(e.pointerId); } catch {}
+    }, { signal: _sig });
+    cv.addEventListener('pointermove', e => {
+      if (!dragging || e.pointerId !== dragPid) return;
+      const dx = e.clientX - dragX, dy = e.clientY - dragY;
+      camYaw -= dx * 0.008;
+      camPitch = Math.max(-0.9, Math.min(0.9, camPitch - dy * 0.008));
+      dragX = e.clientX; dragY = e.clientY;
+    }, { signal: _sig });
+    const endDrag = (e) => {
+      if (e.pointerId !== dragPid) return;
+      dragging = false; dragPid = null;
+      try { cv.releasePointerCapture(e.pointerId); } catch {}
+    };
+    cv.addEventListener('pointerup', endDrag, { signal: _sig });
+    cv.addEventListener('pointercancel', endDrag, { signal: _sig });
+
+    // モバイル：視線パッド
+    const lookPad = ov.querySelector('#ferrisLook');
+    let lookActive = false, lookDX = 0, lookDY = 0, lookPid = null;
+    const LOOK_RADIUS = 60;
+    const lookFrom = (e) => {
+      const r = lookPad.getBoundingClientRect();
+      const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+      let dx = e.clientX - cx, dy = e.clientY - cy;
+      const d = Math.hypot(dx, dy);
+      if (d > LOOK_RADIUS) { dx = dx / d * LOOK_RADIUS; dy = dy / d * LOOK_RADIUS; }
+      lookPad.style.setProperty('--lkx', dx + 'px');
+      lookPad.style.setProperty('--lky', dy + 'px');
+      lookDX = dx / LOOK_RADIUS; lookDY = dy / LOOK_RADIUS;
+    };
+    lookPad.addEventListener('pointerdown', (e) => {
+      if (lookActive && lookPid !== null) return;
+      lookActive = true; lookPid = e.pointerId;
+      lookPad.classList.add('active');
+      lookFrom(e); e.preventDefault(); e.stopPropagation();
+    }, { signal: _sig });
+    document.addEventListener('pointermove', e => {
+      if (!lookActive || e.pointerId !== lookPid) return;
+      lookFrom(e);
+    }, { signal: _sig });
+    const lookEnd = (e) => {
+      if (e.pointerId !== lookPid) return;
+      lookActive = false; lookPid = null;
+      lookPad.style.setProperty('--lkx', '0px');
+      lookPad.style.setProperty('--lky', '0px');
+      lookDX = lookDY = 0;
+      lookPad.classList.remove('active');
+    };
+    document.addEventListener('pointerup', lookEnd, { signal: _sig });
+    document.addEventListener('pointercancel', lookEnd, { signal: _sig });
+
+    // ── アニメーション ──
+    let prevTs = 0;
+    const ROTATION_SPEED = (Math.PI * 2) / 90; // 90 秒で 1 周
+    const LOOK_SPEED = 1.4;
+
+    // キャビンが上向きになるよう counter-rotate するため、各キャビンに userData をつけておく
+    function tick(ts) {
+      if (!ov.isConnected) return;
+      const t = ts / 1000;
+      const dt = Math.min(0.05, (ts - prevTs) / 1000 || 0.016); prevTs = ts;
+      // 視線パッド
+      if (lookActive && (lookDX !== 0 || lookDY !== 0)) {
+        camYaw -= lookDX * LOOK_SPEED * dt;
+        camPitch = Math.max(-0.9, Math.min(0.9, camPitch - lookDY * LOOK_SPEED * dt));
+      }
+      // 観覧車を回転
+      wheelGroup.rotation.z += ROTATION_SPEED * dt;
+      // 各キャビンを counter-rotate して、上向きを維持
+      cabins.forEach(c => {
+        c.group.rotation.z = -wheelGroup.rotation.z;
+      });
+      // プレイヤーカメラ：選択キャビンの位置に追従、自分の首回転は別
+      const player = cabins[PLAYER_CABIN_INDEX];
+      // ワールド位置を取得（wheelGroup の回転を反映した結果）
+      const worldPos = new THREE.Vector3();
+      player.group.getWorldPosition(worldPos);
+      // 座席の高さ（ゴンドラ床から目線 1.0m）
+      camera.position.set(worldPos.x, worldPos.y - 0.6, worldPos.z);
+      // カメラ向き：観覧車の中心から外向き＋首の追加回転
+      const outwardYaw = Math.atan2(worldPos.x - 0, worldPos.z - 0); // ハブからの方位
+      camEuler.set(camPitch, outwardYaw + Math.PI + camYaw, 0, 'YXZ');
+      camera.quaternion.setFromEuler(camEuler);
+
+      renderer.render(scene, camera);
+      requestAnimationFrame(tick);
+    }
+    tick(0);
+
+    window.addEventListener('resize', () => {
+      renderer.setSize(W(), H());
+      camera.aspect = W() / H();
+      camera.updateProjectionMatrix();
+    }, { signal: _sig });
+  }
+  window.openFerrisWheel = openFerrisWheel;
 
   // ============================================================
   // 🌐 偉人ハブ — 「何から偉人を探す？」ゲートウェイ
