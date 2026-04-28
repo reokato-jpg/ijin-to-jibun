@@ -23778,34 +23778,19 @@
           scene.add(baseBlock);
         });
       });
-      // 階段下のスペース埋め（1F フロア＝fromY が 0 のときのみ）
-      if (fromY < 0.5) {
-        const underColMat = new THREE.MeshStandardMaterial({ color: 0x382418, roughness: 0.85 });
-        const midX = (startX + endX) / 2;
-        const midZ = (startZ + endZ) / 2;
-        const underH = toY - 0.4;
-        // 中央の太い石柱
-        const underCol = new THREE.Mesh(
-          new THREE.CylinderGeometry(0.45, 0.55, underH, 16),
-          underColMat
+      // 階段の構造材（側桁＝ストリンガー）：段板の真下、両側に沿って走る斜めの板
+      // 旧実装は階段中央 X に「太い石柱」を立てていたが、柱が段板を 3m 貫通し、
+      // 柱頭は本体に 0.2m 埋没、1F/2F 階段で非対称、という建築的破綻があったため撤去。
+      // 代わりに正統な木造階段の側桁に置換。両側対称・段板裏を支える形で建築的に整合。
+      [-1, 1].forEach(sideSign => {
+        const stringer = new THREE.Mesh(
+          new THREE.BoxGeometry(0.20, 0.55, lengthLen3 * 1.02),
+          woodMat2
         );
-        underCol.position.set(midX, underH / 2, midZ);
-        scene.add(underCol);
-        // 装飾ベース（金）
-        const underBase = new THREE.Mesh(
-          new THREE.BoxGeometry(1.3, 0.4, 1.3),
-          newelCapMat
-        );
-        underBase.position.set(midX, 0.2, midZ);
-        scene.add(underBase);
-        // 上部の柱頭（金）
-        const underCap = new THREE.Mesh(
-          new THREE.CylinderGeometry(0.7, 0.55, 0.4, 16),
-          newelCapMat
-        );
-        underCap.position.set(midX, underH - 0.2, midZ);
-        scene.add(underCap);
-      }
+        // upDist: 階段中心軸より少し下（段板裏側）に配置
+        placeOnStair(stringer, sideSign, -0.32);
+        scene.add(stringer);
+      });
     }
 
     // 本棚を作る共通関数（双面・5段、長さ可変）
