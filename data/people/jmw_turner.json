@@ -12,13 +12,15 @@
       "year": 1775,
       "age": 0,
       "title": "イギリスで生まれる",
-      "detail": ""
+      "detail": "",
+      "tags": []
     },
     {
       "year": 1851,
       "age": 76,
       "title": "逝去",
-      "detail": ""
+      "detail": "",
+      "tags": []
     }
   ],
   "quotes": [
@@ -54,5 +56,10 @@
     "likes": [],
     "dislikes": []
   },
-  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Turner_selfportrait.jpg?width=500"
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Turner_selfportrait.jpg?width=500",
+  "media": [],
+  "works": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": []
 }

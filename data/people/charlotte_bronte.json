@@ -12,13 +12,15 @@
       "year": 1816,
       "age": 0,
       "title": "イギリスで生まれる",
-      "detail": ""
+      "detail": "",
+      "tags": []
     },
     {
       "year": 1855,
       "age": 39,
       "title": "逝去",
-      "detail": ""
+      "detail": "",
+      "tags": []
     }
   ],
   "quotes": [
@@ -55,5 +57,10 @@
     "likes": [],
     "dislikes": []
   },
-  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/CBRichmond.png?width=500"
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/CBRichmond.png?width=500",
+  "media": [],
+  "works": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": []
 }

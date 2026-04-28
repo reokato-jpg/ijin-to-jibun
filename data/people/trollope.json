@@ -273,5 +273,11 @@
     "license": "Public domain",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Anthony_Trollope_c1870.jpg"
   },
-  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Picture_of_Anthony_Trollope.jpg?width=500"
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Picture_of_Anthony_Trollope.jpg?width=500",
+  "places": [],
+  "books": [],
+  "media": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": []
 }

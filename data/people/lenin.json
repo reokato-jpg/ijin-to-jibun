@@ -12,13 +12,15 @@
       "year": 1870,
       "age": 0,
       "title": "ロシア／ソ連で生まれる",
-      "detail": ""
+      "detail": "",
+      "tags": []
     },
     {
       "year": 1924,
       "age": 54,
       "title": "逝去",
-      "detail": ""
+      "detail": "",
+      "tags": []
     }
   ],
   "quotes": [
@@ -54,5 +56,10 @@
     "likes": [],
     "dislikes": []
   },
-  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Lenin_in_1920_%28cropped%29.jpg?width=500"
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Lenin_in_1920_%28cropped%29.jpg?width=500",
+  "media": [],
+  "works": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": []
 }

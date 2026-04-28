@@ -12,13 +12,15 @@
       "year": 1945,
       "age": 0,
       "title": "ジャマイカで生まれる",
-      "detail": ""
+      "detail": "",
+      "tags": []
     },
     {
       "year": 1981,
       "age": 36,
       "title": "逝去",
-      "detail": ""
+      "detail": "",
+      "tags": []
     }
   ],
   "quotes": [
@@ -60,5 +62,10 @@
     "likes": [],
     "dislikes": []
   },
-  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Bob-Marley.jpg?width=500"
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Bob-Marley.jpg?width=500",
+  "media": [],
+  "works": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": []
 }

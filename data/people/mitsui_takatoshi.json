@@ -12,7 +12,8 @@
       "year": 1622,
       "age": 0,
       "title": "伊勢松坂に生まれる",
-      "detail": "三井家の四男として商家に。幼名・八郎兵衛。"
+      "detail": "三井家の四男として商家に。幼名・八郎兵衛。",
+      "tags": []
     },
     {
       "year": 1673,
@@ -27,13 +28,15 @@
       "year": 1673,
       "age": 51,
       "title": "切り売り（小分け販売）を開始",
-      "detail": "反物を一反単位ではなく小さい単位で売る。一般庶民が手を伸ばせる価格に。"
+      "detail": "反物を一反単位ではなく小さい単位で売る。一般庶民が手を伸ばせる価格に。",
+      "tags": []
     },
     {
       "year": 1683,
       "age": 61,
       "title": "両替商（金融業）に進出",
-      "detail": "呉服から金融へ事業拡大。江戸・京都・大坂の三都市に両替店を構える。"
+      "detail": "呉服から金融へ事業拡大。江戸・京都・大坂の三都市に両替店を構える。",
+      "tags": []
     },
     {
       "year": 1691,
@@ -48,7 +51,8 @@
       "year": 1694,
       "age": 72,
       "title": "逝去",
-      "detail": "息子たちに『家法（三井家憲）』を残し、共同経営・兄弟和合の三井帝国を託す。"
+      "detail": "息子たちに『家法（三井家憲）』を残し、共同経営・兄弟和合の三井帝国を託す。",
+      "tags": []
     }
   ],
   "quotes": [
@@ -121,5 +125,10 @@
       "兄弟仲の悪さ"
     ]
   },
-  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Mitsui_Takatoshi.jpg?width=500"
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Mitsui_Takatoshi.jpg?width=500",
+  "media": [],
+  "works": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": []
 }

@@ -12,13 +12,15 @@
       "year": 1907,
       "age": 0,
       "title": "メキシコで生まれる",
-      "detail": ""
+      "detail": "",
+      "tags": []
     },
     {
       "year": 1954,
       "age": 47,
       "title": "逝去",
-      "detail": ""
+      "detail": "",
+      "tags": []
     }
   ],
   "quotes": [
@@ -55,5 +57,10 @@
     "likes": [],
     "dislikes": []
   },
-  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Block_Kahlo_Rivera_1932_cropped.jpg?width=500"
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Block_Kahlo_Rivera_1932_cropped.jpg?width=500",
+  "media": [],
+  "works": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": []
 }

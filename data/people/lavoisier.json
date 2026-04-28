@@ -93,10 +93,22 @@
     }
   ],
   "quotes": [
-    "化学において、新しい物質は生まれず、古い物質も消えない。ただ形を変えるだけだ。",
-    "言語は思考を表現するだけでなく、思考を生み出す道具でもある。",
-    "物理学なしに化学を進めることはできない。",
-    "実験室は哲学の道場である。"
+    {
+      "text": "化学において、新しい物質は生まれず、古い物質も消えない。ただ形を変えるだけだ。",
+      "source": ""
+    },
+    {
+      "text": "言語は思考を表現するだけでなく、思考を生み出す道具でもある。",
+      "source": ""
+    },
+    {
+      "text": "物理学なしに化学を進めることはできない。",
+      "source": ""
+    },
+    {
+      "text": "実験室は哲学の道場である。",
+      "source": ""
+    }
   ],
   "places": [],
   "imageUrl": "assets/portraits/lavoisier.webp",
@@ -112,5 +124,8 @@
   "lifeDigest": "フランスの化学者、近代化学の父。徴税請負人として得た資産で精密実験を可能にし、燃焼の理論を一新、酸素を命名し、33元素を体系化した。妻マリー＝アンヌは英語が堪能で英国化学を翻訳し、生涯の共同研究者だった。フランス革命の急進派は徴税請負人を民衆の敵と断じ、ラヴォアジエは断頭台で処刑された。ラグランジュは『彼の頭を刎ねるのは一瞬だが、同じ頭を生み出すには100年かかる』と嘆いた。マリー＝アンヌは遺稿を守り、後に『化学要論』改訂版を出版した。",
   "traits": {},
   "relations": [],
-  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/David_-_Portrait_of_Monsieur_Lavoisier_and_His_Wife.jpg?width=500"
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/David_-_Portrait_of_Monsieur_Lavoisier_and_His_Wife.jpg?width=500",
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": []
 }

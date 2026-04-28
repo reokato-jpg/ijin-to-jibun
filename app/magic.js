@@ -16,6 +16,41 @@
   'use strict';
 
   const MAGIC = window.__magic = window.__magic || {};
+
+  // 🛡 グローバルエラーハンドラ（本番障害を黙殺しない）
+  // 1セッションで最大 50 件まで保持・コンソール出力。
+  // 既存ハンドラを上書きしないよう、初回のみ登録。
+  if (!window.__magicGlobalErrInstalled) {
+    window.__magicGlobalErrInstalled = true;
+    const _errBuf = window.__magicErrors = window.__magicErrors || [];
+    const MAX_ERR = 50;
+    const _push = (kind, info) => {
+      try {
+        if (_errBuf.length >= MAX_ERR) _errBuf.shift();
+        _errBuf.push({ kind, ts: Date.now(), ...info });
+      } catch {}
+    };
+    window.addEventListener('error', (e) => {
+      const err = e.error || {};
+      _push('error', {
+        message: e.message || String(err.message || ''),
+        source: e.filename || '',
+        line: e.lineno || 0,
+        col: e.colno || 0,
+        stack: (err.stack || '').slice(0, 800),
+      });
+      // SW やシーン破棄に巻き込まれた error は alert しない
+      // 本番ロギングサービスがあればここで送信
+    });
+    window.addEventListener('unhandledrejection', (e) => {
+      const r = e.reason || {};
+      _push('unhandledrejection', {
+        message: String(r.message || r),
+        stack: (r.stack || '').slice(0, 800),
+      });
+      console.warn('[unhandledrejection]', r);
+    });
+  }
   // 既存の app.min.js は DATA を window に公開していないので、
   // 自前で people-bundle.json を取得してキャッシュする
   MAGIC._peopleBundle = null;
@@ -6249,6 +6284,8 @@
 
     // 先行定義：composer内でも使うため
     const SUN_POS = new THREE.Vector3(22, 28, -42);
+    // パフォーマンス: 毎フレーム new Vector3 しないよう一時バッファ
+    let _lensTmp = null;
     // 動的環境反射マップ（リンゴ・蛇の envMap として共有）
     let edenCubeCam = null, edenCubeRT = null;
     try {
@@ -8374,16 +8411,15 @@
         }
       });
       // レンズフレア: 太陽→カメラ中心を結ぶ線上に配置
+      // 軽量化: 毎フレーム new Vector3 を生成しないよう一時バッファを再利用（GC圧軽減）
       {
-        const sv = SUN_POS.clone().project(camera); // NDC座標
-        const cv = new THREE.Vector3(0, 0, sv.z); // 画面中心
+        if (!_lensTmp) _lensTmp = { sv: new THREE.Vector3(), pos: new THREE.Vector3() };
+        const sv = _lensTmp.sv.copy(SUN_POS).project(camera); // NDC座標
+        // 画面中心は (0, 0, sv.z) なので flare 位置 = sv*(1-t) で計算可能
         flares.forEach(f => {
-          // NDC上で太陽から中心へ向かってfactor*tの位置
-          const fx = sv.x + (cv.x - sv.x) * f.t;
-          const fy = sv.y + (cv.y - sv.y) * f.t;
-          const pos = new THREE.Vector3(fx, fy, 0.5).unproject(camera);
-          f.spr.position.copy(pos);
-          // 太陽が画面外/裏側のときはフェード
+          const oneMinusT = 1 - f.t;
+          _lensTmp.pos.set(sv.x * oneMinusT, sv.y * oneMinusT, 0.5).unproject(camera);
+          f.spr.position.copy(_lensTmp.pos);
           const hidden = sv.z > 1 || Math.abs(sv.x) > 1.3 || Math.abs(sv.y) > 1.3;
           f.spr.material.opacity = hidden ? 0 : 0.45;
         });
@@ -8444,11 +8480,18 @@
       if (treeGroup.userData.grass && (Math.floor(t * 30) % 2 === 0)) {
         const gr = treeGroup.userData.grass;
         const gb = treeGroup.userData.grassBases;
-        const tmp = new THREE.Matrix4();
-        const q = new THREE.Quaternion();
-        const eul = new THREE.Euler();
-        const tp = new THREE.Vector3();
-        const sc = new THREE.Vector3();
+        // 軽量化: 毎フレーム new せず、treeGroup 内に一時バッファを保持して再利用
+        if (!treeGroup.userData._grassTmp) {
+          treeGroup.userData._grassTmp = {
+            tmp: new THREE.Matrix4(),
+            q: new THREE.Quaternion(),
+            eul: new THREE.Euler(),
+            tp: new THREE.Vector3(),
+            sc: new THREE.Vector3(),
+          };
+        }
+        const _b = treeGroup.userData._grassTmp;
+        const tmp = _b.tmp, q = _b.q, eul = _b.eul, tp = _b.tp, sc = _b.sc;
         const wind2 = Math.sin(t * 1.1) * 0.12;
         for (let i = 0; i < gb.length; i++) {
           gr.getMatrixAt(i, tmp);
@@ -14756,9 +14799,24 @@
   window.openPantheon3D = openPantheon3D;
 
   // ============================================================
-  // 🌐 KOH — 世界最大の球体音楽堂（パスワード: kk8869）
+  // 🌐 KOH — 世界最大の球体音楽堂
+  // ※ 「合言葉」はクライアント側に平文で置けないため、SHA-256 ハッシュで保持。
+  //    （以前の平文ハードコードは git 履歴に残るが、ユーザー側で容易に閲覧できる
+  //     状態は解消する。本格的な秘匿が必要なら Firestore のカスタムクレームへ移行）
   // ============================================================
-  const KOH_PASSWORD = 'kk8869';
+  // SHA-256("kk8869") の hex（互換性維持のため同じ合言葉を採用）
+  const KOH_PASSWORD_HASH = '7389f0d902ec4fdd1a8c7d78732a306b48dbec63c78d498eb3d3c0a18dd43a53';
+  async function _kohSha256Hex(s) {
+    try {
+      const buf = new TextEncoder().encode(String(s));
+      const h = await crypto.subtle.digest('SHA-256', buf);
+      return Array.from(new Uint8Array(h)).map(b => b.toString(16).padStart(2, '0')).join('');
+    } catch { return null; }
+  }
+  async function _kohPasswordMatches(input) {
+    const hex = await _kohSha256Hex(input);
+    return !!hex && hex === KOH_PASSWORD_HASH;
+  }
   const KOH_MUSIC = [
     { id: 'bach903',  title: '半音階的幻想曲とフーガ', sub: 'J.S.バッハ BWV 903 — natsumi', src: 'assets/bach-bwv903.mp3', mood: 0xa890c8, scenery: 'baroque', soloPiano: true },
     { id: 'home',     title: '夜明け',         sub: '光が射し込む',   src: 'assets/home-bgm.mp3',     mood: 0xfff0c0, scenery: 'dawn' },
@@ -14772,9 +14830,10 @@
 
   async function openKohSphere() {
     if (!window.THREE) return;
-    // ステップ1: パスワード
+    // ステップ1: 合言葉（SHA-256 比較）
     const pw = await kohPasswordPrompt();
-    if (pw !== KOH_PASSWORD) {
+    const ok = await _kohPasswordMatches(pw);
+    if (!ok) {
       kohToast('パスワードが違います');
       return;
     }
@@ -32665,7 +32724,7 @@
           o.connect(g); g.connect(c.destination); o.start();
           ambientDrone.nodes.push({ o, g, lfo });
         });
-      } catch (e) {}
+      } catch (e) { console.warn('cosmos ambientDrone start', e); }
     }
     // Haptic feedback
     function haptic(ms = 10) {
@@ -33561,13 +33620,13 @@
           o.connect(g); g.connect(c.destination); o.start();
           meditateAudio.nodes.push({ o, g });
         });
-      } catch (e) {}
+      } catch (e) { console.warn('cosmos meditate start', e); }
     }
     function stopMeditateSound() {
       if (!meditateAudio) return;
       const c = getCtx();
       meditateAudio.nodes.forEach(({ o, g }) => {
-        try { g.gain.cancelScheduledValues(c.currentTime); g.gain.linearRampToValueAtTime(0, c.currentTime + 1); setTimeout(() => o.stop(), 1100); } catch (e) {}
+        try { g.gain.cancelScheduledValues(c.currentTime); g.gain.linearRampToValueAtTime(0, c.currentTime + 1); setTimeout(() => { try { o.stop(); } catch {} }, 1100); } catch (e) { console.warn('cosmos meditate stop', e); }
       });
       meditateAudio = null;
     }

@@ -66,15 +66,17 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; media-src 'self' https: blob: data:; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://*.firebaseapp.com wss://*.firebaseio.com https://commons.wikimedia.org https://upload.wikimedia.org https://*.wikimedia.org https://dl.polyhaven.org https://cdn.jsdelivr.net; frame-src https://www.youtube.com https://*.firebaseapp.com; object-src 'none'; base-uri 'self'; frame-ancestors 'self';">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta name="referrer" content="strict-origin-when-cross-origin">
+<!-- 不要な強権限ブラウザ API を全て deny（カメラ・マイク・位置等） -->
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), gyroscope=(), magnetometer=(), accelerometer=(), payment=(), usb=(), interest-cohort=()">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- フォントは非ブロッキングで読み込み（print → all でフォールバック） -->
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Shippori+Mincho:wght@400;600;700;800&display=swap" rel="stylesheet"></noscript>
-<link rel="stylesheet" href="dist/style.min.css?v=20260428JAf">
-<link rel="stylesheet" href="dist/era-theme.min.css?v=20260428JAf">
-<link rel="stylesheet" href="magic.css?v=20260428JAf">
+<link rel="stylesheet" href="dist/style.min.css?v=20260428JAg">
+<link rel="stylesheet" href="dist/era-theme.min.css?v=20260428JAg">
+<link rel="stylesheet" href="magic.css?v=20260428JAg">
 </head>
 <body>
   <header class="app-header">
@@ -882,10 +884,10 @@
   </div>
 
   <!-- minified bundles（dist/）と era-lore.min.js は年表画面を開いた時に遅延読み込み -->
-  <script src="dist/history-patterns.min.js?v=20260428JAf" defer></script>
-  <script src="dist/app.min.js?v=20260428JAf" defer></script>
-  <script src="auth.js?v=20260428JAf" type="module"></script>
-  <script src="dist/ai-consult.min.js?v=20260428JAf" defer></script>
+  <script src="dist/history-patterns.min.js?v=20260428JAg" defer></script>
+  <script src="dist/app.min.js?v=20260428JAg" defer></script>
+  <script src="auth.js?v=20260428JAg" type="module"></script>
+  <script src="dist/ai-consult.min.js?v=20260428JAg" defer></script>
 
   <!-- ============ Magic Layer（ピクチャ：3D本・Lenis・ViewTransitions等） ============ -->
   <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js" defer></script>
@@ -949,7 +951,7 @@
       window.dispatchEvent(new CustomEvent('three-ready'));
     });
   </script>
-  <script src="magic.js?v=20260428JAf" defer></script>
+  <script src="magic.js?v=20260428JAg" defer></script>
   <script>
     // Service Worker 登録 ＋ 自動更新検知
     if ('serviceWorker' in navigator) {

@@ -12,19 +12,22 @@
       "year": 1906,
       "age": 0,
       "title": "静岡県磐田郡光明村で鍛冶屋の子として生まれる",
-      "detail": "父は刀鍛冶、自転車修理の内職も。"
+      "detail": "父は刀鍛冶、自転車修理の内職も。",
+      "tags": []
     },
     {
       "year": 1922,
       "age": 15,
       "title": "東京・アート商会に自動車修理の丁稚奉公",
-      "detail": "車に魅せられ『一生をかける』と決意。"
+      "detail": "車に魅せられ『一生をかける』と決意。",
+      "tags": []
     },
     {
       "year": 1937,
       "age": 30,
       "title": "東海精機重工業を設立",
-      "detail": "ピストンリング製造で自動車部品の道へ。"
+      "detail": "ピストンリング製造で自動車部品の道へ。",
+      "tags": []
     },
     {
       "year": 1945,
@@ -49,13 +52,15 @@
       "year": 1948,
       "age": 42,
       "title": "本田技研工業を設立",
-      "detail": "藤沢武夫と出会い経営の二人三脚が始まる。"
+      "detail": "藤沢武夫と出会い経営の二人三脚が始まる。",
+      "tags": []
     },
     {
       "year": 1959,
       "age": 53,
       "title": "マン島TTレース初参戦",
-      "detail": "『世界一になる』と宣言、欧州バイクレースの頂点へ挑戦。"
+      "detail": "『世界一になる』と宣言、欧州バイクレースの頂点へ挑戦。",
+      "tags": []
     },
     {
       "year": 1961,
@@ -70,13 +75,15 @@
       "year": 1963,
       "age": 57,
       "title": "自動車生産を開始",
-      "detail": "スポーツカーS500で四輪市場へ参入。"
+      "detail": "スポーツカーS500で四輪市場へ参入。",
+      "tags": []
     },
     {
       "year": 1965,
       "age": 58,
       "title": "F1世界選手権メキシコGPで初優勝",
-      "detail": "参戦2年で頂点へ。"
+      "detail": "参戦2年で頂点へ。",
+      "tags": []
     },
     {
       "year": 1973,
@@ -91,7 +98,8 @@
       "year": 1991,
       "age": 84,
       "title": "肝不全で死去",
-      "detail": "『ホンダは社員の会社』と最後まで語った。"
+      "detail": "『ホンダは社員の会社』と最後まで語った。",
+      "tags": []
     }
   ],
   "quotes": [
@@ -169,5 +177,10 @@
       "官僚的思考"
     ]
   },
-  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Asahigraph-1955-Shinshun-1.jpg?width=500"
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Asahigraph-1955-Shinshun-1.jpg?width=500",
+  "media": [],
+  "works": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": []
 }

@@ -12,13 +12,15 @@
       "year": 1917,
       "age": 0,
       "title": "アメリカで生まれる",
-      "detail": ""
+      "detail": "",
+      "tags": []
     },
     {
       "year": 1996,
       "age": 79,
       "title": "逝去",
-      "detail": ""
+      "detail": "",
+      "tags": []
     }
   ],
   "quotes": [
@@ -61,5 +63,10 @@
     "likes": [],
     "dislikes": []
   },
-  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Ella_Fitzgerald_%281940%29.jpg?width=500"
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Ella_Fitzgerald_%281940%29.jpg?width=500",
+  "media": [],
+  "works": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": []
 }

@@ -341,5 +341,8 @@
   "themes": [
     "bakumatsu"
   ],
-  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Sakamoto_Ryoma.jpg?width=500"
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Sakamoto_Ryoma.jpg?width=500",
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": []
 }

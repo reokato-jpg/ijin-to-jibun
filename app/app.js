@@ -3529,7 +3529,7 @@ function renderHomeBooks() {
   try {
     const t = getTodaysCompanion && getTodaysCompanion();
     if (t && t.personId) pushBookOf(t.personId, '本日の案内人');
-  } catch (e) {}
+  } catch (e) { console.warn('todaysCompanion', e); }
 
   // 残りを日替わりランダムで埋める（キャッシュした全本リストから）
   const all = _getAllBooks().filter(b => !usedKeys.has(bookKey(b)));
@@ -3641,7 +3641,7 @@ function renderBookOfTheDay() {
       const oshi = withBooks.find(x => x.id === oshiId);
       if (oshi) { p = oshi; isOshiPick = true; }
     }
-  } catch (e) {}
+  } catch (e) { console.warn('oshiPick', e); }
   if (!p) p = withBooks[seed % withBooks.length];
   const candidates = (p.books || []).filter(b => b && b.title);
   const b = candidates[seed % candidates.length];

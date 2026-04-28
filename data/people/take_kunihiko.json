@@ -12,7 +12,8 @@
       "year": 1938,
       "age": 0,
       "title": "京都に生まれる",
-      "detail": "京都競馬の街、農家の三男として。"
+      "detail": "京都競馬の街、農家の三男として。",
+      "tags": []
     },
     {
       "year": 1957,
@@ -27,19 +28,22 @@
       "year": 1969,
       "age": 31,
       "title": "オークス（優駿牝馬）制覇",
-      "detail": "ヒデコトブキで牝馬クラシックを制覇。関西トップジョッキーに。"
+      "detail": "ヒデコトブキで牝馬クラシックを制覇。関西トップジョッキーに。",
+      "tags": []
     },
     {
       "year": 1970,
       "age": 32,
       "title": "JRAリーディング上位",
-      "detail": "昭和40年代の黄金期、毎年リーディング上位に食い込む。"
+      "detail": "昭和40年代の黄金期、毎年リーディング上位に食い込む。",
+      "tags": []
     },
     {
       "year": 1981,
       "age": 43,
       "title": "調教師免許取得",
-      "detail": "現役引退後、調教師として厩舎開業。"
+      "detail": "現役引退後、調教師として厩舎開業。",
+      "tags": []
     },
     {
       "year": 1987,
@@ -54,7 +58,8 @@
       "year": 2005,
       "age": 67,
       "title": "逝去",
-      "detail": "心不全のため大阪府で逝去。享年67。日本競馬界全体が喪に服した。"
+      "detail": "心不全のため大阪府で逝去。享年67。日本競馬界全体が喪に服した。",
+      "tags": []
     }
   ],
   "quotes": [
@@ -125,5 +130,10 @@
       "弟子の甘え"
     ]
   },
-  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Happy_progress_and_kunihiko_take.jpg?width=500"
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Happy_progress_and_kunihiko_take.jpg?width=500",
+  "media": [],
+  "works": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": []
 }

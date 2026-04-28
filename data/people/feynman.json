@@ -104,12 +104,30 @@
     }
   ],
   "quotes": [
-    "もし物理学の知識すべてが消えても、たった一文だけ残せるなら『万物は原子からできている』と書く。",
-    "私は答えを得られないことに耐えられる。だが、間違った答えを信じることには耐えられない。",
-    "First principle: you must not fool yourself — and you are the easiest person to fool.",
-    "What I cannot create, I do not understand.",
-    "わからないということが、知らないということが、好奇心を保つ最高の状態だ。",
-    "科学は、知っているふりをしないという習慣だ。"
+    {
+      "text": "もし物理学の知識すべてが消えても、たった一文だけ残せるなら『万物は原子からできている』と書く。",
+      "source": ""
+    },
+    {
+      "text": "私は答えを得られないことに耐えられる。だが、間違った答えを信じることには耐えられない。",
+      "source": ""
+    },
+    {
+      "text": "First principle: you must not fool yourself — and you are the easiest person to fool.",
+      "source": ""
+    },
+    {
+      "text": "What I cannot create, I do not understand.",
+      "source": ""
+    },
+    {
+      "text": "わからないということが、知らないということが、好奇心を保つ最高の状態だ。",
+      "source": ""
+    },
+    {
+      "text": "科学は、知っているふりをしないという習慣だ。",
+      "source": ""
+    }
   ],
   "places": [],
   "imageUrl": "assets/portraits/feynman.webp",
@@ -126,5 +144,8 @@
   "lifeDigest": "アメリカの理論物理学者。量子電磁力学の業績でノーベル物理学賞を受賞。マンハッタン計画参加から型破りの講義スタイル、ボンゴ演奏、金庫破り、ブラジルでのサンバ修行まで、好奇心の塊として生きた人物。彼は『万物は原子からできている』を物理学の最重要の一文として選び、また『答えを得られないことには耐えられるが、間違った答えを信じることには耐えられない』を信条とした。20世紀後半における科学的誠実さの象徴。",
   "traits": {},
   "relations": [],
-  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Richard_Feynman_1988.png?width=500"
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Richard_Feynman_1988.png?width=500",
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": []
 }

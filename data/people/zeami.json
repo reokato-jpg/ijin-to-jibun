@@ -18,5 +18,8 @@
   "routine": {},
   "lifeDigest": "",
   "traits": {},
-  "relations": []
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": []
 }

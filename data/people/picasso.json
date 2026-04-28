@@ -348,5 +348,8 @@
       "relation": "政治的敵"
     }
   ],
-  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Pablo_picasso_1.jpg?width=500"
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Pablo_picasso_1.jpg?width=500",
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": []
 }

@@ -99,10 +99,22 @@
     }
   ],
   "quotes": [
-    "夢の中で、すべての元素が決まった場所に並んでいるのを見た。目覚めてすぐに紙に書き留めた。",
-    "科学者の仕事は、自然を理解することであって、自然を変えることではない。",
-    "私の周期表は、自然法則の表現であり、私の発明ではない。",
-    "母は、私のために最後の力を絞ってくれた。私の業績はすべて彼女のもの。"
+    {
+      "text": "夢の中で、すべての元素が決まった場所に並んでいるのを見た。目覚めてすぐに紙に書き留めた。",
+      "source": ""
+    },
+    {
+      "text": "科学者の仕事は、自然を理解することであって、自然を変えることではない。",
+      "source": ""
+    },
+    {
+      "text": "私の周期表は、自然法則の表現であり、私の発明ではない。",
+      "source": ""
+    },
+    {
+      "text": "母は、私のために最後の力を絞ってくれた。私の業績はすべて彼女のもの。",
+      "source": ""
+    }
   ],
   "places": [],
   "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Dmitri_Mendeleev.jpg?width=500",
@@ -118,5 +130,8 @@
   "lifeDigest": "ロシアの化学者、周期表の創始者。シベリアの14人兄弟の末子として生まれ、父の死後、母マリアが息子の教育のためペテルブルクまで馬車で旅をしたという物語が伝わる。1869年、原子量順に並べた元素の周期性を発見し、未発見元素を予言。その空欄は後にガリウム・スカンジウム・ゲルマニウムで埋められた。1882年、若い学生との再婚のため正教会と対立し、即時離婚を強行したことが後のノーベル賞落選（1906年、1票差）に影を落とした。母への感謝を生涯語り続けた人。",
   "traits": {},
   "relations": [],
-  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Mendelejew_drawn_by_Repin.jpg?width=500"
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Mendelejew_drawn_by_Repin.jpg?width=500",
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": []
 }

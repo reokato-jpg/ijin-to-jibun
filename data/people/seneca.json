@@ -161,5 +161,11 @@
       "description": "哲学書簡集。日々の迷いに効く。"
     }
   ],
-  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/SenecaELWI.jpg?width=500"
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/SenecaELWI.jpg?width=500",
+  "places": [],
+  "media": [],
+  "works": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": []
 }

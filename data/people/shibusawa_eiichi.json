@@ -12,7 +12,8 @@
       "year": 1840,
       "age": 0,
       "title": "武蔵国血洗島（埼玉県深谷市）の豪農の家に生まれる",
-      "detail": "藍玉商を営む家で、幼少から商いと学問の両方を身につけた。"
+      "detail": "藍玉商を営む家で、幼少から商いと学問の両方を身につけた。",
+      "tags": []
     },
     {
       "year": 1867,
@@ -28,7 +29,8 @@
       "year": 1869,
       "age": 29,
       "title": "大蔵省入省",
-      "detail": "明治新政府で租税・通貨・銀行制度の近代化を主導。"
+      "detail": "明治新政府で租税・通貨・銀行制度の近代化を主導。",
+      "tags": []
     },
     {
       "year": 1873,
@@ -44,19 +46,22 @@
       "year": 1878,
       "age": 38,
       "title": "東京商工会議所（初代会頭）",
-      "detail": "日本の商工業の近代化を牽引。"
+      "detail": "日本の商工業の近代化を牽引。",
+      "tags": []
     },
     {
       "year": 1885,
       "age": 45,
       "title": "東京瓦斯、日本郵船など立ち上げ相次ぐ",
-      "detail": "『論語と算盤』を両立させる経営哲学を実践。"
+      "detail": "『論語と算盤』を両立させる経営哲学を実践。",
+      "tags": []
     },
     {
       "year": 1916,
       "age": 76,
       "title": "実業界から引退、社会事業へ",
-      "detail": "以後、教育・福祉・国際交流に専念。"
+      "detail": "以後、教育・福祉・国際交流に専念。",
+      "tags": []
     },
     {
       "year": 1920,
@@ -71,7 +76,8 @@
       "year": 1931,
       "age": 91,
       "title": "逝去",
-      "detail": "日本経済の礎を築き、戦前日本を見届けて逝く。"
+      "detail": "日本経済の礎を築き、戦前日本を見届けて逝く。",
+      "tags": []
     }
   ],
   "quotes": [
@@ -149,5 +155,10 @@
       "私利私欲の経営"
     ]
   },
-  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Eiichi_Shibusawa.jpg?width=500"
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Eiichi_Shibusawa.jpg?width=500",
+  "media": [],
+  "works": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": []
 }

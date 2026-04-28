@@ -12,19 +12,22 @@
       "year": 1835,
       "age": 0,
       "title": "土佐国安芸郡井ノ口村に生まれる",
-      "detail": "郷士（下級武士）の家に生まれる。貧しいながらも向学心旺盛な少年。"
+      "detail": "郷士（下級武士）の家に生まれる。貧しいながらも向学心旺盛な少年。",
+      "tags": []
     },
     {
       "year": 1859,
       "age": 24,
       "title": "江戸に遊学",
-      "detail": "儒学・洋学を学び、土佐藩の政治の中枢に食い込む。"
+      "detail": "儒学・洋学を学び、土佐藩の政治の中枢に食い込む。",
+      "tags": []
     },
     {
       "year": 1867,
       "age": 32,
       "title": "土佐商会主任に就任",
-      "detail": "土佐藩の長崎商会を運営、海運・貿易の才覚を示す。坂本龍馬の海援隊と密接に関わる。"
+      "detail": "土佐藩の長崎商会を運営、海運・貿易の才覚を示す。坂本龍馬の海援隊と密接に関わる。",
+      "tags": []
     },
     {
       "year": 1870,
@@ -39,7 +42,8 @@
       "year": 1873,
       "age": 38,
       "title": "三菱商会に改称",
-      "detail": "ロゴ『スリーダイヤ』を制定。『三菱』ブランドの誕生。"
+      "detail": "ロゴ『スリーダイヤ』を制定。『三菱』ブランドの誕生。",
+      "tags": []
     },
     {
       "year": 1874,
@@ -54,13 +58,15 @@
       "year": 1877,
       "age": 42,
       "title": "西南戦争で巨利",
-      "detail": "政府軍の輸送を三菱が独占、莫大な利益と官府との関係を確立。"
+      "detail": "政府軍の輸送を三菱が独占、莫大な利益と官府との関係を確立。",
+      "tags": []
     },
     {
       "year": 1885,
       "age": 50,
       "title": "胃癌で死去",
-      "detail": "東京本邸にて。享年50。弟・弥之助が事業を継承、後の三菱財閥に。"
+      "detail": "東京本邸にて。享年50。弟・弥之助が事業を継承、後の三菱財閥に。",
+      "tags": []
     }
   ],
   "quotes": [
@@ -133,5 +139,10 @@
       "武士階級の傲慢"
     ]
   },
-  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Yataro_Iwasaki_Portrait_Closeup_1874.png?width=500"
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Yataro_Iwasaki_Portrait_Closeup_1874.png?width=500",
+  "media": [],
+  "works": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": []
 }

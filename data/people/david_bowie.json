@@ -12,13 +12,15 @@
       "year": 1947,
       "age": 0,
       "title": "イギリスで生まれる",
-      "detail": ""
+      "detail": "",
+      "tags": []
     },
     {
       "year": 2016,
       "age": 69,
       "title": "逝去",
-      "detail": ""
+      "detail": "",
+      "tags": []
     }
   ],
   "quotes": [
@@ -60,5 +62,10 @@
     "likes": [],
     "dislikes": []
   },
-  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/David_Bowie_Lodger_%281979_RCA_publicity_photo_01%29.jpg?width=500"
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/David_Bowie_Lodger_%281979_RCA_publicity_photo_01%29.jpg?width=500",
+  "media": [],
+  "works": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": []
 }

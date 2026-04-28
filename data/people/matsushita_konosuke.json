@@ -12,19 +12,22 @@
       "year": 1894,
       "age": 0,
       "title": "和歌山に生まれる",
-      "detail": "貧農の家に8人兄弟の末っ子として誕生。"
+      "detail": "貧農の家に8人兄弟の末っ子として誕生。",
+      "tags": []
     },
     {
       "year": 1904,
       "age": 10,
       "title": "小学校4年で中退、大阪で火鉢店の奉公",
-      "detail": "父の米相場失敗で一家離散、丁稚奉公の道へ。"
+      "detail": "父の米相場失敗で一家離散、丁稚奉公の道へ。",
+      "tags": []
     },
     {
       "year": 1910,
       "age": 16,
       "title": "大阪電灯に見習工として入社",
-      "detail": "電気の時代の到来を肌で感じ取る。"
+      "detail": "電気の時代の到来を肌で感じ取る。",
+      "tags": []
     },
     {
       "year": 1918,
@@ -39,7 +42,8 @@
       "year": 1927,
       "age": 32,
       "title": "ナショナル商標を発表",
-      "detail": "National＝国民の、の意味を込めた。"
+      "detail": "National＝国民の、の意味を込めた。",
+      "tags": []
     },
     {
       "year": 1932,
@@ -55,13 +59,15 @@
       "year": 1946,
       "age": 52,
       "title": "PHP研究所設立",
-      "detail": "Peace and Happiness through Prosperity。戦後の荒廃から再建へ。"
+      "detail": "Peace and Happiness through Prosperity。戦後の荒廃から再建へ。",
+      "tags": []
     },
     {
       "year": 1961,
       "age": 67,
       "title": "会長退任、経営から実質的に離れる",
-      "detail": "以後も『経営相談役』として若き経営者を指導。"
+      "detail": "以後も『経営相談役』として若き経営者を指導。",
+      "tags": []
     },
     {
       "year": 1979,
@@ -76,7 +82,8 @@
       "year": 1989,
       "age": 94,
       "title": "死去",
-      "detail": "4月27日、激動の昭和とともに。"
+      "detail": "4月27日、激動の昭和とともに。",
+      "tags": []
     }
   ],
   "quotes": [
@@ -157,5 +164,10 @@
       "怠惰"
     ]
   },
-  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Konosuke_Matsushita_01.jpg?width=500"
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Konosuke_Matsushita_01.jpg?width=500",
+  "media": [],
+  "works": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": []
 }

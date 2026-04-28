@@ -5,34 +5,53 @@ service cloud.firestore {
     // ============ 会員プロフィール ============
     // - 他会員はログイン済みなら読み取り可
     //   （名前・称号・アバター・trait・SNS・フォロー偉人を公開）
-    // - 書き込みは本人のみ
+    // - 書き込みは本人のみ + フィールド長制限（巨大ペイロード防止）
     match /users/{uid} {
       allow read: if request.auth != null;
-      allow write: if request.auth != null && request.auth.uid == uid;
+      allow write: if request.auth != null && request.auth.uid == uid
+        // 任意フィールドの長さ制限
+        && (request.resource.data.get('ijin_my_name', '') is string
+            && request.resource.data.get('ijin_my_name', '').size() <= 50)
+        && (request.resource.data.get('ijin_my_bio', '') is string
+            && request.resource.data.get('ijin_my_bio', '').size() <= 500)
+        && (request.resource.data.get('ijin_my_title', '') is string
+            && request.resource.data.get('ijin_my_title', '').size() <= 100)
+        && (request.resource.data.get('ijin_my_xUrl', '') is string
+            && request.resource.data.get('ijin_my_xUrl', '').size() <= 200)
+        && (request.resource.data.get('ijin_my_blogUrl', '') is string
+            && request.resource.data.get('ijin_my_blogUrl', '').size() <= 200);
     }
 
     // ============ 偉人訪問回数（公開カウンタ） ============
-    // 誰でも加算可（匿名ゲスト含む）、誰でも閲覧可
+    // 誰でも加算可（ログイン済み）、誰でも閲覧可
+    // count フィールドのみインクリメント可（任意キー注入を防止）
     match /publicVisits/{personId} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow create: if request.auth != null
+        && request.resource.data.keys().hasOnly(['count', 'lastVisit'])
+        && request.resource.data.count == 1;
+      allow update: if request.auth != null
+        && request.resource.data.keys().hasOnly(['count', 'lastVisit'])
+        && request.resource.data.count == resource.data.count + 1;
     }
 
     // ============ 偉人ページの訪問者足跡 ============
-    // docId = personId + "__" + uid
-    // - 書き込み：ログイン中のユーザーが、自分のuidを含むdocIdのみに書ける
+    // docId = personId + "__" + uid（厳密一致：__で分割した末尾が自分のuid）
+    // - 書き込み：ログイン中のユーザーが、自分のuidを末尾に持つdocIdのみに書ける
     // - 読み取り：ログイン中のみ（匿名ログイン含む）
     match /personVisitors/{docId} {
       allow read: if request.auth != null;
       allow write: if request.auth != null
-        && docId.matches(".*__" + request.auth.uid);
+        && docId.split('__').size() == 2
+        && docId.split('__')[1] == request.auth.uid;
     }
 
     // ============ 時代ページの訪問者足跡 ============
     match /eraVisitors/{docId} {
       allow read: if request.auth != null;
       allow write: if request.auth != null
-        && docId.matches(".*__" + request.auth.uid);
+        && docId.split('__').size() == 2
+        && docId.split('__')[1] == request.auth.uid;
     }
 
     // ============ 会員プロフィールの訪問者足跡 ============
@@ -40,7 +59,8 @@ service cloud.firestore {
     match /userVisitors/{docId} {
       allow read: if request.auth != null;
       allow write: if request.auth != null
-        && docId.matches(".*__" + request.auth.uid);
+        && docId.split('__').size() == 2
+        && docId.split('__')[1] == request.auth.uid;
     }
 
     // ============ お便り（バグ報告・改善提案・機能要望） ============
@@ -84,13 +104,12 @@ service cloud.firestore {
             && request.resource.data.createdAt == resource.data.createdAt
             && request.resource.data.text.size() >= 1
             && request.resource.data.text.size() <= 500)
-          // または他会員が report をインクリメント（textは変更不可）
-          || (request.auth.uid != resource.data.uid
-            && request.resource.data.text == resource.data.text
-            && request.resource.data.uid == resource.data.uid
-            && (request.resource.data.reports == (resource.data.reports != null ? resource.data.reports : 0) + 1))
-          // または管理者
+          // または管理者（通報集計に基づく非表示等）
           || request.auth.token.admin == true
+          // ※ 旧仕様の「他会員が reports をインクリメント」ルールは削除しました。
+          //   1人で連投すれば自動非表示にできてしまう脆弱性のため、
+          //   通報は下の commentReports サブコレクションに reporterUid 一意で書き、
+          //   集計は管理者 / Cloud Function で行う設計へ変更。
         );
       allow delete: if request.auth != null
         && (resource.data.uid == request.auth.uid
@@ -118,6 +137,24 @@ service cloud.firestore {
         && request.resource.data.reason is string
         && request.resource.data.reason.size() <= 300;
       allow read, update, delete: if request.auth != null
+        && request.auth.token.admin == true;
+    }
+
+    // ============ コメントへの通報（reporter単位で一意化） ============
+    // docId = commentId + "__" + reporterUid
+    // 1コメントにつき1ユーザー1通報。連投・重複攻撃を防ぐ。
+    // 集計は管理者 / Cloud Function で行う。
+    match /commentReports/{docId} {
+      allow read: if request.auth != null
+        && request.auth.token.admin == true;
+      allow create: if request.auth != null
+        && docId.split('__').size() == 2
+        && docId.split('__')[1] == request.auth.uid
+        && request.resource.data.reporterUid == request.auth.uid
+        && request.resource.data.commentId is string
+        && request.resource.data.reason is string
+        && request.resource.data.reason.size() <= 300;
+      allow update, delete: if request.auth != null
         && request.auth.token.admin == true;
     }
 

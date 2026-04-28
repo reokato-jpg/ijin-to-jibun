@@ -12,19 +12,22 @@
       "year": 1846,
       "age": 0,
       "title": "南フランス・ヴィルヌーヴ・ルーベに生まれる",
-      "detail": "鍛冶屋の家に生まれる。祖父の食堂が人生の出発点。"
+      "detail": "鍛冶屋の家に生まれる。祖父の食堂が人生の出発点。",
+      "tags": []
     },
     {
       "year": 1859,
       "age": 13,
       "title": "ニースの叔父のレストランで修業開始",
-      "detail": "13歳で皿洗いから。厳しい修業時代の始まり。"
+      "detail": "13歳で皿洗いから。厳しい修業時代の始まり。",
+      "tags": []
     },
     {
       "year": 1870,
       "age": 24,
       "title": "普仏戦争に従軍",
-      "detail": "軍の料理人として従軍、組織的な大量調理の経験を積む。"
+      "detail": "軍の料理人として従軍、組織的な大量調理の経験を積む。",
+      "tags": []
     },
     {
       "year": 1890,
@@ -67,7 +70,8 @@
       "year": 1935,
       "age": 88,
       "title": "モンテカルロの別荘で逝去",
-      "detail": "南仏の自邸にて。88歳。最期まで弟子たちに手紙でレシピ指導を続けた。"
+      "detail": "南仏の自邸にて。88歳。最期まで弟子たちに手紙でレシピ指導を続けた。",
+      "tags": []
     }
   ],
   "quotes": [
@@ -190,5 +194,10 @@
       "素材への冒涜"
     ]
   },
-  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Auguste_Escoffier_01.jpg?width=500"
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Auguste_Escoffier_01.jpg?width=500",
+  "media": [],
+  "works": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": []
 }

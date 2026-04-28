@@ -5,7 +5,7 @@
 // - Firebase: 素通し
 // - 新版が来たら skip waiting → controllerchange でページ自動リロード
 
-const VERSION = 'v20260428JAf';
+const VERSION = 'v20260428JAg';
 const STATIC_CACHE = `ijin-static-${VERSION}`;
 const DATA_CACHE   = `ijin-data-${VERSION}`;
 const AUDIO_CACHE  = `ijin-audio-${VERSION}`;
@@ -38,15 +38,10 @@ const PRECACHE_DATA = [
   '/data/articles.json',
 ];
 
-// プリキャッシュする BGM（サイズ大きめなのでエラー許容）
+// プリキャッシュする「軽量」音素材のみ（小さい SE は install 時に取得）
+// BGM 大物（合計 20MB+）は install プリキャッシュから外し、
+// 各シーン入場時に MAGIC_PRECACHE メッセージで個別取得する設計に変更。
 const PRECACHE_AUDIO = [
-  '/app/assets/home-bgm.mp3',
-  '/app/assets/search-bgm.mp3',
-  '/app/assets/history-bgm.mp3',
-  '/app/assets/routine-bgm.mp3',
-  '/app/assets/blog-bgm.mp3',
-  '/app/assets/favorites-bgm.mp3',
-  '/app/assets/square-bgm.mp3',
   '/app/assets/page-flip.mp3',
   '/app/assets/send.mp3',
   '/app/assets/receive.mp3',

@@ -330,5 +330,9 @@
       "relation": "生涯の主題"
     }
   ],
-  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Claude_Monet_1899_Nadar.jpg?width=500"
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Claude_Monet_1899_Nadar.jpg?width=500",
+  "media": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": []
 }

@@ -164,5 +164,11 @@
       "description": "ルネサンス三巨匠の評伝。"
     }
   ],
-  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Raffaello_Sanzio.jpg?width=500"
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Raffaello_Sanzio.jpg?width=500",
+  "places": [],
+  "media": [],
+  "works": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": []
 }
