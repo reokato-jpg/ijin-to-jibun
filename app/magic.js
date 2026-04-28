@@ -23179,7 +23179,7 @@
     const H = () => window.innerHeight;
     renderer.setSize(W(), H());
     renderer.toneMapping = _isMobile ? THREE.NoToneMapping : THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = _isMobile ? 1.0 : 1.25;
+    renderer.toneMappingExposure = _isMobile ? 1.25 : 1.55;
     if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
 
     // 🎵 ambient drone（WebAudio で生成、外部アセット不要・著作権問題なし）
@@ -23245,8 +23245,8 @@
     ov.addEventListener('touchstart', _ambStart, { once: true, passive: true, capture: true, signal: _libSig });
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x0a0810);
-    scene.fog = new THREE.FogExp2(0x0a0608, 0.022);
+    scene.background = new THREE.Color(0x1a1410);
+    scene.fog = new THREE.FogExp2(0x1a1208, 0.014); // 霧を薄く（奥行きを残しつつ視認性UP）
 
     const camera = new THREE.PerspectiveCamera(70, W()/H(), 0.1, 300);
     // 一人称視点：身長 1.7、入口に立つ
@@ -24331,20 +24331,26 @@
       });
     });
 
-    // ── 環境光・直接光（さらに明るく：1.5倍）──
-    scene.add(new THREE.AmbientLight(0xfff4dc, 1.45));
-    scene.add(new THREE.HemisphereLight(0xfff0d0, 0x4a3828, 1.6));
+    // ── 環境光・直接光（さらに明るく：従来の1.5倍 → 約2倍）──
+    scene.add(new THREE.AmbientLight(0xfff4dc, 2.15));
+    scene.add(new THREE.HemisphereLight(0xfff0d0, 0x6a4838, 2.2));
     // 主要スポット（モバイルは半減）
     const _spotPositions = _isMobile
       ? [[-30, 12, -22], [30, 12, 22], [-15, 13, 0], [15, 13, 0]]
       : [[-30, 12, -22], [30, 12, -22], [-30, 12, 22], [30, 12, 22],
          [0, 12, -25], [0, 12, 25], [-15, 13, 0], [15, 13, 0]];
     _spotPositions.forEach(([x, y, z]) => {
-      const sl = new THREE.SpotLight(0xfff0c8, 2.4, 60, Math.PI / 3.0, 0.45, 1.3);
+      const sl = new THREE.SpotLight(0xfff0c8, 3.4, 65, Math.PI / 3.0, 0.55, 1.2);
       sl.position.set(x, y, z);
       sl.target.position.set(x * 0.3, 4, z * 0.3);
       scene.add(sl); scene.add(sl.target);
     });
+    // 中央フィル光（ホール中心を上から包む暖色光）— 全体の暗さを緩和
+    {
+      const center = new THREE.PointLight(0xffe8b8, 1.6, 50, 1.4);
+      center.position.set(0, 12, 0);
+      scene.add(center);
+    }
     // 各机のランプ（モバイルでは省略）
     if (!_isMobile) {
       deskPositions.forEach(([dx, dz]) => {
