@@ -23255,55 +23255,71 @@
     let camYaw = 0, camPitch = 0;
     const camEuler = new THREE.Euler(0, 0, 0, 'YXZ');
 
-    // 床（大理石風、広い）
+    // 床（ゴシック教会の石板タイル：黒白チェッカー＋幾何装飾。大理石ではなくクワドリパティート文様）
     const floorTex = (() => {
       const c = document.createElement('canvas'); c.width = 512; c.height = 512;
       const g = c.getContext('2d');
-      g.fillStyle = '#2a2018'; g.fillRect(0,0,512,512);
-      // 大理石ベース：濃淡グラデで奥行き
-      const baseGrd = g.createRadialGradient(256, 256, 40, 256, 256, 360);
-      baseGrd.addColorStop(0, 'rgba(160,128,90,0.10)');
-      baseGrd.addColorStop(1, 'rgba(40,28,16,0.0)');
-      g.fillStyle = baseGrd; g.fillRect(0,0,512,512);
-      // 大理石の流れ模様（曲線ストローク）
-      g.strokeStyle = 'rgba(220,200,160,0.08)';
-      g.lineWidth = 1.2;
-      for (let i = 0; i < 18; i++) {
-        g.beginPath();
-        const sx = Math.random() * 512, sy = Math.random() * 512;
-        g.moveTo(sx, sy);
-        for (let k = 0; k < 6; k++) {
-          g.lineTo(sx + (Math.random() - 0.5) * 220, sy + (Math.random() - 0.5) * 220);
+      // 4×4 のチェッカー（512/4 = 128px / タイル）
+      const T = 128;
+      for (let row = 0; row < 4; row++) {
+        for (let col = 0; col < 4; col++) {
+          const isDark = ((row + col) % 2) === 0;
+          // ベース色（暗い石板 / 明るい石板）
+          const base = isDark
+            ? { fill: '#1c1410', stripe: '#3a2a1c' }
+            : { fill: '#5a4a36', stripe: '#7a6448' };
+          g.fillStyle = base.fill; g.fillRect(col*T, row*T, T, T);
+          // 各タイルにわずかな質感（細かいランダム斑点）
+          g.fillStyle = isDark ? 'rgba(120,90,60,0.08)' : 'rgba(40,28,16,0.10)';
+          for (let i = 0; i < 24; i++) {
+            const cx = col*T + Math.random() * T;
+            const cy = row*T + Math.random() * T;
+            g.beginPath(); g.arc(cx, cy, 4 + Math.random() * 18, 0, Math.PI * 2); g.fill();
+          }
+          // 中央に幾何装飾（明タイルだけ）— ゴシック装飾タイルの定番
+          if (!isDark) {
+            const mx = col*T + T/2, my = row*T + T/2;
+            // 4枚弁の四つ葉文様
+            g.strokeStyle = 'rgba(40,26,14,0.45)';
+            g.lineWidth = 1.5;
+            g.beginPath();
+            for (let k = 0; k < 4; k++) {
+              const ang = k * Math.PI / 2;
+              const px = mx + Math.cos(ang) * 14, py = my + Math.sin(ang) * 14;
+              g.moveTo(mx, my);
+              g.bezierCurveTo(
+                mx + Math.cos(ang - 0.6) * 14, my + Math.sin(ang - 0.6) * 14,
+                mx + Math.cos(ang + 0.6) * 14, my + Math.sin(ang + 0.6) * 14,
+                px, py
+              );
+            }
+            g.stroke();
+            // 中央点
+            g.fillStyle = 'rgba(40,26,14,0.55)';
+            g.beginPath(); g.arc(mx, my, 2.4, 0, Math.PI * 2); g.fill();
+          }
         }
-        g.stroke();
       }
-      // タイル目地（4×4 の主目地）
-      g.strokeStyle = 'rgba(180,150,100,0.32)'; g.lineWidth = 2.5;
+      // タイル目地（深め黒）
+      g.strokeStyle = 'rgba(8,4,2,0.72)';
+      g.lineWidth = 2.5;
       for (let i = 0; i <= 4; i++) {
-        g.beginPath(); g.moveTo(i*128, 0); g.lineTo(i*128, 512); g.stroke();
-        g.beginPath(); g.moveTo(0, i*128); g.lineTo(512, i*128); g.stroke();
+        g.beginPath(); g.moveTo(i*T, 0); g.lineTo(i*T, 512); g.stroke();
+        g.beginPath(); g.moveTo(0, i*T); g.lineTo(512, i*T); g.stroke();
       }
-      // 細かいサブ目地（タイル内の繋ぎ目）
-      g.strokeStyle = 'rgba(180,150,100,0.14)'; g.lineWidth = 1;
-      for (let i = 0; i <= 8; i++) {
-        if (i % 2 === 0) continue; // 主目地以外
-        g.beginPath(); g.moveTo(i*64, 0); g.lineTo(i*64, 512); g.stroke();
-        g.beginPath(); g.moveTo(0, i*64); g.lineTo(512, i*64); g.stroke();
-      }
-      // 大理石の班点
-      g.fillStyle = 'rgba(220,200,160,0.05)';
-      for (let i = 0; i < 80; i++) {
-        g.beginPath(); g.arc(Math.random()*512, Math.random()*512, 20 + Math.random()*50, 0, Math.PI*2); g.fill();
-      }
-      // タイル中央の小さな光沢点
-      g.fillStyle = 'rgba(255,228,180,0.12)';
-      for (let i = 0; i < 16; i++) {
-        const cx = (i % 4) * 128 + 64, cy = Math.floor(i / 4) * 128 + 64;
-        g.beginPath(); g.arc(cx, cy, 4, 0, Math.PI*2); g.fill();
+      // ハイライトの薄い光沢（タイル内の擦れ）
+      g.strokeStyle = 'rgba(255,228,180,0.04)';
+      g.lineWidth = 1;
+      for (let i = 0; i < 30; i++) {
+        const sx = Math.random() * 512, sy = Math.random() * 512;
+        g.beginPath();
+        g.moveTo(sx, sy);
+        g.lineTo(sx + (Math.random() - 0.5) * 80, sy + (Math.random() - 0.5) * 80);
+        g.stroke();
       }
       const tex = new THREE.CanvasTexture(c);
       tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
-      // 1 タイル ≒ 8m → HALL 80×60 で 10×7.5 リピート（旧 4×4 = 20m タイルから細目化）
+      // 1 タイル ≒ 2m → HALL 80×60 で 10×7.5 リピート（チェッカー単位）
       tex.repeat.set(10, 8);
       if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace;
       return tex;
@@ -23394,6 +23410,50 @@
     ceiling.rotation.x = Math.PI/2;
     ceiling.position.y = CEIL_Y;
     scene.add(ceiling);
+
+    // === 🏛 立体リブ（ゴシック・ヴォールトの命） ===
+    // 天井に実体の梁（リブ）を渡す。柱頂部から斜めに伸びて中央キーストーンに集束する形を、
+    // 簡略化して「縦横グリッド + 対角線 + 中央リング」で表現。
+    {
+      const ribMat = new THREE.MeshStandardMaterial({
+        color: 0x3a2818, roughness: 0.55, metalness: 0.15,
+      });
+      const ribTrimMat = new THREE.MeshStandardMaterial({
+        color: 0xc8a040, metalness: 0.85, roughness: 0.3, emissive: 0x4a3008, emissiveIntensity: 0.45,
+      });
+      const ribY = CEIL_Y - 0.18; // 天井のすぐ下
+      // 縦リブ（東西方向）— 各 12m 間隔
+      [-HALL_W/2 + 12, -HALL_W/2 + 24, -HALL_W/2 + 36, -HALL_W/2 + 48, -HALL_W/2 + 60, -HALL_W/2 + 72].forEach(x => {
+        if (Math.abs(x) > HALL_W/2) return;
+        const rib = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.4, HALL_D - 0.4), ribMat);
+        rib.position.set(x, ribY, 0); scene.add(rib);
+      });
+      // 横リブ（南北方向）— 各 10m 間隔
+      [-20, -10, 0, 10, 20].forEach(z => {
+        const rib = new THREE.Mesh(new THREE.BoxGeometry(HALL_W - 0.4, 0.4, 0.32), ribMat);
+        rib.position.set(0, ribY, z); scene.add(rib);
+      });
+      // 対角リブ（簡易ヴォールト感）— 中央 4 セクションだけに対角線
+      [
+        { x1: -12, z1: -10, x2: 12, z2: 10 },
+        { x1: -12, z1: 10, x2: 12, z2: -10 },
+      ].forEach(d => {
+        const dx = d.x2 - d.x1, dz = d.z2 - d.z1;
+        const len = Math.hypot(dx, dz);
+        const ang = Math.atan2(dx, dz);
+        const rib = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.3, len), ribMat);
+        rib.position.set((d.x1 + d.x2) / 2, ribY - 0.05, (d.z1 + d.z2) / 2);
+        rib.rotation.y = ang;
+        scene.add(rib);
+      });
+      // キーストーン（中央の丸い装飾）
+      const keystone = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.55, 0.65, 0.25, 16),
+        ribTrimMat
+      );
+      keystone.position.set(0, ribY - 0.15, 0);
+      scene.add(keystone);
+    }
     // 4枚の壁（高くした）
     const wallMat = new THREE.MeshStandardMaterial({ color: 0x382418, roughness: 0.85 });
     const wN = new THREE.Mesh(new THREE.PlaneGeometry(HALL_W, CEIL_Y), wallMat);
@@ -23413,12 +23473,16 @@
       // 背景：縦長アーチ型に切り抜くため、まず黒で埋める
       g.fillStyle = 'rgba(8,4,2,1)';
       g.fillRect(0, 0, 256, 384);
-      // アーチ形のクリッピング
+      // 尖頭アーチ（ランセット）形のクリッピング — ゴシックの決定要素
+      // 2 つの円弧の頂点を高所で合わせる古典的なポインテッド・アーチ。
       g.save();
       g.beginPath();
       g.moveTo(20, 380);
       g.lineTo(20, 140);
-      g.arc(128, 140, 108, Math.PI, 0, false);
+      // 左の円弧（中心 236, 半径 216）→ 頂点 (128, 60) へ
+      g.arc(236, 140, 216, Math.PI, Math.PI * 1.355, false);
+      // 右の円弧（中心 20, 半径 216）→ 頂点 (128, 60) から右下へ
+      g.arc(20, 140, 216, -Math.PI * 0.355, 0, false);
       g.lineTo(236, 380);
       g.closePath();
       g.clip();
@@ -23457,13 +23521,14 @@
       for (let y = 60; y < 380; y += 48) {
         g.beginPath(); g.moveTo(20, y); g.lineTo(236, y); g.stroke();
       }
-      // アーチ枠の外側
+      // 尖頭アーチ枠の外側
       g.strokeStyle = '#241408';
       g.lineWidth = 5;
       g.beginPath();
       g.moveTo(20, 380);
       g.lineTo(20, 140);
-      g.arc(128, 140, 108, Math.PI, 0, false);
+      g.arc(236, 140, 216, Math.PI, Math.PI * 1.355, false);
+      g.arc(20, 140, 216, -Math.PI * 0.355, 0, false);
       g.lineTo(236, 380);
       g.stroke();
       const tex = new THREE.CanvasTexture(cv);
@@ -23606,6 +23671,38 @@
       buildShelf(0, HALL_D/2 - 1.0, HALL_W - 6, Math.PI, false, y, otherBooks);
       buildShelf(-HALL_W/2 + 1.0, 0, HALL_D - 6 - balconyDepth*2 - 4, Math.PI/2, false, y, otherBooks);
       buildShelf(HALL_W/2 - 1.0, 0, HALL_D - 6 - balconyDepth*2 - 4, -Math.PI/2, false, y, otherBooks);
+
+      // 🏛 メザニン下のブラケット（持ち送り装飾）— 床の片持ち感を消す建築的補強
+      // 各バルコニー床の下、壁に張り付く形で 6m 間隔でブラケットを配置
+      const brktMat = new THREE.MeshStandardMaterial({ color: 0x3a2010, roughness: 0.6 });
+      const brktTrimMat = new THREE.MeshStandardMaterial({
+        color: 0xc8a040, metalness: 0.85, roughness: 0.3, emissive: 0x4a3008, emissiveIntensity: 0.4,
+      });
+      function placeBracket(x, z, dirOut) {
+        // ブラケット本体（三角プリズム風）— wedge 表現で BoxGeometry を斜めに置く
+        const wedge = new THREE.Mesh(new THREE.BoxGeometry(0.5, 1.4, 1.2), brktMat);
+        // 壁から 0.6m せり出す形
+        const offX = (dirOut === 'x') ? Math.sign(x) * -0.5 : 0;
+        const offZ = (dirOut === 'z') ? Math.sign(z) * -0.5 : 0;
+        wedge.position.set(x + offX, y - 0.7, z + offZ);
+        if (dirOut === 'z') wedge.rotation.y = Math.PI / 2;
+        scene.add(wedge);
+        // 装飾の金リング（柱頭のミニ版）
+        const cap = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.12, 1.4), brktTrimMat);
+        cap.position.set(x + offX, y - 0.05, z + offZ);
+        if (dirOut === 'z') cap.rotation.y = Math.PI / 2;
+        scene.add(cap);
+      }
+      // 北・南バルコニー下（X 方向に 6m 間隔）
+      [-30, -18, -6, 6, 18, 30].forEach(bx => {
+        placeBracket(bx, -HALL_D/2 + 0.4, 'x');
+        placeBracket(bx,  HALL_D/2 - 0.4, 'x');
+      });
+      // 東・西バルコニー下（Z 方向に 6m 間隔、隅は重複避け）
+      [-18, -6, 6, 18].forEach(bz => {
+        placeBracket(-HALL_W/2 + 0.4, bz, 'z');
+        placeBracket( HALL_W/2 - 0.4, bz, 'z');
+      });
     }
     // 階段（東側：1F→2F→3Fの直線階段、上り段差付き）
     // 木目テクスチャ（階段段板用）— openLibrary 1 回につき 1 回生成して全階段で共有
@@ -24058,6 +24155,50 @@
         }
       });
     });
+
+    // 🪜 スライドはしご — 本棚最上段に届く木製はしご（ハリポタ感）
+    // 中央アイル棚の長辺方向にレールを通し、各列に1本のはしごを乗せる（PC のみ）
+    if (!_isMobile) {
+      const ladderWoodMat = new THREE.MeshStandardMaterial({ color: 0x6a4828, roughness: 0.6 });
+      const railMat = new THREE.MeshStandardMaterial({ color: 0xc8a040, metalness: 0.85, roughness: 0.3, emissive: 0x4a3008, emissiveIntensity: 0.4 });
+      function buildLadder(zCenter, zSign) {
+        // 棚の前面（zSign 方向）にレールを設置、その上にはしごを 1 本
+        const railZ = zCenter + zSign * (SHELF_DEPTH / 2 + 0.32);
+        // レール（金）— 中央 12m 棚 4 連分にまたがる長い真鍮
+        const rail = new THREE.Mesh(new THREE.BoxGeometry(60, 0.06, 0.06), railMat);
+        rail.position.set(0, 7.4, railZ); scene.add(rail);
+        // はしご本体（縦の木桁 2 本 + 段 7 つ）
+        const ladderG = new THREE.Group();
+        const railOffset = 0.30; // 縦桁の左右間隔
+        [[-railOffset, 0xff], [railOffset, 0xff]].forEach(([dx]) => {
+          const sideRail = new THREE.Mesh(new THREE.BoxGeometry(0.08, 7.0, 0.08), ladderWoodMat);
+          sideRail.position.set(dx, 3.5, 0);
+          ladderG.add(sideRail);
+        });
+        // 段（ストップ）
+        for (let i = 0; i < 8; i++) {
+          const rung = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.05, 0.05), ladderWoodMat);
+          rung.position.set(0, 0.5 + i * 0.85, 0);
+          ladderG.add(rung);
+        }
+        // 上端の真鍮金具（レールに掛かるフック風）
+        const hook = new THREE.Mesh(new THREE.BoxGeometry(0.85, 0.18, 0.18), railMat);
+        hook.position.set(0, 7.35, 0);
+        ladderG.add(hook);
+        // 配置位置（X はランダムに本棚 4 連の中で固定）
+        const pickX = -22 + Math.floor(Math.random() * 4) * 15 + (Math.random() - 0.5) * 3;
+        ladderG.position.set(pickX, 0, railZ);
+        // 棚側にやや傾けて立てかける（z方向に 8 度）
+        ladderG.rotation.x = -zSign * 0.12;
+        scene.add(ladderG);
+      }
+      // 中央アイル列各々に 1 本ずつ（前面側 = +z 側）
+      aisleZPositions.forEach(z => {
+        // 棚の前面（プレイヤーから見える側 = z=0 に近い側）に立てかける
+        const zSign = z < 0 ? 1 : -1;
+        buildLadder(z, zSign);
+      });
+    }
     // 🪧 各時代ゾーンの看板（床上に浮かぶサイン）
     function buildEraSign(label, x, y, z, color = 0xc8a040) {
       const cv = document.createElement('canvas');
@@ -24117,17 +24258,24 @@
     // === ゴシック入口アーチ（南壁中央の見せ場） ===
     {
       const archG = new THREE.Group();
-      // 大きなアーチフレーム
+      // 大きな尖頭アーチ（ランセット）フレーム — ゴシックの決定要素
+      // 2 つの円弧の頂点を高所で合わせる古典的なポインテッド・アーチ
+      // 開口幅 7m（-3.5〜+3.5）、肩高 5m、頂点 ~7m
       const archShape = new THREE.Shape();
       archShape.moveTo(-3.5, 0);
       archShape.lineTo(-3.5, 5);
-      archShape.absarc(0, 5, 3.5, Math.PI, 0, false);
+      // 左の円弧（中心 +3.5, 半径 7）→ 頂点 (0, ~7) へ
+      archShape.absarc(3.5, 5, 7, Math.PI, Math.PI * 1.355, false);
+      // 右の円弧（中心 -3.5, 半径 7）→ 頂点から右下へ
+      archShape.absarc(-3.5, 5, 7, -Math.PI * 0.355, 0, false);
       archShape.lineTo(3.5, 0);
       archShape.lineTo(-3.5, 0);
       const archHole = new THREE.Path();
       archHole.moveTo(-2.5, 0.05);
       archHole.lineTo(-2.5, 5);
-      archHole.absarc(0, 5, 2.5, Math.PI, 0, false);
+      // 内側も同じ尖頭形（外側より一回り小さく）
+      archHole.absarc(2.5, 5, 5, Math.PI, Math.PI * 1.355, false);
+      archHole.absarc(-2.5, 5, 5, -Math.PI * 0.355, 0, false);
       archHole.lineTo(2.5, 0.05);
       archHole.lineTo(-2.5, 0.05);
       archShape.holes.push(archHole);
@@ -24285,27 +24433,34 @@
       const col = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.6, 14, 12), colMat);
       col.position.set(cx, 7.0, cz); scene.add(col);
     });
-    // 🏛 中央列の追加柱（メザニン吹き抜けを囲むように 6 本、本棚アイル列の間に配置）
-    // X = -16 と +16 で 1F〜3F を貫通する太柱、本棚通路 [-22,-7,8,23] の間の隙間に配置
-    // Z は中央吹き抜け側の 4 ポジション（-12, 0, 12 をベースに各列 2 本）
+    // 🏛 中央列の追加柱（メザニン吹き抜けを囲むように 12 本、本棚アイル列の間に配置）
+    // 構造グリッド: X=±15.5, Z=±18,±6,+6,+18 = 4×2 グリッド + 中心列 ×4
+    // 本棚アイル Z=[-18,-6,6,18] と整合させ、建築のグリッドが揃うように配置
+    // 構造グリッド: 本棚アイル列 X=[-22,-7,8,23] の隙間（X=±15.5）+ Z はアイル列 [-18,-6,6,18] の隙間（Z=±12, 0）
+    // → 6 本 → 10 本に増やしてゴシック度UP・ホール感を引き締める
     const interiorColPositions = [
-      [-16, -12], [-16,  0], [-16, 12],
-      [ 16, -12], [ 16,  0], [ 16, 12],
+      [-15.5, -12], [-15.5,  0], [-15.5, 12],
+      [ 15.5, -12], [ 15.5,  0], [ 15.5, 12],
+      // 入口寄りと奥の中央軸線上（メザニン下を補強）
+      [    0, -25], [   0,  25],
+      // 短辺の中央（東西バルコニー下を補強）
+      [  -32,   0], [  32,   0],
     ];
     const colCapMat = new THREE.MeshStandardMaterial({
       color: 0xc8a040, metalness: 0.85, roughness: 0.3, emissive: 0x4a3008, emissiveIntensity: 0.45,
     });
     const colBaseMat = new THREE.MeshStandardMaterial({ color: 0x281408, roughness: 0.85 });
     // 衝突判定用の柱配列（tick の衝突回避で参照）
-    const interiorColliders = interiorColPositions.map(([cx, cz]) => ({ x: cx, z: cz, r: 0.62 }));
+    // 柱を一回り太く（細高比改善：上 0.55→0.7、下 0.7→0.85）
+    const interiorColliders = interiorColPositions.map(([cx, cz]) => ({ x: cx, z: cz, r: 0.78 }));
     interiorColPositions.forEach(([cx, cz]) => {
-      // 柱本体（1F→3F天井下まで貫通、わずかにテーパー）
-      const col = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.7, CEIL_Y - 0.6, 16), colMat);
-      col.position.set(cx, (CEIL_Y - 0.6) / 2, cz);
+      // 柱本体（1F→3F天井のリブまで完全に届く、太めのテーパー柱）
+      const col = new THREE.Mesh(new THREE.CylinderGeometry(0.7, 0.85, CEIL_Y - 0.18, 16), colMat);
+      col.position.set(cx, (CEIL_Y - 0.18) / 2, cz);
       scene.add(col);
-      // 柱頭（金）
-      const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.85, 0.6, 0.55, 16), colCapMat);
-      cap.position.set(cx, CEIL_Y - 0.85, cz); scene.add(cap);
+      // 柱頭（金、リブの底面に届くサイズ）
+      const cap = new THREE.Mesh(new THREE.CylinderGeometry(1.0, 0.75, 0.55, 16), colCapMat);
+      cap.position.set(cx, CEIL_Y - 0.5, cz); scene.add(cap);
       // 柱基（重厚な石）
       const base = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.5, 1.5), colBaseMat);
       base.position.set(cx, 0.25, cz); scene.add(base);
