@@ -1,0 +1,93 @@
+{
+  "id": "yanai_tadashi",
+  "name": "柳井正",
+  "nameEn": "Tadashi Yanai",
+  "birth": 1949,
+  "death": null,
+  "country": "日本",
+  "field": "実業家・ファーストリテイリング会長",
+  "summary": "山口県宇部市の小さな紳士服店を継ぎ、ユニクロを世界 26 か国 2400 店舗のグローバルブランドに育てた。「服を変え、常識を変え、世界を変えていく」を企業理念に、日本最大の小売企業を作った。",
+  "wikiTitle": "柳井正",
+  "events": [
+    {
+      "year": 1949,
+      "age": 0,
+      "title": "山口県宇部市の紳士服店「メンズショップ小郡商事」の長男として生まれる",
+      "detail": "",
+      "tags": []
+    },
+    {
+      "year": 1972,
+      "age": 23,
+      "title": "早稲田大学政経学部卒、ジャスコ入社→9 か月で退社",
+      "detail": "父の店を継ぐため山口へ戻る。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1984,
+      "age": 35,
+      "title": "ユニクロ 1 号店オープン（広島）",
+      "detail": "カジュアルウェア専門店。「ユニーク・クロージング・ウェアハウス」。",
+      "tags": [
+        "restart",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1998,
+      "age": 49,
+      "title": "フリースで全国ブレイク",
+      "detail": "原宿 1 号店、フリースが 850 万着販売。",
+      "tags": [
+        "approval",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 2001,
+      "age": 52,
+      "title": "ロンドン進出 — 海外展開開始",
+      "detail": "赤字で撤退寸前まで苦戦するも継続。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 2010,
+      "age": 61,
+      "title": "上海・ユニクロ旗艦店オープン — 海外売上が国内を超える日",
+      "detail": "アジア太平洋で爆発的成長。",
+      "tags": [
+        "breakthrough"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "成功は捨てよ。失敗からしか学べない。",
+      "source": "『一勝九敗』"
+    },
+    {
+      "text": "我が社は世界で唯一、本気で世界一を目指す日本企業だ。",
+      "source": "社員へ"
+    },
+    {
+      "text": "商売は朝令暮改でいい。間違いに気づいたら今すぐ変える。",
+      "source": "経営論"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/yanai_tadashi.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "日本最大のアパレル企業ファーストリテイリング会長。山口の紳士服店を継ぎ、ユニクロを世界 26 か国に展開。「服を変え常識を変え世界を変える」を実践した日本の小売王。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Tadashi_Yanai%2C_in_Japan_on_May_23%2C_2022_%281%29_%28cropped%29.jpg?width=500"
+}

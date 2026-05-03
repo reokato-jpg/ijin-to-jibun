@@ -1,0 +1,91 @@
+{
+  "id": "crick",
+  "name": "フランシス・クリック",
+  "nameEn": "Francis Crick",
+  "birth": 1916,
+  "death": 2004,
+  "country": "イギリス",
+  "field": "分子生物学者",
+  "summary": "物理学者から生物学に転身、ジェームズ・ワトソンと共に DNA 二重らせん構造を解明。「生命とは情報である」という分子生物学の核心を作った。1962 年ノーベル医学生理学賞。",
+  "wikiTitle": "フランシス・クリック",
+  "events": [
+    {
+      "year": 1916,
+      "age": 0,
+      "title": "イギリス・ノーサンプトンで生まれる",
+      "detail": "靴職人の家。",
+      "tags": []
+    },
+    {
+      "year": 1949,
+      "age": 33,
+      "title": "ケンブリッジ・キャヴェンディッシュ研究所で生物学に転向",
+      "detail": "物理学博士課程を中断し、X 線結晶解析で生体分子を研究。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1953,
+      "age": 36,
+      "title": "DNA 二重らせん構造の解明",
+      "detail": "ジェームズ・ワトソン・ロザリンド・フランクリンの X 線写真をもとに 4 月『Nature』論文。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1962,
+      "age": 46,
+      "title": "ノーベル医学生理学賞",
+      "detail": "ワトソン・ウィルキンスと共同受賞。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1976,
+      "age": 60,
+      "title": "アメリカへ移住、神経科学へ転身",
+      "detail": "ソーク研究所で意識・記憶研究。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 2004,
+      "age": 88,
+      "title": "カリフォルニア・ラホヤで大腸癌で死去",
+      "detail": "",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "我々は生命の秘密を発見した。",
+      "source": "DNA 構造発表時 1953"
+    },
+    {
+      "text": "生命は分子である。",
+      "source": "分子生物学宣言"
+    },
+    {
+      "text": "人間の魂もまた、ニューロンと分子の集まりにすぎない。",
+      "source": "『驚くべき仮説』"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/crick.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "イギリスの分子生物学者。物理学から転身し、ジェームズ・ワトソンと DNA 二重らせん構造を解明（1953）。生命の遺伝情報メカニズムを物理化学に還元、「生命とは情報である」という現代生物学の核を作った。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Francis_Crick_%283x4_cropped%29.jpg?width=500"
+}

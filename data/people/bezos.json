@@ -1,0 +1,93 @@
+{
+  "id": "bezos",
+  "name": "ジェフ・ベゾス",
+  "nameEn": "Jeff Bezos",
+  "birth": 1964,
+  "death": null,
+  "country": "アメリカ",
+  "field": "実業家・Amazon 創業者",
+  "summary": "プリンストン卒、ヘッジファンドの幹部だった 30 歳でネット書店 Amazon を創業。全 e コマースを再定義し、AWS でクラウド時代を、Blue Origin で宇宙ビジネスを開いた。",
+  "wikiTitle": "ジェフ・ベゾス",
+  "events": [
+    {
+      "year": 1964,
+      "age": 0,
+      "title": "ニューメキシコ州アルバカーキで生まれる",
+      "detail": "母は 17 歳。実父との関係は途絶えたまま。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1986,
+      "age": 22,
+      "title": "プリンストン大学電気工学卒",
+      "detail": "成績はトップクラス、ベル研究所への誘いを蹴った。",
+      "tags": []
+    },
+    {
+      "year": 1994,
+      "age": 30,
+      "title": "Amazon 創業 — シアトルのガレージで",
+      "detail": "D.E.Shaw のヘッジファンド副社長を辞して西海岸へ。「30 年後に振り返って後悔したくない」。",
+      "tags": [
+        "restart",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 2000,
+      "age": 36,
+      "title": "ドットコム崩壊で時価総額 1/10",
+      "detail": "Amazon 株が 100 ドル → 10 ドル。倒産寸前。長期戦略で耐え抜いた。",
+      "tags": [
+        "loss",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 2006,
+      "age": 42,
+      "title": "AWS 立ち上げ — クラウド時代の幕開け",
+      "detail": "自社インフラを商品化、後に Amazon 利益の柱に。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 2021,
+      "age": 57,
+      "title": "Amazon CEO 退任、宇宙へ",
+      "detail": "Blue Origin で初の有人宇宙飛行に自ら搭乗。",
+      "tags": [
+        "restart"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "今日が常に Day 1 である。Day 2 は停滞、衰退、そして死だ。",
+      "source": "株主への手紙 2017"
+    },
+    {
+      "text": "あなたのブランドとは、あなたが部屋を出た後に他人があなたについて話すことだ。",
+      "source": "インタビュー"
+    },
+    {
+      "text": "私は 30 年後の自分が、後悔しない選択をしたい。",
+      "source": "Amazon 創業時"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/bezos.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "Amazon 創業者・元 CEO。30 歳でネット書店を興し、世界最大の e コマース帝国と AWS を築いた。引退後は Blue Origin で宇宙開発と地球温暖化対策に専念。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Jeff_Bezos_visits_LAAFB_SMC_%283908618%29_%28cropped%29.jpeg?width=500"
+}

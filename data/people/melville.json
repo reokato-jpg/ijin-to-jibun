@@ -1,0 +1,96 @@
+{
+  "id": "melville",
+  "name": "ハーマン・メルヴィル",
+  "nameEn": "Herman Melville",
+  "birth": 1819,
+  "death": 1891,
+  "country": "アメリカ",
+  "field": "作家",
+  "summary": "ニューヨーク出身、捕鯨船員として太平洋を航海した経験から『白鯨』を著したアメリカ文学の巨匠。生前は失敗作扱いされ晩年は税関職員として無名で死亡、死後 30 年で再評価され『アメリカ文学の頂点』として確立。",
+  "wikiTitle": "ハーマン・メルヴィル",
+  "events": [
+    {
+      "year": 1819,
+      "age": 0,
+      "title": "ニューヨーク市で生まれる",
+      "detail": "輸入商の家、12 歳で父破産死、貧困に。",
+      "tags": [
+        "loss",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1841,
+      "age": 21,
+      "title": "捕鯨船アクシュネット号に乗り組む",
+      "detail": "3 年半の太平洋航海、後の『白鯨』の素材。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1846,
+      "age": 26,
+      "title": "処女作『タイピー』ヒット",
+      "detail": "南海諸島での冒険記。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1851,
+      "age": 31,
+      "title": "『白鯨』刊行 — 失敗作扱い",
+      "detail": "複雑すぎて当時の読者に理解されず、生涯で 3000 部しか売れず。",
+      "tags": [
+        "loss",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1866,
+      "age": 47,
+      "title": "ニューヨーク税関の検査官に — 19 年の無名生活",
+      "detail": "作家の道を断念。",
+      "tags": [
+        "self_denial",
+        "loss"
+      ]
+    },
+    {
+      "year": 1891,
+      "age": 72,
+      "title": "ニューヨークで死去 — 完全に忘れられて",
+      "detail": "死後 30 年経って再発見、『白鯨』はアメリカ文学の最高峰として確立。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "私はナンタケットの島民、捕鯨者を呼び続ける。",
+      "source": "『白鯨』"
+    },
+    {
+      "text": "運命の鎖は、強者をも縛る。",
+      "source": "『白鯨』"
+    },
+    {
+      "text": "沈黙は、真の友情の唯一無二の言語である。",
+      "source": "日記"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/melville.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "アメリカの作家。捕鯨船員から作家へ、『白鯨』でアメリカ文学の頂点を作ったが生前は失敗作扱い、19 年税関職員として無名のまま死亡、死後 30 年で再評価された孤独の巨匠。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Herman_Melville_by_Joseph_O_Eaton.jpg?width=500"
+}

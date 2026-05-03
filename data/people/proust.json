@@ -1,0 +1,103 @@
+{
+  "id": "proust",
+  "name": "マルセル・プルースト",
+  "nameEn": "Marcel Proust",
+  "birth": 1871,
+  "death": 1922,
+  "country": "フランス",
+  "field": "作家",
+  "summary": "パリの裕福なユダヤ系家庭出身。社交界の華として暮らした青年期から、母の死を機に隠遁し、コルク張りの部屋で『失われた時を求めて』を 14 年かけて執筆。20 世紀小説の最高峰。",
+  "wikiTitle": "マルセル・プルースト",
+  "events": [
+    {
+      "year": 1871,
+      "age": 0,
+      "title": "パリで生まれる",
+      "detail": "父は医学教授、母はユダヤ系。9 歳から喘息持ち。",
+      "tags": []
+    },
+    {
+      "year": 1880,
+      "age": 9,
+      "title": "喘息発症",
+      "detail": "以降生涯のハンディキャップ。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1905,
+      "age": 34,
+      "title": "母の死",
+      "detail": "最大の喪失。1 年間隠遁。",
+      "tags": [
+        "loss",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1909,
+      "age": 38,
+      "title": "『失われた時を求めて』執筆開始",
+      "detail": "コルク張りの寝室で、ベッドから起きずに 14 年。",
+      "tags": [
+        "restart",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1913,
+      "age": 42,
+      "title": "第 1 巻『スワン家のほうへ』自費出版",
+      "detail": "6 出版社が拒否、自費で出版。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1919,
+      "age": 48,
+      "title": "第 2 巻でゴンクール賞",
+      "detail": "フランス最高の文学賞。",
+      "tags": [
+        "approval",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1922,
+      "age": 51,
+      "title": "パリで肺炎死",
+      "detail": "全 7 巻のうち 4 巻まで自分で校正、残り 3 巻は弟が遺稿出版。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "真の発見の旅は、新しい風景を求めることではなく、新しい目を持つことである。",
+      "source": "『失われた時を求めて』"
+    },
+    {
+      "text": "私たちは皆、与えられた時間の中で、自分自身を取り戻すために生きている。",
+      "source": "『見出された時』"
+    },
+    {
+      "text": "記憶は人を作る最も重要な材料だ。",
+      "source": "日記"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/proust.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "フランスの作家。20 世紀小説の最高峰『失われた時を求めて』を 14 年かけて執筆、コルク張りの部屋で病に倒れながらも書き続けた。マドレーヌの匂いから記憶が湧き上がる『無意志的記憶』の発見。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Marcel_Proust_1895.jpg?width=500"
+}

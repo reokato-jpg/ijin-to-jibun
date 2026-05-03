@@ -1,0 +1,91 @@
+{
+  "id": "planck",
+  "name": "マックス・プランク",
+  "nameEn": "Max Planck",
+  "birth": 1858,
+  "death": 1947,
+  "country": "ドイツ",
+  "field": "理論物理学者",
+  "summary": "ドイツのキール出身。黒体放射の問題を解くために『エネルギーが量子化されている』と仮定（1900）、量子論の幕を開けた。本人は『絶望的な行為』と呼んだ仮説が 20 世紀物理学の革命となった。",
+  "wikiTitle": "マックス・プランク",
+  "events": [
+    {
+      "year": 1858,
+      "age": 0,
+      "title": "ドイツ・キールで生まれる",
+      "detail": "代々の法学者・神学者の家系。",
+      "tags": []
+    },
+    {
+      "year": 1900,
+      "age": 42,
+      "title": "黒体放射の量子仮説発表",
+      "detail": "12 月 14 日、エネルギーが連続でなく離散的（量子）と仮定。20 世紀物理の起点。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1918,
+      "age": 60,
+      "title": "ノーベル物理学賞",
+      "detail": "量子論の創始。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1933,
+      "age": 75,
+      "title": "ナチス政権下でドイツに残る",
+      "detail": "アインシュタインら亡命者と異なり国内残留、しかし反ナチを貫く。",
+      "tags": [
+        "isolation"
+      ]
+    },
+    {
+      "year": 1945,
+      "age": 87,
+      "title": "次男エルヴィンをヒトラー暗殺計画関与で処刑",
+      "detail": "4 人の子供のうち最後の希望を失う。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1947,
+      "age": 89,
+      "title": "ゲッティンゲンで死去",
+      "detail": "研究所は『マックス・プランク研究所』として存続。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "新しい科学的真理は反対者を説得して勝利するのではない。反対者が死んで新世代が真理に慣れ親しむことで勝利する。",
+      "source": "自伝 1948"
+    },
+    {
+      "text": "私の量子仮説は絶望的な行為であった。",
+      "source": "回想"
+    },
+    {
+      "text": "科学者にとって、宗教の発見と同じくらい謙虚さが必要である。",
+      "source": "晩年"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/planck.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "ドイツの理論物理学者。1900 年のエネルギー量子仮説で 20 世紀物理学を起こした量子論の創始者。子供 4 人を全て失う悲劇に耐え、ナチス時代もドイツに残り反ナチを貫いた科学者倫理の象徴。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Max_Planck_by_Hugo_Erfurth_1938cr_-_restoration1.jpg?width=500"
+}

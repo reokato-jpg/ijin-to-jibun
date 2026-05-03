@@ -1,0 +1,90 @@
+{
+  "id": "flaubert",
+  "name": "ギュスターヴ・フローベール",
+  "nameEn": "Gustave Flaubert",
+  "birth": 1821,
+  "death": 1880,
+  "country": "フランス",
+  "field": "作家",
+  "summary": "ノルマンディーのルーアン出身、医師の息子。『ボヴァリー夫人』で写実主義文学の頂点を作り、『芸術のための芸術』を信条に 1 文 1 文を石工のように削り続けた『言語の殉教者』。",
+  "wikiTitle": "ギュスターヴ・フローベール",
+  "events": [
+    {
+      "year": 1821,
+      "age": 0,
+      "title": "ルーアンの病院長舎で生まれる",
+      "detail": "父は外科主任、母は医者の娘。",
+      "tags": []
+    },
+    {
+      "year": 1840,
+      "age": 19,
+      "title": "パリ法学部入学",
+      "detail": "18 歳で発作（てんかん？）以降生涯の持病。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1851,
+      "age": 30,
+      "title": "『ボヴァリー夫人』執筆開始",
+      "detail": "5 年間、1 ページ 1 週間のペースで彫琢。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1857,
+      "age": 36,
+      "title": "『ボヴァリー夫人』刊行 — 即猥褻罪起訴",
+      "detail": "宗教・道徳侮辱罪。無罪判決。社会的注目で爆売れ。",
+      "tags": [
+        "breakthrough",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1862,
+      "age": 41,
+      "title": "『サランボー』刊行",
+      "detail": "古代カルタゴを舞台に。",
+      "tags": []
+    },
+    {
+      "year": 1880,
+      "age": 58,
+      "title": "クロワッセの自宅で脳出血死",
+      "detail": "未完の『ブヴァールとペキュシェ』を残して。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "ボヴァリー夫人、それは私だ。",
+      "source": "友人への発言"
+    },
+    {
+      "text": "明確であろうとせよ。明確に書けない者は、明確に考えていない。",
+      "source": "執筆論"
+    },
+    {
+      "text": "芸術家は時代の中にあって時代を超えなければならない。",
+      "source": "日記"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/flaubert.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "19 世紀フランスの作家。写実主義の頂点『ボヴァリー夫人』で猥褻罪に問われつつも文学史を変えた。1 文を 1 週間かけて磨く『言語の殉教者』、フランス散文の最高水準を作った。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Gustave_Flaubert.jpg?width=500"
+}

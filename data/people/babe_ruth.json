@@ -1,0 +1,94 @@
+{
+  "id": "babe_ruth",
+  "name": "ベーブ・ルース",
+  "nameEn": "Babe Ruth",
+  "birth": 1895,
+  "death": 1948,
+  "country": "アメリカ",
+  "field": "プロ野球選手",
+  "summary": "ボルチモアの不良少年がカトリックの寄宿学校でホームランバッターに変身。投手として最初は活躍、後にヤンキースで本塁打 714 本（生涯）の大記録、野球を国民的スポーツにした『野球の神様』。",
+  "wikiTitle": "ベーブ・ルース",
+  "events": [
+    {
+      "year": 1895,
+      "age": 0,
+      "title": "ボルチモアの貧しい家に生まれる",
+      "detail": "両親が手に負えず 7 歳で寄宿学校へ。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1914,
+      "age": 19,
+      "title": "ボストン・レッドソックス入団",
+      "detail": "投手として活躍、20 勝以上を 2 シーズン。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1920,
+      "age": 25,
+      "title": "ヤンキース移籍 — 『バンビーノの呪い』",
+      "detail": "レッドソックスは以後 86 年優勝なし。ヤンキースは王朝へ。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1927,
+      "age": 32,
+      "title": "シーズン 60 本塁打達成",
+      "detail": "34 年破られなかった大記録。",
+      "tags": [
+        "approval",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1932,
+      "age": 37,
+      "title": "『予告ホームラン』 — ワールドシリーズ",
+      "detail": "フィールドを指して打席に立ち、その方向にホームラン。野球史最大の伝説。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1948,
+      "age": 53,
+      "title": "ニューヨークで咽頭癌で死去",
+      "detail": "棺にキスする数万人のファンが球場に並んだ。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "昨日のホームランが今日の試合に勝つわけではない。",
+      "source": "スランプ時の言葉"
+    },
+    {
+      "text": "ヤメるな。ヤメる人は決して勝てない。勝つ人は決してヤメない。",
+      "source": "記者会見"
+    },
+    {
+      "text": "野球は最高の人生哲学である。",
+      "source": "インタビュー"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/babe_ruth.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "アメリカのプロ野球選手。投手として始まり打者に転向、生涯本塁打 714 本でアメリカの国民的英雄に。1927 年シーズン 60 本塁打は 34 年破られず、『予告ホームラン』は野球史最大の伝説。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Babe_Ruth_circa_1920.jpg?width=500"
+}

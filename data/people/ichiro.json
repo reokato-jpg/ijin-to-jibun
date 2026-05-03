@@ -1,0 +1,109 @@
+{
+  "id": "ichiro",
+  "name": "イチロー",
+  "nameEn": "Ichiro Suzuki",
+  "birth": 1973,
+  "death": null,
+  "country": "日本",
+  "field": "プロ野球選手",
+  "summary": "愛知の小さな体の少年が、独自の振り子打法で日米通算 4367 安打（ピート・ローズ超え）。日本人初の MLB 野手として 10 年連続 200 安打、シアトル・マリナーズで殿堂級の活躍。「日本野球の世界化」の象徴。",
+  "wikiTitle": "イチロー",
+  "events": [
+    {
+      "year": 1973,
+      "age": 0,
+      "title": "愛知県西春日井郡豊山町で生まれる",
+      "detail": "本名 鈴木一朗。父・宣之は野球用品店経営。",
+      "tags": []
+    },
+    {
+      "year": 1977,
+      "age": 3,
+      "title": "野球を始める — 父と毎日のキャッチボール",
+      "detail": "父との 1 日も欠かさない練習が伝説に。",
+      "tags": []
+    },
+    {
+      "year": 1991,
+      "age": 17,
+      "title": "オリックス・ブルーウェーブ入団（ドラフト 4 位）",
+      "detail": "高卒でプロ。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1994,
+      "age": 20,
+      "title": "日本プロ野球史上初のシーズン 200 安打達成",
+      "detail": "打率 .385。仰木監督が登録名を『イチロー』に。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 2001,
+      "age": 27,
+      "title": "シアトル・マリナーズ移籍 — 野手として日本人初の MLB",
+      "detail": "打率 .350、新人王 + MVP 同年獲得は史上 2 人目。",
+      "tags": [
+        "restart",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 2004,
+      "age": 30,
+      "title": "MLB シーズン最多安打記録更新（262 安打）",
+      "detail": "84 年ぶりの記録更新。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 2010,
+      "age": 36,
+      "title": "10 年連続 200 安打 — MLB 唯一",
+      "detail": "プロ野球史上の偉業。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 2019,
+      "age": 45,
+      "title": "東京ドームで現役引退",
+      "detail": "日米通算 4367 安打（ピート・ローズの 4256 安打を超える）。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "小さなことを積み重ねることが、とんでもない所へ行くただひとつの道。",
+      "source": "インタビュー"
+    },
+    {
+      "text": "努力せずに何かできるようになる人のことを天才というのなら、僕はそうじゃない。",
+      "source": "引退会見 2019"
+    },
+    {
+      "text": "野球は人生だ。野球がうまくなることは、人として大きくなること。",
+      "source": "少年野球教室"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/ichiro.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "日本のプロ野球選手・MLB シアトル・マリナーズの伝説的バッター。日米通算 4367 安打でピート・ローズを超え、10 年連続 200 安打を達成した『日本野球の世界化』の象徴。引退後も MLB 球団スタッフとして関わる。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Ichiro_Suzuki_%2851007034081%29_%28cropped%29.jpg?width=500"
+}

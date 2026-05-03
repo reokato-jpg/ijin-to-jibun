@@ -1,0 +1,92 @@
+{
+  "id": "niels_bohr",
+  "name": "ニールス・ボーア",
+  "nameEn": "Niels Bohr",
+  "birth": 1885,
+  "death": 1962,
+  "country": "デンマーク",
+  "field": "物理学者",
+  "summary": "原子模型で量子の概念を物理学に持ち込んだ 20 世紀物理の巨匠。コペンハーゲン解釈で量子力学を確立、アインシュタインと『神はサイコロを振らない』論争を 30 年続けた。第二次大戦中はユダヤ人として亡命しマンハッタン計画にも参加。",
+  "wikiTitle": "ニールス・ボーア",
+  "events": [
+    {
+      "year": 1885,
+      "age": 0,
+      "title": "コペンハーゲンの教養家庭に生まれる",
+      "detail": "父は生理学者、母はユダヤ系銀行家家系。",
+      "tags": []
+    },
+    {
+      "year": 1913,
+      "age": 28,
+      "title": "ボーア原子模型を発表",
+      "detail": "電子が量子化された軌道を持つ。20 世紀物理の出発点。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1922,
+      "age": 37,
+      "title": "ノーベル物理学賞",
+      "detail": "原子構造と放射の研究。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1927,
+      "age": 42,
+      "title": "コペンハーゲン解釈確立",
+      "detail": "ハイゼンベルクと共に量子力学の標準解釈を提示。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1943,
+      "age": 58,
+      "title": "ナチス占領下のデンマークから決死の脱出",
+      "detail": "小舟でスウェーデンへ。後にロンドン・ロスアラモスへ。",
+      "tags": [
+        "loss",
+        "restart"
+      ]
+    },
+    {
+      "year": 1962,
+      "age": 77,
+      "title": "コペンハーゲンで死去",
+      "detail": "研究所は今も「ボーア研究所」。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "反対は対立、深い真理の反対も真理である。",
+      "source": "哲学的省察"
+    },
+    {
+      "text": "私たちが量子力学を理解しているなら、量子力学を理解していないことになる。",
+      "source": "晩年"
+    },
+    {
+      "text": "予測は難しい。特に未来については。",
+      "source": "伝"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/niels_bohr.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "デンマークの物理学者。原子模型と量子力学コペンハーゲン解釈で 20 世紀物理学の主柱を建てた。アインシュタインとの 30 年論争「神はサイコロを振らない」は科学史の金字塔。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Niels_Bohr.jpg?width=500"
+}

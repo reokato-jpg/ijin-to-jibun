@@ -1,0 +1,90 @@
+{
+  "id": "borges",
+  "name": "ホルヘ・ルイス・ボルヘス",
+  "nameEn": "Jorge Luis Borges",
+  "birth": 1899,
+  "death": 1986,
+  "country": "アルゼンチン",
+  "field": "作家・詩人",
+  "summary": "ブエノスアイレスの英語と西語の二言語家庭出身。図書館員から作家へ。短篇『バベルの図書館』『砂の本』などで形而上学を文学に焼き付け、20 世紀文学の地図を変えた。50 代で失明、暗黒の中で書き続けた。",
+  "wikiTitle": "ホルヘ・ルイス・ボルヘス",
+  "events": [
+    {
+      "year": 1899,
+      "age": 0,
+      "title": "ブエノスアイレスで生まれる",
+      "detail": "父は弁護士・心理学教授、母は英国系。",
+      "tags": []
+    },
+    {
+      "year": 1914,
+      "age": 15,
+      "title": "ジュネーブへ家族と移住、ヨーロッパ生活",
+      "detail": "フランス語・ドイツ語・ラテン語を独学。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1937,
+      "age": 38,
+      "title": "市立図書館員",
+      "detail": "地味な職業、本に囲まれた生活で短篇作家へ。",
+      "tags": []
+    },
+    {
+      "year": 1944,
+      "age": 45,
+      "title": "『伝奇集』刊行",
+      "detail": "「バベルの図書館」「分岐する小径の庭」など、世界文学を変える短篇集。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1955,
+      "age": 56,
+      "title": "アルゼンチン国立図書館長",
+      "detail": "同時に視力をほぼ完全に失う。「神は本と暗闇を同時に与えた」。",
+      "tags": [
+        "loss",
+        "approval"
+      ]
+    },
+    {
+      "year": 1986,
+      "age": 86,
+      "title": "ジュネーブで肝臓癌で死去",
+      "detail": "晩年は妻マリア・コダマと暮らした。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "私は天国を、図書館の形で想像していた。",
+      "source": "詩"
+    },
+    {
+      "text": "最大の罰は、欲しがっているものを手に入れることである。",
+      "source": "短篇"
+    },
+    {
+      "text": "鏡と父性は忌まわしい。なぜなら世界を増殖させるから。",
+      "source": "『砂の本』"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/borges.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "アルゼンチンの作家・詩人。図書館員から作家へ、短篇『バベルの図書館』『分岐する小径の庭』で形而上学を文学に焼き付け、20 世紀ラテンアメリカ文学の父祖となった。50 代で失明、暗闇の中で詩を書き続けた。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Jorge_Luis_Borges_Hotel.jpg?width=500"
+}

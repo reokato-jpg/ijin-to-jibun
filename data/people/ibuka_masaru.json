@@ -1,0 +1,98 @@
+{
+  "id": "ibuka_masaru",
+  "name": "井深大",
+  "nameEn": "Masaru Ibuka",
+  "birth": 1908,
+  "death": 1997,
+  "country": "日本",
+  "field": "実業家・ソニー共同創業者",
+  "summary": "早稲田大の電気工学青年が戦後焼け跡で東京通信工業（後のソニー）を起業、テープレコーダーから始めウォークマンまで「世界の SONY」を築いた技術者経営者。盛田昭夫との 50 年の二人三脚。",
+  "wikiTitle": "井深大",
+  "events": [
+    {
+      "year": 1908,
+      "age": 0,
+      "title": "栃木県日光市で生まれる",
+      "detail": "鉱山技師の子。",
+      "tags": []
+    },
+    {
+      "year": 1933,
+      "age": 25,
+      "title": "早稲田大学電気工学科卒",
+      "detail": "日本光音工業へ。",
+      "tags": []
+    },
+    {
+      "year": 1946,
+      "age": 38,
+      "title": "東京通信工業（後のソニー）創業",
+      "detail": "焼け野原の銀座で 7 人、資本金 19 万円。盛田昭夫 25 歳と組む。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1955,
+      "age": 47,
+      "title": "日本初のトランジスタラジオ「TR-55」発売",
+      "detail": "小型化技術で世界の道を開く。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1968,
+      "age": 60,
+      "title": "トリニトロンカラーテレビ発売",
+      "detail": "鮮明な発色が世界を席巻。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1979,
+      "age": 71,
+      "title": "ウォークマン発売",
+      "detail": "音楽を持ち歩く文化を発明。「個人が音楽と一対一になる時代」。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1997,
+      "age": 89,
+      "title": "東京で死去",
+      "detail": "「子育てと教育」に晩年を捧げた。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "幼児期はすべての始まり。",
+      "source": "『幼稚園では遅すぎる』"
+    },
+    {
+      "text": "創意工夫で他社のやらないことをやる。それが我々の生きる道だ。",
+      "source": "ソニー設立趣意書"
+    },
+    {
+      "text": "研究より教育の方が重要だ。",
+      "source": "晩年"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/ibuka_masaru.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "ソニー共同創業者。技術者として戦後焼け跡から世界的家電メーカーを作った。ウォークマン・トランジスタラジオ・トリニトロンを生んだ「もの作り」の魂。盛田昭夫との二人三脚は経営史の金字塔。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Chunichi1966-01-17-1.jpg?width=500"
+}

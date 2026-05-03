@@ -1,0 +1,94 @@
+{
+  "id": "dirac",
+  "name": "ポール・ディラック",
+  "nameEn": "Paul Dirac",
+  "birth": 1902,
+  "death": 1984,
+  "country": "イギリス",
+  "field": "理論物理学者",
+  "summary": "イギリス・ブリストル生まれ、極端な無口と数学的美意識で量子力学・相対性理論を統合した 20 世紀物理の天才。陽電子の予言、ディラック方程式で 31 歳でノーベル賞。「数学が美しければ物理は正しい」を信念とした。",
+  "wikiTitle": "ポール・ディラック",
+  "events": [
+    {
+      "year": 1902,
+      "age": 0,
+      "title": "ブリストルで生まれる",
+      "detail": "父はスイス人移民の厳格な教師。家庭での会話はフランス語のみ強制された。",
+      "tags": [
+        "isolation"
+      ]
+    },
+    {
+      "year": 1923,
+      "age": 21,
+      "title": "ケンブリッジで博士課程",
+      "detail": "電気工学から数学・物理へ転身。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1928,
+      "age": 26,
+      "title": "ディラック方程式発表",
+      "detail": "電子に対する相対論的量子力学方程式。陽電子（反物質）の存在を予言。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1933,
+      "age": 31,
+      "title": "ノーベル物理学賞",
+      "detail": "シュレーディンガーと共同。31 歳での受賞は物理学史最年少クラス。",
+      "tags": [
+        "approval",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1932,
+      "age": 30,
+      "title": "ケンブリッジ大学ルーカス教授就任",
+      "detail": "ニュートンの後継。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1984,
+      "age": 82,
+      "title": "フロリダ州タラハシーで死去",
+      "detail": "フロリダ州立大に晩年所属。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "物理学の方程式は美しくなければならない。",
+      "source": "哲学"
+    },
+    {
+      "text": "言葉は物理学を曖昧にする。私は方程式で考える。",
+      "source": "インタビュー"
+    },
+    {
+      "text": "科学は宗教である。違いは、宗教は希望を、科学は知識を与えることだ。",
+      "source": "晩年"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/dirac.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "イギリスの理論物理学者。極端な無口・数学的美意識で量子力学を一段高みへ引き上げた天才。ディラック方程式で陽電子（反物質）を予言し、31 歳でノーベル賞。アインシュタインが『神聖な狂気の人』と呼んだ。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Paul_Dirac%2C_1933.jpg?width=500"
+}

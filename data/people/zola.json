@@ -1,0 +1,101 @@
+{
+  "id": "zola",
+  "name": "エミール・ゾラ",
+  "nameEn": "Émile Zola",
+  "birth": 1840,
+  "death": 1902,
+  "country": "フランス",
+  "field": "作家・社会派ジャーナリスト",
+  "summary": "パリの貧しい家庭育ち、自然主義文学を旗印に『ルーゴン＝マッカール叢書』20 巻でフランス第二帝政期を描く。ドレフュス事件で『私は弾劾する』を発表し、社会派ジャーナリズムの祖型に。62 歳で謎の一酸化炭素中毒死。",
+  "wikiTitle": "エミール・ゾラ",
+  "events": [
+    {
+      "year": 1840,
+      "age": 0,
+      "title": "パリで生まれる",
+      "detail": "イタリア系技師の父、フランス人の母。",
+      "tags": []
+    },
+    {
+      "year": 1858,
+      "age": 18,
+      "title": "父の死で貧困",
+      "detail": "バカロレア試験 2 度失敗、出版社の発送係から始める。",
+      "tags": [
+        "loss",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1867,
+      "age": 27,
+      "title": "小説『テレーズ・ラカン』で文壇進出",
+      "detail": "自然主義の幕開け。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1871,
+      "age": 31,
+      "title": "『ルーゴン＝マッカール叢書』第 1 巻",
+      "detail": "20 巻の社会記録小説プロジェクト開始。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1885,
+      "age": 45,
+      "title": "『ジェルミナル』 — 炭鉱労働者ストライキ",
+      "detail": "労働運動の聖典に。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1898,
+      "age": 58,
+      "title": "『私は弾劾する』新聞掲載",
+      "detail": "ドレフュス事件で軍部の冤罪を弾劾、自身が名誉毀損で 1 年禁固。亡命へ。",
+      "tags": [
+        "self_denial"
+      ]
+    },
+    {
+      "year": 1902,
+      "age": 62,
+      "title": "パリの自宅で一酸化炭素中毒死",
+      "detail": "暖炉の煙突詰まり。事故か暗殺か論争続く。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "私は弾劾する！（J'accuse！）",
+      "source": "オーロール紙 1898"
+    },
+    {
+      "text": "真実は前進する。何ものもそれを止めない。",
+      "source": "ドレフュス事件"
+    },
+    {
+      "text": "作家は社会の良心であるべきだ。",
+      "source": "自然主義論"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/zola.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "19 世紀フランスの作家・社会派ジャーナリスト。自然主義文学の旗手として『ルーゴン＝マッカール叢書』20 巻を残し、ドレフュス事件の『私は弾劾する』で軍部の冤罪を糾弾、社会派ジャーナリズムの祖型を作った。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Emile_Zola_2.jpg?width=500"
+}

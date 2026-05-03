@@ -1,0 +1,94 @@
+{
+  "id": "lumumba",
+  "name": "パトリス・ルムンバ",
+  "nameEn": "Patrice Lumumba",
+  "birth": 1925,
+  "death": 1961,
+  "country": "コンゴ",
+  "field": "政治家・コンゴ初代首相",
+  "summary": "ベルギー領コンゴの貧農の子。郵便局員から独立運動家へ転身、1960 年コンゴ独立で初代首相に就任。しかし鉱山資源を巡る西側との対立で 6 か月後にクーデターで失脚、35 歳で米 CIA とベルギーの共謀により処刑されたアフリカ独立運動最大の殉教者。",
+  "wikiTitle": "パトリス・ルムンバ",
+  "events": [
+    {
+      "year": 1925,
+      "age": 0,
+      "title": "ベルギー領コンゴ・カサイ州で生まれる",
+      "detail": "バテテラ族農家の子。",
+      "tags": []
+    },
+    {
+      "year": 1956,
+      "age": 31,
+      "title": "郵便局員時に汚職罪で逮捕",
+      "detail": "政治家への転換点。",
+      "tags": [
+        "loss",
+        "restart"
+      ]
+    },
+    {
+      "year": 1958,
+      "age": 33,
+      "title": "コンゴ国民運動（MNC）結党",
+      "detail": "独立運動の中核に。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1960,
+      "age": 35,
+      "title": "コンゴ独立、初代首相就任",
+      "detail": "6 月 30 日、ベルギー国王ボードゥアン臨席の独立式典で『あなたの国の植民地支配を忘れない』と演説、世界に衝撃。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1960,
+      "age": 35,
+      "title": "カタンガ州分離・モブツのクーデターで失脚",
+      "detail": "鉱山資源を巡る西側勢力との対立。",
+      "tags": [
+        "loss",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1961,
+      "age": 35,
+      "title": "カタンガ州エリザベスヴィル近郊で処刑",
+      "detail": "米 CIA とベルギーの共謀で処刑、遺体は溶解。35 歳。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "私たちはあなたの国の植民地支配を忘れない。",
+      "source": "独立式典演説 1960"
+    },
+    {
+      "text": "自由は乞うものではない。掴むものだ。",
+      "source": "演説"
+    },
+    {
+      "text": "いつか歴史は、植民地主義者ではなく、自分の国を愛したアフリカ人の側に立つだろう。",
+      "source": "妻への遺書"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/lumumba.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "コンゴ初代首相。郵便局員から独立運動家へ転身、1960 年独立式典で植民地支配を糾弾する歴史的演説を行った。6 か月後米 CIA とベルギーの共謀で処刑された 35 歳。アフリカ独立運動最大の殉教者。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Anefo_910-9740_De_Congolese2.jpg?width=500"
+}

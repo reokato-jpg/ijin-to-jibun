@@ -1,0 +1,107 @@
+{
+  "id": "hojo_masako",
+  "name": "北条政子",
+  "nameEn": "Hojo Masako",
+  "birth": 1157,
+  "death": 1225,
+  "country": "日本（鎌倉）",
+  "field": "鎌倉幕府初代将軍源頼朝の正室・尼将軍",
+  "summary": "伊豆の北条家の娘。流人源頼朝と恋に落ちて結婚、頼朝の挙兵を支え鎌倉幕府成立を導いた。頼朝の死後は『尼将軍』として 3 度の幕府危機を乗り切り、承久の乱では肉声で御家人を結束させた日本史最大の女傑。",
+  "wikiTitle": "北条政子",
+  "events": [
+    {
+      "year": 1157,
+      "age": 0,
+      "title": "伊豆国の北条時政の長女として生まれる",
+      "detail": "",
+      "tags": []
+    },
+    {
+      "year": 1177,
+      "age": 20,
+      "title": "伊豆流人の源頼朝と駆け落ち結婚",
+      "detail": "父の反対を押し切って雨の夜に駆け落ち。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1180,
+      "age": 23,
+      "title": "頼朝挙兵、鎌倉幕府の事実上の創設",
+      "detail": "政子は頼朝の戦略を支える。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1199,
+      "age": 42,
+      "title": "頼朝死去、出家して尼将軍に",
+      "detail": "以降、北条家による執権政治の中枢に。",
+      "tags": [
+        "loss",
+        "restart"
+      ]
+    },
+    {
+      "year": 1203,
+      "age": 46,
+      "title": "長男頼家を出家させて将軍解任、暗殺",
+      "detail": "次男実朝を将軍に。母として子を切る決断。",
+      "tags": [
+        "self_denial",
+        "loss"
+      ]
+    },
+    {
+      "year": 1219,
+      "age": 62,
+      "title": "次男実朝も暗殺",
+      "detail": "3 代目将軍が公暁により暗殺。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1221,
+      "age": 64,
+      "title": "承久の乱で御家人を演説で結束",
+      "detail": "後鳥羽上皇の挙兵に対し『最後の言葉』演説で御家人を奮起させ幕府勝利。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1225,
+      "age": 68,
+      "title": "鎌倉で死去",
+      "detail": "日本史最大の女性政治家。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "亡き右大将（頼朝）の御恩は、山より高く海より深い。",
+      "source": "承久の乱直前の演説 1221"
+    },
+    {
+      "text": "我が子を切るのは、武家の安寧のためなり。",
+      "source": "頼家暗殺時"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/hojo_masako.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "鎌倉幕府初代将軍源頼朝の正室、尼将軍。頼朝の挙兵を支えて幕府を成立させ、頼朝・頼家・実朝の死後は北条家による執権政治を主導。承久の乱の演説で武家政権を救った日本史最大の女傑。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/%E5%8C%97%E6%9D%A1%E6%94%BF%E5%AD%90.jpg?width=500"
+}

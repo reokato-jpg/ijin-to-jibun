@@ -1,0 +1,89 @@
+{
+  "id": "tsuda_umeko",
+  "name": "津田梅子",
+  "nameEn": "Umeko Tsuda",
+  "birth": 1864,
+  "death": 1929,
+  "country": "日本",
+  "field": "教育者・女子英学塾（現津田塾大学）創立者",
+  "summary": "6 歳で岩倉使節団と共にアメリカ留学、11 年滞在して帰国するも日本社会に馴染めず再渡米。日本女性の地位向上のため女子英学塾（現津田塾大学）を創立、明治の女子高等教育の母となった。",
+  "wikiTitle": "津田梅子",
+  "events": [
+    {
+      "year": 1864,
+      "age": 0,
+      "title": "江戸の旗本津田仙の次女として生まれる",
+      "detail": "父は近代農業の先駆者。",
+      "tags": []
+    },
+    {
+      "year": 1871,
+      "age": 6,
+      "title": "岩倉使節団に随行、アメリカへ",
+      "detail": "日本最初の女子留学生 5 人の最年少。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1882,
+      "age": 17,
+      "title": "11 年ぶりに帰国",
+      "detail": "日本語を忘れ、漢字も読めず、文化的孤立。",
+      "tags": [
+        "pride_broken",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1889,
+      "age": 25,
+      "title": "再渡米、ブリンマー大留学",
+      "detail": "生物学を学ぶ。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1900,
+      "age": 36,
+      "title": "女子英学塾（現津田塾大学）創立",
+      "detail": "麹町区五番町の借家から始まる、日本女子高等教育の起点。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1929,
+      "age": 64,
+      "title": "鎌倉で死去",
+      "detail": "津田塾大学はその後日本の女子高等教育の中心に。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "All-round women（万能の女性）を作りたい。",
+      "source": "女子英学塾創立趣旨"
+    },
+    {
+      "text": "教育がなければ自由はない。",
+      "source": "演説"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/tsuda_umeko.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "明治の女子教育者。6 歳で岩倉使節団に随行アメリカ留学、11 年滞在後の帰国、再留学を経て女子英学塾（現津田塾大学）を創立。日本女子高等教育の母。2024 年から五千円札の顔。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Tsuda_Umeko_Portrait_c1900.png?width=500"
+}

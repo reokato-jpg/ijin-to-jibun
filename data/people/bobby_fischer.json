@@ -1,0 +1,95 @@
+{
+  "id": "bobby_fischer",
+  "name": "ボビー・フィッシャー",
+  "nameEn": "Bobby Fischer",
+  "birth": 1943,
+  "death": 2008,
+  "country": "アメリカ",
+  "field": "チェスプレーヤー",
+  "summary": "15 歳で米国チャンピオン、29 歳の世紀の対決でソ連の王者ボリス・スパスキーを破り西側初の世界チャンピオンに。冷戦の象徴的勝利。しかし以後の奇行・反ユダヤ発言・米政府との対立で晩年は亡命、アイスランドで死去。",
+  "wikiTitle": "ボビー・フィッシャー",
+  "events": [
+    {
+      "year": 1943,
+      "age": 0,
+      "title": "シカゴで生まれる",
+      "detail": "母はユダヤ系で看護師、父は不在。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1958,
+      "age": 15,
+      "title": "米国チェス選手権優勝（最年少）",
+      "detail": "以降 8 連覇。グランドマスター称号も最年少。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1972,
+      "age": 29,
+      "title": "世紀の対決 — ボリス・スパスキーを破り世界王者",
+      "detail": "アイスランド・レイキャヴィクで冷戦下の対決。アメリカ初の世界チェス王者。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1975,
+      "age": 32,
+      "title": "防衛戦放棄でタイトル失う",
+      "detail": "FIDE との対立で防衛拒否、世界から消える。",
+      "tags": [
+        "isolation",
+        "self_denial"
+      ]
+    },
+    {
+      "year": 1992,
+      "age": 49,
+      "title": "ユーゴ制裁違反でスパスキーと再戦",
+      "detail": "米政府の警告を無視。逮捕状発行。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 2008,
+      "age": 64,
+      "title": "アイスランドで腎不全で死去",
+      "detail": "市民権を得たアイスランドで、64 歳（チェス盤の升目数）で逝去。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "チェスは闘いだ。チェスは戦争だ。",
+      "source": "インタビュー"
+    },
+    {
+      "text": "私は最強である。私が言うのではない。盤が言うのだ。",
+      "source": "記者会見"
+    },
+    {
+      "text": "勝利は最良の説得である。",
+      "source": "自伝"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/bobby_fischer.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "アメリカのチェスプレーヤー。29 歳で冷戦下のソ連王者を破り西側初の世界チェスチャンピオンに。以降の奇行・反米発言・アメリカからの逃亡。チェス史最大の天才と最大の困難児。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Bobby_Fischer_1960_in_Leipzig.jpg?width=500"
+}

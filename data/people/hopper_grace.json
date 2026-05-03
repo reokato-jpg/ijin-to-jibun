@@ -1,0 +1,107 @@
+{
+  "id": "hopper_grace",
+  "name": "グレース・ホッパー",
+  "nameEn": "Grace Hopper",
+  "birth": 1906,
+  "death": 1992,
+  "country": "アメリカ",
+  "field": "計算機科学者・米海軍少将",
+  "summary": "イェール大数学博士、第二次大戦中に海軍予備役入り、Mark I 計算機のプログラマに。世界最初のコンパイラを開発、COBOL 言語の母として商用ソフトウェアの基盤を作った。海軍少将で 80 歳まで現役。",
+  "wikiTitle": "グレース・ホッパー",
+  "events": [
+    {
+      "year": 1906,
+      "age": 0,
+      "title": "ニューヨークで生まれる",
+      "detail": "幼少時から目覚ましの分解修理で機械好き。",
+      "tags": []
+    },
+    {
+      "year": 1934,
+      "age": 28,
+      "title": "イェール大学数学博士",
+      "detail": "女性数学博士は当時極めて稀。",
+      "tags": []
+    },
+    {
+      "year": 1943,
+      "age": 37,
+      "title": "海軍予備役入り、Mark I 計算機のプログラマに",
+      "detail": "ハーバード大での 5 トン計算機。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1947,
+      "age": 41,
+      "title": "「コンピュータバグ」の語源を作る",
+      "detail": "Mark II の中に蛾を発見、ログに『First actual case of bug being found』と書いた。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1952,
+      "age": 46,
+      "title": "世界初のコンパイラ A-0 を開発",
+      "detail": "プログラマが英語に近い命令でコードを書ける道を開く。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1959,
+      "age": 53,
+      "title": "COBOL 言語策定",
+      "detail": "商用ソフト・銀行・行政システムの 50 年支柱。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1985,
+      "age": 79,
+      "title": "米海軍少将に昇進（女性最年長）",
+      "detail": "80 歳で退役、退役式に大統領出席。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1992,
+      "age": 85,
+      "title": "アーリントンで死去",
+      "detail": "国葬。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "許可を求めるより許しを請う方がやさしい。",
+      "source": "口癖"
+    },
+    {
+      "text": "『これまでそうしてきた』ほど危険な言葉はない。",
+      "source": "演説"
+    },
+    {
+      "text": "船は港にいる時最も安全だが、それは船の目的ではない。",
+      "source": "演説"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/hopper_grace.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "アメリカ海軍少将・計算機科学者。世界初のコンパイラ開発と COBOL 策定で商用ソフトの基盤を作った。「許可より許し」を口癖に 80 歳まで現役、退役後も IT 業界に影響を残した『コンピュータの祖母』。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Grace_Hopper.jpg?width=500"
+}

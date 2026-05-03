@@ -1,0 +1,101 @@
+{
+  "id": "misora_hibari",
+  "name": "美空ひばり",
+  "nameEn": "Hibari Misora",
+  "birth": 1937,
+  "death": 1989,
+  "country": "日本",
+  "field": "歌手・女優",
+  "summary": "横浜・滝頭の魚屋に生まれ、9 歳でデビュー、12 歳で『悲しき口笛』が大ヒット。歌・映画・人気で戦後昭和を象徴した『歌姫』。1500 曲超を歌い、52 歳で間質性肺炎で逝去、女性初の国民栄誉賞。",
+  "wikiTitle": "美空ひばり",
+  "events": [
+    {
+      "year": 1937,
+      "age": 0,
+      "title": "横浜・滝頭の魚屋に生まれる",
+      "detail": "本名 加藤和枝。",
+      "tags": []
+    },
+    {
+      "year": 1946,
+      "age": 9,
+      "title": "のど自慢で優勝、デビュー",
+      "detail": "母の懸命な売り込みで天才少女歌手として全国へ。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1949,
+      "age": 12,
+      "title": "『悲しき口笛』大ヒット",
+      "detail": "映画主題歌、戦後の混乱の中での希望の歌に。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1957,
+      "age": 20,
+      "title": "塩酸事件 — 浅草国際劇場で塩酸を浴びせられる",
+      "detail": "嫉妬したファンの女性に襲撃される。顔の傷は薄く回復。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1986,
+      "age": 49,
+      "title": "大病から復活、東京ドーム公演",
+      "detail": "『不死鳥コンサート』、5 万人を魅了。",
+      "tags": [
+        "restart",
+        "approval"
+      ]
+    },
+    {
+      "year": 1989,
+      "age": 52,
+      "title": "間質性肺炎で逝去",
+      "detail": "昭和最後の年、昭和そのものを象徴する死。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1989,
+      "age": 52,
+      "title": "女性初の国民栄誉賞",
+      "detail": "死後追贈。",
+      "tags": [
+        "approval"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "歌は私の命です。",
+      "source": "晩年のコンサート"
+    },
+    {
+      "text": "川の流れのように、ゆるやかに、いくつもの時代は過ぎて。",
+      "source": "『川の流れのように』 1989"
+    },
+    {
+      "text": "私は歌う機械じゃありません。歌を生きる人間です。",
+      "source": "インタビュー"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/misora_hibari.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "昭和を代表する歌手・女優。9 歳でデビュー、戦後の希望から昭和最後の象徴まで 1500 曲超を歌い続けた『歌姫』。塩酸事件・大病など波乱を乗り越え、52 歳で世を去る前夜まで歌った。女性初の国民栄誉賞。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Misora-Hibari-4.png?width=500"
+}

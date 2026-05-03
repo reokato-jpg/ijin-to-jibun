@@ -1,0 +1,102 @@
+{
+  "id": "che_guevara",
+  "name": "チェ・ゲバラ",
+  "nameEn": "Ernesto \"Che\" Guevara",
+  "birth": 1928,
+  "death": 1967,
+  "country": "アルゼンチン→キューバ",
+  "field": "革命家・医師",
+  "summary": "アルゼンチンの中流家庭育ち、医学生時代の南米バイク旅行で貧困を目の当たりにし革命家へ転身。フィデル・カストロと共にキューバ革命を成功させ、ボリビアでゲリラ戦中の 39 歳で処刑された 20 世紀最大の革命アイコン。",
+  "wikiTitle": "チェ・ゲバラ",
+  "events": [
+    {
+      "year": 1928,
+      "age": 0,
+      "title": "アルゼンチン・ロサリオで生まれる",
+      "detail": "中流家庭、2 歳から喘息。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1952,
+      "age": 24,
+      "title": "南米バイク旅行 — 『モーターサイクル・ダイアリーズ』",
+      "detail": "医学生時代の親友との 8 か月の旅で貧困を目撃、革命家への転換点。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1955,
+      "age": 27,
+      "title": "メキシコでフィデル・カストロと出会う",
+      "detail": "亡命中のカストロと意気投合、キューバ革命へ。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1956,
+      "age": 28,
+      "title": "グランマ号でキューバ上陸",
+      "detail": "82 名のうち 12 名が生き延び、シエラ・マエストラ山脈でゲリラ戦。",
+      "tags": []
+    },
+    {
+      "year": 1959,
+      "age": 31,
+      "title": "キューバ革命成功",
+      "detail": "バティスタ独裁を倒し、新政府の中央銀行総裁・産業大臣に。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1965,
+      "age": 37,
+      "title": "キューバを離れアフリカ・ボリビアへ",
+      "detail": "カストロとの溝、世界革命を目指す。コンゴ・ボリビアで活動。",
+      "tags": [
+        "restart",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1967,
+      "age": 39,
+      "title": "ボリビア山中で米 CIA 支援軍に処刑",
+      "detail": "逮捕翌日に銃殺、両手を切断され、革命の象徴の遺体は消された。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "ハスタ・ラ・ビクトリア・シエンプレ（勝利の日まで、永遠に）。",
+      "source": "カストロへの別離の手紙 1965"
+    },
+    {
+      "text": "人類愛のない革命家など、革命家ではない。",
+      "source": "演説"
+    },
+    {
+      "text": "私はチェ・ゲバラだ。撃て。男らしく撃て。",
+      "source": "処刑直前 1967"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/che_guevara.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "アルゼンチン人医師・キューバ革命家。カストロと共にキューバ革命を成功させ、その後世界革命を求めてボリビア山中で 39 歳で処刑された 20 世紀最大の革命アイコン。あの T シャツの男。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/CheGuevaraSignature.svg?width=500"
+}

@@ -1,0 +1,101 @@
+{
+  "id": "bob_dylan",
+  "name": "ボブ・ディラン",
+  "nameEn": "Bob Dylan",
+  "birth": 1941,
+  "death": null,
+  "country": "アメリカ",
+  "field": "ミュージシャン・詩人",
+  "summary": "ミネソタ州ダルース出身、ニューヨーク・グリニッジ・ヴィレッジでフォーク歌手としてデビュー。『風に吹かれて』『ライク・ア・ローリング・ストーン』で 60 年代抗議運動の声に。2016 年ノーベル文学賞 — ミュージシャン初。",
+  "wikiTitle": "ボブ・ディラン",
+  "events": [
+    {
+      "year": 1941,
+      "age": 0,
+      "title": "ミネソタ州ダルースで生まれる",
+      "detail": "本名 ロバート・ジマーマン、ユダヤ系。",
+      "tags": []
+    },
+    {
+      "year": 1961,
+      "age": 20,
+      "title": "ニューヨークのグリニッジ・ヴィレッジへ",
+      "detail": "フォークシーンに参入。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1962,
+      "age": 21,
+      "title": "『フリーホイーリン・ボブ・ディラン』 — 『風に吹かれて』",
+      "detail": "公民権運動のテーマ曲に。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1965,
+      "age": 24,
+      "title": "ニューポート・フォーク・フェスでエレクトリック化",
+      "detail": "フォーク純粋主義者から裏切り者扱い、しかしロック史を変える瞬間。",
+      "tags": [
+        "restart",
+        "loss"
+      ]
+    },
+    {
+      "year": 1965,
+      "age": 24,
+      "title": "『ライク・ア・ローリング・ストーン』リリース",
+      "detail": "6 分の曲、AM ラジオを変えた。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1966,
+      "age": 25,
+      "title": "バイク事故で隠遁",
+      "detail": "以後しばらくウッドストックで隠遁生活。",
+      "tags": [
+        "isolation"
+      ]
+    },
+    {
+      "year": 2016,
+      "age": 75,
+      "title": "ノーベル文学賞",
+      "detail": "ミュージシャン初の文学賞。最初は授賞を無視、3 か月後に応諾。",
+      "tags": [
+        "approval"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "答えは、友よ、風に吹かれている。",
+      "source": "『風に吹かれて』 1962"
+    },
+    {
+      "text": "忙しく生まれない者は、忙しく死んでいく。",
+      "source": "『戻ってきたばかりだ』"
+    },
+    {
+      "text": "私は預言者ではない。誰も私の歌の意味を聞かないでくれ。",
+      "source": "インタビュー"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/bob_dylan.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "アメリカのミュージシャン・詩人。60 年代抗議運動の声として『風に吹かれて』『ライク・ア・ローリング・ストーン』を残した。エレクトリック化で「裏切り者」と批判されつつもロック史を変え、2016 年ミュージシャン初のノーベル文学賞。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/DylanYoungKilkenny140719v2_%2850_of_52%29_%2852246124397%29_%28cropped%29.jpg?width=500"
+}

@@ -1,0 +1,97 @@
+{
+  "id": "elon_musk",
+  "name": "イーロン・マスク",
+  "nameEn": "Elon Musk",
+  "birth": 1971,
+  "death": null,
+  "country": "南アフリカ→アメリカ",
+  "field": "実業家・Tesla / SpaceX CEO",
+  "summary": "南アフリカで虐待的な父の下で孤独な少年期を過ごし、独学でプログラミングを習得。30 歳で PayPal を売却して得た資金で Tesla（電気自動車）と SpaceX（宇宙ロケット）を起業。両社を世界一に育てた現代最大の起業家。",
+  "wikiTitle": "イーロン・マスク",
+  "events": [
+    {
+      "year": 1971,
+      "age": 0,
+      "title": "南アフリカ・プレトリアで生まれる",
+      "detail": "父はエンジニア、両親は彼が 8 歳のとき離婚。",
+      "tags": []
+    },
+    {
+      "year": 1983,
+      "age": 12,
+      "title": "自作ゲーム『Blastar』を 500 ドルで販売",
+      "detail": "BASIC で書いたシューティングゲーム。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1995,
+      "age": 24,
+      "title": "Zip2 創業",
+      "detail": "スタンフォード博士課程を 2 日でやめて起業。1999 年にコンパックへ 3 億ドルで売却。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 2002,
+      "age": 31,
+      "title": "PayPal を eBay に売却 — 1.65 億ドル獲得",
+      "detail": "その金で SpaceX 創業。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 2004,
+      "age": 33,
+      "title": "Tesla 投資・会長就任",
+      "detail": "2008 年 CEO に。",
+      "tags": []
+    },
+    {
+      "year": 2008,
+      "age": 37,
+      "title": "Tesla / SpaceX 倒産寸前",
+      "detail": "金融危機で両社破産直前。最後の現金で SpaceX のロケット 4 回目の打ち上げに賭け、成功。",
+      "tags": [
+        "loss",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 2022,
+      "age": 51,
+      "title": "Twitter（X）買収 440 億ドル",
+      "detail": "言論プラットフォームの大規模リストラと再構築。",
+      "tags": []
+    }
+  ],
+  "quotes": [
+    {
+      "text": "失敗は選択肢の一つだ。失敗していないなら、十分にイノベートしていない。",
+      "source": "インタビュー"
+    },
+    {
+      "text": "私は人類を多惑星種にしたい。地球で何かが起きても、種が絶えないように。",
+      "source": "SpaceX 創業時"
+    },
+    {
+      "text": "金は手段であって、目的ではない。",
+      "source": "インタビュー"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/elon_musk.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "南アフリカ生まれの実業家。Tesla・SpaceX で電気自動車と民間宇宙ロケットを世界一に。X / xAI / Neuralink / Boring Co. と多数の事業を同時並行。賛否両論の現代最大の起業家。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Elon_Musk_-_54820081119_%28cropped%29.jpg?width=500"
+}

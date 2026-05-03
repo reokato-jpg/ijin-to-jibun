@@ -1,0 +1,103 @@
+{
+  "id": "victor_hugo",
+  "name": "ヴィクトル・ユーゴー",
+  "nameEn": "Victor Hugo",
+  "birth": 1802,
+  "death": 1885,
+  "country": "フランス",
+  "field": "作家・政治家",
+  "summary": "フランス・ブザンソン生まれの詩人・小説家・劇作家・政治家。ロマン主義の旗手として『ノートルダム・ド・パリ』『レ・ミゼラブル』を残し、ナポレオン 3 世を批判して 19 年の亡命生活を送った。19 世紀フランス最大の文化人。",
+  "wikiTitle": "ヴィクトル・ユーゴー",
+  "events": [
+    {
+      "year": 1802,
+      "age": 0,
+      "title": "ブザンソンで生まれる",
+      "detail": "父はナポレオン軍将軍。",
+      "tags": []
+    },
+    {
+      "year": 1822,
+      "age": 20,
+      "title": "詩集『オード集』で文壇デビュー",
+      "detail": "国王から年金を受ける。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1831,
+      "age": 29,
+      "title": "『ノートルダム・ド・パリ』刊行",
+      "detail": "パリの大聖堂を救う運動の起点に。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1851,
+      "age": 49,
+      "title": "ナポレオン 3 世のクーデターを批判 — 亡命",
+      "detail": "ベルギー、ジャージー島、ガーンジー島で 19 年。",
+      "tags": [
+        "loss",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1862,
+      "age": 60,
+      "title": "『レ・ミゼラブル』刊行",
+      "detail": "ジャン・バルジャンの物語、世界文学史上の傑作。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1870,
+      "age": 68,
+      "title": "帝政崩壊で凱旋帰国",
+      "detail": "パリの英雄として迎えられる。",
+      "tags": [
+        "restart",
+        "approval"
+      ]
+    },
+    {
+      "year": 1885,
+      "age": 83,
+      "title": "パリで死去 — 国葬",
+      "detail": "葬列に 200 万人。パリ全市が泣いた。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "言葉は世界を変える唯一の武器である。",
+      "source": "演説"
+    },
+    {
+      "text": "愛されること、それが幸福である。愛すること、それが地上の楽園である。",
+      "source": "『レ・ミゼラブル』"
+    },
+    {
+      "text": "芸術は鏡ではなく、ハンマーである。",
+      "source": "芸術論"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/victor_hugo.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "19 世紀フランス最大の作家・詩人・劇作家・政治家。ロマン主義の旗手。『ノートルダム・ド・パリ』『レ・ミゼラブル』を残し、ナポレオン 3 世批判で 19 年の亡命生活を送った。葬儀には 200 万人。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Victor_Hugo_by_%C3%89tienne_Carjat_1876_-_full.jpg?width=500"
+}

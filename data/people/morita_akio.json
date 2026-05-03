@@ -1,0 +1,98 @@
+{
+  "id": "morita_akio",
+  "name": "盛田昭夫",
+  "nameEn": "Akio Morita",
+  "birth": 1921,
+  "death": 1999,
+  "country": "日本",
+  "field": "実業家・ソニー共同創業者",
+  "summary": "愛知の代々の造り酒屋の長男に生まれ、海軍技術中尉から戦後ソニーを共同創業。井深大の技術と組む経営側として、世界の SONY ブランドを築いた。「グローバル化」を最初に実践した日本人経営者。",
+  "wikiTitle": "盛田昭夫",
+  "events": [
+    {
+      "year": 1921,
+      "age": 0,
+      "title": "愛知県名古屋市で生まれる",
+      "detail": "15 代続く造り酒屋「盛田家」の長男。",
+      "tags": []
+    },
+    {
+      "year": 1944,
+      "age": 23,
+      "title": "海軍技術中尉として終戦",
+      "detail": "井深大と海軍時代に出会う。",
+      "tags": []
+    },
+    {
+      "year": 1946,
+      "age": 25,
+      "title": "井深大とソニーを共同創業",
+      "detail": "造り酒屋を継がず東京で起業。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1958,
+      "age": 37,
+      "title": "社名を「ソニー」に変更",
+      "detail": "日本企業初のカタカナ社名。世界市場を狙ったブランド戦略。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1963,
+      "age": 42,
+      "title": "ニューヨーク移住、米国マーケットを開拓",
+      "detail": "妻と子供と渡米、現地校に通わせて文化を学ぶ。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1989,
+      "age": 68,
+      "title": "コロンビア・ピクチャーズ買収",
+      "detail": "日本企業の海外大型買収の象徴。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1999,
+      "age": 78,
+      "title": "東京で死去",
+      "detail": "「Made in Japan を世界ブランドに」を実現した男。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "先見性はリスクを取る勇気である。",
+      "source": "『MADE IN JAPAN』"
+    },
+    {
+      "text": "日本の経営の強みは、社員が会社を信頼することだ。",
+      "source": "自伝"
+    },
+    {
+      "text": "完璧な答えを待つな。今、行動せよ。",
+      "source": "社員へ"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/morita_akio.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "ソニー共同創業者・元会長。井深大の技術を世界に売る経営の天才。「Made in Japan」を世界ブランドに変えた日本企業初のグローバル経営者。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Morita_Akio.jpg?width=500"
+}

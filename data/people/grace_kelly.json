@@ -1,0 +1,86 @@
+{
+  "id": "grace_kelly",
+  "name": "グレース・ケリー",
+  "nameEn": "Grace Kelly",
+  "birth": 1929,
+  "death": 1982,
+  "country": "アメリカ→モナコ",
+  "field": "女優・モナコ大公妃",
+  "summary": "フィラデルフィアの裕福なアイルランド系家庭出身、ヒッチコック映画の常連女優として『裏窓』『ダイヤルMを廻せ！』で活躍。25 歳でアカデミー主演女優賞受賞、26 歳でモナコ大公レーニエ 3 世と結婚し女優引退。52 歳で交通事故死。",
+  "wikiTitle": "グレース・ケリー",
+  "events": [
+    {
+      "year": 1929,
+      "age": 0,
+      "title": "フィラデルフィアで生まれる",
+      "detail": "父は実業家・五輪金メダリスト。",
+      "tags": []
+    },
+    {
+      "year": 1949,
+      "age": 20,
+      "title": "アメリカ演劇アカデミー卒、ニューヨークでモデル・女優活動",
+      "detail": "",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1954,
+      "age": 25,
+      "title": "『喝采』でアカデミー主演女優賞",
+      "detail": "ヒッチコック『裏窓』も同年公開。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1955,
+      "age": 26,
+      "title": "カンヌ映画祭でモナコ大公レーニエ 3 世と出会う",
+      "detail": "",
+      "tags": []
+    },
+    {
+      "year": 1956,
+      "age": 27,
+      "title": "モナコ大公妃に — 女優引退",
+      "detail": "世紀の結婚式は世界 30 か国で生中継。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1982,
+      "age": 52,
+      "title": "モナコの山道で交通事故死",
+      "detail": "娘ステファニーと運転中に脳卒中→転落。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "女性は皆、女優である。",
+      "source": "インタビュー"
+    },
+    {
+      "text": "優雅さ（grace）は私の名前であり、私の信条である。",
+      "source": "伝"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/grace_kelly.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "アメリカの女優・モナコ大公妃。ヒッチコック映画の女王として 25 歳でアカデミー賞、26 歳で大公妃となり女優引退。52 歳の事故死までモナコ王室の象徴的存在。「シンデレラ・ストーリー」の代表。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Gracia_van_Monaco_%281972%29.jpg?width=500"
+}

@@ -1,0 +1,95 @@
+{
+  "id": "watson_dna",
+  "name": "ジェームズ・ワトソン",
+  "nameEn": "James Watson",
+  "birth": 1928,
+  "death": null,
+  "country": "アメリカ",
+  "field": "分子生物学者",
+  "summary": "15 歳でシカゴ大学に入学した神童、25 歳でフランシス・クリックと DNA 二重らせん構造を発表、34 歳でノーベル賞。後年は人種差別発言で公職を失う波乱含みの世紀の科学者。",
+  "wikiTitle": "ジェームズ・ワトソン",
+  "events": [
+    {
+      "year": 1928,
+      "age": 0,
+      "title": "シカゴで生まれる",
+      "detail": "鳥類学を愛する少年。",
+      "tags": []
+    },
+    {
+      "year": 1943,
+      "age": 15,
+      "title": "シカゴ大学入学（飛び級）",
+      "detail": "動物学専攻。",
+      "tags": []
+    },
+    {
+      "year": 1951,
+      "age": 23,
+      "title": "ケンブリッジ・キャヴェンディッシュ研究所へ",
+      "detail": "クリックと意気投合。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1953,
+      "age": 25,
+      "title": "DNA 二重らせん構造発表",
+      "detail": "4 月『Nature』論文、ロザリンド・フランクリンの X 線写真がカギ。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1962,
+      "age": 34,
+      "title": "ノーベル医学生理学賞",
+      "detail": "クリック・ウィルキンスと共同。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1968,
+      "age": 40,
+      "title": "『二重らせん』刊行",
+      "detail": "科学者の競争・嫉妬・ロザリンド・フランクリンへの不当な扱いを暴露した自伝。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 2007,
+      "age": 79,
+      "title": "人種差別発言で全公職停止",
+      "detail": "「黒人の知能は遺伝的に低い」発言が世界的に非難。コールド・スプリング・ハーバー研究所長を解任。",
+      "tags": [
+        "loss",
+        "pride_broken"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "運は備えのある精神に味方する（パスツールから）。",
+      "source": "『二重らせん』"
+    },
+    {
+      "text": "科学は競争である。最初に発見した者だけが残る。",
+      "source": "自伝"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/watson_dna.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "アメリカの分子生物学者。25 歳でクリックと DNA 構造を解明、34 歳でノーベル賞。後年は人種差別発言でメダルまで売却する晩節を汚した複雑な人物。生物学を遺伝子の世紀へ押し上げた功績は揺るがない。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/James_D_Watson.jpg?width=500"
+}

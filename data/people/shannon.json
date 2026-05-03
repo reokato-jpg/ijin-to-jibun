@@ -1,0 +1,88 @@
+{
+  "id": "shannon",
+  "name": "クロード・シャノン",
+  "nameEn": "Claude Shannon",
+  "birth": 1916,
+  "death": 2001,
+  "country": "アメリカ",
+  "field": "数学者・情報理論の父",
+  "summary": "ミシガン大学で電気工学・数学を学び、MIT 大学院で『リレー回路でブール代数を実装できる』ことを修士論文で証明、デジタル回路設計の基盤を作った。1948 年『通信の数学的理論』で情報＝ビット概念を確立、20 世紀情報革命の理論的父祖。",
+  "wikiTitle": "クロード・シャノン",
+  "events": [
+    {
+      "year": 1916,
+      "age": 0,
+      "title": "ミシガン州ペトスキーで生まれる",
+      "detail": "父は実業家、母は校長。エジソンの遠縁。",
+      "tags": []
+    },
+    {
+      "year": 1937,
+      "age": 21,
+      "title": "MIT 修士論文 — リレー回路 = ブール代数",
+      "detail": "21 歳の論文で全デジタル回路設計の理論的基盤を作る。「20 世紀最も影響力のある修士論文」。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1948,
+      "age": 32,
+      "title": "『通信の数学的理論』発表",
+      "detail": "情報 = ビット概念、エントロピー定義、誤り訂正符号の理論基盤。情報革命の起点。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1950,
+      "age": 34,
+      "title": "チェス・プレイ・コンピュータの論文",
+      "detail": "AI と機械学習の理論的種をまく。",
+      "tags": []
+    },
+    {
+      "year": 1956,
+      "age": 40,
+      "title": "MIT 教授就任",
+      "detail": "晩年はジャグリング・一輪車・蒸気機関の趣味に没頭。",
+      "tags": []
+    },
+    {
+      "year": 2001,
+      "age": 84,
+      "title": "アルツハイマー病でマサチューセッツで死去",
+      "detail": "",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "情報とは、不確実性の減少である。",
+      "source": "『通信の数学的理論』 1948"
+    },
+    {
+      "text": "私は研究のためでなく、面白いから研究する。",
+      "source": "インタビュー"
+    },
+    {
+      "text": "あなたが何を解こうとしているかを書け。それだけで半分解けている。",
+      "source": "研究論"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/shannon.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "アメリカの数学者・電気工学者。21 歳の修士論文でデジタル回路設計の基盤を作り、32 歳の論文『通信の数学的理論』で情報＝ビット概念を確立、20 世紀情報革命の理論的父祖となった。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/ClaudeShannon_MFO3807.jpg?width=500"
+}

@@ -1,0 +1,111 @@
+{
+  "id": "tanaka_kakuei",
+  "name": "田中角栄",
+  "nameEn": "Kakuei Tanaka",
+  "birth": 1918,
+  "death": 1993,
+  "country": "日本",
+  "field": "政治家・第64代内閣総理大臣",
+  "summary": "新潟・雪深い貧家の子に生まれ、高等小学校卒のみで首相まで上り詰めた「庶民宰相」。日中国交正常化、日本列島改造論で戦後日本の地図を変えたが、ロッキード事件で逮捕、晩年は脳梗塞で沈黙のまま死去。",
+  "wikiTitle": "田中角栄",
+  "events": [
+    {
+      "year": 1918,
+      "age": 0,
+      "title": "新潟県二田村（現柏崎市）の農家に生まれる",
+      "detail": "父の事業失敗で借金生活、雪深い貧家。",
+      "tags": []
+    },
+    {
+      "year": 1933,
+      "age": 15,
+      "title": "高等小学校卒で上京",
+      "detail": "建築事務所の小僧として働きつつ独学。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1947,
+      "age": 29,
+      "title": "衆議院議員初当選（民主党）",
+      "detail": "以降 16 期当選。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1972,
+      "age": 54,
+      "title": "内閣総理大臣就任",
+      "detail": "高等小学校卒の首相は史上初。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1972,
+      "age": 54,
+      "title": "日中国交正常化",
+      "detail": "周恩来との 4 日間の交渉で実現。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1976,
+      "age": 58,
+      "title": "ロッキード事件で逮捕",
+      "detail": "5 億円の収賄罪。日本政治史上最大の汚職事件。",
+      "tags": [
+        "loss",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1985,
+      "age": 67,
+      "title": "脳梗塞で倒れる",
+      "detail": "以降 8 年間言葉を発さずに過ごす。",
+      "tags": [
+        "isolation"
+      ]
+    },
+    {
+      "year": 1993,
+      "age": 75,
+      "title": "東京で死去",
+      "detail": "葬儀には自民党重鎮 ・支持者数十万人が参列。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "政治は数、数は力、力は金。",
+      "source": "政治論（伝）"
+    },
+    {
+      "text": "説明する努力をしないと、誰も理解してくれない。",
+      "source": "派閥での教え"
+    },
+    {
+      "text": "今太閤と呼ばれた私だが、雪国の貧しい子に過ぎない。",
+      "source": "自伝"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/tanaka_kakuei.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "日本の第 64 代総理大臣。高等小学校卒から首相まで上り詰めた「庶民宰相」。日中国交正常化と日本列島改造論で日本を変えたが、ロッキード事件で逮捕され、晩年は脳梗塞で沈黙のまま死去。光と闇の戦後政治家。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Kakuei_Tanaka_19720707.jpg?width=500"
+}

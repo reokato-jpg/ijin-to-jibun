@@ -1,0 +1,122 @@
+{
+  "id": "muhammad_ali",
+  "name": "モハメド・アリ",
+  "nameEn": "Muhammad Ali",
+  "birth": 1942,
+  "death": 2016,
+  "country": "アメリカ",
+  "field": "ボクサー",
+  "summary": "ケンタッキー・ルイビル生まれ、12 歳で自転車を盗まれ警官に「あいつをぶちのめせるようになりたい」と告げてボクシング開始。22 歳で世界ヘビー級王者、ベトナム戦争徴兵拒否でタイトル剥奪・5 年活動停止後復活、3 度王者となった『ザ・グレイテスト』。",
+  "wikiTitle": "モハメド・アリ",
+  "events": [
+    {
+      "year": 1942,
+      "age": 0,
+      "title": "ケンタッキー州ルイビルで生まれる",
+      "detail": "本名 カシアス・クレイ。看板職人の父。",
+      "tags": []
+    },
+    {
+      "year": 1954,
+      "age": 12,
+      "title": "自転車盗難事件 — ボクシング開始",
+      "detail": "警官ジョー・マーティンに『あいつをぶちのめしたい』と言ったのが始まり。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1960,
+      "age": 18,
+      "title": "ローマ五輪金メダル",
+      "detail": "ライトヘビー級。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1964,
+      "age": 22,
+      "title": "世界ヘビー級王座獲得 — ソニー・リストン破る",
+      "detail": "圧倒的不利予想を覆し、試合後イスラム教改宗とモハメド・アリ改名を宣言。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1967,
+      "age": 25,
+      "title": "ベトナム戦争徴兵拒否",
+      "detail": "『俺はベトコンに何も恨みはない』。タイトル剥奪、3 年半リング追放。",
+      "tags": [
+        "loss",
+        "self_denial",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1971,
+      "age": 29,
+      "title": "『世紀の対決』ジョー・フレージャー戦で初敗戦",
+      "detail": "15 ラウンド判定負け。ボクシング史最大のドラマ。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1974,
+      "age": 32,
+      "title": "ザイール『ランブル・イン・ザ・ジャングル』 — フォアマン破り王座復帰",
+      "detail": "ロープ・ア・ドープ戦法で 8 ラウンド KO 勝ち。",
+      "tags": [
+        "restart",
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1996,
+      "age": 54,
+      "title": "アトランタ五輪聖火点火",
+      "detail": "パーキンソン病の手で震えながら点火。世界中が涙。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 2016,
+      "age": 74,
+      "title": "フェニックスで死去",
+      "detail": "32 年にわたるパーキンソン病。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "蝶のように舞い、蜂のように刺す。",
+      "source": "自評"
+    },
+    {
+      "text": "不可能とは事実ではない、意見である。",
+      "source": "演説"
+    },
+    {
+      "text": "私は世界一偉大だ。私が偉大だと知る前から偉大だった。",
+      "source": "インタビュー"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/muhammad_ali.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "アメリカのボクシング王者、3 度の世界ヘビー級王者『ザ・グレイテスト』。ベトナム戦争徴兵拒否で 5 年活動停止後にカムバック、人種差別・宗教自由・反戦の象徴に。32 年のパーキンソン病闘病後 74 歳で逝去。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Muhammad_Ali%2C_gtfy.00140_%28cropped%29.jpg?width=500"
+}

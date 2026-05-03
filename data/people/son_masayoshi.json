@@ -1,0 +1,100 @@
+{
+  "id": "son_masayoshi",
+  "name": "孫正義",
+  "nameEn": "Masayoshi Son",
+  "birth": 1957,
+  "death": null,
+  "country": "日本（在日韓国系）",
+  "field": "実業家・ソフトバンク創業者",
+  "summary": "佐賀の在日韓国人家庭に生まれ、16 歳で渡米しカリフォルニア大バークレー校卒。24 歳でソフトバンク創業、ヤフー BB・iPhone 独占販売・スプリント買収・ARM 買収・ビジョンファンドで世界の IT 投資を主導。",
+  "wikiTitle": "孫正義",
+  "events": [
+    {
+      "year": 1957,
+      "age": 0,
+      "title": "佐賀県鳥栖市の朝鮮人部落で生まれる",
+      "detail": "父は密造酒・パチンコ業。在日韓国人として差別を経験。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1973,
+      "age": 16,
+      "title": "単身渡米",
+      "detail": "高校 1 年で中退してカリフォルニアへ。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1980,
+      "age": 23,
+      "title": "カリフォルニア大バークレー校卒、最初の 1 億円",
+      "detail": "自動翻訳機を発明しシャープに売却。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1981,
+      "age": 24,
+      "title": "ソフトバンク創業",
+      "detail": "机 2 つの事務所で「30 年後に売上 1 兆円」を社員 2 人に宣言、2 人が翌日辞めた。",
+      "tags": [
+        "isolation"
+      ]
+    },
+    {
+      "year": 1995,
+      "age": 38,
+      "title": "ヤフー創業出資",
+      "detail": "36 億円投資、後に 7000 億円超のリターン。",
+      "tags": []
+    },
+    {
+      "year": 2006,
+      "age": 48,
+      "title": "ボーダフォン日本買収 — iPhone 独占販売へ",
+      "detail": "1.7 兆円の借入で日本通信業界に風穴。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 2017,
+      "age": 60,
+      "title": "ビジョンファンド設立 — 10 兆円規模",
+      "detail": "史上最大のテックファンド。Uber・WeWork ほかに大量投資。",
+      "tags": [
+        "approval"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "志と野望なくして、何が経営者か。",
+      "source": "社員へ"
+    },
+    {
+      "text": "金は刀である。志のために抜く。",
+      "source": "スピーチ"
+    },
+    {
+      "text": "私の強みは、99％ 嫌われても 1％ に届けばいいと思える鈍感力だ。",
+      "source": "インタビュー"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/son_masayoshi.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "日本最大の IT 起業家。在日韓国人の貧しい家庭から、24 歳でソフトバンク創業、世界 IT 投資の頂点まで上り詰めた。AI への巨額投資で 21 世紀後半のテック地図を描く野心家。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Masayoshi_Son_%28P066533-522034%2C_cropped%29.jpg?width=500"
+}

@@ -1,0 +1,99 @@
+{
+  "id": "henry_ford",
+  "name": "ヘンリー・フォード",
+  "nameEn": "Henry Ford",
+  "birth": 1863,
+  "death": 1947,
+  "country": "アメリカ",
+  "field": "実業家・自動車王",
+  "summary": "ミシガンの農家の子。「馬車から自動車へ」の革命と、流れ作業（アセンブリライン）による大量生産・大量消費社会の発明者。T 型フォードで車を富裕層の玩具から大衆の道具へ変えた。",
+  "wikiTitle": "ヘンリー・フォード",
+  "events": [
+    {
+      "year": 1863,
+      "age": 0,
+      "title": "ミシガン州ディアボーンの農場で生まれる",
+      "detail": "アイルランド系移民の子。",
+      "tags": []
+    },
+    {
+      "year": 1879,
+      "age": 16,
+      "title": "デトロイトで機械工見習い",
+      "detail": "農場を嫌い機械に憧れた少年期。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1903,
+      "age": 40,
+      "title": "フォード・モーター創業",
+      "detail": "3 度の失敗の後、4 度目で成功。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1908,
+      "age": 45,
+      "title": "T 型フォード発売",
+      "detail": "850 ドル（後に 260 ドル）で「庶民の車」を実現。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1913,
+      "age": 50,
+      "title": "組み立てラインを工場に導入",
+      "detail": "1 台の組み立て時間 12 時間 → 1.5 時間。20 世紀の工業を変える。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1914,
+      "age": 51,
+      "title": "日給 5 ドル（業界 2 倍）を支給",
+      "detail": "労働者を中産階級に押し上げ、自社製品を買える人を増やす自己強化型経済の発明。",
+      "tags": []
+    },
+    {
+      "year": 1947,
+      "age": 83,
+      "title": "ディアボーンで死去",
+      "detail": "反ユダヤ主義の影もある複雑な遺産。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "あなたができると思っても、できないと思っても、あなたは正しい。",
+      "source": "伝"
+    },
+    {
+      "text": "歴史は多かれ少なかれデタラメだ。",
+      "source": "インタビュー 1916"
+    },
+    {
+      "text": "消費者にどんな色がいいかと聞いたなら、彼らは『今と同じ色』と答えただろう。",
+      "source": "T 型フォードについて"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/henry_ford.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "アメリカの自動車王、フォード・モーター創業者。T 型フォードと組み立てラインで自動車を大衆化し、20 世紀の工業生産・消費社会の原型を作った。光と影（反ユダヤ主義）のある巨人。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Henry_ford_1919.jpg?width=500"
+}

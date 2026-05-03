@@ -1,0 +1,101 @@
+{
+  "id": "zhou_enlai",
+  "name": "周恩来",
+  "nameEn": "Zhou Enlai",
+  "birth": 1898,
+  "death": 1976,
+  "country": "中国",
+  "field": "政治家・中国初代国務院総理",
+  "summary": "江蘇省の名家に生まれ、フランス・ドイツ留学を経て中国共産党に。長征から建国まで毛沢東の右腕、初代総理として 27 年間内政外交を取り仕切った『国民の総理』。文化大革命の混乱を抑えるため命を削った。",
+  "wikiTitle": "周恩来",
+  "events": [
+    {
+      "year": 1898,
+      "age": 0,
+      "title": "江蘇省淮安で生まれる",
+      "detail": "母を 9 歳で失う。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1920,
+      "age": 22,
+      "title": "フランス留学、共産主義に出会う",
+      "detail": "勤労学生として渡欧。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1924,
+      "age": 26,
+      "title": "黄埔軍官学校政治部主任",
+      "detail": "国共合作の象徴。",
+      "tags": []
+    },
+    {
+      "year": 1934,
+      "age": 36,
+      "title": "長征に参加",
+      "detail": "毛沢東を党中央へ押し上げる。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1949,
+      "age": 51,
+      "title": "中華人民共和国成立、初代国務院総理就任",
+      "detail": "以後 27 年総理。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1972,
+      "age": 74,
+      "title": "ニクソン訪中 — 米中和解",
+      "detail": "病をおして握手。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1976,
+      "age": 78,
+      "title": "北京で膀胱癌で死去",
+      "detail": "葬儀禁止令にもかかわらず 100 万人が街に並んだ。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "中国人民の総理は、人民のために死ぬまで働く。",
+      "source": "演説"
+    },
+    {
+      "text": "求同存異（共通点を求め、相違は留保する）。",
+      "source": "バンドン会議 1955"
+    },
+    {
+      "text": "我々は飢えている人民の声に耳を傾けねばならない。",
+      "source": "政務会議"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/zhou_enlai.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "中華人民共和国初代総理。フランス留学を経て中国共産党の創設メンバーに、建国から死去まで 27 年間内政外交を取り仕切った『国民の総理』。文化大革命の混乱を抑えながら 1976 年に病死。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Zhou_Enlai_1972.jpg?width=500"
+}

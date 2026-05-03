@@ -1,0 +1,100 @@
+{
+  "id": "kobayashi_ichizo",
+  "name": "小林一三",
+  "nameEn": "Ichizo Kobayashi",
+  "birth": 1873,
+  "death": 1957,
+  "country": "日本",
+  "field": "実業家・阪急電鉄創業者",
+  "summary": "山梨の商家の子。三井銀行から私鉄経営に転身し、関西に「電鉄＋住宅地＋デパート＋宝塚歌劇」の都市開発モデルを発明。後の東急・西武など全国の私鉄経営の祖型を作った日本のディズニー。",
+  "wikiTitle": "小林一三",
+  "events": [
+    {
+      "year": 1873,
+      "age": 0,
+      "title": "山梨県韮崎市の商家に生まれる",
+      "detail": "母は出産で死去、父は彼の幼児期に蒸発。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1893,
+      "age": 20,
+      "title": "慶應義塾卒、三井銀行入行",
+      "detail": "15 年勤務して支店長候補に。",
+      "tags": []
+    },
+    {
+      "year": 1907,
+      "age": 34,
+      "title": "箕面有馬電気軌道（後の阪急）専務",
+      "detail": "赤字鉄道の再建に挑む。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1910,
+      "age": 37,
+      "title": "宝塚〜梅田開通、沿線住宅地分譲",
+      "detail": "電鉄が住宅地を作り客を生み出す自己生成型ビジネス、世界初。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1914,
+      "age": 41,
+      "title": "宝塚少女歌劇開幕",
+      "detail": "沿線集客のための娯楽として始まり、現在の宝塚歌劇団に。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1929,
+      "age": 56,
+      "title": "阪急百貨店オープン（梅田駅 ターミナルデパート）",
+      "detail": "ターミナル＋百貨店の世界初モデル。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1957,
+      "age": 83,
+      "title": "宝塚で死去",
+      "detail": "日本のディズニー（劇場・住宅・デパート統合都市）の発明者。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "乗る人がいないなら、乗る人を作ればいい。",
+      "source": "宝塚住宅地分譲時"
+    },
+    {
+      "text": "清く正しく美しく。",
+      "source": "宝塚歌劇団のモットー"
+    },
+    {
+      "text": "人の行く裏に道あり花の山。",
+      "source": "経営信条"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/kobayashi_ichizo.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "阪急電鉄・東宝の創業者。「電鉄＋住宅地＋デパート＋歌劇」の沿線開発モデルを世界に先駆けて発明。宝塚歌劇団の生みの親。後の東急・西武・関東私鉄すべての祖型。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Ichizo_Kobayashi_by_Shigeru_Tamura_%28cropped%29.jpg?width=500"
+}

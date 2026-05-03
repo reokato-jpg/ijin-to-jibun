@@ -1,0 +1,104 @@
+{
+  "id": "marilyn_monroe",
+  "name": "マリリン・モンロー",
+  "nameEn": "Marilyn Monroe",
+  "birth": 1926,
+  "death": 1962,
+  "country": "アメリカ",
+  "field": "女優・モデル",
+  "summary": "ロサンゼルス孤児院育ち、16 歳で結婚、19 歳でモデル発見。20 世紀最大のセックスシンボル。『七年目の浮気』『お熱いのがお好き』『荒馬と女』で笑顔の影に深い知性と苦悩を持つ女優。36 歳で謎の死。",
+  "wikiTitle": "マリリン・モンロー",
+  "events": [
+    {
+      "year": 1926,
+      "age": 0,
+      "title": "ロサンゼルスで未婚の母から生まれる",
+      "detail": "本名 ノーマ・ジーン・モーテンソン。母は精神病院、父不明。孤児院・里親の少女期。",
+      "tags": [
+        "loss",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1942,
+      "age": 16,
+      "title": "工場の同僚と結婚",
+      "detail": "里親に出されないために。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1945,
+      "age": 19,
+      "title": "工場で軍の写真家に発見、モデルに",
+      "detail": "後の人生の転機。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1953,
+      "age": 27,
+      "title": "『紳士は金髪がお好き』『百万長者と結婚する方法』大ヒット",
+      "detail": "ハリウッドのトップ女優に。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1954,
+      "age": 28,
+      "title": "ジョー・ディマジオと結婚→9 か月で離婚",
+      "detail": "野球史上最大のスター。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1956,
+      "age": 30,
+      "title": "アーサー・ミラー（劇作家）と結婚",
+      "detail": "知性派へのイメチェン、しかし 5 年で離婚。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1962,
+      "age": 36,
+      "title": "ロサンゼルスで死去",
+      "detail": "バルビツール過剰摂取。自殺・事故・暗殺説の論争続く。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "私はカレンダー型の女になりたくない。私は人間でいたい。",
+      "source": "インタビュー"
+    },
+    {
+      "text": "成功は人を変えない。仮面を剥がすだけだ。",
+      "source": "日記"
+    },
+    {
+      "text": "完璧であろうとするな、面白くあれ。",
+      "source": "インタビュー"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/marilyn_monroe.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "アメリカの女優・モデル。20 世紀最大のセックスシンボル。孤児院から世界一のスターへ、しかし笑顔の影に深い苦悩を抱え 36 歳で謎の死。アンディ・ウォーホルの代表作の被写体。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Marilyn_Monroe%2C_Photoplay_1953.jpg?width=500"
+}

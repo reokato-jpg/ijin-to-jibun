@@ -1,0 +1,111 @@
+{
+  "id": "fidel_castro",
+  "name": "フィデル・カストロ",
+  "nameEn": "Fidel Castro",
+  "birth": 1926,
+  "death": 2016,
+  "country": "キューバ",
+  "field": "政治家・革命家",
+  "summary": "キューバの大農場主の子。法学生時代から反バティスタ革命に身を投じ、1959 年革命成功でキューバ首相・国家評議会議長として 49 年間統治。米国の隣で社会主義国を維持、CIA 暗殺計画 638 回を生き延びた『不滅の独裁者』。",
+  "wikiTitle": "フィデル・カストロ",
+  "events": [
+    {
+      "year": 1926,
+      "age": 0,
+      "title": "キューバ・ビランで生まれる",
+      "detail": "スペイン人移民の大農場主の子。",
+      "tags": []
+    },
+    {
+      "year": 1953,
+      "age": 26,
+      "title": "モンカダ兵営襲撃 — 失敗、投獄",
+      "detail": "反バティスタ蜂起、156 人で襲撃、生き残った 27 人とともに逮捕。裁判で『歴史は私を無罪にする』演説。",
+      "tags": [
+        "loss",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1956,
+      "age": 30,
+      "title": "グランマ号でキューバ上陸、ゲリラ戦",
+      "detail": "メキシコ亡命から 82 名で帰国、シエラ・マエストラ山脈でゲリラ戦。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1959,
+      "age": 32,
+      "title": "キューバ革命成功 — 首相就任",
+      "detail": "バティスタ独裁を倒し、社会主義路線へ。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1961,
+      "age": 34,
+      "title": "ピッグス湾事件 — 米軍支援侵攻を撃退",
+      "detail": "CIA 支援の亡命キューバ人による侵攻を 72 時間で撃退。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1962,
+      "age": 35,
+      "title": "キューバ危機",
+      "detail": "ソ連ミサイル配備で米ソ核戦争一歩手前。13 日間で世界が震えた。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 2008,
+      "age": 81,
+      "title": "病で職を退き弟ラウルへ",
+      "detail": "49 年間の統治を終える。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 2016,
+      "age": 90,
+      "title": "ハバナで死去",
+      "detail": "葬儀は質素を遺言、銅像建立も禁止。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "歴史は私を無罪にするだろう。",
+      "source": "裁判演説 1953"
+    },
+    {
+      "text": "祖国か死か、我らは勝利する！",
+      "source": "演説の常套句"
+    },
+    {
+      "text": "自由なき革命は、革命ではない。",
+      "source": "演説"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/fidel_castro.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "キューバ革命の指導者・首相・国家評議会議長。49 年間キューバを統治、米国の隣で社会主義を貫いた『不滅の独裁者』。CIA 暗殺計画 638 回を生き延びた稀有な政治家。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Fidel_Castro_1950s.jpg?width=500"
+}

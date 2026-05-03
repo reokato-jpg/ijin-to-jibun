@@ -1,0 +1,93 @@
+{
+  "id": "garcia_marquez",
+  "name": "ガブリエル・ガルシア＝マルケス",
+  "nameEn": "Gabriel García Márquez",
+  "birth": 1927,
+  "death": 2014,
+  "country": "コロンビア",
+  "field": "作家・ジャーナリスト",
+  "summary": "コロンビア・カリブ海の小村育ち、祖父母から聞いた伝説と『マジックリアリズム』を融合した『百年の孤独』で 20 世紀ラテンアメリカ文学の頂点を作った。1982 年ノーベル文学賞、世界各言語で 5000 万部超販売。",
+  "wikiTitle": "ガブリエル・ガルシア＝マルケス",
+  "events": [
+    {
+      "year": 1927,
+      "age": 0,
+      "title": "コロンビア・アラカタカで生まれる",
+      "detail": "祖父母に育てられる。家中に幽霊・伝説が満ちていた。",
+      "tags": []
+    },
+    {
+      "year": 1948,
+      "age": 21,
+      "title": "ボゴタ大学法学部 — 政情で中退",
+      "detail": "暴動を機にジャーナリストに。",
+      "tags": [
+        "pride_broken",
+        "restart"
+      ]
+    },
+    {
+      "year": 1955,
+      "age": 28,
+      "title": "処女作『落葉』刊行",
+      "detail": "故郷をモデルにした架空の村マコンドが登場。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1967,
+      "age": 40,
+      "title": "『百年の孤独』刊行 — 18 か月で 1500 万部",
+      "detail": "マコンド一族 7 世代の物語。マジックリアリズムの世界的爆発。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1982,
+      "age": 55,
+      "title": "ノーベル文学賞",
+      "detail": "ラテンアメリカ文学を世界文学の主流に据えた。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 2014,
+      "age": 87,
+      "title": "メキシコシティで認知症の末に死去",
+      "detail": "国葬。コロンビア・メキシコで国葬。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "何年も後、銃殺隊の前に立ったとき、アウレリャノ・ブエンディーア大佐は、父が彼を氷を見に連れて行ってくれたあの遠い夕方を思い出した。",
+      "source": "『百年の孤独』冒頭 1967"
+    },
+    {
+      "text": "記憶を持たない国は、未来を持たない。",
+      "source": "演説"
+    },
+    {
+      "text": "愛は古い時計のように、止まることはあっても消えることはない。",
+      "source": "『コレラの時代の愛』"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/garcia_marquez.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "コロンビアの作家・ジャーナリスト。マジックリアリズムの旗手。『百年の孤独』『コレラの時代の愛』『族長の秋』で 20 世紀ラテンアメリカ文学の世界的爆発を引き起こし、1982 年ノーベル文学賞。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Gabriel_Garc%C3%ADa_M%C3%A1rquez_%28cropped1%29.jpg?width=500"
+}

@@ -1,0 +1,85 @@
+{
+  "id": "kasuga_no_tsubone",
+  "name": "春日局",
+  "nameEn": "Kasuga no Tsubone",
+  "birth": 1579,
+  "death": 1643,
+  "country": "日本（戦国〜江戸）",
+  "field": "江戸幕府第3代将軍徳川家光の乳母",
+  "summary": "明智光秀の重臣斎藤利三の娘として生まれ、本能寺の変で父処刑後苦難を味わう。徳川家康の三男秀忠の乳母選定で家光の乳母となり、家光将軍即位を実現、大奥の制度を確立した江戸初期最大の女性権力者。",
+  "wikiTitle": "春日局",
+  "events": [
+    {
+      "year": 1579,
+      "age": 0,
+      "title": "丹波で生まれる",
+      "detail": "本名 福。父は明智光秀の重臣斎藤利三。",
+      "tags": []
+    },
+    {
+      "year": 1582,
+      "age": 3,
+      "title": "本能寺の変、父斎藤利三処刑",
+      "detail": "明智一族として一族郎党失う。",
+      "tags": [
+        "loss",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1604,
+      "age": 25,
+      "title": "徳川家光（後の 3 代将軍）の乳母に",
+      "detail": "将軍家のおもらしを引き受ける。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1623,
+      "age": 44,
+      "title": "家光が将軍就任、奥御殿総取締に",
+      "detail": "大奥制度を確立、女性の最高権力者として君臨。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1629,
+      "age": 50,
+      "title": "後水尾天皇譲位の使者として参内",
+      "detail": "無位無官の女性が天皇に拝謁する異例。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1643,
+      "age": 64,
+      "title": "江戸城で死去",
+      "detail": "麟祥院に葬られる。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "女が政を支えてはならぬというは、男の傲りなり。",
+      "source": "伝（春日局逸話集）"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/kasuga_no_tsubone.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "江戸幕府 3 代将軍徳川家光の乳母。本能寺の変で処刑された明智光秀の重臣斎藤利三の娘。家光の将軍即位を画策し、大奥制度を確立した江戸初期最大の女性権力者。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Kasuga_no_tsubone.jpg?width=500"
+}

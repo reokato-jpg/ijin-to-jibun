@@ -1,0 +1,74 @@
+{
+  "id": "tomoe_gozen",
+  "name": "巴御前",
+  "nameEn": "Tomoe Gozen",
+  "birth": 1157,
+  "death": 1247,
+  "country": "日本（平安末期）",
+  "field": "女武者・木曽義仲の側室",
+  "summary": "信濃の中原氏の娘、源義仲（木曽義仲）の側室。武勇に優れ義仲の女武者として戦場に立った稀有な存在。義仲滅亡後の動向は伝説化、和田義盛の妻になったとの説も。",
+  "wikiTitle": "巴御前",
+  "events": [
+    {
+      "year": 1157,
+      "age": 0,
+      "title": "信濃国木曽谷で生まれる（伝）",
+      "detail": "中原兼遠の娘。",
+      "tags": []
+    },
+    {
+      "year": 1180,
+      "age": 23,
+      "title": "木曽義仲の挙兵に従軍",
+      "detail": "鎌倉武士に伍する女武者として戦場へ。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1183,
+      "age": 26,
+      "title": "倶利伽羅峠の戦いで活躍",
+      "detail": "平家の大軍を破った義仲軍の中核。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1184,
+      "age": 27,
+      "title": "粟津の戦いで義仲戦死",
+      "detail": "巴は義仲の命で離脱、最後の戦いで首をひとつ取って退いた『平家物語』の場面。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1247,
+      "age": 90,
+      "title": "伝・尼として死去",
+      "detail": "史実は不明だが「90 歳で寂した」との伝承。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "巴は色白く髪長く、容顔まことに美麗なり。一方の大将としては悪所を落とし、難所をかけ降ろし、敵に向かいて少しも怯まず。",
+      "source": "『平家物語』巻九"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/tomoe_gozen.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "平安末期の女武者。源義仲（木曽義仲）の側室として戦場に立ち、倶利伽羅峠など武勇を残した稀有な日本女性。『平家物語』に「色白く髪長く、容顔美麗、一方の大将」と描かれる伝説的存在。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Tomoe-Gozen.jpg?width=500"
+}

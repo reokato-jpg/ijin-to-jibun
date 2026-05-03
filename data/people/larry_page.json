@@ -1,0 +1,91 @@
+{
+  "id": "larry_page",
+  "name": "ラリー・ペイジ",
+  "nameEn": "Larry Page",
+  "birth": 1973,
+  "death": null,
+  "country": "アメリカ",
+  "field": "実業家・Google 共同創業者",
+  "summary": "ミシガン大コンピュータ科学の研究室で、博士課程の論文題材として『PageRank』アルゴリズムを発明。同級生セルゲイ・ブリンと組み、世界中の情報を整理する Google を立ち上げ、検索を 21 世紀のインフラに変えた。",
+  "wikiTitle": "ラリー・ペイジ",
+  "events": [
+    {
+      "year": 1973,
+      "age": 0,
+      "title": "ミシガン州ランシングで生まれる",
+      "detail": "父はミシガン州立大コンピュータ科学教授。",
+      "tags": []
+    },
+    {
+      "year": 1995,
+      "age": 22,
+      "title": "スタンフォード博士課程でセルゲイ・ブリンと出会う",
+      "detail": "博士論文のテーマでウェブのリンク構造を解析。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1998,
+      "age": 25,
+      "title": "Google 創業",
+      "detail": "スタンフォードのドミトリーから出発、最初のオフィスはガレージ。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 2004,
+      "age": 31,
+      "title": "Google IPO",
+      "detail": "23 億ドル調達、創業者 2 人が億万長者に。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 2015,
+      "age": 42,
+      "title": "Alphabet 設立 — Google の親会社",
+      "detail": "自動運転・健康・気球ネットなどムーンショットプロジェクトを統合。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 2019,
+      "age": 46,
+      "title": "Alphabet CEO 退任",
+      "detail": "スンダー・ピチャイに譲り、表舞台から退く。",
+      "tags": [
+        "isolation"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "野心的すぎることに苦しむ方が、十分でないことに苦しむより楽だ。",
+      "source": "スタンフォード講演 2009"
+    },
+    {
+      "text": "ユーザーに焦点を合わせれば、他はついてくる。",
+      "source": "Google 哲学 10 か条"
+    },
+    {
+      "text": "地球上の情報をすべて整理するなんて誰も思いつかない。だから私たちがやる。",
+      "source": "創業期"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/larry_page.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "Google 共同創業者。スタンフォード博士課程で PageRank を発明、世界の情報を整理する企業を作った。Alphabet 設立後は表舞台から退き、自動運転・空飛ぶ車・寿命延長など「ムーンショット」に投資。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Larry_Page_in_the_European_Parliament%2C_17.06.2009_%28cropped%29.jpg?width=500"
+}

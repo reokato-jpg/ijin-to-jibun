@@ -1,0 +1,116 @@
+{
+  "id": "juan_peron",
+  "name": "フアン・ペロン",
+  "nameEn": "Juan Perón",
+  "birth": 1895,
+  "death": 1974,
+  "country": "アルゼンチン",
+  "field": "政治家・元軍人・大統領",
+  "summary": "アルゼンチン軍人。労働相時代に労働者の権利を強化し、1946 年大統領に当選。妻エヴィータと共に労働者大衆の偶像となるが、1955 年クーデターで失脚 18 年亡命、78 歳で再選後すぐに死去。アルゼンチン政治の影を決定づけたペロニズムの源流。",
+  "wikiTitle": "フアン・ペロン",
+  "events": [
+    {
+      "year": 1895,
+      "age": 0,
+      "title": "アルゼンチン・ブエノスアイレス州で生まれる",
+      "detail": "中流農家の子。",
+      "tags": []
+    },
+    {
+      "year": 1939,
+      "age": 44,
+      "title": "イタリアに観戦武官として駐在",
+      "detail": "ファシズムを学ぶ。",
+      "tags": []
+    },
+    {
+      "year": 1943,
+      "age": 48,
+      "title": "クーデターで政権参加 — 労働相に",
+      "detail": "労働組合を強化し労働者の支持を獲得。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1945,
+      "age": 50,
+      "title": "投獄→大衆動員で釈放",
+      "detail": "妻エヴィータの呼びかけで労働者 30 万人がカサ・ロサーダ前に集結、釈放を実現。",
+      "tags": [
+        "loss",
+        "restart",
+        "approval"
+      ]
+    },
+    {
+      "year": 1946,
+      "age": 51,
+      "title": "アルゼンチン大統領就任",
+      "detail": "以降ペロニズムの始まり。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1952,
+      "age": 57,
+      "title": "妻エヴィータが子宮癌で死去",
+      "detail": "33 歳。国民の悲しみが爆発、ペロニズムの聖人に。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1955,
+      "age": 60,
+      "title": "軍事クーデターで失脚 — スペイン亡命",
+      "detail": "以降 18 年。",
+      "tags": [
+        "loss",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1973,
+      "age": 78,
+      "title": "アルゼンチンに帰国 — 3 度目の大統領就任",
+      "detail": "国民の熱狂的歓迎。",
+      "tags": [
+        "restart",
+        "approval"
+      ]
+    },
+    {
+      "year": 1974,
+      "age": 78,
+      "title": "ブエノスアイレスで心臓病で死去",
+      "detail": "3 度目の大統領就任から 9 か月後。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "私の大義はあなたの大義、あなたの大義は私の大義である。",
+      "source": "演説"
+    },
+    {
+      "text": "労働者には権利がある。資本家には責任がある。",
+      "source": "労働相時代"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/juan_peron.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "アルゼンチン大統領（1946-55, 1973-74）。妻エヴィータと共に労働者大衆の偶像、ペロニズムの創始者。クーデターで失脚 18 年亡命、78 歳で再選後すぐ病死。アルゼンチン政治の影を 80 年決定づけた。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/RETRATO_FOTOGR%C3%81FICO_DE_PER%C3%93N.jpg?width=500"
+}

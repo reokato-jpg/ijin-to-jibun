@@ -1,0 +1,85 @@
+{
+  "id": "koda_rohan",
+  "name": "幸田露伴",
+  "nameEn": "Rohan Koda",
+  "birth": 1867,
+  "death": 1947,
+  "country": "日本",
+  "field": "小説家",
+  "summary": "江戸の幕臣の家に生まれ、明治の混乱期を独学で生き抜き、漢学・仏典の素養を背景にした古風な格調高い文体で『五重塔』『運命』を書いた。尾崎紅葉と並ぶ『紅露時代』の双璧、明治大正昭和を生き抜いた最後の文人。",
+  "wikiTitle": "幸田露伴",
+  "events": [
+    {
+      "year": 1867,
+      "age": 0,
+      "title": "江戸下谷で生まれる",
+      "detail": "本名 幸田成行。幕臣の家。",
+      "tags": []
+    },
+    {
+      "year": 1885,
+      "age": 18,
+      "title": "電信技手として北海道余市へ",
+      "detail": "3 年勤務、後に文学を志して上京。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1891,
+      "age": 24,
+      "title": "『五重塔』連載",
+      "detail": "職人気質の大工のぶれない物語、国民的傑作に。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1908,
+      "age": 41,
+      "title": "京都帝国大学講師",
+      "detail": "講壇に立ちつつ執筆。",
+      "tags": []
+    },
+    {
+      "year": 1937,
+      "age": 70,
+      "title": "第 1 回文化勲章受章",
+      "detail": "夏目漱石・森鴎外亡き後の文壇の長老として。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1947,
+      "age": 80,
+      "title": "千葉県市川で死去",
+      "detail": "娘・幸田文も作家。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "努力即幸福。",
+      "source": "晩年の口癖"
+    },
+    {
+      "text": "独力で立つ者だけが、本当の知恵を得る。",
+      "source": "随筆"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/koda_rohan.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "明治・大正・昭和の小説家。幕臣の家から独学で文壇へ、『五重塔』『運命』『連環記』など格調高い文体で日本近代文学を代表。尾崎紅葉と並ぶ『紅露時代』の双璧。第 1 回文化勲章受章者。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Rohan_K%C5%8Dda_1941.jpg?width=500"
+}

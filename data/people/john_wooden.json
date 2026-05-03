@@ -1,0 +1,90 @@
+{
+  "id": "john_wooden",
+  "name": "ジョン・ウッデン",
+  "nameEn": "John Wooden",
+  "birth": 1910,
+  "death": 2010,
+  "country": "アメリカ",
+  "field": "バスケットボールコーチ",
+  "summary": "インディアナ農夫の子。UCLA バスケ部のヘッドコーチとして 12 年で 10 度の NCAA 制覇（うち 7 連覇）、米史上最高のスポーツコーチ。哲学者でもあり『ピラミッド・オブ・サクセス』など人生哲学の名手。",
+  "wikiTitle": "ジョン・ウッデン",
+  "events": [
+    {
+      "year": 1910,
+      "age": 0,
+      "title": "インディアナ州マルティンスヴィルで生まれる",
+      "detail": "農夫の子。父から『勝つことより努力を尽くせ』と教わる。",
+      "tags": []
+    },
+    {
+      "year": 1932,
+      "age": 22,
+      "title": "NCAA 全米選手権優勝（パデュー大学）",
+      "detail": "バスケ選手として殿堂入り。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1948,
+      "age": 38,
+      "title": "UCLA ヘッドコーチ就任",
+      "detail": "無名の地方校を立て直す。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1964,
+      "age": 54,
+      "title": "UCLA で初の NCAA 優勝",
+      "detail": "以降 12 年で 10 度優勝（7 連覇含む）。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1975,
+      "age": 65,
+      "title": "10 度目の優勝で引退",
+      "detail": "史上最高のコーチとして殿堂入り。",
+      "tags": []
+    },
+    {
+      "year": 2010,
+      "age": 99,
+      "title": "ロサンゼルスで死去",
+      "detail": "晩年まで講演・指導書執筆。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "成功とは、自分が成りうる最善のものになるための努力をしたという、自己満足から得られる心の安らぎである。",
+      "source": "『ピラミッド・オブ・サクセス』"
+    },
+    {
+      "text": "才能は神の贈り物。何をするかは、神への返事である。",
+      "source": "指導論"
+    },
+    {
+      "text": "運は機会と備えが出会うところに生まれる。",
+      "source": "指導論"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/john_wooden.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "米国 UCLA バスケ部の伝説的ヘッドコーチ。12 年で 10 度の NCAA 制覇（7 連覇含む）でアメリカ史上最高のスポーツコーチ。『ピラミッド・オブ・サクセス』など人生哲学でも著名。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/John_Wooden.JPG?width=500"
+}

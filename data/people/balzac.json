@@ -1,0 +1,88 @@
+{
+  "id": "balzac",
+  "name": "オノレ・ド・バルザック",
+  "nameEn": "Honoré de Balzac",
+  "birth": 1799,
+  "death": 1850,
+  "country": "フランス",
+  "field": "小説家",
+  "summary": "フランス・トゥール出身。法学から文学に転身、印刷業の失敗で巨額の借金を抱えながら『人間喜劇』91 篇を執筆。1 日 18 時間執筆、コーヒー 50 杯で生命を縮めた狂気の作家。19 世紀リアリズム文学の創始者。",
+  "wikiTitle": "オノレ・ド・バルザック",
+  "events": [
+    {
+      "year": 1799,
+      "age": 0,
+      "title": "トゥールで生まれる",
+      "detail": "父は出世した役人。",
+      "tags": []
+    },
+    {
+      "year": 1819,
+      "age": 20,
+      "title": "法学を捨てて文学へ",
+      "detail": "パリの屋根裏部屋で執筆生活。",
+      "tags": [
+        "restart",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1825,
+      "age": 26,
+      "title": "印刷業に進出 → 大失敗",
+      "detail": "巨額の借金を抱える。生涯逃れられず。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1829,
+      "age": 30,
+      "title": "『ふくろう党』で文壇成功",
+      "detail": "30 歳でようやく作家として認知。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1834,
+      "age": 35,
+      "title": "『人間喜劇』の構想",
+      "detail": "フランス社会の全肖像を 91 篇の小説に描く壮大計画。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1850,
+      "age": 51,
+      "title": "パリで死去",
+      "detail": "借金、過労、コーヒー過剰摂取で 51 歳で世を去る。完成は 100 篇のうち 91 篇。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "金は無くても生きられる。しかし金がないと尊厳は持てない。",
+      "source": "『従妹ベット』"
+    },
+    {
+      "text": "3 つあれば人生は完成する。一杯のコーヒー、よい朝、そしてやるべき仕事。",
+      "source": "日記"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/balzac.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "19 世紀フランスの小説家。リアリズム文学の創始者。借金まみれで 1 日 18 時間執筆・コーヒー 50 杯の狂気で『人間喜劇』91 篇を残し、51 歳で過労死。19 世紀フランスの全肖像を活字に焼き付けた巨人。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/%E5%A5%A5%C2%B7%E5%B7%B4%E5%B0%94%E6%89%8E%E5%85%8B.png?width=500"
+}

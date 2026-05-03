@@ -1,0 +1,99 @@
+{
+  "id": "ichikawa_fusae",
+  "name": "市川房枝",
+  "nameEn": "Fusae Ichikawa",
+  "birth": 1893,
+  "death": 1981,
+  "country": "日本",
+  "field": "婦人運動家・政治家",
+  "summary": "愛知の貧農の家に生まれ、教師を経て婦人参政権獲得運動に身を投じた『戦後民主主義の母』。50 歳で参議院議員に当選、87 歳まで議員を勤めながら『金のかからない選挙』を実践した日本フェミニズム史最大の人物。",
+  "wikiTitle": "市川房枝",
+  "events": [
+    {
+      "year": 1893,
+      "age": 0,
+      "title": "愛知県中島郡明知村の農家に生まれる",
+      "detail": "5 歳から農作業手伝い。",
+      "tags": []
+    },
+    {
+      "year": 1918,
+      "age": 25,
+      "title": "労働運動・婦人運動に入る",
+      "detail": "友愛会婦人部書記。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1920,
+      "age": 27,
+      "title": "新婦人協会を平塚らいてうらと結成",
+      "detail": "治安警察法第 5 条改正運動 — 女性の政治集会参加を解禁。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1921,
+      "age": 28,
+      "title": "アメリカ留学（2 年半）",
+      "detail": "アリス・ポール、ヘレン・ケラーらと交流。",
+      "tags": []
+    },
+    {
+      "year": 1945,
+      "age": 52,
+      "title": "終戦・婦人参政権獲得",
+      "detail": "GHQ の指示と運動の長年の蓄積で実現。",
+      "tags": [
+        "approval",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1953,
+      "age": 60,
+      "title": "参議院議員初当選 — 60 歳の新人議員",
+      "detail": "全国区無所属。以降 5 期当選。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1981,
+      "age": 87,
+      "title": "参議院議員のまま死去",
+      "detail": "葬儀は質素を遺言、選挙運動費 0 円の『金のかからない選挙』が選挙史の伝説。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "金のかからない選挙、汚れた政治の追放。",
+      "source": "選挙標語"
+    },
+    {
+      "text": "婦人の地位は、婦人自身がつくるもの。",
+      "source": "演説"
+    },
+    {
+      "text": "私は政党に入らない。私は良心に従う。",
+      "source": "無所属の理由"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/ichikawa_fusae.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "日本のフェミニスト・参議院議員。婦人参政権獲得運動の中心人物として戦前戦後を通じて活動、60 歳で参議院議員初当選、87 歳まで現役。『金のかからない選挙』を実践した日本政治の良心。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Photo-Book-of-Fusae-Ichikawa-2.jpg?width=500"
+}

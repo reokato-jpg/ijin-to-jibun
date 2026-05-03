@@ -1,0 +1,99 @@
+{
+  "id": "chagall",
+  "name": "マルク・シャガール",
+  "nameEn": "Marc Chagall",
+  "birth": 1887,
+  "death": 1985,
+  "country": "ベラルーシ→フランス",
+  "field": "画家",
+  "summary": "ベラルーシのヴィテブスクのユダヤ人居住区出身。サンクトペテルブルク・パリで学び、ロシア・ユダヤ・キリスト教・古典の混合した夢の絵画で 20 世紀絵画を独自の道で歩んだ。空を飛ぶ恋人たち、青い屋根の村のイメージで永遠の人気。",
+  "wikiTitle": "マルク・シャガール",
+  "events": [
+    {
+      "year": 1887,
+      "age": 0,
+      "title": "ベラルーシ・ヴィテブスクで生まれる",
+      "detail": "敬虔なユダヤ系家庭、9 兄弟。",
+      "tags": []
+    },
+    {
+      "year": 1910,
+      "age": 23,
+      "title": "パリ留学",
+      "detail": "モンパルナスでアポリネール・モディリアーニと出会う。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1915,
+      "age": 28,
+      "title": "ベラを最初の妻に",
+      "detail": "故郷の貴族娘との結婚、彼女がほぼ全作品の女性像。",
+      "tags": []
+    },
+    {
+      "year": 1923,
+      "age": 36,
+      "title": "パリに移住",
+      "detail": "以降フランス国籍。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1941,
+      "age": 54,
+      "title": "ナチス占領で米国亡命",
+      "detail": "米国で 6 年。妻ベラを 1944 年に病で失う。",
+      "tags": [
+        "loss",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1964,
+      "age": 77,
+      "title": "パリ・オペラ座天井画完成",
+      "detail": "アンドレ・マルロー文化大臣の依頼。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1985,
+      "age": 97,
+      "title": "南仏サンポール・ド・ヴァンスで死去",
+      "detail": "絵画とステンドグラスを描き続けた長寿の巨匠。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "愛するものを描けば、絵は飛ぶ。",
+      "source": "インタビュー"
+    },
+    {
+      "text": "故郷を追われた者は、故郷を絵に閉じ込めるしかない。",
+      "source": "自伝"
+    },
+    {
+      "text": "色は私の音楽である。",
+      "source": "工房での言葉"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/chagall.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "ベラルーシ系フランス画家。ロシア・ユダヤ・キリスト教の混合した夢の絵画で 20 世紀絵画を独自の道で歩んだ。空を飛ぶ恋人たち・青い屋根の村のイメージは絵画史最大の人気アイコン。97 歳まで描き続けた長寿の巨匠。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Shagal_Choumoff.jpg?width=500"
+}

@@ -1,0 +1,86 @@
+{
+  "id": "lovelace",
+  "name": "エイダ・ラブレス",
+  "nameEn": "Ada Lovelace",
+  "birth": 1815,
+  "death": 1852,
+  "country": "イギリス",
+  "field": "数学者・コンピュータの予言者",
+  "summary": "詩人バイロン卿の娘。母の指導で数学・科学を学び、19 世紀にチャールズ・バベッジの解析機関のために世界初のコンピュータプログラムを書いた。「コンピュータが詩を書ける」と最初に予言した詩人＝数学者。",
+  "wikiTitle": "エイダ・ラブレス",
+  "events": [
+    {
+      "year": 1815,
+      "age": 0,
+      "title": "ロンドンで生まれる",
+      "detail": "父は詩人バイロン卿、両親は彼女が 1 歳のとき離別、父とは生涯会わず。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1833,
+      "age": 17,
+      "title": "チャールズ・バベッジに出会う",
+      "detail": "夜会で彼の差分機関を見て夢中に。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1843,
+      "age": 27,
+      "title": "解析機関の翻訳・注釈刊行",
+      "detail": "イタリア人技師の解析機関論文を翻訳、自分の注釈（ノート G）にベルヌーイ数を計算する世界初のアルゴリズムを記述。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1850,
+      "age": 35,
+      "title": "競馬で多額の負債、晩年は孤独",
+      "detail": "競馬・社交スキャンダル・夫の冷遇。",
+      "tags": [
+        "loss",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1852,
+      "age": 36,
+      "title": "子宮癌で死去",
+      "detail": "父バイロンと同じ 36 歳で。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "解析機関は織機が花や葉を織るように、代数的なパターンを織る。",
+      "source": "ノート G 1843"
+    },
+    {
+      "text": "想像力こそ、新しい世界を発見する力である。",
+      "source": "日記"
+    },
+    {
+      "text": "私は単なる数学者ではない。詩的科学の使徒である。",
+      "source": "母への手紙"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/lovelace.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "19 世紀イギリスの数学者・詩人バイロン卿の娘。チャールズ・バベッジの解析機関のために世界初のコンピュータプログラム（ベルヌーイ数アルゴリズム）を書いた『最初のプログラマ』。プログラミング言語 Ada は彼女の名から。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Ada_Lovelace_portrait.jpg?width=500"
+}

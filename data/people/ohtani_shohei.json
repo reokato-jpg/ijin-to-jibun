@@ -1,0 +1,102 @@
+{
+  "id": "ohtani_shohei",
+  "name": "大谷翔平",
+  "nameEn": "Shohei Ohtani",
+  "birth": 1994,
+  "death": null,
+  "country": "日本",
+  "field": "プロ野球選手",
+  "summary": "岩手生まれ、高校野球時代から『投打二刀流』を志した稀有な才能。北海道日本ハム・LA エンゼルス・LA ドジャースで投打両方で MVP 級活躍、ベーブ・ルース以来 100 年ぶりの『二刀流』を 21 世紀に蘇らせた現代最大の野球選手。",
+  "wikiTitle": "大谷翔平",
+  "events": [
+    {
+      "year": 1994,
+      "age": 0,
+      "title": "岩手県奥州市で生まれる",
+      "detail": "父はアマ社会人野球選手。",
+      "tags": []
+    },
+    {
+      "year": 2012,
+      "age": 18,
+      "title": "花巻東高校卒、北海道日本ハムファイターズ入団",
+      "detail": "大リーグ希望を栗山監督が説得し日本入り。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 2014,
+      "age": 20,
+      "title": "日本プロ野球で投打二刀流を本格化",
+      "detail": "投手で 11 勝、打者で 10 本塁打。前代未聞。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 2018,
+      "age": 24,
+      "title": "ロサンゼルス・エンゼルス入団",
+      "detail": "MLB に移籍、新人王獲得。",
+      "tags": [
+        "restart",
+        "approval"
+      ]
+    },
+    {
+      "year": 2021,
+      "age": 27,
+      "title": "MLB MVP（満票）",
+      "detail": "投手で 9 勝、打者で 46 本塁打。ベーブ・ルース以来 100 年ぶりの『二刀流』。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 2023,
+      "age": 29,
+      "title": "WBC 優勝、MVP",
+      "detail": "日本代表として 14 年ぶりの世界一、決勝でトラウトを三振。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 2024,
+      "age": 30,
+      "title": "ロサンゼルス・ドジャース移籍 — 10 年 7 億ドル契約",
+      "detail": "スポーツ史上最高額契約、ナリーグ MVP（満票）。",
+      "tags": [
+        "approval"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "先入観は可能を不可能にしてしまう。",
+      "source": "花巻東高校時代の目標シート"
+    },
+    {
+      "text": "野球選手にはなれる、なれない、ではなく、なる、しかない。",
+      "source": "インタビュー"
+    },
+    {
+      "text": "あの一本のために、毎日素振りをしている。",
+      "source": "WBC 優勝後"
+    }
+  ],
+  "places": [],
+  "imageUrl": "assets/portraits/ohtani_shohei.webp",
+  "books": [],
+  "media": [],
+  "works": [],
+  "lifeDigest": "日本のプロ野球選手、現代最大の野球選手。花巻東高校から日本ハム・LA エンゼルス・LA ドジャースで『投打二刀流』を実現、ベーブ・ルース以来 100 年ぶりの偉業。2024 年スポーツ史上最高額契約。",
+  "traits": {},
+  "relations": [],
+  "innerConflicts": [],
+  "turningPoints": [],
+  "unknownStories": [],
+  "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Dodgers_at_Nationals_%2853677192000%29_%28cropped2%29.jpg?width=500"
+}
