@@ -8,15 +8,110 @@
   "field": "政治家",
   "summary": "推古天皇の摂政。冠位十二階・十七条憲法を定め、遣隋使を派遣。仏教を国教として日本の基盤を築いた。",
   "wikiTitle": "聖徳太子",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 574,
+      "age": 0,
+      "title": "大和国（奈良県）に生まれる",
+      "detail": "用明天皇の皇子。母は穴穂部間人皇女。",
+      "tags": []
+    },
+    {
+      "year": 587,
+      "age": 13,
+      "title": "蘇我馬子と物部守屋の戦い（丁未の乱）",
+      "detail": "仏教導入派・蘇我側で戦い、勝利。仏教擁護を誓った。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 593,
+      "age": 19,
+      "title": "推古天皇即位、摂政に就任",
+      "detail": "叔母の女帝を補佐する形で実質的な政治指導者に。",
+      "tags": [
+        "restart",
+        "approval"
+      ]
+    },
+    {
+      "year": 593,
+      "age": 19,
+      "title": "四天王寺建立",
+      "detail": "大阪に日本初の本格的官立寺院。仏教の根を据える。",
+      "tags": []
+    },
+    {
+      "year": 603,
+      "age": 29,
+      "title": "冠位十二階制定",
+      "detail": "氏族制を打ち破り能力主義の官僚制へ。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 604,
+      "age": 30,
+      "title": "十七条憲法発布",
+      "detail": "「和を以て貴しとなす」で始まる日本最初の成文法的指針。仏教・儒教・法家を融合。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 607,
+      "age": 33,
+      "title": "小野妹子を遣隋使として派遣",
+      "detail": "「日出ずる処の天子、書を日没する処の天子に致す」と対等な国書を送り、隋の煬帝を激怒させた。日本の独立外交の起点。",
+      "tags": [
+        "approval",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 607,
+      "age": 33,
+      "title": "法隆寺建立",
+      "detail": "現存最古の木造建築。世界最古級の木造建築群。",
+      "tags": []
+    },
+    {
+      "year": 622,
+      "age": 48,
+      "title": "斑鳩宮で死去",
+      "detail": "妃と同日に病没。「夢殿で瞑想していた」との伝説あり。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "和を以て貴しと為し、忤うこと無きを宗と為す。",
+      "source": "十七条憲法 第 1 条 604"
+    },
+    {
+      "text": "篤く三宝を敬え。三宝とは仏・法・僧なり。",
+      "source": "十七条憲法 第 2 条"
+    },
+    {
+      "text": "我れ必ずしも聖に非ず、彼必ずしも愚に非ず。共に是れ凡夫ならくのみ。",
+      "source": "十七条憲法 第 10 条"
+    },
+    {
+      "text": "日出ずる処の天子、書を日没する処の天子に致す。恙なきや。",
+      "source": "遣隋使国書 607"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/shotoku_taishi.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "飛鳥時代の政治家・思想家。摂政として推古天皇を補佐し、冠位十二階・十七条憲法・遣隋使を実現。仏教を国家の柱とし、日本のアイデンティティを定義した「日本国家の設計者」。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Sh%C5%8Dtoku_Taishi_Sh%C5%8Dmanky%C5%8D_K%C5%8Dsan.jpg?width=500",

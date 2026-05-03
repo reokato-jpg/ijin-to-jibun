@@ -8,15 +8,90 @@
   "field": "軍事思想家",
   "summary": "春秋時代の軍事思想家。『孫子』の兵法は「戦わずして勝つ」を説き、古代から現代経営まで引用される東洋最高の戦略書。",
   "wikiTitle": "孫武",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": -544,
+      "age": 0,
+      "title": "斉国（現・山東省）に生まれる",
+      "detail": "後に呉に仕えるが本籍は斉。家系は将軍系統。",
+      "tags": []
+    },
+    {
+      "year": -515,
+      "age": 29,
+      "title": "呉王・闔閭に仕える",
+      "detail": "兵法を献上、将軍に任命される。「兵法 13 篇」を呈示。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": -512,
+      "age": 32,
+      "title": "宮女 180 人で訓練を実演",
+      "detail": "兵法を疑った闔閭に対し、宮女を兵士に見立てて演習。命令に従わなかった寵姫 2 人を斬って規律を示した逸話。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": -506,
+      "age": 38,
+      "title": "柏挙の戦いで楚の大軍を破る",
+      "detail": "数で劣る呉軍が楚国の都・郢を陥落させた歴史的勝利。",
+      "tags": [
+        "approval",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": -496,
+      "age": 48,
+      "title": "晩年は隠棲したと伝わる",
+      "detail": "勝利後、政治の表舞台から退いた。「功成り身を退く」を実践。",
+      "tags": [
+        "isolation"
+      ]
+    },
+    {
+      "year": -496,
+      "age": 48,
+      "title": "『孫子』13 篇成立",
+      "detail": "「兵は詭道なり」「百戦百勝は善の善なるものに非ず」などの古典軍略の決定書。",
+      "tags": [
+        "breakthrough"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "彼を知り己を知れば百戦殆うからず。",
+      "source": "『孫子』謀攻篇"
+    },
+    {
+      "text": "戦わずして人の兵を屈するは善の善なる者なり。",
+      "source": "『孫子』謀攻篇"
+    },
+    {
+      "text": "兵は詭道なり。",
+      "source": "『孫子』始計篇"
+    },
+    {
+      "text": "兵は拙速を聞くも、未だ巧の久しきを睹ず。",
+      "source": "『孫子』作戦篇"
+    },
+    {
+      "text": "勝つべからざるは己に在り、勝つべきは敵に在り。",
+      "source": "『孫子』軍形篇"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/sunzi.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "古代中国・春秋時代の兵法家。呉に仕え、楚の大軍を破った実戦の人。著書『孫子』13 篇は 2500 年後の今も世界で読まれる軍事・経営の古典。「戦わずして勝つ」が思想の核。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/%E5%90%B4%E5%8F%B8%E9%A9%AC%E5%AD%99%E6%AD%A6.jpg?width=500",

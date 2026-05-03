@@ -598,11 +598,16 @@
                 <div class="mtc-name">図 書 館</div>
                 <div class="mtc-sub">全分野の本を検索する</div>
               </button>
-              <button class="magic-topbook-cat magic-topbook-cat-amusement" data-cat="amusement">
+              <!-- 🎡 遊園地ボタン（一時的に非表示）— 復活時はこの hidden を外す
+              <button class="magic-topbook-cat magic-topbook-cat-amusement" data-cat="amusement" hidden>
                 <div class="mtc-emoji">🎡</div>
                 <div class="mtc-name">遊 園 地</div>
                 <div class="mtc-sub">観覧車・ただ眺める空間</div>
               </button>
+              -->
+              <!-- 観覧車本体（openFerrisWheel）と deepMap.ferris は残してあるので、
+                   コンソールから window.openFerrisWheel() で呼び出し可能 -->
+
               <button class="magic-topbook-cat magic-topbook-cat-concept" data-cat="concept">
                 <div class="mtc-name">概 念</div>
                 <div class="mtc-sub">元素・物・ビジネスから辿る</div>
