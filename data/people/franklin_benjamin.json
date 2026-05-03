@@ -8,15 +8,94 @@
   "field": "政治家・科学者",
   "summary": "雷の電気的正体を実証した凧の実験、二眼鏡の発明、独立宣言署名、100ドル札の顔。万能のアメリカ人。",
   "wikiTitle": "ベンジャミン・フランクリン",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1706,
+      "age": 0,
+      "title": "ボストンで生まれる",
+      "detail": "蝋燭職人の 17 人兄弟の 15 番目。",
+      "tags": []
+    },
+    {
+      "year": 1718,
+      "age": 12,
+      "title": "兄の印刷所で徒弟",
+      "detail": "活字を組みながら独学で読書を重ねる。",
+      "tags": []
+    },
+    {
+      "year": 1733,
+      "age": 27,
+      "title": "『貧しいリチャードの暦』刊行",
+      "detail": "格言集として大ヒット、アメリカ大衆文化の出発点。",
+      "tags": [
+        "restart",
+        "approval"
+      ]
+    },
+    {
+      "year": 1752,
+      "age": 46,
+      "title": "凧揚げ実験で雷が電気と証明",
+      "detail": "雷を瓶に貯める実験で世界的科学者に。アカデミー会員選出。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1776,
+      "age": 70,
+      "title": "アメリカ独立宣言起草に参加",
+      "detail": "ジェファーソンの草稿を編集。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1778,
+      "age": 72,
+      "title": "フランス・ベルサイユでルイ16世から仏米同盟取り付け",
+      "detail": "ヨーロッパに「アメリカ的賢者」のイメージを与えた外交の成功。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1790,
+      "age": 84,
+      "title": "フィラデルフィアで死去",
+      "detail": "葬儀には 2 万人。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "時は金なり。",
+      "source": "『若き商人への忠告』 1748"
+    },
+    {
+      "text": "今日できることを明日に延ばすな。",
+      "source": "『貧しいリチャードの暦』"
+    },
+    {
+      "text": "我々はみな共に生き、または別々に首を吊られる。",
+      "source": "独立宣言時"
+    },
+    {
+      "text": "三つの人を信用してはならない: 賢者・聖人・自分自身。",
+      "source": "格言集"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/franklin_benjamin.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "アメリカ建国の父。蝋燭職人の 15 番目の子から、印刷業・新聞・科学（雷の電気証明）・外交・憲法起草までこなした 18 世紀の万能人。100 ドル札の顔。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/BenFranklinDuplessis.jpg?width=500",

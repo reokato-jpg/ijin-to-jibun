@@ -8,15 +8,82 @@
   "field": "映画監督",
   "summary": "『羅生門』でヴェネチア金獅子賞、『七人の侍』など世界映画史に残る作品群。ルーカス・スコセッシも師と仰ぐ日本映画の至宝。",
   "wikiTitle": "黒澤明",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1910,
+      "age": 0,
+      "title": "東京・大森に生まれる",
+      "detail": "兄・丙午は弁士、後に自殺。",
+      "tags": []
+    },
+    {
+      "year": 1936,
+      "age": 26,
+      "title": "PCL 映画製作所（東宝の前身）入社",
+      "detail": "山本嘉次郎の助監督に。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1950,
+      "age": 40,
+      "title": "『羅生門』ヴェネチア映画祭金獅子賞",
+      "detail": "「真実とは何か」を問う多視点叙述で世界に衝撃。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1954,
+      "age": 44,
+      "title": "『七人の侍』完成",
+      "detail": "黒澤映画の頂点、後の世界アクション映画の文法を作った。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1990,
+      "age": 80,
+      "title": "アカデミー名誉賞",
+      "detail": "「映像の語り部」として。スピルバーグ・ルーカスらが献辞。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1998,
+      "age": 88,
+      "title": "東京で死去",
+      "detail": "脳卒中。世界の映画人が哀悼。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "創ることは追い詰められて生まれる。",
+      "source": "回想録"
+    },
+    {
+      "text": "人間は自分の経験以上のものは描けない。だから生きるしかない。",
+      "source": "『蝦蟇の油』"
+    },
+    {
+      "text": "映画とは、嘘で真実を語ること。",
+      "source": "インタビュー"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/kurosawa_akira.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "日本の映画監督。『羅生門』『七人の侍』『生きる』『乱』で世界映画史を変革。「世界のクロサワ」として、スピルバーグ・コッポラ・ルーカスが師と仰ぐ存在。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Kinema-Junpo-1960-December-Special-1.jpg?width=500",

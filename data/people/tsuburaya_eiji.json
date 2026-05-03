@@ -8,15 +8,72 @@
   "field": "特撮監督",
   "summary": "『ゴジラ』『ウルトラマン』の生みの親。日本の特撮技術を世界レベルに押し上げた「特撮の神様」。",
   "wikiTitle": "円谷英二",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1901,
+      "age": 0,
+      "title": "福島県で生まれる",
+      "detail": "本名 円谷英一。",
+      "tags": []
+    },
+    {
+      "year": 1933,
+      "age": 32,
+      "title": "京都・松竹で特撮技師",
+      "detail": "国産初の特殊撮影に挑戦。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1954,
+      "age": 52,
+      "title": "『ゴジラ』特撮監督",
+      "detail": "本多猪四郎監督と組み、戦後日本の象徴となる怪獣映画を生む。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1963,
+      "age": 62,
+      "title": "円谷プロダクション設立",
+      "detail": "テレビ特撮へ進出。",
+      "tags": []
+    },
+    {
+      "year": 1966,
+      "age": 64,
+      "title": "『ウルトラマン』放送開始",
+      "detail": "戦後日本の子供文化を変える特撮ヒーローの嚆矢。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1970,
+      "age": 68,
+      "title": "東京で死去",
+      "detail": "「特撮の神様」と呼ばれた。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "大人が本気で作った嘘は、子供にとっての真実になる。",
+      "source": "弟子への言葉"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/tsuburaya_eiji.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "日本の特撮監督。「ゴジラ」「ウルトラマン」を生んだ「特撮の神様」。日本独自の特撮技術を世界水準に引き上げ、戦後日本の子供文化と映像文化に決定的影響。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Eiji_Tsuburaya_1966.jpg?width=500",

@@ -8,15 +8,78 @@
   "field": "数学者",
   "summary": "コンピュータのアーキテクチャを設計。ゲーム理論、量子力学、原爆に貢献した20世紀最強の頭脳。",
   "wikiTitle": "ジョン・フォン・ノイマン",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1903,
+      "age": 0,
+      "title": "ハンガリー・ブダペストの裕福なユダヤ系家庭に生まれる",
+      "detail": "6 歳で 8 桁の暗算、10 代で大学レベルの数学。",
+      "tags": []
+    },
+    {
+      "year": 1926,
+      "age": 23,
+      "title": "ゲッティンゲンで博士号",
+      "detail": "数学・物理・化学・経済学・コンピュータ科学に通じる万能人。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1933,
+      "age": 30,
+      "title": "プリンストン高等研究所教授",
+      "detail": "アインシュタインらと並ぶ最初の常任教授 5 人の 1 人。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1944,
+      "age": 41,
+      "title": "ゲーム理論を確立（モルゲンシュテルンと共著）",
+      "detail": "「ゲームの理論と経済行動」。経済学・政治学・進化生物学を変える。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1945,
+      "age": 42,
+      "title": "ノイマン型コンピュータ・アーキテクチャを定式化",
+      "detail": "現代コンピュータすべての設計原型。マンハッタン計画にも参加。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1957,
+      "age": 53,
+      "title": "膵臓癌で死去",
+      "detail": "原爆実験での被曝が原因とも。「もっと時間がほしかった」が遺言。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "もし誰かが数学は容易だと思うなら、それは数学が彼に易しくないからである。",
+      "source": "弟子への言葉"
+    },
+    {
+      "text": "ほとんどの数学者は、若い頃に最高の仕事をする。私は例外であろうとした。",
+      "source": "回想"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/von_neumann.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "ハンガリー系アメリカの数学者・物理学者・コンピュータ科学者。20 世紀最大の万能天才。ノイマン型コンピュータ・アーキテクチャ、ゲーム理論、量子力学の数学基盤を作った。ファイマンが「人類最高の知性」と呼んだ人。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/JohnvonNeumann-LosAlamos.gif?width=500",

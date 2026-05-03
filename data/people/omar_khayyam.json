@@ -8,15 +8,73 @@
   "field": "詩人・数学者",
   "summary": "『ルバイヤート』の詩人にして三次方程式を解いた数学者。ジャラリー暦を制定した天文学者でもある万能の人。",
   "wikiTitle": "ウマル・ハイヤーム",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1048,
+      "age": 0,
+      "title": "ペルシア・ニーシャープールに生まれる",
+      "detail": "テント職人の子。Khayyam は「テント職人」の意。",
+      "tags": []
+    },
+    {
+      "year": 1074,
+      "age": 26,
+      "title": "セルジューク朝の天文台に招かれる",
+      "detail": "暦の改訂に携わる。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1079,
+      "age": 31,
+      "title": "ジャラーリー暦を完成",
+      "detail": "グレゴリオ暦より精密な太陽暦。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1090,
+      "age": 42,
+      "title": "三次方程式の幾何学的解法を発見",
+      "detail": "代数学の祖の一人。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1131,
+      "age": 83,
+      "title": "故郷で死去",
+      "detail": "数学者として知られていたが、19 世紀に詩集『ルバイヤート』が西洋で発見され詩人としても評価。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "今日を生きよ。明日のことは誰も知らない。",
+      "source": "『ルバイヤート』"
+    },
+    {
+      "text": "酒よ、人生の苦さを忘れさせる甘き霊薬よ。",
+      "source": "『ルバイヤート』"
+    },
+    {
+      "text": "私たちは砂漠を歩く影に過ぎない。",
+      "source": "『ルバイヤート』"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/omar_khayyam.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "ペルシアの数学者・天文学者・詩人。グレゴリオ暦より正確な太陽暦を作り、三次方程式の幾何学的解を発見。死後 700 年経って詩集『ルバイヤート』が世界で読まれ詩人としても再発見された。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Omar_Khayyam2.JPG?width=500",

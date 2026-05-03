@@ -8,15 +8,81 @@
   "field": "フェミニスト・作家",
   "summary": "「元始、女性は実に太陽であった」で知られる日本初の女性雑誌『青鞜』創刊者。戦後は平和運動にも尽力。",
   "wikiTitle": "平塚らいてう",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1886,
+      "age": 0,
+      "title": "東京・麹町に生まれる",
+      "detail": "本名 平塚明。父は会計検査院の役人。",
+      "tags": []
+    },
+    {
+      "year": 1908,
+      "age": 22,
+      "title": "「塩原事件」 — 作家森田草平との心中未遂",
+      "detail": "新聞で大スキャンダル。「魔の女」と呼ばれる。",
+      "tags": [
+        "pride_broken",
+        "loss"
+      ]
+    },
+    {
+      "year": 1911,
+      "age": 25,
+      "title": "雑誌『青鞜』創刊 — 「元始、女性は太陽であった」",
+      "detail": "創刊号巻頭言で日本フェミニズム運動の幕を開ける。",
+      "tags": [
+        "breakthrough",
+        "restart"
+      ]
+    },
+    {
+      "year": 1914,
+      "age": 28,
+      "title": "奥村博との事実婚（戸籍に入らず）",
+      "detail": "家制度への抵抗として、子供の認知も拒否。",
+      "tags": [
+        "self_denial"
+      ]
+    },
+    {
+      "year": 1920,
+      "age": 34,
+      "title": "新婦人協会設立",
+      "detail": "市川房枝らと女性の参政権獲得運動を開始。",
+      "tags": []
+    },
+    {
+      "year": 1971,
+      "age": 85,
+      "title": "東京で死去",
+      "detail": "戦後も平和運動に尽くした。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "元始、女性は実に太陽であった。真正の人であった。今、女性は月である。他に依って生き、他の光によって輝く、病人のような蒼白い顔の月である。",
+      "source": "『青鞜』創刊号 1911"
+    },
+    {
+      "text": "女は男に従うものではない。共に歩むものである。",
+      "source": "新婦人協会発足"
+    },
+    {
+      "text": "我は新しき女である。少なくとも、真に新しき女でありたいと日々願い祈る。",
+      "source": "「新しい女」 1913"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/hiratsuka_raicho.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "日本のフェミニスト・思想家。1911 年『青鞜』創刊巻頭言「元始、女性は太陽であった」で日本女性解放運動の象徴に。戦後も平和運動に尽くした。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Raicho_Hiratsuka.jpg?width=500",

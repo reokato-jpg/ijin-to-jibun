@@ -8,15 +8,97 @@
   "field": "政治家",
   "summary": "第二次世界大戦時のイギリス首相。「血と汗と涙」の演説で国民を鼓舞。ノーベル文学賞受賞作家でもある。",
   "wikiTitle": "ウィンストン・チャーチル",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1874,
+      "age": 0,
+      "title": "ブレナム宮殿で生まれる",
+      "detail": "父はランドルフ・チャーチル卿、母はアメリカ人ジェニー・ジェローム。",
+      "tags": []
+    },
+    {
+      "year": 1899,
+      "age": 25,
+      "title": "ボーア戦争で捕虜→脱走で英雄に",
+      "detail": "従軍記者として捕虜になるが脱走、新聞で大々的に報道され政治家への道が開く。",
+      "tags": [
+        "breakthrough",
+        "restart"
+      ]
+    },
+    {
+      "year": 1900,
+      "age": 25,
+      "title": "下院議員初当選",
+      "detail": "保守党から、後に自由党、また保守党へ。一貫しないが信念は変えなかった。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1915,
+      "age": 40,
+      "title": "ガリポリの大失敗",
+      "detail": "海軍大臣として強行した上陸作戦が大敗、失脚。「政治的に死んだ」と言われた時期。",
+      "tags": [
+        "loss",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1940,
+      "age": 65,
+      "title": "首相就任 — 第二次世界大戦の指導者へ",
+      "detail": "「我々が提供できるのは血、労苦、涙、汗である」演説。ナチスからイギリスを守り抜いた。",
+      "tags": [
+        "restart",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1953,
+      "age": 78,
+      "title": "ノーベル文学賞",
+      "detail": "『第二次世界大戦回顧録』ほか歴史記述で受賞（平和賞でない点が彼の本質を示す）。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1965,
+      "age": 90,
+      "title": "ロンドンで死去",
+      "detail": "国葬。最後の偉大なる帝国主義者。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "決して、決して、決して諦めるな。",
+      "source": "ハロー校演説 1941"
+    },
+    {
+      "text": "成功とは熱意を失わずに失敗から失敗へと進むこと。",
+      "source": "演説（伝）"
+    },
+    {
+      "text": "私が提供できるのは、血と労苦と涙と汗である。",
+      "source": "首相就任演説 1940"
+    },
+    {
+      "text": "歴史は勝者によって書かれる。なぜなら私は歴史を書くつもりだから。",
+      "source": "回想録について"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/churchill.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "イギリスの政治家・作家。第二次大戦で首相として国民を鼓舞し、ナチスからイギリスを守り抜いた。失脚と復活を繰り返した政治人生。著作家としてもノーベル文学賞を受賞した稀有な人物。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Sir_Winston_Churchill_-_19086236948.jpg?width=500",

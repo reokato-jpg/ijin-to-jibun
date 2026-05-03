@@ -8,15 +8,72 @@
   "field": "僧侶",
   "summary": "真言宗の開祖、弘法大師。唐で密教を学び、高野山を開創。書道の三筆の一人。日本仏教の巨人。",
   "wikiTitle": "空海",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 774,
+      "age": 0,
+      "title": "讃岐国に生まれる",
+      "detail": "本名 佐伯真魚。",
+      "tags": []
+    },
+    {
+      "year": 804,
+      "age": 30,
+      "title": "遣唐使として唐に渡る",
+      "detail": "長安の青龍寺で恵果に密教を学ぶ。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 806,
+      "age": 32,
+      "title": "帰国、密教を伝える",
+      "detail": "真言宗を開く。日本仏教史の大転換。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 816,
+      "age": 42,
+      "title": "高野山金剛峯寺を開創",
+      "detail": "真言密教の本山。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 835,
+      "age": 61,
+      "title": "高野山で入定",
+      "detail": "「死なず生き続ける」入定信仰。御廟に今も食事が運ばれる。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "虚空尽き、衆生尽き、涅槃尽きなば、我が願いも尽きん。",
+      "source": "入定遺告"
+    },
+    {
+      "text": "弘法も筆の誤り。",
+      "source": "故事（伝）"
+    },
+    {
+      "text": "三密加持すれば速疾に顕る。",
+      "source": "『即身成仏義』"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/kukai.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "平安初期の僧。真言宗の開祖。唐に渡り密教を持ち帰り、高野山を開いた日本仏教の巨人。書・教育（綜芸種智院）・土木（満濃池）にも長け、61 歳で入定し永遠の禅定に入ったと信じられる。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Kobo_Daishi_%28Taisanji_Matsuyama%29.jpg?width=500",

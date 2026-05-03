@@ -8,15 +8,68 @@
   "field": "僧侶",
   "summary": "法華経絶対の日蓮宗開祖。「南無妙法蓮華経」を唱え、国家を叱る預言者的宗教家。",
   "wikiTitle": "日蓮",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1222,
+      "age": 0,
+      "title": "安房国に生まれる",
+      "detail": "漁師の家、本名 善日麿。",
+      "tags": []
+    },
+    {
+      "year": 1253,
+      "age": 31,
+      "title": "「南無妙法蓮華経」を唱える",
+      "detail": "清澄寺で立教開宗。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1260,
+      "age": 38,
+      "title": "『立正安国論』を北条時頼に提出",
+      "detail": "他宗を排斥し国の災いを警告、流罪に。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1271,
+      "age": 49,
+      "title": "竜の口の法難（処刑寸前で奇跡的助命）",
+      "detail": "斬首寸前に光が走り処刑が中止されたとされる伝説。佐渡流罪に。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1282,
+      "age": 60,
+      "title": "池上で死去",
+      "detail": "辞世「人々のために唱題し続けよ」。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "南無妙法蓮華経。",
+      "source": "立教 1253"
+    },
+    {
+      "text": "難来るを以て安楽と意得べし。",
+      "source": "御書"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/nichiren.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "鎌倉時代の僧。日蓮宗の開祖。「南無妙法蓮華経」の唱題で衆生を救済する道を説き、他宗を激しく批判して何度も流罪・処刑寸前を経験。日本宗教史で最も激烈な改革者。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Nichiren_Daishonin_Hakii_Portrait.jpg?width=500",

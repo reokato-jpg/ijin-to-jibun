@@ -8,15 +8,71 @@
   "field": "画家",
   "summary": "『叫び』の作者。不安・孤独・死といった人間の内面を鋭く描き出した表現主義の先駆者。",
   "wikiTitle": "エドヴァルド・ムンク",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1863,
+      "age": 0,
+      "title": "ノルウェー・ロイテンで生まれる",
+      "detail": "5 歳で母、14 歳で姉を結核で失う。死の影が生涯の主題に。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1889,
+      "age": 26,
+      "title": "パリ留学",
+      "detail": "ゴーギャンら印象派の前衛に触れる。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1893,
+      "age": 30,
+      "title": "「叫び」完成",
+      "detail": "オスロ・フィヨルドの夕暮れに襲われた不安発作の追体験。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1908,
+      "age": 45,
+      "title": "コペンハーゲンで精神病院に入院",
+      "detail": "8 か月の療養で創作再開。",
+      "tags": [
+        "isolation",
+        "restart"
+      ]
+    },
+    {
+      "year": 1944,
+      "age": 80,
+      "title": "オスロ郊外で死去",
+      "detail": "全作品をオスロ市に寄贈。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "私は呼吸する者・感じる者・苦しむ者・愛する者を描く。",
+      "source": "日記"
+    },
+    {
+      "text": "病・狂気・死は、私のゆりかごを見守った天使たちだった。",
+      "source": "回想"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/munch.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "ノルウェーの画家。表現主義の先駆者。「叫び」で 20 世紀の不安を視覚化した。母と姉と妹の死、自身の精神病が、彼の絵に永遠に刻まれている。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Edvard_Munch_1933.jpg?width=500",

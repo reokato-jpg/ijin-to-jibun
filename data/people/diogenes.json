@@ -8,15 +8,73 @@
   "field": "哲学者",
   "summary": "犬儒学派の代表。樽に住み、アレキサンダー大王に「そこをどいてくれ、日陰になる」と言い放った。",
   "wikiTitle": "ディオゲネス",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": -412,
+      "age": 0,
+      "title": "シノペで生まれる",
+      "detail": "父は両替商。",
+      "tags": []
+    },
+    {
+      "year": -380,
+      "age": 32,
+      "title": "通貨偽造でシノペ追放",
+      "detail": "「価値の改鋳」を文字通りに行い追放。哲学への転機となる。",
+      "tags": [
+        "loss",
+        "restart"
+      ]
+    },
+    {
+      "year": -370,
+      "age": 42,
+      "title": "アテナイへ、樽（甕）に住む",
+      "detail": "アンティステネスに学び、犬のような自由生活を実践。",
+      "tags": [
+        "isolation"
+      ]
+    },
+    {
+      "year": -336,
+      "age": 76,
+      "title": "アレクサンドロス大王と対面",
+      "detail": "「何か望みは？」と問う王に「日陰を作らないでくれ」と返した逸話。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": -323,
+      "age": 89,
+      "title": "コリントで死去",
+      "detail": "アレクサンドロスと同じ日に没したという伝説。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "日陰を作らないでくれ。",
+      "source": "アレクサンドロスへの返答（伝） -336"
+    },
+    {
+      "text": "私は人間を探している。",
+      "source": "昼間に提灯を灯して街を歩いた逸話"
+    },
+    {
+      "text": "犬には礼儀がある。媚びる時は尻尾を振り、敵には吠える。私もそうありたい。",
+      "source": "犬儒派の弁"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/diogenes.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "古代ギリシアの哲学者、犬儒派（キュニコス派）の代表。樽に住み、文明を嘲笑して「自然のままに生きる」徹底を実践。アレクサンドロスとの邂逅は西洋哲学の名場面。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Diogenes_Mosaic_R%C3%B6misch-Germanisches_Museum.jpg?width=500",

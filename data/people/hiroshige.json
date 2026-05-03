@@ -8,15 +8,76 @@
   "field": "浮世絵師",
   "summary": "『東海道五十三次』の作者。風景浮世絵を大成し、ゴッホらに影響を与えた。",
   "wikiTitle": "歌川広重",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1797,
+      "age": 0,
+      "title": "江戸・八重洲河岸の火消同心の家に生まれる",
+      "detail": "本名 安藤重右衛門。",
+      "tags": []
+    },
+    {
+      "year": 1809,
+      "age": 12,
+      "title": "両親を相次いで失う",
+      "detail": "幼少期から家督を継ぐ。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1811,
+      "age": 14,
+      "title": "歌川豊広に入門、歌川広重を名乗る",
+      "detail": "浮世絵の歌川派に。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1832,
+      "age": 35,
+      "title": "幕府の使節に随行して京都へ",
+      "detail": "東海道の風景に魅せられる。",
+      "tags": []
+    },
+    {
+      "year": 1833,
+      "age": 36,
+      "title": "『東海道五十三次』連作刊行",
+      "detail": "雨・雪・夕暮れの叙情的風景画 55 枚。北斎の富嶽三十六景と並ぶ江戸風景画の頂点。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1858,
+      "age": 61,
+      "title": "コレラで死去",
+      "detail": "辞世「東路へ筆を残して旅の空 西のみくにの名所を見ん」。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "東路へ筆を残して旅の空、西のみくにの名所を見ん。",
+      "source": "辞世 1858"
+    },
+    {
+      "text": "私の絵は風景ではなく、風景に立つ自分の心の影である。",
+      "source": "弟子への言葉（伝）"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/hiroshige.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "江戸の浮世絵師。『東海道五十三次』『名所江戸百景』で雨・雪・夕暮れの叙情的風景を確立。ゴッホ・モネが模写したジャポニスムの源流。北斎と並ぶ江戸風景画の双璧。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Memorial_Portrait_of_Hiroshige%2C_by_Kunisada.jpg?width=500",

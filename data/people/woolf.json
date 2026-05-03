@@ -8,15 +8,82 @@
   "field": "小説家",
   "summary": "『ダロウェイ夫人』『灯台へ』で意識の流れ手法を確立。『自分ひとりの部屋』でフェミニズム文学の嚆矢となった。",
   "wikiTitle": "ヴァージニア・ウルフ",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1882,
+      "age": 0,
+      "title": "ロンドンの文人家庭に生まれる",
+      "detail": "父はレズリー・スティーヴン。",
+      "tags": []
+    },
+    {
+      "year": 1904,
+      "age": 22,
+      "title": "父の死、ブルームズベリー・グループ結成",
+      "detail": "知識人サークルが集まる場所に。",
+      "tags": [
+        "loss",
+        "restart"
+      ]
+    },
+    {
+      "year": 1925,
+      "age": 43,
+      "title": "『ダロウェイ夫人』刊行",
+      "detail": "意識の流れの代表作。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1927,
+      "age": 45,
+      "title": "『灯台へ』刊行",
+      "detail": "母をモデルに、家族の崩壊と再生を描く。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1929,
+      "age": 47,
+      "title": "『自分ひとりの部屋』刊行",
+      "detail": "「女性が小説を書くには、年 500 ポンドと自分の部屋が必要だ」 — フェミニズム古典。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1941,
+      "age": 59,
+      "title": "ウーズ川に身を投げて自死",
+      "detail": "鬱病再発。ポケットに石を詰めて入水。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "女性が小説を書くには、お金と自分ひとりの部屋が必要だ。",
+      "source": "『自分ひとりの部屋』 1929"
+    },
+    {
+      "text": "あなたは私を読まないでもいい。しかし読むなら、私の中の女を読んでくれ。",
+      "source": "日記"
+    },
+    {
+      "text": "本当に他人を理解することは、ほとんど不可能だ。",
+      "source": "『ダロウェイ夫人』"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/woolf.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "イギリスのモダニズム作家。「意識の流れ」の代表者。『ダロウェイ夫人』『灯台へ』で内面描写を革新、『自分ひとりの部屋』で女性の経済的自立を説いた。鬱病と闘いながら 59 歳で自死。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Virginia_Woolf_1939.jpg?width=500",

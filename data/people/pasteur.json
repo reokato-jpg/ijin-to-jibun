@@ -8,15 +8,82 @@
   "field": "化学者・微生物学者",
   "summary": "細菌学の父。低温殺菌法（パスチャライゼーション）、狂犬病ワクチン、炭疽菌ワクチンを開発。医学を変えた。",
   "wikiTitle": "ルイ・パスツール",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1822,
+      "age": 0,
+      "title": "フランス・ジュラ地方で生まれる",
+      "detail": "皮なめし職人の子。",
+      "tags": []
+    },
+    {
+      "year": 1856,
+      "age": 34,
+      "title": "微生物が発酵を起こすと証明",
+      "detail": "ワイン醸造の研究から。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1862,
+      "age": 40,
+      "title": "白鳥首フラスコ実験 — 自然発生説を否定",
+      "detail": "「微生物は親から生まれる」を確立。近代細菌学の幕開け。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1864,
+      "age": 42,
+      "title": "低温殺菌法（パスチャライゼーション）開発",
+      "detail": "ワイン・牛乳の腐敗防止。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1885,
+      "age": 63,
+      "title": "狂犬病ワクチン成功",
+      "detail": "9 歳の少年ジョセフ・マイスターを救う。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1895,
+      "age": 72,
+      "title": "パリで死去",
+      "detail": "国葬。パスツール研究所が彼の名を継ぐ。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "幸運は備えある心に宿る。",
+      "source": "リール大学講演 1854"
+    },
+    {
+      "text": "科学に国境はない、しかし科学者には祖国がある。",
+      "source": "演説"
+    },
+    {
+      "text": "観察は機会を逃さない者にだけ報いる。",
+      "source": "弟子への助言"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/pasteur.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "フランスの化学者・細菌学者。微生物が発酵・腐敗の原因と証明し、自然発生説を否定。低温殺菌法、狂犬病・炭疽病ワクチンを開発し、近代医学の基盤を築いた。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Louis_Pasteur_%281822_-_1895%29%2C_microbiologist_and_chemist_Wellcome_V0026980.jpg?width=500",

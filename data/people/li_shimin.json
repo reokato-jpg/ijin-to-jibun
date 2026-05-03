@@ -8,15 +8,70 @@
   "field": "皇帝",
   "summary": "唐の第2代皇帝。「貞観の治」で政治・文化の最盛期を築き、遣唐使に日本も学んだ東アジア最盛期の王。",
   "wikiTitle": "太宗 (唐)",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 598,
+      "age": 0,
+      "title": "山西省で生まれる",
+      "detail": "唐高祖李淵の次男。",
+      "tags": []
+    },
+    {
+      "year": 617,
+      "age": 19,
+      "title": "父李淵の挙兵を主導",
+      "detail": "唐建国の事実上の立役者。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 626,
+      "age": 28,
+      "title": "玄武門の変 — 兄弟を殺害して皇太子に",
+      "detail": "兄の太子建成、弟の元吉を誅殺。父高祖を譲位させる。",
+      "tags": [
+        "loss",
+        "self_denial"
+      ]
+    },
+    {
+      "year": 627,
+      "age": 29,
+      "title": "貞観の治の開始",
+      "detail": "唐第2代皇帝太宗。倹約・諫言・均田制で中国黄金時代へ。",
+      "tags": [
+        "restart",
+        "approval"
+      ]
+    },
+    {
+      "year": 649,
+      "age": 51,
+      "title": "長安で崩御",
+      "detail": "貞観の治は中国史上最高の名君政治とされる。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "民は水なり、君は舟なり。水は舟を浮かべ、また舟を覆す。",
+      "source": "『貞観政要』"
+    },
+    {
+      "text": "鏡を以て衣冠を正し、人を以て得失を知る。",
+      "source": "魏徴の死を悼んで"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/li_shimin.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "唐第2代皇帝。兄弟殺しで皇位を奪うも、貞観の治と呼ばれる中国史上最高の名君政治を行った。シルクロード交易を活性化し、長安を世界都市に。日本の遣唐使もこの時代。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/TangTaizong.jpg?width=500",

@@ -8,15 +8,81 @@
   "field": "征服者",
   "summary": "モンゴル帝国の創始者。ユーラシア大陸最大の版図を築き、東西交流を促進した世界史の転換点。",
   "wikiTitle": "チンギス・カン",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1162,
+      "age": 0,
+      "title": "モンゴル高原で生まれる（テムジン）",
+      "detail": "父イェスゲイは小部族長。9 歳で父が毒殺され貧窮。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1185,
+      "age": 23,
+      "title": "妻ボルテをメルキト族に略奪される",
+      "detail": "戦って取り戻す過程で同盟と権威を獲得。",
+      "tags": [
+        "pride_broken",
+        "restart"
+      ]
+    },
+    {
+      "year": 1206,
+      "age": 44,
+      "title": "クリルタイで「チンギス・ハーン」称号",
+      "detail": "モンゴル諸部族統一、最高指導者の地位確立。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1215,
+      "age": 53,
+      "title": "金（中国北部）の中都（北京）陥落",
+      "detail": "モンゴル帝国の中国侵略開始。",
+      "tags": []
+    },
+    {
+      "year": 1219,
+      "age": 57,
+      "title": "ホラズム遠征 — 中央アジア・ペルシア征服",
+      "detail": "対立した王朝への報復で各都市を破壊。残虐性の伝説が広まる。",
+      "tags": []
+    },
+    {
+      "year": 1227,
+      "age": 65,
+      "title": "西夏遠征中に死去",
+      "detail": "墓は今も発見されず。秘密葬の伝説。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "天は私の中にいる。私の征服は天命である。",
+      "source": "ハーン即位後"
+    },
+    {
+      "text": "勝利者の最大の喜びは、敵を打ち破り、財産を奪い、彼らの妻を抱くことだ。",
+      "source": "伝（モンゴル秘史）"
+    },
+    {
+      "text": "弓を引けない者は、口で語る権利もない。",
+      "source": "ハーン語録"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/genghis_khan.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "モンゴル帝国の創始者。9 歳で父を失い貧窮の中から立ち上がり、ユーラシア大陸最大の帝国を築いた。残虐と統治の天才の両面を持ち、東西交易を活性化させた歴史最大の征服者。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/YuanEmperorAlbumGenghisPortrait.jpg?width=500",

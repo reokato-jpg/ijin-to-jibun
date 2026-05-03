@@ -8,15 +8,80 @@
   "field": "画家",
   "summary": "劇的な明暗法（キアロスクーロ）で宗教画に革命を起こしたバロック絵画の始祖。殺人事件で逃亡生活を送った型破りな天才。",
   "wikiTitle": "ミケランジェロ・メリージ・ダ・カラヴァッジョ",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1571,
+      "age": 0,
+      "title": "ミラノ近郊カラヴァッジョ村に生まれる",
+      "detail": "本名 ミケランジェロ・メリージ。",
+      "tags": []
+    },
+    {
+      "year": 1592,
+      "age": 21,
+      "title": "ローマへ — 貧困と暴力の青年期",
+      "detail": "売春婦や下級民を聖人モデルに使い、教会から物議を醸す。",
+      "tags": [
+        "isolation"
+      ]
+    },
+    {
+      "year": 1600,
+      "age": 29,
+      "title": "コンタレッリ礼拝堂「マタイの召命」で大ブレイク",
+      "detail": "強烈な明暗（テネブリズム）でバロックの幕を開けた。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1606,
+      "age": 35,
+      "title": "決闘相手を殺してローマから逃亡",
+      "detail": "テニスコートでの諍いから殺人。死刑判決、賞金首に。",
+      "tags": [
+        "loss",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1608,
+      "age": 37,
+      "title": "マルタ騎士団に入団→除名",
+      "detail": "騎士の地位を得るが暴力沙汰で除名、各地を逃亡しながら傑作を描き続けた。",
+      "tags": [
+        "restart",
+        "loss"
+      ]
+    },
+    {
+      "year": 1610,
+      "age": 38,
+      "title": "ポルト・エルコレで急死",
+      "detail": "教皇恩赦を受けにローマへ向かう途中、熱病で死去（or 暗殺説あり）。遺体は近年発見された。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "光は真理である。",
+      "source": "工房での言葉（伝）"
+    },
+    {
+      "text": "私は神を、市場の労働者の顔に見つけた。",
+      "source": "宗教画について"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/caravaggio.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "イタリアの画家。バロック絵画の祖。強烈な明暗対比（テネブリズム）と庶民的リアリズムで宗教画を革命した。決闘で人を殺し賞金首として逃亡しながら名作を描き、38 歳で謎の死を遂げた。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Bild-Ottavio_Leoni%2C_Caravaggio.jpg?width=500",

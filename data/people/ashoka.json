@@ -8,15 +8,85 @@
   "field": "王",
   "summary": "マウリヤ朝の第3代皇帝。カリンガ戦争の悲惨さから仏教に帰依、非暴力と寛容に基づく統治で古代インドを統一。",
   "wikiTitle": "アショーカ王",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": -304,
+      "age": 0,
+      "title": "マウリヤ朝王家に生まれる",
+      "detail": "祖父はマウリヤ朝創始者チャンドラグプタ。",
+      "tags": []
+    },
+    {
+      "year": -268,
+      "age": 36,
+      "title": "マウリヤ朝皇帝即位",
+      "detail": "兄弟との後継争いを制す。インド亜大陸の大半を統一。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": -261,
+      "age": 43,
+      "title": "カリンガ戦争で大勝も10万人死亡を目撃",
+      "detail": "戦場の屍を見て深く後悔、武力征服を放棄する転機となる。",
+      "tags": [
+        "loss",
+        "self_denial",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": -260,
+      "age": 44,
+      "title": "仏教に帰依",
+      "detail": "戦後、ダルマ（法）による統治へ転換。仏教を国家の精神支柱に据えた。",
+      "tags": [
+        "restart",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": -250,
+      "age": 54,
+      "title": "石柱詔勅をインド全土に建立",
+      "detail": "「すべての人は私の子供」と刻まれた30本以上の石柱・磨崖。多言語で布告された世界初の人権宣言。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": -232,
+      "age": 72,
+      "title": "死去、マウリヤ朝も間もなく崩壊",
+      "detail": "彼の理想主義的統治は後継者に継承されず、王朝は彼の死後 50 年で滅亡。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "すべての人は私の子供である。",
+      "source": "石柱詔勅"
+    },
+    {
+      "text": "真の征服とは、ダルマ（法と正義）による征服である。",
+      "source": "第13磨崖詔勅"
+    },
+    {
+      "text": "他者の宗教を尊敬することは、自分の宗教を尊敬することに等しい。",
+      "source": "石柱詔勅"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/ashoka.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "古代インド・マウリヤ朝最大の皇帝。武力征服で帝国を拡大したが、カリンガの大虐殺の悔悟から仏教に帰依し、「ダルマによる統治」へ転換。インド全土に石柱詔勅を建立し、史上最初の人権宣言を残した。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Indian_relief_from_Amaravati%2C_Guntur._Preserved_in_Guimet_Museum.jpg?width=500",

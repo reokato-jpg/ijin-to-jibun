@@ -8,15 +8,77 @@
   "field": "僧侶",
   "summary": "浄土真宗の宗祖。「悪人正機」「他力本願」を説き、庶民の救いを徹底した日本最大の仏教改革者。",
   "wikiTitle": "親鸞",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1173,
+      "age": 0,
+      "title": "京都で生まれる",
+      "detail": "下級貴族日野家。",
+      "tags": []
+    },
+    {
+      "year": 1181,
+      "age": 8,
+      "title": "比叡山で出家",
+      "detail": "天台宗で 20 年修行。",
+      "tags": []
+    },
+    {
+      "year": 1201,
+      "age": 28,
+      "title": "法然の弟子に",
+      "detail": "「南無阿弥陀仏」だけで救われる教えに出会う。",
+      "tags": [
+        "restart",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1207,
+      "age": 34,
+      "title": "越後流罪",
+      "detail": "念仏弾圧で師法然と共に流罪、僧籍剥奪。",
+      "tags": [
+        "loss",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1224,
+      "age": 51,
+      "title": "『教行信証』執筆開始",
+      "detail": "浄土真宗の根本聖典。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1262,
+      "age": 89,
+      "title": "京都で寂する",
+      "detail": "浄土真宗は日本最大の仏教宗派の一つに。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "善人なをもて往生をとぐ、いはんや悪人をや。",
+      "source": "『歎異抄』第 3 章"
+    },
+    {
+      "text": "弥陀の本願には、老少善悪の人をえらばれず。",
+      "source": "『歎異抄』第 1 章"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/shinran.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "鎌倉時代の僧。浄土真宗の開祖。法然の弟子として越後流罪を受けながら「悪人正機」（悪人こそ救われる）の革命的教えを確立。妻帯・肉食を許容する革新で日本仏教を民衆化。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/ShinranShonin.png?width=500",

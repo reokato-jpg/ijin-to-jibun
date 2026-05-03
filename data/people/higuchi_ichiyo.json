@@ -8,15 +8,81 @@
   "field": "小説家",
   "summary": "24歳で夭逝した明治の女性小説家。『たけくらべ』『にごりえ』で近代文学を切り拓いた。五千円札の顔。",
   "wikiTitle": "樋口一葉",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1872,
+      "age": 0,
+      "title": "東京・内幸町で生まれる",
+      "detail": "本名 樋口奈津。父は元士族の下級官吏。",
+      "tags": []
+    },
+    {
+      "year": 1889,
+      "age": 17,
+      "title": "父死去、一家の経済を背負う",
+      "detail": "母と妹のため文筆で生計を立てる決意。",
+      "tags": [
+        "loss",
+        "restart"
+      ]
+    },
+    {
+      "year": 1892,
+      "age": 20,
+      "title": "半井桃水の指導で『闇桜』発表",
+      "detail": "東京朝日新聞掲載。文壇デビュー。",
+      "tags": []
+    },
+    {
+      "year": 1894,
+      "age": 22,
+      "title": "本郷丸山福山町に転居 — 創作の絶頂",
+      "detail": "下谷竜泉寺町の駄菓子屋経営の挫折を経て、文学に専念する1年半（奇跡の14ヶ月）。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1895,
+      "age": 23,
+      "title": "『たけくらべ』連載完了",
+      "detail": "吉原界隈の少年少女を描いた近代文学の傑作。森鴎外・幸田露伴が絶賛。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1896,
+      "age": 24,
+      "title": "肺結核で死去",
+      "detail": "母と妹を残して。明治を代表する女流作家として、五千円札の顔となる（2004-2024）。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "わかれといふ字いまだかゝず、人の門出の見はてられず。",
+      "source": "『たけくらべ』"
+    },
+    {
+      "text": "私の小説は、私の貧しさから生まれた。",
+      "source": "日記"
+    },
+    {
+      "text": "言葉は人の心を打つ唯一の武器である。",
+      "source": "日記"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/higuchi_ichiyo.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "明治の女流作家。父を失い一家の経済を背負って文筆に専念、わずか 14 ヶ月の創作期間で『たけくらべ』『にごりえ』『十三夜』を残し 24 歳で夭折。日本初の職業女性作家。五千円札の顔（2004-2024）。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Higuchi_Ichiyou.png?width=500",

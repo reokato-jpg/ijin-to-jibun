@@ -8,15 +8,75 @@
   "field": "政治家",
   "summary": "第16代アメリカ大統領。南北戦争で合衆国を救い、奴隷解放宣言を発布。ゲティスバーグ演説「人民の人民による人民のための政治」。",
   "wikiTitle": "エイブラハム・リンカーン",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1809,
+      "age": 0,
+      "title": "ケンタッキー州の丸太小屋で生まれる",
+      "detail": "貧しい開拓農民の家庭。母を 9 歳で失う。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1834,
+      "age": 25,
+      "title": "イリノイ州議会議員",
+      "detail": "独学で法律家になり政界へ。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1861,
+      "age": 52,
+      "title": "アメリカ第16代大統領就任",
+      "detail": "南部 7 州が連邦離脱、南北戦争勃発。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1863,
+      "age": 54,
+      "title": "奴隷解放宣言・ゲティスバーグ演説",
+      "detail": "「人民の、人民による、人民のための政治」 — 民主主義の名文。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1865,
+      "age": 56,
+      "title": "南北戦争終結 — フォード劇場で暗殺",
+      "detail": "戦争終結 5 日後、ジョン・ウィルクス・ブースに後頭部を撃たれる。連邦の保存と奴隷制廃止を成し遂げた直後の死。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "人民の、人民による、人民のための政治。",
+      "source": "ゲティスバーグ演説 1863"
+    },
+    {
+      "text": "あなたを変えられるのはあなただけだ。",
+      "source": "演説"
+    },
+    {
+      "text": "敵を友にすれば、敵は消えるのではないか？",
+      "source": "演説"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/lincoln.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "アメリカ第16代大統領。丸太小屋から大統領へ。南北戦争で連邦を保ち、奴隷制を廃止した。南北戦争終結直後の暗殺で「殉教者大統領」となる。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Abraham_Lincoln_O-77_matte_collodion_print.jpg?width=500",

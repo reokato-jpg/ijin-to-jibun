@@ -8,15 +8,77 @@
   "field": "発明家・電気技師",
   "summary": "交流送電を実用化。エジソンと電流戦争を繰り広げた。テスラコイル、無線通信の先駆け。EV時代の名の由来。",
   "wikiTitle": "ニコラ・テスラ",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1856,
+      "age": 0,
+      "title": "オーストリア領（現クロアチア）で生まれる",
+      "detail": "セルビア人の聖職者の子。",
+      "tags": []
+    },
+    {
+      "year": 1884,
+      "age": 28,
+      "title": "アメリカへ — エジソンに雇われる",
+      "detail": "ポケットに 4 セント。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1888,
+      "age": 32,
+      "title": "交流電気システム開発",
+      "detail": "ウェスティングハウスと組み「電流戦争」でエジソンの直流に勝利。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1893,
+      "age": 37,
+      "title": "シカゴ万博で交流発電機 — ナイアガラ発電所開発",
+      "detail": "現代電力網の起点。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1899,
+      "age": 43,
+      "title": "コロラドスプリングスで無線送電実験",
+      "detail": "12 メートルの人工雷を発生。先進的すぎて理解されず。",
+      "tags": [
+        "isolation"
+      ]
+    },
+    {
+      "year": 1943,
+      "age": 86,
+      "title": "ニューヨークのホテルで貧困のうちに死去",
+      "detail": "晩年は鳩を餌付け、自分は孤独に。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "現在は彼らのもの、未来は私が働いた成果のもの。",
+      "source": "回想"
+    },
+    {
+      "text": "もしも 3、6、9 の素晴らしさを知れば、宇宙への鍵を手にする。",
+      "source": "晩年"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/tesla_nikola.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "セルビア系アメリカ人の発明家・電気技師。交流電気システム・誘導電動機・無線送電を発明、現代電力文明の礎を築いた。エジソンに勝ったが、ビジネスでは負け、貧困のうちに孤独に死去。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Tesla_Sarony.jpg?width=500",

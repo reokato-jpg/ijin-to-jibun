@@ -8,15 +8,84 @@
   "field": "女王",
   "summary": "ヘンリー8世の娘。生涯独身を貫きスペイン無敵艦隊を撃破、シェイクスピア演劇の黄金時代を築いた処女王。",
   "wikiTitle": "エリザベス1世",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1533,
+      "age": 0,
+      "title": "グリニッジで生まれる",
+      "detail": "父ヘンリー8世、母アン・ブーリン。男児期待で生まれた女児。",
+      "tags": []
+    },
+    {
+      "year": 1536,
+      "age": 2,
+      "title": "母アン・ブーリン処刑、私生児宣言",
+      "detail": "王位継承権を剥奪。",
+      "tags": [
+        "loss",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1554,
+      "age": 21,
+      "title": "異母姉メアリー1世の命でロンドン塔へ投獄",
+      "detail": "新教徒疑惑。死を覚悟したが姉が早逝、解放される。",
+      "tags": [
+        "isolation"
+      ]
+    },
+    {
+      "year": 1558,
+      "age": 25,
+      "title": "イングランド女王即位",
+      "detail": "「処女王」を貫き、生涯独身。",
+      "tags": [
+        "restart",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1588,
+      "age": 55,
+      "title": "アルマダの海戦でスペイン無敵艦隊撃破",
+      "detail": "ティルベリーで「私は弱く卑しい女の体だが、王の心と胃を持つ」と兵に演説。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1603,
+      "age": 69,
+      "title": "リッチモンド宮殿で死去",
+      "detail": "テューダー朝最後の王。スコットランド王ジェームズ6世がイングランド王に。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "私は弱く卑しい女の体を持っているが、王の心と胃を持っている。",
+      "source": "ティルベリー演説 1588"
+    },
+    {
+      "text": "私は神とイングランドと結婚した。",
+      "source": "結婚を断った時 1559"
+    },
+    {
+      "text": "見ること、見られないこと、それが王の務めである。",
+      "source": "宮廷での言葉"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/elizabeth_i.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "イングランド女王。母を父に殺されながら王座に就き、45 年間独身を貫きアルマダ海戦で覇権を確立、シェイクスピアの黄金時代を築いた。「処女王（バージン・クイーン）」。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Darnley_stage_3.jpg?width=500",

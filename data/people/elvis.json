@@ -8,15 +8,79 @@
   "field": "歌手",
   "summary": "ロックンロールの王様（King of Rock and Roll）。白人と黒人音楽を融合させ、20世紀ポップカルチャーの偶像となった。",
   "wikiTitle": "エルヴィス・プレスリー",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1935,
+      "age": 0,
+      "title": "ミシシッピ州チューペロで生まれる",
+      "detail": "貧しい労働者の子。双子の片割れは死産。",
+      "tags": []
+    },
+    {
+      "year": 1954,
+      "age": 19,
+      "title": "サン・スタジオで「That's All Right」録音",
+      "detail": "黒人ブルースを白人少年が歌う革新、ロックンロール誕生の瞬間。",
+      "tags": [
+        "restart",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1956,
+      "age": 21,
+      "title": "「Heartbreak Hotel」全米 1 位",
+      "detail": "腰の動きが「卑猥」と教会から非難されつつ若者を熱狂させる。",
+      "tags": [
+        "approval",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1958,
+      "age": 23,
+      "title": "陸軍入隊（ドイツ駐留）",
+      "detail": "兵役を真面目に務めキャリアが中断、しかしファンは離れず。",
+      "tags": [
+        "self_denial"
+      ]
+    },
+    {
+      "year": 1968,
+      "age": 33,
+      "title": "「カムバック・スペシャル」TV 復活",
+      "detail": "黒革ジャンの伝説的ライブで全盛期へ復帰。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1977,
+      "age": 42,
+      "title": "メンフィスのグレースランドで死去",
+      "detail": "薬物依存と過食による心不全。葬儀に世界中から数十万人。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "野心は、夢を追いかけ続けるための薬だ。",
+      "source": "インタビュー"
+    },
+    {
+      "text": "私は黒人音楽を盗んだのではない。私の魂が彼らに反応しただけだ。",
+      "source": "インタビュー"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/elvis.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "アメリカのミュージシャン。「キング・オブ・ロックンロール」。黒人ブルースを白人若者の音楽として爆発的に広め、20 世紀のポップ・カルチャーそのものを変えた。グレースランドは聖地。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Elvis_Presley_promoting_Jailhouse_Rock.jpg?width=500",

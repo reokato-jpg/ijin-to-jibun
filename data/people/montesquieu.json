@@ -8,15 +8,67 @@
   "field": "思想家",
   "summary": "『法の精神』で三権分立を提唱。アメリカ合衆国憲法の設計に直接影響した近代政治思想の父。",
   "wikiTitle": "モンテスキュー",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1689,
+      "age": 0,
+      "title": "フランス・ボルドー近郊で生まれる",
+      "detail": "貴族の家。",
+      "tags": []
+    },
+    {
+      "year": 1715,
+      "age": 26,
+      "title": "ボルドー高等法院長就任",
+      "detail": "法律実務に通じる。",
+      "tags": []
+    },
+    {
+      "year": 1721,
+      "age": 32,
+      "title": "『ペルシア人の手紙』匿名出版",
+      "detail": "ペルシア人がフランスを評する形式で社会を風刺。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1748,
+      "age": 59,
+      "title": "『法の精神』刊行",
+      "detail": "三権分立論を打ち立て、後のアメリカ憲法に決定的影響。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1755,
+      "age": 66,
+      "title": "パリで死去",
+      "detail": "啓蒙思想の巨人として弔われる。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "権力を抑えるためには、権力をもってこれにあたらなければならない。",
+      "source": "『法の精神』"
+    },
+    {
+      "text": "良い法は人を良くする。悪い法は良い人を悪くする。",
+      "source": "『法の精神』"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/montesquieu.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "18 世紀フランスの啓蒙思想家。『法の精神』で三権分立論（立法・行政・司法）を打ち立て、近代民主主義の基盤を築いた。アメリカ独立宣言・憲法に直接影響。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Montesquieu_1.png?width=500",

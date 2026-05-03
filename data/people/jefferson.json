@@ -8,15 +8,87 @@
   "field": "政治家・思想家",
   "summary": "アメリカ独立宣言の起草者、第3代大統領。「すべての人間は平等に造られた」の言葉の源。",
   "wikiTitle": "トマス・ジェファーソン",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1743,
+      "age": 0,
+      "title": "ヴァージニアの大農場で生まれる",
+      "detail": "父は土地測量・大農場主。奴隷を所有する家庭で育つ。",
+      "tags": []
+    },
+    {
+      "year": 1762,
+      "age": 19,
+      "title": "ウィリアム・アンド・メアリー大学卒業",
+      "detail": "啓蒙思想を吸収。",
+      "tags": []
+    },
+    {
+      "year": 1776,
+      "age": 33,
+      "title": "アメリカ独立宣言起草",
+      "detail": "「すべての人は平等に造られている」。フランクリンらが微修正。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1785,
+      "age": 42,
+      "title": "駐仏公使",
+      "detail": "フランス革命前夜のパリで自由主義を体得。",
+      "tags": []
+    },
+    {
+      "year": 1801,
+      "age": 57,
+      "title": "アメリカ第3代大統領就任",
+      "detail": "ルイジアナ買収（1803）でアメリカの国土を倍にした。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1819,
+      "age": 76,
+      "title": "ヴァージニア大学創立",
+      "detail": "晩年の最大の誇り。墓碑には大学創立を記した（大統領職は記さず）。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1826,
+      "age": 83,
+      "title": "独立宣言 50 周年の同日に死去",
+      "detail": "ジョン・アダムズと同じ 7 月 4 日に死亡という偶然。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "すべての人は平等に造られている。",
+      "source": "アメリカ独立宣言 1776"
+    },
+    {
+      "text": "自由の木は時々、愛国者と暴君の血で潤されねばならない。",
+      "source": "1787 年の手紙"
+    },
+    {
+      "text": "私は新聞のない政府より、政府のない新聞を選ぶ。",
+      "source": "1787 年"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/jefferson.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "アメリカ建国の父・第3代大統領。独立宣言の起草者。「すべての人は平等」と書きながら自身は奴隷を所有した矛盾を抱えた、アメリカそのものを体現する人物。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Official_Presidential_portrait_of_Thomas_Jefferson_%28by_Rembrandt_Peale%2C_1800%29.jpg?width=500",

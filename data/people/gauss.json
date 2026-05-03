@@ -8,15 +8,82 @@
   "field": "数学者・天文学者",
   "summary": "「数学の王」と称される天才。整数論、代数学、統計学、電磁気学すべてで業績。ガウス分布、ガウス平面の由来。",
   "wikiTitle": "カール・フリードリヒ・ガウス",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1777,
+      "age": 0,
+      "title": "ブラウンシュヴァイクの貧しい煉瓦職人の家に生まれる",
+      "detail": "3 歳で父の計算間違いを指摘した逸話あり。",
+      "tags": []
+    },
+    {
+      "year": 1785,
+      "age": 8,
+      "title": "1 から 100 までの和を瞬時に算出",
+      "detail": "教師が罰課題で出した「1+2+...+100」を、5050 と即答（等差数列の和の発見）。",
+      "tags": [
+        "pride_broken",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1796,
+      "age": 19,
+      "title": "正 17 角形のコンパス・定規作図",
+      "detail": "古代ギリシア以来 2000 年解かれなかった問題を 19 歳で解決。墓碑にこの図形を刻む遺言。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1801,
+      "age": 24,
+      "title": "『整数論研究』刊行",
+      "detail": "近代整数論の基礎を 1 冊で築いた歴史的著作。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1801,
+      "age": 24,
+      "title": "小惑星ケレス再発見の軌道計算",
+      "detail": "わずかな観測データから軌道を予測、ケレスを再発見させた。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1855,
+      "age": 77,
+      "title": "ゲッティンゲンで死去",
+      "detail": "「数学の王」と呼ばれた。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "数学は科学の女王であり、整数論は数学の女王である。",
+      "source": "弟子への手紙"
+    },
+    {
+      "text": "鋭く考えれば、ほとんどの問題は易しくなる。",
+      "source": "整数論研究"
+    },
+    {
+      "text": "私は計算ではなく、概念を求める。",
+      "source": "弟子への助言"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/gauss.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "ドイツの数学者・天文学者・物理学者。「数学の王」。整数論・解析学・天文学・電磁気学に独立して大革命を起こした、史上最も多才な数学者。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Carl_Friedrich_Gauss.jpg?width=500",

@@ -8,15 +8,67 @@
   "field": "公民権運動家",
   "summary": "1955年アラバマでバスの白人優先席を譲らず逮捕。これがモンゴメリー・バス・ボイコット運動の起点となり、公民権運動の母となった。",
   "wikiTitle": "ローザ・パークス",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1913,
+      "age": 0,
+      "title": "アラバマ州タスキーギで生まれる",
+      "detail": "祖父母の元で育つ。差別の中で。",
+      "tags": []
+    },
+    {
+      "year": 1932,
+      "age": 19,
+      "title": "公民権活動家のレイモンド・パークスと結婚",
+      "detail": "夫婦で NAACP の活動を開始。",
+      "tags": []
+    },
+    {
+      "year": 1955,
+      "age": 42,
+      "title": "モンゴメリーでバスの席を譲らず逮捕",
+      "detail": "12月1日、白人乗客のために席を立つ命令を拒否。「もう疲れた」。",
+      "tags": [
+        "pride_broken",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1955,
+      "age": 42,
+      "title": "381 日のバスボイコット運動の引き金",
+      "detail": "MLK が指導するボイコットの象徴に。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 2005,
+      "age": 92,
+      "title": "デトロイトで死去",
+      "detail": "国会議事堂で「英雄」として葬儀（女性初・黒人初）。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "私が席を譲らなかったのは、疲れていたからではない。譲ることに疲れていたからだ。",
+      "source": "後年のインタビュー"
+    },
+    {
+      "text": "勇気は恐怖の不在ではなく、恐怖を抱きながらも進むこと。",
+      "source": "演説"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/rosa_parks.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "アメリカの公民権運動の象徴。1955 年モンゴメリーのバスで席を譲らず逮捕、381 日のボイコットで人種隔離違憲判決を引き出した。「公民権運動の母」と呼ばれる。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Rosa_Parks%2C_November_1956_%28cropped%29.jpg?width=500",

@@ -8,15 +8,79 @@
   "field": "小説家",
   "summary": "『嵐が丘』のみを残して30歳で早世。荒野の情念を描いた孤高の天才。3姉妹で文学を変えた。",
   "wikiTitle": "エミリー・ブロンテ",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1818,
+      "age": 0,
+      "title": "ヨークシャー州ソーントンで生まれる",
+      "detail": "ブロンテ三姉妹の次女。父は牧師。",
+      "tags": []
+    },
+    {
+      "year": 1825,
+      "age": 7,
+      "title": "ホーワースの牧師館へ移住、姉 2 人を相次いで失う",
+      "detail": "結核で姉マリアとエリザベスを失い、シャーロット・アン・ブランウェルと荒野を歩き育つ。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1842,
+      "age": 24,
+      "title": "ベルギー留学（短期間）",
+      "detail": "シャーロットと共に語学留学するも母代わりの叔母の死で帰国。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1846,
+      "age": 28,
+      "title": "三姉妹合同詩集出版（男性筆名）",
+      "detail": "Currer / Ellis / Acton Bell。売れたのは 2 部。",
+      "tags": []
+    },
+    {
+      "year": 1847,
+      "age": 29,
+      "title": "『嵐が丘』刊行",
+      "detail": "ヨークシャー荒野の暗く激しい愛憎物語。同時代評価は二分されたが 20 世紀に最高峰として確立。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1848,
+      "age": 30,
+      "title": "弟ブランウェルの葬儀後に発病、死去",
+      "detail": "結核。ホーワースの牧師館で葬儀以来一歩も外に出ずに死んだ。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "私の魂が眠るとき、その横で彼の魂が眠るだろう。",
+      "source": "『嵐が丘』"
+    },
+    {
+      "text": "私は彼であり、彼は私である。",
+      "source": "『嵐が丘』"
+    },
+    {
+      "text": "私は地獄でも彼と共にあるなら、それを天国と呼ぶ。",
+      "source": "『嵐が丘』"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/emily_bronte.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "イギリス・ヨークシャー荒野の作家。30 歳で唯一の小説『嵐が丘』を残して結核で死去。死と愛と荒野の激烈さが、英文学の頂点として 20 世紀以降に再評価された。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/The_Bront%C3%AB_Sisters_by_Patrick_Branwell_Bront%C3%AB_restored.jpg?width=500",

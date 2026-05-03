@@ -8,15 +8,63 @@
   "field": "皇帝",
   "summary": "14世紀マリ帝国の皇帝。史上最も裕福な人物と言われる。メッカ巡礼で通り道の金相場が暴落したほどの伝説。",
   "wikiTitle": "マンサ・ムーサ",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1280,
+      "age": 0,
+      "title": "西アフリカ・マリ帝国に生まれる",
+      "detail": "マンディング王家。",
+      "tags": []
+    },
+    {
+      "year": 1312,
+      "age": 32,
+      "title": "マリ帝国マンサ（皇帝）即位",
+      "detail": "金と塩の交易で巨富を築く。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1324,
+      "age": 44,
+      "title": "メッカ巡礼 — 史上最大の散財",
+      "detail": "1万8000人と100頭のラクダで黄金を運び、カイロでの大量散財により金相場が10年下落した伝説。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1325,
+      "age": 45,
+      "title": "ティンブクトゥにサンコレ・モスクを建立",
+      "detail": "イスラーム学問都市の礎。",
+      "tags": []
+    },
+    {
+      "year": 1337,
+      "age": 57,
+      "title": "死去",
+      "detail": "歴史上最も裕福な人物の一人とされる。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "我が金は神の恵みであり、神への奉納である。",
+      "source": "メッカ巡礼時"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/mansa_musa.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "14 世紀西アフリカ・マリ帝国の皇帝。世界史上最も裕福な人物の一人。1324 年のメッカ巡礼でカイロに金をばらまき、地中海地金相場を 10 年揺るがした。ティンブクトゥをイスラーム学問の都市に。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Mansa_Musa.jpg?width=500",

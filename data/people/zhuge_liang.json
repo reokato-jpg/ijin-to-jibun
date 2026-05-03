@@ -8,15 +8,81 @@
   "field": "軍師・政治家",
   "summary": "三国志の天才軍師。劉備の三顧の礼で世に出て、赤壁の戦いで曹操を破る。「出師の表」の忠誠。",
   "wikiTitle": "諸葛亮",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 181,
+      "age": 0,
+      "title": "山東省で生まれる",
+      "detail": "幼くして両親を失う。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 207,
+      "age": 26,
+      "title": "三顧の礼で劉備に仕える",
+      "detail": "諸葛草庵に三度通った劉備に応えた。「天下三分の計」を進言。",
+      "tags": [
+        "restart",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 208,
+      "age": 27,
+      "title": "赤壁の戦いで曹操軍大破",
+      "detail": "孫権との同盟で勝利、三国時代の幕開け。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 221,
+      "age": 40,
+      "title": "蜀の建国 — 丞相就任",
+      "detail": "劉備が皇帝に。諸葛亮は丞相として実権を握る。",
+      "tags": []
+    },
+    {
+      "year": 227,
+      "age": 46,
+      "title": "「出師の表」を後主劉禅に奉る",
+      "detail": "北伐に向かう前の名文。「鞠躬尽瘁、死して後已む」。",
+      "tags": []
+    },
+    {
+      "year": 234,
+      "age": 53,
+      "title": "五丈原で陣中没",
+      "detail": "司馬懿との対峙中、過労と病で死去。「丞相にしてこれほどなのか」と司馬懿が漏らした逸話。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "鞠躬尽瘁、死して後已む。",
+      "source": "「後出師の表」 227"
+    },
+    {
+      "text": "勝兵は先ず勝ちて而る後に戦いを求む。",
+      "source": "兵法"
+    },
+    {
+      "text": "知らざるを知らずと為す、これ知るなり。",
+      "source": "兵法"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/zhuge_liang.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "三国時代の蜀漢の丞相。「天下三分の計」で蜀の建国を導き、丞相として南征・北伐を指揮。「出師の表」は中国文学の名文。「鞠躬尽瘁、死して後已む」を体現した忠臣の代名詞。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/%E6%98%8E%E4%BA%BA%E7%BB%98_%E3%80%8A%E8%AF%B8%E8%91%9B%E4%BA%AE%E5%83%8F%E3%80%8B%EF%BC%88%E5%8D%97%E8%96%B0%E6%AE%BF%E6%9C%AC%EF%BC%89.jpg?width=500",

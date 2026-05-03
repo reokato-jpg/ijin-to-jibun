@@ -8,15 +8,71 @@
   "field": "思想家",
   "summary": "道家思想の代表。「胡蝶の夢」で知られ、人間中心の価値観を相対化。東洋の詩的哲学の源流。",
   "wikiTitle": "荘子",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": -369,
+      "age": 0,
+      "title": "宋国蒙に生まれる",
+      "detail": "本名 荘周。",
+      "tags": []
+    },
+    {
+      "year": -340,
+      "age": 30,
+      "title": "漆園吏（漆作りの管理人）",
+      "detail": "下級官吏の職。",
+      "tags": []
+    },
+    {
+      "year": -320,
+      "age": 50,
+      "title": "楚の宰相職を辞退",
+      "detail": "「私は泥の中で尾を振る亀の方がいい」と。",
+      "tags": [
+        "self_denial",
+        "isolation"
+      ]
+    },
+    {
+      "year": -300,
+      "age": 70,
+      "title": "『荘子』内篇執筆",
+      "detail": "胡蝶の夢、無為自然、万物斉同 — 道家思想の頂点。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": -286,
+      "age": 84,
+      "title": "死去",
+      "detail": "弟子に「私を野に晒せ。鳥に食わせよ。土に埋めれば蟻が食う、それは不公平だ」と遺言。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "胡蝶の夢を見たのか、夢が私を見ていたのか。",
+      "source": "『荘子』斉物論"
+    },
+    {
+      "text": "井の中の蛙、大海を知らず。",
+      "source": "『荘子』秋水"
+    },
+    {
+      "text": "至人は己なし、神人は功なし、聖人は名なし。",
+      "source": "『荘子』逍遥遊"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/zhuangzi.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "戦国時代の道家思想家。老子と並ぶ道家の双璧。「胡蝶の夢」「無為自然」「万物斉同」を説き、世俗的成功を笑い飛ばした思想で東洋哲学最大の自由人。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Zhuangzi.png?width=500",

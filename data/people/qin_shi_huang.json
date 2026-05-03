@@ -8,15 +8,62 @@
   "field": "皇帝",
   "summary": "中国を統一した最初の皇帝。度量衡・貨幣・文字を統一し万里の長城を築いた。兵馬俑で知られる。",
   "wikiTitle": "始皇帝",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": -259,
+      "age": 0,
+      "title": "趙国で生まれる（人質の子）",
+      "detail": "本名 嬴政。秦の太子の子だが趙国に人質。",
+      "tags": []
+    },
+    {
+      "year": -247,
+      "age": 12,
+      "title": "秦王即位",
+      "detail": "幼年。呂不韋らが摂政。",
+      "tags": []
+    },
+    {
+      "year": -221,
+      "age": 38,
+      "title": "中国統一 — 史上初の皇帝に",
+      "detail": "六国を滅ぼし、史上初の「皇帝」を名乗る。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": -213,
+      "age": 46,
+      "title": "焚書坑儒",
+      "detail": "儒家の書物を焼き、儒者を生き埋め。思想統制の極致。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": -210,
+      "age": 49,
+      "title": "巡幸中に死去",
+      "detail": "不老不死の薬を求めて巡幸中、河北省で病没。長城・兵馬俑を残す。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "朕は始皇帝、子孫は二世皇帝、三世皇帝と万世まで続くべし。",
+      "source": "皇帝即位 -221"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/qin_shi_huang.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "中国史上初の統一皇帝。秦の始皇帝。六国を滅ぼし郡県制・度量衡統一・万里の長城建設で中華帝国の原型を作った。焚書坑儒の暴虐と兵馬俑の壮麗で永遠に記憶される。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/QinShiHuang19century.jpg?width=500",

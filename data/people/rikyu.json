@@ -8,15 +8,71 @@
   "field": "茶人",
   "summary": "侘び茶を完成させた茶聖。秀吉の茶頭として仕え、簡素・清寂の美を極めたが、晩年は切腹を命じられた。",
   "wikiTitle": "千利休",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1522,
+      "age": 0,
+      "title": "堺の魚問屋の家に生まれる",
+      "detail": "本名 田中与四郎。",
+      "tags": []
+    },
+    {
+      "year": 1540,
+      "age": 18,
+      "title": "武野紹鴎に茶の湯を学ぶ",
+      "detail": "侘び茶の系譜を継ぐ。",
+      "tags": []
+    },
+    {
+      "year": 1574,
+      "age": 52,
+      "title": "信長の茶頭",
+      "detail": "茶の湯と政治が結びつく時代。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1585,
+      "age": 63,
+      "title": "秀吉の茶頭、利休居士の号",
+      "detail": "天皇の御前茶を勤める。「侘び」の美学を完成。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1591,
+      "age": 69,
+      "title": "秀吉の命で切腹",
+      "detail": "理由は諸説、大徳寺山門の自像、政治対立等。京都で切腹。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "規矩作法守りつくして破るとも離るゝとても本を忘るな。",
+      "source": "「利休道歌」"
+    },
+    {
+      "text": "和敬清寂。",
+      "source": "茶の湯の心得"
+    },
+    {
+      "text": "茶はただ湯を沸かし茶を点てて飲むばかりなることと知るべし。",
+      "source": "弟子への教え"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/rikyu.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "戦国時代の茶人。侘び茶の大成者。信長・秀吉の茶頭として政治の中枢にあり、69 歳で秀吉に切腹を命じられた。「侘び寂び」の美学を結晶化させた日本文化最大の巨匠の一人。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Sen_no_Rikyu_JPN.jpg?width=500",

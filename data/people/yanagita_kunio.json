@@ -8,15 +8,68 @@
   "field": "民俗学者",
   "summary": "日本民俗学の創始者。『遠野物語』で村落の伝承を救い、無名の庶民の生活を学問にした。",
   "wikiTitle": "柳田國男",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1875,
+      "age": 0,
+      "title": "兵庫県神東郡に生まれる",
+      "detail": "本名 松岡国男。後に柳田家養子。",
+      "tags": []
+    },
+    {
+      "year": 1900,
+      "age": 25,
+      "title": "東京帝国大学法科卒、農商務省入省",
+      "detail": "農政官として全国を回る。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1910,
+      "age": 35,
+      "title": "『遠野物語』刊行",
+      "detail": "岩手県遠野の佐々木喜善から聞いた怪異譚を収録。日本民俗学の出発点。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1935,
+      "age": 60,
+      "title": "民俗学を学問として体系化",
+      "detail": "『民間伝承の会』創設、後の日本民俗学会へ。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1962,
+      "age": 87,
+      "title": "東京で死去",
+      "detail": "「日本民俗学の父」として国民的尊敬。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "民間伝承を尊ぶことは、自分自身を尊ぶことである。",
+      "source": "随筆"
+    },
+    {
+      "text": "山に居る神を、平地で忘れた人々を、私は思い出させたい。",
+      "source": "『遠野物語』序"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/yanagita_kunio.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "日本民俗学の創始者。農政官として全国を回り、『遠野物語』『海上の道』で民間伝承を学問として確立。日本人の精神性のルーツを掘り続けた。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Kunio_Yanagita.jpg?width=500",

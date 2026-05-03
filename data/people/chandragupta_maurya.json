@@ -8,15 +8,74 @@
   "field": "王",
   "summary": "インド初の統一帝国マウリヤ朝の創始者。宰相カウティリヤの補佐でインド亜大陸の大部分を支配。孫はアショーカ王。",
   "wikiTitle": "チャンドラグプタ (マウリヤ朝)",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": -340,
+      "age": 0,
+      "title": "マガダ国低位身分の家に生まれる",
+      "detail": "出自は曖昧、孔雀の飼育家とも伝わる。",
+      "tags": []
+    },
+    {
+      "year": -322,
+      "age": 18,
+      "title": "チャナキヤ（カウティリヤ）と出会う",
+      "detail": "戦略家の天才の指導でナンダ朝打倒を計画。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": -321,
+      "age": 19,
+      "title": "ナンダ朝を打倒、マウリヤ朝建国",
+      "detail": "インド史上初の統一王朝。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": -305,
+      "age": 35,
+      "title": "アレクサンドロス後継セレウコスを撃退",
+      "detail": "戦象 500 頭を引き渡しに、北西インドを獲得。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": -298,
+      "age": 42,
+      "title": "ジャイナ教に改宗、王位を退く",
+      "detail": "南インドのシュラヴァナ・ベラゴラへ赴き、断食によって死を迎える「サレッカナ」を実践。",
+      "tags": [
+        "self_denial",
+        "isolation"
+      ]
+    },
+    {
+      "year": -297,
+      "age": 43,
+      "title": "断食死",
+      "detail": "ジャイナ教の伝統的死法に従い、断食でこの世を去ったとされる。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "王の務めは民の幸福である。民の幸福が王の幸福である。",
+      "source": "『実利論』（チャナキヤ・伝）"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/chandragupta_maurya.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "インド史上初の統一王朝マウリヤ朝の創始者。低位身分から立ち上がり、戦略家チャナキヤの導きでナンダ朝を倒し、インド亜大陸を統一。晩年はジャイナ教に帰依し断食死を選んだ。アショーカ王の祖父。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Chandragupt_maurya_Birla_mandir_6_dec_2009_%2831%29.JPG?width=500",

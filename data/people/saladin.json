@@ -8,15 +8,69 @@
   "field": "軍人・王",
   "summary": "第三次十字軍を退けてエルサレムを奪還。敵からも高潔と称えられた騎士道的リーダー。",
   "wikiTitle": "サラーフッディーン",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1137,
+      "age": 0,
+      "title": "イラク・ティクリートで生まれる",
+      "detail": "クルド系将軍家。",
+      "tags": []
+    },
+    {
+      "year": 1169,
+      "age": 32,
+      "title": "エジプトの宰相に",
+      "detail": "ファーティマ朝を倒しアイユーブ朝建国。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1187,
+      "age": 50,
+      "title": "ヒッティーンの戦いで十字軍に大勝",
+      "detail": "エルサレムを 88 年ぶりにイスラム側に奪還。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1191,
+      "age": 54,
+      "title": "リチャード獅子心王と第3回十字軍で対峙",
+      "detail": "戦場での騎士道精神で敵将からも尊敬される。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1193,
+      "age": 55,
+      "title": "ダマスカスで病死",
+      "detail": "全財産は貧者に分け与え、葬儀代に困るほどだったという伝説。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "敵を打ち負かしても、彼らを尊重せよ。彼らも神の被造物である。",
+      "source": "戦場での命令"
+    },
+    {
+      "text": "金は貯めるためではない、配るためにある。",
+      "source": "晩年"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/saladin.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "アイユーブ朝の創始者。十字軍からエルサレムを奪還した英雄、騎士道精神で敵将リチャード獅子心王にも尊敬された。寛大さで「キリスト教徒の中のイスラム教徒」とまで呼ばれた稀有な征服者。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Folio_from_The_book_of_knowledge_of_ingenious_mechanical_devices_%281354_copy%29._Part_of_a_water_clock_%28detail%29.jpg?width=500",

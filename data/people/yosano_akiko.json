@@ -8,15 +8,70 @@
   "field": "歌人・詩人",
   "summary": "『みだれ髪』で女性の情念を歌い、明治の短歌を革新。日露戦争中「君死にたまふことなかれ」で戦争を批判した先駆的フェミニスト。",
   "wikiTitle": "与謝野晶子",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1878,
+      "age": 0,
+      "title": "堺市の和菓子屋に生まれる",
+      "detail": "本名 鳳志よう。",
+      "tags": []
+    },
+    {
+      "year": 1901,
+      "age": 23,
+      "title": "歌集『みだれ髪』刊行 — 与謝野鉄幹と結婚",
+      "detail": "「やは肌のあつき血潮にふれも見でさびしからずや道を説く君」 — 大胆な官能歌で衝撃。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1904,
+      "age": 26,
+      "title": "「君死にたまふことなかれ」発表",
+      "detail": "日露戦争に出征した弟への反戦詩。「すめらみこと」批判を含むため大反発を招くが詩史に残る。",
+      "tags": [
+        "self_denial"
+      ]
+    },
+    {
+      "year": 1912,
+      "age": 34,
+      "title": "夫を追ってヨーロッパへ",
+      "detail": "パリ・ロンドン・ベルリンを巡る。",
+      "tags": []
+    },
+    {
+      "year": 1942,
+      "age": 64,
+      "title": "東京で死去",
+      "detail": "11 人の子供を育てつつ生涯で 5 万首を詠み続けた。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "やは肌のあつき血潮にふれも見でさびしからずや道を説く君。",
+      "source": "『みだれ髪』 1901"
+    },
+    {
+      "text": "あゝをとうとよ、君を泣く、君死にたまふことなかれ。",
+      "source": "「君死にたまふことなかれ」 1904"
+    },
+    {
+      "text": "山の動く日来る。",
+      "source": "「そぞろごと」 1911"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/yosano_akiko.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "明治・大正・昭和の歌人。情熱的な恋愛歌『みだれ髪』で文壇に登場、日露戦争に「君死にたまふことなかれ」と反戦詩を投じた。11 人の子供を育てつつ 5 万首・小説・評論を残した近代日本最大の女性文学者。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Akiko_Yosano_younger.jpg?width=500",

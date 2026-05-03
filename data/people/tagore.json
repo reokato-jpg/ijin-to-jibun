@@ -8,15 +8,80 @@
   "field": "詩人・思想家",
   "summary": "1913年アジア初のノーベル文学賞。インド・バングラデシュ両国歌の作者。アインシュタインとも対話した詩聖。",
   "wikiTitle": "ラビンドラナート・タゴール",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1861,
+      "age": 0,
+      "title": "ベンガル・カルカッタの裕福な文化人家庭に生まれる",
+      "detail": "14 兄弟の末っ子。",
+      "tags": []
+    },
+    {
+      "year": 1878,
+      "age": 17,
+      "title": "イギリス留学",
+      "detail": "西洋文化に触れる。",
+      "tags": []
+    },
+    {
+      "year": 1901,
+      "age": 40,
+      "title": "シャンティニケタンに学校を設立",
+      "detail": "後の国際大学（ヴィシュヴァ・バーラティ）の前身。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1913,
+      "age": 52,
+      "title": "ノーベル文学賞受賞 — アジア人初",
+      "detail": "詩集『ギーターンジャリ』。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1915,
+      "age": 54,
+      "title": "ナイト爵位を受勲",
+      "detail": "1919 年アムリトサルの大虐殺に抗議して 1919 年に返上。",
+      "tags": [
+        "self_denial"
+      ]
+    },
+    {
+      "year": 1941,
+      "age": 80,
+      "title": "カルカッタで死去",
+      "detail": "インド国歌・バングラデシュ国歌の作詞作曲者。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "私が目を覚ましたとき、世界が踊っているのを見た。",
+      "source": "『ギーターンジャリ』"
+    },
+    {
+      "text": "教育の最高の目的は、知識ではなく、人格である。",
+      "source": "教育論"
+    },
+    {
+      "text": "鳥は翼が重いから空を飛べないと感じることがある。",
+      "source": "詩"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/tagore.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "インドの詩人・哲学者・教育者・作曲家。アジア人初のノーベル文学賞受賞者。インドとバングラデシュの国歌作詞作曲者。シャンティニケタンに国際大学を設立、東西文化の架け橋となった。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Rabindranath_Tagore_in_1909.jpg?width=500",

@@ -8,15 +8,75 @@
   "field": "小説家・軍医",
   "summary": "ドイツ留学の軍医にして『舞姫』『阿部一族』の文豪。漱石と並ぶ明治文学の双璧。",
   "wikiTitle": "森鷗外",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1862,
+      "age": 0,
+      "title": "島根県津和野で生まれる",
+      "detail": "本名 森林太郎。代々の藩医の家。",
+      "tags": []
+    },
+    {
+      "year": 1881,
+      "age": 19,
+      "title": "東京帝国大学医学部卒業（最年少）",
+      "detail": "陸軍軍医に。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1884,
+      "age": 22,
+      "title": "ドイツ留学（4年間）",
+      "detail": "ライプツィヒ・ベルリンで衛生学。",
+      "tags": []
+    },
+    {
+      "year": 1890,
+      "age": 28,
+      "title": "『舞姫』発表",
+      "detail": "ドイツ人女性エリスとの恋を題材にした近代小説の起点。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1907,
+      "age": 45,
+      "title": "陸軍軍医総監（軍医のトップ）",
+      "detail": "森鴎外として文学、森林太郎として軍医、二重生活の頂点。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1922,
+      "age": 60,
+      "title": "東京で死去",
+      "detail": "肺結核。「余ハ石見人森林太郎トシテ死セント欲ス」。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "余ハ石見人森林太郎トシテ死セント欲ス。",
+      "source": "遺書 1922"
+    },
+    {
+      "text": "若し我が思考のうちに、生涯一度なりと閃光を放ったものがあらば、それは漱石と私の論争においてである。",
+      "source": "随筆"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/mori_ogai.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "明治の小説家・軍医。陸軍軍医総監を務めながら『舞姫』『阿部一族』『高瀬舟』を残した二重生活の文学者。漱石と並ぶ明治文学の巨人。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Mori_Ogai_in_the_atelier_of_Sculptor_Takeishi_Kozaburo_in_1916.jpg?width=500",

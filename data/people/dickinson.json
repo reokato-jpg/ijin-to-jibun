@@ -8,15 +8,79 @@
   "field": "詩人",
   "summary": "生前は無名、自室で1800篇の詩を書き残した。死後「アメリカ最高の詩人」と認められた隠れた巨人。",
   "wikiTitle": "エミリー・ディキンソン",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1830,
+      "age": 0,
+      "title": "マサチューセッツ州アマーストで生まれる",
+      "detail": "父は弁護士・連邦下院議員。厳格な家庭。",
+      "tags": []
+    },
+    {
+      "year": 1855,
+      "age": 25,
+      "title": "実家から徐々に外に出なくなる",
+      "detail": "白い服だけを着、家の窓辺から外を眺める日々。生涯独身。",
+      "tags": [
+        "isolation"
+      ]
+    },
+    {
+      "year": 1862,
+      "age": 31,
+      "title": "編集者ヒギンソンに詩を送る",
+      "detail": "「私は誰でもない！」で始まる手紙。彼は詩才を認めるも公的発表は控えた。",
+      "tags": []
+    },
+    {
+      "year": 1860,
+      "age": 30,
+      "title": "創作の絶頂期 — 1 年で 366 篇",
+      "detail": "南北戦争中、家から出ずに大量の詩を書く。生前公表は 10 篇のみ。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1886,
+      "age": 55,
+      "title": "アマーストで死去",
+      "detail": "ブライト病。妹が遺品の中から 1800 篇の詩を発見。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1890,
+      "age": null,
+      "title": "死後 4 年、詩集が出版され衝撃",
+      "detail": "改変された形だが大ヒット。20 世紀初頭にアメリカ詩の最高峰として評価が確立。",
+      "tags": [
+        "approval"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "希望とは羽根のあるもの ── 魂の中に止まり、言葉のない歌を歌う。",
+      "source": "「希望」 1862"
+    },
+    {
+      "text": "私は誰でもない！あなたは誰？あなたも誰でもないの？",
+      "source": "「私は誰でもない！」"
+    },
+    {
+      "text": "私は死のために止まれなかったので、彼は親切にも私のために止まってくれた。",
+      "source": "「死のために止まれなかったので」"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/dickinson.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "アメリカの詩人。アマーストの自宅にひきこもり、1800 篇近くを白い服で書き続けた。生前公表は 10 篇。死後発見された詩集が 20 世紀アメリカ詩を変革した。「アメリカのシェイクスピア」と評される。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Black-white_photograph_of_Emily_Dickinson2.png?width=500",

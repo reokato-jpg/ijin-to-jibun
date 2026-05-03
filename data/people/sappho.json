@@ -8,15 +8,69 @@
   "field": "詩人",
   "summary": "レスボス島の女性詩人。愛と美を歌った抒情詩は現存断片のみだが、2500年後も詩の女神として仰がれる。",
   "wikiTitle": "サッポー",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": -630,
+      "age": 0,
+      "title": "レスボス島で生まれる",
+      "detail": "貴族の家系。",
+      "tags": []
+    },
+    {
+      "year": -600,
+      "age": 30,
+      "title": "シチリアへ亡命",
+      "detail": "政治混乱から一時逃れる。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": -590,
+      "age": 40,
+      "title": "レスボス島で女性たちの詩学校を主宰",
+      "detail": "女性たちに詩・歌・舞踊を教えた。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": -570,
+      "age": 60,
+      "title": "9 巻の詩集が編纂される（後に大半が散逸）",
+      "detail": "古代世界で「第十のミューズ」と呼ばれた。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": -570,
+      "age": 60,
+      "title": "死去（伝承）",
+      "detail": "ファオン青年への失恋から海に身を投げたとの伝説あり、史実は不明。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "ある者は騎兵を、ある者は歩兵を、ある者は艦隊を、地上で最も美しいと言う。私は、私が愛する人を、と言う。",
+      "source": "断片 16"
+    },
+    {
+      "text": "愛は再び苦き甘き蛇のように私を揺り動かす。",
+      "source": "断片 130"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/sappho.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "古代ギリシア・レスボス島の女性詩人。プラトンが「第十のミューズ」と呼んだ。9 巻の詩集の大半が散逸したが残った断片は古代叙情詩の最高峰。「レズビアン」の語源は彼女の島から。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Bust_Sappho_Musei_Capitolini_MC1164.jpg?width=500",

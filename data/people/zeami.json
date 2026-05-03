@@ -8,15 +8,83 @@
   "field": "能楽師",
   "summary": "能を芸術の域まで昇華させた大成者。『風姿花伝』で「秘すれば花」を説き、幽玄の美学を確立した。",
   "wikiTitle": "世阿弥",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1363,
+      "age": 0,
+      "title": "観阿弥の子として生まれる",
+      "detail": "大和猿楽結崎座。",
+      "tags": []
+    },
+    {
+      "year": 1374,
+      "age": 11,
+      "title": "今熊野で足利義満に見出される",
+      "detail": "美少年として将軍の寵愛を受け、能の発展の機会を得る。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1400,
+      "age": 37,
+      "title": "『風姿花伝』執筆開始",
+      "detail": "能の理論書、「秘すれば花」「初心不可忘」の名文を残す。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1422,
+      "age": 59,
+      "title": "出家",
+      "detail": "法名 至翁。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1434,
+      "age": 71,
+      "title": "佐渡へ流罪",
+      "detail": "足利義教の不興を買って。",
+      "tags": [
+        "loss",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1443,
+      "age": 80,
+      "title": "京都で死去",
+      "detail": "晩年は赦されて京都へ戻ったとされる。能を芸術の域まで高めた。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "秘すれば花、秘せずは花なるべからず。",
+      "source": "『風姿花伝』"
+    },
+    {
+      "text": "初心忘るべからず。",
+      "source": "『花鏡』"
+    },
+    {
+      "text": "時分の花を、まことの花と思ふ事、もろもろの過ちなり。",
+      "source": "『風姿花伝』"
+    }
+  ],
   "places": [],
   "imageUrl": "",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "室町時代の能楽師。父観阿弥と共に能を芸術の域まで昇華させた大成者。『風姿花伝』で「秘すれば花」「初心不可忘」を説き、能楽の理論を確立。晩年は流罪を経験。",
   "traits": {},
   "relations": [],
   "innerConflicts": [],

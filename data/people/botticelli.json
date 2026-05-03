@@ -8,15 +8,77 @@
   "field": "画家",
   "summary": "『ヴィーナスの誕生』『春』でフィレンツェ・ルネサンスの美を永遠にした画家。",
   "wikiTitle": "サンドロ・ボッティチェッリ",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1445,
+      "age": 0,
+      "title": "フィレンツェに生まれる",
+      "detail": "本名 アレッサンドロ・ディ・マリアーノ・フィリペーピ。",
+      "tags": []
+    },
+    {
+      "year": 1465,
+      "age": 20,
+      "title": "フィリッポ・リッピに師事",
+      "detail": "リッピの繊細な線描を吸収。",
+      "tags": []
+    },
+    {
+      "year": 1470,
+      "age": 25,
+      "title": "メディチ家のお抱え画家になる",
+      "detail": "ロレンツォ・イル・マニフィコのサークルで人文主義を学ぶ。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1485,
+      "age": 40,
+      "title": "「ヴィーナスの誕生」完成",
+      "detail": "海から生まれるヴィーナスを優美な線で描き、ルネサンス絵画の象徴に。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1494,
+      "age": 49,
+      "title": "サヴォナローラの説教に傾倒",
+      "detail": "メディチ追放と同時に異教的主題を放棄し、宗教画に専念。",
+      "tags": [
+        "self_denial",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1510,
+      "age": 65,
+      "title": "貧困のうちにフィレンツェで没する",
+      "detail": "晩年は忘れられ、19 世紀のラスキンら再発見まで 350 年沈黙していた。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "美は永遠ではない。だから描く。",
+      "source": "伝・工房での言葉"
+    },
+    {
+      "text": "肉体の美は魂の影に過ぎない。",
+      "source": "プラトニズムへの傾倒期"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/botticelli.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "ルネサンス・フィレンツェの画家。「ヴィーナスの誕生」「春（プリマヴェーラ）」で異教的優美の頂点を極めた。サヴォナローラの説教で改心、晩年は宗教画に転じ忘れられた。19 世紀に再発見。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Sandro_Botticelli_083.jpg?width=500",

@@ -8,15 +8,63 @@
   "field": "画家",
   "summary": "引き伸ばされた人体と神秘的な色彩。マニエリスムの極北、20世紀モダニズムに先駆けた前衛画家。",
   "wikiTitle": "エル・グレコ",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1541,
+      "age": 0,
+      "title": "クレタ島イラクリオンで生まれる",
+      "detail": "本名 ドメニコス・テオトコプロス。ビザンティン・イコン画家として修業。",
+      "tags": []
+    },
+    {
+      "year": 1567,
+      "age": 26,
+      "title": "ヴェネツィアへ",
+      "detail": "ティツィアーノ、ティントレットから色彩・劇的構図を学ぶ。",
+      "tags": []
+    },
+    {
+      "year": 1577,
+      "age": 36,
+      "title": "スペイン・トレドへ移住",
+      "detail": "スペイン王宮の依頼を逃すが、トレドで生涯のパトロンを得る。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1586,
+      "age": 45,
+      "title": "「オルガス伯爵の埋葬」完成",
+      "detail": "天と地を一画面に同時表現する代表作。トレドのサント・トメ教会に現存。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1614,
+      "age": 73,
+      "title": "トレドで死去",
+      "detail": "20 世紀の表現主義者（ピカソ、表現派画家）が再発見するまで 300 年忘却。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "私は明日も若いままだ。なぜなら絵は若く生まれるから。",
+      "source": "晩年の弟子への言葉"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/el_greco.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "クレタ島出身のスペインで活動した画家。ビザンティン・ヴェネツィア・スペインの三つの伝統を融合し、引き伸ばされた人体と霊的色彩で独自の宗教画世界を築いた。20 世紀に再評価されピカソに影響。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/El_Greco_-_Portrait_of_a_Man_-_WGA10554.jpg?width=500",

@@ -8,15 +8,63 @@
   "field": "画家",
   "summary": "『真珠の耳飾りの少女』『牛乳を注ぐ女』。現存作35点のみだが、光の魔術で永遠となった画家。",
   "wikiTitle": "ヨハネス・フェルメール",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1632,
+      "age": 0,
+      "title": "オランダ・デルフトで生まれる",
+      "detail": "宿屋兼絵画商の子。",
+      "tags": []
+    },
+    {
+      "year": 1653,
+      "age": 21,
+      "title": "デルフトの聖ルカ組合に画家として登録",
+      "detail": "義父の遺産で結婚。",
+      "tags": []
+    },
+    {
+      "year": 1665,
+      "age": 33,
+      "title": "「真珠の耳飾りの少女」完成",
+      "detail": "「北のモナリザ」と呼ばれる傑作。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1672,
+      "age": 40,
+      "title": "オランダ・フランス戦争で経済破綻",
+      "detail": "絵画市場崩壊で生活困窮。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1675,
+      "age": 43,
+      "title": "デルフトで貧困のうちに死去",
+      "detail": "11 人の子供を残して。生涯作品は約 35 点のみ。19 世紀後半に再発見されオランダ絵画の頂点として確立。",
+      "tags": [
+        "loss",
+        "approval"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "光こそ真実である。",
+      "source": "工房（伝）"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/vermeer_existing.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "オランダ黄金時代の画家。デルフトに生涯住み、「真珠の耳飾りの少女」「牛乳を注ぐ女」など 35 点の傑作を残した。生前は地味な存在だったが、19 世紀後半に再発見されオランダ絵画の頂点として認知。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Vermeer_autograph.png?width=500",

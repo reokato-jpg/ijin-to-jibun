@@ -8,15 +8,72 @@
   "field": "彫刻家",
   "summary": "ルネサンス彫刻の始祖。「ダヴィデ像」で古代後初めてヌード彫刻を復活させた。",
   "wikiTitle": "ドナテッロ",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1386,
+      "age": 0,
+      "title": "フィレンツェで生まれる",
+      "detail": "羊毛梳工の子。",
+      "tags": []
+    },
+    {
+      "year": 1404,
+      "age": 18,
+      "title": "ギベルティの工房で修業",
+      "detail": "サン・ジョヴァンニ洗礼堂門扉制作に参加。",
+      "tags": []
+    },
+    {
+      "year": 1415,
+      "age": 29,
+      "title": "オル・サン・ミケーレ「聖ジョルジョ」",
+      "detail": "中世彫刻から脱した「立つ人間」を初めて表現、ルネサンス彫刻の幕開け。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1440,
+      "age": 54,
+      "title": "「ダヴィデ」（ブロンズ）完成",
+      "detail": "古代ローマ以降初の独立裸体彫刻。少年ダヴィデの優美。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1453,
+      "age": 67,
+      "title": "「ガッタメラータ騎馬像」完成",
+      "detail": "ローマ皇帝以降の独立騎馬像復活。後のレオナルド・ヴェロッキオに影響。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1466,
+      "age": 80,
+      "title": "フィレンツェで死去",
+      "detail": "メディチ家の墓のそばに葬られる。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "石の中には、すでに像が住んでいる。私はそれを解放するだけだ。",
+      "source": "工房での言葉（伝）"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/donatello.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "イタリアの彫刻家。ルネサンス彫刻の創始者。「ダヴィデ」「ガッタメラータ騎馬像」で古代ローマ以降途絶えていた独立裸体・独立騎馬像を蘇らせた。ミケランジェロの先駆者。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Uffizi_Donatello.jpg?width=500",

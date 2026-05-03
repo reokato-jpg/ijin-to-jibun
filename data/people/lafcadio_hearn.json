@@ -8,15 +8,69 @@
   "field": "作家",
   "summary": "『怪談』で日本の幽霊譚を世界に紹介。ギリシャ生まれのアイルランド人だが日本に帰化し、松江の地で怪談を採集した。",
   "wikiTitle": "小泉八雲",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1850,
+      "age": 0,
+      "title": "ギリシア・レフカダ島で生まれる",
+      "detail": "父はアイルランド人軍医、母はギリシア人。複雑な家庭。",
+      "tags": []
+    },
+    {
+      "year": 1869,
+      "age": 19,
+      "title": "アメリカへ渡る",
+      "detail": "シンシナティ・ニューオーリンズで新聞記者。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1890,
+      "age": 40,
+      "title": "来日、松江で英語教師",
+      "detail": "小泉セツと結婚、日本国籍取得し小泉八雲に。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1896,
+      "age": 46,
+      "title": "東京帝国大学で英文学講師",
+      "detail": "夏目漱石の前任。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1904,
+      "age": 54,
+      "title": "『怪談』刊行・東京で死去",
+      "detail": "「耳なし芳一」「雪女」を世界に紹介。心臓病で逝去。",
+      "tags": [
+        "breakthrough",
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "日本は不思議な国である。微笑みの裏に、計り知れぬ深さがある。",
+      "source": "随筆"
+    },
+    {
+      "text": "私は西洋人として生まれ、日本人として死ぬ。",
+      "source": "晩年"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/lafcadio_hearn.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "ギリシア生まれ、アイルランド系・日本帰化作家。小泉八雲。『怪談』で日本の幽玄を世界に紹介、西洋に「ジャパン」のイメージを与えた最大の文化媒介者。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Lafcadio_Hearn_portrait.jpg?width=500",

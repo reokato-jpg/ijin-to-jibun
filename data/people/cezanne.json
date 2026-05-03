@@ -8,15 +8,83 @@
   "field": "画家",
   "summary": "後期印象派の画家。自然を円筒・球・円錐で捉える手法はピカソのキュビスムに直結した「近代絵画の父」。",
   "wikiTitle": "ポール・セザンヌ",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1839,
+      "age": 0,
+      "title": "南仏エクス・アン・プロヴァンスに生まれる",
+      "detail": "父は銀行家。経済的には恵まれた家庭。",
+      "tags": []
+    },
+    {
+      "year": 1861,
+      "age": 22,
+      "title": "パリへ — エコール・デ・ボザール受験失敗",
+      "detail": "アカデミーから拒絶される挫折。同郷のエミール・ゾラと深い友情。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1874,
+      "age": 35,
+      "title": "第1回印象派展に参加",
+      "detail": "印象派の仲間と展示するが酷評。「セザンヌの絵は犬が描いたようだ」。",
+      "tags": [
+        "isolation"
+      ]
+    },
+    {
+      "year": 1886,
+      "age": 47,
+      "title": "ゾラとの絶交",
+      "detail": "ゾラの小説『制作』で挫折画家のモデルにされたと感じ、生涯の友と決別。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1895,
+      "age": 56,
+      "title": "個展で再評価始まる",
+      "detail": "ヴォラールの画廊で個展、若い画家たちから「画家の中の画家」と崇められる。",
+      "tags": [
+        "restart",
+        "approval"
+      ]
+    },
+    {
+      "year": 1906,
+      "age": 67,
+      "title": "サント＝ヴィクトワール山を描き続けて死去",
+      "detail": "晩年の連作絵画でキュビスムの種をまいた。「ピカソの父」と呼ばれる。",
+      "tags": [
+        "breakthrough",
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "自然をシリンダー、球、円錐で扱え。",
+      "source": "若い画家への手紙"
+    },
+    {
+      "text": "私は印象派の中で最も劣った画家だ。だから真実を求め続ける。",
+      "source": "晩年の自評"
+    },
+    {
+      "text": "色彩は私たちの脳と宇宙が出会う場所である。",
+      "source": "ガスケへの手紙"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/cezanne.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "フランスの画家。印象派から出発しつつ「自然を立体で捉える」独自の道を歩み、キュビスムの父祖となる。若い頃は嘲笑され、晩年に再評価。ピカソは『私たち全員の父』と呼んだ。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Paul_C%C3%A9zanne.jpg?width=500",

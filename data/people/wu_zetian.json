@@ -8,15 +8,72 @@
   "field": "女帝",
   "summary": "中国史上唯一の女性皇帝。権謀術数で権力を握り、科挙制度を拡充。有能な女性統治の極北。",
   "wikiTitle": "武則天",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 624,
+      "age": 0,
+      "title": "山西省・利州で生まれる",
+      "detail": "本名 武照（または武曌）。",
+      "tags": []
+    },
+    {
+      "year": 638,
+      "age": 14,
+      "title": "唐太宗の後宮へ",
+      "detail": "才人として入宮。",
+      "tags": []
+    },
+    {
+      "year": 655,
+      "age": 31,
+      "title": "高宗の皇后に立后",
+      "detail": "高宗の病を理由に政務を代行。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 690,
+      "age": 66,
+      "title": "周王朝建国 — 中国唯一の女帝即位",
+      "detail": "唐を一時中断、自ら皇帝に。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 705,
+      "age": 81,
+      "title": "退位、唐復活",
+      "detail": "病気で。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 705,
+      "age": 81,
+      "title": "死去",
+      "detail": "墓碑に文字を刻まず（「無字碑」） — 後世の評価に委ねた。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "我は男に劣らぬ器量を持つ。",
+      "source": "宮廷での発言"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/wu_zetian.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "中国史上唯一の女帝。后妃から皇后へ、そして自ら皇帝に即位し周王朝を建国。残酷な政敵粛清と科挙制度の整備による有能官僚登用の二面性で、中国最大の女傑とされる。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/%E5%94%90%E5%90%8E%E8%A1%8C%E5%BE%9E%E5%9C%96_%28%E5%B1%80%E9%83%A8%29_-_%E6%AD%A6%E5%89%87%E5%A4%A9.png?width=500",

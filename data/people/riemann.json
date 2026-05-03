@@ -8,15 +8,62 @@
   "field": "数学者",
   "summary": "リーマン幾何学の創始者。一般相対性理論の数学的基盤となった。リーマン予想は今なお数学最大の未解決問題。",
   "wikiTitle": "ベルンハルト・リーマン",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1826,
+      "age": 0,
+      "title": "ハノーファー王国の貧しい牧師家庭に生まれる",
+      "detail": "幼少から数学の天才。",
+      "tags": []
+    },
+    {
+      "year": 1851,
+      "age": 25,
+      "title": "ガウスの下で博士号",
+      "detail": "「リーマン面」の概念を導入。",
+      "tags": []
+    },
+    {
+      "year": 1854,
+      "age": 28,
+      "title": "リーマン幾何学を発表",
+      "detail": "教授資格講演で多次元曲がった空間の幾何学を提唱。後の一般相対性理論の数学基盤に。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1859,
+      "age": 33,
+      "title": "リーマン予想 提示",
+      "detail": "素数分布に関する世紀の難問。160 年経った今も未解決、ミレニアム賞問題。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1866,
+      "age": 39,
+      "title": "イタリア・セラスカで肺結核で死去",
+      "detail": "短い生涯で数学を一変させた。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "幾何学とは空間の局所的な性質の研究である。",
+      "source": "教授資格講演 1854"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/riemann.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "ドイツの数学者。リーマン幾何学を作り、後のアインシュタイン一般相対性理論の数学的基盤を提供した。リーマン予想は 160 年未解決の数学最大の難問。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Georg_Friedrich_Bernhard_Riemann.jpeg?width=500",

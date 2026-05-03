@@ -8,15 +8,83 @@
   "field": "宗教指導者",
   "summary": "イスラーム教の預言者。40歳で神の啓示を受け『クルアーン』を伝えた。政治・軍事・宗教を統合し、一大文明圏を築いた。",
   "wikiTitle": "ムハンマド",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 570,
+      "age": 0,
+      "title": "メッカで生まれる",
+      "detail": "クライシュ族の名門ハーシム家。父は出生前に死去。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 595,
+      "age": 25,
+      "title": "豪商の未亡人ハディージャと結婚",
+      "detail": "15 歳年上の女性。経済的安定を得る。",
+      "tags": []
+    },
+    {
+      "year": 610,
+      "age": 40,
+      "title": "ヒラー山の洞窟で天使ガブリエルから啓示",
+      "detail": "「読め！ 創造主の御名において」 — 預言者として召命される瞬間。",
+      "tags": [
+        "restart",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 622,
+      "age": 52,
+      "title": "メッカからメディナへ聖遷（ヒジュラ）",
+      "detail": "イスラーム暦の起点。",
+      "tags": [
+        "restart",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 630,
+      "age": 60,
+      "title": "メッカ無血開城",
+      "detail": "アラビア半島統一の事実上の完了。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 632,
+      "age": 62,
+      "title": "メディナで死去",
+      "detail": "「私の墓で偶像崇拝するな」と弟子に遺言。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "知識を求めなさい、揺籃から墓場まで。",
+      "source": "ハディース"
+    },
+    {
+      "text": "母親の足元に楽園がある。",
+      "source": "ハディース"
+    },
+    {
+      "text": "強い者とは、怒りに勝つ者である。",
+      "source": "ハディース"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/muhammad.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "イスラム教の預言者。40 歳でガブリエルから啓示を受け、22 年でアラビア半島をイスラームの下に統一。クルアーンと共に世界第 2 位の宗教の起源となった。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/MuhammadSVG.svg?width=500",

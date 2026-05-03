@@ -8,15 +8,81 @@
   "field": "禅僧",
   "summary": "曹洞宗の開祖。只管打坐を説き、『正法眼蔵』で東洋の思想の頂点を築いた哲学者にして禅匠。",
   "wikiTitle": "道元",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1200,
+      "age": 0,
+      "title": "京都で生まれる",
+      "detail": "貴族・久我家の子。3 歳で父、8 歳で母を失う。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1213,
+      "age": 13,
+      "title": "比叡山で出家",
+      "detail": "天台宗で修行するも疑問を抱く。",
+      "tags": []
+    },
+    {
+      "year": 1223,
+      "age": 23,
+      "title": "宋へ渡航",
+      "detail": "天童如浄に師事し曹洞禅を学ぶ。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1227,
+      "age": 27,
+      "title": "帰国、『普勧坐禅儀』撰述",
+      "detail": "ただ坐禅すること（只管打坐）を説く。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1244,
+      "age": 44,
+      "title": "永平寺を開創",
+      "detail": "越前（福井）の山中に。曹洞宗本山の起点。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1253,
+      "age": 53,
+      "title": "京都で病没",
+      "detail": "『正法眼蔵』を残す。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "仏道をならふといふは、自己をならふ也。",
+      "source": "『正法眼蔵』現成公案"
+    },
+    {
+      "text": "只管打坐 — ただ、坐れ。",
+      "source": "『普勧坐禅儀』"
+    },
+    {
+      "text": "学人もし大悟をうばわるるをもって、悟をしらざらんと思ふ事なかれ。",
+      "source": "『正法眼蔵』"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/dogen.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "鎌倉時代の禅僧。曹洞宗の開祖。宋に渡って学んだ「只管打坐」（ただ坐る）の禅を日本に持ち帰り、永平寺を開いた。『正法眼蔵』は仏教哲学の最高峰。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Soto-Zen-Master-Dogen-Zenji-Portrait.png?width=500",

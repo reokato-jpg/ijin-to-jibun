@@ -8,15 +8,90 @@
   "field": "政治家",
   "summary": "第35代大統領。キューバ危機を乗り切り、月面着陸計画を始動。「国があなたに何をできるかではなく、あなたが国に何をできるかを問え」",
   "wikiTitle": "ジョン・F・ケネディ",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1917,
+      "age": 0,
+      "title": "マサチューセッツ州ブルックラインで生まれる",
+      "detail": "父はジョセフ・ケネディ（投資家）、アイルランド系カトリック家系。",
+      "tags": []
+    },
+    {
+      "year": 1943,
+      "age": 26,
+      "title": "PT-109 沈没から部下を救出",
+      "detail": "ソロモン諸島で日本駆逐艦に衝突され船を失うが、負傷しつつ部下を救う英雄譚。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1947,
+      "age": 29,
+      "title": "下院議員初当選",
+      "detail": "民主党マサチューセッツ州。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1960,
+      "age": 43,
+      "title": "アメリカ合衆国第35代大統領に当選",
+      "detail": "史上最年少（当時）の大統領、初のカトリック教徒。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1961,
+      "age": 43,
+      "title": "「人類を月に送る」演説",
+      "detail": "「我々は月に行くと決めた。それが容易だからではなく、困難だからだ」。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1962,
+      "age": 45,
+      "title": "キューバ危機を回避",
+      "detail": "13 日間の核戦争寸前の緊迫を、海上封鎖と秘密交渉で回避。20 世紀最大の危機。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1963,
+      "age": 46,
+      "title": "ダラスで暗殺",
+      "detail": "11 月 22 日、オープンカー走行中に銃撃。リー・ハーヴェイ・オズワルドが容疑者として逮捕されるが、暗殺の真相は今も論争。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "国があなたに何をしてくれるかを問わず、あなたが国に何ができるかを問え。",
+      "source": "大統領就任演説 1961"
+    },
+    {
+      "text": "我々は月に行くと決めた。それが容易だからではなく、困難だからだ。",
+      "source": "ライス大学演説 1962"
+    },
+    {
+      "text": "勇気は恐れの不在ではない。恐れに直面する力である。",
+      "source": "演説"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/jfk.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "アメリカ第35代大統領。最年少（当時）・初のカトリックの大統領。キューバ危機を回避し、月着陸計画を発表、公民権法案を推進した。1963 年ダラスで暗殺、46 歳で世を去った。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/John_F._Kennedy%2C_White_House_color_photo_portrait.jpg?width=500",

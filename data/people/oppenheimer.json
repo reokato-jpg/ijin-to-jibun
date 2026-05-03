@@ -8,15 +8,77 @@
   "field": "物理学者",
   "summary": "マンハッタン計画の科学指導者。「原爆の父」として最初の核実験を主導。後に水爆開発に反対し公職から追放された。",
   "wikiTitle": "ロバート・オッペンハイマー",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1904,
+      "age": 0,
+      "title": "ニューヨークの裕福なユダヤ系家庭に生まれる",
+      "detail": "父は実業家、母は画家。",
+      "tags": []
+    },
+    {
+      "year": 1927,
+      "age": 23,
+      "title": "ゲッティンゲンで物理学博士",
+      "detail": "量子力学の最前線へ。",
+      "tags": []
+    },
+    {
+      "year": 1942,
+      "age": 38,
+      "title": "マンハッタン計画の科学責任者就任",
+      "detail": "ロスアラモス研究所長として原爆開発を主導。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1945,
+      "age": 41,
+      "title": "トリニティ実験成功 — 広島・長崎投下",
+      "detail": "「我は死神となる、世界の破壊者となる」（バガヴァッド・ギーターの言葉を引用）。",
+      "tags": [
+        "breakthrough",
+        "self_denial"
+      ]
+    },
+    {
+      "year": 1954,
+      "age": 50,
+      "title": "公職追放 — 機密取扱許可剥奪",
+      "detail": "水爆反対と過去の左翼関係でマッカーシズムの標的に。",
+      "tags": [
+        "loss",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1967,
+      "age": 62,
+      "title": "プリンストンで死去",
+      "detail": "喉頭癌。長年のヘビースモーカー。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "我は死神となる、世界の破壊者となる。",
+      "source": "トリニティ実験後（バガヴァッド・ギーター引用） 1945"
+    },
+    {
+      "text": "我々科学者は罪を知った。それは消えない。",
+      "source": "MIT 講演 1947"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/oppenheimer.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "アメリカの理論物理学者。マンハッタン計画の科学責任者として原爆開発を主導、戦後は水爆に反対して公職追放。「原爆の父」として光と闇の両面を背負った 20 世紀の象徴。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Oppenheimer_%28cropped%29.jpg?width=500",

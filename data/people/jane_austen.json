@@ -8,15 +8,80 @@
   "field": "小説家",
   "summary": "『高慢と偏見』『エマ』で女性の機知と社会を洞察。イギリス文学の永遠のヒロインを生んだ。",
   "wikiTitle": "ジェーン・オースティン",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1775,
+      "age": 0,
+      "title": "ハンプシャー州スティーヴントンで生まれる",
+      "detail": "牧師の家、8 人兄弟。家族で文学を楽しむ環境。",
+      "tags": []
+    },
+    {
+      "year": 1796,
+      "age": 21,
+      "title": "『高慢と偏見』第一稿（『最初の印象』）執筆",
+      "detail": "11 年後に大幅改訂して出版される。",
+      "tags": []
+    },
+    {
+      "year": 1797,
+      "age": 21,
+      "title": "出版社に拒否される",
+      "detail": "父が代理交渉、相手にされず。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1811,
+      "age": 35,
+      "title": "『分別と多感』匿名出版",
+      "detail": "「A Lady によって」とのみ著者名。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1813,
+      "age": 37,
+      "title": "『高慢と偏見』出版",
+      "detail": "「皆様の中で最も愛しい子」と本人が呼ぶ作品、英文学の至宝に。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1817,
+      "age": 41,
+      "title": "ウィンチェスターで死去",
+      "detail": "アジソン病？病名は今も論争。生涯独身。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "それは万人の認めるところである、十分な財産を持つ独身男性は、妻を欲するに違いないと。",
+      "source": "『高慢と偏見』冒頭 1813"
+    },
+    {
+      "text": "私は欠点だけを見ない、見たくない人間だ。",
+      "source": "『エマ』"
+    },
+    {
+      "text": "結婚を急ぐな。あなたの幸せが、それにかかっている。",
+      "source": "姪への手紙"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/jane_austen.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "イギリスの女性作家。生涯独身で 6 篇の小説を残し、結婚と階級と人間心理の機微を描いた英文学の至宝。匿名で出版したため生前は無名同然、19 世紀後半に巨匠として再発見された。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/CassandraAusten-JaneAusten%28c.1810%29_hires.jpg?width=500",

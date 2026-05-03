@@ -8,15 +8,69 @@
   "field": "数学者",
   "summary": "独学で革命的公式を発見した神秘の数学者。32歳で早世するも、現代数学でも解かれ続ける遺産を残した。",
   "wikiTitle": "シュリニヴァーサ・ラマヌジャン",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1887,
+      "age": 0,
+      "title": "南インド・タミルナドゥの貧しい家庭に生まれる",
+      "detail": "母から数学の素地を学ぶ。",
+      "tags": []
+    },
+    {
+      "year": 1903,
+      "age": 16,
+      "title": "高校卒業時に独学で公式集を作成",
+      "detail": "教科書を一冊与えられ、独自の発見を含む膨大な公式集を残す。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1913,
+      "age": 25,
+      "title": "ケンブリッジ大ハーディに手紙",
+      "detail": "G.H.ハーディが「異端の天才」と認め、ケンブリッジに招請。",
+      "tags": [
+        "restart",
+        "approval"
+      ]
+    },
+    {
+      "year": 1916,
+      "age": 28,
+      "title": "ケンブリッジで博士号、王立協会会員",
+      "detail": "アジア人初。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1920,
+      "age": 32,
+      "title": "南インドで肺結核で死去",
+      "detail": "短い生涯で 3900 以上の数学公式・恒等式を残す。多くは死後百年経っても解明中。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "数式は神からの直接の啓示である。",
+      "source": "ハーディへの言葉"
+    },
+    {
+      "text": "0 は無ではない。0 は限りなき神である。",
+      "source": "ノート"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/ramanujan.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "インドの天才数学者。独学で 3900 を超える公式・恒等式を発見し、ケンブリッジの G.H.ハーディに認められた。32 歳で夭折したが、彼のノートは 100 年経った今も研究され続けている。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Srinivasa_Ramanujan-Add._MS_a94_version2_%28cropped%29.jpg?width=500",

@@ -8,15 +8,75 @@
   "field": "小説家",
   "summary": "『雪国』『伊豆の踊子』で日本人初のノーベル文学賞を受賞（1968）。日本的情緒の精緻な描写で知られる。",
   "wikiTitle": "川端康成",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1899,
+      "age": 0,
+      "title": "大阪で生まれる",
+      "detail": "2歳で父、3歳で母を失い、孤独の影が生涯につきまとう。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1924,
+      "age": 25,
+      "title": "横光利一らと『文芸時代』創刊、新感覚派",
+      "detail": "近代日本文学の前衛。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1937,
+      "age": 38,
+      "title": "『雪国』完成",
+      "detail": "「国境の長いトンネルを抜けると雪国であった」。日本文学の代表作。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1968,
+      "age": 69,
+      "title": "ノーベル文学賞受賞 — 日本人初",
+      "detail": "「日本人の心の精髄を、優れた感受性で表現した」。",
+      "tags": [
+        "approval",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1972,
+      "age": 72,
+      "title": "逗子のマンションでガス自殺",
+      "detail": "遺書なし。三島由紀夫の自決から 17 か月後。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "国境の長いトンネルを抜けると雪国であった。",
+      "source": "『雪国』 冒頭"
+    },
+    {
+      "text": "美の存在が、私には苦しみであった。",
+      "source": "ノーベル賞受賞講演"
+    },
+    {
+      "text": "悲しい時ほど美しい言葉を選びたい。",
+      "source": "随筆"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/kawabata_yasunari.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "日本の小説家。日本人初のノーベル文学賞受賞者（1968）。『雪国』『古都』『山の音』で日本的美意識を結晶化。両親を早く失った孤独感が作品の根底に流れる。72 歳で自死。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Yasunari_Kawabata_1938.jpg?width=500",

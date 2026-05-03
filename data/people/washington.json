@@ -8,15 +8,92 @@
   "field": "軍人・初代大統領",
   "summary": "アメリカ独立戦争の総司令官、初代大統領。任期を2期で降りて民主主義の範を示した「建国の父」。",
   "wikiTitle": "ジョージ・ワシントン",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1732,
+      "age": 0,
+      "title": "ヴァージニア州ウェストモアランドで生まれる",
+      "detail": "農場主の子。",
+      "tags": []
+    },
+    {
+      "year": 1755,
+      "age": 23,
+      "title": "フレンチ・インディアン戦争で軍指揮官",
+      "detail": "敗北を学ぶが、軍事的経験を蓄積。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1775,
+      "age": 43,
+      "title": "大陸軍総司令官就任",
+      "detail": "独立戦争を指揮。",
+      "tags": [
+        "restart",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1781,
+      "age": 49,
+      "title": "ヨークタウンの戦いで勝利",
+      "detail": "イギリスの降伏、独立を確定。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1789,
+      "age": 57,
+      "title": "アメリカ初代大統領就任",
+      "detail": "全選挙人の満票で選出。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1797,
+      "age": 65,
+      "title": "三選を辞退して引退",
+      "detail": "「王にならなかった革命家」の伝統を作った。",
+      "tags": [
+        "self_denial"
+      ]
+    },
+    {
+      "year": 1799,
+      "age": 67,
+      "title": "マウントバーノンで死去",
+      "detail": "肺炎。遺言で奴隷を解放。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "私は嘘をつけない。",
+      "source": "桜の木の逸話（伝）"
+    },
+    {
+      "text": "規律は軍隊の魂である。",
+      "source": "司令官時代"
+    },
+    {
+      "text": "正直は最良の政策である。",
+      "source": "演説"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/washington.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "アメリカ建国の父・初代大統領。独立戦争を勝利に導き、初代大統領として「三選辞退」の伝統を作った。「王にならなかった革命家」として民主主義の象徴。1 ドル札の顔。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Gilbert_Stuart_Williamstown_Portrait_of_George_Washington_%28cropped%29%282%29.jpg?width=500",

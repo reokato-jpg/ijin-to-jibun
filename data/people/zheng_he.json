@@ -8,15 +8,64 @@
   "field": "宦官・航海家",
   "summary": "15世紀に7度アフリカ東岸まで遠征した大航海者。コロンブスより早く西洋を凌ぐ艦隊を率いた。",
   "wikiTitle": "鄭和",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1371,
+      "age": 0,
+      "title": "雲南省に生まれる（イスラム教徒）",
+      "detail": "本名 馬三宝。後に去勢されて宦官。",
+      "tags": []
+    },
+    {
+      "year": 1390,
+      "age": 19,
+      "title": "燕王朱棣（後の永楽帝）の宦官に",
+      "detail": "靖難の役で活躍。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1405,
+      "age": 34,
+      "title": "第1回大航海開始",
+      "detail": "62 隻 27800 人の大艦隊で東南アジア・インドへ。コロンブス以前の世界最大の航海。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1417,
+      "age": 46,
+      "title": "第5回航海でアフリカ東岸到達",
+      "detail": "ケニアのマリンディから麒麟（キリン）を持ち帰る。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1433,
+      "age": 62,
+      "title": "第7回航海中に没する",
+      "detail": "インド洋カリカット沖で。明朝はその後鎖国へ転換。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "海路は陸路より広い。",
+      "source": "航海記録（伝）"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/zheng_he.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "明朝の宦官・大航海者。1405 年から 28 年間、7 度の大航海でアフリカ東岸まで到達。コロンブス（1492）の 90 年前にすでに世界規模の航海を行っていた。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Zheng_He_statue_%28cropped%29.jpg?width=500",

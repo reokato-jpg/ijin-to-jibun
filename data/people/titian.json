@@ -8,15 +8,62 @@
   "field": "画家",
   "summary": "ヴェネツィア派の巨匠。色彩の革命児で、88歳まで描き続けた。皇帝カルロス5世御用達。",
   "wikiTitle": "ティツィアーノ・ヴェチェッリオ",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1488,
+      "age": 0,
+      "title": "ヴェネツィアの北の山岳地帯で生まれる",
+      "detail": "本名 ティツィアーノ・ヴェチェッリオ。",
+      "tags": []
+    },
+    {
+      "year": 1510,
+      "age": 22,
+      "title": "ヴェネツィアで画家として独立",
+      "detail": "ジョルジョーネと交流。",
+      "tags": []
+    },
+    {
+      "year": 1518,
+      "age": 30,
+      "title": "「聖母被昇天」完成",
+      "detail": "ヴェネツィア派絵画の頂点。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1533,
+      "age": 45,
+      "title": "神聖ローマ皇帝カール5世の宮廷画家",
+      "detail": "「画家の帝王」と呼ばれる地位を確立。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1576,
+      "age": 88,
+      "title": "ヴェネツィアでペストにより死去",
+      "detail": "60 年以上絵を描き続け、晩年の暗い色調が後のレンブラントに影響。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "色彩は感情そのものである。",
+      "source": "工房での言葉"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/titian.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "ヴェネツィア・ルネサンスの巨匠。「画家の帝王」。神聖ローマ皇帝・スペイン王のお抱えで、肖像・宗教・神話を全てこなした。88 歳で大往生、晩年の自由筆致は後の表現派の祖。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Titian_-_Self-portrait_%28Museo_del_Prado%29.jpg?width=500",

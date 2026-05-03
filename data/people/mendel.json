@@ -8,15 +8,76 @@
   "field": "修道士・遺伝学者",
   "summary": "エンドウ豆の交配実験から遺伝の法則を発見した修道士。生前は評価されず、没後に「遺伝学の父」と認められた。",
   "wikiTitle": "グレゴール・ヨハン・メンデル",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1822,
+      "age": 0,
+      "title": "オーストリア・シレジアで生まれる",
+      "detail": "貧しい農家。",
+      "tags": []
+    },
+    {
+      "year": 1843,
+      "age": 21,
+      "title": "ブルノの聖トマス修道院に入る",
+      "detail": "経済的理由で修道士となり、学問を続ける。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1856,
+      "age": 34,
+      "title": "エンドウマメで遺伝研究開始",
+      "detail": "8 年で 28000 株を交配して観察。",
+      "tags": []
+    },
+    {
+      "year": 1865,
+      "age": 43,
+      "title": "メンデル法則発表",
+      "detail": "ブルノ自然科学協会。完全に無視される。",
+      "tags": [
+        "isolation"
+      ]
+    },
+    {
+      "year": 1884,
+      "age": 61,
+      "title": "修道院長として死去",
+      "detail": "遺伝学の父と知らずに。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1900,
+      "age": null,
+      "title": "再発見 — 遺伝学誕生",
+      "detail": "ド・フリースら 3 名が独立に再発見、遺伝学の起点に。",
+      "tags": [
+        "approval",
+        "breakthrough"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "私の時代は来る。",
+      "source": "晩年（伝）"
+    },
+    {
+      "text": "実験は静かな声で真実を語る。",
+      "source": "研究ノート"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/mendel.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "オーストリアの修道士・遺伝学者。ブルノの修道院でエンドウマメを交配して遺伝の法則を発見したが、生前は無視された。死後 16 年に再発見され、遺伝学の父と認められた。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Gregor_Mendel_2.jpg?width=500",

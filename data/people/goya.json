@@ -8,15 +8,79 @@
   "field": "画家",
   "summary": "スペイン王宮画家にして『マドリード、1808年5月3日』で戦争の狂気を描いた。晩年の黒い絵は近代絵画の礎。",
   "wikiTitle": "フランシスコ・デ・ゴヤ",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1746,
+      "age": 0,
+      "title": "サラゴサ近郊で生まれる",
+      "detail": "金箔師の子。",
+      "tags": []
+    },
+    {
+      "year": 1789,
+      "age": 43,
+      "title": "宮廷画家就任",
+      "detail": "カルロス4世の宮廷で王族肖像を描く。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1792,
+      "age": 46,
+      "title": "重病で聴力喪失",
+      "detail": "原因不明の病。以後、悲哀と幻想の絵画へ転換。",
+      "tags": [
+        "loss",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1808,
+      "age": 62,
+      "title": "ナポレオンのスペイン侵攻",
+      "detail": "民衆虐殺を目撃、後の「1808年5月3日」「戦争の悲惨」につながる。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1819,
+      "age": 73,
+      "title": "「黒い絵」連作（聾の家の壁画）",
+      "detail": "「我が子を喰らうサトゥルヌス」など、絶望と狂気の極致。",
+      "tags": [
+        "breakthrough",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1828,
+      "age": 82,
+      "title": "ボルドー（亡命先）で死去",
+      "detail": "保守反動下のスペインを離れフランスへ。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "理性の眠りは怪物を生む。",
+      "source": "『ロス・カプリチョス』43 番"
+    },
+    {
+      "text": "幻想と理性 ── 二つを欠かしては芸術はない。",
+      "source": "晩年のメモ"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/goya.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "スペインの画家。宮廷画家から始まり、聾と戦争の体験で「黒い絵」連作の暗黒の幻視へ転じた。近代絵画の父祖。彼の暗黒なくしてはピカソもダリも生まれなかった。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Vicente_L%C3%B3pez_Porta%C3%B1a_-_el_pintor_Francisco_de_Goya.jpg?width=500",

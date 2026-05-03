@@ -8,15 +8,92 @@
   "field": "政治家・活動家",
   "summary": "反アパルトヘイト運動の指導者。27年の獄中生活を経て南アフリカ初の黒人大統領に。和解の象徴としてノーベル平和賞。",
   "wikiTitle": "ネルソン・マンデラ",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1918,
+      "age": 0,
+      "title": "南アフリカ・トランスカイで生まれる",
+      "detail": "テンブ族の王家、コーサ人。",
+      "tags": []
+    },
+    {
+      "year": 1944,
+      "age": 26,
+      "title": "アフリカ民族会議（ANC）青年同盟結成",
+      "detail": "アパルトヘイト撤廃運動の中核へ。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1962,
+      "age": 44,
+      "title": "国家反逆罪で逮捕",
+      "detail": "ロベン島刑務所で 27 年の獄中生活開始。",
+      "tags": [
+        "loss",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1990,
+      "age": 71,
+      "title": "釈放 — 27 年ぶりの自由",
+      "detail": "デクラーク大統領との交渉でアパルトヘイト撤廃へ。",
+      "tags": [
+        "restart",
+        "approval"
+      ]
+    },
+    {
+      "year": 1993,
+      "age": 75,
+      "title": "ノーベル平和賞",
+      "detail": "デクラークと共同。「赦しなき自由はない」。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1994,
+      "age": 75,
+      "title": "南アフリカ初の黒人大統領就任",
+      "detail": "民主選挙でアフリカ大陸の象徴に。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 2013,
+      "age": 95,
+      "title": "ヨハネスブルクで死去",
+      "detail": "国葬。世界中の指導者が参列。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "教育は世界を変える最も強力な武器である。",
+      "source": "演説"
+    },
+    {
+      "text": "私は死ぬ覚悟ができている。私の心の中で。",
+      "source": "1964 年裁判演説"
+    },
+    {
+      "text": "敵を許すのは、自分のためでもある。憎しみを抱えて生きる方が辛い。",
+      "source": "釈放後"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/mandela.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "南アフリカの政治家。アパルトヘイト撤廃の象徴。27 年の獄中生活を経て初の黒人大統領に就任、報復ではなく和解の道を選んだ。20 世紀最後の偉人と呼ばれる。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Nelson_Mandela_1994.jpg?width=500",

@@ -8,15 +8,73 @@
   "field": "詩人・神秘家",
   "summary": "スーフィズムの詩神。『精神的マスナヴィー』は「ペルシャ語のコーラン」と呼ばれる。世界で最も読まれる詩人の一人。",
   "wikiTitle": "メヴラーナ・ジャラール・ウッディーン・ルーミー",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1207,
+      "age": 0,
+      "title": "ペルシア・バルフ（現アフガニスタン）で生まれる",
+      "detail": "学者の家系。",
+      "tags": []
+    },
+    {
+      "year": 1244,
+      "age": 37,
+      "title": "シャムス・タブリーズィーと出会う",
+      "detail": "謎の托鉢僧との出会いで詩人に変貌。",
+      "tags": [
+        "restart",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1248,
+      "age": 41,
+      "title": "シャムス失踪（殺害説）",
+      "detail": "ルーミーは深い喪失感から大量の詩を書き始める。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1258,
+      "age": 51,
+      "title": "『精神的マスナヴィー』執筆開始",
+      "detail": "全 6 巻 25000 詩節、ペルシア神秘主義詩の最高峰。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1273,
+      "age": 66,
+      "title": "コンヤ（現トルコ）で死去",
+      "detail": "葬儀には全宗教の人々が参列。「メウラーナ」（我々の師）と呼ばれる。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "傷は光が入る場所である。",
+      "source": "『マスナヴィー』"
+    },
+    {
+      "text": "あなたが探しているものは、あなたを探している。",
+      "source": "「マスナヴィー」"
+    },
+    {
+      "text": "本当の旅は、外ではなく内側にある。",
+      "source": "詩集"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/rumi.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "13 世紀ペルシアの神秘主義詩人。シャムスとの出会いと別れで詩人になり、『マスナヴィー』25000 詩節で愛と神を歌った。21 世紀アメリカで最も読まれる詩人の一人。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/%D9%85%D9%88%D9%84%D8%A7%D9%86%D8%A7_%D8%A7%D8%AB%D8%B1_%D8%AD%D8%B3%DB%8C%D9%86_%D8%A8%D9%87%D8%B2%D8%A7%D8%AF_%28cropped%29.jpg?width=500",

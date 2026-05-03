@@ -8,15 +8,66 @@
   "field": "小説家",
   "summary": "『細雪』『春琴抄』『陰翳礼讃』。官能と日本美を融合させ、戦後も現役で書き続けた耽美派の巨匠。",
   "wikiTitle": "谷崎潤一郎",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1886,
+      "age": 0,
+      "title": "東京・日本橋に生まれる",
+      "detail": "印刷業の家。",
+      "tags": []
+    },
+    {
+      "year": 1910,
+      "age": 24,
+      "title": "『刺青』で文壇デビュー",
+      "detail": "耽美派の代表作家へ。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1923,
+      "age": 37,
+      "title": "関東大震災で関西へ移住",
+      "detail": "古典への傾倒が深まる。",
+      "tags": []
+    },
+    {
+      "year": 1948,
+      "age": 62,
+      "title": "『細雪』完成",
+      "detail": "戦時中も書き続けた船場・蘆屋の四姉妹の物語。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1965,
+      "age": 79,
+      "title": "湯河原で死去",
+      "detail": "心不全。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "美は陰翳の中にある。",
+      "source": "『陰翳礼讃』"
+    },
+    {
+      "text": "我々は明治より此方、六十年此かた、東京の風景を、東京の人情を、すっかり変えてしまった。",
+      "source": "『陰翳礼讃』"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/tanizaki.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "日本の小説家。耽美派の巨匠。『春琴抄』『細雪』『陰翳礼讃』で日本的官能と美意識を結晶化。震災後関西に移り、源氏物語の現代語訳も成し遂げた。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Portrait_of_Tanizaki_Jun%27ichir%C5%8D_-_Atami_-_1950_-_Kimura_Ihei.png?width=500",

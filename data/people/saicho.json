@@ -8,15 +8,69 @@
   "field": "僧侶",
   "summary": "天台宗の開祖、伝教大師。比叡山を開き、法然・親鸞・日蓮ら後の偉人を輩出する仏教の母山とした。",
   "wikiTitle": "最澄",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 767,
+      "age": 0,
+      "title": "近江国に生まれる",
+      "detail": "本名 三津首広野。",
+      "tags": []
+    },
+    {
+      "year": 785,
+      "age": 18,
+      "title": "比叡山に籠もる",
+      "detail": "12 年の山林修行で天台の教えを深める。",
+      "tags": [
+        "isolation"
+      ]
+    },
+    {
+      "year": 804,
+      "age": 37,
+      "title": "遣唐使として唐へ",
+      "detail": "天台山で教えを学ぶ。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 805,
+      "age": 38,
+      "title": "帰国、天台宗を開く",
+      "detail": "比叡山延暦寺を本山に。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 822,
+      "age": 55,
+      "title": "比叡山で入寂、大乗戒壇設立認可",
+      "detail": "死の 7 日後に念願の大乗戒壇が認可される。",
+      "tags": [
+        "approval",
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "一隅を照らす、これすなわち国宝なり。",
+      "source": "『山家学生式』"
+    },
+    {
+      "text": "道心ある者を、賢者と名づく。",
+      "source": "『山家学生式』"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/saicho.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "平安初期の僧。日本天台宗の開祖、伝教大師。比叡山延暦寺を開き、後の法然・親鸞・道元・日蓮を生む日本仏教の母山を作った。「一隅を照らす」が信条。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/%E6%9C%80%E6%BE%84%E5%83%8F_%E4%B8%80%E4%B9%97%E5%AF%BA%E8%94%B5_%E5%B9%B3%E5%AE%89%E6%99%82%E4%BB%A3.jpg?width=500",

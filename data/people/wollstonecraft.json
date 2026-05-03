@@ -8,15 +8,59 @@
   "field": "思想家・作家",
   "summary": "フェミニズムの先駆者。『女性の権利の擁護』（1792）で女性の教育権を主張。『フランケンシュタイン』の作者シェリーの母。",
   "wikiTitle": "メアリ・ウルストンクラフト",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1759,
+      "age": 0,
+      "title": "ロンドンで生まれる",
+      "detail": "暴力的な父、貧困に近い家庭。",
+      "tags": []
+    },
+    {
+      "year": 1784,
+      "age": 25,
+      "title": "妹のために女子学校を設立",
+      "detail": "女性の自立を実践。",
+      "tags": [
+        "restart"
+      ]
+    },
+    {
+      "year": 1792,
+      "age": 33,
+      "title": "『女性の権利の擁護』刊行",
+      "detail": "近代フェミニズムの古典。「女性の理性は男性と同じである」。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1797,
+      "age": 38,
+      "title": "メアリー（後の『フランケンシュタイン』作者）出産後 11 日で産褥死",
+      "detail": "敗血症。娘が後の文豪に。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "私は、女性に男性の上に立つ力を願わない。彼女たちが自分自身の上に立つ力を願う。",
+      "source": "『女性の権利の擁護』 1792"
+    },
+    {
+      "text": "教育がなければ、徳は無理強いされた花にすぎない。",
+      "source": "『女性の権利の擁護』"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/wollstonecraft.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "18 世紀イギリスの作家・思想家。近代フェミニズムの母。『女性の権利の擁護』で女性の理性と教育を主張。娘メアリー・シェリーが『フランケンシュタイン』作者となる。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Mary_Wollstonecraft_by_John_Opie_%28c._1797%29.jpg?width=500",

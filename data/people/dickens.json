@@ -8,15 +8,91 @@
   "field": "小説家",
   "summary": "『オリバー・ツイスト』『クリスマス・キャロル』『大いなる遺産』。ヴィクトリア朝社会を描いた国民作家。",
   "wikiTitle": "チャールズ・ディケンズ",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1812,
+      "age": 0,
+      "title": "ポーツマスで生まれる",
+      "detail": "父は海軍経理事務員。一家は転居を繰り返した。",
+      "tags": []
+    },
+    {
+      "year": 1824,
+      "age": 12,
+      "title": "父が借金で投獄、少年は靴墨工場で働く",
+      "detail": "1日 10 時間労働の少年期トラウマが、後の作品全てに刻まれる。",
+      "tags": [
+        "loss",
+        "isolation",
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1836,
+      "age": 24,
+      "title": "『ピクウィック・クラブ』連載開始",
+      "detail": "ユーモア小説で爆発的人気、史上初の「文芸スター」誕生。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1838,
+      "age": 26,
+      "title": "『オリバー・ツイスト』連載",
+      "detail": "孤児の労働搾取を告発、社会改革小説の嚆矢。",
+      "tags": []
+    },
+    {
+      "year": 1843,
+      "age": 31,
+      "title": "『クリスマス・キャロル』刊行",
+      "detail": "スクルージの改心物語が「クリスマス文化」を欧米に再定義。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1858,
+      "age": 46,
+      "title": "妻と別居、若い女優と関係",
+      "detail": "10 人の子供を妻に押し付けて愛人ヘレン・ターナンと暮らす。世間から非難。",
+      "tags": [
+        "self_denial"
+      ]
+    },
+    {
+      "year": 1870,
+      "age": 58,
+      "title": "ロンドンで脳卒中で急死",
+      "detail": "未完の『エドウィン・ドルードの謎』を残して。ウェストミンスター寺院に埋葬。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "それは最良の時代であり、最悪の時代であった。",
+      "source": "『二都物語』冒頭 1859"
+    },
+    {
+      "text": "誰かを助けるたびに、私は自分が大きくなったと感じる。",
+      "source": "『デヴィッド・コパーフィールド』"
+    },
+    {
+      "text": "クリスマスを心の中で大切にせよ、そして年中それを抱え続けよ。",
+      "source": "『クリスマス・キャロル』"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/dickens.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "19 世紀イギリスの国民的小説家。少年期の労働搾取を糧に『オリバー・ツイスト』『二都物語』『クリスマス・キャロル』など社会派の傑作を量産。ヴィクトリア朝英国を最も鋭く描いた作家。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Dickens_Gurney_head.jpg?width=500",

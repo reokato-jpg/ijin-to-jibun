@@ -8,15 +8,81 @@
   "field": "物理学者・化学者",
   "summary": "電磁誘導の発見者。独学から王立研究所の第一人者に。発電機の原理を確立し、現代電気文明の扉を開いた。",
   "wikiTitle": "マイケル・ファラデー",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1791,
+      "age": 0,
+      "title": "ロンドン・南部の貧しい家に生まれる",
+      "detail": "鍛冶屋の子。正規教育はほとんど受けていない。",
+      "tags": []
+    },
+    {
+      "year": 1805,
+      "age": 14,
+      "title": "製本工房に徒弟入り",
+      "detail": "本の修理中に内容を読み、独学で電気・化学を学ぶ。",
+      "tags": []
+    },
+    {
+      "year": 1813,
+      "age": 22,
+      "title": "デイヴィー卿の助手に採用",
+      "detail": "デイヴィーの講義ノートを清書して持参、感銘を受けた所長が雇った。",
+      "tags": [
+        "restart",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1821,
+      "age": 30,
+      "title": "電磁回転（モーター原理）発見",
+      "detail": "電気を機械運動に変換する世界初の装置。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1831,
+      "age": 40,
+      "title": "電磁誘導発見",
+      "detail": "磁場の変化が電流を生むことを発見、発電機・変圧器の基礎。電気文明の根幹。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1867,
+      "age": 75,
+      "title": "ハンプトン・コートで死去",
+      "detail": "ヴィクトリア女王から授かったハンプトン・コートの恩給住宅で。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "実験こそ、自然との対話である。",
+      "source": "実験ノート"
+    },
+    {
+      "text": "金よりも、知識を獲得することの方が幸せだ。",
+      "source": "若い研究者へ"
+    },
+    {
+      "text": "私には数学はないが、自然の絵を描く力がある。",
+      "source": "回想"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/faraday.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "イギリスの物理学者・化学者。製本工の徒弟から世界的科学者へ。電磁誘導の発見で発電機・モーター・電気文明そのものの礎を築いた。アインシュタインは書斎にニュートン・マクスウェルと並べて彼の肖像を飾った。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Michael_Faraday_sitting_crop.jpg?width=500",

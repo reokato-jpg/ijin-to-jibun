@@ -8,15 +8,70 @@
   "field": "詩人",
   "summary": "『草の葉』でアメリカの自由と肉体を謳った。自由詩を発明し、20世紀詩に絶大な影響を与えた。",
   "wikiTitle": "ウォルト・ホイットマン",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1819,
+      "age": 0,
+      "title": "ニューヨーク・ロングアイランドで生まれる",
+      "detail": "大工の子、9 兄弟。",
+      "tags": []
+    },
+    {
+      "year": 1855,
+      "age": 36,
+      "title": "『草の葉』自費出版",
+      "detail": "型破りの自由詩、エマソンが「私はあなたの天才の最初の段階で挨拶する」と評価。",
+      "tags": [
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1862,
+      "age": 43,
+      "title": "南北戦争 — 軍病院で看護士",
+      "detail": "弟が負傷したのを訪ねたのがきっかけ、3 年間で 80,000 兵を見舞う。",
+      "tags": [
+        "isolation"
+      ]
+    },
+    {
+      "year": 1865,
+      "age": 46,
+      "title": "リンカーン暗殺で「O Captain! My Captain!」",
+      "detail": "アメリカ史上最も愛される弔詩。",
+      "tags": []
+    },
+    {
+      "year": 1892,
+      "age": 73,
+      "title": "カムデンで死去",
+      "detail": "『草の葉』を 9 度の改訂で生涯書き続けた。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "私は自分自身を讃える。",
+      "source": "『草の葉』冒頭"
+    },
+    {
+      "text": "おお、船長、わが船長よ！",
+      "source": "リンカーン弔詩 1865"
+    },
+    {
+      "text": "私は大きい、私の中には大群衆が含まれる。",
+      "source": "『草の葉』"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/whitman.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "アメリカの詩人。型破りの自由詩で『草の葉』を 36 歳で自費出版、生涯改訂し続けた。アメリカ的民主主義と肉体の讃歌で 19 世紀詩を革命、後のビート詩人まで影響。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Walt_Whitman_-_George_Collins_Cox.jpg?width=500",

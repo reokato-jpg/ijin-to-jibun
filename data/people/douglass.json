@@ -8,15 +8,85 @@
   "field": "奴隷廃止論者",
   "summary": "元奴隷から19世紀アメリカ最強の演説家・著述家へ。黒人解放とフェミニズム両方に尽くした。",
   "wikiTitle": "フレデリック・ダグラス",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1818,
+      "age": 0,
+      "title": "メリーランドで奴隷として生まれる",
+      "detail": "母は黒人奴隷、父は白人主人とされる。母の顔を 4 回しか見ないまま死別。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1830,
+      "age": 12,
+      "title": "違法に読み書きを学ぶ",
+      "detail": "主人の妻から、後に近所の白人少年から。「読むことが自由への鍵」と悟る。",
+      "tags": [
+        "pride_broken"
+      ]
+    },
+    {
+      "year": 1838,
+      "age": 20,
+      "title": "船員に変装してニューヨークへ脱走成功",
+      "detail": "20 歳で奴隷から自由へ。",
+      "tags": [
+        "restart",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1845,
+      "age": 27,
+      "title": "自伝『フレデリック・ダグラスの生涯』刊行",
+      "detail": "1 万 1 千部即売、奴隷制廃止運動の主要人物に。安全のため英国へ亡命。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1865,
+      "age": 47,
+      "title": "南北戦争終結、奴隷制廃止",
+      "detail": "彼の演説と組織活動が世論を動かした功績は大きい。リンカーンとの面会も。",
+      "tags": [
+        "approval"
+      ]
+    },
+    {
+      "year": 1895,
+      "age": 77,
+      "title": "ワシントンで死去",
+      "detail": "全米女性参政権運動家との集会後に倒れた。",
+      "tags": [
+        "loss"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "苦闘なくして進歩はない。",
+      "source": "ロチェスター演説 1857"
+    },
+    {
+      "text": "あなたが正しいと思うなら、孤立を恐れるな。",
+      "source": "演説"
+    },
+    {
+      "text": "強い男を作るより、強い子供を育てる方が易しい。",
+      "source": "教育論"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/douglass.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "アメリカの奴隷制廃止運動家・元奴隷。20 歳で脱走、自伝を出版し、奴隷制廃止運動の最も雄弁な指導者となる。リンカーンに進言し、南北戦争後の黒人権利運動を牽引した。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Frederick_Douglass_%28circa_1879%29_%28cropped%29.jpg?width=500",

@@ -8,15 +8,91 @@
   "field": "軍人・聖人",
   "summary": "17歳で神の啓示を受け、百年戦争のフランス軍を勝利に導いた少女。19歳で火刑に処されたが後に聖人に。",
   "wikiTitle": "ジャンヌ・ダルク",
-  "events": [],
-  "quotes": [],
+  "events": [
+    {
+      "year": 1412,
+      "age": 0,
+      "title": "フランス・ドンレミ村に生まれる",
+      "detail": "農民の娘。文字も読めない貧しい少女。",
+      "tags": []
+    },
+    {
+      "year": 1424,
+      "age": 12,
+      "title": "天使の声を聞き始める",
+      "detail": "聖ミカエル・聖カテリーヌ・聖マルガレタの声が「フランスを救え」と告げる、と本人が語った。",
+      "tags": []
+    },
+    {
+      "year": 1429,
+      "age": 17,
+      "title": "シャルル7世に謁見、軍を率いる",
+      "detail": "シノン城で王太子に天命を伝え、軍勢を貸与される。",
+      "tags": [
+        "restart",
+        "breakthrough"
+      ]
+    },
+    {
+      "year": 1429,
+      "age": 17,
+      "title": "オルレアン解放",
+      "detail": "9 日でイングランド軍を退け、百年戦争の流れを変える。",
+      "tags": [
+        "breakthrough",
+        "approval"
+      ]
+    },
+    {
+      "year": 1430,
+      "age": 18,
+      "title": "コンピエーニュで捕虜に",
+      "detail": "ブルゴーニュ派に売られ、イングランドへ。",
+      "tags": [
+        "loss",
+        "isolation"
+      ]
+    },
+    {
+      "year": 1431,
+      "age": 19,
+      "title": "ルーアンで火刑",
+      "detail": "異端裁判で異性服装罪・偽預言罪。シャルル7世は救援に動かなかった。",
+      "tags": [
+        "loss"
+      ]
+    },
+    {
+      "year": 1456,
+      "age": null,
+      "title": "復権裁判で無罪、聖人列序列へ",
+      "detail": "母の請願で再審。1920 年にカトリックの聖人に列せられる。",
+      "tags": [
+        "approval"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "text": "私は神の声を聞いた。それで充分である。",
+      "source": "異端裁判での証言 1431"
+    },
+    {
+      "text": "戦士には神の助けがあれば数は問題ではない。",
+      "source": "オルレアン戦前"
+    },
+    {
+      "text": "私は処女として生き、処女として死ぬ。",
+      "source": "裁判記録"
+    }
+  ],
   "places": [],
   "imageUrl": "assets/portraits/joan_of_arc.webp",
   "books": [],
   "media": [],
   "works": [],
   "routine": {},
-  "lifeDigest": "",
+  "lifeDigest": "百年戦争末期のフランスの英雄。17 歳の農民の娘が天使の声に従って軍を率い、オルレアン解放で戦況を逆転させた。19 歳でイングランドにより火刑、後にカトリック聖人。",
   "traits": {},
   "relations": [],
   "imageUrlSource": "https://commons.wikimedia.org/wiki/Special:FilePath/Joan_of_Arc_miniature_graded.jpg?width=500",
