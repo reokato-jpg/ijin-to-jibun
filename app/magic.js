@@ -10632,7 +10632,8 @@
       let adIdx = 0;
       works.forEach((w, i) => {
         merged.push(w);
-        if ((i + 1) % 4 === 0 && adIdx < MUSEUM_ADS.length) {
+        // 🏛 建築士所見：4 作品に 1 枚（20%）は道の駅レベル → 10 作品に 1 枚（10%）に下げる
+        if ((i + 1) % 10 === 0 && adIdx < MUSEUM_ADS.length) {
           const ad = MUSEUM_ADS[adIdx++];
           // 広告canvas生成（額縁内に表示）
           const c = document.createElement('canvas'); c.width = 512; c.height = 640;
@@ -10846,19 +10847,23 @@
 
     // === ホール構造：ゾーン別の形 ===
     // 神話＝多角形（円形に近い）、戦国＝正方形に近い長方形
+    // 🏛 建築士所見：作品数に応じてホールが膨張すると人体スケールから逸脱するため、
+    //    壁面数は作品数で増やすが、半径は 12〜18m に固定する（パンテオン規模に収束）。
+    //    壁面が増えると角度（wallAngle）が小さくなり、絵が密に並ぶ — 小さなホールで作品を見る感じに。
     const N = isWa
       ? Math.max(4, Math.ceil(works.length / 3) * 4) // 4の倍数、長方形ぽく
       : Math.max(8, works.length);
-    const radius = Math.max(14, N * 1.5);
+    const radius = isWa ? 14 : Math.min(18, Math.max(12, 12 + N * 0.3)); // 上限 18m
     const wallHeight = isWa ? 7 : 6;
     const wallAngle = (Math.PI * 2) / N;
     // 🏛 メザニン構造：1Fに加えて、2F/3Fバルコニーで違う作品を見せる
     const HAS_MEZZANINE = works.length >= 6; // 作品が少ない時は1Fだけで十分
     const HALL_FULL_HEIGHT = HAS_MEZZANINE ? wallHeight * 3 : wallHeight;
+    // 🏛 絵の中心 Y を視線高 1.55m に下げる（ICOM/MoMA 推奨）。各階床+1.55m に統一。
     const TIER_Y = [
-      wallHeight / 2 + 0.3,                  // 1F 絵の中心 Y
-      wallHeight + wallHeight / 2 + 0.3,     // 2F
-      wallHeight * 2 + wallHeight / 2 + 0.3, // 3F
+      1.55,                  // 1F 絵の中心 Y（人間視線高）
+      wallHeight + 1.55,     // 2F
+      wallHeight * 2 + 1.55, // 3F
     ];
     const TIER_FLOOR_Y = [0, wallHeight, wallHeight * 2]; // 各階の床高さ
 
@@ -10924,6 +10929,63 @@
     ceiling.rotation.x = Math.PI / 2;
     ceiling.position.y = HALL_FULL_HEIGHT;
     scene.add(ceiling);
+
+    // === 🏛 ドーム + リブ天井（建築士所見：図書館のリブ天井と同等の立体性を美術館にも） ===
+    if (!isWa) {
+      // 半球ドーム（中央）— SphereGeometry の上半分
+      const domeMat = new THREE.MeshStandardMaterial({
+        map: ceilTex, color: 0xfaecd0, roughness: 0.85, side: THREE.DoubleSide,
+      });
+      const domeGeo = new THREE.SphereGeometry(radius * 0.65, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2);
+      const dome = new THREE.Mesh(domeGeo, domeMat);
+      dome.position.y = HALL_FULL_HEIGHT;
+      scene.add(dome);
+      // 放射リブ（12 本、ドームから中央キーストーンへ）
+      const ribMat = new THREE.MeshStandardMaterial({
+        color: 0x8a6a3a, roughness: 0.55, metalness: 0.2, emissive: 0x4a3008, emissiveIntensity: 0.3,
+      });
+      const RIB_COUNT = 12;
+      const ribH = radius * 0.65;
+      for (let r = 0; r < RIB_COUNT; r++) {
+        const ang = (r / RIB_COUNT) * Math.PI * 2;
+        const rib = new THREE.Mesh(new THREE.BoxGeometry(0.18, ribH, 0.22), ribMat);
+        // ドーム表面に沿うように傾けて配置（中央から外へ）
+        rib.position.set(
+          Math.cos(ang) * ribH / 2,
+          HALL_FULL_HEIGHT + ribH / 2 - 0.2,
+          Math.sin(ang) * ribH / 2
+        );
+        rib.rotation.set(0, -ang, Math.PI / 2 - 0.4);
+        scene.add(rib);
+      }
+      // キーストーン（ドーム頂点の金の円盤）
+      const keystoneMat = new THREE.MeshStandardMaterial({
+        color: 0xc8a040, metalness: 0.85, roughness: 0.3, emissive: 0x4a3008, emissiveIntensity: 0.5,
+      });
+      const keystone = new THREE.Mesh(new THREE.CylinderGeometry(0.7, 0.85, 0.25, 16), keystoneMat);
+      keystone.position.y = HALL_FULL_HEIGHT + ribH - 0.05;
+      scene.add(keystone);
+      // ドーム内側に微弱な光（オクルス採光感）
+      const domeLight = new THREE.PointLight(0xfff0c8, 0.5, 30, 1.2);
+      domeLight.position.set(0, HALL_FULL_HEIGHT + ribH * 0.6, 0);
+      scene.add(domeLight);
+    } else {
+      // 和：折上げ天井（中央 1 段上げ + 十字大梁）
+      const beamMat = new THREE.MeshStandardMaterial({ color: 0x4a2a14, roughness: 0.7 });
+      const upperCeil = new THREE.Mesh(
+        new THREE.CylinderGeometry(radius * 0.5, radius * 0.5, 0.25, 24),
+        new THREE.MeshStandardMaterial({ map: ceilTex, roughness: 0.85 })
+      );
+      upperCeil.position.y = HALL_FULL_HEIGHT + 0.6;
+      scene.add(upperCeil);
+      // 十字大梁
+      [0, Math.PI / 2].forEach(rot => {
+        const beam = new THREE.Mesh(new THREE.BoxGeometry(radius * 1.2, 0.4, 0.5), beamMat);
+        beam.position.y = HALL_FULL_HEIGHT - 0.05;
+        beam.rotation.y = rot;
+        scene.add(beam);
+      });
+    }
 
     // 照明（洋＝シャンデリア / 和＝中央に釣り灯籠 + 周囲の赤提灯）
     const chandLight = new THREE.PointLight(
@@ -11000,20 +11062,17 @@
     }
     scene.add(chandelier);
 
-    // 環境光（さらに明るく：ユーザー要望「美術館暗い」→ 大幅UP）
-    scene.add(new THREE.AmbientLight(isWa ? 0xb88c5c : 0xfff8e8, isWa ? 2.4 : 3.0));
-    const hemi = new THREE.HemisphereLight(isWa ? 0xffe0a8 : 0xfff8e8, isWa ? 0x806040 : 0xd8b890, isWa ? 2.0 : 2.6);
+    // 🏛 美術館の光は陰影が主役（実館 壁面 150-200 lux）。
+    //    旧実装は Ambient/Hemi/Directional を全部高強度にしてフラット化していた。
+    //    SpotLight のドラマ性を取り戻すため、全体を大幅トーンダウン。
+    scene.add(new THREE.AmbientLight(isWa ? 0xb88c5c : 0xfff8e8, isWa ? 0.9 : 1.05));
+    const hemi = new THREE.HemisphereLight(isWa ? 0xffe0a8 : 0xfff8e8, isWa ? 0x806040 : 0xd8b890, isWa ? 0.55 : 0.65);
     scene.add(hemi);
-    // フィルライト（補助、暖色寄せ）強化
-    const fill1 = new THREE.DirectionalLight(0xfff4e0, isWa ? 1.0 : 1.4);
-    fill1.position.set(8, 10, 8); scene.add(fill1);
-    const fill2 = new THREE.DirectionalLight(isWa ? 0xe8efff : 0xfff8e8, isWa ? 0.7 : 0.9);
-    fill2.position.set(-8, 8, -8); scene.add(fill2);
-    // トップライト追加（中央上から白色光、絵画を照らす）
-    const topLight = new THREE.DirectionalLight(0xffffff, isWa ? 0.6 : 0.85);
+    // フィルライトは 1 灯のみ（最小限）
+    const topLight = new THREE.DirectionalLight(0xffffff, isWa ? 0.5 : 0.55);
     topLight.position.set(0, 14, 0); scene.add(topLight);
-    // toneMapping exposure もUP
-    renderer.toneMappingExposure = isWa ? 1.95 : 2.25;
+    // toneMapping exposure を標準域に戻す（陰影を残す）
+    renderer.toneMappingExposure = isWa ? 1.2 : 1.25;
 
     // 🌿 どうぶつの森風デコレーション（洋ホールのみ：観葉植物・ベンチ）
     if (!isWa) {
@@ -11250,17 +11309,35 @@
       const isDoor = doorwayIndices.has(i);
       // 壁面（ドアウェイの場所はスキップ、代わりにアーチ枠だけ）
       if (!isDoor) {
+        // 🏛 厚み 0.3m の Box 化（紙の城→建築的に正しい厚みのある壁）
         // 1F壁
-        const wallGeo = new THREE.PlaneGeometry(segLen, wallHeight);
+        const wallGeo = new THREE.BoxGeometry(segLen, wallHeight, 0.3);
         const wall = new THREE.Mesh(wallGeo, new THREE.MeshStandardMaterial({ map: wallTex, roughness: 0.85 }));
         wall.position.set(mx, wallHeight / 2, mz);
         wall.lookAt(0, wallHeight / 2, 0);
         scene.add(wall);
-        // 2F/3F壁（メザニン分の上部壁を追加）
+        // 🏛 付柱（ピラスタ）— 各壁の左右端に細い柱で立体感を出す
+        if (!isWa) {
+          const pilasterMat = new THREE.MeshStandardMaterial({ color: 0xd4c4a8, roughness: 0.7, metalness: 0.05 });
+          [-segLen / 2 + 0.08, segLen / 2 - 0.08].forEach(offset => {
+            const pilaster = new THREE.Mesh(new THREE.BoxGeometry(0.16, wallHeight, 0.16), pilasterMat);
+            // 壁面ローカル → ワールドへ（壁の向きに沿って配置）
+            const cosA = Math.cos((a + nextA) / 2 + Math.PI / 2);
+            const sinA = Math.sin((a + nextA) / 2 + Math.PI / 2);
+            pilaster.position.set(mx + cosA * offset, wallHeight / 2, mz + sinA * offset);
+            pilaster.lookAt(0, wallHeight / 2, 0);
+            // 壁から少し外側にせり出す
+            const outX = Math.cos((a + nextA) / 2), outZ = Math.sin((a + nextA) / 2);
+            pilaster.position.x += outX * 0.18;
+            pilaster.position.z += outZ * 0.18;
+            scene.add(pilaster);
+          });
+        }
+        // 2F/3F壁（メザニン分の上部壁を追加）— 同じく Box 化
         if (HAS_MEZZANINE) {
           for (let tier = 1; tier < 3; tier++) {
             const wU = new THREE.Mesh(
-              new THREE.PlaneGeometry(segLen, wallHeight),
+              new THREE.BoxGeometry(segLen, wallHeight, 0.3),
               new THREE.MeshStandardMaterial({ map: wallTex, roughness: 0.85 })
             );
             const wYU = TIER_FLOOR_Y[tier] + wallHeight / 2;
@@ -11313,8 +11390,9 @@
       // 中心から内側に少し出す（壁から浮かせる）
       const nx = -Math.cos((a + nextA) / 2), nz = -Math.sin((a + nextA) / 2);
       const offset = 0.06;
-      // 額縁（洋＝金色 / 和＝黒漆＋朱の内枠）
-      const frameW = Math.min(segLen * 0.85, 3.6); // 旧2.4 → 3.6 でデカく
+      // 🏛 額縁サイズを ICOM/MoMA 推奨に近づける（壁面占有率 30-50%、絵の中心 1.55m）
+      // segLen の 60% 以内、最大 2.4m の額縁幅。
+      const frameW = Math.min(segLen * 0.60, 2.4);
       const frameH = frameW * 1.3;
       const frameThick = isWa ? 0.18 : 0.14;
       const frameGeo = new THREE.BoxGeometry(frameW + frameThick*2, frameH + frameThick*2, 0.08);
@@ -11322,8 +11400,8 @@
         ? new THREE.MeshStandardMaterial({ color: 0x1a1008, metalness: 0.4, roughness: 0.5 })
         : new THREE.MeshStandardMaterial({ color: 0xc8a050, metalness: 0.8, roughness: 0.35 });
       const frame = new THREE.Mesh(frameGeo, frameMat);
-      frame.position.set(mx + nx * offset, wallHeight / 2 + 0.3, mz + nz * offset);
-      frame.lookAt(0, wallHeight / 2 + 0.3, 0);
+      frame.position.set(mx + nx * offset, TIER_Y[0], mz + nz * offset);
+      frame.lookAt(0, TIER_Y[0], 0);
       scene.add(frame);
       // 🏛 2F/3F の追加絵画（同じ壁の異なる高さに、別の作品）
       if (HAS_MEZZANINE) {
@@ -11397,8 +11475,8 @@
       })();
       const canvasMat = new THREE.MeshStandardMaterial({ map: phTex, roughness: 0.6 });
       const canvasMesh = new THREE.Mesh(new THREE.PlaneGeometry(frameW, frameH), canvasMat);
-      canvasMesh.position.set(mx + nx * (offset + 0.05), wallHeight / 2 + 0.3, mz + nz * (offset + 0.05));
-      canvasMesh.lookAt(0, wallHeight / 2 + 0.3, 0);
+      canvasMesh.position.set(mx + nx * (offset + 0.05), TIER_Y[0], mz + nz * (offset + 0.05));
+      canvasMesh.lookAt(0, TIER_Y[0], 0);
       scene.add(canvasMesh);
       canvasMesh.userData.work = work;
       canvasMesh.userData.wallMid = { x: mx, z: mz };
@@ -11435,10 +11513,11 @@
           im.src = src;
         });
       };
-      // スポットライト
-      const spot = new THREE.SpotLight(0xfff0c0, 2.5, 12, Math.PI / 4.5, 0.35, 1.4);
-      spot.position.set(mx + nx * 2.0, wallHeight - 0.5, mz + nz * 2.0);
-      spot.target.position.set(mx + nx * 0.2, wallHeight / 2 + 0.3, mz + nz * 0.2);
+      // 🏛 スポットライト（建築士所見：強度UP・狭角・天井寄り＝額の影が絵面に落ちない）
+      // 旧 Math.PI/4.5 (40°) → Math.PI/6 (30°)、強度 2.5 → 4.0、距離を絵に近づける（前 1.2m）
+      const spot = new THREE.SpotLight(0xfff0c0, 4.0, 14, Math.PI / 6, 0.55, 1.4);
+      spot.position.set(mx + nx * 1.2, wallHeight - 0.3, mz + nz * 1.2);
+      spot.target.position.set(mx + nx * 0.15, TIER_Y[0], mz + nz * 0.15);
       scene.add(spot); scene.add(spot.target);
       // プラーク（小さな金の板）— テキストをcanvasに
       const plaqueCanvas = document.createElement('canvas'); plaqueCanvas.width = 256; plaqueCanvas.height = 64;
@@ -11452,7 +11531,7 @@
       const plaqueTex = new THREE.CanvasTexture(plaqueCanvas);
       const plaqueMat = new THREE.MeshBasicMaterial({ map: plaqueTex });
       const plaque = new THREE.Mesh(new THREE.PlaneGeometry(0.9, 0.22), plaqueMat);
-      plaque.position.set(mx + nx * (offset + 0.1), wallHeight / 2 + 0.3 - frameH/2 - 0.25, mz + nz * (offset + 0.1));
+      plaque.position.set(mx + nx * (offset + 0.1), TIER_Y[0] - frameH/2 - 0.25, mz + nz * (offset + 0.1));
       plaque.lookAt(0, plaque.position.y, 0);
       scene.add(plaque);
     }
@@ -11667,21 +11746,22 @@
         // 後壁に追加の絵画（あれば）
         const extraWork = works[(idx * 7) % works.length];
         if (extraWork) {
-          // 額縁
-          const fW = 2.6, fH = 3.2;
+          // 🏛 アルコーブ用に縮小（建築士所見：親密な小部屋なので絵を小さく、視線高 1.55m）
+          const fW = 1.8, fH = 2.34;
+          const ALC_PAINT_Y = 1.55;
           const frame = new THREE.Mesh(
             new THREE.BoxGeometry(fW + 0.3, fH + 0.3, 0.08),
             new THREE.MeshStandardMaterial({ color: 0xc8a050, metalness: 0.8, roughness: 0.35 })
           );
-          frame.position.set(bx - Math.cos(angle) * 0.05, ALCOVE_HEIGHT / 2, bz - Math.sin(angle) * 0.05);
-          frame.lookAt(portal.mx, ALCOVE_HEIGHT / 2, portal.mz);
+          frame.position.set(bx - Math.cos(angle) * 0.05, ALC_PAINT_Y, bz - Math.sin(angle) * 0.05);
+          frame.lookAt(portal.mx, ALC_PAINT_Y, portal.mz);
           scene.add(frame);
           // キャンバス（実画像 or PR広告）
           const canvasGeo = new THREE.PlaneGeometry(fW, fH);
           const canvasMat2 = new THREE.MeshStandardMaterial({ roughness: 0.6 });
           const canvasMesh2 = new THREE.Mesh(canvasGeo, canvasMat2);
-          canvasMesh2.position.set(bx - Math.cos(angle) * 0.10, ALCOVE_HEIGHT / 2, bz - Math.sin(angle) * 0.10);
-          canvasMesh2.lookAt(portal.mx, ALCOVE_HEIGHT / 2, portal.mz);
+          canvasMesh2.position.set(bx - Math.cos(angle) * 0.10, ALC_PAINT_Y, bz - Math.sin(angle) * 0.10);
+          canvasMesh2.lookAt(portal.mx, ALC_PAINT_Y, portal.mz);
           scene.add(canvasMesh2);
           canvasMesh2.userData.work = extraWork;
           // 既存のロード関数があれば後でテクスチャ差し替え
@@ -11697,10 +11777,10 @@
             im.src = extraWork.img;
           }
           paintings.push(canvasMesh2);
-          // スポットライト
-          const sp = new THREE.SpotLight(0xfff0c0, 2.0, 10, Math.PI / 4.5, 0.4, 1.4);
-          sp.position.set(cx, ALCOVE_HEIGHT - 0.6, cz);
-          sp.target.position.set(bx, ALCOVE_HEIGHT / 2, bz);
+          // スポットライト（建築士所見：狭角・強度UPで陰影を残す）
+          const sp = new THREE.SpotLight(0xfff0c0, 3.5, 10, Math.PI / 6, 0.55, 1.4);
+          sp.position.set(cx, ALCOVE_HEIGHT - 0.4, cz);
+          sp.target.position.set(bx, ALC_PAINT_Y, bz);
           scene.add(sp); scene.add(sp.target);
         }
         // どうぶつの森風デコレーション：観葉植物2つ＋ベンチ1つ
@@ -11853,8 +11933,80 @@
       scene.add(g);
       return g;
     }
+    // 🏛 建築士所見：旧 0/π 真反対は「ホール横切りショートカット」で回遊性を崩す。
+    //    出口を 0.7π（手前寄り）にして「ぐるっと回って出る」動線に修正。
     const entrancePortal = buildPortal(isWa ? '入　口' : 'ENTRANCE', 0, false);
-    const exitPortal = buildPortal(isWa ? '出　口' : 'EXIT', Math.PI, true);
+    const exitPortal = buildPortal(isWa ? '出　口' : 'EXIT', Math.PI * 0.7, true);
+
+    // === 🏛 入口ファサード（前庭 + 列柱 + 階段 + ペディメント） — 「来た感」演出 ===
+    if (!isWa) {
+      const facadeG = new THREE.Group();
+      const stoneMat = new THREE.MeshStandardMaterial({ color: 0xe8dcc4, roughness: 0.6, metalness: 0.05 });
+      const stoneMatDark = new THREE.MeshStandardMaterial({ color: 0xc8b896, roughness: 0.7 });
+      const goldMat = new THREE.MeshStandardMaterial({
+        color: 0xc8a040, metalness: 0.85, roughness: 0.3, emissive: 0x4a3008, emissiveIntensity: 0.4,
+      });
+      // 入口前の床（前庭・正方形 8m × 5m）
+      const apron = new THREE.Mesh(new THREE.BoxGeometry(8, 0.3, 5), stoneMatDark);
+      apron.position.set(radius + 2.5, 0.15, 0);
+      facadeG.add(apron);
+      // 階段 4 段（前庭手前へ）
+      for (let s = 0; s < 4; s++) {
+        const step = new THREE.Mesh(new THREE.BoxGeometry(8 - s * 0.6, 0.18, 0.6), stoneMatDark);
+        step.position.set(radius + 4.8 + s * 0.6, 0.09 + s * 0.18, 0);
+        facadeG.add(step);
+      }
+      // 列柱 4 本（前庭の前縁、ドリス式の柱）
+      [-2.6, -0.9, 0.9, 2.6].forEach(zOff => {
+        // 柱基（square base）
+        const colBase = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.25, 0.7), stoneMatDark);
+        colBase.position.set(radius + 0.3, 0.4, zOff);
+        facadeG.add(colBase);
+        // 柱本体（細長 cylinder）
+        const colShaft = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.32, 0.36, 5.5, 16),
+          stoneMat
+        );
+        colShaft.position.set(radius + 0.3, 0.4 + 5.5 / 2 + 0.1, zOff);
+        facadeG.add(colShaft);
+        // 柱頭（イオニア風 — 上下 2 段）
+        const cap1 = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.42, 0.32, 0.25, 16),
+          stoneMat
+        );
+        cap1.position.set(radius + 0.3, 0.4 + 5.5 + 0.25 / 2 + 0.1, zOff);
+        facadeG.add(cap1);
+        const cap2 = new THREE.Mesh(
+          new THREE.BoxGeometry(0.85, 0.18, 0.7),
+          stoneMat
+        );
+        cap2.position.set(radius + 0.3, 0.4 + 5.5 + 0.25 + 0.18 / 2 + 0.1, zOff);
+        facadeG.add(cap2);
+      });
+      // エンタブラチュア（柱の上の梁）
+      const entablature = new THREE.Mesh(new THREE.BoxGeometry(0.85, 0.7, 7.0), stoneMat);
+      entablature.position.set(radius + 0.3, 0.4 + 5.5 + 0.25 + 0.18 + 0.7 / 2 + 0.1, 0);
+      facadeG.add(entablature);
+      // ペディメント（三角破風）— 板金加工で TriangleShape
+      const pediShape = new THREE.Shape();
+      pediShape.moveTo(-3.5, 0);
+      pediShape.lineTo(3.5, 0);
+      pediShape.lineTo(0, 1.6);
+      pediShape.lineTo(-3.5, 0);
+      const pediGeo = new THREE.ExtrudeGeometry(pediShape, { depth: 0.85, bevelEnabled: true, bevelThickness: 0.05, bevelSize: 0.04, bevelSegments: 1 });
+      const pediment = new THREE.Mesh(pediGeo, stoneMat);
+      pediment.position.set(radius + 0.3 - 0.425, 0.4 + 5.5 + 0.25 + 0.18 + 0.7 + 0.1, 0);
+      pediment.rotation.y = Math.PI / 2;
+      facadeG.add(pediment);
+      // ペディメント中央の金の装飾（円形メダリオン）
+      const medallion = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.5, 0.15, 24), goldMat);
+      medallion.position.set(radius + 0.3 + 0.1, 0.4 + 5.5 + 0.25 + 0.18 + 0.7 + 0.6 + 0.1, 0);
+      medallion.rotation.z = Math.PI / 2;
+      facadeG.add(medallion);
+      // ファサード全体を入口アングル（angle=0）の方向に向ける
+      // （buildPortal は angle=0 で X+ 方向に配置済み、ファサードはそのまま）
+      scene.add(facadeG);
+    }
     // 出口前のヒント
     const exitX = Math.cos(Math.PI) * radius;
     const exitZ = Math.sin(Math.PI) * radius;
